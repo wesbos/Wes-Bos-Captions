@@ -1,0 +1,329 @@
+WEBVTT
+
+00:00:00.290 --> 00:00:03.290 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:06.900 --> 00:00:10.400 line:100% position:50% align:middle
+Another way that we can host our
+applications is on GitHub Pages.
+
+00:00:10.400 --> 00:00:15.430 line:100% position:50% align:middle
+Now, this probably isn't the greatest way
+to host your application because it uses a
+
+00:00:15.430 --> 00:00:18.220 line:100% position:50% align:middle
+bit of a hack, and we'll go into that in
+just a second. However,
+
+00:00:18.220 --> 00:00:21.250 line:100% position:50% align:middle
+if you just need to get something online,
+if you want to show it to other people,
+
+00:00:21.250 --> 00:00:23.520 line:100% position:50% align:middle
+it's free hosting and it's
+really easy to do.
+
+00:00:23.520 --> 00:00:29.920 line:100% position:50% align:middle
+So, what I've done here is set up a new
+blank GitHub repo, and I'm going to go to
+
+00:00:29.920 --> 00:00:37.090 line:100% position:50% align:middle
+my Sublime Text and open up my Terminal.
+Now before we actually run npm run
+
+00:00:37.090 --> 00:00:42.670 line:100% position:50% align:middle
+build, what happens is that, this
+"getting-fishy" is going to be my repo
+
+00:00:42.670 --> 00:00:48.660 line:100% position:50% align:middle
+name and "wesbos" is my GitHub name. So
+the effective URL for this is going to be
+
+00:00:48.660 --> 00:00:56.610 line:100% position:50% align:middle
+"wesbos.github.io/getting-fishy" and
+what's different about that is not that
+
+00:00:56.610 --> 00:01:00.350 line:100% position:50% align:middle
+there's a subdomain...that's fine...but
+what's different about that is that it's
+
+00:01:00.350 --> 00:01:07.032 line:100% position:50% align:middle
+going to be running sort of in a subfolder
+where "getting-fishy/store/clean-children"
+
+00:01:07.032 --> 00:01:11.542 line:100% position:50% align:middle
+or something like that, right? So this
+part, how do we account for that.
+
+00:01:11.542 --> 00:01:16.639 line:100% position:50% align:middle
+So far it's always just been
+"/store/clean-kitchen." So what we need to
+
+00:01:16.639 --> 00:01:18.792 line:100% position:50% align:middle
+do is a couple things here.
+
+00:01:18.792 --> 00:01:24.830 line:100% position:50% align:middle
+First of all, we need to go into our
+package.json and specify a home page.
+
+00:01:24.830 --> 00:01:30.140 line:100% position:50% align:middle
+This is going to tell create React app
+where to make the link path.
+
+00:01:30.140 --> 00:01:34.220 line:100% position:50% align:middle
+So, we are going to add a home page, and
+then you need to type in
+
+00:01:34.220 --> 00:01:39.140 line:100% position:50% align:middle
+"wesbos.github.io" or obviously your repo
+here .../the repo name. That's
+
+00:01:39.140 --> 00:01:44.520 line:100% position:50% align:middle
+really important because when we get back
+to these URLs here, our CSS isn't going to
+
+00:01:44.520 --> 00:01:55.180 line:100% position:50% align:middle
+be "/static/style.css" It's going to be
+"/getting-fishy/static/style.css." So it's
+
+00:01:55.180 --> 00:01:59.350 line:100% position:50% align:middle
+really important that we add that home
+page parameter here and create React app,
+
+00:01:59.350 --> 00:02:03.890 line:100% position:50% align:middle
+when we run build, is going to take
+that into account when creating its URL.
+
+00:02:03.890 --> 00:02:09.500 line:100% position:50% align:middle
+So, no problem there. However, we also
+need to open up our index.js and we need
+
+00:02:09.500 --> 00:02:15.570 line:100% position:50% align:middle
+to modify our React router here to run in
+a subfolder. If you've ever tried to run
+
+00:02:15.570 --> 00:02:20.700 line:100% position:50% align:middle
+React router before in a subfolder, you
+know that it just pushes it to forward
+
+00:02:20.700 --> 00:02:24.470 line:100% position:50% align:middle
+slash. And we need to tell it that
+everything is going to be living at
+
+00:02:24.470 --> 00:02:29.730 line:100% position:50% align:middle
+"/getting-fishy." So the way that we do
+that is we say "basename=" and
+
+00:02:29.730 --> 00:02:31.060 line:100% position:50% align:middle
+then "/getting-fishy/."
+
+00:02:31.060 --> 00:02:36.770 line:100% position:50% align:middle
+One little trick that I've done before is
+that I'll create a quick variable from the
+
+00:02:36.770 --> 00:02:42.130 line:100% position:50% align:middle
+URL. So I'll say "const repo =" some
+back text, and I'm just going to take...
+
+00:02:42.130 --> 00:02:53.360 line:100% position:50% align:middle
+Let's say I'm at this URL right here. I've
+got [removed].pathname.
+
+00:02:53.360 --> 00:02:59.200 line:100% position:50% align:middle
+And what you can do is you can split that
+on a forward slash, and you can grab the
+
+00:02:59.200 --> 00:03:03.810 line:100% position:50% align:middle
+second item, and that's going to give you
+the repo name. In this case,
+
+00:03:03.810 --> 00:03:08.960 line:100% position:50% align:middle
+it says "wesbos," but if it was
+"/getting-fishy/storeid" then it would
+
+00:03:08.960 --> 00:03:11.090 line:100% position:50% align:middle
+give me "getting-fishy."
+
+00:03:11.090 --> 00:03:19.650 line:100% position:50% align:middle
+I'm going to take the
+[removed].pathname.split, and then
+
+00:03:19.650 --> 00:03:24.180 line:100% position:50% align:middle
+I'll grab the second thing that comes in,
+and that will only work for GitHub Pages
+
+00:03:24.180 --> 00:03:29.380 line:100% position:50% align:middle
+because GitHub Pages is always going to be
+"your username.github.io/the repo
+
+00:03:29.380 --> 00:03:35.130 line:100% position:50% align:middle
+name." So that's the repo. Then we can
+just pop the repo into there.
+
+00:03:35.130 --> 00:03:36.750 line:100% position:50% align:middle
+Here. Good.
+
+00:03:36.750 --> 00:03:42.200 line:100% position:50% align:middle
+So, now we need to go back to our iTerm
+here and run "npm run build." That is
+
+00:03:42.200 --> 00:03:46.940 line:100% position:50% align:middle
+going to create a build directory so cd
+into build. I'm going to initialize a git
+
+00:03:46.940 --> 00:03:52.810 line:100% position:50% align:middle
+repo. I'm going to add the
+remote, git add -A
+
+00:03:52.810 --> 00:03:54.810 line:100% position:50% align:middle
+git commit - m.
+I'm going to put a fish
+
+00:03:57.920 --> 00:04:04.300 line:100% position:50% align:middle
+in my commit. And then I'm going to push
+everything up to the master branch.
+
+00:04:04.300 --> 00:04:07.840 line:100% position:50% align:middle
+Good. Again, I only did that with the
+build directory, not the entire
+
+00:04:07.840 --> 00:04:11.060 line:100% position:50% align:middle
+catch-of-the-day. If you already have a
+repo in catch-of-the-day,
+
+00:04:11.060 --> 00:04:15.160 line:100% position:50% align:middle
+you can create what's called a git sub
+module where you can just have a separate
+
+00:04:15.160 --> 00:04:18.710 line:100% position:50% align:middle
+git repo for that specific build folder.
+
+00:04:18.710 --> 00:04:22.250 line:100% position:50% align:middle
+So, now, if I refresh this getting fishy,
+I have my master branch with my
+
+00:04:22.250 --> 00:04:29.160 line:100% position:50% align:middle
+index.html. If you go to settings, scroll
+down, and under Github Pages you can set
+
+00:04:29.160 --> 00:04:35.350 line:100% position:50% align:middle
+it to be your master branch.
+It will then give you a URL:
+
+00:04:35.350 --> 00:04:41.440 line:100% position:50% align:middle
+wesbos.github.io/getting-fishy. Then you
+can go to that URL and your application is
+
+00:04:41.440 --> 00:04:42.370 line:100% position:50% align:middle
+working.
+
+00:04:42.370 --> 00:04:46.620 line:100% position:50% align:middle
+So let's try it out, visit the store. It's
+not going to work just yet if I try
+
+00:04:46.620 --> 00:04:52.440 line:100% position:50% align:middle
+logging in because I need to add github.io
+to my Firebase. I'll do that in a second.
+
+00:04:52.440 --> 00:04:58.100 line:100% position:50% align:middle
+But the problem is... Watch when I
+refresh: we get a GitHub 404.
+
+00:04:58.100 --> 00:05:03.010 line:100% position:50% align:middle
+And that's because GitHub doesn't know
+that there's a folder called "store" and a
+
+00:05:03.010 --> 00:05:06.260 line:100% position:50% align:middle
+folder called
+"old-fashioned-mysterious-teeth."
+
+00:05:06.260 --> 00:05:10.860 line:100% position:50% align:middle
+Also, GitHub doesn't really offer any
+routing at all. They only offer you two
+
+00:05:10.860 --> 00:05:15.920 line:100% position:50% align:middle
+things: an index.html, which we took
+advantage of right here.
+
+00:05:15.920 --> 00:05:20.070 line:100% position:50% align:middle
+However, when we change the URL with push
+date and someone refreshes,
+
+00:05:20.070 --> 00:05:26.868 line:100% position:50% align:middle
+it hits a 404. So sort of the hack we can
+do here is rename our index.html to
+
+00:05:26.868 --> 00:05:28.510 line:100% position:50% align:middle
+be also 404.
+
+00:05:28.510 --> 00:05:34.620 line:100% position:50% align:middle
+So, if I copy the index to be 404.html,
+and you can see a couple things.
+
+00:05:34.620 --> 00:05:37.560 line:100% position:50% align:middle
+There are some other workarounds and you
+can use something called Surge and there
+
+00:05:37.560 --> 00:05:40.935 line:100% position:50% align:middle
+are static build tools here. But, at the
+very basic, if you just take your
+
+00:05:40.935 --> 00:05:49.170 line:100% position:50% align:middle
+index.html and dupe it over to 404, and
+add it, and commit it, and push it,
+
+00:05:49.170 --> 00:05:58.280 line:100% position:50% align:middle
+then when GitHub hits a 404, it's going to
+serve up your index.html file in your 404.
+
+00:05:58.280 --> 00:06:04.010 line:100% position:50% align:middle
+And it will actually just work for you, no
+problem there. Let's check that it's in my
+
+00:06:04.010 --> 00:06:11.200 line:100% position:50% align:middle
+repo here. Here we go, 404 to html.
+Now we can refresh.
+
+00:06:11.200 --> 00:06:14.760 line:100% position:50% align:middle
+Sometimes it takes a second on GitHub
+Pages to actually work. So if it's not
+
+00:06:14.760 --> 00:06:18.030 line:100% position:50% align:middle
+working for you, maybe give it a couple of
+minutes. There we go.
+
+00:06:18.030 --> 00:06:23.000 line:100% position:50% align:middle
+Now when I refresh, an actual store name
+is coming to it. The only downside here is
+
+00:06:23.000 --> 00:06:27.370 line:100% position:50% align:middle
+you are technically sending the browser a
+404 code, telling it that it didn't work.
+
+00:06:27.370 --> 00:06:31.230 line:100% position:50% align:middle
+It did, but you're telling it that it
+didn't work. So if you're doing anything
+
+00:06:31.230 --> 00:06:37.220 line:100% position:50% align:middle
+with SEO or catching this page, then some
+people might get confused,
+
+00:06:37.220 --> 00:06:40.060 line:100% position:50% align:middle
+especially Google. So don't use this for
+anything in production.
+
+00:06:40.060 --> 00:06:43.070 line:100% position:50% align:middle
+But again if you want to get something up
+and running, if you want client-side
+
+00:06:43.070 --> 00:06:46.960 line:100% position:50% align:middle
+routing with that catch-all,
+you can use 404.html.
+
+00:06:46.960 --> 00:06:50.670 line:100% position:50% align:middle
+Next up, I'm going to show you how you
+actually can use this on your own server,
+
+00:06:50.670 --> 00:06:54.000 line:100% position:50% align:middle
+whether that's an Apache
+or an Nginx server.

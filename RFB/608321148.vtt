@@ -1,0 +1,668 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.008 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.000 --> 00:00:10.140 line:100% position:50% align:middle
+Now we need to build the inventory
+management system, which is in our third
+
+00:00:10.140 --> 00:00:14.640 line:100% position:50% align:middle
+column right here. Whenever we have this
+specific halibut and the price or however
+
+00:00:14.640 --> 00:00:19.220 line:100% position:50% align:middle
+much it costs, we need to be able to
+update our state immediately as well as
+
+00:00:19.220 --> 00:00:26.150 line:100% position:50% align:middle
+Firebase. And Rebase is going to relay
+that to Firebase. For every single thing
+
+00:00:26.150 --> 00:00:29.680 line:100% position:50% align:middle
+in our state, every single fish in our
+state, we need to render out one of these
+
+00:00:29.680 --> 00:00:35.320 line:100% position:50% align:middle
+blocks here, to edit it. Now we already
+have that block for adding a new fish,
+
+00:00:35.320 --> 00:00:40.440 line:100% position:50% align:middle
+where we can add something and say it's
+cool and we can have a fish pic in it.
+
+00:00:40.440 --> 00:00:43.960 line:100% position:50% align:middle
+And when I add that, it will just push it
+into our state for us,
+
+00:00:43.960 --> 00:00:49.550 line:100% position:50% align:middle
+but we can't edit it or delete that actual
+item from our inventory at all.
+
+00:00:49.550 --> 00:00:54.620 line:100% position:50% align:middle
+All we need to do is go to our inventory
+component here. And right above our load
+
+00:00:54.620 --> 00:00:59.790 line:100% position:50% align:middle
+sample fishes and actually above our add
+fish form, we need to loop over every
+
+00:00:59.790 --> 00:01:03.060 line:100% position:50% align:middle
+single fish that we have. We can do the
+same thing we've been doing,
+
+00:01:03.060 --> 00:01:08.060 line:100% position:50% align:middle
+object.keys, this.props.fishes,
+because we've already passed down
+
+00:01:08.060 --> 00:01:12.240 line:100% position:50% align:middle
+our fishes to our inventory state. At
+least I think we have. Let's double check
+
+00:01:12.240 --> 00:01:17.940 line:100% position:50% align:middle
+that. Look for our inventory. Oh, we
+haven't actually. Here's our inventory,
+
+00:01:17.940 --> 00:01:22.430 line:100% position:50% align:middle
+so we need to pass down our fishes.
+this.state.fishes.
+
+00:01:22.430 --> 00:01:29.840 line:100% position:50% align:middle
+Good. Go to our inventory here.
+this.props.fishes. And we will map over
+
+00:01:29.840 --> 00:01:36.547 line:100% position:50% align:middle
+that. And the map I am going to pass that
+off to another function. We're going to
+
+00:01:36.547 --> 00:01:43.740 line:100% position:50% align:middle
+create a render function called render
+inventory, I'll say this.renderinventory.
+
+00:01:43.740 --> 00:01:49.830 line:100% position:50% align:middle
+Then we go up here. We're going to make a
+render inventory method,
+
+00:01:49.830 --> 00:01:57.940 line:100% position:50% align:middle
+which will take in the key. And from that
+we will return...let's just return a
+
+00:01:57.940 --> 00:02:01.620 line:100% position:50% align:middle
+paragraph tag with the actual key. Let's
+just make sure this is all actually
+
+00:02:01.620 --> 00:02:08.140 line:100% position:50% align:middle
+working. Awesome! So now I've got all of
+these different fishes popping up and this
+
+00:02:08.140 --> 00:02:14.080 line:100% position:50% align:middle
+render inventory is then being put into
+it. So what HTML do we actually need for
+
+00:02:14.080 --> 00:02:18.560 line:100% position:50% align:middle
+this render inventory? We need a div with
+a class of fish edit.
+
+00:02:18.560 --> 00:02:24.340 line:100% position:50% align:middle
+So .fishedit. That needs a key of key,
+otherwise React is going yell at us for it
+
+00:02:24.340 --> 00:02:29.910 line:100% position:50% align:middle
+not being unique. Then inside of that
+we've got a whole bunch of inputs that we
+
+00:02:29.910 --> 00:02:33.790 line:100% position:50% align:middle
+need. Now we need the following five
+things: name, price, status,
+
+00:02:33.790 --> 00:02:37.910 line:100% position:50% align:middle
+description, and image. I'm going to do
+the same kung fu that I did before.
+
+00:02:37.910 --> 00:02:44.240 line:100% position:50% align:middle
+We have an input with type of text. This
+one needs a name attribute and I'll show
+
+00:02:44.240 --> 00:02:49.970 line:100% position:50% align:middle
+you why in just a second. Probably put a
+placeholder on it just in case we delete
+
+00:02:49.970 --> 00:02:56.883 line:100% position:50% align:middle
+it entirely. I'll say fish,
+paste it in. Uppercase. Okay.
+
+00:02:56.883 --> 00:03:00.606 line:100% position:50% align:middle
+Cool! So that's all of our
+inputs. However. name, price,
+
+00:03:00.606 --> 00:03:08.560 line:100% position:50% align:middle
+status. Status should be a select. So
+we'll say select. And that select is going
+
+00:03:08.560 --> 00:03:12.300 line:100% position:50% align:middle
+to have two options. You can just look at
+your add fish form because this is exact
+
+00:03:12.300 --> 00:03:20.950 line:100% position:50% align:middle
+same sort of mark up that we had, so we
+want fresh and unavailable.
+
+00:03:20.950 --> 00:03:30.560 line:100% position:50% align:middle
+Description is not an input. It is a text
+area. There's a couple more things.
+
+00:03:30.560 --> 00:03:34.590 line:100% position:50% align:middle
+First of all, we're going to need to put
+the value of the fish into it, as well as
+
+00:03:34.590 --> 00:03:40.030 line:100% position:50% align:middle
+we are going to need to data bind it,
+which means that whenever I make an edit
+
+00:03:40.030 --> 00:03:46.030 line:100% position:50% align:middle
+to any one of these, it's going to update
+our state directly. That last part that we
+
+00:03:46.030 --> 00:03:52.520 line:100% position:50% align:middle
+need is we actually need the information
+about the fish. We will go up right before
+
+00:03:52.520 --> 00:03:58.376 line:100% position:50% align:middle
+our return, and we'll say const fish
+equals this.props.fishes[key].
+
+00:03:58.376 --> 00:04:01.700 line:100% position:50% align:middle
+And that should give
+us the actual fish. And we can go to each
+
+00:04:01.700 --> 00:04:12.920 line:100% position:50% align:middle
+of these. Satus. Description. Image. And
+say value equals fish dot - not fish dot.
+
+00:04:12.920 --> 00:04:18.390 line:100% position:50% align:middle
+We actually need the value there. Here we
+go. Name, price, status,
+
+00:04:18.390 --> 00:04:24.630 line:100% position:50% align:middle
+description and image. Let's take a look
+at where we're at. React is going to yell
+
+00:04:24.630 --> 00:04:28.510 line:100% position:50% align:middle
+at us because we used value and not
+default value, and I'll tell you why in
+
+00:04:28.510 --> 00:04:32.500 line:100% position:50% align:middle
+just a sec. Open up our dev tools here.
+Cannot read properties undefined.
+
+00:04:32.500 --> 00:04:38.540 line:100% position:50% align:middle
+This is an error. I'm glad that we always
+trip up on this because this is a big
+
+00:04:38.540 --> 00:04:45.230 line:100% position:50% align:middle
+thing in React. I use props of this. Why
+can't I use this? Because this function,
+
+00:04:45.230 --> 00:04:50.950 line:100% position:50% align:middle
+render inventory, is not render and it's
+not bound to the actual inventory
+
+00:04:50.950 --> 00:04:54.080 line:100% position:50% align:middle
+component. So how do we do that? Well we
+give ourselves a constructor.
+
+00:04:54.080 --> 00:05:02.310 line:100% position:50% align:middle
+And we call super. Then inside of that we
+will say this.renderinventory equals
+
+00:05:02.310 --> 00:05:07.150 line:100% position:50% align:middle
+this.renderinventory.bindthis.
+When that reloads we now have a couple of
+
+00:05:07.150 --> 00:05:10.370 line:100% position:50% align:middle
+problems going on here. First of all,
+we see all of our fishes.
+
+00:05:10.370 --> 00:05:14.860 line:100% position:50% align:middle
+This is great. We see all these inventory
+things, but I can't edit them.
+
+00:05:14.860 --> 00:05:18.750 line:100% position:50% align:middle
+What's going on here? And second of all,
+I've got this warning in the console here.
+
+00:05:18.750 --> 00:05:23.090 line:100% position:50% align:middle
+You provided a value of prop without an on
+change handler. This will render a read
+
+00:05:23.090 --> 00:05:28.240 line:100% position:50% align:middle
+only field. If the field is mutable, use
+default value. Essentially,
+
+00:05:28.240 --> 00:05:35.990 line:100% position:50% align:middle
+React doesn't want you just sticking state
+fish into an input unless you have a plan
+
+00:05:35.990 --> 00:05:41.730 line:100% position:50% align:middle
+for actually updating it. If that needs to
+just be set once and it's not going to be
+
+00:05:41.730 --> 00:05:46.090 line:100% position:50% align:middle
+bound to state then that's fine. That's
+what we did in our store picker.
+
+00:05:46.090 --> 00:05:52.510 line:100% position:50% align:middle
+You'll remember that when we did our store
+picker ,we used default value instead of
+
+00:05:52.510 --> 00:05:56.920 line:100% position:50% align:middle
+value. That's because this was not tied to
+our state at all. It was simply just a one
+
+00:05:56.920 --> 00:06:03.380 line:100% position:50% align:middle
+time thing. React is saying if you put
+state in an input box, you must also
+
+00:06:03.380 --> 00:06:08.280 line:100% position:50% align:middle
+provide us with some sort of instruction
+as to how to update that state.
+
+00:06:08.280 --> 00:06:14.280 line:100% position:50% align:middle
+That's really important because React
+doesn't want you just having state in your
+
+00:06:14.280 --> 00:06:17.830 line:100% position:50% align:middle
+input box in your HTML as well as in state
+and they get out of sync.
+
+00:06:17.830 --> 00:06:23.200 line:100% position:50% align:middle
+It wants one core area where our state is
+coming from, and that is our application
+
+00:06:23.200 --> 00:06:27.790 line:100% position:50% align:middle
+state. To update this box here what we
+really need to do is we need to update our
+
+00:06:27.790 --> 00:06:32.530 line:100% position:50% align:middle
+state, which React will then in turn
+update that. It wants to keep them in
+
+00:06:32.530 --> 00:06:38.260 line:100% position:50% align:middle
+sync. We need to listen for a change on
+each of these inputs and when any time any
+
+00:06:38.260 --> 00:06:43.140 line:100% position:50% align:middle
+of these inputs are changed, we need to
+then update our corresponding state.
+
+00:06:43.140 --> 00:06:46.720 line:100% position:50% align:middle
+So let's do it with a name one first,
+then we'll go through and do the rest.
+
+00:06:46.720 --> 00:06:52.120 line:100% position:50% align:middle
+We'll specify an onchange event listener.
+When that happens we are going to run a
+
+00:06:52.120 --> 00:06:55.450 line:100% position:50% align:middle
+function which gives us the event. Giving
+us the event is really important here and
+
+00:06:55.450 --> 00:06:59.791 line:100% position:50% align:middle
+I'll show you why in a second. Say
+this.handlechange. and we'll pass it the
+
+00:06:59.791 --> 00:07:04.710 line:100% position:50% align:middle
+event as well as we'll pass it the key for
+that specific fish. Now where did handle
+
+00:07:04.710 --> 00:07:09.109 line:100% position:50% align:middle
+change come from? I just made that up.
+We need to specify our own handle change
+
+00:07:09.109 --> 00:07:11.684 line:100% position:50% align:middle
+method here
+and we need to grab
+
+00:07:11.684 --> 00:07:16.315 line:100% position:50% align:middle
+the actual fish. So I'll say
+const fish equals this.props.fishes,
+
+00:07:16.315 --> 00:07:20.920 line:100% position:50% align:middle
+so we're back at key. Now, before
+we forget, if I use this inside of a
+
+00:07:20.920 --> 00:07:25.130 line:100% position:50% align:middle
+method that we make up, we need to bind it
+to the actual component itself.
+
+00:07:25.130 --> 00:07:31.070 line:100% position:50% align:middle
+So we'll say handle change. Just to make
+sure that this is all working,
+
+00:07:31.070 --> 00:07:35.940 line:100% position:50% align:middle
+we are going to console log the actual
+fish, and when I change this name input on
+
+00:07:35.940 --> 00:07:39.850 line:100% position:50% align:middle
+any of them, it should console log the
+corresponding fish. Let's see.
+
+00:07:39.850 --> 00:07:44.230 line:100% position:50% align:middle
+No. Key is not defined because our handle
+change needs to take in the event and the
+
+00:07:44.230 --> 00:07:51.610 line:100% position:50% align:middle
+key. Now when I change it, there we go. We
+see our fish. Changed to Pacific Halibut.
+
+00:07:51.610 --> 00:07:54.650 line:100% position:50% align:middle
+You notice it's still not changing, and
+that's because we have not yet been
+
+00:07:54.650 --> 00:08:00.120 line:100% position:50% align:middle
+updating state. These inputs cannot be
+edited unless we update state as well.
+
+00:08:00.120 --> 00:08:08.310 line:100% position:50% align:middle
+However, we are seeing information about
+that fish. So we need to first take a copy
+
+00:08:08.310 --> 00:08:16.780 line:100% position:50% align:middle
+of that fish and update it with the new
+data. We'll say const updated fish equals.
+
+00:08:16.780 --> 00:08:20.220 line:100% position:50% align:middle
+Now we're going to take a copy of fish.
+How do you copy an object?
+
+00:08:20.220 --> 00:08:25.130 line:100% position:50% align:middle
+Well you could use object.assign and
+you take an empty object and then you put
+
+00:08:25.130 --> 00:08:31.750 line:100% position:50% align:middle
+in your fish object. That will take an
+actual copy of it. But we can use the fish
+
+00:08:31.750 --> 00:08:37.500 line:100% position:50% align:middle
+spread. So ...fish. Then we need
+to just overlay our new attributes,
+
+00:08:37.500 --> 00:08:41.190 line:100% position:50% align:middle
+or our new properties, on top of it. So
+first of all, what changed?
+
+00:08:41.190 --> 00:08:45.940 line:100% position:50% align:middle
+How do we know what changed? My console
+log... I'll comment that out and console
+
+00:08:45.940 --> 00:08:52.390 line:100% position:50% align:middle
+log the event e.target. Let's see what
+we got here. I'm going to change fish to
+
+00:08:52.390 --> 00:08:59.300 line:100% position:50% align:middle
+fish x. And look. There's our actual
+input. So e.target is going to give us
+
+00:08:59.300 --> 00:09:04.693 line:100% position:50% align:middle
+the actual element itself and that will
+allow us to console log e.target.name.
+
+00:09:04.693 --> 00:09:08.699 line:100% position:50% align:middle
+That's why we had to put a name
+attribute on it. e.target.value.
+
+00:09:09.030 --> 00:09:16.430 line:100% position:50% align:middle
+Let's see here. New fish. I put an x on
+the end. Aha! Name? That's the actual
+
+00:09:16.430 --> 00:09:21.750 line:100% position:50% align:middle
+property that we're updating. And new fish
+x. That's the new value that we've been
+
+00:09:21.750 --> 00:09:27.200 line:100% position:50% align:middle
+having there. What we can do is take this
+updated fish and overlay the new
+
+00:09:27.200 --> 00:09:33.570 line:100% position:50% align:middle
+properties on it. So what property has
+been updated? Well we can't say like if
+
+00:09:33.570 --> 00:09:39.690 line:100% position:50% align:middle
+it's name then type name, if it's image
+then type image. We can use what's called
+
+00:09:39.690 --> 00:09:43.630 line:100% position:50% align:middle
+a computed property. We can say the
+property that we're changing is called
+
+00:09:43.700 --> 00:09:50.260 line:100% position:50% align:middle
+e.target.name. Remember that's going
+to be name or price or status or
+
+00:09:50.260 --> 00:09:55.910 line:100% position:50% align:middle
+description or image. The actual value
+of that is going to be e.target.value.
+
+00:09:55.910 --> 00:10:01.510 line:100% position:50% align:middle
+That's going to help us just change
+the one thing that actually changed there.
+
+00:10:01.510 --> 00:10:09.664 line:100% position:50% align:middle
+If we console log the updated fish, we
+should now see...open that up, the actual
+
+00:10:09.664 --> 00:10:16.457 line:100% position:50% align:middle
+name of this value is new fish x, right?
+If I console log change
+
+00:10:16.457 --> 00:10:20.346 line:100% position:50% align:middle
+Pacific Halibut,
+you should then see
+
+00:10:21.227 --> 00:10:25.970 line:100% position:50% align:middle
+the name is Pacific Halibut x. Why is this
+an array? Actually we don't need the
+
+00:10:25.970 --> 00:10:29.030 line:100% position:50% align:middle
+square brackets here because it's not an
+array, it's just an actual value.
+
+00:10:29.030 --> 00:10:32.880 line:100% position:50% align:middle
+Take those square brackets off. Let me
+change Pacific Halibut once more.
+
+00:10:32.880 --> 00:10:38.650 line:100% position:50% align:middle
+Put an x on the end. We see that the name
+is Pacific Halibut with an x on it.
+
+00:10:38.650 --> 00:10:44.130 line:100% position:50% align:middle
+Good, but that's still not updating our
+actual inventory, so we need to then take
+
+00:10:44.130 --> 00:10:49.570 line:100% position:50% align:middle
+this updated fish and pass it to our app
+component which is then,
+
+00:10:49.570 --> 00:10:55.680 line:100% position:50% align:middle
+in turn, going to update it. We need to
+make one more method on our app component.
+
+00:10:55.680 --> 00:11:01.416 line:100% position:50% align:middle
+Right below add fish I'm going to make one
+called update fish. That will take in the
+
+00:11:01.416 --> 00:11:05.580 line:100% position:50% align:middle
+key of the fish that we want to update,
+as well as the new updated fish.
+
+00:11:05.958 --> 00:11:09.510 line:100% position:50% align:middle
+Inside of that we'll say const
+fishes equals. We'll take a copy of the
+
+00:11:09.510 --> 00:11:17.963 line:100% position:50% align:middle
+existing this.state.fishes. Then we'll
+update it. So fishes key equals fish. Or
+
+00:11:17.963 --> 00:11:28.121 line:100% position:50% align:middle
+maybe we'll call that updated fish. Then
+we call set state this.setstatefishes.
+
+00:11:28.981 --> 00:11:32.030 line:100% position:50% align:middle
+Good. Now we've got this
+updated fish method. We need to make it
+
+00:11:32.030 --> 00:11:36.850 line:100% position:50% align:middle
+available to our inventory component here.
+Again, you're probably noticing a trend.
+
+00:11:36.850 --> 00:11:41.230 line:100% position:50% align:middle
+If I need to make this method available to
+something like our inventory component
+
+00:11:41.230 --> 00:11:49.210 line:100% position:50% align:middle
+here, like we passed add fish and load
+samples and fishes, we can also pass down
+
+00:11:49.210 --> 00:11:55.280 line:100% position:50% align:middle
+our update fish, this.updatefish.
+Good. We'll go up here.
+
+00:11:55.280 --> 00:12:02.530 line:100% position:50% align:middle
+Make sure that our add fish and our update
+fish are bound. Then inventory.
+
+00:12:02.530 --> 00:12:09.820 line:100% position:50% align:middle
+We'll go back to our handle change method
+and say this.props.updatefish.
+
+00:12:09.820 --> 00:12:16.140 line:100% position:50% align:middle
+We'll pass it the key as well as our
+updated fish object. Now when I update my
+
+00:12:16.140 --> 00:12:22.220 line:100% position:50% align:middle
+Pacific Halibut and put cool in front of
+it, look! It's updating our state
+
+00:12:22.220 --> 00:12:27.110 line:100% position:50% align:middle
+immediately, which means that... Again,
+let's go through the flow.
+
+00:12:27.110 --> 00:12:32.490 line:100% position:50% align:middle
+We have an onchange handler which will
+trigger when someone types into it and it
+
+00:12:32.490 --> 00:12:37.290 line:100% position:50% align:middle
+triggers a change. That in turn is going
+to run this handle change function,
+
+00:12:37.290 --> 00:12:41.349 line:100% position:50% align:middle
+which is going to take a copy of that one
+single fish, not all of them, that one
+
+00:12:41.349 --> 00:12:45.640 line:100% position:50% align:middle
+single fish. Here's where we take
+the copy of it. Then we just overwrite
+
+00:12:45.640 --> 00:12:49.740 line:100% position:50% align:middle
+whatever had changed. So this is a dynamic
+way to get the name,
+
+00:12:49.740 --> 00:12:54.290 line:100% position:50% align:middle
+the price, the status from that fish, and
+then we overwrite the actual value that
+
+00:12:54.290 --> 00:12:59.380 line:100% position:50% align:middle
+got changed there, so e.target.value.
+We then pass that up to our update
+
+00:12:59.380 --> 00:13:04.230 line:100% position:50% align:middle
+fish function which lives on our app.js.
+Let's take a look here.
+
+00:13:04.230 --> 00:13:11.120 line:100% position:50% align:middle
+Update fish. Update fish. That's a little
+hot tip. Sublime text hit command R and
+
+00:13:11.120 --> 00:13:14.330 line:100% position:50% align:middle
+just type update fish and you can go right
+to the actual function.
+
+00:13:14.330 --> 00:13:19.220 line:100% position:50% align:middle
+That takes in the key as well as the
+updated fish object. We take a copy of all
+
+00:13:19.220 --> 00:13:24.070 line:100% position:50% align:middle
+of the fishes, which we always do when we
+update our state. We overwrite that one
+
+00:13:24.070 --> 00:13:28.510 line:100% position:50% align:middle
+updated fish with our new updated fish
+object. Finally we set state,
+
+00:13:28.510 --> 00:13:35.180 line:100% position:50% align:middle
+which in turn is going to update our type
+box. That's like four steps to update a
+
+00:13:35.180 --> 00:13:39.350 line:100% position:50% align:middle
+box. That may seem like, "Wow! That was
+like one line in JQuery and this seems
+
+00:13:39.350 --> 00:13:43.570 line:100% position:50% align:middle
+like a lot of work," but once your apps
+get more complicated, you're really going
+
+00:13:43.570 --> 00:13:48.710 line:100% position:50% align:middle
+to love just having your state in one
+place and not having to worry about having
+
+00:13:48.710 --> 00:13:52.450 line:100% position:50% align:middle
+a bunch of balls in the air. Let's go and
+update the rest of them. So we just take
+
+00:13:52.450 --> 00:14:00.730 line:100% position:50% align:middle
+this onchange handler, and you can just
+pop it on all of the rest of your inputs.
+
+00:14:00.730 --> 00:14:08.260 line:100% position:50% align:middle
+Input onselect, on textarea, and on our
+description here. I'm going to paste that
+
+00:14:08.260 --> 00:14:13.680 line:100% position:50% align:middle
+in. Then it should finally stop yelling at
+us for not having an onchange handler
+
+00:14:13.680 --> 00:14:18.550 line:100% position:50% align:middle
+when we use value. Good, we don't see it
+anymore. Then any time I change something
+
+00:14:18.550 --> 00:14:22.480 line:100% position:50% align:middle
+that's related to how much this costs, if
+I change it from fresh to sold out,
+
+00:14:22.480 --> 00:14:27.870 line:100% position:50% align:middle
+it should automatically update. If I
+change the description, "This is cool."
+
+00:14:27.870 --> 00:14:32.240 line:100% position:50% align:middle
+Good. I just want to double check that
+it's also working in our Firebase console
+
+00:14:32.240 --> 00:14:39.830 line:100% position:50% align:middle
+here. We are on the store called Drab Drab
+Tomato. Open that up.
+
+00:14:39.830 --> 00:14:44.950 line:100% position:50% align:middle
+Going to go into fishes. Going to go into
+fish one. Cool Pacific Halibut.
+
+00:14:44.950 --> 00:14:51.900 line:100% position:50% align:middle
+Bring this sucker over here. When I change
+Cool Pacific Halibut to Lovely,
+
+00:14:51.900 --> 00:14:57.870 line:100% position:50% align:middle
+it's updating everywhere. Ha! Isn't this
+amazing? One state, just sort of like
+
+00:14:57.870 --> 00:15:01.000 line:100% position:50% align:middle
+propagates wherever else
+you wish to have it.

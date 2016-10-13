@@ -1,0 +1,232 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.762 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.171 --> 00:00:12.000 line:100% position:50% align:middle
+Now I'm going to show you how to deploy it
+to a PHP, Apache, you know,
+
+00:00:12.000 --> 00:00:15.710 line:100% position:50% align:middle
+your Bluehost, GoDaddy, everybody's got
+one of these servers kicking around, and
+
+00:00:15.710 --> 00:00:19.890 line:100% position:50% align:middle
+it just costs a couple bucks a month, and
+because it's just an HTML file, it works
+
+00:00:19.890 --> 00:00:24.340 line:100% position:50% align:middle
+really, really well for something like
+this. So, first I just want to go into our
+
+00:00:24.340 --> 00:00:30.080 line:100% position:50% align:middle
+index.js.and we'll back off that base name
+part because I am going to be deploying
+
+00:00:30.080 --> 00:00:36.210 line:100% position:50% align:middle
+mine to catchoftheday.westboss.com. If you
+are deploying it to a sub-directory
+
+00:00:36.210 --> 00:00:41.020 line:100% position:50% align:middle
+instead of a sub-domain, then you do have
+to keep this base name in here and let's
+
+00:00:41.020 --> 00:00:43.800 line:100% position:50% align:middle
+say you were deploying it to
+catchoftheday, you would say,
+
+00:00:43.800 --> 00:00:51.560 line:100% position:50% align:middle
+"/catchoftheday" and then also in your
+package.json, open that up again,
+
+00:00:51.560 --> 00:00:56.390 line:100% position:50% align:middle
+your homepage, again if you are deploying
+it to a sub-folder, you have to put in
+
+00:00:56.390 --> 00:01:06.261 line:100% position:50% align:middle
+westboss.catchoftheday.westboss.com/
+whatever the name is here,
+
+00:01:06.261 --> 00:01:12.096 line:100% position:50% align:middle
+but in my case since I am deploying
+directly to a route, I do not need that
+
+00:01:12.096 --> 00:01:16.778 line:100% position:50% align:middle
+one piece in my package.json So I've
+deleted that, I have to go up a level,
+
+00:01:16.778 --> 00:01:26.320 line:100% position:50% align:middle
+npm run build. Then go into whatever FTP
+client you are using to FTP this up, or
+
+00:01:26.320 --> 00:01:30.342 line:100% position:50% align:middle
+SSH, however you get your files
+onto your server, do that.
+
+00:01:30.342 --> 00:01:35.700 line:100% position:50% align:middle
+I am just going to go and take my
+index.html, and my static and my fav icon,
+
+00:01:35.700 --> 00:01:39.217 line:100% position:50% align:middle
+and I'm going to upload all of them,
+and you can see that I have my
+
+00:01:39.217 --> 00:01:44.966 line:100% position:50% align:middle
+sub-domain already set up here.
+And once that's done, if I refresh,
+
+00:01:44.966 --> 00:01:51.467 line:100% position:50% align:middle
+we now see catchoftheday, I can visit the
+store, I can't log in just yet because I
+
+00:01:51.467 --> 00:01:56.812 line:100% position:50% align:middle
+need to...just here, watch, it doesn't
+work. But if I go to firebase.google.com,
+
+00:01:56.812 --> 00:02:03.494 line:100% position:50% align:middle
+go to my console, go to my actual Firebase
+database, go to "Auth," "Sign In" method,
+
+00:02:03.494 --> 00:02:09.093 line:100% position:50% align:middle
+and I am going to add westboss.com . You
+don't need to add star.westboss.com, it's
+
+00:02:09.093 --> 00:02:15.677 line:100% position:50% align:middle
+assumed, and that's okay. So I can "Add"
+that. I'm also going to add github.io at
+
+00:02:15.677 --> 00:02:19.288 line:100% position:50% align:middle
+the same time. Make sure those domains
+are there. So if I refresh this now,
+
+00:02:19.288 --> 00:02:23.214 line:100% position:50% align:middle
+first of all, that doesn't work, we will
+see why, but go to
+
+00:02:23.214 --> 00:02:27.438 line:100% position:50% align:middle
+catchoftheday.westboss.com or whatever
+your URL is, visit the store,
+
+00:02:27.438 --> 00:02:32.384 line:100% position:50% align:middle
+now if I try to log in with gitHub, it
+works just fine because I've added it.
+
+00:02:32.384 --> 00:02:37.922 line:100% position:50% align:middle
+I can load up some sample fishes and use
+the app as we have, but the problem is
+
+00:02:37.922 --> 00:02:43.706 line:100% position:50% align:middle
+again, when we have this
+/store/thestorename, if I were to refresh,
+
+00:02:43.706 --> 00:02:49.948 line:100% position:50% align:middle
+it's broken again, and why is that? It's
+because our server is not doing the
+
+00:02:49.948 --> 00:02:54.632 line:100% position:50% align:middle
+routing, our client, React Router, is
+doing the routing, and we need to tell our
+
+00:02:54.632 --> 00:03:01.783 line:100% position:50% align:middle
+server, "Take everything from this domain
+and serve up index.html.
+
+00:03:01.783 --> 00:03:06.268 line:100% position:50% align:middle
+Any of these routes you need to serve us
+index.html" and we are going to handle the
+
+00:03:06.268 --> 00:03:11.727 line:100% position:50% align:middle
+routing for us. So it depends on
+what type of server that you have.
+
+00:03:11.727 --> 00:03:17.813 line:100% position:50% align:middle
+The most common type of server is called
+an Apache server, and you can do that with
+
+00:03:17.813 --> 00:03:24.381 line:100% position:50% align:middle
+what's called a .htaccess file. So, I am
+going to go into my catchoftheday and
+
+00:03:24.381 --> 00:03:31.508 line:100% position:50% align:middle
+create a new file called "htaccess,"
+and bring this local if you want.
+
+00:03:31.508 --> 00:03:38.059 line:100% position:50% align:middle
+And I'm going to just edit that file.
+Inside of that file I need to put a couple
+
+00:03:38.059 --> 00:03:43.544 line:100% position:50% align:middle
+rules. I'm going to paste it in here, but
+essentially what this does is it creates a
+
+00:03:43.544 --> 00:03:50.439 line:100% position:50% align:middle
+rule that whenever you have any
+forward slash, just serve up either the
+
+00:03:50.439 --> 00:03:52.559 line:100% position:50% align:middle
+requested file name,
+like style.css,
+
+00:03:52.559 --> 00:03:57.551 line:100% position:50% align:middle
+or if nothing is found, the index.html,
+that's what's going to happen.
+
+00:03:57.551 --> 00:04:04.880 line:100% position:50% align:middle
+I save that, it re-uploads it for me and
+now my htaccess should visit this URL and
+
+00:04:04.880 --> 00:04:08.036 line:100% position:50% align:middle
+say, "Oh, there's nothing actually there.
+There's no folder called
+
+00:04:08.063 --> 00:04:15.544 line:100% position:50% align:middle
+store/itchymysteriousfungi. I'm going to
+serve up index.html instead." And there
+
+00:04:15.544 --> 00:04:20.868 line:100% position:50% align:middle
+it's working for me. No problem there. I
+can go ahead and edit all of my content
+
+00:04:20.868 --> 00:04:25.503 line:100% position:50% align:middle
+and there's no issues with routing. So
+that's with an htaccess file.
+
+00:04:25.503 --> 00:04:30.163 line:100% position:50% align:middle
+However, there also is another kind
+and that is with an NGINX file.
+
+00:04:30.163 --> 00:04:36.559 line:100% position:50% align:middle
+And if you just do a quick Google for
+NGINX single page app you'll see that this
+
+00:04:36.559 --> 00:04:43.210 line:100% position:50% align:middle
+is what you have to put. This goes into an
+nginx.conf file and that will try the file
+
+00:04:43.210 --> 00:04:47.933 line:100% position:50% align:middle
+and if not, it will always serve up
+...in this case it's serving up base.html,
+
+00:04:47.933 --> 00:04:53.322 line:100% position:50% align:middle
+but you can change that to index.html, and
+that will always be served to every single
+
+00:04:53.322 --> 00:04:58.122 line:100% position:50% align:middle
+URL. So you have to know a little bit
+about how NGINX and all of that stuff
+
+00:04:58.122 --> 00:05:02.815 line:100% position:50% align:middle
+works, however, if you don't know what you
+have, if you just have like a regular PHP
+
+00:05:02.815 --> 00:05:08.286 line:100% position:50% align:middle
+server, you probably have an Apache server
+and you can create this .htaccess file and
+
+00:05:08.286 --> 00:05:12.345 line:100% position:50% align:middle
+dump this in. So that's it. That's really
+all it is to deploy it to your server.
+
+00:05:12.345 --> 00:05:14.664 line:100% position:50% align:middle
+Make sure that you have this one file
+and you're good to go.

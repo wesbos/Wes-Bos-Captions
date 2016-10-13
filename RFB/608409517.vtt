@@ -1,0 +1,1135 @@
+WEBVTT
+
+00:00:00.329 --> 00:00:03.329 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:06.977 --> 00:00:09.326 line:100% position:50% align:middle
+Up until now, pretty much
+anyone can just
+
+00:00:09.326 --> 00:00:13.450 line:100% position:50% align:middle
+edit or create a store and that's not
+ideal if you actually want to have a real
+
+00:00:13.450 --> 00:00:18.050 line:100% position:50% align:middle
+world application where you have owners of
+a store and only the owner of that store
+
+00:00:18.050 --> 00:00:21.090 line:100% position:50% align:middle
+would be able to edit it. So, this is the
+finished application here.
+
+00:00:21.090 --> 00:00:23.640 line:100% position:50% align:middle
+This is how it's going to work. We're
+going to go to one of the stores that we
+
+00:00:23.640 --> 00:00:28.110 line:100% position:50% align:middle
+have here and, by default, it's going to
+show you nothing. You need to log in with
+
+00:00:28.110 --> 00:00:33.090 line:100% position:50% align:middle
+GitHub, Facebook or Twitter. So, I'm going
+to go ahead and log in with GitHub,
+
+00:00:33.090 --> 00:00:38.820 line:100% position:50% align:middle
+and once I've logged in, the first person
+to log in to that store with either one is
+
+00:00:38.820 --> 00:00:42.940 line:100% position:50% align:middle
+going to be the owner of that actual
+store, then I can go ahead and load some
+
+00:00:42.940 --> 00:00:47.950 line:100% position:50% align:middle
+samples and add some stuff to my order.
+However, if I were then to log out of
+
+00:00:47.950 --> 00:00:52.120 line:100% position:50% align:middle
+here, I wouldn't be able to actually
+manage that inventory. If I were then to
+
+00:00:52.120 --> 00:00:58.740 line:100% position:50% align:middle
+log in with Twitter and authorize that
+application, you're going to see,
+
+00:00:58.740 --> 00:01:01.440 line:100% position:50% align:middle
+"Sorry, you aren't the owner of the
+store," because I logged in as a different
+
+00:01:01.440 --> 00:01:08.590 line:100% position:50% align:middle
+person. I can log out again, log in with
+GitHub, and I'm back to being able to edit
+
+00:01:08.590 --> 00:01:13.090 line:100% position:50% align:middle
+the actual store. So, we are doing
+everything client-side, so how do you do
+
+00:01:13.090 --> 00:01:17.210 line:100% position:50% align:middle
+authentication when it's only client-side?
+That's really where Firebase comes in.
+
+00:01:17.210 --> 00:01:19.620 line:100% position:50% align:middle
+We're going to split this into two parts.
+First, we're going to,
+
+00:01:19.620 --> 00:01:23.640 line:100% position:50% align:middle
+like, lock it down or pseudo lock it down
+on the client side where people just won't
+
+00:01:23.640 --> 00:01:28.550 line:100% position:50% align:middle
+be able to see this actual form to edit
+it, and then we're going to actually go on
+
+00:01:28.550 --> 00:01:33.490 line:100% position:50% align:middle
+the back end of Firebase and make sure
+that if anyone were to sneakily be able to
+
+00:01:33.490 --> 00:01:36.850 line:100% position:50% align:middle
+get this editing form to show, even if
+they weren't the store owner,
+
+00:01:36.850 --> 00:01:39.770 line:100% position:50% align:middle
+then Firebase would just reject them
+because they aren't the actual store
+
+00:01:39.770 --> 00:01:41.730 line:100% position:50% align:middle
+owner. So, that's what we want to do here.
+
+00:01:41.730 --> 00:01:46.320 line:100% position:50% align:middle
+I'm going to close it down, and we want to
+go to our Firebase here,
+
+00:01:46.320 --> 00:01:53.530 line:100% position:50% align:middle
+and go to the Authentication tab, "Auth."
+Then we want to add a couple different
+
+00:01:53.530 --> 00:01:57.580 line:100% position:50% align:middle
+sign-up methods, so we're going to set up
+a sign-up method, and in this tutorial,
+
+00:01:57.580 --> 00:01:59.080 line:100% position:50% align:middle
+I'm going to show you how to do Facebook,
+Twitter, and GitHub.
+
+00:01:59.080 --> 00:02:02.660 line:100% position:50% align:middle
+Those are the most popular. However, you
+can use email and password,
+
+00:02:02.660 --> 00:02:06.910 line:100% position:50% align:middle
+and Google, and all kinds of other stuff
+here. So, I'm going to turn on Facebook
+
+00:02:06.910 --> 00:02:12.270 line:100% position:50% align:middle
+first. Now, what you need to do is go to
+Facebook and create an application.
+
+00:02:12.270 --> 00:02:19.050 line:100% position:50% align:middle
+So it's developers.facebook.com/apps and
+we want to create an app called Catch of
+
+00:02:19.050 --> 00:02:23.670 line:100% position:50% align:middle
+the Day, and we're going to put it in, how
+about the Business,
+
+00:02:23.670 --> 00:02:28.130 line:100% position:50% align:middle
+the fish business, and create an
+application...oh, "Please select all
+
+00:02:28.130 --> 00:02:32.760 line:100% position:50% align:middle
+photos which show a wristwatch." Wrist,
+wrist, wrist, wrist, wristwatch.
+
+00:02:32.760 --> 00:02:40.810 line:100% position:50% align:middle
+That is a waterfall. Facebook login, so
+I'll click "Get Started Here," and we want
+
+00:02:40.810 --> 00:02:47.950 line:100% position:50% align:middle
+to first, "Valid OAuth redirect URLs." So,
+what we want to do is take this URL that
+
+00:02:47.950 --> 00:02:53.440 line:100% position:50% align:middle
+they've given us, and then you need to
+make sure that you actually hit enter so
+
+00:02:53.440 --> 00:02:56.530 line:100% position:50% align:middle
+that it looks like a blue bubble.
+Sometimes I always forget to do that and
+
+00:02:56.530 --> 00:02:59.970 line:100% position:50% align:middle
+it does it. And, finally, "Embedded
+Browser OAuth Login," you need to make
+
+00:02:59.970 --> 00:03:05.980 line:100% position:50% align:middle
+sure that is checked on, scroll to the
+bottom and click "Save Changes," then go
+
+00:03:05.980 --> 00:03:11.110 line:100% position:50% align:middle
+to the Dashboard, and we need the
+application ID, which is this right here,
+
+00:03:11.110 --> 00:03:14.740 line:100% position:50% align:middle
+so I'm going to paste that into my "App
+ID" here. I'm going to enable it,
+
+00:03:14.740 --> 00:03:19.360 line:100% position:50% align:middle
+I guess. And, then, the Secret you also
+need is...you can show it here,
+
+00:03:19.360 --> 00:03:23.850 line:100% position:50% align:middle
+you can grab it. Don't ever put this in
+any client-side code just because now that
+
+00:03:23.850 --> 00:03:26.550 line:100% position:50% align:middle
+I've shown you this, I'm going to have to
+reset them after this video.
+
+00:03:26.550 --> 00:03:29.850 line:100% position:50% align:middle
+That's not something anyone should ever
+see. So, I'm going to paste it in there,
+
+00:03:29.850 --> 00:03:35.040 line:100% position:50% align:middle
+click "Save." Good, I've set that one up.
+Now, Twitter, I want to turn on as well.
+
+00:03:35.040 --> 00:03:40.690 line:100% position:50% align:middle
+I'm going to go to Twitter. I've already
+created an application with Twitter,
+
+00:03:40.690 --> 00:03:46.080 line:100% position:50% align:middle
+and then you can see that if I go to
+Twitter, it's going to ask me for this
+
+00:03:46.080 --> 00:03:50.440 line:100% position:50% align:middle
+callback URL. This callback URLs is really
+important. This is not local host or
+
+00:03:50.440 --> 00:03:54.780 line:100% position:50% align:middle
+anything like that. This is the actual URL
+that Firebase gives you.
+
+00:03:54.780 --> 00:04:03.370 line:100% position:50% align:middle
+And I'm going to update that, then I'm
+going to go to Details.
+
+00:04:03.370 --> 00:04:08.030 line:100% position:50% align:middle
+I'm going to grab...actually, no, back to
+Settings, or Keys and Access Tokens.
+
+00:04:08.030 --> 00:04:17.810 line:100% position:50% align:middle
+Going to grab the API Key, I'm going to
+grab the Secret...save that.
+
+00:04:17.810 --> 00:04:22.130 line:100% position:50% align:middle
+Then, finally, GitHub, we want to turn on.
+I'm going to go to GitHub and create one
+
+00:04:22.130 --> 00:04:29.450 line:100% position:50% align:middle
+called "Catch of the Day," and it's going
+to be wesbos.com, it's going to be "cool
+
+00:04:29.450 --> 00:04:37.210 line:100% position:50% align:middle
+app," and then, again the URL, very
+important here...going to grab that from
+
+00:04:37.210 --> 00:04:42.450 line:100% position:50% align:middle
+Firebase here, paste that in, make sure
+you don't actually copy the "CANCEL SAVE"
+
+00:04:42.450 --> 00:04:51.210 line:100% position:50% align:middle
+button, register it. Good, it's going to
+give us a Client ID and the Secret.
+
+00:04:51.210 --> 00:04:54.750 line:100% position:50% align:middle
+So you see how we have to put all this
+info into Firebase and not our app,
+
+00:04:54.750 --> 00:04:58.520 line:100% position:50% align:middle
+and that's just because we can't put the
+sensitive information in an application
+
+00:04:58.520 --> 00:05:02.490 line:100% position:50% align:middle
+that's entirely client-side because anyone
+would be able to crack it open and find
+
+00:05:02.490 --> 00:05:07.230 line:100% position:50% align:middle
+that info. So, save that. Good, so I've
+enabled Facebook, Twitter,
+
+00:05:07.230 --> 00:05:07.780 line:100% position:50% align:middle
+and GitHub.
+
+00:05:07.780 --> 00:05:12.270 line:100% position:50% align:middle
+Now we need to actually write some code.
+So we're going to open up our inventory
+
+00:05:12.270 --> 00:05:17.410 line:100% position:50% align:middle
+component and first what we want to do is
+create a method that's going to render out
+
+00:05:17.410 --> 00:05:22.690 line:100% position:50% align:middle
+the buttons GitHub, Facebook, and Twitter.
+So, I'm going to create a method called
+
+00:05:22.690 --> 00:05:34.150 line:100% position:50% align:middle
+"renderLogin," and, then, from that, I'm
+just going to return some jsx,
+
+00:05:34.150 --> 00:05:37.040 line:100% position:50% align:middle
+which I'm going to paste in here and just
+go over it with you real quick.
+
+00:05:37.040 --> 00:05:41.510 line:100% position:50% align:middle
+So, H2 of Inventory, "Sign in to manage
+your... ," we've got a button with a
+
+00:05:41.510 --> 00:05:45.110 line:100% position:50% align:middle
+className of github. It's just going to
+style it to be GitHub colors.
+
+00:05:45.110 --> 00:05:49.590 line:100% position:50% align:middle
+Really, the only important thing here is
+that "onClick" of one of these buttons,
+
+00:05:49.590 --> 00:05:52.610 line:100% position:50% align:middle
+we are running a function called
+"this.authenticate," which we're going to
+
+00:05:52.610 --> 00:05:56.410 line:100% position:50% align:middle
+create next. That's a method. And, then,
+we pass it, the method that we'd like to
+
+00:05:56.410 --> 00:06:00.620 line:100% position:50% align:middle
+authenticate. It's either going to be
+GitHub, Facebook, or Twitter.
+
+00:06:00.620 --> 00:06:06.810 line:100% position:50% align:middle
+Then what we want to do is go down to our
+render function, and we need to do a
+
+00:06:06.810 --> 00:06:12.410 line:100% position:50% align:middle
+couple different returns here. So, above
+this return, we're going to say if their
+
+00:06:12.410 --> 00:06:17.160 line:100% position:50% align:middle
+"!this.state.uid"...so, we are going to
+store both the user ID,
+
+00:06:17.160 --> 00:06:23.030 line:100% position:50% align:middle
+which is the currently logged in person,
+and we are also going to store in state
+
+00:06:23.030 --> 00:06:28.240 line:100% position:50% align:middle
+our application owner. So, we want to
+check if the currently logged in user,
+
+00:06:28.240 --> 00:06:33.450 line:100% position:50% align:middle
+which is "uid," and the current store's
+owner are the same people.
+
+00:06:33.450 --> 00:06:37.400 line:100% position:50% align:middle
+So, first we just want to check if there's
+anyone logged in. If they're not,
+
+00:06:37.400 --> 00:06:43.970 line:100% position:50% align:middle
+maybe we'll put a comment above that,
+"check if they are logged in...or,
+
+00:06:43.970 --> 00:06:48.870 line:100% position:50% align:middle
+check if they are not logged in at all,"
+and if that is true, what we are going to
+
+00:06:48.870 --> 00:06:53.840 line:100% position:50% align:middle
+do is we will return simply just a div.
+Inside of that div we'll say,
+
+00:06:53.840 --> 00:07:01.980 line:100% position:50% align:middle
+"this.renderLogin." Good. And we also want
+to go to our constructor here and make
+
+00:07:01.980 --> 00:07:09.360 line:100% position:50% align:middle
+sure that we bind "renderLogin" so that we
+can use this inside of our renderLogin
+
+00:07:09.360 --> 00:07:14.130 line:100% position:50% align:middle
+function. Good, no problem there. Let's
+see where we're at right now.
+
+00:07:14.130 --> 00:07:20.270 line:100% position:50% align:middle
+So, we've got a bit of an error popping up
+here. Cannot read property user ID of
+
+00:07:20.270 --> 00:07:24.950 line:100% position:50% align:middle
+null. Oh, yeah, so by default, what we
+also need to do in our constructor is set
+
+00:07:24.950 --> 00:07:34.170 line:100% position:50% align:middle
+a user ID and a store owner to be nothing.
+So we say, "this.state =" and the user ID
+
+00:07:34.170 --> 00:07:41.150 line:100% position:50% align:middle
+is going to be null and the owner is going
+to also be null. So,
+
+00:07:41.150 --> 00:07:47.160 line:100% position:50% align:middle
+explicitly nothing by default. Good, and
+then, what happens here is we've got "log
+
+00:07:47.160 --> 00:07:50.680 line:100% position:50% align:middle
+in GitHub, log in Facebook, log in
+Twitter." If I click that, it's going to
+
+00:07:50.680 --> 00:07:53.680 line:100% position:50% align:middle
+error. It's going to say that that
+authentication method is not defined.
+
+00:07:53.680 --> 00:07:59.200 line:100% position:50% align:middle
+Good. "this.authenticate" is not a
+function. That makes sense because we have
+
+00:07:59.200 --> 00:08:03.840 line:100% position:50% align:middle
+bound it to run authenticate on click, but
+we have not yet actually made that
+
+00:08:03.840 --> 00:08:07.450 line:100% position:50% align:middle
+authenticate method. That's fine. We'll go
+over that in a second.
+
+00:08:07.450 --> 00:08:12.200 line:100% position:50% align:middle
+Then the next thing we need to do is check
+if they are the owner of the current
+
+00:08:12.200 --> 00:08:18.480 line:100% position:50% align:middle
+store, So, "if this.state.uid" so we're
+going to be storing the user's ID and
+
+00:08:18.480 --> 00:08:26.790 line:100% position:50% align:middle
+state once they log in...is not equal to
+this.state.owner, then we're going to just
+
+00:08:26.790 --> 00:08:37.300 line:100% position:50% align:middle
+return some sorry div. Div, this is p,
+"Sorry you aren't the owner of this
+
+00:08:37.300 --> 00:08:42.830 line:100% position:50% align:middle
+store!" Then we also need that log out
+button, so I'm going to go right above
+
+00:08:42.830 --> 00:08:52.510 line:100% position:50% align:middle
+this render here and say "const logout ="
+and that is simply just a button that says
+
+00:08:52.510 --> 00:08:58.760 line:100% position:50% align:middle
+"Log Out!" And, then, when someone clicks
+that, we're actually going to hook it up
+
+00:08:58.760 --> 00:09:02.540 line:100% position:50% align:middle
+to our log out button, but we won't do
+that just yet because we haven't created
+
+00:09:02.540 --> 00:09:07.380 line:100% position:50% align:middle
+this log out method. But, we can then take
+that log out and put it right here.
+
+00:09:07.380 --> 00:09:11.350 line:100% position:50% align:middle
+Maybe someone logged in with the wrong
+account, so we can put "logout" there.
+
+00:09:11.350 --> 00:09:15.550 line:100% position:50% align:middle
+And then we also probably want to put the
+log out right in our inventory,
+
+00:09:15.550 --> 00:09:18.650 line:100% position:50% align:middle
+as well, because if they are logged in,
+maybe they're on a shared computer,
+
+00:09:18.650 --> 00:09:21.950 line:100% position:50% align:middle
+you want to allow them to log out, as
+well. So, save, let's see how we're doing
+
+00:09:21.950 --> 00:09:28.190 line:100% position:50% align:middle
+here. Good, no errors. Now, let's actually
+hook up some of this work.
+
+00:09:28.190 --> 00:09:34.100 line:100% position:50% align:middle
+So, we've got that authenticate method
+running so we can go ahead and code it in
+
+00:09:34.100 --> 00:09:38.120 line:100% position:50% align:middle
+ourselves, so we're going to say,
+"authenticate" and that will take in a
+
+00:09:38.120 --> 00:09:45.560 line:100% position:50% align:middle
+provider, and, then when someone clicks
+it, the log, "Trying to log in with
+
+00:09:45.560 --> 00:09:50.590 line:100% position:50% align:middle
+$provider." So, we made this authenticate
+method. Make sure we bind it again up
+
+00:09:50.590 --> 00:09:54.920 line:100% position:50% align:middle
+here. Look, GitHub, trying to log in with
+GitHub, trying to log in with Facebook,
+
+00:09:54.920 --> 00:09:57.880 line:100% position:50% align:middle
+trying to log in with Twitter. Good. So,
+these buttons are working.
+
+00:09:57.880 --> 00:10:02.710 line:100% position:50% align:middle
+Now we actually have to run the code that
+will pop it up and try to interface with
+
+00:10:02.710 --> 00:10:04.434 line:100% position:50% align:middle
+GitHub. So, for that,
+
+00:10:04.434 --> 00:10:09.120 line:100% position:50% align:middle
+we need to import our base.
+Remember, we made this "base.js," which
+
+00:10:09.120 --> 00:10:14.190 line:100% position:50% align:middle
+connected to Firebase for us? We need to
+import this. So, we say,
+
+00:10:14.190 --> 00:10:22.960 line:100% position:50% align:middle
+"import base from '.. /base'." Then, when
+we authenticate, we're going run "base.
+
+00:10:22.960 --> 00:10:30.070 line:100% position:50% align:middle
+AuthWithOAuthPopup."
+Triple check you've got all your capitals
+
+00:10:30.070 --> 00:10:35.070 line:100% position:50% align:middle
+ready there, that's a bit of a jumble, and
+then we are going to pass it.
+
+00:10:35.070 --> 00:10:38.960 line:100% position:50% align:middle
+First, what provider. So, you normally
+would pass it, like, "'twitter'" or
+
+00:10:38.960 --> 00:10:42.990 line:100% position:50% align:middle
+"'facebook'" or "'github'" here, but
+because we just want to make one
+
+00:10:42.990 --> 00:10:48.700 line:100% position:50% align:middle
+authenticate method here, we have popped
+that into a variable called "provider."
+
+00:10:48.700 --> 00:10:53.260 line:100% position:50% align:middle
+Good. And, then, the next thing that we
+want to do is, when the person
+
+00:10:53.260 --> 00:10:57.210 line:100% position:50% align:middle
+successfully or unsuccessfully
+authenticates, we need a callback
+
+00:10:57.210 --> 00:11:00.660 line:100% position:50% align:middle
+function. So, what is going to run as soon
+as they click allow access?
+
+00:11:00.660 --> 00:11:04.220 line:100% position:50% align:middle
+And that's going to be what's called an
+"authHandler," which we're going to build.
+
+00:11:04.220 --> 00:11:09.140 line:100% position:50% align:middle
+We'll say, "this.authHandler," and then
+that's the next step, what we need to do,
+
+00:11:09.140 --> 00:11:13.310 line:100% position:50% align:middle
+"authHandler" and that is going to give us
+an error if there is one,
+
+00:11:13.310 --> 00:11:17.710 line:100% position:50% align:middle
+and then like a payload, which I like to
+call "authData." It's full of all the
+
+00:11:17.710 --> 00:11:22.220 line:100% position:50% align:middle
+information in it. And then we just,
+"console.logauthData," and see where we're
+
+00:11:22.220 --> 00:11:28.270 line:100% position:50% align:middle
+at here. Let's go back up to our
+constructor and we also want to duplicate,
+
+00:11:28.270 --> 00:11:33.410 line:100% position:50% align:middle
+"authenticate" is going to be
+"authHandler," so you need to bind all of
+
+00:11:33.410 --> 00:11:37.550 line:100% position:50% align:middle
+these methods to that instance of the
+component. Right now, click "LOG IN WITH
+
+00:11:37.550 --> 00:11:41.790 line:100% position:50% align:middle
+GITHUB," it's going to pop it open, and
+it's going to ask me...the first time it's
+
+00:11:41.790 --> 00:11:44.670 line:100% position:50% align:middle
+going to ask me, the next time it's just
+going to pop up and close immediately
+
+00:11:44.670 --> 00:11:48.250 line:100% position:50% align:middle
+because I've already authenticated it. Two
+pictures of myself.
+
+00:11:48.250 --> 00:11:52.310 line:100% position:50% align:middle
+Authorize application, and then, oh, look
+what comes back. So,
+
+00:11:52.310 --> 00:11:58.480 line:100% position:50% align:middle
+I just authenticated, which is right here.
+We authenticated with GitHub,
+
+00:11:58.480 --> 00:12:03.230 line:100% position:50% align:middle
+and then when that successfully worked ,
+we ran authHandler, which,
+
+00:12:03.230 --> 00:12:07.910 line:100% position:50% align:middle
+let's go to the authHandler function here,
+and then let's look in here...error and
+
+00:12:07.910 --> 00:12:12.290 line:100% position:50% align:middle
+authData, this is what we're seeing right
+here. The console logging the authData,
+
+00:12:12.290 --> 00:12:16.790 line:100% position:50% align:middle
+and inside of there you're going to see
+information about the actual user.
+
+00:12:16.790 --> 00:12:21.350 line:100% position:50% align:middle
+You can see my email address, and any
+other good information, as well as some
+
+00:12:21.350 --> 00:12:22.310 line:100% position:50% align:middle
+credentials.
+
+00:12:22.310 --> 00:12:26.720 line:100% position:50% align:middle
+Good, but what we actually need to do with
+this data is then store it in state so
+
+00:12:26.720 --> 00:12:32.740 line:100% position:50% align:middle
+that we can re-render the inventory
+component and show those boxes to edit.
+
+00:12:32.740 --> 00:12:37.310 line:100% position:50% align:middle
+So, we're going to go to our authHandler
+function. If there's an error,
+
+00:12:37.310 --> 00:12:44.080 line:100% position:50% align:middle
+then we'll "console.errorerr" the actual
+error itself and "return." Otherwise,
+
+00:12:44.080 --> 00:12:50.220 line:100% position:50% align:middle
+what we're going to do is "// grab the
+store info." So, essentially what we need
+
+00:12:50.220 --> 00:12:54.940 line:100% position:50% align:middle
+to do is, if they've authenticated here,
+we need to grab the reference to our
+
+00:12:54.940 --> 00:12:59.490 line:100% position:50% align:middle
+actual store. In this case, "Sparkling
+Plain Leaves," and we're going to do a
+
+00:12:59.490 --> 00:13:04.350 line:100% position:50% align:middle
+couple things. We're going to claim it as
+our own, as well as update our state.
+
+00:13:04.350 --> 00:13:08.190 line:100% position:50% align:middle
+So, we're going to connect directly to
+Firebase. We're going to grab sort of a
+
+00:13:08.190 --> 00:13:13.000 line:100% position:50% align:middle
+copy of all the information about the
+current store, and then when that info
+
+00:13:13.000 --> 00:13:17.140 line:100% position:50% align:middle
+comes back from Firebase, we're going to
+say, "Okay, we've got all the information
+
+00:13:17.140 --> 00:13:23.730 line:100% position:50% align:middle
+about Sparkling Plain Leaves, we've got
+this person, Wes, who's signed in.
+
+00:13:23.730 --> 00:13:30.890 line:100% position:50% align:middle
+Now, first of all, does Wes own this
+store? If not, the question is,
+
+00:13:30.890 --> 00:13:34.390 line:100% position:50% align:middle
+"Is someone else the owner?" If that's not
+true, then, finally,
+
+00:13:34.390 --> 00:13:37.740 line:100% position:50% align:middle
+we're going to set them as the actual
+owner. Otherwise, we're not going to set
+
+00:13:37.740 --> 00:13:40.640 line:100% position:50% align:middle
+them as an owner. So, we've got to grab
+the store info and we're going to connect
+
+00:13:40.640 --> 00:13:47.350 line:100% position:50% align:middle
+directly to Firebase for this. So we say,
+"const storeRef = base.database," and what
+
+00:13:47.350 --> 00:13:50.260 line:100% position:50% align:middle
+that's going to do is connect us directly
+with our Firebase database,
+
+00:13:50.260 --> 00:13:52.950 line:100% position:50% align:middle
+which will allow us to use any of the
+existing Firebase APIs. So,
+
+00:13:52.950 --> 00:13:58.150 line:100% position:50% align:middle
+if you go to any of the Firebase
+documentation, you can also use any of the
+
+00:13:58.150 --> 00:14:01.670 line:100% position:50% align:middle
+API that you have there if some of the
+stuff in Rebase doesn't cut it for you.
+
+00:14:01.670 --> 00:14:05.750 line:100% position:50% align:middle
+And then we're going to say, "ref"
+because, what a "ref" will do is it will
+
+00:14:05.750 --> 00:14:08.680 line:100% position:50% align:middle
+allow us to get just a piece of our
+database. We don't want the entire
+
+00:14:08.680 --> 00:14:12.820 line:100% position:50% align:middle
+database with every single store that's
+ever happened, we just want Sparkling
+
+00:14:12.820 --> 00:14:16.390 line:100% position:50% align:middle
+Plain Leaves. So we would normally just
+type that in here, like,
+
+00:14:16.390 --> 00:14:20.270 line:100% position:50% align:middle
+"'sparkling... '"blah, blah, blah, but we
+can't. We need to make it dynamic.
+
+00:14:20.270 --> 00:14:26.310 line:100% position:50% align:middle
+So we need to pass down the store again.
+So we'll go to app, go to the bottom here,
+
+00:14:26.310 --> 00:14:33.430 line:100% position:50% align:middle
+go to our inventory, and we'll say,
+"storeID=this.props.storeID." Good.
+
+00:14:33.430 --> 00:14:36.600 line:100% position:50% align:middle
+Then we will go to inventory.
+
+00:14:36.600 --> 00:14:42.750 line:100% position:50% align:middle
+What do you do when you add a new prop?
+You go down here and you add it,
+
+00:14:42.750 --> 00:14:48.950 line:100% position:50% align:middle
+"storeId" is going to be a string, and
+that's required that we pass it.
+
+00:14:48.950 --> 00:14:53.680 line:100% position:50% align:middle
+Okay. Oh, we got a bit of an error here.
+Required prop storeId was not specified,
+
+00:14:53.680 --> 00:14:57.200 line:100% position:50% align:middle
+so, right away, it's catching an error. I
+don't know what the error is,
+
+00:14:57.200 --> 00:15:01.040 line:100% position:50% align:middle
+but obviously I did something wrong.and
+our prop types are kicking in to tell me
+
+00:15:01.040 --> 00:15:05.270 line:100% position:50% align:middle
+something went wrong. So, let me take a
+quick look at when we passed it.
+
+00:15:05.270 --> 00:15:11.390 line:100% position:50% align:middle
+So, we passed the data here and, oh, it's
+"this.props.params.storeId." So,
+
+00:15:11.390 --> 00:15:15.860 line:100% position:50% align:middle
+that was just a silly mistake that I made
+and it caught it immediately.
+
+00:15:15.860 --> 00:15:21.010 line:100% position:50% align:middle
+See, there we go. Then we go back to our
+inventory, back up to the function we were
+
+00:15:21.010 --> 00:15:30.200 line:100% position:50% align:middle
+just writing, "refthis.props.storeId."
+Good. Then we want to get the data once,
+
+00:15:30.200 --> 00:15:41.950 line:100% position:50% align:middle
+so we'll say, "query the firebase once for
+the store data." "storeRef.once'value',"
+
+00:15:41.950 --> 00:15:47.640 line:100% position:50% align:middle
+and then that returns to us. I call that a
+"snapshot," which with Firebase is sort of
+
+00:15:47.640 --> 00:15:55.200 line:100% position:50% align:middle
+object of all the data. And then we can
+say, "const data = snapshot.val." You have
+
+00:15:55.200 --> 00:15:58.190 line:100% position:50% align:middle
+to call "val" on it to get the actual data
+out of it, otherwise,
+
+00:15:58.190 --> 00:16:00.390 line:100% position:50% align:middle
+it's going to be a blank object.
+
+00:16:00.390 --> 00:16:08.240 line:100% position:50% align:middle
+Then we claim it as our own if there's no
+owner already. And the way that we claim
+
+00:16:08.240 --> 00:16:15.130 line:100% position:50% align:middle
+it as our own is we simply just set
+"storeRef.set" and we are going to set the
+
+00:16:15.130 --> 00:16:19.540 line:100% position:50% align:middle
+owner to be...now we go back to this
+authData dump that we have,
+
+00:16:19.540 --> 00:16:26.950 line:100% position:50% align:middle
+we say "authData.user.uid." And that UID
+is going to be unique coming from GitHub.
+
+00:16:26.950 --> 00:16:33.320 line:100% position:50% align:middle
+Good. Now let's see how it is here. Let
+this refresh. I'm going to open up my
+
+00:16:33.320 --> 00:16:37.270 line:100% position:50% align:middle
+Firebase, I'm going to go to the database,
+so I'm going to open up Sparkling Plain
+
+00:16:37.270 --> 00:16:46.990 line:100% position:50% align:middle
+Leaves. See, we only have "fishes" here
+right now, but if I log in with GitHub,
+
+00:16:46.990 --> 00:16:54.130 line:100% position:50% align:middle
+I go back, I see my owner now is opened on
+up and that user ID is there.
+
+00:16:54.130 --> 00:16:57.080 line:100% position:50% align:middle
+Good, but we still can't see any of the
+fishes, we can't load them,
+
+00:16:57.080 --> 00:16:58.850 line:100% position:50% align:middle
+we can't actually work with any of it
+right now.
+
+00:16:58.850 --> 00:17:03.480 line:100% position:50% align:middle
+So what we need to do is set the state
+locally in our application,
+
+00:17:03.480 --> 00:17:11.392 line:100% position:50% align:middle
+as well. So, we'll say, "this.setState,"
+say the user ID is going to be the same
+
+00:17:11.392 --> 00:17:20.714 line:100% position:50% align:middle
+thing, "authData.user.uid," and then the
+"owner:" is going to be either,
+
+00:17:20.714 --> 00:17:27.263 line:100% position:50% align:middle
+"data"...what's data? Data is the actual
+"store.owner" or it's going to be
+
+00:17:27.263 --> 00:17:36.050 line:100% position:50% align:middle
+"authData.user.uid." Good. That was a lot.
+It's a little bit confusing having to jump
+
+00:17:36.050 --> 00:17:40.460 line:100% position:50% align:middle
+between the two, so maybe take a second to
+just read over that a couple times to see
+
+00:17:40.460 --> 00:17:47.040 line:100% position:50% align:middle
+if you know what's going on here, but now
+I think when I log in with GitHub...aha,
+
+00:17:47.040 --> 00:17:50.910 line:100% position:50% align:middle
+look what happens. When I log in with
+GitHub, it comes back and now gives me the
+
+00:17:50.910 --> 00:17:55.540 line:100% position:50% align:middle
+fish. I can load in a whole bunch of
+sample fishes, I can remove those fishes,
+
+00:17:55.540 --> 00:17:57.540 line:100% position:50% align:middle
+and be able to update my Firebase.
+
+00:17:57.540 --> 00:18:03.550 line:100% position:50% align:middle
+Now, there is a problem in that, when I
+refresh, I have to log in again.
+
+00:18:03.550 --> 00:18:07.700 line:100% position:50% align:middle
+Every single time I refresh, I have to log
+in again, and then I'll be able to
+
+00:18:07.700 --> 00:18:12.020 line:100% position:50% align:middle
+actually edit it. So, when would we do
+that? Well, hopefully, you're thinking
+
+00:18:12.020 --> 00:18:16.650 line:100% position:50% align:middle
+back to when we've previously done that
+and we can use one of the React lifecycle
+
+00:18:16.650 --> 00:18:20.020 line:100% position:50% align:middle
+hooks to hook into it, and the one that
+we're going to be using is called,
+
+00:18:20.020 --> 00:18:25.060 line:100% position:50% align:middle
+"component did mount." I;m going to go up
+to the top here, right underneath
+
+00:18:25.060 --> 00:18:28.130 line:100% position:50% align:middle
+constructor, and we're going to use
+"componentDidMount." I sort of like to
+
+00:18:28.130 --> 00:18:32.150 line:100% position:50% align:middle
+always put all of my lifecycle and
+constructor stuff above all of my custom
+
+00:18:32.150 --> 00:18:35.870 line:100% position:50% align:middle
+stuff, and then I like to put my render
+right at the bottom, but that's just a
+
+00:18:35.870 --> 00:18:40.060 line:100% position:50% align:middle
+personal preference. So we say,
+"base.onAuth" and that is going to
+
+00:18:40.060 --> 00:18:45.660 line:100% position:50% align:middle
+listen...this is sort of like base is our
+database, and then onAuth is sort of like
+
+00:18:45.660 --> 00:18:49.730 line:100% position:50% align:middle
+if you've done jQuery, you could say,
+"on'auth'" or "on'click'," so "onAuth" is
+
+00:18:49.730 --> 00:18:54.010 line:100% position:50% align:middle
+going to listen for when we load the page,
+Firebase is going to immediately try to
+
+00:18:54.010 --> 00:18:59.500 line:100% position:50% align:middle
+authenticate myself again. And, when that
+happens, we're going to run this user
+
+00:18:59.500 --> 00:19:10.290 line:100% position:50% align:middle
+here, and we are going to check if there's
+a user, and then, if there is,
+
+00:19:10.290 --> 00:19:13.990 line:100% position:50% align:middle
+we're just going to call
+"this.authHandler" again. We're not going
+
+00:19:13.990 --> 00:19:18.960 line:100% position:50% align:middle
+to pass anything there, and then we'll
+pass the user along with it.
+
+00:19:18.960 --> 00:19:27.140 line:100% position:50% align:middle
+So, we're using this authHandler callback
+both once for when the actual user gets
+
+00:19:27.140 --> 00:19:31.390 line:100% position:50% align:middle
+signed in the first time, and then
+subsequently every single time that we
+
+00:19:31.390 --> 00:19:35.340 line:100% position:50% align:middle
+reload the page, we're going to call this
+authHandler again, and then that should,
+
+00:19:35.340 --> 00:19:39.400 line:100% position:50% align:middle
+in turn, do all the checking and the
+setting of state and all that hard stuff.
+
+00:19:39.400 --> 00:19:42.930 line:100% position:50% align:middle
+And so now I save. Hopefully, when it
+refreshes...yes, you see,
+
+00:19:42.930 --> 00:19:45.990 line:100% position:50% align:middle
+like, for a split second there, we do see
+the log in buttons, and,
+
+00:19:45.990 --> 00:19:51.540 line:100% position:50% align:middle
+again, you could use your lifecycle hooks
+to prevent that, but as soon as it loads,
+
+00:19:51.540 --> 00:19:57.360 line:100% position:50% align:middle
+as soon as it did mount, then it's up and
+running. So, that is our authentication on
+
+00:19:57.360 --> 00:20:00.810 line:100% position:50% align:middle
+the client side. We just need to hook up
+this "LOG OUT" button.
+
+00:20:00.810 --> 00:20:05.350 line:100% position:50% align:middle
+So, I'm going to go right underneath our
+authenticate, and we're going to make a,
+
+00:20:05.350 --> 00:20:12.800 line:100% position:50% align:middle
+"logout" method, that doesn't take any
+arguments in, and then inside of that,
+
+00:20:12.800 --> 00:20:16.660 line:100% position:50% align:middle
+we do a couple things. First, we need to
+just run "base.unauth," it's really easy,
+
+00:20:16.660 --> 00:20:20.710 line:100% position:50% align:middle
+it's going to connect, or we already
+connected to it, and run unauth.
+
+00:20:20.710 --> 00:20:25.450 line:100% position:50% align:middle
+That'll log us out and sever any ties we
+have with Firebase. And then we simply say
+
+00:20:25.450 --> 00:20:29.910 line:100% position:50% align:middle
+"this.setState" and we are going to set
+the user ID of the currently logged in
+
+00:20:29.910 --> 00:20:34.900 line:100% position:50% align:middle
+person to be nothing because we need to
+delete that as well. Then,
+
+00:20:34.900 --> 00:20:39.780 line:100% position:50% align:middle
+of course, we'll do our whole song and
+dance where we go to the top here and bind
+
+00:20:39.780 --> 00:20:45.550 line:100% position:50% align:middle
+logout, and then we go to our button where
+we created the logout button.
+
+00:20:45.550 --> 00:20:53.940 line:100% position:50% align:middle
+Here we go. And then "onClick= =>
+this.logout." Actually, in this case,
+
+00:20:53.940 --> 00:21:00.170 line:100% position:50% align:middle
+because we are not passing any arguments,
+we can simply just pass it like this,
+
+00:21:00.170 --> 00:21:05.280 line:100% position:50% align:middle
+"this.logout" You only need to do that
+song and dance here for when you need to
+
+00:21:05.280 --> 00:21:10.720 line:100% position:50% align:middle
+pass an argument, so we'll say,
+"this.logout" and when I click it,
+
+00:21:10.720 --> 00:21:15.300 line:100% position:50% align:middle
+it will just sign me on out. And then I
+can go ahead and sign in again with
+
+00:21:15.300 --> 00:21:17.820 line:100% position:50% align:middle
+GitHub, should I want that.
+
+00:21:17.820 --> 00:21:22.160 line:100% position:50% align:middle
+Now we actually need to head on to the
+other side, which is secure things at
+
+00:21:22.160 --> 00:21:27.000 line:100% position:50% align:middle
+Firebase's end because, like, I visually
+can't edit these fish,
+
+00:21:27.000 --> 00:21:31.360 line:100% position:50% align:middle
+but anybody with a little bit of know-how
+as to how Firebase works would be able to
+
+00:21:31.360 --> 00:21:37.050 line:100% position:50% align:middle
+figure out how to query and edit all the
+different fishes if they knew how Firebase
+
+00:21:37.050 --> 00:21:40.700 line:100% position:50% align:middle
+works. So, we need to go to Firebase, our
+security rules. So, click on Database,
+
+00:21:40.700 --> 00:21:43.640 line:100% position:50% align:middle
+go to your database and click on rules,
+and way earlier, like,
+
+00:21:43.640 --> 00:21:49.140 line:100% position:50% align:middle
+many videos ago, we set "read" and "write"
+to be true. Now what we need to do is
+
+00:21:49.140 --> 00:21:52.820 line:100% position:50% align:middle
+change those security rules, and I've
+provided you a file called
+
+00:21:52.820 --> 00:21:57.520 line:100% position:50% align:middle
+"Security-rules. JSON." I'm just going to
+paste them in here, and then I'll explain
+
+00:21:57.520 --> 00:22:01.620 line:100% position:50% align:middle
+them.for you. So, I'm just going to paste
+it in here, and I'm going to go through it
+
+00:22:01.620 --> 00:22:02.924 line:100% position:50% align:middle
+with you.
+So, the rules.
+
+00:22:02.924 --> 00:22:07.110 line:100% position:50% align:middle
+Reading. Anybody can read
+it, right? True. Write.
+
+00:22:07.110 --> 00:22:12.000 line:100% position:50% align:middle
+You can only write to it if the data
+doesn't exist. So, this let's people not
+
+00:22:12.000 --> 00:22:16.600 line:100% position:50% align:middle
+being able to delete an existing room.
+Otherwise, you could call Firebase.delete.
+
+00:22:16.600 --> 00:22:21.700 line:100% position:50% align:middle
+And then on each individual room, and
+that's just like sort of one level down,
+
+00:22:21.700 --> 00:22:26.970 line:100% position:50% align:middle
+that's what I did with "$r," only the
+store owner can edit the data.
+
+00:22:26.970 --> 00:22:32.220 line:100% position:50% align:middle
+So, in order to...anybody can read. Right?
+No problem. Anybody can read all of that
+
+00:22:32.220 --> 00:22:37.340 line:100% position:50% align:middle
+data, but to write to that individual room
+or to write to that individual
+
+00:22:37.340 --> 00:22:42.710 line:100% position:50% align:middle
+store...maybe that would be better to be
+called...we have to say that when new data
+
+00:22:42.710 --> 00:22:48.240 line:100% position:50% align:middle
+comes into Firebase, if the owner is not
+equal to the currently authenticated user
+
+00:22:48.240 --> 00:22:52.870 line:100% position:50% align:middle
+ID, then don't allow them. So, that's how
+Firebase works. You have to set these
+
+00:22:52.870 --> 00:22:58.260 line:100% position:50% align:middle
+rules for reading and writing. And, in
+this case, we will not let anybody write
+
+00:22:58.260 --> 00:23:05.030 line:100% position:50% align:middle
+to it unless the owner...again, I can show
+you the owner ID is equal to whatever the
+
+00:23:05.030 --> 00:23:09.690 line:100% position:50% align:middle
+owner, the user's ID when they are
+actually logged in. And that will lock it
+
+00:23:09.690 --> 00:23:14.050 line:100% position:50% align:middle
+down so that no one can monkey around with
+it up behind the scenes.
+
+00:23:14.050 --> 00:23:16.910 line:100% position:50% align:middle
+So, let's save that, make sure that your
+rules are in there...
+
+00:23:16.910 --> 00:23:21.820 line:100% position:50% align:middle
+I forgot to save it...and I'm going to
+publish them. Good. Then I'm just going to
+
+00:23:21.820 --> 00:23:26.320 line:100% position:50% align:middle
+go ahead and refresh this. Good, and I
+should still be able to say,
+
+00:23:26.320 --> 00:23:33.080 line:100% position:50% align:middle
+"Hey Ho," refresh and it still says "Hey
+Ho." I log out, and I'm not able to
+
+00:23:33.080 --> 00:23:34.800 line:100% position:50% align:middle
+actually edit it. Good.

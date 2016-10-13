@@ -1,0 +1,371 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:02.771 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.150 --> 00:00:09.775 line:100% position:50% align:middle
+If you've ever worked on other
+applications before, you may have heard
+
+00:00:09.775 --> 00:00:13.845 line:100% position:50% align:middle
+the term, or know the term CRUD.
+Now, what CRUD means is Create, Read,
+
+00:00:13.990 --> 00:00:18.150 line:100% position:50% align:middle
+Update, and Delete. Now, we've done
+create, which is we can create a new fish
+
+00:00:18.150 --> 00:00:24.540 line:100% position:50% align:middle
+in this box here. We can read them into
+our state right here. We can update them,
+
+00:00:24.540 --> 00:00:25.520 line:100% position:50% align:middle
+that's what we did here.
+
+00:00:25.520 --> 00:00:29.650 line:100% position:50% align:middle
+But really, the last piece is that
+deleting. How do you actually remove one
+
+00:00:29.650 --> 00:00:33.310 line:100% position:50% align:middle
+of these items from our state?
+We don't have a way to do that.
+
+00:00:33.310 --> 00:00:38.833 line:100% position:50% align:middle
+So let's go to our App.js. And you know
+how we have addFish and updateFish.
+
+00:00:38.833 --> 00:00:45.375 line:100% position:50% align:middle
+We just need to create a third one called
+removeFish. And that will take in a key,
+
+00:00:45.375 --> 00:00:51.986 line:100% position:50% align:middle
+and it works the same way up to this,
+but we want to delete the actual item
+
+00:00:51.986 --> 00:00:54.130 line:100% position:50% align:middle
+instead of setting it to something.
+
+00:00:54.130 --> 00:00:56.884 line:100% position:50% align:middle
+So we need to first take a
+copy of our fishes,
+
+00:00:56.884 --> 00:01:03.251 line:100% position:50% align:middle
+const fishes = ... ourselves
+...this.state.fishes
+
+00:01:03.400 --> 00:01:07.670 line:100% position:50% align:middle
+Again, we used 'this.' Hopefully,
+that triggers you. We've got to go up to
+
+00:01:07.670 --> 00:01:15.523 line:100% position:50% align:middle
+our constructor. I'm going to add
+removeFish. Good. Back to removeFish.
+
+00:01:15.523 --> 00:01:19.710 line:100% position:50% align:middle
+Now, I've got a copy of state.
+Then we want to remove it. Now,
+
+00:01:19.710 --> 00:01:24.248 line:100% position:50% align:middle
+you might think, okay, we run
+delete fishes [key];
+
+00:01:24.248 --> 00:01:27.136 line:100% position:50% align:middle
+however because we are
+hooked up to firebase,
+
+00:01:27.136 --> 00:01:31.485 line:100% position:50% align:middle
+there's some weirdness around that.
+Instead of running delete directly,
+
+00:01:31.485 --> 00:01:35.994 line:100% position:50% align:middle
+which apparently doesn't work with
+firebase, you need to explicitly set it to
+
+00:01:35.994 --> 00:01:40.167 line:100% position:50% align:middle
+null. And then we need to update state.
+
+00:01:40.167 --> 00:01:44.075 line:100% position:50% align:middle
+So this.setState and
+we simply pass it, fishes.
+
+00:01:44.838 --> 00:01:50.760 line:100% position:50% align:middle
+Good. Now, we should be able to delete
+a fish. So we've got this Lovely Pacific
+
+00:01:50.760 --> 00:01:55.718 line:100% position:50% align:middle
+Halibut, which is fish1. Let's try and
+go and delete it. We're going to open
+
+00:01:55.718 --> 00:02:02.000 line:100% position:50% align:middle
+our React devtools here. We are going to
+find our App component. There we go.
+
+00:02:02.000 --> 00:02:11.143 line:100% position:50% align:middle
+And we can run $4. removeFish, and we're
+trying to remove fish-1. Didn't work.
+
+00:02:11.143 --> 00:02:12.842 line:100% position:50% align:middle
+Let's see what happened.
+
+00:02:12.842 --> 00:02:18.086 line:100% position:50% align:middle
+Go back to our React devtools.
+Open up our... oh, it's not fish-1,
+
+00:02:18.086 --> 00:02:24.574 line:100% position:50% align:middle
+it's just fish1. That's why. There we go.
+Deleted fish1. There was a key there.
+
+00:02:24.574 --> 00:02:28.438 line:100% position:50% align:middle
+It found it. It deleted it. You see our
+inventory, as well as our lobster,
+
+00:02:28.438 --> 00:02:32.550 line:100% position:50% align:middle
+and the fact that it was in our order, and
+now it's gone. All of those things have
+
+00:02:32.550 --> 00:02:38.610 line:100% position:50% align:middle
+updated where we just touch state once.
+Good, but we actually want that to run on
+
+00:02:38.610 --> 00:02:44.810 line:100% position:50% align:middle
+click. Again, we take that removeFish,
+we are going to pass it to our inventory,
+
+00:02:44.810 --> 00:02:50.305 line:100% position:50% align:middle
+and call it removeFish. Then I'm going to
+open up our inventory component here.
+
+00:02:50.305 --> 00:02:56.610 line:100% position:50% align:middle
+We're going to go into our div class of
+fish-edit, and we'll put a button at the
+
+00:02:56.610 --> 00:03:01.154 line:100% position:50% align:middle
+bottom here. Inside of it, we'll say
+Remove Fish, and we'll add an onClick
+
+00:03:01.154 --> 00:03:08.853 line:100% position:50% align:middle
+handler to that, will simply will run
+this.props.removeFish and you pass it.
+
+00:03:08.853 --> 00:03:13.763 line:100% position:50% align:middle
+We have this key value here, so we
+can pass it to key here. That should work.
+
+00:03:15.854 --> 00:03:22.207 line:100% position:50% align:middle
+Remove fish, bomb, done. Bam, bam,
+bam, bam, bam, bam, bam, bam.
+
+00:03:22.207 --> 00:03:25.170 line:100% position:50% align:middle
+Oh, they're all gone. We can load in some
+more sample ones, and then continue to
+
+00:03:25.170 --> 00:03:30.888 line:100% position:50% align:middle
+remove it. So again, we just created
+a new method called removeFish,
+
+00:03:30.888 --> 00:03:35.108 line:100% position:50% align:middle
+we passed it down to our inventory
+and called that onClick. Now,
+
+00:03:35.108 --> 00:03:38.560 line:100% position:50% align:middle
+how do we actually update our order as
+well, because if I add something to my
+
+00:03:38.560 --> 00:03:42.621 line:100% position:50% align:middle
+order here, I want to be able to delete
+it? So let's look at how we do that.
+
+00:03:43.386 --> 00:03:48.220 line:100% position:50% align:middle
+Removing from order is almost exactly the
+same way, and maybe I'll challenge you.
+
+00:03:48.220 --> 00:03:52.522 line:100% position:50% align:middle
+Just maybe pause this video and see
+if you can write the method in App.js
+
+00:03:52.522 --> 00:03:56.660 line:100% position:50% align:middle
+to remove from order and then hook up a
+button in your inventory so that when you
+
+00:03:56.660 --> 00:04:00.813 line:100% position:50% align:middle
+click it, it's going to remove it from
+your order. So maybe if you're feeling
+
+00:04:00.813 --> 00:04:04.070 line:100% position:50% align:middle
+comfortable with this right now, pause it,
+try it, and then come back and see how
+
+00:04:04.070 --> 00:04:08.830 line:100% position:50% align:middle
+we did it. Otherwise, come along for the
+ride with me. So we are going to find our
+
+00:04:08.830 --> 00:04:15.890 line:100% position:50% align:middle
+addToOrder method and right below that we
+are going to add a removeFromOrder method
+
+00:04:15.890 --> 00:04:21.212 line:100% position:50% align:middle
+and then inside of that, it is going to
+take a key. Which one should we remove?
+
+00:04:21.212 --> 00:04:24.867 line:100% position:50% align:middle
+Let's say const order =
+we'll take a copy of the state
+
+00:04:24.867 --> 00:04:30.638 line:100% position:50% align:middle
+this.state.order, and then we will
+delete the actual one from our order.
+
+00:04:30.638 --> 00:04:34.694 line:100% position:50% align:middle
+In this case, we can use delete because
+we're not limited by firebase.
+
+00:04:34.694 --> 00:04:43.692 line:100% position:50% align:middle
+We'll just say delete order[key]; and
+then we will say this.setState({ order )}
+
+00:04:43.692 --> 00:04:48.037 line:100% position:50% align:middle
+And again, we use 'this,' so we
+have to go to the constructor here.
+
+00:04:48.037 --> 00:04:54.857 line:100% position:50% align:middle
+And well, I like to keep them together.
+addToOrder and removeFromOrder.
+
+00:04:54.857 --> 00:05:00.766 line:100% position:50% align:middle
+Good. Now, let's try it manually
+ourselves. Open up React devtools.
+
+00:05:00.766 --> 00:05:09.000 line:100% position:50% align:middle
+So I'm just going to go to an entirely new
+store called wes. We're going to load
+
+00:05:09.000 --> 00:05:12.534 line:100% position:50% align:middle
+in some sample fishes here.
+I'm going to add fish1 to my order.
+
+00:05:12.534 --> 00:05:15.830 line:100% position:50% align:middle
+I'm going to add fish2 to my order,
+maybe a couple of times. Now,
+
+00:05:15.830 --> 00:05:20.910 line:100% position:50% align:middle
+I'll go to React devtools and find our
+App component, and then we'll try
+
+00:05:20.910 --> 00:05:28.891 line:100% position:50% align:middle
+manually call it.
+So $r.removeFromOrder('fish1')
+
+00:05:30.131 --> 00:05:35.236 line:100% position:50% align:middle
+Beautiful. You see how it just immediately
+did that? And if we check our application
+
+00:05:35.236 --> 00:05:40.730 line:100% position:50% align:middle
+state, you should see that it's no longer
+actually in our state. So again,
+
+00:05:40.730 --> 00:05:47.772 line:100% position:50% align:middle
+if I add it back, fish1 is right there.
+If I go to console and rerun it,
+
+00:05:49.327 --> 00:05:54.280 line:100% position:50% align:middle
+it's deleted. Good. Now, let's hook it up
+to a button. Same song and dance.
+
+00:05:54.280 --> 00:05:58.213 line:100% position:50% align:middle
+Take the remove from order.
+We're going to go to our order thing here
+
+00:05:58.213 --> 00:06:03.261 line:100% position:50% align:middle
+and we're going to say
+removeFromOrder=this.removeFromOrder
+
+00:06:03.261 --> 00:06:06.781 line:100% position:50% align:middle
+Then we'll go into our
+inventory component here.
+
+00:06:06.781 --> 00:06:11.000 line:100% position:50% align:middle
+Oh, not our inventory. Our order
+component. And we will find where we
+
+00:06:11.000 --> 00:06:15.206 line:100% position:50% align:middle
+actually render out that order, and that
+is right here. It's in renderOrder,
+
+00:06:15.206 --> 00:06:22.065 line:100% position:50% align:middle
+and we're going to make a button that we
+can put where ever we want because we need
+
+00:06:22.065 --> 00:06:26.390 line:100% position:50% align:middle
+to have the Remove From Order
+button right here, after Sorry,
+
+00:06:26.390 --> 00:06:30.921 line:100% position:50% align:middle
+this fish is no longer available. And we
+need to have that Remove From Order button
+
+00:06:30.921 --> 00:06:34.326 line:100% position:50% align:middle
+right here, after someone actually
+did add it to their order.
+
+00:06:34.326 --> 00:06:38.481 line:100% position:50% align:middle
+So we'll make a remove button,
+const removeButton
+
+00:06:38.481 --> 00:06:41.127 line:100% position:50% align:middle
+And this is just going to be JSX.
+We haven't done this yet,
+
+00:06:41.127 --> 00:06:43.230 line:100% position:50% align:middle
+but you can store JSX in a variable,
+
+00:06:43.230 --> 00:06:47.330 line:100% position:50% align:middle
+and then use that variable later, wherever
+you wish. And then I'm just going to put
+
+00:06:47.330 --> 00:06:55.092 line:100% position:50% align:middle
+&amp;times; in it, that's just an X. And the
+button we'll say onClick= run this.
+
+00:06:55.092 --> 00:07:02.177 line:100% position:50% align:middle
+this.props.removeFromOrder
+and we pass it the key, right?
+
+00:07:02.177 --> 00:07:06.094 line:100% position:50% align:middle
+because we have this key value
+available to us. Pass it in there.
+
+00:07:06.094 --> 00:07:12.590 line:100% position:50% align:middle
+Good. Then we have this removeButton,
+I'm going to put it beside my no longer
+
+00:07:12.590 --> 00:07:19.127 line:100% position:50% align:middle
+available, and then I'm also going to
+put it beside this fish count here.
+
+00:07:22.063 --> 00:07:25.506 line:100% position:50% align:middle
+There we've got six pounds of
+lobster. I can add it to my order.
+
+00:07:25.506 --> 00:07:28.186 line:100% position:50% align:middle
+You see we've got this X button.
+When I click it, does it work?
+
+00:07:28.652 --> 00:07:33.538 line:100% position:50% align:middle
+Beautiful. It works nicely, and it's just
+updating our actual order state.
+
+00:07:33.538 --> 00:07:36.130 line:100% position:50% align:middle
+In a coming video, we're going to learn
+about how we can animate those on
+
+00:07:36.130 --> 00:07:40.779 line:100% position:50% align:middle
+in with React at CSS Animations,
+but for now, that's working really nicely.
+
+00:07:40.779 --> 00:07:46.740 line:100% position:50% align:middle
+What if we take lobster, and make it Sold
+Out? Now we see it no longer available,
+
+00:07:46.740 --> 00:07:50.367 line:100% position:50% align:middle
+but the X is still there, and I can
+still actually remove it from my item.

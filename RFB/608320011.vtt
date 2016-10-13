@@ -1,0 +1,542 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.802 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:06.080 --> 00:00:10.330 line:100% position:50% align:middle
+So we have our state syncing to
+our Firebase, and that's great for when we
+
+00:00:10.330 --> 00:00:13.970 line:100% position:50% align:middle
+refresh. The data is still going to be
+there. However, when I add stuff to my
+
+00:00:13.970 --> 00:00:19.760 line:100% position:50% align:middle
+order and I refresh, all that data is then
+lost. And, rather than sync that to
+
+00:00:19.760 --> 00:00:23.530 line:100% position:50% align:middle
+Firebase, I want to show you to sync that
+to HTML5 local storage.
+
+00:00:23.530 --> 00:00:27.520 line:100% position:50% align:middle
+And essentially what that means is we're
+going to be storing the data pertaining to
+
+00:00:27.520 --> 00:00:30.350 line:100% position:50% align:middle
+the user's order in the actual browser.
+
+00:00:30.350 --> 00:00:34.390 line:100% position:50% align:middle
+Now, you could use cookies for that but
+local storage is a much better fit.
+
+00:00:34.390 --> 00:00:39.780 line:100% position:50% align:middle
+Now, we are going to head back to these
+React component life cycle methods.
+
+00:00:39.780 --> 00:00:44.630 line:100% position:50% align:middle
+And we need to hook into two more of our
+life cycle methods. First of all,
+
+00:00:44.630 --> 00:00:50.110 line:100% position:50% align:middle
+what we need to do is we need to hook
+into when the data actually changes.
+
+00:00:50.110 --> 00:00:55.750 line:100% position:50% align:middle
+And rather than going into every single
+piece where we may update our order state,
+
+00:00:55.750 --> 00:00:59.143 line:100% position:50% align:middle
+we can hook into one of the life cycle
+methods that's called
+
+00:00:59.143 --> 00:01:01.210 line:100% position:50% align:middle
+"componentWillUpdate."
+
+00:01:01.210 --> 00:01:04.450 line:100% position:50% align:middle
+Let's take a look at it right here. Here
+we go. "Updating." componentWillUpdate.
+
+00:01:04.450 --> 00:01:09.260 line:100% position:50% align:middle
+Invoked immediately before rendering when
+new props or state is being received.
+
+00:01:09.260 --> 00:01:12.740 line:100% position:50% align:middle
+So what that means is that this hook here,
+componentWillUpdate.,
+
+00:01:12.740 --> 00:01:19.070 line:100% position:50% align:middle
+it runs whenever props or state changes.
+And that's perfect, because our order is
+
+00:01:19.070 --> 00:01:22.350 line:100% position:50% align:middle
+state, and that is going to be changed and
+passed down via props.
+
+00:01:22.350 --> 00:01:26.180 line:100% position:50% align:middle
+So, we're going to hook into the
+componentWillUpdate, and I want to show
+
+00:01:26.180 --> 00:01:26.940 line:100% position:50% align:middle
+you how this works.
+
+00:01:26.940 --> 00:01:31.384 line:100% position:50% align:middle
+Let's go up to right underneath our
+componentWillMount and we'll use
+
+00:01:31.384 --> 00:01:35.230 line:100% position:50% align:middle
+componentWillUpdate. And that thing will
+pass you in two things.
+
+00:01:35.230 --> 00:01:40.870 line:100% position:50% align:middle
+It will pass you in the next props and the
+next state, so that's like the updated
+
+00:01:40.870 --> 00:01:45.070 line:100% position:50% align:middle
+props and the updated state. And if
+I were to just console log,
+
+00:01:45.070 --> 00:01:51.700 line:100% position:50% align:middle
+something changed, and I'll take these two
+props and state and I'll console log them
+
+00:01:51.700 --> 00:01:56.950 line:100% position:50% align:middle
+both as well. By the way, that's a little
+trick you can do, next props the next day
+
+00:01:56.950 --> 00:01:59.150 line:100% position:50% align:middle
+I'll show you what that does here.
+
+00:01:59.150 --> 00:02:05.410 line:100% position:50% align:middle
+So we are going to add something to our
+order, and now when we see something
+
+00:02:05.410 --> 00:02:09.460 line:100% position:50% align:middle
+changed, open that up, there is our next
+props, that's what that little trick does.
+
+00:02:09.460 --> 00:02:14.720 line:100% position:50% align:middle
+If you pass in a curly bracket object,
+it's going to name them.
+
+00:02:14.720 --> 00:02:19.380 line:100% position:50% align:middle
+So you actually know what these variables
+are called. So next props is showing us
+
+00:02:19.380 --> 00:02:23.070 line:100% position:50% align:middle
+all of our props, and next state is
+showing us all of our state.
+
+00:02:23.070 --> 00:02:27.960 line:100% position:50% align:middle
+So that's good, we need to know that, and
+any time that our state will change,
+
+00:02:27.960 --> 00:02:31.160 line:100% position:50% align:middle
+it's going to run this
+componentWillUpdate hook.
+
+00:02:31.160 --> 00:02:35.270 line:100% position:50% align:middle
+So inside of that what we need to do is
+set our local storage.
+
+00:02:35.270 --> 00:02:39.000 line:100% position:50% align:middle
+Now if you're never worked with local
+storage before, you can access it by going
+
+00:02:39.000 --> 00:02:43.720 line:100% position:50% align:middle
+to your application tab here, and you go
+to local storage and then click on the
+
+00:02:43.720 --> 00:02:47.910 line:100% position:50% align:middle
+actual domain name here. Now you might
+have some other stuff in here depending on
+
+00:02:47.910 --> 00:02:52.130 line:100% position:50% align:middle
+if you've ever run any other applications
+on your localhost domain.
+
+00:02:52.130 --> 00:02:56.570 line:100% position:50% align:middle
+And your local storage is going to be tied
+directly to your localhost domain.
+
+00:02:56.570 --> 00:03:00.610 line:100% position:50% align:middle
+Now, there is some Firebase stuff in here,
+you don't have to really worry about that,
+
+00:03:00.610 --> 00:03:07.320 line:100% position:50% align:middle
+but local storage is a key value pair.
+Meaning that you can set a key here,
+
+00:03:07.320 --> 00:03:12.580 line:100% position:50% align:middle
+and a value...it's like an object, except
+the only difference is that you cannot
+
+00:03:12.580 --> 00:03:19.280 line:100% position:50% align:middle
+nest an object inside of it. You can only
+store numbers and strings and booleans and
+
+00:03:19.280 --> 00:03:20.730 line:100% position:50% align:middle
+things like that in the value part.
+
+00:03:20.730 --> 00:03:25.170 line:100% position:50% align:middle
+So the way that local storage works, if
+you've never used it...and if you're
+
+00:03:25.170 --> 00:03:27.790 line:100% position:50% align:middle
+familiar with it you can skip ahead a
+couple of minutes...we'll have local
+
+00:03:27.790 --> 00:03:32.930 line:100% position:50% align:middle
+storage and you say .setitem. And I'm
+going to say "Wes," and I'm going to set
+
+00:03:32.930 --> 00:03:40.408 line:100% position:50% align:middle
+that as, "is really cool." Now I jump back
+to my application tab, and there we go,
+
+00:03:40.408 --> 00:03:46.507 line:100% position:50% align:middle
+"Wes is really cool." And then I can call
+it localstorage.getItem("Wes"),
+
+00:03:46.507 --> 00:03:48.920 line:100% position:50% align:middle
+and it will return to me
+that actual value.
+
+00:03:48.920 --> 00:03:52.360 line:100% position:50% align:middle
+So what we're going to do is that whenever
+the order state is updated,
+
+00:03:52.360 --> 00:03:55.170 line:100% position:50% align:middle
+we're going to store it, we're going to
+set item in local storage,
+
+00:03:55.170 --> 00:03:58.760 line:100% position:50% align:middle
+and then when someone refreshes the page,
+when they're loading it for the first
+
+00:03:58.760 --> 00:04:02.890 line:100% position:50% align:middle
+time, we're going to check if there's
+anything in local storage and if there is,
+
+00:04:02.890 --> 00:04:07.640 line:100% position:50% align:middle
+we're going to restore our state via one
+of these life cycle hooks.
+
+00:04:07.640 --> 00:04:13.390 line:100% position:50% align:middle
+So we're going to go in here and we're
+going to say localstorage.setItem,
+
+00:04:13.390 --> 00:04:18.630 line:100% position:50% align:middle
+and I'm going to save it as order dash and
+then the name of the actual store,
+
+00:04:18.630 --> 00:04:24.859 line:100% position:50% align:middle
+so Drab Drab Tomatoes, right? But we
+can't, again, we can't hard code that,
+
+00:04:24.859 --> 00:04:29.302 line:100% position:50% align:middle
+but we can use props, because props gets
+passed down. So we'll say
+
+00:04:29.302 --> 00:04:37.160 line:100% position:50% align:middle
+this.props.params.storeID. And again,
+that's available to us if we go to our
+
+00:04:37.160 --> 00:04:44.070 line:100% position:50% align:middle
+React dev tools here. And we'll go to
+"App," open that up, you see it's in our
+
+00:04:44.070 --> 00:04:47.970 line:100% position:50% align:middle
+app.params' available here,
+if we open up our order here it's actually
+
+00:04:47.970 --> 00:04:53.360 line:100% position:50% align:middle
+not available to us. So if it's available
+at app level but not available at order
+
+00:04:53.360 --> 00:04:59.200 line:100% position:50% align:middle
+level, how do we pass down all the params?
+Well, we can go to our app and
+
+00:04:59.200 --> 00:05:03.830 line:100% position:50% align:middle
+figure out where we create our order which
+is right here. So we passed in fishes,
+
+00:05:03.900 --> 00:05:08.140 line:100% position:50% align:middle
+and if this is getting a big long you
+can put them on their own lines.
+
+00:05:08.140 --> 00:05:11.140 line:100% position:50% align:middle
+And we can either pass down all of the
+params or just the one.
+
+00:05:11.140 --> 00:05:15.578 line:100% position:50% align:middle
+So I'm going to pass them all down, and
+I'm going to say this.props.params.
+
+00:05:15.578 --> 00:05:19.970 line:100% position:50% align:middle
+Now when that refreshes, we'll go
+to our order component.
+
+00:05:19.970 --> 00:05:25.620 line:100% position:50% align:middle
+And look, params are now available to us
+at order level, and we have the storeID.
+
+00:05:25.620 --> 00:05:31.281 line:100% position:50% align:middle
+So we can go back to where we set our
+local storage, this.props.params.storeID.
+
+00:05:31.281 --> 00:05:33.820 line:100% position:50% align:middle
+so we're going to set,
+that's going to be the key,
+
+00:05:33.820 --> 00:05:42.330 line:100% position:50% align:middle
+and then the actual value is going to be
+our next state.order.
+
+00:05:42.330 --> 00:05:45.120 line:100% position:50% align:middle
+Right? Because next state is the entire
+state, and we don't want to put everything
+
+00:05:45.120 --> 00:05:49.220 line:100% position:50% align:middle
+in there, just the order state inside of
+that. Now, that's not going to work and
+
+00:05:49.220 --> 00:05:53.450 line:100% position:50% align:middle
+I'm going to show you exactly why, so
+let's go ahead and run that.
+
+00:05:53.450 --> 00:05:57.930 line:100% position:50% align:middle
+And I'm going to go to my application tab,
+and I'm going to go to my local storage
+
+00:05:57.930 --> 00:06:03.670 line:100% position:50% align:middle
+here, and as I enter the order, you see
+it right here. It's object object.
+
+00:06:03.670 --> 00:06:09.980 line:100% position:50% align:middle
+And why is that? The reason is, because
+you cannot store an object inside of local
+
+00:06:09.980 --> 00:06:16.010 line:100% position:50% align:middle
+storage, you can only store strings. So
+it's actually just turning the object into
+
+00:06:16.010 --> 00:06:20.050 line:100% position:50% align:middle
+a string, and that's what you get with
+object object. So how would you turn an
+
+00:06:20.050 --> 00:06:24.550 line:100% position:50% align:middle
+object into string? Well you can turn it
+into JSON. So we'll just wrap that entire
+
+00:06:24.550 --> 00:06:32.900 line:100% position:50% align:middle
+thing is a json.stringify, and then we
+will start adding things to our order.
+
+00:06:32.900 --> 00:06:36.380 line:100% position:50% align:middle
+And you should see... hey, there we go,
+fish one, and then when I update it, you
+
+00:06:36.380 --> 00:06:41.130 line:100% position:50% align:middle
+see local storage is getting updated,
+add to order, add a couple more.
+
+00:06:41.130 --> 00:06:45.550 line:100% position:50% align:middle
+And it's just storing the exact
+representation of our order state in local
+
+00:06:45.550 --> 00:06:51.100 line:100% position:50% align:middle
+storage. So that's one way, but now when I
+refresh, it's still there.
+
+00:06:51.100 --> 00:06:54.720 line:100% position:50% align:middle
+Drab Drab Tomato, it actually gets
+overwritten because that will run on page
+
+00:06:54.720 --> 00:07:01.460 line:100% position:50% align:middle
+load, but we have a problem here where it
+doesn't actually reinstate our order.
+
+00:07:01.460 --> 00:07:05.610 line:100% position:50% align:middle
+And we need to go back up to this
+component, willMount life cycle hook,
+
+00:07:05.610 --> 00:07:10.856 line:100% position:50% align:middle
+so again right before... maybe we put a
+comment in here. This runs right before
+
+00:07:10.856 --> 00:07:16.250 line:100% position:50% align:middle
+the app is rendered. And we already used
+that to hook into our Firebase,
+
+00:07:16.250 --> 00:07:23.270 line:100% position:50% align:middle
+but we can also check if there is any
+order in local storage. So I'm going to
+
+00:07:23.270 --> 00:07:29.760 line:100% position:50% align:middle
+make a reference to that local storage,
+equals, and then we're going to try to
+
+00:07:29.760 --> 00:07:36.443 line:100% position:50% align:middle
+get that item. So say,
+localstorage.getItem, you need to back
+
+00:07:36.443 --> 00:07:44.660 line:100% position:50% align:middle
+text, order-this.props.params.storeID.
+Then if there is something in
+
+00:07:44.660 --> 00:07:48.930 line:100% position:50% align:middle
+local storage, because it very well may be
+that there's nothing in local storage, so
+
+00:07:48.930 --> 00:07:57.030 line:100% position:50% align:middle
+we need to check. If there is a local
+storage ref, then we need to update our
+
+00:07:57.030 --> 00:08:07.727 line:100% position:50% align:middle
+app component, order state, then we say
+this.setState. Then we're going to update
+
+00:08:07.727 --> 00:08:10.450 line:100% position:50% align:middle
+the order state,
+which is going to be...
+
+00:08:10.450 --> 00:08:15.590 line:100% position:50% align:middle
+you might think it's local storage ref,
+but again, that's just going to give us
+
+00:08:15.590 --> 00:08:20.830 line:100% position:50% align:middle
+this, fish one... let me add a couple
+more to it. That's just a string,
+
+00:08:20.830 --> 00:08:25.700 line:100% position:50% align:middle
+so how do you turn a string back into an
+object? Well we do the opposite of
+
+00:08:25.700 --> 00:08:29.970 line:100% position:50% align:middle
+json.stringify, and it's json.parse.
+And that will turn the string that we
+
+00:08:29.970 --> 00:08:35.170 line:100% position:50% align:middle
+stored in local storage back into an
+actual object here. So good,
+
+00:08:35.170 --> 00:08:41.220 line:100% position:50% align:middle
+give that a save. Hey hey, there we go,
+works already. Every time I refresh now,
+
+00:08:41.220 --> 00:08:44.980 line:100% position:50% align:middle
+you will be able to see one pound
+Atlantic, and I can update that.
+
+00:08:44.980 --> 00:08:48.960 line:100% position:50% align:middle
+It's all being stored in local storage,
+and we can refresh it.
+
+00:08:48.960 --> 00:08:54.990 line:100% position:50% align:middle
+So there is a split second right there
+where it does render, and then it actually
+
+00:08:54.990 --> 00:08:58.740 line:100% position:50% align:middle
+fixes itself. You see it says, "Sorry,
+it's not available," I'm not sure if you
+
+00:08:58.740 --> 00:09:03.780 line:100% position:50% align:middle
+can catch that. And that's just because
+the actual application component is
+
+00:09:03.780 --> 00:09:07.530 line:100% position:50% align:middle
+rendering to the page, and then our local
+storage ref is updating.
+
+00:09:07.530 --> 00:09:11.208 line:100% position:50% align:middle
+So it's sort of doing a double render. I'm
+going to leave it at that just because
+
+00:09:11.208 --> 00:09:15.930 line:100% position:50% align:middle
+for simplicity's sake. However,
+you could use one of the life cycle hooks
+
+00:09:15.930 --> 00:09:21.460 line:100% position:50% align:middle
+called shouldComponentUpdate, right
+here. Invoke before rendering when new
+
+00:09:21.460 --> 00:09:28.260 line:100% position:50% align:middle
+props or states are being received. So,
+componentWillUpdate gives us the new
+
+00:09:28.260 --> 00:09:32.457 line:100% position:50% align:middle
+props and the new state. And
+shouldComponentUpdate also gives us the
+
+00:09:32.457 --> 00:09:38.020 line:100% position:50% align:middle
+new props and the new state. However, that
+will... instead of us setting it in local
+
+00:09:38.020 --> 00:09:42.880 line:100% position:50% align:middle
+storage, we will be able to tell React if
+that component should re-render.
+
+00:09:42.880 --> 00:09:47.580 line:100% position:50% align:middle
+So we're kind of getting a double render
+happening here, and shouldComponentUpdate
+
+00:09:47.580 --> 00:09:52.250 line:100% position:50% align:middle
+allows you to return true or return false
+from this actual method.
+
+00:09:52.250 --> 00:09:56.130 line:100% position:50% align:middle
+And then if... let's say you've got like,
+four or five pieces of data coming in, and
+
+00:09:56.130 --> 00:09:59.800 line:100% position:50% align:middle
+every time a new piece of data comes in,
+that component re-renders itself.
+
+00:09:59.800 --> 00:10:04.040 line:100% position:50% align:middle
+Maybe you want it to wait for four, five
+of those pieces of data to all come in,
+
+00:10:04.040 --> 00:10:07.640 line:100% position:50% align:middle
+and then re-render, that's where
+shouldComponentUpdate sort of comes in,
+
+00:10:07.640 --> 00:10:12.320 line:100% position:50% align:middle
+where you could say, if I have all five
+pieces of data or if I then have my order
+
+00:10:12.320 --> 00:10:16.820 line:100% position:50% align:middle
+state properly, then return true, and that
+will cause it to re-render.
+
+00:10:16.820 --> 00:10:20.450 line:100% position:50% align:middle
+Otherwise, return false, and then that's
+just going to... it's going to stop right
+
+00:10:20.450 --> 00:10:24.340 line:100% position:50% align:middle
+there. It's going to say, okay I have new
+data but I'm not going to re-render myself
+
+00:10:24.340 --> 00:10:29.300 line:100% position:50% align:middle
+on the page until someone returns true
+from this. So there's a whole bunch of
+
+00:10:29.300 --> 00:10:33.820 line:100% position:50% align:middle
+different life cycle hooks, and what I
+probably recommend here is look through
+
+00:10:33.820 --> 00:10:37.170 line:100% position:50% align:middle
+every single life cycle hook is in there,
+read through what it does,
+
+00:10:37.170 --> 00:10:41.070 line:100% position:50% align:middle
+and then you sort of have them in the back
+of your mind so that when you've come upon
+
+00:10:41.070 --> 00:10:43.807 line:100% position:50% align:middle
+a problem, you could say,
+"Oh, I can probably fix it
+
+00:10:43.807 --> 00:10:46.000 line:100% position:50% align:middle
+with one of these life cycle hooks."

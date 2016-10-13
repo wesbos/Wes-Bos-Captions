@@ -1,0 +1,152 @@
+WEBVTT
+
+00:00:03.570 --> 00:00:05.712 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.150 --> 00:00:10.640 line:100% position:50% align:middle
+Now we've pretty much finished up building
+our application, but there's a lot more
+
+00:00:10.640 --> 00:00:15.080 line:100% position:50% align:middle
+in terms of how do we actually deploy
+this application and get it running in
+
+00:00:15.080 --> 00:00:19.370 line:100% position:50% align:middle
+production? So, luckily for us Create
+React App, which is what we have used so
+
+00:00:19.370 --> 00:00:24.260 line:100% position:50% align:middle
+far, has a build step. If you open up your
+package .json, you will see there is a
+
+00:00:24.260 --> 00:00:29.260 line:100% position:50% align:middle
+script called build and we simply just
+have to run. If you open up your terminal
+
+00:00:29.260 --> 00:00:34.880 line:100% position:50% align:middle
+here, nvm run build, and what that's going
+to do is it's going to compress it,
+
+00:00:34.880 --> 00:00:38.940 line:100% position:50% align:middle
+it's going to remove all the stuff out of
+React that we don't necessarily need.
+
+00:00:38.940 --> 00:00:44.250 line:100% position:50% align:middle
+It's going to minify it and uglify it, all
+of that good stuff that we're used to and
+
+00:00:44.250 --> 00:00:48.720 line:100% position:50% align:middle
+make us a tiny little JavaScript file, as
+well as take our CSS out and put it into
+
+00:00:48.720 --> 00:00:54.410 line:100% position:50% align:middle
+its own file. So, there we have it. It ran
+npm run build and after that we've got a
+
+00:00:54.410 --> 00:00:59.150 line:100% position:50% align:middle
+couple little tiny...a CSS file,
+a JavaScript file, and an index.html.
+
+00:00:59.150 --> 00:01:02.200 line:100% position:50% align:middle
+Then it also gives us some information
+here on how to serve it.
+
+00:01:02.200 --> 00:01:05.510 line:100% position:50% align:middle
+And, I'm going to go over the next couple
+videos with you, show you how to get that
+
+00:01:05.510 --> 00:01:10.000 line:100% position:50% align:middle
+online. But, let's just take a quick look
+at that build folder here.
+
+00:01:10.000 --> 00:01:15.130 line:100% position:50% align:middle
+You'll see inside of it is the index.html,
+which is very small and then inside of our
+
+00:01:15.130 --> 00:01:20.550 line:100% position:50% align:middle
+static, we've got our CSS. And then, we
+also have a css.map, and that's the source
+
+00:01:20.550 --> 00:01:25.310 line:100% position:50% align:middle
+map, so that if there's ever an issue with
+our CSS, we can see where we actually
+
+00:01:25.310 --> 00:01:29.800 line:100% position:50% align:middle
+authored it, like in our animations.style
+file. Same goes for our javascript file,
+
+00:01:29.800 --> 00:01:36.000 line:100% position:50% align:middle
+it's one big file, however, if you look
+inside of that, the map file's going to
+
+00:01:36.000 --> 00:01:39.510 line:100% position:50% align:middle
+point you towards the actual components
+where we wrote it. And then,
+
+00:01:39.510 --> 00:01:42.940 line:100% position:50% align:middle
+in the media, I've got just a couple fonts
+that we need here, and then the anchor
+
+00:01:42.940 --> 00:01:48.120 line:100% position:50% align:middle
+that we used in our main file. So, that's
+pretty much all we need,
+
+00:01:48.120 --> 00:01:54.010 line:100% position:50% align:middle
+it's just an index.html and stack, there's
+no server that comes along with it.
+
+00:01:54.010 --> 00:01:59.580 line:100% position:50% align:middle
+If I were to open that up in my browser
+here, you'll notice that it doesn't work.
+
+00:01:59.580 --> 00:02:05.420 line:100% position:50% align:middle
+Right? There's some errors and everything.
+And, even if you were to push that up to
+
+00:02:05.420 --> 00:02:12.550 line:100% position:50% align:middle
+some server and surf to index.html, what
+happens is that when you're on index.html
+
+00:02:12.550 --> 00:02:17.070 line:100% position:50% align:middle
+it's actually fine, but when you go to a
+secondary page, like
+
+00:02:17.070 --> 00:02:22.520 line:100% position:50% align:middle
+store/defeatedobnoxiouschildren, the
+browser thinks you're in a folder called
+
+00:02:22.520 --> 00:02:26.600 line:100% position:50% align:middle
+store and a folder called defeated
+obnoxious children. And, if you were then
+
+00:02:26.600 --> 00:02:30.370 line:100% position:50% align:middle
+to refresh that, there's no index.html
+inside of that folder.
+
+00:02:30.370 --> 00:02:36.630 line:100% position:50% align:middle
+So, we need some sort of server that is
+essentially going to serve this index.html
+
+00:02:36.630 --> 00:02:42.600 line:100% position:50% align:middle
+up, regardless of what URL the user
+requested and we'll say, don't worry about
+
+00:02:42.600 --> 00:02:46.050 line:100% position:50% align:middle
+it, we're going to let the browser
+figure out all of our routing.
+
+00:02:46.050 --> 00:02:49.310 line:100% position:50% align:middle
+So, I'm going to show you a few different
+methods to actually do that.
+
+00:02:49.310 --> 00:02:54.250 line:100% position:50% align:middle
+The first one is now.sh, the second one is
+going to be Github pages, and then the
+
+00:02:54.250 --> 00:02:59.252 line:100% position:50% align:middle
+third one, I'm going to just show you how
+to just throw it up on any existing server
+
+00:02:59.252 --> 00:03:03.000 line:100% position:50% align:middle
+that you might have, like a PHP server,
+that's a couple bucks a month.

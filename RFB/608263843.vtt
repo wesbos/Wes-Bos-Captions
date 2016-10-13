@@ -1,0 +1,1122 @@
+WEBVTT
+
+00:00:00.206 --> 00:00:03.206 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.121 --> 00:00:09.178 line:100% position:50% align:middle
+This video is going to
+be all about state.
+
+00:00:09.178 --> 00:00:12.810 line:100% position:50% align:middle
+And state, in React, is a pretty core
+fundamental concept, so if there's any
+
+00:00:12.810 --> 00:00:15.590 line:100% position:50% align:middle
+videos that you're going to back and watch
+a couple of times over,
+
+00:00:15.590 --> 00:00:21.420 line:100% position:50% align:middle
+this is definitely going to be one of
+them. State is a representation of all of
+
+00:00:21.420 --> 00:00:26.390 line:100% position:50% align:middle
+the data in our application. Each
+component can have it's own state,
+
+00:00:26.390 --> 00:00:30.930 line:100% position:50% align:middle
+and we're going to go into that. However,
+you need to think about state as just one
+
+00:00:30.930 --> 00:00:36.620 line:100% position:50% align:middle
+object that holds all of the data related
+to a piece of our application or all of
+
+00:00:36.620 --> 00:00:41.790 line:100% position:50% align:middle
+our application. For example, right now, I
+have state here, which has a listing of
+
+00:00:41.790 --> 00:00:46.870 line:100% position:50% align:middle
+all of the fishes. And then I also have
+state related to my order or how many of
+
+00:00:46.870 --> 00:00:51.860 line:100% position:50% align:middle
+them I have purchased, and then it will
+calculate it all. If you are coming from a
+
+00:00:51.860 --> 00:00:56.700 line:100% position:50% align:middle
+background of jQuery, you might be used to
+managing your state in your html,
+
+00:00:56.700 --> 00:01:01.430 line:100% position:50% align:middle
+meaning that sometimes you'll get
+information out of an input and then put
+
+00:01:01.430 --> 00:01:07.840 line:100% position:50% align:middle
+it back in. Or you may save some data in
+data attributes. Or you may save some data
+
+00:01:07.840 --> 00:01:11.210 line:100% position:50% align:middle
+in the DOM and pull it out and put it back
+in, and back and forth.
+
+00:01:11.210 --> 00:01:15.200 line:100% position:50% align:middle
+Where the application is currently at is
+done in the DOM.
+
+00:01:15.200 --> 00:01:21.590 line:100% position:50% align:middle
+With React it's totally different, in that
+you store all of your data in this master
+
+00:01:21.590 --> 00:01:26.840 line:100% position:50% align:middle
+object called state, and whenever you want
+to change anything on the page,
+
+00:01:26.840 --> 00:01:31.440 line:100% position:50% align:middle
+you edit your state and you let React
+handle the html for you.
+
+00:01:31.440 --> 00:01:35.180 line:100% position:50% align:middle
+I think that's a big hang-up for people
+coming from jQuery and other libraries
+
+00:01:35.180 --> 00:01:39.090 line:100% position:50% align:middle
+like that, where they want to just touch
+the html directly. But with React,
+
+00:01:39.090 --> 00:01:44.830 line:100% position:50% align:middle
+you edit the data and React will edit the
+html for you. So case in point here,
+
+00:01:44.830 --> 00:01:50.210 line:100% position:50% align:middle
+if I go to my React DevTools here, this is
+the finished one, and I go to my app,
+
+00:01:50.210 --> 00:01:54.700 line:100% position:50% align:middle
+you see that we have the fishes state.
+Now, it's going to go fish1 and I'm going
+
+00:01:54.700 --> 00:02:00.360 line:100% position:50% align:middle
+to change that from Pacific to Atlantic,
+so I am changing state right now.
+
+00:02:00.360 --> 00:02:06.150 line:100% position:50% align:middle
+I'm not worried about what h3, what class
+is on here, and here.
+
+00:02:06.150 --> 00:02:08.710 line:100% position:50% align:middle
+And here you see it's referenced three
+times throughout the application.
+
+00:02:08.710 --> 00:02:13.360 line:100% position:50% align:middle
+I'm not worried about updating every
+single piece of that. I just changed my
+
+00:02:13.360 --> 00:02:18.030 line:100% position:50% align:middle
+state, which is just an object, and when I
+hit enter, you see it's updated it
+
+00:02:18.030 --> 00:02:23.660 line:100% position:50% align:middle
+wherever I have pulled on state. Huge idea
+behind React, it's really,
+
+00:02:23.660 --> 00:02:27.180 line:100% position:50% align:middle
+really nice because you don't have to
+worry about, where is it happening and
+
+00:02:27.180 --> 00:02:30.000 line:100% position:50% align:middle
+what do I have to update? You've got all
+of these balls in the air.
+
+00:02:30.000 --> 00:02:33.200 line:100% position:50% align:middle
+You simply just update state and
+everything else that you've modeled out
+
+00:02:33.200 --> 00:02:35.280 line:100% position:50% align:middle
+with your JSX will update.
+
+00:02:35.280 --> 00:02:39.220 line:100% position:50% align:middle
+What we are going to do now is we are
+going to create this form right here.
+
+00:02:39.220 --> 00:02:42.370 line:100% position:50% align:middle
+I'm going to call that the "Add Fish"
+form, where you put fish a name,
+
+00:02:42.370 --> 00:02:45.180 line:100% position:50% align:middle
+you put a price, you put a description,
+you put a URL to the image,
+
+00:02:45.180 --> 00:02:51.170 line:100% position:50% align:middle
+and when I click "Add image"...let's try
+it. Crabs, it's going to be $50,
+
+00:02:51.170 --> 00:02:56.750 line:100% position:50% align:middle
+it's going to be fresh, it’s going to be
+really good. And then we put an image URL
+
+00:02:56.750 --> 00:03:02.670 line:100% position:50% align:middle
+in there, you've got a fishpic1. And when
+I add the item... Bam!
+
+00:03:02.670 --> 00:03:07.840 line:100% position:50% align:middle
+It adds it to my state. Again, if I pop
+open my DevTools here,
+
+00:03:07.840 --> 00:03:14.610 line:100% position:50% align:middle
+we go to React, we look for our app
+component, and you'll see we have state
+
+00:03:14.610 --> 00:03:17.460 line:100% position:50% align:middle
+here. The first fish, that's the fish
+right there. This is just a key.
+
+00:03:17.460 --> 00:03:21.110 line:100% position:50% align:middle
+I'll explain that in a second. But there's
+"Really good," it's crabs,
+
+00:03:21.110 --> 00:03:24.730 line:100% position:50% align:middle
+it's that much, I can go ahead and add the
+crabs to my order. If I were to then
+
+00:03:24.730 --> 00:03:31.560 line:100% position:50% align:middle
+change any of the price as well, it would
+be no problem. Everything will be updated
+
+00:03:31.560 --> 00:03:32.450 line:100% position:50% align:middle
+for me.
+
+00:03:32.450 --> 00:03:35.860 line:100% position:50% align:middle
+Cool! That's what you want to do. This
+right here, you might think,
+
+00:03:35.860 --> 00:03:39.000 line:100% position:50% align:middle
+"Okay, let's open up inventory." Actually,
+let's go ahead and do that.
+
+00:03:39.000 --> 00:03:42.420 line:100% position:50% align:middle
+First of all, this paragraph should
+probably be in the h2 tag,
+
+00:03:42.420 --> 00:03:48.010 line:100% position:50% align:middle
+so we're going to put this here. Well,
+we’ve got inventory...and you might think
+
+00:03:48.010 --> 00:03:53.320 line:100% position:50% align:middle
+we can just pop a form element here.
+However, that add fish form,
+
+00:03:53.320 --> 00:03:56.910 line:100% position:50% align:middle
+yeah, it's in inventory now, but what if I
+wanted to put it somewhere else?
+
+00:03:56.910 --> 00:04:01.320 line:100% position:50% align:middle
+It's probably not good just to tie it to
+my inventory directly.
+
+00:04:01.320 --> 00:04:05.150 line:100% position:50% align:middle
+We probably want to make a separate
+component for it, so let’s go into our
+
+00:04:05.150 --> 00:04:13.050 line:100% position:50% align:middle
+components folder and we'll make
+"AddFishForm.js." Again, just take one of
+
+00:04:13.050 --> 00:04:17.850 line:100% position:50% align:middle
+your other components, paste it in and
+replace every instance of that old
+
+00:04:17.850 --> 00:04:22.860 line:100% position:50% align:middle
+component name with the new one, which is
+AddFishForm. Cool.
+
+00:04:22.860 --> 00:04:27.160 line:100% position:50% align:middle
+Now, let's just test that it works. We're
+going to go into our inventory component
+
+00:04:27.160 --> 00:04:34.530 line:100% position:50% align:middle
+and I need that AddFishForm, so import
+AddFishForm from...there we go.
+
+00:04:34.530 --> 00:04:42.430 line:100% position:50% align:middle
+AddFishForm. Now, if everything has worked
+properly, we should now see AddFishForm in
+
+00:04:42.430 --> 00:04:49.560 line:100% position:50% align:middle
+here. Not seeing it. Let me refresh. Not
+seeing it. Let's check our console here.
+
+00:04:49.560 --> 00:04:53.800 line:100% position:50% align:middle
+We've got one error here, "Warning
+'AddFishForm' is defined but not used."
+
+00:04:53.800 --> 00:04:58.730 line:100% position:50% align:middle
+Oh, what did I do? I didn't use it. I
+imported it, but if you want to use it,
+
+00:04:58.730 --> 00:05:04.450 line:100% position:50% align:middle
+you have to pop in a AddFishForm tag. Now,
+we said that we can't return two adjacent
+
+00:05:04.450 --> 00:05:07.550 line:100% position:50% align:middle
+elements. Here, I'll show you. I'll save
+it and it’ll yell at us for doing two
+
+00:05:07.550 --> 00:05:11.220 line:100% position:50% align:middle
+adjacent elements. Here we go. Adjacent
+JSX elements must be wrapped in an
+
+00:05:11.220 --> 00:05:16.650 line:100% position:50% align:middle
+enclosing tag. So what do we do with that?
+We give ourselves a div and put the things
+
+00:05:16.650 --> 00:05:23.120 line:100% position:50% align:middle
+that we want inside of there. Good.
+AddFishForm is now popping up.
+
+00:05:23.120 --> 00:05:27.960 line:100% position:50% align:middle
+We open our React DevTools, we should see
+the AddFishForm element popping up.
+
+00:05:27.960 --> 00:05:32.840 line:100% position:50% align:middle
+We have no standard props in that. But
+what we are going to do is go into here,
+
+00:05:32.840 --> 00:05:38.060 line:100% position:50% align:middle
+and we are going to create a form element.
+There's going to be no action on that form
+
+00:05:38.060 --> 00:05:38.730 line:100% position:50% align:middle
+element.
+
+00:05:38.730 --> 00:05:44.550 line:100% position:50% align:middle
+And that form will have a class name of
+"fish-edit," and inside of this form,
+
+00:05:44.550 --> 00:05:49.740 line:100% position:50% align:middle
+we then need a whole whack of inputs,
+right? If we look back at what we have,
+
+00:05:49.740 --> 00:05:55.680 line:100% position:50% align:middle
+we need name, price, status, description,
+URL to image, and an add item button.
+
+00:05:55.680 --> 00:06:00.540 line:100% position:50% align:middle
+How does that work? Well, I've got all the
+names right here, and I'm just going to
+
+00:06:00.540 --> 00:06:10.910 line:100% position:50% align:middle
+quickly make an input...the type of text
+and the placeholder, whatever it is.
+
+00:06:10.910 --> 00:06:18.090 line:100% position:50% align:middle
+Good! We need a button with the type of
+"submit," and inside of that we're going
+
+00:06:18.090 --> 00:06:23.670 line:100% position:50% align:middle
+to say, plus "Add Item." Let's see how
+we're looking here. Good.
+
+00:06:23.670 --> 00:06:29.430 line:100% position:50% align:middle
+Looks okay, but this fish status should
+actually be a select, so we'll do a select
+
+00:06:29.430 --> 00:06:37.070 line:100% position:50% align:middle
+tag instead. I don't need a name or an ID.
+Inside of that, we have an option,
+
+00:06:37.070 --> 00:06:46.330 line:100% position:50% align:middle
+which is available, and we'll call that
+"Fresh!" We’ll have "unavailable" and that
+
+00:06:46.330 --> 00:06:55.750 line:100% position:50% align:middle
+will be "Sold Out!" We don't need this
+here. Save. Fish Price,
+
+00:06:55.750 --> 00:06:59.100 line:100% position:50% align:middle
+looking a little bit funny, what are we
+missing here? Oh, description.
+
+00:06:59.100 --> 00:07:05.570 line:100% position:50% align:middle
+We forgot the description. Which is not
+input type of text, but is a textarea.
+
+00:07:05.570 --> 00:07:09.800 line:100% position:50% align:middle
+There we go. Name, price, fresh or sold
+out, description, image,
+
+00:07:09.800 --> 00:07:14.370 line:100% position:50% align:middle
+and then add item. So that is the form
+that we've then filled out.
+
+00:07:14.370 --> 00:07:19.970 line:100% position:50% align:middle
+But when someone clicks this "Add Item,"
+we actually want to create a fish object
+
+00:07:19.970 --> 00:07:24.630 line:100% position:50% align:middle
+that takes all of this data and puts it
+into an object for us.
+
+00:07:24.630 --> 00:07:28.720 line:100% position:50% align:middle
+For that, what we're going to do is we're
+going to make a method here called
+
+00:07:28.720 --> 00:07:35.540 line:100% position:50% align:middle
+"createFish," and that again, is going to
+pass in the event. And when somebody
+
+00:07:35.540 --> 00:07:42.480 line:100% position:50% align:middle
+submits this thing, say "onSubmit=" exact
+same thing that we did on our Store
+
+00:07:42.480 --> 00:07:45.490 line:100% position:50% align:middle
+Picker, let's take a look at that. On our
+Store Picker we said,
+
+00:07:45.490 --> 00:07:54.650 line:100% position:50% align:middle
+"onSubmit= this.goTostore", so "onSubmit=
+e.createFish." So when someone submits
+
+00:07:54.650 --> 00:07:58.270 line:100% position:50% align:middle
+that, we're going to go here, and we're
+going to call "event.preventDefault" and
+
+00:07:58.270 --> 00:08:06.310 line:100% position:50% align:middle
+let's just "console.log"… “Gonna make some
+fish!" Some fish emoji,
+
+00:08:06.310 --> 00:08:10.830 line:100% position:50% align:middle
+let's see here. Tons of fish emojis.
+That's a good one.
+
+00:08:10.830 --> 00:08:17.370 line:100% position:50% align:middle
+Where are we at right now? When I go to my
+console, add item, “Gonna make some fish!”
+
+00:08:17.370 --> 00:08:22.640 line:100% position:50% align:middle
+Good! Now, the question is, when I type
+into one of these boxes or all of them and
+
+00:08:22.640 --> 00:08:27.430 line:100% position:50% align:middle
+hit "Add Item," how do I then take the
+text out of these inputs and selects and
+
+00:08:27.430 --> 00:08:31.460 line:100% position:50% align:middle
+textarea, and put it into an object?
+Because what I want here is,
+
+00:08:31.460 --> 00:08:35.240 line:100% position:50% align:middle
+I want to make a fish object. And that
+fish is going to have a name,
+
+00:08:35.240 --> 00:08:40.030 line:100% position:50% align:middle
+a price, a status, a description, and an
+image. So how do I then do that?
+
+00:08:40.030 --> 00:08:44.340 line:100% position:50% align:middle
+How did we do it before? We used refs for
+that. So I’m going to go down here and say
+
+00:08:44.340 --> 00:08:53.430 line:100% position:50% align:middle
+input, input, select, textarea, input, and
+if we want actual refs for them,
+
+00:08:53.430 --> 00:09:00.060 line:100% position:50% align:middle
+we say, "ref=," and we use an arrow
+function in-line here, and that has the
+
+00:09:00.060 --> 00:09:04.030 line:100% position:50% align:middle
+input, then we'll say "this." and then I'm
+just going to say, name,
+
+00:09:04.030 --> 00:09:11.940 line:100% position:50% align:middle
+price, status, description, and image,
+equals "input". That will allow us to
+
+00:09:11.940 --> 00:09:19.250 line:100% position:50% align:middle
+have...let me comment this out. Let's
+double check. Save. I go to my React
+
+00:09:19.250 --> 00:09:24.900 line:100% position:50% align:middle
+DevTools, we're going to find the
+"AddFishForm" component, and we're going
+
+00:09:24.900 --> 00:09:33.700 line:100% position:50% align:middle
+to look at it in the console, "$r." If I
+open that sucker up, you'll see we've got
+
+00:09:33.700 --> 00:09:39.710 line:100% position:50% align:middle
+image, description, we’ve got all of these
+values, references to these inputs here,
+
+00:09:39.710 --> 00:09:49.020 line:100% position:50% align:middle
+on our actual this. So we can go back to
+this right here and say,
+
+00:09:49.020 --> 00:09:54.810 line:100% position:50% align:middle
+".this." and the actual name of it,
+because that's the name of the input as
+
+00:09:54.810 --> 00:10:00.250 line:100% position:50% align:middle
+well, that's what we did, ".value," right?
+Hopefully, that will make us a fish object
+
+00:10:00.250 --> 00:10:06.190 line:100% position:50% align:middle
+if we "console.log" the fish after that.
+Go fill this sucker out.
+
+00:10:06.190 --> 00:10:15.040 line:100% position:50% align:middle
+Hi, 1000, Fresh! Testing, fishpic1, and I
+add the item. Awesome!
+
+00:10:15.040 --> 00:10:20.140 line:100% position:50% align:middle
+Gonna make a fish! And then it creates us
+this nice, tidy little fish object,
+
+00:10:20.140 --> 00:10:25.450 line:100% position:50% align:middle
+which we can then send on over to our
+state, so let's look at how we can do that
+
+00:10:25.450 --> 00:10:26.500 line:100% position:50% align:middle
+next.
+
+00:10:26.500 --> 00:10:30.410 line:100% position:50% align:middle
+Now that we have this fish object, how do
+we actually get it into our application or
+
+00:10:30.410 --> 00:10:35.860 line:100% position:50% align:middle
+into our state? Now, earlier, I showed you
+that the state we are going to use is tied
+
+00:10:35.860 --> 00:10:40.920 line:100% position:50% align:middle
+to our app component. Your state is always
+tied to a specific component.
+
+00:10:40.920 --> 00:10:46.030 line:100% position:50% align:middle
+And each component can have its own state.
+However, sometimes when a component needs
+
+00:10:46.030 --> 00:10:50.070 line:100% position:50% align:middle
+to share a state with other
+components...in our example, we have an
+
+00:10:50.070 --> 00:10:54.170 line:100% position:50% align:middle
+app component, and we're going to need to
+share the data with our order,
+
+00:10:54.170 --> 00:10:57.590 line:100% position:50% align:middle
+our inventory, as well as the listing of
+all of the fish here,
+
+00:10:57.590 --> 00:11:00.540 line:100% position:50% align:middle
+right? Because state is referenced here.
+It's referenced here.
+
+00:11:00.540 --> 00:11:04.150 line:100% position:50% align:middle
+As well as it's referenced right here. So
+what I'm going to do is I'm going to put
+
+00:11:04.150 --> 00:11:08.610 line:100% position:50% align:middle
+my state on our app component, which is
+sort of like the parent of all three of
+
+00:11:08.610 --> 00:11:13.630 line:100% position:50% align:middle
+these ones right here. And then we are
+going to pass it on down to it.
+
+00:11:13.630 --> 00:11:17.710 line:100% position:50% align:middle
+How do you use state on a React component?
+Well, first of all,
+
+00:11:17.710 --> 00:11:22.050 line:100% position:50% align:middle
+we need to do something, it's called "get
+initial state." React needs to know what
+
+00:11:22.050 --> 00:11:25.100 line:100% position:50% align:middle
+state you're going to have, what type of
+state it's going to be,
+
+00:11:25.100 --> 00:11:29.680 line:100% position:50% align:middle
+and really, what to expect. So what we
+need to do is, when this app component
+
+00:11:29.680 --> 00:11:33.090 line:100% position:50% align:middle
+initializes, we need to tell it that we're
+going to have a fishes state,
+
+00:11:33.090 --> 00:11:39.120 line:100% position:50% align:middle
+and an order state. And how we do that in
+this ES6 class is via a constructor
+
+00:11:39.120 --> 00:11:44.620 line:100% position:50% align:middle
+method. So we used a constructor method
+earlier. We just simply add one here.
+
+00:11:44.620 --> 00:11:48.590 line:100% position:50% align:middle
+And inside of this constructor, we first
+need to call "super." Again,
+
+00:11:48.590 --> 00:11:53.580 line:100% position:50% align:middle
+we cannot use the keyword "this" until we
+call super again because the React
+
+00:11:53.580 --> 00:11:57.870 line:100% position:50% align:middle
+component that we're extending needs to be
+initialized first. And then we simply say
+
+00:11:57.870 --> 00:12:02.160 line:100% position:50% align:middle
+"this.state =" and state is one big object
+like I told you here.
+
+00:12:02.160 --> 00:12:06.740 line:100% position:50% align:middle
+And inside of that state, we are going to
+have our two pieces of state.
+
+00:12:06.740 --> 00:12:10.600 line:100% position:50% align:middle
+So we're going to have the fishes
+state...and by the way, don't email me,
+
+00:12:10.600 --> 00:12:15.810 line:100% position:50% align:middle
+that is correct. I know you think fish is
+plural, but if you have multiple types of
+
+00:12:15.810 --> 00:12:20.630 line:100% position:50% align:middle
+one fish, it is fishes, so don't email me
+giving me heck. Some people actually did
+
+00:12:20.630 --> 00:12:25.820 line:100% position:50% align:middle
+that. And what type is it going to be?
+Well, some people might use,
+
+00:12:25.820 --> 00:12:29.760 line:100% position:50% align:middle
+like, an array, and you want to keep your
+fishes incremental, or you can use an
+
+00:12:29.760 --> 00:12:32.900 line:100% position:50% align:middle
+object. So for simplicity's sake, I'm
+going to be using an object here and our
+
+00:12:32.900 --> 00:12:36.980 line:100% position:50% align:middle
+keys are just going to be based on 1, 2,
+3, as well as timestamps.
+
+00:12:36.980 --> 00:12:38.000 line:100% position:50% align:middle
+I'll show you that in a second.
+
+00:12:38.000 --> 00:12:41.320 line:100% position:50% align:middle
+So it's going to be an empty object,
+because we’re going to start with no
+
+00:12:41.320 --> 00:12:44.500 line:100% position:50% align:middle
+state, it's going to be empty. And then
+we're also going to have an order state,
+
+00:12:44.500 --> 00:12:49.420 line:100% position:50% align:middle
+which is going to be an empty object as
+well. If we save that and head back to our
+
+00:12:49.420 --> 00:12:54.910 line:100% position:50% align:middle
+app, and go to our React DevTools, and
+find app here, you'll see...ha-ha!
+
+00:12:54.910 --> 00:13:00.030 line:100% position:50% align:middle
+There's our state, it's empty. There's
+nothing in there, but we now have our
+
+00:13:00.030 --> 00:13:07.690 line:100% position:50% align:middle
+initial state. Maybe we'll put a little
+comment in there. And that is also called
+
+00:13:07.690 --> 00:13:11.860 line:100% position:50% align:middle
+"getinitialState" if you're using the
+React create class. However,
+
+00:13:11.860 --> 00:13:15.860 line:100% position:50% align:middle
+this is how you do it with ES6 classes.
+It's sort of the way forward.
+
+00:13:15.860 --> 00:13:22.360 line:100% position:50% align:middle
+Now, we've got our fish here in
+AddFishForm, and we've got our state here.
+
+00:13:22.360 --> 00:13:28.870 line:100% position:50% align:middle
+How does the fish swim upstream to get to
+our "App.js"? Well, first of all,
+
+00:13:28.870 --> 00:13:35.170 line:100% position:50% align:middle
+what we need to do is make a method on our
+app called addFish,
+
+00:13:35.170 --> 00:13:41.080 line:100% position:50% align:middle
+and that's going to take one argument,
+it's going to be fish. And inside of this,
+
+00:13:41.080 --> 00:13:46.770 line:100% position:50% align:middle
+we need to then do a couple of things. We
+need to update our state and then we need
+
+00:13:46.770 --> 00:13:51.160 line:100% position:50% align:middle
+to set state. You might think that this is
+probably the easiest thing ever because
+
+00:13:51.160 --> 00:13:55.883 line:100% position:50% align:middle
+you just say something like
+"this.state.fishes" and maybe like
+
+00:13:55.883 --> 00:14:01.161 line:100% position:50% align:middle
+".fish1 =" and then we'll say "fish"
+right? Like, that's it. You update your
+
+00:14:01.161 --> 00:14:04.084 line:100% position:50% align:middle
+object, you move on with your life.
+However, with React, it's actually a lot
+
+00:14:04.084 --> 00:14:06.330 line:100% position:50% align:middle
+more complicated than that, and
+this is something that I got, like,
+
+00:14:06.330 --> 00:14:11.460 line:100% position:50% align:middle
+really hung-up on when I was first
+learning React is when you want to update
+
+00:14:11.460 --> 00:14:15.570 line:100% position:50% align:middle
+state, there's a couple things that we
+need to do. First of all,
+
+00:14:15.570 --> 00:14:19.810 line:100% position:50% align:middle
+you can directly update your state by
+doing something like this,
+
+00:14:19.810 --> 00:14:24.960 line:100% position:50% align:middle
+"this.state.fishes.fish1 = " the fish that
+got passed in. However,
+
+00:14:24.960 --> 00:14:29.640 line:100% position:50% align:middle
+it is a best practice to first take a copy
+of your current state,
+
+00:14:29.640 --> 00:14:34.800 line:100% position:50% align:middle
+and then update your actual state. And the
+reason, after some research and talking to
+
+00:14:34.800 --> 00:14:38.430 line:100% position:50% align:middle
+a whole bunch of people is that this is
+done entirely for performance,
+
+00:14:38.430 --> 00:14:42.410 line:100% position:50% align:middle
+as well as you don't want to accidentally
+update a couple state and have a race
+
+00:14:42.410 --> 00:14:45.760 line:100% position:50% align:middle
+condition between other things. So it's a
+bit of a run-around to do it,
+
+00:14:45.760 --> 00:14:48.710 line:100% position:50% align:middle
+and I'm just going to leave that there,
+because you can do that.
+
+00:14:48.710 --> 00:14:52.970 line:100% position:50% align:middle
+However, what we want to do is first, take
+a copy of the state.
+
+00:14:52.970 --> 00:14:57.080 line:100% position:50% align:middle
+And the way that I'm going to do it is I’m
+going to say, "const fishes =" and I'm
+
+00:14:57.080 --> 00:15:06.070 line:100% position:50% align:middle
+going to do this, "...this.state.fishes."
+Now, what is this? What's going on?
+
+00:15:06.070 --> 00:15:09.450 line:100% position:50% align:middle
+First of all, "this.state.fishes" is our
+existing fishes state,
+
+00:15:09.450 --> 00:15:12.910 line:100% position:50% align:middle
+so if I had six fishes in there already,
+what that's going to do is we're going to
+
+00:15:12.910 --> 00:15:17.620 line:100% position:50% align:middle
+take each of the fishes from our existing
+state and put them into a new one.
+
+00:15:17.620 --> 00:15:22.570 line:100% position:50% align:middle
+Now, this "..." this is a spread, and you
+may be familiar with the spread from my
+
+00:15:22.570 --> 00:15:28.110 line:100% position:50% align:middle
+ES6 videos, however, we only have ever
+used a spread with an array,
+
+00:15:28.110 --> 00:15:32.220 line:100% position:50% align:middle
+and into a function. But what this will do
+is it will take every item from our
+
+00:15:32.220 --> 00:15:37.080 line:100% position:50% align:middle
+object, this is the ES6...or sorry...it’s
+not part of ES6, and that’s coming to the
+
+00:15:37.080 --> 00:15:43.390 line:100% position:50% align:middle
+language very soon. It will take every
+item from our object and spread it into
+
+00:15:43.390 --> 00:15:48.200 line:100% position:50% align:middle
+this object. So that's a long way of
+saying this takes a copy of your existing
+
+00:15:48.200 --> 00:15:53.370 line:100% position:50% align:middle
+state and puts it into this new fishes
+state. And then what we'll do is we will
+
+00:15:53.370 --> 00:15:55.840 line:100% position:50% align:middle
+add in our new fish.
+
+00:15:55.840 --> 00:16:01.260 line:100% position:50% align:middle
+Now, if we take a look at our example
+here, you'll see, like, this is how I've
+
+00:16:01.260 --> 00:16:06.320 line:100% position:50% align:middle
+named all of our fishes. Fish one through
+nine, those are just temporary ones that
+
+00:16:06.320 --> 00:16:10.380 line:100% position:50% align:middle
+we're going to load in some sample fishes
+and get those. But whenever we add a new
+
+00:16:10.380 --> 00:16:14.120 line:100% position:50% align:middle
+one, it gives us this seemingly random
+number that we have here.
+
+00:16:14.120 --> 00:16:18.630 line:100% position:50% align:middle
+And I'm going to be using a timestamp
+here. First of all, a timestamp is going
+
+00:16:18.630 --> 00:16:24.450 line:100% position:50% align:middle
+to be unique, as well as it's going to be
+incremental, so every time I add a new one
+
+00:16:24.450 --> 00:16:28.980 line:100% position:50% align:middle
+on, it's going to go to the top of it. You
+can use an array and maintain your order
+
+00:16:28.980 --> 00:16:32.260 line:100% position:50% align:middle
+and stuff like that, but really, for
+simplicity's sake here, I'm going to be
+
+00:16:32.260 --> 00:16:38.040 line:100% position:50% align:middle
+using a timestamp as the key of the
+fishes, so that I can keep adding
+
+00:16:38.040 --> 00:16:43.910 line:100% position:50% align:middle
+additional ones in. So I'll say "fishes,"
+square bracket, and I want to say,
+
+00:16:43.910 --> 00:16:49.650 line:100% position:50% align:middle
+like, "[fish-1]," "[fish-2]," "[fish-3],"
+however, I need a timestamp for that.
+
+00:16:49.650 --> 00:16:55.190 line:100% position:50% align:middle
+So first, we're going to make a timestamp,
+say "const timestamp =,” and then we’ll
+
+00:16:55.190 --> 00:16:59.210 line:100% position:50% align:middle
+say, "Date.now." That will give us...if
+you've never used that before,
+
+00:16:59.210 --> 00:17:02.570 line:100% position:50% align:middle
+it's something that's somewhat new to
+javascript, it will just give you the
+
+00:17:02.570 --> 00:17:05.810 line:100% position:50% align:middle
+timestamp. And this is the number of
+milliseconds since January 1st,
+
+00:17:05.810 --> 00:17:09.310 line:100% position:50% align:middle
+1970, something like that. And it's always
+going to be unique,
+
+00:17:09.310 --> 00:17:13.410 line:100% position:50% align:middle
+unless you, of course, add two fishes in
+the same millisecond.
+
+00:17:13.410 --> 00:17:19.710 line:100% position:50% align:middle
+So we've done that "Date.now," and then we
+go back to our fishes,
+
+00:17:19.710 --> 00:17:23.870 line:100% position:50% align:middle
+and we'll say, "fishes," square bracket,
+and I'll use backtext,
+
+00:17:23.870 --> 00:17:31.350 line:100% position:50% align:middle
+"[fish-]" and then I'll use the timestamp
+in here, equals, and then we pass in that
+
+00:17:31.350 --> 00:17:35.840 line:100% position:50% align:middle
+fish, because what we're going to do is
+we're going to take this fish object that
+
+00:17:35.840 --> 00:17:42.530 line:100% position:50% align:middle
+we made here and pass it to this addFish
+method here. Fish. So that's the first
+
+00:17:42.530 --> 00:17:45.840 line:100% position:50% align:middle
+part of it. So we have this object of
+updated fishes, however,
+
+00:17:45.840 --> 00:17:51.070 line:100% position:50% align:middle
+it's not yet been set to our actual state.
+And the way that you do that is you
+
+00:17:51.070 --> 00:17:56.380 line:100% position:50% align:middle
+explicitly tell React which state you
+would like to update. So rather than React
+
+00:17:56.380 --> 00:18:01.670 line:100% position:50% align:middle
+watching your huge state object and
+anytime you make a change to it,
+
+00:18:01.670 --> 00:18:06.910 line:100% position:50% align:middle
+it will then update your DOM. What we have
+to do is we tell React,
+
+00:18:06.910 --> 00:18:11.570 line:100% position:50% align:middle
+"Okay, I updated this piece of state." So
+what we do is we say,
+
+00:18:11.570 --> 00:18:17.920 line:100% position:50% align:middle
+"this.setState" and you don't just pass it
+your entire state, because you might have
+
+00:18:17.920 --> 00:18:22.090 line:100% position:50% align:middle
+five or six different things in your
+state, and React doesn't want to have to
+
+00:18:22.090 --> 00:18:26.700 line:100% position:50% align:middle
+check every single one of them if you, the
+developer, know what has changed.
+
+00:18:26.700 --> 00:18:30.200 line:100% position:50% align:middle
+So in our case, what is the one piece that
+has changed? We've passed in an object,
+
+00:18:30.200 --> 00:18:35.520 line:100% position:50% align:middle
+it's fishes, right? So we say, the fishes
+state has changed, and here is the new
+
+00:18:35.520 --> 00:18:41.160 line:100% position:50% align:middle
+updated state. What is that? We put it in
+a variable called fishes.
+
+00:18:41.160 --> 00:18:47.700 line:100% position:50% align:middle
+So the fishes state is updated. Here is an
+object full of all of the existing as well
+
+00:18:47.700 --> 00:18:52.760 line:100% position:50% align:middle
+as my new fishes. And what React is going
+to then do, any time I make a change to
+
+00:18:52.760 --> 00:18:58.760 line:100% position:50% align:middle
+any one of these, like Crabs is going to
+be changed to Fish, any time that happens,
+
+00:18:58.760 --> 00:19:02.530 line:100% position:50% align:middle
+React will find anywhere in the DOM that
+you've then used that piece of state,
+
+00:19:02.530 --> 00:19:07.540 line:100% position:50% align:middle
+and it's going to update it. That's what
+the whole virtual DOM is behind React.
+
+00:19:07.540 --> 00:19:13.210 line:100% position:50% align:middle
+Now, a little thing that we can do here is
+in ES6 if you have "fishes:fishes," it
+
+00:19:13.210 --> 00:19:17.920 line:100% position:50% align:middle
+seems a little bit redundant, so you can
+actually just pass fishes like that.
+
+00:19:17.920 --> 00:19:22.150 line:100% position:50% align:middle
+And that's the same thing as doing this.
+So we've built out this addFish method,
+
+00:19:22.150 --> 00:19:27.220 line:100% position:50% align:middle
+but if we go to our React DevTools and
+search for app, and take a look at it and
+
+00:19:27.220 --> 00:19:32.560 line:100% position:50% align:middle
+go back to our console, use our "$r" to
+see where we're at. You open it up,
+
+00:19:32.560 --> 00:19:38.590 line:100% position:50% align:middle
+and don't see the addFish method anywhere
+on it, and that's because this addFish has
+
+00:19:38.590 --> 00:19:46.000 line:100% position:50% align:middle
+not yet been added to this. So we need to
+do it up in our constructor here.
+
+00:19:46.000 --> 00:19:53.960 line:100% position:50% align:middle
+We'll say, "this.addFish =
+this.addFish.bind(this).” And that will
+
+00:19:53.960 --> 00:20:02.870 line:100% position:50% align:middle
+bind it to the actual app itself. And if
+we React, find our app component here,
+
+00:20:02.870 --> 00:20:08.190 line:100% position:50% align:middle
+now, you will then see that we have our
+addFish function added to us.
+
+00:20:08.190 --> 00:20:11.620 line:100% position:50% align:middle
+And we can actually just call it ourselves
+if we would want to,
+
+00:20:11.620 --> 00:20:19.980 line:100% position:50% align:middle
+so ".addFish" and you could pass it a name
+of "cool" and a price of $50,
+
+00:20:19.980 --> 00:20:26.260 line:100% position:50% align:middle
+let's just try it with those two things.
+When I add it, nothing happens,
+
+00:20:26.260 --> 00:20:30.920 line:100% position:50% align:middle
+but if we go back to our React DevTools,
+open up our state, ha-ha!
+
+00:20:30.920 --> 00:20:36.110 line:100% position:50% align:middle
+Yes! Look at this, we've got our first
+state has been added. So that method,
+
+00:20:36.110 --> 00:20:39.880 line:100% position:50% align:middle
+addFish can be called, you pass it a fish,
+and then behind the scenes,
+
+00:20:39.880 --> 00:20:42.950 line:100% position:50% align:middle
+it's going to do all of this, like, sort
+of complicated copying the state,
+
+00:20:42.950 --> 00:20:46.780 line:100% position:50% align:middle
+updating it, making a timestamp for all of
+that good stuff, etc.etc.
+
+00:20:46.780 --> 00:20:52.210 line:100% position:50% align:middle
+So really the last thing we need to do now
+is when someone...at this point,
+
+00:20:52.210 --> 00:20:56.570 line:100% position:50% align:middle
+we have this fish object, how do we swim
+upstream? Such a stupid thing to say,
+
+00:20:56.570 --> 00:21:02.560 line:100% position:50% align:middle
+but how do we swim upstream with the fish
+to App.js? Well, this is where props
+
+00:21:02.560 --> 00:21:09.390 line:100% position:50% align:middle
+starts to come in. So I have this addFish
+function. How do I call it from a child
+
+00:21:09.390 --> 00:21:14.000 line:100% position:50% align:middle
+component? That's a couple levels deep.
+Well, the way that we do it is we go to
+
+00:21:14.000 --> 00:21:20.030 line:100% position:50% align:middle
+inventory, and we’ll just say, “addFish=
+this.addFish," so we're passing the
+
+00:21:20.030 --> 00:21:27.300 line:100% position:50% align:middle
+function then on down to inventory. And
+then if we...let me show you now.
+
+00:21:27.300 --> 00:21:36.640 line:100% position:50% align:middle
+We go to our app component and open up our
+inventory component,
+
+00:21:36.640 --> 00:21:43.110 line:100% position:50% align:middle
+and you see that this addFish function has
+now been passed down via props.
+
+00:21:43.110 --> 00:21:47.220 line:100% position:50% align:middle
+And then we got to go one level more,
+because we have to open up our inventory
+
+00:21:47.220 --> 00:21:51.800 line:100% position:50% align:middle
+and we have to pass it. So we’ll say,
+“addFish =,” and now it's not
+
+00:21:51.800 --> 00:21:58.500 line:100% position:50% align:middle
+“this.addFish," it's "this.props.addFish."
+Why? Because the way that you pass things
+
+00:21:58.500 --> 00:22:02.800 line:100% position:50% align:middle
+down, whether it's data or reference to
+this addFish function,
+
+00:22:02.800 --> 00:22:12.980 line:100% position:50% align:middle
+is we do that via props. Now, giving that
+a save, and if we open up our AddFishForm,
+
+00:22:12.980 --> 00:22:17.680 line:100% position:50% align:middle
+aha! It's now available. Now we can access
+this addFish function inside of our
+
+00:22:17.680 --> 00:22:27.710 line:100% position:50% align:middle
+AddFishForm, and all we have to do now is
+"this.props.addFish" and we'll pass it our
+
+00:22:27.710 --> 00:22:35.740 line:100% position:50% align:middle
+actual fish. So let's try that and see if
+it works. Wes, 100, something,
+
+00:22:35.740 --> 00:22:41.580 line:100% position:50% align:middle
+something, go to our console, add item,
+"Gonna make some fish." Now we go back to
+
+00:22:41.580 --> 00:22:47.910 line:100% position:50% align:middle
+our React DevTools, search for App, now
+for state, ha-ha! There it is!
+
+00:22:47.910 --> 00:22:51.510 line:100% position:50% align:middle
+Awesome! We just added that actual element
+here.
+
+00:22:51.510 --> 00:22:58.130 line:100% position:50% align:middle
+One last thing that we could do is, when
+we submit that, we actually want to clear
+
+00:22:58.130 --> 00:23:03.949 line:100% position:50% align:middle
+this form so that it's empty. So we can
+put a ref on the form itself, say
+
+00:23:03.949 --> 00:23:15.328 line:100% position:50% align:middle
+"ref=(input)" say, "this.fishForm=input"
+and then we'll go up here,
+
+00:23:15.328 --> 00:23:21.140 line:100% position:50% align:middle
+and we'll say, "this.fishForm.reset."
+That's just using a regular old javascript
+
+00:23:21.140 --> 00:23:28.140 line:100% position:50% align:middle
+reset, so that when I type something in
+here, add it, it clears out the fish,
+
+00:23:28.140 --> 00:23:33.630 line:100% position:50% align:middle
+but we also should now have that state in
+our fishes. Good! Whew!
+
+00:23:33.630 --> 00:23:38.410 line:100% position:50% align:middle
+That is an introduction to state. We’re
+going to be using it a lot more.
+
+00:23:38.410 --> 00:23:42.350 line:100% position:50% align:middle
+We're going to be doing that a few more
+times, but it's sort of a fundamental
+
+00:23:42.350 --> 00:23:47.270 line:100% position:50% align:middle
+feature of React, so make sure that that
+feels pretty good to you right now.
+
+00:23:47.270 --> 00:23:51.130 line:100% position:50% align:middle
+And then in the next one we're going to
+look at how do we load some default state
+
+00:23:51.130 --> 00:23:54.000 line:100% position:50% align:middle
+in and how do we actually get state to
+start displaying.

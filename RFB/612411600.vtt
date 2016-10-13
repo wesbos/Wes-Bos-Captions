@@ -1,0 +1,956 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:03.300 line:100% position:50% align:middle
+♪[music]♪
+
+00:00:06.900 --> 00:00:10.880 line:100% position:50% align:middle
+- Now let's learn about animation in
+React. And this is really nice because
+
+00:00:10.880 --> 00:00:14.090 line:100% position:50% align:middle
+you can just take your existing
+application and start to add some really
+
+00:00:14.090 --> 00:00:18.530 line:100% position:50% align:middle
+nice interactive features into it. So
+there's three animations really on this
+
+00:00:18.530 --> 00:00:22.580 line:100% position:50% align:middle
+website. First is like this like cheesy
+fold button where it folds itself out like
+
+00:00:22.580 --> 00:00:26.840 line:100% position:50% align:middle
+an actual menu. That actually has nothing
+to do with React, it's simply just a...if
+
+00:00:26.840 --> 00:00:34.110 line:100% position:50% align:middle
+you look on your index.html, index.html,
+there is just a fold checkbox here.
+
+00:00:34.110 --> 00:00:39.110 line:100% position:50% align:middle
+And when that fold checkbox is checked,
+if you go into style.style.
+
+00:00:39.110 --> 00:00:42.810 line:100% position:50% align:middle
+By the way, this style, I never said it
+earlier, but this is just like SASS or
+
+00:00:42.810 --> 00:00:46.300 line:100% position:50% align:middle
+LESS, or if you've used any other
+pre-processor, the really the only
+
+00:00:46.300 --> 00:00:51.470 line:100% position:50% align:middle
+difference is that there's no semi-colons
+or colons. Either hate it or you love it,
+
+00:00:51.470 --> 00:00:55.996 line:100% position:50% align:middle
+if you like to put semi-colons and colons
+in curly the brackets, you can, but I
+
+00:00:55.996 --> 00:00:59.414 line:100% position:50% align:middle
+prefer to leave them off. So what I'm
+doing here is I'm just using some
+
+00:00:59.414 --> 00:01:04.370 line:100% position:50% align:middle
+rotation, rotateY, so that when it's
+checked, it's going to rotate itself,
+
+00:01:04.370 --> 00:01:06.840 line:100% position:50% align:middle
+when it's not checked, it's going to
+rotate itself on out.
+
+00:01:06.840 --> 00:01:13.690 line:100% position:50% align:middle
+So that's the rotation here, and then when
+the input is not checked,
+
+00:01:13.690 --> 00:01:17.350 line:100% position:50% align:middle
+I just take all the transforms off, which
+is the flat state. So a little bit cheesy
+
+00:01:17.350 --> 00:01:21.170 line:100% position:50% align:middle
+but kind of fun to take a look at a couple
+times if you're a little bit overwhelmed
+
+00:01:21.170 --> 00:01:28.320 line:100% position:50% align:middle
+with some of the state stuff. Then what we
+want to do is we are going to be editing
+
+00:01:28.320 --> 00:01:32.320 line:100% position:50% align:middle
+our CSS here and we need to recompile that
+CSS every single time.
+
+00:01:32.320 --> 00:01:37.300 line:100% position:50% align:middle
+And if you open up your package.json,
+we've just been running NPM start,
+
+00:01:37.300 --> 00:01:42.230 line:100% position:50% align:middle
+which NPM start will run the script
+'start' and that will run our web pack and
+
+00:01:42.230 --> 00:01:44.490 line:100% position:50% align:middle
+everything like that.
+
+00:01:44.490 --> 00:01:50.140 line:100% position:50% align:middle
+However, we also need to run one for our
+styles as well. So I have a script called
+
+00:01:50.140 --> 00:01:55.650 line:100% position:50% align:middle
+styles here, and that will just run our
+style list against...and I'll put it every
+
+00:01:55.650 --> 00:01:59.810 line:100% position:50% align:middle
+single time that it changes. And that's
+what this one is, the styles watch,
+
+00:01:59.810 --> 00:02:04.995 line:100% position:50% align:middle
+there's a -w in there. However, I want to
+run NPM run start and NPM run styles
+
+00:02:05.490 --> 00:02:09.556 line:100% position:50% align:middle
+watch. And that's two separate NPM scripts
+and I what I see a lot of people do is
+
+00:02:09.556 --> 00:02:14.852 line:100% position:50% align:middle
+they just open up two tabs and run both
+of them. And that works well but I'm using
+
+00:02:14.893 --> 00:02:17.040 line:100% position:50% align:middle
+a third package here called concurrently.
+
+00:02:17.040 --> 00:02:22.550 line:100% position:50% align:middle
+And what that's going to do is it's going
+to run NPM script start and NPM script
+
+00:02:22.550 --> 00:02:26.800 line:100% position:50% align:middle
+styles watch, it's going to run them at
+the exact same time. And if one of them
+
+00:02:26.800 --> 00:02:31.480 line:100% position:50% align:middle
+breaks, it's going to kill the other one.
+So what we need to do is head back to our
+
+00:02:31.480 --> 00:02:37.970 line:100% position:50% align:middle
+terminal here and we're going to kill it
+with Control C. You're going to run NPM
+
+00:02:37.970 --> 00:02:44.417 line:100% position:50% align:middle
+run watch. It's going to start that up for
+me, and there we go. It should then open
+
+00:02:44.417 --> 00:02:51.940 line:100% position:50% align:middle
+it  up in your browser and it'll refresh,
+and I'll load in sample fishes, add them
+
+00:02:51.940 --> 00:02:55.718 line:100% position:50% align:middle
+to my order.Good, so everything is still
+working. But if you go back to your
+
+00:02:55.718 --> 00:03:00.491 line:100% position:50% align:middle
+terminal, you'll see that some of them are
+from web pack and then if I were to open
+
+00:03:00.491 --> 00:03:06.130 line:100% position:50% align:middle
+up my style.style and make some sort of
+change, like background red,
+
+00:03:06.130 --> 00:03:13.890 line:100% position:50% align:middle
+it's going to automatically compile my
+SASS and re-kick everything up for me. So
+
+00:03:13.890 --> 00:03:17.380 line:100% position:50% align:middle
+I'm in good shape there, you can close
+that down, again, not something you will
+
+00:03:17.380 --> 00:03:21.900 line:100% position:50% align:middle
+need to open up too often unless you have
+an error in your style list and you'll see
+
+00:03:21.900 --> 00:03:23.888 line:100% position:50% align:middle
+the error in your console there.
+
+00:03:23.940 --> 00:03:29.230 line:100% position:50% align:middle
+Next up, what we want to do is open up
+animations.style. This is where we're
+
+00:03:29.230 --> 00:03:32.470 line:100% position:50% align:middle
+actually going to be writing all of our
+animation code. There's nothing in there
+
+00:03:32.470 --> 00:03:38.120 line:100% position:50% align:middle
+yet, but we'll be writing it all inside of
+here. And then we want to open up order.js
+
+00:03:38.120 --> 00:03:46.320 line:100% position:50% align:middle
+because I want to animate in this
+right here, where it animates in.
+
+00:03:46.320 --> 00:03:51.070 line:100% position:50% align:middle
+When you click X, it's going to animate
+itself on out. And then also when we click
+
+00:03:51.070 --> 00:03:55.221 line:100% position:50% align:middle
+five, six, seven, eight, I want that
+number  to move up and have the next
+
+00:03:55.221 --> 00:03:59.620 line:100% position:50% align:middle
+number replace it. We're going to do
+two nice animations there.
+
+00:03:59.620 --> 00:04:05.570 line:100% position:50% align:middle
+So how we do that is you go to the top of
+your order.js, we need to import our CSS
+
+00:04:05.570 --> 00:04:10.910 line:100% position:50% align:middle
+TransitionGroup component. So that comes
+from import CSS TransitionGroup from...and
+
+00:04:10.910 --> 00:04:14.540 line:100% position:50% align:middle
+this is a separate package, you don't
+import it from React. It used to be part
+
+00:04:14.540 --> 00:04:17.334 line:100% position:50% align:middle
+of React core.
+However, what they have been doing
+
+00:04:17.334 --> 00:04:19.768 line:100% position:50% align:middle
+with some of the stuff
+that not everybody uses.
+
+00:04:19.900 --> 00:04:22.190 line:100% position:50% align:middle
+Like not everybody is going to do
+animation in the React app,
+
+00:04:22.190 --> 00:04:26.950 line:100% position:50% align:middle
+the React is still maintaining them as
+first class citizens, but they are in
+
+00:04:26.950 --> 00:04:34.190 line:100% position:50% align:middle
+their own packages. So it's
+react-dd-ons-css-transition-group.
+
+00:04:34.190 --> 00:04:35.290 line:100% position:50% align:middle
+That's a long one.
+
+00:04:35.290 --> 00:04:41.350 line:100% position:50% align:middle
+Then we've got the CSS TransitionGroup
+component. I want you to head down to our
+
+00:04:41.350 --> 00:04:46.880 line:100% position:50% align:middle
+render function. And where we have this
+unordered LESS, let me give you some space
+
+00:04:46.880 --> 00:04:49.129 line:100% position:50% align:middle
+here. We have this ul,
+the class of order,
+
+00:04:49.129 --> 00:04:53.980 line:100% position:50% align:middle
+I want you to replace
+that unordered list with CSS
+
+00:04:53.980 --> 00:04:58.600 line:100% position:50% align:middle
+TransitionGroup. Now, we still want that
+to be unordered list when it kicks it out
+
+00:04:58.600 --> 00:05:05.440 line:100% position:50% align:middle
+to HTML. So what we can do is we give it
+the property of component equals ul.
+
+00:05:05.440 --> 00:05:08.390 line:100% position:50% align:middle
+So it's still going to kick out on
+unordered list. The other things we
+
+00:05:08.390 --> 00:05:13.000 line:100% position:50% align:middle
+need, our transition name is going to be
+order, and that's going to be important in
+
+00:05:13.000 --> 00:05:14.880 line:100% position:50% align:middle
+our CSS class naming.
+
+00:05:14.880 --> 00:05:18.670 line:100% position:50% align:middle
+We're going to have transition enter
+timeout equals and that's the number here,
+
+00:05:18.670 --> 00:05:23.430 line:100% position:50% align:middle
+so we'll use curly brackets. We want that
+animation to be 500 seconds in and then we
+
+00:05:23.430 --> 00:05:30.600 line:100% position:50% align:middle
+also need to provide a transition leave
+time out, and that's going to also be 500
+
+00:05:30.600 --> 00:05:36.790 line:100% position:50% align:middle
+milliseconds, half a second, good. So if I
+look at it now, this should still be an
+
+00:05:36.790 --> 00:05:42.640 line:100% position:50% align:middle
+unordered list. Yes, it is. But if I were
+to look at that unordered list in my React
+
+00:05:42.640 --> 00:05:48.270 line:100% position:50% align:middle
+dev tools, you see that it's a React
+TransitionGroup right here.
+
+00:05:48.270 --> 00:05:52.330 line:100% position:50% align:middle
+And then when I add something to it, it
+should still update it,
+
+00:05:52.330 --> 00:05:55.920 line:100% position:50% align:middle
+it should still add a new item, and it
+should still remove that item.
+
+00:05:55.920 --> 00:06:00.950 line:100% position:50% align:middle
+You'll notice that, "Oh, look, there's a
+bit of a delay there," and I'll show you
+
+00:06:00.950 --> 00:06:02.250 line:100% position:50% align:middle
+why in just a second.
+
+00:06:02.250 --> 00:06:08.420 line:100% position:50% align:middle
+So that is our CSS TransitionGroup. Now,
+if you inspect one of these, add a whole
+
+00:06:08.420 --> 00:06:14.140 line:100% position:50% align:middle
+bunch of stuff to your actual order. And I
+want to change this 500.
+
+00:06:14.140 --> 00:06:20.270 line:100% position:50% align:middle
+Let's change this to 5,000, that is 5
+seconds. And then I want you to go and
+
+00:06:20.270 --> 00:06:25.120 line:100% position:50% align:middle
+inspect one of these list items, not in
+the React dev tool, just in the regular
+
+00:06:25.120 --> 00:06:30.720 line:100% position:50% align:middle
+elements panel here. And when I remove
+one, watch the class names on the list
+
+00:06:30.720 --> 00:06:38.870 line:100% position:50% align:middle
+items. Order-leave, order-leave active and
+then after five seconds it removes both of
+
+00:06:38.870 --> 00:06:39.580 line:100% position:50% align:middle
+those classes.
+
+00:06:39.580 --> 00:06:45.370 line:100% position:50% align:middle
+And what's happening here, and watch we'll
+add a new one, jumble prawns.
+
+00:06:45.370 --> 00:06:51.560 line:100% position:50% align:middle
+And watch the list item down here.
+Order-enter, order-enter-active.
+
+00:06:51.560 --> 00:06:55.860 line:100% position:50% align:middle
+And then after five seconds it will
+remove those classes. So what's happening
+
+00:06:55.860 --> 00:07:02.350 line:100% position:50% align:middle
+here is that React is giving us some
+classes which we can then hook into with
+
+00:07:02.350 --> 00:07:09.270 line:100% position:50% align:middle
+our CSS. So if we go into our
+animations.style and we create a class
+
+00:07:09.270 --> 00:07:15.110 line:100% position:50% align:middle
+called order-enter and
+order-enter-active, and I'm going to
+
+00:07:15.110 --> 00:07:24.050 line:100% position:50% align:middle
+give this a background of red and this one
+is going to have a background yellow.
+
+00:07:24.050 --> 00:07:28.220 line:100% position:50% align:middle
+Not that refreshed. We don't have to
+refresh because the CSS should be
+
+00:07:28.220 --> 00:07:29.190 line:100% position:50% align:middle
+refreshed for us.
+
+00:07:29.190 --> 00:07:33.830 line:100% position:50% align:middle
+When I add a new one to our order, it
+takes five seconds that will remove it
+
+00:07:33.830 --> 00:07:38.710 line:100% position:50% align:middle
+now. So when I add muscles, see yellow,
+yellow, yellow, yellow,
+
+00:07:38.710 --> 00:07:43.060 line:100% position:50% align:middle
+yellow, and then after five seconds it's
+going to be nothing.
+
+00:07:43.060 --> 00:07:47.100 line:100% position:50% align:middle
+And what's happening here is that it adds
+a class of order-enter and then almost
+
+00:07:47.100 --> 00:07:51.310 line:100% position:50% align:middle
+immediately after it adds a class of
+order-enter-active Now, if you've ever
+
+00:07:51.310 --> 00:07:58.140 line:100% position:50% align:middle
+done any CSS transitions, you'll know that
+CSS needs an A point and a B point.
+
+00:07:58.140 --> 00:08:04.630 line:100% position:50% align:middle
+So in order for us to transition from
+something like red to yellow,
+
+00:08:04.630 --> 00:08:11.480 line:100% position:50% align:middle
+we can pop A transition all 0.5 seconds.
+And then what's going to happen is
+
+00:08:11.480 --> 00:08:17.440 line:100% position:50% align:middle
+immediately it's going to have a class of
+red on it. And then over five seconds,
+
+00:08:17.440 --> 00:08:20.866 line:100% position:50% align:middle
+it's going to transition it to yellow,
+watch.
+
+00:08:24.175 --> 00:08:26.790 line:100% position:50% align:middle
+Hope that will just update it, so I'm
+going to remove a couple of these,
+
+00:08:26.790 --> 00:08:30.630 line:100% position:50% align:middle
+they take their five seconds to remove.
+We'll talk about that in a second.
+
+00:08:30.630 --> 00:08:34.050 line:100% position:50% align:middle
+There we go. Add a lobster. It's
+immediately red and then it will
+
+00:08:34.050 --> 00:08:39.650 line:100% position:50% align:middle
+transition itself to 0.5. So we need an A
+point, which is order-enter, and
+
+00:08:39.650 --> 00:08:44.210 line:100% position:50% align:middle
+order-enter-active is our B point, and
+it's going to go the opposite way when
+
+00:08:44.210 --> 00:08:49.160 line:100% position:50% align:middle
+we remove it. So what do we need to add
+here? We have a transition of all 0.5
+
+00:08:49.160 --> 00:08:57.590 line:100% position:50% align:middle
+seconds. We are going to put a
+transform: translateX(-120%).
+
+00:08:57.590 --> 00:09:03.040 line:100% position:50% align:middle
+And what that will do, is it's going to
+put it off screen by default.
+
+00:09:03.040 --> 00:09:05.770 line:100% position:50% align:middle
+It's going to take this unordered list and
+we're going to say,
+
+00:09:05.770 --> 00:09:09.580 line:100% position:50% align:middle
+transform:translateX(-100%).
+
+00:09:09.580 --> 00:09:17.670 line:100% position:50% align:middle
+And what I just did there, is I put it off
+screen. But if I bump those values up...
+
+00:09:17.670 --> 00:09:21.600 line:100% position:50% align:middle
+Here it comes, that's what's going to
+happen, is it's just going to animate
+
+00:09:21.600 --> 00:09:27.720 line:100% position:50% align:middle
+itself on in over that half second. So
+that's why we do translateX(-120%).
+
+00:09:27.800 --> 00:09:36.730 line:100% position:50% align:middle
+We give it a max-height of zero and
+that's just for some animation stuff.
+
+00:09:36.730 --> 00:09:41.060 line:100% position:50% align:middle
+And a padding of zero in...and we've got a
+pop an important tag on there.
+
+00:09:41.060 --> 00:09:46.120 line:100% position:50% align:middle
+Just because of some CSS that I've done in
+style, where we have a default and I need
+
+00:09:46.120 --> 00:09:48.150 line:100% position:50% align:middle
+to make sure that we're overwriting that.
+
+00:09:48.150 --> 00:09:56.220 line:100% position:50% align:middle
+Then the active spot is going to be a
+max-height of 60 px, and that's why we did
+
+00:09:56.220 --> 00:09:59.280 line:100% position:50% align:middle
+a max-height here so we'll be able to
+animate from nothing to 60 px.
+
+00:09:59.280 --> 00:10:04.560 line:100% position:50% align:middle
+We'll do a padding of 2em zero and pop
+an important tip there.
+
+00:10:04.560 --> 00:10:08.330 line:100% position:50% align:middle
+Finally, we need to bring it back to its
+regular state, so we're going to transform
+
+00:10:08.330 --> 00:10:13.680 line:100% position:50% align:middle
+it. translateX(0), right, because it's
+going to start at negative 100.
+
+00:10:13.680 --> 00:10:17.710 line:100% position:50% align:middle
+It's going to start off screen, and then
+it will translate it to zero, which is the
+
+00:10:17.710 --> 00:10:21.270 line:100% position:50% align:middle
+ending point. And then eventually both of
+these classes will be ticked,
+
+00:10:21.270 --> 00:10:27.400 line:100% position:50% align:middle
+will be gone, and whatever styling is in
+our style.style is going to kick in from
+
+00:10:27.400 --> 00:10:29.250 line:100% position:50% align:middle
+there. So give that a save.
+
+00:10:29.250 --> 00:10:35.440 line:100% position:50% align:middle
+Now I try to add some lobster, mahi-mahi,
+you see it's moving in.
+
+00:10:35.440 --> 00:10:39.690 line:100% position:50% align:middle
+We can get rid of those classes. I just
+wanted to show you how that works from
+
+00:10:39.690 --> 00:10:43.050 line:100% position:50% align:middle
+Red. It's easy to visualize it when you
+have that. And then the other thing that
+
+00:10:43.050 --> 00:10:50.230 line:100% position:50% align:middle
+we can do is that we are still taking 5
+seconds, not 500 milliseconds.
+
+00:10:50.230 --> 00:10:56.030 line:100% position:50% align:middle
+So let's move those back to the five
+seconds and we should be good to go.
+
+00:10:56.030 --> 00:10:59.510 line:100% position:50% align:middle
+We should be able to remove them, they'll
+still take half a second to remove.
+
+00:10:59.510 --> 00:11:02.510 line:100% position:50% align:middle
+Try to add them in again, good.
+
+00:11:02.510 --> 00:11:06.630 line:100% position:50% align:middle
+And you can do anything you could possibly
+want with that, you can go crazy.
+
+00:11:06.630 --> 00:11:16.450 line:100% position:50% align:middle
+So I use translate but you can set like a
+rotate(0). And then we want to rotate(45)
+
+00:11:16.450 --> 00:11:28.800 line:100% position:50% align:middle
+degrees, let's try that. Or you can do
+450 degrees and you want to start
+
+00:11:28.800 --> 00:11:34.880 line:100% position:50% align:middle
+it...actually, you should probably rotate
+to 0 and from 1,000 degrees so that
+
+00:11:34.880 --> 00:11:37.750 line:100% position:50% align:middle
+it'll just spin into place like it's
+Batman or something like that.
+
+00:11:37.750 --> 00:11:46.525 line:100% position:50% align:middle
+So let me remove these, that's kind of
+fun. You can do all kinds crazy stuff with
+
+00:11:46.525 --> 00:11:49.330 line:100% position:50% align:middle
+it but don't make your users vomit
+or anything like that.
+
+00:11:49.330 --> 00:11:53.720 line:100% position:50% align:middle
+I'm going to leave mine at translateX and
+we're going to look at how do we do the
+
+00:11:53.720 --> 00:11:58.460 line:100% position:50% align:middle
+other way, which is order-leave. Because
+you'll notice that when I remove one of
+
+00:11:58.460 --> 00:12:02.480 line:100% position:50% align:middle
+these, it says, "Order-leave and
+order-leave-active." So we're going to
+
+00:12:02.480 --> 00:12:07.320 line:100% position:50% align:middle
+give ourselves two more classes.
+And when the order is leaving,
+
+00:12:07.320 --> 00:12:13.150 line:100% position:50% align:middle
+we are going to transition all 0.5s, that
+you should make sure that that 5 seconds,
+
+00:12:13.150 --> 00:12:19.610 line:100% position:50% align:middle
+or half a second, lines up with whatever
+you have right here. And we also want to
+
+00:12:19.610 --> 00:12:25.140 line:100% position:50% align:middle
+transform... We want to start it at
+translateX(0), so we want to...the
+
+00:12:25.140 --> 00:12:28.130 line:100% position:50% align:middle
+starting point is just
+going to be where it is.
+
+00:12:28.130 --> 00:12:33.620 line:100% position:50% align:middle
+And then the active state is going to be
+go to the right. So we're going to say,
+
+00:12:33.620 --> 00:12:42.240 line:100% position:50% align:middle
+transform: translateX(120%). We get a
+max-height of zero. We're pretty much
+
+00:12:42.240 --> 00:12:46.560 line:100% position:50% align:middle
+doing the opposite of what we did earlier,
+padding is going to be zero.
+
+00:12:46.560 --> 00:12:52.270 line:100% position:50% align:middle
+And that should do it. So I'm going to
+remove them, yes. Nice little animation
+
+00:12:52.270 --> 00:12:57.808 line:100% position:50% align:middle
+out. We are transitioning on the
+translateX value, the height value as well
+
+00:12:57.808 --> 00:13:01.450 line:100% position:50% align:middle
+as the padding. And if you're wondering
+why I'm using max-height and not height,
+
+00:13:01.450 --> 00:13:07.120 line:100% position:50% align:middle
+it's because you cannot transition from
+auto height, which is what they are, to a
+
+00:13:07.120 --> 00:13:10.850 line:100% position:50% align:middle
+fixed height, you need to use max-height.
+It's a bit of a trick that we do there.
+
+00:13:10.850 --> 00:13:16.140 line:100% position:50% align:middle
+So that is those elements, now let's work
+on the secondary animation that we have
+
+00:13:16.140 --> 00:13:19.830 line:100% position:50% align:middle
+here, which is a little bit different,
+and we're going to animate this number.
+
+00:13:19.830 --> 00:13:26.407 line:100% position:50% align:middle
+When we add more muscles, the three should
+go up and the four should come in from
+
+00:13:26.407 --> 00:13:31.065 line:100% position:50% align:middle
+underneath it. To work with the count,
+this is the value that we are going to be
+
+00:13:31.065 --> 00:13:33.236 line:100% position:50% align:middle
+animating. And in order
+for it to actually work,
+
+00:13:33.236 --> 00:13:36.740 line:100% position:50% align:middle
+we need multiple ones
+of that actual value.
+
+00:13:36.740 --> 00:13:40.590 line:100% position:50% align:middle
+So a couple things we need to do here,
+first, put these spans that you have
+
+00:13:40.590 --> 00:13:44.370 line:100% position:50% align:middle
+wrapped around everything, put them on
+their own line. Second,
+
+00:13:44.370 --> 00:13:50.310 line:100% position:50% align:middle
+put the LBS fish name and remove button,
+put them on their own line.
+
+00:13:50.310 --> 00:13:56.490 line:100% position:50% align:middle
+And then we need to take this count here
+and wrap it in a CSS TransitionGroups.
+
+00:13:56.490 --> 00:14:02.190 line:100% position:50% align:middle
+So I'm just going to take the name here,
+CSS TransitionGroup, we'll put the count
+
+00:14:02.190 --> 00:14:07.500 line:100% position:50% align:middle
+inside of that. And then finally, we need
+to wrap this in another span, and I'm
+
+00:14:07.500 --> 00:14:11.890 line:100% position:50% align:middle
+show you why in just a second. I'm not
+crazy, wrap it in a span.
+
+00:14:11.890 --> 00:14:18.230 line:100% position:50% align:middle
+And that span needs to have a key which is
+of count. And the reason it's count is
+
+00:14:18.230 --> 00:14:22.420 line:100% position:50% align:middle
+because every time you have a key of two
+elements that are beside each other,
+
+00:14:22.420 --> 00:14:26.100 line:100% position:50% align:middle
+they need to have a unique key and they
+have to be different than each other.
+
+00:14:26.100 --> 00:14:29.820 line:100% position:50% align:middle
+And the reason is, is if we're going to
+have a span with like a five in it, and
+
+00:14:29.900 --> 00:14:33.710 line:100% position:50% align:middle
+then when we increment that by one, we're
+going to have a span with a six in it.
+
+00:14:33.710 --> 00:14:38.570 line:100% position:50% align:middle
+And what React is going to do, is it's
+going to duplicate the first five span and
+
+00:14:38.570 --> 00:14:42.600 line:100% position:50% align:middle
+update it with the six. But it's not going
+to get rid of the original span right
+
+00:14:42.600 --> 00:14:46.280 line:100% position:50% align:middle
+away, it's going to give us 250
+milliseconds, half a second, however long
+
+00:14:46.280 --> 00:14:52.250 line:100% position:50% align:middle
+we ask it to, to animate 5 up and then we
+animate 5 into the spot where it was,
+
+00:14:52.250 --> 00:14:56.620 line:100% position:50% align:middle
+right. So that's why we need to have a key
+in here is so that React will know which
+
+00:14:56.620 --> 00:15:01.740 line:100% position:50% align:middle
+one to add a class of leaving and which
+one to add a class of entering or
+
+00:15:01.740 --> 00:15:07.060 line:100% position:50% align:middle
+order-active...or order-active-leave and
+order-active-enter. So that's why we have
+
+00:15:07.060 --> 00:15:07.650 line:100% position:50% align:middle
+that there.
+
+00:15:07.650 --> 00:15:11.780 line:100% position:50% align:middle
+Our TransitionGroup needs a couple more
+things, we first need the component, which
+
+00:15:11.780 --> 00:15:17.730 line:100% position:50% align:middle
+is going to be a span in itself. We need a
+class name, which is going to be count.
+
+00:15:17.730 --> 00:15:24.030 line:100% position:50% align:middle
+We need a transition name on it, it's
+going to be count. And then we need a
+
+00:15:24.030 --> 00:15:31.300 line:100% position:50% align:middle
+transition enter timeout and that is going
+to be equal to 250 milliseconds.
+
+00:15:31.300 --> 00:15:38.310 line:100% position:50% align:middle
+And then we also want a leave time out.
+Now, if that all worked,
+
+00:15:38.310 --> 00:15:41.910 line:100% position:50% align:middle
+we should see not any animation yet, we've
+not written in the CSS,
+
+00:15:41.910 --> 00:15:46.070 line:100% position:50% align:middle
+but we should see this two being
+duplicated for...just a second.
+
+00:15:46.200 --> 00:15:52.720 line:100% position:50% align:middle
+So Pacific halibut, so three two, four two
+five, four, etc. See how it's like
+
+00:15:52.720 --> 00:15:56.950 line:100% position:50% align:middle
+duplicating it really quickly? We inspect
+that and go to the span right here,
+
+00:15:56.950 --> 00:16:00.100 line:100% position:50% align:middle
+I'll push the button, you keep your eyes
+down here. And I click it,
+
+00:16:00.100 --> 00:16:07.600 line:100% position:50% align:middle
+you see how it duplicated those values for
+us? If we change this to maybe two and a
+
+00:16:07.600 --> 00:16:12.960 line:100% position:50% align:middle
+half seconds, it'll slow down and we'll be
+able to understand what's going on here.
+
+00:16:12.960 --> 00:16:19.810 line:100% position:50% align:middle
+So we've got this span of 12. I'm going to
+add it again. Thirteen,
+
+00:16:19.810 --> 00:16:26.050 line:100% position:50% align:middle
+see enter-leave. I'll do it again.
+Enter-active, leave-active.
+
+00:16:26.050 --> 00:16:30.460 line:100% position:50% align:middle
+So we've got these two spans now because
+React is smart enough to duplicate it for
+
+00:16:30.460 --> 00:16:36.840 line:100% position:50% align:middle
+us. And then it's up to us to take that
+first one or the one of the 15 and animate
+
+00:16:36.840 --> 00:16:41.740 line:100% position:50% align:middle
+it up. And take the second one, which is a
+16 and made it into the place where we had
+
+00:16:41.740 --> 00:16:41.870 line:100% position:50% align:middle
+it.
+
+00:16:41.870 --> 00:16:47.510 line:100% position:50% align:middle
+So we'll head back to our animations here
+and we need a whole bunch of selector.
+
+00:16:47.510 --> 00:16:57.170 line:100% position:50% align:middle
+We need a .count-enter and a
+.count-enter-active. Here we're going to
+
+00:16:57.170 --> 00:17:02.140 line:100% position:50% align:middle
+transition everything all over 2.5
+seconds. Let's do it really slowly and
+
+00:17:02.140 --> 00:17:08.680 line:100% position:50% align:middle
+we'll move it back to 250 milliseconds.
+transform: translateY.
+
+00:17:08.680 --> 00:17:12.750 line:100% position:50% align:middle
+Because we're going to be going on up and
+down axis, this time 100%.
+
+00:17:12.750 --> 00:17:17.380 line:100% position:50% align:middle
+So we're going to start it just off the
+screen when something is entering.
+
+00:17:17.380 --> 00:17:26.669 line:100% position:50% align:middle
+So we're going to take this, I'm going to
+say, transform: translateY(100%).
+
+00:17:27.179 --> 00:17:31.100 line:100% position:50% align:middle
+What that does, see it's gone. You can't
+see the four, but it's going to slowly
+
+00:17:31.100 --> 00:17:36.890 line:100% position:50% align:middle
+bring us into the actual field. See, there
+it is, that's what's going to happen and
+
+00:17:36.890 --> 00:17:40.360 line:100% position:50% align:middle
+we're going to do the opposite. We're
+going to do the opposite with the other
+
+00:17:40.360 --> 00:17:48.030 line:100% position:50% align:middle
+one and made it up. So translateY(100),
+start it off screen, and then when it's
+
+00:17:48.030 --> 00:17:55.030 line:100% position:50% align:middle
+active, we're simply just going to
+transform zero. That means just put it in
+
+00:17:55.030 --> 00:18:03.410 line:100% position:50% align:middle
+its normal resting spot. All right, so
+let's see what we've got here,
+
+00:18:03.410 --> 00:18:09.360 line:100% position:50% align:middle
+we've still got this, transform on it. If
+I add another one, you see what's
+
+00:18:09.360 --> 00:18:13.440 line:100% position:50% align:middle
+happening? If I add a whole bunch of them,
+they all animate themselves in on out.
+
+00:18:13.440 --> 00:18:18.880 line:100% position:50% align:middle
+And then after two and a half seconds, the
+old one will just remove itself.
+
+00:18:18.880 --> 00:18:21.780 line:100% position:50% align:middle
+Because React wants to give us that two
+and a half seconds, actually,
+
+00:18:21.780 --> 00:18:25.090 line:100% position:50% align:middle
+animated out, and then behind the scenes
+it's going to clean it up and actually
+
+00:18:25.090 --> 00:18:32.030 line:100% position:50% align:middle
+delete that DOM element for us. So that's
+when we need to have a count-leave and a
+
+00:18:32.030 --> 00:18:43.010 line:100% position:50% align:middle
+count-leave-active. Then we are going to
+say, "Transition all .5...we'll do,
+
+00:18:43.010 --> 00:18:48.450 line:100% position:50% align:middle
+2.5 seconds. We're going to make it
+position absolute because you'll notice
+
+00:18:48.450 --> 00:18:52.380 line:100% position:50% align:middle
+that they're just going next to each other
+right now and we need to have one of them
+
+00:18:52.380 --> 00:18:54.310 line:100% position:50% align:middle
+overlap the other actual number.
+
+00:18:54.310 --> 00:19:01.224 line:100% position:50% align:middle
+So position absolute, left, 0, bottom, 0
+and transform is going to be
+
+00:19:01.224 --> 00:19:09.150 line:100% position:50% align:middle
+translateY(0). We're going to start it
+where it is, right? Just we want to start
+
+00:19:09.150 --> 00:19:13.400 line:100% position:50% align:middle
+it. If we're getting rid of four here,
+when we add another one, we want to start
+
+00:19:13.400 --> 00:19:22.165 line:100% position:50% align:middle
+it at 0 and we want to animate it up -100%
+so we transform: translateY(100%).
+
+00:19:23.853 --> 00:19:28.830 line:100% position:50% align:middle
+Okay, that was a lot of CSS,
+but let's see if I when add it,
+
+00:19:28.830 --> 00:19:37.180 line:100% position:50% align:middle
+pump that right up. You see what's
+going on here, 34, 35, 36.
+
+00:19:37.180 --> 00:19:43.930 line:100% position:50% align:middle
+One of them animates itself up,
+the other one animates itself on in.
+
+00:19:43.930 --> 00:19:49.060 line:100% position:50% align:middle
+So that's really long, we'll take that 2.5
+seconds and make it .25 seconds.
+
+00:19:49.060 --> 00:19:55.190 line:100% position:50% align:middle
+And then we'll go back to our order here
+and make it 250 milliseconds instead.
+
+00:19:55.190 --> 00:20:02.630 line:100% position:50% align:middle
+So that should be nice and quick. Here we
+go. So that is the two ways that you do
+
+00:20:02.630 --> 00:20:08.590 line:100% position:50% align:middle
+animations. First of all, when it's coming
+in, we can animate it from its original
+
+00:20:08.590 --> 00:20:13.990 line:100% position:50% align:middle
+state, order-enter into the state where we
+want it. And then sometimes we'll have the
+
+00:20:13.990 --> 00:20:18.160 line:100% position:50% align:middle
+case where we're just duplicating things,
+and that's where React will duplicate that
+
+00:20:18.160 --> 00:20:23.160 line:100% position:50% align:middle
+element, let you animate the old one out
+while you're animating the new one in. And
+
+00:20:23.160 --> 00:20:27.770 line:100% position:50% align:middle
+at that point it's just CSS, there's no
+real extra stuff that happens in React
+
+00:20:27.770 --> 00:20:28.000 line:100% position:50% align:middle
+there.

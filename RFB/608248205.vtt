@@ -1,0 +1,328 @@
+WEBVTT
+
+00:00:00.158 --> 00:00:03.746 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.040 --> 00:00:11.260 line:100% position:50% align:middle
+With React Router 4, there is two main
+ways that you can actually change the
+
+00:00:11.260 --> 00:00:15.860 line:100% position:50% align:middle
+page. And React Router 4 have sort of
+taken this whole declarative route,
+
+00:00:15.860 --> 00:00:20.360 line:100% position:50% align:middle
+which means that everything that you want
+to do is done via a component.
+
+00:00:20.360 --> 00:00:23.980 line:100% position:50% align:middle
+So, what you could do is you could render
+out a redirect component.
+
+00:00:23.980 --> 00:00:27.770 line:100% position:50% align:middle
+You just import that from React Router.
+And you can, just say,
+
+00:00:27.770 --> 00:00:31.600 line:100% position:50% align:middle
+to equals somewhere else. So, I could go
+into my render method here and say,
+
+00:00:31.600 --> 00:00:37.230 line:100% position:50% align:middle
+if the store has been set, like I could
+set it in here and then redirect it.
+
+00:00:37.230 --> 00:00:43.290 line:100% position:50% align:middle
+Otherwise, there is still an imperative
+API, which will allow you to transition
+
+00:00:43.290 --> 00:00:44.640 line:100% position:50% align:middle
+from one page to another.
+
+00:00:44.640 --> 00:00:47.820 line:100% position:50% align:middle
+So, if you're looking for...you're like,
+"I don't actually want a component.
+
+00:00:47.820 --> 00:00:51.950 line:100% position:50% align:middle
+I want a function that I can run," and
+that will actually change the page.
+
+00:00:51.950 --> 00:00:55.040 line:100% position:50% align:middle
+So, in our case, I think it makes more
+sense to use the imperative API,
+
+00:00:55.040 --> 00:00:58.570 line:100% position:50% align:middle
+just because we already have this
+goToStore function where we're pulling
+
+00:00:58.570 --> 00:01:05.790 line:100% position:50% align:middle
+up the value as well as changing things on
+over. So, we won't be using the redirect
+
+00:01:05.790 --> 00:01:10.070 line:100% position:50% align:middle
+component...and that could be handy in a
+lot of use cases. We are going to be
+
+00:01:10.070 --> 00:01:15.940 line:100% position:50% align:middle
+using the imperative API, which is
+.transitionTo. So, the way that we do
+
+00:01:15.940 --> 00:01:20.170 line:100% position:50% align:middle
+that is, we first need
+access to the router.
+
+00:01:20.170 --> 00:01:26.020 line:100% position:50% align:middle
+And you might be asking, "Hmm, like how do
+I actually access the router?" If we look
+
+00:01:26.020 --> 00:01:30.840 line:100% position:50% align:middle
+at our index.js, here's the browser
+router, and do we, like,
+
+00:01:30.840 --> 00:01:36.480 line:100% position:50% align:middle
+import it again, and is there a method on
+there? Not exactly. Because this browser
+
+00:01:36.480 --> 00:01:41.140 line:100% position:50% align:middle
+router is the parent of absolutely
+everything in our application,
+
+00:01:41.140 --> 00:01:47.460 line:100% position:50% align:middle
+it actually is possible to surface React
+Router at any component down through it.
+
+00:01:47.460 --> 00:01:52.240 line:100% position:50% align:middle
+So, if we take a look at our dev tools
+here, we go to React, we look for our
+
+00:01:52.240 --> 00:01:58.160 line:100% position:50% align:middle
+StorePicker component, we click on it,
+and... I don't see. There's,
+
+00:01:58.160 --> 00:02:02.680 line:100% position:50% align:middle
+like, some params here, and there's, like,
+a location, but there's no
+
+00:02:02.680 --> 00:02:07.210 line:100% position:50% align:middle
+information...there's no method here that
+allows me to change the page.
+
+00:02:07.210 --> 00:02:11.430 line:100% position:50% align:middle
+And really, if you look at my page here,
+I want to change the page.
+
+00:02:11.430 --> 00:02:16.590 line:100% position:50% align:middle
+So, what we need to do is surface the
+router, and we want to make it available
+
+00:02:16.590 --> 00:02:21.080 line:100% position:50% align:middle
+to this component. And the way that we do
+that is with something called "context" in
+
+00:02:21.080 --> 00:02:26.700 line:100% position:50% align:middle
+React. So, React has "props" and "state,"
+and 99% of the time,
+
+00:02:26.700 --> 00:02:30.000 line:100% position:50% align:middle
+you're going to be either using state to
+hold your data...that's our next
+
+00:02:30.000 --> 00:02:33.360 line:100% position:50% align:middle
+video...or you're going to be using props
+to pass data from one component,
+
+00:02:33.360 --> 00:02:37.970 line:100% position:50% align:middle
+a parent, down to a child component.
+However, there is sort of this third thing
+
+00:02:37.970 --> 00:02:43.020 line:100% position:50% align:middle
+that's called context. And what context
+allows you to do is declare something at
+
+00:02:43.020 --> 00:02:49.040 line:100% position:50% align:middle
+the top level, and it will be made
+available to anybody at a lower level.
+
+00:02:49.040 --> 00:02:51.810 line:100% position:50% align:middle
+Now, that may seem tempting to everyone,
+because they think, "Oh,
+
+00:02:51.810 --> 00:02:54.540 line:100% position:50% align:middle
+that's easy. I'll just put everything on
+the top level, and then it's available
+
+00:02:54.540 --> 00:02:59.100 line:100% position:50% align:middle
+globally." And React really doesn't want
+you to do things globally,
+
+00:02:59.100 --> 00:03:02.760 line:100% position:50% align:middle
+because they want you to make nice, small
+components that can be modular and moved
+
+00:03:02.760 --> 00:03:03.840 line:100% position:50% align:middle
+around throughout your app.
+
+00:03:03.840 --> 00:03:09.350 line:100% position:50% align:middle
+So, rather than relying on a global state
+for your application,
+
+00:03:09.350 --> 00:03:12.780 line:100% position:50% align:middle
+they make you use state and individual
+components. Again, we'll talk about that
+
+00:03:12.780 --> 00:03:15.700 line:100% position:50% align:middle
+in the next video, if you're a little bit
+confused by that. However,
+
+00:03:15.700 --> 00:03:19.770 line:100% position:50% align:middle
+there are some things that need to be
+top-level and passed down to every single
+
+00:03:19.770 --> 00:03:25.290 line:100% position:50% align:middle
+one, and a router is a great example for
+that. It needs to be passed down from the
+
+00:03:25.290 --> 00:03:28.840 line:100% position:50% align:middle
+parent all the way down. So, how do we
+actually access it? Well,
+
+00:03:28.840 --> 00:03:32.090 line:100% position:50% align:middle
+React makes it a little bit tough to
+actually do it, because, like,
+
+00:03:32.090 --> 00:03:38.890 line:100% position:50% align:middle
+you need to know that you actually want to
+use context. So, they're not just going to
+
+00:03:38.890 --> 00:03:43.970 line:100% position:50% align:middle
+make it easy for anyone to use. Context,
+otherwise, it'll start to form some bad
+
+00:03:43.970 --> 00:03:44.890 line:100% position:50% align:middle
+habits.
+
+00:03:44.890 --> 00:03:48.020 line:100% position:50% align:middle
+The way that we surface our router is, we
+go down here, we say,
+
+00:03:48.020 --> 00:03:54.270 line:100% position:50% align:middle
+StorePicker, that's our
+component....contextTypes equals,
+
+00:03:54.270 --> 00:03:59.450 line:100% position:50% align:middle
+and that's going to be an object. So, if
+we set some context types on here, in our
+
+00:03:59.450 --> 00:04:08.250 line:100% position:50% align:middle
+case, we want the router, and we will set
+it to react.proptypes.object. And we're
+
+00:04:08.250 --> 00:04:14.070 line:100% position:50% align:middle
+going to learn what prop types are in a
+future video. But what that will then do
+
+00:04:14.070 --> 00:04:19.440 line:100% position:50% align:middle
+is tell React that the StorePicker
+component expects something called a
+
+00:04:19.440 --> 00:04:22.300 line:100% position:50% align:middle
+router, and React will say, "Okay, I'll
+make this router available to you."
+
+00:04:22.300 --> 00:04:27.200 line:100% position:50% align:middle
+So, give that a save now, and watch as
+this refreshes. I'm going to search for my
+
+00:04:27.200 --> 00:04:32.880 line:100% position:50% align:middle
+StorePicker component again, and oh, all
+of a sudden, this thing called context
+
+00:04:32.880 --> 00:04:39.320 line:100% position:50% align:middle
+pops up. And open it up, there's our
+router. Now, there's not a whole lot of
+
+00:04:39.320 --> 00:04:42.500 line:100% position:50% align:middle
+different methods on here. That's because
+almost everything in React Router is done
+
+00:04:42.500 --> 00:04:47.880 line:100% position:50% align:middle
+with a component. But there is this one
+called transitionTo, and that's the
+
+00:04:47.880 --> 00:04:54.420 line:100% position:50% align:middle
+actual method that we need. So, we'll go
+into this. Right below this comment,
+
+00:04:54.420 --> 00:05:03.600 line:100% position:50% align:middle
+we'll say, this, because this is the
+actual component, .context.router,
+
+00:05:03.600 --> 00:05:09.400 line:100% position:50% align:middle
+because that's the thing. And then the
+method we want is called transitionTo.
+
+00:05:09.400 --> 00:05:12.790 line:100% position:50% align:middle
+So let's say, transitionTo. And we want
+to transition to...well,
+
+00:05:12.790 --> 00:05:17.190 line:100% position:50% align:middle
+we set it right here, right?
+store/...and instead of saying,
+
+00:05:17.190 --> 00:05:22.360 line:100% position:50% align:middle
+storeId, how do we actually get this
+value? Well, it's right here,
+
+00:05:22.360 --> 00:05:28.850 line:100% position:50% align:middle
+this.storeInput.value. So maybe we'll
+pop that into a variable,
+
+00:05:28.850 --> 00:05:37.340 line:100% position:50% align:middle
+and we'll console log, say, "Going to
+storeId," and then we'll also pop the
+
+00:05:37.340 --> 00:05:43.050 line:100% position:50% align:middle
+storeID right into there. And that should
+just transition us from one to another.
+
+00:05:43.050 --> 00:05:49.810 line:100% position:50% align:middle
+So, give that a save. Quaint repulsive
+halves, visit store, aha,
+
+00:05:49.810 --> 00:05:54.300 line:100% position:50% align:middle
+awesome. Our URL has changed. One really
+cool thing about React is that,
+
+00:05:54.300 --> 00:05:58.300 line:100% position:50% align:middle
+since it's all client-side, it uses
+something called HTML5 pushState,
+
+00:05:58.300 --> 00:06:03.020 line:100% position:50% align:middle
+which you will notice that the actual page
+doesn't reload itself.
+
+00:06:03.020 --> 00:06:08.790 line:100% position:50% align:middle
+So, I'm right here. I click "visit store."
+It will actually change the URL of your
+
+00:06:08.790 --> 00:06:13.130 line:100% position:50% align:middle
+URL bar, but it actually doesn't refresh
+your actual browser. And that's why it's
+
+00:06:13.130 --> 00:06:17.910 line:100% position:50% align:middle
+so fast for you to go from one URL to
+another, because all of the HTML,
+
+00:06:17.910 --> 00:06:21.230 line:100% position:50% align:middle
+CSS, JavaScript, all of that stuff is
+already loaded on the page.
+
+00:06:21.230 --> 00:06:25.400 line:100% position:50% align:middle
+So,  this.context.router.transitionTo.
+Pretty straightforward,
+
+00:06:25.400 --> 00:06:30.080 line:100% position:50% align:middle
+just need to know that you need to surface
+the router from the parent with a thing
+
+00:06:30.080 --> 00:06:32.000 line:100% position:50% align:middle
+called contextTypes.

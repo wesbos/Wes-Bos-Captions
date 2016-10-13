@@ -1,0 +1,303 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.008 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:06.970 --> 00:00:10.470 line:100% position:50% align:middle
+If you were to look at your application
+and I asked you "what's the one thing that
+
+00:00:10.470 --> 00:00:17.150 line:100% position:50% align:middle
+is really, really not jiving with you
+about React?" You would probably say this,
+
+00:00:17.150 --> 00:00:21.410 line:100% position:50% align:middle
+"What the hell is this?"
+"this.addFish =bind<this>."
+
+00:00:21.410 --> 00:00:25.740 line:100% position:50% align:middle
+All right, so we said "this" three
+times, the method name twice,
+
+00:00:25.740 --> 00:00:31.140 line:100% position:50% align:middle
+and then every time I have to add a method
+onto here that I want to be bound to the
+
+00:00:31.140 --> 00:00:35.290 line:100% position:50% align:middle
+instance of that component, I need to go
+up to my constructor and do this whole
+
+00:00:35.290 --> 00:00:39.590 line:100% position:50% align:middle
+song and dance. It probably seems like,
+"that's a pain in the ass" because when we
+
+00:00:39.590 --> 00:00:42.950 line:100% position:50% align:middle
+used "React Create-Class" back in the day,
+it did that automatically and now we have
+
+00:00:42.950 --> 00:00:49.859 line:100% position:50% align:middle
+to explicitly bind it. Now this is the
+current way that we have to do it,
+
+00:00:49.859 --> 00:00:54.087 line:100% position:50% align:middle
+however, I want to take a look forward to
+some of the stuff that's coming to the
+
+00:00:54.087 --> 00:00:58.059 line:100% position:50% align:middle
+language in JavaScript that's going to
+make this easier. So disclaimer,
+
+00:00:58.059 --> 00:01:01.842 line:100% position:50% align:middle
+none of this stuff that I'm going to be
+talking about is currently in JavaScript
+
+00:01:01.842 --> 00:01:06.375 line:100% position:50% align:middle
+but we can use it in our applications
+because we use something called "Babel"
+
+00:01:06.375 --> 00:01:10.659 line:100% position:50% align:middle
+and "Babel" will compile our code down to
+the browser equivalent that will work in
+
+00:01:10.659 --> 00:01:15.020 line:100% position:50% align:middle
+all of our browsers. So feel free to go
+ahead and use this just know that this
+
+00:01:15.020 --> 00:01:20.700 line:100% position:50% align:middle
+stuff is currently in stage two. There are
+four stages when they are presenting ideas
+
+00:01:20.700 --> 00:01:25.220 line:100% position:50% align:middle
+for the language and it might change, it
+will change. I've been burned before when
+
+00:01:25.220 --> 00:01:30.130 line:100% position:50% align:middle
+I've taught with ideas that have then
+changed. But I'll try to keep this video
+
+00:01:30.130 --> 00:01:34.030 line:100% position:50% align:middle
+up to date and hopefully, eventually it
+will be put into language.
+
+00:01:34.030 --> 00:01:37.630 line:100% position:50% align:middle
+We're probably looking at, I don't know, a
+couple years from now.
+
+00:01:37.630 --> 00:01:43.890 line:100% position:50% align:middle
+ES7 or ES2016 is already finalized so
+maybe ES2017? I'm not quite sure just yet.
+
+00:01:43.890 --> 00:01:48.080 line:100% position:50% align:middle
+So what does it do? Well, let's take this
+loadSample, for an example,
+
+00:01:48.080 --> 00:01:53.130 line:100% position:50% align:middle
+and let me comment out this binding here,
+so we're not actually doing the binding.
+
+00:01:53.130 --> 00:01:59.360 line:100% position:50% align:middle
+I'm just going to go to my application,
+visit one of the stores and try to load
+
+00:01:59.360 --> 00:02:03.180 line:100% position:50% align:middle
+some sample-fishes. Now we've commented
+out loadSamples and I click that and
+
+00:02:03.180 --> 00:02:08.150 line:100% position:50% align:middle
+nothing happens. Open up your dev tools in
+the console and we're going to get an
+
+00:02:08.150 --> 00:02:12.780 line:100% position:50% align:middle
+error here, "cannot read property
+'setState' of null" Why? It's our
+
+00:02:12.780 --> 00:02:18.830 line:100% position:50% align:middle
+loadSamples function says, "this.
+setState" and this loadsSamples is no
+
+00:02:18.830 --> 00:02:23.770 line:100% position:50% align:middle
+longer bound to the instance of that
+component. So this doesn't mean that one
+
+00:02:23.770 --> 00:02:27.920 line:100% position:50% align:middle
+instance of our app component. So that's
+why we had to do this.
+
+00:02:27.920 --> 00:02:33.000 line:100% position:50% align:middle
+And one thing that we can do is use what's
+called a "property initializer," which
+
+00:02:33.000 --> 00:02:36.820 line:100% position:50% align:middle
+will skip that whole binding thing. And it
+looks a little something like this,
+
+00:02:36.820 --> 00:02:43.580 line:100% position:50% align:middle
+we take "loadSamples" and we set it to, =
+to and we set this to be an arrow function
+
+00:02:43.580 --> 00:02:49.700 line:100% position:50% align:middle
+on its own. So that's similar to this,
+"function" like that, but we use an arrow
+
+00:02:49.700 --> 00:02:56.190 line:100% position:50% align:middle
+function so that it will not be bound to
+that function but it will bound to the
+
+00:02:56.190 --> 00:02:59.090 line:100% position:50% align:middle
+parent. That's what an arrow function
+does. Check out my ES6 series if you're
+
+00:02:59.090 --> 00:03:04.020 line:100% position:50% align:middle
+interested in learning more about arrow
+functions. And then we put a semicolon on
+
+00:03:04.020 --> 00:03:07.340 line:100% position:50% align:middle
+the end. Now that's really important. You
+might see examples online without that
+
+00:03:07.340 --> 00:03:12.230 line:100% position:50% align:middle
+semicolon but that was added in just
+recently. Otherwise, it will break
+
+00:03:12.230 --> 00:03:15.240 line:100% position:50% align:middle
+sometime down the road so make sure you
+put that semicolon in.
+
+00:03:15.240 --> 00:03:21.720 line:100% position:50% align:middle
+This is similar to putting a property on
+an object, but in this case,
+
+00:03:21.720 --> 00:03:26.440 line:100% position:50% align:middle
+we use an equal sign, set it to an actual
+function, and put a semicolon on.
+
+00:03:26.440 --> 00:03:32.120 line:100% position:50% align:middle
+Now I save that and try to load some
+fishes, and it just works.
+
+00:03:32.120 --> 00:03:36.420 line:100% position:50% align:middle
+Right? Because I didn't have to do this
+whole load samples and it works.
+
+00:03:36.420 --> 00:03:42.000 line:100% position:50% align:middle
+Let's try it with another one. Let's do
+"removeFish," and remove the binding.
+
+00:03:42.000 --> 00:03:45.010 line:100% position:50% align:middle
+I'm going to try to remove a fish. It will
+break. You can not call fishes of
+
+00:03:45.010 --> 00:03:52.750 line:100% position:50% align:middle
+undefined. We go down to our "removeFish"
+and we change it to equals,
+
+00:03:52.750 --> 00:03:59.710 line:100% position:50% align:middle
+this can be an arrow function here, and I
+will put a semicolon on the end.
+
+00:03:59.710 --> 00:04:03.820 line:100% position:50% align:middle
+The "removeFish" should work. Beautiful.
+Let's do a couple more.
+
+00:04:03.820 --> 00:04:12.640 line:100% position:50% align:middle
+"UpdateFish= updatedFish" semicolon on the
+end. We will remove the actual binding of
+
+00:04:12.640 --> 00:04:22.230 line:100% position:50% align:middle
+the "updateFish" and we should be able to
+type it here and say "cool." I've updated
+
+00:04:22.230 --> 00:04:27.240 line:100% position:50% align:middle
+it. No problem there. So you can go
+through and change all those over and
+
+00:04:27.240 --> 00:04:31.980 line:100% position:50% align:middle
+eventually be able to just delete all of
+this, if you are comfortable with using a
+
+00:04:31.980 --> 00:04:37.070 line:100% position:50% align:middle
+feature that probably is going to come to
+JavaScript, but you can't be guaranteed
+
+00:04:37.070 --> 00:04:41.190 line:100% position:50% align:middle
+that it might burn you in the future if it
+changes or they take it out entirely.
+
+00:04:41.190 --> 00:04:45.880 line:100% position:50% align:middle
+In a previous tutorial, I used an app,
+"autobind," which is something called a
+
+00:04:45.880 --> 00:04:51.080 line:100% position:50% align:middle
+decorator. It was looking good but then
+they took it out and it's not looking so
+
+00:04:51.080 --> 00:04:55.880 line:100% position:50% align:middle
+good anymore. So I'm not going to be
+teaching with anything that's not totally
+
+00:04:55.880 --> 00:05:01.140 line:100% position:50% align:middle
+in the language. Other things we can do
+with this, instead of saying "this.
+
+00:05:01.140 --> 00:05:09.790 line:100% position:50% align:middle
+state" inside of our constructor, we can
+take "this" out and we can simply just
+
+00:05:09.790 --> 00:05:17.220 line:100% position:50% align:middle
+say, "state=fishes." Right? This is just
+like adding a property to an object,
+
+00:05:17.220 --> 00:05:21.830 line:100% position:50% align:middle
+except this is how you add a property
+initializer, which means that every
+
+00:05:21.830 --> 00:05:27.660 line:100% position:50% align:middle
+instance of this application, or of this
+app component, will get its own stage.
+
+00:05:27.660 --> 00:05:31.530 line:100% position:50% align:middle
+Then we have "fishes" and again a
+semicolon, very important there.
+
+00:05:31.530 --> 00:05:34.430 line:100% position:50% align:middle
+Let's just double check that it still
+works. Then also what we can do is,
+
+00:05:34.430 --> 00:05:40.080 line:100% position:50% align:middle
+let's open up our inventory. js. You can
+also use this for things that you need to
+
+00:05:40.080 --> 00:05:45.280 line:100% position:50% align:middle
+do after, like our prompt types. So if I
+take our prompt types then delete it,
+
+00:05:45.280 --> 00:05:51.240 line:100% position:50% align:middle
+then go into our component, we can say
+"promptType=object" and in front of that,
+
+00:05:51.240 --> 00:05:56.110 line:100% position:50% align:middle
+I'm going to say "static." And the reason
+I say that is we don't need a copy of this
+
+00:05:56.110 --> 00:06:00.170 line:100% position:50% align:middle
+for every single instance. It's going to
+be the same for every single instance of
+
+00:06:00.170 --> 00:06:05.040 line:100% position:50% align:middle
+it so we put the word "static" in front of
+it so we don't duplicate it over and over.
+
+00:06:05.040 --> 00:06:09.800 line:100% position:50% align:middle
+And that should work as well. Good, still
+works. What I would challenge you to do,
+
+00:06:09.800 --> 00:06:13.650 line:100% position:50% align:middle
+maybe, if you're interested, is go through
+all of your "this, this,
+
+00:06:13.650 --> 00:06:17.499 line:100% position:50% align:middle
+this, bind this" and remove them, and try
+to swap them out
+
+00:06:17.499 --> 00:06:20.671 line:100% position:50% align:middle
+with using your property initializers.

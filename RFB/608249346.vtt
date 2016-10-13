@@ -1,0 +1,528 @@
+WEBVTT
+
+00:00:01.378 --> 00:00:03.140 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:06.070 --> 00:00:10.910 line:100% position:50% align:middle
+All right our first component, which is
+going to be this storepicker component.
+
+00:00:10.910 --> 00:00:14.212 line:100% position:50% align:middle
+Where you type in the name of the
+store or it auto fills with a
+
+00:00:14.212 --> 00:00:17.036 line:100% position:50% align:middle
+hilarious one. And then we have
+a button that when you click it,
+
+00:00:17.036 --> 00:00:19.807 line:100% position:50% align:middle
+it's going to push you to that actual
+store. So if you look
+
+00:00:19.807 --> 00:00:22.510 line:100% position:50% align:middle
+at our react dev
+tools here, you'll see that there is a
+
+00:00:22.510 --> 00:00:26.348 line:100% position:50% align:middle
+store picker component. We're going
+to build that first ,and then we're
+
+00:00:26.348 --> 00:00:30.561 line:100% position:50% align:middle
+going to hook up the visit store, which
+is going to push the actual URL for it.
+
+00:00:30.561 --> 00:00:34.900 line:100% position:50% align:middle
+So where do we write that code? Well let's
+first write it in index.js and then we'll
+
+00:00:34.900 --> 00:00:39.073 line:100% position:50% align:middle
+move it over to the separate components
+folder here. Now before we write any
+
+00:00:39.073 --> 00:00:42.674 line:100% position:50% align:middle
+react, what do we need? We need to load
+in react just like before you write
+
+00:00:42.674 --> 00:00:46.133 line:100% position:50% align:middle
+jquery, you need to load in jquery.
+And you might be thinking, "Okay I'll
+
+00:00:46.133 --> 00:00:52.355 line:100% position:50% align:middle
+go into my index.html, and I'll give
+myself a script source, and I will
+
+00:00:52.355 --> 00:00:55.380 line:100% position:50% align:middle
+say react.js, and then it's on the page,
+and I'm good to go."
+
+00:00:55.380 --> 00:00:57.918 line:100% position:50% align:middle
+However modern javascript is done
+a little bit differently,
+
+00:00:57.918 --> 00:01:01.772 line:100% position:50% align:middle
+and we're going to be using
+what's called ES6 modules where we can
+
+00:01:01.772 --> 00:01:06.190 line:100% position:50% align:middle
+import it. So rather than using a script
+tag to load in every single library that
+
+00:01:06.190 --> 00:01:10.950 line:100% position:50% align:middle
+you want, you go into the code that you're
+writing, in this case index.js, and we're
+
+00:01:10.950 --> 00:01:17.080 line:100% position:50% align:middle
+going to import React, capital R,
+from and then a string of react.
+
+00:01:17.080 --> 00:01:21.880 line:100% position:50% align:middle
+And what that does is it's going to load
+everything that is in the React library
+
+00:01:21.880 --> 00:01:26.680 line:100% position:50% align:middle
+into this variable called React. Now where
+is this coming from?
+
+00:01:26.680 --> 00:01:30.094 line:100% position:50% align:middle
+Well in the first video, if you open
+up our package at .JSON, you'll know
+
+00:01:30.094 --> 00:01:35.306 line:100% position:50% align:middle
+that I have already gone ahead and listed
+all of the things that we need for this
+
+00:01:35.306 --> 00:01:40.498 line:100% position:50% align:middle
+tutorial to work. And one of them being
+react and react-dom and react-router
+
+00:01:40.498 --> 00:01:45.419 line:100% position:50% align:middle
+and react-addons, -css all of these
+different things. So if I didn't do that,
+
+00:01:45.419 --> 00:01:49.600 line:100% position:50% align:middle
+what you would have had to do is go
+to your terminal here, but quit this first
+
+00:01:49.600 --> 00:01:54.844 line:100% position:50% align:middle
+npm install react--save, and that will
+go and fetch the react library
+
+00:01:54.844 --> 00:01:58.256 line:100% position:50% align:middle
+as well as save that dependency
+to your package .JSON.
+
+00:01:58.256 --> 00:02:01.960 line:100% position:50% align:middle
+So really
+important, this entire tutorial I do not
+
+00:02:01.960 --> 00:02:06.820 line:100% position:50% align:middle
+need you to npm install anything. Why?
+Because this tutorial has already come
+
+00:02:06.820 --> 00:02:09.821 line:100% position:50% align:middle
+with a list of things that you need,
+as well as the versions that are going
+
+00:02:09.821 --> 00:02:14.397 line:100% position:50% align:middle
+to work the best. These are the latest
+versions as of time of recording, and I
+
+00:02:14.397 --> 00:02:18.271 line:100% position:50% align:middle
+just want to make sure that everybody's
+on the exact same version for the duration
+
+00:02:18.271 --> 00:02:23.440 line:100% position:50% align:middle
+of this course until things get updated
+and then it's time to re-record them.
+
+00:02:23.440 --> 00:02:27.460 line:100% position:50% align:middle
+So you do not need to npm install
+anything, you simply just need to type npm
+
+00:02:27.460 --> 00:02:30.994 line:100% position:50% align:middle
+install on our first video, which we did
+already. And then you type npm start,
+
+00:02:30.994 --> 00:02:36.140 line:100% position:50% align:middle
+to kickstart our web pack and server
+that will open itself on up.
+
+00:02:36.140 --> 00:02:40.605 line:100% position:50% align:middle
+Let's go over to our index.js here.
+And we've imported react from react.
+
+00:02:40.605 --> 00:02:45.475 line:100% position:50% align:middle
+Now I'm going to open up this localhost
+in the browser here. First of all, a
+
+00:02:45.475 --> 00:02:48.999 line:100% position:50% align:middle
+couple things, you're going to sometimes
+see these warnings here, and that's
+
+00:02:48.999 --> 00:02:54.398 line:100% position:50% align:middle
+something called ESLint. ESLint is a
+linter which sort of will smack your hand
+
+00:02:54.398 --> 00:02:59.607 line:100% position:50% align:middle
+when you do things that aren't in the
+best interest of writing good react code,
+
+00:02:59.607 --> 00:03:03.225 line:100% position:50% align:middle
+and it's okay if you sometimes see these.
+We're going to run into them,
+
+00:03:03.225 --> 00:03:07.577 line:100% position:50% align:middle
+and we'll show you how to fix them.
+The create react app comes
+
+00:03:07.577 --> 00:03:12.096 line:100% position:50% align:middle
+with a very minimal set of ESLint
+rules, and then we'll show you how
+
+00:03:12.096 --> 00:03:15.593 line:100% position:50% align:middle
+you can break out, or eject out of it,
+if you'd like to use your own
+
+00:03:15.593 --> 00:03:19.036 line:100% position:50% align:middle
+ESLint rules, if you're comfortable
+with that. However, what I want to show
+
+00:03:19.036 --> 00:03:23.070 line:100% position:50% align:middle
+you is that if we go to our elements
+panel, you'll see that the script tag
+
+00:03:23.070 --> 00:03:28.380 line:100% position:50% align:middle
+has been added. That gets added by the
+dev server. And it gives us the static
+
+00:03:28.380 --> 00:03:33.633 line:100% position:50% align:middle
+bundle js. If I were to go to that URL
+here, you'll see that...Look at this.
+
+00:03:33.633 --> 00:03:40.067 line:100% position:50% align:middle
+All this code here, this is react,
+right? only because I imported react
+
+00:03:40.067 --> 00:03:44.776 line:100% position:50% align:middle
+from react. If I take it out and refresh
+this URL you're going to see that react
+
+00:03:44.776 --> 00:03:47.857 line:100% position:50% align:middle
+is no longer in there. There's a whole
+bunch of stuff. This is all web pack dev
+
+00:03:47.857 --> 00:03:51.608 line:100% position:50% align:middle
+server stuff. That's totally fine.
+That stuff's not included when you
+
+00:03:51.608 --> 00:03:55.711 line:100% position:50% align:middle
+actually deploy it to your application,
+but if I were to write alert hello,
+
+00:03:55.711 --> 00:04:02.939 line:100% position:50% align:middle
+and refresh this, you will see if I
+search for it. There we go, there is my
+
+00:04:02.939 --> 00:04:07.421 line:100% position:50% align:middle
+actual alert code. So any code that gets
+written in this index.js is going
+
+00:04:07.421 --> 00:04:11.398 line:100% position:50% align:middle
+to be bundled into your bundle.js file,
+and this is...again this is a
+
+00:04:11.398 --> 00:04:14.668 line:100% position:50% align:middle
+development version. So there is going
+to be a whole bunch of other stuff
+
+00:04:14.668 --> 00:04:18.361 line:100% position:50% align:middle
+in here that's just for development,
+and we're going to learn
+
+00:04:18.361 --> 00:04:22.731 line:100% position:50% align:middle
+how do we take that out for production
+mode? So we want to go back to import
+
+00:04:22.731 --> 00:04:26.140 line:100% position:50% align:middle
+react from react, and we want
+to create our first component.
+
+00:04:26.140 --> 00:04:28.999 line:100% position:50% align:middle
+And the way that we do that is we
+say class, and we're going to be using
+
+00:04:28.999 --> 00:04:33.801 line:100% position:50% align:middle
+ES6 classes here. And we'll look at what
+the difference is between the two.
+
+00:04:33.801 --> 00:04:40.293 line:100% position:50% align:middle
+But we'll say class Store Picker, and we
+use a capital on the front of all of our
+
+00:04:40.293 --> 00:04:44.770 line:100% position:50% align:middle
+components because they can be used more
+than once. And we're going to say extends,
+
+00:04:44.770 --> 00:04:51.930 line:100% position:50% align:middle
+and it's going to extend React. Component,
+and open up and close your curly brackets.
+
+00:04:51.930 --> 00:04:57.667 line:100% position:50% align:middle
+Now that is our very basic component.
+In every single component that you build,
+
+00:04:57.667 --> 00:05:02.638 line:100% position:50% align:middle
+it means at least one method, and that
+is the render method. So when a component
+
+00:05:02.638 --> 00:05:07.779 line:100% position:50% align:middle
+gets rendered to the actual page, it will
+ask store picker "what HTML should
+
+00:05:07.779 --> 00:05:15.094 line:100% position:50% align:middle
+I display?" So we type render, and if you
+are new to ES6 classes, this is sort
+
+00:05:15.094 --> 00:05:21.176 line:100% position:50% align:middle
+of similar to doing something like this
+like function store, sorry, render,
+
+00:05:21.176 --> 00:05:25.882 line:100% position:50% align:middle
+something like that. However, we just
+write it like this here, and then
+
+00:05:25.882 --> 00:05:30.373 line:100% position:50% align:middle
+inside of this render we are going
+to return some jsx.
+
+00:05:30.373 --> 00:05:32.828 line:100% position:50% align:middle
+We'll learn about more of that in the
+video. So we'll say return,
+
+00:05:32.828 --> 00:05:36.250 line:100% position:50% align:middle
+I'm just going to have a paragraph
+that says Hello, and close
+
+00:05:36.250 --> 00:05:41.230 line:100% position:50% align:middle
+that up. Now that is our store picker
+component. How do I get it to actually
+
+00:05:41.230 --> 00:05:45.764 line:100% position:50% align:middle
+render onto the page? If you open up your
+HTML here, you're going to see that we
+
+00:05:45.764 --> 00:05:50.004 line:100% position:50% align:middle
+have an empty div right here. Div with the
+id of main, and this is where the react
+
+00:05:50.004 --> 00:05:54.194 line:100% position:50% align:middle
+app is going to go. This is called a
+mounting point for us with a div with the
+
+00:05:54.194 --> 00:06:00.031 line:100% position:50% align:middle
+id of main. So what we do here, is we
+need to go and grab react-dom
+
+00:06:00.031 --> 00:06:03.379 line:100% position:50% align:middle
+because react is not just for HTML
+in the dom.
+
+00:06:03.379 --> 00:06:07.705 line:100% position:50% align:middle
+It can also be used to create
+Android apps as well as IOS
+
+00:06:07.705 --> 00:06:12.791 line:100% position:50% align:middle
+apps, and there is a canvas render.
+So where react renders out to is not just
+
+00:06:12.791 --> 00:06:17.820 line:100% position:50% align:middle
+HTML, but in our case we actually want it
+to render to HTML. So we need to import
+
+00:06:17.820 --> 00:06:23.640 line:100% position:50% align:middle
+the render method from a package called
+react-dom. Now sometimes you may see
+
+00:06:23.640 --> 00:06:29.856 line:100% position:50% align:middle
+people say import reactDOM
+from 'react-dom,' and then what we're
+
+00:06:29.856 --> 00:06:35.840 line:100% position:50% align:middle
+going to do is down here we'll say
+react-dom.render, but in our case, we
+
+00:06:35.840 --> 00:06:39.411 line:100% position:50% align:middle
+don't need the entire react-dom package.
+We just need that one render method.
+
+00:06:39.411 --> 00:06:45.596 line:100% position:50% align:middle
+So rather than import the entire package,
+we just import one of the methods
+
+00:06:45.596 --> 00:06:49.205 line:100% position:50% align:middle
+from it, and that's what these
+curly brackets in ES6 will do.
+
+00:06:49.205 --> 00:06:52.541 line:100% position:50% align:middle
+So what we do is say render,
+and the first thing that we
+
+00:06:52.541 --> 00:06:56.588 line:100% position:50% align:middle
+pass it is what component would we
+like to render. In our case, it's going
+
+00:06:56.588 --> 00:07:01.881 line:100% position:50% align:middle
+to be store picker. So here we say
+store picker, and this is jsx here
+
+00:07:01.881 --> 00:07:04.223 line:100% position:50% align:middle
+because we created this
+component, and when you
+
+00:07:04.223 --> 00:07:08.040 line:100% position:50% align:middle
+want to render out a component,
+you open up a tag, you type the name
+
+00:07:08.040 --> 00:07:11.599 line:100% position:50% align:middle
+of the component, and then you
+close the actual component itself.
+
+00:07:11.599 --> 00:07:16.957 line:100% position:50% align:middle
+And then the second thing is what
+dom element should it render out to?
+
+00:07:16.957 --> 00:07:21.520 line:100% position:50% align:middle
+So we have a div with the id of main. How
+do we select that? Well we can just use
+
+00:07:21.520 --> 00:07:27.780 line:100% position:50% align:middle
+document.querySelector, and we'll pass it
+with an id of main. You could also use
+
+00:07:27.780 --> 00:07:32.910 line:100% position:50% align:middle
+document.getElement by id there. So now,
+if I save that, and go back to our
+
+00:07:32.910 --> 00:07:37.760 line:100% position:50% align:middle
+application...Oh, there we go. Look all
+ready you see hello, now if we go to our
+
+00:07:37.760 --> 00:07:41.900 line:100% position:50% align:middle
+react dev tools, you'll see that the store
+picker component has been rendered to the
+
+00:07:41.900 --> 00:07:48.240 line:100% position:50% align:middle
+page, and that's pretty much it. Now it's
+a best practice to put each of your
+
+00:07:48.240 --> 00:07:55.096 line:100% position:50% align:middle
+components in a separate file. So rather
+than us build our entire application
+
+00:07:55.096 --> 00:07:58.959 line:100% position:50% align:middle
+in one file, and there's nothing wrong
+with that. However, it's a little bit
+
+00:07:58.959 --> 00:08:05.400 line:100% position:50% align:middle
+easier to maintain it if we put each
+of our components in their own files.
+
+00:08:05.400 --> 00:08:09.650 line:100% position:50% align:middle
+So what I like to do is go to components
+here. I'm going to create a file.
+
+00:08:09.650 --> 00:08:15.165 line:100% position:50% align:middle
+And I'm going to name it storepicker.js
+and I'm naming it exactly as the component
+
+00:08:15.165 --> 00:08:21.803 line:100% position:50% align:middle
+is named. And I'm going to take this
+component here and I'm going to go
+
+00:08:21.803 --> 00:08:26.700 line:100% position:50% align:middle
+to storepicker.js and paste it there. Now
+you might think that's all we need to do
+
+00:08:26.700 --> 00:08:30.039 line:100% position:50% align:middle
+in order for it to actually work.
+But there's a couple of things that need
+
+00:08:30.039 --> 00:08:35.059 line:100% position:50% align:middle
+to happen here. First of all, we need
+react, so we need to import react
+
+00:08:35.059 --> 00:08:38.982 line:100% position:50% align:middle
+from react, and you're going to have
+to do that in the top of every
+
+00:08:38.982 --> 00:08:42.437 line:100% position:50% align:middle
+single component. Not like jquery, where
+you load on the page, and it's
+
+00:08:42.437 --> 00:08:46.071 line:100% position:50% align:middle
+available to everyone. With ES6
+modules, if you need something
+
+00:08:46.071 --> 00:08:49.916 line:100% position:50% align:middle
+inside of of these js modules here,
+you need to make sure
+
+00:08:49.916 --> 00:08:53.550 line:100% position:50% align:middle
+that you import it inside of every
+single file that you need it.
+
+00:08:53.550 --> 00:08:58.267 line:100% position:50% align:middle
+So we've imported react. We've needed it.
+We create this class here, and then what
+
+00:08:58.267 --> 00:09:03.228 line:100% position:50% align:middle
+we would do is we type export default
+StorePicker, and what that's going
+
+00:09:03.228 --> 00:09:07.214 line:100% position:50% align:middle
+to allow us to do is we've created this
+tidy little component that we can go
+
+00:09:07.214 --> 00:09:16.651 line:100% position:50% align:middle
+back into our index.js and we will say
+import StorePicker from, now you might
+
+00:09:16.651 --> 00:09:21.464 line:100% position:50% align:middle
+think we just type StorePicker right?
+However, if it's just a string, web pack
+
+00:09:21.464 --> 00:09:24.983 line:100% position:50% align:middle
+thinks that you look in the node modules
+directory, and this is not a node module.
+
+00:09:24.983 --> 00:09:29.440 line:100% position:50% align:middle
+This is a module that we've created our
+actual selves. So we need to do what's
+
+00:09:29.440 --> 00:09:34.910 line:100% position:50% align:middle
+called a relative path, so . / or index
+the HTML, we need to go inside of the
+
+00:09:34.910 --> 00:09:39.967 line:100% position:50% align:middle
+components folder, and we want to look
+for StorePicker. You don't need the .js
+
+00:09:39.967 --> 00:09:45.058 line:100% position:50% align:middle
+on the end. It's assumed, so you can just
+simply type StorePicker. So if we refresh,
+
+00:09:45.058 --> 00:09:51.250 line:100% position:50% align:middle
+nothing should have happened because we
+have just sort of refactored it, made the
+
+00:09:51.250 --> 00:09:54.353 line:100% position:50% align:middle
+component inside of here, and this
+is nice. We're going to be able to go
+
+00:09:54.353 --> 00:09:57.325 line:100% position:50% align:middle
+into the storepicker every time that we
+need to edit it.  And we don't have
+
+00:09:57.325 --> 00:10:01.000 line:100% position:50% align:middle
+to scroll through a thousand
+lines of code in order to work with it.
