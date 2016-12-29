@@ -1,0 +1,768 @@
+WEBVTT
+
+00:00:02.993 --> 00:00:06.282 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:08.440 --> 00:00:11.920 line:100% position:50% align:middle
+Today we're going to create what I like to
+call a type-ahead feature where I've got a
+
+00:00:11.920 --> 00:00:15.690 line:100% position:50% align:middle
+list of cities and states with their
+population in it. When I type something in
+
+00:00:15.690 --> 00:00:20.040 line:100% position:50% align:middle
+like new, it's going to show me everything
+that matches the word new.
+
+00:00:20.040 --> 00:00:27.044 line:100% position:50% align:middle
+If I type in New York or Boston or West
+it's going to show me every single city
+
+00:00:27.044 --> 00:00:32.720 line:100% position:50% align:middle
+and state that matches whatever I've typed
+in along with the corresponding population
+
+00:00:32.720 --> 00:00:35.820 line:100% position:50% align:middle
+Now this data is going to be coming in
+from an external source.
+
+00:00:35.820 --> 00:00:40.199 line:100% position:50% align:middle
+What I've done is I just went in GitHub
+here, and I found a cities.JSON
+
+00:00:40.199 --> 00:00:45.580 line:100% position:50% align:middle
+file which will include the city
+name, the state name, as well as the
+
+00:00:45.580 --> 00:00:50.376 line:100% position:50% align:middle
+population that we have here and I've put
+that into a URL. So first thing that we
+
+00:00:50.376 --> 00:00:55.820 line:100% position:50% align:middle
+need to do is, we need to actually go and
+fetch this data which is a huge array and
+
+00:00:55.820 --> 00:01:00.520 line:100% position:50% align:middle
+then once that data is back, whenever
+someone types into this specific box,
+
+00:01:00.520 --> 00:01:05.260 line:100% position:50% align:middle
+we're going to filter that array down to a
+subset of all of the ones that either the
+
+00:01:05.260 --> 00:01:09.000 line:100% position:50% align:middle
+city name or the state name will match.
+
+00:01:09.000 --> 00:01:12.280 line:100% position:50% align:middle
+So how we're going to do that? Well, first
+of all, we need an empty array to put our
+
+00:01:12.280 --> 00:01:16.790 line:100% position:50% align:middle
+cities into so let's say, const cities
+equals an empty array and then we need to
+
+00:01:16.790 --> 00:01:22.060 line:100% position:50% align:middle
+go out and fetch our data. We're going to
+be using a new API in the browser called
+
+00:01:22.060 --> 00:01:28.280 line:100% position:50% align:middle
+fetch. And if you've done an HTML or XML
+HTTP request in the browser before,
+
+00:01:28.280 --> 00:01:33.980 line:100% position:50% align:middle
+you probably have used like JQuery.dol.
+JSON or a library like axios.
+
+00:01:33.980 --> 00:01:38.620 line:100% position:50% align:middle
+However, the browser now has a new one
+built in which is called fetch.
+
+00:01:38.620 --> 00:01:41.742 line:100% position:50% align:middle
+So that's what we're going to use. We're
+going to call fetch and you fetch the end
+
+00:01:41.742 --> 00:01:49.150 line:100% position:50% align:middle
+point. And what fetch will do, if you're
+used to maybe running a callback like this
+
+00:01:49.150 --> 00:01:51.990 line:100% position:50% align:middle
+function, and you have the data, and then
+you can const log the the data,
+
+00:01:51.990 --> 00:01:57.130 line:100% position:50% align:middle
+it works a little bit differently than
+that because fetch itself will return what
+
+00:01:57.130 --> 00:02:01.450 line:100% position:50% align:middle
+is called a promise and I'll show you
+that. If you we were to just put this
+
+00:02:01.450 --> 00:02:07.980 line:100% position:50% align:middle
+in a variable, const prom equals fetch and
+console log prom. Open that sucker up in
+
+00:02:07.980 --> 00:02:13.980 line:100% position:50% align:middle
+our browser, you see that, oh prom.
+Prom, here we go. You see that?
+
+00:02:13.980 --> 00:02:18.970 line:100% position:50% align:middle
+It doesn't return the data, it returns
+what's called a promise which is sort of
+
+00:02:18.970 --> 00:02:23.420 line:100% position:50% align:middle
+like a something will eventually
+come back from this fetch.
+
+00:02:23.420 --> 00:02:27.860 line:100% position:50% align:middle
+So the way that we can work with the
+promise is you call .then against it.
+
+00:02:27.860 --> 00:02:33.820 line:100% position:50% align:middle
+So it's a .then. And it's going to return
+to us just like a blob of data.
+
+00:02:33.820 --> 00:02:37.570 line:100% position:50% align:middle
+I like to call it a blob. And I'll show
+you why. You might think like,
+
+00:02:37.570 --> 00:02:43.160 line:100% position:50% align:middle
+"Oh why, wouldn't that just be the list of
+cities?" So from that let's console.log
+
+00:02:43.160 --> 00:02:49.710 line:100% position:50% align:middle
+the blob. So this is what comes back.
+Response of course it worked, Two hundred,
+
+00:02:49.710 --> 00:02:57.460 line:100% position:50% align:middle
+okay, is true, good. Headers, we open up
+the body. There's just a readable stream
+
+00:02:57.460 --> 00:03:04.990 line:100% position:50% align:middle
+locked false T, like what's going on here?
+And what's happening is that the data that
+
+00:03:04.990 --> 00:03:10.656 line:100% position:50% align:middle
+comes back from our fetch, it doesn't
+know what kind of data it is just yet.
+
+00:03:10.656 --> 00:03:14.550 line:100% position:50% align:middle
+Just it could be an image, it could be
+some HTML, it could be some music that's
+
+00:03:14.550 --> 00:03:18.950 line:100% position:50% align:middle
+coming back. We explicitly
+know that it is JSON.
+
+00:03:18.950 --> 00:03:22.716 line:100% position:50% align:middle
+So you might think, "Okay, that's fine.
+Why don't we just do JSON.parse, right?
+
+00:03:22.716 --> 00:03:27.930 line:100% position:50% align:middle
+That should you work." But it doesn't
+because the blob has to be converted from
+
+00:03:27.930 --> 00:03:33.710 line:100% position:50% align:middle
+the raw data that it is in into JSON. So
+what you do from this is you call blob.
+
+00:03:33.710 --> 00:03:38.040 line:100% position:50% align:middle
+And if you look at this blob, and open the
+prototype, you'll see that there is a
+
+00:03:38.040 --> 00:03:44.720 line:100% position:50% align:middle
+method called JSON right there. So if you
+call blob.JSON, that itself is going to
+
+00:03:44.720 --> 00:03:49.500 line:100% position:50% align:middle
+return another promise which we're going
+to call .then on. This is getting a little
+
+00:03:49.500 --> 00:03:55.567 line:100% position:50% align:middle
+bit hairy, so let's do this. Oh yeah, that
+looks much better .then and that is
+
+00:03:55.567 --> 00:04:00.823 line:100% position:50% align:middle
+going to give you the raw data which
+we can console log this data here.
+
+00:04:01.698 --> 00:04:07.150 line:100% position:50% align:middle
+Now when I refresh, we get a massive array
+of all 1000 cities and states and
+
+00:04:07.150 --> 00:04:11.910 line:100% position:50% align:middle
+population and latitude and longitude from
+each of the ones. Now how do I get this
+
+00:04:11.910 --> 00:04:18.407 line:100% position:50% align:middle
+data into cities? You might think, "Oh
+I'll just do a Cities equals data, right?
+
+00:04:18.407 --> 00:04:23.300 line:100% position:50% align:middle
+No problem there. Assignment to a
+const variable. So we just tried to
+
+00:04:23.300 --> 00:04:27.890 line:100% position:50% align:middle
+wipe out a const variable by
+reassigning it to be the data.
+
+00:04:27.890 --> 00:04:32.330 line:100% position:50% align:middle
+So what you could do is say let
+cities and that's a fine way to go
+
+00:04:32.330 --> 00:04:38.140 line:100% position:50% align:middle
+about it as cities by array or if you like
+to keep your variables const because you
+
+00:04:38.140 --> 00:04:44.340 line:100% position:50% align:middle
+do not want that array changing,
+you can push the items into cities.
+
+00:04:44.340 --> 00:04:52.530 line:100% position:50% align:middle
+So you might think, "Okay, cities.push"
+and we'll say data, and look at cities.
+
+00:04:52.530 --> 00:04:57.770 line:100% position:50% align:middle
+Okay, this is an array of one thing but if
+you open that array then you say,
+
+00:04:57.770 --> 00:05:01.170 line:100% position:50% align:middle
+okay that's not it. It's an array of
+an array. Now, we're nested.
+
+00:05:01.170 --> 00:05:06.690 line:100% position:50% align:middle
+So how do I get each and every item to go
+into cities? Well, you might know that
+
+00:05:06.690 --> 00:05:10.660 line:100% position:50% align:middle
+cities.push, if you push something
+like one, two , three, four,
+
+00:05:10.660 --> 00:05:15.660 line:100% position:50% align:middle
+and then look at cities, you'll notice
+that every time I have another argument to
+
+00:05:15.660 --> 00:05:20.980 line:100% position:50% align:middle
+push, it will put it as its own item in
+the array. And the way that we can change
+
+00:05:20.980 --> 00:05:27.167 line:100% position:50% align:middle
+this array into individual arguments is we
+spread into it. A spread is part of ES6
+
+00:05:27.167 --> 00:05:29.580 line:100% position:50% align:middle
+I've got a whole bunch of videos
+in my other ES6 series,
+
+00:05:29.580 --> 00:05:36.060 line:100% position:50% align:middle
+but you simply spread into a function or
+spread into this push method and that will
+
+00:05:36.060 --> 00:05:41.720 line:100% position:50% align:middle
+give us proper cities, there we go. Now
+that's an array of a thousand different
+
+00:05:41.720 --> 00:05:45.240 line:100% position:50% align:middle
+cities that we have. Good.
+Now I'm happy with that.
+
+00:05:45.240 --> 00:05:48.850 line:100% position:50% align:middle
+The next thing we need to do is when
+someone then types into this box here,
+
+00:05:48.850 --> 00:05:53.390 line:100% position:50% align:middle
+I need to run a function that is going to
+take this massive array and filter it down
+
+00:05:53.390 --> 00:05:58.340 line:100% position:50% align:middle
+into a subset where you can then listen
+for it. So I'm going to create a function
+
+00:05:58.340 --> 00:06:05.570 line:100% position:50% align:middle
+here called find matches. And that's
+going to take in a word to match,
+
+00:06:05.570 --> 00:06:09.970 line:100% position:50% align:middle
+and it's also going to take in the cities
+array as we want to pass in the data into
+
+00:06:09.970 --> 00:06:14.590 line:100% position:50% align:middle
+this function that it's going to filter.
+And from that, we are going to return
+
+00:06:14.590 --> 00:06:18.266 line:100% position:50% align:middle
+these cities array, but we're going
+to call filter on it which is going to
+
+00:06:18.266 --> 00:06:22.800 line:100% position:50% align:middle
+sort of chisel it down into a
+subset of that initial array.
+
+00:06:22.800 --> 00:06:28.140 line:100% position:50% align:middle
+So each one is going to have a place which
+is each individual city and state and
+
+00:06:28.140 --> 00:06:32.690 line:100% position:50% align:middle
+population and everything like that. And
+from that, we need to figure out,
+
+00:06:32.690 --> 00:06:42.550 line:100% position:50% align:middle
+here we need to figure out if the city or
+state matches what was searched.
+
+00:06:42.550 --> 00:06:50.810 line:100% position:50% align:middle
+Right? Like if I were to run find matches
+with Bos, it should show me Boston and
+
+00:06:50.810 --> 00:06:57.440 line:100% position:50% align:middle
+whatever other cities have the word Bos in
+it. So we need a couple of reg access
+
+00:06:57.440 --> 00:07:05.600 line:100% position:50% align:middle
+because you might think like, "Okay, we'll
+just return place.city.match." And
+
+00:07:05.600 --> 00:07:11.770 line:100% position:50% align:middle
+normally you could do something like this
+where you search for the word bos and if
+
+00:07:11.770 --> 00:07:16.440 line:100% position:50% align:middle
+it does match, then it will be true, and
+we will give ourselves a subset.
+
+00:07:16.440 --> 00:07:22.220 line:100% position:50% align:middle
+But the problem is that the word to match
+is not always going to be bos or always
+
+00:07:22.220 --> 00:07:26.840 line:100% position:50% align:middle
+going to be new, or always going to
+be York, it's going to be a variable,
+
+00:07:26.840 --> 00:07:31.370 line:100% position:50% align:middle
+and the variable is where to match.
+So just popped in the working match?
+
+00:07:31.370 --> 00:07:35.591 line:100% position:50% align:middle
+No that doesn't work because it's actually
+going to look for the word to match
+
+00:07:35.591 --> 00:07:41.800 line:100% position:50% align:middle
+So how do you put a variable into a
+regular expression? Well, you can't just
+
+00:07:41.800 --> 00:07:46.260 line:100% position:50% align:middle
+do it in this syntax here. We need to
+actually create a regular expression
+
+00:07:46.260 --> 00:07:55.530 line:100% position:50% align:middle
+outside of it. So let's go above here and
+we'll say const regX equals new regEXP
+
+00:07:55.530 --> 00:07:59.110 line:100% position:50% align:middle
+and you pass at the word to match, and
+that's going to be whatever the person
+
+00:07:59.110 --> 00:08:05.154 line:100% position:50% align:middle
+passes in Bos, New, York, etc, etc. And
+then you pass it any of the flags that
+
+00:08:05.154 --> 00:08:08.328 line:100% position:50% align:middle
+you want. So G is going to be global
+meaning it's going to look through
+
+00:08:08.328 --> 00:08:14.415 line:100% position:50% align:middle
+the entire string for that specific one.
+And I is going to be insensitive meaning
+
+00:08:14.415 --> 00:08:20.839 line:100% position:50% align:middle
+that it's not a terrible person or it's
+insensitive, it's going to match lowercase
+
+00:08:20.839 --> 00:08:25.608 line:100% position:50% align:middle
+as well as uppercase regardless of what
+you're searching with. So now we call dot
+
+00:08:25.608 --> 00:08:31.140 line:100% position:50% align:middle
+match with our regX in here. And
+that's going to take the place.city in.
+
+00:08:31.140 --> 00:08:38.270 line:100% position:50% align:middle
+If we take a look at our cities here,
+you'll see that as each place is New York
+
+00:08:38.270 --> 00:08:43.050 line:100% position:50% align:middle
+and the city is going to be New York. But
+we also need to match the state
+
+00:08:43.050 --> 00:08:46.940 line:100% position:50% align:middle
+which...that's a bad example. Here we go.
+State is going to be California.
+
+00:08:46.940 --> 00:08:51.040 line:100% position:50% align:middle
+So we've got to return the place
+that city.match regX or the
+
+00:08:51.040 --> 00:08:59.120 line:100% position:50% align:middle
+place.state.match regX. And that will
+check if the city or the state has either
+
+00:08:59.120 --> 00:09:05.050 line:100% position:50% align:middle
+one, so if this one is true or this one is
+true, the whole thing is going to be true,
+
+00:09:05.050 --> 00:09:09.360 line:100% position:50% align:middle
+and therefore our filter is going
+to be made much smaller.
+
+00:09:09.360 --> 00:09:15.240 line:100% position:50% align:middle
+So if I were to then run this, if we were
+to say, find matches, and we are to search
+
+00:09:15.240 --> 00:09:22.220 line:100% position:50% align:middle
+for Bos and we need to pass our cities
+array here. What it returns to us is a
+
+00:09:22.220 --> 00:09:28.570 line:100% position:50% align:middle
+small array of two things, Boston and
+Bossier City, good. We've got our find
+
+00:09:28.570 --> 00:09:35.310 line:100% position:50% align:middle
+matches function done. Then what we need
+to do is create our display function.
+
+00:09:35.310 --> 00:09:41.860 line:100% position:50% align:middle
+So I say function, display matches and
+that's going to be called whenever someone
+
+00:09:41.860 --> 00:09:47.090 line:100% position:50% align:middle
+changes the value on here. So I'm
+going to console.log this .value.
+
+00:09:47.090 --> 00:09:55.070 line:100% position:50% align:middle
+And then we're going to select
+this input that we're working here.
+
+00:09:55.070 --> 00:10:00.190 line:100% position:50% align:middle
+So what is the selector on here. Input
+type of text class is search,
+
+00:10:00.190 --> 00:10:05.410 line:100% position:50% align:middle
+that's good for me. So I'm going to go
+down here in case. Const search input
+
+00:10:05.410 --> 00:10:13.600 line:100% position:50% align:middle
+equals document.query selector.search.
+And then we also want to select this UL
+
+00:10:13.600 --> 00:10:21.780 line:100% position:50% align:middle
+here which is suggestions. Then we'll say,
+search input.add event listener.
+
+00:10:21.780 --> 00:10:28.130 line:100% position:50% align:middle
+We're going to listen for the change
+event and when the input changes,
+
+00:10:28.130 --> 00:10:35.570 line:100% position:50% align:middle
+we are going to run find matches. Save. We
+should now see when we run it.
+
+00:10:35.570 --> 00:10:42.150 line:100% position:50% align:middle
+Type in here and I click outside then it
+runs that function, oh we got an error.
+
+00:10:42.150 --> 00:10:49.350 line:100% position:50% align:middle
+Cannot read property filter of undefined
+in our...oh because we're not running fine
+
+00:10:49.350 --> 00:10:55.110 line:100% position:50% align:middle
+matches directly, sorry, we are running
+display matches not find matches.
+
+00:10:55.110 --> 00:11:00.840 line:100% position:50% align:middle
+So if I type in here, like Bos and click
+outside, it then will trigger in console
+
+00:11:00.840 --> 00:11:05.760 line:100% position:50% align:middle
+log this, which is the input.value and
+that's whatever someone has typed in
+
+00:11:05.760 --> 00:11:09.920 line:100% position:50% align:middle
+here, new, click outside. So why do I need
+to click outside? That's because the
+
+00:11:09.920 --> 00:11:15.390 line:100% position:50% align:middle
+change event only fires when you go off
+that input not whenever you type into and
+
+00:11:15.390 --> 00:11:20.250 line:100% position:50% align:middle
+key up. So if you want it to also fire and
+key up, just duplicate that it will listen
+
+00:11:20.250 --> 00:11:26.430 line:100% position:50% align:middle
+for the key up event and we'll just rerun
+display matches on that as well.
+
+00:11:26.430 --> 00:11:34.490 line:100% position:50% align:middle
+Now if I type new, hello, bos, you get the
+point. Every time we key up,
+
+00:11:34.490 --> 00:11:38.460 line:100% position:50% align:middle
+it's going to tell us what the person has
+typed into that box.
+
+00:11:38.460 --> 00:11:43.930 line:100% position:50% align:middle
+Now what we want to do is go back to
+this display matches function here,
+
+00:11:43.930 --> 00:11:49.410 line:100% position:50% align:middle
+and we are going to use this find
+matches function that we built.
+
+00:11:49.410 --> 00:11:58.880 line:100% position:50% align:middle
+So say const match array equals find
+matches and we are going to pass it this
+
+00:11:58.880 --> 00:12:05.840 line:100% position:50% align:middle
+.value as well as our cities array
+and that should give us the match array.
+
+00:12:05.840 --> 00:12:11.100 line:100% position:50% align:middle
+Let's try it out. Whenever I type into, it
+should run this caller function find ones
+
+00:12:11.100 --> 00:12:16.928 line:100% position:50% align:middle
+that match it, Bos. There we go. So the
+first time I type B, there is a lot
+
+00:12:16.928 --> 00:12:21.140 line:100% position:50% align:middle
+of cities. Second time I type O, a
+little less and then the third type,
+
+00:12:21.140 --> 00:12:25.605 line:100% position:50% align:middle
+I type Bos, it's going to give me that
+array of just two cities that have
+
+00:12:25.605 --> 00:12:30.290 line:100% position:50% align:middle
+matched it. Good. So we've got the data,
+and that's really what I'd like to stress
+
+00:12:30.290 --> 00:12:34.549 line:100% position:50% align:middle
+when we're doing this stuff. Get your data
+first, get all your functionality in place
+
+00:12:34.549 --> 00:12:39.400 line:100% position:50% align:middle
+and then we'll worry about hooking
+it up to event listeners as well as
+
+00:12:39.400 --> 00:12:41.720 line:100% position:50% align:middle
+creating the HTML that we need there.
+
+00:12:41.720 --> 00:12:50.240 line:100% position:50% align:middle
+So we're going to first loop over it. So
+say const HTML equals match array.map
+
+00:12:50.240 --> 00:12:56.540 line:100% position:50% align:middle
+and each one is going to be the place,
+what did we use up here?
+
+00:12:56.540 --> 00:13:02.540 line:100% position:50% align:middle
+Yeah, place, I like to keep it consistent.
+And from each of those return back texts,
+
+00:13:02.540 --> 00:13:08.180 line:100% position:50% align:middle
+it's going to hold our list item LI.
+Inside of that, we want a span with the
+
+00:13:08.180 --> 00:13:17.760 line:100% position:50% align:middle
+class of name just going to contain the
+place.city and the place.state and below
+
+00:13:17.760 --> 00:13:22.920 line:100% position:50% align:middle
+that we're going to have a span with a
+class of population, place.population.
+
+00:13:22.920 --> 00:13:30.860 line:100% position:50% align:middle
+Then finally once we've mapped over this
+array, we can simply call suggestions dot.
+
+00:13:30.860 --> 00:13:34.060 line:100% position:50% align:middle
+And what are suggestions? That's the
+square selector that we've done down here,
+
+00:13:34.060 --> 00:13:40.670 line:100% position:50% align:middle
+.inner HTML equals HTML, which is this
+HTML that we have here.
+
+00:13:40.670 --> 00:13:44.550 line:100% position:50% align:middle
+One last thing is this map is going to
+return an array when we really want just
+
+00:13:44.550 --> 00:13:50.440 line:100% position:50% align:middle
+one string. So we can call it quick.join
+on the end, and that will turn it into
+
+00:13:50.440 --> 00:13:56.320 line:100% position:50% align:middle
+from an array with multiple items into one
+big string. Let's give it a shot.
+
+00:13:56.320 --> 00:14:02.590 line:100% position:50% align:middle
+Bos, there we go, Boston, Massachusetts,
+Bossier City. New, looking good.
+
+00:14:02.590 --> 00:14:06.660 line:100% position:50% align:middle
+A couple of last things we need to do. If
+we look at the actual answer that we're
+
+00:14:06.660 --> 00:14:14.420 line:100% position:50% align:middle
+working here is we want to format these
+numbers here as well as we want to
+
+00:14:14.420 --> 00:14:20.430 line:100% position:50% align:middle
+highlight the actual words like Wes in
+West Virginia and West Sacramento.
+
+00:14:20.430 --> 00:14:25.080 line:100% position:50% align:middle
+So how do we do that? Well, let's go back
+to our map function here.
+
+00:14:25.080 --> 00:14:31.730 line:100% position:50% align:middle
+And before we return, what we can then do
+is create a regX or match the city name
+
+00:14:31.730 --> 00:14:37.060 line:100% position:50% align:middle
+and then we'll use that regX to replace
+the word that it matches like Wes with
+
+00:14:37.060 --> 00:14:41.140 line:100% position:50% align:middle
+just a span of the class of HL and the
+word that it matches.
+
+00:14:41.140 --> 00:14:44.736 line:100% position:50% align:middle
+So we're just going to be like plucking
+the word Wes out and replacing it with
+
+00:14:44.736 --> 00:14:52.270 line:100% position:50% align:middle
+a span class of HL. So say const
+regX equals new regXt. You'll see this
+
+00:14:52.270 --> 00:14:55.589 line:100% position:50% align:middle
+top value which is whatever the person
+searched for. We want to search for that
+
+00:14:55.589 --> 00:15:01.043 line:100% position:50% align:middle
+globally because if it's matched more than
+once in the city name, it would be kind of
+
+00:15:01.043 --> 00:15:04.930 line:100% position:50% align:middle
+cool to show that and insensitively
+we don't care about capitals.
+
+00:15:04.930 --> 00:15:10.230 line:100% position:50% align:middle
+And then we will create a city name
+variable where we're going to take the
+
+00:15:10.230 --> 00:15:16.277 line:100% position:50% align:middle
+place.city and we're going to
+replace the regX, which is whatever
+
+00:15:16.277 --> 00:15:24.130 line:100% position:50% align:middle
+it matches with just a span with the
+class of highlight and we'll pop in this,
+
+00:15:24.130 --> 00:15:29.410 line:100% position:50% align:middle
+.value, oh, I got to use back text
+there. Here we go. So it's going to find
+
+00:15:29.410 --> 00:15:33.490 line:100% position:50% align:middle
+whatever it matched in the regX and
+replace it with a span with a class of
+
+00:15:33.490 --> 00:15:37.400 line:100% position:50% align:middle
+highlight and then the value that the
+person had searched for.
+
+00:15:37.400 --> 00:15:43.720 line:100% position:50% align:middle
+So now when we take that city name, we can
+replace it. Place that city with the city
+
+00:15:43.720 --> 00:15:49.740 line:100% position:50% align:middle
+name variable which is going to include
+the HTML for us. Type in Bos and there we
+
+00:15:49.740 --> 00:15:54.210 line:100% position:50% align:middle
+go, it's matching it. If I type in
+Wes, working so far but we also have to
+
+00:15:54.210 --> 00:16:00.060 line:100% position:50% align:middle
+do it for the state name. So we'll just
+duplicate this and change it to state name
+
+00:16:00.060 --> 00:16:06.400 line:100% position:50% align:middle
+and place.state.replace. And then you
+take that state name variable and replace
+
+00:16:06.400 --> 00:16:10.630 line:100% position:50% align:middle
+it right here. There we go.
+Looks like it's working.
+
+00:16:10.630 --> 00:16:16.200 line:100% position:50% align:middle
+Finally, what we need to do is find a
+function that is going to put in commas
+
+00:16:16.200 --> 00:16:20.360 line:100% position:50% align:middle
+for us. So I've just got a function right
+here. You can grab this from the answer if
+
+00:16:20.360 --> 00:16:25.180 line:100% position:50% align:middle
+you don't feel like typing it or go to
+your nearest stack overflow and take that
+
+00:16:25.180 --> 00:16:30.130 line:100% position:50% align:middle
+answer. And I'm just going to paste it in
+here. Number with commas is just going to
+
+00:16:30.130 --> 00:16:32.710 line:100% position:50% align:middle
+replace it and again it'll
+give you those nice commas.
+
+00:16:32.710 --> 00:16:41.330 line:100% position:50% align:middle
+So we can go to our population. We say
+number with commas, and it will then give
+
+00:16:41.330 --> 00:16:44.280 line:100% position:50% align:middle
+us those nice commas instead of
+everything that we have there.
+
+00:16:44.280 --> 00:16:48.230 line:100% position:50% align:middle
+So new...there we go, we're matching new
+in the state, we're matching new in the
+
+00:16:48.230 --> 00:16:52.520 line:100% position:50% align:middle
+city name as well as we're putting in
+those nice commas to display the data to
+
+00:16:52.520 --> 00:16:56.259 line:100% position:50% align:middle
+the user. That's it for today. If you want
+to a little bit more of a challenge,
+
+00:16:56.259 --> 00:17:00.810 line:100% position:50% align:middle
+maybe go to this data and say, "What else
+could I use to sort these data?" Maybe you
+
+00:17:00.810 --> 00:17:05.030 line:100% position:50% align:middle
+could figure out how does geolocation work
+which is coming in a future video and
+
+00:17:05.030 --> 00:17:09.890 line:100% position:50% align:middle
+sort it by what are the cities that are
+closest to me rather than just the order
+
+00:17:09.890 --> 00:17:14.130 line:100% position:50% align:middle
+that they appear in this array
+explicitly. Thanks a lot and I'll see
+
+00:17:14.130 --> 00:17:15.644 line:100% position:50% align:middle
+you in the next one.
+
+00:17:15.644 --> 00:17:19.609 line:100% position:50% align:middle
+♪ [music] ♪

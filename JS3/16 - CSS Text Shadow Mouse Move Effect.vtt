@@ -1,0 +1,518 @@
+WEBVTT
+
+00:00:01.520 --> 00:00:04.500 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:06.913 --> 00:00:10.104 line:100% position:50% align:middle
+Today we are going to be learning
+all about mouse move
+
+00:00:10.104 --> 00:00:13.660 line:100% position:50% align:middle
+and we're going to recreate this.
+I've created this on
+
+00:00:13.660 --> 00:00:18.020 line:100% position:50% align:middle
+flexbox.io. It's a website for one of my
+other courses and when you move your
+
+00:00:18.020 --> 00:00:24.110 line:100% position:50% align:middle
+cursor over top of the window, the shadow
+sort of follows you around...and just to
+
+00:00:24.110 --> 00:00:28.320 line:100% position:50% align:middle
+show you what's going on here, if we
+inspect this right here, you see that I'm
+
+00:00:28.320 --> 00:00:33.230 line:100% position:50% align:middle
+just dynamically updating the style of
+that h1 tag depending on where your mouse
+
+00:00:33.230 --> 00:00:38.850 line:100% position:50% align:middle
+is on the actual page. Now, you can also
+do this on your phone where I've tapped
+
+00:00:38.850 --> 00:00:43.460 line:100% position:50% align:middle
+into the accelerometer and depending on
+how far you're tipping your phone will
+
+00:00:43.460 --> 00:00:47.480 line:100% position:50% align:middle
+also follow you around. So it's what we're
+going to be building today. This is,
+
+00:00:47.480 --> 00:00:51.420 line:100% position:50% align:middle
+we kind of go crazy at the end here,
+moving it up and down, but we're going to
+
+00:00:51.420 --> 00:00:57.820 line:100% position:50% align:middle
+start with just this which has our
+emoji "woah!" and you can edit it.
+
+00:00:57.820 --> 00:01:00.917 line:100% position:50% align:middle
+I've put a content editable on there
+and we have a hero here.
+
+00:01:00.917 --> 00:01:04.320 line:100% position:50% align:middle
+So, what we're going to do is we're going
+to listen for a mouse move event on our
+
+00:01:04.320 --> 00:01:08.580 line:100% position:50% align:middle
+hero, and when that changes, we are going
+to figure out how far and where we should
+
+00:01:08.580 --> 00:01:14.930 line:100% position:50% align:middle
+put the text shadow on this woah here. So
+we're going to go into our script tag here
+
+00:01:14.930 --> 00:01:22.750 line:100% position:50% align:middle
+and first we'll grab the hero, and we'll
+also grab the text inside of that hero
+
+00:01:22.750 --> 00:01:29.617 line:100% position:50% align:middle
+which is our h1 tag. Now what we need to
+do is make a function called shadow.
+
+00:01:29.758 --> 00:01:36.520 line:100% position:50% align:middle
+It's going to pass us the event and then
+down here, we're going to take our hero
+
+00:01:36.520 --> 00:01:41.700 line:100% position:50% align:middle
+and add an event listener for mouse move.
+When the mouse is moved,
+
+00:01:41.700 --> 00:01:46.050 line:100% position:50% align:middle
+we are going to run the shadow. Good.
+Maybe we will just console log the event
+
+00:01:46.050 --> 00:01:50.113 line:100% position:50% align:middle
+inside of here, see what we're dealing
+with. Go to our console. Good.
+
+00:01:50.113 --> 00:01:55.430 line:100% position:50% align:middle
+Now anytime I mouse over, what we're going
+to do is we get all this information about
+
+00:01:55.430 --> 00:01:59.010 line:100% position:50% align:middle
+what happened and in there, like many of
+these other videos, we find out that we
+
+00:01:59.010 --> 00:02:05.520 line:100% position:50% align:middle
+have some information about
+the offset left. So let's go into
+
+00:02:05.520 --> 00:02:10.950 line:100% position:50% align:middle
+here, and first of all what we need to do
+is get the width and the height of the
+
+00:02:10.950 --> 00:02:16.888 line:100% position:50% align:middle
+thing that we have hovered over which is
+the hero. So say const and we're going to
+
+00:02:16.888 --> 00:02:21.329 line:100% position:50% align:middle
+use some ES6 destructuring here because...
+let's code it without destructuring
+
+00:02:21.329 --> 00:02:27.850 line:100% position:50% align:middle
+first and then we'll rename it. So
+width is equal to hero.offset width,
+
+00:02:27.850 --> 00:02:35.020 line:100% position:50% align:middle
+and height is equal to hero.offset
+height. If you're a hotshot,
+
+00:02:35.020 --> 00:02:39.970 line:100% position:50% align:middle
+you can do it in one line. So you can
+const offset width is going to be equal to
+
+00:02:39.970 --> 00:02:45.380 line:100% position:50% align:middle
+width and offset height is going to be
+equal to height and that is equal.
+
+00:02:45.380 --> 00:02:48.900 line:100% position:50% align:middle
+We destructured that right off the
+hero element. So these two things,
+
+00:02:48.900 --> 00:02:53.300 line:100% position:50% align:middle
+these two lines are like this, whatever
+you prefer to read. You can do that and
+
+00:02:53.300 --> 00:02:57.840 line:100% position:50% align:middle
+then we also need to get the information
+about where the person's cursor was.
+
+00:02:57.840 --> 00:03:00.080 line:100% position:50% align:middle
+So we'll say let and I'll tell you why
+we're going to do let instead of
+
+00:03:00.080 --> 00:03:05.410 line:100% position:50% align:middle
+const in just a second, offset x is going
+to be equal to the variable x.
+
+00:03:05.410 --> 00:03:09.300 line:100% position:50% align:middle
+Offset y is going to be equal to the
+variable y, and we're going to be taking
+
+00:03:09.300 --> 00:03:14.470 line:100% position:50% align:middle
+that off of the event. That's the same
+thing as having e.offset x and e.offset y.
+
+00:03:14.470 --> 00:03:19.360 line:100% position:50% align:middle
+We want these values right here,
+180 and 100. Now let's console.log x
+
+00:03:19.360 --> 00:03:24.840 line:100% position:50% align:middle
+and y. Hey, look at this. Okay, so go, go
+to the top corner and you see zeros.
+
+00:03:24.840 --> 00:03:29.790 line:100% position:50% align:middle
+Go to the very bottom right and you see
+700 or however big your actual one is.
+
+00:03:29.790 --> 00:03:32.071 line:100% position:50% align:middle
+So that's looking good.
+We're seeing information,
+
+00:03:32.071 --> 00:03:38.215 line:100% position:50% align:middle
+but one weird thing is if you hover
+right in the top corner of this h1 tag,
+
+00:03:38.215 --> 00:03:42.470 line:100% position:50% align:middle
+you see that these values are close
+to zero. Now, what's going on here?
+
+00:03:42.470 --> 00:03:49.290 line:100% position:50% align:middle
+If we put a background on this element
+here, and I hover over top the top corner
+
+00:03:49.290 --> 00:03:54.970 line:100% position:50% align:middle
+of the red, it's giving us values like
+zero. Look at, it's like 140 right here,
+
+00:03:54.970 --> 00:04:03.010 line:100% position:50% align:middle
+and then zeros right here. Huh, and what's
+happening is that the event,
+
+00:04:03.010 --> 00:04:09.190 line:100% position:50% align:middle
+even though we're listening for the mouse
+move on the hero, if there are children
+
+00:04:09.190 --> 00:04:13.710 line:100% position:50% align:middle
+elements inside of the hero it's going to
+give us the x and the y of the actual
+
+00:04:13.710 --> 00:04:18.855 line:100% position:50% align:middle
+element that we hovered which is kind
+of a pain. So we need to do a little bit
+
+00:04:18.855 --> 00:04:25.650 line:100% position:50% align:middle
+of normalization here to say okay, if the
+thing that we're actually hovering is this
+
+00:04:25.650 --> 00:04:32.150 line:100% position:50% align:middle
+h1 instead of the hero, then modify the x
+and the y values, so that they're going to
+
+00:04:32.150 --> 00:04:39.650 line:100% position:50% align:middle
+be consistent across all of them. So what
+we do here is we say if this does not
+
+00:04:39.650 --> 00:04:46.830 line:100% position:50% align:middle
+equal event.target, then...hold on,
+what is this? Console log this.
+
+00:04:46.830 --> 00:04:51.127 line:100% position:50% align:middle
+This is going to be a div with a class of
+hero. Okay. What is going to be
+
+00:04:51.127 --> 00:04:56.070 line:100% position:50% align:middle
+event.target? The target is going to be
+the thing that it actually triggered on,
+
+00:04:56.070 --> 00:04:59.940 line:100% position:50% align:middle
+whereas this is going to be the thing that
+you listened on. So it's always going to
+
+00:04:59.940 --> 00:05:03.050 line:100% position:50% align:middle
+be hero for this, but
+the target, what it got
+
+00:05:03.050 --> 00:05:08.290 line:100% position:50% align:middle
+triggered on will sometimes change. So
+hero, hero, hero. Watch this.
+
+00:05:08.290 --> 00:05:14.990 line:100% position:50% align:middle
+Ah, I'm hovering over here and you see
+that I see this is equal to the hero but
+
+00:05:14.990 --> 00:05:20.560 line:100% position:50% align:middle
+the target is equal to the h1. So if those
+two things are not the same,
+
+00:05:20.560 --> 00:05:24.260 line:100% position:50% align:middle
+which is what this if statement is doing
+right here, then what we'll need to do,
+
+00:05:24.260 --> 00:05:31.453 line:100% position:50% align:middle
+we say x equals x plus event
+or e.target.offset left
+
+00:05:31.453 --> 00:05:37.510 line:100% position:50% align:middle
+and the same we'll do with y and
+offset top. So essensially what we're
+
+00:05:37.510 --> 00:05:41.370 line:100% position:50% align:middle
+doing is we're figuring out if someone
+hovers in the top left hand corner of
+
+00:05:41.370 --> 00:05:47.613 line:100% position:50% align:middle
+woah, this h1, we're going to add the
+like two pixels that it's given us plus
+
+00:05:48.230 --> 00:05:52.257 line:100% position:50% align:middle
+whatever it is from the left and whatever
+it is from the top. So dealing with x and
+
+00:05:52.257 --> 00:05:57.917 line:100% position:50% align:middle
+y is a bit of a headache in Javascript and
+this is the best fix that we can find
+
+00:05:57.917 --> 00:06:02.500 line:100% position:50% align:middle
+to work with that. So now if I console log
+x and y and that, by the way that is why I
+
+00:06:02.500 --> 00:06:06.196 line:100% position:50% align:middle
+used let, because it's possible that we
+needed to reassign the values here.
+
+00:06:07.321 --> 00:06:11.550 line:100% position:50% align:middle
+Now if I hover over the top left hand
+corner you see those values aren't back to
+
+00:06:11.550 --> 00:06:16.850 line:100% position:50% align:middle
+zero. It doesn't change depending on where
+we are. Good. Now what we need to do is
+
+00:06:16.850 --> 00:06:23.840 line:100% position:50% align:middle
+figure out how far the text shadow should
+actually go. So we need something that I
+
+00:06:23.840 --> 00:06:28.459 line:100% position:50% align:middle
+like to call a walk. If you look at this,
+if my cursor is all the way at the top
+
+00:06:28.459 --> 00:06:33.620 line:100% position:50% align:middle
+left, how much over and
+back should it go? If it's all
+
+00:06:33.620 --> 00:06:37.000 line:100% position:50% align:middle
+the way over, how much over should that
+go, how much all the way down should it
+
+00:06:37.000 --> 00:06:40.820 line:100% position:50% align:middle
+go, and I like to call that the walk. How
+many pixels, at its most,
+
+00:06:40.820 --> 00:06:48.750 line:100% position:50% align:middle
+should it be stretched? So let's go up
+here, and we'll say const walk equals,
+
+00:06:48.750 --> 00:06:53.890 line:100% position:50% align:middle
+let's make it 100 pixels. Just 100, and
+we're going to use that in our math
+
+00:06:53.890 --> 00:07:00.932 line:100% position:50% align:middle
+equation. So now we will say const x walk
+equal to...and here is where it gets a
+
+00:07:00.932 --> 00:07:07.750 line:100% position:50% align:middle
+little bit tricky. Because if it was all
+the way over, like right here,
+
+00:07:07.750 --> 00:07:11.540 line:100% position:50% align:middle
+it's not going to be 200 pixels, and if
+it's all the way over here it's not going
+
+00:07:11.540 --> 00:07:15.570 line:100% position:50% align:middle
+to be zero. If it's all the way
+over it's going to be plus 100,
+
+00:07:15.570 --> 00:07:20.110 line:100% position:50% align:middle
+and if it's all the way over here it's
+going to be negative 100.
+
+00:07:20.110 --> 00:07:29.510 line:100% position:50% align:middle
+So we say x walk equals x divided by the
+width times the walk minus the walk
+
+00:07:29.510 --> 00:07:32.649 line:100% position:50% align:middle
+divided by two.
+What? What are we doing here?
+
+00:07:32.649 --> 00:07:39.850 line:100% position:50% align:middle
+So essentially what that is, if 100 is as
+high as we'll go, 0 is not as low as we'll
+
+00:07:39.850 --> 00:07:46.730 line:100% position:50% align:middle
+go, if 100 is our walk, then 50 should be
+as high as we go and negative 50 is as low
+
+00:07:46.730 --> 00:07:51.210 line:100% position:50% align:middle
+as we should go. So our walk is 100 but we
+want to go from 50 to negative 50,
+
+00:07:51.210 --> 00:07:56.140 line:100% position:50% align:middle
+and that's what this little bit of math is
+doing for us here. It's sort of offsetting
+
+00:07:56.140 --> 00:08:00.040 line:100% position:50% align:middle
+it so we go to plus 50 and
+negative 50 instead of 0
+
+00:08:00.040 --> 00:08:06.540 line:100% position:50% align:middle
+and plus 100. Then we can just swap out
+this x walk, y, with this is going to be
+
+00:08:06.540 --> 00:08:12.612 line:100% position:50% align:middle
+height, then we should console log our x
+walk and our y walk. See what we got here.
+
+00:08:13.512 --> 00:08:18.710 line:100% position:50% align:middle
+Ah, there we go. So now we've got a bunch
+of pixel values, which is giving us...and
+
+00:08:18.710 --> 00:08:25.280 line:100% position:50% align:middle
+those are a little bit long, so we could
+pop a quick math.round around them.
+
+00:08:25.280 --> 00:08:28.150 line:100% position:50% align:middle
+There we go. Now it's giving us some
+good...if you go all the way to the top
+
+00:08:28.150 --> 00:08:32.015 line:100% position:50% align:middle
+left, you get negative 50, negative 50,
+and all the way to the bottom right
+
+00:08:32.015 --> 00:08:36.970 line:100% position:50% align:middle
+you're getting plus 50, plus 50. So now
+that's all left to us is we take our text,
+
+00:08:36.970 --> 00:08:41.950 line:100% position:50% align:middle
+and we can grab the style attribute and
+set the text shadow to be..and I'm going
+
+00:08:41.950 --> 00:08:45.906 line:100% position:50% align:middle
+to use backtexts here. It's going to
+be...and the way that the text-shadow
+
+00:08:45.906 --> 00:08:52.200 line:100% position:50% align:middle
+works is it's, like, 10px, 10px,
+blur, which is going to be 0,
+
+00:08:52.200 --> 00:08:55.780 line:100% position:50% align:middle
+and then you want to give itself like red.
+Something like that.
+
+00:08:55.780 --> 00:09:00.560 line:100% position:50% align:middle
+However, this 10px is not going to be
+10px. It's going to be x walk.
+
+00:09:00.560 --> 00:09:07.640 line:100% position:50% align:middle
+This 10px is going to be y walk and we can
+leave this red as we have it here.
+
+00:09:07.640 --> 00:09:14.240 line:100% position:50% align:middle
+So give that a refresh, and woah! It's
+working. So give it an inspect.
+
+00:09:14.240 --> 00:09:18.805 line:100% position:50% align:middle
+You see how those values are now being
+updated as we move? Negative 50,
+
+00:09:18.805 --> 00:09:24.110 line:100% position:50% align:middle
+negative 50. 50, 50. We're moving it all
+around. That's pretty cool and what you
+
+00:09:24.110 --> 00:09:30.000 line:100% position:50% align:middle
+can also do with that is just do multiple
+colors as you like. So RGBA
+
+00:09:30.000 --> 00:09:40.190 line:100% position:50% align:middle
+255, 0, 255, 0.7, something like that, and
+then comma. We'll do it again,
+
+00:09:40.190 --> 00:09:47.017 line:100% position:50% align:middle
+which x walk times negative one will make
+that one negative, and we'll make this
+
+00:09:47.017 --> 00:09:52.263 line:100% position:50% align:middle
+color to be zero. Just going around the
+spectrum here. Take off that leading
+
+00:09:52.263 --> 00:09:56.931 line:100% position:50% align:middle
+comma. There we go. So now one of them is
+going the opposite way of the way it would
+
+00:09:56.931 --> 00:09:59.987 line:100% position:50% align:middle
+go. So you go left. One of them goes left.
+The other goes right.
+
+00:09:59.987 --> 00:10:08.800 line:100% position:50% align:middle
+Do it again with...we want to give that
+first one our y walk value and this one
+
+00:10:08.800 --> 00:10:15.240 line:100% position:50% align:middle
+our x walk times negative one, and
+finally, figure out y walk times negative
+
+00:10:15.240 --> 00:10:22.612 line:100% position:50% align:middle
+one and our x walk. It changes colors
+around so they're not exactly the same.
+
+00:10:22.612 --> 00:10:30.100 line:100% position:50% align:middle
+0, 255, 0, and 0, 0, 255. Take
+off that last trailing comma,
+
+00:10:30.100 --> 00:10:35.480 line:100% position:50% align:middle
+and there we go. We see all of them going
+every which that way we have,
+
+00:10:35.480 --> 00:10:40.910 line:100% position:50% align:middle
+looking kind of fun. You can do some crazy
+stuff by...go up, change your walk value,
+
+00:10:40.910 --> 00:10:45.679 line:100% position:50% align:middle
+where did we set that? Here and if you
+change that to 500 and it goes woo!
+
+00:10:45.679 --> 00:10:49.534 line:100% position:50% align:middle
+All over the place. You can set
+some blur modes in CSS
+
+00:10:49.534 --> 00:10:52.560 line:100% position:50% align:middle
+so that they change each
+other when they overwrite.
+
+00:10:52.560 --> 00:10:55.990 line:100% position:50% align:middle
+There's all sort of fun stuff we can do
+there. The real big thing that we learned
+
+00:10:55.990 --> 00:11:00.300 line:100% position:50% align:middle
+there is that when you're dealing with
+events, you can use offset x and offset y
+
+00:11:00.300 --> 00:11:07.330 line:100% position:50% align:middle
+to get the position where your cursor is.
+However, if you have nested elements
+
+00:11:07.330 --> 00:11:11.020 line:100% position:50% align:middle
+inside of that thing, you sometimes will
+need to do a little bit of math to deal
+
+00:11:11.020 --> 00:11:15.760 line:100% position:50% align:middle
+with it. Hopefully, you enjoyed that, and
+it wasn't too tough on the old noggin.
+
+00:11:15.760 --> 00:11:16.986 line:100% position:50% align:middle
+I will see you tomorrow.
+
+00:11:17.527 --> 00:11:20.536 line:100% position:50% align:middle
+♪ [music] ♪

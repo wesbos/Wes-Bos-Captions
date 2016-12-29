@@ -1,0 +1,602 @@
+WEBVTT
+
+00:00:01.723 --> 00:00:04.700 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.270 --> 00:00:11.924 line:100% position:50% align:middle
+Today we are going to learn all about
+speech recognition in the browser.
+
+00:00:12.604 --> 00:00:16.450 line:100% position:50% align:middle
+While it's not perfect, it's actually
+really impressive that you can do this
+
+00:00:16.450 --> 00:00:21.830 line:100% position:50% align:middle
+without any libraries or external APIs,
+just do it straight in the browser.
+
+00:00:21.830 --> 00:00:30.540 line:100% position:50% align:middle
+So let's open up our index - start and
+Phyllis open. All right,
+
+00:00:30.540 --> 00:00:33.930 line:100% position:50% align:middle
+I'm just going to get this sucker running
+while I'll explain what we got going on.
+
+00:00:33.930 --> 00:00:36.370 line:100% position:50% align:middle
+Some hilarious results here.
+
+00:00:36.370 --> 00:00:41.240 line:100% position:50% align:middle
+So we've got speech recognition. It's a
+global variable that lives in the browser
+
+00:00:41.240 --> 00:00:45.850 line:100% position:50% align:middle
+and that lives on top of the window. Now
+in Chrome it lives at Webkit speech
+
+00:00:45.850 --> 00:00:50.900 line:100% position:50% align:middle
+recognition and currently it's only
+available in Firefox.
+
+00:00:50.900 --> 00:00:55.760 line:100% position:50% align:middle
+So right here what we're doing is we're
+just setting it to be speech recognition
+
+00:00:55.760 --> 00:00:59.470 line:100% position:50% align:middle
+even if it is Webkit speech recognition.
+Then what we need to do is go ahead and
+
+00:00:59.470 --> 00:01:02.575 line:100% position:50% align:middle
+create a new instance of speech
+recognition. Let's see,
+
+00:01:02.575 --> 00:01:04.240 line:100% position:50% align:middle
+this guy's still going, yes.
+
+00:01:04.240 --> 00:01:18.510 line:100% position:50% align:middle
+So we will say const recognition equals
+new speech recognition and then we need to
+
+00:01:18.510 --> 00:01:24.710 line:100% position:50% align:middle
+take that recognition variable and set
+something called the interim results.
+
+00:01:24.710 --> 00:01:28.670 line:100% position:50% align:middle
+And that has to be true. And what that's
+going to do is as you are speaking,
+
+00:01:28.670 --> 00:01:32.500 line:100% position:50% align:middle
+you can see right here...as I'm speaking
+it's sort of populating it.
+
+00:01:32.500 --> 00:01:37.250 line:100% position:50% align:middle
+And if you don't do that, you need to stop
+speaking before it will give you anything.
+
+00:01:37.250 --> 00:01:40.603 line:100% position:50% align:middle
+That's a bit frustrating. So we want to be
+able to see what we're saying
+
+00:01:40.603 --> 00:01:42.025 line:100% position:50% align:middle
+as we are speaking.
+
+00:01:42.720 --> 00:01:47.910 line:100% position:50% align:middle
+So we got our interim results here. Then
+what we need to do is create a paragraph.
+
+00:01:47.910 --> 00:01:53.590 line:100% position:50% align:middle
+And if I inspect this right here, you'll
+see what's happening is that I'm updating
+
+00:01:53.590 --> 00:02:00.000 line:100% position:50% align:middle
+the last paragraph in here. And then when
+I stop speaking, it creates a new
+
+00:02:00.000 --> 00:02:04.830 line:100% position:50% align:middle
+paragraph as if we were saying a new
+sentence. And then when I stop speaking
+
+00:02:04.830 --> 00:02:10.140 line:100% position:50% align:middle
+again, is going to create a new paragraph.
+And the browser is going to tell us when
+
+00:02:10.140 --> 00:02:16.230 line:100% position:50% align:middle
+it's finished processing what I'm...
+the brams. This is the best one ever.
+
+00:02:16.230 --> 00:02:20.760 line:100% position:50% align:middle
+All right. So we've got that recognition.
+We need to create a paragraph.
+
+00:02:20.760 --> 00:02:24.132 line:100% position:50% align:middle
+So let's say, let P equals... And I'll
+tell you why I'm using "let" there
+
+00:02:24.132 --> 00:02:25.076 line:100% position:50% align:middle
+in just a second.
+
+00:02:25.076 --> 00:02:30.050 line:100% position:50% align:middle
+We'll say a document.create element
+and that's going to be a paragraph.
+
+00:02:30.050 --> 00:02:37.290 line:100% position:50% align:middle
+And then we also need to get this words
+right here. They've other class of words.
+
+00:02:37.290 --> 00:02:45.180 line:100% position:50% align:middle
+So we say const words equals
+document.query selector.words.
+
+00:02:45.180 --> 00:02:51.500 line:100% position:50% align:middle
+And then we'll take that words and we'll
+append the child P, which is going to be
+
+00:02:51.500 --> 00:02:53.626 line:100% position:50% align:middle
+our first one because we're
+going to put it in the DOM
+
+00:02:53.626 --> 00:02:55.611 line:100% position:50% align:middle
+just as we are working with it.
+
+00:02:56.080 --> 00:02:59.700 line:100% position:50% align:middle
+Next this work is just the same as
+listening for clicks. So we take our
+
+00:02:59.700 --> 00:03:03.900 line:100% position:50% align:middle
+recognition and we add an event listener
+but we don't listen for click but we
+
+00:03:03.900 --> 00:03:09.160 line:100% position:50% align:middle
+listen for a result. And when the results
+comes back, were going to get an event
+
+00:03:09.160 --> 00:03:13.230 line:100% position:50% align:middle
+which... Let's just take a look at what
+that actual event gives us here.
+
+00:03:13.230 --> 00:03:20.720 line:100% position:50% align:middle
+Console log E. So give that a save. Now
+you do have to run this through a server.
+
+00:03:20.720 --> 00:03:24.140 line:100% position:50% align:middle
+Just like we did with the WebCam, you
+can't just run it on a file.
+
+00:03:24.140 --> 00:03:27.840 line:100% position:50% align:middle
+It has to be localhost or something like
+that. So take your index file and run it
+
+00:03:27.840 --> 00:03:32.285 line:100% position:50% align:middle
+through some sort of server. If you're not
+sure, I've created a quick...
+
+00:03:32.285 --> 00:03:35.101 line:100% position:50% align:middle
+Where is it here?
+
+00:03:39.302 --> 00:03:43.470 line:100% position:50% align:middle
+I've created a quick little server for you
+here in the speech detection folder.
+
+00:03:43.470 --> 00:03:46.710 line:100% position:50% align:middle
+All you need to do is type MPM install and
+then when that's installed,
+
+00:03:46.710 --> 00:03:50.630 line:100% position:50% align:middle
+you type MPM start and what that will do
+is it's just going to open up a little
+
+00:03:50.630 --> 00:03:55.780 line:100% position:50% align:middle
+server for you and then we open up the
+index - start. Now that will probably pop
+
+00:03:55.780 --> 00:04:00.780 line:100% position:50% align:middle
+open a little dialog box that will say
+can this access your microphone and you'll
+
+00:04:00.780 --> 00:04:05.900 line:100% position:50% align:middle
+say yes or no. But as we start speaking,
+actually we don't see anything just yet
+
+00:04:05.900 --> 00:04:08.830 line:100% position:50% align:middle
+and that's because we haven't started
+this. Take your recognition and call
+
+00:04:08.830 --> 00:04:13.561 line:100% position:50% align:middle
+recognition.start as you don't want to
+unnecessarily run it on page load
+
+00:04:13.561 --> 00:04:17.660 line:100% position:50% align:middle
+because you might want to prompt the
+user that "Hey we're going to ask for your
+
+00:04:17.660 --> 00:04:20.330 line:100% position:50% align:middle
+microphone, don't turn it down otherwise
+we won't be able to see this."
+
+00:04:20.330 --> 00:04:25.540 line:100% position:50% align:middle
+So there we go. Now it should be running.
+So we see our paragraph tag being put into
+
+00:04:25.540 --> 00:04:31.750 line:100% position:50% align:middle
+here. We've started it. We have an all add
+or add event listener result singular not
+
+00:04:31.750 --> 00:04:36.270 line:100% position:50% align:middle
+results. Now when you speak into the
+microphone, you should be seeing something
+
+00:04:36.270 --> 00:04:44.780 line:100% position:50% align:middle
+popping up in your console. Now when
+you speak into the microphone,
+
+00:04:44.780 --> 00:04:48.361 line:100% position:50% align:middle
+you should be seeing some speech
+recognition events pop up
+
+00:04:48.361 --> 00:04:50.364 line:100% position:50% align:middle
+into your console.
+
+00:04:53.268 --> 00:04:58.030 line:100% position:50% align:middle
+Now when you speak into your microphone,
+you should see some speech recognition
+
+00:04:58.030 --> 00:05:03.320 line:100% position:50% align:middle
+event results just flooding into your
+console. Now if you don't see anything,
+
+00:05:03.320 --> 00:05:06.660 line:100% position:50% align:middle
+make sure that it don't have like the
+answer or anything else that's jacking
+
+00:05:06.660 --> 00:05:11.420 line:100% position:50% align:middle
+your microphone up opened in another tab.
+That's something I spent way too much time
+
+00:05:11.420 --> 00:05:15.975 line:100% position:50% align:middle
+debugging and you just have to realize
+sometimes the microphone would be used
+
+00:05:15.975 --> 00:05:17.478 line:100% position:50% align:middle
+on another tab.
+
+00:05:17.478 --> 00:05:21.440 line:100% position:50% align:middle
+So we have this event and let's just find
+a random one right here.
+
+00:05:21.440 --> 00:05:27.770 line:100% position:50% align:middle
+Open up that event and go to the results.
+Inside of the results...let's just console
+
+00:05:27.770 --> 00:05:36.820 line:100% position:50% align:middle
+E.results. That is going to be a list of
+results and I say list because it's not an
+
+00:05:36.820 --> 00:05:40.990 line:100% position:50% align:middle
+array. It looks like an array, but if you
+open up the prototype and see what's in
+
+00:05:40.990 --> 00:05:44.330 line:100% position:50% align:middle
+there, you'll see that there is no Map or
+for each or anything like that.
+
+00:05:44.330 --> 00:05:48.670 line:100% position:50% align:middle
+That's going to be a bit of an issue for
+us so we can convert that to an array or
+
+00:05:48.670 --> 00:05:52.890 line:100% position:50% align:middle
+use ES 64 ave to iterate over it.
+
+00:05:52.890 --> 00:05:58.110 line:100% position:50% align:middle
+So here we've got a list and if you open
+each of those up, you'll see there's
+
+00:05:58.110 --> 00:06:02.860 line:100% position:50% align:middle
+another thing inside of it. This data is
+so nested. Opened it up once more time,
+
+00:06:02.860 --> 00:06:07.390 line:100% position:50% align:middle
+and then you see that is going to be. And
+then the second one we'll say,
+
+00:06:07.390 --> 00:06:12.340 line:100% position:50% align:middle
+open it up again, it keeps jumping around.
+That is going to be a list of.
+
+00:06:12.340 --> 00:06:17.360 line:100% position:50% align:middle
+And it tells you what the person said
+and then as well as its confidence.
+
+00:06:17.360 --> 00:06:21.640 line:100% position:50% align:middle
+Like this one is 89% confidence. That's
+what I said. And here it's like less than
+
+00:06:21.640 --> 00:06:26.280 line:100% position:50% align:middle
+a percent confident and it builds up
+confidence over time as it gets to
+
+00:06:26.280 --> 00:06:30.410 line:100% position:50% align:middle
+analyze it a few more times. And then
+finally, there is an is final build-in
+
+00:06:30.410 --> 00:06:34.650 line:100% position:50% align:middle
+here which tells us is the person done
+speaking that sentence.
+
+00:06:34.650 --> 00:06:40.590 line:100% position:50% align:middle
+So what we really need to do here is to
+take this sort of mess of nested stuff and
+
+00:06:40.590 --> 00:06:48.900 line:100% position:50% align:middle
+convert it into just a plain old string
+that we can see. So let's go into here and
+
+00:06:48.900 --> 00:06:55.140 line:100% position:50% align:middle
+we'll say const transcript equals
+array.from and we need to convert it to an
+
+00:06:55.140 --> 00:07:00.620 line:100% position:50% align:middle
+arrayE.results because it's not an
+array by default. And then we're going to
+
+00:07:00.620 --> 00:07:04.260 line:100% position:50% align:middle
+just map over each of them and then just
+turn it from one thing to another.
+
+00:07:04.260 --> 00:07:10.360 line:100% position:50% align:middle
+So first thing I want to do is just grab
+the first thing from each of them because
+
+00:07:10.360 --> 00:07:15.880 line:100% position:50% align:middle
+this is the list and we need to grab the
+first thing from each of them.
+
+00:07:15.880 --> 00:07:18.140 line:100% position:50% align:middle
+So we could actually just take.
+
+00:07:28.229 --> 00:07:32.790 line:100% position:50% align:middle
+So we are going to map over it and take
+the first thing that we have there.
+
+00:07:32.790 --> 00:07:36.200 line:100% position:50% align:middle
+So even if it's on it's own line and we're
+going to Map the results is going to
+
+00:07:36.200 --> 00:07:41.550 line:100% position:50% align:middle
+return the result [0] because that's the
+first thing that is there. And then if we
+
+00:07:41.550 --> 00:07:49.110 line:100% position:50% align:middle
+console log the transcript, let's see what
+we've got. "Hello, I love to pet dogs."
+
+00:07:49.110 --> 00:07:52.570 line:100% position:50% align:middle
+Let's see. Open it up. Some of them are
+going to be two things.
+
+00:07:52.570 --> 00:07:57.650 line:100% position:50% align:middle
+Like this one will tell me that, "Hello, I
+love." And the second thing that it gives
+
+00:07:57.650 --> 00:08:02.677 line:100% position:50% align:middle
+us is so nested, "The pet dog." And then
+I'm sure that it would correct it
+
+00:08:02.677 --> 00:08:03.703 line:100% position:50% align:middle
+as we go along.
+
+00:08:03.703 --> 00:08:11.260 line:100% position:50% align:middle
+So good. Now we need to map over
+that once more and return the
+
+00:08:11.260 --> 00:08:21.506 line:100% position:50% align:middle
+results.transcript. "Hello, I love to pet
+dogs." There we go. Look at what we've
+
+00:08:21.610 --> 00:08:25.430 line:100% position:50% align:middle
+got  here. We've got arrays coming in.
+All right one more time,
+
+00:08:25.430 --> 00:08:32.490 line:100% position:50% align:middle
+"Hello, I love..." There we go. Sometimes,
+LOL... How did it know that I
+
+00:08:32.490 --> 00:08:36.650 line:100% position:50% align:middle
+was actually laughing out loud?
+That's amazing.
+
+00:08:36.650 --> 00:08:40.040 line:100% position:50% align:middle
+I've got an array of the different
+pieces that it thinks I said.
+
+00:08:40.040 --> 00:08:44.740 line:100% position:50% align:middle
+So what we need to do finally is join
+those two pieces together because we don't
+
+00:08:44.740 --> 00:08:49.820 line:100% position:50% align:middle
+want two strings or three strings or one
+string. We want one big string.
+
+00:08:49.820 --> 00:08:54.191 line:100% position:50% align:middle
+So join at the end. I'm going to take
+this console log out. Now when I say
+
+00:08:54.191 --> 00:09:02.460 line:100% position:50% align:middle
+something... Now when I say something,
+it tells me exactly what I have.
+
+00:09:02.460 --> 00:09:06.540 line:100% position:50% align:middle
+You will notice that if you stopped
+speaking and then start speaking again,
+
+00:09:06.540 --> 00:09:11.370 line:100% position:50% align:middle
+it doesn't work. And why is that? And that
+is because we're listening for the result
+
+00:09:11.370 --> 00:09:15.950 line:100% position:50% align:middle
+but then once the result is finished it
+doesn't, like it unbinds itself, it's no
+
+00:09:15.950 --> 00:09:23.430 line:100% position:50% align:middle
+longer listening. So what we need to do is
+add a second event listener for the end
+
+00:09:23.430 --> 00:09:29.570 line:100% position:50% align:middle
+event. And when that ends, we simply just
+call the function. We can just tell it.
+
+00:09:29.570 --> 00:09:33.840 line:100% position:50% align:middle
+When it ends, run the function for us
+recognition.start. We don't run it here
+
+00:09:33.840 --> 00:09:37.860 line:100% position:50% align:middle
+because that would run a page load but we
+just supply the name of the function that
+
+00:09:37.860 --> 00:09:42.680 line:100% position:50% align:middle
+it will then call. So if we give that a
+save. Now when I start talking...
+
+00:09:45.349 --> 00:09:51.688 line:100% position:50% align:middle
+and after a break, it will start up again.
+And that's because this end event
+
+00:09:51.688 --> 00:09:54.778 line:100% position:50% align:middle
+is firing which in turn is going to
+add the event listener.
+
+00:09:54.778 --> 00:09:57.289 line:100% position:50% align:middle
+It's going to start listening
+for it again.
+
+00:09:57.289 --> 00:10:03.210 line:100% position:50% align:middle
+Good. Now what we need to do is create a
+paragraph tag where we can put these
+
+00:10:03.210 --> 00:10:06.450 line:100% position:50% align:middle
+paragraphs. Actually we already have a
+paragraph tag. So right down here we
+
+00:10:06.450 --> 00:10:15.930 line:100% position:50% align:middle
+simply have to say P.text content is equal
+to transcript. Now when I start talking,
+
+00:10:15.930 --> 00:10:26.050 line:100% position:50% align:middle
+we should see it in the DOM, but when I
+start talking again, it overwrites it.
+
+00:10:26.050 --> 00:10:32.160 line:100% position:50% align:middle
+What's going on here? Well, what's
+happening is that if I'm done with that
+
+00:10:32.160 --> 00:10:36.910 line:100% position:50% align:middle
+sentence, this is going to run again and
+replace it. So what we need to do is check
+
+00:10:36.910 --> 00:10:44.670 line:100% position:50% align:middle
+if the result is final. So let's say, if
+E.results, the first one,
+
+00:10:44.670 --> 00:10:49.880 line:100% position:50% align:middle
+dot is final, then we need to create a new
+paragraph. We are going to overwrite this
+
+00:10:49.880 --> 00:10:54.660 line:100% position:50% align:middle
+paragraph we created on page load. So
+we just say P equals...nope don't put a
+
+00:10:54.660 --> 00:10:58.020 line:100% position:50% align:middle
+vowel letter in front of it. We're going
+to overwrite this existing one here.
+
+00:10:58.020 --> 00:11:09.370 line:100% position:50% align:middle
+P equals document.create element P and I
+will stick that sucker in the words.append
+
+00:11:09.370 --> 00:11:11.932 line:100% position:50% align:middle
+child P.
+
+00:11:16.146 --> 00:11:21.450 line:100% position:50% align:middle
+Now when we talk, it should add a
+paragraph and when I talk again,
+
+00:11:21.450 --> 00:11:28.820 line:100% position:50% align:middle
+it should add a second paragraph and a
+third, exclamation mark.
+
+00:11:28.820 --> 00:11:30.667 line:100% position:50% align:middle
+Do you get the point?
+
+00:11:32.249 --> 00:11:37.050 line:100% position:50% align:middle
+Sweet, seems to be working. So
+that is the very basics of speech
+
+00:11:37.050 --> 00:11:40.673 line:100% position:50% align:middle
+recognition that we have here it's
+actually not a lot of code. What you could
+
+00:11:40.803 --> 00:11:45.090 line:100% position:50% align:middle
+do with this now is that now that we have
+this transcript, you could say like if
+
+00:11:45.090 --> 00:11:56.912 line:100% position:50% align:middle
+transcript. as it contains unicorn, then
+console log unicorn. Whoa.
+
+00:12:00.982 --> 00:12:07.546 line:100% position:50% align:middle
+"I love dogs." oh, it's not contains
+it's includes,
+
+00:12:08.680 --> 00:12:15.990 line:100% position:50% align:middle
+"I Love dogs. I love unicorns." And when
+you say the word unicorn,
+
+00:12:15.990 --> 00:12:20.420 line:100% position:50% align:middle
+it triggers it and goes off. So what
+you could do is you could listen if
+
+00:12:20.420 --> 00:12:28.320 line:100% position:50% align:middle
+includes like, "Get the weather" And then
+it would run a function that would also
+
+00:12:28.320 --> 00:12:39.660 line:100% position:50% align:middle
+log getting the weather. "Siri, go get the
+weather." And then it will run this
+
+00:12:39.660 --> 00:12:42.230 line:100% position:50% align:middle
+getting the weather function. Obviously
+you'd have to debounce that or
+
+00:12:42.230 --> 00:12:45.460 line:100% position:50% align:middle
+only run it once every so often because it
+will run it multiple times,
+
+00:12:45.460 --> 00:12:50.000 line:100% position:50% align:middle
+but you get the point here. I've seen
+people hook this up to external weather
+
+00:12:50.000 --> 00:12:55.170 line:100% position:50% align:middle
+APIs or to other functions and you can
+basically have a hands-off application
+
+00:12:55.170 --> 00:12:59.490 line:100% position:50% align:middle
+that listens for what you're saying behind
+the scenes and when it sees those words
+
+00:12:59.490 --> 00:13:03.370 line:100% position:50% align:middle
+that you want, it will trigger some sort
+of other function. Hopefully you
+
+00:13:03.370 --> 00:13:07.490 line:100% position:50% align:middle
+enjoyed that. I would love to see what you
+build with this. There is just a whole
+
+00:13:07.490 --> 00:13:11.800 line:100% position:50% align:middle
+world that opens up when you have speech
+recognition. So please let me know what
+
+00:13:11.800 --> 00:13:14.558 line:100% position:50% align:middle
+you create. Thanks and
+I'll see you tomorrow.
+
+00:13:15.038 --> 00:13:18.496 line:100% position:50% align:middle
+♪ [music] ♪

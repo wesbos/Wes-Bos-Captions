@@ -1,0 +1,1383 @@
+WEBVTT
+
+00:00:00.669 --> 00:00:03.669 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.440 --> 00:00:12.560 line:100% position:50% align:middle
+Hi, everybody. Wes Bos here. We are
+going to make a photobooth with JavaScript
+
+00:00:12.560 --> 00:00:19.430 line:100% position:50% align:middle
+today. Now, first of all, if you see like
+I'm talking, and then later on the audio
+
+00:00:19.430 --> 00:00:23.940 line:100% position:50% align:middle
+doesn't add up, that's because I'm
+recording my screen on a 4K monitor and
+
+00:00:23.940 --> 00:00:28.070 line:100% position:50% align:middle
+piping video through, and it's just too
+much. So when I stop recording my screen,
+
+00:00:28.070 --> 00:00:32.300 line:100% position:50% align:middle
+this is live, don't worry if you wonder if
+the sound is off or not.
+
+00:00:32.300 --> 00:00:38.190 line:100% position:50% align:middle
+So what are we going to be building today?
+First of all, we've got our video being
+
+00:00:38.190 --> 00:00:44.280 line:100% position:50% align:middle
+piped in from our webcam, and then we've
+got our video being piped into a canvas
+
+00:00:44.280 --> 00:00:48.360 line:100% position:50% align:middle
+element. Then, once it's in a canvas
+element, we can start to do all kinds of
+
+00:00:48.360 --> 00:00:53.470 line:100% position:50% align:middle
+cool things with it. Like we can take our
+photo, and then you can go ahead and
+
+00:00:53.470 --> 00:00:58.080 line:100% position:50% align:middle
+download them. They'll download to your
+computer, and you can see them as real
+
+00:00:58.080 --> 00:01:04.250 line:100% position:50% align:middle
+photos, handsome.png. Then, in the
+scripts, once we have it, we can start to
+
+00:01:04.250 --> 00:01:09.340 line:100% position:50% align:middle
+add effects, like different filters where
+things should be red.
+
+00:01:09.340 --> 00:01:17.760 line:100% position:50% align:middle
+Or what we can do is make this really cool
+RGB split, where you can see my face.
+
+00:01:17.760 --> 00:01:21.410 line:100% position:50% align:middle
+Don't look at the top right-hand corner, I
+look crazy. But the RGB values are just a
+
+00:01:21.410 --> 00:01:26.830 line:100% position:50% align:middle
+little bit off. You can play with the
+alpha. So it's just a bit of like a,
+
+00:01:26.830 --> 00:01:32.710 line:100% position:50% align:middle
+woo, ghosting effect that goes on here.
+Then, finally, the green screen.
+
+00:01:32.710 --> 00:01:36.600 line:100% position:50% align:middle
+If you've never known how the green screen
+works, essentially you pick a color that's
+
+00:01:36.600 --> 00:01:40.940 line:100% position:50% align:middle
+in the background, and then you find any
+color that's within the range of that
+
+00:01:40.940 --> 00:01:45.140 line:100% position:50% align:middle
+specific color, usually green, and then
+you pull it out. Whatever is behind it,
+
+00:01:45.140 --> 00:01:48.070 line:100% position:50% align:middle
+like a video or a beach, or something like
+that, it's going to show.
+
+00:01:48.070 --> 00:01:54.640 line:100% position:50% align:middle
+So we have these slider values here, which
+we can use to discover what the threshold
+
+00:01:54.640 --> 00:01:58.440 line:100% position:50% align:middle
+is, and in my case I'm pulling out just a
+whole bunch of stuff,
+
+00:01:58.440 --> 00:02:04.270 line:100% position:50% align:middle
+but you can do some fun stuff. Whatever
+would be behind that would then show on
+
+00:02:04.270 --> 00:02:08.510 line:100% position:50% align:middle
+through. So this is going to be a bit of a
+big one, but it's going to be fun.
+
+00:02:08.510 --> 00:02:12.861 line:100% position:50% align:middle
+So let's get rolling. I'll open up my
+index.html and switch this
+
+00:02:12.861 --> 00:02:19.430 line:100% position:50% align:middle
+scripts-FINISHED to just scripts.js, and
+it'll go into our scripts.js.
+
+00:02:19.430 --> 00:02:23.880 line:100% position:50% align:middle
+Before we get started today, there is one
+thing that we do need to get up and
+
+00:02:23.880 --> 00:02:28.380 line:100% position:50% align:middle
+running, and that is a server. So far, in
+this course we've just been working off of
+
+00:02:28.380 --> 00:02:32.310 line:100% position:50% align:middle
+the file. We right-click and that sucker
+in the browser. However,
+
+00:02:32.310 --> 00:02:35.570 line:100% position:50% align:middle
+because of security restrictions with
+getting a user's webcam,
+
+00:02:35.570 --> 00:02:41.630 line:100% position:50% align:middle
+it must be tied to what's called a "secure
+origin". A secure origin is a website that
+
+00:02:41.630 --> 00:02:47.660 line:100% position:50% align:middle
+is HTTPS, or in our case localhost is also
+a secure origin. Even if it's not,
+
+00:02:47.660 --> 00:02:51.640 line:100% position:50% align:middle
+has a little icon lock there, it's still
+considered a secure origin,
+
+00:02:51.640 --> 00:02:55.190 line:100% position:50% align:middle
+which is localhost. So what I need you to
+do, if you take a look at this,
+
+00:02:55.190 --> 00:02:59.480 line:100% position:50% align:middle
+we have this index.html, that needs to be
+fed through some sort of server.
+
+00:02:59.480 --> 00:03:04.300 line:100% position:50% align:middle
+So if you've already got Python server or
+maybe Map if you've done WordPress,
+
+00:03:04.300 --> 00:03:08.990 line:100% position:50% align:middle
+or any sort of local server running, you
+can totally use that.
+
+00:03:08.990 --> 00:03:14.020 line:100% position:50% align:middle
+Just make sure that you feed this
+index.html through your localhost server.
+
+00:03:14.020 --> 00:03:18.170 line:100% position:50% align:middle
+Now, if you don't have any sort of server
+locally, what I've done is I've included a
+
+00:03:18.170 --> 00:03:23.950 line:100% position:50% align:middle
+package.JSON file. If we open that up,
+you'll see that I have one dependency,
+
+00:03:23.950 --> 00:03:26.590 line:100% position:50% align:middle
+which is this thing called "browser-sync".
+It's really, really nice,
+
+00:03:26.590 --> 00:03:31.580 line:100% position:50% align:middle
+because it allows you to open up your
+website and start a little server,
+
+00:03:31.580 --> 00:03:34.390 line:100% position:50% align:middle
+and it also gives you live reloading and a
+whole bunch of other stuff.
+
+00:03:34.390 --> 00:03:38.320 line:100% position:50% align:middle
+So what I want you to do is type "npm
+install". If you don't have NPM,
+
+00:03:38.320 --> 00:03:43.250 line:100% position:50% align:middle
+if it tells you that's not something, you
+go to nodejs.org and download Node.js.
+
+00:03:43.250 --> 00:03:47.760 line:100% position:50% align:middle
+So I'm going to type "npm install", and
+when that has finished what you can type
+
+00:03:47.760 --> 00:03:52.620 line:100% position:50% align:middle
+is "npm start". What that is going to do,
+it's going to run this script that I have
+
+00:03:52.620 --> 00:03:56.540 line:100% position:50% align:middle
+here and this is just a really long
+browser-sync start file. This just starts
+
+00:03:56.540 --> 00:04:01.150 line:100% position:50% align:middle
+a little server for you. So "npm start",
+and that is going to kick open a little
+
+00:04:01.150 --> 00:04:04.650 line:100% position:50% align:middle
+server. It's going to tell you that your
+local server is 3001,
+
+00:04:04.650 --> 00:04:08.640 line:100% position:50% align:middle
+and then it will also give you an external
+server in case you want to check it on
+
+00:04:08.640 --> 00:04:11.370 line:100% position:50% align:middle
+your Wi-Fi, maybe check it on your Android
+phone, or something like that.
+
+00:04:11.370 --> 00:04:16.190 line:100% position:50% align:middle
+So I've got that up and running. Now,
+let's go to our scripts.js,
+
+00:04:16.190 --> 00:04:19.180 line:100% position:50% align:middle
+and I'm going to load in a couple
+selectors that we're working with here,
+
+00:04:19.180 --> 00:04:22.360 line:100% position:50% align:middle
+just because you're probably sick of
+seeing me type selectors for now.
+
+00:04:22.360 --> 00:04:27.350 line:100% position:50% align:middle
+Let's review real quick. We've got this
+video here, which is a class of "player".
+
+00:04:27.350 --> 00:04:32.290 line:100% position:50% align:middle
+If we look at our HTML, you'll see that we
+have a canvas, we have a video,
+
+00:04:32.290 --> 00:04:37.260 line:100% position:50% align:middle
+and we have a strip. Now, the video from
+our webcam is going to come in hot off the
+
+00:04:37.260 --> 00:04:40.860 line:100% position:50% align:middle
+webcam, and we're going to pipe that into
+this video element. Then,
+
+00:04:40.860 --> 00:04:45.440 line:100% position:50% align:middle
+every, I don't know, 16 milliseconds or
+so, we're going to take a snapshot of that
+
+00:04:45.440 --> 00:04:51.270 line:100% position:50% align:middle
+video and dump it into this canvas. Once
+it's in the canvas, we're going to
+
+00:04:51.270 --> 00:04:54.510 line:100% position:50% align:middle
+manipulate the pixels, change the color,
+apply filters. We're going to have a lot
+
+00:04:54.510 --> 00:04:57.730 line:100% position:50% align:middle
+of fun with that. But just know that the
+video is going to come off the webcam on
+
+00:04:57.730 --> 00:05:01.200 line:100% position:50% align:middle
+the video element, and we're going to dump
+it into the canvas every so often.
+
+00:05:01.200 --> 00:05:05.160 line:100% position:50% align:middle
+Then, finally the strip, that's where
+we're going to put all of our images.
+
+00:05:05.160 --> 00:05:08.840 line:100% position:50% align:middle
+So what that canvas video context, this is
+where the work happens.
+
+00:05:08.840 --> 00:05:13.180 line:100% position:50% align:middle
+If you've never used canvas before, go
+back to our canvas tutorial that we've
+
+00:05:13.180 --> 00:05:15.830 line:100% position:50% align:middle
+done earlier. We've got our strip, and
+then we have this audio,
+
+00:05:15.830 --> 00:05:20.290 line:100% position:50% align:middle
+which is a little [verbal sounds 00:05:17]
+sound that's going to play every single
+
+00:05:20.290 --> 00:05:25.200 line:100% position:50% align:middle
+time that we play a video here. Good. The
+first thing we want to do is get the video
+
+00:05:25.200 --> 00:05:30.820 line:100% position:50% align:middle
+being piped into that video element. So
+we're going to say "function getVideo".
+
+00:05:30.820 --> 00:05:33.300 line:100% position:50% align:middle
+The way that you get
+someone's video, it's actually
+
+00:05:33.300 --> 00:05:42.350 line:100% position:50% align:middle
+"navigator.mediaDevices.getUserMedia".
+If you've done this before,
+
+00:05:42.350 --> 00:05:46.230 line:100% position:50% align:middle
+you might have seen it as
+"navigator.getUserMedia". It's now changed
+
+00:05:46.230 --> 00:05:51.140 line:100% position:50% align:middle
+to "navigator.mediaDevices" in some of the
+newer browsers, which is "getUserMedia".
+
+00:05:51.140 --> 00:05:55.040 line:100% position:50% align:middle
+From that we pass it to the video, which
+we want to be "true" and the audio,
+
+00:05:55.040 --> 00:06:01.600 line:100% position:50% align:middle
+which is going to be "false". Now that
+thing this going to return a promise.
+
+00:06:01.600 --> 00:06:05.670 line:100% position:50% align:middle
+You know that with a promise, we call
+".then" on it. It's going to give us
+
+00:06:05.670 --> 00:06:12.980 line:100% position:50% align:middle
+something called a "localMediaStream".
+From there, we'll run a function.
+
+00:06:12.980 --> 00:06:16.380 line:100% position:50% align:middle
+Let's just console.log that
+"localMediaStream", see what we've got
+
+00:06:16.380 --> 00:06:21.450 line:100% position:50% align:middle
+here. So when you load it, you probably
+get a little pop-up here saying "localhost
+
+00:06:21.450 --> 00:06:25.740 line:100% position:50% align:middle
+would like to access your camera". Go
+ahead and click Yes to that,
+
+00:06:25.740 --> 00:06:30.370 line:100% position:50% align:middle
+and of course we need to run this getVideo
+function on page load.
+
+00:06:30.370 --> 00:06:32.920 line:100% position:50% align:middle
+You'll notice it's refreshing
+automatically for you, which is a really
+
+00:06:32.920 --> 00:06:36.350 line:100% position:50% align:middle
+nice feature. So here's what we've got
+here. We've got this media stream,
+
+00:06:36.350 --> 00:06:44.000 line:100% position:50% align:middle
+and then we've just got some ID, "active:
+true", and there's some stuff on the
+
+00:06:44.000 --> 00:06:49.650 line:100% position:50% align:middle
+prototype that we're working with here.
+But really not much for us to deal with.
+
+00:06:49.650 --> 00:06:56.860 line:100% position:50% align:middle
+So what we need to do is to take our
+video, and we need to set the source to be
+
+00:06:56.860 --> 00:07:00.780 line:100% position:50% align:middle
+that "localMediaStream". Now, that's not
+going to work automatically,
+
+00:07:00.780 --> 00:07:06.120 line:100% position:50% align:middle
+because this is an object. In order for
+our video to work, it actually needs to be
+
+00:07:06.120 --> 00:07:10.260 line:100% position:50% align:middle
+converted into some sort of URL. This is a
+little bit weird, because you might be
+
+00:07:10.260 --> 00:07:15.620 line:100% position:50% align:middle
+used to having a video like a .mp4. But
+this is how you set it to be a live video
+
+00:07:15.620 --> 00:07:21.150 line:100% position:50% align:middle
+feed. So we're going to wrap this
+"localMediaStream" in window.url caps
+
+00:07:21.150 --> 00:07:26.650 line:100% position:50% align:middle
+".createObjectURL". That's going to
+convert that media stream into something
+
+00:07:26.650 --> 00:07:31.030 line:100% position:50% align:middle
+that this video player can understand.
+Finally, underneath that we'll call
+
+00:07:31.030 --> 00:07:35.010 line:100% position:50% align:middle
+"video.play", which is going to play it.
+If I try it with that,
+
+00:07:35.010 --> 00:07:39.620 line:100% position:50% align:middle
+you might see like one frame. Yeah, see?
+One frame. If you mouse over it,
+
+00:07:39.620 --> 00:07:44.680 line:100% position:50% align:middle
+it will sometimes open. Why is that?
+That's because we set the video to be this
+
+00:07:44.680 --> 00:07:49.810 line:100% position:50% align:middle
+media stream. But it's not going to update
+unless we actually go ahead and play it.
+
+00:07:49.810 --> 00:07:54.240 line:100% position:50% align:middle
+So I'm going to call "video.play". Now,
+when you load the page,
+
+00:07:54.240 --> 00:07:59.450 line:100% position:50% align:middle
+you should see yourself in the actual
+video element in the top right-hand corner
+
+00:07:59.450 --> 00:08:03.410 line:100% position:50% align:middle
+that I've done here. If you inspect it,
+you'll see that the video source is a
+
+00:08:03.410 --> 00:08:09.460 line:100% position:50% align:middle
+blob. That just means that it's the raw
+data being piped in off this webcam right
+
+00:08:09.460 --> 00:08:13.650 line:100% position:50% align:middle
+here. The last thing that we need to do is
+we need to do a catch here,
+
+00:08:13.650 --> 00:08:15.880 line:100% position:50% align:middle
+just in case someone doesn't allow you to
+access their webcam.
+
+00:08:15.880 --> 00:08:21.670 line:100% position:50% align:middle
+We need to handle that error. So we'll say
+"error", and when that happens we're just
+
+00:08:21.670 --> 00:08:28.990 line:100% position:50% align:middle
+going to console.error. Oh, no, and then
+give yourself the error.
+
+00:08:28.990 --> 00:08:33.570 line:100% position:50% align:middle
+You can obviously tell the user, "Hey, you
+denied the webcam. Maybe you should not do
+
+00:08:33.570 --> 00:08:38.130 line:100% position:50% align:middle
+that, because we need to get access to
+your webcam." Good. So we are up and
+
+00:08:38.130 --> 00:08:43.530 line:100% position:50% align:middle
+running with getting the video being piped
+in. The next thing that we need to do is
+
+00:08:43.530 --> 00:08:50.510 line:100% position:50% align:middle
+to take a frame from this video, and to
+paint it onto the actual canvas on the
+
+00:08:50.510 --> 00:08:59.010 line:100% position:50% align:middle
+screen. So that's what we'll do here, is
+we'll make a function and we will call
+
+00:08:59.010 --> 00:09:04.870 line:100% position:50% align:middle
+that "paintToCanvas". We have a couple
+things first. What we need is the width
+
+00:09:04.870 --> 00:09:08.910 line:100% position:50% align:middle
+and the height of the actual video. So
+we'll say "const width = video.videowidth"
+
+00:09:08.910 --> 00:09:20.540 line:100% position:50% align:middle
+and "const height = video.videoheight".
+Now, what we need to do is the video is
+
+00:09:20.540 --> 00:09:26.560 line:100% position:50% align:middle
+going to have a width and height
+associated with it, and if we were to call
+
+00:09:26.560 --> 00:09:32.090 line:100% position:50% align:middle
+that "paintToCanvas" you'll see that it's
+640 by 480. That's the size of the video
+
+00:09:32.090 --> 00:09:37.950 line:100% position:50% align:middle
+that's coming in off my webcam. Now, we
+need to make sure that the canvas is the
+
+00:09:37.950 --> 00:09:42.120 line:100% position:50% align:middle
+exact same size before we paint to it.
+That's really important because if the
+
+00:09:42.120 --> 00:09:45.760 line:100% position:50% align:middle
+canvas is not the same size as the video
+or if your video webcam has a different
+
+00:09:45.760 --> 00:09:52.650 line:100% position:50% align:middle
+width and height to it, then we need to
+change that. So we'll say "canvas.width =
+
+00:09:52.650 --> 00:09:59.330 line:100% position:50% align:middle
+width" and "canvas.height = height". Good.
+Now, if you refresh and you inspect this
+
+00:09:59.330 --> 00:10:04.800 line:100% position:50% align:middle
+canvas here, you'll see that right now
+it's 943 pixels. But if I were to call
+
+00:10:04.800 --> 00:10:08.850 line:100% position:50% align:middle
+that "paintToCanvas", it will then be
+changed. It still shows me it,
+
+00:10:08.850 --> 00:10:13.940 line:100% position:50% align:middle
+because I'm stretching it with CSS. But
+the width and the height have been
+
+00:10:13.940 --> 00:10:21.910 line:100% position:50% align:middle
+explicitly set on the actual canvas. Now,
+what we want to do is to every,
+
+00:10:21.910 --> 00:10:27.410 line:100% position:50% align:middle
+I don't know, 16 or so milliseconds, we
+are going to take an image from the webcam
+
+00:10:27.410 --> 00:10:33.580 line:100% position:50% align:middle
+and put it into the canvas. So we are
+going to "setinterval", and that is going
+
+00:10:33.580 --> 00:10:37.670 line:100% position:50% align:middle
+to run a function every... Let's start
+with 16 milliseconds. You really have to
+
+00:10:37.670 --> 00:10:41.130 line:100% position:50% align:middle
+play with how often is it going to paint
+to the canvas. A lower-performance
+
+00:10:41.130 --> 00:10:44.480 line:100% position:50% align:middle
+machine, sometimes you have to go up. You
+can also play with
+
+00:10:44.480 --> 00:10:49.110 line:100% position:50% align:middle
+"requestAnimationFrame". But I have had no
+success with that, so I'm sticking with an
+
+00:10:49.110 --> 00:10:53.700 line:100% position:50% align:middle
+interval here. We're going to take the
+canvas context, we're going to call
+
+00:10:53.700 --> 00:10:57.770 line:100% position:50% align:middle
+"dramImage", and you simply just pass it
+your video element. So the way that
+
+00:10:57.770 --> 00:11:01.730 line:100% position:50% align:middle
+"dramImage" works is that you pass it an
+image, or a video element,
+
+00:11:01.730 --> 00:11:08.170 line:100% position:50% align:middle
+and it will paint it right to it. We're
+going to start at 00, which is I guess
+
+00:11:08.170 --> 00:11:12.830 line:100% position:50% align:middle
+you're on the other side here. Start at
+the top left-hand corner of the canvas,
+
+00:11:12.830 --> 00:11:17.910 line:100% position:50% align:middle
+and then paint the width and the height.
+That's exactly why we stuck them in their
+
+00:11:17.910 --> 00:11:24.980 line:100% position:50% align:middle
+own variables right here. So if we rerun
+that "paintToCanvas" now...
+
+00:11:24.980 --> 00:11:30.210 line:100% position:50% align:middle
+Oh, we got an error, "setInterval". It's
+capital I. It probably drives you nuts
+
+00:11:30.210 --> 00:11:34.980 line:100% position:50% align:middle
+watching me code like that. There we go.
+Woo. What's going on here?
+
+00:11:34.980 --> 00:11:40.210 line:100% position:50% align:middle
+Every 16 milliseconds what's happening is
+this is our canvas element right here,
+
+00:11:40.210 --> 00:11:44.050 line:100% position:50% align:middle
+and then up here we've got our video
+element that we're working with.
+
+00:11:44.050 --> 00:11:49.640 line:100% position:50% align:middle
+So we are taking a frame from it. One
+thing I like to do is just return that
+
+00:11:49.640 --> 00:11:53.280 line:100% position:50% align:middle
+interval here, because if you ever need to
+stop this from painting,
+
+00:11:53.280 --> 00:11:58.290 line:100% position:50% align:middle
+you can have access to that interval and
+you can call "clearInterval" on it.
+
+00:11:58.290 --> 00:12:04.840 line:100% position:50% align:middle
+Good. Now, what we want to do is let's
+work on the takePhoto function,
+
+00:12:04.840 --> 00:12:13.400 line:100% position:50% align:middle
+so "function takePhoto". Let's work on the
+audio portion of it right now.
+
+00:12:13.400 --> 00:12:21.950 line:100% position:50% align:middle
+So I'll say "snap.currentTime = 0" and we
+will say "snap.play".
+
+00:12:21.950 --> 00:12:28.360 line:100% position:50% align:middle
+So Console, Refresh. We want to go into
+our console and run "paintToCanvas".
+
+00:12:28.360 --> 00:12:32.880 line:100% position:50% align:middle
+Got it going. Then, we're going to run
+"takePhoto", which should play.
+
+00:12:32.880 --> 00:12:35.100 line:100% position:50% align:middle
+There we go. You might not hear it,
+because it's not recording on my
+
+00:12:35.100 --> 00:12:39.200 line:100% position:50% align:middle
+computer's audio. But that should say
+[verbal noise 00:12:38].
+
+00:12:39.200 --> 00:12:43.260 line:100% position:50% align:middle
+Just imagine it going off right now. Good.
+So that is playing the photo.
+
+00:12:43.260 --> 00:12:49.880 line:100% position:50% align:middle
+But before we go any further, it's kind of
+a pain to have to manually run this
+
+00:12:49.880 --> 00:12:53.620 line:100% position:50% align:middle
+"paintToCanvas". So what we're going to do
+is we're going to go down to the bottom
+
+00:12:53.620 --> 00:12:59.120 line:100% position:50% align:middle
+here. We're going to listen for an event
+on the video element called "canplay".
+
+00:12:59.120 --> 00:13:02.844 line:100% position:50% align:middle
+So we're going to say
+"video.addEventListener('canplay')".
+
+00:13:02.844 --> 00:13:07.130 line:100% position:50% align:middle
+That's an event that the video will emit.
+When that happens, we are going to run the
+
+00:13:07.130 --> 00:13:15.960 line:100% position:50% align:middle
+function "paintToCanvas". So what will
+that do? Once this video is played,
+
+00:13:15.960 --> 00:13:19.540 line:100% position:50% align:middle
+it's going to emit... Because we've got to
+get the webcam sorted out first.
+
+00:13:19.540 --> 00:13:25.350 line:100% position:50% align:middle
+Right? Once the video is playing, it's
+going to emit an event called "canplay",
+
+00:13:25.350 --> 00:13:29.300 line:100% position:50% align:middle
+which in turn canvas is going to say, "Oh,
+now we should start to paint to canvas."
+
+00:13:29.300 --> 00:13:34.770 line:100% position:50% align:middle
+So that's going to now happen on our page
+load. Good. I'm happy with that.
+
+00:13:34.770 --> 00:13:40.790 line:100% position:50% align:middle
+Now, how do we take a photo of this actual
+canvas here. So it's part of our
+
+00:13:40.790 --> 00:13:47.260 line:100% position:50% align:middle
+"takePhoto". We've already played the
+sound, which is not really anything to do
+
+00:13:47.260 --> 00:13:55.220 line:100% position:50% align:middle
+with it. What we now need to do is take
+the data out of the canvas.
+
+00:13:55.220 --> 00:14:03.172 line:100% position:50% align:middle
+We can do this, "const data =
+canvas.toDataURL". Then, you pass it,
+
+00:14:03.172 --> 00:14:11.405 line:100% position:50% align:middle
+"image/jpeg" or "jpng", or whatever you're
+looking for. But it probably makes sense
+
+00:14:11.405 --> 00:14:16.120 line:100% position:50% align:middle
+to do a PJEG with an E there, because
+that's a picture of me. It's not really a
+
+00:14:16.120 --> 00:14:20.350 line:100% position:50% align:middle
+PNG. Then, I'm just going to console.log
+the actual data and see what we're working
+
+00:14:20.350 --> 00:14:28.060 line:100% position:50% align:middle
+with here. So I'm going to go to my
+console, and see what we're working with
+
+00:14:28.060 --> 00:14:34.310 line:100% position:50% align:middle
+here. I'm going to take a photo. Okay, and
+this is what happens.
+
+00:14:34.310 --> 00:14:40.800 line:100% position:50% align:middle
+Whoa. What the heck is this? So what this
+is, this is something called "Base64".
+
+00:14:40.800 --> 00:14:47.200 line:100% position:50% align:middle
+This is like a text-based representation
+of the picture of me.
+
+00:14:47.200 --> 00:14:56.750 line:100% position:50% align:middle
+So this like "8vpb4fb", that means
+"stunning smile". This "rvs0",
+
+00:14:56.750 --> 00:15:00.830 line:100% position:50% align:middle
+that means "sweet baby blues". These are
+just like little attributes about the
+
+00:15:00.830 --> 00:15:08.240 line:100% position:50% align:middle
+photo in text-based form. So what we can
+do with that is we can create a link and
+
+00:15:08.240 --> 00:15:12.910 line:100% position:50% align:middle
+an image to actually put it into our
+strip. Let's create a link here.
+
+00:15:12.910 --> 00:15:17.490 line:100% position:50% align:middle
+So we'll say "const link =
+document.createElement". You need to
+
+00:15:17.490 --> 00:15:21.910 line:100% position:50% align:middle
+create a proper link here. You can't just
+use back text. Then,
+
+00:15:21.910 --> 00:15:29.570 line:100% position:50% align:middle
+we will be creating an anchor link. That
+"link.href" is going to equal the data.
+
+00:15:29.570 --> 00:15:34.877 line:100% position:50% align:middle
+That's what we have there. Then, we are
+also going to say "link.setAttribute".
+
+00:15:34.877 --> 00:15:38.150 line:100% position:50% align:middle
+The attribute we are going to set is
+called "download", and we're going to set
+
+00:15:38.150 --> 00:15:42.390 line:100% position:50% align:middle
+that to "handsome". I'll show you why in
+just a second. Then, we'll just say
+
+00:15:42.390 --> 00:15:48.190 line:100% position:50% align:middle
+"link.textContent = _'Download Image'_".
+Then, finally, we are going to take our
+
+00:15:48.190 --> 00:15:53.920 line:100% position:50% align:middle
+strip, which is where we're going to dump
+our links. We are going to insert before
+
+00:15:53.920 --> 00:15:58.570 line:100% position:50% align:middle
+and we're going to insert the link node.
+It's going to happen right before the
+
+00:15:58.570 --> 00:16:04.870 line:100% position:50% align:middle
+strip.firstChild. That's sort of like if
+you've jQueried ".prepend",
+
+00:16:04.870 --> 00:16:09.770 line:100% position:50% align:middle
+this is how you do that in vanilla
+JavaScript. So what we did is we created a
+
+00:16:09.770 --> 00:16:16.070 line:100% position:50% align:middle
+link. We set the href... Apparently "href"
+is not a word, but let's make it a thing.
+
+00:16:16.070 --> 00:16:20.690 line:100% position:50% align:middle
+".setAttribute", ".textContent", we've
+created the link, and we've put it in.
+
+00:16:20.690 --> 00:16:23.800 line:100% position:50% align:middle
+So let's see what we've got here. It's
+running. I'm going to run the function
+
+00:16:23.800 --> 00:16:28.010 line:100% position:50% align:middle
+"takePhoto". Good. Now, we have a link
+here that is "download photo".
+
+00:16:28.010 --> 00:16:33.200 line:100% position:50% align:middle
+I'm going to open it up in a new tab,
+first of all. Whoa. Look what we've got
+
+00:16:33.200 --> 00:16:38.900 line:100% position:50% align:middle
+here. So this, the URL, is just a data
+image here. But it's smart enough to know
+
+00:16:38.900 --> 00:16:42.500 line:100% position:50% align:middle
+that that is the actual image. It's not
+anywhere on our computer.
+
+00:16:42.500 --> 00:16:48.440 line:100% position:50% align:middle
+It's just stored in this really long text
+string. But what I also did is we made
+
+00:16:48.440 --> 00:16:54.560 line:100% position:50% align:middle
+this download attribute of "handsome", and
+when you click that it's going to
+
+00:16:54.560 --> 00:17:00.000 line:100% position:50% align:middle
+actually, there we go, download it to your
+computer, where it will then be put on
+
+00:17:00.000 --> 00:17:05.320 line:100% position:50% align:middle
+your user's hard drive. You can then open
+it up in your Finder,
+
+00:17:05.320 --> 00:17:09.690 line:100% position:50% align:middle
+whatever it is you're using. There we go,
+"handsome.jpeg". I've got it up and
+
+00:17:09.690 --> 00:17:13.580 line:100% position:50% align:middle
+running. Cool. So we've got our download
+"download image". We've got it.
+
+00:17:13.580 --> 00:17:17.580 line:100% position:50% align:middle
+Now, let's actually put the image visible
+inside of there as well.
+
+00:17:17.580 --> 00:17:22.680 line:100% position:50% align:middle
+So rather than link that text content,
+delete that. We'll say "link.innerHTM" is
+
+00:17:22.680 --> 00:17:28.460 line:100% position:50% align:middle
+equal to an image tag". The source is
+going to be equal to the data.
+
+00:17:28.460 --> 00:17:32.230 line:100% position:50% align:middle
+So both the href and the source is going
+to be equal to the data.
+
+00:17:32.230 --> 00:17:37.310 line:100% position:50% align:middle
+[inaudible 00:17:32] "Handsome Man",
+adjust accordingly if you're not
+
+00:17:37.310 --> 00:17:45.490 line:100% position:50% align:middle
+handsome. When we run "takePhoto", there
+we go, you should now see your actual
+
+00:17:45.490 --> 00:17:50.650 line:100% position:50% align:middle
+photo. Every time you run that function,
+it's going to take a photo of yourself,
+
+00:17:50.650 --> 00:17:55.020 line:100% position:50% align:middle
+and you can download any of the ones that
+you like. Cool. Let's hook it up to the
+
+00:17:55.020 --> 00:18:00.050 line:100% position:50% align:middle
+actual button. So if we go to our
+index.html and we have this photo,
+
+00:18:00.050 --> 00:18:04.110 line:100% position:50% align:middle
+it's already hooked up on click, or you
+could select it. I've just did sort of
+
+00:18:04.110 --> 00:18:09.400 line:100% position:50% align:middle
+like a bit of a cheap way to do it without
+selecting it, and that button should now
+
+00:18:09.400 --> 00:18:13.970 line:100% position:50% align:middle
+work regardless of whatever it is that
+you're doing. Good. So we've got our
+
+00:18:13.970 --> 00:18:17.360 line:100% position:50% align:middle
+"getVideo". We've got our "paintToCanvas".
+We've got our "takePhoto".
+
+00:18:17.360 --> 00:18:21.970 line:100% position:50% align:middle
+Really, the last thing that we want to do
+is do some filters on them.
+
+00:18:21.970 --> 00:18:31.860 line:100% position:50% align:middle
+So the way that a filter works is that you
+get the pixels out of the canvas,
+
+00:18:31.860 --> 00:18:36.740 line:100% position:50% align:middle
+and then you mess with them, changing the
+RGB values, and put them back in.
+
+00:18:36.740 --> 00:18:41.120 line:100% position:50% align:middle
+So let's go back up to our
+"paintToCanvas". Let's go into our
+
+00:18:41.120 --> 00:18:47.910 line:100% position:50% align:middle
+interval, and we'll just do something like
+this and say, "const pixels =
+
+00:18:47.910 --> 00:18:55.620 line:100% position:50% align:middle
+ctx.getImageData", and then you ask for
+the 00, the width and the height,
+
+00:18:55.620 --> 00:19:00.170 line:100% position:50% align:middle
+just like we did before. This might crash
+my browser, but I'm going to try console
+
+00:19:00.170 --> 00:19:04.460 line:100% position:50% align:middle
+logging it. It's going to be millions of
+pixels large, but let's see.
+
+00:19:04.460 --> 00:19:10.420 line:100% position:50% align:middle
+Whoa. Okay. So here we go. We've got this
+sort of special kind of array here,
+
+00:19:10.420 --> 00:19:15.380 line:100% position:50% align:middle
+which is pixels.data is going to be a
+special kind of array that's meant for
+
+00:19:15.380 --> 00:19:20.420 line:100% position:50% align:middle
+very, very large numbers. If you open up
+one of those suckers...
+
+00:19:20.420 --> 00:19:25.120 line:100% position:50% align:middle
+Where did it go. Here. What if we did
+this? "Console.log(pixels)",
+
+00:19:25.120 --> 00:19:31.610 line:100% position:50% align:middle
+and "debugger". Let's just stop it
+altogether. There we go. I paused it.
+
+00:19:31.610 --> 00:19:35.550 line:100% position:50% align:middle
+Go back to our console. Look at some of
+this image data. Open up the data.
+
+00:19:35.550 --> 00:19:41.570 line:100% position:50% align:middle
+There we go. We've got one, two, three,
+four, five, six, 1.2 million items.
+
+00:19:41.570 --> 00:19:47.180 line:100% position:50% align:middle
+If you open up one of those and one of
+those, and one of those,
+
+00:19:47.180 --> 00:19:53.420 line:100% position:50% align:middle
+here's the actual values. Now, what is
+this? Well, "0" is going to be "R",
+
+00:19:53.420 --> 00:20:00.000 line:100% position:50% align:middle
+"1" is going to be "G", "B", "R", red,
+green, blue, alpha. Red,
+
+00:20:00.000 --> 00:20:06.360 line:100% position:50% align:middle
+green, blue, alpha. So this array here is
+simply just a huge array of numbers,
+
+00:20:06.360 --> 00:20:12.660 line:100% position:50% align:middle
+which is the first pixel is red, the first
+pixel is green, the first pixel is blue,
+
+00:20:12.660 --> 00:20:15.450 line:100% position:50% align:middle
+I can't even remember, and then the first
+pixel is alpha. Then,
+
+00:20:15.450 --> 00:20:20.000 line:100% position:50% align:middle
+it starts again. The second pixel is red,
+green, blue, alpha. Red,
+
+00:20:20.000 --> 00:20:24.200 line:100% position:50% align:middle
+green, blue, alpha, and it just goes over
+and over, and over. So for every one pixel
+
+00:20:24.200 --> 00:20:29.780 line:100% position:50% align:middle
+on this picture of me, you have four
+entries in your array that describe the
+
+00:20:29.780 --> 00:20:35.180 line:100% position:50% align:middle
+red, the green, the blue, and the alpha.
+So what we can then do is we take these
+
+00:20:35.180 --> 00:20:39.190 line:100% position:50% align:middle
+pixels, and this needs to be "let",
+because we're going to reassign the pixels
+
+00:20:39.190 --> 00:20:46.050 line:100% position:50% align:middle
+array, not "const". It wouldn't let us do
+that. We need to then take the pixels.
+
+00:20:46.050 --> 00:20:53.070 line:100% position:50% align:middle
+Say "pixels =" and let's do the red effect
+first. I'll say "redEffect" and pass it
+
+00:20:53.070 --> 00:21:00.000 line:100% position:50% align:middle
+our pixels. Then, we go down here and
+we'll make our filter function "redEffect"
+
+00:21:00.000 --> 00:21:07.650 line:100% position:50% align:middle
+, mix in our pixels, and then you loop
+over every single pixel that you have.
+
+00:21:07.650 --> 00:21:16.320 line:100% position:50% align:middle
+Say "for (let i = 0); i < pixels.length".
+If you're wondering why I'm not using .map
+
+00:21:16.320 --> 00:21:21.330 line:100% position:50% align:middle
+here, it's because this is a special kind
+of array in JavaScript.
+
+00:21:21.330 --> 00:21:25.520 line:100% position:50% align:middle
+It doesn't have all of the regular array
+method that you're used to working with.
+
+00:21:25.520 --> 00:21:34.120 line:100% position:50% align:middle
+You say "i = i + for" or "I += 4". That's
+just going to increment it by four and not
+
+00:21:34.120 --> 00:21:39.000 line:100% position:50% align:middle
+by one. [inaudible 00:21:35] Then, we have
+access to our red, green,
+
+00:21:39.000 --> 00:21:45.090 line:100% position:50% align:middle
+blue, and alpha, because "pixels[i]" is
+going to be a red channel.
+
+00:21:45.090 --> 00:21:53.030 line:100% position:50% align:middle
+"I + 1" is going to be our green. "I +2"
+is going to be our red,
+
+00:21:53.030 --> 00:21:57.460 line:100% position:50% align:middle
+green, blue, and then we actually don't
+need to really mess with the alpha on this
+
+00:21:57.460 --> 00:22:03.280 line:100% position:50% align:middle
+redEffect on our own. So we say "pixels[i]
+=", and then we can just start messing
+
+00:22:03.280 --> 00:22:06.460 line:100% position:50% align:middle
+with it and changing with the red, the
+green, the blue, the one.
+
+00:22:06.460 --> 00:22:09.580 line:100% position:50% align:middle
+So I'm just going to paste some stuff in
+here, and you can have some fun with it.
+
+00:22:09.580 --> 00:22:14.460 line:100% position:50% align:middle
+So what I've done here is I've just said
+the first one plus zero,
+
+00:22:14.460 --> 00:22:18.660 line:100% position:50% align:middle
+I've just added a zero so I can see that
+it's the first, second,
+
+00:22:18.660 --> 00:22:23.410 line:100% position:50% align:middle
+and third one that we have here, and I'm
+just equaling it to itself plus 100,
+
+00:22:23.410 --> 00:22:28.910 line:100% position:50% align:middle
+the second one minus 50, and the third one
+times 0.5. There's no rhyme or reason to
+
+00:22:28.910 --> 00:22:32.120 line:100% position:50% align:middle
+that. I just was messing with them. Some
+of them are going to go over 255,
+
+00:22:32.120 --> 00:22:35.220 line:100% position:50% align:middle
+and some of them are going to go under,
+and that's totally fine.
+
+00:22:35.220 --> 00:22:38.350 line:100% position:50% align:middle
+But what that will do is it'll give us a
+bit of a cool effect.
+
+00:22:38.350 --> 00:22:43.880 line:100% position:50% align:middle
+What we do here is we return those pixels
+once we've done messing with the actual
+
+00:22:43.880 --> 00:22:49.120 line:100% position:50% align:middle
+RGB values, and we go back up here where
+"pixels = redEffect".
+
+00:22:49.120 --> 00:22:57.190 line:100% position:50% align:middle
+Then, we say "context.putImageData(pixels
+0, 0)". That's going to,
+
+00:22:57.190 --> 00:23:01.200 line:100% position:50% align:middle
+if you take the pixels out... Maybe we
+should put some comments here.
+
+00:23:01.200 --> 00:23:13.280 line:100% position:50% align:middle
+"Take the pixels out. Mess with them. Put
+them back." So now, if we refresh this
+
+00:23:13.280 --> 00:23:21.460 line:100% position:50% align:middle
+sucker, I don't see a red effect happening
+here. Why is that? "Let pixels =",
+
+00:23:21.460 --> 00:23:25.840 line:100% position:50% align:middle
+let's just debug this real quick. We've
+got our pixels. We've got our pixels
+
+00:23:25.840 --> 00:23:31.470 line:100% position:50% align:middle
+coming back. We're putting it in. Any
+errors in our console? Nope.
+
+00:23:31.470 --> 00:23:38.450 line:100% position:50% align:middle
+[inaudible 00:23:33], turning our pixels.
+I'm not sure.
+
+00:23:48.110 --> 00:23:53.400 line:100% position:50% align:middle
+Oh, I figured out what it was. Our loop
+is "pixels.data.length",
+
+00:23:53.400 --> 00:23:57.410 line:100% position:50% align:middle
+because "pixels" is not an array".
+"Pixels.data" is an actual array.
+
+00:23:57.410 --> 00:24:02.450 line:100% position:50% align:middle
+So now if I save that, there we go. Now,
+I've got this bit of a red effect going on
+
+00:24:02.450 --> 00:24:07.490 line:100% position:50% align:middle
+here, and we are seeing all of the
+different colors being changed.
+
+00:24:07.490 --> 00:24:12.070 line:100% position:50% align:middle
+If you were to mess with this, like minus
+100, you see you get a bit of a different
+
+00:24:12.070 --> 00:24:17.960 line:100% position:50% align:middle
+color effect. Or less 200, it will just
+jack the red up really as high as we can
+
+00:24:17.960 --> 00:24:22.010 line:100% position:50% align:middle
+go. So that's the red effect. Next up,
+what I want to do is what I like to call
+
+00:24:22.010 --> 00:24:28.890 line:100% position:50% align:middle
+the "RGB split". So I'll say "function
+rgbSplit". That takes in our pixels,
+
+00:24:28.890 --> 00:24:31.770 line:100% position:50% align:middle
+and we're going to do exactly the same
+thing that we did here.
+
+00:24:31.770 --> 00:24:36.950 line:100% position:50% align:middle
+So you can just copy and paste these
+values into here. Except,
+
+00:24:36.950 --> 00:24:43.790 line:100% position:50% align:middle
+with our RGB split, what I'm going to do
+instead of just changing each individual
+
+00:24:43.790 --> 00:24:52.650 line:100% position:50% align:middle
+one is I'm going to take the red and
+change the one that is 150 pixels back to
+
+00:24:52.650 --> 00:25:00.000 line:100% position:50% align:middle
+be the current color. I'm going to take
+the green, and take the pixel that is 150
+
+00:25:00.000 --> 00:25:04.430 line:100% position:50% align:middle
+pixels forward and set it to be the
+current color. Then, I'll do the same
+
+00:25:04.430 --> 00:25:11.770 line:100% position:50% align:middle
+thing with the 150 pixels for the blue. So
+I'm essentially just pulling apart the
+
+00:25:11.770 --> 00:25:18.390 line:100% position:50% align:middle
+different red, green, blues, and I'm
+moving them to either side so that when
+
+00:25:18.390 --> 00:25:22.400 line:100% position:50% align:middle
+we're working it we're going to be able to
+see the different ones that we're working
+
+00:25:22.400 --> 00:25:26.710 line:100% position:50% align:middle
+with. So I'm going to take that "rgbSplit"
+function. I'm going to comment out this
+
+00:25:26.710 --> 00:25:33.390 line:100% position:50% align:middle
+pixels one. I'll use this one, "pixels =
+rgbSplit(pixels)". Now,
+
+00:25:33.390 --> 00:25:38.210 line:100% position:50% align:middle
+when you refresh, you should see your red,
+green, and your blue channels sort of
+
+00:25:38.210 --> 00:25:44.830 line:100% position:50% align:middle
+showing up where we have it. I think we
+can go down here and maybe change this one
+
+00:25:44.830 --> 00:25:49.140 line:100% position:50% align:middle
+to 550 maybe. I don't know. I'm just m-...
+There we go. You see the blue.
+
+00:25:49.140 --> 00:25:57.130 line:100% position:50% align:middle
+My face, which is blue, it's 550 pixels
+off. Then, if I get to the edge of the
+
+00:25:57.130 --> 00:26:01.410 line:100% position:50% align:middle
+screen here, it starts to wrap around to
+the other edge of the screen.
+
+00:26:01.410 --> 00:26:04.990 line:100% position:50% align:middle
+Because at a certain point, the pixels on
+the very left-hand side,
+
+00:26:04.990 --> 00:26:10.910 line:100% position:50% align:middle
+it's going to wrap around. Of course, you
+can play with this, make this 500.
+
+00:26:10.910 --> 00:26:17.260 line:100% position:50% align:middle
+Whoa. That's way more fun. I really like
+that. Then, I also figured out that if you
+
+00:26:17.260 --> 00:26:25.090 line:100% position:50% align:middle
+go up right here and you take your CTX
+Global Alpha to be 0.1,
+
+00:26:25.090 --> 00:26:31.560 line:100% position:50% align:middle
+what that's going to do is it's going to
+right the actual one that we have.
+
+00:26:31.560 --> 00:26:35.830 line:100% position:50% align:middle
+But the ones that are underneath it are
+still going to show through for 10 more
+
+00:26:35.830 --> 00:26:39.010 line:100% position:50% align:middle
+frames. The reason that that is, is
+because we're just like putting a
+
+00:26:39.010 --> 00:26:43.840 line:100% position:50% align:middle
+transparency of 10% of the current image
+on top, and we're just stacking and
+
+00:26:43.840 --> 00:26:48.390 line:100% position:50% align:middle
+stacking, and stacking. So as it goes, it
+sort of like follows you around.
+
+00:26:48.390 --> 00:26:55.420 line:100% position:50% align:middle
+You can make that 0.8 and it would still
+be ghosting, just a little bit less of an
+
+00:26:55.420 --> 00:27:01.100 line:100% position:50% align:middle
+actual ghosting effect. Woo. That's
+really, really fun. Cool. Last one up,
+
+00:27:01.100 --> 00:27:05.430 line:100% position:50% align:middle
+we want to work with the green screen. So
+we're going to go in here.
+
+00:27:05.430 --> 00:27:11.720 line:100% position:50% align:middle
+I have a function called "greenScreen".
+That's going to take in our pixels.
+
+00:27:11.720 --> 00:27:16.980 line:100% position:50% align:middle
+Again, I'm just going to take this from
+the answer here and explain it to you,
+
+00:27:16.980 --> 00:27:24.980 line:100% position:50% align:middle
+because there's a whole bunch of stuff
+that's going on here. So I pasted it in
+
+00:27:24.980 --> 00:27:31.160 line:100% position:50% align:middle
+here. First of all, we've got this Levels
+object here, and that's going to hold our
+
+00:27:31.160 --> 00:27:35.770 line:100% position:50% align:middle
+minimum and maximum green. Because the way
+that green screen works is that you say,
+
+00:27:35.770 --> 00:27:41.530 line:100% position:50% align:middle
+"Give me all the colors in between this
+RGB value, and take them out." Usually,
+
+00:27:41.530 --> 00:27:46.630 line:100% position:50% align:middle
+that's like you find a certain range of
+special greens, and then you take those
+
+00:27:46.630 --> 00:27:50.170 line:100% position:50% align:middle
+ones out and they don't occur in the
+people's clothing and what not.
+
+00:27:50.170 --> 00:27:57.620 line:100% position:50% align:middle
+So we have started with some blank levels.
+Then, I've grabbed every single RGB input.
+
+00:27:57.620 --> 00:28:04.210 line:100% position:50% align:middle
+Actually, this conversion to array is no
+longer needed. So that's all six of these
+
+00:28:04.210 --> 00:28:10.840 line:100% position:50% align:middle
+sliders here. Then, I've set the Red Min,
+Red Max, Green Min, Green Max,
+
+00:28:10.840 --> 00:28:17.420 line:100% position:50% align:middle
+Blue Min, and Blue Max to be on that. So
+if you were to console.log the levels,
+
+00:28:17.420 --> 00:28:22.570 line:100% position:50% align:middle
+and we were to go up here... Take off the
+RGB split and the alpha.
+
+00:28:22.570 --> 00:28:34.230 line:100% position:50% align:middle
+Say "pixels = greenScreen(pixels)". Check
+out our console here.
+
+00:28:34.230 --> 00:28:38.220 line:100% position:50% align:middle
+You see that we've got these objects
+happening, which is going to give us the
+
+00:28:38.220 --> 00:28:46.000 line:100% position:50% align:middle
+Red Min, Red Max, etc. , etc. Okay? Good.
+Then, we have a huge four-loop,
+
+00:28:46.000 --> 00:28:49.710 line:100% position:50% align:middle
+just like we've done before. We loop over
+every single pixel, figure out what the
+
+00:28:49.710 --> 00:28:54.680 line:100% position:50% align:middle
+red, the green, the blue, and the alpha
+are, and then we say, "The red and the
+
+00:28:54.680 --> 00:28:56.790 line:100% position:50% align:middle
+green, and the blue, and the red, and the
+green, and the blue,
+
+00:28:56.790 --> 00:29:03.150 line:100% position:50% align:middle
+if it's anywhere in between those min and
+max values," that's what this huge if
+
+00:29:03.150 --> 00:29:09.130 line:100% position:50% align:middle
+statement does, "we take it out." Why?
+Because the fourth pixel is the alpha,
+
+00:29:09.130 --> 00:29:13.930 line:100% position:50% align:middle
+which is the transparency pixel, and if
+you set that to zero, that's going to be
+
+00:29:13.930 --> 00:29:18.800 line:100% position:50% align:middle
+totally transparent. Rather than 255,
+which would be totally there.
+
+00:29:18.800 --> 00:29:25.640 line:100% position:50% align:middle
+So if we give that a save now and you play
+around with these sliders now,
+
+00:29:25.640 --> 00:29:30.790 line:100% position:50% align:middle
+you can just change your min and your max
+red, green, and if you have a bit of a
+
+00:29:30.790 --> 00:29:34.070 line:100% position:50% align:middle
+green screen... Or I've done it before
+where I've got a pink bristle board and
+
+00:29:34.070 --> 00:29:39.370 line:100% position:50% align:middle
+put it behind me, and I found that slice
+of the rainbow where we want to pull that
+
+00:29:39.370 --> 00:29:43.340 line:100% position:50% align:middle
+specific pink or blue out. In this case,
+I'm just pulling out random colors that
+
+00:29:43.340 --> 00:29:50.550 line:100% position:50% align:middle
+seem to match. It's kind of fun to work
+with. So that is it. That was a big one.
+
+00:29:50.550 --> 00:29:54.080 line:100% position:50% align:middle
+I know that I went a little bit fast. But
+this is one where I want you to go back
+
+00:29:54.080 --> 00:29:58.040 line:100% position:50% align:middle
+and just play with it. Start to make your
+own filters. Now that you understand that
+
+00:29:58.040 --> 00:30:03.000 line:100% position:50% align:middle
+it's just a huge array of color values,
+and especially if you understand how color
+
+00:30:03.000 --> 00:30:06.650 line:100% position:50% align:middle
+and math relate to each other, you can
+start to make some really cool,
+
+00:30:06.650 --> 00:30:10.520 line:100% position:50% align:middle
+fun filters with them. I'd love to see any
+of the filters that you do make.
+
+00:30:10.520 --> 00:30:14.276 line:100% position:50% align:middle
+Thanks a lot. Guess what?
+I will see you tomorrow.
+
+00:30:14.276 --> 00:30:16.276 line:100% position:50% align:middle
+♪ [music] ♪

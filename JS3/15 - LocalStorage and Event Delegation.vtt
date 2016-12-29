@@ -1,0 +1,1422 @@
+WEBVTT
+
+00:00:00.355 --> 00:00:03.355 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.090 --> 00:00:11.390 line:100% position:50% align:middle
+Hello. Hello. Hello. Today, we are going
+to be learning about two main things.
+
+00:00:11.390 --> 00:00:13.960 line:100% position:50% align:middle
+First, we're going to be learning about
+local storage and, second,
+
+00:00:13.960 --> 00:00:17.400 line:100% position:50% align:middle
+we're going to be learning about something
+called "event delegation".
+
+00:00:17.400 --> 00:00:21.180 line:100% position:50% align:middle
+So what we've got here is sort of a
+[tapas] menu, where you can add things,
+
+00:00:21.180 --> 00:00:25.330 line:100% position:50% align:middle
+and then if you want them you can check
+and uncheck them. But kind of the cool
+
+00:00:25.330 --> 00:00:30.330 line:100% position:50% align:middle
+thing, where if you were to type in like
+"taco", I'm going to say "pork taco",
+
+00:00:30.330 --> 00:00:36.230 line:100% position:50% align:middle
+hit Enter, and then when I refresh the
+page it's still there. If I click on one
+
+00:00:36.230 --> 00:00:40.190 line:100% position:50% align:middle
+of them to taco it or check it, as normal
+people would do, you refresh,
+
+00:00:40.190 --> 00:00:44.630 line:100% position:50% align:middle
+it's still going to be there. So that's
+going to be persisting our state with
+
+00:00:44.630 --> 00:00:48.960 line:100% position:50% align:middle
+local storage. Next up, we're also going
+to be doing something called "event
+
+00:00:48.960 --> 00:00:55.310 line:100% position:50% align:middle
+delegation", because when I add another
+item here, like fish, and I click on it,
+
+00:00:55.310 --> 00:01:00.150 line:100% position:50% align:middle
+I can taco it right away. Why can I do
+that? Because if you add an event listener
+
+00:01:00.150 --> 00:01:05.520 line:100% position:50% align:middle
+on something that doesn't exist, you'll
+know that in the future it won't be
+
+00:01:05.520 --> 00:01:10.280 line:100% position:50% align:middle
+clicked. So we're going to look at that
+error as well, and use event delegation to
+
+00:01:10.280 --> 00:01:15.450 line:100% position:50% align:middle
+fix it. So I've gone ahead and just
+selected the Add Items, which in our case
+
+00:01:15.450 --> 00:01:19.340 line:100% position:50% align:middle
+is this form element right here. So when
+someone submits that form,
+
+00:01:19.340 --> 00:01:23.630 line:100% position:50% align:middle
+we're going to add an item. Then, I have
+also selected this UL with a class of
+
+00:01:23.630 --> 00:01:28.120 line:100% position:50% align:middle
+"plates" here. That's where we're going to
+load all of our tapas dishes into.
+
+00:01:28.120 --> 00:01:31.810 line:100% position:50% align:middle
+Then, finally, we're going to be storing
+all of our data in an array.
+
+00:01:31.810 --> 00:01:36.270 line:100% position:50% align:middle
+It's going to be an array of objects,
+which has the name of the array,
+
+00:01:36.270 --> 00:01:40.990 line:100% position:50% align:middle
+as well as the status whether it's tacoed
+or done, or whatever it is that we are
+
+00:01:40.990 --> 00:01:45.890 line:100% position:50% align:middle
+here. So we're going to go ahead and grab
+that form element, which is Add Items,
+
+00:01:45.890 --> 00:01:50.510 line:100% position:50% align:middle
+and we're going to listen for the submit
+event. Why do we listen for the submit
+
+00:01:50.510 --> 00:01:54.210 line:100% position:50% align:middle
+event here? Because that's what we
+actually need. A lot of times people,
+
+00:01:54.210 --> 00:01:58.670 line:100% position:50% align:middle
+they listen for a click on this button.
+But you want to listen for a submit,
+
+00:01:58.670 --> 00:02:02.900 line:100% position:50% align:middle
+when someone hits Enter, when someone
+clicks a button, when some external thing
+
+00:02:02.900 --> 00:02:06.040 line:100% position:50% align:middle
+submits it. We need to make sure that we
+are covering all our bases,
+
+00:02:06.040 --> 00:02:14.080 line:100% position:50% align:middle
+and by listening to the submit event, we
+cover all of our bases with that.
+
+00:02:14.080 --> 00:02:19.070 line:100% position:50% align:middle
+So we're going to run a function called
+"addItem" when somebody submits it,
+
+00:02:19.070 --> 00:02:23.260 line:100% position:50% align:middle
+and we're going to create that function
+here. It's going to give us the event,
+
+00:02:23.260 --> 00:02:28.730 line:100% position:50% align:middle
+and let's just console.log, "Hello". I'm
+going to open mine up here,
+
+00:02:28.730 --> 00:02:34.910 line:100% position:50% align:middle
+and I'm going to go to the console here.
+Now, when I type in something like "fish,"
+
+00:02:34.910 --> 00:02:39.660 line:100% position:50% align:middle
+you see that, oh, "Hello" is quickly
+flashed there. Let me do it again.
+
+00:02:39.660 --> 00:02:43.750 line:100% position:50% align:middle
+Oh, if you click on this button here,
+Preserve Log, you can see what's happening
+
+00:02:43.750 --> 00:02:50.060 line:100% position:50% align:middle
+here. I'm going to hit Enter, and then
+automatically we log "Hello",
+
+00:02:50.060 --> 00:02:54.660 line:100% position:50% align:middle
+and then we see "Navigated to" and this is
+the URLs of where I'm working here.
+
+00:02:54.660 --> 00:02:58.490 line:100% position:50% align:middle
+So what's happening is our page is
+actually refreshing, and we don't want
+
+00:02:58.490 --> 00:03:03.240 line:100% position:50% align:middle
+that. So what we can do is we can say
+e.preventDefault, and that's going to stop
+
+00:03:03.240 --> 00:03:07.080 line:100% position:50% align:middle
+the page from reloading. Because by
+default, a form is just going to reload
+
+00:03:07.080 --> 00:03:12.300 line:100% position:50% align:middle
+the page or send the data to an external
+source, generally what's your server side.
+
+00:03:12.300 --> 00:03:16.320 line:100% position:50% align:middle
+In this case, we're going to be doing an
+all client side, so prevent the default of
+
+00:03:16.320 --> 00:03:23.550 line:100% position:50% align:middle
+that happening. Now when I type in
+something and submit that, we don't get
+
+00:03:23.550 --> 00:03:28.960 line:100% position:50% align:middle
+anything. Why is that? Because nothing is
+happening. If I were to console.log
+
+00:03:28.960 --> 00:03:35.550 line:100% position:50% align:middle
+"hello," once more, I'm going to say
+"hello," we see "hello" in the thing but
+
+00:03:35.550 --> 00:03:41.920 line:100% position:50% align:middle
+the page does not reload. Okay. Now that
+we have that, what we need to do is to
+
+00:03:41.920 --> 00:03:48.920 line:100% position:50% align:middle
+take that text of this box and put it into
+an object. So first of all,
+
+00:03:48.920 --> 00:03:53.730 line:100% position:50% align:middle
+we are going to make an item and that item
+is going to have two.
+
+00:03:53.730 --> 00:03:57.990 line:100% position:50% align:middle
+It's going to have text of item name, and
+we'll replace that in a second.
+
+00:03:57.990 --> 00:04:01.430 line:100% position:50% align:middle
+It's going to have a done state of
+"false". So by default, it's not going to
+
+00:04:01.430 --> 00:04:05.510 line:100% position:50% align:middle
+be checked or tacoed. Now, how do we get
+this text here? Well,
+
+00:04:05.510 --> 00:04:13.880 line:100% position:50% align:middle
+we can do this, "const text =" and we're
+going to first grab this input box,
+
+00:04:13.880 --> 00:04:19.820 line:100% position:50% align:middle
+which has a name of item on it. So we
+could say "document.querySelector"
+
+00:04:19.820 --> 00:04:27.440 line:100% position:50% align:middle
+but we can also do "this.querySelector."
+Why can we do that? "Name=item"
+
+00:04:27.440 --> 00:04:32.360 line:100% position:50% align:middle
+why can we do that? That's because this is
+going to be the actual form.
+
+00:04:32.360 --> 00:04:36.770 line:100% position:50% align:middle
+That's the whole form tag, and then we'll
+look inside of that form tag for something
+
+00:04:36.770 --> 00:04:41.870 line:100% position:50% align:middle
+that has a name attribute of "Item".
+That's really helpful if you have multiple
+
+00:04:41.870 --> 00:04:45.060 line:100% position:50% align:middle
+forms on a page. You don't just want to be
+globally selecting it.
+
+00:04:45.060 --> 00:04:49.380 line:100% position:50% align:middle
+You want to narrow down your search inside
+of the one form that we're working with.
+
+00:04:49.380 --> 00:04:53.770 line:100% position:50% align:middle
+So we've got that text. If we were just to
+wrap that whole thing in parentheses,
+
+00:04:53.770 --> 00:04:57.270 line:100% position:50% align:middle
+it's going to execute first and we can
+call ".value" against it.
+
+00:04:57.270 --> 00:05:00.290 line:100% position:50% align:middle
+Because that's going to give us the input,
+and then input has a property called
+
+00:05:00.290 --> 00:05:05.070 line:100% position:50% align:middle
+"value," which is whatever the user has
+typed into it. Then, we can go here.
+
+00:05:05.070 --> 00:05:09.320 line:100% position:50% align:middle
+Type "text." Or if you've watched my ES6
+videos, then you know instead of saying
+
+00:05:09.320 --> 00:05:15.780 line:100% position:50% align:middle
+"text: text," we can use the ES6 shorthand
+property, which is just "text".
+
+00:05:15.780 --> 00:05:20.770 line:100% position:50% align:middle
+So we just created this object here. Let's
+console.log the item.
+
+00:05:20.770 --> 00:05:24.410 line:100% position:50% align:middle
+Let's go over to our console. Let's type
+in something like "fish."
+
+00:05:24.410 --> 00:05:28.920 line:100% position:50% align:middle
+Now, when I run that, you should now
+see an object in your console that has a
+
+00:05:28.920 --> 00:05:33.010 line:100% position:50% align:middle
+done of "false" and a text of whatever the
+user has put in there.
+
+00:05:33.010 --> 00:05:35.850 line:100% position:50% align:middle
+If you run it a couple times, you're going
+to get it console logged.
+
+00:05:35.850 --> 00:05:39.740 line:100% position:50% align:middle
+One thing we want to do is clear that
+input. What we can do is we can say
+
+00:05:39.740 --> 00:05:45.280 line:100% position:50% align:middle
+"this.reset." Because "this" is the form
+element, and form elements have a method
+
+00:05:45.280 --> 00:05:49.760 line:100% position:50% align:middle
+called "reset" on it. You've probably run
+into this where you've spent an hour
+
+00:05:49.760 --> 00:05:53.610 line:100% position:50% align:middle
+filling out a form online somewhere, and
+you accidentally click the Reset button
+
+00:05:53.610 --> 00:05:59.110 line:100% position:50% align:middle
+instead of the Submit button. That's what
+it's hooked up to is the ".reset."
+
+00:05:59.110 --> 00:06:05.210 line:100% position:50% align:middle
+So let's see where we're at now. "Fish,"
+there we go. It refreshes it,
+
+00:06:05.210 --> 00:06:08.930 line:100% position:50% align:middle
+it clears that, and we create this object.
+We're not seeing it,
+
+00:06:08.930 --> 00:06:14.860 line:100% position:50% align:middle
+because we're not console logging it. Now,
+what we want to do is take that item here
+
+00:06:14.860 --> 00:06:19.290 line:100% position:50% align:middle
+and put that into this item's array. So
+what we do is we just say
+
+00:06:19.290 --> 00:06:27.950 line:100% position:50% align:middle
+"items.push(item)." Now, let's take a fish
+and we will say "squid."
+
+00:06:27.950 --> 00:06:32.690 line:100% position:50% align:middle
+Now, if we look at our item's array, you
+see that we have "Object" with two things
+
+00:06:32.690 --> 00:06:37.750 line:100% position:50% align:middle
+in it. We can go one step further and
+console.table the item's array,
+
+00:06:37.750 --> 00:06:42.750 line:100% position:50% align:middle
+and you see that we have "Fish" and
+"Squid". Now, that's all we've done to get
+
+00:06:42.750 --> 00:06:46.760 line:100% position:50% align:middle
+our data in it. It's not going to persist
+when we refresh just yet.
+
+00:06:46.760 --> 00:06:50.380 line:100% position:50% align:middle
+We'll do that in just a second. But at
+this point, we need to create a second
+
+00:06:50.380 --> 00:06:54.450 line:100% position:50% align:middle
+function that we're going to call
+"populateList," and that's going to create
+
+00:06:54.450 --> 00:06:58.190 line:100% position:50% align:middle
+the actual HTML here. So we're going to
+say "function populateList".
+
+00:06:58.190 --> 00:07:04.650 line:100% position:50% align:middle
+That populateList function needs two
+things. First of all, it needs a list of
+
+00:07:04.650 --> 00:07:08.660 line:100% position:50% align:middle
+plates to populate. We've stored that
+where? We've stored that in our item's
+
+00:07:08.660 --> 00:07:13.340 line:100% position:50% align:middle
+array. Let me show you once more. If I
+type "fish" and look at our item's array,
+
+00:07:13.340 --> 00:07:17.730 line:100% position:50% align:middle
+you see that we have an array of things,
+which has a text of "fish" and done.
+
+00:07:17.730 --> 00:07:22.390 line:100% position:50% align:middle
+So we need to pass in what that's going to
+be called, and you can call that "Items"
+
+00:07:22.390 --> 00:07:27.050 line:100% position:50% align:middle
+if you prefer to name the variable the
+same thing. But let's call that "plates"
+
+00:07:27.050 --> 00:07:31.620 line:100% position:50% align:middle
+and we're going to set that to be a
+default of an empty object.
+
+00:07:31.620 --> 00:07:36.170 line:100% position:50% align:middle
+The reason why I do that is because if for
+some reason you forget to pass in
+
+00:07:36.170 --> 00:07:39.900 line:100% position:50% align:middle
+something, it's not going to break your
+JavaScript. It's just going to loop over
+
+00:07:39.900 --> 00:07:44.410 line:100% position:50% align:middle
+an array of nothing, and then your map
+function will work just fine.
+
+00:07:44.410 --> 00:07:49.420 line:100% position:50% align:middle
+Then, second of all, we need a place to
+put the HTML and that's called the "plates
+
+00:07:49.420 --> 00:07:55.280 line:100% position:50% align:middle
+list." We are going to pass in our items
+list. So why am I doing that?
+
+00:07:55.280 --> 00:08:00.250 line:100% position:50% align:middle
+Why am I not just like reaching outside
+and grabbing the list of items and
+
+00:08:00.250 --> 00:08:03.840 line:100% position:50% align:middle
+grabbing the place where we will dump
+them? That's because I want this
+
+00:08:03.840 --> 00:08:08.780 line:100% position:50% align:middle
+populateList function to be a little bit
+more resilient. Meaning that I could pass
+
+00:08:08.780 --> 00:08:14.210 line:100% position:50% align:middle
+in any array of plates and any destination
+HTML element, and it will work.
+
+00:08:14.210 --> 00:08:19.140 line:100% position:50% align:middle
+So if in the future I decided to have two
+different lists or two different menus,
+
+00:08:19.140 --> 00:08:23.660 line:100% position:50% align:middle
+that would be fine. I could still use a
+single populateList function and just pass
+
+00:08:23.660 --> 00:08:27.880 line:100% position:50% align:middle
+it a different array of items and a
+different HTML element to dump it.
+
+00:08:27.880 --> 00:08:32.730 line:100% position:50% align:middle
+So we go inside of here and we take this
+plate's array here, and we are going to
+
+00:08:32.730 --> 00:08:38.850 line:100% position:50% align:middle
+map over it. So we hit Map. We take our
+item, or let's call it "plate,"
+
+00:08:38.850 --> 00:08:43.300 line:100% position:50% align:middle
+singular, and then we have the index and
+I'll show you why we need that in just a
+
+00:08:43.300 --> 00:08:48.630 line:100% position:50% align:middle
+second. Now, from here this is going to
+return some HTML. So we're going to use
+
+00:08:48.630 --> 00:08:53.820 line:100% position:50% align:middle
+back text. The last thing we need to do
+is, in front of this plates.map,
+
+00:08:53.820 --> 00:08:58.350 line:100% position:50% align:middle
+we need to stick this either in a variable
+or directly into the HTML.
+
+00:08:58.350 --> 00:09:04.140 line:100% position:50% align:middle
+So I'm going to say "plateslist[removed]
+=" and I'll show you what this does in
+
+00:09:04.140 --> 00:09:09.580 line:100% position:50% align:middle
+just a second. So we're going to loop over
+every single item in our array,
+
+00:09:09.580 --> 00:09:12.960 line:100% position:50% align:middle
+and that's just an object and we're going
+to map. Which again,
+
+00:09:12.960 --> 00:09:19.710 line:100% position:50% align:middle
+a map will take in an array of raw data
+and return an array of some other data.
+
+00:09:19.710 --> 00:09:24.080 line:100% position:50% align:middle
+In our case, we're going to take in the
+objects and return a string from each one.
+
+00:09:24.080 --> 00:09:27.120 line:100% position:50% align:middle
+That's why we're using these back texts
+here. So we're going to give ourselves a
+
+00:09:27.120 --> 00:09:34.240 line:100% position:50% align:middle
+list item, and then let's just take a
+label and let's forget about all of the
+
+00:09:34.240 --> 00:09:39.960 line:100% position:50% align:middle
+stuff. Let's just get it working. We'll
+put "plate.text" inside of it.
+
+00:09:39.960 --> 00:09:46.810 line:100% position:50% align:middle
+Then, the last thing we need to do is call
+a ".join" on here. Because map is going to
+
+00:09:46.810 --> 00:09:51.870 line:100% position:50% align:middle
+return an array, when really if we're
+setting inner HTML, we just need one big
+
+00:09:51.870 --> 00:09:57.750 line:100% position:50% align:middle
+string. So this little ".join" on the end
+is going to take this array that map makes
+
+00:09:57.750 --> 00:10:01.140 line:100% position:50% align:middle
+and turn it into one big string. So if we
+have six or seven items,
+
+00:10:01.140 --> 00:10:05.240 line:100% position:50% align:middle
+it's not going to give us an array with
+six strings. It's going to give us one
+
+00:10:05.240 --> 00:10:13.430 line:100% position:50% align:middle
+huge string. So now, if we take this
+populateList, you go back up here right
+
+00:10:13.430 --> 00:10:19.610 line:100% position:50% align:middle
+before we run it, and we run populateList.
+We are going to pass it our list of items
+
+00:10:19.610 --> 00:10:24.390 line:100% position:50% align:middle
+and our itemsList. Let's try it out. So if
+I type "fish", aha,
+
+00:10:24.390 --> 00:10:31.600 line:100% position:50% align:middle
+"fish" and "squid," and "tacos," and you
+see what's happening here is that every
+
+00:10:31.600 --> 00:10:36.550 line:100% position:50% align:middle
+time we add an item, we are calling this
+populateList function,
+
+00:10:36.550 --> 00:10:41.910 line:100% position:50% align:middle
+which is then going to create a list item
+with a label inside of it.
+
+00:10:41.910 --> 00:10:46.470 line:100% position:50% align:middle
+You can inspect this and see what we've
+got going on here. It's going to create a
+
+00:10:46.470 --> 00:10:50.110 line:100% position:50% align:middle
+list item. One thing that I should say is
+this populateList function,
+
+00:10:50.110 --> 00:10:55.960 line:100% position:50% align:middle
+every time we add an item, it's recreating
+the entire list. So if you are really
+
+00:10:55.960 --> 00:10:59.530 line:100% position:50% align:middle
+worried about performance, in this case
+it's not a big deal. It's very,
+
+00:10:59.530 --> 00:11:05.800 line:100% position:50% align:middle
+very fast. But if you were doing this
+maybe every half a second or every second,
+
+00:11:05.800 --> 00:11:10.170 line:100% position:50% align:middle
+or you had a bunch of animations, you
+would want to look at, "How do I update
+
+00:11:10.170 --> 00:11:15.070 line:100% position:50% align:middle
+just that one list item that I have,
+rather than rerender the entire list?"
+
+00:11:15.070 --> 00:11:18.790 line:100% position:50% align:middle
+That's where something like React or
+Angular becomes really helpful,
+
+00:11:18.790 --> 00:11:22.500 line:100% position:50% align:middle
+because they're smart enough to know,
+"Okay. Rather than just blowing away this
+
+00:11:22.500 --> 00:11:27.630 line:100% position:50% align:middle
+entire unordered list and rerendering the
+whole thing, let me just figure out what's
+
+00:11:27.630 --> 00:11:33.490 line:100% position:50% align:middle
+the minimum HTML that I need to change on
+the page without having to change the rest
+
+00:11:33.490 --> 00:11:38.340 line:100% position:50% align:middle
+of it. So we've got this label here, and
+above it I'm going to have an input with
+
+00:11:38.340 --> 00:11:44.910 line:100% position:50% align:middle
+the type of checkbox. We need a
+"data-index," and I'll show you why that's
+
+00:11:44.910 --> 00:11:51.760 line:100% position:50% align:middle
+helpful in just a few minutes. We're going
+to set that to the index that we have
+
+00:11:51.760 --> 00:12:00.310 line:100% position:50% align:middle
+here. We're going to have an ID, which is
+going to be Item I, because that's going
+
+00:12:00.310 --> 00:12:05.690 line:100% position:50% align:middle
+to be Item 1, Item 2, Item 3, Item 4.
+Here, we need to go back to our label and
+
+00:12:05.690 --> 00:12:12.040 line:100% position:50% align:middle
+hook that ID up. So we'll say "Item I",
+and that's how when you click on the label
+
+00:12:12.040 --> 00:12:16.920 line:100% position:50% align:middle
+the input will check itself. That's how we
+link the two. The ID and the "for" are
+
+00:12:16.920 --> 00:12:22.060 line:100% position:50% align:middle
+exactly the same thing. Then, finally, we
+need to know whether or not these items
+
+00:12:22.060 --> 00:12:26.700 line:100% position:50% align:middle
+are going to be checked or not. Because
+when I rerender it, if it's already
+
+00:12:26.700 --> 00:12:30.730 line:100% position:50% align:middle
+checked, if it has a Done status, we need
+to put the "checked" attribute.
+
+00:12:30.730 --> 00:12:37.330 line:100% position:50% align:middle
+So if I were to say "checked," then all of
+them would automatically be checked.
+
+00:12:37.330 --> 00:12:47.480 line:100% position:50% align:middle
+So if I add "fish," see that has a
+"checked" state? But we have to look at
+
+00:12:47.480 --> 00:12:52.810 line:100% position:50% align:middle
+the items in there, and the first one has
+a property of "done".
+
+00:12:52.810 --> 00:12:57.060 line:100% position:50% align:middle
+So if it has a property of "done," put the
+"checked" attribute.
+
+00:12:57.060 --> 00:13:00.060 line:100% position:50% align:middle
+Otherwise, we leave it off. Because you
+might know that you cannot say
+
+00:13:00.060 --> 00:13:05.210 line:100% position:50% align:middle
+"checked=false." That will still make
+it... Watch. If I say "checked=false" and
+
+00:13:05.210 --> 00:13:13.420 line:100% position:50% align:middle
+I type in "fish," it still checks it. If I
+say "checked=emoji poop,"
+
+00:13:13.420 --> 00:13:17.980 line:100% position:50% align:middle
+it's still checked. That's because
+anything, any existence of the property
+
+00:13:17.980 --> 00:13:24.180 line:100% position:50% align:middle
+checked or the attribute checked will make
+it check. So we need to create a turnery
+
+00:13:24.180 --> 00:13:29.810 line:100% position:50% align:middle
+operator here, where we say if the
+"plate.done" attribute is true,
+
+00:13:29.810 --> 00:13:34.600 line:100% position:50% align:middle
+then we're going to put the checked.
+Otherwise, we're just going to do nothing.
+
+00:13:34.600 --> 00:13:38.800 line:100% position:50% align:middle
+It's just an empty string. Sometimes I
+thought to put "null" here.
+
+00:13:38.800 --> 00:13:43.990 line:100% position:50% align:middle
+But the word "null" will actually show up
+in your HTML. So you need two blank
+
+00:13:43.990 --> 00:13:48.910 line:100% position:50% align:middle
+strings. Let's see if anything is broken.
+Good. "Fish" is working.
+
+00:13:48.910 --> 00:13:52.150 line:100% position:50% align:middle
+Then, when I click it, it will check the
+taco on and off. If you're wondering how I
+
+00:13:52.150 --> 00:13:56.780 line:100% position:50% align:middle
+did this custom thing here, if you take a
+look at the input box,
+
+00:13:56.780 --> 00:14:00.850 line:100% position:50% align:middle
+you'll see that I've displayed "none;". If
+I take that off, the input box is actually
+
+00:14:00.850 --> 00:14:07.460 line:100% position:50% align:middle
+still there. I've just hidden it with CSS.
+If we open up our CSS here,
+
+00:14:07.460 --> 00:14:13.980 line:100% position:50% align:middle
+let's look for the tacos, here we go, what
+we say is the plate input,
+
+00:14:13.980 --> 00:14:19.790 line:100% position:50% align:middle
+the label before it, has a blank sort of
+emoji that's just a square,
+
+00:14:19.790 --> 00:14:25.140 line:100% position:50% align:middle
+but then when the input is checked, turn
+that content from a blank square into a
+
+00:14:25.140 --> 00:14:29.830 line:100% position:50% align:middle
+taco. So you could really put anything you
+wanted here, and it will turn it on and
+
+00:14:29.830 --> 00:14:33.860 line:100% position:50% align:middle
+off. It's sort of a little trick that you
+can do to make it work.
+
+00:14:33.860 --> 00:14:37.340 line:100% position:50% align:middle
+I think it looks a little bit better, and
+that's a way that you can still have your
+
+00:14:37.340 --> 00:14:42.890 line:100% position:50% align:middle
+proper checkbox for data. But you can
+display them with whatever HTML or CSS
+
+00:14:42.890 --> 00:14:48.440 line:100% position:50% align:middle
+that you want. So we've got that up and
+running. Every time I add a new item it
+
+00:14:48.440 --> 00:14:55.510 line:100% position:50% align:middle
+will add it to the list, and I can check
+it and uncheck it. The other problem here
+
+00:14:55.510 --> 00:15:02.300 line:100% position:50% align:middle
+is that when I refresh the page, that list
+is not persisting. So what we're going to
+
+00:15:02.300 --> 00:15:06.220 line:100% position:50% align:middle
+do is we're going to be storing our data
+in local storage. Now,
+
+00:15:06.220 --> 00:15:10.760 line:100% position:50% align:middle
+if you've never worked with local storage
+before, essentially how it works is that
+
+00:15:10.760 --> 00:15:16.010 line:100% position:50% align:middle
+you have this object in the browser called
+"Local Storage." If you open that up,
+
+00:15:16.010 --> 00:15:24.180 line:100% position:50% align:middle
+this is just a list of things that have
+been saved to this domain.
+
+00:15:24.180 --> 00:15:29.320 line:100% position:50% align:middle
+So this is only a computer by computer,
+browser by browser, website by website
+
+00:15:29.320 --> 00:15:34.210 line:100% position:50% align:middle
+basis. But you're able to save text to the
+browser, and then when you reload the page
+
+00:15:34.210 --> 00:15:38.300 line:100% position:50% align:middle
+you'll be able to grab this text out of
+it. So if you go to your Application tab
+
+00:15:38.300 --> 00:15:42.230 line:100% position:50% align:middle
+in Chrome Dev Tools, there's a whole bunch
+of stuff here. If you go to Local Storage
+
+00:15:42.230 --> 00:15:45.430 line:100% position:50% align:middle
+and you click on the domain that you're
+working on, in this case I'm working
+
+00:15:45.430 --> 00:15:50.500 line:100% position:50% align:middle
+locally so it's just "file," you should
+see that there's a key of Items and a
+
+00:15:50.500 --> 00:15:53.550 line:100% position:50% align:middle
+value of something else. Now, you might
+see a whole bunch of other stuff here,
+
+00:15:53.550 --> 00:15:57.980 line:100% position:50% align:middle
+depending if you've ever run other
+applications on your local host.
+
+00:15:57.980 --> 00:16:04.440 line:100% position:50% align:middle
+This is where I've stored the text of what
+we're going for and the property of done
+
+00:16:04.440 --> 00:16:11.560 line:100% position:50% align:middle
+to "false" or "true," etc., etc. So how
+do we actually save that to local storage
+
+00:16:11.560 --> 00:16:16.640 line:100% position:50% align:middle
+or done? Well, it's actually pretty easy.
+When we populate the list here,
+
+00:16:16.640 --> 00:16:21.500 line:100% position:50% align:middle
+what we also need to do is set this item's
+array into local storage.
+
+00:16:21.500 --> 00:16:26.000 line:100% position:50% align:middle
+So you think you might be able to do this,
+localStorage. , and then the API is
+
+00:16:26.000 --> 00:16:32.770 line:100% position:50% align:middle
+.setItem, .getItem, and .removeItem or
+deleteItem. I'll double check that.
+
+00:16:32.770 --> 00:16:36.910 line:100% position:50% align:middle
+So localStorage.setItem, and then we're
+going to set the item,
+
+00:16:36.910 --> 00:16:41.170 line:100% position:50% align:middle
+"Items." That's the key right here, what
+it's going to be called.
+
+00:16:41.170 --> 00:16:44.050 line:100% position:50% align:middle
+Then, what are you going to set the data
+to? Well, you might just think,
+
+00:16:44.050 --> 00:16:48.430 line:100% position:50% align:middle
+"Okay. I'll just pass items, because
+that's my items array." "Fish."
+
+00:16:48.430 --> 00:16:52.470 line:100% position:50% align:middle
+Okay. So we just ran it. We gathered the
+item, we populated to the list,
+
+00:16:52.470 --> 00:16:55.400 line:100% position:50% align:middle
+and then we called
+"localStorage.setItems." We go to our
+
+00:16:55.400 --> 00:17:02.450 line:100% position:50% align:middle
+local storage here, and you see this,
+"object Object." What does that mean?
+
+00:17:02.450 --> 00:17:06.990 line:100% position:50% align:middle
+Well, what's happening here is that local
+storage, although it seems like it's an
+
+00:17:06.990 --> 00:17:14.250 line:100% position:50% align:middle
+object, it's simply just a key value store
+and you may only use strings in local
+
+00:17:14.250 --> 00:17:20.390 line:100% position:50% align:middle
+storage. So if we were to take our items
+here and call ".toString" on it,
+
+00:17:20.390 --> 00:17:25.460 line:100% position:50% align:middle
+you see "object Object". What's happening
+is that when you try to put something
+
+00:17:25.460 --> 00:17:29.540 line:100% position:50% align:middle
+other than a string into local storage,
+the browser goes, "Oh,
+
+00:17:29.540 --> 00:17:33.360 line:100% position:50% align:middle
+I don't know how to handle this. Let me
+just convert it to a string,
+
+00:17:33.360 --> 00:17:38.580 line:100% position:50% align:middle
+and let me just use the .toString method
+that exists on the number or the object,
+
+00:17:38.580 --> 00:17:42.660 line:100% position:50% align:middle
+or the array." In our case, it's an array.
+What returns is the browser goes,
+
+00:17:42.660 --> 00:17:47.380 line:100% position:50% align:middle
+"object Object" and that's its
+representation. So we can't really do
+
+00:17:47.380 --> 00:17:51.520 line:100% position:50% align:middle
+that, because there's not actually an
+object here. It's just the word "object
+
+00:17:51.520 --> 00:17:58.310 line:100% position:50% align:middle
+Object". So what we actually need to do is
+stringify it before we convert it.
+
+00:17:58.310 --> 00:18:02.120 line:100% position:50% align:middle
+So in the browser, we have this thing
+called "JSON.stringify" and when you pass
+
+00:18:02.120 --> 00:18:08.770 line:100% position:50% align:middle
+it your items, it's going to convert your
+objects and arrays into a JSON string
+
+00:18:08.770 --> 00:18:14.040 line:100% position:50% align:middle
+equivalent. So we just need to wrap this
+sucker. You send out "parse(items),"
+
+00:18:14.040 --> 00:18:23.630 line:100% position:50% align:middle
+and now when you add an item in here,
+"fish," oh, "Unexpected token o at JSON."
+
+00:18:23.630 --> 00:18:28.240 line:100% position:50% align:middle
+What is our problem? Oh, we're not parsed.
+JSON.stringify. Parsed is going to be the
+
+00:18:28.240 --> 00:18:38.090 line:100% position:50% align:middle
+other way. "Fish" and "tacos," and "yum,"
+and now when you go to your Application
+
+00:18:38.090 --> 00:18:42.730 line:100% position:50% align:middle
+tab here, you see that this is now being
+stored. It looks like an array of objects,
+
+00:18:42.730 --> 00:18:46.440 line:100% position:50% align:middle
+but it really is just text. I can show you
+that, because we can say
+
+00:18:46.440 --> 00:18:53.380 line:100% position:50% align:middle
+"localStorage.getItem('items')." That is
+just a string. However,
+
+00:18:53.380 --> 00:18:59.120 line:100% position:50% align:middle
+what you can do is you can wrap that thing
+in the JSON.parse and that's going to then
+
+00:18:59.120 --> 00:19:03.510 line:100% position:50% align:middle
+take it from the string and put it back
+into whatever it was initially.
+
+00:19:03.510 --> 00:19:08.810 line:100% position:50% align:middle
+In this case, it's going to be an array of
+actual objects. So that's what we need to
+
+00:19:08.810 --> 00:19:16.330 line:100% position:50% align:middle
+do on page load. We go down here and when
+the page loads, the very last thing,
+
+00:19:16.330 --> 00:19:23.260 line:100% position:50% align:middle
+we'll say "populateList" and we can say
+"items." But again, you don't know.
+
+00:19:23.260 --> 00:19:27.870 line:100% position:50% align:middle
+Do we have to do JSON.parse? No, not here.
+We are going to say "items" and
+
+00:19:27.870 --> 00:19:33.400 line:100% position:50% align:middle
+"itemsList." But the "items" doesn't exist
+on page load. Remember,
+
+00:19:33.400 --> 00:19:38.460 line:100% position:50% align:middle
+the first thing we do up here is we create
+an empty object? So what we can do is we
+
+00:19:38.460 --> 00:19:43.390 line:100% position:50% align:middle
+can say "items =
+JSON.parse(localStorage.getItem('items'))
+
+00:19:43.390 --> 00:19:51.360 line:100% position:50% align:middle
+or a blank array. What that will do is
+it's going to try and get it from local
+
+00:19:51.360 --> 00:19:59.000 line:100% position:50% align:middle
+storage, and then if it isn't there it's
+going to fall back to an empty array.
+
+00:19:59.000 --> 00:20:02.950 line:100% position:50% align:middle
+Then, on page load, before we do any of
+this stuff, our Items is going to be
+
+00:20:02.950 --> 00:20:09.100 line:100% position:50% align:middle
+populated, and then when we reach here we
+can call our "populateList" just as we did
+
+00:20:09.100 --> 00:20:15.530 line:100% position:50% align:middle
+right here. So if we refresh the page now,
+oh-ho, you see that our "fish,"
+
+00:20:15.530 --> 00:20:20.260 line:100% position:50% align:middle
+"tacos," and "yum" is now persisting. I
+can refresh all that I want,
+
+00:20:20.260 --> 00:20:25.710 line:100% position:50% align:middle
+and the data is always going to be there.
+So a real quick review of what we just did
+
+00:20:25.710 --> 00:20:30.240 line:100% position:50% align:middle
+there. When we add an item, you put it
+into local storage and you update your
+
+00:20:30.240 --> 00:20:36.790 line:100% position:50% align:middle
+local storage every single time. Then, on
+page load, what's going to happen is that
+
+00:20:36.790 --> 00:20:41.650 line:100% position:50% align:middle
+we check if there is something in local
+storage, and then we fall back to an empty
+
+00:20:41.650 --> 00:20:44.660 line:100% position:50% align:middle
+array. Now, I just want to make sure that
+that still works with nothing.
+
+00:20:44.660 --> 00:20:49.240 line:100% position:50% align:middle
+So we can go to our application, File,
+click on this thing, and exit.
+
+00:20:49.240 --> 00:20:54.230 line:100% position:50% align:middle
+Then, when we refresh the page, you see
+that there is nothing there.
+
+00:20:54.230 --> 00:20:59.110 line:100% position:50% align:middle
+So if I type in "items", you see that it's
+fallen back to this square bracket,
+
+00:20:59.110 --> 00:21:03.840 line:100% position:50% align:middle
+which is a blank array. Okay. Good. Good.
+Good. We are in good shape.
+
+00:21:03.840 --> 00:21:09.290 line:100% position:50% align:middle
+Next, what we need to do is persist the
+toggling of it. Because if you add in
+
+00:21:09.290 --> 00:21:16.390 line:100% position:50% align:middle
+"fish" and "tacos," and "yum," and you
+check one and refresh the page,
+
+00:21:16.390 --> 00:21:24.450 line:100% position:50% align:middle
+that state is no longer handled. So what
+we need to do is create a new function
+
+00:21:24.450 --> 00:21:29.520 line:100% position:50% align:middle
+called "toggleDone," and then we're going
+to pass the event there.
+
+00:21:29.520 --> 00:21:36.000 line:100% position:50% align:middle
+Now, when will this function run? Let's go
+down here. You think that you would select
+
+00:21:36.000 --> 00:21:41.440 line:100% position:50% align:middle
+each of the checkboxes right here, and
+then listen for either a change or a click
+
+00:21:41.440 --> 00:21:48.250 line:100% position:50% align:middle
+event on those checkboxes. Then, when that
+happens you will go ahead and perform
+
+00:21:48.250 --> 00:21:53.690 line:100% position:50% align:middle
+something. Now, let me show you a real
+quick example. If I say "const checkBoxes
+
+00:21:53.690 --> 00:21:58.610 line:100% position:50% align:middle
+= document.querySelectorAll, and I'm just
+going to select every input on the page,
+
+00:21:58.610 --> 00:22:05.320 line:100% position:50% align:middle
+and I'll say checkBoxes.forEach(input =>
+input.addEventListener('click'".
+
+00:22:05.320 --> 00:22:11.330 line:100% position:50% align:middle
+Then, when that runs, I'm just going to
+run a quick function here,
+
+00:22:11.330 --> 00:22:18.710 line:100% position:50% align:middle
+that will alert I. Okay. What I did there,
+when I click on a checkbox,
+
+00:22:18.710 --> 00:22:22.420 line:100% position:50% align:middle
+we should alert "hi." So click it, and
+when I click one of them,
+
+00:22:22.420 --> 00:22:29.800 line:100% position:50% align:middle
+we showed alert "hi," but it's not
+working. Hmm, what's going on here?
+
+00:22:29.800 --> 00:22:37.430 line:100% position:50% align:middle
+Well, if we look at our checkboxes array,
+there's two things in there and it's this
+
+00:22:37.430 --> 00:22:42.150 line:100% position:50% align:middle
+thing. Okay. So when I click on that, that
+works. When we click on Add Item,
+
+00:22:42.150 --> 00:22:47.700 line:100% position:50% align:middle
+that works. So where are these three
+inputs? Why are they not showing up in my
+
+00:22:47.700 --> 00:22:53.770 line:100% position:50% align:middle
+note list? The problem that we've run into
+here is that when this code runs,
+
+00:22:53.770 --> 00:22:58.470 line:100% position:50% align:middle
+when our event listener runs, when our
+selector runs, this doesn't exist yet.
+
+00:22:58.470 --> 00:23:01.790 line:100% position:50% align:middle
+Why? Because we need to populate the list
+first. So you might think,
+
+00:23:01.790 --> 00:23:06.870 line:100% position:50% align:middle
+"Okay. That's fine. Let's populate the
+list first and let's take a look at our
+
+00:23:06.870 --> 00:23:11.880 line:100% position:50% align:middle
+checkboxes array." Okay. Look at it.
+There's more. There they are.
+
+00:23:11.880 --> 00:23:15.650 line:100% position:50% align:middle
+Okay. Are we out? Now, if I click on one
+of these, okay, now it's working.
+
+00:23:15.650 --> 00:23:22.270 line:100% position:50% align:middle
+But what happens if I add an additional
+item like here? "Hello."
+
+00:23:22.270 --> 00:23:25.530 line:100% position:50% align:middle
+It adds it. Okay, good. Now, I'm going to
+click on this checkbox.
+
+00:23:25.530 --> 00:23:34.300 line:100% position:50% align:middle
+It doesn't work. Does "yum" still work?
+No. None of these work now.
+
+00:23:34.300 --> 00:23:40.050 line:100% position:50% align:middle
+What's happening is because these inputs
+here are created after we listen for them,
+
+00:23:40.050 --> 00:23:44.280 line:100% position:50% align:middle
+they don't have event listeners attached
+to them. The whole idea behind event
+
+00:23:44.280 --> 00:23:48.830 line:100% position:50% align:middle
+delegation is rather than listening for a
+click or a change on these checkboxes
+
+00:23:48.830 --> 00:23:55.120 line:100% position:50% align:middle
+directly, what we do is we look for
+somebody who is going to be on the page at
+
+00:23:55.120 --> 00:24:00.250 line:100% position:50% align:middle
+the time of listening. If we look at our
+HTML here, you're going to see that that
+
+00:24:00.250 --> 00:24:05.140 line:100% position:50% align:middle
+unordered list that holds everything, UL
+with a class of "plates,"
+
+00:24:05.140 --> 00:24:09.600 line:100% position:50% align:middle
+that does exist. So what we're going to do
+is we're going to listen for a click on
+
+00:24:09.600 --> 00:24:13.430 line:100% position:50% align:middle
+the plates, and then we're going to figure
+out, "Did they actually mean to click one
+
+00:24:13.430 --> 00:24:18.050 line:100% position:50% align:middle
+of the inputs inside of it?" So I always
+like to think of event delegation as very
+
+00:24:18.050 --> 00:24:23.680 line:100% position:50% align:middle
+responsible parents, like UL with a class
+of "plates," and very negligent children
+
+00:24:23.680 --> 00:24:28.760 line:100% position:50% align:middle
+who don't necessarily hear any
+instructions from the parents. So what
+
+00:24:28.760 --> 00:24:33.510 line:100% position:50% align:middle
+we're saying is, "Hey, plates. When your
+children inputs get clicked,
+
+00:24:33.510 --> 00:24:38.790 line:100% position:50% align:middle
+can you please pass this click on to
+them?" Rather than you handling the click
+
+00:24:38.790 --> 00:24:43.240 line:100% position:50% align:middle
+directly, we're just telling you because
+you're the only one responsible here.
+
+00:24:43.240 --> 00:24:46.290 line:100% position:50% align:middle
+So that when someone clicks it, if it's
+for one of your children,
+
+00:24:46.290 --> 00:24:49.140 line:100% position:50% align:middle
+I don't know if they're your current
+children or you're going to make more
+
+00:24:49.140 --> 00:24:53.040 line:100% position:50% align:middle
+children in the future, but if you make
+more in the future, make sure you tell
+
+00:24:53.040 --> 00:24:57.170 line:100% position:50% align:middle
+them to handle this click. So you've got
+to think of like, responsible parent,
+
+00:24:57.170 --> 00:25:01.020 line:100% position:50% align:middle
+negligent child who doesn't necessarily
+know what to do with the click.
+
+00:25:01.020 --> 00:25:04.440 line:100% position:50% align:middle
+So the parent has to tell it what to do.
+So let's go back to this code here.
+
+00:25:04.440 --> 00:25:08.690 line:100% position:50% align:middle
+We're going to delete these checkboxes
+here if you type that. We just want this
+
+00:25:08.690 --> 00:25:15.010 line:100% position:50% align:middle
+populatedList and addItem with that
+listener. We are going to listen for the
+
+00:25:15.010 --> 00:25:19.900 line:100% position:50% align:middle
+click on the unordered list, which is this
+itemsList right here.
+
+00:25:19.900 --> 00:25:24.790 line:100% position:50% align:middle
+So we'll say, just duplicate this,
+"itemsList.addEventListener."
+
+00:25:24.790 --> 00:25:30.230 line:100% position:50% align:middle
+We're going to listen for a click. When
+that happens, we're going to "toggleDone."
+
+00:25:30.230 --> 00:25:35.850 line:100% position:50% align:middle
+Then, inside of here, I'm going to
+console.log the E. Let's go back to our
+
+00:25:35.850 --> 00:25:42.030 line:100% position:50% align:middle
+console here. Now, let's click on one of
+these. Uh-oh. Okay. That's interesting.
+
+00:25:42.030 --> 00:25:45.990 line:100% position:50% align:middle
+We're getting two different mouse event
+handlers. Let's click on this one right
+
+00:25:45.990 --> 00:25:52.860 line:100% position:50% align:middle
+here. Whoa. What's going on here? So we're
+getting two different event listeners here
+
+00:25:52.860 --> 00:25:57.670 line:100% position:50% align:middle
+when we click on something. What we can do
+a little bit further is if we look at the
+
+00:25:57.670 --> 00:26:04.550 line:100% position:50% align:middle
+target of that event, let's see what we're
+working with here, click on Tacos,
+
+00:26:04.550 --> 00:26:08.080 line:100% position:50% align:middle
+ah. So what's happening here is that we're
+clicking on the item,
+
+00:26:08.080 --> 00:26:16.190 line:100% position:50% align:middle
+and we're also clicking on the checkbox.
+Because our click on Label is in turn
+
+00:26:16.190 --> 00:26:22.060 line:100% position:50% align:middle
+checking the checkbox, which will trigger
+a click on the actual input.
+
+00:26:22.060 --> 00:26:26.760 line:100% position:50% align:middle
+Okay, good. Then, what else? Like if we
+click on something here that isn't
+
+00:26:26.760 --> 00:26:30.510 line:100% position:50% align:middle
+necessarily the list item or the input,
+you see the label is there,
+
+00:26:30.510 --> 00:26:36.690 line:100% position:50% align:middle
+if we click like right here in between,
+what do we got? We get the LI.
+
+00:26:36.690 --> 00:26:40.720 line:100% position:50% align:middle
+So you see as we click different items,
+the target is going to be a little bit
+
+00:26:40.720 --> 00:26:47.100 line:100% position:50% align:middle
+different. What we want to do here is we
+want to check if the target matches the
+
+00:26:47.100 --> 00:26:53.320 line:100% position:50% align:middle
+thing that we're looking for. So we'll
+say, "If the e.target.matches," this is
+
+00:26:53.320 --> 00:26:58.370 line:100% position:50% align:middle
+the new API in the browser, "input," and
+this is sort of like if you've ever worked
+
+00:26:58.370 --> 00:27:04.960 line:100% position:50% align:middle
+with jquery.isaninput, it's the same thing
+as .matches, then we want to return.
+
+00:27:04.960 --> 00:27:15.070 line:100% position:50% align:middle
+Which means they skip this unless it's in
+input. Then, let's console.log the target.
+
+00:27:15.070 --> 00:27:20.150 line:100% position:50% align:middle
+There we go. Now, wherever we click, we're
+only getting input checks.
+
+00:27:20.150 --> 00:27:24.130 line:100% position:50% align:middle
+Good. So now, we have that working. Again,
+that's event delegation,
+
+00:27:24.130 --> 00:27:28.580 line:100% position:50% align:middle
+where we listen for a click on something
+higher, and then inside of it we check if
+
+00:27:28.580 --> 00:27:32.880 line:100% position:50% align:middle
+it's the actual thing that we want because
+it could trigger on a few different
+
+00:27:32.880 --> 00:27:37.780 line:100% position:50% align:middle
+things. Now, what we want to do is we want
+to go to our items array,
+
+00:27:37.780 --> 00:27:44.090 line:100% position:50% align:middle
+and we want to find the one that was
+checked and set the done to be "true" or
+
+00:27:44.090 --> 00:27:49.750 line:100% position:50% align:middle
+"false," depending on what state it's in.
+So we can first get the index,
+
+00:27:49.750 --> 00:27:56.660 line:100% position:50% align:middle
+and this is why I gave each input a
+data-index value, because we can then use
+
+00:27:56.660 --> 00:28:03.300 line:100% position:50% align:middle
+that to reference where it is in the
+array. So if we say "const el = e.target",
+
+00:28:03.300 --> 00:28:08.150 line:100% position:50% align:middle
+so put it in its own, now that we have
+that element, we can console.log,
+
+00:28:08.150 --> 00:28:13.990 line:100% position:50% align:middle
+el.dataset.index. This is why we put a
+data-index on each of the checkboxes.
+
+00:28:13.990 --> 00:28:18.230 line:100% position:50% align:middle
+You check one, it's going to tell you the
+index of the corresponding item in the
+
+00:28:18.230 --> 00:28:24.850 line:100% position:50% align:middle
+array. Then, from that we'll take that
+index, we'll stick it in its own variable
+
+00:28:24.850 --> 00:28:32.780 line:100% position:50% align:middle
+just for simplicity's sake, and then we'll
+take our items with the index and we'll
+
+00:28:32.780 --> 00:28:38.990 line:100% position:50% align:middle
+access the done property. We'll set it to
+itself, but this is the trick,
+
+00:28:38.990 --> 00:28:44.000 line:100% position:50% align:middle
+the opposite. So if this is true, it's
+going to be the opposite,
+
+00:28:44.000 --> 00:28:46.920 line:100% position:50% align:middle
+which is false. If this is false, it's
+going to be the opposite,
+
+00:28:46.920 --> 00:28:52.510 line:100% position:50% align:middle
+which is true. So this is just
+flip-flopping between true and false.
+
+00:28:52.510 --> 00:28:56.410 line:100% position:50% align:middle
+Then, we're going to do the same thing
+that we did with the stringify,
+
+00:28:56.410 --> 00:29:01.590 line:100% position:50% align:middle
+localStorage right here. Take that. Stick
+it right in here. Then,
+
+00:29:01.590 --> 00:29:08.750 line:100% position:50% align:middle
+we will run populateList once more, which
+will update the actual visibility part on
+
+00:29:08.750 --> 00:29:11.990 line:100% position:50% align:middle
+here. So we're going to change the
+property, we're going to store that in
+
+00:29:11.990 --> 00:29:15.680 line:100% position:50% align:middle
+local storage, and we're going to visually
+update what's on our page.
+
+00:29:15.680 --> 00:29:20.070 line:100% position:50% align:middle
+Now when we refresh "tacos", and I should
+refresh the page now,
+
+00:29:20.070 --> 00:29:24.730 line:100% position:50% align:middle
+"tacos" is always going to be "true". Why?
+Because if we go to our application and we
+
+00:29:24.730 --> 00:29:32.060 line:100% position:50% align:middle
+look at our local storage here, you should
+see that "tacos" is "true" and done is
+
+00:29:32.060 --> 00:29:35.990 line:100% position:50% align:middle
+"false". If I were to just mainly change
+this to "false" and the first one to
+
+00:29:35.990 --> 00:29:40.790 line:100% position:50% align:middle
+"true", then I refresh the page, you'll
+see now "fish" is checked and "tacos".
+
+00:29:40.790 --> 00:29:46.800 line:100% position:50% align:middle
+So every time we make a change, we are
+going to mirror that to local storage,
+
+00:29:46.800 --> 00:29:51.030 line:100% position:50% align:middle
+and then rerender the entire list. Or even
+better, if you can figure out,
+
+00:29:51.030 --> 00:29:56.340 line:100% position:50% align:middle
+"How do I rerender just that one?" that's
+even better. So that's it for today's.
+
+00:29:56.340 --> 00:30:01.550 line:100% position:50% align:middle
+What I will now challenge you to do is
+make a button right here that says Clear
+
+00:30:01.550 --> 00:30:06.330 line:100% position:50% align:middle
+All or Check All, or Uncheck All. When you
+click that Delete button,
+
+00:30:06.330 --> 00:30:10.020 line:100% position:50% align:middle
+it'll delete all of them. When you click
+Check All, it will make them all checked.
+
+00:30:10.020 --> 00:30:13.960 line:100% position:50% align:middle
+When you click Uncheck All, it will
+uncheck all of them and mirror it to local
+
+00:30:13.960 --> 00:30:17.830 line:100% position:50% align:middle
+storage, as well as rerun this populated
+list. Thanks a lot, and I'll see you in
+
+00:30:17.830 --> 00:30:18.780 line:100% position:50% align:middle
+the next one.
+
+00:30:18.780 --> 00:30:20.780 line:100% position:50% align:middle
+♪ [music] ♪

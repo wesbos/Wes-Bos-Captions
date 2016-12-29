@@ -1,0 +1,792 @@
+WEBVTT
+
+00:00:01.078 --> 00:00:04.708 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.770 --> 00:00:11.990 line:100% position:50% align:middle
+Today what we'll be building is this
+sweet HTML5 canvas where,
+
+00:00:11.990 --> 00:00:17.900 line:100% position:50% align:middle
+as I click down, drag my finger and let
+go, it's going to draw something on the
+
+00:00:17.900 --> 00:00:21.090 line:100% position:50% align:middle
+actual canvas here. Now, this may seem a
+little bit silly, but we're actually going
+
+00:00:21.090 --> 00:00:24.650 line:100% position:50% align:middle
+to learn a lot about how the fundamentals
+of Canvas actually work,
+
+00:00:24.650 --> 00:00:27.660 line:100% position:50% align:middle
+as well as a couple other
+neat tricks along the way.
+
+00:00:27.660 --> 00:00:31.300 line:100% position:50% align:middle
+So let's head on over to our
+JavaScript file here, and really,
+
+00:00:31.300 --> 00:00:36.000 line:100% position:50% align:middle
+all we have is this Canvas element that we
+need to draw on. So first thing that we
+
+00:00:36.000 --> 00:00:41.470 line:100% position:50% align:middle
+want to do is grab that canvas, and the
+second thing that we need is something
+
+00:00:41.470 --> 00:00:45.430 line:100% position:50% align:middle
+called a context. Canvas on the
+web is sort of like Microsoft Paint,
+
+00:00:45.430 --> 00:00:50.790 line:100% position:50% align:middle
+where you just get a block of actual
+pixels and you need to then draw on that.
+
+00:00:50.790 --> 00:00:55.710 line:100% position:50% align:middle
+Now, you don't draw directly on the canvas
+element in HTML, but you draw on something
+
+00:00:55.710 --> 00:00:59.350 line:100% position:50% align:middle
+called the context. And the context can
+either be 2D, which is what we'll be
+
+00:00:59.350 --> 00:01:04.910 line:100% position:50% align:middle
+working with, although you can also use it
+with 3D for the stuff like video games and
+
+00:01:04.910 --> 00:01:11.590 line:100% position:50% align:middle
+3D rendering. So we're going to grab
+the context, const ctx = canvas.
+
+00:01:11.590 --> 00:01:18.030 line:100% position:50% align:middle
+Getcontext. Ask it for the 2D context.
+Next thing we need to do is size up our
+
+00:01:18.030 --> 00:01:21.860 line:100% position:50% align:middle
+canvas to be the exact width of the
+window. By default, your canvas is going
+
+00:01:21.860 --> 00:01:27.110 line:100% position:50% align:middle
+to be 800px by 800px, as I've done it
+here. However, we want to resize it before
+
+00:01:27.110 --> 00:01:33.860 line:100% position:50% align:middle
+we do any of our drawings. So say
+canvas.width = window.innerWidth and we'll
+
+00:01:33.860 --> 00:01:39.970 line:100% position:50% align:middle
+also do that with height. Then, when I
+refresh this page, it should be as big as
+
+00:01:39.970 --> 00:01:44.190 line:100% position:50% align:middle
+the actual window is. If I Inspect Element
+on my canvas element you shouldn't see
+
+00:01:44.190 --> 00:01:49.185 line:100% position:50% align:middle
+anything, but if you hover over it, you'll
+see mine is about 1700px by 1100px.
+
+00:01:50.270 --> 00:01:53.652 line:100% position:50% align:middle
+Then we need to do a couple of the base
+settings with the strokeStyle,
+
+00:01:53.652 --> 00:01:58.290 line:100% position:50% align:middle
+the lineCap and the lineJoin, and I'll
+explain these in just a second.
+
+00:01:58.290 --> 00:02:08.130 line:100% position:50% align:middle
+#BADA55. And we need lineJoin is going to
+be round, and the lineCap is also going to
+
+00:02:08.130 --> 00:02:12.710 line:100% position:50% align:middle
+be round. And when you draw on something,
+what is going to happen is there needs to
+
+00:02:12.710 --> 00:02:15.650 line:100% position:50% align:middle
+be a color, first of all, and we're going
+to start with #BADA55,
+
+00:02:15.650 --> 00:02:20.130 line:100% position:50% align:middle
+and then also the end of the line, should
+it be squared off? And when a line meets
+
+00:02:20.130 --> 00:02:24.310 line:100% position:50% align:middle
+another line, should it be squared off or
+should it be rounded around the corner?
+
+00:02:24.310 --> 00:02:29.066 line:100% position:50% align:middle
+So we've done rounded. You can go up on
+MDN and look at all the different options
+
+00:02:29.066 --> 00:02:31.570 line:100% position:50% align:middle
+for lineJoin and lineCap,
+and play around with them.
+
+00:02:31.570 --> 00:02:38.300 line:100% position:50% align:middle
+Next, we need a couple of dummy variables,
+so we're going to say let isDrawing =
+
+00:02:38.300 --> 00:02:44.850 line:100% position:50% align:middle
+false, and what this is going to do is
+when I click down on this element...
+
+00:02:45.030 --> 00:02:48.740 line:100% position:50% align:middle
+I'm clicking down, I just did it, and I
+move my mouse and then I let go,
+
+00:02:48.740 --> 00:02:52.630 line:100% position:50% align:middle
+and then I move my mouse again. Nothing
+happens when I'm moving my mouse down,
+
+00:02:52.630 --> 00:02:57.080 line:100% position:50% align:middle
+it only draws when my cursor is actually
+down. So what we're going to do is we're
+
+00:02:57.080 --> 00:03:02.200 line:100% position:50% align:middle
+creating sort of like a flag right here,
+where we set it to false,
+
+00:03:02.200 --> 00:03:06.830 line:100% position:50% align:middle
+and then when you click down we set it to
+true, and when you click up,
+
+00:03:06.830 --> 00:03:09.660 line:100% position:50% align:middle
+you let go of the button, we're going to
+set it to false. And that's sort of just
+
+00:03:09.660 --> 00:03:13.630 line:100% position:50% align:middle
+going to be our flag to tell us should we
+actually draw to this canvas,
+
+00:03:13.630 --> 00:03:17.560 line:100% position:50% align:middle
+or is someone moving their mouse
+without doing anything?
+
+00:03:17.560 --> 00:03:24.340 line:100% position:50% align:middle
+Then we need a couple of variables,
+let lastX = 0 and lastY = 0.
+
+00:03:24.340 --> 00:03:30.880 line:100% position:50% align:middle
+And lastX and lastY are going to help us
+out, because when we draw to a canvas,
+
+00:03:30.880 --> 00:03:34.437 line:100% position:50% align:middle
+let's say I have my mouse right here and I
+want to move it to right here.
+
+00:03:34.437 --> 00:03:38.715 line:100% position:50% align:middle
+Let's imagine that was just one straight
+line. What needs to happen for you to draw
+
+00:03:38.715 --> 00:03:44.330 line:100% position:50% align:middle
+a line is you need a starting X and Y and
+an ending X and Y. You can't just tell it
+
+00:03:44.330 --> 00:03:51.340 line:100% position:50% align:middle
+"Draw a line at coordinates (100,100),"
+because a line needs a start and a stop,
+
+00:03:51.340 --> 00:03:56.910 line:100% position:50% align:middle
+not just a start. So what we've done is
+we've created a lastX and a lastY variable
+
+00:03:56.910 --> 00:04:00.960 line:100% position:50% align:middle
+that's going to be "Where do you start the
+line from?" And then when we finish
+
+00:04:00.960 --> 00:04:04.820 line:100% position:50% align:middle
+drawing, that's going to be "Where do you
+end?" Next up, we need a function called
+
+00:04:04.820 --> 00:04:08.740 line:100% position:50% align:middle
+draw, and that's going to take in an
+event. That draw function is going to be
+
+00:04:08.740 --> 00:04:12.540 line:100% position:50% align:middle
+called whenever I move my mouse on top of
+the canvas. Let's just console.log that
+
+00:04:12.540 --> 00:04:16.967 line:100% position:50% align:middle
+event, and we'll listen for our
+mousemove event on the canvas.
+
+00:04:19.441 --> 00:04:25.100 line:100% position:50% align:middle
+So now when I move my mouse on the canvas,
+it's going to console.log draw,
+
+00:04:25.100 --> 00:04:29.890 line:100% position:50% align:middle
+and when I move around our mouse now,
+you're going to see that these events,
+
+00:04:29.890 --> 00:04:34.020 line:100% position:50% align:middle
+MouseEvents, are being logged every time
+I move the mouse. And on those
+
+00:04:34.020 --> 00:04:38.470 line:100% position:50% align:middle
+MouseEvents, we're going to see offsetX,
+offsetY, movementX, movementY,
+
+00:04:38.470 --> 00:04:44.770 line:100% position:50% align:middle
+X and Y. All this information about what
+happened, where was the mouse when this
+
+00:04:44.770 --> 00:04:49.880 line:100% position:50% align:middle
+thing was fired. But, again, we don't want
+this draw, this console log to run all the
+
+00:04:49.880 --> 00:04:55.060 line:100% position:50% align:middle
+time, we want to only do it when the
+person has clicked down. So what we can do
+
+00:04:55.060 --> 00:05:04.849 line:100% position:50% align:middle
+here is, we'll say if they are not drawing
+then return. And this will stop the
+
+00:05:14.635 --> 00:05:14.635 line:100% position:50% align:middle
+function from running when they are not
+moused down. And then how do we change
+
+00:05:14.635 --> 00:05:20.422 line:100% position:50% align:middle
+that isDrawing? Well, we'll have another
+event listener here, so mousedown.
+
+00:05:20.422 --> 00:05:24.293 line:100% position:50% align:middle
+And when the mouse is down, we're just
+going to run a quick arrow function inline
+
+00:05:24.293 --> 00:05:34.800 line:100% position:50% align:middle
+here that says isDrawing = true, and when
+the mouse is up isDrawing = false,
+
+00:05:34.800 --> 00:05:39.870 line:100% position:50% align:middle
+and then finally one, we want to listen
+for mouseout isDrawing is also going to be
+
+00:05:39.870 --> 00:05:44.390 line:100% position:50% align:middle
+false. Because what can happen is you can
+click down, let your mouse leave the
+
+00:05:44.390 --> 00:05:49.850 line:100% position:50% align:middle
+actual window here and let go and come
+back, and it's still going to think that
+
+00:05:49.850 --> 00:05:52.610 line:100% position:50% align:middle
+the mouse is down because you never
+triggered a mouseup on that event.
+
+00:05:52.610 --> 00:05:55.645 line:100% position:50% align:middle
+So when you mouse out it's going to
+automatically say, "Oh, you're no longer
+
+00:05:55.645 --> 00:06:01.599 line:100% position:50% align:middle
+drawing." So with these variables being
+set here, we should only console.log the
+
+00:06:01.599 --> 00:06:06.170 line:100% position:50% align:middle
+event when my mouse is down. So refresh,
+here we go, I'm moving my mouse around,
+
+00:06:06.170 --> 00:06:10.190 line:100% position:50% align:middle
+nothing is happening. I'm going to click
+and keep moving my mouse,
+
+00:06:10.190 --> 00:06:14.480 line:100% position:50% align:middle
+look at all these numbers are moving and
+I'm going to let go and move my mouse
+
+00:06:14.480 --> 00:06:18.840 line:100% position:50% align:middle
+around, nothing happening. Good. So that
+means this function, everything below this
+
+00:06:18.840 --> 00:06:23.970 line:100% position:50% align:middle
+one line, is only going to run when the
+user's mouse is actually down.
+
+00:06:23.970 --> 00:06:30.630 line:100% position:50% align:middle
+So that's our sort of click-and-drag
+functionality down pat, now let's work on
+
+00:06:30.630 --> 00:06:32.770 line:100% position:50% align:middle
+actually doing the drawing.
+
+00:06:32.770 --> 00:06:37.250 line:100% position:50% align:middle
+So first thing we want to do here
+is start a path, so we say ctx,
+
+00:06:37.250 --> 00:06:40.870 line:100% position:50% align:middle
+and remember, ctx is where we do all of
+our drawings for our canvas.
+
+00:06:40.870 --> 00:06:49.420 line:100% position:50% align:middle
+So beginPath() then we need to start with
+an X and a Y, move it to an X and Y,
+
+00:06:49.420 --> 00:06:55.920 line:100% position:50% align:middle
+and that will complete our drawing of X.
+So we say ctx.moveTo (lastX,
+
+00:06:55.920 --> 00:07:07.060 line:100% position:50% align:middle
+lastY), and then we are going
+to lineTo (e.offsetX, e.offsetY).
+
+00:07:07.060 --> 00:07:13.100 line:100% position:50% align:middle
+And again, those e.offsetX and offsetY,
+those values are coming from the actual
+
+00:07:13.100 --> 00:07:20.230 line:100% position:50% align:middle
+event that happened here. And
+then finally we call ctx.stroke().
+
+00:07:20.230 --> 00:07:23.980 line:100% position:50% align:middle
+So all of these lines right here, they've
+just been starting up our line,
+
+00:07:23.980 --> 00:07:27.540 line:100% position:50% align:middle
+but we're not going to actually see
+anything on the page until we call stroke.
+
+00:07:27.540 --> 00:07:30.188 line:100% position:50% align:middle
+Now, that's not going to get us there, but
+let's see where we are so far.
+
+00:07:31.840 --> 00:07:40.260 line:100% position:50% align:middle
+Whoa! What is going on here? Maybe you
+can understand what's going on here.
+
+00:07:40.260 --> 00:07:45.230 line:100% position:50% align:middle
+It's actually kind of cool. We're drawing
+all of these lines, but what's happening
+
+00:07:45.230 --> 00:07:51.860 line:100% position:50% align:middle
+is we're always starting from...and we'll
+put a comment, "Start from," and "Go to."
+
+00:07:51.860 --> 00:07:56.940 line:100% position:50% align:middle
+We're going to always start from 0, and go
+to wherever the user's mouse is actually
+
+00:07:56.940 --> 00:08:01.570 line:100% position:50% align:middle
+moving, right? So what we want to do is
+when we're done, this draw function,
+
+00:08:01.570 --> 00:08:07.530 line:100% position:50% align:middle
+we want to update the lastX and the lastY
+variables to be wherever they were.
+
+00:08:07.530 --> 00:08:17.447 line:100% position:50% align:middle
+So we could say lastX = e.offsetX and
+lastY = e.offsetY. Let's see if that does
+
+00:08:17.447 --> 00:08:26.920 line:100% position:50% align:middle
+it for us. Ah, working so far. Drag...oh,
+no. A couple of things happening here.
+
+00:08:26.920 --> 00:08:30.920 line:100% position:50% align:middle
+First of all, let me just show you a quick
+ES6 trick. We could set both of these
+
+00:08:30.920 --> 00:08:41.146 line:100% position:50% align:middle
+variables in one line where we say
+[lastX, lastY] = [e.offsetX, e.offsetY].
+
+00:08:41.146 --> 00:08:45.230 line:100% position:50% align:middle
+That just allows us to do it in one single
+line. That's called "destructuring an
+
+00:08:45.230 --> 00:08:49.050 line:100% position:50% align:middle
+array," but we still have this problem. We
+got a couple of problems here.
+
+00:08:49.050 --> 00:08:56.543 line:100% position:50% align:middle
+First of all, when I click down my first
+drawing is still always going to start at
+
+00:08:56.543 --> 00:09:01.910 line:100% position:50% align:middle
+(0,0), and that doesn't really make much
+sense. And then the other thing is,
+
+00:09:01.910 --> 00:09:06.270 line:100% position:50% align:middle
+like, when I continue to draw, it just
+starts off from where I was.
+
+00:09:06.270 --> 00:09:11.050 line:100% position:50% align:middle
+So I'm only able to draw one continuous
+line and nowhere in between.
+
+00:09:11.050 --> 00:09:16.860 line:100% position:50% align:middle
+What we can do is go back to this
+mousedown, here, this function,
+
+00:09:16.860 --> 00:09:20.910 line:100% position:50% align:middle
+and maybe I'll move this to the top here,
+just have it out. And rather than doing
+
+00:09:20.910 --> 00:09:25.210 line:100% position:50% align:middle
+this just one quick inline function, I'm
+going to make that into a block so I can
+
+00:09:25.210 --> 00:09:31.010 line:100% position:50% align:middle
+do multiple things. So isDrawing = true,
+but we also have to update our lastX and
+
+00:09:31.010 --> 00:09:39.090 line:100% position:50% align:middle
+our lastY, the same as we've done here and
+pass the event. So what we're going to do
+
+00:09:39.090 --> 00:09:44.089 line:100% position:50% align:middle
+is as soon as the person clicks their
+mouse down to start it, before we do a
+
+00:09:44.089 --> 00:09:48.580 line:100% position:50% align:middle
+mousemove, because mousedown
+will happen before we move our mouse,
+
+00:09:48.580 --> 00:09:53.250 line:100% position:50% align:middle
+then we're going to update the lastX and
+lastY, and that's going to put us where we
+
+00:09:53.250 --> 00:09:58.200 line:100% position:50% align:middle
+want to go rather than starting
+at (0,0). So give that a save.
+
+00:09:58.200 --> 00:10:01.980 line:100% position:50% align:middle
+Now, I'm going to start here. Click.
+Ah, looks like it's actually working.
+
+00:10:01.980 --> 00:10:06.220 line:100% position:50% align:middle
+Can I start another one? Good. Draw
+another line. Draw another line.
+
+00:10:06.220 --> 00:10:10.940 line:100% position:50% align:middle
+Draw another line. Good. I'm really happy
+with that. Now, couple of other things.
+
+00:10:10.940 --> 00:10:15.480 line:100% position:50% align:middle
+These lines are really, really small so we
+could go up to our context here and say
+
+00:10:15.480 --> 00:10:24.080 line:100% position:50% align:middle
+ctx.lineWidth = 100, and that will give us
+a much... You see how the end of the caps
+
+00:10:24.080 --> 00:10:29.970 line:100% position:50% align:middle
+are round? If I were to take this lineJoin
+and lineCap off, we just get that,
+
+00:10:29.970 --> 00:10:36.290 line:100% position:50% align:middle
+woo! This kind of funkiness going on here,
+and as well as the lineCap it's going to
+
+00:10:36.290 --> 00:10:42.070 line:100% position:50% align:middle
+give us this nice, smooth round one. So
+that's the very basics of drawing on a
+
+00:10:42.070 --> 00:10:46.540 line:100% position:50% align:middle
+canvas, but let's have a little bit of fun
+and do something like this.
+
+00:10:46.540 --> 00:10:51.630 line:100% position:50% align:middle
+Let's first do the color. If you haven't
+heard of HSL, I need to stop for just a
+
+00:10:51.630 --> 00:10:56.730 line:100% position:50% align:middle
+second and explain it. Head to
+the website mothereffinghsl.com,
+
+00:10:56.730 --> 00:11:02.710 line:100% position:50% align:middle
+and what HSL is, it's essentially the
+rainbow, but you can programmatically
+
+00:11:02.710 --> 00:11:09.850 line:100% position:50% align:middle
+select pieces of the rainbow. So the hue
+part of HSL is from red all the way over
+
+00:11:09.850 --> 00:11:14.440 line:100% position:50% align:middle
+to red on the rainbow, the S which is the
+saturation, which is sort of like,
+
+00:11:14.440 --> 00:11:19.360 line:100% position:50% align:middle
+how bright it is. And L is going to be the
+lightness and that's what you can change
+
+00:11:19.360 --> 00:11:25.350 line:100% position:50% align:middle
+right here. Lightness all the way is
+white, the absence of lightness is going
+
+00:11:25.350 --> 00:11:28.270 line:100% position:50% align:middle
+to be black. So somewhere in the middle is
+probably what you're looking for,
+
+00:11:28.270 --> 00:11:33.290 line:100% position:50% align:middle
+maybe a little bit higher and that's going
+to allow us to programmatically pick the
+
+00:11:33.290 --> 00:11:39.740 line:100% position:50% align:middle
+different pieces of this. Now, that's
+really cool because what we can do is if 0
+
+00:11:39.740 --> 00:11:49.210 line:100% position:50% align:middle
+is red, and 360 is the other spectrum,
+that means for every 360 draws that we do,
+
+00:11:49.210 --> 00:11:53.820 line:100% position:50% align:middle
+we can just pick and increment
+a color and then flip it back.
+
+00:11:53.820 --> 00:11:56.740 line:100% position:50% align:middle
+So what we're going to do is go
+back up to our initial variables,
+
+00:11:56.740 --> 00:12:03.440 line:100% position:50% align:middle
+and we're going to say let hue = 0
+and as we draw, before we begin the path,
+
+00:12:03.440 --> 00:12:09.170 line:100% position:50% align:middle
+we'll say ctx.strokeStyle, and remember
+we started with #BADA55,
+
+00:12:09.170 --> 00:12:17.400 line:100% position:50% align:middle
+but now we're going to be setting it to be
+'hsl ()', and the hue is going to be the
+
+00:12:17.400 --> 00:12:24.820 line:100% position:50% align:middle
+variable hue, and then we're going to give
+it 100% saturation and 50% lightness.
+
+00:12:24.820 --> 00:12:29.660 line:100% position:50% align:middle
+So let's start, let's see where we get
+so far. Yeah, so it's starting at 0,
+
+00:12:29.660 --> 00:12:35.260 line:100% position:50% align:middle
+which is red . Good, but we could also,
+once we've done that strokeStyle,
+
+00:12:35.260 --> 00:12:42.050 line:100% position:50% align:middle
+or maybe at the end of it here, we say
+hue++, and that will just increment it so
+
+00:12:42.050 --> 00:12:48.290 line:100% position:50% align:middle
+the second time we draw it will be 1.
+Third time will be 2. Woo!
+
+00:12:48.290 --> 00:12:56.540 line:100% position:50% align:middle
+Okay, looking good. Looking good. And
+eventually, we're just going to get all
+
+00:12:56.540 --> 00:13:01.720 line:100% position:50% align:middle
+the way around and the kind of the cool
+part about HSL is if you go over 360,
+
+00:13:01.720 --> 00:13:07.619 line:100% position:50% align:middle
+it's just going to...like if we pop it
+into here and see what hue is that,
+
+00:13:09.300 --> 00:13:14.260 line:100% position:50% align:middle
+hue is 906 but it'll just kind of, like,
+keep going around and around and around.
+
+00:13:14.260 --> 00:13:26.650 line:100% position:50% align:middle
+What we could also do is say if(hue >=
+360) then hue = 0 and then just sort of,
+
+00:13:26.650 --> 00:13:31.880 line:100% position:50% align:middle
+like, reset it at that point
+and that will work just as well.
+
+00:13:31.880 --> 00:13:36.370 line:100% position:50% align:middle
+And then the other thing that we can do is
+we can also change the lineWidth of what
+
+00:13:36.370 --> 00:13:41.270 line:100% position:50% align:middle
+we've done right here, ctx.lineWidth.
+We can use that variable as well.
+
+00:13:41.270 --> 00:13:52.770 line:100% position:50% align:middle
+So, strokeStyle...ctx.lineWidth is going
+to be equal to hue. Let's see what we got
+
+00:13:52.770 --> 00:13:56.480 line:100% position:50% align:middle
+there. So it starts...ooh, it goes
+all the way up, all the way up,
+
+00:13:56.480 --> 00:14:01.050 line:100% position:50% align:middle
+all the way up, and then at a certain
+point, it just starts over again.
+
+00:14:01.050 --> 00:14:06.000 line:100% position:50% align:middle
+And that's kind of cool, but what I've
+done here is once you hit that maximum
+
+00:14:06.000 --> 00:14:12.070 line:100% position:50% align:middle
+draw it will just sort of fade itself
+back. So what we can do is create another
+
+00:14:12.070 --> 00:14:18.870 line:100% position:50% align:middle
+variable here called let direction = true.
+That means it's going to be building up,
+
+00:14:18.870 --> 00:14:22.430 line:100% position:50% align:middle
+so we have let direction = true,
+now we have this lineWidth = hue.
+
+00:14:22.430 --> 00:14:26.540 line:100% position:50% align:middle
+We don't want this, delete that line and
+head down to the bottom below where we do
+
+00:14:26.540 --> 00:14:31.780 line:100% position:50% align:middle
+our hue stuff, and we are going to, for
+every loop, we are going to increment the
+
+00:14:31.780 --> 00:14:38.320 line:100% position:50% align:middle
+line width. So ctx.lineWidth++. What that
+will do is it will increment the lineWidth
+
+00:14:38.320 --> 00:14:42.450 line:100% position:50% align:middle
+once for every single time I have, so
+growing bigger, bigger, bigger and it just
+
+00:14:42.450 --> 00:14:46.820 line:100% position:50% align:middle
+keeps getting bigger and bigger and bigger
+infinitely, and that's really not what we
+
+00:14:46.820 --> 00:15:00.160 line:100% position:50% align:middle
+want. So what you can say is we'll say if
+(ctx.lineWidth >= 100 | | ctx.lineWidth <=
+
+00:15:00.160 --> 00:15:04.484 line:100% position:50% align:middle
+1) then we want to flip the direction.
+
+00:15:11.096 --> 00:15:15.293 line:100% position:50% align:middle
+Then we say down here
+if(direction = true)
+
+00:15:15.293 --> 00:15:23.122 line:100% position:50% align:middle
+then the lineWidth goes up, otherwise
+the lineWidth goes down.
+
+00:15:23.122 --> 00:15:26.560 line:100% position:50% align:middle
+Now, that might have broken your brain
+for a second, so let's take a second
+
+00:15:26.560 --> 00:15:32.530 line:100% position:50% align:middle
+to see what's going on here, if(ctx.
+lineWidth) is greater than 100,
+
+00:15:32.530 --> 00:15:36.180 line:100% position:50% align:middle
+so essentially what we're doing right here
+is we're incrementing it from 0 all the
+
+00:15:36.180 --> 00:15:42.400 line:100% position:50% align:middle
+way to 100, but then once we hit 100,
+we're going to go from 100 to 99 to 98,
+
+00:15:42.400 --> 00:15:48.690 line:100% position:50% align:middle
+all the way down. So we're saying, if it's
+greater than 100, then flip the direction,
+
+00:15:48.690 --> 00:15:54.910 line:100% position:50% align:middle
+or if it's less than 1, also flip the
+direction. And then, depending on what
+
+00:15:54.910 --> 00:15:59.740 line:100% position:50% align:middle
+that direction is, we either increment the
+line width, or if the direction is going
+
+00:15:59.740 --> 00:16:04.220 line:100% position:50% align:middle
+in the other way, we decrement the line
+width by 1. So let's see what's going on
+
+00:16:04.220 --> 00:16:07.670 line:100% position:50% align:middle
+here. Draw, draw, draw, and
+it's going smaller, bigger, bigger,
+
+00:16:07.670 --> 00:16:11.140 line:100% position:50% align:middle
+bigger. Smaller, smaller, smaller. Bigger,
+bigger, bigger. And you can play with
+
+00:16:11.140 --> 00:16:15.833 line:100% position:50% align:middle
+these values as well, you could do it
+something like 500 where it gets super big
+
+00:16:15.833 --> 00:16:22.270 line:100% position:50% align:middle
+and then it will slowly bring itself
+down once we get to 500.
+
+00:16:22.270 --> 00:16:26.890 line:100% position:50% align:middle
+There we go, it's bringing itself down to
+be much smaller. You can play with it
+
+00:16:26.890 --> 00:16:33.370 line:100% position:50% align:middle
+exactly. One other thing we can do is play
+with something called Global Composite
+
+00:16:33.370 --> 00:16:37.900 line:100% position:50% align:middle
+Operator, and if you've worked with
+Photoshop blend modes, you can use blend
+
+00:16:37.900 --> 00:16:43.987 line:100% position:50% align:middle
+modes inside of context. So say ctx.
+globalCompositeOperation = 'multiply'.
+
+00:16:44.890 --> 00:16:50.559 line:100% position:50% align:middle
+This is kind of cool where when you draw
+on it... Let me refresh this here.
+
+00:16:52.250 --> 00:16:57.470 line:100% position:50% align:middle
+They will sort of blend each other as you
+draw over top of each other.
+
+00:16:57.470 --> 00:17:01.660 line:100% position:50% align:middle
+Eventually, everything is just going to be
+black, but you can play with the different
+
+00:17:01.660 --> 00:17:05.060 line:100% position:50% align:middle
+blend modes that we have here, the
+subtract and lighten and all that good
+
+00:17:05.060 --> 00:17:12.310 line:100% position:50% align:middle
+stuff. So just go and look up Global
+Composite Operator on Google and take a
+
+00:17:12.310 --> 00:17:16.924 line:100% position:50% align:middle
+look at the different types that we have
+here. They've got a nice source-over,
+
+00:17:16.924 --> 00:17:20.900 line:100% position:50% align:middle
+source-in, source-out, source-atop,
+destination-over. Just play with all of
+
+00:17:20.900 --> 00:17:25.350 line:100% position:50% align:middle
+them and you can kind of get an idea
+for how are they actually working.
+
+00:17:25.350 --> 00:17:30.160 line:100% position:50% align:middle
+So that is today's exercise. We had fun
+with Canvas. We understood couple things
+
+00:17:30.160 --> 00:17:34.680 line:100% position:50% align:middle
+about events and when events happen.
+We understand this flag thing,
+
+00:17:34.680 --> 00:17:39.890 line:100% position:50% align:middle
+where you set it to isDrawing = true and
+isDrawing = false, that's sort of a common
+
+00:17:39.890 --> 00:17:44.330 line:100% position:50% align:middle
+thing that we do a lot in JavaScript where
+you have a flag where you want to test if
+
+00:17:44.330 --> 00:17:50.440 line:100% position:50% align:middle
+it's true or not and then when you move
+the mouse, we use the event information to
+
+00:17:50.440 --> 00:17:53.719 line:100% position:50% align:middle
+draw onto our canvas context.
+Hopefully, you enjoyed that.
+
+00:17:53.719 --> 00:17:55.171 line:100% position:50% align:middle
+I'll see you in the next one.
+
+00:17:55.764 --> 00:17:59.456 line:100% position:50% align:middle
+♪ [music] ♪

@@ -1,0 +1,487 @@
+WEBVTT
+
+00:00:01.670 --> 00:00:04.852 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.506 --> 00:00:11.129 line:100% position:50% align:middle
+Today we are going to talk all
+about Javascript reference versus copy.
+
+00:00:11.129 --> 00:00:15.190 line:100% position:50% align:middle
+And I found this to be a sticking point
+and while it's not necessarily going to be
+
+00:00:15.190 --> 00:00:17.730 line:100% position:50% align:middle
+something that you're going to build
+that's going to be sweet and your clients
+
+00:00:17.730 --> 00:00:20.840 line:100% position:50% align:middle
+are going to see it, but this is something
+that is fundamental to understanding how
+
+00:00:20.840 --> 00:00:25.321 line:100% position:50% align:middle
+Javascript works. And more often than not,
+this is a source of a lot of bugs because
+
+00:00:25.321 --> 00:00:28.690 line:100% position:50% align:middle
+people don't understand what the
+difference between a reference and a copy
+
+00:00:28.690 --> 00:00:33.350 line:100% position:50% align:middle
+is especially when you get into
+nested data. So let's take a look at some
+
+00:00:33.350 --> 00:00:38.040 line:100% position:50% align:middle
+strings, numbers, and booleans right here.
+If I have a variable or let's use let
+
+00:00:38.040 --> 00:00:43.370 line:100% position:50% align:middle
+here, and age is set to 100 and then I
+make another variable called age 2 and set
+
+00:00:43.370 --> 00:00:46.970 line:100% position:50% align:middle
+that to age, if I console log age and
+age 2, what are we going to get?
+
+00:00:46.970 --> 00:00:51.106 line:100% position:50% align:middle
+100 and 100, right? Well, what
+happens if age is equal to 200?
+
+00:00:51.106 --> 00:00:54.490 line:100% position:50% align:middle
+And then I also console log age and
+age 2, what are we going to get?
+
+00:00:54.490 --> 00:01:01.112 line:100% position:50% align:middle
+Are we going to get 200, 200 or 200, 100?
+Okay good. No we get 200, 100.
+
+00:01:01.112 --> 00:01:06.511 line:100% position:50% align:middle
+Why? Because the value of age goes
+into the variable at the same time.
+
+00:01:06.511 --> 00:01:14.013 line:100% position:50% align:middle
+That works the same way with strings.
+If I do const name or let,
+
+00:01:14.013 --> 00:01:20.245 line:100% position:50% align:middle
+I'm going to be reassigning these so I
+need to use let Wes and let name two is
+
+00:01:20.245 --> 00:01:29.305 line:100% position:50% align:middle
+equal to pool. No let name two is equal to
+name. Console log name and name two.
+
+00:01:29.305 --> 00:01:34.760 line:100% position:50% align:middle
+You probably will see Wes Wes
+but if name is equal to Wesley,
+
+00:01:34.760 --> 00:01:39.010 line:100% position:50% align:middle
+and we also console log that, what
+are we going to get? Wesley Wes.
+
+00:01:39.010 --> 00:01:43.582 line:100% position:50% align:middle
+Okay good. So the value of strings,
+numbers, and booleans go into it and if
+
+00:01:43.582 --> 00:01:48.346 line:100% position:50% align:middle
+you change the original one, it's okay.
+It's not going to update the other one.
+
+00:01:48.346 --> 00:01:52.229 line:100% position:50% align:middle
+Makes sense.
+Now let's actually work with an array.
+
+00:01:52.229 --> 00:01:57.511 line:100% position:50% align:middle
+Let's say we've got some data here and we
+want to make a copy of the array so we
+
+00:01:57.511 --> 00:02:01.555 line:100% position:50% align:middle
+say, const team equals players.
+And that should make sense.
+
+00:02:01.555 --> 00:02:06.606 line:100% position:50% align:middle
+Console log players and team, just to
+make sure we got both of them here,
+
+00:02:06.606 --> 00:02:10.616 line:100% position:50% align:middle
+okay good. That's the same array here. So
+you might think that we could do something
+
+00:02:10.616 --> 00:02:21.129 line:100% position:50% align:middle
+like this where we changed team three
+is equal to locks. Now if I look at team,
+
+00:02:21.129 --> 00:02:27.083 line:100% position:50% align:middle
+you'll see locks is the last one but if I
+look at the original one which is players,
+
+00:02:27.083 --> 00:02:31.470 line:100% position:50% align:middle
+which should the last one be? Should it
+poppy as it was, or is it going to be
+
+00:02:31.470 --> 00:02:37.076 line:100% position:50% align:middle
+updated to locks? It's locks again.
+So what happened there?
+
+00:02:37.076 --> 00:02:44.428 line:100% position:50% align:middle
+Because we updated team but team is not
+the array. Team is just a reference to the
+
+00:02:44.428 --> 00:02:49.506 line:100% position:50% align:middle
+original array which is players. So when
+you edit that original array or when you
+
+00:02:49.506 --> 00:02:54.729 line:100% position:50% align:middle
+update any of the arrays, it's always
+going to go back to the reference where it
+
+00:02:54.729 --> 00:02:59.844 line:100% position:50% align:middle
+was which is not the same as what
+we did here with numbers, strings,
+
+00:02:59.844 --> 00:03:04.069 line:100% position:50% align:middle
+and booleans. So that's interesting.
+If you update an array,
+
+00:03:04.069 --> 00:03:07.537 line:100% position:50% align:middle
+it will always reference back.
+And that is what I find people do is
+
+00:03:07.537 --> 00:03:13.417 line:100% position:50% align:middle
+say, "I just want to make a copy of the
+array and update it." So what we then need
+
+00:03:13.417 --> 00:03:18.981 line:100% position:50% align:middle
+to do is make a copy rather than a actual
+reference. And there's a couple of ways
+
+00:03:18.981 --> 00:03:26.236 line:100% position:50% align:middle
+that you can make a copy of an array. Say
+const team two equals and you can take the
+
+00:03:26.236 --> 00:03:32.599 line:100% position:50% align:middle
+players and just call slice against it.
+And if you call slice, players.slice
+
+00:03:32.599 --> 00:03:36.495 line:100% position:50% align:middle
+that's just going to return the
+entire array because generally
+
+00:03:36.495 --> 00:03:40.745 line:100% position:50% align:middle
+what slice does is you ask for two
+and three and that will give you one
+
+00:03:40.745 --> 00:03:46.845 line:100% position:50% align:middle
+of them whereas the original array is
+untouched, right? But what slice will do
+
+00:03:46.845 --> 00:03:50.927 line:100% position:50% align:middle
+if you pass at nothing is it will take a
+copy of the actual array here.
+
+00:03:50.927 --> 00:03:54.733 line:100% position:50% align:middle
+Let me just comment out this changing
+up here. So let's take a look.
+
+00:03:54.733 --> 00:04:01.691 line:100% position:50% align:middle
+We got players, and we have team two,
+and if I were to change team two to
+
+00:04:01.691 --> 00:04:09.954 line:100% position:50% align:middle
+locks, team two has locks in it but
+players still has poppy because we made a
+
+00:04:09.954 --> 00:04:15.842 line:100% position:50% align:middle
+copy of it with our array. Another way you
+can see people do it is if we make a team
+
+00:04:15.842 --> 00:04:23.726 line:100% position:50% align:middle
+three, you take a blank array and you can
+concatenate in the existing array and that
+
+00:04:23.726 --> 00:04:27.231 line:100% position:50% align:middle
+will just concatenate all of the
+items from that player's array into the
+
+00:04:27.231 --> 00:04:31.236 line:100% position:50% align:middle
+emptier right here. That will work the
+exact same way. And then finally
+
+00:04:31.236 --> 00:04:36.606 line:100% position:50% align:middle
+we can do is the ES6 spread way
+which looks like this, const team
+
+00:04:36.606 --> 00:04:44.328 line:100% position:50% align:middle
+three or four equals, you create a
+new array, and you spread into that
+
+00:04:44.328 --> 00:04:49.366 line:100% position:50% align:middle
+array with the players. And what a spread
+will do is it will take every item out of
+
+00:04:49.366 --> 00:04:55.752 line:100% position:50% align:middle
+your iterable and put it into, in this
+case it's the containing array although we
+
+00:04:55.752 --> 00:04:59.881 line:100% position:50% align:middle
+have also used spread to spread into a
+function as well. So that will take
+
+00:04:59.881 --> 00:05:09.444 line:100% position:50% align:middle
+a copy of it just as well. Team four,
+the last one equal to E and console
+
+00:05:09.444 --> 00:05:16.148 line:100% position:50% align:middle
+log team four. The last one but if I go
+back to my player's array, it's untouched
+
+00:05:16.148 --> 00:05:23.458 line:100% position:50% align:middle
+Then finally you could say const
+team five is equal to array.from and then
+
+00:05:23.458 --> 00:05:29.360 line:100% position:50% align:middle
+you pass it, your player's array. And if
+we were to look at team five,
+
+00:05:29.360 --> 00:05:32.440 line:100% position:50% align:middle
+that's our array, and we were
+to change one of them,
+
+00:05:36.306 --> 00:05:42.390 line:100% position:50% align:middle
+then player's array untouched whereas
+team five has been updated.
+
+00:05:42.390 --> 00:05:46.908 line:100% position:50% align:middle
+So a whole bunch of different ways.
+Array.from and the spread is probably my
+
+00:05:46.908 --> 00:05:52.014 line:100% position:50% align:middle
+favorite way but any of these ways will
+work just fine. Now, the same thing
+
+00:05:52.014 --> 00:05:57.976 line:100% position:50% align:middle
+happens for objects as well. If I have a
+person object here and I want to make a
+
+00:05:57.976 --> 00:06:03.221 line:100% position:50% align:middle
+copy of it, you cannot do this const
+captain equals person because
+
+00:06:03.221 --> 00:06:13.339 line:100% position:50% align:middle
+if you change the captain's number to 99,
+so person is now 99 even though person
+
+00:06:13.339 --> 00:06:21.411 line:100% position:50% align:middle
+should be 80, we just update the number to
+99, we made a reference to the original
+
+00:06:21.411 --> 00:06:25.146 line:100% position:50% align:middle
+one. So how do you take a copy instead,
+that is with something called
+
+00:06:25.146 --> 00:06:30.099 line:100% position:50% align:middle
+object.assigns. Object.assign, the way
+that it works, is you start with a blank
+
+00:06:30.099 --> 00:06:35.717 line:100% position:50% align:middle
+object. You pass it the object
+you wish to copy all the properties from
+
+00:06:35.717 --> 00:06:42.466 line:100% position:50% align:middle
+which is person, and then you sort of fold
+in your new properties that you wish to
+
+00:06:42.466 --> 00:06:47.050 line:100% position:50% align:middle
+overwrite which is number is going to be
+99. And then you stick that entire thing
+
+00:06:47.050 --> 00:06:53.536 line:100% position:50% align:middle
+in your own const cap two equals,
+stick it into its own variable.
+
+00:06:53.536 --> 00:06:59.644 line:100% position:50% align:middle
+Now when you console log cap two, you'll
+see we have... I've got to comment these
+
+00:06:59.644 --> 00:07:07.924 line:100% position:50% align:middle
+ones out here, 99. However if I go back
+to person, the number has not been
+
+00:07:07.924 --> 00:07:12.041 line:100% position:50% align:middle
+added to that one at all. So if we just
+added them in...same goes if I wanted to
+
+00:07:12.041 --> 00:07:20.047 line:100% position:50% align:middle
+have a number of 99 in age of 12. The
+captain is now 12 but the person is 80.
+
+00:07:20.047 --> 00:07:24.947 line:100% position:50% align:middle
+So what happened there is we'd take a
+blank object, we overwrite or we sort of
+
+00:07:24.947 --> 00:07:29.531 line:100% position:50% align:middle
+fold in all of the properties and values
+from our object, and then we use the third
+
+00:07:29.531 --> 00:07:34.447 line:100% position:50% align:middle
+argument to fold in our own ones.
+We are going to be getting or
+
+00:07:34.447 --> 00:07:40.134 line:100% position:50% align:middle
+hopefully, it's not confirmed yet, but we
+will be getting a cap three which is
+
+00:07:40.134 --> 00:07:44.825 line:100% position:50% align:middle
+called an object spread. And you may be
+used to this if you've ever done any react
+
+00:07:44.825 --> 00:07:49.922 line:100% position:50% align:middle
+before and it's dot dot dot person. And
+that works exactly the same way as we
+
+00:07:49.922 --> 00:07:55.335 line:100% position:50% align:middle
+spread into an array but you can spread
+into an object. Now one thing that we do
+
+00:07:55.335 --> 00:08:00.451 line:100% position:50% align:middle
+need to know is this is very shallow,
+meaning that it will only ever go one
+
+00:08:00.451 --> 00:08:04.827 line:100% position:50% align:middle
+level deep. So if we create
+a new object here, const
+
+00:08:04.827 --> 00:08:13.639 line:100% position:50% align:middle
+Wes equals name is Wes, age is 100,
+and maybe it will say social and Twitter
+
+00:08:13.639 --> 00:08:24.104 line:100% position:50% align:middle
+is equal to @wesbos, Facebook is equal to
+Wesbos...okay good then I've got this
+
+00:08:24.104 --> 00:08:32.118 line:100% position:50% align:middle
+object here, Wes. Pop a quick
+console.clear above it so it
+
+00:08:32.118 --> 00:08:36.331 line:100% position:50% align:middle
+will clear out whatever is in here.
+Obviously this is not going to work dot
+
+00:08:36.331 --> 00:08:40.305 line:100% position:50% align:middle
+dot dot why? Because object's spread is
+not in Javascript yet so we have to
+
+00:08:40.305 --> 00:08:43.615 line:100% position:50% align:middle
+comment that out. There we go. So we've
+got this object here. That's the person.
+
+00:08:43.615 --> 00:08:49.082 line:100% position:50% align:middle
+You open up social and we have the object
+there. Now if I want to make a copy of
+
+00:08:49.082 --> 00:08:58.046 line:100% position:50% align:middle
+Wes, we would say const div equals object
+dot assign. We take a blank object and you
+
+00:08:58.046 --> 00:09:02.510 line:100% position:50% align:middle
+pass in Wes we have here.
+Good. So now I have div, that's good,
+
+00:09:02.510 --> 00:09:12.581 line:100% position:50% align:middle
+div.name equals Wesley. Now Wes is still
+Wes and dev is Wesley.
+
+00:09:12.581 --> 00:09:16.861 line:100% position:50% align:middle
+So you see how we took a copy of that
+object and when we update it,
+
+00:09:16.861 --> 00:09:20.313 line:100% position:50% align:middle
+it's not going to update the original one
+so it's not a reference.
+
+00:09:20.313 --> 00:09:29.306 line:100% position:50% align:middle
+However what if we do this,
+div.social.twitter is equal to
+
+00:09:29.306 --> 00:09:37.803 line:100% position:50% align:middle
+@poolman. Now div.social, the
+Twitter is there but what if I look at
+
+00:09:37.803 --> 00:09:45.190 line:100% position:50% align:middle
+Wes.social now? Shit. Look what happen.
+Because when you use object.assign,
+
+00:09:45.190 --> 00:09:52.292 line:100% position:50% align:middle
+it only does one level deep. If you need
+to do a clone, you have to get out a
+
+00:09:52.292 --> 00:09:57.102 line:100% position:50% align:middle
+function and go online and find it where
+it's called clone deep and that will clone
+
+00:09:57.102 --> 00:10:00.195 line:100% position:50% align:middle
+every level as deep as you want. Although
+before you do that, you should
+
+00:10:00.195 --> 00:10:04.384 line:100% position:50% align:middle
+ask yourself, "Do I really actually need
+to do this? Maybe I could be doing it in a
+
+00:10:04.384 --> 00:10:08.235 line:100% position:50% align:middle
+better spot because very rarely do you
+actually need to clone an object that
+
+00:10:08.235 --> 00:10:12.194 line:100% position:50% align:middle
+deep." So we have that.
+And then another sort of cheating way,
+
+00:10:12.194 --> 00:10:16.543 line:100% position:50% align:middle
+the poor man's deep clone, and I'm not
+recommending this but you could say const
+
+00:10:16.543 --> 00:10:24.996 line:100% position:50% align:middle
+div two equals Jason.parse,
+Jason.stringify then you pass it your
+
+00:10:24.996 --> 00:10:35.507 line:100% position:50% align:middle
+person. Now we have div two and
+then we say divtwo.social.twitter equals
+
+00:10:35.507 --> 00:10:43.485 line:100% position:50% align:middle
+@poolman. And now if we look at
+Wes.social, it has not been touched.
+
+00:10:43.485 --> 00:10:50.928 line:100% position:50% align:middle
+Why? Because what you can do is you can
+take Jason.stringify and pass it an
+
+00:10:50.928 --> 00:10:55.113 line:100% position:50% align:middle
+object, and that will return to you a
+string. That's no longer an object.
+
+00:10:55.113 --> 00:10:59.392 line:100% position:50% align:middle
+And then you immediately Jason.parse it to
+turn it back into an object,
+
+00:10:59.392 --> 00:11:04.382 line:100% position:50% align:middle
+and then you get a full copy of
+it rather than and you shake all the
+
+00:11:04.382 --> 00:11:07.631 line:100% position:50% align:middle
+references. I have no idea about
+performance with that. You might want to
+
+00:11:07.631 --> 00:11:12.325 line:100% position:50% align:middle
+look it up before you use it but that's
+often referred to as the poor man's deep
+
+00:11:12.325 --> 00:11:17.593 line:100% position:50% align:middle
+clone. Other than that, hopefully you
+learned a thing or two about object
+
+00:11:17.593 --> 00:11:22.205 line:100% position:50% align:middle
+references and array references versus
+actually copying them. See you tomorrow.
+
+00:11:22.599 --> 00:11:25.756 line:100% position:50% align:middle
+♪ [music] ♪

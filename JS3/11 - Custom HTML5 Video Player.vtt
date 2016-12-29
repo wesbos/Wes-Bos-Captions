@@ -1,0 +1,1075 @@
+WEBVTT
+
+00:00:00.346 --> 00:00:03.346 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:08.055 --> 00:00:13.130 line:100% position:50% align:middle
+Today, we are building in HTML5 video
+player. If you've ever tried to style the
+
+00:00:13.130 --> 00:00:17.350 line:100% position:50% align:middle
+default video player, you'll know that
+it's really not all that possible.
+
+00:00:17.350 --> 00:00:20.410 line:100% position:50% align:middle
+If I take a look at what the video player
+looks like by default,
+
+00:00:20.410 --> 00:00:24.070 line:100% position:50% align:middle
+this is currently what it looks like in
+Chrome. But that changes sometimes,
+
+00:00:24.070 --> 00:00:28.020 line:100% position:50% align:middle
+as well as it's different from browser to
+browser. So this is what it looks like.
+
+00:00:28.020 --> 00:00:32.540 line:100% position:50% align:middle
+You get some basic controls. You get to be
+able to scrub the video.
+
+00:00:32.540 --> 00:00:36.640 line:100% position:50% align:middle
+You can change the volume and full-screen
+it, as well as a couple other things that
+
+00:00:36.640 --> 00:00:40.620 line:100% position:50% align:middle
+happen. Now, what we want to build is this
+totally custom interface,
+
+00:00:40.620 --> 00:00:45.220 line:100% position:50% align:middle
+where we're going to hide the controls and
+we're going to build our own interface
+
+00:00:45.220 --> 00:00:51.610 line:100% position:50% align:middle
+with a button to pause and play it.
+There's going to be a button that just
+
+00:00:51.610 --> 00:00:56.160 line:100% position:50% align:middle
+does the volume, a slider. This is going
+to speed it right up so it goes much
+
+00:00:56.160 --> 00:00:59.510 line:100% position:50% align:middle
+faster. It's going to bring it right down
+to be nice and slow.
+
+00:00:59.510 --> 00:01:02.720 line:100% position:50% align:middle
+As well as we're going to have these nice
+little Skip buttons that allow you to skip
+
+00:01:02.720 --> 00:01:08.600 line:100% position:50% align:middle
+forward 25 seconds, skip back 10 seconds,
+and then finally when you click the video
+
+00:01:08.600 --> 00:01:12.990 line:100% position:50% align:middle
+itself, it will pause and play. So there's
+a whole lot going on here,
+
+00:01:12.990 --> 00:01:18.570 line:100% position:50% align:middle
+and at any time during this tutorial, what
+I want you to do is just pause the video
+
+00:01:18.570 --> 00:01:24.760 line:100% position:50% align:middle
+and try to maybe tear off just doing the
+sliders, or just doing the scrubber,
+
+00:01:24.760 --> 00:01:28.940 line:100% position:50% align:middle
+or just doing the Skip buttons. See if you
+can just get a couple of features on your
+
+00:01:28.940 --> 00:01:34.150 line:100% position:50% align:middle
+own, and then come on back and join me for
+the parts that you're having trouble with.
+
+00:01:34.150 --> 00:01:38.650 line:100% position:50% align:middle
+So I've already done some CSS for you.
+There's really not all that much going on
+
+00:01:38.650 --> 00:01:42.750 line:100% position:50% align:middle
+here. It's just going to be... I've just
+got to take my... If Throttle Play is
+
+00:01:42.750 --> 00:01:49.450 line:100% position:50% align:middle
+annoying you, we take this little off.
+Whoa, as I save. Okay. I've done some CSS.
+
+00:01:49.450 --> 00:01:54.850 line:100% position:50% align:middle
+Sorry. This hilarious bunny is getting me.
+The CSS has been done for you.
+
+00:01:54.850 --> 00:01:57.530 line:100% position:50% align:middle
+But there's really not all that much here.
+There's just a bunch of divs,
+
+00:01:57.530 --> 00:02:03.750 line:100% position:50% align:middle
+and then when you hover over it, I just
+transition the position of that div up and
+
+00:02:03.750 --> 00:02:08.470 line:100% position:50% align:middle
+down, up and down, depending on where
+we're at. What we have here is we've got a
+
+00:02:08.470 --> 00:02:12.130 line:100% position:50% align:middle
+div with a class "player". This is the
+video element that we're working with.
+
+00:02:12.130 --> 00:02:16.540 line:100% position:50% align:middle
+Then, everything below it is just HTML
+that we've built for the controls.
+
+00:02:16.540 --> 00:02:20.430 line:100% position:50% align:middle
+So we've got a progress bar here. Inside
+of that, we have a field.
+
+00:02:20.430 --> 00:02:25.390 line:100% position:50% align:middle
+I've got a Player button here that we're
+going to pause and play.
+
+00:02:25.390 --> 00:02:31.160 line:100% position:50% align:middle
+There's an input for the slider, which has
+a Min, a Max, and a Step,
+
+00:02:31.160 --> 00:02:34.890 line:100% position:50% align:middle
+which is how much it's going to increment
+each notch on the slider.
+
+00:02:34.890 --> 00:02:39.190 line:100% position:50% align:middle
+Same for playback rate. Then, I have these
+Skip buttons. I'm going to talk a little
+
+00:02:39.190 --> 00:02:44.870 line:100% position:50% align:middle
+bit about why I chose to use data skip in
+just a second. So this one is pretty big,
+
+00:02:44.870 --> 00:02:49.020 line:100% position:50% align:middle
+so I'm not just going to stick it in a
+script tag here. We're actually going to
+
+00:02:49.020 --> 00:02:54.880 line:100% position:50% align:middle
+put it in a separate scripts.js file that
+we're going to be working in here.
+
+00:02:54.880 --> 00:02:59.560 line:100% position:50% align:middle
+So let's get going. The first thing that
+we need to know is there's going to be
+
+00:02:59.560 --> 00:03:05.460 line:100% position:50% align:middle
+pretty much three pieces of this. First,
+we're going to get our elements,
+
+00:03:05.460 --> 00:03:12.940 line:100% position:50% align:middle
+and then we are going to build our
+functions. Then, we are going to hook up
+
+00:03:12.940 --> 00:03:17.910 line:100% position:50% align:middle
+the event listeners. So let's start with
+getting our elements on the page.
+
+00:03:17.910 --> 00:03:21.850 line:100% position:50% align:middle
+There's a whole bunch that we need here.
+We're going to first get the player,
+
+00:03:21.850 --> 00:03:29.800 line:100% position:50% align:middle
+so "const player =
+document.querySelector.player". Then,
+
+00:03:29.800 --> 00:03:34.060 line:100% position:50% align:middle
+inside of that player, because that's sort
+of like the papa div here,
+
+00:03:34.060 --> 00:03:38.430 line:100% position:50% align:middle
+inside of that is we're going to grab
+everything else. So we need the video
+
+00:03:38.430 --> 00:03:44.690 line:100% position:50% align:middle
+itself, and we're going to call
+"player.querySelector", and inside of that
+
+00:03:44.690 --> 00:03:50.720 line:100% position:50% align:middle
+we'll look for the ".viewer", because
+that's the class that that video has right
+
+00:03:50.720 --> 00:03:57.110 line:100% position:50% align:middle
+there. Okay, working good so far. Other
+things we need is the progress bar,
+
+00:03:57.110 --> 00:04:02.060 line:100% position:50% align:middle
+the progress field, the toggle, the Skip
+buttons, and the player slider.
+
+00:04:02.060 --> 00:04:07.320 line:100% position:50% align:middle
+So I'm just going to blow these out real
+quick. Otherwise, you can just grab them
+
+00:04:07.320 --> 00:04:10.370 line:100% position:50% align:middle
+from the answer. I'm sure you understand
+what's going on here.
+
+00:04:10.370 --> 00:04:14.440 line:100% position:50% align:middle
+We're just selecting elements from the
+page. If you'd like to see me type them,
+
+00:04:14.440 --> 00:04:19.500 line:100% position:50% align:middle
+I'm sorry. But we've got them going right
+here. So we've got our progress bar,
+
+00:04:19.500 --> 00:04:23.380 line:100% position:50% align:middle
+and I'll explain exactly what all of these
+are. Next, what we want to do,
+
+00:04:23.380 --> 00:04:27.140 line:100% position:50% align:middle
+let's just start easy and work with the
+Toggle Play. So we're going to have a
+
+00:04:27.140 --> 00:04:35.710 line:100% position:50% align:middle
+function called "togglePlay". When that is
+called, we are going to either call
+
+00:04:35.710 --> 00:04:42.850 line:100% position:50% align:middle
+".play" on the video, or ".pause". So what
+we can do is we can just say "if
+
+00:04:42.850 --> 00:04:47.950 line:100% position:50% align:middle
+video.pause", because pause is a property
+that lives on the video...
+
+00:04:47.950 --> 00:04:52.560 line:100% position:50% align:middle
+There is no playing property. There is
+only a pause property. We'll say
+
+00:04:52.560 --> 00:05:02.460 line:100% position:50% align:middle
+"video.play else video.pause". Good. So
+now, if we open up our dev tools here and
+
+00:05:02.460 --> 00:05:09.000 line:100% position:50% align:middle
+call "togglePlay", you'll see that starts
+to play. If I call it again,
+
+00:05:09.000 --> 00:05:13.750 line:100% position:50% align:middle
+it's going to pause it. One little thing
+that you could do here is you could say
+
+00:05:13.750 --> 00:05:22.010 line:100% position:50% align:middle
+"const method =" and use a [turnery]
+operator, I don't know how to say things,
+
+00:05:22.010 --> 00:05:30.910 line:100% position:50% align:middle
+"play otherwise pause". Then, because the
+method name is in a string here you can
+
+00:05:30.910 --> 00:05:39.190 line:100% position:50% align:middle
+simply just call "video", access the
+method name, and then immediately call it.
+
+00:05:39.190 --> 00:05:41.930 line:100% position:50% align:middle
+Some people don't like that, because they
+find it hard to read.
+
+00:05:41.930 --> 00:05:45.440 line:100% position:50% align:middle
+Don't send me angry mail. Just don't use
+it if you don't like it.
+
+00:05:45.440 --> 00:05:51.760 line:100% position:50% align:middle
+But that is sort of a way. You could even
+just put this sucker right inside of here,
+
+00:05:51.760 --> 00:05:56.230 line:100% position:50% align:middle
+if you wanted to get really crazy. But
+we're not dipping down here.
+
+00:05:56.230 --> 00:05:59.410 line:100% position:50% align:middle
+Let's just double-check that this still
+works. Working good for me.
+
+00:05:59.410 --> 00:06:04.980 line:100% position:50% align:middle
+Okay. So that's our Toggle Play. Now, what
+we need to do is hook it up both to when
+
+00:06:04.980 --> 00:06:09.250 line:100% position:50% align:middle
+you click the video, as well as when you
+click this button. So first,
+
+00:06:09.250 --> 00:06:13.150 line:100% position:50% align:middle
+we're going to go down to hook up our
+event listeners. We'll say
+
+00:06:13.150 --> 00:06:20.480 line:100% position:50% align:middle
+"video.addEventListener('click',". When
+that happens, we are going to run
+
+00:06:20.480 --> 00:06:27.750 line:100% position:50% align:middle
+"togglePlay". Good. Now, let's try it out.
+Click, it's going. It's going.
+
+00:06:27.750 --> 00:06:31.700 line:100% position:50% align:middle
+Click it again. It pauses on and off, on
+and off. Good. Next, we want to hook up
+
+00:06:31.700 --> 00:06:35.840 line:100% position:50% align:middle
+this button right here. So what did we
+call that button. That is the Toggle
+
+00:06:35.840 --> 00:06:40.440 line:100% position:50% align:middle
+button. You can say "video". Or we can
+pretty much just duplicate that line and
+
+00:06:40.440 --> 00:06:43.330 line:100% position:50% align:middle
+switch out the "toggle",
+"addEventListener('click', togglePlay".
+
+00:06:43.330 --> 00:06:49.000 line:100% position:50% align:middle
+There we go. It's working for us. You'll
+notice that this button here isn't
+
+00:06:49.000 --> 00:06:56.650 line:100% position:50% align:middle
+changing, and for that we need to update
+the actual text of this button inside of
+
+00:06:56.650 --> 00:06:59.710 line:100% position:50% align:middle
+here. So one way that we can do that and
+you might think, "Okay.
+
+00:06:59.710 --> 00:07:06.070 line:100% position:50% align:middle
+We'll do that in here, where we'll get the
+button and we'll say '.textContent =' and
+
+00:07:06.070 --> 00:07:09.840 line:100% position:50% align:middle
+figure out whatever the Play button is."
+But the better way to do that,
+
+00:07:09.840 --> 00:07:13.970 line:100% position:50% align:middle
+because there are other ways that you
+could pause a video other than clicking on
+
+00:07:13.970 --> 00:07:17.730 line:100% position:50% align:middle
+the video and toggling it, sometimes
+people have plugins. Sometimes people
+
+00:07:17.730 --> 00:07:21.250 line:100% position:50% align:middle
+have, like maybe you want to pause the
+video if a pop-up opens.
+
+00:07:21.250 --> 00:07:26.250 line:100% position:50% align:middle
+So rather than hook into this "togglePlay"
+function, what we want to do is listen to
+
+00:07:26.250 --> 00:07:33.010 line:100% position:50% align:middle
+the video for whenever it is paused. So
+whatever causes it to pause,
+
+00:07:33.010 --> 00:07:42.300 line:100% position:50% align:middle
+then we can just update the actual buttons
+right here. So what we could do is we will
+
+00:07:42.300 --> 00:07:46.330 line:100% position:50% align:middle
+go to our video, and I'm going to group
+these together, "video.addEventListener",
+
+00:07:46.330 --> 00:07:54.250 line:100% position:50% align:middle
+and we're going to listen for play. When
+that runs, we are going to make a function
+
+00:07:54.250 --> 00:08:03.040 line:100% position:50% align:middle
+called "updateButton", and console.log
+"update the button", we'll just say that.
+
+00:08:03.040 --> 00:08:10.170 line:100% position:50% align:middle
+Take that Update button. When the video is
+played, run "updateButton",
+
+00:08:10.170 --> 00:08:16.400 line:100% position:50% align:middle
+and when the video is paused or pause is
+the event, sort of like click,
+
+00:08:16.400 --> 00:08:23.850 line:100% position:50% align:middle
+it will also run. So now, if I click it,
+see what's going on here?
+
+00:08:23.850 --> 00:08:29.190 line:100% position:50% align:middle
+Every time I click it, it's going to
+trigger a play or a pause event,
+
+00:08:29.190 --> 00:08:34.040 line:100% position:50% align:middle
+which will in turn run our "updateButton"
+function. So if we go inside of our
+
+00:08:34.040 --> 00:08:41.320 line:100% position:50% align:middle
+"updateButton" function, we will say
+"const icon =" and we simply say
+
+00:08:41.320 --> 00:08:49.220 line:100% position:50% align:middle
+"this.pause". Why can we use "this" in
+this case? Because it's bound to the video
+
+00:08:49.220 --> 00:08:57.000 line:100% position:50% align:middle
+itself. "This.pause" if that is true, then
+we will put the Play button in there.
+
+00:08:57.000 --> 00:09:02.370 line:100% position:50% align:middle
+Otherwise, we will put the pause icon. If
+you need to grab these icons,
+
+00:09:02.370 --> 00:09:08.860 line:100% position:50% align:middle
+you can just grab them from the answer
+file. Then, we take that icon and say
+
+00:09:08.860 --> 00:09:18.060 line:100% position:50% align:middle
+"toggle". What's toggle? Well, if we go up
+here, toggle is our Toggle button,
+
+00:09:18.060 --> 00:09:22.460 line:100% position:50% align:middle
+which is this button right here has a
+class of "toggle". Good.
+
+00:09:22.460 --> 00:09:29.640 line:100% position:50% align:middle
+So we'll say "toggle.textContent = icon".
+Or again, yes, you could take this,
+
+00:09:29.640 --> 00:09:35.660 line:100% position:50% align:middle
+and just slap it right inside of there.
+I'm just going to do it in two steps,
+
+00:09:35.660 --> 00:09:42.610 line:100% position:50% align:middle
+and that should be it. Uh-oh. Error,
+"online 17". What did I do?
+
+00:09:42.610 --> 00:09:49.840 line:100% position:50% align:middle
+I got two question marks. What a silly
+thing to do. Here we go.
+
+00:09:49.840 --> 00:09:54.620 line:100% position:50% align:middle
+Oh. It doesn't seem to be working. Let's
+debug this real quick.
+
+00:09:54.620 --> 00:10:05.312 line:100% position:50% align:middle
+Console.log, it ran. Okay. It's running.
+Now, let's console.log the icon.
+
+00:10:10.870 --> 00:10:16.460 line:100% position:50% align:middle
+Oh, you know what? There's no property
+called "pause". It's "paused".
+
+00:10:16.460 --> 00:10:21.140 line:100% position:50% align:middle
+There we go. Now, it's up and running.
+It's working, and then if I click this
+
+00:10:21.140 --> 00:10:24.940 line:100% position:50% align:middle
+button itself it will also... But if I
+also just call it from the console
+
+00:10:24.940 --> 00:10:31.420 line:100% position:50% align:middle
+"video"... Or is it "viewer"? No. I think
+it's "video", which is the video.
+
+00:10:31.420 --> 00:10:35.700 line:100% position:50% align:middle
+If I just call "video.play" on it, it's
+going to start playing.
+
+00:10:35.700 --> 00:10:41.190 line:100% position:50% align:middle
+But look. Ha-ha. It's worked. If I call it
+again or call ".pause",
+
+00:10:41.190 --> 00:10:46.570 line:100% position:50% align:middle
+it's updated the button for us. So you see
+how we didn't have to hook into this
+
+00:10:46.570 --> 00:10:51.370 line:100% position:50% align:middle
+function? We simply just listened for the
+event. Good. What should we do next here?
+
+00:10:51.370 --> 00:10:55.610 line:100% position:50% align:middle
+We've got the Play button working. Let's
+do these Skip buttons here.
+
+00:10:55.610 --> 00:11:02.580 line:100% position:50% align:middle
+So we're going to make a function called
+"skip", and what we then need to do is
+
+00:11:02.580 --> 00:11:07.900 line:100% position:50% align:middle
+understand how much it's going to be
+skipped. The way that I like to define how
+
+00:11:07.900 --> 00:11:12.020 line:100% position:50% align:middle
+much the video is going to be skipped is
+to go to the actual DOM element,
+
+00:11:12.020 --> 00:11:18.290 line:100% position:50% align:middle
+and let's look at these Skip buttons that
+we have here. They have a "data-skip" -10,
+
+00:11:18.290 --> 00:11:22.600 line:100% position:50% align:middle
+which means it's going to go back 10
+seconds, and a data-skip of 25,
+
+00:11:22.600 --> 00:11:27.300 line:100% position:50% align:middle
+which means it's going to go forward 25
+seconds. I really like this approach,
+
+00:11:27.300 --> 00:11:30.640 line:100% position:50% align:middle
+because that means I can put a "data-skip"
+on absolutely anything.
+
+00:11:30.640 --> 00:11:34.800 line:100% position:50% align:middle
+It could be a picture of myself, and when
+you click my face it will skip to the end,
+
+00:11:34.800 --> 00:11:39.510 line:100% position:50% align:middle
+because you don't want to see it at all.
+So we can put a "data-skip" on absolutely
+
+00:11:39.510 --> 00:11:43.640 line:100% position:50% align:middle
+anything, and that's the way that it's
+going to work. So before we run this skip,
+
+00:11:43.640 --> 00:11:46.320 line:100% position:50% align:middle
+let's just console.log "Skipping!".
+[inaudible 00:11:45] down here,
+
+00:11:46.320 --> 00:11:51.240 line:100% position:50% align:middle
+and we'll listen for a click on anything
+that has a "data-skip".
+
+00:11:51.240 --> 00:11:56.770 line:100% position:50% align:middle
+Now, let's look at the top here. Skip
+buttons is equal to anything that has a
+
+00:11:56.770 --> 00:12:01.570 line:100% position:50% align:middle
+"data-skip" attribute, which is why I said
+you could put a "data-skip" on absolutely
+
+00:12:01.570 --> 00:12:09.050 line:100% position:50% align:middle
+any element. So we'll say
+"skipButtons.forEach(button =>
+
+00:12:09.050 --> 00:12:16.220 line:100% position:50% align:middle
+button.addEventListener", and we are going
+to be listening for a click.
+
+00:12:16.220 --> 00:12:20.290 line:100% position:50% align:middle
+When that happens, we are going to run the
+"skip" function. Good.
+
+00:12:20.290 --> 00:12:25.200 line:100% position:50% align:middle
+Let's try it out. Skipping, skipping,
+skipping. Now, what's cool about that is
+
+00:12:25.200 --> 00:12:30.070 line:100% position:50% align:middle
+instead of console logging "Skipping",
+let's console.log "this.dataSet" and see
+
+00:12:30.070 --> 00:12:35.490 line:100% position:50% align:middle
+what we have there, is we get an object
+which has that skip value in it.
+
+00:12:35.490 --> 00:12:39.940 line:100% position:50% align:middle
+So we can take that "this.dataSet.skip",
+and we say
+
+00:12:39.940 --> 00:12:49.720 line:100% position:50% align:middle
+"video.currentTime+=this.dataSet.skip".
+Now, that's a string, so we should wrap
+
+00:12:49.720 --> 00:12:56.090 line:100% position:50% align:middle
+that in a parse bloat, and that will
+convert it into a true number.
+
+00:12:56.090 --> 00:13:02.100 line:100% position:50% align:middle
+Now, if we play it, and we click our Skip
+button, it'll jump back and forward,
+
+00:13:02.100 --> 00:13:06.140 line:100% position:50% align:middle
+back and forward. Next, let's work with
+these range sliders here.
+
+00:13:06.140 --> 00:13:10.340 line:100% position:50% align:middle
+If you take a look, we have an input type
+of "range". The name is "volume".
+
+00:13:10.340 --> 00:13:15.090 line:100% position:50% align:middle
+Then, we have another one where the name
+is "playback rate". I've purposely done
+
+00:13:15.090 --> 00:13:19.030 line:100% position:50% align:middle
+that with "volume" and "playback rate",
+just so that they line up with the
+
+00:13:19.030 --> 00:13:23.890 line:100% position:50% align:middle
+properties on the actual video. So what
+we're going to do is first of all,
+
+00:13:23.890 --> 00:13:29.970 line:100% position:50% align:middle
+we're going to listen for a change on
+those specific sliders. So we're going to
+
+00:13:29.970 --> 00:13:33.410 line:100% position:50% align:middle
+make a function called
+"handleRangeUpdate". I'm just going to
+
+00:13:33.410 --> 00:13:41.370 line:100% position:50% align:middle
+console.log "this.value". Then, we're
+going to go down here and listen for a
+
+00:13:41.370 --> 00:13:47.570 line:100% position:50% align:middle
+change event on each of those ranges.
+[inaudible 00:13:46]
+
+00:13:47.570 --> 00:13:56.430 line:100% position:50% align:middle
+"ranges.forEachRange", and then the
+"range.addEventListener('click'," is going
+
+00:13:56.430 --> 00:14:05.300 line:100% position:50% align:middle
+to run the function "handleRangeUpdate".
+Oh, not "click", "changeEvent".
+
+00:14:05.300 --> 00:14:10.920 line:100% position:50% align:middle
+Give it a refresh. Now, if I change one of
+these, .035, change one of these,
+
+00:14:10.920 --> 00:14:16.710 line:100% position:50% align:middle
+1.75, 1.5, 1.3. Another thing we could do
+is we could just duplicate this and listen
+
+00:14:16.710 --> 00:14:26.370 line:100% position:50% align:middle
+for a mouse move event. This will fire
+regardless of if you're clicking or not.
+
+00:14:26.370 --> 00:14:29.360 line:100% position:50% align:middle
+But what you can, if you want to have a
+little bit more practice,
+
+00:14:29.360 --> 00:14:34.000 line:100% position:50% align:middle
+is go back and set a flag so that when you
+click down and move it,
+
+00:14:34.000 --> 00:14:38.820 line:100% position:50% align:middle
+much like we did with the canvas, and
+click up, you are only updating the
+
+00:14:38.820 --> 00:14:43.640 line:100% position:50% align:middle
+property when you are clicked down. But
+for that, we've got it updating in
+
+00:14:43.640 --> 00:14:50.040 line:100% position:50% align:middle
+real-time, rather than just when we let go
+of the button. So we have this step value,
+
+00:14:50.040 --> 00:15:00.600 line:100% position:50% align:middle
+and we could also console.log "this.name".
+Coincidentally, volume and playback rate
+
+00:15:00.600 --> 00:15:04.630 line:100% position:50% align:middle
+are the two properties on the video that
+we need to update. So we simply just need
+
+00:15:04.630 --> 00:15:10.090 line:100% position:50% align:middle
+to say "video", and the property you want
+to update is called "this.name",
+
+00:15:10.090 --> 00:15:18.090 line:100% position:50% align:middle
+which is either going to be "volume" or
+"playback rate". So we'll say "this.name =
+
+00:15:18.090 --> 00:15:23.050 line:100% position:50% align:middle
+this.value", because that's the value
+that's already being piped in.
+
+00:15:23.050 --> 00:15:28.710 line:100% position:50% align:middle
+So now, if we go ahead and play it, there
+the volume is right down,
+
+00:15:28.710 --> 00:15:36.110 line:100% position:50% align:middle
+all the way up, [run] super-fast,
+super-slow. You get the point,
+
+00:15:36.110 --> 00:15:38.430 line:100% position:50% align:middle
+right? That one is a pretty simple one.
+I'm going to [inaudible 00:15:37] those
+
+00:15:38.430 --> 00:15:42.790 line:100% position:50% align:middle
+console logs, as well as this console log
+here. Next up, let's deal with the big
+
+00:15:42.790 --> 00:15:48.840 line:100% position:50% align:middle
+one, which is this progress bar here. So
+first of all, when you play the video,
+
+00:15:48.840 --> 00:15:52.830 line:100% position:50% align:middle
+the progress bar should be updating in
+real-time. Let's do that first.
+
+00:15:52.830 --> 00:15:59.190 line:100% position:50% align:middle
+Then, second of all, when you click on it
+and drag, it should update the video to
+
+00:15:59.190 --> 00:16:02.950 line:100% position:50% align:middle
+correspond with that lace. So first, we're
+going to make a function called
+
+00:16:02.950 --> 00:16:09.360 line:100% position:50% align:middle
+"handleProgress", and we are going to make
+a percentage. Because essentially,
+
+00:16:09.360 --> 00:16:12.620 line:100% position:50% align:middle
+how it's going to work is we're going to
+go in there, and we're going to inspect
+
+00:16:12.620 --> 00:16:16.220 line:100% position:50% align:middle
+this progress field here. You see how we
+have a flex basis value?
+
+00:16:16.220 --> 00:16:21.230 line:100% position:50% align:middle
+We're just going to be updating that flex
+basis value, sort of like updating the
+
+00:16:21.230 --> 00:16:26.580 line:100% position:50% align:middle
+width, of the progress bar. It's just
+going to correspond with how long it is.
+
+00:16:26.580 --> 00:16:31.870 line:100% position:50% align:middle
+So if we have 0% being not started at all,
+100% being totally finished,
+
+00:16:31.870 --> 00:16:35.840 line:100% position:50% align:middle
+we simply just need to calculate that
+knowing, "How long is the video and how
+
+00:16:35.840 --> 00:16:45.650 line:100% position:50% align:middle
+far are we right now?" So we'll "const
+percent =" say "video.currentTime /
+
+00:16:45.650 --> 00:16:51.230 line:100% position:50% align:middle
+video.duration". Current time and duration
+are just properties on that video,
+
+00:16:51.230 --> 00:16:55.810 line:100% position:50% align:middle
+and we multiply it by 100. So we're
+getting a not 0.5, but 50%.
+
+00:16:55.810 --> 00:17:01.800 line:100% position:50% align:middle
+Then, we simply take the progress bar,
+which we've selected at the top here,
+
+00:17:01.800 --> 00:17:11.190 line:100% position:50% align:middle
+"progressBar", and we append the styles.
+".style.flexBasis =" and we simply pop in
+
+00:17:11.190 --> 00:17:18.730 line:100% position:50% align:middle
+the percent variable and put a percent
+sign on the end there. So that doesn't
+
+00:17:18.730 --> 00:17:22.730 line:100% position:50% align:middle
+work just yet, and why not? It's because
+we've created the progress,
+
+00:17:22.730 --> 00:17:29.110 line:100% position:50% align:middle
+and if I were to run it manually it would
+update itself. But we want it to run every
+
+00:17:29.110 --> 00:17:33.860 line:100% position:50% align:middle
+so often. So should we put that in like a
+timeout or an interval and run it every
+
+00:17:33.860 --> 00:17:40.490 line:100% position:50% align:middle
+second? No. What we'll do is, again, we
+will listen for the video to emit an event
+
+00:17:40.490 --> 00:17:44.990 line:100% position:50% align:middle
+called "timeupdate", and when that happens
+we will run "handleProgress".
+
+00:17:44.990 --> 00:17:48.730 line:100% position:50% align:middle
+So you just duplicate one of these,
+"video.addEventListener". We're going to
+
+00:17:48.730 --> 00:17:55.440 line:100% position:50% align:middle
+listen for the "timeupdate" event, and
+we're going to run "handleProgress" when
+
+00:17:55.440 --> 00:18:00.210 line:100% position:50% align:middle
+that happens. There's also an event called
+"progress" and I don't know the difference
+
+00:18:00.210 --> 00:18:04.360 line:100% position:50% align:middle
+between the two. I've looked and I don't
+really understand. But as far as I've
+
+00:18:04.360 --> 00:18:08.860 line:100% position:50% align:middle
+tested, both "progress" and "timeupdate"
+will just trigger when the video is
+
+00:18:08.860 --> 00:18:13.010 line:100% position:50% align:middle
+updating its timecode, and then if it's
+paused it's not going to be unnecessarily
+
+00:18:13.010 --> 00:18:19.490 line:100% position:50% align:middle
+running that function. So now, we'll give
+it a play and it seems to be working just
+
+00:18:19.490 --> 00:18:23.350 line:100% position:50% align:middle
+fine. If I use these Skip buttons to skip
+ahead, you'll notice that it updates
+
+00:18:23.350 --> 00:18:32.110 line:100% position:50% align:middle
+itself nicely as well. Finally, the big
+one that we want here is the scrub.
+
+00:18:32.110 --> 00:18:38.440 line:100% position:50% align:middle
+How this is going to work is we are going
+to listen for a click on this video bar
+
+00:18:38.440 --> 00:18:42.720 line:100% position:50% align:middle
+here. Wherever I have clicked, let's say I
+click right here, it's going to...
+
+00:18:42.720 --> 00:18:46.920 line:100% position:50% align:middle
+Say, like you've clicked... How wide is
+this bar here? Six hundred and forty
+
+00:18:46.920 --> 00:18:54.600 line:100% position:50% align:middle
+pixels. So let's say I click at 320 pixels
+in. We know that 320 pixels is halfway to
+
+00:18:54.600 --> 00:19:00.520 line:100% position:50% align:middle
+640. So I should scrub the video 50% or
+50% of its duration. So we're going to
+
+00:19:00.520 --> 00:19:05.730 line:100% position:50% align:middle
+make a function called "scrub" here, and
+when that happens we're going to get the
+
+00:19:05.730 --> 00:19:10.450 line:100% position:50% align:middle
+event. Let's just console.log the event
+here, and we'll go down to the bottom
+
+00:19:10.450 --> 00:19:16.600 line:100% position:50% align:middle
+here, and we will get our progress bar. We
+are going to listen for a click,
+
+00:19:16.600 --> 00:19:21.030 line:100% position:50% align:middle
+and when that happens we are going to run
+"scrub". So let's see how we're doing
+
+00:19:21.030 --> 00:19:27.590 line:100% position:50% align:middle
+here. Open up your console. Play it. Now,
+click somewhere on it.
+
+00:19:27.590 --> 00:19:31.550 line:100% position:50% align:middle
+I'm going to click about halfway. Okay.
+Now, we've got this mouse event,
+
+00:19:31.550 --> 00:19:38.330 line:100% position:50% align:middle
+and inside the mouse event we are going to
+see that we have "e.offsetX",
+
+00:19:38.330 --> 00:19:42.480 line:100% position:50% align:middle
+which is exactly what we used in the
+canvas tutorial. So here it is.
+
+00:19:42.480 --> 00:19:49.940 line:100% position:50% align:middle
+It tells me I clicked 283 pixels into this
+bar, because that bar is positioned
+
+00:19:49.940 --> 00:19:56.500 line:100% position:50% align:middle
+relative. So given that knowledge, we can
+do a little bit of math.
+
+00:19:56.500 --> 00:20:03.520 line:100% position:50% align:middle
+So I'm going to say "const scrub time =
+e.offsetX". I'm going to pause these
+
+00:20:03.520 --> 00:20:10.930 line:100% position:50% align:middle
+bunnies here. Hold on. "/" and now we have
+to figure out what is the width of this
+
+00:20:10.930 --> 00:20:16.470 line:100% position:50% align:middle
+entire progress bar? Well, we've already
+selected it into a variable called
+
+00:20:16.470 --> 00:20:20.920 line:100% position:50% align:middle
+"progress", and we can grab the width of
+it with "offsetWidth".
+
+00:20:20.920 --> 00:20:26.000 line:100% position:50% align:middle
+That'll give us the entire width of the
+bar. That gives us a percentage like 50.5
+
+00:20:26.000 --> 00:20:33.840 line:100% position:50% align:middle
+or 0.6 for 60%, and we simply just
+multiply that by the video's duration.
+
+00:20:33.840 --> 00:20:37.610 line:100% position:50% align:middle
+So if it's a 60-second clip, you're
+halfway through, it's going to tell us
+
+00:20:37.610 --> 00:20:41.870 line:100% position:50% align:middle
+that you should scrub to 30 seconds. Then,
+we simply just update the video,
+
+00:20:41.870 --> 00:20:49.960 line:100% position:50% align:middle
+"video.currentTime = scrubTime". Let's see
+where we're at now.
+
+00:20:49.960 --> 00:20:59.710 line:100% position:50% align:middle
+So if I play it and I click about halfway,
+ah, it jumps exactly to where I've tried
+
+00:20:59.710 --> 00:21:07.090 line:100% position:50% align:middle
+to click it. Good. Now, let's work on the
+actual dragging and dropping of it.
+
+00:21:07.090 --> 00:21:11.920 line:100% position:50% align:middle
+Because you don't want to just listen for
+when someone moves it.
+
+00:21:11.920 --> 00:21:15.190 line:100% position:50% align:middle
+You want to listen for when someone clicks
+and moves it all around.
+
+00:21:15.190 --> 00:21:19.510 line:100% position:50% align:middle
+So let's just do it where you mouse move
+over top of it. So we'll take
+
+00:21:19.510 --> 00:21:27.440 line:100% position:50% align:middle
+"progress.addEventListener", and we are
+going to listen for a mouse move.
+
+00:21:27.440 --> 00:21:32.070 line:100% position:50% align:middle
+We're just going to scrub it there without
+thinking about clicking just yet.
+
+00:21:32.070 --> 00:21:37.710 line:100% position:50% align:middle
+Play it. Watch. As I move my... It's a
+little bit jerky, because it's just firing
+
+00:21:37.710 --> 00:21:43.130 line:100% position:50% align:middle
+like a million times and the video can't
+really keep up. But when I move my cursor
+
+00:21:43.130 --> 00:21:48.520 line:100% position:50% align:middle
+anywhere, it just catches up. Now, that's
+not really all that great,
+
+00:21:48.520 --> 00:21:53.190 line:100% position:50% align:middle
+because I want to be clicking down. What
+did we do in the canvas example?
+
+00:21:53.190 --> 00:21:58.400 line:100% position:50% align:middle
+We created a flag variable, set it to
+"false", and then when you clicked we set
+
+00:21:58.400 --> 00:22:04.970 line:100% position:50% align:middle
+it to "true". So this is what we do. We
+say "let mouse down = false".
+
+00:22:04.970 --> 00:22:08.700 line:100% position:50% align:middle
+Is the person currently clicking, or has
+their mouse down? No.
+
+00:22:08.700 --> 00:22:12.830 line:100% position:50% align:middle
+That is false. Then, when someone mouses
+down, we'll set it to "true".
+
+00:22:12.830 --> 00:22:16.970 line:100% position:50% align:middle
+We'll say
+"progress.addEventListener('mousedown',"
+
+00:22:16.970 --> 00:22:26.410 line:100% position:50% align:middle
+and when that happens we will run
+"mousedown = true". Then, when someone
+
+00:22:26.410 --> 00:22:33.210 line:100% position:50% align:middle
+mouses up, we will make the mouse down
+equal to "false". Then,
+
+00:22:33.210 --> 00:22:38.060 line:100% position:50% align:middle
+the scrub, when someone moves their mouse,
+what we want to do essentially is we would
+
+00:22:38.060 --> 00:22:46.580 line:100% position:50% align:middle
+run a function here that says "if mouse
+down, then we want to scrub".
+
+00:22:46.580 --> 00:22:50.030 line:100% position:50% align:middle
+Right? However, we can do it a little bit
+easier, and I'll show you a little trick
+
+00:22:50.030 --> 00:22:58.870 line:100% position:50% align:middle
+here. We'll run a function just in line
+here, and we'll say "mousedown &amp;&amp; scrub",
+
+00:22:58.870 --> 00:23:03.230 line:100% position:50% align:middle
+and we'll pass it the event. So we need to
+pass the event here.
+
+00:23:03.230 --> 00:23:10.660 line:100% position:50% align:middle
+Now, whoa. Hold on. What did we just do
+here? When someone moves their mouse,
+
+00:23:10.660 --> 00:23:16.510 line:100% position:50% align:middle
+we say "mousedown &amp;&amp; scrub", and what this
+does is it first checks this variable.
+
+00:23:16.510 --> 00:23:22.700 line:100% position:50% align:middle
+If this variable is "true", it moves on to
+this. If this variable is "false",
+
+00:23:22.700 --> 00:23:25.410 line:100% position:50% align:middle
+it's just going to return "false" and it's
+not going to do anything.
+
+00:23:25.410 --> 00:23:31.240 line:100% position:50% align:middle
+So we're sort of hijacking the fact that
+we can use "&amp;&amp;" and if this is "true" it
+
+00:23:31.240 --> 00:23:35.920 line:100% position:50% align:middle
+will move on to running the scrub. If this
+is "false", it's not going to run the
+
+00:23:35.920 --> 00:23:41.400 line:100% position:50% align:middle
+scrub. Then, because our "scrub" function
+requires the initial event of when this
+
+00:23:41.400 --> 00:23:44.810 line:100% position:50% align:middle
+happened on mouse move, we need to pass it
+in this error function,
+
+00:23:44.810 --> 00:23:49.720 line:100% position:50% align:middle
+and then just sort of like hot potato it
+over to our "scrub" function here.
+
+00:23:49.720 --> 00:23:55.710 line:100% position:50% align:middle
+So now, if we play it and see I'm moving
+my cursor over top no problem,
+
+00:23:55.710 --> 00:24:01.840 line:100% position:50% align:middle
+but if I click and drag you'll see it is
+updating all that time.
+
+00:24:01.840 --> 00:24:05.690 line:100% position:50% align:middle
+Looking good. Awesome. So that is the very
+basics of a video player.
+
+00:24:05.690 --> 00:24:09.670 line:100% position:50% align:middle
+It's not really all that basic. We've got
+a lot here. The one thing that we did not
+
+00:24:09.670 --> 00:24:13.910 line:100% position:50% align:middle
+do, and this is my challenge to you, is
+try to figure out how to make the
+
+00:24:13.910 --> 00:24:18.550 line:100% position:50% align:middle
+Fullscreen button work. So add another
+button here, and they should nicely work
+
+00:24:18.550 --> 00:24:21.930 line:100% position:50% align:middle
+out. I've used flex box here, so if you
+add another button it'll just shift on
+
+00:24:21.930 --> 00:24:26.170 line:100% position:50% align:middle
+over. When you click that button, make the
+video go fullscreen.
+
+00:24:26.170 --> 00:24:27.973 line:100% position:50% align:middle
+Thanks a lot.
+See you tomorrow.
+
+00:24:27.973 --> 00:24:29.973 line:100% position:50% align:middle
+♪ [music] ♪

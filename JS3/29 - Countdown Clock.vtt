@@ -1,0 +1,959 @@
+WEBVTT
+
+00:00:00.360 --> 00:00:03.796 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.988 --> 00:00:12.121 line:100% position:50% align:middle
+Today we are creating a countdown timer
+that will show us how many seconds
+
+00:00:12.121 --> 00:00:16.614 line:100% position:50% align:middle
+are left in some sort of task, like
+you've got a quick 5-minute break,
+
+00:00:16.614 --> 00:00:20.283 line:100% position:50% align:middle
+or you have a 15-minute break,
+or you've got a lunch break going on.
+
+00:00:20.283 --> 00:00:23.650 line:100% position:50% align:middle
+You need to be able to click these
+buttons or you can put in the number
+
+00:00:23.650 --> 00:00:26.181 line:100% position:50% align:middle
+of minutes that you'd like.
+It's going to count it down as well as
+
+00:00:26.181 --> 00:00:29.431 line:100% position:50% align:middle
+show you what time to be back.
+This is just because when I teach,
+
+00:00:29.431 --> 00:00:34.510 line:100% position:50% align:middle
+we have breaks and people need to know how
+long a break is left and they always ask
+
+00:00:34.510 --> 00:00:38.400 line:100% position:50% align:middle
+me, "Hey, Wes, how much time is left in
+the break?" And I say, "I'm not your dad."
+
+00:00:38.400 --> 00:00:42.730 line:100% position:50% align:middle
+Then we built something so we could
+stop asking that question.
+
+00:00:42.730 --> 00:00:49.300 line:100% position:50% align:middle
+We want to first go into our scripts here,
+and I'm just going to make a function
+
+00:00:49.300 --> 00:00:53.080 line:100% position:50% align:middle
+called timer, and we're just going to
+work in the console to start.
+
+00:00:53.080 --> 00:00:56.780 line:100% position:50% align:middle
+Then what we are going to do
+is update this actual interface here.
+
+00:00:56.780 --> 00:01:00.620 line:100% position:50% align:middle
+I'm going to make a function called timer.
+That's going to take in the number of
+
+00:01:00.620 --> 00:01:07.150 line:100% position:50% align:middle
+seconds you wish for the timer to be in.
+And then we are going to do two things.
+
+00:01:07.150 --> 00:01:10.690 line:100% position:50% align:middle
+Now, how do timers work? You have the
+amount of time that you wish for it to
+
+00:01:10.690 --> 00:01:16.240 line:100% position:50% align:middle
+have, and then you simply elapse that time
+over however many seconds it is.
+
+00:01:16.240 --> 00:01:22.870 line:100% position:50% align:middle
+In the past what I've done is I would just
+set an interval, which has a function and
+
+00:01:22.870 --> 00:01:29.970 line:100% position:50% align:middle
+that function itself, let's get rid of all
+this junk, it would run every second and
+
+00:01:29.970 --> 00:01:33.450 line:100% position:50% align:middle
+then what I would do is I would just say,
+seconds, minus, minus.
+
+00:01:33.450 --> 00:01:36.910 line:100% position:50% align:middle
+Then it would just decrement the amount of
+seconds every single time.
+
+00:01:36.910 --> 00:01:41.780 line:100% position:50% align:middle
+However, I did run into issues with that
+because said interval does not run
+
+00:01:41.780 --> 00:01:46.400 line:100% position:50% align:middle
+sometimes. I found sometimes when I tab
+away for a long time, it would simply just
+
+00:01:46.400 --> 00:01:49.680 line:100% position:50% align:middle
+stop running it. I don't know if the
+browser does something funky there with
+
+00:01:49.680 --> 00:01:53.920 line:100% position:50% align:middle
+pausing its intervals when it's not
+necessarily running. Then I also found on
+
+00:01:53.920 --> 00:01:58.820 line:100% position:50% align:middle
+iOS, when you are scrolling,
+it will pause all of your intervals.
+
+00:01:58.820 --> 00:02:02.600 line:100% position:50% align:middle
+I think it does that for performance
+issues as well as making your scrolling
+
+00:02:02.600 --> 00:02:06.090 line:100% position:50% align:middle
+nice and buttery smooth. Similar to how,
+if you scroll a page,
+
+00:02:06.090 --> 00:02:11.740 line:100% position:50% align:middle
+your animated gifs will also stop.
+So it's not really a good use case there,
+
+00:02:11.740 --> 00:02:15.480 line:100% position:50% align:middle
+because if I were to be scrolling for
+10 seconds, then it would add an extra
+
+00:02:15.480 --> 00:02:20.230 line:100% position:50% align:middle
+10 seconds onto the break. So rather than
+doing that, we will use an interval but in
+
+00:02:20.230 --> 00:02:26.290 line:100% position:50% align:middle
+a different way. What we want to do is
+figure out when the timer started,
+
+00:02:26.290 --> 00:02:32.220 line:100% position:50% align:middle
+just const now equals date.now. That's
+kind of a new one to the browser.
+
+00:02:32.220 --> 00:02:38.800 line:100% position:50% align:middle
+Previously we had to do like, new date and
+then get time but there's a new static
+
+00:02:38.800 --> 00:02:44.060 line:100% position:50% align:middle
+method on date called now, and that will
+just give us the current timestamp in
+
+00:02:44.060 --> 00:02:50.220 line:100% position:50% align:middle
+milliseconds. Then we also want then,
+which is now plus the number of seconds
+
+00:02:50.220 --> 00:02:55.830 line:100% position:50% align:middle
+that you wish to run the timer for, but
+that now is going to be in milliseconds
+
+00:02:55.830 --> 00:03:00.720 line:100% position:50% align:middle
+and seconds is obviously in seconds.
+So we just multiply that by 1000.
+
+00:03:00.720 --> 00:03:04.950 line:100% position:50% align:middle
+So it's console log, now and then just to
+see what we've got going on here.
+
+00:03:04.950 --> 00:03:10.210 line:100% position:50% align:middle
+If I were to refresh this, run timer 10,
+you see our now and our then values that
+
+00:03:10.210 --> 00:03:15.300 line:100% position:50% align:middle
+we have here. Good, so those are working
+for us. Next thing we need to do is every
+
+00:03:15.300 --> 00:03:21.200 line:100% position:50% align:middle
+single second, we need to display the
+amount of time left. This is where we set
+
+00:03:21.200 --> 00:03:25.870 line:100% position:50% align:middle
+an interval. This is okay to use an
+interval here because we're really not
+
+00:03:25.870 --> 00:03:30.180 line:100% position:50% align:middle
+worried about it running every single
+second if something happens.
+
+00:03:30.180 --> 00:03:34.530 line:100% position:50% align:middle
+But like, let's say it were to skip two
+seconds. It would just update two seconds
+
+00:03:34.530 --> 00:03:39.580 line:100% position:50% align:middle
+later and show us those two less seconds
+rather than one. So, it's fine to use it
+
+00:03:39.580 --> 00:03:44.160 line:100% position:50% align:middle
+here, we are going to run it every second,
+which is 1000 milliseconds here.
+
+00:03:44.160 --> 00:03:49.940 line:100% position:50% align:middle
+Then what we need to figure out is
+how much time is left on the clock.
+
+00:03:49.940 --> 00:03:56.040 line:100% position:50% align:middle
+We'll take our then, which is when it
+stops, we'll say const seconds left is
+
+00:03:56.040 --> 00:04:03.510 line:100% position:50% align:middle
+equal to then minus and we can't just say
+now because that was captured when it ran,
+
+00:04:03.510 --> 00:04:08.600 line:100% position:50% align:middle
+but we need to run date.now once more.
+Again, now it's going to be in
+
+00:04:08.600 --> 00:04:13.060 line:100% position:50% align:middle
+milliseconds so we want to divide that
+by 1000 so we can get seconds.
+
+00:04:13.060 --> 00:04:19.690 line:100% position:50% align:middle
+Console log seconds left. Let's see what
+we got here. Eight and a half,
+
+00:04:19.690 --> 00:04:23.470 line:100% position:50% align:middle
+seven, six, five, so we have a bit of
+a rounding error here. Oh,
+
+00:04:23.470 --> 00:04:27.100 line:100% position:50% align:middle
+that's a bit of a funky one. I guess just
+because we're dealing with milliseconds
+
+00:04:27.100 --> 00:04:34.120 line:100% position:50% align:middle
+and doing this division here, so you can
+wrap the entire thing in the math.round.
+
+00:04:34.120 --> 00:04:39.850 line:100% position:50% align:middle
+Then run it at ten, nine, there we go. You
+may have just seen that it started going
+
+00:04:39.850 --> 00:04:44.610 line:100% position:50% align:middle
+negative after awhile. And why is that?
+Because intervals don't know when to stop
+
+00:04:44.610 --> 00:04:53.090 line:100% position:50% align:middle
+themselves. So what we need to do here is
+before we display it, we need to check if
+
+00:04:53.090 --> 00:05:02.320 line:100% position:50% align:middle
+we should stop it. How do you stop? I'll
+say if the seconds left is less or equal
+
+00:05:02.320 --> 00:05:08.840 line:100% position:50% align:middle
+to zero, then we want to stop it. So,
+obviously, we could return which will stop
+
+00:05:08.840 --> 00:05:11.920 line:100% position:50% align:middle
+the function from running, but that's
+not really going to help us,
+
+00:05:11.920 --> 00:05:15.580 line:100% position:50% align:middle
+and I'll show you here. That's not going
+to totally stop this interval from
+
+00:05:15.580 --> 00:05:20.800 line:100% position:50% align:middle
+running, it's just going to run but not
+show us anything. What we need to do is to
+
+00:05:20.800 --> 00:05:26.070 line:100% position:50% align:middle
+store this interval in its own variable.
+I'm going to go up here and say let
+
+00:05:26.070 --> 00:05:30.250 line:100% position:50% align:middle
+countdown and that's going to be
+our sort of higher-level variable.
+
+00:05:30.250 --> 00:05:33.230 line:100% position:50% align:middle
+In this case, it's a global variable,
+it's going to live on the window,
+
+00:05:33.230 --> 00:05:37.370 line:100% position:50% align:middle
+but you could pop that into IFFE and not
+have it in the global name space.
+
+00:05:37.370 --> 00:05:42.230 line:100% position:50% align:middle
+Then here we're going to simply update it.
+Countdown is equal to.
+
+00:05:42.230 --> 00:05:47.120 line:100% position:50% align:middle
+Then here we will call clear interval and
+pass it the name of our timer which is
+
+00:05:47.120 --> 00:05:51.760 line:100% position:50% align:middle
+countdown. Then when we run it,
+let's run it with three seconds left,
+
+00:05:51.760 --> 00:05:58.280 line:100% position:50% align:middle
+two, one, and then it will never
+run again because we hit this here.
+
+00:05:58.280 --> 00:06:02.380 line:100% position:50% align:middle
+Real quick aside, sorry that I have to
+jump in here though, but I said less or
+
+00:06:02.380 --> 00:06:06.800 line:100% position:50% align:middle
+equal to, but that ends up with leaving us
+one second. Obviously we want less than
+
+00:06:06.800 --> 00:06:13.170 line:100% position:50% align:middle
+zero seconds, which is going to give us
+two, one and zero. Not less or equal to,
+
+00:06:13.170 --> 00:06:17.550 line:100% position:50% align:middle
+just less. All right, back to scheduled
+programming. Now, one other issue that we
+
+00:06:17.550 --> 00:06:24.630 line:100% position:50% align:middle
+are running into is if I run 10 seconds,
+watch what happens. Only after one second
+
+00:06:24.630 --> 00:06:29.350 line:100% position:50% align:middle
+elapses does it actually run. The
+problem with that is that set interval,
+
+00:06:29.350 --> 00:06:37.030 line:100% position:50% align:middle
+what we have right here, that does not run
+immediately. It has to wait for the first
+
+00:06:37.030 --> 00:06:42.540 line:100% position:50% align:middle
+second to elapse. So what I want to do is,
+we'll create a second function down here
+
+00:06:42.540 --> 00:06:53.460 line:100% position:50% align:middle
+called display time left which takes in
+seconds. Here we're going to console log
+
+00:06:53.460 --> 00:06:59.040 line:100% position:50% align:middle
+the number of seconds left, and we're
+going to change that to minutes and
+
+00:06:59.040 --> 00:07:04.440 line:100% position:50% align:middle
+whatnot. Down here, instead of console
+logging it, we're going to display it
+
+00:07:04.440 --> 00:07:09.350 line:100% position:50% align:middle
+which it should still do the same thing,
+still after a second.
+
+00:07:09.350 --> 00:07:13.320 line:100% position:50% align:middle
+But then we could also run that
+as soon as the function is invoked.
+
+00:07:13.320 --> 00:07:18.740 line:100% position:50% align:middle
+We'll run display time left and we'll
+pass it seconds. We're going to run it
+
+00:07:18.740 --> 00:07:25.870 line:100% position:50% align:middle
+immediately once, and then once again,
+every single time that we do that
+
+00:07:25.870 --> 00:07:32.120 line:100% position:50% align:middle
+interval. Here we go, a timer. See? It
+does 10 immediately and then we'll count
+
+00:07:32.120 --> 00:07:38.990 line:100% position:50% align:middle
+down from 9 to 6, all the way down to 1.
+Good, so this little countdown function
+
+00:07:38.990 --> 00:07:44.900 line:100% position:50% align:middle
+that we've written here is looking pretty
+good, now I want to go down into our
+
+00:07:44.900 --> 00:07:50.140 line:100% position:50% align:middle
+display time left and start working with
+converting it to minutes and seconds.
+
+00:07:50.140 --> 00:07:53.466 line:100% position:50% align:middle
+In a previous video, what we did is we
+took all of our seconds and converted it
+
+00:07:53.466 --> 00:07:57.900 line:100% position:50% align:middle
+to seconds, minutes, and hours. You can
+go grab that code right now if you'd like.
+
+00:07:57.900 --> 00:08:01.100 line:100% position:50% align:middle
+Or if you want a little bit of practice,
+figure it out yourself.
+
+00:08:01.100 --> 00:08:04.170 line:100% position:50% align:middle
+We're only going to do minutes and seconds
+here, but you are welcome to do hours as
+
+00:08:04.170 --> 00:08:12.650 line:100% position:50% align:middle
+well. So I'll say, const minutes is equal
+to seconds divided by 60 and let's just
+
+00:08:12.650 --> 00:08:20.729 line:100% position:50% align:middle
+console what we have left. If I were to
+run 70, we have 1.16 minutes left,
+
+00:08:20.729 --> 00:08:27.000 line:100% position:50% align:middle
+1.13. So what's going on here with that?
+Well, that's because we only want whole
+
+00:08:27.000 --> 00:08:31.140 line:100% position:50% align:middle
+minutes. We don't care about those
+remainders here. So we'll say math.floor,
+
+00:08:31.140 --> 00:08:35.764 line:100% position:50% align:middle
+we'll grab the lower bound of that number.
+And now if I were to run,
+
+00:08:35.764 --> 00:08:43.404 line:100% position:50% align:middle
+let's do 124 seconds. So, two minutes, two
+minutes and then eventually it should get
+
+00:08:43.404 --> 00:08:49.058 line:100% position:50% align:middle
+to one whole minute, there we go. Now
+we're worried about how many seconds are
+
+00:08:49.058 --> 00:08:57.405 line:100% position:50% align:middle
+left. So I say const remainderSeconds and
+that is going to be seconds mod 60 and mod
+
+00:08:57.405 --> 00:09:02.177 line:100% position:50% align:middle
+will give us the remainder that we have.
+Minutes and remainderSeconds timer,
+
+00:09:02.177 --> 00:09:09.440 line:100% position:50% align:middle
+Here we go, three, two, one. That goes
+down to 1 minute and 59 seconds.
+
+00:09:09.440 --> 00:09:13.230 line:100% position:50% align:middle
+Good. So we've got our minutes in our
+remainderSeconds, now we can start
+
+00:09:13.230 --> 00:09:20.780 line:100% position:50% align:middle
+working with our HTML. We've got
+this display time left div here.
+
+00:09:20.780 --> 00:09:25.760 line:100% position:50% align:middle
+If we were to put that in a variable,
+const timer display is equal to
+
+00:09:25.760 --> 00:09:34.170 line:100% position:50% align:middle
+document.querySelector. We want to look
+for that. Then we'll go down here and
+
+00:09:34.170 --> 00:09:38.570 line:100% position:50% align:middle
+create another variable which is
+going to be our display time,
+
+00:09:38.570 --> 00:09:43.389 line:100% position:50% align:middle
+which is going to look something like
+11:11, right? How do we get the number of
+
+00:09:43.389 --> 00:09:49.786 line:100% position:50% align:middle
+minutes left? Simply just
+minutes: number of remainderSeconds.
+
+00:09:49.786 --> 00:09:58.420 line:100% position:50% align:middle
+Then we take our timerDisplay which is
+our div, we set the textContent to be
+
+00:09:58.420 --> 00:10:04.050 line:100% position:50% align:middle
+display. We can get rid of this console
+log because now we're dealing with actual
+
+00:10:04.050 --> 00:10:09.900 line:100% position:50% align:middle
+DOM elements here. If I were to run it,
+oh, I spelled it wrong. Minutes.
+
+00:10:09.900 --> 00:10:18.480 line:100% position:50% align:middle
+Minutsas. Now we run it. Oh, okay, kind of
+working but you see what the problem is
+
+00:10:18.480 --> 00:10:22.880 line:100% position:50% align:middle
+here? When you have less than 10 seconds
+left, it just says 4 seconds,
+
+00:10:22.880 --> 00:10:28.730 line:100% position:50% align:middle
+but we should be 04 seconds left. How do
+we do that? Well, we could go to this
+
+00:10:28.730 --> 00:10:35.020 line:100% position:50% align:middle
+remainderSeconds, and we'll say if the
+remainderSeconds is greater than 10,
+
+00:10:35.020 --> 00:10:43.840 line:100% position:50% align:middle
+or sorry, less than 10, then we want to
+return a zero. It's a question mark,
+
+00:10:43.840 --> 00:10:48.360 line:100% position:50% align:middle
+this is a shorthand ternary operator, and
+otherwise, we're just going to return
+
+00:10:48.360 --> 00:10:53.050 line:100% position:50% align:middle
+nothing. And that will give us a zero.
+And then, finally, on the end here,
+
+00:10:53.050 --> 00:10:58.760 line:100% position:50% align:middle
+you can just give us the remainderSeconds
+left. So if we run it now,
+
+00:10:58.760 --> 00:11:04.270 line:100% position:50% align:middle
+with 124 seconds, we have that padded zero
+on the front until it gets there.
+
+00:11:04.270 --> 00:11:08.430 line:100% position:50% align:middle
+Another thing is we should update
+the tab on our browser here,
+
+00:11:08.430 --> 00:11:16.640 line:100% position:50% align:middle
+it just says countdown timer. We can
+simply just say document.title.
+
+00:11:16.640 --> 00:11:23.600 line:100% position:50% align:middle
+Document.title is the title tag in your
+HTML, is equal to display.
+
+00:11:23.600 --> 00:11:27.910 line:100% position:50% align:middle
+Now we're going to run it. Here we go.
+It updates it as we're updating it.
+
+00:11:27.910 --> 00:11:32.170 line:100% position:50% align:middle
+You can put that really wherever it is
+that you like. Now I want to work on that
+
+00:11:32.170 --> 00:11:36.450 line:100% position:50% align:middle
+other function which is showing the ending
+time. If it's 2:30 and you have a
+
+00:11:36.450 --> 00:11:41.810 line:100% position:50% align:middle
+five-minute break, I want to say be back
+at 2:35. We'll create a function called
+
+00:11:41.810 --> 00:11:47.460 line:100% position:50% align:middle
+displayEndTime. That's going to take in
+a timestamp of when you want to finish.
+
+00:11:47.460 --> 00:11:54.640 line:100% position:50% align:middle
+That's our then time right here. Takes in
+a timestamp and we got to turn that
+
+00:11:54.640 --> 00:12:01.340 line:100% position:50% align:middle
+timestamp into a date. Const end equals
+new date. You want to pass it the
+
+00:12:01.340 --> 00:12:06.220 line:100% position:50% align:middle
+timestamp. Why? If you've never worked
+with timestamps before, this is how they
+
+00:12:06.220 --> 00:12:12.950 line:100% position:50% align:middle
+work. You have date.now which is just a
+number of milliseconds since January 1st,
+
+00:12:12.950 --> 00:12:16.940 line:100% position:50% align:middle
+1970. That's when God created the earth.
+That's the number of milliseconds that has
+
+00:12:16.940 --> 00:12:21.440 line:100% position:50% align:middle
+elapsed since that amount of time. Now, if
+you were just to take this and then put it
+
+00:12:21.440 --> 00:12:24.180 line:100% position:50% align:middle
+in a string and then come back to
+JavaScript, you'd be like, "Okay,
+
+00:12:24.180 --> 00:12:29.810 line:100% position:50% align:middle
+I need to convert this back into a date."
+You say new date and you pass it the
+
+00:12:29.810 --> 00:12:32.860 line:100% position:50% align:middle
+number of milliseconds that you have.
+It's going to convert that.
+
+00:12:32.860 --> 00:12:38.711 line:100% position:50% align:middle
+It's December 1st right now, convert it
+into a proper timestamp for you.
+
+00:12:38.711 --> 00:12:41.927 line:100% position:50% align:middle
+What's cool about that is you
+could put it in a variable called X
+
+00:12:41.927 --> 00:12:52.702 line:100% position:50% align:middle
+and then you can call
+X.getDate, X.getDay, X.getMonth,
+
+00:12:52.702 --> 00:12:56.092 line:100% position:50% align:middle
+and you get all the information about
+what day and month and all that.
+
+00:12:56.092 --> 00:13:00.220 line:100% position:50% align:middle
+That's a proper date. That takes
+in a timestamp. We create a new date
+
+00:13:00.220 --> 00:13:07.730 line:100% position:50% align:middle
+object from that. Then we can simply just
+get the hours. We'll say const hour equals
+
+00:13:07.730 --> 00:13:20.960 line:100% position:50% align:middle
+end.getHours and const minutes is equal to
+end.getMinutes, then we'll say end-time
+
+00:13:20.960 --> 00:13:24.080 line:100% position:50% align:middle
+which we don't have that yet.
+Let's go back up to the top here.
+
+00:13:24.080 --> 00:13:30.780 line:100% position:50% align:middle
+What is our end time? Display end time.
+Grab that sucker, const endTime is equal
+
+00:13:30.780 --> 00:13:37.310 line:100% position:50% align:middle
+to document.querySelector. We'll grab
+the thing with the class of display,
+
+00:13:37.310 --> 00:13:43.580 line:100% position:50% align:middle
+end-time. Okay, so we got this
+endTime.textContent is equal to,
+
+00:13:43.580 --> 00:13:46.320 line:100% position:50% align:middle
+and I'm just going to set it here.
+Previously, we put it in a variable called
+
+00:13:46.320 --> 00:13:49.940 line:100% position:50% align:middle
+display. Why? Because I needed to use it
+more than once. I needed to use it to
+
+00:13:49.940 --> 00:13:53.850 line:100% position:50% align:middle
+update the title, as well as update the
+text content. But in this case I just want
+
+00:13:53.850 --> 00:14:01.060 line:100% position:50% align:middle
+to do it directly inside of here. We'll
+say "Be Back At" and then we will grab the
+
+00:14:01.060 --> 00:14:10.590 line:100% position:50% align:middle
+hour and we will grab the minutes. That
+easy, right? No, it's not going to be that
+
+00:14:10.590 --> 00:14:17.310 line:100% position:50% align:middle
+easy, but let's give it a shot. In our
+timer, we're not going to run this in our
+
+00:14:17.310 --> 00:14:21.210 line:100% position:50% align:middle
+interval, it doesn't need to be updated
+every second, it just needs to happen once
+
+00:14:21.210 --> 00:14:26.690 line:100% position:50% align:middle
+when you run the timer. So, simply
+just displayEndTime, you pass it then,
+
+00:14:26.690 --> 00:14:31.920 line:100% position:50% align:middle
+which is the endTime. So if I were to
+run our timer with, I don't know,
+
+00:14:31.920 --> 00:14:38.737 line:100% position:50% align:middle
+3,000 seconds to pass it into it, we got
+50 minutes left. But the problem here
+
+00:14:38.737 --> 00:14:44.193 line:100% position:50% align:middle
+is that I am not European, and I do not
+understand what 15:00 is.
+
+00:14:44.193 --> 00:14:50.330 line:100% position:50% align:middle
+I do know that I should be back at 3:11.
+So we need to then, go in here,
+
+00:14:50.330 --> 00:14:54.800 line:100% position:50% align:middle
+and if you're European, congratulations.
+You can leave this part and maybe go get a
+
+00:14:54.800 --> 00:15:00.770 line:100% position:50% align:middle
+pop or something like that. But we
+Canadians and Americans and whoever else
+
+00:15:00.770 --> 00:15:07.600 line:100% position:50% align:middle
+is normal needs to go into this hour and
+we'll say, if the hour is greater than 12,
+
+00:15:07.600 --> 00:15:14.420 line:100% position:50% align:middle
+then we need to return the hour minus 12,
+otherwise we want to just return the hour.
+
+00:15:14.420 --> 00:15:19.740 line:100% position:50% align:middle
+And if this is a little bit too funky for
+you, you can simply just go in here and
+
+00:15:19.740 --> 00:15:26.320 line:100% position:50% align:middle
+create a new variable const adjusted hour
+is equal to, we'll return the hour minus
+
+00:15:26.320 --> 00:15:32.070 line:100% position:50% align:middle
+12. So, if it is 13:00, take away 12, it
+is 1:00 and take that adjusted hour and
+
+00:15:32.070 --> 00:15:38.700 line:100% position:50% align:middle
+put it here, so how's that looking?
+Okay, be back at 3:12, good.
+
+00:15:38.700 --> 00:15:47.770 line:100% position:50% align:middle
+But what if I were to run it with
+2700 seconds? Be back at 3:07,
+
+00:15:47.770 --> 00:15:53.370 line:100% position:50% align:middle
+so we got the trailing minutes again.
+If the minutes is less than 10,
+
+00:15:53.370 --> 00:16:02.270 line:100% position:50% align:middle
+then return a 0 otherwise return nothing.
+And then we'll tack the minutes onto the
+
+00:16:02.270 --> 00:16:10.630 line:100% position:50% align:middle
+end again. Be back at 3:07. Beautiful.
+Okay, so we've got our timer working,
+
+00:16:10.630 --> 00:16:14.470 line:100% position:50% align:middle
+our function is working, it's updating,
+displaying, and everything.
+
+00:16:14.470 --> 00:16:19.130 line:100% position:50% align:middle
+Last thing that we need to do now is hook
+it up to all of these different buttons as
+
+00:16:19.130 --> 00:16:23.940 line:100% position:50% align:middle
+well as our minutes here. If we look at
+our HTML, you'll see that each of these
+
+00:16:23.940 --> 00:16:29.540 line:100% position:50% align:middle
+buttons here, has a data-time and the
+number of seconds we wish to run it on it.
+
+00:16:29.540 --> 00:16:33.510 line:100% position:50% align:middle
+And then we have a form here which is a
+custom number of minutes, not seconds.
+
+00:16:33.510 --> 00:16:38.230 line:100% position:50% align:middle
+Let's deal with these buttons, we'll knock
+them off first. We'll go in here and first
+
+00:16:38.230 --> 00:16:46.220 line:100% position:50% align:middle
+we'll select all of those, so say, const
+buttons equals all. And you want to select
+
+00:16:46.220 --> 00:16:51.290 line:100% position:50% align:middle
+anything with a data-time. Not just a
+button, it might be a picture,
+
+00:16:51.290 --> 00:16:56.530 line:100% position:50% align:middle
+it might be something else, anything
+that has a data-time attribute.
+
+00:16:56.530 --> 00:17:02.860 line:100% position:50% align:middle
+When that happens, we'll go down here and
+we'll say buttons for each button,
+
+00:17:02.860 --> 00:17:09.363 line:100% position:50% align:middle
+button.addEventListener, we want to listen
+for a click, and when that happens,
+
+00:17:09.363 --> 00:17:13.787 line:100% position:50% align:middle
+we could run a function
+called startTimer.
+
+00:17:13.787 --> 00:17:18.106 line:100% position:50% align:middle
+We'll go here, we'll make a function
+called startTimer and we will
+
+00:17:18.106 --> 00:17:21.833 line:100% position:50% align:middle
+simply just console log this.
+Okay, let's see what we got here.
+
+00:17:21.833 --> 00:17:26.500 line:100% position:50% align:middle
+Twenty seconds button, got it. How did we
+get this data-time out?
+
+00:17:26.500 --> 00:17:31.090 line:100% position:50% align:middle
+Well, this.dataset will give us
+an object with the time on it.
+
+00:17:31.090 --> 00:17:36.114 line:100% position:50% align:middle
+This.dataset.time will give us
+a string of the number of minutes.
+
+00:17:36.114 --> 00:17:41.862 line:100% position:50% align:middle
+So we can just put that into a variable,
+const seconds is equal to
+
+00:17:41.862 --> 00:17:48.051 line:100% position:50% align:middle
+this.dataset.time you want to wrap it
+in a quick parseint, turn it into a real
+
+00:17:48.051 --> 00:17:52.417 line:100% position:50% align:middle
+number and then we'll
+console log seconds.
+
+00:17:52.417 --> 00:17:56.364 line:100% position:50% align:middle
+Twenty, 30, good.
+Working really nicely for us.
+
+00:17:56.364 --> 00:18:00.950 line:100% position:50% align:middle
+What we want to do is then we can
+simply just call timer, seconds,
+
+00:18:00.950 --> 00:18:07.260 line:100% position:50% align:middle
+that other function. So click it, ah-ha,
+looks like it's working really nicely,
+
+00:18:07.260 --> 00:18:14.130 line:100% position:50% align:middle
+although, watch this, click on work five.
+Oh, back and forth, back and forth,
+
+00:18:14.130 --> 00:18:17.682 line:100% position:50% align:middle
+back and forth.
+So what's going on here?
+
+00:18:17.682 --> 00:18:22.211 line:100% position:50% align:middle
+And if I click a couple of them...let's
+just go to town, here. If I just click,
+
+00:18:22.211 --> 00:18:26.495 line:100% position:50% align:middle
+like, 100 times. Oh my goodness,
+what's going on? Well I just queued up
+
+00:18:26.495 --> 00:18:34.550 line:100% position:50% align:middle
+like, 1000 timers and there's no way for
+the timers to cancel themselves out unless
+
+00:18:34.550 --> 00:18:38.590 line:100% position:50% align:middle
+the number of seconds hits zero. That's
+annoying. Like, what if you click the
+
+00:18:38.590 --> 00:18:42.390 line:100% position:50% align:middle
+wrong one. Do you have to like, refresh
+the page and then start again?
+
+00:18:42.390 --> 00:18:46.480 line:100% position:50% align:middle
+That's not really any way to live your
+life. What we want to do is when we start
+
+00:18:46.480 --> 00:18:54.760 line:100% position:50% align:middle
+our timer, we'll just clear any existing
+timers. Let's clear interval countdown.
+
+00:18:54.760 --> 00:18:58.280 line:100% position:50% align:middle
+If there is a timer in countdown,
+it will clear it. If there's not,
+
+00:18:58.280 --> 00:19:02.280 line:100% position:50% align:middle
+the variable still exists and it's not
+gonna error out on us. Now,
+
+00:19:02.280 --> 00:19:08.610 line:100% position:50% align:middle
+if I say, "Oh, not 20, I meant 5." It's
+not going back 15, it's not going back,
+
+00:19:08.610 --> 00:19:12.380 line:100% position:50% align:middle
+you see that? Our "be back" time is
+also updating itself nicely.
+
+00:19:12.380 --> 00:19:20.050 line:100% position:50% align:middle
+Good, good, good. Last thing is this form
+here where you enter in maybe 30 minutes.
+
+00:19:20.050 --> 00:19:24.220 line:100% position:50% align:middle
+So we want to take this form right here,
+which, if you go into our HTML you'll see
+
+00:19:24.220 --> 00:19:29.470 line:100% position:50% align:middle
+that this form has a name of custom form,
+so we'll go into here.
+
+00:19:29.470 --> 00:19:32.920 line:100% position:50% align:middle
+Before you select it, I kind of wanted to
+show you this little thing.
+
+00:19:32.920 --> 00:19:36.360 line:100% position:50% align:middle
+I actually didn't know about it for the
+longest time. I was just selecting all of
+
+00:19:36.360 --> 00:19:41.520 line:100% position:50% align:middle
+my elements. But did you know that you can
+type document., and then if it has a name
+
+00:19:41.520 --> 00:19:46.960 line:100% position:50% align:middle
+attribute on it, custom form, you can just
+type document.customform and that will
+
+00:19:46.960 --> 00:19:52.600 line:100% position:50% align:middle
+give us the form element. Similarly,
+if your input also has a name,
+
+00:19:52.600 --> 00:19:57.270 line:100% position:50% align:middle
+it'll just nest itself .minutes and that
+will give us the input.
+
+00:19:57.270 --> 00:20:01.610 line:100% position:50% align:middle
+Whoa, we don't have to select a single
+thing. Let's go into our scripts here and
+
+00:20:01.610 --> 00:20:06.160 line:100% position:50% align:middle
+we'll say
+documentcustomform.addeventlistener and
+
+00:20:06.160 --> 00:20:12.152 line:100% position:50% align:middle
+we're going to listen for it, what? Click.
+Enter? No. Submit. Then we are going to
+
+00:20:12.152 --> 00:20:15.460 line:100% position:50% align:middle
+run a function, a proper function here,
+I'll show you why in a second,
+
+00:20:15.460 --> 00:20:21.620 line:100% position:50% align:middle
+past the event. Now, if we submit this
+now, type 10, it refreshes the page and
+
+00:20:21.620 --> 00:20:25.870 line:100% position:50% align:middle
+you see the URL says minutes equals 10.
+How do we stop it from reloading the page
+
+00:20:25.870 --> 00:20:32.960 line:100% position:50% align:middle
+and sending the data over a get? A call,
+e.preventdefault. That will stop it from
+
+00:20:32.960 --> 00:20:39.629 line:100% position:50% align:middle
+running. Ten. Good, nothing happens. Then
+we can get the mins which is going to be
+
+00:20:39.629 --> 00:20:45.713 line:100% position:50% align:middle
+this, because this is the form.minutes,
+which is going to be that text box there
+
+00:20:45.713 --> 00:20:52.110 line:100% position:50% align:middle
+that we typed into, the input.value.
+And console log our mins, 10, got it.
+
+00:20:52.110 --> 00:20:58.390 line:100% position:50% align:middle
+We can quickly call this .reset and clear
+out the value, 10, it'll clear the value
+
+00:20:58.390 --> 00:21:04.760 line:100% position:50% align:middle
+and console log it. Then we simply just
+take that number of minutes that we want,
+
+00:21:04.760 --> 00:21:09.980 line:100% position:50% align:middle
+we pass it to our timer, we can't pass it
+minutes because our timer requires
+
+00:21:09.980 --> 00:21:19.173 line:100% position:50% align:middle
+seconds. Multiply that by 60, and if we
+do it right, so 5 minutes should give us
+
+00:21:19.173 --> 00:21:25.460 line:100% position:50% align:middle
+5 whole minutes. Very nice. So that is
+our timer. We got a couple of different
+
+00:21:25.460 --> 00:21:29.910 line:100% position:50% align:middle
+functions going on here, we have our time
+out and whatnot, hopefully you enjoyed
+
+00:21:29.910 --> 00:21:34.149 line:100% position:50% align:middle
+that. I'd love to see how you
+can take this a little bit further,
+
+00:21:34.149 --> 00:21:38.085 line:100% position:50% align:middle
+either adding some animation and some
+interaction, or adding some features in
+
+00:21:38.085 --> 00:21:39.583 line:100% position:50% align:middle
+terms of hours and whatnot.

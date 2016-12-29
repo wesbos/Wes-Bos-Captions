@@ -1,0 +1,466 @@
+WEBVTT
+
+00:00:01.344 --> 00:00:03.408 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.077 --> 00:00:08.772 line:100% position:50% align:middle
+Today we're going to do something that...
+
+00:00:08.772 --> 00:00:13.360 line:100% position:50% align:middle
+this is probably one of the very first
+things that I learned in jQuery when I was
+
+00:00:13.360 --> 00:00:18.210 line:100% position:50% align:middle
+first starting to learn JavaScript and it
+was how do I actually fix a nav when you
+
+00:00:18.210 --> 00:00:22.030 line:100% position:50% align:middle
+scroll to it? So this is what we're going
+to be building here where you've got
+
+00:00:22.030 --> 00:00:26.226 line:100% position:50% align:middle
+this nav that's just position rolled over
+static and then as soon as you hit that
+
+00:00:26.226 --> 00:00:29.868 line:100% position:50% align:middle
+point where it hits the top of the
+browser, we're going to make it fixed
+
+00:00:29.868 --> 00:00:33.616 line:100% position:50% align:middle
+so the content scrolls underneath. And
+then we can also do some hotshot stuff
+
+00:00:33.616 --> 00:00:38.925 line:100% position:50% align:middle
+like scroll out the logo or something like
+that. So first thing we're going to do is
+
+00:00:39.000 --> 00:00:45.900 line:100% position:50% align:middle
+grab this nav right here. So I'm going to
+say const nav = document.querySelector
+
+00:00:45.900 --> 00:00:52.074 line:100% position:50% align:middle
+and we're going to look for the nav with
+the ID of main and then we're also
+
+00:00:52.074 --> 00:00:56.754 line:100% position:50% align:middle
+going to make a function called fixNav
+that is then going to run every single
+
+00:00:56.754 --> 00:01:05.798 line:100% position:50% align:middle
+page scroll, awesome. So what this is
+going to do is we're going to figure out
+
+00:01:05.798 --> 00:01:12.778 line:100% position:50% align:middle
+where the top of this navigation black bar
+is. Let's say it's 500 pixels from the top
+
+00:01:12.778 --> 00:01:17.618 line:100% position:50% align:middle
+and then when we scroll, we're going to
+figure out how far are we scrolled?
+
+00:01:17.618 --> 00:01:21.844 line:100% position:50% align:middle
+Let's say, right here, I'm about 400
+pixels scrolled. But as soon as I hit that
+
+00:01:21.844 --> 00:01:29.110 line:100% position:50% align:middle
+threshold of scrolling more than the top
+of the nav is, so as soon I've scroll 501
+
+00:01:29.110 --> 00:01:36.393 line:100% position:50% align:middle
+pixels, the nav bar is going to go, "Oop,
+I'm off screen, I should now fix myself."
+
+00:01:36.393 --> 00:01:42.971 line:100% position:50% align:middle
+So what we need to do on page load is
+grab wherever the top of this nav
+
+00:01:42.971 --> 00:01:51.810 line:100% position:50% align:middle
+actually looks. So let's say
+const topOfNav = nav.offsetTop.
+
+00:01:51.810 --> 00:01:57.210 line:100% position:50% align:middle
+Then when you console.log(topOfNav)...
+let's just console.log that every single
+
+00:01:57.210 --> 00:02:00.924 line:100% position:50% align:middle
+time that we run it, open up your dev
+tools. I recommend putting your dev tools
+
+00:02:00.924 --> 00:02:06.229 line:100% position:50% align:middle
+at the side here so that won't mess up
+your top of nav here. You could also
+
+00:02:06.229 --> 00:02:11.353 line:100% position:50% align:middle
+update this variable every time that your
+window resizes just so that if somebody
+
+00:02:11.353 --> 00:02:15.470 line:100% position:50% align:middle
+does resize or open dev tools, you've got
+it. So I'm going to scroll here and you
+
+00:02:15.470 --> 00:02:21.819 line:100% position:50% align:middle
+see, it's 542 pixels, that is the top
+of the navigation at that point.
+
+00:02:21.819 --> 00:02:29.760 line:100% position:50% align:middle
+So what we can then do is we'll say
+if(window.scrollY)... Why?
+
+00:02:29.760 --> 00:02:34.390 line:100% position:50% align:middle
+Because what is window.scrollY? Let's go
+back to that topOfNav and then we'll also
+
+00:02:34.390 --> 00:02:38.486 line:100% position:50% align:middle
+console.log window.scrollY.
+We've done this in a couple of tutorials
+
+00:02:38.486 --> 00:02:42.930 line:100% position:50% align:middle
+so far now. So now you're going to
+see that the second value, 1,
+
+00:02:42.930 --> 00:02:47.510 line:100% position:50% align:middle
+that's how far we've scrolled. And then
+you're going to see that as we get closer
+
+00:02:47.510 --> 00:02:52.490 line:100% position:50% align:middle
+and closer to where it's going to hit the
+top, we're just about at that point where
+
+00:02:52.490 --> 00:02:57.760 line:100% position:50% align:middle
+the 542 pixels is going to be equal
+to the 542. And at that point,
+
+00:02:57.760 --> 00:03:02.770 line:100% position:50% align:middle
+we want to make that nav fixed. So we're
+going to go in here, we're going to say
+
+00:03:02.770 --> 00:03:09.215 line:100% position:50% align:middle
+if(topOfNav >= window)...
+or other way around,
+
+00:03:09.215 --> 00:03:15.634 line:100% position:50% align:middle
+window.scrollY >= topOfNav,
+if that is true,
+
+00:03:15.634 --> 00:03:18.800 line:100% position:50% align:middle
+what we're going to do is we're going to
+pop a class and when I do things like
+
+00:03:18.800 --> 00:03:23.480 line:100% position:50% align:middle
+this, I like to pop a class on the body
+just so that I can always target any of
+
+00:03:23.480 --> 00:03:27.480 line:100% position:50% align:middle
+the children when we're in the fixed nav
+state. Some people like to put it on the
+
+00:03:27.480 --> 00:03:30.784 line:100% position:50% align:middle
+nav itself, but I found that if I
+want to target anything else,
+
+00:03:30.784 --> 00:03:33.452 line:100% position:50% align:middle
+it's nice to have it nice
+and high on the body,
+
+00:03:33.452 --> 00:03:41.967 line:100% position:50% align:middle
+document.body.classList.add('fixed-nav')
+and then we'll say else,
+
+00:03:42.290 --> 00:03:46.918 line:100% position:50% align:middle
+and we'll just duplicate this,
+which you're going to remove.
+
+00:03:46.918 --> 00:03:49.156 line:100% position:50% align:middle
+Now that's not going to
+get us all the way there,
+
+00:03:49.156 --> 00:03:53.814 line:100% position:50% align:middle
+but if we save that now
+and refresh, now as you scroll,
+
+00:03:54.516 --> 00:04:00.605 line:100% position:50% align:middle
+you'll see this fixed-nav is being added
+and removed, but it's not actually fixing
+
+00:04:00.605 --> 00:04:07.040 line:100% position:50% align:middle
+itself. So we need to go over to our
+style-start.CSS and find our navs CSS
+
+00:04:07.040 --> 00:04:11.471 line:100% position:50% align:middle
+and this isn't the greatest CSS because
+it's using just the element selectors
+
+00:04:11.471 --> 00:04:13.846 line:100% position:50% align:middle
+here. It should probably have a class or
+something like that, but I'm trying to
+
+00:04:13.846 --> 00:04:18.499 line:100% position:50% align:middle
+keep it as simple as we can. And I'm going
+to say when the body has a class of
+
+00:04:18.499 --> 00:04:24.310 line:100% position:50% align:middle
+.fixed-nav, the nav itself is going to be
+positioned: fixed; and then I'm going to
+
+00:04:24.310 --> 00:04:29.550 line:100% position:50% align:middle
+put a quick little box-shadow on there to
+just give it a little bit of a shadow so
+
+00:04:29.550 --> 00:04:33.340 line:100% position:50% align:middle
+when it is in that fixed state, you have a
+shadow showing that you have some depth
+
+00:04:33.340 --> 00:04:38.936 line:100% position:50% align:middle
+there. All right, so now, when I hit this
+point... oh, you see what's happening?
+
+00:04:38.936 --> 00:04:45.811 line:100% position:50% align:middle
+Now it seems to be working, but it
+seems kind of janky. You see what's going
+
+00:04:45.811 --> 00:04:52.694 line:100% position:50% align:middle
+on here? As soon as we hit that little end
+point there, the content jumps up and why
+
+00:04:52.694 --> 00:04:58.300 line:100% position:50% align:middle
+is that happening? Well, the reason for
+that happening is because when you make
+
+00:04:58.300 --> 00:05:02.830 line:100% position:50% align:middle
+this nav fixed, it is no longer
+taking up space in the document.
+
+00:05:02.830 --> 00:05:07.214 line:100% position:50% align:middle
+You know this from CSS. When you make
+an element fixed, it no longer takes up
+
+00:05:07.214 --> 00:05:11.507 line:100% position:50% align:middle
+space. It sort of floats on top of
+the browser. And by doing that,
+
+00:05:11.507 --> 00:05:18.131 line:100% position:50% align:middle
+what's happening is that we cause a reflow
+on the page and this site wrap right here,
+
+00:05:18.131 --> 00:05:24.223 line:100% position:50% align:middle
+it says, "Oh, this nav is no longer taking
+up space, well, I don't mind if I do,"
+
+00:05:24.223 --> 00:05:29.989 line:100% position:50% align:middle
+and it moves on up the exact amount of
+space that it gave up, which is however
+
+00:05:29.989 --> 00:05:36.100 line:100% position:50% align:middle
+many pixels. So what we need to do is we
+need to offset that amount by adding some
+
+00:05:36.100 --> 00:05:40.530 line:100% position:50% align:middle
+padding to our body. So just as
+we make it fixed, we need to
+
+00:05:40.530 --> 00:05:43.753 line:100% position:50% align:middle
+offset that amount so they don't
+get this jerky jump right here.
+
+00:05:43.753 --> 00:05:48.889 line:100% position:50% align:middle
+So let's go back to our element
+right here and we're going to
+
+00:05:48.889 --> 00:05:54.981 line:100% position:50% align:middle
+take our document.body.style and
+we're going to set the paddingTop,
+
+00:05:55.425 --> 00:05:58.634 line:100% position:50% align:middle
+and if you have something
+that is a padding-top,
+
+00:05:58.634 --> 00:06:01.826 line:100% position:50% align:middle
+you cannot do that in JavaScript,
+so that's a camel case.
+
+00:06:01.826 --> 00:06:06.846 line:100% position:50% align:middle
+And we're going to set that
+to be the nav.offsetHeight.
+
+00:06:06.846 --> 00:06:10.273 line:100% position:50% align:middle
+Why? What is that going to give us? If I
+were to run this in my console here,
+
+00:06:11.362 --> 00:06:15.620 line:100% position:50% align:middle
+nav.offsetHeight is going to give
+us however large this nav is.
+
+00:06:15.620 --> 00:06:20.780 line:100% position:50% align:middle
+And I've seen people just like hardcode
+64px, but don't do that because then what
+
+00:06:20.780 --> 00:06:24.684 line:100% position:50% align:middle
+happens if your nav changes or your font
+changes or anything else and then you're
+
+00:06:24.684 --> 00:06:29.170 line:100% position:50% align:middle
+going to be off just a couple pixels. So
+programmatically grab the height of the
+
+00:06:29.170 --> 00:06:37.474 line:100% position:50% align:middle
+pixels and then add on px to the top. And
+then what we'll also do is on the opposite
+
+00:06:37.474 --> 00:06:42.953 line:100% position:50% align:middle
+end, we'll just set the padding top
+to be zero, good. So now when...
+
+00:06:42.953 --> 00:06:45.402 line:100% position:50% align:middle
+Ooh, look at that,
+
+00:06:45.402 --> 00:06:49.173 line:100% position:50% align:middle
+so now we've got this nav, nav, nav,
+normal, normal, normal, and then fixed.
+
+00:06:49.173 --> 00:06:54.021 line:100% position:50% align:middle
+And as soon as we hit that point, we don't
+have that jump anymore. And your can go
+
+00:06:54.021 --> 00:06:58.047 line:100% position:50% align:middle
+into your Elements panel and take a
+look at what's going on here. See this?
+
+00:06:58.047 --> 00:07:04.070 line:100% position:50% align:middle
+style= padding-top: 0 and then as soon as
+we that point, the class of fixed goes on
+
+00:07:04.070 --> 00:07:09.311 line:100% position:50% align:middle
+and then the padding-top is 64px.
+Again, you might be asking why don't
+
+00:07:09.311 --> 00:07:15.648 line:100% position:50% align:middle
+I just like put it in here when I have a
+class of fixed-nav, give it padding-top
+
+00:07:15.648 --> 00:07:20.387 line:100% position:50% align:middle
+of 64 px? It's that we don't know how high
+this nav is going to be and I'd rather do
+
+00:07:20.387 --> 00:07:25.486 line:100% position:50% align:middle
+it programmatically and do in line than
+have to guess and update that every time
+
+00:07:25.486 --> 00:07:30.080 line:100% position:50% align:middle
+the nav changes itself. So that's looking
+pretty good. So that's working great.
+
+00:07:30.080 --> 00:07:32.950 line:100% position:50% align:middle
+There're a couple other things that
+we can do. If you open up your nav,
+
+00:07:32.950 --> 00:07:36.293 line:100% position:50% align:middle
+you're going to see that we have
+an li with a class of logo.
+
+00:07:37.124 --> 00:07:41.323 line:100% position:50% align:middle
+If we look into our style sheet here,
+you'll see that I gave it a max-width
+
+00:07:41.323 --> 00:07:47.790 line:100% position:50% align:middle
+of 0 and give it an overflow of hidden.
+So it's there, it's just not being shown
+
+00:07:47.790 --> 00:07:51.486 line:100% position:50% align:middle
+at all because it has a width of zero.
+Then what we're going to do is we're going
+
+00:07:51.486 --> 00:07:58.590 line:100% position:50% align:middle
+to say, "When the body has a class of
+fixed-nav, the li with a class of logo is
+
+00:07:58.590 --> 00:08:02.690 line:100% position:50% align:middle
+going to have a max-width of
+something bigger than it will ever be,
+
+00:08:02.783 --> 00:08:07.378 line:100% position:50% align:middle
+like 500px," and I'll show you why in just
+second, why we didn't use width
+
+00:08:07.378 --> 00:08:10.570 line:100% position:50% align:middle
+in this case. So give that
+a save and now watch what
+
+00:08:10.570 --> 00:08:15.676 line:100% position:50% align:middle
+happens when we scroll, when we hit
+that point, ooh, it slides itself out.
+
+00:08:15.676 --> 00:08:22.930 line:100% position:50% align:middle
+Why? Because we have set it to be default
+0 and then when you have a max-width of
+
+00:08:22.930 --> 00:08:28.166 line:100% position:50% align:middle
+500, it's going to transition, which is
+right here, you could set that to be 5px,
+
+00:08:28.166 --> 00:08:33.897 line:100% position:50% align:middle
+if you really like. And over five
+seconds, it's going to animate itself in
+
+00:08:33.897 --> 00:08:37.878 line:100% position:50% align:middle
+and animate itself out. Now quick
+question, this is a bit of an aside
+
+00:08:37.878 --> 00:08:43.490 line:100% position:50% align:middle
+nothing to do with JavaScript, why
+didn't I do width and width: auto?
+
+00:08:43.490 --> 00:08:49.897 line:100% position:50% align:middle
+That's because you cannot animate
+the width of something to be from zero
+
+00:08:49.897 --> 00:08:56.502 line:100% position:50% align:middle
+to auto. You do have to use a max-width
+in order to get that transition to kick in
+
+00:08:56.502 --> 00:09:01.247 line:100% position:50% align:middle
+here. So nothing brings itself in,
+obviously, let's do over half a second
+
+00:09:01.247 --> 00:09:06.886 line:100% position:50% align:middle
+instead. Brings itself in. And then
+one last thing that I did is if you look
+
+00:09:06.886 --> 00:09:14.273 line:100% position:50% align:middle
+at this site wrap, you'll see I've given
+it a scale of 98%. We can do here is
+
+00:09:14.400 --> 00:09:20.775 line:100% position:50% align:middle
+when the body has a class of
+fixed-nav, this site-wrap is going to...
+
+00:09:21.658 --> 00:09:25.262 line:100% position:50% align:middle
+we're going to transform,
+we're going to scale it up to 1.
+
+00:09:25.262 --> 00:09:29.219 line:100% position:50% align:middle
+So it's just going to go from 98% to 1.
+You're going to get this little...
+
+00:09:30.584 --> 00:09:33.732 line:100% position:50% align:middle
+You see how it sort of brings
+itself in, a little bit effect.
+
+00:09:33.732 --> 00:09:38.177 line:100% position:50% align:middle
+I really like these things because all we
+did there is add one class to the body
+
+00:09:38.177 --> 00:09:42.023 line:100% position:50% align:middle
+and then everything else is just
+taken cared of in our CSS.
+
+00:09:42.023 --> 00:09:46.375 line:100% position:50% align:middle
+So hopefully you liked that, it's really
+interesting. There's not a lot of code
+
+00:09:46.375 --> 00:09:51.855 line:100% position:50% align:middle
+but understanding that you need to take
+care of that extra space when you fix it
+
+00:09:51.855 --> 00:09:56.054 line:100% position:50% align:middle
+is really the key to this one.
+Thanks a lot. I'll see you tomorrow.

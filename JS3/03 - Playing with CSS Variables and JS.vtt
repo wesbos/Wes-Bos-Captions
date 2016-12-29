@@ -1,0 +1,631 @@
+WEBVTT
+
+00:00:01.146 --> 00:00:04.506 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.080 --> 00:00:09.141 line:100% position:50% align:middle
+In today's exercise, we're going to be
+
+00:00:09.141 --> 00:00:15.070 line:100% position:50% align:middle
+talking about something that is brand
+spanking new to CSS and that is CSS
+
+00:00:15.070 --> 00:00:19.303 line:100% position:50% align:middle
+variables. And now, I know what you're
+saying, "Wes, we've had variables in SAS
+
+00:00:19.303 --> 00:00:25.183 line:100% position:50% align:middle
+forever and this is not new." But it
+is new, smart Alec, because CSS
+
+00:00:25.183 --> 00:00:29.340 line:100% position:50% align:middle
+variables can be updated with JavaScript,
+meaning that when you update a variable
+
+00:00:29.340 --> 00:00:34.143 line:100% position:50% align:middle
+in CSS, everywhere on the page that that
+variable is referenced will update itself.
+
+00:00:34.143 --> 00:00:38.664 line:100% position:50% align:middle
+With SAS, you define them at compile time
+and then it gets compiled and you cannot
+
+00:00:38.664 --> 00:00:44.110 line:100% position:50% align:middle
+change it. So let's take a look here. I've
+got three variables, spacing, blur,
+
+00:00:44.110 --> 00:00:49.580 line:100% position:50% align:middle
+and base color. And when I change one of
+those, like spacing, it will just
+
+00:00:49.580 --> 00:00:53.450 line:100% position:50% align:middle
+immediately update wherever that
+variable is changed on the page,
+
+00:00:53.450 --> 00:00:58.400 line:100% position:50% align:middle
+same with blur. I'm only using that on
+this imagery here. But as I change it,
+
+00:00:58.400 --> 00:00:59.310 line:100% position:50% align:middle
+it's going to update.
+
+00:00:59.310 --> 00:01:03.330 line:100% position:50% align:middle
+And then finally base color, I'm using it
+for the background of this image as well
+
+00:01:03.330 --> 00:01:07.630 line:100% position:50% align:middle
+as the color of this JS highlight here.
+So when I change that color,
+
+00:01:07.630 --> 00:01:12.350 line:100% position:50% align:middle
+it updates everywhere it's referenced on
+the actual page. So let's jump in.
+
+00:01:12.350 --> 00:01:17.870 line:100% position:50% align:middle
+Let's take a quick look at our HTML here.
+I've got h2 which has a span with a class
+
+00:01:17.870 --> 00:01:24.850 line:100% position:50% align:middle
+of highlight or hl around JS. And
+then I've got a label and input for the
+
+00:01:24.850 --> 00:01:31.360 line:100% position:50% align:middle
+spacing which has a min of 10, a max of
+200. And we've got a range which does our
+
+00:01:31.360 --> 00:01:36.290 line:100% position:50% align:middle
+blur. And we've got an input type of color
+which gives you that kind of cool color
+
+00:01:36.290 --> 00:01:39.120 line:100% position:50% align:middle
+picker. You're getting at bit of a
+different color picker off your own
+
+00:01:39.120 --> 00:01:44.040 line:100% position:50% align:middle
+windows or something like that but it'll
+always open up whatever that default color
+
+00:01:44.040 --> 00:01:48.210 line:100% position:50% align:middle
+picker is on your system. Then we've
+got the image and we're styling.
+
+00:01:48.210 --> 00:01:51.420 line:100% position:50% align:middle
+Now, let's actually jump into...opening
+this up in our browser.
+
+00:01:51.420 --> 00:01:55.150 line:100% position:50% align:middle
+Let's jump into some CSS variables first
+because we need to understand how they
+
+00:01:55.150 --> 00:01:59.100 line:100% position:50% align:middle
+work before we can write any of our
+JavaScript to update them.
+
+00:01:59.100 --> 00:02:03.830 line:100% position:50% align:middle
+So the way that CSS variables work is that
+you declare them on some sort of element
+
+00:02:03.830 --> 00:02:07.910 line:100% position:50% align:middle
+in our case, we're going to declare it on
+root which is sort of the highest level
+
+00:02:07.910 --> 00:02:11.570 line:100% position:50% align:middle
+that you can get, very similar to
+declaring it on the HTML element.
+
+00:02:11.570 --> 00:02:15.200 line:100% position:50% align:middle
+And here's where we're going to set our
+default values for those variables.
+
+00:02:15.200 --> 00:02:19.700 line:100% position:50% align:middle
+So we're going to have a base variable
+that's going to be set to the Wes base
+
+00:02:19.700 --> 00:02:24.000 line:100% position:50% align:middle
+yellow color. We're going to have a
+spacing variable which is going to be
+
+00:02:24.000 --> 00:02:29.410 line:100% position:50% align:middle
+defaulted to 10 pixels and we're going to
+give ourselves a blur variable which is
+
+00:02:29.410 --> 00:02:33.650 line:100% position:50% align:middle
+also going to be defaulted to 10 pixels.
+Now, we've defined these variables,
+
+00:02:33.650 --> 00:02:35.530 line:100% position:50% align:middle
+and we can go ahead
+and start using them.
+
+00:02:35.530 --> 00:02:40.210 line:100% position:50% align:middle
+So let's grab our image that's on the page
+here and give it a padding of...and now
+
+00:02:40.210 --> 00:02:45.910 line:100% position:50% align:middle
+when you want to use a variable in CSS,
+you say "var" and you pass it the spacing.
+
+00:02:45.910 --> 00:02:48.590 line:100% position:50% align:middle
+Now this dash-dash, I know you're like,
+"What the hell are you doing,
+
+00:02:48.590 --> 00:02:52.930 line:100% position:50% align:middle
+Wes?" That is the standard in CSS, that's
+how you do it. It's normally like dollar
+
+00:02:52.930 --> 00:02:57.050 line:100% position:50% align:middle
+in SAS or something like that. But in
+CSS, it's dash-dash. Don't yell at me,
+
+00:02:57.050 --> 00:03:01.310 line:100% position:50% align:middle
+that's how they decided to go about it so
+that it would be backwards compatible with
+
+00:03:01.310 --> 00:03:07.427 line:100% position:50% align:middle
+all the CSS that were older browsers spec.
+And look, the padding is based on the
+
+00:03:07.427 --> 00:03:12.720 line:100% position:50% align:middle
+spacing and it's giving us some...you can
+see the green there. Okay, that works.
+
+00:03:12.720 --> 00:03:19.140 line:100% position:50% align:middle
+Then we want to work on the background is
+going to be our variable base which is
+
+00:03:19.140 --> 00:03:23.510 line:100% position:50% align:middle
+going to be that yellow color. Okay,
+looking good. The image is taking a second
+
+00:03:23.510 --> 00:03:28.970 line:100% position:50% align:middle
+to load. Then if I were to change this
+spacing to 50 pixels, refresh,
+
+00:03:28.970 --> 00:03:34.360 line:100% position:50% align:middle
+you see it's much bigger. Put it back down
+to 10 it's going to take that variable
+
+00:03:34.360 --> 00:03:36.440 line:100% position:50% align:middle
+from spacing and I don't
+need to re-declare it.
+
+00:03:36.440 --> 00:03:41.780 line:100% position:50% align:middle
+And then finally, we are going to give it
+a filter which is a blur and we want to
+
+00:03:41.780 --> 00:03:49.195 line:100% position:50% align:middle
+use the variable "blur." Good. Now we want
+to work with this JS highlight here.
+
+00:03:49.195 --> 00:03:56.040 line:100% position:50% align:middle
+So we'll say anything with the class
+of highlight is going to have the color of
+
+00:03:56.040 --> 00:04:03.180 line:100% position:50% align:middle
+variable base. Great. So anywhere now
+we're referencing this color right here
+
+00:04:03.180 --> 00:04:07.390 line:100% position:50% align:middle
+and right here, it's going to be changed
+if I were just to change this to maybe
+
+00:04:07.390 --> 00:04:11.160 line:100% position:50% align:middle
+like red, everywhere on the page
+gets...you get the point, right?
+
+00:04:11.160 --> 00:04:13.450 line:100% position:50% align:middle
+It's a variable and you reference it
+and it's going to be used.
+
+00:04:13.450 --> 00:04:19.220 line:100% position:50% align:middle
+Now, how do we write some JavaScript to
+update those? Well, let's go ahead and do
+
+00:04:19.220 --> 00:04:23.160 line:100% position:50% align:middle
+that. First thing that we need to do is we
+need to select all three of these inputs
+
+00:04:23.160 --> 00:04:28.450 line:100% position:50% align:middle
+right here so that when they change, we
+can then update the CSS variables which
+
+00:04:28.450 --> 00:04:33.360 line:100% position:50% align:middle
+will in turn update the colors on the
+screen so we'll scroll down to our script
+
+00:04:33.360 --> 00:04:37.860 line:100% position:50% align:middle
+tags here and we will select all of our
+inputs on the page, so const inputs
+
+00:04:37.860 --> 00:04:45.308 line:100% position:50% align:middle
+equals, and I'm going to use
+document.querySelectorAll. And our
+
+00:04:45.308 --> 00:04:50.600 line:100% position:50% align:middle
+selector here is going to be .controls
+input, so that's going to select all the
+
+00:04:50.600 --> 00:04:51.730 line:100% position:50% align:middle
+inputs on the page.
+
+00:04:51.730 --> 00:04:57.130 line:100% position:50% align:middle
+Real quick aside, in the last video, I
+said that the querySelector will give you
+
+00:04:57.130 --> 00:05:00.140 line:100% position:50% align:middle
+an array. And what I really meant is it
+gives you something called a NodeList.
+
+00:05:00.140 --> 00:05:04.580 line:100% position:50% align:middle
+If I run this in my console here, it
+returns to you what actually looks like
+
+00:05:04.580 --> 00:05:08.380 line:100% position:50% align:middle
+an array. It's got square brackets. It has
+index items. It has a length.
+
+00:05:08.380 --> 00:05:12.890 line:100% position:50% align:middle
+But it's not an array. And the difference
+between a NodeList and an array is that an
+
+00:05:12.890 --> 00:05:20.070 line:100% position:50% align:middle
+array has all kinds of methods for dealing
+with an array like map and reduce and all
+
+00:05:20.070 --> 00:05:23.700 line:100% position:50% align:middle
+the good ones. And if you open up the
+prototype for the NodeList,
+
+00:05:23.700 --> 00:05:29.840 line:100% position:50% align:middle
+you see we only have a couple methods
+here, entries for each keys and values and
+
+00:05:29.840 --> 00:05:33.550 line:100% position:50% align:middle
+then a couple other little things here.
+Whereas if I had an array,
+
+00:05:33.550 --> 00:05:39.810 line:100% position:50% align:middle
+like one, two, three, R X equals, and
+I have X, and I open that up and look
+
+00:05:39.810 --> 00:05:43.100 line:100% position:50% align:middle
+at the prototype of that. Oh, look at all
+these good stuff. There's everything that
+
+00:05:43.100 --> 00:05:44.280 line:100% position:50% align:middle
+you're used to.
+
+00:05:44.280 --> 00:05:49.840 line:100% position:50% align:middle
+So sometimes you'll see people converting
+their NodeList to an array.
+
+00:05:49.840 --> 00:05:54.100 line:100% position:50% align:middle
+And in some future exercises, we're going
+to have to do that. But in our case,
+
+00:05:54.100 --> 00:05:58.920 line:100% position:50% align:middle
+what we're going to use to loop over these
+inputs is the forEach method which has
+
+00:05:58.920 --> 00:06:04.430 line:100% position:50% align:middle
+just recently been added to the NodeList,
+so it's not necessary for us to convert it
+
+00:06:04.430 --> 00:06:08.720 line:100% position:50% align:middle
+to an array unless you're using an older
+browser that does not support having
+
+00:06:08.720 --> 00:06:13.140 line:100% position:50% align:middle
+forEach on it. So what we want to do now
+is create our function called
+
+00:06:13.140 --> 00:06:20.930 line:100% position:50% align:middle
+handleUpdate, function handleUpdate and
+we'll just console.log this.value for each
+
+00:06:20.930 --> 00:06:26.650 line:100% position:50% align:middle
+of them. And then we'll listen for a
+change event on each of the inputs.
+
+00:06:26.650 --> 00:06:31.600 line:100% position:50% align:middle
+So we'll say inputs.forEach and then we
+want to loop over each one.
+
+00:06:31.600 --> 00:06:35.630 line:100% position:50% align:middle
+We have an input, I'm going to use an
+arrow function just to be nice and clean
+
+00:06:35.630 --> 00:06:41.930 line:100% position:50% align:middle
+here, the input.addEventListener.
+We want to listen for the change event.
+
+00:06:41.930 --> 00:06:45.386 line:100% position:50% align:middle
+And when that is called, we're
+going to call handleUpdate.
+
+00:06:47.607 --> 00:06:55.332 line:100% position:50% align:middle
+Good. Now when we open up our console here
+and I change one of these and I move and
+
+00:06:55.332 --> 00:07:03.130 line:100% position:50% align:middle
+let go 75, 102, 167, you see my blur will
+change as well. So I'm seeing the values
+
+00:07:03.130 --> 00:07:09.590 line:100% position:50% align:middle
+change whenever I change the value of
+one of these. But one little thing is you
+
+00:07:09.590 --> 00:07:12.580 line:100% position:50% align:middle
+notice that as I drag it around, it
+doesn't actually trigger a change.
+
+00:07:12.580 --> 00:07:21.890 line:100% position:50% align:middle
+What we can do is we can also listen for
+the mousemove update which when you move
+
+00:07:21.890 --> 00:07:26.160 line:100% position:50% align:middle
+over it looks like it's going to trigger
+every single time. There's some flags that
+
+00:07:26.160 --> 00:07:30.430 line:100% position:50% align:middle
+you could set where when click,
+set it to true, when you click off,
+
+00:07:30.430 --> 00:07:35.590 line:100% position:50% align:middle
+set it to false. We're going to keep it
+really simple here where when I move the
+
+00:07:35.590 --> 00:07:41.580 line:100% position:50% align:middle
+value, it's also going to trigger a
+change rather than just when I let go.
+
+00:07:41.580 --> 00:07:44.700 line:100% position:50% align:middle
+So we're listening for change and mouse
+move and it's going to call handleUpdate
+
+00:07:44.700 --> 00:07:46.900 line:100% position:50% align:middle
+regardless of which one that happened.
+
+00:07:46.900 --> 00:07:51.760 line:100% position:50% align:middle
+Now let's go into this handleUpdate here
+and let's work on getting the values out
+
+00:07:51.760 --> 00:07:57.240 line:100% position:50% align:middle
+of it. So the first thing we need to know
+is what is the suffix of the value that
+
+00:07:57.240 --> 00:08:02.840 line:100% position:50% align:middle
+we're working on. Because if we go up to
+our variables here, this base doesn't have
+
+00:08:02.840 --> 00:08:06.270 line:100% position:50% align:middle
+a suffix, it's just a hex code or RGB
+value that's going to come out of the
+
+00:08:06.270 --> 00:08:10.890 line:100% position:50% align:middle
+input. But the spacing and the blur,
+they're going to give us values like 10
+
+00:08:10.890 --> 00:08:16.680 line:100% position:50% align:middle
+but they need to be 10px. So what I've
+done is I've attached some additional info
+
+00:08:16.680 --> 00:08:22.190 line:100% position:50% align:middle
+to each of this inputs right here
+where I've created a data attribute.
+
+00:08:22.190 --> 00:08:25.820 line:100% position:50% align:middle
+Again, a data attribute is just an
+attribute that you've made up.you just
+
+00:08:25.820 --> 00:08:30.780 line:100% position:50% align:middle
+have to prefix it with data-dash
+something. And I've put on a sizing or a
+
+00:08:30.780 --> 00:08:36.920 line:100% position:50% align:middle
+suffix value here called px. And then this
+one, I haven't. So what we can do in here
+
+00:08:36.920 --> 00:08:43.000 line:100% position:50% align:middle
+is we can say const suffix
+equals this.dataset because...
+
+00:08:43.000 --> 00:08:45.750 line:100% position:50% align:middle
+What is this.dataset? Let's take a quick
+look at that a second.
+
+00:08:45.750 --> 00:08:54.740 line:100% position:50% align:middle
+Console.log this.dataset and if I change
+it...you see, dataset is an object that
+
+00:08:54.740 --> 00:08:58.950 line:100% position:50% align:middle
+will contain all the data attributes
+from that specific element.
+
+00:08:58.950 --> 00:09:03.880 line:100% position:50% align:middle
+In this case, it's just sizing. But if I
+were to go up to this first one here,
+
+00:09:03.880 --> 00:09:12.820 line:100% position:50% align:middle
+data-name equals wes and data-dash cool
+equals, we'll put a poop in there.
+
+00:09:12.820 --> 00:09:17.100 line:100% position:50% align:middle
+Now, let's see what we got. We got
+a poop, sure do have a poop.
+
+00:09:17.100 --> 00:09:20.020 line:100% position:50% align:middle
+Here we go. Open it up, we've
+got an object of all of the things.
+
+00:09:20.020 --> 00:09:23.340 line:100% position:50% align:middle
+So dataset is just an object that all
+ready. You don't have to select it.
+
+00:09:23.340 --> 00:09:26.990 line:100% position:50% align:middle
+You don't have to use any attribute
+selectors from it. It will just take
+
+00:09:26.990 --> 00:09:31.320 line:100% position:50% align:middle
+everything that has data-dash on that
+element and put it into a nice tidy little
+
+00:09:31.320 --> 00:09:32.420 line:100% position:50% align:middle
+object for you.
+
+00:09:32.420 --> 00:09:37.200 line:100% position:50% align:middle
+So we want to go back down to this. We'll
+say suffix equals this.dataset.
+
+00:09:37.200 --> 00:09:45.660 line:100% position:50% align:middle
+and what do we call it, sizing. Good.
+And then for some of them,
+
+00:09:45.660 --> 00:09:50.900 line:100% position:50% align:middle
+they don't have a sizing like the color
+one, so I'm just going to say "or nothing"
+
+00:09:50.900 --> 00:09:55.110 line:100% position:50% align:middle
+because if I don't leave it at that, we're
+gonna upend undefined in the end and
+
+00:09:55.110 --> 00:09:58.360 line:100% position:50% align:middle
+that's not what we want. So it's "or
+nothing," it's just going to fall back.
+
+00:09:58.360 --> 00:10:04.360 line:100% position:50% align:middle
+So let's console.log suffix, see
+what we're working with here.
+
+00:10:04.360 --> 00:10:10.300 line:100% position:50% align:middle
+So pixels, good. Pixels for that one. And
+then when I hover over this one,
+
+00:10:10.300 --> 00:10:15.010 line:100% position:50% align:middle
+you see nothing and that's because
+there is no suffix for the hex code.
+
+00:10:15.010 --> 00:10:20.322 line:100% position:50% align:middle
+Now, what we need to do is update the
+actual variable. So how do you select a
+
+00:10:20.322 --> 00:10:27.440 line:100% position:50% align:middle
+variable? And then the way that that works
+is we are going to select our entire
+
+00:10:27.440 --> 00:10:35.130 line:100% position:50% align:middle
+document which is our root here and
+we're going to set a property of base,
+
+00:10:35.130 --> 00:10:41.330 line:100% position:50% align:middle
+spacing, or blur and you'll notice that we
+use the name here, name spacing,
+
+00:10:41.330 --> 00:10:51.970 line:100% position:50% align:middle
+name blur, and name base. So we go down
+here and let's console.log this.name.
+
+00:10:51.970 --> 00:11:03.154 line:100% position:50% align:middle
+Blur, spacing, base, good. We say
+document.documentElement.style.setProperty
+
+00:11:04.897 --> 00:11:12.187 line:100% position:50% align:middle
+and we're going to set the property of
+usually --base or --spacing but those
+
+00:11:12.187 --> 00:11:15.723 line:100% position:50% align:middle
+things are going to be variable so
+because we're using back text here,
+
+00:11:15.723 --> 00:11:23.181 line:100% position:50% align:middle
+we can plop that variable name in this
+.name and then it's going to be set
+
+00:11:23.181 --> 00:11:26.620 line:100% position:50% align:middle
+to this, .value. Now, that's not
+going to get us all the way there,
+
+00:11:26.620 --> 00:11:28.470 line:100% position:50% align:middle
+and I'll show you just a sec here.
+
+00:11:28.470 --> 00:11:33.510 line:100% position:50% align:middle
+Let's open up our elements panel and let's
+change our blur. You see what's happening
+
+00:11:33.510 --> 00:11:39.240 line:100% position:50% align:middle
+here? The blur value is changing but there
+is no pixels being upended to the end.
+
+00:11:39.240 --> 00:11:43.810 line:100% position:50% align:middle
+And that's why we created this suffix
+variable, so we can tack on the suffix
+
+00:11:43.810 --> 00:11:48.380 line:100% position:50% align:middle
+variable onto the end. And now when I
+refresh, let's switch out the image here
+
+00:11:48.380 --> 00:11:52.330 line:100% position:50% align:middle
+because the other one's having trouble
+loading. And I change one of these,
+
+00:11:52.330 --> 00:11:58.960 line:100% position:50% align:middle
+you'll see that the value is being updated
+124px, blur 10px. As you change it
+
+00:11:58.960 --> 00:12:02.320 line:100% position:50% align:middle
+it's going to be immediately updated.
+Let's double check that the color one
+
+00:12:02.320 --> 00:12:09.180 line:100% position:50% align:middle
+works as well. Perfect. So that's today's
+exercise. Again, when you use a CSS
+
+00:12:09.180 --> 00:12:14.910 line:100% position:50% align:middle
+variable, you can then update that
+variable on any element and any selectors
+
+00:12:14.910 --> 00:12:19.880 line:100% position:50% align:middle
+that are inside of that element that
+reference that variable will be using it.
+
+00:12:19.880 --> 00:12:23.650 line:100% position:50% align:middle
+So one other thing you could do is you
+could also scope them to be just on a
+
+00:12:23.650 --> 00:12:29.420 line:100% position:50% align:middle
+specific div. So if I were to take
+this h2 and add an attribute of
+
+00:12:29.420 --> 00:12:36.718 line:100% position:50% align:middle
+style equals and I want to change the
+variable base to be a badass,
+
+00:12:38.989 --> 00:12:40.359 line:100% position:50% align:middle
+oh, look what happened there.
+
+00:12:40.359 --> 00:12:46.710 line:100% position:50% align:middle
+So even though this base variable is right
+here, because I've specified the variable
+
+00:12:46.710 --> 00:12:51.720 line:100% position:50% align:middle
+lower down and inside of that, this
+highlight is referencing the variable,
+
+00:12:51.720 --> 00:12:57.230 line:100% position:50% align:middle
+this one wins out over this one. Much like
+the CSS cascade, the closer one will
+
+00:12:57.230 --> 00:13:00.140 line:100% position:50% align:middle
+always win out. And I can go ahead
+and keep changing this value,
+
+00:13:00.140 --> 00:13:06.810 line:100% position:50% align:middle
+and this one's not going to change because
+I've updated it at a lower scope.
+
+00:13:06.810 --> 00:13:09.268 line:100% position:50% align:middle
+Hopefully you enjoyed that.
+See you in the next one.
+
+00:13:09.268 --> 00:13:12.174 line:100% position:50% align:middle
+♪ [music] ♪

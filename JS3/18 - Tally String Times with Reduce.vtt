@@ -1,0 +1,583 @@
+WEBVTT
+
+00:00:01.102 --> 00:00:04.200 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.230 --> 00:00:10.371 line:100% position:50% align:middle
+Today we're going to be
+solving a problem that I actually run into
+
+00:00:10.390 --> 00:00:16.840 line:100% position:50% align:middle
+fairly frequently, and that is I want to
+add up the total number of minutes,
+
+00:00:16.840 --> 00:00:22.470 line:100% position:50% align:middle
+and seconds, and hours that is my actual
+videos. So what I usually do is I'll
+
+00:00:22.470 --> 00:00:26.810 line:100% position:50% align:middle
+export all my videos and I'll upload them
+to Youtube or whatever it is my host and
+
+00:00:26.810 --> 00:00:30.530 line:100% position:50% align:middle
+they'll give me like this time stamp here,
+5 minutes and 23 seconds.
+
+00:00:30.530 --> 00:00:35.380 line:100% position:50% align:middle
+And I go, "Uh huh. I need to
+add that up all together," right?
+
+00:00:35.380 --> 00:00:40.830 line:100% position:50% align:middle
+And it's just in HTML. So what I've done,
+is I've sort of replicated what Youtube
+
+00:00:40.830 --> 00:00:45.330 line:100% position:50% align:middle
+generally gives me. They have like a list
+item or a div, or something like that.
+
+00:00:45.330 --> 00:00:49.650 line:100% position:50% align:middle
+And there's going to be some sort of a dom
+node that it's either like a span with a
+
+00:00:49.650 --> 00:00:55.120 line:100% position:50% align:middle
+class of time and inside of that it'll say
+2 minutes and 34 seconds or usually with
+
+00:00:55.120 --> 00:01:00.200 line:100% position:50% align:middle
+Youtube they have a data-time attribute
+that is a string containing the minutes
+
+00:01:00.200 --> 00:01:04.410 line:100% position:50% align:middle
+and the seconds of it.
+So what I wanted to do is to figure out
+
+00:01:04.410 --> 00:01:09.640 line:100% position:50% align:middle
+how do I pull these out of the dom,
+convert them to numbers, make them into
+
+00:01:09.640 --> 00:01:13.280 line:100% position:50% align:middle
+minutes and seconds, add it all up,
+figure out how many hours,
+
+00:01:13.280 --> 00:01:18.020 line:100% position:50% align:middle
+minutes and seconds there are totally,
+then finally console.log those actual
+
+00:01:18.020 --> 00:01:24.630 line:100% position:50% align:middle
+values. So we are going to be using reduce
+in this one and I'm going to show you
+
+00:01:24.630 --> 00:01:28.870 line:100% position:50% align:middle
+how to first do it with map and reduce,
+and then we'll look at how do you just
+
+00:01:28.870 --> 00:01:33.360 line:100% position:50% align:middle
+make it in one single reduce. So
+we're going to our script tag here and I'm
+
+00:01:33.360 --> 00:01:36.360 line:100% position:50% align:middle
+just going to open this up. There's not
+much to look at for this one.
+
+00:01:36.360 --> 00:01:41.780 line:100% position:50% align:middle
+It's kind of ugly but we're really just
+concerned with this data-time attributes
+
+00:01:41.780 --> 00:01:45.580 line:100% position:50% align:middle
+here. So first thing that we want to do is
+we want to select all of those nodes.
+
+00:01:45.580 --> 00:01:50.350 line:100% position:50% align:middle
+So we're going to say const time nodes
+equals document.queryselectorall.
+
+00:01:50.350 --> 00:01:54.450 line:100% position:50% align:middle
+We're going to be looking at not just a
+list item because you don't know if it's
+
+00:01:54.450 --> 00:01:59.240 line:100% position:50% align:middle
+just going to be a list item. We want to
+say anything with a data-time attribute on
+
+00:01:59.240 --> 00:02:06.320 line:100% position:50% align:middle
+it. Now let's console log those
+time nodes. Okay, we've got a bunch of
+
+00:02:06.320 --> 00:02:08.640 line:100% position:50% align:middle
+list items. Now what I want
+to do is I want to turn
+
+00:02:08.640 --> 00:02:17.830 line:100% position:50% align:middle
+this from a node list into an array of
+actual time strings. Let's just say
+
+00:02:17.830 --> 00:02:26.640 line:100% position:50% align:middle
+seconds equals timenodes.map and for each
+one, we are going to take the node and
+
+00:02:26.640 --> 00:02:32.025 line:100% position:50% align:middle
+we're going to return to the
+node.dataset.time. So watch what's going
+
+00:02:32.025 --> 00:02:38.680 line:100% position:50% align:middle
+to air out in here. Timenodes.map is not a
+function. So map is not a function of time
+
+00:02:38.680 --> 00:02:44.400 line:100% position:50% align:middle
+nodes. Why is that? I thought it
+was an array. Let's see it again.
+
+00:02:44.400 --> 00:02:50.780 line:100% position:50% align:middle
+Time nodes is looks like an array, walks
+like an array, but it's not.
+
+00:02:50.780 --> 00:02:54.280 line:100% position:50% align:middle
+It's a nodeless and if you open up the
+product type we do not have.
+
+00:02:54.280 --> 00:02:58.010 line:100% position:50% align:middle
+We have it for each which we could use but
+it's not as clean. So what we want to do
+
+00:02:58.010 --> 00:03:01.450 line:100% position:50% align:middle
+is convert this sucker from
+a nodeless into an array.
+
+00:03:01.450 --> 00:03:06.470 line:100% position:50% align:middle
+And there are two ways. You could spread
+it it into a new array or you can run
+
+00:03:06.470 --> 00:03:13.930 line:100% position:50% align:middle
+array.from round the entire thing.
+And now when we loop over it,
+
+00:03:13.930 --> 00:03:19.940 line:100% position:50% align:middle
+we should have our seconds variable which
+is now going to be an array of all of the
+
+00:03:19.940 --> 00:03:25.250 line:100% position:50% align:middle
+times. Good. So what I did there is I took
+the time nodes and I mapped it which means
+
+00:03:25.250 --> 00:03:30.180 line:100% position:50% align:middle
+I made it from an array of list items
+and into an array of strings.
+
+00:03:30.180 --> 00:03:35.460 line:100% position:50% align:middle
+Good. Now what I want
+to do is turn that into
+
+00:03:35.460 --> 00:03:43.200 line:100% position:50% align:middle
+just seconds, okay? So we're going to
+.map it into that and that is going to
+
+00:03:43.200 --> 00:03:50.220 line:100% position:50% align:middle
+give us the time code. And from that we
+are going to split it because if we have a
+
+00:03:50.220 --> 00:03:54.860 line:100% position:50% align:middle
+string like this, I want to break that
+into minutes and seconds.
+
+00:03:54.860 --> 00:04:00.700 line:100% position:50% align:middle
+Let me show you an example here, right?
+Might say something like string.split
+
+00:04:00.700 --> 00:04:04.580 line:100% position:50% align:middle
+and we split it on the colon
+and that will give us,
+
+00:04:04.580 --> 00:04:07.580 line:100% position:50% align:middle
+the first thing is going to be the
+minutes. The second thing will be the
+
+00:04:07.580 --> 00:04:11.050 line:100% position:50% align:middle
+seconds. So what we can do is we can use
+ES6 restructuring there
+
+00:04:11.050 --> 00:04:22.720 line:100% position:50% align:middle
+which they say const, mins, secs is equal
+to timecode.split. Then I'll split it on
+
+00:04:22.720 --> 00:04:26.260 line:100% position:50% align:middle
+that. Okay. Let's see where that gets us.
+We want the console log,
+
+00:04:26.260 --> 00:04:32.332 line:100% position:50% align:middle
+the min, and the secs. And you see
+that we've got a 5, 43, 2, okay.
+
+00:04:32.332 --> 00:04:36.310 line:100% position:50% align:middle
+We're good. We've got them into
+their own variables however they are
+
+00:04:36.310 --> 00:04:41.210 line:100% position:50% align:middle
+black, and what that tells me is that they
+are strings. And if we want to do any sort
+
+00:04:41.210 --> 00:04:45.170 line:100% position:50% align:middle
+of math because what we are going to be
+doing here is we're going to return the
+
+00:04:45.170 --> 00:04:52.880 line:100% position:50% align:middle
+mins plus the minutes times sixty, plus
+the seconds. And if we take a look at our
+
+00:04:52.880 --> 00:04:57.480 line:100% position:50% align:middle
+seconds array here, you'll see that these
+are way bigger than they should be.
+
+00:04:57.480 --> 00:05:01.780 line:100% position:50% align:middle
+Zero, four, seven. That's not a number.
+And that's because when we split
+
+00:05:01.780 --> 00:05:08.610 line:100% position:50% align:middle
+that string off of it, it's still going to
+be a string. So if I take something like a
+
+00:05:08.610 --> 00:05:16.470 line:100% position:50% align:middle
+string of six ten and I split it, each of
+the six and the ten are still strings.
+
+00:05:16.470 --> 00:05:21.350 line:100% position:50% align:middle
+So what can we do? We could just map over
+that array real quick and you could pass
+
+00:05:21.350 --> 00:05:26.790 line:100% position:50% align:middle
+it. Parse float. And what that will do is
+it's going to run the parse float function
+
+00:05:26.790 --> 00:05:31.280 line:100% position:50% align:middle
+against every item in the result array.
+And that's going to return to us
+
+00:05:31.280 --> 00:05:37.390 line:100% position:50% align:middle
+an actual array of numbers. So we're
+going to split then right away map that
+
+00:05:37.390 --> 00:05:43.000 line:100% position:50% align:middle
+into parse float. And that's the same
+thing as doing this function,
+
+00:05:43.000 --> 00:05:50.430 line:100% position:50% align:middle
+stir and then returning parse float stir
+but because we're just running this,
+
+00:05:50.430 --> 00:05:54.850 line:100% position:50% align:middle
+it doesn't make sense to run a function.
+You can just pass at the function directly
+
+00:05:54.850 --> 00:05:59.170 line:100% position:50% align:middle
+and it will call that function against
+every item in that array.
+
+00:05:59.170 --> 00:06:03.581 line:100% position:50% align:middle
+Good. So what have we got here?
+Let's look at our seconds. Good.
+
+00:06:03.581 --> 00:06:07.585 line:100% position:50% align:middle
+We've got an array of seconds.
+The first one is 343 seconds.
+
+00:06:07.585 --> 00:06:12.530 line:100% position:50% align:middle
+The second one is 47 seconds.
+Let's double check that right here.
+
+00:06:12.530 --> 00:06:17.960 line:100% position:50% align:middle
+The first one is that. It looks good. The
+fourth one is 47 seconds.
+
+00:06:17.960 --> 00:06:22.440 line:100% position:50% align:middle
+Good. So our numbers are all adding up.
+Now we want to add them together.
+
+00:06:22.440 --> 00:06:26.840 line:100% position:50% align:middle
+So how would I do that? Well, reduce is a
+really good way. So if map takes in an
+
+00:06:26.840 --> 00:06:32.640 line:100% position:50% align:middle
+array and exports an array, a reduce
+will take in an array and return
+
+00:06:32.640 --> 00:06:36.530 line:100% position:50% align:middle
+anything you want. It could be
+a number, it could be a string,
+
+00:06:36.530 --> 00:06:40.080 line:100% position:50% align:middle
+it could be an object. In our case, we are
+going to take all of these numbers and
+
+00:06:40.080 --> 00:06:46.380 line:100% position:50% align:middle
+reduce them down into one big number. So
+we'll call .reduce and that will give us
+
+00:06:46.380 --> 00:06:57.228 line:100% position:50% align:middle
+each, we'll call that a total in seconds.
+And from that, we're going to return
+
+00:06:57.228 --> 00:07:02.648 line:100% position:50% align:middle
+the total plus the seconds.
+And of course we can make that
+
+00:07:02.648 --> 00:07:09.070 line:100% position:50% align:middle
+a nice little tidy arrow function. We just
+do it in one line. So by the way these
+
+00:07:09.070 --> 00:07:12.980 line:100% position:50% align:middle
+seconds is not the same as the seconds. If
+you wanted to rename that to something
+
+00:07:12.980 --> 00:07:18.700 line:100% position:50% align:middle
+like vidseconds just so you
+don't confuse yourself, go for it.
+
+00:07:18.700 --> 00:07:22.430 line:100% position:50% align:middle
+Good. Now let's see what our main
+seconds variables at. Okay good.
+
+00:07:22.430 --> 00:07:27.200 line:100% position:50% align:middle
+We've got the total number of seconds for
+every single video added together.
+
+00:07:27.200 --> 00:07:30.790 line:100% position:50% align:middle
+Good, I'm nice and happy with that.
+Now what we need to do with this
+
+00:07:30.790 --> 00:07:34.760 line:100% position:50% align:middle
+seconds variable here is we need to chop
+it down into hours, minutes,
+
+00:07:34.760 --> 00:07:38.219 line:100% position:50% align:middle
+and seconds. So I'm going to create a
+variable that's sort of going to be a
+
+00:07:38.219 --> 00:07:42.140 line:100% position:50% align:middle
+running tally of seconds left. Because
+we're just start chipping away
+
+00:07:42.140 --> 00:07:46.049 line:100% position:50% align:middle
+at the hours and minutes and seconds.
+So we'll say let seconds left
+
+00:07:46.049 --> 00:07:54.112 line:100% position:50% align:middle
+equals seconds. Then we make our hours,
+is going to be equal to...
+
+00:07:54.112 --> 00:08:04.355 line:100% position:50% align:middle
+Normally we do something like this seconds
+left divided by 3600 and what that will do
+
+00:08:04.355 --> 00:08:10.235 line:100% position:50% align:middle
+if I save it, look at how many hours we
+have. We have 4.9 hours. But we don't care
+
+00:08:10.235 --> 00:08:13.954 line:100% position:50% align:middle
+about the point nine so what we can
+do is we can just grab the lower limit
+
+00:08:13.954 --> 00:08:17.416 line:100% position:50% align:middle
+of that. We only care about whole
+hours. The point nine is going to make
+
+00:08:17.416 --> 00:08:24.960 line:100% position:50% align:middle
+itself into seconds and minutes. Wrap it
+in math.floor and that's going to tell us
+
+00:08:24.960 --> 00:08:33.324 line:100% position:50% align:middle
+that we have four whole hours.
+Now seconds left is equal to, how do we
+
+00:08:33.324 --> 00:08:37.430 line:100% position:50% align:middle
+figure that out? It was like point 9 so
+does that mean there was like 90 seconds
+
+00:08:37.430 --> 00:08:43.370 line:100% position:50% align:middle
+left? No it doesn't...because math is
+100 based and minutes are 60 based,
+
+00:08:43.370 --> 00:08:48.731 line:100% position:50% align:middle
+so how do we figure that out? Well what we
+can do is we take the seconds left and we
+
+00:08:48.731 --> 00:08:57.084 line:100% position:50% align:middle
+use mod 3600. Now what does mod do?
+Let's do a little quick side lesson.
+
+00:08:57.084 --> 00:09:01.406 line:100% position:50% align:middle
+I've got a box of Smarties and in
+that box I have 10 smarties.
+
+00:09:01.406 --> 00:09:06.532 line:100% position:50% align:middle
+Now I have five children so I'm
+going to divide that by five.
+
+00:09:06.532 --> 00:09:10.705 line:100% position:50% align:middle
+How many Smarties does each kid
+have? Two. Every kid gets two Smarties.
+
+00:09:10.705 --> 00:09:16.689 line:100% position:50% align:middle
+Good. But what if I open up a box and lo
+and behold there was 11 Smarties?
+
+00:09:16.689 --> 00:09:20.549 line:100% position:50% align:middle
+Well there's only five kids so how many
+Smarties does each kid get?
+
+00:09:20.549 --> 00:09:24.939 line:100% position:50% align:middle
+Two point two smarties? There's no way
+you're going to...oh by the way,
+
+00:09:24.939 --> 00:09:30.078 line:100% position:50% align:middle
+if you're not Canadian, a Smartie is like
+an M&amp;M. It's a little chocolate treat.
+
+00:09:30.078 --> 00:09:34.539 line:100% position:50% align:middle
+So there's no way you're going
+to cut a little Smartie up into
+
+00:09:34.539 --> 00:09:39.711 line:100% position:50% align:middle
+point two pieces. So what we're only
+concerned with is how many whole Smarties
+
+00:09:39.711 --> 00:09:45.572 line:100% position:50% align:middle
+is each kid going to get math.floor. So
+each kid is going to get two whole
+
+00:09:45.572 --> 00:09:48.978 line:100% position:50% align:middle
+smarties, good but now what we want to
+know and that's what we've done right here
+
+00:09:48.978 --> 00:09:53.182 line:100% position:50% align:middle
+but now what we want to do is we want to
+figure out how many Smarties are left for
+
+00:09:53.182 --> 00:09:58.546 line:100% position:50% align:middle
+dad because I get to eat whatever cannot
+be evenly distributed between all the kids
+
+00:09:58.546 --> 00:10:05.600 line:100% position:50% align:middle
+So what we have is 11 Smarties mod 5,
+and that's going to return to us one.
+
+00:10:05.600 --> 00:10:11.299 line:100% position:50% align:middle
+Why one? Because what mod does
+is it says, "How many are left after
+
+00:10:11.299 --> 00:10:15.962 line:100% position:50% align:middle
+they've been evenly distributed?"
+So after each kid gets two,
+
+00:10:15.962 --> 00:10:21.836 line:100% position:50% align:middle
+there's going to be one left. Same thing
+if I have five oranges and I divide them
+
+00:10:21.836 --> 00:10:28.285 line:100% position:50% align:middle
+by two kids. There's going to
+be one left because it doesn't tell us,
+
+00:10:28.285 --> 00:10:36.394 line:100% position:50% align:middle
+and let's do a seconds example,
+if I have 73 seconds and I divide that by
+
+00:10:36.394 --> 00:10:44.387 line:100% position:50% align:middle
+60 seconds, we clearly have 1 whole minute
+math.floor shows us 1 whole minute but
+
+00:10:44.387 --> 00:10:49.776 line:100% position:50% align:middle
+what does that point two seconds? That's
+not twenty seconds because that's a
+
+00:10:49.776 --> 00:10:59.793 line:100% position:50% align:middle
+percentage. So 73 mod 60 will tell us that
+after we chunk it out into 1 whole minute,
+
+00:10:59.793 --> 00:11:03.371 line:100% position:50% align:middle
+we have 13 seconds left. That's
+exactly what we're doing here.
+
+00:11:03.371 --> 00:11:08.224 line:100% position:50% align:middle
+After we chunk it into the hours, we are
+going to have these many seconds left.
+
+00:11:08.224 --> 00:11:15.393 line:100% position:50% align:middle
+So let's console log seconds
+left. Seconds, there we go.
+
+00:11:15.393 --> 00:11:22.091 line:100% position:50% align:middle
+So we have 3538 seconds left. So we can go
+ahead and do minutes now, const mins
+
+00:11:22.091 --> 00:11:28.009 line:100% position:50% align:middle
+equals, we'll do the same thing math.floor
+take the seconds left and we'll divide
+
+00:11:28.009 --> 00:11:32.580 line:100% position:50% align:middle
+that by 60 because there are 60 seconds in
+a minute, then we update our seconds left
+
+00:11:32.580 --> 00:11:37.688 line:100% position:50% align:middle
+variable just like we did here but instead
+we use 60. And this is why I used led up
+
+00:11:37.688 --> 00:11:42.281 line:100% position:50% align:middle
+here because we need to reassign this
+value over and over. So console log hours
+
+00:11:42.281 --> 00:11:48.809 line:100% position:50% align:middle
+and minutes. 4 hours, 58 minutes and then
+we can just use the seconds left because
+
+00:11:48.809 --> 00:11:51.669 line:100% position:50% align:middle
+that's what's left at the end of the day.
+There's no need to convert it.
+
+00:11:51.669 --> 00:11:56.598 line:100% position:50% align:middle
+So we have our seconds left variable. So 4
+hours, 58 minutes, and 58 seconds.
+
+00:11:56.598 --> 00:12:00.804 line:100% position:50% align:middle
+You can test that. You can take this one
+that's 404 and change it to 406.
+
+00:12:00.804 --> 00:12:06.549 line:100% position:50% align:middle
+And if you refresh, it will show you
+4 hours, 59 minutes, and 0 seconds left.
+
+00:12:06.549 --> 00:12:12.857 line:100% position:50% align:middle
+That's how I would do it. Also I've
+done this into map and reduce.
+
+00:12:12.857 --> 00:12:17.334 line:100% position:50% align:middle
+Just so I can show you what we're doing
+in every step of the time but if you
+
+00:12:17.334 --> 00:12:21.518 line:100% position:50% align:middle
+really understand what's going on here,
+this could be all done in a single reduce.
+
+00:12:21.518 --> 00:12:29.208 line:100% position:50% align:middle
+You've taken this array of nodes. You
+convert the dataset.time into minutes and
+
+00:12:29.208 --> 00:12:34.215 line:100% position:50% align:middle
+seconds. You convert that, then
+into seconds then you convert that into
+
+00:12:34.215 --> 00:12:37.494 line:100% position:50% align:middle
+whole number of seconds where they have
+the number, and then finally add it all
+
+00:12:37.494 --> 00:12:41.521 line:100% position:50% align:middle
+together. So it's up to you whether you do
+it in one shot or make it a little bit
+
+00:12:41.521 --> 00:12:45.411 line:100% position:50% align:middle
+more readable and chunk it into separate
+ones. And that allows you to write little
+
+00:12:45.411 --> 00:12:49.765 line:100% position:50% align:middle
+comments above each of them. Hopefully you
+enjoyed that. I will see you tomorrow.
+
+00:12:50.527 --> 00:12:53.786 line:100% position:50% align:middle
+♪ [music] ♪

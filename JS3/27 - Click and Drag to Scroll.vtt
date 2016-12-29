@@ -1,0 +1,691 @@
+WEBVTT
+
+00:00:01.447 --> 00:00:04.224 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.074 --> 00:00:11.460 line:100% position:50% align:middle
+Today we're going to learn how to do click
+and drag from scratch.
+
+00:00:11.460 --> 00:00:15.510 line:100% position:50% align:middle
+This is an effect that I saw on this
+website Hover States. I scroll down to the
+
+00:00:15.510 --> 00:00:19.200 line:100% position:50% align:middle
+bottom here and I noticed that
+you can scroll this if you want,
+
+00:00:19.200 --> 00:00:22.600 line:100% position:50% align:middle
+it's just a horizontally scrolling div,
+which is kind of cool because it works
+
+00:00:22.600 --> 00:00:27.930 line:100% position:50% align:middle
+without Javascript. However, you can also
+take your cursor, click and drag as you
+
+00:00:27.930 --> 00:00:30.620 line:100% position:50% align:middle
+want to go through it and I thought that
+was kind of a cool effect.
+
+00:00:30.620 --> 00:00:35.760 line:100% position:50% align:middle
+So, that's what I would like to do here is
+when you click, drag your mouse and go
+
+00:00:35.760 --> 00:00:41.310 line:100% position:50% align:middle
+somewhere, we want it to sort of come
+along with it and this whole mouse event
+
+00:00:41.310 --> 00:00:44.130 line:100% position:50% align:middle
+and mouse positioning stuff, I find it to
+be a little bit complicated,
+
+00:00:44.130 --> 00:00:48.620 line:100% position:50% align:middle
+so I thought that this would be a really
+nice exercise to get us comfortable with
+
+00:00:48.620 --> 00:00:52.480 line:100% position:50% align:middle
+what's going on here. So, pretty simple,
+what we've got going on here,
+
+00:00:52.480 --> 00:00:57.420 line:100% position:50% align:middle
+we've got our style that's CSS, I've added
+some sort of fun CSS to it,
+
+00:00:57.420 --> 00:01:02.340 line:100% position:50% align:middle
+like when you click it, we add a class of
+active and it will bring it up a little
+
+00:01:02.340 --> 00:01:10.590 line:100% position:50% align:middle
+bit. And then I also used this rotate y
+and a perspective, so that when you move
+
+00:01:10.590 --> 00:01:14.820 line:100% position:50% align:middle
+it, you see how 17 is "oh, I can barely
+see it, oh, now it's totally looking at
+
+00:01:14.820 --> 00:01:18.980 line:100% position:50% align:middle
+us." Just some fun stuff, it has nothing
+to do with it other than it looks pretty.
+
+00:01:18.980 --> 00:01:24.660 line:100% position:50% align:middle
+So, let's go down to our script here. And
+really what we want to be doing here is
+
+00:01:24.660 --> 00:01:29.970 line:100% position:50% align:middle
+selecting the items, which is this white
+box right here and then we're going to be
+
+00:01:29.970 --> 00:01:34.820 line:100% position:50% align:middle
+listening for a number of different
+events. So, when I first click down,
+
+00:01:34.820 --> 00:01:38.480 line:100% position:50% align:middle
+we're gonna add a class of active and
+we're gonna figure out where did I click
+
+00:01:38.480 --> 00:01:42.950 line:100% position:50% align:middle
+down. Then when I move my mouse
+either to the left or to the right,
+
+00:01:42.950 --> 00:01:49.790 line:100% position:50% align:middle
+we're gonna figure out okay, let's say if
+I click right here. This is 500 px and if
+
+00:01:49.790 --> 00:01:55.340 line:100% position:50% align:middle
+I scroll to the left, 20 px, we know that
+we should scroll the div 20 pixels.
+
+00:01:55.340 --> 00:01:58.840 line:100% position:50% align:middle
+If I scroll to the right 20 pixels, we
+know that we should scroll the div 20
+
+00:01:58.840 --> 00:02:02.910 line:100% position:50% align:middle
+pixels that way. And that's really how
+it's going to work, we're just going to
+
+00:02:02.910 --> 00:02:07.650 line:100% position:50% align:middle
+anchor it down as soon as we click and
+then depending on how far either way we
+
+00:02:07.650 --> 00:02:11.760 line:100% position:50% align:middle
+scroll, that's how much we're going to be
+scrolling the div or we can do it a
+
+00:02:11.760 --> 00:02:15.600 line:100% position:50% align:middle
+multiple of that, if you'd like for the
+scrolling to go a little bit bigger.
+
+00:02:15.600 --> 00:02:18.870 line:100% position:50% align:middle
+It's just a combination of mouse down,
+mouse leave, mouse out,
+
+00:02:18.870 --> 00:02:23.830 line:100% position:50% align:middle
+up and mouse move. So, let's first go
+ahead and grab the sliders so we say const
+
+00:02:23.830 --> 00:02:28.100 line:100% position:50% align:middle
+sliders equals document.query
+selector. We are going to look for the
+
+00:02:28.100 --> 00:02:32.850 line:100% position:50% align:middle
+item, that's the white div that surrounds
+everything. And then we need a couple of
+
+00:02:32.850 --> 00:02:35.570 line:100% position:50% align:middle
+variables, they're all gonna be let
+because they're gonna be updated.
+
+00:02:35.570 --> 00:02:39.390 line:100% position:50% align:middle
+So we're going to say let is down, to
+build a false. That's gonna be our flag
+
+00:02:39.390 --> 00:02:43.550 line:100% position:50% align:middle
+variable, that's either gonna be true or
+false, depending on if I'm clicking or if
+
+00:02:43.550 --> 00:02:48.700 line:100% position:50% align:middle
+I'm not. And then we also need one
+called start x and scroll left, so we say
+
+00:02:48.700 --> 00:02:55.800 line:100% position:50% align:middle
+let start x and let scroll left. You'll
+notice how I'm not assigning any values to
+
+00:02:55.800 --> 00:02:59.410 line:100% position:50% align:middle
+them, because that's gonna be happening in
+our events. And we'll understand exactly
+
+00:02:59.410 --> 00:03:04.900 line:100% position:50% align:middle
+what these are in just a second. Then what
+we need to do is attach a whole bunch of
+
+00:03:04.900 --> 00:03:08.630 line:100% position:50% align:middle
+different listeners, so we're gonna be
+working with mouse down,
+
+00:03:08.630 --> 00:03:13.020 line:100% position:50% align:middle
+mouse leave, mouse up and mouse move.
+And I've paced these in here.
+
+00:03:13.020 --> 00:03:17.800 line:100% position:50% align:middle
+And we're gonna listen for an event on
+each of them, so we're just gonna say
+
+00:03:17.800 --> 00:03:29.280 line:100% position:50% align:middle
+slider.add event listener. And you can
+farm these off to separate functions.
+
+00:03:29.280 --> 00:03:32.800 line:100% position:50% align:middle
+I'm gonna do them in line just because
+right now I think it's important that we
+
+00:03:32.800 --> 00:03:36.470 line:100% position:50% align:middle
+attach the code that is happening
+directly to the event. However,
+
+00:03:36.470 --> 00:03:39.730 line:100% position:50% align:middle
+once you're done it would be great to
+refactor those out into separate functions
+
+00:03:39.730 --> 00:03:42.970 line:100% position:50% align:middle
+and then just pass them into your event
+listener, like we've been doing with a lot
+
+00:03:42.970 --> 00:03:47.960 line:100% position:50% align:middle
+of our videos so far. We've got mouse down
+mouse leave, mouse up and mouse move.
+
+00:03:47.960 --> 00:03:53.960 line:100% position:50% align:middle
+So first let's handle the is down that's
+happening. So when someone mouses down,
+
+00:03:53.960 --> 00:03:59.850 line:100% position:50% align:middle
+we're gonna take this is down variable,
+set it to true. When someone leaves,
+
+00:03:59.850 --> 00:04:05.150 line:100% position:50% align:middle
+so if I'm dragging here, and then
+I leave this thing and come back,
+
+00:04:05.150 --> 00:04:08.930 line:100% position:50% align:middle
+it shouldn't work because what happens is
+someone leaves, they come back,
+
+00:04:08.930 --> 00:04:12.350 line:100% position:50% align:middle
+they let go and then they come back here
+and it's still in the down state,
+
+00:04:12.350 --> 00:04:20.750 line:100% position:50% align:middle
+so what we need to then do is to take this
+is down and set that to be false.
+
+00:04:20.750 --> 00:04:25.030 line:100% position:50% align:middle
+When someone mouses up, we want
+to set that to be false as well.
+
+00:04:25.030 --> 00:04:29.830 line:100% position:50% align:middle
+And then in mouse move, that's where all
+of our magic is going to happen,
+
+00:04:29.830 --> 00:04:36.410 line:100% position:50% align:middle
+so let's just inside of that, console log
+is down. And then we're gonna console log
+
+00:04:36.410 --> 00:04:40.490 line:100% position:50% align:middle
+do work. Open that up, open up your
+console, I want to see what's going on
+
+00:04:40.490 --> 00:04:46.140 line:100% position:50% align:middle
+here. And you see like, I'm console
+logging a lot here and I haven't even
+
+00:04:46.140 --> 00:04:52.390 line:100% position:50% align:middle
+clicked anything. This console logging
+shouldn't show anything at all unless I'm
+
+00:04:52.390 --> 00:04:55.980 line:100% position:50% align:middle
+actually mouse down. And if I click it
+and mouse around me says true,
+
+00:04:55.980 --> 00:05:00.030 line:100% position:50% align:middle
+true, true, I let go, false, false, false.
+So what we want to do first thing here is
+
+00:05:00.030 --> 00:05:05.850 line:100% position:50% align:middle
+in our mouse move, we'll say if is not
+down, we are just going to return.
+
+00:05:05.850 --> 00:05:10.890 line:100% position:50% align:middle
+And what that will do is stop the function
+from running and then this console log is
+
+00:05:10.890 --> 00:05:15.880 line:100% position:50% align:middle
+down and do work won't get logged unless
+you're clicked in the click state.
+
+00:05:15.880 --> 00:05:20.940 line:100% position:50% align:middle
+Here we go, let go, let me clear this out.
+See I'm moving around,
+
+00:05:20.940 --> 00:05:24.700 line:100% position:50% align:middle
+nothing, nothing, nothing? Click down,
+move around, it starts to work.
+
+00:05:24.700 --> 00:05:30.559 line:100% position:50% align:middle
+Let go, there's no updated. And we could
+console.log, if you change that to
+
+00:05:30.559 --> 00:05:34.380 line:100% position:50% align:middle
+console.count and just to see how many
+times that happens. None, none, none,
+
+00:05:34.380 --> 00:05:39.130 line:100% position:50% align:middle
+drag, drag, drag, good. Then it stops,
+then it goes again. Good,
+
+00:05:39.130 --> 00:05:43.800 line:100% position:50% align:middle
+so we have that mouse down. Next thing I
+want to do is we'll take the slider.
+
+00:05:43.800 --> 00:05:47.020 line:100% position:50% align:middle
+When you mouse down. We're
+gonna take slider.add event listener.
+
+00:05:47.020 --> 00:05:55.080 line:100% position:50% align:middle
+Nope. We'll take the slider, class
+list.add, active, then we'll also do that
+
+00:05:55.080 --> 00:06:02.170 line:100% position:50% align:middle
+the opposite when someone leaves, so
+remove, and then once my mouse is up,
+
+00:06:02.170 --> 00:06:06.725 line:100% position:50% align:middle
+it'll also remove class of act, good.
+So now when you click it,
+
+00:06:06.725 --> 00:06:11.566 line:100% position:50% align:middle
+you see it get a little bit of effect
+there. Why is that happening?
+
+00:06:11.566 --> 00:06:14.920 line:100% position:50% align:middle
+That's happening because if you look
+at our style, that CSS.
+
+00:06:14.920 --> 00:06:20.200 line:100% position:50% align:middle
+When we have a class of active,
+I just change the background,
+
+00:06:20.200 --> 00:06:23.950 line:100% position:50% align:middle
+I change the cursor. You have to change it
+to... I didn't even know you had to
+
+00:06:23.950 --> 00:06:28.400 line:100% position:50% align:middle
+vendor prefix cursor, it's been a
+while since I've seen that.
+
+00:06:28.400 --> 00:06:33.000 line:100% position:50% align:middle
+And then transform the scale up to one, so
+it goes from 98 percent to one.
+
+00:06:33.000 --> 00:06:36.830 line:100% position:50% align:middle
+It just gives you a little bit of a cool
+effect that goes in and out.
+
+00:06:36.830 --> 00:06:41.820 line:100% position:50% align:middle
+Now let's think about how this is going to
+work. When I click down here and I drag 20
+
+00:06:41.820 --> 00:06:46.810 line:100% position:50% align:middle
+pixels to the left or 20 pixels to the
+right, we need to know where that anchor
+
+00:06:46.810 --> 00:06:52.210 line:100% position:50% align:middle
+point is when I scroll to the left or to
+the right. Because as many times as I move
+
+00:06:52.210 --> 00:06:59.360 line:100% position:50% align:middle
+around, until I unclick or mouse up, we
+need to know where that initial click down
+
+00:06:59.360 --> 00:07:04.170 line:100% position:50% align:middle
+was. And that's what that start x variable
+is for, where we created right here.
+
+00:07:04.170 --> 00:07:07.950 line:100% position:50% align:middle
+So when someone clicks down, before they
+start moving to the left or to the right,
+
+00:07:07.950 --> 00:07:12.340 line:100% position:50% align:middle
+we need to record where they did that
+initial click down. That's going to happen
+
+00:07:12.340 --> 00:07:17.460 line:100% position:50% align:middle
+in our mouse down here. And we're going to
+go up to our function and past the event.
+
+00:07:17.460 --> 00:07:21.440 line:100% position:50% align:middle
+Now, if we're to console log that event,
+let's see what information we get on
+
+00:07:21.440 --> 00:07:25.240 line:100% position:50% align:middle
+there. Yeah, I got the mouse event,
+I got all kinds of information.
+
+00:07:25.240 --> 00:07:31.730 line:100% position:50% align:middle
+Client x, client y, etc., etc. One way to
+tell where we clicked inside of it and
+
+00:07:31.730 --> 00:07:38.970 line:100% position:50% align:middle
+we've done a couple of different ways in
+this series is to console log e.page x.
+
+00:07:38.970 --> 00:07:43.780 line:100% position:50% align:middle
+And then it's going to tell us exactly
+three, nine, six. It's telling us exactly
+
+00:07:43.780 --> 00:07:50.440 line:100% position:50% align:middle
+what the x coordinates on the actual page.
+However, if there was some margin in
+
+00:07:50.440 --> 00:07:55.680 line:100% position:50% align:middle
+between this item here, like margin 50 px.
+If we really brought it out,
+
+00:07:55.680 --> 00:08:00.000 line:100% position:50% align:middle
+then that would be off. We need to know
+where did they click inside of this thing,
+
+00:08:00.000 --> 00:08:04.610 line:100% position:50% align:middle
+not on the page. So we just take
+start x is equal to e.page x,
+
+00:08:04.610 --> 00:08:10.580 line:100% position:50% align:middle
+but then we'll attract the slider.offset
+left and that will just offset it.
+
+00:08:10.580 --> 00:08:16.180 line:100% position:50% align:middle
+If there's 50 px of margin in between the
+page and the item that we care about,
+
+00:08:16.180 --> 00:08:21.480 line:100% position:50% align:middle
+then subtracting it will handle that
+offset for us. So then we can console log
+
+00:08:21.480 --> 00:08:26.690 line:100% position:50% align:middle
+start x and if I click here, we should
+get a really low number, 18.
+
+00:08:26.690 --> 00:08:30.670 line:100% position:50% align:middle
+If I click over here, we'll get a high
+number, good. Then,
+
+00:08:30.670 --> 00:08:35.000 line:100% position:50% align:middle
+what's important about that is when we
+move our mouse, we should be able to
+
+00:08:35.000 --> 00:08:42.500 line:100% position:50% align:middle
+console log start x over and over. See
+it's 645 regardless of where I'm moving my
+
+00:08:42.500 --> 00:08:46.180 line:100% position:50% align:middle
+actual cursor here, that's pretty cool.
+And then when I let go,
+
+00:08:46.180 --> 00:08:51.090 line:100% position:50% align:middle
+we don't really care about it. We click
+again, now it's 547, we care about that.
+
+00:08:51.090 --> 00:08:55.820 line:100% position:50% align:middle
+The other thing we need to log at
+the time of click is the scroll.
+
+00:08:55.820 --> 00:08:59.860 line:100% position:50% align:middle
+Because let's say I'm scrolled 200
+pixels in and then I want to
+
+00:08:59.860 --> 00:09:04.798 line:100% position:50% align:middle
+scroll to the left and to the right of
+this div. Then we need to figure out
+
+00:09:04.798 --> 00:09:09.563 line:100% position:50% align:middle
+where the initial scroll was when we
+started it. And that's what this other
+
+00:09:09.563 --> 00:09:11.872 line:100% position:50% align:middle
+variable is for, which is scroll left.
+
+00:09:11.872 --> 00:09:18.485 line:100% position:50% align:middle
+So we'll take this, we'll say scroll
+left is equal to slider.scroll left.
+
+00:09:18.485 --> 00:09:21.770 line:100% position:50% align:middle
+And the reason why we're going to
+keep that in a variable is because it's
+
+00:09:21.770 --> 00:09:25.280 line:100% position:50% align:middle
+going to move. If I go to the
+answer here, it's going to move,
+
+00:09:25.280 --> 00:09:28.980 line:100% position:50% align:middle
+but we always need to go back
+to that initial state when it started,
+
+00:09:28.980 --> 00:09:33.800 line:100% position:50% align:middle
+when you did that first click down. We got
+our start x and we got our scroll left,
+
+00:09:33.800 --> 00:09:39.280 line:100% position:50% align:middle
+we can take these console logs out of
+here. Good. Now we'll go down to our mouse
+
+00:09:39.280 --> 00:09:46.000 line:100% position:50% align:middle
+move and start doing the work. So first of
+all, I'd like to take the event and then
+
+00:09:46.000 --> 00:09:51.940 line:100% position:50% align:middle
+just call an e.prevent default on it. And
+that will stop any selecting of text
+
+00:09:51.940 --> 00:09:56.560 line:100% position:50% align:middle
+that's inside of there or any of the
+sliding to the left or any other weird
+
+00:09:56.560 --> 00:09:59.670 line:100% position:50% align:middle
+stuff that the browser might think you're
+actually trying to select some text,
+
+00:09:59.670 --> 00:10:06.830 line:100% position:50% align:middle
+that will stop it for us. Then what we
+need to do is figure out where the cursor
+
+00:10:06.830 --> 00:10:10.990 line:100% position:50% align:middle
+is when they moved it. We already know
+where the cursor is when they initially
+
+00:10:10.990 --> 00:10:15.190 line:100% position:50% align:middle
+clicked down, but we want to know where
+the cursor is when they move it to the
+
+00:10:15.190 --> 00:10:24.350 line:100% position:50% align:middle
+left and to the right. So we'll say const
+x is equal to e.page x minus slider.offset
+
+00:10:24.350 --> 00:10:28.550 line:100% position:50% align:middle
+left. That's the exact same code that we
+just used up here. Here we're using it to
+
+00:10:28.550 --> 00:10:31.837 line:100% position:50% align:middle
+say where did they initially click and
+here we're going to recalculate every
+
+00:10:31.837 --> 00:10:39.446 line:100% position:50% align:middle
+single time that we move the mouse. So now
+if we just console.log x as well as what
+
+00:10:39.446 --> 00:10:45.257 line:100% position:50% align:middle
+was that other one called here? Start x.
+And a little tip here, if you want to know
+
+00:10:45.340 --> 00:10:50.440 line:100% position:50% align:middle
+what those variables are, just throw them
+in an object and you'll see the values.
+
+00:10:50.440 --> 00:10:56.280 line:100% position:50% align:middle
+Now, when I click in the middle here, you
+see that the x value is changing and the
+
+00:10:56.280 --> 00:11:03.670 line:100% position:50% align:middle
+start x is not changing at all. So we can
+simply then take that and I'm going to
+
+00:11:03.670 --> 00:11:11.570 line:100% position:50% align:middle
+call that the wok. Const wok is equal to,
+we'll take the x value and subtract the
+
+00:11:11.570 --> 00:11:17.530 line:100% position:50% align:middle
+start x. And this is going to tell us how
+far have we deviated from that initial
+
+00:11:17.530 --> 00:11:24.150 line:100% position:50% align:middle
+space. Console log wok, get rid of that
+initial console log and now we're seeing,
+
+00:11:24.150 --> 00:11:29.380 line:100% position:50% align:middle
+ah, look at that! So I'm going to click
+here. I'm going to move 20 pixels to the
+
+00:11:29.380 --> 00:11:34.620 line:100% position:50% align:middle
+right. So we've gone 20 pixels to the
+right. Then I'm going to go back and 20
+
+00:11:34.620 --> 00:11:38.570 line:100% position:50% align:middle
+pixels to the left gives me negative. So
+it's telling us, how far have we deviated
+
+00:11:38.570 --> 00:11:42.510 line:100% position:50% align:middle
+from that initial point, which we could
+put like a red dot there when you clicked,
+
+00:11:42.510 --> 00:11:47.301 line:100% position:50% align:middle
+because then you can see exactly how far
+to the left and to the right you are
+
+00:11:47.301 --> 00:11:53.030 line:100% position:50% align:middle
+working. So next up, what we need to
+actually do is change this div here to
+
+00:11:53.030 --> 00:11:58.980 line:100% position:50% align:middle
+scroll and we do that with a scroll left
+property. So we'll say slider.scroll left
+
+00:11:58.980 --> 00:12:02.370 line:100% position:50% align:middle
+is equal to...now you might think,
+okay, we'll just set it to wok and
+
+00:12:02.370 --> 00:12:03.730 line:100% position:50% align:middle
+let's see what that does for us.
+
+00:12:09.438 --> 00:12:12.463 line:100% position:50% align:middle
+It kind of works, but it's really jumpy.
+
+00:12:12.463 --> 00:12:16.890 line:100% position:50% align:middle
+And the problem is that is we're
+recalculating the scroll left every single
+
+00:12:16.890 --> 00:12:23.330 line:100% position:50% align:middle
+time. So the reason why we captured the
+scroll left value when we did that initial
+
+00:12:23.330 --> 00:12:26.870 line:100% position:50% align:middle
+click is so we could reference it inside
+of this function. So we'll take
+
+00:12:26.870 --> 00:12:32.410 line:100% position:50% align:middle
+slider.scroll left, set it to the scroll
+left value, which is what we initially
+
+00:12:32.410 --> 00:12:36.170 line:100% position:50% align:middle
+captured, we've put it in a variable
+and then we minus the wok value.
+
+00:12:36.170 --> 00:12:41.300 line:100% position:50% align:middle
+We give that a save here and now we should
+be able to click and drag beautifully back
+
+00:12:41.300 --> 00:12:44.910 line:100% position:50% align:middle
+and forth. If you feel like this is a lot
+of work just to get over,
+
+00:12:44.910 --> 00:12:49.570 line:100% position:50% align:middle
+what you can then do is put this in
+parenthesis and then multiply it by like
+
+00:12:49.570 --> 00:12:54.180 line:100% position:50% align:middle
+three or something. So for every pixel
+moved, you're gonna scroll the slider
+
+00:12:54.180 --> 00:13:01.070 line:100% position:50% align:middle
+three pixels. There you get a bit of a
+nice slider effect as we're going on in
+
+00:13:01.070 --> 00:13:07.360 line:100% position:50% align:middle
+there. So I think that's it for what we've
+got going on here, looking pretty good.
+
+00:13:07.360 --> 00:13:12.766 line:100% position:50% align:middle
+It's a simple ISH code, however actually
+building this the first time took me
+
+00:13:12.766 --> 00:13:16.973 line:100% position:50% align:middle
+a while to understand. "Oh, you need to
+put these variables, you need to capture
+
+00:13:16.973 --> 00:13:20.575 line:100% position:50% align:middle
+them at the time of your mouse down and
+then reference them whenever someone
+
+00:13:20.575 --> 00:13:25.626 line:100% position:50% align:middle
+moves the mouse." So hopefully you
+enjoyed that. Obviously there's a lot more
+
+00:13:25.626 --> 00:13:29.456 line:100% position:50% align:middle
+to libraries, if you take a look at this
+one right here, you can just flick it
+
+00:13:29.456 --> 00:13:33.731 line:100% position:50% align:middle
+and you don't have to worry. It really
+gives me appreciation for people who
+
+00:13:33.731 --> 00:13:38.813 line:100% position:50% align:middle
+build bouncy scrolling and inertial
+scrolling, you see how like it fades
+
+00:13:38.813 --> 00:13:42.902 line:100% position:50% align:middle
+out at the end. There's a lot of math that
+goes into building these different
+
+00:13:42.902 --> 00:13:46.961 line:100% position:50% align:middle
+libraries. But it's really important to
+know how they're working under the hood
+
+00:13:46.961 --> 00:13:48.947 line:100% position:50% align:middle
+in case you ever wanted
+to build your own.
+
+00:13:48.947 --> 00:13:53.360 line:100% position:50% align:middle
+I should also note that with this mouse
+down, mouse leave, mouse up,
+
+00:13:53.360 --> 00:13:58.170 line:100% position:50% align:middle
+mouse move dance that we've done here, you
+can also implement your own drag and drop,
+
+00:13:58.170 --> 00:14:00.750 line:100% position:50% align:middle
+so if that's something you're interested
+in doing, I would challenge you to do
+
+00:14:00.750 --> 00:14:03.003 line:100% position:50% align:middle
+that. Thanks a lot, I'll see you tomorrow.
+
+00:14:03.564 --> 00:14:06.854 line:100% position:50% align:middle
+♪ [music] ♪

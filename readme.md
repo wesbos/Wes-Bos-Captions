@@ -6,6 +6,8 @@ This is a Github Repo containing all the captions for my video courses. Edits ar
 
 `ES6` → [ES6 for Everyone](https://ES6.io)
 
+`JS3` → [JavaScript30](https://JavaScript30.com)
+
 
 ## Translations
 Translations are welcome - just append the language code to the file name. Example: 

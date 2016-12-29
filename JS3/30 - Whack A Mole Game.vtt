@@ -1,0 +1,658 @@
+WEBVTT
+
+00:00:01.304 --> 00:00:04.451 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.810 --> 00:00:11.730 line:100% position:50% align:middle
+Here we are on day 30, and to have a
+little bit of fun today we are going,
+
+00:00:11.730 --> 00:00:15.120 line:100% position:50% align:middle
+well like you didn't have fun the whole
+time. But we're going to be building a
+
+00:00:15.120 --> 00:00:18.310 line:100% position:50% align:middle
+game so you can have fun and play it and
+just have a great time.
+
+00:00:18.310 --> 00:00:25.330 line:100% position:50% align:middle
+So what we are building is Whack-a-mole,
+and what happens is when you run the game
+
+00:00:25.330 --> 00:00:30.620 line:100% position:50% align:middle
+you're going to get these little critters
+popping up in random holes for for random
+
+00:00:30.620 --> 00:00:34.410 line:100% position:50% align:middle
+amounts of time. And then when
+you click them you get a point,
+
+00:00:34.410 --> 00:00:39.190 line:100% position:50% align:middle
+you sort of have to follow it along with
+your mouse. So there's a couple things we
+
+00:00:39.190 --> 00:00:42.700 line:100% position:50% align:middle
+need to know here, the game itself is
+going to be 10 seconds long,
+
+00:00:42.700 --> 00:00:49.440 line:100% position:50% align:middle
+but which hole the mole pops up in and for
+how long that mole peeps his head up from
+
+00:00:49.440 --> 00:00:54.090 line:100% position:50% align:middle
+the ground is totally random, it's all
+going to be between like 200 milliseconds
+
+00:00:54.090 --> 00:00:59.020 line:100% position:50% align:middle
+and a couple of seconds, and then the mole
+hill that it's going to pop up from is
+
+00:00:59.020 --> 00:01:04.350 line:100% position:50% align:middle
+also going to be totally random as well.
+So I've gone here and I've gone ahead and
+
+00:01:04.350 --> 00:01:08.420 line:100% position:50% align:middle
+selected all of the holes, I've gone ahead
+and selected the scoreboard which is the
+
+00:01:08.420 --> 00:01:12.400 line:100% position:50% align:middle
+seven right here, and I've gone ahead and
+selected all the moles.
+
+00:01:12.400 --> 00:01:15.990 line:100% position:50% align:middle
+So look at our HTML here, you've got your
+holes, you've got your moles in your
+
+00:01:15.990 --> 00:01:22.400 line:100% position:50% align:middle
+holes, and were ready to roll with our
+moles in our holes. So we first need a
+
+00:01:22.400 --> 00:01:27.330 line:100% position:50% align:middle
+function that's going to give us a random
+amount of time between hover minimum and
+
+00:01:27.330 --> 00:01:32.610 line:100% position:50% align:middle
+maximum. So we're going to say, "function
+randTime" and that's going to take a
+
+00:01:32.610 --> 00:01:40.600 line:100% position:50% align:middle
+minimum and a maximum. And that will
+return a "Math.random() * (max-min) +
+
+00:01:40.600 --> 00:01:44.670 line:100% position:50% align:middle
+min;" And we've done this whole offset
+thing a couple of times,
+
+00:01:44.670 --> 00:01:48.440 line:100% position:50% align:middle
+now I'm not going to explain it again.
+That should give us a function that if we
+
+00:01:48.440 --> 00:01:54.950 line:100% position:50% align:middle
+open up in our browser here and we run
+"randTime" and if we go between 20
+
+00:01:54.950 --> 00:01:59.400 line:100% position:50% align:middle
+milliseconds and 2 seconds, it's just
+going to give us a random amount of
+
+00:01:59.400 --> 00:02:05.130 line:100% position:50% align:middle
+millisecond. We could probably also pop a
+"Math.round" around that just so we can
+
+00:02:05.130 --> 00:02:11.370 line:100% position:50% align:middle
+get a nice, clean number of milliseconds
+back. There we go, now we're going to get
+
+00:02:11.370 --> 00:02:14.890 line:100% position:50% align:middle
+a random amount of time that it's
+going to be popping itself up.
+
+00:02:14.890 --> 00:02:18.560 line:100% position:50% align:middle
+So that's one function, that's sort of a
+bit of a utility. Then we needed other
+
+00:02:18.560 --> 00:02:23.580 line:100% position:50% align:middle
+function that's going to pick a random
+hole for the mole to pop up from.
+
+00:02:23.580 --> 00:02:31.670 line:100% position:50% align:middle
+So, "function randomHole()" and that is
+going to take in a list of holes,
+
+00:02:31.670 --> 00:02:36.770 line:100% position:50% align:middle
+which is going to be, in our case it's
+going to be this holes that we have here,
+
+00:02:36.770 --> 00:02:40.880 line:100% position:50% align:middle
+however this could be any list of DOM
+Elements. Essentially this is just a get
+
+00:02:40.880 --> 00:02:47.080 line:100% position:50% align:middle
+me a random DOM Element function there.
+And what we're going to do here is,
+
+00:02:47.080 --> 00:02:51.750 line:100% position:50% align:middle
+let's just console log holes. Now if I
+were to run "randHole()" and pass our
+
+00:02:51.750 --> 00:02:57.160 line:100% position:50% align:middle
+"holes" variable, we're going to get six,
+why? Because holes is a node list that
+
+00:02:57.160 --> 00:03:03.490 line:100% position:50% align:middle
+contains all six of our holes. Okay, good.
+So we need to find a random index between
+
+00:03:03.490 --> 00:03:07.907 line:100% position:50% align:middle
+zero and five which is going to give us
+that one, so we say "const idx =
+
+00:03:07.907 --> 00:03:19.992 line:100% position:50% align:middle
+Math.floor(Math.random() * holes.length;
+const hole = holes[idx];" why?
+
+00:03:19.992 --> 00:03:23.113 line:100% position:50% align:middle
+Because that's going to be like hole
+zero, one, two, three, four,
+
+00:03:23.113 --> 00:03:28.008 line:100% position:50% align:middle
+all the way up till five. So idx, then
+let's just console log the hole itself.
+
+00:03:28.008 --> 00:03:36.640 line:100% position:50% align:middle
+So now if we run that function by passing
+it our holes, this is five.
+
+00:03:36.640 --> 00:03:40.510 line:100% position:50% align:middle
+Oh, five again, that's going to be a
+problem for us. One, one,
+
+00:03:40.510 --> 00:03:43.380 line:100% position:50% align:middle
+oh, one again, that's going to be a
+problem for us. One again,
+
+00:03:43.380 --> 00:03:48.590 line:100% position:50% align:middle
+what are the chances? I guess one in six.
+Hole, three, hole two.
+
+00:03:48.590 --> 00:03:53.150 line:100% position:50% align:middle
+You see how it's giving us a random one.
+But the problem that we're running into is
+
+00:03:53.150 --> 00:03:57.520 line:100% position:50% align:middle
+that sometimes we get the same one,
+it's a one and six chance,
+
+00:03:57.520 --> 00:04:01.990 line:100% position:50% align:middle
+so it's going to be pretty common, and you
+don't want the same mole popping up.
+
+00:04:01.990 --> 00:04:05.130 line:100% position:50% align:middle
+So what we're going to do is we're
+going to create a variable up here,
+
+00:04:05.130 --> 00:04:10.670 line:100% position:50% align:middle
+we're going to say "let lastHole;" and
+that's just going to create a variable.
+
+00:04:10.670 --> 00:04:15.480 line:100% position:50% align:middle
+And then down here we're going to say, at
+the very bottom put a line in between
+
+00:04:15.480 --> 00:04:21.150 line:100% position:50% align:middle
+that, we'll say "lastHole = hole;" and
+what this will do is it will save the
+
+00:04:21.150 --> 00:04:26.590 line:100% position:50% align:middle
+reference to what one got popped up last
+time this function was called so that in
+
+00:04:26.590 --> 00:04:32.950 line:100% position:50% align:middle
+here what we can do it we'll say, "if(hole
+= lastHole)" like if it was the same
+
+00:04:32.950 --> 00:04:40.000 line:100% position:50% align:middle
+one that popped up last time, we'll just
+console log "Ah nah that's the same one
+
+00:04:40.000 --> 00:04:47.796 line:100% position:50% align:middle
+bud." And then we'll simply just run this
+function "randomHole()" again by passing
+
+00:04:47.890 --> 00:04:53.110 line:100% position:50% align:middle
+"holes." Now this function is just console
+logging but that's not really what we want
+
+00:04:53.110 --> 00:04:57.740 line:100% position:50% align:middle
+because we can't get the reference to the
+DOM node if we just consolel log it.
+
+00:04:57.740 --> 00:05:03.100 line:100% position:50% align:middle
+So what we need to do here is return the
+hole which is what we have,
+
+00:05:03.100 --> 00:05:08.420 line:100% position:50% align:middle
+and then up here if it was the same one
+we'll just return that function itself
+
+00:05:08.420 --> 00:05:12.680 line:100% position:50% align:middle
+which will in turn get called. So you've
+got some recursion going on here returning
+
+00:05:12.680 --> 00:05:18.000 line:100% position:50% align:middle
+the hole. Now if we rerun that we should
+never get the same one twice in a row.
+
+00:05:18.000 --> 00:05:21.770 line:100% position:50% align:middle
+So, oh, we've got two things going on
+here, why do we? Oh, because we are
+
+00:05:21.770 --> 00:05:24.630 line:100% position:50% align:middle
+running it and we're console logging
+it, and that's...so this one,
+
+00:05:24.630 --> 00:05:27.490 line:100% position:50% align:middle
+this little thing is saying it's returned
+and we're console logging,
+
+00:05:27.490 --> 00:05:32.370 line:100% position:50% align:middle
+so we can take that console log out and
+run it, we have one, two,
+
+00:05:32.370 --> 00:05:37.540 line:100% position:50% align:middle
+three, two, six, three. There we go, never
+getting the same one,
+
+00:05:37.540 --> 00:05:40.980 line:100% position:50% align:middle
+every now and then we're getting,
+"now that's a same one, bud." Why?
+
+00:05:40.980 --> 00:05:44.740 line:100% position:50% align:middle
+Because it's, it is, in this case it was
+one and then it found one again,
+
+00:05:44.740 --> 00:05:49.190 line:100% position:50% align:middle
+but rather than returning it, it just
+returned the function which will call
+
+00:05:49.190 --> 00:05:53.340 line:100% position:50% align:middle
+itself again. If you call that a few more
+times you might get a chance where it will
+
+00:05:53.340 --> 00:05:58.830 line:100% position:50% align:middle
+run it more than once. Aha, there we go,
+see, it ran it once, it had one,
+
+00:05:58.830 --> 00:06:03.840 line:100% position:50% align:middle
+ran it again and got one, ran it again and
+got one, and then ran it again and got
+
+00:06:03.840 --> 00:06:06.820 line:100% position:50% align:middle
+three. So we've got them running now.
+So we've got a random time,
+
+00:06:06.820 --> 00:06:10.780 line:100% position:50% align:middle
+we got a random hole, maybe we should
+rename this to "randomTime",
+
+00:06:10.780 --> 00:06:16.390 line:100% position:50% align:middle
+keep that consistent, random and
+"randomHole." Next what we need to do is
+
+00:06:16.390 --> 00:06:22.330 line:100% position:50% align:middle
+actually get the moles popping up. So
+we'll go here and we'll make a function
+
+00:06:22.330 --> 00:06:26.290 line:100% position:50% align:middle
+called "peep()" which is, there're going
+to go hoop, they're going to pop up from
+
+00:06:26.290 --> 00:06:30.600 line:100% position:50% align:middle
+their holes. And we will get some time,
+which is a random time,
+
+00:06:30.600 --> 00:06:36.540 line:100% position:50% align:middle
+it's going to be between 200 miliseconds
+and one second, and we're going to get a
+
+00:06:36.540 --> 00:06:44.190 line:100% position:50% align:middle
+random hole which should give us
+"randomHole()" we pass it "holes." So now
+
+00:06:44.190 --> 00:06:53.030 line:100% position:50% align:middle
+we just console log time and hole see what
+we got here. Now when I just run "peep" we
+
+00:06:53.030 --> 00:07:01.660 line:100% position:50% align:middle
+get 450 milliseconds, hole5 should pop up,
+hole4 should pop up for 821 milliseconds,
+
+00:07:01.660 --> 00:07:06.740 line:100% position:50% align:middle
+hole3 should be just under one second. So
+you see how we're getting a random hole
+
+00:07:06.740 --> 00:07:11.900 line:100% position:50% align:middle
+and a random amount of time? So what we'll
+do here is we'll take that hole,
+
+00:07:11.900 --> 00:07:21.970 line:100% position:50% align:middle
+we'll add a class to it of "up" and that
+is going to trigger our CSS to be "top:0;"
+
+00:07:21.970 --> 00:07:25.910 line:100% position:50% align:middle
+and that's just going to animate itself in
+because by default I have put them
+
+00:07:25.910 --> 00:07:32.380 line:100% position:50% align:middle
+"top:100%;" and I put a transition
+of 0.4 seconds to pop up on it.
+
+00:07:32.380 --> 00:07:39.990 line:100% position:50% align:middle
+So there we go, let's try this here.
+Hey, there he is. I'll do it again,
+
+00:07:39.990 --> 00:07:44.520 line:100% position:50% align:middle
+hey, and again, and again, and again, and
+again, and you see that they are all
+
+00:07:44.520 --> 00:07:49.880 line:100% position:50% align:middle
+slowly popping up. However, we
+don't...they don't go away, and what we
+
+00:07:49.880 --> 00:07:55.670 line:100% position:50% align:middle
+need to do now is after this random amount
+of time we need to remove the class of
+
+00:07:55.670 --> 00:08:02.760 line:100% position:50% align:middle
+"up" from this random hole. So
+"setTimeout()" which is after how many
+
+00:08:02.760 --> 00:08:10.140 line:100% position:50% align:middle
+seconds time? And when that happens we're
+going to take our hole and we're going to
+
+00:08:10.140 --> 00:08:17.953 line:100% position:50% align:middle
+remove the class of "up." No, not remove
+class, just remove...removeClass is
+
+00:08:17.953 --> 00:08:22.860 line:100% position:50% align:middle
+jQuery. So here we go, and I will say peep
+and then it goes down,
+
+00:08:22.860 --> 00:08:27.990 line:100% position:50% align:middle
+peep again and then it goes down, peep
+again, wohoo! Having some fun here,
+
+00:08:27.990 --> 00:08:36.480 line:100% position:50% align:middle
+awesome. Then, what we need to do is
+unless the game is over we just need to
+
+00:08:36.480 --> 00:08:40.890 line:100% position:50% align:middle
+run it again, when it's done we'll run
+"peep()." So if you were to kick off
+
+00:08:40.890 --> 00:08:48.170 line:100% position:50% align:middle
+peep like that it's just going to run
+indefinitely because there's no way to
+
+00:08:48.170 --> 00:08:53.550 line:100% position:50% align:middle
+actually stop that. So what we'll do here
+is we'll go up to our top,
+
+00:08:53.550 --> 00:08:59.530 line:100% position:50% align:middle
+and we'll create a variable called
+"timeUp" and we'll set that to "false,"
+
+00:08:59.530 --> 00:09:05.800 line:100% position:50% align:middle
+and we'll go down here and we'll say if
+the time is not up then we'll run
+
+00:09:05.800 --> 00:09:13.420 line:100% position:50% align:middle
+"peep()." So if there is the variable
+"timeUp" is ever set to "true" then it
+
+00:09:13.420 --> 00:09:18.130 line:100% position:50% align:middle
+will stop. So here we go, we'll run
+"peep()", it's going to run forever but
+
+00:09:18.130 --> 00:09:22.820 line:100% position:50% align:middle
+then we're going to take this "timeUp"
+variable, it's set to "false," we can set
+
+00:09:22.820 --> 00:09:28.790 line:100% position:50% align:middle
+it to "true," and it never starts again
+because it just...well,
+
+00:09:28.790 --> 00:09:33.400 line:100% position:50% align:middle
+"peep()" will call itself and then it'll
+call itself for the last time because this
+
+00:09:33.400 --> 00:09:40.460 line:100% position:50% align:middle
+will not run. Okay, that makes sense so
+far. Then what we need to do is make a
+
+00:09:40.460 --> 00:09:44.937 line:100% position:50% align:middle
+function called "startGame." So we'll say
+"function startGame()." And the first
+
+00:09:44.937 --> 00:09:48.570 line:100% position:50% align:middle
+thing we need to do is just reset the
+scoreboard here, just in case we're
+
+00:09:48.570 --> 00:09:56.104 line:100% position:50% align:middle
+playing again. So we'll say
+"scoreboard.textContent = 0;" then we'll
+
+00:09:56.104 --> 00:10:00.816 line:100% position:50% align:middle
+say "timeUp = false;" again we set that on
+page load I know, but if you were to
+
+00:10:00.816 --> 00:10:04.920 line:100% position:50% align:middle
+run "startGame()" again like you want to
+play twice then you could do that.
+
+00:10:04.920 --> 00:10:09.860 line:100% position:50% align:middle
+Then we want to kick off "peep()" there
+which we'll run it, so let's see here,
+
+00:10:09.860 --> 00:10:16.920 line:100% position:50% align:middle
+startGame(), so they're running like
+crazy. But what we also want to do is
+
+00:10:16.920 --> 00:10:21.800 line:100% position:50% align:middle
+after 10 seconds we want to set that
+variable that we time up,
+
+00:10:21.800 --> 00:10:28.820 line:100% position:50% align:middle
+we want to set it to true. So
+"setTimeout()" after that happens we'll
+
+00:10:28.820 --> 00:10:37.420 line:100% position:50% align:middle
+say "timeUp = true" and that will run
+after 10 seconds, 10,000 milliseconds.
+
+00:10:37.420 --> 00:10:42.170 line:100% position:50% align:middle
+Well, let's do it after two seconds now
+just so we can see if it works.
+
+00:10:42.170 --> 00:10:49.300 line:100% position:50% align:middle
+So we'll run it, two seconds has
+elapsed and no longer is running.
+
+00:10:49.300 --> 00:10:53.410 line:100% position:50% align:middle
+Good, so we'll set that back to 10
+seconds. So we've got our "startGame(),"
+
+00:10:53.410 --> 00:11:00.000 line:100% position:50% align:middle
+we've got our "peep()" and we can make a
+button now that when clicked we can maybe
+
+00:11:00.000 --> 00:11:07.550 line:100% position:50% align:middle
+put a button right here that says
+"onClick="startGame()"" there's "Start!"
+
+00:11:07.550 --> 00:11:11.480 line:100% position:50% align:middle
+and then when you click it it will start
+playing the game for you.
+
+00:11:11.480 --> 00:11:16.020 line:100% position:50% align:middle
+Wohoo! The last piece that we need
+is when you click on a mole,
+
+00:11:16.020 --> 00:11:21.030 line:100% position:50% align:middle
+we need to bonk them on the head. So we
+are going to make a function called "bonk"
+
+00:11:21.030 --> 00:11:24.770 line:100% position:50% align:middle
+that's going to take in the event, it'll
+just console log the event.
+
+00:11:24.770 --> 00:11:31.740 line:100% position:50% align:middle
+Then we'll take all of our moles and we'll
+listen for a click on each of the moles,
+
+00:11:31.740 --> 00:11:39.270 line:100% position:50% align:middle
+then we'll run "bonk." Bonk, like that. So
+now we have to get a little bit crafty
+
+00:11:39.270 --> 00:11:44.780 line:100% position:50% align:middle
+with our clicking. So, start it, click.
+Oh, I got the first one.
+
+00:11:44.780 --> 00:11:50.040 line:100% position:50% align:middle
+All right, let's take a look at this.
+"MouseEvent", all kinds of information in
+
+00:11:50.040 --> 00:11:53.230 line:100% position:50% align:middle
+here. The first thing I want you to do is,
+you might say like,
+
+00:11:53.230 --> 00:11:58.830 line:100% position:50% align:middle
+"Oh, Wes, but I can fake a click with
+JavaScript," good matches like do that
+
+00:11:58.830 --> 00:12:04.170 line:100% position:50% align:middle
+and win the entire game. Well, on all of
+your events you have this thing called
+
+00:12:04.170 --> 00:12:10.880 line:100% position:50% align:middle
+"isTrusted" and it will say "true." If you
+fake clicking something with JavaScript
+
+00:12:10.880 --> 00:12:15.060 line:100% position:50% align:middle
+that's going to be false because you can
+simulate a click which is handy in some
+
+00:12:15.060 --> 00:12:19.860 line:100% position:50% align:middle
+cases, but we need it to be true that this
+actually came from the user's mouse input.
+
+00:12:19.860 --> 00:12:25.200 line:100% position:50% align:middle
+So the first thing we're going to do is
+we're going to say "if(!e.isTrusted)
+
+00:12:25.200 --> 00:12:31.200 line:100% position:50% align:middle
+return;" and that will...we'll just say
+"cheater!" So someone's
+
+00:12:31.200 --> 00:12:36.830 line:100% position:50% align:middle
+trying to fake the click without their
+mouse. Okay, good. Then what we want to do
+
+00:12:36.830 --> 00:12:41.950 line:100% position:50% align:middle
+here is when someone clicks something
+we've got to give them some sort of score.
+
+00:12:41.950 --> 00:12:49.140 line:100% position:50% align:middle
+So let's go up to the top here and we'll
+say, "let score = 0" and when we start the
+
+00:12:49.140 --> 00:12:55.700 line:100% position:50% align:middle
+game we'll set score to zero as well just
+so that if we restart it we can do that.
+
+00:12:55.700 --> 00:13:01.290 line:100% position:50% align:middle
+And then we'll go down here and we'll
+simply say "score++;" and we will move
+
+00:13:01.290 --> 00:13:06.400 line:100% position:50% align:middle
+that little guy down, so
+"this.classList.remove('up');" because if
+
+00:13:06.400 --> 00:13:11.240 line:100% position:50% align:middle
+you smack them they should move down even
+if they have like a second or so left on
+
+00:13:11.240 --> 00:13:14.910 line:100% position:50% align:middle
+the clock. And then we take our
+"scoreBoard" which have we selected that?
+
+00:13:14.910 --> 00:13:20.424 line:100% position:50% align:middle
+Yes, yes we have "document.querySelctor"
+and we'll set the text content to be
+
+00:13:20.424 --> 00:13:26.280 line:100% position:50% align:middle
+[inaudible]. I got eight, then
+you click start, it'll run again and you
+
+00:13:26.280 --> 00:13:31.630 line:100% position:50% align:middle
+can keep playing with all of your values
+there. So that is our Whack-a-mole game,
+
+00:13:31.630 --> 00:13:34.790 line:100% position:50% align:middle
+there's a lot more you could do. First of
+all what would be really be cool is if you
+
+00:13:34.790 --> 00:13:39.440 line:100% position:50% align:middle
+had like an all time scoreboard and you
+were to save that in local storage so if
+
+00:13:39.440 --> 00:13:43.580 line:100% position:50% align:middle
+someone were to come back then you
+could reload the highest score,
+
+00:13:43.580 --> 00:13:47.630 line:100% position:50% align:middle
+and you save them in local storage. It
+would also be cool if you had like levels,
+
+00:13:47.630 --> 00:13:53.820 line:100% position:50% align:middle
+like this is like a pretty clickable, but
+if you were to say like expert level,
+
+00:13:53.820 --> 00:14:00.000 line:100% position:50% align:middle
+and then you were to change this random
+time to like between 50 milliseconds and
+
+00:14:00.000 --> 00:14:04.060 line:100% position:50% align:middle
+300 milliseconds and then it'll be like
+super hard like woo, woo,
+
+00:14:04.060 --> 00:14:07.250 line:100% position:50% align:middle
+woo, woo, woo. Like some people would
+be really good at that, not me,
+
+00:14:07.250 --> 00:14:12.940 line:100% position:50% align:middle
+but oh I got one, sweet. So you could do
+expert mode and you can just create extra
+
+00:14:12.940 --> 00:14:16.420 line:100% position:50% align:middle
+all kinds of different controls up here
+along with the dashboard and I would just
+
+00:14:16.420 --> 00:14:22.680 line:100% position:50% align:middle
+love to see where you take this one.
+Hopefully you enjoyed that and I won't see
+
+00:14:22.680 --> 00:14:26.190 line:100% position:50% align:middle
+you tomorrow because that is it. Hopefully
+you enjoyed it and I'll have a little bit
+
+00:14:26.190 --> 00:14:29.350 line:100% position:50% align:middle
+of an outro video for you as well.
+Thanks a lot.
+
+00:14:29.350 --> 00:14:32.650 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:14:34.000 --> 00:14:35.000 line:100% position:50% align:middle
+.

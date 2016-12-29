@@ -1,0 +1,476 @@
+WEBVTT
+
+00:00:00.361 --> 00:00:03.361 line:100% position:50% align:middle
+♪ [ music] ♪
+
+00:00:07.546 --> 00:00:11.020 line:100% position:50% align:middle
+A couple weeks ago Stripe launched
+this new page and I hovered over the
+
+00:00:11.020 --> 00:00:16.560 line:100% position:50% align:middle
+navigation and I was
+like, "Whoa. How are they doing that?"
+
+00:00:16.560 --> 00:00:20.790 line:100% position:50% align:middle
+Because you know if you have a drop down
+and you hide one and show the other,
+
+00:00:20.790 --> 00:00:24.930 line:100% position:50% align:middle
+you can't just transition the background.
+You can't just move the unordered list
+
+00:00:24.930 --> 00:00:29.510 line:100% position:50% align:middle
+from one to another, because it's two
+different elements. So, I figured out how
+
+00:00:29.510 --> 00:00:33.710 line:100% position:50% align:middle
+to do it, and we're going to build a
+replica of this in a coming video.
+
+00:00:33.710 --> 00:00:37.260 line:100% position:50% align:middle
+But what I wanted to do was start with
+something simple, just so we can get the
+
+00:00:37.260 --> 00:00:41.020 line:100% position:50% align:middle
+ideas. Because it's a bit of a doozy. They
+obviously have some really good developers
+
+00:00:41.020 --> 00:00:44.410 line:100% position:50% align:middle
+at Stripe to build this thing. But I
+really want to understand, sort of,
+
+00:00:44.410 --> 00:00:47.920 line:100% position:50% align:middle
+the fundamentals of what's happening. So,
+this is what we're going to start with,
+
+00:00:47.920 --> 00:00:52.100 line:100% position:50% align:middle
+and then in a couple videos down the road,
+we're going to replicate this sort of
+
+00:00:52.100 --> 00:00:54.320 line:100% position:50% align:middle
+thing with the Stripe navigation.
+
+00:00:54.320 --> 00:00:57.600 line:100% position:50% align:middle
+So, here's what we're doing. We've got
+these links on the page,
+
+00:00:57.600 --> 00:01:01.850 line:100% position:50% align:middle
+and when you hover over one of the links,
+we've got this little pill that's going to
+
+00:01:01.850 --> 00:01:07.690 line:100% position:50% align:middle
+both resize itself, so it's short and
+long, as well as follow you around the
+
+00:01:07.690 --> 00:01:13.400 line:100% position:50% align:middle
+page wherever that is going. So let's
+open up our index-start and get going.
+
+00:01:13.400 --> 00:01:17.130 line:100% position:50% align:middle
+Go down to our script tag here. So, first
+thing that we need to do,
+
+00:01:17.130 --> 00:01:21.830 line:100% position:50% align:middle
+is to get all of what I like to call
+triggers. Things that will be hovered,
+
+00:01:21.830 --> 00:01:26.810 line:100% position:50% align:middle
+that need a background behind it. So I'm
+just going to do every single link that's
+
+00:01:26.810 --> 00:01:27.580 line:100% position:50% align:middle
+on the page.
+
+00:01:27.580 --> 00:01:33.310 line:100% position:50% align:middle
+So it's "const triggers =
+document.query selector all A."
+
+00:01:33.310 --> 00:01:37.320 line:100% position:50% align:middle
+Every single link on the actual page. Then
+what we need to do is create what's called
+
+00:01:37.320 --> 00:01:41.160 line:100% position:50% align:middle
+a highlight. Because if you haven't
+figured it out yet, how does this actually
+
+00:01:41.160 --> 00:01:46.870 line:100% position:50% align:middle
+work? If we inspect it here, and we look
+at our DOM, you're going to see that we
+
+00:01:46.870 --> 00:01:51.350 line:100% position:50% align:middle
+have the span with a class of highlight,
+that I've just tacked into the DOM here.
+
+00:01:51.350 --> 00:01:57.010 line:100% position:50% align:middle
+And when you highlight over something, it
+will figure out the width,
+
+00:01:57.010 --> 00:02:02.120 line:100% position:50% align:middle
+the height, and where on the page that
+actual item is. And because there's CSS
+
+00:02:02.120 --> 00:02:07.110 line:100% position:50% align:middle
+transitions on this element, it's just
+going to transition itself from place,
+
+00:02:07.110 --> 00:02:12.230 line:100% position:50% align:middle
+to place, to place. And the width, the
+height, and the transform translate X,
+
+00:02:12.230 --> 00:02:17.680 line:100% position:50% align:middle
+and translate Y values, are gong to
+be moved on over.
+
+00:02:17.680 --> 00:02:21.800 line:100% position:50% align:middle
+So we will first make that highlight
+ourself, rather than having to go into our
+
+00:02:21.800 --> 00:02:27.400 line:100% position:50% align:middle
+HTML and do it we're going to make it in
+there. So, we'll say "const highlight
+
+00:02:27.400 --> 00:02:30.120 line:100% position:50% align:middle
+= document.create element." And we're
+going to make a span.
+
+00:02:30.120 --> 00:02:37.910 line:100% position:50% align:middle
+We're going to add a class of highlight,
+and then we're going to put it into the
+
+00:02:37.910 --> 00:02:40.210 line:100% position:50% align:middle
+DOM.
+
+00:02:40.210 --> 00:02:44.330 line:100% position:50% align:middle
+When we open this up in our browser here,
+you actually won't see that highlight
+
+00:02:44.330 --> 00:02:47.440 line:100% position:50% align:middle
+anywhere, and it's because it does not
+have a width or a height or anything like
+
+00:02:47.440 --> 00:02:52.270 line:100% position:50% align:middle
+that. But if we inspect, you should see
+that we do actually have this highlight
+
+00:02:52.270 --> 00:02:59.340 line:100% position:50% align:middle
+element in here. Good. Now what we need to
+do is listen for someone enters into a
+
+00:02:59.340 --> 00:03:05.245 line:100% position:50% align:middle
+link. So we'll make a function called,
+let's call it highlight link.
+
+00:03:05.590 --> 00:03:11.010 line:100% position:50% align:middle
+And we'll just console.log highlight. And
+then we'll listen for the mouse enter
+
+00:03:11.010 --> 00:03:13.630 line:100% position:50% align:middle
+event on each of our triggers.
+
+00:03:13.630 --> 00:03:18.720 line:100% position:50% align:middle
+Triggers.for each and then take our link,
+and we're going to take the link and we're
+
+00:03:18.720 --> 00:03:24.160 line:100% position:50% align:middle
+going to add the event listener for mouse
+enter. And when that happens we are gong
+
+00:03:24.160 --> 00:03:29.890 line:100% position:50% align:middle
+to run the function highlight link.
+Good. Now let's try it out.
+
+00:03:29.890 --> 00:03:35.160 line:100% position:50% align:middle
+Console highlight over it, there we go.
+We've got highlight triggering on all of
+
+00:03:35.160 --> 00:03:39.220 line:100% position:50% align:middle
+the links on the page. And you can tell
+that by console logging this.
+
+00:03:39.220 --> 00:03:43.470 line:100% position:50% align:middle
+And you'll see it will log the actual link
+that we're looking for.
+
+00:03:43.470 --> 00:03:48.850 line:100% position:50% align:middle
+Good. So, we've got that working so far.
+But now, what needs to happen is we need
+
+00:03:48.850 --> 00:03:53.410 line:100% position:50% align:middle
+to figure out the width, the height, the X
+and the Y. We need to figure out how big
+
+00:03:53.410 --> 00:03:59.470 line:100% position:50% align:middle
+is the element that we hovered? And where
+on the page is that actual element?
+
+00:03:59.470 --> 00:04:04.820 line:100% position:50% align:middle
+So, we're going to use a method called
+"get bounding client rect,"
+
+00:04:04.820 --> 00:04:09.900 line:100% position:50% align:middle
+which is a bit of a mouthful to say. But
+we'll say const link coords,
+
+00:04:09.900 --> 00:04:14.100 line:100% position:50% align:middle
+this is going to give us the coordinates,
+and this, this is going to be equal to the
+
+00:04:14.100 --> 00:04:17.170 line:100% position:50% align:middle
+thing that was triggered, which is going
+to be each of the links.
+
+00:04:17.170 --> 00:04:23.820 line:100% position:50% align:middle
+Dot get, bounding client rect. And then
+just console log those link coords to see
+
+00:04:23.820 --> 00:04:26.450 line:100% position:50% align:middle
+what we have here.
+
+00:04:26.450 --> 00:04:30.607 line:100% position:50% align:middle
+So I'm going to hover over this sucker. Ah
+and look what we get here.
+
+00:04:30.607 --> 00:04:35.280 line:100% position:50% align:middle
+We get the client rect. We've got the
+bottom, the height, the left,
+
+00:04:35.280 --> 00:04:39.500 line:100% position:50% align:middle
+the right, the top and the width. So it
+gives us all the information about where
+
+00:04:39.500 --> 00:04:44.940 line:100% position:50% align:middle
+on the page does that thing actually live.
+Now that we have those coordinates here,
+
+00:04:44.940 --> 00:04:50.472 line:100% position:50% align:middle
+we can simply take our highlight element,
+and we can apply the style.width
+
+00:04:50.472 --> 00:04:57.410 line:100% position:50% align:middle
+is gong to be equal to, and we'll
+take the link coords.width and you need to
+
+00:04:57.410 --> 00:05:02.320 line:100% position:50% align:middle
+put on PX on the end, otherwise it's just
+going to be 399 or 409 or something that
+
+00:05:02.320 --> 00:05:07.820 line:100% position:50% align:middle
+we don't know. And we'll do that also with
+the height. Let's see where we're at with
+
+00:05:07.820 --> 00:05:11.960 line:100% position:50% align:middle
+that. Hover one of these. Okay, so that
+matches up. And then when you go from one
+
+00:05:11.960 --> 00:05:16.030 line:100% position:50% align:middle
+to another, it's dynamically applying the
+style to it.
+
+00:05:16.030 --> 00:05:20.090 line:100% position:50% align:middle
+And if you go to our style.css and you
+look for the highlight selector,
+
+00:05:20.090 --> 00:05:26.180 line:100% position:50% align:middle
+.highlight, there we go. We have this
+transition on here of 0.2 seconds.
+
+00:05:26.180 --> 00:05:32.310 line:100% position:50% align:middle
+So in order to change that to two seconds,
+you'll see that it will just change itself
+
+00:05:32.310 --> 00:05:36.860 line:100% position:50% align:middle
+over that amount of time. And like, these
+links are a little bit shorter than these
+
+00:05:36.860 --> 00:05:40.680 line:100% position:50% align:middle
+links. So it will grow both in width and
+height. So that is why.
+
+00:05:40.680 --> 00:05:44.220 line:100% position:50% align:middle
+If we didn't have that transition on there
+it would just be immediate snaps,
+
+00:05:44.220 --> 00:05:49.270 line:100% position:50% align:middle
+and that's not what we want. We want it to
+animate itself. So where the fun part
+
+00:05:49.270 --> 00:05:52.630 line:100% position:50% align:middle
+comes in is where we start to animate the
+left and the right values.
+
+00:05:52.630 --> 00:05:58.610 line:100% position:50% align:middle
+And we're going to be doing that. Rather
+than doing it with CSS.left and .right,
+
+00:05:58.610 --> 00:06:04.100 line:100% position:50% align:middle
+or top and bottom, what we will be doing
+is we will be using the transform property
+
+00:06:04.100 --> 00:06:07.843 line:100% position:50% align:middle
+to apply it and that can have some
+benefits when you're looking for some
+
+00:06:07.843 --> 00:06:09.300 line:100% position:50% align:middle
+really smooth animation.
+
+00:06:09.300 --> 00:06:13.250 line:100% position:50% align:middle
+So, we'll take our highlight. We'll apply
+the style of transform.
+
+00:06:13.250 --> 00:06:19.150 line:100% position:50% align:middle
+And normally how it works is that we say
+something like translate and then you give
+
+00:06:19.150 --> 00:06:24.460 line:100% position:50% align:middle
+it an X and a Y. So 100 and 100. You see
+how it animates itself to 100 100?
+
+00:06:24.460 --> 00:06:28.860 line:100% position:50% align:middle
+Well, we want to make these 100 and 100
+dynamic. But we take our 100,
+
+00:06:28.860 --> 00:06:35.750 line:100% position:50% align:middle
+and replace it with our variable here. So
+we'll say linkcoords.left,
+
+00:06:35.750 --> 00:06:40.440 line:100% position:50% align:middle
+and this one is going to be
+linkcoords.top. And that will give us the
+
+00:06:40.440 --> 00:06:44.300 line:100% position:50% align:middle
+value right from the top. Now if we hover
+over any of these items here,
+
+00:06:44.300 --> 00:06:49.750 line:100% position:50% align:middle
+everything is looking good. You can also
+go up into one of your ones and maybe put
+
+00:06:49.750 --> 00:06:53.040 line:100% position:50% align:middle
+a break tag in or something to make it
+bigger. You can see that it's going to
+
+00:06:53.040 --> 00:06:56.330 line:100% position:50% align:middle
+transition both the height, the width, and
+the X and the Y.
+
+00:06:56.330 --> 00:06:59.370 line:100% position:50% align:middle
+Now, you might think you're done, and a
+lot of people do this,
+
+00:06:59.370 --> 00:07:04.530 line:100% position:50% align:middle
+but they don't try...like open your DEV
+tools, and scroll down a little bit.
+
+00:07:04.530 --> 00:07:12.150 line:100% position:50% align:middle
+Now hover over one of them. Oh. What the
+hell is going on? They're like a little
+
+00:07:12.150 --> 00:07:19.490 line:100% position:50% align:middle
+bit messed up. If I scroll down a little
+bit, you see how it's off by the amount
+
+00:07:19.490 --> 00:07:23.470 line:100% position:50% align:middle
+that I've scrolled down? Hmm. That's a
+little bit of a pain here.
+
+00:07:23.470 --> 00:07:26.970 line:100% position:50% align:middle
+And how we compensate for that is, you can
+do it in a couple of ways.
+
+00:07:26.970 --> 00:07:31.000 line:100% position:50% align:middle
+First, we can figure out what the offset
+of the actual parent is.
+
+00:07:31.000 --> 00:07:33.880 line:100% position:50% align:middle
+And we're going to do that in the next
+one. But in this case, I think we can just
+
+00:07:33.880 --> 00:07:39.600 line:100% position:50% align:middle
+simply take how far the person has
+scrolled down, and then take that away
+
+00:07:39.600 --> 00:07:44.860 line:100% position:50% align:middle
+from our actual item. So how do we do
+that? Well, let's go into our window here.
+
+00:07:44.860 --> 00:07:50.390 line:100% position:50% align:middle
+Window.scroll Y is going to give us zero.
+Scroll down a little bit and re-run that.
+
+00:07:50.390 --> 00:07:54.300 line:100% position:50% align:middle
+It's going to give you 67. That's how far
+we actually are. So,
+
+00:07:54.300 --> 00:07:57.320 line:100% position:50% align:middle
+let's go back and refactor this code a
+little bit.
+
+00:07:57.320 --> 00:07:59.570 line:100% position:50% align:middle
+What I'm going to do is I'm going to make
+our own coordinates here.
+
+00:07:59.570 --> 00:08:05.240 line:100% position:50% align:middle
+So we'll say "const.coords =." It's
+going to have a width, which is going to
+
+00:08:05.240 --> 00:08:09.940 line:100% position:50% align:middle
+be equal to the linkcoords.width. The
+width and the height are fine.
+
+00:08:09.940 --> 00:08:16.000 line:100% position:50% align:middle
+Right. But the problem is with our X and
+our Y, or our top and our left.
+
+00:08:16.000 --> 00:08:26.620 line:100% position:50% align:middle
+So the top is now going to be
+linkcoords.top minus wondow.scroll Y.
+
+00:08:26.620 --> 00:08:31.711 line:100% position:50% align:middle
+And then we'll do that for our left which
+is link.left and we can also do scroll X
+
+00:08:31.711 --> 00:08:36.080 line:100% position:50% align:middle
+just in case we have any horizontal scroll
+there. Then what we'll do is we'll switch
+
+00:08:36.080 --> 00:08:40.400 line:100% position:50% align:middle
+out the reference to link coords, with
+just the coords. Object,
+
+00:08:40.400 --> 00:08:43.230 line:100% position:50% align:middle
+which we've done here. We've done a little
+bit of math there.
+
+00:08:43.230 --> 00:08:48.430 line:100% position:50% align:middle
+Now when I refresh and scroll down a
+little bit, it still doesn't work,
+
+00:08:48.430 --> 00:08:54.010 line:100% position:50% align:middle
+and that's because I minused them, we
+should add them in, not take them away.
+
+00:08:54.010 --> 00:08:58.690 line:100% position:50% align:middle
+There we go. Now if I scroll down anywhere
+on the page it's always going to follow us
+
+00:08:58.690 --> 00:09:03.360 line:100% position:50% align:middle
+along regardless of where we are on the
+page. So, that is the very basics.
+
+00:09:03.360 --> 00:09:07.250 line:100% position:50% align:middle
+Really, what I wanted to get down there is
+this concept of the get bounding client
+
+00:09:07.250 --> 00:09:13.120 line:100% position:50% align:middle
+rect, and then applying it to the inline
+style. In a couple more videos,
+
+00:09:13.120 --> 00:09:17.750 line:100% position:50% align:middle
+we're going to go ahead and build out the
+entire drop down, which is a lot more
+
+00:09:17.750 --> 00:09:19.622 line:100% position:50% align:middle
+involved. I'll see you then.
+
+00:09:19.622 --> 00:09:21.622 line:100% position:50% align:middle
+♪ [music] ♪

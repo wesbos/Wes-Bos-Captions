@@ -1,0 +1,422 @@
+WEBVTT
+
+00:00:00.421 --> 00:00:03.400 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:06.978 --> 00:00:10.130 line:100% position:50% align:middle
+Today we are going to be taking two of the
+things that we've done in the past,
+
+00:00:10.130 --> 00:00:14.630 line:100% position:50% align:middle
+which is working with mouse move events
+and second working with HTML5 video.
+
+00:00:14.630 --> 00:00:17.320 line:100% position:50% align:middle
+And we're going to sort of put them
+together. We are going to mash them into
+
+00:00:17.320 --> 00:00:21.950 line:100% position:50% align:middle
+our colab. So this is just an idea that
+I've had. I don't know if it's totally a
+
+00:00:21.950 --> 00:00:25.030 line:100% position:50% align:middle
+great idea but I know that it was a fun
+thing to build regardless.
+
+00:00:25.030 --> 00:00:27.990 line:100% position:50% align:middle
+So I run a video site where I've got a lot
+of people watching my videos,
+
+00:00:27.990 --> 00:00:31.720 line:100% position:50% align:middle
+and I'm always thinking about how do I
+make the viewing experience a little bit
+
+00:00:31.720 --> 00:00:35.180 line:100% position:50% align:middle
+better? So one thing that a lot of
+developers like to do is they don't watch
+
+00:00:35.180 --> 00:00:40.310 line:100% position:50% align:middle
+their videos at 1x. They watch them at
+like 1.5 or 2 or like they like to speed
+
+00:00:40.310 --> 00:00:43.160 line:100% position:50% align:middle
+it up and slow it down depending on how
+quickly or how boring,
+
+00:00:43.160 --> 00:00:46.200 line:100% position:50% align:middle
+or how exciting something is, or how
+important something is.
+
+00:00:46.200 --> 00:00:51.860 line:100% position:50% align:middle
+So what I really wanted to do here is just
+experiment with a new sort of input that
+
+00:00:51.860 --> 00:00:55.910 line:100% position:50% align:middle
+would control how fast the video goes so
+that rather than you having to click up
+
+00:00:55.910 --> 00:00:59.970 line:100% position:50% align:middle
+and down to change the video speed, you
+can sort of just like DJ it here as you're
+
+00:00:59.970 --> 00:01:04.810 line:100% position:50% align:middle
+watching the video to go slower and
+faster. So I'm just going to give you a
+
+00:01:04.810 --> 00:01:11.615 line:100% position:50% align:middle
+little play here. And then chipmunk, and
+then you slow it down.
+
+00:01:20.869 --> 00:01:26.157 line:100% position:50% align:middle
+So you see what's going on here. As I move
+this, like the lowest is going to be 0.5x
+
+00:01:26.157 --> 00:01:31.657 line:100% position:50% align:middle
+or 0.4x and then the highest is going to
+be all the way up to 4x.
+
+00:01:31.657 --> 00:01:35.020 line:100% position:50% align:middle
+And then as you mouse over or as you click
+and drag, depending on how you like to do
+
+00:01:35.020 --> 00:01:40.110 line:100% position:50% align:middle
+your interface, we are just changing that
+value and then it's indirectly going to be
+
+00:01:40.110 --> 00:01:44.270 line:100% position:50% align:middle
+setting the playback rate on this video.
+So let's jump into it.
+
+00:01:44.270 --> 00:01:49.200 line:100% position:50% align:middle
+This won't be too big of a one. So far
+what I've done is I've selected the speed,
+
+00:01:49.200 --> 00:01:55.280 line:100% position:50% align:middle
+which is the entire white bar here, and
+then we have the speed bar which is going
+
+00:01:55.280 --> 00:02:00.270 line:100% position:50% align:middle
+to be the field in here or with that sort
+of blue gradient right here.
+
+00:02:00.270 --> 00:02:05.010 line:100% position:50% align:middle
+And then I've just got a video sort of
+playing here streaming off of Dropbox.
+
+00:02:05.010 --> 00:02:07.860 line:100% position:50% align:middle
+Hopefully it doesn't get shut down.
+So it's a lot of bandwidth.
+
+00:02:07.860 --> 00:02:12.670 line:100% position:50% align:middle
+And then I've got a video element here,
+which is the actual video here.
+
+00:02:12.670 --> 00:02:18.230 line:100% position:50% align:middle
+Now, I'm going to take auto play off just
+for our sanity's sake so it doesn't keep
+
+00:02:18.230 --> 00:02:22.710 line:100% position:50% align:middle
+playing every single time. And then what
+happens is when you hover over top of this
+
+00:02:22.710 --> 00:02:27.000 line:100% position:50% align:middle
+we are going to change the playback rate
+as well as update the actual visual.
+
+00:02:27.000 --> 00:02:31.130 line:100% position:50% align:middle
+So let's do the visual part first and then
+we'll work on the playback rate.
+
+00:02:31.130 --> 00:02:36.590 line:100% position:50% align:middle
+So first thing we need to do is take our
+speed and add the event listener of mouse
+
+00:02:36.590 --> 00:02:42.340 line:100% position:50% align:middle
+move. And when that happens we'll have a
+function. I'm using a proper function here
+
+00:02:42.340 --> 00:02:46.840 line:100% position:50% align:middle
+because I need this to be equal to the
+video itself. Sorry, not the video,
+
+00:02:46.840 --> 00:02:52.060 line:100% position:50% align:middle
+the actual speed bar when you mouse over
+it. And cool. In that function pass
+
+00:02:52.060 --> 00:02:57.280 line:100% position:50% align:middle
+yourself the event and then let's just
+console log the event when you mouse over
+
+00:02:57.280 --> 00:03:02.100 line:100% position:50% align:middle
+it. Open that sucker up in your browser
+and you should see this video that we've
+
+00:03:02.100 --> 00:03:06.990 line:100% position:50% align:middle
+got going on and our thing. Now when I
+start hovering over top of it,
+
+00:03:06.990 --> 00:03:11.560 line:100% position:50% align:middle
+you will now see all the different events
+that we have going on it.
+
+00:03:11.560 --> 00:03:15.050 line:100% position:50% align:middle
+So first of all we need to get where like
+this is going to be zero pixels and this
+
+00:03:15.050 --> 00:03:20.120 line:100% position:50% align:middle
+is going to be however high it is. Let's
+talk look look look- 410,
+
+00:03:20.120 --> 00:03:22.620 line:100% position:50% align:middle
+so that's going to be 410
+pixels. So how do we get that?
+
+00:03:22.620 --> 00:03:26.510 line:100% position:50% align:middle
+We'll say cons y is equal to and we'll do
+the same thing we did in the last video,
+
+00:03:26.510 --> 00:03:31.790 line:100% position:50% align:middle
+e dot page y and we are going to take the
+offset of this, dot offset top.
+
+00:03:31.790 --> 00:03:35.980 line:100% position:50% align:middle
+Why? Because we can't assume that this bar
+is going to be at the top of it.
+
+00:03:35.980 --> 00:03:40.480 line:100% position:50% align:middle
+There might be padding, or merging or
+anything or another element in-between it.
+
+00:03:40.480 --> 00:03:44.620 line:100% position:50% align:middle
+So let's console log y, see what we've got
+there. There we go.
+
+00:03:44.620 --> 00:03:47.990 line:100% position:50% align:middle
+You see at the top, you're getting zero.
+All the way at the bottom we are getting
+
+00:03:47.990 --> 00:03:53.520 line:100% position:50% align:middle
+around 410. So that's showing us how far
+along we are. We want to turn that into a
+
+00:03:53.520 --> 00:04:00.170 line:100% position:50% align:middle
+percentage. So if this is a 410 pixel, if
+I go to 205 pixels, right around here,
+
+00:04:00.170 --> 00:04:09.000 line:100% position:50% align:middle
+that should be 50%. Let's say const
+percent is equal to let's take y divided
+
+00:04:09.000 --> 00:04:14.260 line:100% position:50% align:middle
+by this dot offset height. That's a way to
+get the height of the actual one that we
+
+00:04:14.260 --> 00:04:21.720 line:100% position:50% align:middle
+have there. So let's console log the
+percent. There we go. So that is a one.
+
+00:04:21.720 --> 00:04:26.987 line:100% position:50% align:middle
+That is zero. And we could bump those up
+to get to what we want.
+
+00:04:27.280 --> 00:04:33.250 line:100% position:50% align:middle
+Then we also need a min and a max because
+want this to be 0.4 and this to be 4,
+
+00:04:33.250 --> 00:04:39.323 line:100% position:50% align:middle
+right? So how do we do that? I would say
+const min equals 0.4 and const.
+
+00:04:39.323 --> 00:04:43.400 line:100% position:50% align:middle
+Max is equal to, I don't know, max is
+equal to 4x or whatever you think the
+
+00:04:43.400 --> 00:04:49.120 line:100% position:50% align:middle
+crazy upper bound. Then what we do is
+we'll make a height variable and we're
+
+00:04:49.120 --> 00:04:54.300 line:100% position:50% align:middle
+going to set that to...the percentage
+right now is like 0.99 and we want to turn
+
+00:04:54.300 --> 00:05:00.910 line:100% position:50% align:middle
+that into 99%. Take our percent variable,
+multiply it by a hundred and then we'll
+
+00:05:00.910 --> 00:05:12.370 line:100% position:50% align:middle
+wrap that sucker in, I thought, round. And
+then add percent to the end and console
+
+00:05:12.370 --> 00:05:17.680 line:100% position:50% align:middle
+log the height. See what we've got here.
+All right. So now we actually are getting
+
+00:05:17.680 --> 00:05:22.860 line:100% position:50% align:middle
+a full percentage that we're looking for
+rather than a zero point something
+
+00:05:22.860 --> 00:05:28.070 line:100% position:50% align:middle
+whatever, and then we'll take our bar
+which is the speed bar, a bar,
+
+00:05:28.070 --> 00:05:39.000 line:100% position:50% align:middle
+that style. The height is equal to height.
+Look at this. So so far,
+
+00:05:39.000 --> 00:05:43.570 line:100% position:50% align:middle
+we've got it up and going. Looks good.
+Next thing we need to do is update that
+
+00:05:43.570 --> 00:05:50.380 line:100% position:50% align:middle
+number that's inside of there, and the way
+that we do that is we will then calculate
+
+00:05:50.380 --> 00:05:57.160 line:100% position:50% align:middle
+what the playback rate is. Let's say const
+playback rate is going to be equal to.
+
+00:05:57.160 --> 00:06:01.630 line:100% position:50% align:middle
+This is going to be a bit of a weird one
+because we don't want the minimum to be
+
+00:06:01.630 --> 00:06:08.129 line:100% position:50% align:middle
+zero and the maximum to be one. That's not
+the playback rate. At a 0% height,
+
+00:06:08.129 --> 00:06:14.940 line:100% position:50% align:middle
+it should be 0.4x and at a 100% height it
+should be 4x. So we sort of need to do a
+
+00:06:14.940 --> 00:06:19.010 line:100% position:50% align:middle
+little bit of math to get that lower and
+upper bounds. And the way that you do that
+
+00:06:19.010 --> 00:06:24.780 line:100% position:50% align:middle
+is you take your percent and you multiply
+that by the max minus the min plus the
+
+00:06:24.780 --> 00:06:28.350 line:100% position:50% align:middle
+min. And that's sort of how you can offset
+your height. We did that in a couple of
+
+00:06:28.350 --> 00:06:31.600 line:100% position:50% align:middle
+videos ago when we were doing the
+tech shot at one when you
+
+00:06:31.600 --> 00:06:37.320 line:100% position:50% align:middle
+needed to hover negative 50 and plus 50,
+not 0 to 100. And that's just a neat way
+
+00:06:37.320 --> 00:06:41.540 line:100% position:50% align:middle
+that we can do that.
+We have that playback rate and we can take
+
+00:06:41.540 --> 00:06:48.590 line:100% position:50% align:middle
+our bar and set the text content to be
+that playback rate. See here.
+
+00:06:50.035 --> 00:06:56.400 line:100% position:50% align:middle
+So you see it's just like a crazy number.
+So we can take that and just run dot two
+
+00:06:56.400 --> 00:07:02.710 line:100% position:50% align:middle
+fixed on it and just give us two decimal
+places. There we go and then you can tack
+
+00:07:02.710 --> 00:07:08.720 line:100% position:50% align:middle
+on your little x or something onto the
+end. So plus x or you could use a template
+
+00:07:08.720 --> 00:07:16.350 line:100% position:50% align:middle
+string to pop up that in. Looking pretty
+snazzy. Last thing we need to do is
+
+00:07:16.350 --> 00:07:20.070 line:100% position:50% align:middle
+actually to take that playback rate that
+we have here, console log,
+
+00:07:20.070 --> 00:07:23.810 line:100% position:50% align:middle
+playback rate. Let's see what we got going
+on here. Three point five.
+
+00:07:23.810 --> 00:07:29.120 line:100% position:50% align:middle
+We've got to take that value and apply it
+to our video. So let's say video dot
+
+00:07:29.120 --> 00:07:34.730 line:100% position:50% align:middle
+playback rate. And what playback rate is,
+take a look at it in our console here,
+
+00:07:34.730 --> 00:07:41.170 line:100% position:50% align:middle
+video dot playback rate. One is just
+normal speed. So two is equal to,
+
+00:07:41.170 --> 00:07:51.240 line:100% position:50% align:middle
+if we were to play it ourselves...ten. The
+audio stops at some point.
+
+00:07:52.700 --> 00:07:58.470 line:100% position:50% align:middle
+Four, zero point two. The audio stops at a
+very slow amount as well.
+
+00:07:58.470 --> 00:08:06.770 line:100% position:50% align:middle
+Like 0.5 is as low as you can get it.
+Sounds like I'm just wasted trying to
+
+00:08:06.770 --> 00:08:12.820 line:100% position:50% align:middle
+teach you Flexbox. So video dot playback
+rate equals playback rate.
+
+00:08:12.820 --> 00:08:16.590 line:100% position:50% align:middle
+And don't worry about those long
+percentage. I know some people are irked
+
+00:08:16.590 --> 00:08:21.360 line:100% position:50% align:middle
+when you have like very long decimal
+places but it won't be issue there.
+
+00:08:21.360 --> 00:08:35.113 line:100% position:50% align:middle
+Now we'll give it a play. Looks good. Nice
+and fast. Slow. Fantastic.
+
+00:08:35.113 --> 00:08:40.472 line:100% position:50% align:middle
+So that was kind of cool. We did there is
+we both calculated the height as well as
+
+00:08:40.472 --> 00:08:45.173 line:100% position:50% align:middle
+attached the playback rate. If you don't
+like doing both your presentation and your
+
+00:08:45.173 --> 00:08:48.990 line:100% position:50% align:middle
+functionality in a single function, you
+could shell that off to two separate
+
+00:08:48.990 --> 00:08:52.860 line:100% position:50% align:middle
+functions which you would just then call
+from your mass move event right here and
+
+00:08:52.860 --> 00:08:58.540 line:100% position:50% align:middle
+then also we could take this function out
+and call it handle move and then up here
+
+00:08:58.540 --> 00:09:03.784 line:100% position:50% align:middle
+we'll make a function or replace that
+function. We'll call it a handle move.
+
+00:09:04.020 --> 00:09:07.340 line:100% position:50% align:middle
+Then you're just going to hook that up to
+mouse move but maybe you'll also want to
+
+00:09:07.340 --> 00:09:12.770 line:100% position:50% align:middle
+hook it up to touch move or any other
+event that you wanted. Got that.
+
+00:09:12.770 --> 00:09:17.477 line:100% position:50% align:middle
+Still works wonderfully. Excellent.
+
+00:09:17.477 --> 00:09:19.819 line:100% position:50% align:middle
+So hopefully you enjoyed that
+and I will see you tomorrow.
+
+00:09:20.078 --> 00:09:23.000 line:100% position:50% align:middle
+♪ [music] ♪

@@ -1,0 +1,455 @@
+WEBVTT
+
+00:00:01.404 --> 00:00:03.558 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:07.698 --> 00:00:12.755 line:100% position:50% align:middle
+Quick, short, and sweet lesson today, and
+it's going to be about .addEventListener.
+
+00:00:12.755 --> 00:00:16.220 line:100% position:50% align:middle
+We're not going to be building anything
+huge here, but there's a couple concepts
+
+00:00:16.220 --> 00:00:20.210 line:100% position:50% align:middle
+that I need to make sure that we all get
+down pat, because we've been using these
+
+00:00:20.210 --> 00:00:24.120 line:100% position:50% align:middle
+.addEventListeners throughout all these
+videos, but there's going to be edge cases
+
+00:00:24.120 --> 00:00:29.220 line:100% position:50% align:middle
+that you run into where these things are
+going to be helpful. So what I've got here
+
+00:00:29.220 --> 00:00:33.915 line:100% position:50% align:middle
+is I've got three divs. I've got a div
+with a class of one, two, and three.
+
+00:00:33.915 --> 00:00:38.186 line:100% position:50% align:middle
+and they're all nested inside
+of each other. What I want to do is
+
+00:00:38.186 --> 00:00:44.592 line:100% position:50% align:middle
+explain to you a couple things about
+propagation, bubbling, event capturing,
+
+00:00:44.592 --> 00:00:50.813 line:100% position:50% align:middle
+as well as using this new property called
+once. So go into your scrip tag here,
+
+00:00:50.813 --> 00:00:54.317 line:100% position:50% align:middle
+and I want to just listen for a click on
+all of these divs, so we're going to
+
+00:00:54.317 --> 00:00:59.628 line:100% position:50% align:middle
+select all those divs, and we're going to
+make a function called logText.
+
+00:00:59.628 --> 00:01:05.735 line:100% position:50% align:middle
+Fix in the event, and we're just going to
+console.log(this.classList.value).
+
+00:01:05.735 --> 00:01:07.274 line:100% position:50% align:middle
+When somebody clicks a div,
+
+00:01:07.274 --> 00:01:11.079 line:100% position:50% align:middle
+we're going to log it, so we'll say take
+all the divs, loop over each one,
+
+00:01:11.079 --> 00:01:16.516 line:100% position:50% align:middle
+we're going to take the div, and we're
+going to add.EventListener click,
+
+00:01:16.516 --> 00:01:20.890 line:100% position:50% align:middle
+and when that happens, we're going
+to call LogText. This is the one...
+
+00:01:20.890 --> 00:01:24.960 line:100% position:50% align:middle
+You may see me autocompleting this, and
+we have this capture?: boolean right here.
+
+00:01:24.960 --> 00:01:27.834 line:100% position:50% align:middle
+That's really what we're going to be
+looking at here today, we'll leave that
+
+00:01:27.834 --> 00:01:30.491 line:100% position:50% align:middle
+there for now. So give it a save.
+
+00:01:31.230 --> 00:01:36.660 line:100% position:50% align:middle
+Now, I'm going to click on, and obviously
+this purple one is div with a class of
+
+00:01:36.660 --> 00:01:43.560 line:100% position:50% align:middle
+one, the misty rose one is two, and the
+coral one is three. So when I click on the
+
+00:01:43.560 --> 00:01:47.420 line:100% position:50% align:middle
+coral one, what is going to log? Don't
+cheat, just tell yourself what will
+
+00:01:47.420 --> 00:01:53.750 line:100% position:50% align:middle
+console that log? Click it, three, two,
+and one. Wait, I just clicked on the third
+
+00:01:53.750 --> 00:01:59.608 line:100% position:50% align:middle
+one, which is the very most inner one,
+but I also console.logged two and one.
+
+00:02:00.384 --> 00:02:03.610 line:100% position:50% align:middle
+That's weird. Well, also if you
+console.log this, you'll see the actual
+
+00:02:03.610 --> 00:02:09.028 line:100% position:50% align:middle
+elements themselves, three, two,
+and one. So what's going on here?
+
+00:02:09.190 --> 00:02:12.510 line:100% position:50% align:middle
+Well, what is happening is if we go
+to our Elements panel here,
+
+00:02:12.510 --> 00:02:17.079 line:100% position:50% align:middle
+and we go to the div that we clicked on,
+we clicked on three, but we really also
+
+00:02:17.079 --> 00:02:20.373 line:100% position:50% align:middle
+clicked on two, because it wraps around
+it, and we also clicked on one,
+
+00:02:20.373 --> 00:02:25.150 line:100% position:50% align:middle
+we also clicked on the body, we also
+clicked on the html tag, we also clicked
+
+00:02:25.150 --> 00:02:29.600 line:100% position:50% align:middle
+on the current tab, and we also clicked on
+Google Chrome, and we also clicked on our
+
+00:02:29.600 --> 00:02:33.520 line:100% position:50% align:middle
+OS X operating system, and we also clicked
+on the world, and it just keeps zooming
+
+00:02:33.520 --> 00:02:38.182 line:100% position:50% align:middle
+out and out and out. So that's the
+concept of something called bubbling,
+
+00:02:38.182 --> 00:02:43.358 line:100% position:50% align:middle
+where the browser will figure out what
+you clicked on, but it will also trigger
+
+00:02:43.358 --> 00:02:48.970 line:100% position:50% align:middle
+clicks up every...and they'll ripple
+all the way up. So case in point,
+
+00:02:48.970 --> 00:02:58.460 line:100% position:50% align:middle
+if I take document.body and I add the
+EventListener of click, and when that
+
+00:02:58.460 --> 00:03:03.634 line:100% position:50% align:middle
+happens, I'm going to logText, and we
+have to give our body a class here,
+
+00:03:03.634 --> 00:03:07.745 line:100% position:50% align:middle
+so class="bod". Now watch, I'm
+going to click on the coral one,
+
+00:03:07.745 --> 00:03:13.700 line:100% position:50% align:middle
+three, two, one, and bod. So what's
+happening is that when you make a click,
+
+00:03:13.700 --> 00:03:19.010 line:100% position:50% align:middle
+it will ripple all the way up to the top
+of the document and trigger clicks on
+
+00:03:19.010 --> 00:03:22.690 line:100% position:50% align:middle
+those elements as well. Now, you don't
+always see them, because you're not
+
+00:03:22.690 --> 00:03:26.408 line:100% position:50% align:middle
+necessarily listening for a click on those
+elements, but if you're listening for
+
+00:03:26.408 --> 00:03:30.555 line:100% position:50% align:middle
+a click on multiple nested elements, in
+this case, we're listening for a click on
+
+00:03:30.555 --> 00:03:35.486 line:100% position:50% align:middle
+three, two, one, and bod, then
+it's going to trigger a click
+
+00:03:35.486 --> 00:03:37.800 line:100% position:50% align:middle
+on all of those, right there.
+
+00:03:37.800 --> 00:03:41.724 line:100% position:50% align:middle
+So I want to explain to you how this
+actually works in JavaScript.
+
+00:03:41.724 --> 00:03:47.552 line:100% position:50% align:middle
+The way that it works in modern
+browsers is that the browser will first
+
+00:03:47.552 --> 00:03:51.407 line:100% position:50% align:middle
+do something called a capture, which
+means that when you click on the element,
+
+00:03:51.407 --> 00:03:56.029 line:100% position:50% align:middle
+it's going to ripple down. It's going to
+say, "Okay, you clicked on the body,
+
+00:03:56.029 --> 00:04:00.400 line:100% position:50% align:middle
+you clicked on one, you clicked on two,
+and you clicked on three." So it actually
+
+00:04:00.400 --> 00:04:04.964 line:100% position:50% align:middle
+goes from the top down, and then it
+captures all of those events,
+
+00:04:04.964 --> 00:04:09.732 line:100% position:50% align:middle
+and then it starts at the bottom, and then
+starts doing something called a bubble.
+
+00:04:09.732 --> 00:04:14.594 line:100% position:50% align:middle
+So the capture goes from top down, and
+then the events...the events haven't fired
+
+00:04:14.594 --> 00:04:19.019 line:100% position:50% align:middle
+yet. It just captures where you clicked,
+and is storing them. Then it will start to
+
+00:04:19.019 --> 00:04:23.510 line:100% position:50% align:middle
+bubble up, which means that it's
+triggering the events as you go up.
+
+00:04:23.510 --> 00:04:27.363 line:100% position:50% align:middle
+So it says, "Okay, we've done figuring out
+what you've clicked on all the way down,
+
+00:04:27.363 --> 00:04:31.684 line:100% position:50% align:middle
+now I'm going to start firing off
+those click events," on three,
+
+00:04:31.684 --> 00:04:36.960 line:100% position:50% align:middle
+then two, then one, then body, and
+anything else you're listening for.
+
+00:04:36.960 --> 00:04:41.630 line:100% position:50% align:middle
+So if we go to our .addEventListener here,
+and let's get rid of this document.body
+
+00:04:41.630 --> 00:04:44.620 line:100% position:50% align:middle
+here, after our function [inaudible
+00:04:43] a third argument,
+
+00:04:44.620 --> 00:04:50.707 line:100% position:50% align:middle
+which is an options object, and we say
+capture is going to be equal to true,
+
+00:04:50.707 --> 00:04:55.817 line:100% position:50% align:middle
+what that will then do is when I click, we
+go one, two, three, and what's happening
+
+00:04:55.817 --> 00:05:01.277 line:100% position:50% align:middle
+is that this function, logText, is not
+going to get run on the bubble up,
+
+00:05:01.277 --> 00:05:05.437 line:100% position:50% align:middle
+it's going to get run on the capture down.
+So we go to the Elements here,
+
+00:05:05.437 --> 00:05:09.181 line:100% position:50% align:middle
+it's going to say, "Oh, they clicked on
+one, fire it. They clicked on two,
+
+00:05:09.181 --> 00:05:13.909 line:100% position:50% align:middle
+fire it. They clicked on three, fire it."
+So that is what capture means
+
+00:05:13.909 --> 00:05:20.127 line:100% position:50% align:middle
+is that we will run the function on the
+way down rather than on the way up.
+
+00:05:20.127 --> 00:05:24.947 line:100% position:50% align:middle
+Now let me put that back to false. By
+default, it is false, so that's the normal
+
+00:05:24.947 --> 00:05:26.416 line:100% position:50% align:middle
+version that we have here.
+
+00:05:26.416 --> 00:05:30.435 line:100% position:50% align:middle
+Another thing we have is called stop
+propagation. So we just talked about
+
+00:05:30.435 --> 00:05:34.751 line:100% position:50% align:middle
+events bubble up, meaning that if you
+click on the innermost one,
+
+00:05:34.751 --> 00:05:40.407 line:100% position:50% align:middle
+it will also trigger an event on the
+parent and that parent as well.
+
+00:05:40.407 --> 00:05:44.591 line:100% position:50% align:middle
+However, what you could then do is
+you take your event in your function,
+
+00:05:44.591 --> 00:05:50.960 line:100% position:50% align:middle
+and you call e.stopPropagation(),
+and what that will do is it will say,
+
+00:05:50.960 --> 00:05:56.135 line:100% position:50% align:middle
+"Stop bubbling this event up. I clicked
+the one that I actually wanted."
+
+00:05:56.135 --> 00:06:01.432 line:100% position:50% align:middle
+So now if I go in here, and click on
+the middle one, I just see three,
+
+00:06:01.432 --> 00:06:07.990 line:100% position:50% align:middle
+then two, and then one. Why is that?
+Because we run... What happens is the
+
+00:06:07.990 --> 00:06:13.778 line:100% position:50% align:middle
+browser starts at the very lowest one,
+it runs that function, and then we say
+
+00:06:13.778 --> 00:06:20.952 line:100% position:50% align:middle
+stopPropagation, which essentially means
+stop bubbling! and it will no longer
+
+00:06:20.952 --> 00:06:25.680 line:100% position:50% align:middle
+trigger events on the parents on the way
+on up. So that's stopPropagation. You can
+
+00:06:25.680 --> 00:06:28.607 line:100% position:50% align:middle
+wrap that in an if statement if
+you needed to get the middle one,
+
+00:06:28.607 --> 00:06:33.060 line:100% position:50% align:middle
+or something like that, but that's what
+stopPropagation does. You can also use
+
+00:06:33.060 --> 00:06:38.280 line:100% position:50% align:middle
+that in conjunction with your on your way
+down, right here, if I were to click on
+
+00:06:38.280 --> 00:06:44.314 line:100% position:50% align:middle
+the middle one, or sorry, if I were to
+click on three, what are we going to get
+
+00:06:44.314 --> 00:06:51.257 line:100% position:50% align:middle
+with capture: true and stopPropagation?
+Just one. Why? Because capture makes it go
+
+00:06:51.257 --> 00:06:56.757 line:100% position:50% align:middle
+on the way down, one, and then we run
+stopPropagation, which stops it from
+
+00:06:56.757 --> 00:06:59.013 line:100% position:50% align:middle
+going down even further.
+
+00:06:59.013 --> 00:07:02.844 line:100% position:50% align:middle
+Last thing I wanted to show you was
+something called once, and this is very
+
+00:07:02.844 --> 00:07:06.505 line:100% position:50% align:middle
+new in the browser we have here. So I'm
+just going to console.log that propagation
+
+00:07:06.505 --> 00:07:11.952 line:100% position:50% align:middle
+out and bring this capture back to false,
+just so we can get our defaults going back
+
+00:07:11.952 --> 00:07:16.926 line:100% position:50% align:middle
+here, three, two, one. We also have an
+option called once. If you set that to
+
+00:07:16.926 --> 00:07:22.390 line:100% position:50% align:middle
+true, what will happen is it will listen
+for a click and then unbind itself,
+
+00:07:22.390 --> 00:07:25.814 line:100% position:50% align:middle
+and unbinding itself is
+the same thing as saying
+
+00:07:25.814 --> 00:07:33.119 line:100% position:50% align:middle
+div.removeEvent.Listener('click', logText.
+
+00:07:33.119 --> 00:07:37.909 line:100% position:50% align:middle
+So it will listen for a click once,
+and then unbind itself
+
+00:07:37.909 --> 00:07:42.126 line:100% position:50% align:middle
+so that there's no future clicks on it.
+Now if I click on one of these here,
+
+00:07:42.126 --> 00:07:48.027 line:100% position:50% align:middle
+here we go, I'm clicking as many as I can.
+It ran once, it fired all those events,
+
+00:07:48.027 --> 00:07:53.278 line:100% position:50% align:middle
+but it will never run again, until I rerun
+the page. So that could be helpful if
+
+00:07:53.278 --> 00:07:56.685 line:100% position:50% align:middle
+you have a button. Let's just make
+ourselves a quick button here,
+
+00:07:56.685 --> 00:08:03.792 line:100% position:50% align:middle
+and we'll grab it, and you only ever
+wanted somebody to click that button once,
+
+00:08:03.792 --> 00:08:09.545 line:100% position:50% align:middle
+we just say button.addEventListener click,
+and then when that happens we'll run
+
+00:08:09.545 --> 00:08:13.639 line:100% position:50% align:middle
+a quick function here that just
+console.logs click, watch this.
+
+00:08:13.639 --> 00:08:17.000 line:100% position:50% align:middle
+So we've got this button, if I click it
+over and over and over and over,
+
+00:08:17.000 --> 00:08:18.030 line:100% position:50% align:middle
+we're going to get it,
+
+00:08:18.030 --> 00:08:23.410 line:100% position:50% align:middle
+but if I were to add that third options
+argument here, where we have once
+
+00:08:23.410 --> 00:08:29.174 line:100% position:50% align:middle
+is equal to true, I should only be able
+to click this once and never again.
+
+00:08:29.174 --> 00:08:34.066 line:100% position:50% align:middle
+And where I've used that specifically is
+in store checkouts, where you do not wish
+
+00:08:34.066 --> 00:08:40.174 line:100% position:50% align:middle
+for someone to click that button more than
+once, you can unbind it and stop them from
+
+00:08:40.174 --> 00:08:41.920 line:100% position:50% align:middle
+clicking it multiple times.
+
+00:08:41.920 --> 00:08:45.738 line:100% position:50% align:middle
+So hopefully you learned a few things
+there. I know that propagation and
+
+00:08:45.738 --> 00:08:51.058 line:100% position:50% align:middle
+bubbling and capturing, all of those words
+used to be very, very confusing to me.
+
+00:08:51.058 --> 00:08:55.580 line:100% position:50% align:middle
+It's not something you use every day, so
+it's one of those things where you just
+
+00:08:55.580 --> 00:08:58.977 line:100% position:50% align:middle
+sort of put off from learning, so
+hopefully, you spent a couple minutes
+
+00:08:58.977 --> 00:09:02.790 line:100% position:50% align:middle
+and just learned exactly what propagation
+and bubbling and all of that stuff does.
+
+00:09:02.790 --> 00:09:04.382 line:100% position:50% align:middle
+Thanks, and I'll see you tomorrow.

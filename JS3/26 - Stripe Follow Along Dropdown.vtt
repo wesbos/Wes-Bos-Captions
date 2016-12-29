@@ -1,0 +1,978 @@
+WEBVTT
+
+00:00:00.309 --> 00:00:03.309 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:08.200 --> 00:00:10.118 line:100% position:50% align:middle
+A couple of videos ago, we looked at this
+
+00:00:10.118 --> 00:00:15.680 line:100% position:50% align:middle
+really slick nav that Stripe has on its
+pricing page and when you hover over top
+
+00:00:15.680 --> 00:00:20.310 line:100% position:50% align:middle
+of it, of course, it shows the dropdown.
+But the really cool part about it is that
+
+00:00:20.310 --> 00:00:25.880 line:100% position:50% align:middle
+the background of the dropdown seems to be
+able to transform itself from the width
+
+00:00:25.880 --> 00:00:30.570 line:100% position:50% align:middle
+and the height as well as wherever it is
+on the page. So its x and its y
+
+00:00:30.570 --> 00:00:34.210 line:100% position:50% align:middle
+coordinates. And when I first saw that, I
+was like, "How did they do that?
+
+00:00:34.210 --> 00:00:39.950 line:100% position:50% align:middle
+That's incredible." And what I found out
+is that the dropdowns themselves like the
+
+00:00:39.950 --> 00:00:45.570 line:100% position:50% align:middle
+content, the texture, those are separate
+elements, but there's this sort of like
+
+00:00:45.570 --> 00:00:51.020 line:100% position:50% align:middle
+little puppy div that follows each of
+those dropdowns around and will resize
+
+00:00:51.020 --> 00:00:56.550 line:100% position:50% align:middle
+itself based on wherever it is on the
+page. So this white thing that you see
+
+00:00:56.550 --> 00:01:01.380 line:100% position:50% align:middle
+moving, that's the actual background
+that's just moving itself around and it's
+
+00:01:01.380 --> 00:01:06.100 line:100% position:50% align:middle
+just sort of absolutely positioned behind
+those elements. And we did a really simple
+
+00:01:06.100 --> 00:01:10.370 line:100% position:50% align:middle
+example like that a couple days ago when
+we hovered over a link,
+
+00:01:10.370 --> 00:01:14.330 line:100% position:50% align:middle
+we had a little div that would sort of
+resize itself and go behind where that
+
+00:01:14.330 --> 00:01:18.340 line:100% position:50% align:middle
+element is. So today, we're going to step
+it up a little bit and build something
+
+00:01:18.340 --> 00:01:22.450 line:100% position:50% align:middle
+like this, which is the proof of concept
+Stripe navigation. It looks a little bit
+
+00:01:22.450 --> 00:01:27.350 line:100% position:50% align:middle
+different, but it has the same idea where
+when you hover over top of one of these
+
+00:01:27.350 --> 00:01:31.370 line:100% position:50% align:middle
+navigation links, it's going to resize
+itself, it's going to match the width and
+
+00:01:31.370 --> 00:01:35.400 line:100% position:50% align:middle
+the height of actual content and animate
+itself wherever it's going to go or
+
+00:01:35.400 --> 00:01:40.510 line:100% position:50% align:middle
+transition itself wherever it's going to
+go. Let's jump in to looking at our html
+
+00:01:40.510 --> 00:01:45.720 line:100% position:50% align:middle
+real quick. We have a nav element right
+here and you could give that a class of
+
+00:01:45.720 --> 00:01:52.000 line:100% position:50% align:middle
+top if you like, then you've got a
+dropdown background. That's what the white
+
+00:01:52.000 --> 00:01:54.920 line:100% position:50% align:middle
+is going to follow around. You see this
+little white dip part?
+
+00:01:54.920 --> 00:01:59.700 line:100% position:50% align:middle
+That's not three separate divs, that's
+just one and it's going to follow along
+
+00:01:59.700 --> 00:02:02.940 line:100% position:50% align:middle
+with the content as we go. So that's what
+you have and then we have a span with a
+
+00:02:02.940 --> 00:02:08.060 line:100% position:50% align:middle
+class or arrow, which is going to be that
+little notch that we have there.
+
+00:02:08.060 --> 00:02:12.050 line:100% position:50% align:middle
+Okay, good, and you noticed that I put
+this inside of this nav.
+
+00:02:12.050 --> 00:02:15.290 line:100% position:50% align:middle
+In the last one, we just put it straight
+in the body so that we didn't have to
+
+00:02:15.290 --> 00:02:19.320 line:100% position:50% align:middle
+worry about any, like, margin or padding
+on top of our nav here.
+
+00:02:19.320 --> 00:02:23.570 line:100% position:50% align:middle
+But in this one, I want to show you how do
+you actually deal with this if you're
+
+00:02:23.570 --> 00:02:29.960 line:100% position:50% align:middle
+trying to get the actual position of an
+element inside of a nav.
+
+00:02:29.960 --> 00:02:34.480 line:100% position:50% align:middle
+Because it's not always your job to pick
+the html, sometimes you have a CMS and
+
+00:02:34.480 --> 00:02:38.270 line:100% position:50% align:middle
+it's going to generate that html for you
+and I want to make sure that we're not
+
+00:02:38.270 --> 00:02:41.410 line:100% position:50% align:middle
+just making this as easy as possible and
+then you go to implement it in your own
+
+00:02:41.410 --> 00:02:44.770 line:100% position:50% align:middle
+and you're like, "Oh, this is actually a
+little bit harder than we actually thought
+
+00:02:44.770 --> 00:02:48.460 line:100% position:50% align:middle
+it was." So we've put it in here just to
+show you a different way to do it.
+
+00:02:48.460 --> 00:02:53.040 line:100% position:50% align:middle
+Then we have unordered class with a class
+of cool. We have our list items.
+
+00:02:53.040 --> 00:02:57.600 line:100% position:50% align:middle
+These are our lis. We have three of them.
+We've got our link and then what's called
+
+00:02:57.600 --> 00:03:00.430 line:100% position:50% align:middle
+the dropdown, and the dropdown can be any
+element. In this case,
+
+00:03:00.430 --> 00:03:04.210 line:100% position:50% align:middle
+it's a div that has some info on me. In
+this case, it's an unordered list that has
+
+00:03:04.210 --> 00:03:08.090 line:100% position:50% align:middle
+more list items inside of it. But the
+important thing is that these lis,
+
+00:03:08.090 --> 00:03:13.320 line:100% position:50% align:middle
+the top level lis, they will be our
+triggers. They are the things that are
+
+00:03:13.320 --> 00:03:17.160 line:100% position:50% align:middle
+going to be hovered on them. And the
+reason why these lis are going to be the
+
+00:03:17.160 --> 00:03:24.310 line:100% position:50% align:middle
+things that we hover is because if you
+hover onto this A link and then you try to
+
+00:03:24.310 --> 00:03:27.800 line:100% position:50% align:middle
+hover into something inside of it like
+Twitter, Facebook or blog,
+
+00:03:27.800 --> 00:03:32.590 line:100% position:50% align:middle
+you're technically hovering off the anchor
+link and then it would trigger the off and
+
+00:03:32.590 --> 00:03:37.120 line:100% position:50% align:middle
+it would fade itself out. Here what we're
+doing is even though my mouse is right
+
+00:03:37.120 --> 00:03:42.690 line:100% position:50% align:middle
+here, I'm still inside of this parent li,
+then we've got the second one as well as
+
+00:03:42.690 --> 00:03:46.760 line:100% position:50% align:middle
+the third one. In terms of CSS, there's
+not a whole lot going on here.
+
+00:03:46.760 --> 00:03:51.090 line:100% position:50% align:middle
+Most of this is just so it looks half
+decent. None of it really has anything to
+
+00:03:51.090 --> 00:03:57.580 line:100% position:50% align:middle
+do with the positioning on the page other
+than this position relative right here
+
+00:03:57.580 --> 00:04:03.100 line:100% position:50% align:middle
+that we have. We are going to be writing
+the CSS, that is important for ourselves.
+
+00:04:03.100 --> 00:04:06.040 line:100% position:50% align:middle
+First, we need the triggers and those are
+those three lis. So let's say,
+
+00:04:06.040 --> 00:04:11.800 line:100% position:50% align:middle
+"const triggers =
+document.querySelectorAll" and we'll say
+
+00:04:11.800 --> 00:04:16.890 line:100% position:50% align:middle
+"cool li." And that's going to be all the
+direct descendants of that cool,
+
+00:04:16.890 --> 00:04:21.130 line:100% position:50% align:middle
+that are our list item. Then we also need
+to grab the dropdown background which is
+
+00:04:21.130 --> 00:04:26.790 line:100% position:50% align:middle
+that white div. We'll call that
+"background." Make sure that you use only
+
+00:04:26.790 --> 00:04:31.550 line:100% position:50% align:middle
+query selector here because we don't need
+a node list. We need just one element.
+
+00:04:31.550 --> 00:04:36.730 line:100% position:50% align:middle
+And then we'll also do that for our nav
+which we put a class of top on.
+
+00:04:36.730 --> 00:04:41.690 line:100% position:50% align:middle
+Then what we want to do is listen for a
+hover in and a hover out or a mouse enter
+
+00:04:41.690 --> 00:04:45.420 line:100% position:50% align:middle
+and a mouse leave on each of those list
+items. So we're going to make two
+
+00:04:45.420 --> 00:04:50.150 line:100% position:50% align:middle
+functions here called "handle enter" and
+we're going to make one called "handle
+
+00:04:50.150 --> 00:04:56.330 line:100% position:50% align:middle
+leave." Then we'll listen for the mouse
+enter and the mouse leave and trigger each
+
+00:04:56.330 --> 00:05:01.620 line:100% position:50% align:middle
+of those functions.
+[silence]
+
+00:05:01.620 --> 00:05:05.790 line:100% position:50% align:middle
+I'll handle enter on that one then we'll
+just duplicate it over and we'll listen
+
+00:05:05.790 --> 00:05:10.670 line:100% position:50% align:middle
+for the mouse leave event, which is going
+to trigger our handle leave.
+
+00:05:10.670 --> 00:05:14.000 line:100% position:50% align:middle
+All right, so we just wrote a bit of code
+there. Let's make sure that these all
+
+00:05:14.000 --> 00:05:22.730 line:100% position:50% align:middle
+work. So ENTER and LEAVE. Make sure we
+didn't get anything wrong here.
+
+00:05:22.730 --> 00:05:26.670 line:100% position:50% align:middle
+Any syntax errors in our console, no, then
+you go to your console,
+
+00:05:26.670 --> 00:05:29.990 line:100% position:50% align:middle
+hover over top of them, good. You should
+be getting ENTER and LEAVE console logs
+
+00:05:29.990 --> 00:05:36.790 line:100% position:50% align:middle
+whenever you hover in and out of any of
+those elements. Good. So next what we need
+
+00:05:36.790 --> 00:05:41.570 line:100% position:50% align:middle
+to do is we need to break this down into
+two parts. First part is I just want to
+
+00:05:41.570 --> 00:05:47.100 line:100% position:50% align:middle
+get the contents of the dropdown showing,
+meaning that if I hover over this last
+
+00:05:47.100 --> 00:05:52.240 line:100% position:50% align:middle
+one, this ul here, it should show itself.
+I'll take the opacity off,
+
+00:05:52.240 --> 00:05:56.470 line:100% position:50% align:middle
+the display none off. You see, there's the
+content for each of them.
+
+00:05:56.470 --> 00:06:01.330 line:100% position:50% align:middle
+I want to show whenever I hover over li, I
+want to find the dropdown inside of it and
+
+00:06:01.330 --> 00:06:06.920 line:100% position:50% align:middle
+then display it. And the way that's going
+to work is we're going to be adding and
+
+00:06:06.920 --> 00:06:13.330 line:100% position:50% align:middle
+removing classes and then leaning on our
+CSS to actually do that for us.
+
+00:06:13.330 --> 00:06:18.980 line:100% position:50% align:middle
+So we'll go into our handle enter function
+here, and we will grab this.
+
+00:06:18.980 --> 00:06:22.650 line:100% position:50% align:middle
+What is this? This is the list item. I'm
+going to put the class on the list item
+
+00:06:22.650 --> 00:06:30.810 line:100% position:50% align:middle
+.classlist.add and we'll say,
+trigger-enter. And then what we want to do
+
+00:06:30.810 --> 00:06:36.090 line:100% position:50% align:middle
+is also add a class of
+trigger-enter-active after 150
+
+00:06:36.090 --> 00:06:40.210 line:100% position:50% align:middle
+milliseconds. And this is going to become
+more clear as to why I've done this when
+
+00:06:40.210 --> 00:06:44.220 line:100% position:50% align:middle
+we get into the second part, which is
+.follow along div. So I'm going to say set
+
+00:06:44.220 --> 00:06:48.870 line:100% position:50% align:middle
+timeout. We are going to... I'm going to
+show a little trick here with arrow
+
+00:06:48.870 --> 00:06:52.060 line:100% position:50% align:middle
+functions, I'm going to use a normal
+function here and then I'm going to say,
+
+00:06:52.060 --> 00:07:01.670 line:100% position:50% align:middle
+after 150 milliseconds, this.classList.add
+trigger-enter-active.
+
+00:07:01.670 --> 00:07:06.930 line:100% position:50% align:middle
+Now this isn't going to work. Why not?
+Cannot read property add of undefined.
+
+00:07:06.930 --> 00:07:15.300 line:100% position:50% align:middle
+So it cannot find class list of this and
+why is that? If you console log this,
+
+00:07:15.300 --> 00:07:20.590 line:100% position:50% align:middle
+it gives you window and you probably have
+like, "Yeah, Wes, you showed me this in
+
+00:07:20.590 --> 00:07:23.470 line:100% position:50% align:middle
+your ES6 course, I understand it now."
+When you enter into a function,
+
+00:07:23.470 --> 00:07:27.240 line:100% position:50% align:middle
+the value of this changes. However, if you
+change that into an arrow function,
+
+00:07:27.240 --> 00:07:31.540 line:100% position:50% align:middle
+the value of this is inherited from the
+parent function, which is going to be
+
+00:07:31.540 --> 00:07:37.820 line:100% position:50% align:middle
+exactly what we want. Good. So we can make
+this into a nice little short one-liner
+
+00:07:37.820 --> 00:07:48.210 line:100% position:50% align:middle
+arrow function here. There we go. Does
+this still work? Good, got it.
+
+00:07:48.210 --> 00:07:52.770 line:100% position:50% align:middle
+So we've got this.classList.add
+trigger-enter-active. Then we want to go
+
+00:07:52.770 --> 00:07:57.930 line:100% position:50% align:middle
+into our CSS, so scroll up and this is why
+I've included the CSS in the file for you
+
+00:07:57.930 --> 00:08:01.930 line:100% position:50% align:middle
+here because it's actually a bit long.
+It'd be better suited towards a separate
+
+00:08:01.930 --> 00:08:06.710 line:100% position:50% align:middle
+CSS file, and we'll find our dropdown
+which is here, and you'll notice that the
+
+00:08:06.710 --> 00:08:13.000 line:100% position:50% align:middle
+way that I show the dropdown is with both
+I hit it with opacity zero and displayed
+
+00:08:13.000 --> 00:08:18.450 line:100% position:50% align:middle
+none. And the reason why I've done that is
+because you cannot go from opacity zero to
+
+00:08:18.450 --> 00:08:23.160 line:100% position:50% align:middle
+one as well as display none to display
+block. That's a bit of a pain,
+
+00:08:23.160 --> 00:08:28.770 line:100% position:50% align:middle
+but what we're going to do is we're sort
+of going to step it where when we have
+
+00:08:28.770 --> 00:08:35.000 line:100% position:50% align:middle
+trigger-enter, our dropdown is going to be
+display block, but it's still going to be
+
+00:08:35.000 --> 00:08:40.920 line:100% position:50% align:middle
+opacity one. And I'll show you opacity
+one. See, that will just immediately show
+
+00:08:40.920 --> 00:08:46.370 line:100% position:50% align:middle
+it, but I want it to sort of transition
+itself in, which is why we have this here.
+
+00:08:46.370 --> 00:08:51.500 line:100% position:50% align:middle
+So, what I want to do is not put the
+opacity there but after a second,
+
+00:08:51.500 --> 00:08:56.720 line:100% position:50% align:middle
+we're going to have this class of
+trigger-enter-active. So watch this.
+
+00:08:56.720 --> 00:09:01.800 line:100% position:50% align:middle
+See how they after 150 milliseconds, we
+get that second one and then when it has a
+
+00:09:01.800 --> 00:09:07.710 line:100% position:50% align:middle
+class of trigger-enter-active, because it
+was already shown with the display block
+
+00:09:07.710 --> 00:09:14.800 line:100% position:50% align:middle
+just a split second earlier, then we go
+into our opacity and set it to be one.
+
+00:09:14.800 --> 00:09:19.090 line:100% position:50% align:middle
+And this is how, if you've ever used
+animations in either react or angular,
+
+00:09:19.090 --> 00:09:23.500 line:100% position:50% align:middle
+this is how animations or transitions work
+inside of those frameworks.
+
+00:09:23.500 --> 00:09:27.880 line:100% position:50% align:middle
+They just apply two separate classes when
+something enters or leaves and then you
+
+00:09:27.880 --> 00:09:34.050 line:100% position:50% align:middle
+can use your CSS just to do that sort of
+staged move there. So now if we give it a
+
+00:09:34.050 --> 00:09:40.560 line:100% position:50% align:middle
+save and refresh, it looks like it's not
+showing opacity one, because I need to say
+
+00:09:40.560 --> 00:09:44.780 line:100% position:50% align:middle
+.dropdown. Ah, there we go. See how they
+animate themselves in or transition
+
+00:09:44.780 --> 00:09:48.250 line:100% position:50% align:middle
+themselves in? And then, of course, on the
+other side of things,
+
+00:09:48.250 --> 00:09:53.370 line:100% position:50% align:middle
+we can go into our LEAVE and we simply
+just need to duplicate that one and we
+
+00:09:53.370 --> 00:09:57.890 line:100% position:50% align:middle
+will just remove the class of
+trigger-enter and then I'm going to do it
+
+00:09:57.890 --> 00:10:03.310 line:100% position:50% align:middle
+all in one shot. I'm not going to animate
+it out. We'll say, "trigger-enter-active."
+
+00:10:03.310 --> 00:10:08.890 line:100% position:50% align:middle
+Good. You see these things are nice fading
+in. So that's a lot of JavaScript just to
+
+00:10:08.890 --> 00:10:13.620 line:100% position:50% align:middle
+do something that CSS can do out of the
+box, but the next piece and the reason why
+
+00:10:13.620 --> 00:10:17.770 line:100% position:50% align:middle
+we need to do this with JavaScript, is
+because the next piece is that we're going
+
+00:10:17.770 --> 00:10:24.520 line:100% position:50% align:middle
+to figure out how big is this ul with a
+class of dropdown and then can that little
+
+00:10:24.520 --> 00:10:29.930 line:100% position:50% align:middle
+white div go behind it so we get this
+little animation that we have here?
+
+00:10:29.930 --> 00:10:34.800 line:100% position:50% align:middle
+So let's go here. The first thing we need
+to do is get that white thing on the page
+
+00:10:34.800 --> 00:10:38.790 line:100% position:50% align:middle
+and that white thing is our background.
+It's what we have right here.
+
+00:10:38.790 --> 00:10:44.290 line:100% position:50% align:middle
+So we'll say "background.classList.add"
+and it's going to have a class of open and
+
+00:10:44.290 --> 00:10:52.210 line:100% position:50% align:middle
+then just duplicate that and remove it on
+our LEAVE. So now we should look at our
+
+00:10:52.210 --> 00:10:57.240 line:100% position:50% align:middle
+dropdown background here and then when you
+hover over top of one of them,
+
+00:10:57.240 --> 00:11:04.090 line:100% position:50% align:middle
+you should also add a class of open. So if
+we go into our CSS,
+
+00:11:04.090 --> 00:11:10.090 line:100% position:50% align:middle
+we see it here. When our dropdown
+background also has a class of open let's
+
+00:11:10.090 --> 00:11:16.510 line:100% position:50% align:middle
+say, opacity one. Ah, you see? See that
+the little white guy in the corner is
+
+00:11:16.510 --> 00:11:21.930 line:100% position:50% align:middle
+showing itself? Makes sense. So now we
+need to do, which is really the heavy
+
+00:11:21.930 --> 00:11:28.210 line:100% position:50% align:middle
+lifting, is to figure out, okay, we have
+this dropdown, just Twitter or Facebook
+
+00:11:28.210 --> 00:11:35.070 line:100% position:50% align:middle
+blog course catalog, how wide, how high
+and where on the page do you live so that
+
+00:11:35.070 --> 00:11:39.890 line:100% position:50% align:middle
+we can take this white thing and move it
+on over to where that exists.
+
+00:11:39.890 --> 00:11:44.490 line:100% position:50% align:middle
+So we're going to go down here below where
+we did all those class lists and first
+
+00:11:44.490 --> 00:11:49.640 line:100% position:50% align:middle
+thing that we need to do is figure out
+what that dropdown actually is.
+
+00:11:49.640 --> 00:11:57.200 line:100% position:50% align:middle
+So we'll say, "const dropdown =
+this.querySelector." Now we're going to be
+
+00:11:57.200 --> 00:12:01.080 line:100% position:50% align:middle
+looking for a dropdown. You might be
+asking yourself, like, "Why didn't we do
+
+00:12:01.080 --> 00:12:04.880 line:100% position:50% align:middle
+that up here [[00:012:01]] with our nav?"
+Well, you can't do that here because
+
+00:12:04.880 --> 00:12:07.410 line:100% position:50% align:middle
+there'ss three different dropdowns and it
+needs to be dynamic.
+
+00:12:07.410 --> 00:12:12.210 line:100% position:50% align:middle
+You need to find the one dropdown that
+exists inside of the thing that got
+
+00:12:12.210 --> 00:12:19.960 line:100% position:50% align:middle
+hovered. So if we console.log that
+dropdown, go to our console here.
+
+00:12:19.960 --> 00:12:26.870 line:100% position:50% align:middle
+You should now see that we get a different
+dropdown in the console whenever we hover.
+
+00:12:26.870 --> 00:12:32.090 line:100% position:50% align:middle
+Good. So we can then take the coordinates
+from that just like we did in the previous
+
+00:12:32.090 --> 00:12:39.900 line:100% position:50% align:middle
+one. We'll say, "const dropdownCoords =
+dropdown.getBoundingClientRect" Put those
+
+00:12:39.900 --> 00:12:52.530 line:100% position:50% align:middle
+together. Let's just console.log
+dropdownCoords, we're going to save.
+
+00:12:52.530 --> 00:12:58.980 line:100% position:50% align:middle
+So you see what's happening here is that
+we get information about where on the page
+
+00:12:58.980 --> 00:13:03.680 line:100% position:50% align:middle
+from the bottom, the left, the top, the
+right and the width is that actual item.
+
+00:13:03.680 --> 00:13:08.710 line:100% position:50% align:middle
+Now the other thing is that we need to get
+information about where the nav is because
+
+00:13:08.710 --> 00:13:13.230 line:100% position:50% align:middle
+you cannot assume that this nav tag is
+always going to be the first thing on the
+
+00:13:13.230 --> 00:13:17.300 line:100% position:50% align:middle
+page. You might have an h2 that says
+"hello" and when that happens,
+
+00:13:17.300 --> 00:13:23.020 line:100% position:50% align:middle
+you bump everything down. And this
+information, it gives you information
+
+00:13:23.020 --> 00:13:28.880 line:100% position:50% align:middle
+relative to where on the page it is,
+absolutely on the page, and it doesn't
+
+00:13:28.880 --> 00:13:32.580 line:100% position:50% align:middle
+take these things into account. So what
+we'll need to do is then grab the
+
+00:13:32.580 --> 00:13:41.560 line:100% position:50% align:middle
+coordinates for the nav as well. So go
+down, down, down "const navCoords =
+
+00:13:41.560 --> 00:13:47.380 line:100% position:50% align:middle
+nav.getBoundingClientRect." We should also
+have the coordinates for the nav and the
+
+00:13:47.380 --> 00:13:50.240 line:100% position:50% align:middle
+reason why I do that on every single time,
+something might change,
+
+00:13:50.240 --> 00:13:53.310 line:100% position:50% align:middle
+sometimes you have a banner that opens and
+closes. We can't assume that it's always
+
+00:13:53.310 --> 00:13:57.790 line:100% position:50% align:middle
+going to be the same on page load as it is
+when you hover. You got these nav coords
+
+00:13:57.790 --> 00:14:02.630 line:100% position:50% align:middle
+as well, let's console log those. Good.
+We've got that. And then what we need to
+
+00:14:02.630 --> 00:14:06.740 line:100% position:50% align:middle
+do is figure out where are the coords for
+everything, so we're going to put those
+
+00:14:06.740 --> 00:14:12.810 line:100% position:50% align:middle
+two coordinates that we just got together
+"const coords =" and then the height is
+
+00:14:12.810 --> 00:14:20.600 line:100% position:50% align:middle
+just going to be equal to the
+dropdownCoords.height and the width is
+
+00:14:20.600 --> 00:14:25.080 line:100% position:50% align:middle
+also going to be "dropdownCoords.width."
+Let's just stop it there and work with the
+
+00:14:25.080 --> 00:14:29.320 line:100% position:50% align:middle
+width and the height before we get any
+further. Now that we have the width and
+
+00:14:29.320 --> 00:14:33.090 line:100% position:50% align:middle
+the height here, we can just take our
+background which is that white thing.
+
+00:14:33.090 --> 00:14:38.900 line:100% position:50% align:middle
+We can set the style and we'll say,
+".setProperty" and we're going to set the
+
+00:14:38.900 --> 00:14:45.090 line:100% position:50% align:middle
+property, the width to be, coords.width
+and we're also going to do that with the
+
+00:14:45.090 --> 00:14:50.550 line:100% position:50% align:middle
+height. And that doesn't seem to be
+working, how come? Because you need to
+
+00:14:50.550 --> 00:14:58.570 line:100% position:50% align:middle
+give it pixels, so you could just wrap
+these suckers in a template string and add
+
+00:14:58.570 --> 00:15:06.040 line:100% position:50% align:middle
+px to the end and that should do it for
+us. Ah, look at this. So when you hover
+
+00:15:06.040 --> 00:15:12.810 line:100% position:50% align:middle
+it, it will know how big and how wide that
+actual element is and that's another
+
+00:15:12.810 --> 00:15:17.140 line:100% position:50% align:middle
+reason why we do that sort of two stage
+adding trigger-enter and
+
+00:15:17.140 --> 00:15:20.500 line:100% position:50% align:middle
+trigger-enter-active so that when you
+enter it, even though it's not shown on
+
+00:15:20.500 --> 00:15:25.250 line:100% position:50% align:middle
+the page, it's display block and we're
+able to get these bounding client rects
+
+00:15:25.250 --> 00:15:28.900 line:100% position:50% align:middle
+from it. Because otherwise if it was
+hidden, you can't tell the width and the
+
+00:15:28.900 --> 00:15:33.330 line:100% position:50% align:middle
+height of a hidden element, so it needs to
+be on the page even if it's visibly not
+
+00:15:33.330 --> 00:15:38.070 line:100% position:50% align:middle
+there with opacity. So we've got our width
+and our height and the reason why that is
+
+00:15:38.070 --> 00:15:44.200 line:100% position:50% align:middle
+animating itself if we go up to our CSS
+here, you see this dropdown background?
+
+00:15:44.200 --> 00:15:51.520 line:100% position:50% align:middle
+I have a transition of the opacity is half
+a second and then everything else is 0.3
+
+00:15:51.520 --> 00:15:56.230 line:100% position:50% align:middle
+seconds that translates to 0.2 seconds. So
+if I make that two seconds and make this
+
+00:15:56.230 --> 00:16:02.990 line:100% position:50% align:middle
+one three seconds, the width and the
+height will just take two seconds to
+
+00:16:02.990 --> 00:16:07.440 line:100% position:50% align:middle
+actually grow, but you want that to be
+nice and short and you can kind of play
+
+00:16:07.440 --> 00:16:12.300 line:100% position:50% align:middle
+around with how nicely that goes. Good.
+That's working. And the last piece of the
+
+00:16:12.300 --> 00:16:19.850 line:100% position:50% align:middle
+puzzle is actually working with the top
+and the left values. So if we go back down
+
+00:16:19.850 --> 00:16:26.970 line:100% position:50% align:middle
+here, let's say the top is going to be
+let's just say "dropdownCoords.top" and
+
+00:16:26.970 --> 00:16:33.450 line:100% position:50% align:middle
+the left is going to be the same thing and
+then we are to go down here and set our
+
+00:16:33.450 --> 00:16:38.270 line:100% position:50% align:middle
+transform because this is a CSS property.
+It's going to be...normally,
+
+00:16:38.270 --> 00:16:44.680 line:100% position:50% align:middle
+it would be a translate and we will give
+it our x and our y, but in our case,
+
+00:16:44.680 --> 00:16:54.770 line:100% position:50% align:middle
+it's going to be "coords.left.px,
+coordsTop" then give that a save.
+
+00:16:54.770 --> 00:17:01.000 line:100% position:50% align:middle
+Seems to be working, but if I were to go
+up here, again, just do what we did before
+
+00:17:01.000 --> 00:17:09.700 line:100% position:50% align:middle
+and maybe put like "h2," say like "cool."
+Now see how everything is messed up?
+
+00:17:09.700 --> 00:17:12.520 line:100% position:50% align:middle
+And that's because the coordinates that we
+get are off a little bit because that
+
+00:17:12.520 --> 00:17:16.150 line:100% position:50% align:middle
+navigation is pushed down. So you can't
+always assume that everything is going to
+
+00:17:16.150 --> 00:17:23.530 line:100% position:50% align:middle
+be anchored to the top of the actual page.
+And that's why we went ahead and grabbed
+
+00:17:23.530 --> 00:17:28.380 line:100% position:50% align:middle
+this nav coordinates right here because we
+need to take our dropdown coords and then
+
+00:17:28.380 --> 00:17:35.210 line:100% position:50% align:middle
+offset them with the top nav. So if the
+top nav is 30 pixels, we know it's been
+
+00:17:35.210 --> 00:17:41.060 line:100% position:50% align:middle
+bumped down 30 pixels, so the value the
+top of this white box needs to be moved up
+
+00:17:41.060 --> 00:17:47.150 line:100% position:50% align:middle
+30 pixels and same for the left
+navCoords.left. And those two values are
+
+00:17:47.150 --> 00:17:52.850 line:100% position:50% align:middle
+just going to offset them and it's going
+to perfectly put itself...a-ha,
+
+00:17:52.850 --> 00:17:57.010 line:100% position:50% align:middle
+buttery smooth you've got it going on.
+This is probably the hardest part.
+
+00:17:57.010 --> 00:18:00.780 line:100% position:50% align:middle
+That took me a while to figure out, when
+you have something nested inside of it,
+
+00:18:00.780 --> 00:18:05.640 line:100% position:50% align:middle
+these values don't care and you need to do
+the math yourself. That's one that jQuery
+
+00:18:05.640 --> 00:18:09.890 line:100% position:50% align:middle
+did really nice for you. If you ever use
+.offset inside of jQuery,
+
+00:18:09.890 --> 00:18:12.850 line:100% position:50% align:middle
+you didn't have to worry about it because
+it did all the math behind the scenes for
+
+00:18:12.850 --> 00:18:17.270 line:100% position:50% align:middle
+you there. Other than that, working really
+nicely for us, there is one little thing
+
+00:18:17.270 --> 00:18:23.370 line:100% position:50% align:middle
+where if you sort of go bananas on it,
+take the nav, the ul, open this up.
+
+00:18:23.370 --> 00:18:26.590 line:100% position:50% align:middle
+You see, like why is there
+trigger-enter-active here? And if you,
+
+00:18:26.590 --> 00:18:30.570 line:100% position:50% align:middle
+like, really mess with it, like, go really
+quickly, you'll see like okay sometimes
+
+00:18:30.570 --> 00:18:36.070 line:100% position:50% align:middle
+you see the content before you actually
+get to it. And then if you mess with it,
+
+00:18:36.070 --> 00:18:41.040 line:100% position:50% align:middle
+sometimes you're going to end up with
+active here and what's happening is that
+
+00:18:41.040 --> 00:18:45.250 line:100% position:50% align:middle
+it's the set time up here. Immediately
+when we enter, we're going to add a class
+
+00:18:45.250 --> 00:18:49.590 line:100% position:50% align:middle
+of trigger-enter and then 150 milliseconds
+later, we're going to enter
+
+00:18:49.590 --> 00:18:56.380 line:100% position:50% align:middle
+trigger-enter-active. But sometimes I'm
+already hovering off before this is even
+
+00:18:56.380 --> 00:19:01.000 line:100% position:50% align:middle
+added. So there's a bit of problem here
+where you try to remove the active one
+
+00:19:01.000 --> 00:19:05.570 line:100% position:50% align:middle
+before it's ever been added, so you run
+the remove and then a little bit later,
+
+00:19:05.570 --> 00:19:10.970 line:100% position:50% align:middle
+you actually add it on. That's a bit of a
+pain. So what we want to do is take this
+
+00:19:10.970 --> 00:19:17.470 line:100% position:50% align:middle
+function that we're running here, put that
+into its own and we'll say if
+
+00:19:17.470 --> 00:19:30.410 line:100% position:50% align:middle
+this.classList contains trigger-enter,
+then we want to add a class of active and
+
+00:19:30.410 --> 00:19:34.090 line:100% position:50% align:middle
+then you can see it. You can just go crazy
+with it and you'll see that you're never
+
+00:19:34.090 --> 00:19:38.620 line:100% position:50% align:middle
+seeing the content too early because that
+active one is never being added and you
+
+00:19:38.620 --> 00:19:44.830 line:100% position:50% align:middle
+never see them on here. Another way that I
+like to write it is it's a little bit
+
+00:19:44.830 --> 00:19:49.460 line:100% position:50% align:middle
+shorter where I'm going to take it back to
+what we have here, take that,
+
+00:19:49.460 --> 00:19:54.100 line:100% position:50% align:middle
+take the statement out, take this block
+out that we had here, bring it back to
+
+00:19:54.100 --> 00:19:58.360 line:100% position:50% align:middle
+that arrow function and what you can do is
+you say, this.classList that contains
+
+00:19:58.360 --> 00:20:04.610 line:100% position:50% align:middle
+trigger-enter and this class.add. And
+that's sort of short circuiting this where
+
+00:20:04.610 --> 00:20:11.920 line:100% position:50% align:middle
+if this is true, then this will run. If
+this is false, then it doesn't bother
+
+00:20:11.920 --> 00:20:16.010 line:100% position:50% align:middle
+checking the second one. So it's a bit of
+a hack there where you take advantage of
+
+00:20:16.010 --> 00:20:21.230 line:100% position:50% align:middle
+this Boolean and. But that means that the
+add will never run unless it actually
+
+00:20:21.230 --> 00:20:26.050 line:100% position:50% align:middle
+contains trigger enter. It's just like the
+if statement that we have there in things.
+
+00:20:26.050 --> 00:20:31.600 line:100% position:50% align:middle
+Oh no, I broke it! Token, we got too many
+tokens. Is it that one?
+
+00:20:31.600 --> 00:20:37.260 line:100% position:50% align:middle
+Maybe, yes, there we go,
+working nicely for us. So hopefully,
+
+00:20:37.260 --> 00:20:40.620 line:100% position:50% align:middle
+you enjoyed that one. I really liked it. I
+think that the people that work at Stripe
+
+00:20:40.620 --> 00:20:44.460 line:100% position:50% align:middle
+they have...if you look into it, if you
+noticed like when just hover into it,
+
+00:20:44.460 --> 00:20:48.700 line:100% position:50% align:middle
+they have this, like, really cool sort of
+fold down effect that they have going on
+
+00:20:48.700 --> 00:20:52.680 line:100% position:50% align:middle
+and I think that their code is probably
+six or seven times as large as this.
+
+00:20:52.680 --> 00:20:56.930 line:100% position:50% align:middle
+But if this is something that you love
+working with, which is coordinates and
+
+00:20:56.930 --> 00:21:00.850 line:100% position:50% align:middle
+timing and all of that, I would definitely
+encourage you to try and make that little
+
+00:21:00.850 --> 00:21:06.080 line:100% position:50% align:middle
+fold down animation work as well. Thanks
+so much and I will see you tomorrow.
+
+00:21:06.080 --> 00:21:08.080 line:100% position:50% align:middle
+♪ [music] ♪
