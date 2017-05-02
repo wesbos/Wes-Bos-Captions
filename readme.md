@@ -8,6 +8,8 @@ This is a Github Repo containing all the captions for my video courses. Edits ar
 
 `JS3` → [JavaScript30](https://JavaScript30.com)
 
+`NODE` → [Learn Node](https://LearnNode.com)
+
 
 ## Translations
 Translations are welcome - just append the language code to the file name. Example: 
