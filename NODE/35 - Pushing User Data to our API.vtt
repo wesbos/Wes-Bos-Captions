@@ -1,0 +1,1157 @@
+WEBVTT
+
+00:00:00.554 --> 00:00:03.554 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.035 --> 00:00:16.393 line:100% position:50% align:middle
+The last two pieces of using our API have
+been getting, getting, getting data.
+
+00:00:16.393 --> 00:00:20.214 line:100% position:50% align:middle
+We've been pulling data from or API given
+that we give it something like a latitude
+
+00:00:20.300 --> 00:00:24.834 line:100% position:50% align:middle
+and longitude or a search term. What we
+want to do now is actually do something
+
+00:00:24.900 --> 00:00:29.370 line:100% position:50% align:middle
+where we're going to push data to
+the API. So we're going to be looking at
+
+00:00:29.370 --> 00:00:34.570 line:100% position:50% align:middle
+these heart icons here. And when you heart
+something, it's going to add it to a list
+
+00:00:34.570 --> 00:00:38.550 line:100% position:50% align:middle
+of your hearts and you can click on
+your heart page and you can see a list of
+
+00:00:38.550 --> 00:00:42.580 line:100% position:50% align:middle
+everything that you have then hearted. So
+that's going to be using the API.
+
+00:00:42.580 --> 00:00:45.470 line:100% position:50% align:middle
+Why? Because when you click on the heart,
+we don't want to actually push you to any
+
+00:00:45.470 --> 00:00:50.860 line:100% position:50% align:middle
+page, we want that just to happen in real
+time. So let's dive into that now.
+
+00:00:50.860 --> 00:00:55.090 line:100% position:50% align:middle
+First thing that we need to do is actually
+modify our user schema,
+
+00:00:55.090 --> 00:00:59.440 line:100% position:50% align:middle
+because the way that this is going to work
+is that every time you heart a store,
+
+00:00:59.440 --> 00:01:04.540 line:100% position:50% align:middle
+the ID of the store will be put
+into your actual user account,
+
+00:01:04.540 --> 00:01:07.820 line:100% position:50% align:middle
+and then then we're going to have a
+property on the user called hearts.
+
+00:01:07.820 --> 00:01:12.610 line:100% position:50% align:middle
+So let's open up user.js, which is our
+model here, and we're going to add a new
+
+00:01:12.610 --> 00:01:15.360 line:100% position:50% align:middle
+field which is going to be called hearts.
+
+00:01:15.360 --> 00:01:21.250 line:100% position:50% align:middle
+Now, what will the hearts look like? Well,
+it is going to be a relationship because
+
+00:01:21.250 --> 00:01:25.610 line:100% position:50% align:middle
+the user is going to heart many stores,
+but there's going to be many.
+
+00:01:25.610 --> 00:01:29.580 line:100% position:50% align:middle
+So how do you do a relationship with
+multiple object IDs? Well,
+
+00:01:29.580 --> 00:01:33.330 line:100% position:50% align:middle
+you say it's going to be an array, and
+then each of the things in the array are
+
+00:01:33.330 --> 00:01:43.450 line:100% position:50% align:middle
+going to be an object with the type of
+mongoose.Schema.ObjectId,
+
+00:01:43.450 --> 00:01:47.360 line:100% position:50% align:middle
+and that will tell it that is expecting an
+ID, and then we tell it the ref is going
+
+00:01:47.360 --> 00:01:49.320 line:100% position:50% align:middle
+to be in this store. Right?
+
+00:01:49.320 --> 00:01:54.580 line:100% position:50% align:middle
+So, a couple things. We're telling it that
+hearts is going to be an array of IDs that
+
+00:01:54.580 --> 00:01:58.000 line:100% position:50% align:middle
+are related to a store. That, when we want
+to populate our hearts,
+
+00:01:58.000 --> 00:02:02.850 line:100% position:50% align:middle
+we're going to see all of the stores in
+this actual hearts, not just the list of
+
+00:02:02.850 --> 00:02:03.230 line:100% position:50% align:middle
+IDs.
+
+00:02:03.230 --> 00:02:07.340 line:100% position:50% align:middle
+So good, that's the first part done. Next
+we need to create some sort of interface
+
+00:02:07.340 --> 00:02:14.430 line:100% position:50% align:middle
+to actually handle hearting each of these.
+So let's open up our storeCard.pug,
+
+00:02:14.430 --> 00:02:18.030 line:100% position:50% align:middle
+and you'll see that we have all this
+action already here. We're going to do
+
+00:02:18.030 --> 00:02:21.030 line:100% position:50% align:middle
+another action here. We're going to say,
+"if user" and what that will do is that
+
+00:02:21.030 --> 00:02:24.970 line:100% position:50% align:middle
+we're going to check if they're logged in
+first because there's no sense in showing
+
+00:02:24.970 --> 00:02:28.940 line:100% position:50% align:middle
+the hearting interface to people who are
+logged out. And if that is true,
+
+00:02:28.940 --> 00:02:30.820 line:100% position:50% align:middle
+we're going to have a
+store__action.store__action--heart. So
+
+00:02:30.820 --> 00:02:39.210 line:100% position:50% align:middle
+that's a class of storeAction and a class
+of storeAction-heart.
+
+00:02:39.210 --> 00:02:42.886 line:100% position:50% align:middle
+Then inside of that, we need an actual
+&amp;lt; form &amp;gt; tag, right? Because
+
+00:02:42.886 --> 00:02:46.600 line:100% position:50% align:middle
+whenever you're submitting data to
+the backend, it's easiest just to have a
+
+00:02:46.690 --> 00:02:47.487 line:100% position:50% align:middle
+&amp;lt; form &amp;gt; tag.
+
+00:02:47.487 --> 00:02:51.717 line:100% position:50% align:middle
+That way if JavaScript does ever fail,
+then it will still work as a regular form
+
+00:02:51.717 --> 00:02:57.170 line:100% position:50% align:middle
+submit. So we've a form with a class of
+heart and the method on that is going to
+
+00:02:57.170 --> 00:03:03.070 line:100% position:50% align:middle
+be post, and the action is going to be,
+make sure you use back text, here,
+
+00:03:03.070 --> 00:03:11.200 line:100% position:50% align:middle
+'/api/stores/' we're going to grab the
+store. _id as part of the store endpoint,
+
+00:03:11.200 --> 00:03:17.520 line:100% position:50% align:middle
+just to show you that you can also pass
+IDs via the URL and then "/heart" because
+
+00:03:17.520 --> 00:03:21.180 line:100% position:50% align:middle
+that's the actual action that we're going
+to do there. Then inside of that we're
+
+00:03:21.180 --> 00:03:27.150 line:100% position:50% align:middle
+going to have a button with the type of
+submit. So, rather than having an input
+
+00:03:27.150 --> 00:03:30.960 line:100% position:50% align:middle
+that I have to submit using this button.
+Why? Because we actually want to put some
+
+00:03:30.960 --> 00:03:34.940 line:100% position:50% align:middle
+HTML inside of a button, and you can't put
+HTML inside of an input.
+
+00:03:34.940 --> 00:03:42.990 line:100% position:50% align:middle
+That will have a name of "heart" and then
+inside of it we're going to use our thing
+
+00:03:42.990 --> 00:03:47.820 line:100% position:50% align:middle
+"!=h. icon('heart') and that's going to be
+our heart icon. You'll see sort of an ugly
+
+00:03:47.820 --> 00:03:51.530 line:100% position:50% align:middle
+button, and we'll worry about the look in
+just a second, but, if you were to press
+
+00:03:51.530 --> 00:03:56.270 line:100% position:50% align:middle
+that, it should submit this form and then
+give us a 404 because we haven't actually
+
+00:03:56.270 --> 00:03:59.210 line:100% position:50% align:middle
+set up this route yet. So let's try to
+click one. There we go.
+
+00:03:59.210 --> 00:04:05.300 line:100% position:50% align:middle
+We tried to post to api/stores this actual
+store. _id/heart. That's what's next up.
+
+00:04:05.300 --> 00:04:09.070 line:100% position:50% align:middle
+We need to actually go and make the route
+and the method to handle that.
+
+00:04:09.070 --> 00:04:13.570 line:100% position:50% align:middle
+Open up index. js and go down to where our
+api is and we'll make the route for that,
+
+00:04:13.570 --> 00:04:22.750 line:100% position:50% align:middle
+router. post('/api/stores/:id/heart'). And
+then when that happens,
+
+00:04:22.750 --> 00:04:28.033 line:100% position:50% align:middle
+we're going to catch errors, we are going
+to use the storeController.heartStore.
+
+00:04:28.033 --> 00:04:30.860 line:100% position:50% align:middle
+Good then we'll go into our
+storeController here and down at the
+
+00:04:30.860 --> 00:04:35.549 line:100% position:50% align:middle
+bottom we'll make a new one, exports.
+heartStore =
+
+00:04:35.549 --> 00:04:40.930 line:100% position:50% align:middle
+and we'll make it a sync, request
+response. Now, what we need to now get is
+
+00:04:40.930 --> 00:04:46.010 line:100% position:50% align:middle
+at first we need a list of the person's
+stores because we need to know if they
+
+00:04:46.010 --> 00:04:52.050 line:100% position:50% align:middle
+already have the store in their hearts,
+then by posting to this URL we're going to
+
+00:04:52.050 --> 00:04:56.270 line:100% position:50% align:middle
+remove it. If they all don't have it, then
+posting to this URL will add it.
+
+00:04:56.270 --> 00:05:00.000 line:100% position:50% align:middle
+Sort of like a toggle where we don't
+really care all that much about if they
+
+00:05:00.000 --> 00:05:04.620 line:100% position:50% align:middle
+have done it or not, it will just do the
+opposite. So we need to get a list or an
+
+00:05:04.620 --> 00:05:07.200 line:100% position:50% align:middle
+array of hearts, so we'll say, "const
+hearts =...
+
+00:05:07.300 --> 00:05:13.650 line:100% position:50% align:middle
+we'll take the user request.user.hearts
+and we'll map over each of them
+
+00:05:13.650 --> 00:05:17.760 line:100% position:50% align:middle
+where each object that comes back... and
+this is a little bit weird because you
+
+00:05:17.760 --> 00:05:21.830 line:100% position:50% align:middle
+would think that we already have an array
+of IDs because if we look at our here we
+
+00:05:21.830 --> 00:05:27.120 line:100% position:50% align:middle
+have an array of IDs. But it's really an
+array of objects and we want just an array
+
+00:05:27.120 --> 00:05:33.110 line:100% position:50% align:middle
+of strings that is specific to that user.
+So we'll take each object and we'll run
+
+00:05:33.110 --> 00:05:38.910 line:100% position:50% align:middle
+the obj.toString and that will work
+because MongoDB has overwritten the
+
+00:05:38.910 --> 00:05:43.480 line:100% position:50% align:middle
+toString method on each of the objects,
+which will allow us to get a list of
+
+00:05:43.480 --> 00:05:48.850 line:100% position:50% align:middle
+possible strings. So let's just console.
+log hearts when we post to that and then,
+
+00:05:48.850 --> 00:05:53.240 line:100% position:50% align:middle
+let's actually just say, "res.
+json(hearts); send the data back to
+
+00:05:53.240 --> 00:05:56.450 line:100% position:50% align:middle
+the person and give them a list of their
+actual hearts when they have it.
+
+00:05:56.450 --> 00:06:01.010 line:100% position:50% align:middle
+We go back to stores here, click on hearts
+for one of them and we get back an empty
+
+00:06:01.010 --> 00:06:05.240 line:100% position:50% align:middle
+array. Why is that? Well, because I'm new,
+I haven't... I don't have any hearts.
+
+00:06:05.240 --> 00:06:08.600 line:100% position:50% align:middle
+I don't have a heart, I'm a
+terrible person and I don't have a heart,
+
+00:06:08.600 --> 00:06:13.360 line:100% position:50% align:middle
+but I don't have any hearts in my array,
+yet. So now what we need to do is we're
+
+00:06:13.360 --> 00:06:17.670 line:100% position:50% align:middle
+going to be taking the user and we're
+going to be running one called
+
+00:06:17.670 --> 00:06:22.920 line:100% position:50% align:middle
+findOneAndUpdate which is going to allow
+us to find the user and then update the
+
+00:06:22.920 --> 00:06:30.000 line:100% position:50% align:middle
+actual thing. However, the operators in
+which we can either take it out of or put
+
+00:06:30.000 --> 00:06:33.980 line:100% position:50% align:middle
+it into needs to be a variable. So we're
+going to make a new variable here called
+
+00:06:33.980 --> 00:06:39.510 line:100% position:50% align:middle
+operator, and the operator is going to
+check if our hearts includes the current
+
+00:06:39.510 --> 00:06:43.240 line:100% position:50% align:middle
+ID that's being posted, right? So if we
+have an array, we're going to say,
+
+00:06:43.240 --> 00:06:47.280 line:100% position:50% align:middle
+"Is this one already in the array?" and if
+it is, then remove it.
+
+00:06:47.400 --> 00:06:51.129 line:100% position:50% align:middle
+If it's not, then add it. Right? So
+we're going to say hearts.include
+
+00:06:51.129 --> 00:06:54.810 line:100% position:50% align:middle
+and then how do we how do we get
+this from the URL? Well,
+
+00:06:54.810 --> 00:07:01.531 line:100% position:50% align:middle
+we told it it would be a program of ID.
+So we could say, "request.params.id"
+
+00:07:01.531 --> 00:07:06.720 line:100% position:50% align:middle
+and if it is in there, the
+operator is going to be $pull which is the
+
+00:07:06.720 --> 00:07:13.410 line:100% position:50% align:middle
+MongoDB operator of removing from this
+array on our user. Otherwise,
+
+00:07:13.410 --> 00:07:18.039 line:100% position:50% align:middle
+the opposite of $pull is going to be
+something called $addToSet.
+
+00:07:18.039 --> 00:07:21.800 line:100% position:50% align:middle
+And the reason why it's not $push is
+because we want it to be unique.
+
+00:07:21.800 --> 00:07:26.420 line:100% position:50% align:middle
+If we use... there is an equivalent
+to $push in MongoDB which it will just add
+
+00:07:26.420 --> 00:07:31.890 line:100% position:50% align:middle
+it multiple times. But by saying
+$addToSet, it will make sure that we don't
+
+00:07:31.890 --> 00:07:35.343 line:100% position:50% align:middle
+accidentally, for whatever happens, we
+don't accidentally add it twice to a
+
+00:07:35.343 --> 00:07:38.453 line:100% position:50% align:middle
+specific user. If it's already there, it
+will just duplicate it over.
+
+00:07:38.453 --> 00:07:48.151 line:100% position:50% align:middle
+So then we can say "const user =
+await User.findByIdAndUpdate;"
+
+00:07:48.151 --> 00:07:49.428 line:100% position:50% align:middle
+That was a long one.
+
+00:07:49.428 --> 00:07:54.910 line:100% position:50% align:middle
+And we got to find the current user (req.
+user_id, ) we're going to find the current
+
+00:07:54.910 --> 00:08:00.000 line:100% position:50% align:middle
+user, and when that happens we are going
+to update it. I'm going to put these on
+
+00:08:00.000 --> 00:08:05.660 line:100% position:50% align:middle
+their own line here. Let's put
+findByIdAndUpdate. Put that on its own
+
+00:08:05.660 --> 00:08:13.170 line:100% position:50% align:middle
+line. Then once we have found it by ID,
+we are going to pass it all of the data.
+
+00:08:13.170 --> 00:08:20.320 line:100% position:50% align:middle
+And in this case we normally say we're
+going to $pull the hearts property,
+
+00:08:20.320 --> 00:08:23.980 line:100% position:50% align:middle
+which is going to be req.params.id and
+that would take it out.
+
+00:08:23.980 --> 00:08:29.580 line:100% position:50% align:middle
+Or we're going to say $addToSet, and
+that's going to put it into our array.
+
+00:08:29.580 --> 00:08:34.680 line:100% position:50% align:middle
+But because we've put it in a variable,
+we can use the computed property names
+
+00:08:34.680 --> 00:08:39.250 line:100% position:50% align:middle
+in ES6 which is [operator]. And what
+that's going to do is it's either going to
+
+00:08:39.250 --> 00:08:45.940 line:100% position:50% align:middle
+replace itself with $pull or $addToSet.
+Okay? And then what we often need as a
+
+00:08:45.940 --> 00:08:50.830 line:100% position:50% align:middle
+third option here, we could say "new:true"
+and what that will do is,
+
+00:08:50.830 --> 00:08:56.300 line:100% position:50% align:middle
+by updating the user it's going to return
+to us the updated user rather than the
+
+00:08:56.300 --> 00:08:59.150 line:100% position:50% align:middle
+previous user. I'll show you what that
+means in just a second.
+
+00:08:59.150 --> 00:09:04.010 line:100% position:50% align:middle
+So we have this user here, we'll, let's
+res.json(user) the actual user.
+
+00:09:04.010 --> 00:09:08.980 line:100% position:50% align:middle
+And let's go back, I'm going to refresh
+and let's actually post to one of
+
+00:09:08.980 --> 00:09:14.020 line:100% position:50% align:middle
+these, and, oh, we get user is not
+defined. And why is that? It's because we
+
+00:09:14.020 --> 00:09:19.410 line:100% position:50% align:middle
+actually haven't worked with the user here
+just yet. So let's go to the top here and
+
+00:09:19.410 --> 00:09:24.820 line:100% position:50% align:middle
+import the user. There we go. We'll
+duplicate that and we'll say,
+
+00:09:24.820 --> 00:09:31.110 line:100% position:50% align:middle
+"const User = mongoose. model('user');"
+Now if I go back of my stores and heart
+
+00:09:31.110 --> 00:09:36.840 line:100% position:50% align:middle
+one of them, look what happened. So what
+we did, let's go over that again.
+
+00:09:36.840 --> 00:09:43.200 line:100% position:50% align:middle
+We posted to this URL with the ID in it
+and what MongoDB will do is it will get a
+
+00:09:43.200 --> 00:09:47.500 line:100% position:50% align:middle
+list of the user's hearts, in this case it
+was an array of nothing,
+
+00:09:47.500 --> 00:09:51.290 line:100% position:50% align:middle
+then it will check if that heart is
+already in that array and,
+
+00:09:51.290 --> 00:09:55.710 line:100% position:50% align:middle
+if it is, it will $pull it, meaning it
+will take it out. If it's not,
+
+00:09:55.710 --> 00:09:59.850 line:100% position:50% align:middle
+it will $addToSet, meaning it will put it
+in. Then we went ahead and found the
+
+00:09:59.850 --> 00:10:06.440 line:100% position:50% align:middle
+current user, updated their hearts
+property, and then we said new is true.
+
+00:10:06.440 --> 00:10:09.800 line:100% position:50% align:middle
+And if we didn't have that on there, it
+would have returned to us hearts.
+
+00:10:09.800 --> 00:10:13.230 line:100% position:50% align:middle
+It still would have added it, but it would
+have given us the empty array because it,
+
+00:10:13.230 --> 00:10:16.790 line:100% position:50% align:middle
+by default, will return to you, the user,
+before it's been updated,
+
+00:10:16.790 --> 00:10:22.570 line:100% position:50% align:middle
+not after. So we would say new it's true
+to have that. Good. So now if I go back
+
+00:10:22.570 --> 00:10:26.440 line:100% position:50% align:middle
+and I go to another store and heart it, it
+should say...there we go,
+
+00:10:26.440 --> 00:10:31.960 line:100% position:50% align:middle
+our hearts is an array of two things. And
+let's do one more Donut Monster Heart,
+
+00:10:31.960 --> 00:10:37.460 line:100% position:50% align:middle
+now there's three things. Now, if I go
+back and Heart Donut Monster once more,
+
+00:10:37.460 --> 00:10:41.850 line:100% position:50% align:middle
+it takes it out because at this point it
+was included in the hearts array,
+
+00:10:41.850 --> 00:10:45.540 line:100% position:50% align:middle
+and then we used $pull instead of
+$addToSet in the last two.
+
+00:10:45.540 --> 00:10:49.580 line:100% position:50% align:middle
+Refresh your page, you should now see that
+we have two under hearts because we have
+
+00:10:49.580 --> 00:10:52.620 line:100% position:50% align:middle
+hearted two of the actual stores. And how
+is that working? Well,
+
+00:10:52.620 --> 00:10:58.100 line:100% position:50% align:middle
+if we open up our layout.pug and we go
+down to where it says,
+
+00:10:58.100 --> 00:11:02.840 line:100% position:50% align:middle
+"heart" we say, "if user, then " it will
+give us the icon heart. And then this is
+
+00:11:02.840 --> 00:11:07.590 line:100% position:50% align:middle
+the line right here, line 29 or so. It
+says the heart-count will first check if
+
+00:11:07.590 --> 00:11:12.760 line:100% position:50% align:middle
+there is a user.hearts. It first checks if
+there's actually a hearts property because
+
+00:11:12.760 --> 00:11:17.840 line:100% position:50% align:middle
+as we're developing this we just added it
+in. And then if there is a hearts array,
+
+00:11:17.840 --> 00:11:21.620 line:100% position:50% align:middle
+it's going to just tell us the actual
+length of the number of hearts that we
+
+00:11:21.620 --> 00:11:26.690 line:100% position:50% align:middle
+have, and that's why it says two.
+If I go and heart another one,
+
+00:11:26.690 --> 00:11:32.090 line:100% position:50% align:middle
+you should have... there's three in there.
+And I go back and I refresh, that
+
+00:11:32.090 --> 00:11:35.690 line:100% position:50% align:middle
+will now show me three. So that shows me
+that data. Let's also update this
+
+00:11:35.690 --> 00:11:41.180 line:100% position:50% align:middle
+interface, here, so that it will be red if
+the heart is hearted,
+
+00:11:41.180 --> 00:11:45.890 line:100% position:50% align:middle
+and it will be white if it's unhearted. So
+we'll go back to our store card here,
+
+00:11:45.890 --> 00:11:48.180 line:100% position:50% align:middle
+and we need to do something
+similar to what we just did. It's,
+
+00:11:48.180 --> 00:11:53.940 line:100% position:50% align:middle
+first we need to get a list of all of the
+heart strings and then we also need to
+
+00:11:53.940 --> 00:11:59.380 line:100% position:50% align:middle
+check if that is included in it. So let's
+go right above this button here and we'll
+
+00:11:59.380 --> 00:12:02.740 line:100% position:50% align:middle
+make a variable. And the way that you
+make a variable in Pug is you do a dash,
+
+00:12:02.740 --> 00:12:08.630 line:100% position:50% align:middle
+so we'll say "- const heartStrings =
+user.hearts.map" So we're going to map
+
+00:12:08.630 --> 00:12:16.420 line:100% position:50% align:middle
+over the user's hearts and we're going to
+take each object and we're going to return
+
+00:12:16.420 --> 00:12:21.390 line:100% position:50% align:middle
+the obj.toString(). Again, that will just
+give us a list of the actual hearts that
+
+00:12:21.390 --> 00:12:27.260 line:100% position:50% align:middle
+the person has. And how can you tell if
+that worked? You could do a quick pre=h.
+
+00:12:27.260 --> 00:12:35.030 line:100% position:50% align:middle
+dump(heartStrings), we'll see here. So now
+for each store, we're seeing a list of all
+
+00:12:35.030 --> 00:12:39.190 line:100% position:50% align:middle
+of the user's heartStrings, and then we
+also already have the current store's
+
+00:12:39.190 --> 00:12:46.050 line:100% position:50% align:middle
+string, because we could dump that as
+well, you just store._id.
+
+00:12:46.050 --> 00:12:49.840 line:100% position:50% align:middle
+So now what we're going to do is we're
+going to check if the store's ID is in
+
+00:12:49.840 --> 00:12:55.750 line:100% position:50% align:middle
+that array of hearted stores, and if it's
+not, we'll make it white,
+
+00:12:55.750 --> 00:13:00.660 line:100% position:50% align:middle
+if it is, we'll make it red. So what we'll
+do here is we'll make a new variable
+
+00:13:00.660 --> 00:13:07.980 line:100% position:50% align:middle
+called "- const heartClass" and we'll say
+if the heartStrings includes the
+
+00:13:07.980 --> 00:13:14.340 line:100% position:50% align:middle
+store._id. toString, because, again the
+store._id is actually not a string.
+
+00:13:14.340 --> 00:13:19.380 line:100% position:50% align:middle
+It's technically an object which has some
+methods on it, so we want to make a
+
+00:13:19.380 --> 00:13:23.900 line:100% position:50% align:middle
+true string otherwise the
+includes won't work. If that is true,
+
+00:13:23.900 --> 00:13:31.910 line:100% position:50% align:middle
+then we will make the heartClass
+heart__button--hearted. And then
+
+00:13:31.910 --> 00:13:35.640 line:100% position:50% align:middle
+otherwise what we're going to do
+is just return nothing there.
+
+00:13:35.640 --> 00:13:42.500 line:100% position:50% align:middle
+Then we can get rid of these two pres and
+"class=heartClass. Give that a save.
+
+00:13:42.500 --> 00:13:48.260 line:100% position:50% align:middle
+Now, when we refresh you'll see that the
+white ones are unhearted and the red ones
+
+00:13:48.260 --> 00:13:52.370 line:100% position:50% align:middle
+are hearted. One other thing is that we
+have this white background on it,
+
+00:13:52.370 --> 00:13:59.109 line:100% position:50% align:middle
+and that's because our button also needs
+just a base class of heart__button.
+
+00:13:59.120 --> 00:14:04.340 line:100% position:50% align:middle
+Let's see if that works. Beautiful.
+So now it is white or red,
+
+00:14:04.340 --> 00:14:08.020 line:100% position:50% align:middle
+and if I were to click one of these, it
+still submits us to the page.
+
+00:14:08.020 --> 00:14:13.630 line:100% position:50% align:middle
+I can go back and refresh the page and
+that one should now be red.
+
+00:14:13.630 --> 00:14:17.380 line:100% position:50% align:middle
+There it is, red. What we're going to do
+now is actually use our API endpoint to
+
+00:14:17.380 --> 00:14:20.990 line:100% position:50% align:middle
+make this happen automatically so you
+don't actually have to leave the page to
+
+00:14:20.990 --> 00:14:23.940 line:100% position:50% align:middle
+heart something. We're going to turn the
+color red, we're going to actually add
+
+00:14:23.940 --> 00:14:27.610 line:100% position:50% align:middle
+it to the user and then we're going to
+also update this little thing up here.
+
+00:14:27.610 --> 00:14:31.960 line:100% position:50% align:middle
+So let's go and make ourselves a new
+JavaScript file. So public > javascripts
+
+00:14:31.960 --> 00:14:39.709 line:100% position:50% align:middle
+> modules, make a new file called heart.js
+and then open up your delicious-app.js.
+
+00:14:39.709 --> 00:14:44.670 line:100% position:50% align:middle
+So those are the two that we need open
+right now. And in our heart.js
+
+00:14:44.670 --> 00:14:47.680 line:100% position:50% align:middle
+we just have a couple lines of
+JavaScript. The first thing we need is
+
+00:14:47.680 --> 00:14:55.210 line:100% position:50% align:middle
+axios, then we're going to make a function
+called ajaxHeart() and that is going to
+
+00:14:55.210 --> 00:14:59.721 line:100% position:50% align:middle
+take in the event that we're going to hook
+up to the submit event on this little
+
+00:14:59.721 --> 00:15:06.630 line:100% position:50% align:middle
+&amp;lt; form &amp;gt; tag that we have here,
+and then we want to export that. Good.
+
+00:15:06.630 --> 00:15:10.410 line:100% position:50% align:middle
+Then we want to go into our delicious-app
+and we're going to import that ajaxHeart.
+
+00:15:10.410 --> 00:15:16.520 line:100% position:50% align:middle
+So we'll say, import ajaxHeart from...
+What we're going to do down here is we're
+
+00:15:16.520 --> 00:15:19.994 line:100% position:50% align:middle
+going to select all of our heartForms,
+and we can use '$$" that's
+
+00:15:19.994 --> 00:15:23.229 line:100% position:50% align:middle
+document.queryselectorselector all,
+form.heart.
+
+00:15:23.229 --> 00:15:25.685 line:100% position:50% align:middle
+So any form that
+has a class of heart...
+
+00:15:25.685 --> 00:15:31.720 line:100% position:50% align:middle
+and you can put that in a variable if you
+want, so "- const heartForms =" and then
+
+00:15:31.720 --> 00:15:36.900 line:100% position:50% align:middle
+we can console.log the heartForms just to
+make sure that we are pulling them up.
+
+00:15:36.900 --> 00:15:42.010 line:100% position:50% align:middle
+So here open up your console and refresh
+the page, and you see that we have 19
+
+00:15:42.010 --> 00:15:46.160 line:100% position:50% align:middle
+heartForms on this page. Why? Because
+there's 19 stores on our actual page.
+
+00:15:46.160 --> 00:15:51.170 line:100% position:50% align:middle
+Good. And then we can just take those
+heartForms and we can use the "on" which
+
+00:15:51.170 --> 00:15:55.080 line:100% position:50% align:middle
+is like the add event listener, we can
+listen for the submit event,
+
+00:15:55.080 --> 00:15:59.020 line:100% position:50% align:middle
+and when the summit event happens we are
+going to run our function called
+
+00:15:59.020 --> 00:16:05.120 line:100% position:50% align:middle
+ajaxHeart. Good. So select all the forms
+when the forms are submitted then call
+
+00:16:05.120 --> 00:16:09.460 line:100% position:50% align:middle
+ajaxHeart. And this is really nice with
+these bling JSs that you can listen for
+
+00:16:09.460 --> 00:16:14.660 line:100% position:50% align:middle
+events on multiple on a node list rather
+than having to loop over every single one.
+
+00:16:14.660 --> 00:16:18.400 line:100% position:50% align:middle
+So go back into our heart.js and, you
+tell me, how do you stop a form from
+
+00:16:18.400 --> 00:16:23.030 line:100% position:50% align:middle
+submitting itself? Well, you just "e." and
+you take the event and you call
+
+00:16:23.030 --> 00:16:27.826 line:100% position:50% align:middle
+preventdefault, then we can
+console. log. Heart it.
+
+00:16:31.900 --> 00:16:33.102 line:100% position:50% align:middle
+Now we'll give this a refresh
+
+00:16:33.102 --> 00:16:36.420 line:100% position:50% align:middle
+and click on your heart and
+you don't see anything actually happen
+
+00:16:36.420 --> 00:16:41.800 line:100% position:50% align:middle
+because we've stopped the default which is
+the post, and we are taking over with
+
+00:16:41.800 --> 00:16:44.480 line:100% position:50% align:middle
+JavaScript, and what we're going to do is
+we're going to actually make the post
+
+00:16:44.480 --> 00:16:48.960 line:100% position:50% align:middle
+happen with JavaScript rather than use the
+browser to post that actual data.
+
+00:16:48.960 --> 00:16:55.970 line:100% position:50% align:middle
+So we can keep that console.log there and
+we're going to take our axios and we're
+
+00:16:55.970 --> 00:17:01.910 line:100% position:50% align:middle
+going to .post to this.action. Why? Okay,
+hold on, let's comment that out.
+
+00:17:01.910 --> 00:17:06.650 line:100% position:50% align:middle
+Console.log this. What is this going to
+be equal to? This will be equal to the
+
+00:17:06.650 --> 00:17:10.036 line:100% position:50% align:middle
+thing that this function was called
+against which is going to be the
+
+00:17:10.036 --> 00:17:14.960 line:100% position:50% align:middle
+&amp;lt; form &amp;gt; tag, and then we need this
+action because that's the URL we want to
+
+00:17:14.960 --> 00:17:19.600 line:100% position:50% align:middle
+hit. So if we axios.post to this.action,
+we can chain a .then() on,
+
+00:17:19.600 --> 00:17:22.991 line:100% position:50% align:middle
+which gives us our response,
+and chain a .catch() on.
+
+00:17:22.991 --> 00:17:24.831 line:100% position:50% align:middle
+I believe I forgot the .catch()
+in the last one,
+
+00:17:24.831 --> 00:17:28.480 line:100% position:50% align:middle
+so make sure you
+go back in and grab that and just console.
+
+00:17:28.480 --> 00:17:32.830 line:100% position:50% align:middle
+error it or handle it however you please
+there. So, first thing we want to do is
+
+00:17:32.830 --> 00:17:37.480 line:100% position:50% align:middle
+just let's just console. log, or request
+data, or response that data and see if
+
+00:17:37.480 --> 00:17:41.670 line:100% position:50% align:middle
+it's actually working. So Randy's Joint,
+I'm going to heart it.
+
+00:17:41.670 --> 00:17:48.040 line:100% position:50% align:middle
+And we hearted it and pretty soon after we
+get an Object() come back which has our
+
+00:17:48.040 --> 00:17:52.860 line:100% position:50% align:middle
+hearts array. Now we have five things in
+our hearts array and if I refresh this
+
+00:17:52.860 --> 00:17:58.630 line:100% position:50% align:middle
+page, this should now be red. Beautiful.
+Now, if I click it, again,
+
+00:17:58.630 --> 00:18:02.260 line:100% position:50% align:middle
+it should take it off see our hearts array
+is four and I refresh the page,
+
+00:18:02.260 --> 00:18:05.470 line:100% position:50% align:middle
+it's going to be white. So we don't want
+to have to refresh the page to see both
+
+00:18:05.470 --> 00:18:09.570 line:100% position:50% align:middle
+that interface there happen, as well as
+this little number should be updating
+
+00:18:09.570 --> 00:18:13.600 line:100% position:50% align:middle
+itself. So we're going to check if the
+heart is already hearted,
+
+00:18:13.600 --> 00:18:19.330 line:100% position:50% align:middle
+so we'll make a variable called isHearted
+and we're going to simply take this.
+
+00:18:19.330 --> 00:18:24.390 line:100% position:50% align:middle
+heart... Whoa, what is this. heart? Back
+it up. This, we are ready talked about,
+
+00:18:24.390 --> 00:18:25.384 line:100% position:50% align:middle
+is the &amp;lt; form &amp;gt; tag,
+
+00:18:25.384 --> 00:18:29.840 line:100% position:50% align:middle
+and heart is going to be a sub-property
+or a sub-element inside of it.
+
+00:18:29.840 --> 00:18:30.518 line:100% position:50% align:middle
+And how does that work?
+
+00:18:30.518 --> 00:18:32.891 line:100% position:50% align:middle
+Well, if you have 'this'
+which is our &amp;lt; form &amp;gt; tag
+
+00:18:32.891 --> 00:18:37.058 line:100% position:50% align:middle
+and then if you have any elements inside
+of your &amp;lt;form&amp;gt; tag that have a name
+
+00:18:37.058 --> 00:18:43.174 line:100% position:50% align:middle
+attribute, you can access those elements
+by saying this.the-name-attribute.
+
+00:18:43.174 --> 00:18:47.022 line:100% position:50% align:middle
+So this.heart is going to give us our
+actual button. Okay, good. We'll say
+
+00:18:47.022 --> 00:18:53.459 line:100% position:50% align:middle
+this.heart.classList.toggle... we're
+going to toggle the class of
+
+00:18:53.459 --> 00:18:59.665 line:100% position:50% align:middle
+heart "__button--hearted." And make sure
+you don't put it like a dot in front of
+
+00:18:59.665 --> 00:19:02.977 line:100% position:50% align:middle
+there. I know a lot of people have like
+a weird habit of toggling a class with a
+
+00:19:02.977 --> 00:19:06.175 line:100% position:50% align:middle
+dot in front of it. So take that off and
+then we're just going to console.log
+
+00:19:06.175 --> 00:19:11.490 line:100% position:50% align:middle
+isHearted and see what we've got there.
+Okay. So both of these are hearted, so
+
+00:19:11.490 --> 00:19:17.560 line:100% position:50% align:middle
+when I click it, it says "false" and it
+will take the class off. Click that and it
+
+00:19:17.560 --> 00:19:20.454 line:100% position:50% align:middle
+will say "false" and it'll take the class
+off. And I should... this is five now, I
+
+00:19:20.454 --> 00:19:25.702 line:100% position:50% align:middle
+refresh the page it should say, three.
+Good. Click it, it turns it red again.
+
+00:19:25.702 --> 00:19:30.261 line:100% position:50% align:middle
+Click that, it turns it red again as well.
+Refresh the page, we've got five.
+
+00:19:30.261 --> 00:19:33.357 line:100% position:50% align:middle
+So, good, we've got our functionality
+happening, we've got our interface
+
+00:19:33.357 --> 00:19:37.323 line:100% position:50% align:middle
+updating, the last little piece that we
+want is this little number needs to now
+
+00:19:37.323 --> 00:19:41.598 line:100% position:50% align:middle
+be updated. So what we're going to do is
+we're going to select that heart count
+
+00:19:41.598 --> 00:19:47.356 line:100% position:50% align:middle
+here. If you inspect it, there is a class
+of heart-count on it. So we will import
+
+00:19:47.356 --> 00:19:56.567 line:100% position:50% align:middle
+our bling. Import $, import our $ from
+bling, go down here, and we'll say,
+
+00:19:56.567 --> 00:20:05.726 line:100% position:50% align:middle
+".heart-count.textContent=
+response.data.hearts.length." Why?
+
+00:20:05.726 --> 00:20:10.296 line:100% position:50% align:middle
+Because response.data is going to give us
+the entire user, .hearts is going to give
+
+00:20:10.296 --> 00:20:13.481 line:100% position:50% align:middle
+us the hearts array, and length will tell
+us how many hearts are in that array.
+
+00:20:13.481 --> 00:20:18.637 line:100% position:50% align:middle
+And if I give that a save here, we've got
+five. If I click it, it will bring it
+
+00:20:18.637 --> 00:20:21.862 line:100% position:50% align:middle
+right down to four. If I heart it
+again, it will bring it up to five.
+
+00:20:21.862 --> 00:20:27.662 line:100% position:50% align:middle
+So that is now happening in real time.
+Last cool thing I want to do is, if when
+
+00:20:27.662 --> 00:20:32.689 line:100% position:50% align:middle
+we click on one of these... let's make a
+little... let's make a little heart sort
+
+00:20:32.689 --> 00:20:38.177 line:100% position:50% align:middle
+of like jump out of there. And what I
+have done is, if you add a class of
+
+00:20:38.177 --> 00:20:43.694 line:100% position:50% align:middle
+heart__button--float to this thing, it
+will automatically make a little heart
+
+00:20:43.694 --> 00:20:48.583 line:100% position:50% align:middle
+float out of it. So let's go find this
+button here and, if I were to then...
+
+00:20:48.583 --> 00:20:54.005 line:100% position:50% align:middle
+It's a little bit cramped in here but if
+I were to give it a class of
+
+00:20:54.005 --> 00:21:00.918 line:100% position:50% align:middle
+heart__button--float... and watch
+when I hit Enter. You ready? Put your eyes
+
+00:21:00.918 --> 00:21:05.001 line:100% position:50% align:middle
+on the heart. I'm going to hit enter.
+You see that? Where did that come from?
+
+00:21:05.001 --> 00:21:14.785 line:100% position:50% align:middle
+Well, there is a CSS animation that I've
+put in the hearts.scss file, and on our
+
+00:21:14.785 --> 00:21:20.270 line:100% position:50% align:middle
+buttons I have an after element here
+where the content is just a heart, and the
+
+00:21:20.270 --> 00:21:25.001 line:100% position:50% align:middle
+font size and the pixel and the opacity
+is zero, and then when it is floated,
+
+00:21:25.001 --> 00:21:30.092 line:100% position:50% align:middle
+when it has a class of float on it, I am
+just going to add an animation of fly
+
+00:21:30.092 --> 00:21:35.151 line:100% position:50% align:middle
+over two and a half seconds. And what
+fly will do is it's a CSS key frame that
+
+00:21:35.151 --> 00:21:39.914 line:100% position:50% align:middle
+will sort of just transition it from where
+it is up back and forth, back and forth,
+
+00:21:39.914 --> 00:21:43.722 line:100% position:50% align:middle
+back and forth, and then eventually to
+opacity of zero, so you cannot see it any
+
+00:21:43.722 --> 00:21:48.586 line:100% position:50% align:middle
+longer. So that's kind of fun, and the way
+that we can do that is we want to check
+
+00:21:48.586 --> 00:21:54.164 line:100% position:50% align:middle
+if it is hearted. So we'll say "if
+isHearted then" we are going to say
+
+00:21:54.164 --> 00:22:04.462 line:100% position:50% align:middle
+this.heart.classlist.add. we're going
+to add that class of heart__button--float.
+
+00:22:04.462 --> 00:22:09.851 line:100% position:50% align:middle
+Let's see if that works. Oh, didn't work
+because I forgot a T. Let's try it again
+
+00:22:09.851 --> 00:22:15.778 line:100% position:50% align:middle
+with The French. So that worked great, and
+what we need to do is after two and a
+
+00:22:15.778 --> 00:22:19.049 line:100% position:50% align:middle
+half seconds we need to take that off, so
+I'll say "set time out," we'll have an
+
+00:22:19.049 --> 00:22:25.793 line:100% position:50% align:middle
+arrow function and we can sort of say
+"this.heart.classlist.remove" we're going
+
+00:22:25.793 --> 00:22:32.671 line:100% position:50% align:middle
+remove the heart__button--float after
+two and a half seconds. And the reason
+
+00:22:32.671 --> 00:22:36.217 line:100% position:50% align:middle
+why I use an arrow function there is so
+I can use 'this' and still reference our
+
+00:22:36.217 --> 00:22:37.421 line:100% position:50% align:middle
+actual &amp;lt; form &amp;gt; tag.
+
+00:22:37.421 --> 00:22:39.804 line:100% position:50% align:middle
+So that will just take it off,
+otherwise you'll have these invisible
+
+00:22:39.804 --> 00:22:43.023 line:100% position:50% align:middle
+hearts and sometimes they can get in the
+way of clicking other elements on the
+
+00:22:43.023 --> 00:22:46.398 line:100% position:50% align:middle
+page, so we want to make sure that we
+just remove it entirely and then that will
+
+00:22:46.398 --> 00:22:51.923 line:100% position:50% align:middle
+also allow us to unheart it and then
+heart it again, and over and over and
+
+00:22:51.923 --> 00:22:56.352 line:100% position:50% align:middle
+over again. So that is adding our hearts
+to our actual data. If you ever want to
+
+00:22:56.352 --> 00:23:01.804 line:100% position:50% align:middle
+see that data about your user, you can
+just go into your layout.pug. And, again,
+
+00:23:01.804 --> 00:23:05.753 line:100% position:50% align:middle
+anywhere you want, you can just do a quick
+dump, h.dump, you can dump your
+
+00:23:05.753 --> 00:23:11.763 line:100% position:50% align:middle
+user, and you're going to see that your
+user now has a hearts array which has
+
+00:23:11.763 --> 00:23:16.001 line:100% position:50% align:middle
+items taken on and away from it.
+So you're going to take that away and
+
+00:23:16.001 --> 00:23:17.329 line:100% position:50% align:middle
+refresh and we're good to go.
+
+00:23:17.329 --> 00:23:20.329 line:100% position:50% align:middle
+♪ [music] ♪
