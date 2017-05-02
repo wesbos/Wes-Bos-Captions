@@ -1,0 +1,570 @@
+WEBVTT
+
+00:00:00.610 --> 00:00:03.610 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.000 --> 00:00:15.330 line:100% position:50% align:middle
+Our home page and our stores page is
+starting to get really, really long.
+
+00:00:15.330 --> 00:00:19.070 line:100% position:50% align:middle
+I think we have something about 15, 16
+different stores on the home page. And if
+
+00:00:19.070 --> 00:00:23.290 line:100% position:50% align:middle
+we were to continually add that up to
+1,000 or 2,000 stores then that would take
+
+00:00:23.290 --> 00:00:27.500 line:100% position:50% align:middle
+way too long to actually load the page
+because each of these stores has an image
+
+00:00:27.500 --> 00:00:31.218 line:100% position:50% align:middle
+associated with it. So we need to
+introduce pagination which allows us to
+
+00:00:31.218 --> 00:00:36.630 line:100% position:50% align:middle
+skip from page to page to page to page.
+Great. So what we essentially need to do
+
+00:00:36.630 --> 00:00:43.460 line:100% position:50% align:middle
+is to go into our store controller and we
+need to modify our get stores function to
+
+00:00:43.460 --> 00:00:50.540 line:100% position:50% align:middle
+not just find all of them, but to find a
+specific number of stores and we need to
+
+00:00:50.540 --> 00:00:55.060 line:100% position:50% align:middle
+skip it. So let's say we're showing three
+or four per page. If I'm showing four per
+
+00:00:55.060 --> 00:00:59.850 line:100% position:50% align:middle
+page, page one is one through four then on
+page two I need to skip four and start at
+
+00:00:59.850 --> 00:01:02.660 line:100% position:50% align:middle
+five, six, seven, eight,
+you get the point, right?
+
+00:01:02.660 --> 00:01:08.530 line:100% position:50% align:middle
+So we first want to create a new route
+because the way that the urls are
+
+00:01:08.530 --> 00:01:15.573 line:100% position:50% align:middle
+going to work we are going to go
+/stores/page/two, /three, /four,
+
+00:01:15.573 --> 00:01:19.660 line:100% position:50% align:middle
+those are going to be the pages that we're
+on. So let's open up our index.js and
+
+00:01:19.660 --> 00:01:24.820 line:100% position:50% align:middle
+let's look for our...here we go. We've got
+store, let's just duplicate and modify it
+
+00:01:24.820 --> 00:01:28.860 line:100% position:50% align:middle
+how we want it. Let's go back to our get
+stores function here and I am going to put
+
+00:01:28.860 --> 00:01:32.960 line:100% position:50% align:middle
+this find on its own line and take off the
+semicolon because there's a lot that we're
+
+00:01:32.960 --> 00:01:37.100 line:100% position:50% align:middle
+going to be going through here.
+So first thing that we need is we need a
+
+00:01:37.100 --> 00:01:41.930 line:100% position:50% align:middle
+variable for what page we are on, so we'll
+say const page is equal to and ideally we
+
+00:01:41.930 --> 00:01:48.610 line:100% position:50% align:middle
+get that from the url request.params.page
+but if we're on the home page like we are
+
+00:01:48.610 --> 00:01:53.040 line:100% position:50% align:middle
+clicking on stores right here or we are on
+the home page, there is no store...there
+
+00:01:53.040 --> 00:01:57.740 line:100% position:50% align:middle
+is no page number and in that case we just
+show them one so we say or one.
+
+00:01:57.740 --> 00:02:03.780 line:100% position:50% align:middle
+Then we need a limit, how many do you want
+to show per page so we'll say const limit
+
+00:02:03.780 --> 00:02:06.286 line:100% position:50% align:middle
+and let's set it to four, four per page.
+
+00:02:15.888 --> 00:02:17.315 line:100% position:50% align:middle
+Now we need to make our skip.
+
+00:02:17.315 --> 00:02:20.810 line:100% position:50% align:middle
+So we're going to make a const skip equals
+and what skip is going to be is if we're
+
+00:02:20.810 --> 00:02:25.310 line:100% position:50% align:middle
+on page two, we want to skip four
+because we are showing five,
+
+00:02:25.310 --> 00:02:29.720 line:100% position:50% align:middle
+six, seven, eight. If we're on page one,
+our skip is going to be zero.
+
+00:02:29.720 --> 00:02:33.260 line:100% position:50% align:middle
+So in order for us to do that, we take the
+page which is we're on page one,
+
+00:02:33.260 --> 00:02:38.760 line:100% position:50% align:middle
+and we multiply that by the limit that is
+four, and that's going to give us page
+
+00:02:38.760 --> 00:02:42.580 line:100% position:50% align:middle
+times limit, that's going to give
+us four minus the actual limit,
+
+00:02:42.580 --> 00:02:48.190 line:100% position:50% align:middle
+and let's just think about that a second.
+So page one, let's do some math here,
+
+00:02:48.190 --> 00:02:54.590 line:100% position:50% align:middle
+we're on page one, we're going to multiply
+that by four, and then we're going to
+
+00:02:54.590 --> 00:03:01.530 line:100% position:50% align:middle
+subtract four so that will give us a skip
+of zero. And then if we're on page two
+
+00:03:01.530 --> 00:03:05.690 line:100% position:50% align:middle
+times four, that's going to give us eight
+minus four, we want to skip four.
+
+00:03:05.690 --> 00:03:11.420 line:100% position:50% align:middle
+So that's in pretty good shape so far.
+Then we can go down to our find here and
+
+00:03:11.420 --> 00:03:16.990 line:100% position:50% align:middle
+we're going to implement a skip which is
+our skip variable and we are going to
+
+00:03:16.990 --> 00:03:22.530 line:100% position:50% align:middle
+limit it to the number that we have. So
+let's try it out. We go to our stores.
+
+00:03:22.530 --> 00:03:30.430 line:100% position:50% align:middle
+We go to page two and we're seeing
+The Burnt Tongue, Bar Izakaya,
+
+00:03:30.430 --> 00:03:38.220 line:100% position:50% align:middle
+Mulberry Coffee, Olive Oil, page one,
+we see Charred, page three,
+
+00:03:38.220 --> 00:03:42.440 line:100% position:50% align:middle
+we see that, and if we just go to the
+home page, we see Charred, our four.
+
+00:03:42.440 --> 00:03:46.660 line:100% position:50% align:middle
+So we know our pagination is actually
+working. Now we need to make some sort of
+
+00:03:46.660 --> 00:03:51.730 line:100% position:50% align:middle
+interface to actually handle showing the
+next and the previous values.
+
+00:03:51.730 --> 00:03:56.400 line:100% position:50% align:middle
+So we're going to make ourselves another
+mixin called pagination so we'll go to
+
+00:03:56.400 --> 00:03:59.623 line:100% position:50% align:middle
+views, mixin, we'll make a...
+
+00:04:04.900 --> 00:04:09.644 line:100% position:50% align:middle
+...mixin pagination.
+It's going to take in the
+
+00:04:09.644 --> 00:04:15.720 line:100% position:50% align:middle
+current page, the number of pages, and the
+count, two of these things which we do not
+
+00:04:15.720 --> 00:04:23.830 line:100% position:50% align:middle
+have just yet. Then we'll have a
+pagination div. We'll have a
+
+00:04:23.900 --> 00:04:27.830 line:100% position:50% align:middle
+"pagination__previous" and we'll
+say, "if page is greater than one,"
+
+00:04:27.830 --> 00:04:32.210 line:100% position:50% align:middle
+so if we're not on page one because
+otherwise we would need to be able to...we
+
+00:04:32.210 --> 00:04:42.395 line:100% position:50% align:middle
+wouldn't want to say previous on page one,
+"then we do 'a ref = stores/page/'" and
+
+00:04:42.395 --> 00:04:48.210 line:100% position:50% align:middle
+we want to take the current page and
+remove it, bring it down by one,
+
+00:04:48.210 --> 00:04:54.120 line:100% position:50% align:middle
+and we'll say previous then in between
+we're going to have some text,
+
+00:04:54.120 --> 00:05:03.980 line:100% position:50% align:middle
+so pagination text. We'll put a paragraph
+tag and we'll say "page of" how many pages
+
+00:05:03.980 --> 00:05:09.460 line:100% position:50% align:middle
+are there, we're going to have to figure
+that in a second, we'll give it a dash out
+
+00:05:09.460 --> 00:05:16.300 line:100% position:50% align:middle
+of how many total results, count total
+results. Then that should be indented and
+
+00:05:16.300 --> 00:05:21.110 line:100% position:50% align:middle
+we'll have a pagination next and we'll say
+"if the page is less than the number of
+
+00:05:21.110 --> 00:05:26.580 line:100% position:50% align:middle
+pages," so if we're not on the last one,
+then we give ourselves a ref to the
+
+00:05:26.580 --> 00:05:30.690 line:100% position:50% align:middle
+next one. And then reason why we need to
+do that because it will think that this
+
+00:05:30.690 --> 00:05:34.560 line:100% position:50% align:middle
+page is an actual string and a string plus
+a number will give you 11,
+
+00:05:34.560 --> 00:05:40.090 line:100% position:50% align:middle
+string of 1 plus 1 will give you 11.
+And we'll say next.
+
+00:05:40.090 --> 00:05:42.810 line:100% position:50% align:middle
+There's a couple of things we need here.
+We need to be able to...we know what page
+
+00:05:42.810 --> 00:05:47.180 line:100% position:50% align:middle
+we're on. We do not know how many pages
+there are in total and we do not know how
+
+00:05:47.180 --> 00:05:52.520 line:100% position:50% align:middle
+many values there are in total. So we have
+to go back to our store controller here
+
+00:05:52.520 --> 00:05:58.440 line:100% position:50% align:middle
+and get a couple more of those actual
+values. So our first question is if we're
+
+00:05:58.440 --> 00:06:03.580 line:100% position:50% align:middle
+now limiting the number that we find, how
+do we possibly know how many items are
+
+00:06:03.580 --> 00:06:07.690 line:100% position:50% align:middle
+actually in the database? Well, what we
+can do is rather than query the entire
+
+00:06:07.690 --> 00:06:11.960 line:100% position:50% align:middle
+database for every single store, we can
+actually use something in MongoDB called
+
+00:06:11.960 --> 00:06:15.410 line:100% position:50% align:middle
+count and that will not return us all the
+documents, it'll just tell us how many
+
+00:06:15.410 --> 00:06:18.280 line:100% position:50% align:middle
+there are and that's going
+to be really nice and quick.
+
+00:06:18.280 --> 00:06:22.600 line:100% position:50% align:middle
+So rather than awaiting our store data,
+we're going to be doing two queries and
+
+00:06:22.600 --> 00:06:26.690 line:100% position:50% align:middle
+we're going to use promise.all to wait on
+both of them. We've done this already once
+
+00:06:26.690 --> 00:06:31.250 line:100% position:50% align:middle
+before but let's do it once more. So we'll
+go in here "const stores = await."
+
+00:06:31.250 --> 00:06:38.750 line:100% position:50% align:middle
+We will rename this to storesPromise and
+we will take the await off. Then we'll go
+
+00:06:38.750 --> 00:06:46.935 line:100% position:50% align:middle
+down here and we'll say const count
+promise is equal to Store.count and what
+
+00:06:46.935 --> 00:06:50.310 line:100% position:50% align:middle
+that will do is it will return a promise
+of when it comes back from counting them
+
+00:06:50.310 --> 00:06:55.430 line:100% position:50% align:middle
+all, it'll give us the actual data.
+Then we're not awaiting either of these.
+
+00:06:55.430 --> 00:07:01.560 line:100% position:50% align:middle
+We can await both of them at the same time
+so stores count is equal to await and we
+
+00:07:01.560 --> 00:07:06.570 line:100% position:50% align:middle
+say promise.all, remember we can pass
+promise.all an array of promises,
+
+00:07:06.570 --> 00:07:13.440 line:100% position:50% align:middle
+stores promise and count promise and then
+that way we will fire off both of these
+
+00:07:13.440 --> 00:07:19.080 line:100% position:50% align:middle
+queries at the same time but wait for both
+of them to come back because likely this
+
+00:07:19.080 --> 00:07:22.760 line:100% position:50% align:middle
+one will take a little bit longer than
+this one. So we have our stores.
+
+00:07:22.760 --> 00:07:27.690 line:100% position:50% align:middle
+We have our count. Now what we can do is
+let's just actually double check that we
+
+00:07:27.690 --> 00:07:33.390 line:100% position:50% align:middle
+have our stores coming back and maybe we
+can put the count in here in the title
+
+00:07:33.390 --> 00:07:36.780 line:100% position:50% align:middle
+just to see if we have how many we have.
+
+00:07:36.780 --> 00:07:41.100 line:100% position:50% align:middle
+Here we go, 16, so we do have that count
+variable coming back no problem.
+
+00:07:41.100 --> 00:07:47.000 line:100% position:50% align:middle
+Now we can figure out how many pages there
+will be so const pages is equal to and we
+
+00:07:47.000 --> 00:07:52.010 line:100% position:50% align:middle
+need to take the upper limit of the number
+of stores divided by how many are on per
+
+00:07:52.010 --> 00:07:57.280 line:100% position:50% align:middle
+page. So if we have the count, 16 stores,
+and we have 4 per page, that is going to
+
+00:07:57.280 --> 00:08:02.140 line:100% position:50% align:middle
+give us which is our limit. So 16 divided
+by 4, that's going to give us a clean 4
+
+00:08:02.140 --> 00:08:08.410 line:100% position:50% align:middle
+pages, but what if we had 17 stores? What
+will we get? We would get like four and a
+
+00:08:08.410 --> 00:08:15.250 line:100% position:50% align:middle
+bit pages. So we will say math.ceil,
+ceiling not like the actual animal,
+
+00:08:15.250 --> 00:08:20.540 line:100% position:50% align:middle
+and math.ceil will give us the upper bound
+so if we have 17, we're going to need 5
+
+00:08:20.540 --> 00:08:25.060 line:100% position:50% align:middle
+pages because that last one is going to be
+on the last page that we have there.
+
+00:08:25.060 --> 00:08:30.240 line:100% position:50% align:middle
+So that's what we have here so far.
+We can now take these variables,
+
+00:08:30.240 --> 00:08:34.960 line:100% position:50% align:middle
+the count variable and the pages variable
+as well as the page variable and we can
+
+00:08:34.960 --> 00:08:39.340 line:100% position:50% align:middle
+pass that all along to our actual
+templates. We have stores, we have page,
+
+00:08:39.340 --> 00:08:45.600 line:100% position:50% align:middle
+we have pages, and we have our count. Now
+let's go back to our pagination here and
+
+00:08:45.600 --> 00:08:51.080 line:100% position:50% align:middle
+we've already used these values in here.
+Look at these two. These two need to have
+
+00:08:51.080 --> 00:08:57.900 line:100% position:50% align:middle
+a hash beside them. We need to now bring
+that into our stores.pug file so we'll
+
+00:08:57.900 --> 00:09:08.030 line:100% position:50% align:middle
+include the mixin and then we'll use it
+down below our stores and we'll pass it.
+
+00:09:08.030 --> 00:09:13.680 line:100% position:50% align:middle
+What is it expecting? Page, pages, and
+count, page, pages, and count.
+
+00:09:13.680 --> 00:09:19.050 line:100% position:50% align:middle
+So that was a lot. Let's see if it works.
+So we've got page 1 of 4,
+
+00:09:19.050 --> 00:09:23.150 line:100% position:50% align:middle
+16 total results, and it gives us a next.
+I click on that, uh-oh,
+
+00:09:23.150 --> 00:09:31.710 line:100% position:50% align:middle
+not found. Oh, it's because our links
+page, not pages, let's give that a refresh
+
+00:09:31.710 --> 00:09:36.180 line:100% position:50% align:middle
+now, page one of four, total results,
+there we go, two of four,
+
+00:09:36.180 --> 00:09:40.260 line:100% position:50% align:middle
+three of four, get to the last one, we
+don't have it, why? Because we have these
+
+00:09:40.260 --> 00:09:43.930 line:100% position:50% align:middle
+if statements that make sure if we should
+show them or not, same thing if we're on
+
+00:09:43.930 --> 00:09:48.510 line:100% position:50% align:middle
+our first page, we do not see a previous
+showing up because we don't need it.
+
+00:09:48.510 --> 00:09:52.050 line:100% position:50% align:middle
+One thing is we do want to guard against
+possible data changing.
+
+00:09:52.050 --> 00:09:56.260 line:100% position:50% align:middle
+So maybe somebody bookmarks that they're
+on page 20, and then all of a sudden,
+
+00:09:56.260 --> 00:10:00.010 line:100% position:50% align:middle
+it doesn't work. It says page 20 of 4,
+16 total results, and we don't get
+
+00:10:00.010 --> 00:10:03.700 line:100% position:50% align:middle
+anything. So what we want to do in that
+case is go back to our store controller
+
+00:10:03.700 --> 00:10:10.340 line:100% position:50% align:middle
+here and right before we render out, we'll
+say if there is no stores.length,
+
+00:10:10.340 --> 00:10:18.070 line:100% position:50% align:middle
+if there are no stores that have come back
+and there is a skip value, then we want to
+
+00:10:18.070 --> 00:10:25.160 line:100% position:50% align:middle
+redirect them to the last page of
+pagination. So we'll say request.flash
+
+00:10:25.160 --> 00:10:28.400 line:100% position:50% align:middle
+we'll use info here because it's not
+really a success. We'll say,
+
+00:10:28.400 --> 00:10:34.556 line:100% position:50% align:middle
+hey, you asked for page and we'll tell
+them what page they asked for, but that
+
+00:10:34.556 --> 00:10:44.279 line:100% position:50% align:middle
+doesn't exist, so I put you on page...and
+then we'll tell them pages,
+
+00:10:44.279 --> 00:10:48.800 line:100% position:50% align:middle
+that's the last one. So if they ask for 20
+and we only have 4, we're going to say,
+
+00:10:48.800 --> 00:10:53.230 line:100% position:50% align:middle
+hey, you asked for 20 but I only put you
+on page 4 because that's as far as we
+
+00:10:53.230 --> 00:11:01.420 line:100% position:50% align:middle
+can possibly go, and then we'll redirect
+them to that actual page. And then finally
+
+00:11:01.420 --> 00:11:04.790 line:100% position:50% align:middle
+make sure you return from this because
+we're done here. We're not actually going
+
+00:11:04.790 --> 00:11:08.350 line:100% position:50% align:middle
+to render. We're just going to redirect
+them to this page which this get stores
+
+00:11:08.350 --> 00:11:10.710 line:100% position:50% align:middle
+will run again.
+So give that a save and now when you
+
+00:11:10.710 --> 00:11:14.950 line:100% position:50% align:middle
+refresh a page that shouldn't exist. It
+says, "Hey, you asked for page 20 but that
+
+00:11:14.950 --> 00:11:19.280 line:100% position:50% align:middle
+doesn't exist so I put you on page 4."
+And then it redirected us to page four
+
+00:11:19.280 --> 00:11:23.210 line:100% position:50% align:middle
+which is the absolute last version that we
+have. Let's try it one more.
+
+00:11:23.210 --> 00:11:27.360 line:100% position:50% align:middle
+Let's log in and try to do it. Now, we
+deleted all of our login data so you have
+
+00:11:27.360 --> 00:11:31.710 line:100% position:50% align:middle
+to go to readme.md to find some of the
+actual logins that do exist.
+
+00:11:31.710 --> 00:11:36.900 line:100% position:50% align:middle
+So let me log in as Debby Downer.
+I'm going to add a new value,
+
+00:11:36.900 --> 00:11:46.320 line:100% position:50% align:middle
+going to great store,
+love this place, cool.
+
+00:11:46.320 --> 00:11:50.500 line:100% position:50% align:middle
+So I added this new one, Great Store, but
+if I go back to our store page,
+
+00:11:50.500 --> 00:11:54.260 line:100% position:50% align:middle
+you'll see that we now have 5 pages
+with 17 total results. I don't see it
+
+00:11:54.260 --> 00:11:58.130 line:100% position:50% align:middle
+here. If we go through and look for it
+here it is because we're not actually
+
+00:11:58.130 --> 00:12:02.610 line:100% position:50% align:middle
+sorting our stores in any meaningful way.
+So we can actually do that real quick if
+
+00:12:02.610 --> 00:12:07.430 line:100% position:50% align:middle
+we go back to our limit and take off a
+semicolon and we can sort them by their
+
+00:12:07.430 --> 00:12:11.500 line:100% position:50% align:middle
+property called created, why? Because
+there's a field on each of our stores
+
+00:12:11.500 --> 00:12:16.990 line:100% position:50% align:middle
+called created and we'll make that
+descending. So now when I refresh my page
+
+00:12:16.990 --> 00:12:21.120 line:100% position:50% align:middle
+one, Great Store is first, why? Because
+that's the latest store that I have
+
+00:12:21.120 --> 00:12:25.910 line:100% position:50% align:middle
+created whereas the last page is going to
+have the oldest stores on it.
+
+00:12:25.910 --> 00:12:29.557 line:100% position:50% align:middle
+Awesome. Let's deploy this sucker.
+
+00:12:29.557 --> 00:12:32.557 line:100% position:50% align:middle
+♪ [music] ♪

@@ -1,0 +1,294 @@
+WEBVTT
+
+00:00:04.200 --> 00:00:07.200 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.190 --> 00:00:15.230 line:100% position:50% align:middle
+Last thing I want to talk about is
+something I like to call "templating
+
+00:00:15.230 --> 00:00:21.560 line:100% position:50% align:middle
+helpers," where sometimes you need data
+available in every single request.
+
+00:00:21.560 --> 00:00:26.700 line:100% position:50% align:middle
+So if you look at our website here, you'll
+see the tab says "undefined - Now That's
+
+00:00:26.700 --> 00:00:31.520 line:100% position:50% align:middle
+Delicious!" So if we look at our
+layout.pug, you'll notice that it's asking
+
+00:00:31.520 --> 00:00:35.810 line:100% position:50% align:middle
+us to pass it a title variable, and we
+haven't. So that's an easy fix.
+
+00:00:35.810 --> 00:00:40.500 line:100% position:50% align:middle
+We can go back to our hello, and pass it a
+title, and say, like...
+
+00:00:40.500 --> 00:00:46.760 line:100% position:50% align:middle
+"I love food," and then when I refresh,
+you'll see that "I love food" is now in
+
+00:00:46.760 --> 00:00:50.260 line:100% position:50% align:middle
+the title. Why? Because we passed the
+locals a title variable,
+
+00:00:50.260 --> 00:00:51.790 line:100% position:50% align:middle
+and then we used it.
+
+00:00:51.790 --> 00:00:56.230 line:100% position:50% align:middle
+Now, what about the site name, "Now That's
+Delicious!"? You notice that I'm not
+
+00:00:56.230 --> 00:01:00.320 line:100% position:50% align:middle
+passing it on every single request,
+because it's...that would be too
+
+00:01:00.320 --> 00:01:05.030 line:100% position:50% align:middle
+cumbersome to pass that to every single
+render. I'd rather just have every single
+
+00:01:05.030 --> 00:01:10.140 line:100% position:50% align:middle
+request have that data available. And
+that's where I like to make a file called
+
+00:01:10.140 --> 00:01:15.700 line:100% position:50% align:middle
+"helpers.js," and if you open up your
+application, right in the main folder,
+
+00:01:15.700 --> 00:01:19.340 line:100% position:50% align:middle
+you're gonna see helpers.js. And I just
+called it "helpers," you might be able to
+
+00:01:19.340 --> 00:01:21.500 line:100% position:50% align:middle
+name it something a little bit better.
+
+00:01:21.500 --> 00:01:30.100 line:100% position:50% align:middle
+But essentially what helpers.js does is, I
+put any helper libraries or any data that
+
+00:01:30.100 --> 00:01:35.640 line:100% position:50% align:middle
+I need in every single template, I put it
+in my helpers.js file.
+
+00:01:35.640 --> 00:01:40.700 line:100% position:50% align:middle
+So if you scroll to the bottom, you'll see
+exports.siteName, so the site name
+
+00:01:40.700 --> 00:01:45.420 line:100% position:50% align:middle
+property, is "Now That's Delicious!" and
+that's what getting piped into there.
+
+00:01:45.420 --> 00:01:51.160 line:100% position:50% align:middle
+So if I were to change that to "hi That's
+Delicious!" and hit refresh...and now,
+
+00:01:51.160 --> 00:01:54.030 line:100% position:50% align:middle
+see, "hi That's Delicious!"
+You get the point, right?
+
+00:01:54.030 --> 00:02:00.380 line:100% position:50% align:middle
+Same with the menu here. I've opted to not
+just hard code every single menu,
+
+00:02:00.380 --> 00:02:05.830 line:100% position:50% align:middle
+I've opted to be able to put the "stores,"
+"tags," "top," "add," and "map," I put
+
+00:02:05.830 --> 00:02:09.950 line:100% position:50% align:middle
+those in an array so if I were to ever
+change them, or you were to build some
+
+00:02:09.950 --> 00:02:14.450 line:100% position:50% align:middle
+sort of back-end interface for managing
+the menu, I could take a couple of them
+
+00:02:14.450 --> 00:02:20.420 line:100% position:50% align:middle
+out, refresh the page, and they will
+automatically be gone. So if you look at
+
+00:02:20.420 --> 00:02:28.320 line:100% position:50% align:middle
+layout.pug, you will see here: "each item
+in h.menu." So what "each" will do is,
+
+00:02:28.320 --> 00:02:33.840 line:100% position:50% align:middle
+it will loop over every single item in an
+array, and then you can simply say
+
+00:02:33.840 --> 00:02:41.290 line:100% position:50% align:middle
+"item.slug," "item.icon," "item.title,"
+and that data is all coming from
+
+00:02:41.290 --> 00:02:46.580 line:100% position:50% align:middle
+item.slug, title, and icon, that we have
+being pulled in there.
+
+00:02:46.580 --> 00:02:51.850 line:100% position:50% align:middle
+I'm doing a little bit more stuff where
+I'm adding a class of active...if the
+
+00:02:51.850 --> 00:02:57.060 line:100% position:50% align:middle
+current path, which is the current URL, is
+equal to or starts with "slug," and that
+
+00:02:57.060 --> 00:02:59.880 line:100% position:50% align:middle
+will just give it that highlighted look,
+that we're going to be able,
+
+00:02:59.880 --> 00:03:03.820 line:100% position:50% align:middle
+once we have these other pages, we'll
+click on it in the current page...
+
+00:03:03.820 --> 00:03:08.470 line:100% position:50% align:middle
+We'll click on it. Now, that helpers is
+great, so that's kind of where you would
+
+00:03:08.470 --> 00:03:11.710 line:100% position:50% align:middle
+put it, but how does that happen? I just
+made this helpers file.
+
+00:03:11.710 --> 00:03:18.520 line:100% position:50% align:middle
+Well, let's go back to our app.js...let's
+go to about line 54 or so...this is a
+
+00:03:18.520 --> 00:03:20.860 line:100% position:50% align:middle
+concept called middleware, which we're
+going to learn about it,
+
+00:03:20.860 --> 00:03:27.710 line:100% position:50% align:middle
+but essentially what it allows us to do is
+say, "on every single request,
+
+00:03:27.710 --> 00:03:30.100 line:100% position:50% align:middle
+put the information in the locals."
+
+00:03:30.100 --> 00:03:35.000 line:100% position:50% align:middle
+Remember I said that these variables that
+get passed, "name," "dog," and "title,"
+
+00:03:35.000 --> 00:03:41.630 line:100% position:50% align:middle
+those get put into something called
+locals, but you can also put stuff on on
+
+00:03:41.630 --> 00:03:48.030 line:100% position:50% align:middle
+every single render. So we say,
+"res.locals.h"... I just call it "h" for
+
+00:03:48.030 --> 00:03:53.930 line:100% position:50% align:middle
+brevity inside of my template..."=
+helpers". Now where did helpers come from?
+
+00:03:53.930 --> 00:03:59.640 line:100% position:50% align:middle
+Helpers got required at the very top. So
+what's happening here is that inside of
+
+00:03:59.640 --> 00:04:06.280 line:100% position:50% align:middle
+this file, we export "moment," and "dump,"
+and "staticMap," and we're going to learn
+
+00:04:06.280 --> 00:04:09.990 line:100% position:50% align:middle
+exactly what all these things
+are..."siteName," and then we go into our
+
+00:04:09.990 --> 00:04:14.470 line:100% position:50% align:middle
+app and we import it into a variable
+called helpers, and then we simply give
+
+00:04:14.470 --> 00:04:20.110 line:100% position:50% align:middle
+that information to our helpers every
+single time that we need it.
+
+00:04:20.110 --> 00:04:25.880 line:100% position:50% align:middle
+Now, that's different than the
+variables.env, because this is all
+
+00:04:25.880 --> 00:04:32.280 line:100% position:50% align:middle
+sensitive information that probably
+shouldn't make its way into our templating
+
+00:04:32.280 --> 00:04:38.310 line:100% position:50% align:middle
+in any way, but everything in our helpers
+is stuff that is not sensitive, and it
+
+00:04:38.310 --> 00:04:41.550 line:100% position:50% align:middle
+doesn't need to be an environmental
+variable. It just needs to be in a file
+
+00:04:41.550 --> 00:04:47.240 line:100% position:50% align:middle
+somewhere so that we can pull it into each
+of our templates. So you can do that with
+
+00:04:47.240 --> 00:04:52.490 line:100% position:50% align:middle
+arrays, you can do that with strings, or
+you can also do that with entire libraries
+
+00:04:52.490 --> 00:04:53.550 line:100% position:50% align:middle
+that you like to use.
+
+00:04:53.550 --> 00:04:58.540 line:100% position:50% align:middle
+So one library that I really like to use
+is called moment.js, and what moment.js
+
+00:04:58.540 --> 00:05:03.050 line:100% position:50% align:middle
+will do is it'll give you this nice date
+formatting, and it will give you relative
+
+00:05:03.050 --> 00:05:08.040 line:100% position:50% align:middle
+time, like "this was five years ago,"
+"this was in 11 hours." So what you could
+
+00:05:08.040 --> 00:05:13.960 line:100% position:50% align:middle
+do is if you're in your hello.pug, we can
+simply use that variable,
+
+00:05:13.960 --> 00:05:21.000 line:100% position:50% align:middle
+we could say something like... I have an
+h2 tag, "Sale ends in," and then we just
+
+00:05:21.000 --> 00:05:27.090 line:100% position:50% align:middle
+run a little bit of Javascript with our
+pound...whoops! And "h's" are helpers,
+
+00:05:27.090 --> 00:05:31.700 line:100% position:50% align:middle
+so everything is sort of under the
+umbrella of h, dot, and then we have
+
+00:05:31.700 --> 00:05:36.660 line:100% position:50% align:middle
+"moment," and we can just start using the
+Javascript library from then.
+
+00:05:36.660 --> 00:05:40.840 line:100% position:50% align:middle
+So we can say, ".endOf"...let's say the
+sale ends at the end of the day,
+
+00:05:40.840 --> 00:05:43.980 line:100% position:50% align:middle
+and we want to know how soon is that? So
+we say, "fromNow."
+
+00:05:43.980 --> 00:05:53.870 line:100% position:50% align:middle
+And then go back here, and it's going to
+say, "Sale ends in 11 hours." So rather
+
+00:05:53.870 --> 00:06:00.590 line:100% position:50% align:middle
+than have to compute that all inside of my
+route, sometimes I like to just pass a
+
+00:06:00.590 --> 00:06:06.500 line:100% position:50% align:middle
+timestamp from here, and then in my
+layout.pug or in my hello.pug,
+
+00:06:06.500 --> 00:06:12.603 line:100% position:50% align:middle
+I'm able to use these helper libraries
+to format the date in a way that
+
+00:06:12.603 --> 00:06:16.546 line:100% position:50% align:middle
+I wish to have. And the way
+that you surface a helper library is
+
+00:06:16.546 --> 00:06:20.421 line:100% position:50% align:middle
+by putting it in your helpers.js.
+
+00:06:20.750 --> 00:06:23.800 line:100% position:50% align:middle
+♪ [music] ♪

@@ -1,0 +1,813 @@
+WEBVTT
+
+00:00:01.000 --> 00:00:04.100 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.149 --> 00:00:15.565 line:100% position:50% align:middle
+So we looked at different ways to
+send data to the browser via send,
+
+00:00:15.565 --> 00:00:19.270 line:100% position:50% align:middle
+in JSON, and whatnot,
+but the one that we're going to
+
+00:00:19.270 --> 00:00:23.180 line:100% position:50% align:middle
+be using quite a bit when we're not
+dealing with API endpoints is something
+
+00:00:23.180 --> 00:00:29.180 line:100% position:50% align:middle
+called res.render. So response.render.
+And what that will do is it's going to
+
+00:00:29.180 --> 00:00:33.661 line:100% position:50% align:middle
+render out a template for us. So this
+video's going to be all about learning how
+
+00:00:33.661 --> 00:00:38.510 line:100% position:50% align:middle
+to use our templating language
+called Pug. Now, first things first,
+
+00:00:38.510 --> 00:00:42.940 line:100% position:50% align:middle
+Pug is a templating language that
+is very popular in the node community.
+
+00:00:42.940 --> 00:00:46.520 line:100% position:50% align:middle
+It used to be called Jade. So if you're
+ever looking for help on this stuff, it
+
+00:00:46.520 --> 00:00:50.750 line:100% position:50% align:middle
+could be helpful to search for Jade. I
+think they switched the name over because
+
+00:00:50.750 --> 00:00:55.230 line:100% position:50% align:middle
+of some legal reason. So Jade is our
+templating engine and you can look in
+
+00:00:55.230 --> 00:01:01.030 line:100% position:50% align:middle
+app.js on around line 20 and 21. And what
+that's going to show you is that, first of
+
+00:01:01.030 --> 00:01:06.900 line:100% position:50% align:middle
+all, we have what's called a views folder.
+And the views folder is where all of our
+
+00:01:06.900 --> 00:01:10.620 line:100% position:50% align:middle
+Pug files are going to live. So anytime
+we need to create a template,
+
+00:01:10.620 --> 00:01:14.050 line:100% position:50% align:middle
+that goes inside of our views folder
+and that's determined right here.
+
+00:01:14.050 --> 00:01:18.960 line:100% position:50% align:middle
+Next we set our view engine to be Pug.
+However, there are other alternatives if
+
+00:01:18.960 --> 00:01:24.000 line:100% position:50% align:middle
+you do not prefer. Pug is based on
+indentation, which some people absolutely
+
+00:01:24.000 --> 00:01:27.710 line:100% position:50% align:middle
+love. Some people just can't deal with
+it at all. So there's other templating
+
+00:01:27.710 --> 00:01:33.410 line:100% position:50% align:middle
+engines called Mustache in EJS
+if you prefer either of those as well.
+
+00:01:33.410 --> 00:01:36.600 line:100% position:50% align:middle
+You could even do this entire tutorial in
+a different templating engine if you
+
+00:01:36.600 --> 00:01:40.940 line:100% position:50% align:middle
+already know that. You would just
+switch that out here at that moment.
+
+00:01:40.940 --> 00:01:46.724 line:100% position:50% align:middle
+Now, that's fine, so we can close down
+app.js. Then we go to our...let's go to
+
+00:01:46.724 --> 00:01:53.810 line:100% position:50% align:middle
+our first route here, router.get/. How
+we can then render out a template,
+
+00:01:53.810 --> 00:02:00.001 line:100% position:50% align:middle
+is not request response at JSON, but
+it's response.render. And response.render
+
+00:02:00.001 --> 00:02:03.980 line:100% position:50% align:middle
+is going to take two things. First, it
+needs a name of a template to render out.
+
+00:02:03.980 --> 00:02:07.786 line:100% position:50% align:middle
+So we need to make one. So let's go to
+our views directory here and I'm going to
+
+00:02:07.786 --> 00:02:15.550 line:100% position:50% align:middle
+make a new file. Let's just call that
+hello.pug, and then we can write inside of
+
+00:02:15.550 --> 00:02:18.430 line:100% position:50% align:middle
+Pug. Now, we're going to go over
+all the different pieces of Pug
+
+00:02:18.430 --> 00:02:23.140 line:100% position:50% align:middle
+but let's just get it working. And how Pug
+works is that you do not give yourself
+
+00:02:23.140 --> 00:02:28.909 line:100% position:50% align:middle
+tags like an open paragraph, close
+paragraph, hello, close it. You simply
+
+00:02:28.909 --> 00:02:32.882 line:100% position:50% align:middle
+just give it the opening tag that you wish
+to have and then you type your content
+
+00:02:32.882 --> 00:02:37.820 line:100% position:50% align:middle
+inside of it. So we'll go over it a
+little bit more but that's our very basic
+
+00:02:37.820 --> 00:02:42.630 line:100% position:50% align:middle
+getting set up. So we want to render out
+the hello template. You don't need to put
+
+00:02:42.630 --> 00:02:47.850 line:100% position:50% align:middle
+a .pug on the end, so it's just hello. And
+then the second thing we pass is local
+
+00:02:47.850 --> 00:02:52.140 line:100% position:50% align:middle
+variables, some information that it
+needs. So right now let's just go without
+
+00:02:52.140 --> 00:02:58.270 line:100% position:50% align:middle
+those. We'll render out hello.pug.
+So let's go back to our application,
+
+00:02:58.270 --> 00:03:02.610 line:100% position:50% align:middle
+get that working, and you should see
+hello being rendered out to the page.
+
+00:03:02.610 --> 00:03:08.410 line:100% position:50% align:middle
+Okay. That seems simple enough. We've
+got our hello.pug, it's going to be turned
+
+00:03:08.410 --> 00:03:13.210 line:100% position:50% align:middle
+into regular HTML. If you inspect it, you
+can see exactly what's going on here.
+
+00:03:13.210 --> 00:03:17.054 line:100% position:50% align:middle
+We've got a paragraph tag. And then the
+HTML, the head, the body, all of that
+
+00:03:17.054 --> 00:03:20.547 line:100% position:50% align:middle
+stuff is just there. Because if the
+browser does not receive any of it,
+
+00:03:20.547 --> 00:03:23.353 line:100% position:50% align:middle
+it will insert it in there for us.
+
+00:03:23.353 --> 00:03:28.122 line:100% position:50% align:middle
+So let's go through some of
+our basics when dealing with Pug.
+
+00:03:28.122 --> 00:03:32.620 line:100% position:50% align:middle
+First thing that we need to know is that
+you have a tag, a space, and then you have
+
+00:03:32.620 --> 00:03:36.940 line:100% position:50% align:middle
+all of your elements inside of it.
+If you wish to nest your elements,
+
+00:03:36.940 --> 00:03:39.940 line:100% position:50% align:middle
+like let's say you have a div and
+inside of that you want a paragraph,
+
+00:03:39.940 --> 00:03:44.230 line:100% position:50% align:middle
+you need to indent it one level. And this
+is really important because, I know that
+
+00:03:44.230 --> 00:03:47.310 line:100% position:50% align:middle
+some people, when they're first getting
+started with coding, they're a little bit
+
+00:03:47.310 --> 00:03:52.100 line:100% position:50% align:middle
+sloppy with their indentation practices.
+And this going to force you to get really
+
+00:03:52.100 --> 00:03:56.300 line:100% position:50% align:middle
+good at your indentation. So first thing
+you need to do is to pick your indentation
+
+00:03:56.300 --> 00:03:59.660 line:100% position:50% align:middle
+standard. I use two spaces, you
+might use four, you might use tabs,
+
+00:03:59.660 --> 00:04:05.430 line:100% position:50% align:middle
+it doesn't matter as long as you pick one
+and do not ever stray from it for this
+
+00:04:05.430 --> 00:04:09.050 line:100% position:50% align:middle
+entire project. So I'm using two spaces,
+you can see in my editor I've set that up.
+
+00:04:09.050 --> 00:04:13.190 line:100% position:50% align:middle
+and then you simply just nest it
+inside of it. So I have a div and I have
+
+00:04:13.190 --> 00:04:18.522 line:100% position:50% align:middle
+a paragraph, and maybe inside of that I
+want a span with "Yo." You add a save.
+
+00:04:18.522 --> 00:04:23.070 line:100% position:50% align:middle
+Now when I refresh. You can inspect this
+and you can see that we've got all of our
+
+00:04:23.070 --> 00:04:27.458 line:100% position:50% align:middle
+different elements here. Close that sucker
+down. There we go. We got a div, we got
+
+00:04:27.458 --> 00:04:31.490 line:100% position:50% align:middle
+a paragraph, we got a span.
+They will be turned on over.
+
+00:04:31.490 --> 00:04:37.016 line:100% position:50% align:middle
+Now, what if we want classes on it, like a
+wrapper? So we can say div.wrapper.
+
+00:04:37.016 --> 00:04:42.702 line:100% position:50% align:middle
+And if you want a class on the paragraph
+with "hello." And then if you want an ID,
+
+00:04:42.702 --> 00:04:49.672 line:100% position:50% align:middle
+you use #, just like CSS, selectors
+will be, put "yo." Out of that. Refresh.
+
+00:04:49.672 --> 00:04:53.970 line:100% position:50% align:middle
+You see a div with a class of wrapper,
+class of hello, ID. You have multiple
+
+00:04:53.970 --> 00:05:00.882 line:100% position:50% align:middle
+".ohonoooo." It will give both of
+those classes as you need. So you can
+
+00:05:00.882 --> 00:05:07.964 line:100% position:50% align:middle
+dot, dot, and #. Another hot
+tip is if it's just a div, it's assumed.
+
+00:05:07.964 --> 00:05:11.815 line:100% position:50% align:middle
+So you do not need, you can
+simply just type .wrapper in front of it
+
+00:05:11.815 --> 00:05:16.370 line:100% position:50% align:middle
+and it will always give you a div. So if
+you leave the element type out,
+
+00:05:16.370 --> 00:05:20.765 line:100% position:50% align:middle
+it will assume that it is always a div.
+And then we also need to know about
+
+00:05:20.765 --> 00:05:26.784 line:100% position:50% align:middle
+attributes. So let's say I have an image
+tag here. How do I give it a source?
+
+00:05:26.784 --> 00:05:32.093 line:100% position:50% align:middle
+Well, you use parentheses here, and then
+you can give it all of your attributes
+
+00:05:32.093 --> 00:05:40.627 line:100% position:50% align:middle
+that you need. So src="dog.jpg," and
+then you'd do a space, which is alt="Dog."
+
+00:05:40.627 --> 00:05:44.855 line:100% position:50% align:middle
+Got to save. And then here, image
+source, it goes alt. I believe you
+
+00:05:44.855 --> 00:05:49.285 line:100% position:50% align:middle
+can also do commas in it, if you prefer
+that. Yep. That will work just fine.
+
+00:05:49.285 --> 00:05:54.114 line:100% position:50% align:middle
+So if you prefer to do a comma, but I like
+to keep my syntax as minimal as possible.
+
+00:05:54.114 --> 00:06:00.662 line:100% position:50% align:middle
+And you can, of course, mix that with a
+dog class and have a source in there.
+
+00:06:00.662 --> 00:06:05.059 line:100% position:50% align:middle
+So, class of dog, a source of
+dog, .jpeg and alt of dog in there.
+
+00:06:05.059 --> 00:06:09.965 line:100% position:50% align:middle
+What else do we need to learn?
+Obviously, have all of your h-2 tags,
+
+00:06:09.965 --> 00:06:14.036 line:100% position:50% align:middle
+"hello," all of your headings, all
+of your HTML works just the same.
+
+00:06:14.036 --> 00:06:17.778 line:100% position:50% align:middle
+But if you ever need to nest something
+inside of another element, you can do
+
+00:06:17.778 --> 00:06:21.440 line:100% position:50% align:middle
+that. Maybe if you have a "hello"
+there, and then a span that says,
+
+00:06:21.440 --> 00:06:27.256 line:100% position:50% align:middle
+"How are you?" with maybe emphasis
+inside of that, that will work just fine.
+
+00:06:27.256 --> 00:06:31.574 line:100% position:50% align:middle
+Although, if that bugs you a little bit,
+and you wish to put the "hello" and the
+
+00:06:31.574 --> 00:06:35.682 line:100% position:50% align:middle
+"How are you?" on their own line, what you
+can do is you can put it on its own line,
+
+00:06:35.682 --> 00:06:39.783 line:100% position:50% align:middle
+but now what's going to happen
+if I save that, open up the h-2,
+
+00:06:39.783 --> 00:06:43.763 line:100% position:50% align:middle
+you'll see that we get a "hello" tag,
+which is not what you want.
+
+00:06:43.763 --> 00:06:48.131 line:100% position:50% align:middle
+So, like, how would you just put the
+content? Well, you pipe space and that
+
+00:06:48.131 --> 00:06:53.332 line:100% position:50% align:middle
+will give you the actual. So the Pug
+and the jdocs are really good at telling
+
+00:06:53.332 --> 00:06:56.163 line:100% position:50% align:middle
+you what is the equivalent.
+It's a little bit of a learning curve,
+
+00:06:56.163 --> 00:06:59.741 line:100% position:50% align:middle
+to understand, but we're going to be
+learning how we do all of the different
+
+00:06:59.741 --> 00:07:03.115 line:100% position:50% align:middle
+pieces. We're going to be looking at how
+do you do looping inside of here, how do
+
+00:07:03.115 --> 00:07:08.004 line:100% position:50% align:middle
+you do logic, how do you do advanced
+templating, how do you do mix-ins.
+
+00:07:08.004 --> 00:07:10.721 line:100% position:50% align:middle
+There's a whole bunch that we can do and
+we're going to learn it as we go along.
+
+00:07:10.721 --> 00:07:17.158 line:100% position:50% align:middle
+But for now, what you need to know is how
+we create elements and nest them inside
+
+00:07:17.158 --> 00:07:21.422 line:100% position:50% align:middle
+of each other. The other thing I want to
+tell you is how do you get information
+
+00:07:21.422 --> 00:07:27.488 line:100% position:50% align:middle
+from your route, which will come from,
+maybe from a database that we're going to
+
+00:07:27.488 --> 00:07:31.624 line:100% position:50% align:middle
+do, or it comes from your URL, how do you
+get that information to your actual
+
+00:07:31.624 --> 00:07:35.630 line:100% position:50% align:middle
+template? So the way that you do that is
+you have to pass it when you render.
+
+00:07:35.630 --> 00:07:41.047 line:100% position:50% align:middle
+So we pass it in object here, and then
+that object will contain all of the
+
+00:07:41.047 --> 00:07:46.418 line:100% position:50% align:middle
+information that we have. So maybe we
+say name is Wes, and dog is Snickers.
+
+00:07:46.418 --> 00:07:52.668 line:100% position:50% align:middle
+Then you go into here, "Hello, how are
+you?" And we can reference those variables
+
+00:07:52.668 --> 00:07:58.949 line:100% position:50% align:middle
+inside of it. So let's say, "Hello, my
+dog's name is." Now how do we reference
+
+00:07:58.949 --> 00:08:04.736 line:100% position:50% align:middle
+it? You do #, curly brackets, and that's
+how you interpolate a variable inside of
+
+00:08:04.736 --> 00:08:11.460 line:100% position:50% align:middle
+text in Pug. And you can simply just say
+what the name was. So let's say dog.
+
+00:08:11.460 --> 00:08:14.555 line:100% position:50% align:middle
+Then, "Hello, my dog's name is
+Snickers," and you could make that a
+
+00:08:14.555 --> 00:08:21.188 line:100% position:50% align:middle
+little bit dynamic. Where you could do
+query mark, dog= with Hugo,
+
+00:08:21.188 --> 00:08:27.337 line:100% position:50% align:middle
+and we could make that dynamic by
+saying the dog's is...  how, you tell me.
+
+00:08:27.337 --> 00:08:37.039 line:100% position:50% align:middle
+Request.query.dog. So my dog's name is
+Hugo, Snickers, Wes, you see how it's
+
+00:08:37.039 --> 00:08:41.285 line:100% position:50% align:middle
+pulling it in, passing it along to the
+templating. So whenever you need to
+
+00:08:41.285 --> 00:08:46.673 line:100% position:50% align:middle
+get information over to your template,
+these are called local variables,
+
+00:08:46.673 --> 00:08:51.507 line:100% position:50% align:middle
+or locals as they're often called, in
+EXPRESS land, that's how we pass it along.
+
+00:08:51.507 --> 00:08:57.500 line:100% position:50% align:middle
+And we can do things like dog. Another
+thing that we need to know is let's say we
+
+00:08:57.500 --> 00:09:03.630 line:100% position:50% align:middle
+wanted to put the dog's name in the alt
+tag. Previously, in Jade, what you would
+
+00:09:03.630 --> 00:09:08.152 line:100% position:50% align:middle
+do is you would do a # like that, and you
+would say dog. But it actually doesn't
+
+00:09:08.152 --> 00:09:13.288 line:100% position:50% align:middle
+work. You'll see that it actually just
+writes the word. So how do you put
+
+00:09:13.288 --> 00:09:16.933 line:100% position:50% align:middle
+variables into attributes?
+This is how you put variables into text.
+
+00:09:16.933 --> 00:09:22.737 line:100% position:50% align:middle
+But they've taken away the ability to put
+variables into attributes unless you just
+
+00:09:22.737 --> 00:09:26.777 line:100% position:50% align:middle
+use JavaScript. So how do you do that
+in JavaScript? Well, you use back ticks
+
+00:09:26.777 --> 00:09:32.548 line:100% position:50% align:middle
+instead, and then you use ESX template
+literals, which is a $ curly brackets
+
+00:09:32.548 --> 00:09:39.452 line:100% position:50% align:middle
+instead of #. And then that will pass
+along the dog's name into the alt of the
+
+00:09:39.452 --> 00:09:45.240 line:100% position:50% align:middle
+actual image. So that's a little bit
+funky, because you have to remember that
+
+00:09:45.240 --> 00:09:50.205 line:100% position:50% align:middle
+when you're writing text it's #, but
+when you're trying to do an attribute,
+
+00:09:50.205 --> 00:09:55.893 line:100% position:50% align:middle
+you have to use back ticks and
+a $. So it's a bit unfortunate,
+
+00:09:55.893 --> 00:09:58.637 line:100% position:50% align:middle
+but that's just the way it is, and it
+doesn't look like it's going to be
+
+00:09:58.637 --> 00:10:02.459 line:100% position:50% align:middle
+changed. So not the biggest deal in the
+world because you can learn these things
+
+00:10:02.459 --> 00:10:07.341 line:100% position:50% align:middle
+pretty quickly. Another thing that you
+need to know is that you can run any
+
+00:10:07.341 --> 00:10:10.859 line:100% position:50% align:middle
+JavaScript inside of this. So if you
+needed to make a quick variable,
+
+00:10:10.859 --> 00:10:15.213 line:100% position:50% align:middle
+ideally you'd do all the work in here,
+but if you do need to make a variable, you
+
+00:10:15.213 --> 00:10:24.537 line:100% position:50% align:middle
+can just use a minus sign, const upDog =
+dog.toUpperCase. And then we can use
+
+00:10:24.537 --> 00:10:29.355 line:100% position:50% align:middle
+our updog variable in there, no
+problem, and it will uppercase it for us.
+
+00:10:29.355 --> 00:10:36.626 line:100% position:50% align:middle
+Similarly, we can also dog.toUpperCase,
+and that will do exactly the same thing.
+
+00:10:36.626 --> 00:10:41.325 line:100% position:50% align:middle
+So you can run JavaScript, and that's
+really why I like using Pug a lot, because
+
+00:10:41.325 --> 00:10:45.141 line:100% position:50% align:middle
+it's JavaScript-based, and any
+time you need to run some quick
+
+00:10:45.141 --> 00:10:48.603 line:100% position:50% align:middle
+JavaScript, whether it's to filter
+something or whether it's to run a quick
+
+00:10:48.603 --> 00:10:54.214 line:100% position:50% align:middle
+uppercase or to split a string, then you
+can also do that logic right inside of
+
+00:10:54.214 --> 00:10:57.151 line:100% position:50% align:middle
+your template. So we're going to be
+looking deeper at some of those
+
+00:10:57.151 --> 00:11:01.400 line:100% position:50% align:middle
+self-looping logic mix-ins, if statements,
+all that stuff, as we go ahead.
+
+00:11:01.400 --> 00:11:07.263 line:100% position:50% align:middle
+But that's the very basics of
+understanding our Pug. So this is all
+
+00:11:07.263 --> 00:11:11.616 line:100% position:50% align:middle
+great, but chances are that you want to
+chunk your website into different pieces
+
+00:11:11.616 --> 00:11:17.196 line:100% position:50% align:middle
+like a header and a footer and a body tag,
+and you want to reuse parts of your
+
+00:11:17.196 --> 00:11:23.608 line:100% position:50% align:middle
+website over and over again. So how we
+actually do that is we extend templates,
+
+00:11:23.608 --> 00:11:27.994 line:100% position:50% align:middle
+and we sort of create like what I like to
+call layouts. And then you leave little
+
+00:11:27.994 --> 00:11:33.082 line:100% position:50% align:middle
+holes in your layouts for the footer and
+for the body content and whatnot,
+
+00:11:33.082 --> 00:11:37.420 line:100% position:50% align:middle
+and we just pass that in. Because right
+now, we don't have our...I've got to do an
+
+00:11:37.420 --> 00:11:42.707 line:100% position:50% align:middle
+exclamation mark tab. And by the way,
+that little thing, that's Emmet, if you're
+
+00:11:42.707 --> 00:11:46.935 line:100% position:50% align:middle
+ever wondering. Emmet works just fine in
+Jade as well. So you can do things like
+
+00:11:46.935 --> 00:11:57.076 line:100% position:50% align:middle
+ul.dogs>li.dog.dog$$, then hit tab, and
+give ten of them. That will give you all
+
+00:11:57.076 --> 00:12:01.708 line:100% position:50% align:middle
+of it. So that's Emmet, if you need it up
+and running, we've used it in most of my
+
+00:12:01.708 --> 00:12:05.879 line:100% position:50% align:middle
+other courses. I recommend that
+you get it for writing Pug as well.
+
+00:12:05.879 --> 00:12:12.027 line:100% position:50% align:middle
+But how do you get like the HTML tag in
+all that? So if we go into our views
+
+00:12:12.027 --> 00:12:16.182 line:100% position:50% align:middle
+directory, and we open up layout.pug,
+you'll see that I've actually set you up
+
+00:12:16.182 --> 00:12:21.421 line:100% position:50% align:middle
+with our base HTML. So we have
+doc type HTML, here's our HTML tag,
+
+00:12:21.421 --> 00:12:27.355 line:100% position:50% align:middle
+we've got our head, and we have a title
+tag, which means you should pass it a
+
+00:12:27.355 --> 00:12:30.521 line:100% position:50% align:middle
+title, and we also have a helpers,
+I'll go into that in a second.
+
+00:12:30.521 --> 00:12:35.145 line:100% position:50% align:middle
+Link up our style at CSS, we're going to
+link up our donut for the fav icon.
+
+00:12:35.145 --> 00:12:40.555 line:100% position:50% align:middle
+We have our body tag, which inside of it
+will include what's called a block.
+
+00:12:40.555 --> 00:12:46.051 line:100% position:50% align:middle
+And a block is sort of like a section of
+your website that can be filled in by
+
+00:12:46.051 --> 00:12:50.277 line:100% position:50% align:middle
+another template. And so we have our
+header here, and then we put the content
+
+00:12:50.277 --> 00:12:55.276 line:100% position:50% align:middle
+that we wish for it to show if nothing
+gets passed in. So by default you probably
+
+00:12:55.276 --> 00:12:59.326 line:100% position:50% align:middle
+aren't going to pass a custom header.
+So we're going run this header,
+
+00:12:59.326 --> 00:13:03.786 line:100% position:50% align:middle
+and this may look like a little bit messy,
+it may look like a lot right now.
+
+00:13:03.786 --> 00:13:08.618 line:100% position:50% align:middle
+We will go into understanding all of this
+in the future, don't worry all that much.
+
+00:13:08.618 --> 00:13:12.802 line:100% position:50% align:middle
+But if you scroll down, all the way down,
+all the way down, to where we say
+
+00:13:12.802 --> 00:13:16.331 line:100% position:50% align:middle
+.content, block content, so we
+have a div with a class of content,
+
+00:13:16.331 --> 00:13:21.877 line:100% position:50% align:middle
+and that's where our blocked content goes.
+What we can then do is go back to our
+
+00:13:21.877 --> 00:13:27.225 line:100% position:50% align:middle
+"hello" here. And we can, let's just
+delete absolutely everything that we have
+
+00:13:27.225 --> 00:13:32.912 line:100% position:50% align:middle
+in there. We want to extend this layout,
+we want to like use all of this layout and
+
+00:13:32.912 --> 00:13:36.785 line:100% position:50% align:middle
+then we just want to put our content in
+this one little piece that we have right
+
+00:13:36.785 --> 00:13:42.636 line:100% position:50% align:middle
+here. So that's what we can do, we can say
+"extends layout" and that will extend the
+
+00:13:42.636 --> 00:13:45.524 line:100% position:50% align:middle
+layout, and then you go ahead
+and type all of your blocks.
+
+00:13:45.524 --> 00:13:51.171 line:100% position:50% align:middle
+So we have block content, and inside of
+the content block is now where we type
+
+00:13:51.171 --> 00:13:56.822 line:100% position:50% align:middle
+everything we want for it to put into
+this block right here. So if I say
+
+00:13:56.822 --> 00:14:01.578 line:100% position:50% align:middle
+"p hello," what it's going to do is
+it's going to take the paragraph and
+
+00:14:01.578 --> 00:14:07.515 line:100% position:50% align:middle
+replace this with "p hello" for us.
+I'll give that a save and refresh.
+
+00:14:07.515 --> 00:14:12.790 line:100% position:50% align:middle
+And now you're going to see, whoa, now
+we've got all of our website showing up.
+
+00:14:12.790 --> 00:14:17.303 line:100% position:50% align:middle
+We've got this header that I've already
+done for you being clicked in.
+
+00:14:17.303 --> 00:14:23.969 line:100% position:50% align:middle
+And the "hello" is the only thing that
+we've done here. We could also make a
+
+00:14:23.969 --> 00:14:30.655 line:100% position:50% align:middle
+block header and pass in a custom header,
+like h1 "yo," and what that will do is
+
+00:14:30.655 --> 00:14:36.073 line:100% position:50% align:middle
+it will replace, because you'll see in our
+layout.pug we have a block header,
+
+00:14:36.073 --> 00:14:40.631 line:100% position:50% align:middle
+and then we also have content in front of
+that. So this will be the default header
+
+00:14:40.631 --> 00:14:44.854 line:100% position:50% align:middle
+that we have here. However, if you
+ever are in a Pug file and you wish to
+
+00:14:44.854 --> 00:14:50.675 line:100% position:50% align:middle
+overwrite the default that you have there,
+you can just specify the block header and
+
+00:14:50.675 --> 00:14:53.600 line:100% position:50% align:middle
+that will, instead of using
+the default one that we have here,
+
+00:14:53.600 --> 00:14:58.972 line:100% position:50% align:middle
+it will replace it with whatever it is
+that you have passed inside of there.
+
+00:14:58.972 --> 00:15:05.749 line:100% position:50% align:middle
+So you can also do that with our content
+here. You could say like "p this is the
+
+00:15:05.749 --> 00:15:10.571 line:100% position:50% align:middle
+default," and if I do not pass anything,
+this is the default, but if we go back to
+
+00:15:10.571 --> 00:15:16.631 line:100% position:50% align:middle
+content here and pass in "hello," now we
+start to see hello. So that's what we're
+
+00:15:16.631 --> 00:15:18.627 line:100% position:50% align:middle
+going to be doing with all of our
+templates. We're going to be
+
+00:15:18.627 --> 00:15:24.328 line:100% position:50% align:middle
+extending the layout. This is
+sort of our overall layout for the
+
+00:15:24.328 --> 00:15:29.239 line:100% position:50% align:middle
+entire website. So it's not like a
+WordPress where you have a page where you
+
+00:15:29.239 --> 00:15:33.429 line:100% position:50% align:middle
+pull in the pieces that you want,
+it's more like you grab your layout,
+
+00:15:33.429 --> 00:15:37.457 line:100% position:50% align:middle
+and then you pass it the data that you
+want, and the pieces that you wish to
+
+00:15:37.457 --> 00:15:41.246 line:100% position:50% align:middle
+override. So I don't have a footer here,
+but if I wanted to, I would simply just
+
+00:15:41.246 --> 00:15:47.351 line:100% position:50% align:middle
+add in a footer element here, and we'd say
+block footer, and then I would say like
+
+00:15:47.351 --> 00:15:53.090 line:100% position:50% align:middle
+something like copyright Wes Bos,
+and I'll see what that does. So it
+
+00:15:53.090 --> 00:15:58.913 line:100% position:50% align:middle
+shows up, because I've put it in my
+layout.pug. However, I'd be able to then
+
+00:15:58.913 --> 00:16:04.449 line:100% position:50% align:middle
+go in here and give ourselves a new block
+called footer, and maybe I'll want to do
+
+00:16:04.449 --> 00:16:12.382 line:100% position:50% align:middle
+something funny like "p I love you," and
+that's going to overwrite the default that
+
+00:16:12.382 --> 00:16:16.343 line:100% position:50% align:middle
+we've got in there. So hopefully that
+makes sense, we'll be going over that a
+
+00:16:16.343 --> 00:16:21.441 line:100% position:50% align:middle
+lot more as we go along. But know that
+your layout is your overall page layout
+
+00:16:21.441 --> 00:16:27.386 line:100% position:50% align:middle
+and your Pug files are simply going to
+extend that layout by typing extend
+
+00:16:27.386 --> 00:16:32.806 line:100% position:50% align:middle
+layout. So we sort of use that layout.
+And you can feather them in many levels,
+
+00:16:32.806 --> 00:16:36.586 line:100% position:50% align:middle
+but generally I just have one layout for
+my front end, I have one layout if I have
+
+00:16:36.586 --> 00:16:41.488 line:100% position:50% align:middle
+like a custom back end that is totally
+different, and then I just plop in
+
+00:16:41.488 --> 00:16:43.709 line:100% position:50% align:middle
+my content blocks as I need them.
+
+00:16:44.323 --> 00:16:47.400 line:100% position:50% align:middle
+♪ [music] ♪

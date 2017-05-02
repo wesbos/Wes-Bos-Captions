@@ -1,0 +1,463 @@
+WEBVTT
+
+00:00:00.211 --> 00:00:03.211 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.000 --> 00:00:15.480 line:100% position:50% align:middle
+In this video, we're going to be making
+our store locator with Google Maps built
+
+00:00:15.480 --> 00:00:18.810 line:100% position:50% align:middle
+in. So we're going to be making an API
+endpoint that we can ping,
+
+00:00:18.810 --> 00:00:23.470 line:100% position:50% align:middle
+given a lat and a long, and that's going
+to return to us the top 10 closest stores
+
+00:00:23.470 --> 00:00:27.750 line:100% position:50% align:middle
+that are within a kilometer, or 1,000
+kilometers, or however much we'd like.
+
+00:00:27.750 --> 00:00:32.130 line:100% position:50% align:middle
+So for example, if I type in "Hamilton"
+because of all our demo stores are in
+
+00:00:32.130 --> 00:00:34.960 line:100% position:50% align:middle
+Hamilton, and I hit Enter, what it's going
+to do is a couple things.
+
+00:00:34.960 --> 00:00:39.660 line:100% position:50% align:middle
+First, it's going to center the map on
+Hamilton. Second, it's also going to take
+
+00:00:39.660 --> 00:00:44.370 line:100% position:50% align:middle
+everything that it got from the API and
+plot them as little markers on top of
+
+00:00:44.370 --> 00:00:47.920 line:100% position:50% align:middle
+here. So that's great to be able to do
+that. We need to do sort of a similar
+
+00:00:47.920 --> 00:00:52.510 line:100% position:50% align:middle
+layout that we did to searching for our
+actual stores, where we need to index our
+
+00:00:52.510 --> 00:00:57.590 line:100% position:50% align:middle
+data. We need to create a route. We need
+to handle it in our Store controller.
+
+00:00:57.590 --> 00:01:03.110 line:100% position:50% align:middle
+Let's first open up our store.js, and
+handle that indexing. So if we scroll down
+
+00:01:03.110 --> 00:01:05.770 line:100% position:50% align:middle
+here, we have our index, which is our name
+and our description.
+
+00:01:05.770 --> 00:01:09.610 line:100% position:50% align:middle
+That's being indexed as text. Sort of
+we're telling the database that this is
+
+00:01:09.610 --> 00:01:14.690 line:100% position:50% align:middle
+text. What we're also going to do is we're
+going to tell it that our location is
+
+00:01:14.690 --> 00:01:19.510 line:100% position:50% align:middle
+going to be what's called "geospatial."
+It's going to store the metadata about
+
+00:01:19.510 --> 00:01:24.920 line:100% position:50% align:middle
+this location as geospatial data, and then
+it's going to be able to quickly and
+
+00:01:24.920 --> 00:01:29.970 line:100% position:50% align:middle
+easily search for things that are
+specifically near our lat and long that we
+
+00:01:29.970 --> 00:01:33.680 line:100% position:50% align:middle
+pass it. So we take our Store Schema, and
+we call an "index" on it,
+
+00:01:33.680 --> 00:01:37.880 line:100% position:50% align:middle
+and we are going to index the location
+property. Right? Because that's what our
+
+00:01:37.880 --> 00:01:43.200 line:100% position:50% align:middle
+location property is right here. We're
+going to tell it to index it as a 2D
+
+00:01:43.200 --> 00:01:48.050 line:100% position:50% align:middle
+sphere. That is because I believe the
+world is round, and that will give us
+
+00:01:48.050 --> 00:01:52.660 line:100% position:50% align:middle
+information about it. So I'm going to give
+this a save, and we go back to our MongoDB
+
+00:01:52.660 --> 00:01:57.730 line:100% position:50% align:middle
+Compass. I've found that if you click on
+Users and you click Back to Stores,
+
+00:01:57.730 --> 00:02:02.200 line:100% position:50% align:middle
+your indexes should now have
+"location_2Dsphere" because that's our
+
+00:02:02.200 --> 00:02:06.330 line:100% position:50% align:middle
+location. It's telling us the type is
+"geospatial", pretty sweet,
+
+00:02:06.330 --> 00:02:10.570 line:100% position:50% align:middle
+and then the size, the usage, and all
+kinds of information specifically about
+
+00:02:10.570 --> 00:02:15.490 line:100% position:50% align:middle
+that. Good. So we now have our new index
+location, "2Dsphere" showing up.
+
+00:02:15.490 --> 00:02:18.640 line:100% position:50% align:middle
+We want to create the route, as well as
+the method to handle that route.
+
+00:02:18.640 --> 00:02:22.170 line:100% position:50% align:middle
+So open up index.js, go all the way to the
+bottom, and we'll make a
+
+00:02:22.170 --> 00:02:29.500 line:100% position:50% align:middle
+"router.get('/api/stores/near',". So we're
+going to search for stores that are near,
+
+00:02:29.500 --> 00:02:32.760 line:100% position:50% align:middle
+and we're going to take our Store
+controller, and we're going to run a
+
+00:02:32.760 --> 00:02:36.460 line:100% position:50% align:middle
+method called "mapStores". Good. We'll
+open up our Store controller,
+
+00:02:36.460 --> 00:02:41.960 line:100% position:50% align:middle
+go all the way to the bottom here, and we
+are going to make that method called
+
+00:02:41.960 --> 00:02:52.040 line:100% position:50% align:middle
+"mapStores". From that, let's just
+"res.json" and object, "it: 'Worked!'"
+
+00:02:52.040 --> 00:03:01.250 line:100% position:50% align:middle
+Let's see how that works. We can go to
+/api/stores/near, and we get reply of "it:
+
+00:03:01.250 --> 00:03:06.700 line:100% position:50% align:middle
+'Worked!'" Good. The way that we are going
+to hit this endpoint is with two queries.
+
+00:03:06.700 --> 00:03:13.170 line:100% position:50% align:middle
+It's going to be the lat and the long. So
+if we were to "res.json(req.query)" and we
+
+00:03:13.170 --> 00:03:22.230 line:100% position:50% align:middle
+go to this URL and we pass it our lat 43,
+and our lng -179 and hit Enter,
+
+00:03:22.230 --> 00:03:25.990 line:100% position:50% align:middle
+what that will do is we'll give us
+a query of lat and long. Now,
+
+00:03:25.990 --> 00:03:32.060 line:100% position:50% align:middle
+the way that MongoDB expects us to pass it
+to it is it expects us to pass it an array
+
+00:03:32.060 --> 00:03:36.890 line:100% position:50% align:middle
+of long and lat numbers. Okay. So let's go
+up here and we'll say,
+
+00:03:36.890 --> 00:03:43.470 line:100% position:50% align:middle
+"const coordinates = an array" and the
+array is going to be made up the
+
+00:03:43.470 --> 00:03:51.990 line:100% position:50% align:middle
+"req.query.lng", remember, weirdo, long
+comes first, and then "req.query.lat".
+
+00:03:51.990 --> 00:03:56.300 line:100% position:50% align:middle
+Then, let's just take that "coordinates"
+and try to json back the data,
+
+00:03:56.300 --> 00:04:02.480 line:100% position:50% align:middle
+just so we can see what we're working with
+here. Good. It returns us an array of...
+
+00:04:02.480 --> 00:04:07.030 line:100% position:50% align:middle
+These aren't really numbers. These are an
+array of strings. So one little quick
+
+00:04:07.030 --> 00:04:10.160 line:100% position:50% align:middle
+thing we can do is we can map over it and
+pass it to "parseFloat",
+
+00:04:10.160 --> 00:04:17.510 line:100% position:50% align:middle
+and that should map over every item in the
+array and turn it into an actual number.
+
+00:04:17.510 --> 00:04:20.060 line:100% position:50% align:middle
+Now, when I refresh, that's when we get
+true numbers, -179 and 43.
+
+00:04:20.060 --> 00:04:25.120 line:100% position:50% align:middle
+So good. We have those coordinates here.
+We can get rid of this "res.json",
+
+00:04:25.120 --> 00:04:29.120 line:100% position:50% align:middle
+because we know what's going on here.
+Next, we want to make our query,
+
+00:04:29.120 --> 00:04:33.260 line:100% position:50% align:middle
+so that when we do store.find, we're going
+to be able to pass it.
+
+00:04:33.260 --> 00:04:37.020 line:100% position:50% align:middle
+Because this query, it's going to be a
+healthy query. It's going to be a big
+
+00:04:37.020 --> 00:04:41.210 line:100% position:50% align:middle
+query. So we need to be able to write it
+in a separate object,
+
+00:04:41.210 --> 00:04:46.130 line:100% position:50% align:middle
+and then pass it in. So I'll say "const q
+= an object." Then, down here,
+
+00:04:46.130 --> 00:04:53.840 line:100% position:50% align:middle
+we can already do the "const stores =
+await Store.find(q)", and then
+
+00:04:53.840 --> 00:04:59.380 line:100% position:50% align:middle
+"res.json(stores)". Okay. Good. That will
+probably work without anything in our
+
+00:04:59.380 --> 00:05:03.080 line:100% position:50% align:middle
+query. Let's double-check. There we go.
+We've got a huge, long list of stores that
+
+00:05:03.080 --> 00:05:07.780 line:100% position:50% align:middle
+are actually coming back because our query
+is just a blank object.
+
+00:05:07.780 --> 00:05:11.690 line:100% position:50% align:middle
+Now, what we want to do is we want to
+search for stores where the location
+
+00:05:11.690 --> 00:05:19.200 line:100% position:50% align:middle
+property is near. Woo. Look at this. So
+"near" is an operator inside of MongoDB,
+
+00:05:19.200 --> 00:05:24.020 line:100% position:50% align:middle
+and it will allow us to just search for
+stores that are near a certain lat and a
+
+00:05:24.020 --> 00:05:28.320 line:100% position:50% align:middle
+long. There's no math that needs to happen
+here, because MongoDB is wise to lat and
+
+00:05:28.320 --> 00:05:31.740 line:100% position:50% align:middle
+long, and it will know exactly how to find
+the ones that are near.
+
+00:05:31.740 --> 00:05:36.750 line:100% position:50% align:middle
+So say it's near and we tell it we're
+passing it geometry. That's another object
+
+00:05:36.750 --> 00:05:41.680 line:100% position:50% align:middle
+inside of there. The type is going to be a
+"point", because you could also have a
+
+00:05:41.680 --> 00:05:45.280 line:100% position:50% align:middle
+fenced in area that you're searching for.
+In our case, it's just "point".
+
+00:05:45.280 --> 00:05:49.860 line:100% position:50% align:middle
+The coordinates is going to be equal to
+our coordinates variable.
+
+00:05:49.860 --> 00:05:54.490 line:100% position:50% align:middle
+Or again, we don't need to double up that,
+just like that. We also want to specify
+
+00:05:54.490 --> 00:05:59.210 line:100% position:50% align:middle
+what the max distance is. So,
+"$maxDistance". Make sure you have the "D"
+
+00:05:59.210 --> 00:06:06.230 line:100% position:50% align:middle
+there, otherwise it won't work, and
+"10,000". That means 10,000 meters,
+
+00:06:06.230 --> 00:06:12.490 line:100% position:50% align:middle
+which is equal to 10 kilometers. So if you
+are from the United States of America,
+
+00:06:12.490 --> 00:06:18.640 line:100% position:50% align:middle
+kilometers, they're sort of like miles,
+but they make sense in that everything is
+
+00:06:18.640 --> 00:06:22.110 line:100% position:50% align:middle
+10-based. We have meters and centimeters,
+and millimeters, and kilometers,
+
+00:06:22.110 --> 00:06:26.680 line:100% position:50% align:middle
+and all kinds of good stuff like that. So
+if you are unsure, you'll have to do some
+
+00:06:26.680 --> 00:06:30.710 line:100% position:50% align:middle
+conversion on Google to convert
+it to actual kilometers. Good.
+
+00:06:30.710 --> 00:06:35.810 line:100% position:50% align:middle
+So let's see now, when we refresh this, we
+are looking for all of our items here.
+
+00:06:35.810 --> 00:06:42.000 line:100% position:50% align:middle
+Randy's BBQ Joint is in the United States.
+Now, if I refresh, we get nothing,
+
+00:06:42.000 --> 00:06:47.878 line:100% position:50% align:middle
+and I believe that's because there is
+nothing within 10 kilometers of 43, -179.
+
+00:06:47.878 --> 00:06:51.790 line:100% position:50% align:middle
+So what you can do is you can comma
+that max distance out to see all of them
+
+00:06:51.790 --> 00:06:56.790 line:100% position:50% align:middle
+real quick again, and you can take a...
+Let's go to one that is in Hamilton,
+
+00:06:56.790 --> 00:07:01.090 line:100% position:50% align:middle
+since that's where most of these samples
+ones are, -79, 43. So I believe -79.8 and
+
+00:07:01.090 --> 00:07:05.190 line:100% position:50% align:middle
+43.2, let's use that as a search. So we'll
+go to this page. We'll make sure that our
+
+00:07:05.190 --> 00:07:09.330 line:100% position:50% align:middle
+max distance of 10 kilometers is set on,
+and there we go. Now,
+
+00:07:09.330 --> 00:07:18.070 line:100% position:50% align:middle
+we're only getting one, two, three, four.
+We're getting all of the ones that are in
+
+00:07:18.070 --> 00:07:24.840 line:100% position:50% align:middle
+Hamilton. If you were to bring that down
+to just 10 meters, you'd probably get none
+
+00:07:24.840 --> 00:07:31.900 line:100% position:50% align:middle
+again. There we go. Nothing. So within 10
+kilometers of this point,
+
+00:07:31.900 --> 00:07:35.420 line:100% position:50% align:middle
+it's going to show us where all
+of the actual values are. Good.
+
+00:07:35.420 --> 00:07:39.730 line:100% position:50% align:middle
+So we've now made this API endpoint here.
+But there's a couple things going on here
+
+00:07:39.730 --> 00:07:43.490 line:100% position:50% align:middle
+that I'd like to fix. First of all, we
+don't actually need all of this
+
+00:07:43.490 --> 00:07:48.420 line:100% position:50% align:middle
+information here. We only just need a
+couple of different pieces of information
+
+00:07:48.420 --> 00:07:53.620 line:100% position:50% align:middle
+in our API. In general, you want to keep
+your Ajax request as slim as possible.
+
+00:07:53.620 --> 00:07:57.800 line:100% position:50% align:middle
+So what do we need? We need the name, we
+need the slug, we need the description,
+
+00:07:57.800 --> 00:08:02.280 line:100% position:50% align:middle
+we need the photo, and we need the
+address. Everything else we don't need.
+
+00:08:02.280 --> 00:08:07.180 line:100% position:50% align:middle
+So what you can do is you can actually go
+to Find and chain a .select value on it,
+
+00:08:07.180 --> 00:08:12.650 line:100% position:50% align:middle
+and you can specify either which fields
+you do want or which fields you do not
+
+00:08:12.650 --> 00:08:17.390 line:100% position:50% align:middle
+want. So in our case, maybe we just want
+the photo and we want the name.
+
+00:08:17.390 --> 00:08:22.010 line:100% position:50% align:middle
+So "photo name", give that a save. Now,
+when I refresh this, you'll see that we
+
+00:08:22.010 --> 00:08:26.290 line:100% position:50% align:middle
+are only getting the ID, the name, and the
+photo back for every single one of them.
+
+00:08:26.290 --> 00:08:30.090 line:100% position:50% align:middle
+Also, what you can do is you can take away
+ones that you don't specifically want.
+
+00:08:30.090 --> 00:08:35.280 line:100% position:50% align:middle
+So if we don't want the author and we
+don't want the tags, you can minus those
+
+00:08:35.280 --> 00:08:39.410 line:100% position:50% align:middle
+and you see that there is no actual value
+being passed here for the author or for
+
+00:08:39.410 --> 00:08:42.720 line:100% position:50% align:middle
+the tags. So that's really neat. Let's go
+ahead and just select the pieces that we
+
+00:08:42.720 --> 00:08:45.830 line:100% position:50% align:middle
+need. We need the slug, we need the name,
+we need the description,
+
+00:08:45.830 --> 00:08:51.010 line:100% position:50% align:middle
+and we need the location. Now, when I
+refresh, we have the slug,
+
+00:08:51.010 --> 00:08:54.070 line:100% position:50% align:middle
+the name, the description, and the
+location. We're keeping the overhead as
+
+00:08:54.070 --> 00:08:57.960 line:100% position:50% align:middle
+small as possible, and that's going to
+help make our Ajax request nice and fast
+
+00:08:57.960 --> 00:09:03.310 line:100% position:50% align:middle
+for us. Finally, we can type a ".limit" on
+the end there, and we can limit it to the
+
+00:09:03.310 --> 00:09:07.280 line:100% position:50% align:middle
+closest 10. We don't want to put too many
+points on our map. Of course,
+
+00:09:07.280 --> 00:09:14.040 line:100% position:50% align:middle
+all of this stuff could be configurable,
+sent over via the "req.query.limit".
+
+00:09:14.040 --> 00:09:18.100 line:100% position:50% align:middle
+That is if you would like to. Now that we
+actually have our API endpoint up and
+
+00:09:18.100 --> 00:09:21.030 line:100% position:50% align:middle
+running, let's actually get into writing
+some frontend code again,
+
+00:09:21.030 --> 00:09:24.650 line:100% position:50% align:middle
+so that we can build out our frontend of
+Google Maps.
+
+00:09:24.650 --> 00:09:27.651 line:100% position:50% align:middle
+♪ [music] ♪

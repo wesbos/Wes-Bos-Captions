@@ -1,0 +1,1206 @@
+WEBVTT
+
+00:00:00.471 --> 00:00:03.471 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.834 --> 00:00:15.106 line:100% position:50% align:middle
+Let's get rocking on our
+search here. So if I right-click,
+
+00:00:15.106 --> 00:00:18.560 line:100% position:50% align:middle
+"Inspect" on this, you
+have a div with a class of search.
+
+00:00:18.560 --> 00:00:22.540 line:100% position:50% align:middle
+Inside of that we have an input, and then
+we have a hidden div that has search
+
+00:00:22.540 --> 00:00:29.010 line:100% position:50% align:middle
+results inside of it. So what we want to
+do is open up our public folder,
+
+00:00:29.010 --> 00:00:33.860 line:100% position:50% align:middle
+open up our JavaScripts folder, and then
+in our modules we're going to make a new
+
+00:00:33.860 --> 00:00:40.710 line:100% position:50% align:middle
+file called typeAhead, capital A, .js.
+Then inside of that we're going to import
+
+00:00:40.710 --> 00:00:47.420 line:100% position:50% align:middle
+a library called axios, "const axios =
+require('axios');". And axios is a library
+
+00:00:47.420 --> 00:00:51.530 line:100% position:50% align:middle
+sort of like fetch built into the browser,
+but with some sane defaults and some nice
+
+00:00:51.530 --> 00:00:54.920 line:100% position:50% align:middle
+ability to cancel requests if you ever
+want to implement something like that.
+
+00:00:54.920 --> 00:00:59.160 line:100% position:50% align:middle
+Then we're going to make a function called
+typeAhead, which will take in the search
+
+00:00:59.160 --> 00:01:05.090 line:100% position:50% align:middle
+box. And it's going to be exported from
+this file. Good. Then we'll open up our
+
+00:01:05.090 --> 00:01:10.050 line:100% position:50% align:middle
+main delicious-app and we will import
+that. We'll put it above here,
+
+00:01:10.050 --> 00:01:15.270 line:100% position:50% align:middle
+"import typeAhead from '.
+/modules/typeAhead';". Then we will run it
+
+00:01:15.270 --> 00:01:21.740 line:100% position:50% align:middle
+and we'll say, "typeAhead",
+and we will pass it "$('.search')".
+
+00:01:21.740 --> 00:01:25.260 line:100% position:50% align:middle
+Good. So we'll see if it worked. We'll go
+inside of our typeAhead and just
+
+00:01:25.260 --> 00:01:28.750 line:100% position:50% align:middle
+console.log search. Make sure that
+everything is up and running before we
+
+00:01:28.750 --> 00:01:33.230 line:100% position:50% align:middle
+start writing some real code. When I
+refresh we get a div with a class of
+
+00:01:33.230 --> 00:01:39.590 line:100% position:50% align:middle
+search. Good. So essentially how this is
+going to work is we are going to listen
+
+00:01:39.590 --> 00:01:44.260 line:100% position:50% align:middle
+for when somebody types into this box
+here. And when somebody types into this
+
+00:01:44.260 --> 00:01:50.670 line:100% position:50% align:middle
+box, we are going to hit our API endpoint
+with the value that's typed into that box,
+
+00:01:50.670 --> 00:01:55.350 line:100% position:50% align:middle
+and then wait for the results to come
+back, and then we can make some drop-down
+
+00:01:55.350 --> 00:01:59.770 line:100% position:50% align:middle
+value here. So let's do the very basics,
+which is when somebody types in the box,
+
+00:01:59.770 --> 00:02:03.100 line:100% position:50% align:middle
+let's console.log what they typed. Delete
+this. First thing we want to do is say,
+
+00:02:03.100 --> 00:02:07.870 line:100% position:50% align:middle
+"If there is no search, then we are just
+going to return." And what that will do is
+
+00:02:07.870 --> 00:02:12.060 line:100% position:50% align:middle
+if, for whatever reason, the search is not
+on the page, then we don't want to run
+
+00:02:12.060 --> 00:02:16.430 line:100% position:50% align:middle
+this function at all. And that will stop
+any of these "cannot find query selector
+
+00:02:16.430 --> 00:02:23.440 line:100% position:50% align:middle
+of", etc., etc. So first thing we need is
+we need the input and we need the results.
+
+00:02:23.440 --> 00:02:29.200 line:100% position:50% align:middle
+So what we do here is you say, "const
+searchInput =". We'll take our search and
+
+00:02:29.200 --> 00:02:37.230 line:100% position:50% align:middle
+we will querySelector inside of that for
+our input with the name of search.
+
+00:02:37.230 --> 00:02:44.680 line:100% position:50% align:middle
+Then we also need our results div,
+"search__results". Good. So we have our
+
+00:02:44.680 --> 00:02:48.180 line:100% position:50% align:middle
+two pieces of information that we're
+looking for here, let's quickly
+
+00:02:48.180 --> 00:02:53.410 line:100% position:50% align:middle
+console.log them to searchInput and
+searchResults. Let's double-check that we
+
+00:02:53.410 --> 00:02:58.100 line:100% position:50% align:middle
+have those values on page load. There's
+our input, there's our results.
+
+00:02:58.100 --> 00:03:03.300 line:100% position:50% align:middle
+It's zero pixels high because we are not
+showing anything in it right now.
+
+00:03:03.300 --> 00:03:07.980 line:100% position:50% align:middle
+Good. Okay, then what we need to do is
+listen for an input event on that search.
+
+00:03:07.980 --> 00:03:13.870 line:100% position:50% align:middle
+So we'll say, "searchInput.on('input')".
+And again, "on" is just a shortcut in
+
+00:03:13.870 --> 00:03:19.220 line:100% position:50% align:middle
+bling.js for addEventListener. But we are
+just using "on" because we are cool.
+
+00:03:19.220 --> 00:03:24.250 line:100% position:50% align:middle
+And when the input function runs, we are
+going to run this callback.
+
+00:03:24.250 --> 00:03:29.650 line:100% position:50% align:middle
+Which in here we'll just console.log
+this.value. And once you type C-O-F-F-E-E,
+
+00:03:29.650 --> 00:03:33.020 line:100% position:50% align:middle
+good. So we are listening for an input
+event on the searchInput.
+
+00:03:33.020 --> 00:03:36.470 line:100% position:50% align:middle
+When that happens, we are using
+this.value, which will give us the actual
+
+00:03:36.470 --> 00:03:45.790 line:100% position:50% align:middle
+value of here. Good. What we do want to do
+is immediately, if there is no value
+
+00:03:45.790 --> 00:03:51.050 line:100% position:50% align:middle
+inside of that, we just want to hide the
+search results and return.
+
+00:03:51.050 --> 00:03:55.850 line:100% position:50% align:middle
+Because, and we'll just put a little
+comment, "if there is no value,
+
+00:03:55.850 --> 00:04:00.710 line:100% position:50% align:middle
+quit it". So if somebody is typing in
+here, and then they backspace it all,
+
+00:04:00.710 --> 00:04:04.600 line:100% position:50% align:middle
+we should get rid of any search results
+that we do have as well as stop this thing
+
+00:04:04.600 --> 00:04:08.270 line:100% position:50% align:middle
+from running because there's nothing to
+search for. So how do we do that?
+
+00:04:08.270 --> 00:04:13.690 line:100% position:50% align:middle
+We take our search results and we grab the
+style.display property and we set that to
+
+00:04:13.690 --> 00:04:18.410 line:100% position:50% align:middle
+"none", which will hide it. And then we
+also return, which will stop.
+
+00:04:18.410 --> 00:04:23.850 line:100% position:50% align:middle
+Okay, good. Then what we want to do is
+show the search result.
+
+00:04:23.850 --> 00:04:27.170 line:100% position:50% align:middle
+So, "searchResults.style.display =",
+we want to make it "block".
+
+00:04:27.170 --> 00:04:30.070 line:100% position:50% align:middle
+So if it was hidden from before, we want
+to now make it block.
+
+00:04:30.070 --> 00:04:36.650 line:100% position:50% align:middle
+And then we use axios to hit our endpoint.
+So, "axios", ".get".
+
+00:04:36.650 --> 00:04:43.050 line:100% position:50% align:middle
+Now what is our URL? "/api/search"," and
+then the query parameter is going to be
+
+00:04:43.050 --> 00:04:51.980 line:100% position:50% align:middle
+set to this.value. Then we chain a .then
+on the end, which gives us our response.
+
+00:04:51.980 --> 00:04:57.890 line:100% position:50% align:middle
+And let's just do a quick console.log,
+res.data. So if I type C,
+
+00:04:57.890 --> 00:05:05.330 line:100% position:50% align:middle
+we get an empty array. O-F-F-E-E. And as
+soon as I did my first letter,
+
+00:05:05.330 --> 00:05:09.660 line:100% position:50% align:middle
+you see that these are all empty coming
+back? But as soon as I hit "coffee",
+
+00:05:09.660 --> 00:05:13.240 line:100% position:50% align:middle
+it comes back with three objects from our
+actual API. Very good,
+
+00:05:13.240 --> 00:05:19.330 line:100% position:50% align:middle
+I'm really happy with that. So we have our
+res.data coming back to us.
+
+00:05:19.330 --> 00:05:23.950 line:100% position:50% align:middle
+Then inside of here we'll say, "If there
+is any data that has come back,
+
+00:05:23.950 --> 00:05:32.530 line:100% position:50% align:middle
+so res.data.length, then we will
+console.log 'There is something to show!'"
+
+00:05:32.530 --> 00:05:38.770 line:100% position:50% align:middle
+So now are we going to see anything?
+C-O-F-F-E-E. And then as soon as we hit
+
+00:05:38.770 --> 00:05:42.430 line:100% position:50% align:middle
+the "coffee", the data comes back and
+says, "Yes, there actually are some
+
+00:05:42.430 --> 00:05:47.510 line:100% position:50% align:middle
+results for coffee." Let's go ahead and do
+that. So at this point we need to start
+
+00:05:47.510 --> 00:05:54.670 line:100% position:50% align:middle
+making some results HTML to actually
+display to our users. Let me open up the
+
+00:05:54.670 --> 00:05:57.770 line:100% position:50% align:middle
+actual finished version to show you kind
+of what we're going for here.
+
+00:05:57.770 --> 00:06:00.120 line:100% position:50% align:middle
+This is our finished version here. So as
+soon as I hit "coffee",
+
+00:06:00.120 --> 00:06:05.920 line:100% position:50% align:middle
+you see how as I type C-O-F-F-E-E there's
+nothing? And as soon as I hit "coffee",
+
+00:06:05.920 --> 00:06:11.220 line:100% position:50% align:middle
+it's going to start showing us the results
+here. And I can use my arrow keys to go up
+
+00:06:11.220 --> 00:06:14.410 line:100% position:50% align:middle
+and down to all the different versions
+that we have. And when I hit "enter",
+
+00:06:14.410 --> 00:06:20.510 line:100% position:50% align:middle
+it's going to bring me to the actual URL
+for that one. Good. So rather than make
+
+00:06:20.510 --> 00:06:23.420 line:100% position:50% align:middle
+the HTML write inside of this function,
+this is getting a little bit harry,
+
+00:06:23.420 --> 00:06:26.880 line:100% position:50% align:middle
+I'm going to go to the top here and I'm
+going to make a second function that's
+
+00:06:26.880 --> 00:06:31.590 line:100% position:50% align:middle
+called searchResultsHTML. So it's a
+function, searchResultsHTML.
+
+00:06:31.590 --> 00:06:38.480 line:100% position:50% align:middle
+It's going to take in an array of stores
+and it's going to return to us some HTML.
+
+00:06:38.480 --> 00:06:42.800 line:100% position:50% align:middle
+Now if you take in either my ES6 or my
+JavaScript 30 course, you'll be fairly
+
+00:06:42.800 --> 00:06:47.250 line:100% position:50% align:middle
+familiar with this. We're just going to
+return the stores and we're going to map
+
+00:06:47.250 --> 00:06:54.420 line:100% position:50% align:middle
+over each store. And from that we are
+going to return, backticks.
+
+00:06:54.420 --> 00:06:59.480 line:100% position:50% align:middle
+And each of those stores has "a" with a
+class of .search__result,
+
+00:06:59.480 --> 00:07:08.740 line:100% position:50% align:middle
+singular. And the "a href" is going to be
+equal to "/stores/${store.slug}".
+
+00:07:08.740 --> 00:07:14.500 line:100% position:50% align:middle
+Good. And inside of that we are going to
+give ourselves a strong tag which has the
+
+00:07:14.500 --> 00:07:20.350 line:100% position:50% align:middle
+store.name inside of it. Alternatively,
+you can also give yourself a paragraph tag
+
+00:07:20.350 --> 00:07:24.430 line:100% position:50% align:middle
+which has the store.description inside of
+it. But I'm going to leave that off for
+
+00:07:24.430 --> 00:07:28.900 line:100% position:50% align:middle
+now because I think it clutters up our
+search a little bit too much.
+
+00:07:28.900 --> 00:07:33.670 line:100% position:50% align:middle
+So this searchResultsHTML is now a nice
+little function that we can use to map
+
+00:07:33.670 --> 00:07:38.660 line:100% position:50% align:middle
+over each stores, return some HTML for
+each one, and then on the end of this one
+
+00:07:38.660 --> 00:07:44.220 line:100% position:50% align:middle
+we can call .join because this map is
+going to return to us an array and we
+
+00:07:44.220 --> 00:07:47.600 line:100% position:50% align:middle
+really just want a string. Here, let me
+show you what it looks like without it.
+
+00:07:47.600 --> 00:07:54.570 line:100% position:50% align:middle
+So we'll go down here and I'll say, "const
+HTML = searchResultsHTML(res.data);".
+
+00:07:54.570 --> 00:07:59.420 line:100% position:50% align:middle
+That's going to be the array of stores.
+And let's just console.log the HTML for
+
+00:07:59.420 --> 00:08:05.150 line:100% position:50% align:middle
+each of those. So watch what happens now
+when I search for coffee.
+
+00:08:05.150 --> 00:08:11.030 line:100% position:50% align:middle
+What comes back is a list of stores,
+res.data. We pass that into our
+
+00:08:11.030 --> 00:08:17.400 line:100% position:50% align:middle
+searchResultsHTML. And then from that we
+get an array of three pieces of HTML,
+
+00:08:17.400 --> 00:08:23.970 line:100% position:50% align:middle
+each with a link and a strong tag inside
+of it. But we don't want an array,
+
+00:08:23.970 --> 00:08:30.960 line:100% position:50% align:middle
+we just want one big chunk of HTML. So I
+can call .join on the end here and that is
+
+00:08:30.960 --> 00:08:36.680 line:100% position:50% align:middle
+going to give us, there we go, nice actual
+HTML, one string rather than an array of
+
+00:08:36.680 --> 00:08:41.920 line:100% position:50% align:middle
+three strings. Good. At this point we just
+take our searchResults and we set the
+
+00:08:41.920 --> 00:08:46.830 line:100% position:50% align:middle
+innerHTML to be the HTML that we have
+there. Or what you can do is you can just
+
+00:08:46.830 --> 00:08:51.330 line:100% position:50% align:middle
+take this function here and set the result
+to be that right away.
+
+00:08:51.330 --> 00:08:54.920 line:100% position:50% align:middle
+It's not necessary to put in a variable if
+you're just doing it in one line.
+
+00:08:54.920 --> 00:09:00.290 line:100% position:50% align:middle
+Now if I search for coffee, C-O-F-F-E-E.
+And as soon as I hit "coffee",
+
+00:09:00.290 --> 00:09:05.050 line:100% position:50% align:middle
+we're generating that HTML and having it
+replaced. Now there also is a bit of a
+
+00:09:05.050 --> 00:09:08.510 line:100% position:50% align:middle
+problem now. If I were to backspace, it's
+not finding anything,
+
+00:09:08.510 --> 00:09:12.700 line:100% position:50% align:middle
+but it's not actually removing anything.
+So what we want to do is at the top of
+
+00:09:12.700 --> 00:09:16.360 line:100% position:50% align:middle
+this, where we did
+"searchResults.style.display = 'block';",
+
+00:09:16.360 --> 00:09:22.800 line:100% position:50% align:middle
+we could do "searchResults[removed] =
+'';". And that will blow it away if there
+
+00:09:22.800 --> 00:09:27.460 line:100% position:50% align:middle
+is nothing to actually show. So here we
+go, C-O-F-F-E-E. There we go.
+
+00:09:27.460 --> 00:09:30.920 line:100% position:50% align:middle
+And then if I were to remove the extra E,
+it's not finding anything,
+
+00:09:30.920 --> 00:09:35.750 line:100% position:50% align:middle
+so it's going to remove it entirely for
+us. Good. Last thing we need to do here is
+
+00:09:35.750 --> 00:09:42.230 line:100% position:50% align:middle
+a catch, the error. And if there is an
+error, you need to handle it accordingly.
+
+00:09:42.230 --> 00:09:45.690 line:100% position:50% align:middle
+So it's up to you what you want
+to do with that specific error.
+
+00:09:45.690 --> 00:09:50.090 line:100% position:50% align:middle
+You can just console.error the actually
+error and send it off to yourself.
+
+00:09:50.090 --> 00:09:54.620 line:100% position:50% align:middle
+Or if you have something like Sentry set
+up, the error will go off to your Sentry
+
+00:09:54.620 --> 00:09:58.000 line:100% position:50% align:middle
+support. Good. So let's try it one more
+time, make sure it's working.
+
+00:09:58.000 --> 00:10:02.220 line:100% position:50% align:middle
+Very good. Now there's a couple other
+things that we need in order to actually
+
+00:10:02.220 --> 00:10:06.470 line:100% position:50% align:middle
+handle the changing over to it. Because I
+can search for coffee and I can manually
+
+00:10:06.470 --> 00:10:10.790 line:100% position:50% align:middle
+click on one of them, and that's going to
+bring me to that specific store.
+
+00:10:10.790 --> 00:10:14.970 line:100% position:50% align:middle
+Good, let's try it one more time. If I
+search C-O-F-F-E-E, we see all of them.
+
+00:10:14.970 --> 00:10:18.350 line:100% position:50% align:middle
+If I were to click on one of them, like
+Mulberry Coffee, we should go to the...
+
+00:10:18.350 --> 00:10:22.970 line:100% position:50% align:middle
+We don't go to the store. I think that's
+because I screwed up the URL,
+
+00:10:22.970 --> 00:10:28.510 line:100% position:50% align:middle
+singular S. Singular stores, not multiple
+stores. So let's try that once more.
+
+00:10:28.510 --> 00:10:33.290 line:100% position:50% align:middle
+C-O-F-F-E-E, click on Rust City Brewery,
+and it actually brings me to the page
+
+00:10:33.290 --> 00:10:39.020 line:100% position:50% align:middle
+specifically for Rust City Brewery. Search
+for it again, search for Donut Monster,
+
+00:10:39.020 --> 00:10:41.360 line:100% position:50% align:middle
+and it will get me to that page. Good. So
+I can click on them,
+
+00:10:41.360 --> 00:10:47.650 line:100% position:50% align:middle
+but how do I also use my keys in order to
+have a nice keyboard shortcut so I can use
+
+00:10:47.650 --> 00:10:52.650 line:100% position:50% align:middle
+the up and down? Well, let's go. We're
+still inside of our main typeAhead
+
+00:10:52.650 --> 00:11:00.070 line:100% position:50% align:middle
+function right here. We'll say "handle
+keyboard inputs". So,
+
+00:11:00.070 --> 00:11:06.510 line:100% position:50% align:middle
+"searchInput.on('keyup'". And when that
+happens, we're going to take the event,
+
+00:11:06.510 --> 00:11:10.830 line:100% position:50% align:middle
+and let's just console.log the event,
+.keyCode. And that should tell us which
+
+00:11:10.830 --> 00:11:18.840 line:100% position:50% align:middle
+keyCode we are pressing. So we search for
+C-O-F-F-E-E. And then down,
+
+00:11:18.840 --> 00:11:26.350 line:100% position:50% align:middle
+down, down is 40. Up, up, up is 38. And
+"enter" is 13. So really all we care about
+
+00:11:26.350 --> 00:11:35.520 line:100% position:50% align:middle
+is 38, 40, and 13. So what we can do here
+is we'll say, "If they aren't pressing up,
+
+00:11:35.520 --> 00:11:43.920 line:100% position:50% align:middle
+down, or 'enter', who cares?" And we'll
+skip it. It's like, "If the array",
+
+00:11:43.920 --> 00:11:48.790 line:100% position:50% align:middle
+and this is kind of a cool way to do it.
+We'll say we're looking for 38,
+
+00:11:48.790 --> 00:11:56.420 line:100% position:50% align:middle
+40, or 13. If that doesn't include the
+event .keyCode, then we'll simply just
+
+00:11:56.420 --> 00:12:03.170 line:100% position:50% align:middle
+return, "nah". Otherwise we're going to
+console.log "DO SOMETHING!!".
+
+00:12:03.170 --> 00:12:10.150 line:100% position:50% align:middle
+So if we do not have 38, 40, or 13, then
+just skip this one. We'll say skip it.
+
+00:12:10.150 --> 00:12:14.520 line:100% position:50% align:middle
+Otherwise we're going to console.log "DO
+SOMETHING!!". So let's try it again now.
+
+00:12:14.520 --> 00:12:19.080 line:100% position:50% align:middle
+C-O-F-F-E-E, nothing. But I hit down, "Do
+SOMETHING!!" Up, "DO SOMETHING!!" And I
+
+00:12:19.080 --> 00:12:23.690 line:100% position:50% align:middle
+hit "enter", a third "DO SOMETHING!!"
+Good. Otherwise all the other keys are
+
+00:12:23.690 --> 00:12:28.480 line:100% position:50% align:middle
+doing absolutely nothing for us so we
+don't really care. It becomes a little bit
+
+00:12:28.480 --> 00:12:32.740 line:100% position:50% align:middle
+of a complicated part because if we go to
+the answer here, and I'm searching for
+
+00:12:32.740 --> 00:12:37.620 line:100% position:50% align:middle
+coffee, you notice I can hit down and up.
+And if I hit the bottom and I hit down,
+
+00:12:37.620 --> 00:12:42.570 line:100% position:50% align:middle
+it will cycle to the top. If I hit up on
+the first one, it will cycle to the last
+
+00:12:42.570 --> 00:12:48.180 line:100% position:50% align:middle
+one. And it will allow you just to sort of
+move your selected cursor throughout all
+
+00:12:48.180 --> 00:12:52.050 line:100% position:50% align:middle
+of them. So if you want a little bit of a
+challenge, pause and try to come up with
+
+00:12:52.050 --> 00:12:56.890 line:100% position:50% align:middle
+the actual JavaScript, front-end
+JavaScript, to handle this. Otherwise I'll
+
+00:12:56.890 --> 00:13:01.890 line:100% position:50% align:middle
+go through it now with you. So the first
+thing that we need is an active class that
+
+00:13:01.890 --> 00:13:06.350 line:100% position:50% align:middle
+is going to mark each one as active,
+right? If I were to inspect this sucker
+
+00:13:06.350 --> 00:13:11.710 line:100% position:50% align:middle
+here and I were to move up and down, you
+see how I'm removing and adding the class
+
+00:13:11.710 --> 00:13:17.040 line:100% position:50% align:middle
+of search__result--active? I'm just going
+to keep that, search__result--active,
+
+00:13:17.040 --> 00:13:21.202 line:100% position:50% align:middle
+I'm going to keep that in a variable here.
+So we'll go here and we'll say,
+
+00:13:21.202 --> 00:13:32.940 line:100% position:50% align:middle
+"const activeClass =". And that is going
+to be search__result--active.
+
+00:13:32.940 --> 00:13:36.840 line:100% position:50% align:middle
+Then we need the current. Every single
+time that we press down,
+
+00:13:36.840 --> 00:13:41.320 line:100% position:50% align:middle
+what we're going to be doing is we're
+going to be finding the current one.
+
+00:13:41.320 --> 00:13:44.520 line:100% position:50% align:middle
+And the way that we're going to do that is
+we're just going to find which one has
+
+00:13:44.520 --> 00:13:51.380 line:100% position:50% align:middle
+that current class. So we'll say, "const
+current = search.querySelector".
+
+00:13:51.380 --> 00:13:56.230 line:100% position:50% align:middle
+And we're going to be looking for
+something with the class, actually we need
+
+00:13:56.230 --> 00:14:00.950 line:100% position:50% align:middle
+backticks here, something with the class
+of activeClass. And the only reason I'm
+
+00:14:00.950 --> 00:14:04.010 line:100% position:50% align:middle
+putting it in a variable here is because I
+don't feel like writing this thing over
+
+00:14:04.010 --> 00:14:07.500 line:100% position:50% align:middle
+and over again. I'd rather just put it in
+a variable and reference the variable
+
+00:14:07.500 --> 00:14:11.740 line:100% position:50% align:middle
+activeClass over and over. Then we will
+take a list of all of the items.
+
+00:14:11.740 --> 00:14:18.300 line:100% position:50% align:middle
+So, "const items =
+search.querySelectorAll", because we want
+
+00:14:18.300 --> 00:14:22.930 line:100% position:50% align:middle
+a node list to come back. We're going to
+look for all the search results,
+
+00:14:22.930 --> 00:14:27.370 line:100% position:50% align:middle
+search__results. Then finally we need a
+let variable called next.
+
+00:14:27.370 --> 00:14:30.290 line:100% position:50% align:middle
+And the reason that is a let and not a
+const is because we are going to be
+
+00:14:30.290 --> 00:14:33.840 line:100% position:50% align:middle
+updating it. Essentially how it's going to
+work is that we're going to figure out
+
+00:14:33.840 --> 00:14:40.140 line:100% position:50% align:middle
+what are we currently on and, if someone
+presses down or up, which one is going to
+
+00:14:40.140 --> 00:14:46.200 line:100% position:50% align:middle
+be the next one. So first thing we want to
+do is say, "If they press down and there
+
+00:14:46.200 --> 00:14:53.550 line:100% position:50% align:middle
+is one selected, we want to set next to be
+the one after it." So if I'm on Mulberry
+
+00:14:53.550 --> 00:14:57.870 line:100% position:50% align:middle
+and I press down, I want the next one to
+be Rest City Brewery.
+
+00:14:57.870 --> 00:15:05.170 line:100% position:50% align:middle
+So say, "If the event .keyCode is equal to
+40," meaning that they press down,
+
+00:15:05.170 --> 00:15:11.140 line:100% position:50% align:middle
+"and there is a current one already,"
+because they've already selected one,
+
+00:15:11.140 --> 00:15:18.190 line:100% position:50% align:middle
+"then the next one is going to be the
+current one, .nextElementSibling,
+
+00:15:18.190 --> 00:15:23.070 line:100% position:50% align:middle
+or this is going to be the first one in
+the actual row." And what that will do is
+
+00:15:23.070 --> 00:15:29.130 line:100% position:50% align:middle
+if I'm on the last one, there's obviously
+no nextElementSibling because I'm on the
+
+00:15:29.130 --> 00:15:34.600 line:100% position:50% align:middle
+last one. And what this "or" will do is it
+will fall back to the first item in our
+
+00:15:34.600 --> 00:15:44.980 line:100% position:50% align:middle
+array. Then we have an "else if (e.keyCode
+=== 40)", then what we say is "next =
+
+00:15:44.980 --> 00:15:51.620 line:100% position:50% align:middle
+items0". So if they press down and there
+is no current, so it's the first time.
+
+00:15:51.620 --> 00:15:57.050 line:100% position:50% align:middle
+Let me refresh this page. I hit "coffee"
+and there's current one because I haven't
+
+00:15:57.050 --> 00:16:02.840 line:100% position:50% align:middle
+selected any yet, and I press down. Now in
+that case the keyCode was down,
+
+00:16:02.840 --> 00:16:08.980 line:100% position:50% align:middle
+so the next one has to be the first one so
+far. Next up we have else if the event
+
+00:16:08.980 --> 00:16:17.230 line:100% position:50% align:middle
+.keyCode is equal to 38 and there is a
+current, so this is kind of the opposite.
+
+00:16:17.230 --> 00:16:24.710 line:100% position:50% align:middle
+So if someone is pressing, what did we say
+the up was? Keycode.info.
+
+00:16:24.710 --> 00:16:30.780 line:100% position:50% align:middle
+So if someone is pressing up, which is 38.
+Down, which is 40. And there is a current
+
+00:16:30.780 --> 00:16:39.500 line:100% position:50% align:middle
+one. We'll say next is equal to the
+current.previousElementSibling or the last
+
+00:16:39.500 --> 00:16:46.550 line:100% position:50% align:middle
+thing in the items. So here if I'm
+"coffee" and I press up, then it should
+
+00:16:46.550 --> 00:16:53.890 line:100% position:50% align:middle
+select the last one. So we'll say
+items.length-1, square bracket
+
+00:16:53.890 --> 00:16:58.450 line:100% position:50% align:middle
+items.length-1. And that's a little trick
+that we can use to get the last element on
+
+00:16:58.450 --> 00:17:03.300 line:100% position:50% align:middle
+there. Then we say, "Else if the event
+.keyCode is equal to 38,
+
+00:17:03.300 --> 00:17:09.420 line:100% position:50% align:middle
+so if it's just equal to 38, the next is
+going to be equal to the items,
+
+00:17:09.420 --> 00:17:17.730 line:100% position:50% align:middle
+the last one in the list, items.length-1.
+Finally, we need to handle the "enter"
+
+00:17:17.730 --> 00:17:25.540 line:100% position:50% align:middle
+key. So we'll say, "Else if the e.keyCode
+is equal to 13 and there is a
+
+00:17:25.540 --> 00:17:31.950 line:100% position:50% align:middle
+current.href". Meaning that if someone hit
+"enter" and there is a current element
+
+00:17:31.950 --> 00:17:36.750 line:100% position:50% align:middle
+with a href value on it, then we need to
+put them on that actual page.
+
+00:17:36.750 --> 00:17:45.370 line:100% position:50% align:middle
+So say, "[removed] = current.href;".
+So at this point let's just console.log
+
+00:17:45.370 --> 00:17:51.080 line:100% position:50% align:middle
+next and see what we're dealing with after
+this huge if/if else statement.
+
+00:17:51.080 --> 00:17:56.360 line:100% position:50% align:middle
+I'm going to refresh here and type in
+"coffee", and open up my dev tools now.
+
+00:17:56.360 --> 00:18:01.520 line:100% position:50% align:middle
+And I'm going to press down, down, down,
+down. It's always undefined,
+
+00:18:01.520 --> 00:18:07.890 line:100% position:50% align:middle
+so we have a bit of an error here. Let's
+double-check. Oh, "next = items0".
+
+00:18:07.890 --> 00:18:13.520 line:100% position:50% align:middle
+And give that a refresh. "Coffee", down,
+there we go. I push down,
+
+00:18:13.520 --> 00:18:17.690 line:100% position:50% align:middle
+Mulberry Coffee. Press down again, it's
+always going to give me Mulberry Coffee
+
+00:18:17.690 --> 00:18:21.170 line:100% position:50% align:middle
+because we're not adding the class. So
+down, down, down. If I hit up,
+
+00:18:21.170 --> 00:18:24.500 line:100% position:50% align:middle
+it's going to give me Donut Monster
+because that's the last one in there.
+
+00:18:24.500 --> 00:18:28.760 line:100% position:50% align:middle
+Good. So what we want to do now that we
+have next, we want to add an activeClass
+
+00:18:28.760 --> 00:18:31.780 line:100% position:50% align:middle
+to our next one. So in the
+next.classList.add, the activeClass.
+
+00:18:31.780 --> 00:18:41.790 line:100% position:50% align:middle
+I'll see what we're doing here. So
+"coffee", down, Mulberry. Down,
+
+00:18:41.790 --> 00:18:47.090 line:100% position:50% align:middle
+Rust City. Down, oh, we're kind of stuck
+here. We have two, and now all three have
+
+00:18:47.090 --> 00:18:52.240 line:100% position:50% align:middle
+the class of active. Well, before we add a
+class of active to that next one we need
+
+00:18:52.240 --> 00:18:58.920 line:100% position:50% align:middle
+to remove it from the current one. So say,
+"If there is a current one,
+
+00:18:58.920 --> 00:19:05.140 line:100% position:50% align:middle
+then we will simply take the current and
+take the class list and we will remove the
+
+00:19:05.140 --> 00:19:12.320 line:100% position:50% align:middle
+activeClass. So if we currently have a
+current one, then just remove it from it.
+
+00:19:12.320 --> 00:19:16.400 line:100% position:50% align:middle
+"Coffee", down, there we go. Down, down,
+up, up, up, down, down,
+
+00:19:16.400 --> 00:19:20.880 line:100% position:50% align:middle
+down. Good, it seems to be cycling just
+fine. Now if I hit "enter" on Rust City
+
+00:19:20.880 --> 00:19:26.930 line:100% position:50% align:middle
+Brewery, oh, "Cannot read property
+'classList' of undefined". Oh,
+
+00:19:26.930 --> 00:19:31.170 line:100% position:50% align:middle
+and that's because if you do hit "enter",
+we need to stop this function from
+
+00:19:31.170 --> 00:19:36.730 line:100% position:50% align:middle
+running. So we type a return. So we'll say
+"coffee". Down, down,
+
+00:19:36.730 --> 00:19:42.830 line:100% position:50% align:middle
+Rust City Brewery, I'm going to hit
+"enter". Doesn't seem to have worked.
+
+00:19:42.830 --> 00:19:47.770 line:100% position:50% align:middle
+Let's do a quick console.log in here and
+debug it, "Changing Pages!" And
+
+00:19:47.770 --> 00:19:52.430 line:100% position:50% align:middle
+console.log current, see what that does.
+"Coffee", enter. It says "Changing
+
+00:19:52.430 --> 00:19:57.230 line:100% position:50% align:middle
+Pages!", it gives us the current Rust City
+Brewery. Oh, what am I doing with these
+
+00:19:57.230 --> 00:20:01.210 line:100% position:50% align:middle
+triple equals? It's only one equals.
+You're probably yelling at me being like,
+
+00:20:01.210 --> 00:20:04.890 line:100% position:50% align:middle
+"What a fool. How does this guy have a
+course? He doesn't even know how equals
+
+00:20:04.890 --> 00:20:09.220 line:100% position:50% align:middle
+works." Hit "enter". There we go, then it
+will actually change the page because you
+
+00:20:09.220 --> 00:20:12.300 line:100% position:50% align:middle
+have to know how JavaScript works before
+we get into that. So delete those two
+
+00:20:12.300 --> 00:20:16.780 line:100% position:50% align:middle
+console.logs, now we have all of this
+stuff working beautifully for us.
+
+00:20:16.780 --> 00:20:20.180 line:100% position:50% align:middle
+I know that's quite a bit of code, but
+it's kind of neat to take a break from the
+
+00:20:20.180 --> 00:20:24.510 line:100% position:50% align:middle
+server-side stuff and just work with a
+little bit more of this interfacy stuff
+
+00:20:24.510 --> 00:20:29.160 line:100% position:50% align:middle
+that requires us to have keyboard input as
+well as clicking. So that us our layout
+
+00:20:29.160 --> 00:20:32.950 line:100% position:50% align:middle
+there. One thing I did notice is that I
+used a traditional require here,
+
+00:20:32.950 --> 00:20:36.820 line:100% position:50% align:middle
+and everywhere else through our front-end
+JavaScript we use our ES6 import.
+
+00:20:36.820 --> 00:20:41.210 line:100% position:50% align:middle
+And the reason why that still worked is
+because we're using webpack to convert to
+
+00:20:41.210 --> 00:20:46.890 line:100% position:50% align:middle
+CommonJS first, and then it gets compiled
+for us. So instead of requiring axios,
+
+00:20:46.890 --> 00:20:54.990 line:100% position:50% align:middle
+we want to say "import axios from
+'axios';". And then that will do exactly
+
+00:20:54.990 --> 00:20:59.640 line:100% position:50% align:middle
+the same thing, but we're just keeping it
+consistent with ES6 on our front end.
+
+00:20:59.640 --> 00:21:03.560 line:100% position:50% align:middle
+And then on the server side we're still
+using CommonJS modules just because we do
+
+00:21:03.560 --> 00:21:08.320 line:100% position:50% align:middle
+not have ES6 modules in Node just yet. You
+can compile them, but it's more of a
+
+00:21:08.320 --> 00:21:12.310 line:100% position:50% align:middle
+headache than it's worth because it's just
+syntax at the end of the day.
+
+00:21:12.310 --> 00:21:17.090 line:100% position:50% align:middle
+So we've got this up and running, let's
+double-check that this works.
+
+00:21:17.090 --> 00:21:22.380 line:100% position:50% align:middle
+"Coffee", there we go. One other thing is
+that on the answer when you don't find
+
+00:21:22.380 --> 00:21:26.400 line:100% position:50% align:middle
+something, it tells you "No Results for,"
+the word, "Found". And that's probably
+
+00:21:26.400 --> 00:21:30.540 line:100% position:50% align:middle
+better than what we're doing, which is
+just hiding it. Because then your user is
+
+00:21:30.540 --> 00:21:37.960 line:100% position:50% align:middle
+trying to do stuff and nothing is
+happening, right? So what did we do?
+
+00:21:37.960 --> 00:21:43.550 line:100% position:50% align:middle
+If there's no value, quit it. But at this
+point we say, "If there is some stuff that
+
+00:21:43.550 --> 00:21:46.960 line:100% position:50% align:middle
+comes back". And at this point right here
+what we want to do is,
+
+00:21:46.960 --> 00:21:53.580 line:100% position:50% align:middle
+rather than clear out the innerHTML, what
+we want to do is we will have an else
+
+00:21:53.580 --> 00:21:58.940 line:100% position:50% align:middle
+here. Or we will just return from this and
+not have an else, just on its own line
+
+00:21:58.940 --> 00:22:04.910 line:100% position:50% align:middle
+here. And we'll say, "Tell them nothing
+came back". Which means that the result
+
+00:22:04.910 --> 00:22:09.070 line:100% position:50% align:middle
+data came back, but there wasn't length to
+it because there were no results.
+
+00:22:09.070 --> 00:22:15.260 line:100% position:50% align:middle
+So at that point what we'll do is we'll
+take our searchResults[removed] and we'll
+
+00:22:15.260 --> 00:22:21.730 line:100% position:50% align:middle
+set it to use some backticks. We will take
+a div with a class of search__result,
+
+00:22:21.730 --> 00:22:26.100 line:100% position:50% align:middle
+and then inside of that we'll say "No
+results for," and we can interpolate the
+
+00:22:26.100 --> 00:22:32.430 line:100% position:50% align:middle
+value, ${this.value}, "found!" We'll see
+if that works. There we go,
+
+00:22:32.430 --> 00:22:36.800 line:100% position:50% align:middle
+no results found. It will tell us exactly
+what it has found. And then if we
+
+00:22:36.800 --> 00:22:38.920 line:100% position:50% align:middle
+backspace, it will go away. Good. So those
+are a couple things.
+
+00:22:38.920 --> 00:22:44.580 line:100% position:50% align:middle
+And the last thing, I think that we're
+open to an XSS attack, a cross-site
+
+00:22:44.580 --> 00:22:49.950 line:100% position:50% align:middle
+scripting attack, right here. And the way
+that we can test that is if we are to log
+
+00:22:49.950 --> 00:22:54.110 line:100% position:50% align:middle
+in real quick and we are to go to one of
+the stores that we had made with this
+
+00:22:54.110 --> 00:22:58.370 line:100% position:50% align:middle
+account. And in this case New Store is the
+only one I've done.
+
+00:22:58.370 --> 00:23:04.230 line:100% position:50% align:middle
+And let's change the New Store to be an
+image tag. And the image tag can go to
+
+00:23:04.230 --> 00:23:09.250 line:100% position:50% align:middle
+anything, I'm just going to copy this
+image. It doesn't matter what it's to,
+
+00:23:09.250 --> 00:23:12.750 line:100% position:50% align:middle
+what's important is that there is an
+onload event with an image.
+
+00:23:12.750 --> 00:23:21.770 line:100% position:50% align:middle
+And you can say, "alert&amp;#40;'you got
+hacked'&amp;#41;". So let's see if this works.
+
+00:23:21.770 --> 00:23:28.520 line:100% position:50% align:middle
+Save. So you see, that immediately pops up
+because what we just did is we allowed
+
+00:23:28.520 --> 00:23:34.380 line:100% position:50% align:middle
+somebody to put an image tag inside of
+their store name. Which in most cases Pug
+
+00:23:34.380 --> 00:23:38.970 line:100% position:50% align:middle
+will take care of it for you. So let's
+look for New Store. See,
+
+00:23:38.970 --> 00:23:43.040 line:100% position:50% align:middle
+somebody can try and put an image and it
+won't actually load it.
+
+00:23:43.040 --> 00:23:48.240 line:100% position:50% align:middle
+But when we are responsible for creating
+HTML ourselves, as we have done in our
+
+00:23:48.240 --> 00:23:52.740 line:100% position:50% align:middle
+search results right here, if I search for
+"New", look at this.
+
+00:23:52.740 --> 00:23:56.680 line:100% position:50% align:middle
+As soon as I search for "New" it says "you
+got hacked", I press "OK",
+
+00:23:56.680 --> 00:24:02.900 line:100% position:50% align:middle
+and it actually brings the result with
+allowing us to have a store with a strong,
+
+00:24:02.900 --> 00:24:07.220 line:100% position:50% align:middle
+and then the image tag is in here. We're
+taking advantage of the onload event in
+
+00:24:07.220 --> 00:24:11.720 line:100% position:50% align:middle
+JavaScript. And at that point anyone could
+load any JavaScript they could possibly
+
+00:24:11.720 --> 00:24:15.890 line:100% position:50% align:middle
+want and actually ruin your website. So
+you need to be really careful.
+
+00:24:15.890 --> 00:24:21.180 line:100% position:50% align:middle
+Before you actually embed any HTML on your
+page, you need to sanitize that data.
+
+00:24:21.180 --> 00:24:26.350 line:100% position:50% align:middle
+And if you have looked at my ES6 course, I
+like to do this with a library called
+
+00:24:26.350 --> 00:24:37.210 line:100% position:50% align:middle
+Purify. Go to the top here and we will
+"import dompurify from 'dompurify';".
+
+00:24:37.210 --> 00:24:41.690 line:100% position:50% align:middle
+Now we have this thing called dompurify.
+And then anywhere you are setting HTML,
+
+00:24:41.690 --> 00:24:46.080 line:100% position:50% align:middle
+so we are doing it right here,
+searchResults, we'll just wrap the entire
+
+00:24:46.080 --> 00:24:54.310 line:100% position:50% align:middle
+searchResults in dompurify.sanitize. And
+then also we're doing it right here.
+
+00:24:54.310 --> 00:24:57.550 line:100% position:50% align:middle
+Technically someone could access this
+themselves by searching for something,
+
+00:24:57.550 --> 00:25:01.920 line:100% position:50% align:middle
+and then it would set the innerHTML. We
+don't want that. So we'll
+
+00:25:01.920 --> 00:25:06.860 line:100% position:50% align:middle
+dompurify.sanitize that. Save. Now when we
+refresh and you search for "New",
+
+00:25:06.860 --> 00:25:12.340 line:100% position:50% align:middle
+what that does is it still finds that huge
+image, but you can see that the onload
+
+00:25:12.340 --> 00:25:17.670 line:100% position:50% align:middle
+event has been stripped out of the actual
+image that was in the URL.
+
+00:25:17.670 --> 00:25:22.230 line:100% position:50% align:middle
+So what you could also do at this point is
+use other libraries to strip out images.
+
+00:25:22.230 --> 00:25:26.410 line:100% position:50% align:middle
+Or, even better, when somebody actually
+saves the data to your database,
+
+00:25:26.410 --> 00:25:30.370 line:100% position:50% align:middle
+you could strip out the images, as well.
+How you would do that is you would go into
+
+00:25:30.370 --> 00:25:35.110 line:100% position:50% align:middle
+your store model, Store.js, and you would
+add yourself another "Scheme.pre('save'".
+
+00:25:35.110 --> 00:25:39.460 line:100% position:50% align:middle
+And this one we did for the slug, but then
+you could get another Node.js library that
+
+00:25:39.460 --> 00:25:45.050 line:100% position:50% align:middle
+will strip any unnecessary HTML or any
+HTML from specific fields.
+
+00:25:45.050 --> 00:25:49.810 line:100% position:50% align:middle
+So maybe you do want some HTML to be
+available in the description,
+
+00:25:49.810 --> 00:25:53.960 line:100% position:50% align:middle
+but absolutely no HTML to be available in
+the title. Then you would add yourself a
+
+00:25:53.960 --> 00:25:56.300 line:100% position:50% align:middle
+new "pre('save'". So I'm not going to show
+you how to do that,
+
+00:25:56.300 --> 00:26:00.000 line:100% position:50% align:middle
+but if you want to have a little bit of a
+challenge to go into something right now,
+
+00:26:00.000 --> 00:26:04.140 line:100% position:50% align:middle
+I definitely challenge you to actually
+implement that. Throw it up on GitHub and
+
+00:26:04.140 --> 00:26:06.690 line:100% position:50% align:middle
+I'm sure other people in the course would
+love to see how you finished that.
+
+00:26:06.690 --> 00:26:11.080 line:100% position:50% align:middle
+So that is our search results, let's move
+on to doing some more stuff with the AJAX
+
+00:26:11.080 --> 00:26:12.309 line:100% position:50% align:middle
+endpoints.
+
+00:26:12.309 --> 00:26:14.309 line:100% position:50% align:middle
+♪ [music] ♪

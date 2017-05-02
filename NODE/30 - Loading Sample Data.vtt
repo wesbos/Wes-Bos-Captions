@@ -1,0 +1,257 @@
+WEBVTT
+
+00:00:01.100 --> 00:00:04.100 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.100 --> 00:00:14.065 line:100% position:50% align:middle
+- [Wes Bos] By now you are probably sick
+
+00:00:14.065 --> 00:00:18.110 line:100% position:50% align:middle
+of making stores and having to fill out
+these forms of just random stuff.
+
+00:00:18.110 --> 00:00:21.940 line:100% position:50% align:middle
+And we're about to work on our API here
+where we're going to be able to search for
+
+00:00:21.940 --> 00:00:25.590 line:100% position:50% align:middle
+stores, but in order for us to search for
+stuff, we need a whole bunch of data to
+
+00:00:25.590 --> 00:00:30.790 line:100% position:50% align:middle
+actually search for. So, what I've done
+here, if we open up our package.json
+
+00:00:30.790 --> 00:00:36.340 line:100% position:50% align:middle
+file, you'll know that there are a number
+of different scripts in here, and this
+
+00:00:36.340 --> 00:00:39.933 line:100% position:50% align:middle
+might look a little bit different from
+what you have, depending on what all of
+
+00:00:39.933 --> 00:00:43.509 line:100% position:50% align:middle
+the deployment stuff ends up being, but we
+do have ones called 'Sample' and
+
+00:00:43.509 --> 00:00:50.540 line:100% position:50% align:middle
+'blowitallaway.' And what Sample will do
+is run a script called load-sample-data.js
+
+00:00:50.540 --> 00:00:53.800 line:100% position:50% align:middle
+and blowitallaway will also do that, but
+it'll just delete everything.
+
+00:00:53.800 --> 00:00:58.732 line:100% position:50% align:middle
+Let's open up that file and look at what
+we got here. So, look at load-sample-data,
+
+00:00:58.732 --> 00:01:04.800 line:100% position:50% align:middle
+and this is sort of a quick and dirty
+script. It's not part of our application,
+
+00:01:04.800 --> 00:01:08.170 line:100% position:50% align:middle
+which is why we need to do all of the
+requiring, the environmental
+
+00:01:08.170 --> 00:01:13.674 line:100% position:50% align:middle
+variables and requiring the connection to
+the database and what not.
+
+00:01:13.674 --> 00:01:17.830 line:100% position:50% align:middle
+That's why it's outside of our
+application, but what this will do is it
+
+00:01:17.830 --> 00:01:21.920 line:100% position:50% align:middle
+will load everything up, connect to our
+database, bring in our models,
+
+00:01:21.920 --> 00:01:27.890 line:100% position:50% align:middle
+and then read the files from stores.json
+to reviews.json and users.json.
+
+00:01:27.890 --> 00:01:31.086 line:100% position:50% align:middle
+So, if I open up stores.json,
+you'll see that this is just
+
+00:01:31.086 --> 00:01:36.640 line:100% position:50% align:middle
+a whole bunch of data related to some
+sample stores, and the same we'll be able
+
+00:01:36.640 --> 00:01:43.950 line:100% position:50% align:middle
+to use in users. That will load them into
+some objects here. And then the function
+
+00:01:43.950 --> 00:01:48.629 line:100% position:50% align:middle
+called loadData is going to
+insertMany(stores); inserMany(reviews);
+
+00:01:48.629 --> 00:01:50.224 line:100% position:50% align:middle
+and insertMany(users);
+
+00:01:50.224 --> 00:01:53.890 line:100% position:50% align:middle
+from which we console.log 'Done!', and
+we're done out of the thing.
+
+00:01:53.890 --> 00:01:59.590 line:100% position:50% align:middle
+So, that's what we've got so far, but we
+don't have reviews yet.
+
+00:01:59.590 --> 00:02:01.463 line:100% position:50% align:middle
+So, this isn't going to work
+
+00:02:01.463 --> 00:02:04.790 line:100% position:50% align:middle
+just yet. So what I want you to do is to
+comment out a couple of things so we can
+
+00:02:04.790 --> 00:02:08.055 line:100% position:50% align:middle
+actually run this and stop having to
+input data manually.
+
+00:02:08.055 --> 00:02:19.082 line:100% position:50% align:middle
+So go to our review here. Comment that one
+out, One. That one, Two. Three. Four.
+
+00:02:19.082 --> 00:02:20.930 line:100% position:50% align:middle
+And that's it. Four.
+
+00:02:20.930 --> 00:02:25.340 line:100% position:50% align:middle
+So how do we run this script? Well, we
+should be able to go back to our terminal
+
+00:02:25.340 --> 00:02:30.470 line:100% position:50% align:middle
+here. I'm going to kill what I'm running
+right now with control c, and
+
+00:02:30.470 --> 00:02:33.840 line:100% position:50% align:middle
+then I'm going to run 'npm run sample.'
+
+00:02:33.840 --> 00:02:38.220 line:100% position:50% align:middle
+There we go! It worked. It loaded in.
+Don't worry about this deprecation error
+
+00:02:38.220 --> 00:02:41.310 line:100% position:50% align:middle
+message. That's not something we ever have
+to worry about. And then we have this
+
+00:02:41.310 --> 00:02:47.850 line:100% position:50% align:middle
+thumbs up, done! And if you go back to
+your Mongo DB compass and click on stores
+
+00:02:47.850 --> 00:02:54.880 line:100% position:50% align:middle
+and apply this, you'll see we now have
+eighteen documents, and they are spread
+
+00:02:54.880 --> 00:02:59.456 line:100% position:50% align:middle
+out all over the world, and if you look at
+your documents here, you are going to see
+
+00:02:59.456 --> 00:03:02.080 line:100% position:50% align:middle
+that we've got all kinds of great stuff.
+
+00:03:02.080 --> 00:03:04.730 line:100% position:50% align:middle
+You should be able to refresh our
+application. Oh, it doesn't work.
+
+00:03:04.730 --> 00:03:10.010 line:100% position:50% align:middle
+Why? Because we have to start our app
+again. 'npm start' or bom start.
+
+00:03:10.010 --> 00:03:18.430 line:100% position:50% align:middle
+'npm start'. And then refresh this
+sucker, and ...lots and lots of lots of
+
+00:03:18.430 --> 00:03:22.800 line:100% position:50% align:middle
+data. Obviously we are going to need
+to do the pagination bit pretty soon.
+
+00:03:22.800 --> 00:03:27.642 line:100% position:50% align:middle
+We've got quite a bit going on here, and
+if you click on one of them, you should
+
+00:03:27.642 --> 00:03:30.855 line:100% position:50% align:middle
+see all the information. We can actually
+remove that real quick.
+
+00:03:30.855 --> 00:03:40.060 line:100% position:50% align:middle
+Let's open up store.pug.
+Take that dump out of there.
+
+00:03:40.060 --> 00:03:44.090 line:100% position:50% align:middle
+Good. So we've got all of our data. Go to
+tags and you can see a whole bunch of
+
+00:03:44.090 --> 00:03:47.510 line:100% position:50% align:middle
+different tags that are being pulled in -
+"Family friendly," "Vegetarian,"
+
+00:03:47.510 --> 00:03:48.880 line:100% position:50% align:middle
+"Licensed." Good.
+
+00:03:48.880 --> 00:03:52.710 line:100% position:50% align:middle
+So, that was how we load a bunch of data.
+If you ever want to delete all of the data
+
+00:03:52.710 --> 00:03:59.231 line:100% position:50% align:middle
+you can run it. Just look at the readme.md
+and you can run 'npm run blowitallaway'
+
+00:03:59.231 --> 00:04:04.483 line:100% position:50% align:middle
+and that will delete all of your data. As
+part of importing all of these users, I
+
+00:04:04.483 --> 00:04:10.181 line:100% position:50% align:middle
+imported three extra users here: Wes,
+Debbie, and Beau. And if you look at our
+
+00:04:10.181 --> 00:04:14.424 line:100% position:50% align:middle
+data here. Go to 'users,' you're going to
+see that there's a Randy, there's a
+
+00:04:14.424 --> 00:04:18.980 line:100% position:50% align:middle
+Wesley, those are the two that we made,
+but now here's Beau, Debbie, and Wes,
+
+00:04:18.980 --> 00:04:22.900 line:100% position:50% align:middle
+and their all at example.com. So if you
+ever need to log in and log out as other
+
+00:04:22.900 --> 00:04:27.530 line:100% position:50% align:middle
+people, their email addresses are in the
+readme.md, and their passwords are, also.
+
+00:04:27.530 --> 00:04:30.200 line:100% position:50% align:middle
+So it's Wes, Debbie, and Beau. Those are
+all the passwords for you
+
+00:04:30.200 --> 00:04:34.410 line:100% position:50% align:middle
+to log in as those people. So we can try
+it real quick. Try logging in as Debbie
+
+00:04:34.410 --> 00:04:42.195 line:100% position:50% align:middle
+Downer. There we go. Now I'm
+logged in as Debbie Downer.
+
+00:04:42.195 --> 00:04:44.290 line:100% position:50% align:middle
+So that's how you load a
+bunch of sample data.
+
+00:04:44.290 --> 00:04:49.295 line:100% position:50% align:middle
+These images work, because in the public
+uploads folder when you cloned this repo
+
+00:04:49.295 --> 00:04:53.340 line:100% position:50% align:middle
+or downloaded it from Github you'll notice
+that it came with a bunch of images
+
+00:04:53.340 --> 00:04:57.730 line:100% position:50% align:middle
+already, and you can use those. Those are
+there, because they are associated with
+
+00:04:57.730 --> 00:05:00.867 line:100% position:50% align:middle
+some of the stores that we have uploaded.
+So that's our sample data.
+
+00:05:00.867 --> 00:05:05.849 line:100% position:50% align:middle
+Now that we have it, let's move into
+getting the search up and running.

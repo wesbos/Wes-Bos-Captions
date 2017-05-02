@@ -1,0 +1,664 @@
+WEBVTT
+
+00:00:00.200 --> 00:00:03.200 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.122 --> 00:00:16.180 line:100% position:50% align:middle
+In this video, we're going to finally
+work on our actual single store layouts.
+
+00:00:16.180 --> 00:00:18.298 line:100% position:50% align:middle
+So, when you hit one of...
+I'm on the answer right here,
+
+00:00:18.298 --> 00:00:20.118 line:100% position:50% align:middle
+but when you go to your list of stores
+
+00:00:20.118 --> 00:00:22.800 line:100% position:50% align:middle
+and you were to click on one of
+the stores, there's a couple of things
+
+00:00:22.800 --> 00:00:29.260 line:100% position:50% align:middle
+going on here. First, we need to find
+the actual store that has this slug,
+
+00:00:29.260 --> 00:00:33.370 line:100% position:50% align:middle
+and the next, what we need to do
+is pull in the name of the store,
+
+00:00:33.370 --> 00:00:36.810 line:100% position:50% align:middle
+the photo of the store, we need to create
+a map of the store, we need to show the
+
+00:00:36.810 --> 00:00:40.470 line:100% position:50% align:middle
+address, a description, a list of tags.
+And then eventually what we're going to do
+
+00:00:40.470 --> 00:00:44.570 line:100% position:50% align:middle
+is, we're going to be getting into either
+showing a login form if the user is logged
+
+00:00:44.570 --> 00:00:48.110 line:100% position:50% align:middle
+in, or if they're logged out, it
+tells them to log in to review.
+
+00:00:48.110 --> 00:00:52.850 line:100% position:50% align:middle
+And then it will show a list of all the
+possible reviews. So, a lot going on here,
+
+00:00:52.850 --> 00:00:57.700 line:100% position:50% align:middle
+let's jump into it. If you're sort of
+feeling comfortable, with this whole make
+
+00:00:57.700 --> 00:01:01.650 line:100% position:50% align:middle
+a route, make a controller, then the
+controller will query the database,
+
+00:01:01.650 --> 00:01:05.130 line:100% position:50% align:middle
+get some data, and then pass it to a
+template to render, maybe I would suggest
+
+00:01:05.130 --> 00:01:09.900 line:100% position:50% align:middle
+like pausing the video right here and try
+to do this piece on your own.
+
+00:01:09.900 --> 00:01:15.420 line:100% position:50% align:middle
+So, let's click on one of these, and of
+course we're going to get a 404 because we
+
+00:01:15.420 --> 00:01:19.150 line:100% position:50% align:middle
+do not have a route set up for that. So,
+it says butcher-and-the-vegan.
+
+00:01:19.150 --> 00:01:26.300 line:100% position:50% align:middle
+Now, what we're going to do is go into our
+routes file, index .js, and first set up
+
+00:01:26.300 --> 00:01:34.953 line:100% position:50% align:middle
+the route for that. So, I'm going to go
+down here, say, router.get('/store/ and
+
+00:01:34.953 --> 00:01:38.167 line:100% position:50% align:middle
+we're going to call that a slug.
+And when that happens,
+
+00:01:38.167 --> 00:01:39.826 line:100% position:50% align:middle
+we are going to run and we'll just say
+
+00:01:39.826 --> 00:01:47.050 line:100% position:50% align:middle
+catchErrors(storeController.
+getStoreBySlug)). Good.
+
+00:01:47.050 --> 00:01:51.030 line:100% position:50% align:middle
+Then we'll go into our storeController,
+and we'll go to the bottom here,
+
+00:01:51.030 --> 00:01:57.551 line:100% position:50% align:middle
+and we'll make a new one, say
+exports.getStorebySlug. We're going to
+
+00:01:57.551 --> 00:02:00.660 line:100% position:50% align:middle
+make it async because we're going
+to be creating the database.
+
+00:02:01.492 --> 00:02:05.460 line:100% position:50% align:middle
+Request and we have our
+response, and we're up and running.
+
+00:02:05.460 --> 00:02:10.425 line:100% position:50% align:middle
+So, again, let's always just test that it
+actually works. res.send('it works!'),
+
+00:02:11.269 --> 00:02:15.478 line:100% position:50% align:middle
+refresh, good. So, we are hitting
+this URL and we say that it
+
+00:02:15.478 --> 00:02:19.792 line:100% position:50% align:middle
+actually works. So, first thing that we
+need to do is query the database for that
+
+00:02:19.792 --> 00:02:27.362 line:100% position:50% align:middle
+specific store. So let's say const store =
+and then we will await Store.findOne
+
+00:02:27.362 --> 00:02:29.713 line:100% position:50% align:middle
+and now here, what is our
+query going to look like?
+
+00:02:29.713 --> 00:02:31.780 line:100% position:50% align:middle
+Well, we only have one piece of data and
+
+00:02:31.780 --> 00:02:35.280 line:100% position:50% align:middle
+that is the actual slug, right?
+We don't have the ID of the store,
+
+00:02:35.280 --> 00:02:39.820 line:100% position:50% align:middle
+we only have a slug. So, we need to do a
+lookup at our database for a store where
+
+00:02:39.820 --> 00:02:44.830 line:100% position:50% align:middle
+the slug field is set to this.
+So, we'll say the slug is set to,
+
+00:02:44.830 --> 00:02:49.750 line:100% position:50% align:middle
+and now how do I access the actual
+parameters? Well, again, if I were to
+
+00:02:49.750 --> 00:02:56.014 line:100% position:50% align:middle
+comment this out, we could
+res.json(req.params).
+
+00:02:56.014 --> 00:02:58.240 line:100% position:50% align:middle
+And then req.params is going to just be
+
+00:02:58.240 --> 00:03:02.640 line:100% position:50% align:middle
+an object full of all the data that
+is in the URL that we've set out
+
+00:03:02.640 --> 00:03:06.500 line:100% position:50% align:middle
+to. So, it's a slug, why? Because
+we put a slug in our URL here,
+
+00:03:06.500 --> 00:03:11.440 line:100% position:50% align:middle
+and that will give it to us. So, we can
+go back to here. Slug is equal to
+
+00:03:11.440 --> 00:03:19.390 line:100% position:50% align:middle
+req.params.slug. Then when we have
+that actual store, what we're going to do
+
+00:03:19.390 --> 00:03:24.680 line:100% position:50% align:middle
+is give ourselves, and we're going to say
+res.json(store). Let's just double check
+
+00:03:24.680 --> 00:03:30.770 line:100% position:50% align:middle
+that we have that data coming back. Good.
+So, we have all of the data that we know
+
+00:03:30.770 --> 00:03:34.620 line:100% position:50% align:middle
+that our query is actually working.
+However, what happens if we hit a URL that
+
+00:03:34.620 --> 00:03:42.960 line:100% position:50% align:middle
+doesn't exist? Veganx. Then we get null.
+So, it actually still does work when you
+
+00:03:42.960 --> 00:03:49.080 line:100% position:50% align:middle
+give it the wrong URL. But ideally what
+would happen, is that we would show a 404
+
+00:03:49.080 --> 00:03:54.130 line:100% position:50% align:middle
+because that's not actually a page
+that exists. So, in our case,
+
+00:03:54.130 --> 00:03:59.090 line:100% position:50% align:middle
+we need to handle this ourselves because
+if a store, if a query in MongoDB does not
+
+00:03:59.090 --> 00:04:03.590 line:100% position:50% align:middle
+find anything, that's not necessarily an
+error, it's just a query that returns
+
+00:04:03.590 --> 00:04:07.560 line:100% position:50% align:middle
+null. So, we need to sort of check
+ourselves, so we'll say if there is,
+
+00:04:07.560 --> 00:04:14.450 line:100% position:50% align:middle
+no store, then what we need to do is
+return next. Or often you'll see just
+
+00:04:14.450 --> 00:04:18.880 line:100% position:50% align:middle
+someone call next and then type
+return. So, those are both valid.
+
+00:04:18.880 --> 00:04:21.900 line:100% position:50% align:middle
+Often, you'll see people do it on one line
+even without the if statements.
+
+00:04:21.900 --> 00:04:26.090 line:100% position:50% align:middle
+So, return next, like that. Those are all
+three the same. So, what does that do?
+
+00:04:26.090 --> 00:04:29.670 line:100% position:50% align:middle
+Well, you tell me what next does. Well,
+first of all, we actually have to pass
+
+00:04:29.670 --> 00:04:36.230 line:100% position:50% align:middle
+next here, but what does it actually do?
+Well, next will assume that this is a
+
+00:04:36.230 --> 00:04:41.755 line:100% position:50% align:middle
+middleware and pass it along to the next
+steps. So, again, I know you're probably
+
+00:04:41.755 --> 00:04:45.000 line:100% position:50% align:middle
+getting sick of me showing you this,
+but I really want to drill this home.
+
+00:04:45.000 --> 00:04:50.900 line:100% position:50% align:middle
+If we go to our app.js, and we find our
+routes, there we go, this is our routes
+
+00:04:50.900 --> 00:04:55.224 line:100% position:50% align:middle
+right here. And if it is not found, it's
+just going to say, "All right well, next."
+
+00:04:55.224 --> 00:04:58.410 line:100% position:50% align:middle
+Move on to the next piece of
+middleware, which is this notFound
+
+00:04:58.410 --> 00:05:02.655 line:100% position:50% align:middle
+handler. And that's going to kick in. So,
+that's all we need to do in order to
+
+00:05:02.655 --> 00:05:07.990 line:100% position:50% align:middle
+render out a 404, give it a save. Now if I
+refresh this page, we should see a 404
+
+00:05:07.990 --> 00:05:13.000 line:100% position:50% align:middle
+page because that store is not found,
+but if I take the X off the URL,
+
+00:05:13.000 --> 00:05:17.600 line:100% position:50% align:middle
+we should actually get...or actually right
+now we're not sending any sort of data but
+
+00:05:17.600 --> 00:05:23.450 line:100% position:50% align:middle
+we could say res.json(store),
+and actually get the data for that
+
+00:05:23.450 --> 00:05:27.960 line:100% position:50% align:middle
+specific store. Good, so again, put an X
+on the end, 404, go back to our real
+
+00:05:27.960 --> 00:05:31.710 line:100% position:50% align:middle
+store, and we see the actual data. Good.
+That's what we want, and at this point
+
+00:05:31.710 --> 00:05:35.650 line:100% position:50% align:middle
+now, we don't want to just json
+it back, we want to res.render it,
+
+00:05:35.650 --> 00:05:39.040 line:100% position:50% align:middle
+and we want to render out a store
+template, which we'll make in a second.
+
+00:05:39.040 --> 00:05:43.040 line:100% position:50% align:middle
+And what is the data we need to pass?
+Well, we need to pass the store: store,
+
+00:05:43.040 --> 00:05:47.040 line:100% position:50% align:middle
+which again, we can just do that with
+store, and then we want to pass the title,
+
+00:05:47.040 --> 00:05:51.880 line:100% position:50% align:middle
+which is going to be the store.name
+value that gets passed in. Good.
+
+00:05:51.880 --> 00:05:56.950 line:100% position:50% align:middle
+Now, we'll open up our views, and make a
+new file and we'll call that store.pug,
+
+00:05:56.950 --> 00:06:01.286 line:100% position:50% align:middle
+and we will extends the layout.
+We have a block of content
+
+00:06:01.286 --> 00:06:03.371 line:100% position:50% align:middle
+and inside of that let's
+just do, right away,
+
+00:06:03.371 --> 00:06:08.970 line:100% position:50% align:middle
+let's just do an h2 tag that will
+contain the store.name, just to
+
+00:06:08.970 --> 00:06:12.230 line:100% position:50% align:middle
+make sure that this is working.
+So, refresh one of your pages,
+
+00:06:12.230 --> 00:06:16.170 line:100% position:50% align:middle
+there we go, Butcher and the Vegan, and
+go back to stores, Click on Brew Bar.
+
+00:06:16.170 --> 00:06:21.000 line:100% position:50% align:middle
+So, now we know that our controller is
+querying the database, getting a store
+
+00:06:21.000 --> 00:06:25.610 line:100% position:50% align:middle
+back and passing it along to store.pug.
+So, now it's just a templating problem,
+
+00:06:25.610 --> 00:06:30.440 line:100% position:50% align:middle
+and if you want to try to match it to what
+this looks like, feel free to go ahead.
+
+00:06:30.440 --> 00:06:32.455 line:100% position:50% align:middle
+Otherwise, let's work on this now.
+
+00:06:32.455 --> 00:06:34.519 line:100% position:50% align:middle
+So, we would need a
+[inaudible] class of single,
+
+00:06:34.519 --> 00:06:39.763 line:100% position:50% align:middle
+and inside of that, we need a
+single__hero, inside of that we need an
+
+00:06:39.763 --> 00:06:47.710 line:100% position:50% align:middle
+image with a class of single__image, with
+a source of, need to use backticks here,
+
+00:06:47.710 --> 00:06:57.250 line:100% position:50% align:middle
+/uploads/ store.photo or we want to use
+again, store.png. Let's see if this is
+
+00:06:57.250 --> 00:07:03.030 line:100% position:50% align:middle
+working now. Click on Brew Bar, beautiful,
+see some burgs, click on the Coffe Shop,
+
+00:07:03.030 --> 00:07:05.940 line:100% position:50% align:middle
+which doesn't have one and it will
+give us the default image. Good,
+
+00:07:05.940 --> 00:07:09.940 line:100% position:50% align:middle
+really happy with that. Then we need to go
+underneath it, and give ourselves an h2,
+
+00:07:09.940 --> 00:07:16.790 line:100% position:50% align:middle
+the class of title, and title--single,
+inside of that we want an a(href=
+
+00:07:16.790 --> 00:07:21.360 line:100% position:50% align:middle
+again we need to use backticks
+whenever we do generated strings,
+
+00:07:21.360 --> 00:07:27.590 line:100% position:50% align:middle
+stores/ and we want to put a store.slug.
+I know we link to ourselves but it's
+
+00:07:27.590 --> 00:07:33.380 line:100% position:50% align:middle
+generally good to do for SEO, and then
+we'll put our store.name inside of it.
+
+00:07:33.773 --> 00:07:39.650 line:100% position:50% align:middle
+How we doing? Good, showing up.
+Brew Bar, all of our CSS is kicking in.
+
+00:07:39.650 --> 00:07:46.420 line:100% position:50% align:middle
+Now, inside of or at the same level as
+single, we want to put in some details.
+
+00:07:46.420 --> 00:07:53.047 line:100% position:50% align:middle
+So, not inside of single, as a sibling to
+single, and so we have a single__details
+
+00:07:53.047 --> 00:07:56.930 line:100% position:50% align:middle
+and we also want to give it a class of
+inner, which will just constrain the width
+
+00:07:56.930 --> 00:08:02.766 line:100% position:50% align:middle
+of it. We have an image with a class of
+single__map, let's give that a save and
+
+00:08:02.766 --> 00:08:08.880 line:100% position:50% align:middle
+refresh. What needs to happen here is that
+we need to get what's called a static map
+
+00:08:08.880 --> 00:08:13.510 line:100% position:50% align:middle
+with Google Maps. And how static maps
+work, if I go here you'll notice that if I
+
+00:08:13.510 --> 00:08:17.690 line:100% position:50% align:middle
+click this, it's not actually like an
+embedded Google map, there's no JavaScript
+
+00:08:17.690 --> 00:08:21.460 line:100% position:50% align:middle
+here, it's actually just an image tag. And
+I can go ahead and inspect that,
+
+00:08:21.460 --> 00:08:31.613 line:100% position:50% align:middle
+and you can see the source of this map is
+googleapi/map/staticmap/center, 43 -79,
+
+00:08:31.613 --> 00:08:35.060 line:100% position:50% align:middle
+blah, blah, blah, blah, blah and it has
+an API key and a marker in there.
+
+00:08:35.060 --> 00:08:39.910 line:100% position:50% align:middle
+So, if I go visit this URL here, you'll
+see that this is just a static map that
+
+00:08:39.910 --> 00:08:43.980 line:100% position:50% align:middle
+I've created with a center, as well as you
+can put a number of markers and set the
+
+00:08:43.980 --> 00:08:49.450 line:100% position:50% align:middle
+zoom on it in there. Now, there's a whole
+lot that goes into making one of these
+
+00:08:49.450 --> 00:08:54.270 line:100% position:50% align:middle
+static maps, if we look at all the
+params here. What do we have?
+
+00:08:54.270 --> 00:09:00.160 line:100% position:50% align:middle
+We've got center, we've got zoom, we've
+got size, we've got our API key,
+
+00:09:00.160 --> 00:09:06.140 line:100% position:50% align:middle
+we've got markers, which is the lat and
+lng, and we have a scale, which allows us
+
+00:09:06.140 --> 00:09:13.780 line:100% position:50% align:middle
+to do high DPI for retina-based devices.
+So, rather than have to do all of that
+
+00:09:13.780 --> 00:09:17.970 line:100% position:50% align:middle
+generation right inside of our template,
+we're going to use our template helpers,
+
+00:09:17.970 --> 00:09:23.250 line:100% position:50% align:middle
+just like we learned about in our earlier
+video. So, if you open up helpers.js,
+
+00:09:23.250 --> 00:09:29.010 line:100% position:50% align:middle
+you'll see that we have a function here
+called staticMap that takes in an array,
+
+00:09:29.010 --> 00:09:32.440 line:100% position:50% align:middle
+where the first thing is the lng
+and the second thing is the lat.
+
+00:09:32.440 --> 00:09:39.440 line:100% position:50% align:middle
+Why? Because MongoDB will give it to us in
+lng lat and then from that we use an
+
+00:09:39.440 --> 00:09:43.210 line:100% position:50% align:middle
+arrow function which will have an implicit
+return. And again, if you are a little bit
+
+00:09:43.210 --> 00:09:48.830 line:100% position:50% align:middle
+confused by what all this is, definitely
+check out my ES6 For Everyone at es6.io
+
+00:09:48.830 --> 00:09:54.170 line:100% position:50% align:middle
+that will clear all of this syntax up for
+you. So, https:, google.maps blah,
+
+00:09:54.170 --> 00:09:59.760 line:100% position:50% align:middle
+blah, blah, blah, blah, center= lat lng.
+Why? Because MongoDB is lng, lat,
+
+00:09:59.760 --> 00:10:05.160 line:100% position:50% align:middle
+but Google Maps is lat lng. Then you
+want a zoom, hardcoded 14,
+
+00:10:05.160 --> 00:10:10.890 line:100% position:50% align:middle
+size, hardcoded key=process.env. MAP_KEY.
+So where is that coming from?
+
+00:10:10.890 --> 00:10:15.120 line:100% position:50% align:middle
+Well, go to your variables.env.
+MAP_key, that's going in there.
+
+00:10:15.120 --> 00:10:19.040 line:100% position:50% align:middle
+So, if you want to sign up for your own
+Google Maps key, you pop that in there and
+
+00:10:19.040 --> 00:10:23.420 line:100% position:50% align:middle
+it will automatically be replaced.
+I never like to put any sort of API key
+
+00:10:23.420 --> 00:10:27.060 line:100% position:50% align:middle
+hardcoded into template files because
+it's inevitably going to change and you're
+
+00:10:27.060 --> 00:10:32.820 line:100% position:50% align:middle
+going to have a couple of issues when you
+work with that. Then we have a markers,
+
+00:10:32.820 --> 00:10:35.800 line:100% position:50% align:middle
+and the markers is going to be
+exactly at the lat and lng as well,
+
+00:10:35.800 --> 00:10:40.050 line:100% position:50% align:middle
+so it's going to be exactly at center,
+wherever it is. And scale is set to 2.
+
+00:10:40.050 --> 00:10:43.760 line:100% position:50% align:middle
+So, we have this little helper file here
+where you pass in the lng and the lat,
+
+00:10:43.760 --> 00:10:47.300 line:100% position:50% align:middle
+and then it will return to us this very
+long string, which will give us this
+
+00:10:47.300 --> 00:10:52.120 line:100% position:50% align:middle
+hardcoded value. So we can say
+src= and we simply just said
+
+00:10:52.120 --> 00:10:57.960 line:100% position:50% align:middle
+h, helpers, .staticMap, and you pass
+it the array of coordinates, which is
+
+00:10:57.960 --> 00:11:03.020 line:100% position:50% align:middle
+available to us at
+store.location.coordinates. And again, if
+
+00:11:03.020 --> 00:11:06.116 line:100% position:50% align:middle
+you're having trouble like visualizing
+what is the data available to us,
+
+00:11:06.116 --> 00:11:10.177 line:100% position:50% align:middle
+you can always do a
+pre=h.dump(store), just to
+
+00:11:10.177 --> 00:11:16.560 line:100% position:50% align:middle
+see what available data is to you.
+So, now if I give this page a refresh,
+
+00:11:16.560 --> 00:11:22.630 line:100% position:50% align:middle
+now we see the actual map, the pin, I got
+my dump showing up, I can remove that,
+
+00:11:22.630 --> 00:11:26.300 line:100% position:50% align:middle
+and everything is working out for me.
+Good. Let's keep going. We got a paragraph
+
+00:11:26.300 --> 00:11:31.070 line:100% position:50% align:middle
+of class of single__location.
+Inside of that we need to put our
+
+00:11:31.070 --> 00:11:37.790 line:100% position:50% align:middle
+store.location.address, there we go.
+Hamilton, Ontario, Canada, working well.
+
+00:11:37.790 --> 00:11:43.240 line:100% position:50% align:middle
+Then we need to show some tags inside of
+that. So we'll say if there is store.tags
+
+00:11:43.240 --> 00:11:49.020 line:100% position:50% align:middle
+so if there are tags, because otherwise
+we don't want an empty tags list.
+
+00:11:49.020 --> 00:11:53.960 line:100% position:50% align:middle
+On our list the class of tags, and
+then we want to loop over each of the
+
+00:11:53.960 --> 00:12:00.340 line:100% position:50% align:middle
+store tags in there so we use each tag in
+store.tags. So, store.tags is going to be
+
+00:12:00.340 --> 00:12:02.780 line:100% position:50% align:middle
+our array. Tag is going to be each
+
+00:12:02.780 --> 00:12:06.952 line:100% position:50% align:middle
+singular one, whatever it's called on each
+iteration. We have a list item with a
+
+00:12:06.952 --> 00:12:12.674 line:100% position:50% align:middle
+class of tag, inside of that we have a
+link with a class of tag__link,
+
+00:12:12.674 --> 00:12:17.170 line:100% position:50% align:middle
+which is the href is going to set to again
+backticks because we're generating the URL
+
+00:12:17.170 --> 00:12:24.960 line:100% position:50% align:middle
+here. Tags/ and then we'll use our
+tag value there. And then, finally,
+
+00:12:24.960 --> 00:12:31.800 line:100% position:50% align:middle
+inside of that, we have a span with a
+class of tag__text and that will be just
+
+00:12:31.800 --> 00:12:37.070 line:100% position:50% align:middle
+a tag value or it can be something
+like that. So, let's refresh that.
+
+00:12:37.070 --> 00:12:41.154 line:100% position:50% align:middle
+Beautiful. Family friendly, licensed. What
+you could do with this is, if you wanted
+
+00:12:41.154 --> 00:12:44.564 line:100% position:50% align:middle
+to add something around
+it like parentheses,
+
+00:12:44.564 --> 00:12:46.756 line:100% position:50% align:middle
+the parentheses would show up.
+Or if you wanted to make it
+
+00:12:46.756 --> 00:12:50.080 line:100% position:50% align:middle
+look like a hashtag, you could
+put another # in front of it,
+
+00:12:50.080 --> 00:12:54.960 line:100% position:50% align:middle
+and it would say #Family Friendly
+#Licensed. So, that's the beauty of using
+
+00:12:54.960 --> 00:13:00.170 line:100% position:50% align:middle
+this layout here. So, that's the base
+layout for everything that we've got here.
+
+00:13:00.170 --> 00:13:05.070 line:100% position:50% align:middle
+Actually one thing we forgot was the
+description, and that will go right
+
+00:13:05.070 --> 00:13:09.370 line:100% position:50% align:middle
+underneath the location. So just say
+p=store.description and that gets
+
+00:13:09.370 --> 00:13:11.860 line:100% position:50% align:middle
+popped in. Obviously, those descriptions
+are going to be a little bit longer.
+
+00:13:11.860 --> 00:13:16.380 line:100% position:50% align:middle
+So, that's it for now on this single page.
+We're going to come back once we have our
+
+00:13:16.380 --> 00:13:22.834 line:100% position:50% align:middle
+login and register working and actually
+hook up some reviews, the ability to
+
+00:13:22.834 --> 00:13:24.869 line:100% position:50% align:middle
+review as well as displaying past reviews.
+
+00:13:25.000 --> 00:13:28.000 line:100% position:50% align:middle
+♪ [music] ♪

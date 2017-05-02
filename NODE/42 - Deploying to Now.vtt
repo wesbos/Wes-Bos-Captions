@@ -1,0 +1,289 @@
+WEBVTT
+
+00:00:00.368 --> 00:00:03.368 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.759 --> 00:00:15.880 line:100% position:50% align:middle
+First one we are going to deploy to is
+something called now, and now is like a
+
+00:00:15.880 --> 00:00:21.200 line:100% position:50% align:middle
+super simple way to host really any kind
+of app. They are really good with Docker,
+
+00:00:21.200 --> 00:00:26.160 line:100% position:50% align:middle
+Node, and Static websites, but because
+they support Docker you can really host
+
+00:00:26.160 --> 00:00:29.860 line:100% position:50% align:middle
+any type of application on it. In our case
+we are going to be hosting our node app
+
+00:00:29.860 --> 00:00:35.540 line:100% position:50% align:middle
+straight away on now, and they have both a
+free plan as well as a premium plan.
+
+00:00:35.540 --> 00:00:39.840 line:100% position:50% align:middle
+And this is by far the easiest way to get
+an application up and running on the
+
+00:00:39.840 --> 00:00:44.100 line:100% position:50% align:middle
+internet nice and quickly without having
+to really worry about any of the server
+
+00:00:44.100 --> 00:00:48.700 line:100% position:50% align:middle
+sidey stuff. So how do we do that? Well
+first thing that we need to do is go back
+
+00:00:48.700 --> 00:00:53.420 line:100% position:50% align:middle
+to our package.json and give now just a
+little bit of information about what our
+
+00:00:53.420 --> 00:00:57.240 line:100% position:50% align:middle
+application is going to look like. So
+let's open up our package.json,
+
+00:00:57.240 --> 00:01:02.450 line:100% position:50% align:middle
+and by the way, you can now change the
+name of your actual thing to something
+
+00:01:02.450 --> 00:01:06.360 line:100% position:50% align:middle
+that you much prefer. I said, "Dang that's
+delicious," but you could call that
+
+00:01:06.360 --> 00:01:11.770 line:100% position:50% align:middle
+something like, "Wes-loves-snacks," or you
+could name it whatever you like and you
+
+00:01:11.770 --> 00:01:19.020 line:100% position:50% align:middle
+can also give it a version 0.0.1. Now all
+we want to do is we need to add a new
+
+00:01:19.020 --> 00:01:24.060 line:100% position:50% align:middle
+object to our package.json that has stuff
+that is specific to now.sh.
+
+00:01:24.060 --> 00:01:28.390 line:100% position:50% align:middle
+So you're going to go in here and make a
+now property. This is JSON this is not
+
+00:01:28.390 --> 00:01:32.580 line:100% position:50% align:middle
+JavaScript so you can't just start saying
+now or whatever. You have to use double
+
+00:01:32.580 --> 00:01:36.620 line:100% position:50% align:middle
+quotes, "now" and that is equal to an
+object, and make sure you put the quote
+
+00:01:36.620 --> 00:01:41.770 line:100% position:50% align:middle
+after it. Okay so we have our now and
+there is just one possible thing that we
+
+00:01:41.770 --> 00:01:47.150 line:100% position:50% align:middle
+need to pass here and that's the .env, and
+you can tell it where the environmental
+
+00:01:47.150 --> 00:01:52.590 line:100% position:50% align:middle
+variables are going to be coming from. So
+we have this variables.env file,
+
+00:01:52.590 --> 00:01:57.750 line:100% position:50% align:middle
+and I'm going to create a new one, save it
+as variables.env.now.
+
+00:01:57.750 --> 00:02:02.580 line:100% position:50% align:middle
+And why is that? Well because we need to
+put our different stuff in here.
+
+00:02:02.580 --> 00:02:05.750 line:100% position:50% align:middle
+So I'm going to say this is production.
+I'm going to keep the same database.
+
+00:02:05.750 --> 00:02:09.650 line:100% position:50% align:middle
+I'm going to keep the same mail stuff.
+The port is going to be 80.
+
+00:02:09.650 --> 00:02:13.160 line:100% position:50% align:middle
+Map key and secret those are all going to
+stay the same. Now these are the
+
+00:02:13.160 --> 00:02:17.040 line:100% position:50% align:middle
+environmental variables that are going to
+be put onto the server.
+
+00:02:17.040 --> 00:02:22.330 line:100% position:50% align:middle
+However, it is not going to actually
+upload this file to the server.
+
+00:02:22.330 --> 00:02:26.960 line:100% position:50% align:middle
+What it will do is it will set them on the
+server for us, and then when we actually
+
+00:02:26.960 --> 00:02:32.610 line:100% position:50% align:middle
+deploy our process.env, .node_env,
+.database, .mail_user, those are all going
+
+00:02:32.610 --> 00:02:37.110 line:100% position:50% align:middle
+to be available to us. It now has a little
+tool that will do that for you if you just
+
+00:02:37.110 --> 00:02:41.450 line:100% position:50% align:middle
+tell it where your environmental file is.
+We're going to tell it it's called
+
+00:02:41.450 --> 00:02:46.460 line:100% position:50% align:middle
+variables.env.now, and again, again,
+again, this variables.env.now,
+
+00:02:46.460 --> 00:02:52.940 line:100% position:50% align:middle
+because we've put it in out git_ignore. It
+will a, not go on github or whatever you
+
+00:02:52.940 --> 00:02:57.780 line:100% position:50% align:middle
+are hosting it on, and b, it will also not
+be deployed to now.sh.
+
+00:02:57.780 --> 00:03:01.980 line:100% position:50% align:middle
+And that's really really important because
+now.sh by default, if you have the free
+
+00:03:01.980 --> 00:03:06.700 line:100% position:50% align:middle
+plan, it will make your entire application
+public, an that's fine because the entire
+
+00:03:06.700 --> 00:03:11.610 line:100% position:50% align:middle
+application is fine to be public except
+for this stuff. You don't want to be
+
+00:03:11.610 --> 00:03:16.030 line:100% position:50% align:middle
+showing like I'm showing the world right
+now, but after I deploy this, I'm going to
+
+00:03:16.030 --> 00:03:22.100 line:100% position:50% align:middle
+have to change all of my passwords. It
+will not deploy your variables.env file or
+
+00:03:22.100 --> 00:03:26.950 line:100% position:50% align:middle
+your variables.env.now file. It will just
+put them on the server so that even if you
+
+00:03:26.950 --> 00:03:31.840 line:100% position:50% align:middle
+have a public instance of now, which is
+the free plan, it will not be open to the
+
+00:03:31.840 --> 00:03:36.380 line:100% position:50% align:middle
+public. So that's how we have our .env
+file. Now what you need to do is go ahead
+
+00:03:36.380 --> 00:03:40.930 line:100% position:50% align:middle
+and sign up for a now account. So I have
+already done that. You might have already
+
+00:03:40.930 --> 00:03:44.700 line:100% position:50% align:middle
+done this because we have used
+now in some of my other tutorials.
+
+00:03:44.700 --> 00:03:49.170 line:100% position:50% align:middle
+So make sure you are signed up and then
+you simply just need to go to your
+
+00:03:49.170 --> 00:03:53.230 line:100% position:50% align:middle
+terminal. You'll need to install now
+globally on your system. So the way you do
+
+00:03:53.230 --> 00:03:58.040 line:100% position:50% align:middle
+that is you type NPMinstallnow-g, and what
+that will do is it will install globally
+
+00:03:58.040 --> 00:03:59.990 line:100% position:50% align:middle
+on your system. If you're having troubles
+with permissions you could always pop a
+
+00:03:59.990 --> 00:04:04.460 line:100% position:50% align:middle
+sudo in front of it, and then go figure
+out how to actually fix those permissions
+
+00:04:04.460 --> 00:04:08.210 line:100% position:50% align:middle
+on your computer. Then, I'm not going to
+do it because I already have it,
+
+00:04:08.210 --> 00:04:11.710 line:100% position:50% align:middle
+you can test if you already have it with
+now-v, and that will show you which
+
+00:04:11.710 --> 00:04:16.180 line:100% position:50% align:middle
+version you have and clearly you must have
+a command called now there.
+
+00:04:16.180 --> 00:04:20.930 line:100% position:50% align:middle
+Then you can simply go ahead and type now
+and when you hit enter, it's either going
+
+00:04:20.930 --> 00:04:25.200 line:100% position:50% align:middle
+to ask you to sign in with your username
+and your password, or it's going to start
+
+00:04:25.200 --> 00:04:28.897 line:100% position:50% align:middle
+the deploy. And type now!
+
+00:04:31.635 --> 00:04:34.590 line:100% position:50% align:middle
+It's going to give you a url,
+copy it right to your clipboard
+
+00:04:34.590 --> 00:04:37.470 line:100% position:50% align:middle
+so you can go ahead and view that right
+now while we're waiting.
+
+00:04:37.470 --> 00:04:42.750 line:100% position:50% align:middle
+And it's going to upload all of the files
+that we have. It's going to prepare the
+
+00:04:42.750 --> 00:04:46.300 line:100% position:50% align:middle
+container. The sync, that was really
+quick. I guess because I've done this
+
+00:04:46.300 --> 00:04:50.459 line:100% position:50% align:middle
+before. It generally takes, like, a minute
+or two to actually upload all of your
+
+00:04:50.459 --> 00:04:54.443 line:100% position:50% align:middle
+files, and now what it's doing is it's
+installing all of the different
+
+00:04:54.443 --> 00:04:56.473 line:100% position:50% align:middle
+pieces of data for us.
+
+00:04:56.473 --> 00:05:01.540 line:100% position:50% align:middle
+It just gave it a start. It's doing...see,
+npm start, and then it's running the
+
+00:05:01.540 --> 00:05:05.079 line:100% position:50% align:middle
+command node start. The express is running
+on port 80, and the deployment is
+
+00:05:05.079 --> 00:05:10.120 line:100% position:50% align:middle
+complete. You go back here ready, visit
+your website. Woohoo! There we go.
+
+00:05:10.120 --> 00:05:13.790 line:100% position:50% align:middle
+Go ahead and click over to some of these.
+You can see all of our data that we have
+
+00:05:13.790 --> 00:05:17.320 line:100% position:50% align:middle
+here. We have all of our stores. Because
+I'm using my existing data, all of my data
+
+00:05:17.320 --> 00:05:20.860 line:100% position:50% align:middle
+is already there, and they'd be able to go
+ahead and log in with any of the other
+
+00:05:20.860 --> 00:05:25.490 line:100% position:50% align:middle
+websites that I have. So that's deploying
+to now. Very, very straightforward, not a
+
+00:05:25.490 --> 00:05:28.583 line:100% position:50% align:middle
+whole lot to it. Let's look at some of the
+other possible options.
+
+00:05:28.583 --> 00:05:31.583 line:100% position:50% align:middle
+♪ [music] ♪

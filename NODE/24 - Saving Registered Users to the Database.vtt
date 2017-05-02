@@ -1,0 +1,911 @@
+WEBVTT
+
+00:00:00.108 --> 00:00:03.108 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.140 --> 00:00:17.940 line:100% position:50% align:middle
+If we open up our index.js and scroll down
+to where we post to /register,
+
+00:00:17.940 --> 00:00:21.210 line:100% position:50% align:middle
+we're doing three things. We're validating
+the registration data,
+
+00:00:21.210 --> 00:00:24.490 line:100% position:50% align:middle
+done. We did that in the last video.
+Second, we're going to actually register
+
+00:00:24.490 --> 00:00:28.420 line:100% position:50% align:middle
+the user, or save them to our database.
+And third, we're going to log them in.
+
+00:00:28.420 --> 00:00:31.810 line:100% position:50% align:middle
+So we've done the first piece, which is
+validate register. Now what we want to do
+
+00:00:31.810 --> 00:00:35.310 line:100% position:50% align:middle
+is create the second piece, which is
+actually save them to the database.
+
+00:00:35.310 --> 00:00:39.740 line:100% position:50% align:middle
+So I'm going to put these on their own
+line here, and we are going to now put in
+
+00:00:39.740 --> 00:00:43.230 line:100% position:50% align:middle
+a second one, which is
+userController.register. So
+
+00:00:43.230 --> 00:00:47.030 line:100% position:50% align:middle
+validateRegister, then we actually
+register. Good. Then we'll open up our
+
+00:00:47.030 --> 00:00:51.830 line:100% position:50% align:middle
+userController, scroll all the way down to
+the bottom, and we'll make a new method on
+
+00:00:51.830 --> 00:00:57.230 line:100% position:50% align:middle
+our exports, exports.register. We'll make
+it async (req, res, and next).
+
+00:00:57.230 --> 00:01:01.790 line:100% position:50% align:middle
+The reason why we are passing next here is
+because it's going to be a middleware,
+
+00:01:01.790 --> 00:01:05.860 line:100% position:50% align:middle
+right? The end of the road is not
+register. The end of the road is actually
+
+00:01:05.860 --> 00:01:09.640 line:100% position:50% align:middle
+logging them in, and we are just sort of
+in the middle here of actually creating
+
+00:01:09.640 --> 00:01:10.820 line:100% position:50% align:middle
+the user.
+
+00:01:10.820 --> 00:01:16.000 line:100% position:50% align:middle
+So we have this request response in our
+next. Then from that we need to go ahead
+
+00:01:16.000 --> 00:01:21.360 line:100% position:50% align:middle
+and create the user. So we first need to
+actually import our user.
+
+00:01:21.360 --> 00:01:26.060 line:100% position:50% align:middle
+We haven't yet actually imported it
+anywhere. Oh, one sec. I see a little red
+
+00:01:26.060 --> 00:01:29.520 line:100% position:50% align:middle
+underline here in my ESLint. I'm not sure
+if you can see it. Let me just bring it up
+
+00:01:29.520 --> 00:01:35.130 line:100% position:50% align:middle
+here. It says, "Unable to resolve path
+module 'password-local-mongoose'.
+
+00:01:35.130 --> 00:01:38.170 line:100% position:50% align:middle
+So what that's telling me is that
+('password-local-mongoose'); is not a
+
+00:01:38.170 --> 00:01:41.360 line:100% position:50% align:middle
+package. And what you can tell what the
+actual name of the package is if you open
+
+00:01:41.360 --> 00:01:45.690 line:100% position:50% align:middle
+packages.json, and you look here. It's
+passport-local-mongoose,
+
+00:01:45.690 --> 00:01:51.550 line:100% position:50% align:middle
+not password. So let's change that to
+passport.
+
+00:01:51.550 --> 00:01:55.350 line:100% position:50% align:middle
+And then finally, let's also open up our
+start.js, and remember I said that you
+
+00:01:55.350 --> 00:01:59.160 line:100% position:50% align:middle
+only ever have to import your models once?
+Well, we've done that for store,
+
+00:01:59.160 --> 00:02:03.760 line:100% position:50% align:middle
+but we haven't yet done that for our
+actual users. So we can just duplicate
+
+00:02:03.760 --> 00:02:08.140 line:100% position:50% align:middle
+that line, change it out with user. We
+import our user model. So two things
+
+00:02:08.140 --> 00:02:12.650 line:100% position:50% align:middle
+there. We changed this to passport, not
+password, and we also imported our model.
+
+00:02:12.650 --> 00:02:15.140 line:100% position:50% align:middle
+So let's change that down. Good.
+
+00:02:15.140 --> 00:02:20.070 line:100% position:50% align:middle
+Now we need to go into our userController
+and get that model that we just imported.
+
+00:02:20.070 --> 00:02:26.000 line:100% position:50% align:middle
+Go to the top here, const capital "U" User
+= mongoose.model. And we'll ask for the
+
+00:02:26.000 --> 00:02:30.000 line:100% position:50% align:middle
+user model. Why can we do that? Because we
+already imported it in start.js.
+
+00:02:30.000 --> 00:02:34.800 line:100% position:50% align:middle
+And then we also need a library called
+promisify, which I'm going to go into in
+
+00:02:34.800 --> 00:02:40.580 line:100% position:50% align:middle
+just a second. So we say const promisify =
+require, and it's a library called
+
+00:02:40.580 --> 00:02:41.910 line:100% position:50% align:middle
+('es6-promisify');. Good.
+
+00:02:41.910 --> 00:02:45.320 line:100% position:50% align:middle
+Now let's go down to the bottom here. And
+what happens when we actually hit the
+
+00:02:45.320 --> 00:02:49.820 line:100% position:50% align:middle
+register? Well, that means we successfully
+passed this huge validation one,
+
+00:02:49.820 --> 00:02:53.750 line:100% position:50% align:middle
+and our request.body is filled with a
+Name, and Email, a Password,
+
+00:02:53.750 --> 00:02:55.780 line:100% position:50% align:middle
+and then also a Confirm Password.
+
+00:02:55.780 --> 00:03:01.160 line:100% position:50% align:middle
+So we can go and start making our actual
+user here. Say const user,
+
+00:03:01.160 --> 00:03:06.380 line:100% position:50% align:middle
+lowercase "u" = new capital "U" User. And
+we just need two things here.
+
+00:03:06.380 --> 00:03:10.320 line:100% position:50% align:middle
+First, we need the email address, which is
+stored on req.body.email.
+
+00:03:10.320 --> 00:03:15.720 line:100% position:50% align:middle
+And why? Well, go to our register. You see
+the name of Name, and the name of Email,
+
+00:03:15.720 --> 00:03:19.790 line:100% position:50% align:middle
+and the name of Password? Those are what
+the three things that we need are going to
+
+00:03:19.790 --> 00:03:25.560 line:100% position:50% align:middle
+pass in, req.body.name, req.body.email,
+req.body.password. So we have the email,
+
+00:03:25.560 --> 00:03:28.390 line:100% position:50% align:middle
+and then we also need the name:
+req.body.name.
+
+00:03:28.390 --> 00:03:31.390 line:100% position:50% align:middle
+Now we have that user. We haven't called
+.save on it just yet,
+
+00:03:31.390 --> 00:03:35.590 line:100% position:50% align:middle
+and the reason is because we're not going
+to call .save on it.
+
+00:03:35.590 --> 00:03:41.880 line:100% position:50% align:middle
+We're going to call .register against it.
+And because .register is the actual method
+
+00:03:41.880 --> 00:03:47.930 line:100% position:50% align:middle
+that will take the password that we pass
+it, and hash it, and save it to our actual
+
+00:03:47.930 --> 00:03:53.350 line:100% position:50% align:middle
+database. So well, where did .register
+come from? Well, if we open up our User.js
+
+00:03:53.350 --> 00:03:59.310 line:100% position:50% align:middle
+model, scroll to the bottom here. Remember
+we did this passportLocalMongoose plugin?
+
+00:03:59.310 --> 00:04:04.790 line:100% position:50% align:middle
+What that does is expose to us a method
+called .register, which is going to take
+
+00:04:04.790 --> 00:04:07.700 line:100% position:50% align:middle
+care of all the lower level
+registration for us.
+
+00:04:07.700 --> 00:04:12.920 line:100% position:50% align:middle
+You take your user model, capital "U"
+User, and you call .register.
+
+00:04:12.920 --> 00:04:18.170 line:100% position:50% align:middle
+And you pass it your new user that you've
+created, which is our (user variable here,
+
+00:04:18.170 --> 00:04:22.040 line:100% position:50% align:middle
+If that confuses you, just note that this
+capital "U" User is our model,
+
+00:04:22.040 --> 00:04:25.320 line:100% position:50% align:middle
+and this lowercase "u" user is the one
+that we are creating right now.
+
+00:04:25.320 --> 00:04:32.850 line:100% position:50% align:middle
+And then you pass it your password. So
+that is req.body .password.
+
+00:04:32.850 --> 00:04:33.400 line:100% position:50% align:middle
+Good.
+
+00:04:33.400 --> 00:04:37.150 line:100% position:50% align:middle
+Now the third thing that you're supposed
+to pass register is called a callback.
+
+00:04:37.150 --> 00:04:41.380 line:100% position:50% align:middle
+So you have a function here, that takes an
+(err, and the actual user).
+
+00:04:41.380 --> 00:04:46.270 line:100% position:50% align:middle
+And then we will work. Now this is a
+little bit weird because we've been using
+
+00:04:46.270 --> 00:04:50.930 line:100% position:50% align:middle
+async await for everything so far, but the
+problem with this .register library is
+
+00:04:50.930 --> 00:04:55.380 line:100% position:50% align:middle
+that it doesn't return a promise. It's
+callback based. And this is fairly common
+
+00:04:55.380 --> 00:04:59.860 line:100% position:50% align:middle
+for when you're using an external library
+that doesn't use promises just yet.
+
+00:04:59.860 --> 00:05:05.000 line:100% position:50% align:middle
+Then you have to use either their callback
+or...let's just get rid of this entirely.
+
+00:05:05.000 --> 00:05:10.360 line:100% position:50% align:middle
+We're going to use promisify library which
+is going to take this older callback based
+
+00:05:10.360 --> 00:05:14.970 line:100% position:50% align:middle
+function and turn it into a promise based
+function so we can keep using async await.
+
+00:05:14.970 --> 00:05:18.780 line:100% position:50% align:middle
+So let's show you how to do that. First
+thing you need to do is make the method
+
+00:05:18.780 --> 00:05:23.970 line:100% position:50% align:middle
+that is promisified. So say const register
+=, or we could call it
+
+00:05:23.970 --> 00:05:28.650 line:100% position:50% align:middle
+registerWithPromise. That's just to show
+you that we're making a version of the
+
+00:05:28.650 --> 00:05:32.920 line:100% position:50% align:middle
+register method that is promisified. So
+we'll just call it register for
+
+00:05:32.920 --> 00:05:38.230 line:100% position:50% align:middle
+simplicity's sake. And you take promisify
+and you pass it two things.
+
+00:05:38.230 --> 00:05:41.630 line:100% position:50% align:middle
+First, the method that you want to
+promisify, just capital "U"
+
+00:05:41.630 --> 00:05:48.240 line:100% position:50% align:middle
+(User.register). And the second thing is,
+because it's a method,
+
+00:05:48.240 --> 00:05:53.640 line:100% position:50% align:middle
+(User.register), and not just a top-level
+function, you need to pass it which object
+
+00:05:53.640 --> 00:05:55.910 line:100% position:50% align:middle
+to bind to, which is capital "U" User.
+
+00:05:55.910 --> 00:05:59.830 line:100% position:50% align:middle
+So if you ever are using this promisify
+library, if the method that you're trying
+
+00:05:59.830 --> 00:06:06.050 line:100% position:50% align:middle
+to promisify lives on an object, you also
+need to pass the entire object so it knows
+
+00:06:06.050 --> 00:06:11.700 line:100% position:50% align:middle
+where to bind itself to. So const register
+= promisify. Now we have this register
+
+00:06:11.700 --> 00:06:17.080 line:100% position:50% align:middle
+method which we can await register. We
+pass it our lower case user,
+
+00:06:17.080 --> 00:06:21.130 line:100% position:50% align:middle
+because that's what we're going to do. And
+then you also pass it the password that
+
+00:06:21.130 --> 00:06:25.930 line:100% position:50% align:middle
+you wish for it to use. So it's
+req.body.password.
+
+00:06:25.930 --> 00:06:30.340 line:100% position:50% align:middle
+Now what's going to happen there is it's
+going to take the password.
+
+00:06:30.340 --> 00:06:32.680 line:100% position:50% align:middle
+It's going to take their email, and it's
+going to take their name.
+
+00:06:32.680 --> 00:06:36.050 line:100% position:50% align:middle
+And it's not going to store the actual
+password. It's going to store what's
+
+00:06:36.050 --> 00:06:39.410 line:100% position:50% align:middle
+called a hash in the database. Because as
+a general rule of thumb,
+
+00:06:39.410 --> 00:06:44.360 line:100% position:50% align:middle
+or as a golden rule in the universe, you
+never actually store a user's password in
+
+00:06:44.360 --> 00:06:48.960 line:100% position:50% align:middle
+the database, because if your database is
+leaked, or it gets into the wrong hands,
+
+00:06:48.960 --> 00:06:52.570 line:100% position:50% align:middle
+or you accidentally screenshot some of
+that data, or whatever happens,
+
+00:06:52.570 --> 00:06:55.690 line:100% position:50% align:middle
+you do not ever want your user's password
+to be visible.
+
+00:06:55.690 --> 00:07:00.810 line:100% position:50% align:middle
+So what happens is, let's say your
+password is dog123. The library is going
+
+00:07:00.810 --> 00:07:05.230 line:100% position:50% align:middle
+to take that password and encrypt it into
+something that looks like this.
+
+00:07:05.230 --> 00:07:10.410 line:100% position:50% align:middle
+Now that, as far as you can tell, this is
+the password that is stored in the
+
+00:07:10.410 --> 00:07:14.000 line:100% position:50% align:middle
+database. Now when you come along six
+months later and try to log in with
+
+00:07:14.000 --> 00:07:19.370 line:100% position:50% align:middle
+dog123, it's going to also hash that
+password into the same thing.
+
+00:07:19.370 --> 00:07:23.740 line:100% position:50% align:middle
+And then the library will say, if the hash
+version we have on file,
+
+00:07:23.740 --> 00:07:28.990 line:100% position:50% align:middle
+this is the database, and the hash version
+which they provided,
+
+00:07:28.990 --> 00:07:33.880 line:100% position:50% align:middle
+if they are the same thing, which they
+are, then let them in. Tell them they are
+
+00:07:33.880 --> 00:07:34.330 line:100% position:50% align:middle
+logged in.
+
+00:07:34.330 --> 00:07:39.260 line:100% position:50% align:middle
+And if they're not, someone tries to log
+in as cat123, they'll have another hash
+
+00:07:39.260 --> 00:07:44.110 line:100% position:50% align:middle
+that looks like this. Hitting my pause
+button. It's going to say this hash is not
+
+00:07:44.110 --> 00:07:47.970 line:100% position:50% align:middle
+the same thing as this hash. And the
+beauty of that is if your database ever
+
+00:07:47.970 --> 00:07:52.390 line:100% position:50% align:middle
+gets leaked, or you get hacked, or
+whatever, then all the user will see is
+
+00:07:52.390 --> 00:07:56.680 line:100% position:50% align:middle
+this piece of information, which first,
+they don't know the salt,
+
+00:07:56.680 --> 00:08:00.110 line:100% position:50% align:middle
+they don't know how it's been hashed. So
+they can't really reverse it.
+
+00:08:00.110 --> 00:08:04.320 line:100% position:50% align:middle
+And second, you can't reverse these at
+all. You would have to just make a list of
+
+00:08:04.320 --> 00:08:08.580 line:100% position:50% align:middle
+very long possibilities and see if they
+match up. So that's the beauty of that.
+
+00:08:08.580 --> 00:08:10.550 line:100% position:50% align:middle
+We are awaiting our register here.
+
+00:08:10.550 --> 00:08:14.950 line:100% position:50% align:middle
+And when everything happens successfully,
+we just call that next,
+
+00:08:14.950 --> 00:08:18.990 line:100% position:50% align:middle
+which we're going to "pass to
+authController.login," which we haven't
+
+00:08:18.990 --> 00:08:23.930 line:100% position:50% align:middle
+done that just yet. But before we call
+next, let's just say response.send,
+
+00:08:23.930 --> 00:08:30.080 line:100% position:50% align:middle
+it works. Give this a click on Register
+here. Oh, I got an error.
+
+00:08:30.080 --> 00:08:36.510 line:100% position:50% align:middle
+Let's open up our terminal here. Got a bit
+of an error, let's see what it says.
+
+00:08:36.510 --> 00:08:45.940 line:100% position:50% align:middle
+"Unexpected token open on index.js on line
+38.index.js on line 38.
+
+00:08:45.940 --> 00:08:51.270 line:100% position:50% align:middle
+Oh, comma, comma dangle. Okay, there we
+go. Give it a Save, refresh.
+
+00:08:51.270 --> 00:08:56.410 line:100% position:50% align:middle
+Okay, let's try signup now. My Name is
+"Wes." My Email is "wesboss@gmail.com." My
+
+00:08:56.410 --> 00:09:01.860 line:100% position:50% align:middle
+Password is "wes," I confirm it as "wes,"
+and I hit Register. And now it says it
+
+00:09:01.860 --> 00:09:08.040 line:100% position:50% align:middle
+works. Why? Because we posted our data to
+register. We passed the validation.
+
+00:09:08.040 --> 00:09:13.190 line:100% position:50% align:middle
+We created a user and registered, and then
+finally, we just say "it works!"
+
+00:09:13.190 --> 00:09:17.690 line:100% position:50% align:middle
+Now if we did that properly, we should be
+able to go to our database tooling and see
+
+00:09:17.690 --> 00:09:20.800 line:100% position:50% align:middle
+that there is a new user in there. So
+let's check that out. I'm going to open up
+
+00:09:20.800 --> 00:09:26.250 line:100% position:50% align:middle
+my MongoDB Compass Beta. Going to go to my
+dang-thats-delicious database.
+
+00:09:26.250 --> 00:09:30.140 line:100% position:50% align:middle
+And oh, look what we have here. We got our
+7 stores, we know about that.
+
+00:09:30.140 --> 00:09:34.050 line:100% position:50% align:middle
+But now we have our users table, which has
+1 in it. Is that going to be Wes that we
+
+00:09:34.050 --> 00:09:38.540 line:100% position:50% align:middle
+just created? Well, let's go to our
+Documents, and let's take a look.
+
+00:09:38.540 --> 00:09:43.160 line:100% position:50% align:middle
+Yes, here is the actual thing that we just
+made, name of "Wes," email of
+
+00:09:43.160 --> 00:09:47.950 line:100% position:50% align:middle
+"wesboss@gmail.com." And then it has a
+salt and a hash, which is going to allow
+
+00:09:47.950 --> 00:09:53.840 line:100% position:50% align:middle
+us to sort of store the password for that
+user safely. And then of course,
+
+00:09:53.840 --> 00:09:58.220 line:100% position:50% align:middle
+every document in MongoDB has a unique
+identifier along with it.
+
+00:09:58.220 --> 00:10:03.370 line:100% position:50% align:middle
+Now let's finally do the last part which
+is we need to actually log them in,
+
+00:10:03.370 --> 00:10:07.560 line:100% position:50% align:middle
+because they validated it, they registered
+themselves. And then let's just
+
+00:10:07.560 --> 00:10:10.610 line:100% position:50% align:middle
+automatically log them in. I like when
+websites do that. After you've created an
+
+00:10:10.610 --> 00:10:13.820 line:100% position:50% align:middle
+account, you can automatically log
+yourself in. So to do that,
+
+00:10:13.820 --> 00:10:16.730 line:100% position:50% align:middle
+we're going to create a third controller
+called our authController.
+
+00:10:16.730 --> 00:10:20.500 line:100% position:50% align:middle
+And our authController is going to handle
+all of the logging in,
+
+00:10:20.500 --> 00:10:24.170 line:100% position:50% align:middle
+all of our passport.js stuff, it's going
+to handle all the passwords resets and
+
+00:10:24.170 --> 00:10:30.150 line:100% position:50% align:middle
+email sending. All that stuff that is
+specifically related to logging in and
+
+00:10:30.150 --> 00:10:33.200 line:100% position:50% align:middle
+being authenticated rather
+than just with the user.
+
+00:10:33.200 --> 00:10:36.540 line:100% position:50% align:middle
+So we'll go into our controllers here.
+We'll create a new file called
+
+00:10:36.540 --> 00:10:41.750 line:100% position:50% align:middle
+authController.js. Then we need to import
+one thing that's called passport,
+
+00:10:41.750 --> 00:10:47.640 line:100% position:50% align:middle
+const passport = require('passport');. And
+again, passport is the library that we're
+
+00:10:47.640 --> 00:10:53.340 line:100% position:50% align:middle
+using to log everybody in. The one thing
+that we haven't done is the ability to
+
+00:10:53.340 --> 00:10:57.610 line:100% position:50% align:middle
+send passport data and tell us if we
+should be logged in or not.
+
+00:10:57.610 --> 00:11:00.430 line:100% position:50% align:middle
+And that's what's called a strategy in
+passport. A strategy is essentially
+
+00:11:00.430 --> 00:11:05.560 line:100% position:50% align:middle
+something that will interface with
+checking if you're allowed
+
+00:11:05.560 --> 00:11:06.960 line:100% position:50% align:middle
+to be logged in.
+
+00:11:06.960 --> 00:11:11.030 line:100% position:50% align:middle
+So there could be a strategy for Facebook
+that's going to check with Facebook if
+
+00:11:11.030 --> 00:11:14.490 line:100% position:50% align:middle
+they have the correct tokens. In our case,
+we're going to be using what's called a
+
+00:11:14.490 --> 00:11:18.080 line:100% position:50% align:middle
+local strategy, and a local strategy is
+going to check if our username and
+
+00:11:18.080 --> 00:11:21.240 line:100% position:50% align:middle
+password has been sent in correctly. So
+what we'll do is we're going to create a
+
+00:11:21.240 --> 00:11:25.970 line:100% position:50% align:middle
+middleware here. We'll say exports.login
+=. Now this isn't the normal request
+
+00:11:25.970 --> 00:11:29.360 line:100% position:50% align:middle
+response that we're used to. What we're
+going to be doing is we're taking
+
+00:11:29.360 --> 00:11:32.960 line:100% position:50% align:middle
+advantage of some of the middleware that
+comes with passport. So we'll say
+
+00:11:32.960 --> 00:11:37.310 line:100% position:50% align:middle
+passport.authenticate. And you at first
+tell it which type of strategy you want.
+
+00:11:37.310 --> 00:11:41.830 line:100% position:50% align:middle
+You say local. And you could also say
+('facebook'), or ('github'),
+
+00:11:41.830 --> 00:11:45.470 line:100% position:50% align:middle
+or whatever it is. But we're going to be
+using a local, which allows us to use a
+
+00:11:45.470 --> 00:11:46.420 line:100% position:50% align:middle
+username and a password.
+
+00:11:46.420 --> 00:11:50.560 line:100% position:50% align:middle
+And then the second thing that you pass it
+is a config object that will tell us a
+
+00:11:50.560 --> 00:11:55.580 line:100% position:50% align:middle
+little bit of data about what to happen.
+So first thing is, if there is a failure,
+
+00:11:55.580 --> 00:11:57.430 line:100% position:50% align:middle
+where should they go? So we'll say
+failureRedirect. And if that is,
+
+00:11:57.430 --> 00:12:03.910 line:100% position:50% align:middle
+we'll just redirect them to login. And
+then we'll also say failureFlash.
+
+00:12:03.910 --> 00:12:08.570 line:100% position:50% align:middle
+And if there is a failure, you should
+flash the message 'Failed Login!' So
+
+00:12:08.570 --> 00:12:13.240 line:100% position:50% align:middle
+that's nice. If the passport is not
+authenticated, it will just redirect them
+
+00:12:13.240 --> 00:12:16.570 line:100% position:50% align:middle
+and flash them. So that's nice, we don't
+even have to handle any of the redirects
+
+00:12:16.570 --> 00:12:19.930 line:100% position:50% align:middle
+ourselves. We just tell it what to do. And
+then we tell it some success stuff,
+
+00:12:19.930 --> 00:12:24.590 line:100% position:50% align:middle
+successRedirect. If they successfully go
+to the home page, and then we also want to
+
+00:12:24.590 --> 00:12:29.070 line:100% position:50% align:middle
+successfully flash them. 'You are now
+logged in!'
+
+00:12:29.070 --> 00:12:31.400 line:100% position:50% align:middle
+We've created our login function. Now
+let's go and hook it up.
+
+00:12:31.400 --> 00:12:35.380 line:100% position:50% align:middle
+We'll go back to our routes in index.js.
+We validateRegister, and finally,
+
+00:12:35.380 --> 00:12:40.620 line:100% position:50% align:middle
+we are going to authController.login. Of
+course, we need to import that first,
+
+00:12:40.620 --> 00:12:43.630 line:100% position:50% align:middle
+so go to the top here. We have our
+storeController, we have our
+
+00:12:43.630 --> 00:12:47.880 line:100% position:50% align:middle
+userController. So just duplicate that
+line and take our user,
+
+00:12:47.880 --> 00:12:50.750 line:100% position:50% align:middle
+and replace it with auth. Good.
+
+00:12:50.750 --> 00:12:54.810 line:100% position:50% align:middle
+Then let's go back to our userController.
+We still have this res.send,
+
+00:12:54.810 --> 00:12:59.470 line:100% position:50% align:middle
+it works. We don't want to stop it from
+continuing down the line so we'll take
+
+00:12:59.470 --> 00:13:03.800 line:100% position:50% align:middle
+that out. Why? Because next we'll call for
+the next one in line,
+
+00:13:03.800 --> 00:13:08.040 line:100% position:50% align:middle
+right? I know I've said this 1,000 times,
+but we validate, then we register,
+
+00:13:08.040 --> 00:13:11.100 line:100% position:50% align:middle
+then we go to authController, which will
+allow us to log in. Good.
+
+00:13:11.100 --> 00:13:14.220 line:100% position:50% align:middle
+I know this is a whole lot, but we got one
+more piece to do, and that's that we
+
+00:13:14.220 --> 00:13:17.740 line:100% position:50% align:middle
+actually need to configure passport in
+order to use local, right?
+
+00:13:17.740 --> 00:13:21.770 line:100% position:50% align:middle
+Because before you use any of these
+strategies here, we actually need to
+
+00:13:21.770 --> 00:13:25.050 line:100% position:50% align:middle
+configure them in our application. So
+before you use Facebook,
+
+00:13:25.050 --> 00:13:27.670 line:100% position:50% align:middle
+you need to give them the correct Facebook
+tokens. Before you use GitHub,
+
+00:13:27.670 --> 00:13:31.360 line:100% position:50% align:middle
+you need to give them your OAuth tokens.
+Before you use a local,
+
+00:13:31.360 --> 00:13:36.004 line:100% position:50% align:middle
+you need to tell it what to do with the
+actual users once they've
+
+00:13:36.004 --> 00:13:37.090 line:100% position:50% align:middle
+signed in, right?
+
+00:13:37.090 --> 00:13:41.250 line:100% position:50% align:middle
+In our case, what it's going to do is it's
+going to put the user object on each
+
+00:13:41.250 --> 00:13:45.690 line:100% position:50% align:middle
+request. So we need to create one more
+file, and if we open up our handlers here,
+
+00:13:45.690 --> 00:13:50.280 line:100% position:50% align:middle
+we have errorHandlers. We're also going to
+create one more file called passport.js.
+
+00:13:50.280 --> 00:13:54.110 line:100% position:50% align:middle
+And this is just a handler that will
+configure our actual passport.
+
+00:13:54.110 --> 00:13:59.280 line:100% position:50% align:middle
+So we need to import passport. We need to
+import Mongoose. We need our user model.
+
+00:13:59.280 --> 00:14:05.450 line:100% position:50% align:middle
+Then we simply say passport.use, and we
+say (User), capital "U"
+
+00:14:05.450 --> 00:14:09.370 line:100% position:50% align:middle
+(User.createStrategy());. And the reason
+why we can do that is because we've used
+
+00:14:09.370 --> 00:14:12.490 line:100% position:50% align:middle
+that plugin in our user.js.
+
+00:14:12.490 --> 00:14:15.490 line:100% position:50% align:middle
+Then we need to tell passport what to do
+with the actual user.
+
+00:14:15.490 --> 00:14:19.520 line:100% position:50% align:middle
+Because what's going to happen is we're
+going to log in to passport and it's going
+
+00:14:19.520 --> 00:14:24.860 line:100% position:50% align:middle
+to say, "Okay, now what? What information
+would you like on each request?" And in
+
+00:14:24.860 --> 00:14:29.490 line:100% position:50% align:middle
+our case, we just want to pass along the
+actual user object so we can do things
+
+00:14:29.490 --> 00:14:33.970 line:100% position:50% align:middle
+like put their avatar in the top
+right-hand corner, and show the stores
+
+00:14:33.970 --> 00:14:37.000 line:100% position:50% align:middle
+that they've created. And we want to do
+stuff specific to that user.
+
+00:14:37.000 --> 00:14:44.480 line:100% position:50% align:middle
+So we take our passport and we say
+serializeUser. And we take the (User and
+
+00:14:44.480 --> 00:14:51.910 line:100% position:50% align:middle
+we say serializeUser());. And
+passport.deserialize will do the same
+
+00:14:51.910 --> 00:14:58.960 line:100% position:50% align:middle
+thing, deserializeUser());. Good. So
+again, what this will do is every single
+
+00:14:58.960 --> 00:15:02.540 line:100% position:50% align:middle
+time you have your request, it's going to
+ask passport, "What should I do with the
+
+00:15:02.540 --> 00:15:07.120 line:100% position:50% align:middle
+actual user now that I've confirmed that
+they are properly logged in?" We need to
+
+00:15:07.120 --> 00:15:11.170 line:100% position:50% align:middle
+take this passport.js and actually import
+it somewhere in our application.
+
+00:15:11.170 --> 00:15:15.310 line:100% position:50% align:middle
+So we'll go to app.js. So we haven't
+edited app.js yet, but we'll put it up
+
+00:15:15.310 --> 00:15:22.320 line:100% position:50% align:middle
+here, and we'll simply just require('.
+/handlers/passport');, and that will just
+
+00:15:22.320 --> 00:15:25.910 line:100% position:50% align:middle
+invoke the code that lives inside of here.
+You probably could have also done that
+
+00:15:25.910 --> 00:15:29.700 line:100% position:50% align:middle
+right in line here, but I like to have it
+in separate files just so that we know we
+
+00:15:29.700 --> 00:15:31.810 line:100% position:50% align:middle
+are configuring everything.
+
+00:15:31.810 --> 00:15:34.120 line:100% position:50% align:middle
+Good, so I know that was a lot. Let's
+actually go ahead and try it.
+
+00:15:34.120 --> 00:15:37.330 line:100% position:50% align:middle
+We'll click on our Register page here, and
+we'll try create user.
+
+00:15:37.330 --> 00:15:41.140 line:100% position:50% align:middle
+Make sure that your MongoDB you refresh if
+there's anything in there,
+
+00:15:41.140 --> 00:15:45.510 line:100% position:50% align:middle
+making sure you delete it, because you
+can't sign up with the same email twice.
+
+00:15:45.510 --> 00:15:49.430 line:100% position:50% align:middle
+So Delete. I'm going to try to register.
+Then we'll go ahead and try it.
+
+00:15:49.430 --> 00:15:57.290 line:100% position:50% align:middle
+"Wes, gmail." Now if this works properly,
+what should happen is that we are posting
+
+00:15:57.290 --> 00:16:00.250 line:100% position:50% align:middle
+to register. So I validate myself. It
+should actually register me.
+
+00:16:00.250 --> 00:16:06.330 line:100% position:50% align:middle
+And then it should log me in. So go ahead
+and click on Register.
+
+00:16:06.330 --> 00:16:12.280 line:100% position:50% align:middle
+Woo-hoo, it worked! Look it, "You are now
+logged in!" Good. And then it has
+
+00:16:12.280 --> 00:16:16.580 line:100% position:50% align:middle
+redirected me to the homepage because I
+know that it has actually worked.
+
+00:16:16.580 --> 00:16:21.210 line:100% position:50% align:middle
+Good. And we go back to our MongoDB and
+refresh, you see that that's our actual
+
+00:16:21.210 --> 00:16:21.960 line:100% position:50% align:middle
+user.
+
+00:16:21.960 --> 00:16:25.470 line:100% position:50% align:middle
+So in the next video what we're going to
+do is we're going to actually hook up this
+
+00:16:25.470 --> 00:16:28.990 line:100% position:50% align:middle
+log out button. We're going to work on
+getting our photo to show up here,
+
+00:16:28.990 --> 00:16:32.950 line:100% position:50% align:middle
+and a couple of other general housekeeping
+stuff now that we have the concept of the
+
+00:16:32.950 --> 00:16:35.008 line:100% position:50% align:middle
+user being shown.
+
+00:16:35.008 --> 00:16:38.008 line:100% position:50% align:middle
+♪ [music] ♪

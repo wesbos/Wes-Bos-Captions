@@ -1,0 +1,381 @@
+WEBVTT
+
+00:00:00.630 --> 00:00:03.630 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.455 --> 00:00:14.350 line:100% position:50% align:middle
+Let's take a look at the starter files. If
+you first crack open,
+
+00:00:14.350 --> 00:00:18.350 line:100% position:50% align:middle
+you know, the package . JSON or you look
+at app.js and you say,
+
+00:00:18.350 --> 00:00:23.390 line:100% position:50% align:middle
+"Wes, these are the starter files? This
+seems like more code than I would expect
+
+00:00:23.390 --> 00:00:28.800 line:100% position:50% align:middle
+to have on the ender files," in that
+stupid ender file. But what we need to
+
+00:00:28.800 --> 00:00:32.930 line:100% position:50% align:middle
+know here is that we are going to be
+building our application on something
+
+00:00:32.930 --> 00:00:39.080 line:100% position:50% align:middle
+called Express. And Express is a fast,
+un-opinionated, minimalist web framework
+
+00:00:39.080 --> 00:00:43.310 line:100% position:50% align:middle
+for Node.js. So what is important about
+that is that it's un-opinionated and it's
+
+00:00:43.310 --> 00:00:50.650 line:100% position:50% align:middle
+minimalist. Meaning that it doesn't do a
+whole lot by itself. So we need to pick
+
+00:00:50.650 --> 00:00:54.594 line:100% position:50% align:middle
+and choose different pieces of
+the Node ecosystem in order to
+
+00:00:54.594 --> 00:00:55.900 line:100% position:50% align:middle
+make things work for us.
+
+00:00:55.900 --> 00:01:01.530 line:100% position:50% align:middle
+So, it's fairly common in the Node
+ecosystem where nothing really comes
+
+00:01:01.530 --> 00:01:05.640 line:100% position:50% align:middle
+batteries included. We are always working
+with external modules.
+
+00:01:05.640 --> 00:01:09.360 line:100% position:50% align:middle
+We sort of just pull out different parts
+and use them together.
+
+00:01:09.360 --> 00:01:12.820 line:100% position:50% align:middle
+Now that's Express. That's what we're
+going to be using here. We are using a
+
+00:01:12.820 --> 00:01:16.500 line:100% position:50% align:middle
+site called Express Session to manage
+sessions, we'll learn all about that.
+
+00:01:16.500 --> 00:01:20.980 line:100% position:50% align:middle
+We are using Mongoose to work with our
+MongoDB database. So that's sort of the
+
+00:01:20.980 --> 00:01:25.020 line:100% position:50% align:middle
+interface for it. Then there's a couple of
+other stuff here. I'm not going to go
+
+00:01:25.020 --> 00:01:30.450 line:100% position:50% align:middle
+through absolutely everything here just
+right now. But we are going to come back
+
+00:01:30.450 --> 00:01:34.630 line:100% position:50% align:middle
+and understand like what is a cookie
+parser, what is a body parser,
+
+00:01:34.630 --> 00:01:39.700 line:100% position:50% align:middle
+what is passport, what is promisify, what
+is error-handling strategy,
+
+00:01:39.700 --> 00:01:42.900 line:100% position:50% align:middle
+what is our middleware? We're going to
+learn all about these pieces.
+
+00:01:42.900 --> 00:01:47.600 line:100% position:50% align:middle
+And rather than me sit here and explain
+all of the pieces to you right now,
+
+00:01:47.600 --> 00:01:51.470 line:100% position:50% align:middle
+what's going to happen is we're going to
+learn each of these different pieces as we
+
+00:01:51.470 --> 00:01:55.820 line:100% position:50% align:middle
+build our application. And as it's in
+context, we're going to come back to this
+
+00:01:55.820 --> 00:02:00.670 line:100% position:50% align:middle
+app.js file and understand, okay, this is
+actually what it's doing.
+
+00:02:00.670 --> 00:02:07.490 line:100% position:50% align:middle
+Also, what I want to tell you is that we
+have a start.js file and what the start.js
+
+00:02:07.490 --> 00:02:11.970 line:100% position:50% align:middle
+file does is first, it imports Mongoose,
+which is going to be how we interface with
+
+00:02:11.970 --> 00:02:17.310 line:100% position:50% align:middle
+our MongoDB. Then I've got this little if
+statement here. "If you've made it this
+
+00:02:17.310 --> 00:02:23.040 line:100% position:50% align:middle
+far and you are on a greater version than
+Node 7.6..." This is just here to make
+
+00:02:23.040 --> 00:02:27.320 line:100% position:50% align:middle
+sure that people don't skip this video and
+start out with the old version of Node.
+
+00:02:27.320 --> 00:02:31.340 line:100% position:50% align:middle
+So if you are on that, you can go ahead
+and delete that, if you like.
+
+00:02:31.340 --> 00:02:34.840 line:100% position:50% align:middle
+Then we have this thing called
+"Environmental variables." Now what
+
+00:02:34.840 --> 00:02:39.500 line:100% position:50% align:middle
+"Environmental Variables" are is,
+generally, that's where you store your
+
+00:02:39.500 --> 00:02:44.370 line:100% position:50% align:middle
+sensitive information. That's where you
+store your passwords, and usernames,
+
+00:02:44.370 --> 00:02:50.980 line:100% position:50% align:middle
+and log-ins, and API keys, and tokens, and
+anything that you need to keep safe.
+
+00:02:50.980 --> 00:02:56.320 line:100% position:50% align:middle
+So if we open up the variables.env... The
+reason why we don't keep this in like a
+
+00:02:56.320 --> 00:03:03.570 line:100% position:50% align:middle
+.txt or a .js file is that this should
+never actually go into your GitHub Repo or
+
+00:03:03.570 --> 00:03:08.710 line:100% position:50% align:middle
+your Git Repo at all because this is based
+on the environment that you're on.
+
+00:03:08.710 --> 00:03:13.780 line:100% position:50% align:middle
+So we have a variables.env file that we're
+going to be using on this file.
+
+00:03:13.780 --> 00:03:17.120 line:100% position:50% align:middle
+But you're also going to have one of these
+up on your server and then that's going to
+
+00:03:17.120 --> 00:03:20.970 line:100% position:50% align:middle
+be in production, maybe your database will
+be different, maybe your mail server will
+
+00:03:20.970 --> 00:03:24.720 line:100% position:50% align:middle
+be different. You'll have different API
+keys for all of those different ones.
+
+00:03:24.720 --> 00:03:32.100 line:100% position:50% align:middle
+So what this package here does, .env, it
+will take anything that is in here and
+
+00:03:32.100 --> 00:03:37.410 line:100% position:50% align:middle
+allow us to access it via
+process.env.thenameofthevariable. So we're
+
+00:03:37.410 --> 00:03:41.160 line:100% position:50% align:middle
+going to be using that quite a bit. That's
+why we put it in here.
+
+00:03:41.160 --> 00:03:44.930 line:100% position:50% align:middle
+And when we first started off in the last
+video, we renamed it as a .sample on the
+
+00:03:44.930 --> 00:03:50.340 line:100% position:50% align:middle
+end. So just triple check that you do not
+have a .sample on the end of that.
+
+00:03:50.340 --> 00:03:54.620 line:100% position:50% align:middle
+Here is what we're doing is we are
+connecting to our MongoDB instance.
+
+00:03:54.620 --> 00:03:59.660 line:100% position:50% align:middle
+So earlier, we used our application,
+Compass, to connect to our database.
+
+00:03:59.660 --> 00:04:03.740 line:100% position:50% align:middle
+But if we actually want to interface with
+it with code, MongoDB is going to connect
+
+00:04:03.740 --> 00:04:10.540 line:100% position:50% align:middle
+to it. Now, we don't type in MongoDB right
+here. And the reason is because that will
+
+00:04:10.540 --> 00:04:14.680 line:100% position:50% align:middle
+change depending on if we're locally or if
+we're in production.
+
+00:04:14.680 --> 00:04:20.920 line:100% position:50% align:middle
+So we say process.env.database and then
+you can see that database is a variable
+
+00:04:20.920 --> 00:04:25.870 line:100% position:50% align:middle
+that we have in this ENV file
+and that is set in there.
+
+00:04:25.870 --> 00:04:30.060 line:100% position:50% align:middle
+We are going to be using ES6 Promises in
+that Mongoose so you could also use
+
+00:04:30.060 --> 00:04:35.040 line:100% position:50% align:middle
+external libraries like Bluebird. But we
+are going to be using the built-in one so
+
+00:04:35.040 --> 00:04:39.470 line:100% position:50% align:middle
+that we can use async/await. That's why we
+have to do this little line right here.
+
+00:04:39.470 --> 00:04:42.980 line:100% position:50% align:middle
+And then finally, what we are doing is
+we're listening for any errors that
+
+00:04:42.980 --> 00:04:46.750 line:100% position:50% align:middle
+Mongoose is going to throw us. So if we're
+having trouble connecting or something
+
+00:04:46.750 --> 00:04:50.380 line:100% position:50% align:middle
+times out, we just want to console
+log it. Where that will show up
+
+00:04:50.380 --> 00:04:53.600 line:100% position:50% align:middle
+is in our terminal once we start things.
+
+00:04:53.600 --> 00:04:57.060 line:100% position:50% align:middle
+Finally, we require this application here.
+We're going to be getting into this whole
+
+00:04:57.060 --> 00:05:00.970 line:100% position:50% align:middle
+require thing in a bit, don't worry if you
+don't know it. And then we kick off our
+
+00:05:00.970 --> 00:05:06.600 line:100% position:50% align:middle
+server. So let's get that started and just
+make sure that everything works for us.
+
+00:05:06.600 --> 00:05:12.230 line:100% position:50% align:middle
+So let's go back to our terminal here and
+you type "NPM start." And what NPM start
+
+00:05:12.230 --> 00:05:16.260 line:100% position:50% align:middle
+will do is, if you ever want to know what
+these commands are that we're typing in,
+
+00:05:16.260 --> 00:05:22.270 line:100% position:50% align:middle
+is you can open up your package.json. And
+your package.json will have a script and
+
+00:05:22.270 --> 00:05:25.540 line:100% position:50% align:middle
+this will contain a whole bunch of
+different scripts that we can run.
+
+00:05:25.540 --> 00:05:31.710 line:100% position:50% align:middle
+And in our case, we have a start which is
+going to kick off another task called "NPM
+
+00:05:31.710 --> 00:05:37.760 line:100% position:50% align:middle
+run watch," which is this one, Nodemon
+start.js and we're going to ignore the
+
+00:05:37.760 --> 00:05:43.150 line:100% position:50% align:middle
+public file. What that means is that we're
+going to kick off a Node process which
+
+00:05:43.150 --> 00:05:48.840 line:100% position:50% align:middle
+will start on start.js. And we're using a
+package called "Nodemon" which will
+
+00:05:48.840 --> 00:05:53.200 line:100% position:50% align:middle
+monitor our files. And any time there's a
+change to one of our JavaScript files,
+
+00:05:53.200 --> 00:05:58.260 line:100% position:50% align:middle
+this is going to kill itself and restart
+the whole process, the whole server again.
+
+00:05:58.260 --> 00:06:02.150 line:100% position:50% align:middle
+This is not like PHP where you simply
+refresh the browser. You need to stop the
+
+00:06:02.150 --> 00:06:04.930 line:100% position:50% align:middle
+process and start it again, and that's
+what Nodemon will do.
+
+00:06:04.930 --> 00:06:10.700 line:100% position:50% align:middle
+And then also, we are going to run assets
+which is just another command that we have
+
+00:06:10.700 --> 00:06:17.720 line:100% position:50% align:middle
+here, and that will kick off a web pack
+task. And this is just for our CSFs in our
+
+00:06:17.720 --> 00:06:21.990 line:100% position:50% align:middle
+client side JavaScript. So this assets
+right here, the web pack has absolutely
+
+00:06:21.990 --> 00:06:26.610 line:100% position:50% align:middle
+nothing to do with our backend process.
+It's simply just there so that we can
+
+00:06:26.610 --> 00:06:33.440 line:100% position:50% align:middle
+compile our SaaS into CSS and compile our
+frontend JavaScript into a bundle for us.
+
+00:06:33.440 --> 00:06:36.890 line:100% position:50% align:middle
+So that's what that does right there. I'm
+not going to go into the web pack stuff in
+
+00:06:36.890 --> 00:06:40.580 line:100% position:50% align:middle
+this course but if you're interested, I've
+heavily commented the web pack.
+
+00:06:40.580 --> 00:06:45.160 line:100% position:50% align:middle
+That will just go into exactly what
+everything is going on in there.
+
+00:06:45.160 --> 00:06:49.090 line:100% position:50% align:middle
+There's a couple of other ones in here in
+terms of deployment and loading in sample
+
+00:06:49.090 --> 00:06:52.300 line:100% position:50% align:middle
+data. We'll get into all of that. But for
+now, I just want to make sure that we can
+
+00:06:52.300 --> 00:06:57.660 line:100% position:50% align:middle
+get everything running. So when we run NPM
+start, what should happen is we're kicking
+
+00:06:57.660 --> 00:07:02.040 line:100% position:50% align:middle
+off our concurrently task with the logs
+that come from the computer,
+
+00:07:02.040 --> 00:07:06.250 line:100% position:50% align:middle
+meaning that's coming from our node
+application. And the logs that come from
+
+00:07:06.250 --> 00:07:10.260 line:100% position:50% align:middle
+the box are the logs that are coming from
+our web pack application.
+
+00:07:10.260 --> 00:07:16.210 line:100% position:50% align:middle
+So you should see Express is running on
+port 7777. And if we go to our browser
+
+00:07:16.210 --> 00:07:22.570 line:100% position:50% align:middle
+here and type in, "local host 7777," you
+should see, hey, it works.
+
+00:07:22.570 --> 00:07:27.410 line:100% position:50% align:middle
+So if you've gotten that far, we will skip
+to the next video and actually get into
+
+00:07:27.410 --> 00:07:30.258 line:100% position:50% align:middle
+covering some of the fundamental
+concepts of this course.
+
+00:07:30.258 --> 00:07:32.258 line:100% position:50% align:middle
+♪ [music] ♪

@@ -1,0 +1,691 @@
+WEBVTT
+
+00:00:00.556 --> 00:00:03.556 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.070 --> 00:00:16.500 line:100% position:50% align:middle
+Now, we need to take a look at our Store
+Schema here and talk about some custom
+
+00:00:16.500 --> 00:00:20.310 line:100% position:50% align:middle
+data types. Why? Because what types do we
+have so far? A string,
+
+00:00:20.310 --> 00:00:25.230 line:100% position:50% align:middle
+a string, a string, and an array of
+strings. So it's important to note that
+
+00:00:25.230 --> 00:00:29.500 line:100% position:50% align:middle
+there are many, many types of data that
+could be stored in a MongoDB database,
+
+00:00:29.500 --> 00:00:33.680 line:100% position:50% align:middle
+and it's really important to before you
+actually start storing data,
+
+00:00:33.680 --> 00:00:37.970 line:100% position:50% align:middle
+to figure out how your data should be
+stored. So let's say, example,
+
+00:00:37.970 --> 00:00:43.410 line:100% position:50% align:middle
+for a date. When we want to store when a
+store was created... We want to store when
+
+00:00:43.410 --> 00:00:47.500 line:100% position:50% align:middle
+a store was created, so let's make a
+"created" property. The type is not going
+
+00:00:47.500 --> 00:00:51.760 line:100% position:50% align:middle
+to be a string. It's not going to be a
+number. It's going to be a date.
+
+00:00:51.760 --> 00:00:55.480 line:100% position:50% align:middle
+Right? Because that is a real date, and
+what that will allow us to do is to do
+
+00:00:55.480 --> 00:01:00.570 line:100% position:50% align:middle
+complex queries in the future, where users
+search for things in a specific month or
+
+00:01:00.570 --> 00:01:05.430 line:100% position:50% align:middle
+between these two dates, or are greater
+than the following date.
+
+00:01:05.430 --> 00:01:08.750 line:100% position:50% align:middle
+MongoDB has a whole bunch of custom
+queries for dealing with dates,
+
+00:01:08.750 --> 00:01:14.150 line:100% position:50% align:middle
+and if you store it as a date, then you
+will be able to take advantage of those.
+
+00:01:14.150 --> 00:01:17.420 line:100% position:50% align:middle
+When I did one on my projects, I just
+stored it as a timestamp,
+
+00:01:17.420 --> 00:01:21.300 line:100% position:50% align:middle
+because I thought I was a badass, and I
+stored everything as a Unix timestamp.
+
+00:01:21.300 --> 00:01:24.970 line:100% position:50% align:middle
+But I realized that it's much better to
+store it as a real date,
+
+00:01:24.970 --> 00:01:28.470 line:100% position:50% align:middle
+so you can take advantage of all the
+custom queries with MongoDB.
+
+00:01:28.470 --> 00:01:33.840 line:100% position:50% align:middle
+Now, the default of "date" is just going
+to be "date.now". What that will mean is
+
+00:01:33.840 --> 00:01:41.290 line:100% position:50% align:middle
+when you create a store, it will just
+simply set the "created" property to be
+
+00:01:41.290 --> 00:01:45.400 line:100% position:50% align:middle
+whatever "date.now". If you've never used
+"date.now", it's pretty sweet.
+
+00:01:45.400 --> 00:01:50.600 line:100% position:50% align:middle
+It's a static method on "date" and it will
+just tell you what the current time is in
+
+00:01:50.600 --> 00:01:56.230 line:100% position:50% align:middle
+milliseconds since God created the Earth.
+So now, MongoDB, as well as having stuff
+
+00:01:56.230 --> 00:01:59.820 line:100% position:50% align:middle
+built in for numbers and times, and
+strings, it also has a huge feature set
+
+00:01:59.820 --> 00:02:06.380 line:100% position:50% align:middle
+for dealing specifically with stuff that
+is location-based. So it will allow you to
+
+00:02:06.380 --> 00:02:11.870 line:100% position:50% align:middle
+search based on the coordinates for things
+that are within a couple kilometers or a
+
+00:02:11.870 --> 00:02:16.990 line:100% position:50% align:middle
+couple miles. Or it will allow you to
+search for stores that are within the
+
+00:02:16.990 --> 00:02:21.810 line:100% position:50% align:middle
+following bounds, or within a province or
+a state, wherever it is that you're
+
+00:02:21.810 --> 00:02:26.280 line:100% position:50% align:middle
+living. So that's pretty cool, because you
+can do these really complex queries and
+
+00:02:26.280 --> 00:02:31.400 line:100% position:50% align:middle
+not have to do any of the math or any of
+the hard query lookups behind it,
+
+00:02:31.400 --> 00:02:36.180 line:100% position:50% align:middle
+because it's all built into MongoDB. So
+we're going to make a "location" property
+
+00:02:36.180 --> 00:02:41.460 line:100% position:50% align:middle
+here, and that's going to be an object.
+Now, there are many ways of storing data,
+
+00:02:41.460 --> 00:02:44.630 line:100% position:50% align:middle
+and the way that we're going to be doing
+it is storing it as a point,
+
+00:02:44.630 --> 00:02:50.440 line:100% position:50% align:middle
+which is just going to be a pin on a map,
+because you could also store a custom
+
+00:02:50.440 --> 00:02:54.380 line:100% position:50% align:middle
+location. Maybe if you're outlining a
+state, or maybe you're outlining a block
+
+00:02:54.380 --> 00:02:57.830 line:100% position:50% align:middle
+or a couple streets, that would be
+multiple points. But in our case,
+
+00:02:57.830 --> 00:03:01.270 line:100% position:50% align:middle
+we just have a latitude and longitude and
+that's where I'm going to drop the pin on
+
+00:03:01.270 --> 00:03:06.130 line:100% position:50% align:middle
+the map. So we'll say "type", and the type
+itself has to be a little bit weird,
+
+00:03:06.130 --> 00:03:11.040 line:100% position:50% align:middle
+because it is technically a string. So you
+say, "type: String," but you say "default"
+
+00:03:11.040 --> 00:03:16.290 line:100% position:50% align:middle
+is going to be a point. This seems a
+little weird. It took me a while to figure
+
+00:03:16.290 --> 00:03:19.420 line:100% position:50% align:middle
+this out. But you have a "type" property,
+which is the object,
+
+00:03:19.420 --> 00:03:24.790 line:100% position:50% align:middle
+which has a type of "string" and a default
+of "point". Now, we have a couple of sort
+
+00:03:24.790 --> 00:03:30.970 line:100% position:50% align:middle
+of sub-properties that will live inside of
+"location" that make up a point.
+
+00:03:30.970 --> 00:03:37.910 line:100% position:50% align:middle
+So we have "coordinates", and the
+"coordinates" is going to be an array of
+
+00:03:37.910 --> 00:03:44.370 line:100% position:50% align:middle
+lng and lat. If that sounds backwards,
+it's because it is. So that is going to be
+
+00:03:44.370 --> 00:03:50.040 line:100% position:50% align:middle
+an array, and each item in the coordinates
+is going to be an object.
+
+00:03:50.040 --> 00:03:56.300 line:100% position:50% align:middle
+So maybe I'll put this like this. The
+coordinates are a type of "number",
+
+00:03:56.300 --> 00:04:03.320 line:100% position:50% align:middle
+because our coordinates look something
+like 43.whatever, and then negative
+
+00:04:03.320 --> 00:04:08.170 line:100% position:50% align:middle
+131.whatever. So those two values, lat and
+lng, those are going to be numbers,
+
+00:04:08.170 --> 00:04:13.380 line:100% position:50% align:middle
+so type of "numbers". "Required" is going
+to be "true", or as we learned earlier,
+
+00:04:13.380 --> 00:04:23.490 line:100% position:50% align:middle
+"You must supply coordinates!" Then, we
+also need an address, because lat and lng
+
+00:04:23.490 --> 00:04:27.400 line:100% position:50% align:middle
+are not all that useful to a user. It's
+helpful for a map, but we also want to
+
+00:04:27.400 --> 00:04:32.010 line:100% position:50% align:middle
+store the physical address of the
+location. So that is going to be a type of
+
+00:04:32.010 --> 00:04:38.370 line:100% position:50% align:middle
+"string" and "required" is, "You must
+supply an address!" Good.
+
+00:04:38.370 --> 00:04:42.110 line:100% position:50% align:middle
+So I think we've got that now. So I have a
+"location" property that has a type of
+
+00:04:42.110 --> 00:04:45.860 line:100% position:50% align:middle
+"string", which the default is the point.
+It has a "coordinates",
+
+00:04:45.860 --> 00:04:50.570 line:100% position:50% align:middle
+which is going to be an array of numbers,
+and it has an address,
+
+00:04:50.570 --> 00:04:54.880 line:100% position:50% align:middle
+which is going to be a string and both of
+those are required. Good.
+
+00:04:54.880 --> 00:05:00.410 line:100% position:50% align:middle
+Now, the next step is we need to edit our
+Edit screen here, in order to accept a
+
+00:05:00.410 --> 00:05:06.360 line:100% position:50% align:middle
+lat, a lng, and an address. So let's go
+back to our "storeForm".
+
+00:05:06.360 --> 00:05:10.260 line:100% position:50% align:middle
+Oh, before we go to "storeForm", make sure
+you take the quotes off the string.
+
+00:05:10.260 --> 00:05:13.490 line:100% position:50% align:middle
+Why? Because it is a type of "string".
+That's a built-in JavaScript type,
+
+00:05:13.490 --> 00:05:17.640 line:100% position:50% align:middle
+not quote "string", so make sure you take
+that off. Now, we'll go over to our
+
+00:05:17.640 --> 00:05:22.060 line:100% position:50% align:middle
+"storeForm" and start creating an
+interface. We're actually adding our
+
+00:05:22.060 --> 00:05:25.000 line:100% position:50% align:middle
+address and our coordinates. So we'll go
+to our "storeForm" here,
+
+00:05:25.000 --> 00:05:30.450 line:100% position:50% align:middle
+and let's do a little comment. That's how
+you comment in Pug, "//-" and we'll just
+
+00:05:30.450 --> 00:05:37.430 line:100% position:50% align:middle
+say, "address, lat and lng", or let's do
+"lng and lat". We'll talk about that in
+
+00:05:37.430 --> 00:05:42.680 line:100% position:50% align:middle
+just a second. So we need a label for
+"address". Give ourselves an input with
+
+00:05:42.680 --> 00:05:52.550 line:100% position:50% align:middle
+the type of "text", the ID of "address",
+and the name of "location[address]".
+
+00:05:52.550 --> 00:05:57.420 line:100% position:50% align:middle
+Now, if you've never seen this syntax
+before, what is actually happening,
+
+00:05:57.420 --> 00:06:02.950 line:100% position:50% align:middle
+if we open up our App.js and scroll down
+to "app.use", see this,
+
+00:06:02.950 --> 00:06:08.650 line:100% position:50% align:middle
+"(bodyParser.urlencoded({ extended: true
+}))? What that "extended: true" does is it
+
+00:06:08.650 --> 00:06:14.700 line:100% position:50% align:middle
+allows us to use inputs that sort of have
+nested data in them.
+
+00:06:14.700 --> 00:06:20.360 line:100% position:50% align:middle
+Meaning that this is going to come as
+"location.address", because we need
+
+00:06:20.360 --> 00:06:25.150 line:100% position:50% align:middle
+"location.address" as nested data. So by
+putting "[]" and then the name of the
+
+00:06:25.150 --> 00:06:31.120 line:100% position:50% align:middle
+sub-property, that will allow us to send
+nested data without having to do any extra
+
+00:06:31.120 --> 00:06:35.320 line:100% position:50% align:middle
+heavy lifting, either on the client side
+before we send it, or on the server side
+
+00:06:35.320 --> 00:06:40.470 line:100% position:50% align:middle
+as we receive that data. It's pretty neat.
+I really like that feature of Express.
+
+00:06:40.470 --> 00:06:46.660 line:100% position:50% align:middle
+So we have our name of "address", and
+let's actually just try that for now.
+
+00:06:46.660 --> 00:06:49.760 line:100% position:50% align:middle
+We have to add a new one, because there's
+a little bit we need to do to edit them.
+
+00:06:49.760 --> 00:06:56.870 line:100% position:50% align:middle
+So we'll go to Add and say, "New Store",
+say, "Good eats", and then we'll add an
+
+00:06:56.870 --> 00:07:05.320 line:100% position:50% align:middle
+address of 123... Oh, I forgot to add the
+x for our label. 123 Fake Street and add a
+
+00:07:05.320 --> 00:07:10.200 line:100% position:50% align:middle
+couple. So give it a save, and [it'll]
+say, "Successfully created New Store.
+
+00:07:10.200 --> 00:07:14.230 line:100% position:50% align:middle
+Care to leave a review?" Obviously, we
+can't see it yet, but we'll go back here,
+
+00:07:14.230 --> 00:07:21.990 line:100% position:50% align:middle
+we'll go to New Store, and edit it. How
+come address isn't filled out?
+
+00:07:21.990 --> 00:07:28.060 line:100% position:50% align:middle
+Well, that's because we need to set the
+value of this to be
+
+00:07:28.060 --> 00:07:35.670 line:100% position:50% align:middle
+"store.location.address". Give that a save
+and refresh. Hey, hey.
+
+00:07:35.670 --> 00:07:39.660 line:100% position:50% align:middle
+Now, Fake Street is showing up. But I need
+to tell you something.
+
+00:07:39.660 --> 00:07:43.310 line:100% position:50% align:middle
+You know when you have
+"store.location.address"? What if
+
+00:07:43.310 --> 00:07:47.230 line:100% position:50% align:middle
+"location" doesn't exist, and you try to
+read a property of something that is not
+
+00:07:47.230 --> 00:07:51.770 line:100% position:50% align:middle
+an object or does not exist. It's going to
+tell you, "Cannot read property address of
+
+00:07:51.770 --> 00:07:55.480 line:100% position:50% align:middle
+undefined," because "location" is
+undefined. So that's going to be a bit of
+
+00:07:55.480 --> 00:08:00.770 line:100% position:50% align:middle
+a problem for when we go to add a new one,
+right now. See, we get this error here?
+
+00:08:00.770 --> 00:08:05.520 line:100% position:50% align:middle
+"Cannot read property address of
+undefined." Why is that? Because we don't
+
+00:08:05.520 --> 00:08:11.300 line:100% position:50% align:middle
+have an address yet. So in this case, what
+we need to do is to take this value and to
+
+00:08:11.300 --> 00:08:19.330 line:100% position:50% align:middle
+wrap it in some parentheses. We'll say,
+"store.location &amp;&amp;
+
+00:08:19.330 --> 00:08:26.450 line:100% position:50% align:middle
+store.location.address". What that will do
+is it will first check if "store.location"
+
+00:08:26.450 --> 00:08:32.220 line:100% position:50% align:middle
+exists. If it does, it will go and return
+the second thing. If "store.loation" does
+
+00:08:32.220 --> 00:08:36.060 line:100% position:50% align:middle
+not exist, it will just return "false", or
+it won't return anything and the value
+
+00:08:36.060 --> 00:08:40.770 line:100% position:50% align:middle
+will be empty. So that's a nice little way
+that we can do sort of a check for that
+
+00:08:40.770 --> 00:08:45.450 line:100% position:50% align:middle
+property first, and you can see that it
+doesn't error out. But if we were to go to
+
+00:08:45.450 --> 00:08:53.600 line:100% position:50% align:middle
+one of our properties here, maybe we'll go
+back to Bakery and add in an address,
+
+00:08:53.600 --> 00:08:57.930 line:100% position:50% align:middle
+"455 Fake Street", save, you see that the
+Fake Street is there.
+
+00:08:57.930 --> 00:09:03.390 line:100% position:50% align:middle
+If I refresh, the data will always be
+coming back. Good. Now, let's do the lng
+
+00:09:03.390 --> 00:09:07.770 line:100% position:50% align:middle
+and the lat. So we'll go underneath that
+and we'll say, "label(for="lng")",
+
+00:09:07.770 --> 00:09:16.510 line:100% position:50% align:middle
+longitude. We'll say, "Address LNG". Then,
+we'll have an input with the type of
+
+00:09:16.510 --> 00:09:20.910 line:100% position:50% align:middle
+"number". Actually, it should just be type
+of "text", because we don't need the...
+
+00:09:20.910 --> 00:09:24.190 line:100% position:50% align:middle
+The interface for input type of "number"
+will give us the arrows.
+
+00:09:24.190 --> 00:09:28.440 line:100% position:50% align:middle
+Why would you ever pick an address with up
+and down arrows? Then,
+
+00:09:28.440 --> 00:09:38.500 line:100% position:50% align:middle
+the ID is going to be "lng" and the name
+is going to be, "location[coordinates]".
+
+00:09:38.500 --> 00:09:42.410 line:100% position:50% align:middle
+If we look back at our store,
+"coordinates" is an array and the
+
+00:09:42.410 --> 00:09:47.510 line:100% position:50% align:middle
+longitude needs to be the first thing. So
+I have always done it where it's lat and
+
+00:09:47.510 --> 00:09:53.700 line:100% position:50% align:middle
+lng, meaning that lat comes first and lng
+comes second. But upon wasting several
+
+00:09:53.700 --> 00:09:59.150 line:100% position:50% align:middle
+hours on building this project, I realized
+that there is this whole other world of
+
+00:09:59.150 --> 00:10:04.850 line:100% position:50% align:middle
+people who build it with lng first and
+then lat. So absolutely,
+
+00:10:04.850 --> 00:10:12.070 line:100% position:50% align:middle
+100%, make sure that your lng comes first
+and your latitude comes second in this
+
+00:10:12.070 --> 00:10:17.630 line:100% position:50% align:middle
+array. That's just the way that MongoDB
+expects the data to be stored.
+
+00:10:17.630 --> 00:10:20.920 line:100% position:50% align:middle
+If you do it the opposite, you're either
+going to end up in Australia,
+
+00:10:20.920 --> 00:10:24.390 line:100% position:50% align:middle
+or if you're Australian and you come to
+Canada, or wherever the [inaudible]
+
+00:10:24.390 --> 00:10:28.530 line:100% position:50% align:middle
+of the Earth is. Or it will give
+you errors, being like that,
+
+00:10:28.530 --> 00:10:32.140 line:100% position:50% align:middle
+"That's not a correct latitude and
+longitude." So triple-check it's lng,
+
+00:10:32.140 --> 00:10:37.460 line:100% position:50% align:middle
+then lat. Then, we'll just duplicate this
+and I'll swap out that for lat,
+
+00:10:37.460 --> 00:10:44.560 line:100% position:50% align:middle
+lat, and the second value, which is going
+to be one, because it's zero-based.
+
+00:10:44.560 --> 00:10:51.450 line:100% position:50% align:middle
+Good. Oh, that should be lat as well.
+Let's try giving ourselves some values
+
+00:10:51.450 --> 00:10:58.890 line:100% position:50% align:middle
+here. So 127 and negative 43. Give that a
+save. The values aren't here,
+
+00:10:58.890 --> 00:11:02.020 line:100% position:50% align:middle
+but that's because we haven't actually put
+them back into it. So let's try a quick
+
+00:11:02.020 --> 00:11:07.680 line:100% position:50% align:middle
+dump of our values again, "pre=
+h.dump(store)". Let's see if they're
+
+00:11:07.680 --> 00:11:12.550 line:100% position:50% align:middle
+actually even getting stored before we try
+to display them. There we go,
+
+00:11:12.550 --> 00:11:18.100 line:100% position:50% align:middle
+coordinates, 127, negative 43. So what we
+need to do is go to here and say,
+
+00:11:18.100 --> 00:11:24.000 line:100% position:50% align:middle
+"The value equals," and we'll do another
+one of these, lng. "Store.location &amp;&amp;
+
+00:11:24.000 --> 00:11:31.800 line:100% position:50% align:middle
+store.location.coordinates", the first
+one. Then, we can just take that whole
+
+00:11:31.800 --> 00:11:40.010 line:100% position:50% align:middle
+thing and dip it over for the second one.
+Now, when I refresh,
+
+00:11:40.010 --> 00:11:43.940 line:100% position:50% align:middle
+see how our lng and our lat have values?
+If I change that to one and give it a
+
+00:11:43.940 --> 00:11:48.950 line:100% position:50% align:middle
+save, it will be able to update those
+values for us no problem.
+
+00:11:48.950 --> 00:11:53.760 line:100% position:50% align:middle
+Other things we want to do here is add a
+"required" attribute onto it,
+
+00:11:53.760 --> 00:11:57.640 line:100% position:50% align:middle
+just so you get some client side
+validation, making sure that somebody puts
+
+00:11:57.640 --> 00:12:01.460 line:100% position:50% align:middle
+it in.but you'll notice that if we
+actually delete "address" and give it a
+
+00:12:01.460 --> 00:12:06.650 line:100% position:50% align:middle
+save, we get an error that says, "You must
+supply an address!" Well,
+
+00:12:06.650 --> 00:12:13.370 line:100% position:50% align:middle
+why is that happening? Well, our store
+requires an address, which if you do not
+
+00:12:13.370 --> 00:12:17.740 line:100% position:50% align:middle
+give it a string with an address in it, it
+says, "You must supply an address!" What's
+
+00:12:17.740 --> 00:12:22.890 line:100% position:50% align:middle
+happening here is that when we go to our
+Store controller and we go to Create
+
+00:12:22.890 --> 00:12:27.000 line:100% position:50% align:middle
+Store, you notice that we're not handling
+that error anywhere.
+
+00:12:27.000 --> 00:12:33.730 line:100% position:50% align:middle
+But what is happening, because we are
+using async/await, and because we're using
+
+00:12:33.730 --> 00:12:39.300 line:100% position:50% align:middle
+that error handler, what happens is that
+this, "await store.save",
+
+00:12:39.300 --> 00:12:46.230 line:100% position:50% align:middle
+that will fail, because our validation
+does not pass. What will happen is that...
+
+00:12:46.230 --> 00:12:51.450 line:100% position:50% align:middle
+Let's look at our error handlers again.
+Our handlers, we'll call them "next",
+
+00:12:51.450 --> 00:12:58.610 line:100% position:50% align:middle
+and what does "next" do? "Next" will go
+into our App.js and we'll go to our
+
+00:12:58.610 --> 00:13:02.690 line:100% position:50% align:middle
+routes, here we go, and if it does not
+work, it'll say, "All right.
+
+00:13:02.690 --> 00:13:08.480 line:100% position:50% align:middle
+Next." Then, it will go down the chain of
+events. What actually happens is that we
+
+00:13:08.480 --> 00:13:14.240 line:100% position:50% align:middle
+have this flash validation error handler,
+where now that we know all about flashes,
+
+00:13:14.240 --> 00:13:18.480 line:100% position:50% align:middle
+we can sort of help with them. We say, "If
+there is no errors,
+
+00:13:18.480 --> 00:13:22.170 line:100% position:50% align:middle
+return next error." What that means is
+that, [inaudible] put a comment
+
+00:13:22.170 --> 00:13:29.950 line:100% position:50% align:middle
+there, "If there are no errors to show for
+flashes, skip it." What that will do is
+
+00:13:29.950 --> 00:13:36.840 line:100% position:50% align:middle
+it'll just pass on the error to the stack
+trace. But if there is actually an error
+
+00:13:36.840 --> 00:13:43.020 line:100% position:50% align:middle
+message that we have, in our case, we're
+going to check if the error has some
+
+00:13:43.020 --> 00:13:48.970 line:100% position:50% align:middle
+errors on it, then we're just going to
+flash them. Because the model that we're
+
+00:13:48.970 --> 00:13:53.850 line:100% position:50% align:middle
+using here will actually pass us an error
+message. If we have a good error message
+
+00:13:53.850 --> 00:13:57.520 line:100% position:50% align:middle
+from this, we don't need to show a stack
+trace, because it didn't break.
+
+00:13:57.520 --> 00:14:03.110 line:100% position:50% align:middle
+It's just a validation error. The error
+handler, for each of the possible errors,
+
+00:14:03.110 --> 00:14:07.320 line:100% position:50% align:middle
+it will flash that error and show it on
+the page, and then it will call
+
+00:14:07.320 --> 00:14:12.780 line:100% position:50% align:middle
+"res.redirect(`back`)". That will just
+redirect us to the page that we were on
+
+00:14:12.780 --> 00:14:16.640 line:100% position:50% align:middle
+previously, and it will not have actually
+updated. So that's really nice.
+
+00:14:16.640 --> 00:14:19.980 line:100% position:50% align:middle
+You just have to have this once in your
+application and you don't have to worry
+
+00:14:19.980 --> 00:14:23.270 line:100% position:50% align:middle
+about it, because the errors are still
+going to filter through the different
+
+00:14:23.270 --> 00:14:27.610 line:100% position:50% align:middle
+levels that we have there. So I'm not
+going to save anything there.
+
+00:14:27.610 --> 00:14:33.250 line:100% position:50% align:middle
+If we were to change this to "123 Fake
+Street," give it a save,
+
+00:14:33.250 --> 00:14:36.830 line:100% position:50% align:middle
+it does work properly, and we get our
+"Success" message here. Good.
+
+00:14:36.830 --> 00:14:40.470 line:100% position:50% align:middle
+Let's go back to our "storeForm" here.
+Let's get rid of that dump.
+
+00:14:40.470 --> 00:14:44.440 line:100% position:50% align:middle
+Now, let's actually hook up to Google Maps
+so that when you type into here,
+
+00:14:44.440 --> 00:14:48.280 line:100% position:50% align:middle
+these lng and lat are actually going to
+populate with real values,
+
+00:14:48.280 --> 00:14:54.246 line:100% position:50% align:middle
+rather than us having to work with the
+existing ones that we have.
+
+00:14:54.246 --> 00:14:57.246 line:100% position:50% align:middle
+♪ [music] ♪

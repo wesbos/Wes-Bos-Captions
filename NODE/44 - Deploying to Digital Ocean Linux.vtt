@@ -1,0 +1,647 @@
+WEBVTT
+
+00:00:00.579 --> 00:00:03.579 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.000 --> 00:00:16.940 line:100% position:50% align:middle
+In this video, we're going to be setting
+up DigitalOcean. DigitalOcean is sort of a
+
+00:00:16.940 --> 00:00:21.670 line:100% position:50% align:middle
+server provider, and they're pretty sweet
+because, A, they're fairly cheap and,
+
+00:00:21.670 --> 00:00:25.290 line:100% position:50% align:middle
+B, they actually give you access to the
+raw server if you want to get in there and
+
+00:00:25.290 --> 00:00:29.310 line:100% position:50% align:middle
+make some changes, and have full control
+over your entire environment.
+
+00:00:29.310 --> 00:00:33.730 line:100% position:50% align:middle
+The last two are sort of just services.
+While they can do absolutely everything
+
+00:00:33.730 --> 00:00:36.660 line:100% position:50% align:middle
+that we need, it can be a little bit
+limiting if you just want to get in there
+
+00:00:36.660 --> 00:00:41.820 line:100% position:50% align:middle
+and see what's on your hard drive and what
+not. So we have the ability to create our
+
+00:00:41.820 --> 00:00:45.910 line:100% position:50% align:middle
+own Linux server. But before we even do
+that, I want to just figure out how are we
+
+00:00:45.910 --> 00:00:50.260 line:100% position:50% align:middle
+going to get the files on the server once
+we've created it? There are all kinds of
+
+00:00:50.260 --> 00:00:54.310 line:100% position:50% align:middle
+different ways that you can get your files
+on a server. You can use something called
+
+00:00:54.310 --> 00:00:59.740 line:100% position:50% align:middle
+"rsync", which would sync them all up. You
+can SSH into your box and move those over
+
+00:00:59.740 --> 00:01:04.300 line:100% position:50% align:middle
+with something called "STP". You can use
+an FTP client that supports SFTP,
+
+00:01:04.300 --> 00:01:08.860 line:100% position:50% align:middle
+and you just log in with that, and drag
+and drop your files. There's all kinds of
+
+00:01:08.860 --> 00:01:12.030 line:100% position:50% align:middle
+different ways, and what we're going to be
+doing is using a Git repo that we can then
+
+00:01:12.030 --> 00:01:16.250 line:100% position:50% align:middle
+push to GitHub, and then go on to our
+server and pull that down from GitHub.
+
+00:01:16.250 --> 00:01:19.960 line:100% position:50% align:middle
+So we're going to go to GitHub here, and
+we're going to create a new repo,
+
+00:01:19.960 --> 00:01:26.390 line:100% position:50% align:middle
+and we're going to call this
+"testing-deploy-node", and then "Testing
+
+00:01:26.390 --> 00:01:32.520 line:100% position:50% align:middle
+Deploy". Let's try that. Create the repo.
+What we want to do is we already have an
+
+00:01:32.520 --> 00:01:38.360 line:100% position:50% align:middle
+existing repo, so we just need these two
+lines right here. There we go,
+
+00:01:38.360 --> 00:01:41.030 line:100% position:50% align:middle
+and we're just pushing up all of our data.
+Again, this is going to take a little bit,
+
+00:01:41.030 --> 00:01:45.600 line:100% position:50% align:middle
+because we do have quite a few images in
+our actual repo. As you get more and more
+
+00:01:45.600 --> 00:01:49.510 line:100% position:50% align:middle
+images, it might make sense to start
+looking at, rather than storing your
+
+00:01:49.510 --> 00:01:53.290 line:100% position:50% align:middle
+images right in your Uploads folder, but
+storing them on something like Amazon S3,
+
+00:01:53.290 --> 00:01:58.240 line:100% position:50% align:middle
+where your files are stored on a separate
+CDN. There we go. I've got everything
+
+00:01:58.240 --> 00:02:01.410 line:100% position:50% align:middle
+uploaded here, and I give it a refresh.
+You should see that your entire
+
+00:02:01.410 --> 00:02:05.890 line:100% position:50% align:middle
+application, except your variables.env are
+up and running. Good.
+
+00:02:05.890 --> 00:02:08.990 line:100% position:50% align:middle
+Now, we go back to DigitalOcean and you're
+logged into your dashboard.
+
+00:02:08.990 --> 00:02:11.860 line:100% position:50% align:middle
+Create an account if you haven't. Then,
+you should see a button that says,
+
+00:02:11.860 --> 00:02:17.250 line:100% position:50% align:middle
+"Create a New Droplet". What we want to do
+is go over to our one-click apps here,
+
+00:02:17.250 --> 00:02:21.480 line:100% position:50% align:middle
+and we want to select the highest version
+of Node that they currently offer.
+
+00:02:21.480 --> 00:02:25.870 line:100% position:50% align:middle
+It looks like it's 6.10.2. That's not
+nearly as close as what we need.
+
+00:02:25.870 --> 00:02:29.850 line:100% position:50% align:middle
+We need at least 7.6. But it's going to
+get us there, and we'll hop on the server
+
+00:02:29.850 --> 00:02:34.950 line:100% position:50% align:middle
+and upgrade it ourselves. So click on
+that. We do need at least one gig of RAM
+
+00:02:34.950 --> 00:02:40.380 line:100% position:50% align:middle
+in order to do our npm install. I have
+found that if you choose a $5 one,
+
+00:02:40.380 --> 00:02:44.960 line:100% position:50% align:middle
+when you do npm install, the npm install
+will fail. The reason is because there's
+
+00:02:44.960 --> 00:02:52.190 line:100% position:50% align:middle
+just not enough memory for it to download
+all those files. Although that's said,
+
+00:02:52.190 --> 00:02:56.330 line:100% position:50% align:middle
+the $5 server is good enough for our
+application. It's just the npm install
+
+00:02:56.330 --> 00:03:00.420 line:100% position:50% align:middle
+that it fails on. So if you do want to
+save yourself $5 a month,
+
+00:03:00.420 --> 00:03:05.400 line:100% position:50% align:middle
+do a quick search for "how to add swap
+memory." Now, this is Ubuntu 12,
+
+00:03:05.400 --> 00:03:09.250 line:100% position:50% align:middle
+but I followed these on my own server,
+because I didn't feel like paying an extra
+
+00:03:09.250 --> 00:03:13.050 line:100% position:50% align:middle
+$5 a month for npm install. What this will
+do is it will install something called
+
+00:03:13.050 --> 00:03:18.360 line:100% position:50% align:middle
+"swap memory," which you can use the file
+system as sort of temporary memory,
+
+00:03:18.360 --> 00:03:22.950 line:100% position:50% align:middle
+and then that way the npm install will
+work. If you don't know what I'm talking
+
+00:03:22.950 --> 00:03:28.070 line:100% position:50% align:middle
+about, then let's just go with the $10 a
+month one. You could even do the $10,
+
+00:03:28.070 --> 00:03:32.490 line:100% position:50% align:middle
+do our install, and then size down to $5 a
+month, if you're really worried about it.
+
+00:03:32.490 --> 00:03:36.500 line:100% position:50% align:middle
+Then, you pick your location, where you
+want to go. I'm going to go with the
+
+00:03:36.500 --> 00:03:41.760 line:100% position:50% align:middle
+default New York 2, and then SSH keys. If
+you don't know what an SSH key is,
+
+00:03:41.760 --> 00:03:45.180 line:100% position:50% align:middle
+essentially, what it is, it's like a
+little fingerprint on your computer so
+
+00:03:45.180 --> 00:03:48.800 line:100% position:50% align:middle
+that when you try to log into a server,
+you don't need to provide the username and
+
+00:03:48.800 --> 00:03:53.220 line:100% position:50% align:middle
+password. You simply just log into it and
+the SSH key is proof enough that you're
+
+00:03:53.220 --> 00:03:58.740 line:100% position:50% align:middle
+actually coming from an authorized
+machine. I'm not going to show an SSH key,
+
+00:03:58.740 --> 00:04:02.000 line:100% position:50% align:middle
+just so that if you're not familiar with
+them, you can keep going and only use the
+
+00:04:02.000 --> 00:04:06.960 line:100% position:50% align:middle
+password. But ideally, what you would do
+is you would create an SSH key and log in
+
+00:04:06.960 --> 00:04:10.090 line:100% position:50% align:middle
+without any sort of password. Finally, you
+create a host name.
+
+00:04:10.090 --> 00:04:14.490 line:100% position:50% align:middle
+We'll call this "node-deploy1", or
+whatever it is you'd like to call it,
+
+00:04:14.490 --> 00:04:20.010 line:100% position:50% align:middle
+and click on Create. Now, while you wait
+for this to go ahead and create itself,
+
+00:04:20.010 --> 00:04:24.090 line:100% position:50% align:middle
+we can hop over to our email and grab the
+password that it's going to send you.
+
+00:04:24.090 --> 00:04:27.410 line:100% position:50% align:middle
+It's a one-time password that we need to
+get into our box. Now,
+
+00:04:27.410 --> 00:04:31.470 line:100% position:50% align:middle
+after about a minute or so, you're going
+to see that your server is ready to go and
+
+00:04:31.470 --> 00:04:36.830 line:100% position:50% align:middle
+it will give you an IP address. What comes
+in your email if you didn't use an SSH key
+
+00:04:36.830 --> 00:04:39.990 line:100% position:50% align:middle
+is you'll see the name of the Droplet, the
+IP address, your username,
+
+00:04:39.990 --> 00:04:44.260 line:100% position:50% align:middle
+and then this one-time use password. So
+what we need to do now is to actually get
+
+00:04:44.260 --> 00:04:49.840 line:100% position:50% align:middle
+into our box. When I mean "box", I mean
+get into our server. We do that via
+
+00:04:49.840 --> 00:04:53.200 line:100% position:50% align:middle
+something called "SSH". So open up your
+terminal. If you're on Windows,
+
+00:04:53.200 --> 00:04:56.560 line:100% position:50% align:middle
+you need to download a program called
+"PuTTY", and that will allow you to do SSH
+
+00:04:56.560 --> 00:05:00.160 line:100% position:50% align:middle
+on Windows. Or if you're really into it,
+there's a new thing on Windows called
+
+00:05:00.160 --> 00:05:04.790 line:100% position:50% align:middle
+"Windows Subsystem Linux", which will
+allow you to use SSH on Windows no
+
+00:05:04.790 --> 00:05:08.160 line:100% position:50% align:middle
+problem, if you'd like to look into that.
+Otherwise, just download PuTTY.
+
+00:05:08.160 --> 00:05:11.310 line:100% position:50% align:middle
+So here we go. We're going to do SSH, and
+then you say "root",
+
+00:05:11.310 --> 00:05:15.410 line:100% position:50% align:middle
+because that's your username, you can
+create more later, "@", and then you grab
+
+00:05:15.410 --> 00:05:19.280 line:100% position:50% align:middle
+IP address. That's sort of like the domain
+name for your server.
+
+00:05:19.280 --> 00:05:22.390 line:100% position:50% align:middle
+It's going to ask if you want to have a
+fingerprint. Yes, you do.
+
+00:05:22.390 --> 00:05:26.320 line:100% position:50% align:middle
+Then, it's asking you for your password if
+you have a password.
+
+00:05:26.320 --> 00:05:30.830 line:100% position:50% align:middle
+If you don't, then you will already be
+logged in, because you used an SSH key.
+
+00:05:30.830 --> 00:05:33.240 line:100% position:50% align:middle
+So I'm going to paste it in there. It's
+not going to show us anything.
+
+00:05:33.240 --> 00:05:37.470 line:100% position:50% align:middle
+Hit Enter, and then it's immediately going
+to ask you to set a new password.
+
+00:05:37.470 --> 00:05:43.530 line:100% position:50% align:middle
+So paste your current password. Then, make
+a new one. There we go.
+
+00:05:43.530 --> 00:05:47.450 line:100% position:50% align:middle
+Now, I'm in. Then, I hit CMD+K to clear
+this out. You notice that this is
+
+00:05:47.450 --> 00:05:50.730 line:100% position:50% align:middle
+different than my normal terminal, because
+I'm actually in my server now.
+
+00:05:50.730 --> 00:05:56.540 line:100% position:50% align:middle
+So "ls -l", there's actually nothing in
+there. But if I type "node -v",
+
+00:05:56.540 --> 00:06:00.490 line:100% position:50% align:middle
+you'll see that, ooh, now we have Node. I
+can even do "Node", and then "1 + 1",
+
+00:06:00.490 --> 00:06:05.590 line:100% position:50% align:middle
+and I see 2. When I need to get back out
+of that, I'll hit CTRL+C twice to get back
+
+00:06:05.590 --> 00:06:10.730 line:100% position:50% align:middle
+into my Bash terminal. Okay. So now, we
+need to upgrade our version of Node,
+
+00:06:10.730 --> 00:06:16.070 line:100% position:50% align:middle
+because it's on Version 6.10. If it is not
+at least 7.6, then you need to upgrade it.
+
+00:06:16.070 --> 00:06:20.120 line:100% position:50% align:middle
+The way we do that is we install a package
+called "n", and n will allow us to switch
+
+00:06:20.120 --> 00:06:27.220 line:100% position:50% align:middle
+to different versions on our computer. So
+type "npm install n -g",
+
+00:06:27.220 --> 00:06:32.210 line:100% position:50% align:middle
+and then we type "n latest". That's going
+to go off and download the latest version
+
+00:06:32.210 --> 00:06:35.810 line:100% position:50% align:middle
+of Node for us. Now, if we type "node -v"
+it's still going to say it's Version 6.
+
+00:06:35.810 --> 00:06:41.130 line:100% position:50% align:middle
+But if we type "bash", sort of like
+opening up a new terminal tab,
+
+00:06:41.130 --> 00:06:47.250 line:100% position:50% align:middle
+and then type "node -v", then we're in
+sort of a fresh version of a tab and we
+
+00:06:47.250 --> 00:06:52.810 line:100% position:50% align:middle
+now see Version 7.9. Good. So we have Node
+all set up on our computer.
+
+00:06:52.810 --> 00:06:57.970 line:100% position:50% align:middle
+You can clear this out. The next thing we
+need to do is actually get our files onto
+
+00:06:57.970 --> 00:07:06.000 line:100% position:50% align:middle
+our computer. So I'm going to move into
+the "/opt". That's a nice directory to
+
+00:07:06.000 --> 00:07:10.310 line:100% position:50% align:middle
+keep all of your applications in, and
+we're going to clone our application into
+
+00:07:10.310 --> 00:07:15.020 line:100% position:50% align:middle
+this folder. So if we go to GitHub here,
+and we're going to Clone or Download,
+
+00:07:15.020 --> 00:07:20.990 line:100% position:50% align:middle
+and I'm going to select this URL here,
+"Clone with HTTPS". Click it.
+
+00:07:20.990 --> 00:07:26.030 line:100% position:50% align:middle
+Say, "git clone", paste it, and what it's
+going to do, it's going to go grab a copy.
+
+00:07:26.030 --> 00:07:32.150 line:100% position:50% align:middle
+It downloads fairly quickly and you can
+say, "ls -l", and you see that now we have
+
+00:07:32.150 --> 00:07:38.740 line:100% position:50% align:middle
+our testing-deploy-node folder. So move
+into that. Now, we have "ls -l".
+
+00:07:38.740 --> 00:07:41.780 line:100% position:50% align:middle
+There is our application. A couple things
+we're missing here. First,
+
+00:07:41.780 --> 00:07:46.060 line:100% position:50% align:middle
+we don't have any of our dependencies.
+Second, we don't have a varibles.env file.
+
+00:07:46.060 --> 00:07:49.390 line:100% position:50% align:middle
+So let's create both of those right now.
+First, "npm install".
+
+00:07:56.240 --> 00:08:01.830 line:100% position:50% align:middle
+While I sit here and watch it try to
+install webpack, and probably also will
+
+00:08:01.830 --> 00:08:07.180 line:100% position:50% align:middle
+try to install sass, I realize that npm
+install could be made much quicker by
+
+00:08:07.180 --> 00:08:13.810 line:100% position:50% align:middle
+typing "npm install --production", and
+that will only install our dependencies
+
+00:08:13.810 --> 00:08:17.410 line:100% position:50% align:middle
+and not our dev dependencies, which we
+don't need sass on our...
+
+00:08:17.410 --> 00:08:21.290 line:100% position:50% align:middle
+It will install just fine. But there's no
+need to actually have any of this
+
+00:08:21.290 --> 00:08:25.030 line:100% position:50% align:middle
+development stuff, like uglify and
+whatever on our actual server,
+
+00:08:25.030 --> 00:08:29.110 line:100% position:50% align:middle
+because it's not needed in our case. So it
+all finished. It puked a whole bunch of
+
+00:08:29.110 --> 00:08:32.490 line:100% position:50% align:middle
+stuff up on the screen. It adds some scary
+warnings, but that's npm.
+
+00:08:32.490 --> 00:08:36.040 line:100% position:50% align:middle
+That's how you know it's done. It makes
+you worried about what happened.
+
+00:08:36.040 --> 00:08:40.820 line:100% position:50% align:middle
+So that installed. The next thing we want
+to do is create our variables.env file.
+
+00:08:40.820 --> 00:08:46.170 line:100% position:50% align:middle
+So we'll say, "touch variables.env", and
+then we will go into that.
+
+00:08:46.170 --> 00:08:49.950 line:100% position:50% align:middle
+Now, we don't have an editor here, except
+for vim. So we're going to be badass and
+
+00:08:49.950 --> 00:08:55.790 line:100% position:50% align:middle
+actually open up vim ourselves,
+"variables.env". Now, we're in it,
+
+00:08:55.790 --> 00:09:02.240 line:100% position:50% align:middle
+and we can just go back to our existing
+variables.env.now file with all of our
+
+00:09:02.240 --> 00:09:09.730 line:100% position:50% align:middle
+production things in it. We paste them in,
+and then you want to hit ESC ":wq".
+
+00:09:09.730 --> 00:09:15.360 line:100% position:50% align:middle
+See, at the bottom here? I hit ESC ":wq"
+and hit Enter. That means "save and quit"
+
+00:09:15.360 --> 00:09:20.420 line:100% position:50% align:middle
+in vim land, and then we have set that up.
+So again, we npm installed.
+
+00:09:20.420 --> 00:09:27.850 line:100% position:50% align:middle
+We have our variables. I think now we can
+be able just to type "npm start" and that
+
+00:09:27.850 --> 00:09:33.360 line:100% position:50% align:middle
+will kick off our start.js file. Because
+we're running on Port 80,
+
+00:09:33.360 --> 00:09:37.950 line:100% position:50% align:middle
+again, Port 80 and 443, and I think one of
+the other ones, those are the only ports
+
+00:09:37.950 --> 00:09:41.410 line:100% position:50% align:middle
+that are actually open on this image by
+default, which is great.
+
+00:09:41.410 --> 00:09:45.550 line:100% position:50% align:middle
+You don't want to open everything else up.
+So it's looking like it's up and running.
+
+00:09:45.550 --> 00:09:50.630 line:100% position:50% align:middle
+What I'm going to do is I'm going to take
+the IP address of our Droplet and try to
+
+00:09:50.630 --> 00:09:56.270 line:100% position:50% align:middle
+visit it in the URL. Woo-hoo. There it is.
+It's running. Obviously,
+
+00:09:56.270 --> 00:09:59.910 line:100% position:50% align:middle
+we don't have a domain name. You can do
+that by going to your DigitalOcean backend
+
+00:09:59.910 --> 00:10:05.720 line:100% position:50% align:middle
+and click on Networking. You can add a
+domain name in there. But you can visit it
+
+00:10:05.720 --> 00:10:09.170 line:100% position:50% align:middle
+no problem with your IP address that you
+have for this server,
+
+00:10:09.170 --> 00:10:14.000 line:100% position:50% align:middle
+and then you can go ahead and everything
+will work just as we expected it to work
+
+00:10:14.000 --> 00:10:18.760 line:100% position:50% align:middle
+no problem. One thing I should say is that
+if you have a bug in your code and
+
+00:10:18.760 --> 00:10:24.670 line:100% position:50% align:middle
+everything breaks, then it won't restart
+itself. This is a little bit confusing to
+
+00:10:24.670 --> 00:10:28.060 line:100% position:50% align:middle
+people who are coming from PHP, where if
+you break your script,
+
+00:10:28.060 --> 00:10:31.780 line:100% position:50% align:middle
+and then you just refresh the page and
+it's already working again.
+
+00:10:31.780 --> 00:10:36.230 line:100% position:50% align:middle
+So what I like to do on my servers is
+rather than type "npm start" directly in
+
+00:10:36.230 --> 00:10:40.430 line:100% position:50% align:middle
+the command line... Because if I have a
+fatal failure and the whole application
+
+00:10:40.430 --> 00:10:44.100 line:100% position:50% align:middle
+falls over in the middle of the night, no
+one is there to start it back up again.
+
+00:10:44.100 --> 00:10:47.660 line:100% position:50% align:middle
+So we want to quit this, and we're going
+to use something called "Forever".
+
+00:10:47.660 --> 00:10:51.850 line:100% position:50% align:middle
+Just like in development, we use Node MOM
+to restart our app whenever there was a
+
+00:10:51.850 --> 00:10:55.180 line:100% position:50% align:middle
+change, what Forever will do is whenever
+it senses that the application has
+
+00:10:55.180 --> 00:10:59.920 line:100% position:50% align:middle
+crashed, it will just try to start it up
+again for you over and over again.
+
+00:10:59.920 --> 00:11:03.530 line:100% position:50% align:middle
+So if you do have a crash, it'll be down
+for maybe a second or two,
+
+00:11:03.530 --> 00:11:07.430 line:100% position:50% align:middle
+and then it will be started up again. So
+we're going to type "npm install -g",
+
+00:11:07.430 --> 00:11:12.340 line:100% position:50% align:middle
+globally, "forever". Once that is
+installed, you can start your application
+
+00:11:12.340 --> 00:11:17.010 line:100% position:50% align:middle
+now. If we refresh, you'll see it's down
+and we can type "forever start",
+
+00:11:17.010 --> 00:11:21.390 line:100% position:50% align:middle
+and then the name of the actual script,
+"start.js", again, because we're in our
+
+00:11:21.390 --> 00:11:28.050 line:100% position:50% align:middle
+testing-deploy-node folder. I think it is
+up and running now. We go back and refresh
+
+00:11:28.050 --> 00:11:32.300 line:100% position:50% align:middle
+this, and there is our application. You
+can see if your script is running,
+
+00:11:32.300 --> 00:11:36.100 line:100% position:50% align:middle
+because if I were to close this tab or log
+out, it would still run it in the
+
+00:11:36.100 --> 00:11:39.760 line:100% position:50% align:middle
+background. But you can always type
+"forever list" and this will show you a
+
+00:11:39.760 --> 00:11:43.560 line:100% position:50% align:middle
+list of all the processes that are
+running. In this case, we only have one
+
+00:11:43.560 --> 00:11:49.040 line:100% position:50% align:middle
+process and it is running Node, start.js,
+and if that were to quit,
+
+00:11:49.040 --> 00:11:52.980 line:100% position:50% align:middle
+it would restart itself. What's cool about
+that is you can also take those numbers,
+
+00:11:52.980 --> 00:11:59.590 line:100% position:50% align:middle
+0, say, "forever restart 0" and that will
+kill your app and start it up again.
+
+00:11:59.590 --> 00:12:05.250 line:100% position:50% align:middle
+There we go. It's killed. But if I refresh
+it a second later, it's back up again.
+
+00:12:05.250 --> 00:12:11.370 line:100% position:50% align:middle
+You can say, "forever logs 0", and that'll
+give you any of the console.logs or any of
+
+00:12:11.370 --> 00:12:16.010 line:100% position:50% align:middle
+the errors that are happening on your
+server, and you can be able to see that
+
+00:12:16.010 --> 00:12:20.160 line:100% position:50% align:middle
+really quickly as well. So that is
+deploying to DigitalOcean. Pretty neat.
+
+00:12:20.160 --> 00:12:23.580 line:100% position:50% align:middle
+Pretty simple. I'm a big fan of that,
+especially as things start to get a little
+
+00:12:23.580 --> 00:12:26.123 line:100% position:50% align:middle
+bit more expensive with
+those other services.
+
+00:12:26.123 --> 00:12:29.123 line:100% position:50% align:middle
+♪ [music] ♪

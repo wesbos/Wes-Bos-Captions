@@ -1,0 +1,1495 @@
+WEBVTT
+
+00:00:00.352 --> 00:00:03.352 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.000 --> 00:00:16.160 line:100% position:50% align:middle
+All right. We're going to cool it on the
+stores part, and we're going to move into
+
+00:00:16.160 --> 00:00:19.870 line:100% position:50% align:middle
+actually working with users on our
+application. So we're going to be able to
+
+00:00:19.870 --> 00:00:23.130 line:100% position:50% align:middle
+allow users to sign up, and everyone is
+going to have an account.
+
+00:00:23.130 --> 00:00:27.820 line:100% position:50% align:middle
+You can log in and register, and log out,
+and create a store that's associated with
+
+00:00:27.820 --> 00:00:31.980 line:100% position:50% align:middle
+you, and comment on other stores. That
+comment will be associated for you,
+
+00:00:31.980 --> 00:00:36.040 line:100% position:50% align:middle
+and all of that good stuff. You'll be able
+to only edit a store that exists to you.
+
+00:00:36.040 --> 00:00:40.810 line:100% position:50% align:middle
+So in order to get up and going with that,
+we first need this login form,
+
+00:00:40.810 --> 00:00:44.550 line:100% position:50% align:middle
+and then we're going to go forward and
+start creating all of the pieces to log
+
+00:00:44.550 --> 00:00:47.590 line:100% position:50% align:middle
+in. So click on your Log In. It's got a
+404, because we don't have a route for
+
+00:00:47.590 --> 00:00:55.440 line:100% position:50% align:middle
+that. So let's open up our index.js file
+and go all the way to the bottom,
+
+00:00:55.440 --> 00:01:02.380 line:100% position:50% align:middle
+and we'll say, "router.get('/login'".
+When that happens, we are going to make a
+
+00:01:02.380 --> 00:01:06.440 line:100% position:50% align:middle
+new controller, called the "User
+controller" and we're going to just say,
+
+00:01:06.440 --> 00:01:10.530 line:100% position:50% align:middle
+"loginForm". Now, why are we making a new
+controller? Well, generally,
+
+00:01:10.530 --> 00:01:14.580 line:100% position:50% align:middle
+you have one controller for every kind of
+specific area of your website.
+
+00:01:14.580 --> 00:01:17.340 line:100% position:50% align:middle
+For this, we're going to have a User
+controller, which is going to take care of
+
+00:01:17.340 --> 00:01:21.270 line:100% position:50% align:middle
+all of our signup and registration
+validation, and logging out,
+
+00:01:21.270 --> 00:01:24.210 line:100% position:50% align:middle
+and all the forms, password reset, and
+what not. Then, we're going to have an
+
+00:01:24.210 --> 00:01:29.800 line:100% position:50% align:middle
+Authentication controller, which will deal
+with all of the heavy lifting for logging
+
+00:01:29.800 --> 00:01:33.010 line:100% position:50% align:middle
+people in, making sure they're logged in,
+making sure that they own the correct
+
+00:01:33.010 --> 00:01:37.700 line:100% position:50% align:middle
+store, etc., etc. So it doesn't really
+matter where they go in the controller.
+
+00:01:37.700 --> 00:01:41.890 line:100% position:50% align:middle
+But it's just a nice way to chunk things
+up and keep them with like code.
+
+00:01:41.890 --> 00:01:45.270 line:100% position:50% align:middle
+So we're going to create a User
+controller. So we're going to go into our
+
+00:01:45.270 --> 00:01:50.264 line:100% position:50% align:middle
+controllers, make a new file, and call it
+"userController.js".
+
+00:01:50.264 --> 00:01:53.690 line:100% position:50% align:middle
+Then, we're going to import Mongoose
+because that's what we need.
+
+00:01:53.690 --> 00:01:58.560 line:100% position:50% align:middle
+So I'll say, "const mongoose =
+require('mongoose')" and we'll say,
+
+00:01:58.560 --> 00:02:04.470 line:100% position:50% align:middle
+"exports."... What did we look for? Login
+form. "loginForm = (req,res)".
+
+00:02:04.500 --> 00:02:08.340 line:100% position:50% align:middle
+This one doesn't need to be async.
+That's all we're going to be doing is
+
+00:02:08.340 --> 00:02:15.790 line:100% position:50% align:middle
+res.render out the login form, and the
+title is going to be "Login Form," or just
+
+00:02:15.790 --> 00:02:21.250 line:100% position:50% align:middle
+"Login," probably. Good. Now, finally, if
+we try to run this, we're going to get a
+
+00:02:21.250 --> 00:02:25.920 line:100% position:50% align:middle
+bit of an error. You see that my ESLint is
+highlighting it and it's telling me that
+
+00:02:25.920 --> 00:02:29.730 line:100% position:50% align:middle
+"User controller is not to find." Why? If
+we go to the top of our routes,
+
+00:02:29.730 --> 00:02:33.660 line:100% position:50% align:middle
+we're importing Store controller. But we
+have to duplicate that and change out
+
+00:02:33.660 --> 00:02:38.780 line:100% position:50% align:middle
+"Store" with "User." So we have the Store
+controller is coming from that file.
+
+00:02:38.780 --> 00:02:44.040 line:100% position:50% align:middle
+The User controller is coming from this
+file. So now, we give that a refresh and
+
+00:02:44.040 --> 00:02:48.420 line:100% position:50% align:middle
+we log in. It should tell us that we don't
+have a login Pug file yet.
+
+00:02:48.420 --> 00:02:51.910 line:100% position:50% align:middle
+There we go. "Failed to lookup view
+'login' in views directory." So we don't
+
+00:02:51.910 --> 00:02:57.390 line:100% position:50% align:middle
+have that view yet. We'll go into Views,
+New File, Login.pug, and we'll do our
+
+00:02:57.390 --> 00:03:04.250 line:100% position:50% align:middle
+whole song and dance, "extends layout",
+"block content", "h2= title".
+
+00:03:04.250 --> 00:03:11.060 line:100% position:50% align:middle
+Let's try that. Actually, we'll do
+".inner", and then a title inside of that.
+
+00:03:11.060 --> 00:03:15.500 line:100% position:50% align:middle
+Now, we have a login showing up, and we
+need to build the actual login form.
+
+00:03:15.500 --> 00:03:21.230 line:100% position:50% align:middle
+Now, rather than just do the login form
+right in login.pug, I rather put it in a
+
+00:03:21.230 --> 00:03:25.980 line:100% position:50% align:middle
+mixin, so that I can include that login
+form anywhere I want. Whether it's in a
+
+00:03:25.980 --> 00:03:29.650 line:100% position:50% align:middle
+popup or another piece of the website, I
+can have it in a nice,
+
+00:03:29.650 --> 00:03:32.960 line:100% position:50% align:middle
+little partial. So we're going to go to
+Mixins. Create a new file called
+
+00:03:32.960 --> 00:03:40.440 line:100% position:50% align:middle
+"_loginForm.pug". I'll say, "mixin
+loginForm()" and nothing goes inside of
+
+00:03:40.440 --> 00:03:43.390 line:100% position:50% align:middle
+those parenthesis because it doesn't take
+any arguments. I'll say,
+
+00:03:43.390 --> 00:03:47.990 line:100% position:50% align:middle
+"form" with a class of "form". The reason
+we have a class of "form" is so that CSS
+
+00:03:47.990 --> 00:03:53.640 line:100% position:50% align:middle
+will kick in. The action is going to be
+"/login", and the method is going to be
+
+00:03:53.640 --> 00:04:01.380 line:100% position:50% align:middle
+equal to "POST". Then, we'll have an h2
+inside of that that says "login".
+
+00:04:01.380 --> 00:04:06.240 line:100% position:50% align:middle
+We'll have a label for "email". We'll have
+an input type of "email",
+
+00:04:06.240 --> 00:04:11.040 line:100% position:50% align:middle
+a name of "email", and then we'll have an
+input type of "password",
+
+00:04:11.040 --> 00:04:15.520 line:100% position:50% align:middle
+name of "password". We'll have an
+input.button, which has a type of
+
+00:04:15.520 --> 00:04:19.380 line:100% position:50% align:middle
+"submit", and then the value is going to
+be "Log In". Woo. All right.
+
+00:04:19.380 --> 00:04:24.570 line:100% position:50% align:middle
+So I made a nice, little mixin there. We
+can go back to our login.pug and import
+
+00:04:24.570 --> 00:04:32.370 line:100% position:50% align:middle
+that mixin. Then, we can use our mixin,
+"loginForm()". Let's see what that does
+
+00:04:32.370 --> 00:04:36.740 line:100% position:50% align:middle
+for us, give it a refresh, and now we have
+a login from... Oh,
+
+00:04:36.740 --> 00:04:43.960 line:100% position:50% align:middle
+one thing we forgot was the actual email
+address and password.
+
+00:04:43.960 --> 00:04:49.860 line:100% position:50% align:middle
+We forgot our "label for password". There
+we go. Login, email address,
+
+00:04:49.860 --> 00:04:52.430 line:100% position:50% align:middle
+and password. We go up to our login.pug,
+where we're using it.
+
+00:04:52.430 --> 00:04:57.580 line:100% position:50% align:middle
+Actually, we don't need this h2 either.
+That's just for the actual title bar.
+
+00:04:57.580 --> 00:05:02.380 line:100% position:50% align:middle
+We've got our login page rendering. Good.
+Now, comes the harder part.
+
+00:05:02.380 --> 00:05:07.140 line:100% position:50% align:middle
+When somebody fills this in,
+"wesbos@gmail.com", and I'm going to have
+
+00:05:07.140 --> 00:05:11.720 line:100% position:50% align:middle
+my password as "wes", because that's
+super-strong, and when we click Login,
+
+00:05:11.720 --> 00:05:17.080 line:100% position:50% align:middle
+that data gets posted to the same route.
+So much like when we added a store and we
+
+00:05:17.080 --> 00:05:22.560 line:100% position:50% align:middle
+posted the data to /add, we also need to
+now create a user and save it to the
+
+00:05:22.560 --> 00:05:27.600 line:100% position:50% align:middle
+database. So how do we create a user? We
+need a new model. Right?
+
+00:05:27.600 --> 00:05:31.160 line:100% position:50% align:middle
+Remember models is where our data gets
+stored, and we've already just done
+
+00:05:31.160 --> 00:05:41.520 line:100% position:50% align:middle
+store.js? Let's make a new one. Call it
+"user.js", and we'll start from scratch,
+
+00:05:41.520 --> 00:05:47.910 line:100% position:50% align:middle
+"const mongoose = require('mongoose')".
+Then, we also need this schema.
+
+00:05:47.910 --> 00:05:53.520 line:100% position:50% align:middle
+Another thing we have to do is say,
+"mongoose. Promise = global.
+
+00:05:53.520 --> 00:05:58.760 line:100% position:50% align:middle
+Promise". Again, we shouldn't have to do
+that. But there's a bug currently in the
+
+00:05:58.760 --> 00:06:02.850 line:100% position:50% align:middle
+Mongoose package that will sort of give
+you false positives in your console if you
+
+00:06:02.850 --> 00:06:06.700 line:100% position:50% align:middle
+don't do that. It'll tell you that they've
+deprecated their own internal promise
+
+00:06:06.700 --> 00:06:12.560 line:100% position:50% align:middle
+library. Because we've done it in
+start.js, this is the only time we should
+
+00:06:12.560 --> 00:06:17.440 line:100% position:50% align:middle
+be telling it that we need to use ES6
+promises. But if we don't do it in each of
+
+00:06:17.440 --> 00:06:21.420 line:100% position:50% align:middle
+our models, it does this cranky complaint.
+Even though it doesn't make any
+
+00:06:21.420 --> 00:06:27.880 line:100% position:50% align:middle
+difference, that just suppresses the error
+in our terminal if you ever see that.
+
+00:06:27.880 --> 00:06:30.800 line:100% position:50% align:middle
+So we've got Mongoose. We've got our
+schema pulling in. A couple of other
+
+00:06:30.800 --> 00:06:34.340 line:100% position:50% align:middle
+things that we need real quick is just a
+few dependencies, and I will explain them
+
+00:06:34.340 --> 00:06:42.080 line:100% position:50% align:middle
+as we start to use them. So I'll say,
+"const md5 = require('md5')".
+
+00:06:42.080 --> 00:06:49.230 line:100% position:50% align:middle
+We need a package called "Validator". We
+need something called a
+
+00:06:49.230 --> 00:06:54.360 line:100% position:50% align:middle
+"mongodbErrorHandler" and again I'll
+explain all of this as we need it.
+
+00:06:54.360 --> 00:06:57.470 line:100% position:50% align:middle
+Finally, something called
+"passportLocalMongoose", which is going to
+
+00:06:57.470 --> 00:07:02.520 line:100% position:50% align:middle
+help us easily create user accounts
+without doing a whole lot of boilerplate
+
+00:07:02.520 --> 00:07:10.150 line:100% position:50% align:middle
+code, "passport-local-mongoose". Woo.
+Okay. Again, don't worry too much about
+
+00:07:10.150 --> 00:07:13.410 line:100% position:50% align:middle
+what these are. We will go into them in
+just a second. So the first thing that we
+
+00:07:13.410 --> 00:07:17.870 line:100% position:50% align:middle
+need to do is actually make our model.
+Again, our model is what our data is going
+
+00:07:17.870 --> 00:07:24.350 line:100% position:50% align:middle
+to look like. So I'll say, "const
+userSchema = new Schema". That is going to
+
+00:07:24.350 --> 00:07:28.690 line:100% position:50% align:middle
+take an object, and then right away we
+should just go ahead and export that.
+
+00:07:28.690 --> 00:07:36.803 line:100% position:50% align:middle
+So, "module.exports = mongoose.model".
+We're going to call this "User",
+
+00:07:36.803 --> 00:07:41.230 line:100% position:50% align:middle
+and we're going to give it the User Schema
+that we've defined.
+
+00:07:41.230 --> 00:07:45.560 line:100% position:50% align:middle
+Again, we use module.exports there, and
+not just exports.something,
+
+00:07:45.560 --> 00:07:49.500 line:100% position:50% align:middle
+because this is the main thing that will
+be exported from this file.
+
+00:07:49.500 --> 00:07:53.630 line:100% position:50% align:middle
+When you require this file, that's the
+thing that you're getting out of the file
+
+00:07:53.630 --> 00:07:58.140 line:100% position:50% align:middle
+without specifying a sub-property. So we
+have our schema, and there are five things
+
+00:07:58.140 --> 00:08:01.360 line:100% position:50% align:middle
+that are going to go on our schema. But
+for now, we really just need email and we
+
+00:08:01.360 --> 00:08:05.000 line:100% position:50% align:middle
+also need the name of the actual person.
+So let's go through each of these.
+
+00:08:05.000 --> 00:08:12.080 line:100% position:50% align:middle
+"Email" is going to be a type of string.
+It's going to be a unique that's "true",
+
+00:08:12.080 --> 00:08:16.720 line:100% position:50% align:middle
+and that's really important, because you
+don't want people signing up for multiple
+
+00:08:16.720 --> 00:08:20.870 line:100% position:50% align:middle
+accounts with the same email address. If
+someone tries to sign up with an email
+
+00:08:20.870 --> 00:08:25.820 line:100% position:50% align:middle
+account that already exists, you should
+tell them, "Hey, you can't do that.
+
+00:08:25.820 --> 00:08:31.295 line:100% position:50% align:middle
+That email address already exists." Then,
+you want to say "lowercase: true" and this
+
+00:08:31.295 --> 00:08:36.510 line:100% position:50% align:middle
+is something I wish I knew earlier. When I
+first made the thing that built my
+
+00:08:36.510 --> 00:08:40.940 line:100% position:50% align:middle
+courses, I was having all kinds of
+trouble, because every single place that I
+
+00:08:40.940 --> 00:08:44.410 line:100% position:50% align:middle
+needed to use someone's email, I needed to
+make sure that I lowercased it.
+
+00:08:44.410 --> 00:08:47.570 line:100% position:50% align:middle
+Because if somebody would sign in or sign
+up, or buy a course,
+
+00:08:47.570 --> 00:08:52.460 line:100% position:50% align:middle
+or do anything with an uppercase email, or
+even just a capital somewhere in there,
+
+00:08:52.460 --> 00:08:57.780 line:100% position:50% align:middle
+it would then not be the same email as the
+lowercase version that I had on file.
+
+00:08:57.780 --> 00:09:01.700 line:100% position:50% align:middle
+So what you can do is you can say,
+"lowercase: true" and that will always
+
+00:09:01.700 --> 00:09:06.550 line:100% position:50% align:middle
+save them in your database as lowercase.
+Then, we also use a middleware that
+
+00:09:06.550 --> 00:09:10.920 line:100% position:50% align:middle
+whenever somebody submits an email
+address, it's always going to just
+
+00:09:10.920 --> 00:09:15.680 line:100% position:50% align:middle
+automatically lowercase itself. So you
+don't have to worry about case in any of
+
+00:09:15.680 --> 00:09:18.650 line:100% position:50% align:middle
+these. It's nice to take that off your
+plate. The next one is trim.
+
+00:09:18.650 --> 00:09:22.100 line:100% position:50% align:middle
+You want it to be "true", because people
+sign in with all kinds of...
+
+00:09:22.100 --> 00:09:26.290 line:100% position:50% align:middle
+Like I see all kinds of people signing in
+with emails like this,
+
+00:09:26.290 --> 00:09:30.210 line:100% position:50% align:middle
+"gmail.com", and then they have all kinds
+of spaces on it. So if we put trim on it,
+
+00:09:30.210 --> 00:09:34.630 line:100% position:50% align:middle
+that'll take off any spaces on either end.
+Next up, we want validate,
+
+00:09:34.630 --> 00:09:38.450 line:100% position:50% align:middle
+and what we want to do is do custom
+validation on this email address to make
+
+00:09:38.450 --> 00:09:44.200 line:100% position:50% align:middle
+sure that this is a proper validation. The
+way that we do that is you pass it an
+
+00:09:44.200 --> 00:09:48.220 line:100% position:50% align:middle
+array. The first thing is how to validate
+it, and the second thing is the error
+
+00:09:48.220 --> 00:09:52.660 line:100% position:50% align:middle
+message if it fails validation. So we have
+this package here called "Validator" and
+
+00:09:52.660 --> 00:09:58.000 line:100% position:50% align:middle
+this is a really good validation package
+for Node.js. All we need to do is just
+
+00:09:58.000 --> 00:10:02.990 line:100% position:50% align:middle
+take the validator and say, "isEmal" and
+that will just make sure that it is a
+
+00:10:02.990 --> 00:10:08.790 line:100% position:50% align:middle
+valid email address based on having an @
+and all that good stuff inside of it.
+
+00:10:08.790 --> 00:10:14.830 line:100% position:50% align:middle
+Then, the second thing is just an error
+message. So it's, "Invalid Email Address".
+
+00:10:14.830 --> 00:10:18.530 line:100% position:50% align:middle
+If somebody tries to sign up with an
+invalid email address, this message is
+
+00:10:18.530 --> 00:10:22.620 line:100% position:50% align:middle
+going to show to them. Now, we're also
+going to implement client-side checks with
+
+00:10:22.620 --> 00:10:27.940 line:100% position:50% align:middle
+the input type equals email. So they
+almost will never see this error message,
+
+00:10:27.940 --> 00:10:31.270 line:100% position:50% align:middle
+because we'll catch it in the browser. But
+if for whatever reason,
+
+00:10:31.270 --> 00:10:34.940 line:100% position:50% align:middle
+somebody is on an older browser that
+doesn't haven't an input type of email or
+
+00:10:34.940 --> 00:10:39.890 line:100% position:50% align:middle
+somebody maliciously turns it off, we need
+to make sure that we are also checking on
+
+00:10:39.890 --> 00:10:43.950 line:100% position:50% align:middle
+the server side, and that people aren't
+signing up with invalid email addresses.
+
+00:10:43.950 --> 00:10:47.520 line:100% position:50% align:middle
+Next, we want it to be required, which is
+generally true. Or if,
+
+00:10:47.520 --> 00:10:54.900 line:100% position:50% align:middle
+for us, we're going to say, "Please supply
+an email address." So if someone forgets
+
+00:10:54.900 --> 00:10:58.770 line:100% position:50% align:middle
+to sign up and they bypass our client-side
+validation, it's going to tell them that.
+
+00:10:58.770 --> 00:11:02.340 line:100% position:50% align:middle
+Next up, we have our name. Make sure you
+put a comma there, and our name is going
+
+00:11:02.340 --> 00:11:08.640 line:100% position:50% align:middle
+to be type of "string", and it's going to
+be required as "Please supply a name" and
+
+00:11:08.640 --> 00:11:12.750 line:100% position:50% align:middle
+it's going to say, "trim: true". That one
+is a lot simpler than the other one.
+
+00:11:12.750 --> 00:11:16.990 line:100% position:50% align:middle
+This one has a lot of things to think
+about when you have an email address.
+
+00:11:16.990 --> 00:11:22.170 line:100% position:50% align:middle
+So now, we're able to create new users
+given that they have an email address and
+
+00:11:22.170 --> 00:11:29.233 line:100% position:50% align:middle
+a name. Now, you might be asking, "Well,
+don't they need a password field?" That's
+
+00:11:29.233 --> 00:11:34.950 line:100% position:50% align:middle
+exactly true. We need to be able to store
+a password in the database.
+
+00:11:34.950 --> 00:11:37.310 line:100% position:50% align:middle
+Or actually, we don't want to store the
+password itself. We want to store what's
+
+00:11:37.310 --> 00:11:41.390 line:100% position:50% align:middle
+called the "hash" of that password. To do
+that, we're going to be using a package
+
+00:11:41.390 --> 00:11:47.870 line:100% position:50% align:middle
+called Passport.js. Passport.js is a
+middleware for Node.js, and it can be used
+
+00:11:47.870 --> 00:11:53.250 line:100% position:50% align:middle
+with any Node.js framework that has
+built-in middleware. What it does is,
+
+00:11:53.250 --> 00:11:56.950 line:100% position:50% align:middle
+essentially, it takes away a lot of the
+heavy lifting that comes along with
+
+00:11:56.950 --> 00:12:02.950 line:100% position:50% align:middle
+managing sessions or creating tokens, or
+logging people in, logging people out,
+
+00:12:02.950 --> 00:12:06.120 line:100% position:50% align:middle
+being able to interface with many of the
+popular login providers,
+
+00:12:06.120 --> 00:12:11.040 line:100% position:50% align:middle
+like LinkedIn, or Google, or Twitter, or
+Facebook. It's just a fantastic...
+
+00:12:11.040 --> 00:12:14.710 line:100% position:50% align:middle
+It's like the de facto library that you
+use if you need to do any sort of
+
+00:12:14.710 --> 00:12:19.250 line:100% position:50% align:middle
+authentication inside of Password.js. It's
+sort of like a base framework,
+
+00:12:19.250 --> 00:12:23.690 line:100% position:50% align:middle
+and then they have these things called
+"Strategies," which allow you to do
+
+00:12:23.690 --> 00:12:28.810 line:100% position:50% align:middle
+everything from doing things like
+password-auth0 Twitter. You can log in.
+
+00:12:28.810 --> 00:12:32.630 line:100% position:50% align:middle
+We're going to use username and password,
+which is called a "Local Strategy."
+
+00:12:32.630 --> 00:12:35.900 line:100% position:50% align:middle
+There's all kinds of different strategies
+that you can have and be implemented in
+
+00:12:35.900 --> 00:12:41.000 line:100% position:50% align:middle
+here. It's pretty neat and it takes a lot
+of the heavy lifting off our plate.
+
+00:12:41.000 --> 00:12:45.290 line:100% position:50% align:middle
+So in order to do that, we're not going to
+specify a password or a hash,
+
+00:12:45.290 --> 00:12:50.060 line:100% position:50% align:middle
+or anything field in here. We're just
+going to be using this Passport Local
+
+00:12:50.060 --> 00:12:55.790 line:100% position:50% align:middle
+Mongoose library that we imported, and it
+will take care of adding the additional
+
+00:12:55.790 --> 00:13:01.880 line:100% position:50% align:middle
+fields to our schema, as well as adding
+the additional methods to create our new
+
+00:13:01.880 --> 00:13:05.790 line:100% position:50% align:middle
+logins. So we'll go down here, and we'll
+take our User Schema,
+
+00:13:05.790 --> 00:13:10.900 line:100% position:50% align:middle
+and we're going to just add the plugin
+that's called "Passport Local Mongoose".
+
+00:13:10.900 --> 00:13:16.300 line:100% position:50% align:middle
+Then, we just need to pass it one option
+that says, "usernameField" that's going to
+
+00:13:16.300 --> 00:13:19.960 line:100% position:50% align:middle
+be the email field. So essentially what we
+say is, "Here's our schema,
+
+00:13:19.960 --> 00:13:24.750 line:100% position:50% align:middle
+email name. Can you please add all the
+methods and all of the fields that are
+
+00:13:24.750 --> 00:13:30.780 line:100% position:50% align:middle
+needed for us to add authentication to our
+schema? By the way,
+
+00:13:30.780 --> 00:13:35.420 line:100% position:50% align:middle
+I want to use "email" as our login field."
+You know, some services allow you to login
+
+00:13:35.420 --> 00:13:39.150 line:100% position:50% align:middle
+with a username or they login with an
+email address? In this case,
+
+00:13:39.150 --> 00:13:42.410 line:100% position:50% align:middle
+we're going to be using the email address
+to log the people in.
+
+00:13:42.410 --> 00:13:49.630 line:100% position:50% align:middle
+Next up, we also need to use a second
+plugin called "MongoDB Error Handler." So
+
+00:13:49.630 --> 00:13:54.280 line:100% position:50% align:middle
+"userSchema.plugin" and this is what we
+imported right here,
+
+00:13:54.280 --> 00:13:58.810 line:100% position:50% align:middle
+"mongodbErrorHandler". Essentially, what
+that will do is, this validation,
+
+00:13:58.810 --> 00:14:04.550 line:100% position:50% align:middle
+it will give us good errors. But when you
+have a unique of "true",
+
+00:14:04.550 --> 00:14:08.460 line:100% position:50% align:middle
+it actually doesn't give us very nice
+errors. It sort of gives us an ugly error
+
+00:14:08.460 --> 00:14:12.990 line:100% position:50% align:middle
+that comes along with MongoDB, and it has
+a code in it. It's just not something that
+
+00:14:12.990 --> 00:14:15.870 line:100% position:50% align:middle
+you actually want to show to your user. So
+by having this plugin,
+
+00:14:15.870 --> 00:14:21.700 line:100% position:50% align:middle
+what it will do is it will change those
+errors from the ugly error into the nice
+
+00:14:21.700 --> 00:14:24.970 line:100% position:50% align:middle
+version [inaudible]. If you're
+interested in learning more about this,
+
+00:14:24.970 --> 00:14:29.540 line:100% position:50% align:middle
+you just go to Mongoose Error Handler.
+Give it a quick search.
+
+00:14:29.540 --> 00:14:36.980 line:100% position:50% align:middle
+Look it up on... There we go. So what the
+error will say is, "1111000-duplicate
+
+00:14:36.980 --> 00:14:40.980 line:100% position:50% align:middle
+key." That's not great for your user to
+see. What this will allow us to do is it
+
+00:14:40.980 --> 00:14:46.950 line:100% position:50% align:middle
+will give us much nicer error messages in
+there. So really happy with that.
+
+00:14:46.950 --> 00:14:51.500 line:100% position:50% align:middle
+Other than that, it looks like we are in
+pretty good shape. Let's move on to
+
+00:14:51.500 --> 00:14:55.330 line:100% position:50% align:middle
+posting our data to our login. Now, this
+login form isn't much use to us.
+
+00:14:55.330 --> 00:14:59.590 line:100% position:50% align:middle
+We actually need the register form as
+well, so that we can use our login form
+
+00:14:59.590 --> 00:15:02.650 line:100% position:50% align:middle
+once we're actually registered. So let's
+set up our route for that as well.
+
+00:15:02.650 --> 00:15:08.360 line:100% position:50% align:middle
+We'll go back to our index.js,
+"router.get('/register'," and that's going
+
+00:15:08.360 --> 00:15:12.860 line:100% position:50% align:middle
+to be "userController.registerForm)".
+Then, we'll go over to our User
+
+00:15:12.860 --> 00:15:19.230 line:100% position:50% align:middle
+controller. We'll have
+"exports.registerForm" and we're going to
+
+00:15:19.230 --> 00:15:25.360 line:100% position:50% align:middle
+just quickly render out the Register file,
+and that's going to have a title of
+
+00:15:25.360 --> 00:15:29.600 line:100% position:50% align:middle
+"Register". Then, we'll go back to our
+views. Make a new file called
+
+00:15:29.600 --> 00:15:35.550 line:100% position:50% align:middle
+"register.pug". Extend the layout. Now,
+inside of here, we could shell it off to a
+
+00:15:35.550 --> 00:15:38.820 line:100% position:50% align:middle
+mixin if we do want our register form to
+pop up in multiple places.
+
+00:15:38.820 --> 00:15:42.370 line:100% position:50% align:middle
+I'm going to keep in line just for the
+sake of not having too many files and
+
+00:15:42.370 --> 00:15:46.300 line:100% position:50% align:middle
+confusing you. But totally doable in a
+mixin, just as we've done the other one.
+
+00:15:46.300 --> 00:15:51.110 line:100% position:50% align:middle
+So I'll just say "form" with class of
+"form". The action is going to be "post it
+
+00:15:51.110 --> 00:15:55.980 line:100% position:50% align:middle
+to register". Of course, the method is
+"POST". Then, inside of that,
+
+00:15:55.980 --> 00:16:01.110 line:100% position:50% align:middle
+we'll have "h2 Register". We'll have a
+label for our name. [inaudible]
+
+00:16:01.110 --> 00:16:05.220 line:100% position:50% align:middle
+an input for our "name" equals "name".
+We'll have an input...
+
+00:16:05.220 --> 00:16:09.110 line:100% position:50% align:middle
+I always forget to put the words in the
+name. There we go. Then,
+
+00:16:09.110 --> 00:16:14.680 line:100% position:50% align:middle
+we'll have a label for "email". We'll have
+an input type of "email".
+
+00:16:14.680 --> 00:16:19.330 line:100% position:50% align:middle
+That's going to tell us that we need it.
+That's going to make sure that it is a
+
+00:16:19.330 --> 00:16:24.460 line:100% position:50% align:middle
+valid email before we sign up, and the
+name is going to be "email" and I'm going
+
+00:16:24.460 --> 00:16:28.260 line:100% position:50% align:middle
+to also make it required. Same with the
+name. We're going to make that required.
+
+00:16:28.260 --> 00:16:31.440 line:100% position:50% align:middle
+"Email", then we're going to make two
+fields for "password". So say,
+
+00:16:31.440 --> 00:16:38.820 line:100% position:50% align:middle
+"label(for="password")", input type,
+"password", name equals "password".
+
+00:16:38.820 --> 00:16:41.990 line:100% position:50% align:middle
+Then, we'll just duplicate that, and this
+is going to be "confirm-password".
+
+00:16:41.990 --> 00:16:50.340 line:100% position:50% align:middle
+This is going to be "password-confirm".
+Confirm password as text there.
+
+00:16:50.340 --> 00:16:56.520 line:100% position:50% align:middle
+Good. Finally, I guess we need a Submit
+button as well. Input type of "submit",
+
+00:16:56.520 --> 00:17:02.050 line:100% position:50% align:middle
+value equals "register". Good. Give this a
+refresh now. Do we have that "register"?
+
+00:17:02.050 --> 00:17:07.010 line:100% position:50% align:middle
+Oh, "Failed to lookup 'register' in the
+views directory." What did we do wrong?
+
+00:17:07.010 --> 00:17:15.430 line:100% position:50% align:middle
+We put a "register", R-E-G-I-S-T-E-R.
+"Reigster"? "Regis Philmanster," no.
+
+00:17:15.430 --> 00:17:18.990 line:100% position:50% align:middle
+That's not what we want. So we want to go
+back to our User controller.
+
+00:17:18.990 --> 00:17:23.960 line:100% position:50% align:middle
+We want to register that actual... There
+we go. Name, email, password,
+
+00:17:23.960 --> 00:17:30.720 line:100% position:50% align:middle
+confirm password, and register. Actually,
+we'll pop a class of "button" on our
+
+00:17:30.720 --> 00:17:33.410 line:100% position:50% align:middle
+Register button, just so it looks a little
+bit nicer. Beautiful.
+
+00:17:33.410 --> 00:17:38.500 line:100% position:50% align:middle
+Okay. So we have all of our fields set up,
+and it's going to be actually a couple
+
+00:17:38.500 --> 00:17:44.420 line:100% position:50% align:middle
+steps once we actually post to /register.
+Let's go back to our routes here,
+
+00:17:44.420 --> 00:17:52.130 line:100% position:50% align:middle
+and we have our Get Register, be need the
+route for when it's posted to Register.
+
+00:17:52.130 --> 00:17:56.000 line:100% position:50% align:middle
+There's kind of a couple things that need
+to happen as soon as we hit that
+
+00:17:56.000 --> 00:17:59.680 line:100% position:50% align:middle
+registration. First, we need to..and
+we'll write this, here.
+
+00:17:59.680 --> 00:18:07.650 line:100% position:50% align:middle
+One, we need to validate the registration
+data. Two, we need to register the user.
+
+00:18:07.650 --> 00:18:13.380 line:100% position:50% align:middle
+Three, we need to log them in, once
+they've actually done the registration.
+
+00:18:13.380 --> 00:18:17.260 line:100% position:50% align:middle
+First, we actually need to validate the
+data that the person is registering with.
+
+00:18:17.260 --> 00:18:21.300 line:100% position:50% align:middle
+We try to do as much validation as
+possible on our model. But sometimes
+
+00:18:21.300 --> 00:18:26.820 line:100% position:50% align:middle
+there's additional checks that need to
+happen, before you even start to send the
+
+00:18:26.820 --> 00:18:31.780 line:100% position:50% align:middle
+data over to the database. In that case,
+you can also do validation right inside of
+
+00:18:31.780 --> 00:18:35.980 line:100% position:50% align:middle
+your actual controller. For that, we're
+going to go into our User Controller,
+
+00:18:35.980 --> 00:18:39.900 line:100% position:50% align:middle
+and we're going to make a middleware,
+which is going to do a bunch of checks to
+
+00:18:39.900 --> 00:18:45.000 line:100% position:50% align:middle
+make sure that we've done everything
+correctly. So make a middleware called
+
+00:18:45.000 --> 00:18:50.180 line:100% position:50% align:middle
+"validateRegister", and that is going to
+take a req, res, and the next.
+
+00:18:50.180 --> 00:18:56.770 line:100% position:50% align:middle
+We pass "next" because it's going to be
+middleware. If everything passes Register,
+
+00:18:56.770 --> 00:19:01.800 line:100% position:50% align:middle
+we're just going to pass it along to the
+next person in line. So the first thing
+
+00:19:01.800 --> 00:19:06.610 line:100% position:50% align:middle
+that we want to do is sanitize their name,
+and make sure that they're not trying to
+
+00:19:06.610 --> 00:19:10.200 line:100% position:50% align:middle
+sign up with any sort of script tags in
+it. So we'll say,
+
+00:19:10.200 --> 00:19:18.240 line:100% position:50% align:middle
+"req.sanitizeBody('name')". Now, hold on.
+Where did this come from?
+
+00:19:18.240 --> 00:19:22.380 line:100% position:50% align:middle
+Is that like an Express thing? Is that
+built in? How come I just pulled that out
+
+00:19:22.380 --> 00:19:26.340 line:100% position:50% align:middle
+of nowhere and now I'm just using this
+function called "sanitizeBody"?
+
+00:19:26.340 --> 00:19:30.040 line:100% position:50% align:middle
+Well, if we open up our app.js, remember I
+said, "This is a lot of stuff,
+
+00:19:30.040 --> 00:19:35.140 line:100% position:50% align:middle
+but we'll come back to this," every single
+time that we have? Remember we imported
+
+00:19:35.140 --> 00:19:40.030 line:100% position:50% align:middle
+Express-Validator, and then later on we
+used it? Where did we use it?
+
+00:19:40.030 --> 00:19:46.900 line:100% position:50% align:middle
+Here we go, "app.use(expressValidator())",
+what this does is it applies a bunch of
+
+00:19:46.900 --> 00:19:52.850 line:100% position:50% align:middle
+validation methods to every single
+request. Then, whenever you have a
+
+00:19:52.850 --> 00:19:57.830 line:100% position:50% align:middle
+request, you can just call the different
+validation methods that live on top of it,
+
+00:19:57.830 --> 00:20:00.830 line:100% position:50% align:middle
+without having to import the library or
+anything. They're sort of just always
+
+00:20:00.830 --> 00:20:04.540 line:100% position:50% align:middle
+there for us. Additionally, it does a
+whole bunch of stuff. Let's just take a
+
+00:20:04.540 --> 00:20:08.130 line:100% position:50% align:middle
+quick look at the Express-Validator at
+GitHub here. What it will do is,
+
+00:20:08.130 --> 00:20:12.170 line:100% position:50% align:middle
+whenever you have somebody send data to a
+URL, you can check the body,
+
+00:20:12.170 --> 00:20:15.650 line:100% position:50% align:middle
+you can check the params, and you can
+check the query. So body is things posted
+
+00:20:15.650 --> 00:20:22.280 line:100% position:50% align:middle
+via a form. Params are things that come in
+the URL. Query are things that come also
+
+00:20:22.280 --> 00:20:26.330 line:100% position:50% align:middle
+in the URL, but after that question mark
+that you have. So you can check that they
+
+00:20:26.330 --> 00:20:31.230 line:100% position:50% align:middle
+all are in the format that you're looking
+for, or you can convert them,
+
+00:20:31.230 --> 00:20:34.480 line:100% position:50% align:middle
+or you can do some sanitization, whatever
+it is that you need to do.
+
+00:20:34.480 --> 00:20:38.190 line:100% position:50% align:middle
+So before you actually work with your
+data, often, you need to do some
+
+00:20:38.190 --> 00:20:41.260 line:100% position:50% align:middle
+sanitizing, a little massaging, a little
+bit of working with your data.
+
+00:20:41.260 --> 00:20:46.010 line:100% position:50% align:middle
+That's exactly what this does for us. So
+we are sanitizing the body,
+
+00:20:46.010 --> 00:20:51.890 line:100% position:50% align:middle
+the name. So "req.body.name", it's
+sanitizing that property on there.
+
+00:20:51.890 --> 00:20:55.390 line:100% position:50% align:middle
+Then, we are going to check that somebody
+actually supplied a name,
+
+00:20:55.390 --> 00:20:58.910 line:100% position:50% align:middle
+because we make sure that it's required
+here, but we're going to also make sure
+
+00:20:58.910 --> 00:21:04.590 line:100% position:50% align:middle
+that it's required here. So we'll just
+say, "req.checkBody" for a "name" property
+
+00:21:04.590 --> 00:21:12.990 line:100% position:50% align:middle
+that "You must supply a name!", and then
+you've got to check that it is not empty.
+
+00:21:12.990 --> 00:21:17.950 line:100% position:50% align:middle
+Then, we also want to check for the email.
+So, "req.checkBody",
+
+00:21:17.950 --> 00:21:25.160 line:100% position:50% align:middle
+we're going to check that the "email"
+property and, "That email is not valid".
+
+00:21:25.160 --> 00:21:28.210 line:100% position:50% align:middle
+Then, you want to say, "isEmail". You see
+how we're doing all of our checks?
+
+00:21:28.210 --> 00:21:34.920 line:100% position:50% align:middle
+You also could say, ".notEmpty" and
+"isEmail". So you chain these on and on.
+
+00:21:34.920 --> 00:21:38.100 line:100% position:50% align:middle
+So you can do multiple checks in one go.
+In our case, we just need to check for
+
+00:21:38.100 --> 00:21:41.620 line:100% position:50% align:middle
+email, because if it is not there it will
+fail that test as well.
+
+00:21:41.620 --> 00:21:45.660 line:100% position:50% align:middle
+Then, we also want to normalize the email
+address. So we'll say,
+
+00:21:45.660 --> 00:21:52.340 line:100% position:50% align:middle
+"req.sanitizeBody". I'm going to take the
+email. There's a method called
+
+00:21:52.340 --> 00:21:58.330 line:100% position:50% align:middle
+".normalizeEmail". What this will do is
+there's this thing when you have people
+
+00:21:58.330 --> 00:22:03.340 line:100% position:50% align:middle
+sign up to your account, sometimes they'll
+use "Wesbos@gmail.com".
+
+00:22:03.340 --> 00:22:08.290 line:100% position:50% align:middle
+Sometimes if they're in the UK, they'll
+use "wesbos@googlemail.com".
+
+00:22:08.290 --> 00:22:17.430 line:100% position:50% align:middle
+Sometimes they'll use "wes.bos@gmail.com",
+which is the same thing as Gmail.
+
+00:22:17.430 --> 00:22:23.110 line:100% position:50% align:middle
+So Gmail lets you put dots anywhere in
+your Gmail one, and that's technically
+
+00:22:23.110 --> 00:22:29.750 line:100% position:50% align:middle
+different ones. You can do
+"wesbos+test@gmail.com". So there's all
+
+00:22:29.750 --> 00:22:35.080 line:100% position:50% align:middle
+these variations on the email, as well as
+you can do capitals and what not.
+
+00:22:35.080 --> 00:22:40.230 line:100% position:50% align:middle
+So with all these different variations,
+what happens is, A, either people can be
+
+00:22:40.230 --> 00:22:44.110 line:100% position:50% align:middle
+malicious and sign up for multiple
+accounts. I don't do that, because I know
+
+00:22:44.110 --> 00:22:50.410 line:100% position:50% align:middle
+that people use this for very good
+reasons. But also, people just forget what
+
+00:22:50.410 --> 00:22:54.250 line:100% position:50% align:middle
+email address they possibly used. So a lot
+of times, people are using these modifiers
+
+00:22:54.250 --> 00:22:57.220 line:100% position:50% align:middle
+to sign up for my website, and then they
+email me being like, "Hey,
+
+00:22:57.220 --> 00:23:02.010 line:100% position:50% align:middle
+Wes. I forgot which email address I used
+to sign up. Can you tell me?" So what you
+
+00:23:02.010 --> 00:23:06.220 line:100% position:50% align:middle
+can do is you can allow people to sign up
+with any of these email addresses,
+
+00:23:06.220 --> 00:23:12.000 line:100% position:50% align:middle
+and this normalizeEmail function is just
+going to always normalize it down to
+
+00:23:12.000 --> 00:23:16.590 line:100% position:50% align:middle
+simply "wesbos@gmail.com". You can turn
+all of these different features on and
+
+00:23:16.590 --> 00:23:21.360 line:100% position:50% align:middle
+off. Different email providers, some Yahoo
+and some Microsoft ones have similar
+
+00:23:21.360 --> 00:23:25.410 line:100% position:50% align:middle
+quirks about them. But it just starts to
+cut down either on abuse,
+
+00:23:25.410 --> 00:23:29.970 line:100% position:50% align:middle
+or just general confusion and angry users.
+So we're going to go into our
+
+00:23:29.970 --> 00:23:33.230 line:100% position:50% align:middle
+normalizeEmail here. There's a couple of
+properties that we want to say,
+
+00:23:33.230 --> 00:23:38.480 line:100% position:50% align:middle
+"remove_dots", and that will be "false",
+just because sometimes you do want to have
+
+00:23:38.480 --> 00:23:44.150 line:100% position:50% align:middle
+multiple email addresses for the same
+service. So that is allowed to do that.
+
+00:23:44.150 --> 00:23:48.510 line:100% position:50% align:middle
+We're going to say, "remove_extension",
+because dots and extension by default are
+
+00:23:48.510 --> 00:23:56.340 line:100% position:50% align:middle
+on by "true". So we say,
+"remove_extension: false", and then,
+
+00:23:56.340 --> 00:24:00.320 line:100% position:50% align:middle
+"gmail_remove_subaddress" and that is also
+going to be "false".
+
+00:24:00.320 --> 00:24:04.310 line:100% position:50% align:middle
+So if you want to know what all these
+possible ones are, all you have to do is
+
+00:24:04.310 --> 00:24:09.700 line:100% position:50% align:middle
+go to Express-Validator, look for this
+normalizeEmail function here...
+
+00:24:09.700 --> 00:24:15.240 line:100% position:50% align:middle
+Actually, if you do not find it, it's
+because you have to just go to Validator,
+
+00:24:15.240 --> 00:24:19.910 line:100% position:50% align:middle
+because Express-Validator just sits on top
+of this Validator package that we were
+
+00:24:19.910 --> 00:24:23.420 line:100% position:50% align:middle
+using earlier, and there we go,
+"normalizeEmail" all lowercase,
+
+00:24:23.420 --> 00:24:27.320 line:100% position:50% align:middle
+"gmail lowercase", "gmail_remove_dots",
+"gmail_remove_subaddress",
+
+00:24:27.320 --> 00:24:29.340 line:100% position:50% align:middle
+"outlook". There's all kinds of stuff that
+will normalizeEmail,
+
+00:24:29.340 --> 00:24:33.080 line:100% position:50% align:middle
+and you make sure that you have those
+turned on and off, depending on what your
+
+00:24:33.080 --> 00:24:36.280 line:100% position:50% align:middle
+preferences are for your application. So
+we're sanitizing the body there.
+
+00:24:36.280 --> 00:24:40.440 line:100% position:50% align:middle
+Next up, we want to check that the
+password cannot be blank, "req.checkBody",
+
+00:24:40.440 --> 00:24:44.690 line:100% position:50% align:middle
+and we're going to check that the
+password... I'll say, "password cannot be
+
+00:24:44.690 --> 00:24:50.460 line:100% position:50% align:middle
+blank," "notEmpty". Again, these probably
+won't ever trip. But if somebody does turn
+
+00:24:50.460 --> 00:24:53.740 line:100% position:50% align:middle
+off the actual validation right here...
+Because if I try to submit this,
+
+00:24:53.740 --> 00:24:59.080 line:100% position:50% align:middle
+you see how it's triggering the HTML5 one?
+But somebody could easily come along and
+
+00:24:59.080 --> 00:25:02.870 line:100% position:50% align:middle
+take the required attribute off of these
+fields, and then submit it.
+
+00:25:02.870 --> 00:25:05.760 line:100% position:50% align:middle
+So we do need to make sure that we're
+doing a server-side check.
+
+00:25:05.760 --> 00:25:13.560 line:100% position:50% align:middle
+We'll check the body again that the
+password-confirm is also not blank,
+
+00:25:13.560 --> 00:25:20.670 line:100% position:50% align:middle
+"Confirmed Password cannot be blank!"
+Empty." Then, we want to check that they
+
+00:25:20.670 --> 00:25:25.280 line:100% position:50% align:middle
+are the same. So,
+"req.checkBody('password-confirm',".
+
+00:25:25.280 --> 00:25:31.750 line:100% position:50% align:middle
+"Oops! Your passwords do not match')".
+Then, we're going to say,
+
+00:25:31.750 --> 00:25:34.660 line:100% position:50% align:middle
+"equals". So we want to make sure that the
+password confirmed is equal to
+
+00:25:34.660 --> 00:25:41.800 line:100% position:50% align:middle
+req.body.password. Right? So woo. That's a
+lot of checks that we have in place there.
+
+00:25:41.800 --> 00:25:46.520 line:100% position:50% align:middle
+But it's the simplest way to do validation
+with Express-Validator.
+
+00:25:46.520 --> 00:25:49.430 line:100% position:50% align:middle
+You just build a nice, little middleware
+that will take care of it.
+
+00:25:49.430 --> 00:25:53.220 line:100% position:50% align:middle
+Then, by the time we actually get to
+registering, we know that all the data is
+
+00:25:53.220 --> 00:25:57.320 line:100% position:50% align:middle
+going to be super, super-clean. Now, what
+we've got to do is we've got to get those
+
+00:25:57.320 --> 00:26:01.540 line:100% position:50% align:middle
+validation errors. So I'll say, "const
+errors = req.validationErrors()".
+
+00:26:01.540 --> 00:26:02.750 line:100% position:50% align:middle
+Calling this method, it will actually
+check all of these methods here,
+
+00:26:02.750 --> 00:26:05.550 line:100% position:50% align:middle
+and put them into an Errors object. Then,
+we can just simply check,
+
+00:26:05.550 --> 00:26:10.670 line:100% position:50% align:middle
+"If there are errors then," and in this
+case we're not going to pass it on to any
+
+00:26:10.670 --> 00:26:17.830 line:100% position:50% align:middle
+sort of error-handling middleware. We
+actually want to handle the error
+
+00:26:17.830 --> 00:26:21.550 line:100% position:50% align:middle
+ourselves here. This is a good example of
+actually handling the error yourself,
+
+00:26:21.550 --> 00:26:31.250 line:100% position:50% align:middle
+rather than passing it along to any sort
+of middleware. So if that is true,
+
+00:26:31.250 --> 00:26:37.370 line:100% position:50% align:middle
+we'll say, "req.flash('error',". So we'll
+say, "errors.map". We'll take the error,
+
+00:26:37.370 --> 00:26:44.890 line:100% position:50% align:middle
+and we'll return the error.msg. What this
+will do is that the errors here will
+
+00:26:44.890 --> 00:26:49.370 line:100% position:50% align:middle
+contain an array of objects, including the
+error message, as well as which field
+
+00:26:49.370 --> 00:26:53.140 line:100% position:50% align:middle
+actually had an error. So you could also
+use this to highlight which fields has an
+
+00:26:53.140 --> 00:26:56.490 line:100% position:50% align:middle
+error. But in our case, we're not all that
+concerned. Then, finally,
+
+00:26:56.490 --> 00:27:00.810 line:100% position:50% align:middle
+if something went wrong, what should we
+do? Well, we should just go back and
+
+00:27:00.810 --> 00:27:05.260 line:100% position:50% align:middle
+re-render this register form. But we don't
+want to totally clear the form.
+
+00:27:05.260 --> 00:27:09.590 line:100% position:50% align:middle
+How much do you hate that, when you go to
+a website and you have a validation error,
+
+00:27:09.590 --> 00:27:13.430 line:100% position:50% align:middle
+and then it just totally clears your
+entire form? That's not something that we
+
+00:27:13.430 --> 00:27:19.550 line:100% position:50% align:middle
+want to do to our users. So say,
+"res.render('register'," and the title is
+
+00:27:19.550 --> 00:27:24.450 line:100% position:50% align:middle
+going to be "Register". The body is going
+to be "req.body". Right?
+
+00:27:24.450 --> 00:27:27.240 line:100% position:50% align:middle
+We're going to take the body and just send
+it right back to the user,
+
+00:27:27.240 --> 00:27:32.270 line:100% position:50% align:middle
+so that we can prepopulate these inputs
+once more. Then, we also need to send the
+
+00:27:32.270 --> 00:27:37.750 line:100% position:50% align:middle
+flashes along. The reason why is because,
+normally the flashes get passed along
+
+00:27:37.750 --> 00:27:41.210 line:100% position:50% align:middle
+because it's on the next request. But
+because all of this validation and
+
+00:27:41.210 --> 00:27:45.490 line:100% position:50% align:middle
+rendering, the re-register is happening on
+one single request,
+
+00:27:45.490 --> 00:27:50.130 line:100% position:50% align:middle
+we need to explicitly pass the flashes,
+which looks like this,
+
+00:27:50.130 --> 00:27:56.450 line:100% position:50% align:middle
+"req.flash". So if you ever need them on
+that request, you can just manually pass
+
+00:27:56.450 --> 00:28:00.880 line:100% position:50% align:middle
+them like that. Otherwise, the next time
+they come around, they'll be passed to
+
+00:28:00.880 --> 00:28:07.050 line:100% position:50% align:middle
+your locals, no problem. I forgot an arrow
+here, and we'll pop a semicolon here,
+
+00:28:07.050 --> 00:28:12.100 line:100% position:50% align:middle
+and let's actually hook up this
+validateRegister method to our router.
+
+00:28:12.100 --> 00:28:17.500 line:100% position:50% align:middle
+Go back to index.js. Say, "When somebody
+posts to /register, the first thing we're
+
+00:28:17.500 --> 00:28:21.360 line:100% position:50% align:middle
+going to do is
+userController.validateRegister." So
+
+00:28:21.360 --> 00:28:25.420 line:100% position:50% align:middle
+that's really, "Let's actually make it
+break," and then we'll go back to our
+
+00:28:25.420 --> 00:28:30.300 line:100% position:50% align:middle
+register.pug and make sure that you take
+off these requires, just temporarily,
+
+00:28:30.300 --> 00:28:34.480 line:100% position:50% align:middle
+so we can actually make it break and see
+what will happen. So let's go back here.
+
+00:28:34.480 --> 00:28:38.740 line:100% position:50% align:middle
+We'll go to our Register page. Name, I'm
+going to do nothing and push Register.
+
+00:28:38.740 --> 00:28:44.770 line:100% position:50% align:middle
+Oh, I get an error, "req.validationErrors
+is not a function." So one more time,
+
+00:28:44.770 --> 00:28:52.340 line:100% position:50% align:middle
+we'll go back here. Too many R's and this
+needs an S. There we go.
+
+00:28:52.340 --> 00:28:55.570 line:100% position:50% align:middle
+"You must apply a name!", "That email is
+not valid", "Passwords cannot be blank",
+
+00:28:55.570 --> 00:29:00.780 line:100% position:50% align:middle
+and "Confirmed passwords cannot be blank!"
+Wow. So see? We did all the bad things and
+
+00:29:00.780 --> 00:29:05.180 line:100% position:50% align:middle
+now it's telling us what these possible
+errors are. If I filled in some of them,
+
+00:29:05.180 --> 00:29:10.930 line:100% position:50% align:middle
+like "wes" and "wesbos@gmail.com", but I
+did this as "wes" and this as "bos"...
+
+00:29:10.930 --> 00:29:14.930 line:100% position:50% align:middle
+Oh, what did we do there? We didn't do a
+type of "password" on that.
+
+00:29:14.930 --> 00:29:19.400 line:100% position:50% align:middle
+Let's take a look. Oh, type of "password",
+and then name of "password-confirm".
+
+00:29:19.400 --> 00:29:25.730 line:100% position:50% align:middle
+I was being a hotshot with my selectors
+there earlier. So once we now submit this,
+
+00:29:25.730 --> 00:29:29.370 line:100% position:50% align:middle
+it says, "Oops! Your passwords do not
+match". Why? Because the password-confirm
+
+00:29:29.370 --> 00:29:33.780 line:100% position:50% align:middle
+was not equal to the actual password. So
+that is a first part of our middleware,
+
+00:29:33.780 --> 00:29:40.560 line:100% position:50% align:middle
+where we validate all other registration
+data. I should say the last thing is down
+
+00:29:40.560 --> 00:29:46.100 line:100% position:50% align:middle
+here, if there is errors you've returned,
+which will stop the function from running.
+
+00:29:46.100 --> 00:29:52.020 line:100% position:50% align:middle
+Otherwise, we're just going to call "next"
+and say, "There were no errors." What
+
+00:29:52.020 --> 00:29:55.510 line:100% position:50% align:middle
+"next" will do is it will just call the
+next piece of middleware down the line.
+
+00:29:55.510 --> 00:29:59.600 line:100% position:50% align:middle
+That is actually, "Now, let's register
+them. Let's save them to the database."
+
+00:29:59.600 --> 00:30:03.110 line:100% position:50% align:middle
+That's exactly what we're going
+to do in the next video.
+
+00:30:03.110 --> 00:30:06.200 line:100% position:50% align:middle
+♪ [music] ♪

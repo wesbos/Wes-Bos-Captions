@@ -1,0 +1,873 @@
+WEBVTT
+
+00:00:00.920 --> 00:00:03.256 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.030 --> 00:00:13.629 line:100% position:50% align:middle
+In order to start working with the
+database, we first need
+
+00:00:13.629 --> 00:00:16.619 line:100% position:50% align:middle
+to import Mongoose. Again, Mongoose
+is our package that we use
+
+00:00:16.619 --> 00:00:21.550 line:100% position:50% align:middle
+to interface with our MongoDB database.
+So we say "const Mongoose equals
+
+00:00:21.550 --> 00:00:27.733 line:100% position:50% align:middle
+require Mongoose." Then we also need
+reference to our store .js schema,
+
+00:00:27.733 --> 00:00:31.817 line:100% position:50% align:middle
+and rather than importing this schema
+directly from the file because we've
+
+00:00:31.817 --> 00:00:36.708 line:100% position:50% align:middle
+already imported it once in our
+start.js file, remember in our require
+
+00:00:36.708 --> 00:00:41.419 line:100% position:50% align:middle
+model store, we can simply reference it
+off the Mongoose variable here
+
+00:00:41.419 --> 00:00:45.150 line:100% position:50% align:middle
+because Mongoose uses a concept
+called a singleton, which allows us
+
+00:00:45.150 --> 00:00:48.975 line:100% position:50% align:middle
+to only import our models once
+and then reference them anywhere
+
+00:00:48.975 --> 00:00:58.460 line:100% position:50% align:middle
+in our application. So const Store equals
+mongoose.model Store, and that comes
+
+00:00:58.460 --> 00:01:02.720 line:100% position:50% align:middle
+from...where did that Store come from?
+Well, at the bottom of our model, where we
+
+00:01:02.720 --> 00:01:08.344 line:100% position:50% align:middle
+create the model here, we are setting it
+to be store, and here we are getting it
+
+00:01:08.344 --> 00:01:11.063 line:100% position:50% align:middle
+and putting it back into this
+variable here. Good.
+
+00:01:11.063 --> 00:01:14.988 line:100% position:50% align:middle
+Now let's go into our create store,
+and let's talk about how to actually
+
+00:01:14.988 --> 00:01:21.858 line:100% position:50% align:middle
+create a store with MongoDB. So the way,
+that you do it is you say const store
+
+00:01:21.858 --> 00:01:28.908 line:100% position:50% align:middle
+equals new Store, and then you pass it
+in object full of a name, a description,
+
+00:01:28.908 --> 00:01:32.707 line:100% position:50% align:middle
+and the tags. So the way that we can do
+that is already in request.body,
+
+00:01:32.707 --> 00:01:36.745 line:100% position:50% align:middle
+so we can just pass that directly
+from the body into our store.
+
+00:01:36.745 --> 00:01:40.881 line:100% position:50% align:middle
+Now you may be saying like, "Well, what
+happens if somebody posts some other
+
+00:01:40.881 --> 00:01:45.158 line:100% position:50% align:middle
+data that we don't necessarily want?
+Is that going to be a bit of an issue?"
+
+00:01:45.158 --> 00:01:50.301 line:100% position:50% align:middle
+Well, no, it's not an issue because if you
+open up your store.js, we are using
+
+00:01:50.301 --> 00:01:55.839 line:100% position:50% align:middle
+what's called a strict schema by default,
+and it will only pick up the actual fields
+
+00:01:55.839 --> 00:01:59.682 line:100% position:50% align:middle
+that we have set out in this schema.
+Anything else will get thrown away.
+
+00:01:59.682 --> 00:02:04.430 line:100% position:50% align:middle
+So we have our store. Now, in order
+to save this to the database,
+
+00:02:04.430 --> 00:02:08.100 line:100% position:50% align:middle
+we just created the store here, and we
+could go ahead and add new stuff to the
+
+00:02:08.100 --> 00:02:13.545 line:100% position:50% align:middle
+stuff, so store.age equals 10, store.cool
+equals true. You can keep adding fields
+
+00:02:13.545 --> 00:02:18.460 line:100% position:50% align:middle
+to your store, but none of that will be
+reflected in the database until you call
+
+00:02:18.460 --> 00:02:23.161 line:100% position:50% align:middle
+store.save. And what that will do is once
+you call store.save, it's going to fire
+
+00:02:23.161 --> 00:02:28.145 line:100% position:50% align:middle
+off a connection to your MongoDB database,
+save that data, and then come back to us
+
+00:02:28.145 --> 00:02:34.390 line:100% position:50% align:middle
+with either the store itself or an error
+saying what happened. Maybe there was a
+
+00:02:34.390 --> 00:02:38.442 line:100% position:50% align:middle
+validation error. Maybe there was some
+missing data, incorrect data.
+
+00:02:38.442 --> 00:02:39.078 line:100% position:50% align:middle
+You don't know.
+
+00:02:39.080 --> 00:02:43.940 line:100% position:50% align:middle
+So at this point what you need to take
+sort of a look at the history of Mongoose
+
+00:02:43.940 --> 00:02:49.000 line:100% position:50% align:middle
+and how it's been working. So in the olden
+days, what we would do is we would have a
+
+00:02:49.000 --> 00:02:54.047 line:100% position:50% align:middle
+callback function because JavaScript is a
+synchronous...meaning that if I were
+
+00:02:54.047 --> 00:02:58.721 line:100% position:50% align:middle
+to call a bunch of code right here
+and maybe console log, it worked,
+
+00:02:58.721 --> 00:03:03.405 line:100% position:50% align:middle
+or in our case, we're going to redirect
+them to maybe like the home page,
+
+00:03:03.405 --> 00:03:08.384 line:100% position:50% align:middle
+what that's going to do is it's going
+to fire off the save, and then redirect
+
+00:03:08.384 --> 00:03:13.336 line:100% position:50% align:middle
+them to the home page, but the
+save will not happen immediately.
+
+00:03:13.336 --> 00:03:16.860 line:100% position:50% align:middle
+The save will take some time because this
+sort of stuff where you...if you ever do
+
+00:03:16.860 --> 00:03:21.350 line:100% position:50% align:middle
+an ajax request, you know that it takes
+time, or if you ever save some data to a
+
+00:03:21.350 --> 00:03:25.647 line:100% position:50% align:middle
+database, it will take a little bit
+of time, but JavaScript will not wait
+
+00:03:25.647 --> 00:03:30.903 line:100% position:50% align:middle
+for anybody because it's a synchronous
+by default, and what that means is that it
+
+00:03:30.903 --> 00:03:34.760 line:100% position:50% align:middle
+would simply just fire it off and then
+redirect you, regardless of if that
+
+00:03:34.760 --> 00:03:39.120 line:100% position:50% align:middle
+actually worked or not. And that's a bit
+of a problem for us because before we
+
+00:03:39.120 --> 00:03:44.591 line:100% position:50% align:middle
+redirect them, we need to know, was there
+an error? And if so, we need to display
+
+00:03:44.591 --> 00:03:47.860 line:100% position:50% align:middle
+it to the user and tell them,
+"Hey, this actually didn't work."
+
+00:03:47.860 --> 00:03:52.052 line:100% position:50% align:middle
+So the way that we initially did it is we
+would have a callback function here,
+
+00:03:52.052 --> 00:03:56.186 line:100% position:50% align:middle
+and that would pass us the error if there
+was an error, and then it would pass us
+
+00:03:56.186 --> 00:04:00.520 line:100% position:50% align:middle
+the actual store, or the document, as it's
+called in MongoDB. You can call that
+
+00:04:00.520 --> 00:04:06.616 line:100% position:50% align:middle
+whatever you want. And then, in here you
+say, if there is no error, then you can
+
+00:04:06.616 --> 00:04:13.378 line:100% position:50% align:middle
+take your redirect, and take your
+console log, it worked, and put it
+
+00:04:13.378 --> 00:04:18.096 line:100% position:50% align:middle
+up inside of here. Now, whew!
+That's a lot of code just for a simple
+
+00:04:18.096 --> 00:04:21.212 line:100% position:50% align:middle
+saving of a store. What happens
+if you need to first query
+
+00:04:21.212 --> 00:04:25.246 line:100% position:50% align:middle
+three or four stores, then loop
+over the data, then save two of those
+
+00:04:25.246 --> 00:04:29.350 line:100% position:50% align:middle
+actual stores? You can see how
+this code would get really
+
+00:04:29.350 --> 00:04:35.840 line:100% position:50% align:middle
+complicated if you need to have any sort
+of order of operation inside of your
+
+00:04:35.840 --> 00:04:40.920 line:100% position:50% align:middle
+actual code because in here, then once it
+worked, maybe you would take another one
+
+00:04:40.920 --> 00:04:45.973 line:100% position:50% align:middle
+like reviews. and like you would find all
+of the reviews, and then when that
+
+00:04:45.973 --> 00:04:50.442 line:100% position:50% align:middle
+is done, you have the error and the
+reviews, and then when that is done,
+
+00:04:50.442 --> 00:04:53.847 line:100% position:50% align:middle
+and you want to redirect them. You could
+see how things just start getting nested
+
+00:04:53.847 --> 00:04:59.945 line:100% position:50% align:middle
+deeper and deeper and deeper if you just
+want to do what? One, two, three,
+
+00:04:59.945 --> 00:05:04.224 line:100% position:50% align:middle
+four, five. If you want to do six things
+before you actually send some data
+
+00:05:04.224 --> 00:05:09.428 line:100% position:50% align:middle
+to the actual user, your code gets
+to be looking like what's called a
+
+00:05:09.428 --> 00:05:12.643 line:100% position:50% align:middle
+Christmas tree code, or this is referred
+to as callback hell, where you have
+
+00:05:12.643 --> 00:05:17.752 line:100% position:50% align:middle
+nested data over and over and over again.
+So that's not a great way to code
+
+00:05:17.752 --> 00:05:20.947 line:100% position:50% align:middle
+your app. You will see a lot of example
+code online like that because that's
+
+00:05:20.947 --> 00:05:25.965 line:100% position:50% align:middle
+how it was for many, many years.
+But let's bring it back, bring it back,
+
+00:05:25.965 --> 00:05:29.423 line:100% position:50% align:middle
+bring it back. Let's bring it back just
+to this right here store.save.
+
+00:05:29.423 --> 00:05:34.754 line:100% position:50% align:middle
+What we have now transitioned
+over to is using Mongoose with what's
+
+00:05:34.754 --> 00:05:38.900 line:100% position:50% align:middle
+called promises, and promises
+will immediately return to you,
+
+00:05:38.900 --> 00:05:42.040 line:100% position:50% align:middle
+not the data, whether it worked or not
+because that's impossible.
+
+00:05:42.040 --> 00:05:45.855 line:100% position:50% align:middle
+What it will return to us is a promise
+which is sort of like an IOU note
+
+00:05:45.855 --> 00:05:50.997 line:100% position:50% align:middle
+for, "I will eventually come back to you
+with either the data, which the store
+
+00:05:50.997 --> 00:05:55.281 line:100% position:50% align:middle
+saved, or the data that you queried, or
+an error saying something had happened."
+
+00:05:55.281 --> 00:06:00.164 line:100% position:50% align:middle
+So we had changed our...we take that
+save out, put it on it's own line, take
+
+00:06:00.164 --> 00:06:05.184 line:100% position:50% align:middle
+the semicolon off, and then we would
+chain.then, which is what you use
+
+00:06:05.184 --> 00:06:09.314 line:100% position:50% align:middle
+in a promise. And the reason why we can
+use a promise is because if you look
+
+00:06:09.314 --> 00:06:13.910 line:100% position:50% align:middle
+back at our start.js, remember they did
+this mongoose.promise equals
+
+00:06:13.910 --> 00:06:17.702 line:100% position:50% align:middle
+global.promise. What this does is at first
+tells Mongoose that we are using
+
+00:06:17.702 --> 00:06:21.929 line:100% position:50% align:middle
+promises, and second, it tells us that
+we're using built-in ES6 promises
+
+00:06:21.929 --> 00:06:25.886 line:100% position:50% align:middle
+because there are additional promise
+libraries like Bluebird and whatnot,
+
+00:06:25.886 --> 00:06:30.350 line:100% position:50% align:middle
+but now that ES6 promises are out, we
+can just use them.
+
+00:06:30.350 --> 00:06:34.370 line:100% position:50% align:middle
+So we have then, we have a store that
+comes back, and then you could say
+
+00:06:34.370 --> 00:06:39.667 line:100% position:50% align:middle
+like res.json, the actual store data,
+and if there's an error, you catch the
+
+00:06:39.667 --> 00:06:45.785 line:100% position:50% align:middle
+error, and then you do something, throw
+error with the actual error in there.
+
+00:06:45.825 --> 00:06:51.190 line:100% position:50% align:middle
+So that's good, and the beauty of that is
+you can chain store, so maybe you want it
+
+00:06:51.190 --> 00:06:58.740 line:100% position:50% align:middle
+to save the store, but then you want it
+to return store.find all of the stores
+
+00:06:58.740 --> 00:07:02.200 line:100% position:50% align:middle
+because you want it to immediately display
+a list of all of the stores like the
+
+00:07:02.200 --> 00:07:06.216 line:100% position:50% align:middle
+latest ten. And then what that will allow
+you to do is you can chain stores,
+
+00:07:06.216 --> 00:07:11.840 line:100% position:50% align:middle
+and that will allow us to do
+like res.render store list,
+
+00:07:11.840 --> 00:07:15.460 line:100% position:50% align:middle
+and you want to pass it a list of the
+stores which is just stores.
+
+00:07:15.460 --> 00:07:19.729 line:100% position:50% align:middle
+So that's great because you can chain
+these things on and on and on as long
+
+00:07:19.729 --> 00:07:25.830 line:100% position:50% align:middle
+as you possibly want, as long as each one
+of these is returning some sort of promise
+
+00:07:25.830 --> 00:07:30.020 line:100% position:50% align:middle
+from each of the thens. So that made
+things a little bit easier because we're
+
+00:07:30.020 --> 00:07:35.160 line:100% position:50% align:middle
+not in callback hell anymore. We're just
+in sort of chaining promise land.
+
+00:07:35.160 --> 00:07:43.986 line:100% position:50% align:middle
+The promise land is chained, but we can do
+even better. In ES8, we have something
+
+00:07:43.986 --> 00:07:49.327 line:100% position:50% align:middle
+called async await, which also does
+away with all of this then, then,
+
+00:07:49.327 --> 00:07:53.736 line:100% position:50% align:middle
+thening catch. So let's go back to here.
+Let's bring the save back onto its
+
+00:07:53.736 --> 00:07:54.318 line:100% position:50% align:middle
+own line.
+
+00:07:55.906 --> 00:08:01.920 line:100% position:50% align:middle
+Now, let's say I wanted a console log. It
+worked only once the save has finished.
+
+00:08:01.920 --> 00:08:06.370 line:100% position:50% align:middle
+The way that we can do that is we can tell
+JavaScript, "Hey, hold on a second.
+
+00:08:06.370 --> 00:08:11.683 line:100% position:50% align:middle
+Just like cool your jets, and wait
+until I've done this save, and then
+
+00:08:11.683 --> 00:08:15.933 line:100% position:50% align:middle
+continue on," and that's with something
+called async await, and the way that that
+
+00:08:15.933 --> 00:08:21.298 line:100% position:50% align:middle
+works is you go to your function, and you
+mark this function as async, and that
+
+00:08:21.298 --> 00:08:26.884 line:100% position:50% align:middle
+will tell the browser or node.js that,
+"Hey, this function that I'm using is
+
+00:08:26.884 --> 00:08:31.430 line:100% position:50% align:middle
+going to have some awaits inside of it or
+possibly have some awaits inside of it,"
+
+00:08:31.430 --> 00:08:36.453 line:100% position:50% align:middle
+and then we can go in front of the thing
+that returns a promise and simply await
+
+00:08:36.453 --> 00:08:41.826 line:100% position:50% align:middle
+it because store.save will return to us
+a promise, and we then can await it,
+
+00:08:41.826 --> 00:08:46.637 line:100% position:50% align:middle
+meaning that we will not move
+on to line 16 until the save has
+
+00:08:47.323 --> 00:08:49.004 line:100% position:50% align:middle
+successfully happened.
+
+00:08:49.540 --> 00:08:52.820 line:100% position:50% align:middle
+Good. So don't worry too too much if this
+doesn't make a whole lot of sense.
+
+00:08:52.820 --> 00:08:55.223 line:100% position:50% align:middle
+We're going to be doing it quite a bit,
+especially if you're brand new
+
+00:08:55.223 --> 00:09:00.730 line:100% position:50% align:middle
+to promises, it can be a little bit of a
+woe, but we'll get it as we go along.
+
+00:09:00.730 --> 00:09:04.593 line:100% position:50% align:middle
+One more thing that we need to know
+about async await is that there's no...
+
+00:09:04.593 --> 00:09:11.847 line:100% position:50% align:middle
+you noticed that before we had a callback
+that passed an error, or we had a .catch
+
+00:09:11.847 --> 00:09:16.340 line:100% position:50% align:middle
+that gave us the error. In order to catch
+an error with async await,
+
+00:09:16.340 --> 00:09:22.756 line:100% position:50% align:middle
+you generally have to wrap your entire
+code in a try. You try all this stuff,
+
+00:09:22.930 --> 00:09:27.280 line:100% position:50% align:middle
+and then you have this fallback catch.
+We'll give you the error, and then if that
+
+00:09:27.280 --> 00:09:30.861 line:100% position:50% align:middle
+happens, you need to do something
+with your actual error in here. Maybe you
+
+00:09:30.861 --> 00:09:35.630 line:100% position:50% align:middle
+console log it or send the user
+to a 404 page or whatnot.
+
+00:09:35.630 --> 00:09:40.891 line:100% position:50% align:middle
+I'm not a huge fan of that because the
+whole try catch thing, the whole beauty
+
+00:09:40.891 --> 00:09:44.280 line:100% position:50% align:middle
+of async await is that you don't have
+to have all of this nested code,
+
+00:09:44.280 --> 00:09:48.460 line:100% position:50% align:middle
+and if you have to wrap your code in this
+ugly try catch, it's a bit of a bummer.
+
+00:09:48.460 --> 00:09:54.570 line:100% position:50% align:middle
+So, two solutions, just don't write code
+that has bugs, which is what I do.
+
+00:09:54.570 --> 00:10:00.075 line:100% position:50% align:middle
+I'm joking. You can't ever do that because
+if there is an error, your node.js process
+
+00:10:00.075 --> 00:10:03.720 line:100% position:50% align:middle
+will quit on you, and that's not good
+to happen.
+
+00:10:03.720 --> 00:10:06.560 line:100% position:50% align:middle
+So you always have to handle your errors
+even if you think you're amazing
+
+00:10:06.560 --> 00:10:07.980 line:100% position:50% align:middle
+at programming and you never write errors.
+
+00:10:07.980 --> 00:10:14.360 line:100% position:50% align:middle
+So how are we going to handle that? Well,
+one cool way is that we can use something
+
+00:10:14.360 --> 00:10:20.040 line:100% position:50% align:middle
+called composition, which is you can take
+this create store and wrap it in another
+
+00:10:20.040 --> 00:10:26.590 line:100% position:50% align:middle
+function that will catch any errors. So we
+create a higher function that wraps create
+
+00:10:26.590 --> 00:10:32.590 line:100% position:50% align:middle
+store, and if any of this code in here was
+to throw an error, if anything weird was
+
+00:10:32.590 --> 00:10:38.400 line:100% position:50% align:middle
+to happen inside of here, we will have a
+function that wraps it that will handle
+
+00:10:38.400 --> 00:10:41.610 line:100% position:50% align:middle
+all of our error handling,
+which is really, really nice.
+
+00:10:41.610 --> 00:10:47.463 line:100% position:50% align:middle
+So I've already coded this function
+for you. Let's open up error handlers.js,
+
+00:10:47.463 --> 00:10:54.675 line:100% position:50% align:middle
+and you see this catch errors here. What
+this will do, and this is essentially
+
+00:10:54.675 --> 00:11:00.310 line:100% position:50% align:middle
+just a middleware that we can use here,
+is it will take in the function,
+
+00:11:00.310 --> 00:11:06.940 line:100% position:50% align:middle
+which in our case is the create store
+function, and it will return a function
+
+00:11:06.940 --> 00:11:11.815 line:100% position:50% align:middle
+that calls it...this is a function that
+calls a function, and if there is
+
+00:11:11.815 --> 00:11:19.892 line:100% position:50% align:middle
+an error, it will catch it and call
+.next. Okay, follow with me. And what
+
+00:11:19.892 --> 00:11:30.220 line:100% position:50% align:middle
+.next will do is if we look at our app.js,
+remember we have all of our routes.
+
+00:11:30.220 --> 00:11:36.418 line:100% position:50% align:middle
+Where are they? Here we go, app.use
+routes, and all of our routes are going
+
+00:11:36.418 --> 00:11:39.330 line:100% position:50% align:middle
+to be wrapped in this error handler here.
+
+00:11:39.330 --> 00:11:45.718 line:100% position:50% align:middle
+So if any of our routes hit an error, this
+error handler is going to kick in,
+
+00:11:45.718 --> 00:11:50.230 line:100% position:50% align:middle
+and it's going to catch the error because
+we don't want to have to do it.
+
+00:11:50.230 --> 00:11:54.155 line:100% position:50% align:middle
+It's going to catch it for us, and it's
+going to immediately call next,
+
+00:11:54.155 --> 00:11:59.115 line:100% position:50% align:middle
+and what next will do is it's just going
+to say, "Okay, well something
+
+00:11:59.115 --> 00:12:01.487 line:100% position:50% align:middle
+just happened. We're not going to use
+any of these routes here.
+
+00:12:01.487 --> 00:12:06.573 line:100% position:50% align:middle
+We're just going to pass it along the
+chain of middleware, which is either
+
+00:12:06.573 --> 00:12:10.808 line:100% position:50% align:middle
+going to be a not found or a validation
+flash error, which we're going to talk
+
+00:12:10.808 --> 00:12:14.912 line:100% position:50% align:middle
+about, or it's going to most likely,
+it's going to be this one, which is going
+
+00:12:14.912 --> 00:12:18.057 line:100% position:50% align:middle
+to either show us our development errors
+or our production errors.
+
+00:12:18.400 --> 00:12:22.040 line:100% position:50% align:middle
+So I know that's a little bit confusing
+because there's a whole lot of steps that
+
+00:12:22.040 --> 00:12:27.293 line:100% position:50% align:middle
+that has to filter through, but we will
+keep coming back to how this works,
+
+00:12:27.293 --> 00:12:31.888 line:100% position:50% align:middle
+and as we go along, but the main thing
+that we need to learn about here is that
+
+00:12:31.888 --> 00:12:38.925 line:100% position:50% align:middle
+if you do not wrap your async await
+functions in a try catch, you need to wrap
+
+00:12:38.925 --> 00:12:46.115 line:100% position:50% align:middle
+it in this catch errors function right
+here, so that it will handle all of the
+
+00:12:46.115 --> 00:12:51.051 line:100% position:50% align:middle
+errors for you. Let's go back to our
+routes here, and we need to then
+
+00:12:51.051 --> 00:12:54.585 line:100% position:50% align:middle
+import that error handler
+because this create store function,
+
+00:12:54.585 --> 00:12:59.115 line:100% position:50% align:middle
+it is async await, so it needs
+to be wrapped in that catch
+
+00:12:59.115 --> 00:13:04.180 line:100% position:50% align:middle
+error function. We need to use
+composition, which is wrapping a function
+
+00:13:04.180 --> 00:13:09.987 line:100% position:50% align:middle
+in a function. So we will do this. We'll
+say const curly brackets catch errors
+
+00:13:09.987 --> 00:13:15.861 line:100% position:50% align:middle
+equals require, then we'll go up a level
+into our handlers directory, and then
+
+00:13:15.861 --> 00:13:20.190 line:100% position:50% align:middle
+we'll grab our error handlers.js file,
+don't need the .js on the end.
+
+00:13:20.190 --> 00:13:24.370 line:100% position:50% align:middle
+So, whoa, we haven't done this before.
+What is this? This is just something
+
+00:13:24.370 --> 00:13:30.230 line:100% position:50% align:middle
+called object de-structuring, which will
+allow us to import an entire object, which
+
+00:13:30.230 --> 00:13:34.790 line:100% position:50% align:middle
+will have an object exports.catch
+error, exports.not found,
+
+00:13:34.790 --> 00:13:37.719 line:100% position:50% align:middle
+exports.flash validation.
+We don't need all of these.
+
+00:13:37.719 --> 00:13:41.929 line:100% position:50% align:middle
+We just need to catch errors.
+So by taking de-structuring,
+
+00:13:41.929 --> 00:13:46.660 line:100% position:50% align:middle
+if you've taken my ES6 course, you'll know
+that what that will do is just creates a
+
+00:13:46.660 --> 00:13:50.974 line:100% position:50% align:middle
+variable called catch errors, and it's not
+necessary to import the entire thing,
+
+00:13:50.974 --> 00:13:56.600 line:100% position:50% align:middle
+and then grab a property off of it. We can
+simply just import the one method that we
+
+00:13:56.600 --> 00:14:01.396 line:100% position:50% align:middle
+need, and then we'll take this catch
+errors and wrap our controller
+
+00:14:01.396 --> 00:14:02.688 line:100% position:50% align:middle
+that is async await.
+
+00:14:02.688 --> 00:14:06.270 line:100% position:50% align:middle
+So essentially, what this is going to do
+is it's immediately going to run catch
+
+00:14:06.270 --> 00:14:10.650 line:100% position:50% align:middle
+errors when you boot up your application,
+and catch errors is going to take that
+
+00:14:10.650 --> 00:14:14.160 line:100% position:50% align:middle
+function, wrap it in another function, a
+higher order function,
+
+00:14:14.160 --> 00:14:19.300 line:100% position:50% align:middle
+and then return to us that function with a
+catch tacked on to the end, that will then
+
+00:14:19.300 --> 00:14:24.372 line:100% position:50% align:middle
+handle pushing up to the next value.
+So, again, don't worry too too much if
+
+00:14:24.372 --> 00:14:27.551 line:100% position:50% align:middle
+that doesn't make a whole lot of sense.
+It's a bit confusing, but it's a nice
+
+00:14:27.551 --> 00:14:33.255 line:100% position:50% align:middle
+clean way for us to just catch any of the
+errors and push them along to some later
+
+00:14:33.255 --> 00:14:38.647 line:100% position:50% align:middle
+middleware, rather than us have to catch
+the error in every single controller
+
+00:14:38.647 --> 00:14:42.429 line:100% position:50% align:middle
+that we have, and then to handle it.
+In here, we don't have to handle the
+
+00:14:42.429 --> 00:14:46.640 line:100% position:50% align:middle
+errors, unless we explicitly want to do
+the error handling in a special way.
+
+00:14:46.640 --> 00:14:50.946 line:100% position:50% align:middle
+We simply just let the errors happen,
+let the error handler catch it for us,
+
+00:14:50.946 --> 00:14:57.262 line:100% position:50% align:middle
+and then push it along our middleware
+stack, so that one of our error handlers,
+
+00:14:57.262 --> 00:15:00.232 line:100% position:50% align:middle
+not found, validation errors,
+development errors,
+
+00:15:00.232 --> 00:15:04.720 line:100% position:50% align:middle
+or production errors, one of these
+middlewares is going to figure out which
+
+00:15:04.720 --> 00:15:10.380 line:100% position:50% align:middle
+one should be actually displaying
+it for us. So, whew! Let's go back to our
+
+00:15:10.380 --> 00:15:14.055 line:100% position:50% align:middle
+create store function. We have our async.
+We are awaiting the store.save.
+
+00:15:14.055 --> 00:15:18.320 line:100% position:50% align:middle
+When the store is saved,
+we are going to redirect them.
+
+00:15:18.320 --> 00:15:25.328 line:100% position:50% align:middle
+Let's just redirect them to the home page
+for now, so res.redirect to forward slash.
+
+00:15:25.328 --> 00:15:30.160 line:100% position:50% align:middle
+So give it a save. Let's go back
+to our add folder here.
+
+00:15:30.160 --> 00:15:36.075 line:100% position:50% align:middle
+Let's try add a store called bakery,
+and the description is I love bread,
+
+00:15:36.075 --> 00:15:40.208 line:100% position:50% align:middle
+and we're going to make it vegetarian
+and open late and give it a save.
+
+00:15:40.208 --> 00:15:46.592 line:100% position:50% align:middle
+Whew! Look what happened there. It saved
+the data and then redirected us to the
+
+00:15:46.592 --> 00:15:50.585 line:100% position:50% align:middle
+home page. How do we know if
+it worked? Well, we can open up our
+
+00:15:50.585 --> 00:15:57.594 line:100% position:50% align:middle
+MongoDB compass application here,
+and we can connect back to our compass
+
+00:15:57.594 --> 00:16:02.147 line:100% position:50% align:middle
+database that we have. So either you
+are on local host, or you are on your
+
+00:16:02.147 --> 00:16:05.801 line:100% position:50% align:middle
+mLab, depending on which one you have.
+It should be still in your sidebar here.
+
+00:16:05.801 --> 00:16:10.390 line:100% position:50% align:middle
+If you ever forget your username
+and password, again, you can just open
+
+00:16:10.390 --> 00:16:15.423 line:100% position:50% align:middle
+up that variables.env, and here you will
+see your username, your password,
+
+00:16:15.423 --> 00:16:20.770 line:100% position:50% align:middle
+your host, your port, and your
+database name.
+
+00:16:20.770 --> 00:16:24.920 line:100% position:50% align:middle
+So those are, if you ever forget it, it
+will always be in your variables.env file.
+
+00:16:24.920 --> 00:16:29.726 line:100% position:50% align:middle
+So I'm going to connect to that, and we
+find our database, and you now see if you
+
+00:16:29.745 --> 00:16:36.670 line:100% position:50% align:middle
+go to stores, whoo ooh, one! Click it
+and click on documents, and you see that
+
+00:16:36.670 --> 00:16:41.970 line:100% position:50% align:middle
+there's the bakery. The slug has been
+made lowercase, the name, I love bread,
+
+00:16:41.970 --> 00:16:45.310 line:100% position:50% align:middle
+and then we added a couple of tags. There
+they are, open late and vegetarian.
+
+00:16:45.310 --> 00:16:49.780 line:100% position:50% align:middle
+Let's try it again. Go to add, we're going
+to add fish market,
+
+00:16:49.780 --> 00:16:55.690 line:100% position:50% align:middle
+shout out to catch of the day, and let's
+say licensed. You'll have a beer at our
+
+00:16:55.690 --> 00:17:00.210 line:100% position:50% align:middle
+fish market. Click on save. Good. It just
+redirected us to the home page,
+
+00:17:00.210 --> 00:17:04.680 line:100% position:50% align:middle
+but if I click on refresh, aha, second one
+has now been popping up.
+
+00:17:04.680 --> 00:17:08.575 line:100% position:50% align:middle
+So that's all you need in order
+to save data to a database.
+
+00:17:08.575 --> 00:17:12.180 line:100% position:50% align:middle
+You first create your schema, what your
+data looks like, and then in your
+
+00:17:12.180 --> 00:17:17.055 line:100% position:50% align:middle
+controller, you create a new version
+from that schema, and you call it .save
+
+00:17:17.055 --> 00:17:20.754 line:100% position:50% align:middle
+on it, and because we use async await,
+there's no nested callbacks. There's no
+
+00:17:20.754 --> 00:17:25.747 line:100% position:50% align:middle
+promise chaining.then. It's simply just
+wait for it to save, then do some data.
+
+00:17:25.747 --> 00:17:28.591 line:100% position:50% align:middle
+♪ [music] ♪

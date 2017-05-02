@@ -1,0 +1,295 @@
+WEBVTT
+
+00:00:00.559 --> 00:00:03.559 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.000 --> 00:00:15.990 line:100% position:50% align:middle
+Let's take a hot second to fix an issue
+that we have with our slugs,
+
+00:00:15.990 --> 00:00:21.210 line:100% position:50% align:middle
+and that is if you have something of the
+same name, the slug will get overwritten.
+
+00:00:21.210 --> 00:00:26.850 line:100% position:50% align:middle
+So let's say we have Brew Bar here, and
+the slug is brew-bar. If I were to add
+
+00:00:26.850 --> 00:00:30.430 line:100% position:50% align:middle
+another one called "Brew Bar," because
+there's two Brew Bars, and we'll call it
+
+00:00:30.430 --> 00:00:35.010 line:100% position:50% align:middle
+"Brew Bar 2"... Upload a photo real quick.
+Brew Bar, let's see.
+
+00:00:35.010 --> 00:00:44.350 line:100% position:50% align:middle
+There's one in Australia. Good. We upload
+it. We successfully created it,
+
+00:00:44.350 --> 00:00:49.000 line:100% position:50% align:middle
+but "Good Beers" was the description of
+the first one. Now, how do we get to the
+
+00:00:49.000 --> 00:00:54.110 line:100% position:50% align:middle
+second one? Well, we've created this
+unreachable URL, where we have Brew Bar
+
+00:00:54.110 --> 00:00:58.020 line:100% position:50% align:middle
+and Brew Bar. Both of them go to,
+actually, the first Brew Bar,
+
+00:00:58.020 --> 00:01:02.790 line:100% position:50% align:middle
+not the second Brew Bar. That's just
+because, if we open up our schema,
+
+00:01:02.790 --> 00:01:09.390 line:100% position:50% align:middle
+Store.js, and our Models directory, you'll
+see that our .pre('save') function here is
+
+00:01:09.390 --> 00:01:13.540 line:100% position:50% align:middle
+pretty simple, in that it just says,
+"this.slug = slug(this.name)".
+
+00:01:13.540 --> 00:01:17.350 line:100% position:50% align:middle
+So we're not checking for any duplicate
+slugs, or anything like that,
+
+00:01:17.350 --> 00:01:20.760 line:100% position:50% align:middle
+and that's exactly what we want to do
+right now. So we will change this function
+
+00:01:20.760 --> 00:01:26.180 line:100% position:50% align:middle
+to an async function. Because what we're
+going to do is, before we save the actual
+
+00:01:26.180 --> 00:01:31.390 line:100% position:50% align:middle
+store, we're going to check if there are
+any other stores with that same slug.
+
+00:01:31.390 --> 00:01:35.370 line:100% position:50% align:middle
+So we'll go down here. We'll make it
+async, go down below where we say,
+
+00:01:35.370 --> 00:01:42.020 line:100% position:50% align:middle
+"this.slug = slug", and then we need to
+find other stores that have a slug of wes,
+
+00:01:42.020 --> 00:01:48.260 line:100% position:50% align:middle
+wes-1, wes-2, etc. Because the whole idea
+here is, if we have a store called "Wes",
+
+00:01:48.260 --> 00:01:51.630 line:100% position:50% align:middle
+and then we have a second store called
+"Wes", it should be Wes 1.
+
+00:01:51.630 --> 00:01:55.840 line:100% position:50% align:middle
+Then, if we have already two stores that
+are Wes and Wes 1, it should be Wes 2,
+
+00:01:55.840 --> 00:02:02.660 line:100% position:50% align:middle
+etc.etc. So what we need to do here is
+make a RegEx that is going to search for
+
+00:02:02.660 --> 00:02:07.920 line:100% position:50% align:middle
+stores that have a slug of wes, wes-1,
+wes-2, wes-3. So essentially,
+
+00:02:07.920 --> 00:02:14.130 line:100% position:50% align:middle
+what we need to do is, we need to search
+for stores that have anything with "Wes"
+
+00:02:14.130 --> 00:02:19.550 line:100% position:50% align:middle
+or anything that has "wes-", and then some
+sort of number. So it's going to be a
+
+00:02:19.550 --> 00:02:23.380 line:100% position:50% align:middle
+little bit of a complex RegEx that we have
+here. Feel free to go ahead and grab this
+
+00:02:23.380 --> 00:02:26.950 line:100% position:50% align:middle
+from the step solutions if you don't feel
+like typing this by hand.
+
+00:02:26.950 --> 00:02:30.180 line:100% position:50% align:middle
+But I really just want to get the point
+across about how this actually works.
+
+00:02:30.180 --> 00:02:35.120 line:100% position:50% align:middle
+So we're first going to make a RegEx,
+which is "const slugRegEx".
+
+00:02:35.120 --> 00:02:39.560 line:100% position:50% align:middle
+If you've never written a RegEx before,
+it's sort of like a way to pattern match
+
+00:02:39.560 --> 00:02:46.140 line:100% position:50% align:middle
+in JavaScript. We'll say, "new RegExp()",
+regular expression. The regular expression
+
+00:02:46.140 --> 00:02:51.940 line:100% position:50% align:middle
+is going to be in backticks. Let's do the
+second part first. We'll just say it's
+
+00:02:51.940 --> 00:02:55.920 line:100% position:50% align:middle
+'i', which is case insensitive. So if we
+have an uppercase or a lowercase,
+
+00:02:55.920 --> 00:02:59.230 line:100% position:50% align:middle
+I don't want to have the slugs overriding
+each other in that sense.
+
+00:02:59.230 --> 00:03:04.390 line:100% position:50% align:middle
+So our regular expression is going to have
+a hat and parentheses.
+
+00:03:04.390 --> 00:03:09.230 line:100% position:50% align:middle
+Then, we put "this.slug" inside of it. So
+far, what this means is that we are
+
+00:03:09.230 --> 00:03:15.560 line:100% position:50% align:middle
+searching for URLs that start with
+"this.slug". Okay. So far so good.
+
+00:03:15.560 --> 00:03:21.920 line:100% position:50% align:middle
+Then, we want to have a second group here,
+where we say it ends with...
+
+00:03:21.920 --> 00:03:28.590 line:100% position:50% align:middle
+That's what $ is. It ends with one of two
+things. We put another capture in there,
+
+00:03:28.590 --> 00:03:35.820 line:100% position:50% align:middle
+a dash and zero through nine, and then
+that can be as many. It could be one.
+
+00:03:35.820 --> 00:03:41.860 line:100% position:50% align:middle
+It could be wes-100. So we have * and $,
+which means that ends with that.
+
+00:03:41.860 --> 00:03:45.450 line:100% position:50% align:middle
+Then, in between those two, we're going to
+put a question mark,
+
+00:03:45.450 --> 00:03:50.950 line:100% position:50% align:middle
+which means that part is option. Woo. What
+that means is we're looking for something
+
+00:03:50.950 --> 00:03:54.070 line:100% position:50% align:middle
+with a slug, and then it might end
+in -1, -2, -3, -4, -5. Next,
+
+00:03:54.070 --> 00:04:01.340 line:100% position:50% align:middle
+we need to actually pass that RegEx into a
+query. So we'll say,
+
+00:04:01.340 --> 00:04:07.980 line:100% position:50% align:middle
+"const storesWithSlug = await". Now, we
+need to... We essentially want to say
+
+00:04:07.980 --> 00:04:15.390 line:100% position:50% align:middle
+"store.find", but we don't have "store"
+yet, because we actually haven't even made
+
+00:04:15.390 --> 00:04:20.360 line:100% position:50% align:middle
+it yet. So how do you access the model
+inside of a model's function?
+
+00:04:20.360 --> 00:04:25.570 line:100% position:50% align:middle
+This was a little bit confusing to me at
+first. But I eventually got it with
+
+00:04:25.570 --> 00:04:31.120 line:100% position:50% align:middle
+"this.constructor.find", and
+"this.constructor" will be equal to
+
+00:04:31.120 --> 00:04:37.500 line:100% position:50% align:middle
+"store" by the time it actually runs.
+We're going to find stores where the slug
+
+00:04:37.500 --> 00:04:44.070 line:100% position:50% align:middle
+is equal to the slugRegEx. So when you
+have to do sort of a fuzzy match,
+
+00:04:44.070 --> 00:04:49.140 line:100% position:50% align:middle
+you can always use a RegEx, instead of an
+actual absolute value.
+
+00:04:49.140 --> 00:04:53.880 line:100% position:50% align:middle
+Then, right here, we're going to say,
+"if(storesWithSlug.length)",
+
+00:04:53.880 --> 00:04:58.950 line:100% position:50% align:middle
+so if there are any matches that have come
+back, we're simply going to overwrite
+
+00:04:58.950 --> 00:05:09.230 line:100% position:50% align:middle
+"this.slug" by saying, "this.slug = ''".
+We're going to say "${this.slug}-" and
+
+00:05:09.230 --> 00:05:13.520 line:100% position:50% align:middle
+we're going to say, "-1, -2, -3, -4". We
+need to make that part dynamic.
+
+00:05:13.520 --> 00:05:23.120 line:100% position:50% align:middle
+So we'll say, "${storesWithSlug.length +
+1}". So what will happen is if we search
+
+00:05:23.120 --> 00:05:26.950 line:100% position:50% align:middle
+for "Wes", it's going to come back with,
+"Yes. Somebody already used that," and
+
+00:05:26.950 --> 00:05:30.770 line:100% position:50% align:middle
+there's going to be one. So we're going to
+say, "Okay. Well, that slug is already
+
+00:05:30.770 --> 00:05:35.090 line:100% position:50% align:middle
+taken. This is going to be wes-1." So it's
+going to be wes-1, and then there'll be
+
+00:05:35.090 --> 00:05:38.720 line:100% position:50% align:middle
+wes-2, wes-3, etc. , etc. So give that a
+save. Then we call "next",
+
+00:05:38.720 --> 00:05:43.340 line:100% position:50% align:middle
+which will continue on the saving of our
+actual data to the database.
+
+00:05:43.340 --> 00:05:48.220 line:100% position:50% align:middle
+We'll give this a refresh. We'll try to
+make a new Brew Bar now.
+
+00:05:48.220 --> 00:05:56.080 line:100% position:50% align:middle
+So click on Add, Brew Bar. We'll say,
+"Brew Bar 3". Choose a file here and
+
+00:05:56.080 --> 00:06:04.010 line:100% position:50% align:middle
+upload. "Bar". Let's get another one. Man,
+Australia has a lot of Brew Bars.
+
+00:06:04.010 --> 00:06:08.720 line:100% position:50% align:middle
+Save, and you can see now
+that Brew Bar is showing up.
+
+00:06:08.720 --> 00:06:13.610 line:100% position:50% align:middle
+Because there was two already, Brew Bar 3
+is now... If I ever were to add a fourth,
+
+00:06:13.610 --> 00:06:17.840 line:100% position:50% align:middle
+it would be Brew Bar 4, etc.etc. You get
+the point. Right? So sometimes you need to
+
+00:06:17.840 --> 00:06:23.980 line:100% position:50% align:middle
+make a little bit more advanced functions,
+and that is done in your store schema pre
+
+00:06:23.980 --> 00:06:27.700 line:100% position:50% align:middle
+hooks. Because we're using async/await, we
+don't need to use any callbacks.
+
+00:06:27.700 --> 00:06:30.512 line:100% position:50% align:middle
+We just make that
+function async, as well.
+
+00:06:30.512 --> 00:06:32.512 line:100% position:50% align:middle
+♪ [music] ♪

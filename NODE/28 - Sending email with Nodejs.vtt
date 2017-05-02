@@ -1,0 +1,914 @@
+WEBVTT
+
+00:00:00.544 --> 00:00:03.544 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.200 --> 00:00:16.620 line:100% position:50% align:middle
+In this video, we're going to learn all
+about sending email with Node.js,
+
+00:00:16.620 --> 00:00:21.890 line:100% position:50% align:middle
+as well as taking a Pug file, converting
+it to an HTML-ready email,
+
+00:00:21.890 --> 00:00:25.200 line:100% position:50% align:middle
+as well as then taking your CSS and
+inlining it. Because if you've ever done
+
+00:00:25.200 --> 00:00:28.710 line:100% position:50% align:middle
+HTML email before, you know that, first,
+it's a nightmare. It's really,
+
+00:00:28.710 --> 00:00:34.180 line:100% position:50% align:middle
+really hard. And second, it needs to make
+sure that your CSS has been inlined into
+
+00:00:34.180 --> 00:00:37.330 line:100% position:50% align:middle
+it in order to make sure that it works
+across all the different email clients.
+
+00:00:37.330 --> 00:00:41.660 line:100% position:50% align:middle
+So whenever you're doing email sending in
+a development environment,
+
+00:00:41.660 --> 00:00:45.000 line:100% position:50% align:middle
+I use something called Mailtrap. Now
+there's a number of different services out
+
+00:00:45.000 --> 00:00:51.720 line:100% position:50% align:middle
+there. This is a free freemium one. It
+works for 20 sends, and then you delete
+
+00:00:51.720 --> 00:00:55.770 line:100% position:50% align:middle
+the older ones and you get new ones. But
+essentially what it does is,
+
+00:00:55.770 --> 00:01:00.580 line:100% position:50% align:middle
+rather than set it up with an SMTP server,
+something like I personally use Postmark
+
+00:01:00.580 --> 00:01:05.440 line:100% position:50% align:middle
+app to send all of my real email. But when
+I'm in development mode I'll use Mailtrap.
+
+00:01:05.440 --> 00:01:09.100 line:100% position:50% align:middle
+And what this does is that it fakes being
+a mail server.
+
+00:01:09.100 --> 00:01:13.850 line:100% position:50% align:middle
+And then anytime you send mail to this
+fake mail server, it will,
+
+00:01:13.850 --> 00:01:17.040 line:100% position:50% align:middle
+instead of actually sending it to your
+users it will just put it into this
+
+00:01:17.040 --> 00:01:22.840 line:100% position:50% align:middle
+Mailtrap and you'll be able to quickly see
+who the emails are being sent to,
+
+00:01:22.840 --> 00:01:26.350 line:100% position:50% align:middle
+what they look like, when they've been
+sent. And you don't have to worry about
+
+00:01:26.350 --> 00:01:30.060 line:100% position:50% align:middle
+going to your own Gmail account, or
+accidentally, which is a nightmare
+
+00:01:30.060 --> 00:01:36.070 line:100% position:50% align:middle
+situation, accidentally sending some email
+out to some users which you had real data
+
+00:01:36.070 --> 00:01:38.360 line:100% position:50% align:middle
+but were in development mode.
+
+00:01:38.360 --> 00:01:43.220 line:100% position:50% align:middle
+So go on over to mailtrap.io, and sign up
+for an account. And I know there's other
+
+00:01:43.220 --> 00:01:47.010 line:100% position:50% align:middle
+services that do this, so if you have a
+personal preference of one that you
+
+00:01:47.010 --> 00:01:51.320 line:100% position:50% align:middle
+prefer, there's self-hosted versions as
+well. Feel free to go and set that up
+
+00:01:51.320 --> 00:01:57.000 line:100% position:50% align:middle
+right now. Now once you are signed up,
+you're going to have access to your SMTP
+
+00:01:57.000 --> 00:02:01.130 line:100% position:50% align:middle
+credentials. We are going to be making
+what's called a transport with something
+
+00:02:01.130 --> 00:02:05.220 line:100% position:50% align:middle
+called nodemailer, and we need all of
+these credentials. So you tell me,
+
+00:02:05.220 --> 00:02:11.340 line:100% position:50% align:middle
+where does sensitive information go? Well,
+it goes into our variables.env file.
+
+00:02:11.340 --> 00:02:15.900 line:100% position:50% align:middle
+Open up our variables.env file. The PORT
+and HOST are already setup for Mailtrap,
+
+00:02:15.900 --> 00:02:18.980 line:100% position:50% align:middle
+so if you're using Mailtrap you can keep
+those the same. You see here,
+
+00:02:18.980 --> 00:02:25.930 line:100% position:50% align:middle
+2525, as well as mailtrap.io is the actual
+host. Then the Username we can just take
+
+00:02:25.930 --> 00:02:29.860 line:100% position:50% align:middle
+right from here. And the Password we can
+take right from here.
+
+00:02:29.860 --> 00:02:33.710 line:100% position:50% align:middle
+Good. So now whenever we try to send email
+with these credentials,
+
+00:02:33.710 --> 00:02:37.220 line:100% position:50% align:middle
+it's not going to actually make it to
+anyone's inbox. It's going to be trapped
+
+00:02:37.220 --> 00:02:38.530 line:100% position:50% align:middle
+with Mailtrap.
+
+00:02:38.530 --> 00:02:41.590 line:100% position:50% align:middle
+Good. Now in order to actually send email
+we need to make a new,
+
+00:02:41.590 --> 00:02:45.310 line:100% position:50% align:middle
+what I like to call, handler. So open up
+your handlers, and we're going to make one
+
+00:02:45.310 --> 00:02:49.830 line:100% position:50% align:middle
+called mail.js. There's a couple different
+packages we need in order to send email.
+
+00:02:49.830 --> 00:02:53.250 line:100% position:50% align:middle
+The first one is one called nodemailer.
+And nodemailer is really,
+
+00:02:53.250 --> 00:03:00.000 line:100% position:50% align:middle
+really great because what it will do is it
+will interface with SMTP or any number of
+
+00:03:00.000 --> 00:03:05.230 line:100% position:50% align:middle
+different what are called transports. And
+it will do the sending of the email for
+
+00:03:05.230 --> 00:03:09.270 line:100% position:50% align:middle
+you. So I'll say const nodemailer, and
+require it.
+
+00:03:09.270 --> 00:03:15.440 line:100% position:50% align:middle
+We also need something called pug, juice,
+htmlToText, and our promisify library.
+
+00:03:15.440 --> 00:03:19.415 line:100% position:50% align:middle
+So I'm just going to type those in super
+speed here, and make sure you grab them as
+
+00:03:19.415 --> 00:03:20.500 line:100% position:50% align:middle
+well.
+
+00:03:26.130 --> 00:03:29.260 line:100% position:50% align:middle
+Good. So I'll explain what all of these
+are in just a second, but right now what
+
+00:03:29.260 --> 00:03:33.470 line:100% position:50% align:middle
+we need to know is that we have our
+nodemailer being set up. And we have to
+
+00:03:33.470 --> 00:03:36.810 line:100% position:50% align:middle
+create what's called a transport. And a
+transport is a way that you interface with
+
+00:03:36.810 --> 00:03:42.190 line:100% position:50% align:middle
+different ways of sending email, SMTP
+being the most common. So we'll say const
+
+00:03:42.190 --> 00:03:50.050 line:100% position:50% align:middle
+transport = nodemailer.createTransport.
+That takes an object where you have a
+
+00:03:50.050 --> 00:03:50.650 line:100% position:50% align:middle
+host.
+
+00:03:50.650 --> 00:03:55.010 line:100% position:50% align:middle
+And now the host is going to be taken from
+here, right? Just as we did everything
+
+00:03:55.010 --> 00:04:01.910 line:100% position:50% align:middle
+else as a process.env. MAIL_HOST. We have
+a port, which is going to be the exact
+
+00:04:01.910 --> 00:04:07.740 line:100% position:50% align:middle
+same but _port. Then we have an auth
+object. Inside of that, you have a user,
+
+00:04:07.740 --> 00:04:15.290 line:100% position:50% align:middle
+which is going to be MAIL_...well, that
+should be "PORT." MAIL_USER.
+
+00:04:15.290 --> 00:04:20.820 line:100% position:50% align:middle
+And then we have a pass, which is going to
+be MAIL_PASS. Good.
+
+00:04:20.820 --> 00:04:26.630 line:100% position:50% align:middle
+So what we just did there is we created a
+transport. And we can try to send a piece
+
+00:04:26.630 --> 00:04:31.320 line:100% position:50% align:middle
+of email immediately. So if you ever just
+want to make sure that something works,
+
+00:04:31.320 --> 00:04:36.380 line:100% position:50% align:middle
+you can actually just code right in here.
+And whenever the server starts up it will
+
+00:04:36.380 --> 00:04:38.080 line:100% position:50% align:middle
+send that email.
+
+00:04:38.080 --> 00:04:43.390 line:100% position:50% align:middle
+So we can take our transport and
+call.sendMail, and sendMail is going to
+
+00:04:43.390 --> 00:04:50.030 line:100% position:50% align:middle
+take some options here which will have a
+from Wes Bos, a to. I'll say
+
+00:04:50.030 --> 00:04:59.486 line:100% position:50% align:middle
+randy@example.com. A subject: 'Just trying
+things out!'
+
+00:04:59.486 --> 00:05:07.010 line:100% position:50% align:middle
+The html is going to be
+'Hey I, ' we'll put some HTML in here
+
+00:05:07.010 --> 00:05:14.010 line:100% position:50% align:middle
+<strong>love</strong> you. ' And then it also takes a text
+for those weirdos that don't get HTML and
+
+00:05:14.010 --> 00:05:17.930 line:100% position:50% align:middle
+only text. Something like that, that was
+just text people can read.
+
+00:05:17.930 --> 00:05:22.730 line:100% position:50% align:middle
+So good. We have our transport. We're
+sending over the mail. Then if we import
+
+00:05:22.730 --> 00:05:27.700 line:100% position:50% align:middle
+this mail. js file into any one of our
+files that's already running,
+
+00:05:27.700 --> 00:05:32.070 line:100% position:50% align:middle
+it should trigger this on page load and
+send us an email. So I'm going to do that
+
+00:05:32.070 --> 00:05:38.470 line:100% position:50% align:middle
+in start. js. Let's just temporarily do it
+at the bottom here.
+
+00:05:38.470 --> 00:05:43.790 line:100% position:50% align:middle
+TEMP send email. Again, make sure to take
+this out later. And we'll just say
+
+00:05:43.790 --> 00:05:50.300 line:100% position:50% align:middle
+require('. /handlers/mail'). Good, so
+don't save it just yet, but clear this
+
+00:05:50.300 --> 00:05:57.240 line:100% position:50% align:middle
+out. Give it a Save. And you'll see that
+it ran. And all of a sudden,
+
+00:05:57.240 --> 00:06:01.510 line:100% position:50% align:middle
+this refreshed, and I say, "Hey, I love
+you. Just trying things out.
+
+00:06:01.510 --> 00:06:06.600 line:100% position:50% align:middle
+From Wes Bos to Randy@example. com." You
+can see the HTML source that we did,
+
+00:06:06.600 --> 00:06:10.510 line:100% position:50% align:middle
+but you can also see the Text version of
+the email that we sent,
+
+00:06:10.510 --> 00:06:16.040 line:100% position:50% align:middle
+the Raw, the Analysis, the Checking HTML,
+etc, etc. So some handy stuff that comes
+
+00:06:16.040 --> 00:06:20.490 line:100% position:50% align:middle
+along with this MailChimp. Mailtrap, not
+MailChimp. That's a different thing.
+
+00:06:20.490 --> 00:06:23.830 line:100% position:50% align:middle
+Cool. So delete that. We don't need that.
+We know that it's actually working.
+
+00:06:23.830 --> 00:06:28.000 line:100% position:50% align:middle
+And go back to your mail. js, and again,
+get rid of the sendMail as well because
+
+00:06:28.000 --> 00:06:31.300 line:100% position:50% align:middle
+we're going to make a method that sort of
+encapsulates that. But I just wanted to
+
+00:06:31.300 --> 00:06:37.400 line:100% position:50% align:middle
+make sure that our host, and port, and
+user, and password were done properly.
+
+00:06:37.400 --> 00:06:40.990 line:100% position:50% align:middle
+Now whenever somebody resets their
+password, we're going to call a function
+
+00:06:40.990 --> 00:06:46.190 line:100% position:50% align:middle
+called "send." So we'll say, exports. send
+=, we'll make it async,
+
+00:06:46.190 --> 00:06:51.260 line:100% position:50% align:middle
+(options) takes in some options, and so
+I'll make a sends in just a second.
+
+00:06:51.260 --> 00:06:56.550 line:100% position:50% align:middle
+And we'll open up our curly brackets
+there. Good. Now what we want to do is
+
+00:06:56.550 --> 00:07:02.140 line:100% position:50% align:middle
+make our mailOption. So there's a const
+mailOptions = from, and this is going to
+
+00:07:02.140 --> 00:07:06.090 line:100% position:50% align:middle
+be the from. So whatever application you
+are doing, and say 'Wes Bos.
+
+00:07:06.090 --> 00:07:12.595 line:100% position:50% align:middle
+And you can put in the email address in
+brackets here, so noreply@wesbos.com.
+
+00:07:12.595 --> 00:07:14.600 line:100% position:50% align:middle
+Whatever you want
+the from address to be,
+
+00:07:14.600 --> 00:07:21.047 line:100% position:50% align:middle
+to, this is going to be
+send to the options.user.email.
+
+00:07:21.047 --> 00:07:25.050 line:100% position:50% align:middle
+So we're going to pass in the
+user who it needs to be sent to once we
+
+00:07:25.050 --> 00:07:32.020 line:100% position:50% align:middle
+find it. The HTML is going to be, say
+'This will be filled in later.'
+
+00:07:32.020 --> 00:07:38.370 line:100% position:50% align:middle
+And our text properly is 'This will also
+be filled in later.'
+
+00:07:38.370 --> 00:07:44.640 line:100% position:50% align:middle
+Yeah, so here's our options. Then we
+want to go ahead and promisify our
+
+00:07:44.640 --> 00:07:48.500 line:100% position:50% align:middle
+sendmail function. Because by default,
+again, sendmail will work as a callback.
+
+00:07:48.500 --> 00:07:57.620 line:100% position:50% align:middle
+We want to promisify it. So we'll say
+const sendMail = promisify(transport.
+
+00:07:57.620 --> 00:08:04.500 line:100% position:50% align:middle
+sendMail. We'll bind it to the transport .
+And transport is the Mailtrap one that we
+
+00:08:04.500 --> 00:08:08.580 line:100% position:50% align:middle
+set up. What's beautiful about that is
+once you swap out your variables.
+
+00:08:08.580 --> 00:08:13.070 line:100% position:50% align:middle
+env for a production one, that'll all just
+hook up when you fill it up with something
+
+00:08:13.070 --> 00:08:17.980 line:100% position:50% align:middle
+like Postmark app, which actually does
+send your email. So const sendMail =
+
+00:08:17.980 --> 00:08:23.380 line:100% position:50% align:middle
+promisify. Good, we're going to return
+sendMail, and we'll give it the
+
+00:08:23.380 --> 00:08:26.060 line:100% position:50% align:middle
+mailOptions that we have there. And the
+mailOptions has the from,
+
+00:08:26.060 --> 00:08:29.410 line:100% position:50% align:middle
+the to, the html, text. Oh, and one last
+thing. We also need the subject,
+
+00:08:29.410 --> 00:08:34.540 line:100% position:50% align:middle
+which is going to be the options. subject.
+That's going to get passed in.
+
+00:08:34.540 --> 00:08:37.600 line:100% position:50% align:middle
+Good. Now we have this little function
+that will send mail. And we're going to
+
+00:08:37.600 --> 00:08:40.380 line:100% position:50% align:middle
+hook it up to actually compile our Pug
+files in just a second.
+
+00:08:40.380 --> 00:08:45.380 line:100% position:50% align:middle
+But right now we're just going to be
+filling it in. And let's go to our
+
+00:08:45.380 --> 00:08:50.390 line:100% position:50% align:middle
+password-reset flow and actually get this
+to send when we've sent it.
+
+00:08:50.390 --> 00:08:54.490 line:100% position:50% align:middle
+So that was in our auth controller. And
+we'll take a look. Where was it where we
+
+00:08:54.490 --> 00:08:59.480 line:100% position:50% align:middle
+actually sent it? Here we go. In the
+function called "forgot," we flashed,
+
+00:08:59.480 --> 00:09:04.440 line:100% position:50% align:middle
+"You have been emailed a password reset
+link." Okay, good. But we don't want to
+
+00:09:04.440 --> 00:09:07.660 line:100% position:50% align:middle
+actually send them the URL. Remember, we
+were doing that with that variable reset
+
+00:09:07.660 --> 00:09:12.980 line:100% position:50% align:middle
+URL? Take that away. And one line above it
+we're going to use our mail.
+
+00:09:12.980 --> 00:09:20.160 line:100% position:50% align:middle
+send. Okay, well, we need to import this
+mail library real quick from here.
+
+00:09:20.160 --> 00:09:26.870 line:100% position:50% align:middle
+So go to the top, const mail = require. Up
+a level, because we're in controllers.
+
+00:09:26.870 --> 00:09:32.070 line:100% position:50% align:middle
+Then into our handlers. Then into our
+mail. js file. And then we'll go back down
+
+00:09:32.070 --> 00:09:37.210 line:100% position:50% align:middle
+to our exports. forgot, and we'll say
+mail. send. And there's a couple options
+
+00:09:37.210 --> 00:09:42.100 line:100% position:50% align:middle
+that need to be passed. It's one big
+object. The user is going to be the actual
+
+00:09:42.100 --> 00:09:47.040 line:100% position:50% align:middle
+user that we found when we did our
+database query. So the user = the user.
+
+00:09:47.040 --> 00:09:56.140 line:100% position:50% align:middle
+Or just user. And then the subject is
+going to be 'Password Reset.'
+
+00:09:56.140 --> 00:10:02.400 line:100% position:50% align:middle
+Then we also need to pass along the
+reset URL. So resetURL is going to be
+
+00:10:02.400 --> 00:10:07.910 line:100% position:50% align:middle
+equal to resetURL. Or like we've been
+doing all along, just resetURL.
+
+00:10:07.910 --> 00:10:14.330 line:100% position:50% align:middle
+Good. So we are going to await that mail
+to send. And then once it's been sent,
+
+00:10:14.330 --> 00:10:18.730 line:100% position:50% align:middle
+we're going to flash a success message and
+redirect to a login.
+
+00:10:18.730 --> 00:10:22.760 line:100% position:50% align:middle
+So let's see, let's try the reset flow
+once more. We'll go back to our
+
+00:10:22.760 --> 00:10:26.800 line:100% position:50% align:middle
+application. I'm going to log out. I'm
+going to click on Log In.
+
+00:10:26.800 --> 00:10:32.770 line:100% position:50% align:middle
+I forgot my password. Send the reset It
+says, "You have been emailed a password
+
+00:10:32.770 --> 00:10:37.850 line:100% position:50% align:middle
+reset link." If we go back to our Mailtrap
+inbox here, we see it.
+
+00:10:37.850 --> 00:10:41.630 line:100% position:50% align:middle
+And now see we have a new mail that's
+arrived, Password Reset.
+
+00:10:41.630 --> 00:10:46.440 line:100% position:50% align:middle
+And we don't see anything other than that
+it was sent to the correct address.
+
+00:10:46.440 --> 00:10:52.330 line:100% position:50% align:middle
+And the HTML and the text tell us what
+will be filled in later.
+
+00:10:52.330 --> 00:10:59.010 line:100% position:50% align:middle
+Good. So we have our email sending at the
+right point. But now the question is,
+
+00:10:59.010 --> 00:11:05.330 line:100% position:50% align:middle
+how do we get the HTML generating? Because
+we looked at views>email>email-layout,
+
+00:11:05.330 --> 00:11:10.410 line:100% position:50% align:middle
+and password-reset. This was all done in
+Pug. How do we convert it from Pug into
+
+00:11:10.410 --> 00:11:14.190 line:100% position:50% align:middle
+HTML? And then how do we take our HTML and
+our CSS and inline it?
+
+00:11:14.190 --> 00:11:17.070 line:100% position:50% align:middle
+So that's what we're going to be doing
+next. We'll go back into our mail.
+
+00:11:17.070 --> 00:11:24.510 line:100% position:50% align:middle
+js. And we're going to make a function
+called generateHTML. So const generateHTML
+
+00:11:24.510 --> 00:11:28.630 line:100% position:50% align:middle
+= an arrow function. And that arrow
+function's going to take in two things,
+
+00:11:28.630 --> 00:11:33.730 line:100% position:50% align:middle
+a filename and an options object, which
+will default to just being a blank object.
+
+00:11:33.730 --> 00:11:40.190 line:100% position:50% align:middle
+Okay, but why is that not exports.
+generateHTML? It's just const.
+
+00:11:40.190 --> 00:11:43.600 line:100% position:50% align:middle
+And the reason behind that is because it's
+not needed anywhere outside of this mail.
+
+00:11:43.600 --> 00:11:49.060 line:100% position:50% align:middle
+js file. So we're just going to make it a
+regular function here rather than have to
+
+00:11:49.060 --> 00:11:52.560 line:100% position:50% align:middle
+export it, because it's not needed
+anywhere else. Now we make a variable
+
+00:11:52.560 --> 00:11:56.850 line:100% position:50% align:middle
+called html, and we use our Pug library
+that we imported right here.
+
+00:11:56.850 --> 00:12:01.180 line:100% position:50% align:middle
+And we're going to use one of the methods
+on Pug called renderFile.
+
+00:12:01.180 --> 00:12:05.690 line:100% position:50% align:middle
+And that will take the name of the actual
+file that we're looking for,
+
+00:12:05.690 --> 00:12:09.660 line:100% position:50% align:middle
+which in our case is going to get passed
+in as password-reset.
+
+00:12:09.660 --> 00:12:14.060 line:100% position:50% align:middle
+pug. Now there's a big of a problem here,
+because whenever you have render file,
+
+00:12:14.060 --> 00:12:18.290 line:100% position:50% align:middle
+or whenever you pass a function reference
+to something on your disk,
+
+00:12:18.290 --> 00:12:22.840 line:100% position:50% align:middle
+you don't actually know where you are in
+the folder system, because of course right
+
+00:12:22.840 --> 00:12:27.710 line:100% position:50% align:middle
+now we're in a handlers folder. But this
+renderFile folder, it's in a totally
+
+00:12:27.710 --> 00:12:31.510 line:100% position:50% align:middle
+different folder. And it gets a little bit
+mixed up. So what we can use there is we
+
+00:12:31.510 --> 00:12:35.870 line:100% position:50% align:middle
+use backticks. We can use one of these
+variables that is available to us in any
+
+00:12:35.870 --> 00:12:40.470 line:100% position:50% align:middle
+file, and it's called __dirname. And you
+see how it turned blue there?
+
+00:12:40.470 --> 00:12:44.670 line:100% position:50% align:middle
+That means my editor knows that that's a
+special variable, sort of like window or
+
+00:12:44.670 --> 00:12:48.410 line:100% position:50% align:middle
+console in the browser. We have this
+variable that's always available to us in
+
+00:12:48.410 --> 00:12:54.120 line:100% position:50% align:middle
+every single file. And dirname is going to
+be equal to the current directory that we
+
+00:12:54.120 --> 00:12:59.130 line:100% position:50% align:middle
+are running this file from, which in our
+case is going to be like my hard drive,
+
+00:12:59.130 --> 00:13:04.050 line:100% position:50% align:middle
+blah, blah, blah /handlers. So dirname
+will give us what we're looking for.
+
+00:13:04.050 --> 00:13:09.210 line:100% position:50% align:middle
+Then we will go up a level, so /.. /,
+because we don't want to be in the
+
+00:13:09.210 --> 00:13:14.150 line:100% position:50% align:middle
+handlers folder. We want to be in the main
+folder. And we go into views,
+
+00:13:14.150 --> 00:13:22.320 line:100% position:50% align:middle
+into email, and then into the filename.
+pug on the end. And then as a second
+
+00:13:22.320 --> 00:13:26.790 line:100% position:50% align:middle
+argument we are going to pass the options
+that got passed into the render file.
+
+00:13:26.790 --> 00:13:32.160 line:100% position:50% align:middle
+And the options is going to contain all
+the information, like the reset variable
+
+00:13:32.160 --> 00:13:38.720 line:100% position:50% align:middle
+and the user's email address. Then what
+that will do is... let's just console log.
+
+00:13:38.720 --> 00:13:43.080 line:100% position:50% align:middle
+Or let's return the html. And we can
+console log the html as well,
+
+00:13:43.080 --> 00:13:47.850 line:100% position:50% align:middle
+just so we can see where we're at. And we
+can go back into our mailOptions,
+
+00:13:47.850 --> 00:13:51.830 line:100% position:50% align:middle
+or right above it. And we can make an HTML
+variable and use our new function called
+
+00:13:51.830 --> 00:13:56.830 line:100% position:50% align:middle
+generateHTML. What do you need to pass it?
+Well, options. filename is going to be the
+
+00:13:56.830 --> 00:14:00.450 line:100% position:50% align:middle
+name of the file. And then it also, see,
+there we go. It also expects us to pass
+
+00:14:00.450 --> 00:14:09.990 line:100% position:50% align:middle
+the options variable as well. So then we
+can take that HTML variable and swap out
+
+00:14:09.990 --> 00:14:14.150 line:100% position:50% align:middle
+the "This will be filled in later with
+HTML," or again, because they're the same
+
+00:14:14.150 --> 00:14:21.060 line:100% position:50% align:middle
+thing just html. And when we now run this,
+it should go off to our Pug,
+
+00:14:21.060 --> 00:14:26.510 line:100% position:50% align:middle
+find this password-reset. pug, generate it
+into HTML, return it,
+
+00:14:26.510 --> 00:14:31.010 line:100% position:50% align:middle
+which will allow us to then pass it along
+to our mailOption. So let's try it,
+
+00:14:31.010 --> 00:14:36.380 line:100% position:50% align:middle
+wesbos@gmail. com. Give it a reset. Tells
+us it worked properly.
+
+00:14:36.380 --> 00:14:40.720 line:100% position:50% align:middle
+Let's go back to our Mailtrap inbox. Don't
+see anything. Give it a refresh.
+
+00:14:40.720 --> 00:14:45.850 line:100% position:50% align:middle
+There we go, it just showed up. Click it.
+Hey, look what's going on here.
+
+00:14:45.850 --> 00:14:49.970 line:100% position:50% align:middle
+Password Reset, "Hello, you've requested a
+password reset. Please click the following
+
+00:14:49.970 --> 00:14:53.770 line:100% position:50% align:middle
+button to continue to reset..." Blah,
+blah, blah, blah, blah. And then see this?
+
+00:14:53.770 --> 00:14:59.750 line:100% position:50% align:middle
+Localhost:777 account/reset, and then my
+token. That's because when we generated
+
+00:14:59.750 --> 00:15:08.690 line:100% position:50% align:middle
+the actual resetURL, we passed it via our
+mail. send, which then accepted it via
+
+00:15:08.690 --> 00:15:14.660 line:100% position:50% align:middle
+mail. send and gave it to all of our Pug
+template files. So following me here,
+
+00:15:14.660 --> 00:15:20.640 line:100% position:50% align:middle
+then if we look at our password-reset Pug,
+we use that variable resetURL inside of
+
+00:15:20.640 --> 00:15:24.340 line:100% position:50% align:middle
+here, and that's how it got to my actual
+users at the end of the day.
+
+00:15:24.340 --> 00:15:29.260 line:100% position:50% align:middle
+So good so far. A couple more things is my
+text still says it will be filled in
+
+00:15:29.260 --> 00:15:33.210 line:100% position:50% align:middle
+later. And also I haven't inlined my CSS,
+which is a bit of a problem.
+
+00:15:33.210 --> 00:15:38.120 line:100% position:50% align:middle
+It works fine here because I'm on the web,
+but if I open the sucker up in Windows XP
+
+00:15:38.120 --> 00:15:42.310 line:100% position:50% align:middle
+95, it's not going to work really well
+because that CSS should be inlined.
+
+00:15:42.310 --> 00:15:47.120 line:100% position:50% align:middle
+So we'll head back to our mail. js and
+let's deal with the text one first,
+
+00:15:47.120 --> 00:15:51.440 line:100% position:50% align:middle
+because that's pretty simple. We imported
+a library here called htmlToText.
+
+00:15:51.440 --> 00:15:55.750 line:100% position:50% align:middle
+And what that will do is you just give it
+HTML and it's going to,
+
+00:15:55.750 --> 00:15:58.930 line:100% position:50% align:middle
+guess what? going to give you text. And
+what that will do is it will make all of
+
+00:15:58.930 --> 00:16:02.290 line:100% position:50% align:middle
+your text-based readers who
+answer the email in dim
+
+00:16:02.290 --> 00:16:08.950 line:100% position:50% align:middle
+or whatever they're doing. It will give
+them a nice, clean HTML-free email and
+
+00:16:08.950 --> 00:16:14.110 line:100% position:50% align:middle
+still allow them to read it. So we'll go
+here and we'll simply just say const text
+
+00:16:14.110 --> 00:16:21.680 line:100% position:50% align:middle
+= htmlToText. fromString, and you pass all
+of our HTML. And that's just going to make
+
+00:16:21.680 --> 00:16:25.950 line:100% position:50% align:middle
+a nice... format it with spaces and
+asterisks around the bold stuff.
+
+00:16:25.950 --> 00:16:31.960 line:100% position:50% align:middle
+Let's swap that out here. Or again, just
+text. Good. And let's check if the text is
+
+00:16:31.960 --> 00:16:37.770 line:100% position:50% align:middle
+now working. So I'm going to say
+wesbos@gmail. com. Worked fine.
+
+00:16:37.770 --> 00:16:42.870 line:100% position:50% align:middle
+Open up my Password Reset, it looks good.
+If I click on Text, you'll see here we go.
+
+00:16:42.870 --> 00:16:48.920 line:100% position:50% align:middle
+PASSWORD RESET is all in caps, and it will
+then show the person the actual URL that
+
+00:16:48.920 --> 00:16:53.000 line:100% position:50% align:middle
+they can visit, rather than giving them
+any sort of link. So good,
+
+00:16:53.000 --> 00:17:00.060 line:100% position:50% align:middle
+good, good. Last thing is, how do you
+inline CSS? Well, there is a module called
+
+00:17:00.060 --> 00:17:05.390 line:100% position:50% align:middle
+juice. And what it does is you give it
+HTML with style tags. And it will take
+
+00:17:05.390 --> 00:17:08.430 line:100% position:50% align:middle
+those style tags and it will inline them
+in every single paragraph.
+
+00:17:08.430 --> 00:17:12.870 line:100% position:50% align:middle
+It will figure out what selectors match
+what HTML, and inline all of our CSS for
+
+00:17:12.870 --> 00:17:17.850 line:100% position:50% align:middle
+us, which is exactly what you need when
+you're running HTML. Because if we look in
+
+00:17:17.850 --> 00:17:24.290 line:100% position:50% align:middle
+our console here, you'll see that this is
+our actual HTML here,
+
+00:17:24.290 --> 00:17:30.170 line:100% position:50% align:middle
+<tr><td><h2> Password Reset. And this CSS here is not
+going to apply to any of this HTML in many
+
+00:17:30.170 --> 00:17:37.330 line:100% position:50% align:middle
+email clients. So we can go back to our
+generateHTML. And what we can do is rather
+
+00:17:37.330 --> 00:17:41.690 line:100% position:50% align:middle
+than console log it, we can make a new
+variable called inlined and just take
+
+00:17:41.690 --> 00:17:45.950 line:100% position:50% align:middle
+juice and pass it the HTML. And it's going
+to do all of its work for us.
+
+00:17:45.950 --> 00:17:50.900 line:100% position:50% align:middle
+And then rather than returning HTML, we're
+going to return inlined.
+
+00:17:50.900 --> 00:17:56.900 line:100% position:50% align:middle
+Good, that was easy. Just two little lines
+of code. Now if I try to reset my password
+
+00:17:56.900 --> 00:18:00.580 line:100% position:50% align:middle
+and go back to my inbox here, it looks
+exactly the same for me.
+
+00:18:00.580 --> 00:18:06.260 line:100% position:50% align:middle
+But if we click on the HTML source, you'll
+see that... it's all in one line.
+
+00:18:06.260 --> 00:18:15.390 line:100% position:50% align:middle
+But you see how the body style tag is
+inlined? Or the h2 tag has margin-bottom,
+
+00:18:15.390 --> 00:18:19.040 line:100% position:50% align:middle
+line-height, font-weight, font-family, it
+has all of that stuff inlined.
+
+00:18:19.040 --> 00:18:23.640 line:100% position:50% align:middle
+That's exactly what Juice will do, is it
+will take all the labor-intensive inlining
+
+00:18:23.640 --> 00:18:27.940 line:100% position:50% align:middle
+and just automatically do it for you
+without having to use... I use to go to
+
+00:18:27.940 --> 00:18:32.900 line:100% position:50% align:middle
+just search for "CSS inliner tool." I
+would find the MailChimp one and then I
+
+00:18:32.900 --> 00:18:37.320 line:100% position:50% align:middle
+would just paste it into here. And then it
+would take my HTML and my CSS and convert
+
+00:18:37.320 --> 00:18:40.600 line:100% position:50% align:middle
+it for me. But this will automatically do
+absolutely everything for me,
+
+00:18:40.600 --> 00:18:46.540 line:100% position:50% align:middle
+which I was really, really happy to do. So
+that is sending email with Node.
+
+00:18:46.540 --> 00:18:51.540 line:100% position:50% align:middle
+js. It's really nice because you can
+re-use this send function over and over
+
+00:18:51.540 --> 00:18:57.020 line:100% position:50% align:middle
+again, and really all you need to do is
+just pass it a new filename as well as a
+
+00:18:57.020 --> 00:19:02.844 line:100% position:50% align:middle
+new subject, and a new user of
+who to send that email to.
+
+00:19:02.844 --> 00:19:04.844 line:100% position:50% align:middle
+♪ [music] ♪

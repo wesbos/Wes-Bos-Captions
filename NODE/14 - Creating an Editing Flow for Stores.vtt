@@ -1,0 +1,981 @@
+WEBVTT
+
+00:00:00.095 --> 00:00:03.095 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.970 --> 00:00:15.980 line:100% position:50% align:middle
+Now we need to actually edit the store. So
+when we have a button up here and you
+
+00:00:15.980 --> 00:00:20.070 line:100% position:50% align:middle
+click it we're going to be editing the
+actual store. So the first thing we need
+
+00:00:20.070 --> 00:00:24.210 line:100% position:50% align:middle
+to do is have a button here.
+We'll go into our store's action,
+
+00:00:24.210 --> 00:00:28.530 line:100% position:50% align:middle
+and where we have that button, soon we'll
+remove that. And we need a div with the
+
+00:00:28.530 --> 00:00:38.590 line:100% position:50% align:middle
+class of store__action, and a div with
+this class of store__action--edit.
+
+00:00:38.590 --> 00:00:44.180 line:100% position:50% align:middle
+And again, if you're not used to this
+class naming syntax, this is just BEM.
+
+00:00:44.180 --> 00:00:48.580 line:100% position:50% align:middle
+It helps us write CSS so it's not nested
+in a nice, clean fashion.
+
+00:00:48.580 --> 00:00:49.990 line:100% position:50% align:middle
+So that's what we have there.
+
+00:00:49.990 --> 00:00:56.250 line:100% position:50% align:middle
+And then inside of that we need an SVG
+icon inside of a link that will be a
+
+00:00:56.250 --> 00:01:03.980 line:100% position:50% align:middle
+pencil. So we'll say a(href=. Now it needs
+to be "/store/123/edit").
+
+00:01:03.980 --> 00:01:09.480 line:100% position:50% align:middle
+So we need to make this part, 123, we need
+to make that the id of our store.
+
+00:01:09.480 --> 00:01:13.820 line:100% position:50% align:middle
+Now we haven't talked about this yet, but
+if we open up our MongoDB Compass here,
+
+00:01:13.820 --> 00:01:18.920 line:100% position:50% align:middle
+and you look at any of your actual stores
+here, you'll notice that every single
+
+00:01:18.920 --> 00:01:24.020 line:100% position:50% align:middle
+store had an id identifier that we didn't
+give it. So MongoDB by default will assign
+
+00:01:24.020 --> 00:01:29.050 line:100% position:50% align:middle
+a unique id to every piece of content that
+you have, every document that is stored in
+
+00:01:29.050 --> 00:01:36.370 line:100% position:50% align:middle
+this database. And we often use this id
+for being sort of like a...not necessarily
+
+00:01:36.370 --> 00:01:40.190 line:100% position:50% align:middle
+a primary key, but a way to uniquely
+identify a piece of content that will
+
+00:01:40.190 --> 00:01:41.630 line:100% position:50% align:middle
+never be duplicated.
+
+00:01:41.630 --> 00:01:46.960 line:100% position:50% align:middle
+So the way that we do that is we need to
+switch this to ``, because we're going to
+
+00:01:46.960 --> 00:01:53.700 line:100% position:50% align:middle
+be generating a string here. And the id is
+going to be ${, and inside of that we'll
+
+00:01:53.700 --> 00:01:58.590 line:100% position:50% align:middle
+say store. _id}. That's how you access the
+actual id. Then inside of that,
+
+00:01:58.590 --> 00:02:06.420 line:100% position:50% align:middle
+we need a SVG icon that will be a pencil.
+And the way that we do that is if you look
+
+00:02:06.420 --> 00:02:11.890 line:100% position:50% align:middle
+at helpers.js, you'll see that I
+also have this icon function.
+
+00:02:11.890 --> 00:02:15.960 line:100% position:50% align:middle
+And all it really does is it reads an SVG
+file and will include it.
+
+00:02:15.960 --> 00:02:20.060 line:100% position:50% align:middle
+Because you'll know that if you use an
+image tag with an SVG, there's no way for
+
+00:02:20.060 --> 00:02:25.220 line:100% position:50% align:middle
+you to set the fill color or style in any
+way. It's just a solid image tag.
+
+00:02:25.220 --> 00:02:30.080 line:100% position:50% align:middle
+But if you actually include the SVG code,
+then you have full access to working with
+
+00:02:30.080 --> 00:02:30.500 line:100% position:50% align:middle
+that SVG.
+
+00:02:30.500 --> 00:02:35.010 line:100% position:50% align:middle
+So there's a whole bunch of different
+ways. You can also use SVG sprites and
+
+00:02:35.010 --> 00:02:39.100 line:100% position:50% align:middle
+whatnot. But this is just a short way that
+we can do it without having an additional
+
+00:02:39.100 --> 00:02:45.070 line:100% position:50% align:middle
+request on page load. So we go in here and
+we tell Pug that we're going to be writing
+
+00:02:45.070 --> 00:02:51.430 line:100% position:50% align:middle
+some HTMLs. And that's with !=, and you
+say h.icon, that's the method that we're
+
+00:02:51.430 --> 00:02:55.160 line:100% position:50% align:middle
+looking for here. And you ask for
+('pencil'). And what that's going to do if
+
+00:02:55.160 --> 00:02:59.490 line:100% position:50% align:middle
+we look at it here, it's going to include
+all of the code of the SVG that is in
+
+00:02:59.490 --> 00:03:05.750 line:100% position:50% align:middle
+public/images/ icons/pencils.svg. So we've
+got that there. Let's refresh it and see
+
+00:03:05.750 --> 00:03:06.640 line:100% position:50% align:middle
+what we've got.
+
+00:03:06.640 --> 00:03:11.570 line:100% position:50% align:middle
+Good. Now we have a pencil icon. And, oh,
+real quick. It's not "store," it's
+
+00:03:11.570 --> 00:03:16.950 line:100% position:50% align:middle
+"stores," with an "S" on it. Refresh. Now
+click on any one of them,
+
+00:03:16.950 --> 00:03:23.770 line:100% position:50% align:middle
+and you should go to...there you go. You
+go to a URL, /stores/ the id of the store
+
+00:03:23.770 --> 00:03:29.830 line:100% position:50% align:middle
+/edit. Now it's going to 404 obviously
+because we need to hook up our route in
+
+00:03:29.830 --> 00:03:35.100 line:100% position:50% align:middle
+order for it to work. So we'll go back to
+our index.js and we'll write a route for
+
+00:03:35.100 --> 00:03:36.560 line:100% position:50% align:middle
+that specific URL combination.
+
+00:03:36.560 --> 00:03:46.220 line:100% position:50% align:middle
+Do router.get('/stores/ hmm, let's just do
+123/edit. So the question now is this part
+
+00:03:46.220 --> 00:03:50.970 line:100% position:50% align:middle
+is going to be dynamic. How do we do a
+wild card route that will match anything
+
+00:03:50.970 --> 00:03:56.620 line:100% position:50% align:middle
+of this pattern? Well, what you do is you
+put a : and you put the name of the
+
+00:03:56.620 --> 00:04:00.550 line:100% position:50% align:middle
+parameter that is going to be
+passed in, so we'll call that id.
+
+00:04:00.550 --> 00:04:05.000 line:100% position:50% align:middle
+And when we visit this page, we're going
+to have a variable available to us on our
+
+00:04:05.000 --> 00:04:10.330 line:100% position:50% align:middle
+request object that tells us what the
+actual id of the URL is.
+
+00:04:10.330 --> 00:04:14.530 line:100% position:50% align:middle
+Good. Then we can take our storeController
+here. Let's preemptively run catchErrors
+
+00:04:14.530 --> 00:04:17.530 line:100% position:50% align:middle
+because you know we're going to need to do
+that. And then we're going to say
+
+00:04:17.530 --> 00:04:22.390 line:100% position:50% align:middle
+(storeController. , and we're going to
+make one called editStore)).
+
+00:04:22.390 --> 00:04:27.650 line:100% position:50% align:middle
+Good. Now let's go back to our
+storeController now, and we'll make a new
+
+00:04:27.650 --> 00:04:33.350 line:100% position:50% align:middle
+method here called editStore,
+exports.editStore =, we'll make it async.
+
+00:04:33.350 --> 00:04:37.370 line:100% position:50% align:middle
+Again, a lot of these, any time you're
+dealing with database you're going to make
+
+00:04:37.370 --> 00:04:41.530 line:100% position:50% align:middle
+it async. And then I should also say, if
+you make something async and you don't end
+
+00:04:41.530 --> 00:04:45.600 line:100% position:50% align:middle
+up actually using anything there's no harm
+in doing that. So don't feel like,
+
+00:04:45.600 --> 00:04:47.710 line:100% position:50% align:middle
+"Oh, I'm not sure if I should
+make it async or not."
+
+00:04:47.710 --> 00:04:53.250 line:100% position:50% align:middle
+We need to do a couple things. First,
+"Find the store given the ID." Two,
+
+00:04:53.250 --> 00:04:58.290 line:100% position:50% align:middle
+we need to "confirm they are the owner of
+the store." So that's something we're
+
+00:04:58.290 --> 00:05:01.720 line:100% position:50% align:middle
+going to have to wait on because we don't
+have any login sessions just yet.
+
+00:05:01.720 --> 00:05:07.890 line:100% position:50% align:middle
+But we will do that in the future. And
+then 3, we need to...well,
+
+00:05:07.890 --> 00:05:16.100 line:100% position:50% align:middle
+that's 4. There's 3. "Render out the edit
+form so the user can update their store."
+
+00:05:16.100 --> 00:05:21.950 line:100% position:50% align:middle
+Okay, good. So first things first. "Find
+the store given the ID." So how do I get
+
+00:05:21.950 --> 00:05:26.910 line:100% position:50% align:middle
+the ID? Well, there is, I told you, this
+request. And on that is going to be
+
+00:05:26.910 --> 00:05:31.880 line:100% position:50% align:middle
+something called "params," which will give
+you any parameters that have come through
+
+00:05:31.880 --> 00:05:38.320 line:100% position:50% align:middle
+the URL. Again, what are params? Params
+are any time your URL contains something
+
+00:05:38.320 --> 00:05:41.560 line:100% position:50% align:middle
+like this, : and then an actual
+value in front of there.
+
+00:05:41.560 --> 00:05:47.860 line:100% position:50% align:middle
+So we can go back into our Controller, and
+let's just try res.json(req.params);.
+
+00:05:47.860 --> 00:05:52.110 line:100% position:50% align:middle
+Let's just send back the parameters that
+we have, see what we're dealing with.
+
+00:05:52.110 --> 00:05:58.930 line:100% position:50% align:middle
+We'll refresh. And there we go. We're
+immediately sending back the id parameter
+
+00:05:58.930 --> 00:06:03.520 line:100% position:50% align:middle
+that we have here. So if I change this to
+"123" it's going to give us "123." If I
+
+00:06:03.520 --> 00:06:05.640 line:100% position:50% align:middle
+change it back, there we go. Good.
+
+00:06:05.640 --> 00:06:10.710 line:100% position:50% align:middle
+So we know that req.params.id will give it
+to us, but we need to find the specific
+
+00:06:10.710 --> 00:06:17.610 line:100% position:50% align:middle
+store that we have. So let's say const
+store =, we'll take our Store model here.
+
+00:06:17.610 --> 00:06:23.870 line:100% position:50% align:middle
+And we'll use the findOne method here, and
+this you just pass it a query.
+
+00:06:23.870 --> 00:06:30.240 line:100% position:50% align:middle
+So what is the one piece that we know?
+Well, _id: is going to be equal to
+
+00:06:30.240 --> 00:06:33.880 line:100% position:50% align:middle
+req.params.id. And there's a whole bunch
+of other methods here.
+
+00:06:33.880 --> 00:06:37.310 line:100% position:50% align:middle
+I believe there's a findByID and there's a
+find, which will give us multiple ones.
+
+00:06:37.310 --> 00:06:40.110 line:100% position:50% align:middle
+We'll be looking into quite
+a bit more of them.
+
+00:06:40.110 --> 00:06:44.600 line:100% position:50% align:middle
+Now that's not going to work just yet.
+Why? Because, you tell me.
+
+00:06:44.600 --> 00:06:50.050 line:100% position:50% align:middle
+What does Store.findOne return? What do
+all these queries in MongoDB return?
+
+00:06:50.050 --> 00:06:54.780 line:100% position:50% align:middle
+They don't return the data, they return a
+promise, an I. O. U.that the data is going
+
+00:06:54.780 --> 00:06:59.120 line:100% position:50% align:middle
+to come back. So in order for us to put
+the actual store into store,
+
+00:06:59.120 --> 00:07:04.710 line:100% position:50% align:middle
+right now it's going to be a promise, we
+need to await that promise to be resolved,
+
+00:07:04.710 --> 00:07:07.290 line:100% position:50% align:middle
+or to come back from database.
+
+00:07:07.290 --> 00:07:11.700 line:100% position:50% align:middle
+So there we have the store, and again, we
+can just res.json the (store); just to see
+
+00:07:11.700 --> 00:07:16.840 line:100% position:50% align:middle
+if that data is working. So we'll come
+here and click on Fish Market.
+
+00:07:16.840 --> 00:07:20.980 line:100% position:50% align:middle
+And you'll see, all right, good. So what's
+happening here is we are finding the store
+
+00:07:20.980 --> 00:07:25.240 line:100% position:50% align:middle
+by id, and then we're just sending the
+actual JSON object back.
+
+00:07:25.240 --> 00:07:29.080 line:100% position:50% align:middle
+I often like to just JSON the object back
+just to make sure that we know what we
+
+00:07:29.080 --> 00:07:32.530 line:100% position:50% align:middle
+have. So good, we have all the data. Let's
+try another one.
+
+00:07:32.530 --> 00:07:37.710 line:100% position:50% align:middle
+Let's go to the Bakery. Bakery is working
+nicely. Really long store name.
+
+00:07:37.710 --> 00:07:41.090 line:100% position:50% align:middle
+That one's working nicely. Good. But we
+don't want to just json it,
+
+00:07:41.090 --> 00:07:46.570 line:100% position:50% align:middle
+so we'll remove that. Confirm the owner of
+the store TODO. We can't do that yet
+
+00:07:46.570 --> 00:07:49.200 line:100% position:50% align:middle
+because we don't have any
+account login stuff yet.
+
+00:07:49.200 --> 00:07:53.910 line:100% position:50% align:middle
+And then finally, "Render out the edit
+form so that the user can update their
+
+00:07:53.910 --> 00:08:00.140 line:100% position:50% align:middle
+store." So we're going to res.render. And
+we already have our editStore layout here.
+
+00:08:00.140 --> 00:08:04.780 line:100% position:50% align:middle
+Remember we did this for adding a store?
+So we're going to render out the same
+
+00:08:04.780 --> 00:08:11.340 line:100% position:50% align:middle
+form. We'll say render out ('editStore',
+and a couple things we're going to be
+
+00:08:11.340 --> 00:08:18.340 line:100% position:50% align:middle
+doing is we're going to pass the {}
+title:, which is going to be 'Edit Store.
+
+00:08:18.340 --> 00:08:23.360 line:100% position:50% align:middle
+' And you can make that dynamic if you
+wanted. You could say 'Edit
+
+00:08:23.360 --> 00:08:25.970 line:100% position:50% align:middle
+${store.name}', and that
+will make it dynamic.
+
+00:08:25.970 --> 00:08:30.460 line:100% position:50% align:middle
+And then we also want to pass the
+storeData. So normally, again,
+
+00:08:30.460 --> 00:08:35.100 line:100% position:50% align:middle
+we'd say store: is equal to store, because
+we've got the data right here and we need
+
+00:08:35.100 --> 00:08:40.130 line:100% position:50% align:middle
+to pass that as a param called store. So
+you know in ES6 if the parameter name and
+
+00:08:40.130 --> 00:08:44.520 line:100% position:50% align:middle
+the variable that you're passing are
+exactly the same thing it's not necessary
+
+00:08:44.520 --> 00:08:50.660 line:100% position:50% align:middle
+to do that. You can just pass store {});
+and get the exact same thing.
+
+00:08:50.660 --> 00:08:53.220 line:100% position:50% align:middle
+So give that a Save.
+
+00:08:53.220 --> 00:08:57.240 line:100% position:50% align:middle
+Now we'll go back to our editStore here,
+and let's just try a quick dump,
+
+00:08:57.240 --> 00:09:07.750 line:100% position:50% align:middle
+pre= h.dump (store). Let's click on Fish
+Market. Good. So you see that we're
+
+00:09:07.750 --> 00:09:14.460 line:100% position:50% align:middle
+actually editing the right store because
+now when we edit this view,
+
+00:09:14.460 --> 00:09:18.390 line:100% position:50% align:middle
+the data about the store is pulled from
+the database and sent along to the
+
+00:09:18.390 --> 00:09:22.840 line:100% position:50% align:middle
+template. And if we go to Add, you'll see
+that there is nothing showing up,
+
+00:09:22.840 --> 00:09:26.860 line:100% position:50% align:middle
+even though this is the same
+template. Go back, there we go.
+
+00:09:26.860 --> 00:09:32.370 line:100% position:50% align:middle
+Now the question is, how do I populate
+these fields here as well as make sure
+
+00:09:32.370 --> 00:09:36.830 line:100% position:50% align:middle
+that all the checkboxes are checked? Well,
+we're going to take that store,
+
+00:09:36.830 --> 00:09:41.860 line:100% position:50% align:middle
+get rid of this dump, and pass it along to
+our storeForm. So our storeForm gets the
+
+00:09:41.860 --> 00:09:47.790 line:100% position:50% align:middle
+(store). Then let's open up our storeForm.
+Make sure you can spell.
+
+00:09:47.790 --> 00:09:52.470 line:100% position:50% align:middle
+There you go. And then it's going to take
+in a store. And this right here,
+
+00:09:52.470 --> 00:09:57.270 line:100% position:50% align:middle
+if we're on the Add screen the store is
+going to fall back to an empty object.
+
+00:09:57.270 --> 00:10:01.810 line:100% position:50% align:middle
+If we're on an actual store page, it's
+going to actually pass us the store.
+
+00:10:01.810 --> 00:10:06.030 line:100% position:50% align:middle
+That's why we've done this here, because
+we're using the form for both creating as
+
+00:10:06.030 --> 00:10:07.400 line:100% position:50% align:middle
+well as editing.
+
+00:10:07.400 --> 00:10:12.730 line:100% position:50% align:middle
+So we'll go to the name here, and we'll
+simply go to our input and we'll say
+
+00:10:12.730 --> 00:10:16.240 line:100% position:50% align:middle
+value=store.name. And if there is a
+store.name it will be populated.
+
+00:10:16.240 --> 00:10:20.110 line:100% position:50% align:middle
+If not, just nothing will be there.
+Let's refresh. There we go,
+
+00:10:20.110 --> 00:10:24.100 line:100% position:50% align:middle
+see? Fish Market on the Edit Fish page is
+showing up. Good. Let's go to our
+
+00:10:24.100 --> 00:10:28.420 line:100% position:50% align:middle
+description, and inside description there
+is no value on a text area.
+
+00:10:28.420 --> 00:10:37.310 line:100% position:50% align:middle
+So you need to set it. So =
+store.description. Let's check that.
+
+00:10:37.310 --> 00:10:39.810 line:100% position:50% align:middle
+Good. So Fish Market "Catch of the day!"
+
+00:10:39.810 --> 00:10:45.890 line:100% position:50% align:middle
+Now we need to have the Wifi and Open
+Late, all these tags. So I'm going to go
+
+00:10:45.890 --> 00:10:53.150 line:100% position:50% align:middle
+down here and make a tags array. So we'll
+say - const tags = store.tags,
+
+00:10:53.150 --> 00:10:56.840 line:100% position:50% align:middle
+or an empty array. And the reason why I
+make it an empty array is because down
+
+00:10:56.840 --> 00:11:00.570 line:100% position:50% align:middle
+here we're going to use the includes
+method, and if you try to use
+
+00:11:00.570 --> 00:11:04.490 line:100% position:50% align:middle
+array.includes on something that doesn't
+exist it's going to throw and error and
+
+00:11:04.490 --> 00:11:08.520 line:100% position:50% align:middle
+say, "Could not read property
+includes of undefined."
+
+00:11:08.520 --> 00:11:12.920 line:100% position:50% align:middle
+So we'll go to our input here. And how do
+you make a checkbox checked?
+
+00:11:12.920 --> 00:11:19.110 line:100% position:50% align:middle
+Well, give it a checked property, and
+that's = we're going to do () here,
+
+00:11:19.110 --> 00:11:22.410 line:100% position:50% align:middle
+because if you want to run a little bit of
+JavaScript you throw a () here.
+
+00:11:22.410 --> 00:11:29.010 line:100% position:50% align:middle
+And we'll say (tags.includes. If the tags
+includes no (choice)),
+
+00:11:29.010 --> 00:11:34.690 line:100% position:50% align:middle
+right? So let's say it's Wifi. We're going
+to say this huge list of tags,
+
+00:11:34.690 --> 00:11:39.870 line:100% position:50% align:middle
+if it includes the word "Wifi," then it
+will return true and checked will be true.
+
+00:11:39.870 --> 00:11:44.320 line:100% position:50% align:middle
+Otherwise it's going to return false, and
+Pug knows to just omit that checked
+
+00:11:44.320 --> 00:11:45.860 line:100% position:50% align:middle
+attribute altogether.
+
+00:11:45.860 --> 00:11:48.910 line:100% position:50% align:middle
+Let's give that a Save and see if that
+works. There we go. See,
+
+00:11:48.910 --> 00:11:52.160 line:100% position:50% align:middle
+Licensed was checked on that one. Let's go
+back to another store.
+
+00:11:52.160 --> 00:11:57.280 line:100% position:50% align:middle
+Bakery, that one has Vegatarian and Open
+Late checked, so you can see that they are
+
+00:11:57.280 --> 00:11:58.740 line:100% position:50% align:middle
+checked.
+
+00:11:58.740 --> 00:12:04.460 line:100% position:50% align:middle
+Finally, we need to actually handle the
+updating of the URL. And if I were to just
+
+00:12:04.460 --> 00:12:11.040 line:100% position:50% align:middle
+submit this, the form action is going to
+post to Add. And we're actually going to
+
+00:12:11.040 --> 00:12:15.570 line:100% position:50% align:middle
+create a second store, not update the
+existing store. So we need to edit this
+
+00:12:15.570 --> 00:12:23.040 line:100% position:50% align:middle
+form action in order to appropriately on a
+brand new one post to add,
+
+00:12:23.040 --> 00:12:25.840 line:100% position:50% align:middle
+and on an editing one we want to post to
+add/ the id of the store.
+
+00:12:25.840 --> 00:12:32.430 line:100% position:50% align:middle
+Okay, we'll go up to this add and we'll
+replace it with ``, because again,
+
+00:12:32.430 --> 00:12:36.690 line:100% position:50% align:middle
+every time you use `` it means that you're
+trying to generate a string,
+
+00:12:36.690 --> 00:12:43.050 line:100% position:50% align:middle
+rather than just hard quote a string. So
+it's going to be /add/ and then we're
+
+00:12:43.050 --> 00:12:48.970 line:100% position:50% align:middle
+going to interpolate some data here,
+${store. _id} or nothing.
+
+00:12:48.970 --> 00:12:52.860 line:100% position:50% align:middle
+And what that will do is if there is a
+store ID, it will pop it in there.
+
+00:12:52.860 --> 00:12:57.270 line:100% position:50% align:middle
+Otherwise, it's just going to be /add. So
+let's try that out, and let's inspect on
+
+00:12:57.270 --> 00:12:59.550 line:100% position:50% align:middle
+that form to make sure
+it's actually working.
+
+00:12:59.550 --> 00:13:03.730 line:100% position:50% align:middle
+So if we open up our dev tools here to
+this form, you see that the action is
+
+00:13:03.730 --> 00:13:11.620 line:100% position:50% align:middle
+/add/58ec, etc, etc. Now if I were to go
+to the Add page, you see that the action
+
+00:13:11.620 --> 00:13:19.380 line:100% position:50% align:middle
+is just /add/ nothing. So that's a nice
+little trick that we can use so that we
+
+00:13:19.380 --> 00:13:24.220 line:100% position:50% align:middle
+can use the same form to add a new store,
+as well as update an existing store.
+
+00:13:24.220 --> 00:13:28.120 line:100% position:50% align:middle
+So let's first test that actually adding a
+brand new store still works,
+
+00:13:28.120 --> 00:13:35.910 line:100% position:50% align:middle
+we didn't break anything there. So let's
+say "Brew Bar. Good beers." Licensed,
+
+00:13:35.910 --> 00:13:41.000 line:100% position:50% align:middle
+and "Family Friendly. Give it a Save. And,
+"Successfully Created Brew Bar." If we go
+
+00:13:41.000 --> 00:13:44.690 line:100% position:50% align:middle
+to our Stores page, you should see, there
+we go. Brew Bar is now showing up.
+
+00:13:44.690 --> 00:13:45.340 line:100% position:50% align:middle
+Good.
+
+00:13:45.340 --> 00:13:51.770 line:100% position:50% align:middle
+Now if I edit Brew Bar, and let's say we
+say "Really good beers," and give it a
+
+00:13:51.770 --> 00:13:57.540 line:100% position:50% align:middle
+Save. You'll see we get a 404. And did it
+actually update itself?
+
+00:13:57.540 --> 00:14:02.680 line:100% position:50% align:middle
+No, there's no "Really good beers," here.
+So what's the problem here?
+
+00:14:02.680 --> 00:14:09.260 line:100% position:50% align:middle
+And the reason is that when you actually
+try to save one, it's trying to go to
+
+00:14:09.260 --> 00:14:16.050 line:100% position:50% align:middle
+/add/ the ID, which we do not have a route
+for yet. Let's go to our index.js.
+
+00:14:16.050 --> 00:14:21.870 line:100% position:50% align:middle
+Here we have a /add, but we don't have one
+for /add/id. So what I want you to do is
+
+00:14:21.870 --> 00:14:25.860 line:100% position:50% align:middle
+to just copy that /add, paste it into
+another one, because it's
+
+00:14:25.860 --> 00:14:30.740 line:100% position:50% align:middle
+router.post('add', not get. Because this
+is post, we're posting to the form.
+
+00:14:30.740 --> 00:14:36.830 line:100% position:50% align:middle
+And we're going to add one for an id. And
+then we are going to change the method not
+
+00:14:36.830 --> 00:14:41.870 line:100% position:50% align:middle
+to storeController.createStore,
+but to updateStore.
+
+00:14:41.870 --> 00:14:47.440 line:100% position:50% align:middle
+Good. Then we'll go to our Controller. And
+you guessed it, then we'll create another
+
+00:14:47.440 --> 00:14:54.660 line:100% position:50% align:middle
+method, exports.updateStore = async,
+because we're going to be querying for the
+
+00:14:54.660 --> 00:15:00.060 line:100% position:50% align:middle
+store and then updating it, (req, res), =>
+{} open that up. All right,
+
+00:15:00.060 --> 00:15:04.750 line:100% position:50% align:middle
+so a couple things that need to happen
+here. First, we need to "find and update
+
+00:15:04.750 --> 00:15:13.140 line:100% position:50% align:middle
+the store." And then we need to, "Redirect
+them to the store and tell them it
+
+00:15:13.140 --> 00:15:14.530 line:100% position:50% align:middle
+worked."
+
+00:15:14.530 --> 00:15:19.360 line:100% position:50% align:middle
+So first thing that we need to know is
+that we will, again, get our new store.
+
+00:15:19.360 --> 00:15:24.750 line:100% position:50% align:middle
+So const store =. We'll take our Store
+model and call a method called
+
+00:15:24.750 --> 00:15:31.720 line:100% position:50% align:middle
+findOneAndUpdate. So we could query for
+the store, bring it back,
+
+00:15:31.720 --> 00:15:35.690 line:100% position:50% align:middle
+change the data on it, then send it back
+to the database and update it.
+
+00:15:35.690 --> 00:15:40.560 line:100% position:50% align:middle
+But findOneAndUpdate is a method in
+MongoDB that will allow us to sort of do
+
+00:15:40.560 --> 00:15:43.620 line:100% position:50% align:middle
+it in one fell swoop, which is really,
+really nice.
+
+00:15:43.620 --> 00:15:48.060 line:100% position:50% align:middle
+We're going to first...findOneAndUpdate
+takes three parameters.
+
+00:15:48.060 --> 00:15:54.020 line:100% position:50% align:middle
+First, the query, second, it takes the
+data, and third, it's going to take some
+
+00:15:54.020 --> 00:16:00.030 line:100% position:50% align:middle
+options. So our query is going to be...we
+can do this on one line here.
+
+00:16:00.030 --> 00:16:09.450 line:100% position:50% align:middle
+We'll say _id: is going to be equal to
+req.body. Or no, req.params {}).
+
+00:16:09.450 --> 00:16:14.860 line:100% position:50% align:middle
+Again, remember that that's coming in from
+our route.id is defined right here,
+
+00:16:14.860 --> 00:16:21.380 line:100% position:50% align:middle
+so if I called that wes, then it would be
+req.params.wes, but it's id in our case.
+
+00:16:21.380 --> 00:16:22.820 line:100% position:50% align:middle
+Then that will find it.
+
+00:16:22.820 --> 00:16:27.510 line:100% position:50% align:middle
+And the second one is, what do we update
+it with? Well, we need all of the fields
+
+00:16:27.510 --> 00:16:32.720 line:100% position:50% align:middle
+that have come in from editing our store.
+So we'll go to our Stores here.
+
+00:16:32.720 --> 00:16:37.140 line:100% position:50% align:middle
+We'll edit the Brew Bar. And if you were
+to pass it all of this data,
+
+00:16:37.140 --> 00:16:41.660 line:100% position:50% align:middle
+we need to then pass that from our
+controller over to our database.
+
+00:16:41.660 --> 00:16:46.590 line:100% position:50% align:middle
+So we can pass over the req.body, which
+again, is going to be an object filled
+
+00:16:46.590 --> 00:16:51.020 line:100% position:50% align:middle
+with every form field that got sent
+over to it. And then third,
+
+00:16:51.020 --> 00:16:56.620 line:100% position:50% align:middle
+there's a couple things that we need to do
+here in order to make it work a little bit
+
+00:16:56.620 --> 00:17:00.080 line:100% position:50% align:middle
+differently. So we need to pass some
+options here, which is the {}.
+
+00:17:00.080 --> 00:17:08.100 line:100% position:50% align:middle
+And we need to say, new: is true. And what
+new: is true will do is it will "return
+
+00:17:08.100 --> 00:17:11.890 line:100% position:50% align:middle
+the new store instead of the old one."
+
+00:17:11.890 --> 00:17:17.370 line:100% position:50% align:middle
+And what that means is, by default,
+findOneAndUpdate will actually return to
+
+00:17:17.370 --> 00:17:24.600 line:100% position:50% align:middle
+us the old store, not the updated data.
+And in our case, we want the updated data
+
+00:17:24.600 --> 00:17:30.140 line:100% position:50% align:middle
+because we need to redirect them to a
+specific page. Then we also want to pass a
+
+00:17:30.140 --> 00:17:36.630 line:100% position:50% align:middle
+property called runValidators: and set
+that to true. And we're going to run into
+
+00:17:36.630 --> 00:17:42.330 line:100% position:50% align:middle
+this because if we look at our model,
+store.js, remember we said it required a
+
+00:17:42.330 --> 00:17:50.430 line:100% position:50% align:middle
+true? So if somebody updates the store to
+have no store name, then by default it's
+
+00:17:50.430 --> 00:17:53.430 line:100% position:50% align:middle
+not going to error out. It only runs those
+validators against it,
+
+00:17:53.430 --> 00:17:59.580 line:100% position:50% align:middle
+like required, true, trim, true. It only
+runs these things on the initial creation,
+
+00:17:59.580 --> 00:18:02.430 line:100% position:50% align:middle
+and we don't want that because somebody
+could easily create a store and then go
+
+00:18:02.430 --> 00:18:05.650 line:100% position:50% align:middle
+back and edit it and take the name off of
+it. Then we're going to be in a bit of
+
+00:18:05.650 --> 00:18:11.640 line:100% position:50% align:middle
+trouble. So by saying runValidators: true,
+that will force our model to run these
+
+00:18:11.640 --> 00:18:16.040 line:100% position:50% align:middle
+required validators against it. And we'll
+go into some more advanced validators as
+
+00:18:16.040 --> 00:18:17.310 line:100% position:50% align:middle
+we go along in this class.
+
+00:18:17.310 --> 00:18:23.630 line:100% position:50% align:middle
+So that's what we've got there. Then to
+run it, you run exec; on the end.
+
+00:18:23.630 --> 00:18:28.680 line:100% position:50% align:middle
+And some of them by default will not run.
+By putting E-X-E-C, exec on the end,
+
+00:18:28.680 --> 00:18:32.630 line:100% position:50% align:middle
+it will actually run the query
+that we have here.
+
+00:18:32.630 --> 00:18:37.520 line:100% position:50% align:middle
+Finally, we need to await that data from
+coming back again, because this whole
+
+00:18:37.520 --> 00:18:42.090 line:100% position:50% align:middle
+thing right here will return a promise,
+and if we await it, it will eventually
+
+00:18:42.090 --> 00:18:48.300 line:100% position:50% align:middle
+bring us back the data and put it in our
+stores variable. So we have updated the
+
+00:18:48.300 --> 00:18:54.750 line:100% position:50% align:middle
+value here, then we will say req.flash,
+and we want to say ('success',
+
+00:18:54.750 --> 00:19:01.160 line:100% position:50% align:middle
+message when that successful happens. So
+we'll say 'Successfully updated.
+
+00:19:01.160 --> 00:19:04.710 line:100% position:50% align:middle
+I'm using ` here so I can put the
+${store.name}`) right inside of it.
+
+00:19:04.710 --> 00:19:06.419 line:100% position:50% align:middle
+And you could put a
+strong tag around
+
+00:19:06.419 --> 00:19:12.380 line:100% position:50% align:middle
+that if you like. And then you
+could give them a link to it,
+
+00:19:12.380 --> 00:19:21.490 line:100% position:50% align:middle
+so a href= close it up. And the link will
+go to /stores/${store.
+
+00:19:21.490 --> 00:19:29.070 line:100% position:50% align:middle
+slug}". You could say >ViewStore. And then
+finally, we're going to redirect them to
+
+00:19:29.070 --> 00:19:35.010 line:100% position:50% align:middle
+the edit page that they were just on, so
+we'll say request... or response.
+
+00:19:35.010 --> 00:19:39.530 line:100% position:50% align:middle
+redirect. Sometimes I get the request and
+the response mixed up.
+
+00:19:39.530 --> 00:19:43.500 line:100% position:50% align:middle
+That's a fairly common mistake that you
+will have. If you have an error,
+
+00:19:43.500 --> 00:19:48.510 line:100% position:50% align:middle
+first just ask yourself, "Did I get my
+request and response mixed up?" Because it
+
+00:19:48.510 --> 00:19:56.590 line:100% position:50% align:middle
+is very common. /stores/ grab the ${store.
+id}/edit');. Okay, woo.
+
+00:19:56.590 --> 00:20:02.370 line:100% position:50% align:middle
+So find and update the store, run the
+validators, tell them it was successfully
+
+00:20:02.370 --> 00:20:06.620 line:100% position:50% align:middle
+updated, and then redirect them to the
+edit screen that they were just on.
+
+00:20:06.620 --> 00:20:11.150 line:100% position:50% align:middle
+Good. So let's try it out. So we'll say
+"Good beers." We'll change that to "Really
+
+00:20:11.150 --> 00:20:17.160 line:100% position:50% align:middle
+Good beers!" And put an !. Save. Hey,
+there we go. We got our flash message
+
+00:20:17.160 --> 00:20:22.380 line:100% position:50% align:middle
+showing up, as well as we have our Brew
+Bar here. And we have a link,
+
+00:20:22.380 --> 00:20:27.050 line:100% position:50% align:middle
+I guess, to the actual store to view it,
+but we haven't created that page just yet.
+
+00:20:27.050 --> 00:20:31.520 line:100% position:50% align:middle
+That's coming in just a second. Let's
+double check that if we add all of the
+
+00:20:31.520 --> 00:20:36.890 line:100% position:50% align:middle
+tags they stay. Good. You can take a
+couple off and save it. That will work as
+
+00:20:36.890 --> 00:20:38.088 line:100% position:50% align:middle
+well. Great.
+
+00:20:38.498 --> 00:20:41.498 line:100% position:50% align:middle
+♪ [music] ♪

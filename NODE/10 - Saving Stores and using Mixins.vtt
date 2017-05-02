@@ -1,0 +1,750 @@
+WEBVTT
+
+00:00:00.553 --> 00:00:03.553 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.000 --> 00:00:15.570 line:100% position:50% align:middle
+Let's get this Add page working. Right now
+if you click on if you get 404,
+
+00:00:15.570 --> 00:00:19.090 line:100% position:50% align:middle
+and that's because we don't have a route
+set up for it. So let's open up our
+
+00:00:19.090 --> 00:00:24.820 line:100% position:50% align:middle
+index.js inside of our routes folder, and
+let's just duplicate this route and say
+
+00:00:24.820 --> 00:00:30.420 line:100% position:50% align:middle
+('/add', and we want to have
+storeController.addStore);. Now we'll go
+
+00:00:30.420 --> 00:00:34.300 line:100% position:50% align:middle
+over to our storeController file, and
+we're going to add a new one.
+
+00:00:34.300 --> 00:00:40.350 line:100% position:50% align:middle
+So it's going to be exports.addStore =, we
+have our req and we have our res.
+
+00:00:40.350 --> 00:00:46.020 line:100% position:50% align:middle
+And from that, let's just say res.send,
+response.send('It works');.
+
+00:00:46.020 --> 00:00:49.050 line:100% position:50% align:middle
+Let's just check that that sucker works.
+And now when you refresh,
+
+00:00:49.050 --> 00:00:50.520 line:100% position:50% align:middle
+you should see "It works" show up.
+
+00:00:50.520 --> 00:00:54.600 line:100% position:50% align:middle
+Now we don't actually want to send that.
+We want to render out one of our
+
+00:00:54.600 --> 00:00:59.770 line:100% position:50% align:middle
+templates. So we'll say res.render, and
+the template that we want to render our,
+
+00:00:59.770 --> 00:01:02.520 line:100% position:50% align:middle
+we're going to call it ('editStore'). And
+the reason I'm not calling this
+
+00:01:02.520 --> 00:01:08.180 line:100% position:50% align:middle
+('addStore') is because I want to use the
+same template, whether we're adding a new
+
+00:01:08.180 --> 00:01:12.100 line:100% position:50% align:middle
+store or whether we're editing an existing
+store. That keeps the number of templates
+
+00:01:12.100 --> 00:01:16.300 line:100% position:50% align:middle
+down. It keeps our code as dry as
+possible. What is the data that we need to
+
+00:01:16.300 --> 00:01:21.490 line:100% position:50% align:middle
+pass to this? Well, we need to add the {
+title: which is called 'Add Store' });.
+
+00:01:21.490 --> 00:01:25.080 line:100% position:50% align:middle
+So now if we save that we're going to get
+an error, because this doesn't exist,
+
+00:01:25.080 --> 00:01:30.080 line:100% position:50% align:middle
+but let's see. There we go, "Failed to
+lookup 'editStore. '" So we'll go into our
+
+00:01:30.080 --> 00:01:36.500 line:100% position:50% align:middle
+views directory here. We make a new file,
+and we'll call it editStore.pug.
+
+00:01:36.500 --> 00:01:41.780 line:100% position:50% align:middle
+And we'll do exactly what we've been doing
+for the rest of them.extends layout,
+
+00:01:41.780 --> 00:01:44.034 line:100% position:50% align:middle
+and we'll have our block content.
+
+00:03:54.400 --> 00:03:58.530 line:100% position:50% align:middle
+Some HTML that needs to be displayed onto
+the page. So that's what we're going to
+
+00:03:58.530 --> 00:04:02.490 line:100% position:50% align:middle
+do. We're going to open up our views
+folder and open up our mixins folder.
+
+00:04:02.490 --> 00:04:06.230 line:100% position:50% align:middle
+There's nothing inside of there right now,
+but we're going to create our first
+
+00:04:06.230 --> 00:04:09.710 line:100% position:50% align:middle
+mixins. We're going to create a new file
+here. And we're going to call it,
+
+00:04:09.710 --> 00:04:14.870 line:100% position:50% align:middle
+I like to prefix mine with _. However,
+that is 100% not necessary.
+
+00:04:14.870 --> 00:04:19.300 line:100% position:50% align:middle
+I just like to do it as a naming
+convention. We do that in SAS.
+
+00:04:19.300 --> 00:04:24.140 line:100% position:50% align:middle
+It's nice to sort of keep that convention
+going in Pug. So we're going to call it
+
+00:04:24.140 --> 00:04:29.860 line:100% position:50% align:middle
+_storeForm, capital "F," .pug. And we're
+going to define what the mixin looks like.
+
+00:04:29.860 --> 00:04:32.730 line:100% position:50% align:middle
+So the way that you define the mixin is
+you simply just say mixin.
+
+00:04:32.730 --> 00:04:36.800 line:100% position:50% align:middle
+And you name the mixin that you want, it's
+just like a function.
+
+00:04:36.800 --> 00:04:44.250 line:100% position:50% align:middle
+So we'll call it storeForm. And that will
+take in a (store, which is going to be for
+
+00:04:44.250 --> 00:04:48.500 line:100% position:50% align:middle
+when we edit it. And it's going to default
+into an empty object.
+
+00:04:48.500 --> 00:04:51.500 line:100% position:50% align:middle
+So for now, we don't actually need the
+store because we're not editing a store
+
+00:04:51.500 --> 00:04:55.200 line:100% position:50% align:middle
+just yet. We're just adding one. But we're
+going to put that there so that if someone
+
+00:04:55.200 --> 00:04:59.810 line:100% position:50% align:middle
+does pass a store, we have the information
+for how to use it. Otherwise,
+
+00:04:59.810 --> 00:05:05.710 line:100% position:50% align:middle
+if someone does not pass a store, this is
+what this does. It falls back to an empty
+
+00:05:05.710 --> 00:05:10.190 line:100% position:50% align:middle
+object, and this is exactly the same in
+ES6 as well. So we see that Pug has
+
+00:05:10.190 --> 00:05:13.050 line:100% position:50% align:middle
+brought a lot of the things over from
+JavaScript. And from that,
+
+00:05:13.050 --> 00:05:18.120 line:100% position:50% align:middle
+you can start to just maybe you put a
+paragraph, it works. Let's try that.
+
+00:05:18.120 --> 00:05:23.610 line:100% position:50% align:middle
+Now to go back to our editStore, what we
+need to do is import the actual mixin that
+
+00:05:23.610 --> 00:05:29.910 line:100% position:50% align:middle
+we need. The way that you import a mixin
+is you include mixins/ and then the name
+
+00:05:29.910 --> 00:05:34.000 line:100% position:50% align:middle
+of the mixin, _storeForm. And what that
+will do is it will make all of the mixins
+
+00:05:34.000 --> 00:05:39.580 line:100% position:50% align:middle
+that you've defined in this file available
+to us as functions that live inside of
+
+00:05:39.580 --> 00:05:43.530 line:100% position:50% align:middle
+this Pug file. So you can have multiple
+mixins inside of a file,
+
+00:05:43.530 --> 00:05:48.480 line:100% position:50% align:middle
+but I generally keep it one mixin to one
+file. So we've got mixins/_storeForm.
+
+00:05:48.480 --> 00:05:53.480 line:100% position:50% align:middle
+And then to use a mixin you simply use the
++ sign. You have the storeForm.
+
+00:05:53.480 --> 00:05:59.280 line:100% position:50% align:middle
+What that will do, the + will tell Pug
+that we are using a mixin and we're
+
+00:05:59.280 --> 00:06:03.400 line:100% position:50% align:middle
+running the function here. So give that a
+Save now, refresh. You see it works.
+
+00:06:03.400 --> 00:06:08.430 line:100% position:50% align:middle
+Why? Because the code that is inside of
+here will be then used.
+
+00:06:08.430 --> 00:06:14.460 line:100% position:50% align:middle
+And you can also pass it some data like
+store. You could say the ({ name: is 'Tim
+
+00:06:14.460 --> 00:06:19.140 line:100% position:50% align:middle
+Hortons'}). And here you could say "It
+works!" And we could interpolate the
+
+00:06:19.140 --> 00:06:24.580 line:100% position:50% align:middle
+#{store.name}. So now it should say, "It
+works! Tim Hortons." There we go.
+
+00:06:24.580 --> 00:06:29.920 line:100% position:50% align:middle
+Why? Because we passed in an object, which
+was a store. And then it accepts an
+
+00:06:29.920 --> 00:06:36.330 line:100% position:50% align:middle
+object, which we also call store. And then
+you can use all the properties on that
+
+00:06:36.330 --> 00:06:39.480 line:100% position:50% align:middle
+object that got passed in. It works just
+like a function in JavaScript.
+
+00:06:39.480 --> 00:06:44.350 line:100% position:50% align:middle
+It accepts some parameters, and then we
+can then use that parameter and all of the
+
+00:06:44.350 --> 00:06:48.250 line:100% position:50% align:middle
+properties on it. Now we're not going to
+use that just yet, but once we get into
+
+00:06:48.250 --> 00:06:51.730 line:100% position:50% align:middle
+editing a store we will use it.
+So let's back that up there.
+
+00:06:51.730 --> 00:06:56.760 line:100% position:50% align:middle
+Good. Now let's get rid of that paragraph
+tag and get to editing our form.
+
+00:06:56.760 --> 00:07:02.600 line:100% position:50% align:middle
+So the first thing that we need to do is
+have a form. And the (action is going to
+
+00:07:02.600 --> 00:07:10.190 line:100% position:50% align:middle
+be "/add" and the method is going to be
+"POST." I like to capitalize that.
+
+00:07:10.190 --> 00:07:13.390 line:100% position:50% align:middle
+And this is a little bit weird, but this
+is because we're going to be uploading
+
+00:07:13.390 --> 00:07:21.360 line:100% position:50% align:middle
+photos. So we're going to say
+enctype="multipart/form-data." And then
+
+00:07:21.360 --> 00:07:24.990 line:100% position:50% align:middle
+finally, you want to give it a class of
+"card"), and that's just so that the CSS
+
+00:07:24.990 --> 00:07:27.220 line:100% position:50% align:middle
+that I've written will kick in.
+
+00:07:27.220 --> 00:07:30.660 line:100% position:50% align:middle
+Now inside of that, make sure your...see
+how we're indented one level deep right
+
+00:07:30.660 --> 00:07:37.300 line:100% position:50% align:middle
+here? Now we want a label(for="name"), and
+then you want to input the type of text,
+
+00:07:37.300 --> 00:07:43.380 line:100% position:50% align:middle
+the name of Name. So let's see if that's
+working now. Good. So we have our store
+
+00:07:43.380 --> 00:07:47.190 line:100% position:50% align:middle
+form. We have "Name." This is where we're
+going to type in the actual name.
+
+00:07:47.190 --> 00:07:52.180 line:100% position:50% align:middle
+Now let's go back to our model and just
+see what other fields that we need,
+
+00:07:52.180 --> 00:07:59.900 line:100% position:50% align:middle
+right? So we need a name. And the name of
+your name...that's a poor naming because
+
+00:07:59.900 --> 00:08:03.400 line:100% position:50% align:middle
+now everything is named name. But let's
+look at a different one.
+
+00:08:03.400 --> 00:08:07.710 line:100% position:50% align:middle
+Description, let's do that. So we will
+have label(for="description").
+
+00:08:07.710 --> 00:08:14.820 line:100% position:50% align:middle
+Say Description. And then we have an
+input(type of "text," and the name is
+
+00:08:14.820 --> 00:08:22.600 line:100% position:50% align:middle
+"description"). Now the name that gets
+posted, it needs to line up with the name
+
+00:08:22.600 --> 00:08:28.620 line:100% position:50% align:middle
+inside of your schema, right? So it's
+going to be a String. Then we'll go down.
+
+00:08:28.620 --> 00:08:33.820 line:100% position:50% align:middle
+We have the description. And then we also
+wanted to work with some tags, right?
+
+00:08:33.820 --> 00:08:38.200 line:100% position:50% align:middle
+There's going to be no input for the slug,
+because that's going to be auto-generated,
+
+00:08:38.200 --> 00:08:43.200 line:100% position:50% align:middle
+but we do need to be able to let the
+person choose from multiple tags.
+
+00:08:43.200 --> 00:08:47.740 line:100% position:50% align:middle
+So how would this work? Well, you could
+pull a list of available tags and have
+
+00:08:47.740 --> 00:08:51.730 line:100% position:50% align:middle
+them, or you could have a predefined set
+of tags. And that's what we're going to be
+
+00:08:51.730 --> 00:08:56.360 line:100% position:50% align:middle
+doing. We're going to first have an array
+of tags, and then we're going to loop over
+
+00:08:56.360 --> 00:09:00.000 line:100% position:50% align:middle
+each of them. So we're going to say -,
+that means we're running JavaScript
+
+00:09:00.000 --> 00:09:03.890 line:100% position:50% align:middle
+because we just need to make a quick
+variable here before we actually render
+
+00:09:03.890 --> 00:09:04.810 line:100% position:50% align:middle
+any pug.
+
+00:09:04.810 --> 00:09:14.210 line:100% position:50% align:middle
+So the choices is going to be = ['Wifi',
+'Open Late', 'Family Friendly',
+
+00:09:14.210 --> 00:09:20.680 line:100% position:50% align:middle
+'Vegatarian', and 'Licensed']. So that's
+all of our variables that we have here.
+
+00:09:20.680 --> 00:09:24.740 line:100% position:50% align:middle
+Then we're going to take those variables
+and loop over them. So we'll give
+
+00:09:24.740 --> 00:09:29.690 line:100% position:50% align:middle
+ourselves an unordered list of the class
+of tags. And then how do you loop in Pug?
+
+00:09:29.690 --> 00:09:35.600 line:100% position:50% align:middle
+Well, you use something called an each. So
+you say each choice in choices,
+
+00:09:35.600 --> 00:09:40.250 line:100% position:50% align:middle
+so that's sort of like a dot for each in
+JavaScript, but this is the syntax for it.
+
+00:09:40.250 --> 00:09:45.370 line:100% position:50% align:middle
+So if choices is our array, choice is
+going to be each individual one.
+
+00:09:45.370 --> 00:09:48.590 line:100% position:50% align:middle
+Then we can go inside of that and just
+start writing some more pugs.
+
+00:09:48.590 --> 00:09:52.380 line:100% position:50% align:middle
+So we're going to say class of tag, and
+the class of tag__choice.
+
+00:09:52.380 --> 00:09:57.650 line:100% position:50% align:middle
+I'm using some BEM syntax here that my CSS
+kicks in. That's nothing special,
+
+00:09:57.650 --> 00:09:59.640 line:100% position:50% align:middle
+this __. That has nothing to do with Pug.
+That's just how I like to write my
+
+00:09:59.640 --> 00:10:06.280 line:100% position:50% align:middle
+mark-up. So BEM will kick in, and then for
+that we'll have an input with (type of
+
+00:10:06.280 --> 00:10:12.450 line:100% position:50% align:middle
+"checkbox"). Let's see how far that gets
+us. So we should have one,
+
+00:10:12.450 --> 00:10:16.840 line:100% position:50% align:middle
+two, three, four, five. We should have
+five checkboxes now showing up.
+
+00:10:16.840 --> 00:10:19.400 line:100% position:50% align:middle
+There we go, there's
+five empty checkboxes.
+
+00:10:19.400 --> 00:10:24.260 line:100% position:50% align:middle
+The id of that is going to be just choice.
+So you notice how there's no quotes around
+
+00:10:24.260 --> 00:10:31.780 line:100% position:50% align:middle
+that. Why? Because choice is a variable.
+The value is going to also be choice.
+
+00:10:31.780 --> 00:10:35.610 line:100% position:50% align:middle
+The name is going to be "tags" so the name
+in there is really important because that
+
+00:10:35.610 --> 00:10:40.080 line:100% position:50% align:middle
+will line up to the data being sent to our
+server. And then below it,
+
+00:10:40.080 --> 00:10:48.630 line:100% position:50% align:middle
+we need to have a label just (for our
+choice). And inside of that we can put our
+
+00:10:48.630 --> 00:10:49.130 line:100% position:50% align:middle
+#{choice} name.
+
+00:10:49.130 --> 00:10:54.730 line:100% position:50% align:middle
+So we can either do the interpolation,
+which is #{} and then the variable.
+
+00:10:54.730 --> 00:10:58.320 line:100% position:50% align:middle
+Or you can use a syntax = choice. Both of
+those are going to work.
+
+00:10:58.320 --> 00:11:01.860 line:100% position:50% align:middle
+Here, let me show you. So you see, "Family
+Friend," "Open Late." Or I could
+
+00:11:01.860 --> 00:11:08.120 line:100% position:50% align:middle
+interpolate it with the bang {} choice,
+and that will do exactly the same thing.
+
+00:11:08.120 --> 00:11:12.090 line:100% position:50% align:middle
+So we'll leave it at this because we did
+it the other way last time.
+
+00:11:12.090 --> 00:11:17.200 line:100% position:50% align:middle
+Okay, good. Now we finally need an input
+with the type of submit.
+
+00:11:17.200 --> 00:11:24.070 line:100% position:50% align:middle
+So input(type="submit". And value is going
+to be "Save. And give it a class of
+
+00:11:24.070 --> 00:11:28.280 line:100% position:50% align:middle
+"button" just so that the CSS will kick in
+some nice styles. There we go,
+
+00:11:28.280 --> 00:11:34.130 line:100% position:50% align:middle
+we have a Save, and a Name and a
+Description. Now what happens when I fill
+
+00:11:34.130 --> 00:11:35.090 line:100% position:50% align:middle
+this out?
+
+00:11:35.090 --> 00:11:39.270 line:100% position:50% align:middle
+Oh, one last thing. I goofed us up. The
+description is only one line.
+
+00:11:39.270 --> 00:11:43.500 line:100% position:50% align:middle
+This description shouldn't be an input, it
+should be a textarea.
+
+00:11:43.500 --> 00:11:47.280 line:100% position:50% align:middle
+And there is no type on a textarea,
+because it should be multi-line.
+
+00:11:47.280 --> 00:11:52.650 line:100% position:50% align:middle
+There we go, this gives us multi-line. So
+if I have a Name, like "Wes." I have a
+
+00:11:52.650 --> 00:11:58.270 line:100% position:50% align:middle
+Description, "its good." And then I add a
+couple tags and click on Save.
+
+00:11:58.270 --> 00:12:04.230 line:100% position:50% align:middle
+Notice how we're on /add. Click Save. What
+happens? We go back to /add,
+
+00:12:04.230 --> 00:12:10.385 line:100% position:50% align:middle
+but we get a 404. And why is that? Well,
+if you look at a form tag,
+
+00:12:10.385 --> 00:12:15.017 line:100% position:50% align:middle
+the form tag always includes two important
+pieces of information about what should
+
+00:12:15.017 --> 00:12:18.573 line:100% position:50% align:middle
+happen when somebody
+clicks on Submit for that form.
+
+00:12:18.573 --> 00:12:20.750 line:100% position:50% align:middle
+So the action tells the browser where to
+send the data, and the method tells the
+
+00:12:20.750 --> 00:12:25.260 line:100% position:50% align:middle
+browser how to send the data. So the two
+different ones in HTML,
+
+00:12:25.260 --> 00:12:33.800 line:100% position:50% align:middle
+there's a couple other ones you can use in
+JavaScript, but these are two simple ones
+
+00:12:33.800 --> 00:12:39.560 line:100% position:50% align:middle
+in HTML, are POST and GET. POST will send
+the data sort of invisibly,
+
+00:12:39.560 --> 00:12:44.550 line:100% position:50% align:middle
+and it will make it invisible. And that's
+great for when you don't want the data to
+
+00:12:44.550 --> 00:12:48.470 line:100% position:50% align:middle
+show up in the URL if it's a data like a
+username and a password.
+
+00:12:48.470 --> 00:12:52.370 line:100% position:50% align:middle
+You don't want that to show up in a URL.
+The other one is called GET,
+
+00:12:52.370 --> 00:12:56.930 line:100% position:50% align:middle
+and that will actually put the data in the
+URL. And that's helpful for if you want to
+
+00:12:56.930 --> 00:12:56.990 line:100% position:50% align:middle
+make a bookmarkable URL.
+
+00:12:56.990 --> 00:13:03.330 line:100% position:50% align:middle
+So maybe if I refresh this...actually, if
+you refresh a page that has been posted
+
+00:13:03.330 --> 00:13:09.110 line:100% position:50% align:middle
+to, the browser says, "Oh, do you actually
+want to resubmit that form that you just
+
+00:13:09.110 --> 00:13:14.060 line:100% position:50% align:middle
+did?" And you push Continue. You still get
+a 404 page. I refresh.
+
+00:13:14.060 --> 00:13:18.560 line:100% position:50% align:middle
+See how you can't get back to our form
+page? That's because we're in a post value
+
+00:13:18.560 --> 00:13:22.420 line:100% position:50% align:middle
+right now. But if you actually click on
+Add once more, it will bring us back to
+
+00:13:22.420 --> 00:13:24.060 line:100% position:50% align:middle
+that Add Store URL.
+
+00:13:24.060 --> 00:13:29.470 line:100% position:50% align:middle
+But if I say "wes, cool." And then I take
+Open Late, and Wifi,
+
+00:13:29.470 --> 00:13:34.830 line:100% position:50% align:middle
+and Licensed, and Save it, you'll see in
+the URL, because we set it to GET,
+
+00:13:34.830 --> 00:13:39.040 line:100% position:50% align:middle
+the URL is now showing us the Name was
+"Wes", the Description was "cool," and the
+
+00:13:39.040 --> 00:13:45.830 line:100% position:50% align:middle
+tags, "Wifi, Open Late," and "Licensed."
+So that's what GET does,
+
+00:13:45.830 --> 00:13:48.710 line:100% position:50% align:middle
+and that would be great if I was searching
+something I wanted to bookmark it,
+
+00:13:48.710 --> 00:13:52.400 line:100% position:50% align:middle
+send it to a friend. But in our case, we
+don't want that. We want POST,
+
+00:13:52.400 --> 00:13:55.420 line:100% position:50% align:middle
+so we want all that data
+to be sent invisibly.
+
+00:13:55.420 --> 00:14:04.800 line:100% position:50% align:middle
+So now let's take that off the URL, and
+submit it, "wes, testing," click a couple.
+
+00:14:04.800 --> 00:14:08.390 line:100% position:50% align:middle
+We're going to get a 404. Why is that?
+Well, if we go back to our routes,
+
+00:14:08.390 --> 00:14:14.130 line:100% position:50% align:middle
+right here, you'll see that we say
+router.get('/add', and that means when you
+
+00:14:14.130 --> 00:14:19.700 line:100% position:50% align:middle
+visit a page by default, you're getting
+that page. But you can also post to a
+
+00:14:19.700 --> 00:14:24.330 line:100% position:50% align:middle
+page, and that's generally when a form is
+submitted or you are posting to that with
+
+00:14:24.330 --> 00:14:28.660 line:100% position:50% align:middle
+a library like jQuery, or Axios, or
+whatever library you're using.
+
+00:14:28.660 --> 00:14:35.340 line:100% position:50% align:middle
+So what we actually want to do is say
+router.post('/add'). So when someone posts
+
+00:14:35.340 --> 00:14:39.710 line:100% position:50% align:middle
+to the add, we want to use
+storeController. And the method that we're
+
+00:14:39.710 --> 00:14:45.330 line:100% position:50% align:middle
+going to create is called createStore, so
+storeController.createStore);.
+
+00:14:45.330 --> 00:14:49.920 line:100% position:50% align:middle
+Now we'll go back to our Controller here
+and we'll add a new one,
+
+00:14:49.920 --> 00:15:00.530 line:100% position:50% align:middle
+exports.createStore = (req, res) =>. And
+let's do res.json. Now how do we get the
+
+00:15:00.530 --> 00:15:04.880 line:100% position:50% align:middle
+data? Let's just do this, we submit the
+form, and let's immediately send the data
+
+00:15:04.880 --> 00:15:09.250 line:100% position:50% align:middle
+back to the user in JSON.
+So we'll say res.json.
+
+00:15:09.250 --> 00:15:16.390 line:100% position:50% align:middle
+And now if we take (req.body);,
+(req.body); is going to contain all of the
+
+00:15:16.390 --> 00:15:22.680 line:100% position:50% align:middle
+information about what got sent to it. Oh,
+you see this, I forgot an "S." So if I
+
+00:15:22.680 --> 00:15:28.900 line:100% position:50% align:middle
+fill out this form, "WEs, Cool," and click
+a couple tags, click Save.
+
+00:15:28.900 --> 00:15:35.520 line:100% position:50% align:middle
+Click on Save. Oh, we actually don't get
+any data. (req.body); should be showing us
+
+00:15:35.520 --> 00:15:39.300 line:100% position:50% align:middle
+all of the data that we posted to it. So
+let's take a quick look at our form here,
+
+00:15:39.300 --> 00:15:45.050 line:100% position:50% align:middle
+and I think what the problem is, is this
+enctype="multipart/form-data".
+
+00:15:45.050 --> 00:15:49.020 line:100% position:50% align:middle
+This is a special encoding type that you
+need when you upload images.
+
+00:15:49.020 --> 00:15:52.550 line:100% position:50% align:middle
+And we need to handle that properly when
+we start uploading images.
+
+00:15:52.550 --> 00:15:56.800 line:100% position:50% align:middle
+So we actually don't need this just yet.
+We're going to come back and modify the
+
+00:15:56.800 --> 00:15:59.420 line:100% position:50% align:middle
+form once we start uploading our image and
+take care of that.
+
+00:15:59.420 --> 00:16:05.200 line:100% position:50% align:middle
+So try to take that out, and let's see. If
+we go back to our form here,
+
+00:16:05.200 --> 00:16:09.210 line:100% position:50% align:middle
+click on Add again. Make sure you actually
+do a page refresh because we want to make
+
+00:16:09.210 --> 00:16:13.050 line:100% position:50% align:middle
+sure that that HTML is gone, it's not a
+cache version. So "Wes,
+
+00:16:13.050 --> 00:16:18.110 line:100% position:50% align:middle
+cool." Let's try a couple things, click
+Save. There we go. Okay,
+
+00:16:18.110 --> 00:16:23.560 line:100% position:50% align:middle
+good. So our storeController is now just
+sending back (req.body);,
+
+00:16:23.560 --> 00:16:26.890 line:100% position:50% align:middle
+and we see this entire object.
+Alternatively, if you're ever working and
+
+00:16:26.890 --> 00:16:31.360 line:100% position:50% align:middle
+you want to see what's being posted, you
+can just quickly console.log (req.body);.
+
+00:16:31.360 --> 00:16:37.250 line:100% position:50% align:middle
+And now when you go back here, you can
+always hit Cmd+K to just clear out your
+
+00:16:37.250 --> 00:16:41.840 line:100% position:50% align:middle
+terminal and give it a refresh.
+You want to Continue.
+
+00:16:41.840 --> 00:16:46.880 line:100% position:50% align:middle
+You'll see that you can also console.log
+all of the data that is being posted,
+
+00:16:46.880 --> 00:16:51.350 line:100% position:50% align:middle
+so name, description, and tags, all of the
+data is now available to us.
+
+00:16:51.350 --> 00:16:56.310 line:100% position:50% align:middle
+Okay, cool, but what's the point of just
+taking the data and sending them back to
+
+00:16:56.310 --> 00:17:02.770 line:100% position:50% align:middle
+the person? No, what we actually want to
+do is to save that data (req.body),
+
+00:17:02.770 --> 00:17:07.270 line:100% position:50% align:middle
+back to the database. And in the next
+video we're going to look at how to use
+
+00:17:07.270 --> 00:17:11.200 line:100% position:50% align:middle
+Mongoose, which is our library to
+interface with MongoDB, as well as a new
+
+00:17:11.200 --> 00:17:16.025 line:100% position:50% align:middle
+thing in JavaScript called "async await"
+to actually save the data to our database
+
+00:17:16.025 --> 00:17:17.320 line:100% position:50% align:middle
+so it persists.
+
+00:17:17.320 --> 00:17:20.320 line:100% position:50% align:middle
+♪ [music] ♪

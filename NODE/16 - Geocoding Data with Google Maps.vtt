@@ -1,0 +1,479 @@
+WEBVTT
+
+00:00:00.392 --> 00:00:03.392 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.823 --> 00:00:14.047 line:100% position:50% align:middle
+In this video, we're going to
+write some client-side JavaScript
+
+00:00:14.047 --> 00:00:18.295 line:100% position:50% align:middle
+to make our lives a little bit easier
+for storing latitude and longitude.
+
+00:00:18.295 --> 00:00:21.050 line:100% position:50% align:middle
+You see that I have this address
+field. This is the finished version that
+
+00:00:21.050 --> 00:00:26.720 line:100% position:50% align:middle
+I've got up and running. If I were to say
+"Paris," and it will automatically give me
+
+00:00:26.720 --> 00:00:31.060 line:100% position:50% align:middle
+this drop down autocomplete, where I can
+select Paris and hit enter.
+
+00:00:31.060 --> 00:00:33.820 line:100% position:50% align:middle
+It's going to populate the lat and the
+long, or the long and the lat.
+
+00:00:33.820 --> 00:00:38.390 line:100% position:50% align:middle
+And I can do things like Hamilton,
+Ontario. And it will give me the long and
+
+00:00:38.390 --> 00:00:42.920 line:100% position:50% align:middle
+the lat. So that's extremely helpful
+because there's no way that I want to type
+
+00:00:42.920 --> 00:00:47.075 line:100% position:50% align:middle
+in the lat and long and your users also
+don't know that. So, this is called
+
+00:00:47.075 --> 00:00:52.410 line:100% position:50% align:middle
+geolocation where it's going to...you give
+it an address or the name of a...
+
+00:00:52.410 --> 00:00:56.020 line:100% position:50% align:middle
+Mulberry Coffee. That's a coffee shop
+around the corner from me.
+
+00:00:56.020 --> 00:00:58.957 line:100% position:50% align:middle
+You just give it something that you'd
+normally type into Google, and then it
+
+00:00:58.957 --> 00:01:04.240 line:100% position:50% align:middle
+will do sort of a reverse lookup for the
+lat and the long, and store it in there.
+
+00:01:04.240 --> 00:01:07.850 line:100% position:50% align:middle
+So that's what we want to do. And let's
+take a look at how client-side JavaScript
+
+00:01:07.850 --> 00:01:14.510 line:100% position:50% align:middle
+is written in our course. If you open up
+your public folder, and you open up your
+
+00:01:14.510 --> 00:01:20.560 line:100% position:50% align:middle
+JavaScript folder you're going to see this
+delicious_app.js. This is sort of the
+
+00:01:20.560 --> 00:01:25.520 line:100% position:50% align:middle
+entry point for all of our JavaScript.
+This is where Webpack is bundling them all
+
+00:01:25.520 --> 00:01:28.710 line:100% position:50% align:middle
+together. And then in our modules
+directory is where we're going to write
+
+00:01:28.710 --> 00:01:34.760 line:100% position:50% align:middle
+each of the client-side modules that will
+happen. So I've already included bling.js.
+
+00:01:34.760 --> 00:01:40.176 line:100% position:50% align:middle
+If you've never used it before, bling.js
+will just give us short form to document
+
+00:01:40.176 --> 00:01:44.133 line:100% position:50% align:middle
+our query selector and query selector
+all. It will give us .on on
+
+00:01:44.133 --> 00:01:49.220 line:100% position:50% align:middle
+each of our nodes. So we could say... it
+sort of makes it look like jquery and a
+
+00:01:49.220 --> 00:01:55.840 line:100% position:50% align:middle
+little bit nicer. So we can do things like
+.wrapper on click. And rather than us
+
+00:01:55.840 --> 00:02:01.580 line:100% position:50% align:middle
+having to do the whole var wrapper equals
+document.queryselector and then wrapper.
+
+00:02:01.580 --> 00:02:04.720 line:100% position:50% align:middle
+addevent listen or click etc. You get
+the point. Right? So,
+
+00:02:04.720 --> 00:02:09.200 line:100% position:50% align:middle
+this is just a little helper called bling
+js. I modified it a little bit but it's
+
+00:02:09.200 --> 00:02:14.430 line:100% position:50% align:middle
+based on Paul Irish's thing. He was a
+pretty cool developer from Google and you
+
+00:02:14.430 --> 00:02:19.620 line:100% position:50% align:middle
+should check out what he's done here. So
+we want to make a module and we're going
+
+00:02:19.620 --> 00:02:25.230 line:100% position:50% align:middle
+to call it autocomplete. So we'll go into
+our modules folder and call autocomplete.
+
+00:02:25.230 --> 00:02:29.970 line:100% position:50% align:middle
+js. And we're going to make a function
+called autocomplete. That's going to take
+
+00:02:29.970 --> 00:02:39.400 line:100% position:50% align:middle
+in an input, a lat input and a long
+input. And from that it's going to do the
+
+00:02:39.400 --> 00:02:44.590 line:100% position:50% align:middle
+work for us and populate. Then we can
+export default autocomplete.
+
+00:02:44.590 --> 00:02:49.910 line:100% position:50% align:middle
+So I'm using ES6 here because we do not
+have ES6 on node just yet.
+
+00:02:49.910 --> 00:02:54.510 line:100% position:50% align:middle
+But we do have ES6 in Webpack and the
+ability to compile that for us.
+
+00:02:54.510 --> 00:02:59.100 line:100% position:50% align:middle
+So we have that. And we'll go back into
+our delicious app right here and we will
+
+00:02:59.100 --> 00:03:09.640 line:100% position:50% align:middle
+import that. Import autocomplete from
+modules autocomplete. Good so then we have
+
+00:03:09.640 --> 00:03:14.120 line:100% position:50% align:middle
+this autocomplete function that we can
+just run. Click autocomplete and we need
+
+00:03:14.120 --> 00:03:18.740 line:100% position:50% align:middle
+to pass it three things. We need to pass
+it our address... address input,
+
+00:03:18.740 --> 00:03:22.760 line:100% position:50% align:middle
+our longitude input, and our latitude
+input. But you'll notice here that I've
+
+00:03:22.760 --> 00:03:26.780 line:100% position:50% align:middle
+done it lat and long. So opposite.
+Why? Because Google Maps does it the right
+
+00:03:26.780 --> 00:03:30.560 line:100% position:50% align:middle
+way and MongoDB does it the other way. So
+it's kind of confusing got to keep
+
+00:03:30.560 --> 00:03:35.040 line:100% position:50% align:middle
+switching them around. But stay sharp,
+you'll get it. So first thing we need we
+
+00:03:35.040 --> 00:03:42.650 line:100% position:50% align:middle
+need to pass it the address input
+#address. So let's go to our store form
+
+00:03:42.650 --> 00:03:48.810 line:100% position:50% align:middle
+.pug and our address has an ID of address,
+Our long has ID of long, and
+
+00:03:48.810 --> 00:03:53.710 line:100% position:50% align:middle
+our lat has an ID of lat. Good. So
+address... the second thing we need to
+
+00:03:53.710 --> 00:04:01.122 line:100% position:50% align:middle
+pass it is the latitude. Is that right?
+Yeah. Lat input. And the third thing we
+
+00:04:01.122 --> 00:04:04.512 line:100% position:50% align:middle
+need to pass it is the longitude.
+
+00:04:06.503 --> 00:04:09.816 line:100% position:50% align:middle
+Again this is not jquery.
+Looks like jquery but rather
+
+00:04:09.816 --> 00:04:15.990 line:100% position:50% align:middle
+than us doing $ it's just saying document.
+queryselector. But who's got time to write
+
+00:04:15.990 --> 00:04:20.300 line:100% position:50% align:middle
+that? We just do $ nice and quickly. Good.
+So we have that. Let's go back and into
+
+00:04:20.300 --> 00:04:25.200 line:100% position:50% align:middle
+our autocomplete and let's just
+console.log the input, the lat input,
+
+00:04:25.200 --> 00:04:29.010 line:100% position:50% align:middle
+and the long input. Just make sure
+that's all working. So we'll go back to
+
+00:04:29.010 --> 00:04:35.010 line:100% position:50% align:middle
+our activation here. Refresh the page.
+And there we go. We got our input.
+
+00:04:35.010 --> 00:04:40.060 line:100% position:50% align:middle
+Our input are required here. Good so these
+are all working. Now we're going to write
+
+00:04:40.060 --> 00:04:46.610 line:100% position:50% align:middle
+some JavaScript for Google. First thing
+will say, 'If there is no input, return."
+
+00:04:46.610 --> 00:04:54.200 line:100% position:50% align:middle
+What that will do is, "skip this function
+from running if there is no input on the
+
+00:04:54.200 --> 00:04:58.680 line:100% position:50% align:middle
+page." It's a bunch of different ways you
+could do that it's a nice simple one to
+
+00:04:58.680 --> 00:05:03.730 line:100% position:50% align:middle
+skip that function from running if there's
+no address on the actual page.
+
+00:05:03.730 --> 00:05:06.048 line:100% position:50% align:middle
+Then, first we need the drop down.
+
+00:05:06.048 --> 00:05:09.769 line:100% position:50% align:middle
+And this is part of the
+Google Maps autocomplete API.
+
+00:05:09.769 --> 00:05:14.530 line:100% position:50% align:middle
+So I've already loaded up if you view
+source on this sucker right here.
+
+00:05:14.530 --> 00:05:20.760 line:100% position:50% align:middle
+You will see, like, Google... You'll see
+that we've already loaded in Google Maps
+
+00:05:20.760 --> 00:05:31.687 line:100% position:50% align:middle
+with the API key right there. So we'll say
+"const dropdown = new google.maps
+
+00:05:31.800 --> 00:05:38.460 line:100% position:50% align:middle
+.places.Autocomplete," capital A.
+And then you give it an input value.
+
+00:05:38.460 --> 00:05:44.530 line:100% position:50% align:middle
+Good so just that alone, if we refresh
+this. We go to... Let's go to add a new
+
+00:05:44.530 --> 00:05:49.564 line:100% position:50% align:middle
+one, actually. Now if I were to type in
+here "Paris," it will automatically start
+
+00:05:49.564 --> 00:05:54.820 line:100% position:50% align:middle
+to autocomplete it. So just with that one
+line of code, we now have autocomplete
+
+00:05:54.820 --> 00:06:00.530 line:100% position:50% align:middle
+showing up on that. But, that doesn't give
+us all that much because we need to
+
+00:06:00.530 --> 00:06:07.590 line:100% position:50% align:middle
+populate the lat and long. So we'll take
+this drop down and we'll add listener.
+
+00:06:07.590 --> 00:06:10.840 line:100% position:50% align:middle
+And add listener is a Google Maps
+way to add an event listener.
+
+00:06:10.840 --> 00:06:16.380 line:100% position:50% align:middle
+You listen for the event called
+"place_change." And when that happens
+
+00:06:16.380 --> 00:06:21.170 line:100% position:50% align:middle
+we're going to run a little arrow function
+here. And we'll say, "const place =
+
+00:06:21.170 --> 00:06:26.959 line:100% position:50% align:middle
+dropdown." So that's the actual Input
+".getPlace." Let's just console log
+
+00:06:26.959 --> 00:06:33.070 line:100% position:50% align:middle
+palace...place. Let's console log the
+place here and see what we've got.
+
+00:06:33.070 --> 00:06:36.780 line:100% position:50% align:middle
+So open up your dev tools here.
+And bring that sucker on the bottom.
+
+00:06:36.780 --> 00:06:42.140 line:100% position:50% align:middle
+Give it a refresh. And let's type in
+Paris. Hit enter. And you see when I hit
+
+00:06:42.140 --> 00:06:47.970 line:100% position:50% align:middle
+enter, it will automatically give us this
+object here with address components,
+
+00:06:47.970 --> 00:06:54.110 line:100% position:50% align:middle
+all of the different pieces of the actual
+address. It gives us some photos of Paris.
+
+00:06:54.110 --> 00:06:58.080 line:100% position:50% align:middle
+It gives us some HTML attribute.
+It gives us the geometry.
+
+00:06:58.080 --> 00:07:02.551 line:100% position:50% align:middle
+It gives us the types. That's the locale
+... Locality and political...
+
+00:07:03.004 --> 00:07:07.144 line:100% position:50% align:middle
+Everything you could possibly ever want,
+it will format the address as well in the
+
+00:07:07.144 --> 00:07:14.029 line:100% position:50% align:middle
+HTML. So what we do need is if we open up
+the geometry, and we open up...
+
+00:07:14.029 --> 00:07:15.927 line:100% position:50% align:middle
+Where did that go?
+There we go.
+
+00:07:15.927 --> 00:07:19.920 line:100% position:50% align:middle
+Geometry.location.lat.
+And that's a function that will give us
+
+00:07:19.920 --> 00:07:25.617 line:100% position:50% align:middle
+the actual lat as well as the long. So
+here's what we do. We say, 'latInput.
+
+00:07:25.617 --> 00:07:35.475 line:100% position:50% align:middle
+value = place.geometry.location.lat"
+and you can just duplicate that and
+
+00:07:35.475 --> 00:07:42.123 line:100% position:50% align:middle
+change out the lng with the lng. And then
+if we then refresh this page and you'll
+
+00:07:42.123 --> 00:07:49.194 line:100% position:50% align:middle
+notice every time we take a save, your
+Webpack bundle, if I clear this out,
+
+00:07:49.194 --> 00:07:52.549 line:100% position:50% align:middle
+give us a save. Notice that Webpack...
+Didn't change anything.
+
+00:07:52.549 --> 00:07:55.733 line:100% position:50% align:middle
+If you change something and give it a
+save, you'll notice that Webpack will
+
+00:07:55.733 --> 00:07:57.559 line:100% position:50% align:middle
+re-bundle it for us.
+
+00:07:57.559 --> 00:08:00.714 line:100% position:50% align:middle
+You actually have to make a
+significant change in order for it to
+
+00:08:00.714 --> 00:08:04.150 line:100% position:50% align:middle
+trigger a change. It won't trigger a
+change on something like a semicolon.
+
+00:08:04.150 --> 00:08:09.588 line:100% position:50% align:middle
+There we go. Put it back in. Give it a
+save. It will regenerate our app.bundle.js
+
+00:08:09.700 --> 00:08:14.140 line:100% position:50% align:middle
+file for us, which is great. We
+refresh this. Now If I type in Paris,
+
+00:08:14.140 --> 00:08:18.140 line:100% position:50% align:middle
+select one of them, it's going to
+automatically populate the long and the
+
+00:08:18.140 --> 00:08:23.080 line:100% position:50% align:middle
+lat. Again, let me do Hamilton, Ontario.
+It will automatically populate the lat and
+
+00:08:23.080 --> 00:08:30.070 line:100% position:50% align:middle
+long. What? What happened there? So
+Hamilton. Okay. And then I type in Paris
+
+00:08:30.070 --> 00:08:34.264 line:100% position:50% align:middle
+and hit enter. And it actually refreshes
+the page. Why?
+
+00:08:34.264 --> 00:08:36.924 line:100% position:50% align:middle
+Because what's happening
+here is we're typing
+
+00:08:36.924 --> 00:08:41.880 line:100% position:50% align:middle
+in Paris and hitting enter.
+By hitting enter, we're doing two things.
+
+00:08:41.880 --> 00:08:46.980 line:100% position:50% align:middle
+We're confirming the autocomplete. But
+then we're also submitting the entire
+
+00:08:46.980 --> 00:08:54.100 line:100% position:50% align:middle
+form. Because by hitting enter in one of
+these inputs here it will cause the form
+
+00:08:54.100 --> 00:08:59.060 line:100% position:50% align:middle
+to actually submit. So we can quickly fix
+that. Go right below this drop down here.
+
+00:08:59.060 --> 00:09:10.170 line:100% position:50% align:middle
+And we'll say, "If someone hits enter on
+the address field, don't submit the form."
+
+00:09:10.170 --> 00:09:15.144 line:100% position:50% align:middle
+So we'll take our input, which is the
+address field. We'll say .on
+
+00:09:15.144 --> 00:09:19.271 line:100% position:50% align:middle
+because we have on because normally it's
+.add event listener.
+
+00:09:19.271 --> 00:09:27.980 line:100% position:50% align:middle
+But we can do input.on because we are
+using bling.js. So on key down.
+
+00:09:27.980 --> 00:09:36.120 line:100% position:50% align:middle
+And then there's an event and we'll say,
+If e.key code is equal to 13...
+
+00:09:36.120 --> 00:09:41.860 line:100% position:50% align:middle
+Why? Because keycode.info... This is if
+you hit enter, 13 is the keycode for
+
+00:09:41.860 --> 00:09:47.750 line:100% position:50% align:middle
+enter. Escape 27. You get the point. So
+"if e.keycode = 13," we're going to say
+
+00:09:47.750 --> 00:09:54.750 line:100% position:50% align:middle
+"e.prevent default," and that will
+stop the regular, which is submitting the
+
+00:09:54.750 --> 00:09:58.929 line:100% position:50% align:middle
+actual form. So give that a save. Let's
+double check that now. Go back to our
+
+00:09:58.929 --> 00:10:06.229 line:100% position:50% align:middle
+store here. Type in Paris. Hit enter. Type
+in Hamilton. Hit enter. You'll see that
+
+00:10:06.229 --> 00:10:10.721 line:100% position:50% align:middle
+it's not submitting the form now, it's
+just confirming the autocomplete that we
+
+00:10:10.721 --> 00:10:11.334 line:100% position:50% align:middle
+have there.
+
+00:10:11.334 --> 00:10:15.845 line:100% position:50% align:middle
+Good. So that is the autocomplete
+for Google. We are going to come back to
+
+00:10:15.845 --> 00:10:19.970 line:100% position:50% align:middle
+Google Maps when we actually start A,
+plotting it on a map. And B,
+
+00:10:19.970 --> 00:10:22.852 line:100% position:50% align:middle
+showing a map on the
+single store pages.
+
+00:10:22.852 --> 00:10:25.852 line:100% position:50% align:middle
+♪ [music] ♪

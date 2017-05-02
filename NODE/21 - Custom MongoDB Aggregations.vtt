@@ -1,0 +1,862 @@
+WEBVTT
+
+00:00:00.345 --> 00:00:03.345 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.751 --> 00:00:15.287 line:100% position:50% align:middle
+In this video we're going to talk
+about doing this tags page.
+
+00:00:15.400 --> 00:00:18.050 line:100% position:50% align:middle
+Now the tags page is going to be
+a little bit different because
+
+00:00:18.050 --> 00:00:22.220 line:100% position:50% align:middle
+there's really two pieces of data that
+needs to be pulled in for each of these
+
+00:00:22.220 --> 00:00:27.680 line:100% position:50% align:middle
+pages. First, we need a list of all of the
+possible tags, and each tag needs to know
+
+00:00:27.680 --> 00:00:32.030 line:100% position:50% align:middle
+how many stores are in that tag. And then
+second, when we go to a tag page,
+
+00:00:32.030 --> 00:00:37.250 line:100% position:50% align:middle
+like "family friendly," it's going to
+filter for all of the stores that have
+
+00:00:37.250 --> 00:00:41.830 line:100% position:50% align:middle
+that specific tag. We have a little bit of
+a problem. Let's focus on just this part
+
+00:00:41.830 --> 00:00:44.360 line:100% position:50% align:middle
+right now, and then in a future video,
+we're going to look at
+
+00:00:44.360 --> 00:00:48.750 line:100% position:50% align:middle
+how do we filter for stores that have
+that tag. So let's look at this tag bar
+
+00:00:48.750 --> 00:00:54.710 line:100% position:50% align:middle
+right now. The problem is how do we make
+this sort of aggregation of all of the
+
+00:00:54.710 --> 00:00:58.200 line:100% position:50% align:middle
+tags? And if you were to think about this
+right now, you might say,
+
+00:00:58.200 --> 00:01:02.490 line:100% position:50% align:middle
+"Okay, well, will you query every single
+store?" Then we'll loop over every single
+
+00:01:02.490 --> 00:01:07.230 line:100% position:50% align:middle
+store, and we'll loop over every single
+store's tags and then just count the
+
+00:01:07.230 --> 00:01:12.990 line:100% position:50% align:middle
+instances of that. However, that becomes a
+little bit slow when you start to get a
+
+00:01:12.990 --> 00:01:18.460 line:100% position:50% align:middle
+lot of pieces of content, so if you have
+1,000 stores, it doesn't make sense to
+
+00:01:18.460 --> 00:01:23.580 line:100% position:50% align:middle
+query 1,000 stores, have that data come
+back, and then to loop over each and every
+
+00:01:23.580 --> 00:01:28.700 line:100% position:50% align:middle
+one of them. As soon as you get into large
+data, that can become extremely slow to
+
+00:01:28.700 --> 00:01:32.100 line:100% position:50% align:middle
+actually have to get the documents back,
+and you can run into problems with your
+
+00:01:32.100 --> 00:01:37.010 line:100% position:50% align:middle
+server running out of actual memory
+because 10,000 documents, each with 10,
+
+00:01:37.010 --> 00:01:40.300 line:100% position:50% align:middle
+15 fields on them will start to eat up
+your memory pretty quickly,
+
+00:01:40.300 --> 00:01:45.210 line:100% position:50% align:middle
+so that's actually not what we want to do.
+And when we have a problem like this,
+
+00:01:45.210 --> 00:01:51.080 line:100% position:50% align:middle
+we need to ask ourselves, "How can I
+offload the heavy lifting off of Node.js
+
+00:01:51.080 --> 00:01:56.230 line:100% position:50% align:middle
+and onto our database?" Because that's
+what databases do. Databases are good at
+
+00:01:56.230 --> 00:02:01.390 line:100% position:50% align:middle
+doing complex queries, complex
+aggregations. They're able to look at the
+
+00:02:01.390 --> 00:02:05.460 line:100% position:50% align:middle
+data and quickly filter it for the
+specific stuff that it needs,
+
+00:02:05.460 --> 00:02:11.110 line:100% position:50% align:middle
+so we don't want to do that data in
+Node.js specifically. We just want to
+
+00:02:11.110 --> 00:02:16.140 line:100% position:50% align:middle
+write some code in Node and then pass it
+off to MongoDB and tell it,
+
+00:02:16.140 --> 00:02:20.540 line:100% position:50% align:middle
+"Hey, MongoDB, you can do this because
+you're a little bit better at doing this
+
+00:02:20.540 --> 00:02:25.940 line:100% position:50% align:middle
+type of thing." So we're going to offload
+the heavy lifting over to MongoDB with
+
+00:02:25.940 --> 00:02:29.740 line:100% position:50% align:middle
+something called an aggregation. And an
+aggregation is the ability to...
+
+00:02:29.740 --> 00:02:34.660 line:100% position:50% align:middle
+I got the docs open right here... An
+aggregation is the ability to do sort a
+
+00:02:34.660 --> 00:02:39.435 line:100% position:50% align:middle
+complex query where often you'll need to
+do sort of, like, multiple steps
+
+00:02:39.435 --> 00:02:43.310 line:100% position:50% align:middle
+in a query. You might need to select
+everything and then filter for those,
+
+00:02:43.310 --> 00:02:48.030 line:100% position:50% align:middle
+and then modify them or group them
+together, or group and then filter each of
+
+00:02:48.030 --> 00:02:52.840 line:100% position:50% align:middle
+those groups. So if there's multiple steps
+in your query and it's not just as simple
+
+00:02:52.840 --> 00:02:58.500 line:100% position:50% align:middle
+as, "Search for stores with a slug. Give
+me stores with these tags.
+
+00:02:58.500 --> 00:03:03.190 line:100% position:50% align:middle
+Give me the latest top five stores." Those
+are all very simple queries,
+
+00:03:03.190 --> 00:03:07.630 line:100% position:50% align:middle
+but when you get into more advanced
+queries, you need to start looking at
+
+00:03:07.630 --> 00:03:12.220 line:100% position:50% align:middle
+aggregation and using all of these
+different operators that MongoDB will
+
+00:03:12.220 --> 00:03:16.950 line:100% position:50% align:middle
+allow you to do. So an aggregation is
+simply just an array. You see that they
+
+00:03:16.950 --> 00:03:21.680 line:100% position:50% align:middle
+have orders array, where you can pass it
+multiple commands where it will first
+
+00:03:21.680 --> 00:03:26.540 line:100% position:50% align:middle
+match...in this case it matches for things
+that have a status of A,
+
+00:03:26.540 --> 00:03:32.160 line:100% position:50% align:middle
+so you've got A, A, A, D. So that will
+match only three of the subsetted ones
+
+00:03:32.160 --> 00:03:36.630 line:100% position:50% align:middle
+that we initially had. And then, you can
+go ahead and group them together.
+
+00:03:36.630 --> 00:03:40.830 line:100% position:50% align:middle
+You can add things up. It's sort of like a
+reduce function in JavaScript,
+
+00:03:40.830 --> 00:03:45.380 line:100% position:50% align:middle
+where you can take them from the stage
+that they were in, in the raw document
+
+00:03:45.380 --> 00:03:49.760 line:100% position:50% align:middle
+format and process it into pretty much any
+other format that you're looking for.
+
+00:03:49.760 --> 00:03:54.670 line:100% position:50% align:middle
+And in our case, we're going to take all
+of the stores and turn it into...and we're
+
+00:03:54.670 --> 00:03:58.480 line:100% position:50% align:middle
+going to group it by the actual tags that
+they have. So the first thing that we
+
+00:03:58.480 --> 00:04:04.200 line:100% position:50% align:middle
+should do is go to our tags page and we've
+got a 404, so let's go into our index.js
+
+00:04:04.200 --> 00:04:09.450 line:100% position:50% align:middle
+and set up some routes for our
+specific tags page. So I'm going to go to
+
+00:04:09.450 --> 00:04:13.170 line:100% position:50% align:middle
+the bottom here. I'm going to...you
+can...these spaces aren't necessary.
+
+00:04:13.170 --> 00:04:19.250 line:100% position:50% align:middle
+I just have them for readability. Often
+I'll say, "router.get/tags," and when that
+
+00:04:19.250 --> 00:04:25.150 line:100% position:50% align:middle
+happens, what we're going to do is to
+catch errors, and we're going to use the
+
+00:04:25.150 --> 00:04:31.780 line:100% position:50% align:middle
+"storer controller.get stores by tag," and
+then I actually want to set up another
+
+00:04:31.780 --> 00:04:39.100 line:100% position:50% align:middle
+route, so just duplicate that, and say,
+"/tags/tag," and that is going to be a
+
+00:04:39.100 --> 00:04:41.900 line:100% position:50% align:middle
+colon tag. Why? Because when we look at
+this one, it's going to be,
+
+00:04:41.900 --> 00:04:48.670 line:100% position:50% align:middle
+"/tags/family friendly," or, "WiFi" or
+"Open late," or, "licensed." Whatever it
+
+00:04:48.670 --> 00:04:51.740 line:100% position:50% align:middle
+it. So we want to have routes
+for both of those. You can also do,
+
+00:04:51.740 --> 00:04:57.280 line:100% position:50% align:middle
+I think it's a star question mark, and
+that will have a Raj Ex route saying
+
+00:04:57.280 --> 00:05:03.270 line:100% position:50% align:middle
+that, "This piece right here is totally
+optional. However, I often prefer just to
+
+00:05:03.270 --> 00:05:07.190 line:100% position:50% align:middle
+have two routes with the same controller
+just so it's really explicit to me that I
+
+00:05:07.190 --> 00:05:15.380 line:100% position:50% align:middle
+have tags and "tags/the tag name." Good,
+then we'll go into our store controller,
+
+00:05:15.380 --> 00:05:21.060 line:100% position:50% align:middle
+and we'll go to the bottom here, and we'll
+have "exports.get stores by tag." Is that
+
+00:05:21.060 --> 00:05:27.280 line:100% position:50% align:middle
+what we called it? Yes it is. Equals
+Async. Request response. I open that
+
+00:05:27.280 --> 00:05:33.630 line:100% position:50% align:middle
+sucker up, and then, "response.send." It
+works. I've got to go back here and click
+
+00:05:33.630 --> 00:05:38.670 line:100% position:50% align:middle
+on my tags page, and we see it works.
+Good. So now we know that that has all
+
+00:05:38.670 --> 00:05:43.200 line:100% position:50% align:middle
+been lined up. Now what we need to do is
+get a list of all of the stores,
+
+00:05:43.200 --> 00:05:50.950 line:100% position:50% align:middle
+so we'll say, "const stores = await,"
+and here is where it comes in a little bit
+
+00:05:50.950 --> 00:05:53.680 line:100% position:50% align:middle
+weird. We want to say, "store." and now
+we're not going to say,
+
+00:05:53.680 --> 00:05:58.440 line:100% position:50% align:middle
+"find," because we want to get a list of
+tags. So the way that that works is we can
+
+00:05:58.440 --> 00:06:03.940 line:100% position:50% align:middle
+create our own static methods that live on
+our store model, and then we can name them
+
+00:06:03.940 --> 00:06:07.570 line:100% position:50% align:middle
+whatever it is that we could possibly
+want. So we're going to call it,
+
+00:06:07.570 --> 00:06:13.310 line:100% position:50% align:middle
+"getTagslist," and that is what we're
+going to have be returned to us.
+
+00:06:13.310 --> 00:06:18.140 line:100% position:50% align:middle
+Now we want to go back into our store
+model here, "store.js" and scroll all the
+
+00:06:18.140 --> 00:06:23.000 line:100% position:50% align:middle
+way down, and we're going to take our
+schema, say "storeSchema," and we're
+
+00:06:23.000 --> 00:06:27.380 line:100% position:50% align:middle
+going to add a method on to it. And the
+way that you add a method on to the schema
+
+00:06:27.380 --> 00:06:31.360 line:100% position:50% align:middle
+is you put it on ".statics" and then you
+make up a method name.
+
+00:06:31.360 --> 00:06:36.090 line:100% position:50% align:middle
+And what did we call ours? "Get tags
+list," and that's going to be equal to a
+
+00:06:36.090 --> 00:06:39.570 line:100% position:50% align:middle
+function. It's important that we use a
+proper function here. Why?
+
+00:06:39.570 --> 00:06:44.300 line:100% position:50% align:middle
+Because we need to use this inside of the
+function, and this function is going to be
+
+00:06:44.300 --> 00:06:49.140 line:100% position:50% align:middle
+bound to our model. All of the static
+methods are bound to the model,
+
+00:06:49.140 --> 00:06:53.400 line:100% position:50% align:middle
+meaning that we can use all of the
+"this.find," and "this." We're going to
+
+00:06:53.400 --> 00:06:57.780 line:100% position:50% align:middle
+use aggregate inside of it. So do not use
+an arrow function, otherwise we cannot use
+
+00:06:57.780 --> 00:07:02.270 line:100% position:50% align:middle
+'this" inside of it. So proper function
+there. And from that we are going to
+
+00:07:02.270 --> 00:07:08.570 line:100% position:50% align:middle
+return "this.aggregate" and we're going to
+open up and close our parentheses on it.
+
+00:07:08.570 --> 00:07:14.600 line:100% position:50% align:middle
+Now, "aggregate" is just a method like
+"find" or "find by ID" or whatever it is
+
+00:07:14.600 --> 00:07:19.190 line:100% position:50% align:middle
+that we're looking for like "find one." So
+aggregate, it will take an array of
+
+00:07:19.190 --> 00:07:26.490 line:100% position:50% align:middle
+possible operators of what we're looking
+for. Now from that, you can start to use
+
+00:07:26.490 --> 00:07:29.740 line:100% position:50% align:middle
+any of the different aggregation
+operators. And how you find those,
+
+00:07:29.740 --> 00:07:38.150 line:100% position:50% align:middle
+you just go to "MongoDB aggregate
+operators" and we'll take a look.
+
+00:07:38.150 --> 00:07:42.680 line:100% position:50% align:middle
+Here we go. They're called pipeline
+operators. The pipeline is this array
+
+00:07:42.680 --> 00:07:46.470 line:100% position:50% align:middle
+here, and you can see that there's all
+these different operators,
+
+00:07:46.470 --> 00:07:50.120 line:100% position:50% align:middle
+and then the way that you can tell that
+they're operators is that they always
+
+00:07:50.120 --> 00:07:54.110 line:100% position:50% align:middle
+start with a $ meaning that it still is an
+object, but they do something special
+
+00:07:54.110 --> 00:07:58.130 line:100% position:50% align:middle
+because they start with a $. And so you
+can match things. You can limit,
+
+00:07:58.130 --> 00:08:03.820 line:100% position:50% align:middle
+so maybe I want to match things that start
+with "Wes," but limit it to two.
+
+00:08:03.820 --> 00:08:08.526 line:100% position:50% align:middle
+Or maybe I want to skip. I want to match
+10 things but skip the first 10,
+
+00:08:08.526 --> 00:08:14.930 line:100% position:50% align:middle
+so give me 11 through 20, unwind group,
+sample, sort, geo, near. We're going to be
+
+00:08:14.930 --> 00:08:18.950 line:100% position:50% align:middle
+looking at ones like .out, index,
+faucet, bucket. There's all kinds of
+
+00:08:18.950 --> 00:08:22.280 line:100% position:50% align:middle
+different ones here, and whenever you need
+to do any sort of complex query,
+
+00:08:22.280 --> 00:08:26.730 line:100% position:50% align:middle
+you'll find yourself on this page, looking
+for the possible operators that make sense
+
+00:08:26.730 --> 00:08:31.230 line:100% position:50% align:middle
+for you. So in our case, we're going to
+use one called "unwind" first.
+
+00:08:31.230 --> 00:08:37.510 line:100% position:50% align:middle
+Why? Because we're going to be grouping
+all of our items by the number of tags
+
+00:08:37.510 --> 00:08:43.610 line:100% position:50% align:middle
+they have. But before you can group by,
+you need to "unwind your stores" so that
+
+00:08:43.610 --> 00:08:47.830 line:100% position:50% align:middle
+for every single tag that exists for a
+store, there's going to be that many
+
+00:08:47.830 --> 00:08:52.320 line:100% position:50% align:middle
+stores. That may not make a lot of sense,
+but let's go through it right now.
+
+00:08:52.320 --> 00:08:58.360 line:100% position:50% align:middle
+So first thing we want to do, use $ or you
+have to pass an object for each pipeline
+
+00:08:58.360 --> 00:09:05.000 line:100% position:50% align:middle
+operator. We'll unwind, and we're going to
+unwind based on the...
+
+00:09:05.000 --> 00:09:09.790 line:100% position:50% align:middle
+and then in quotes use "$ tags." And what
+that means is that by putting a $ in front
+
+00:09:09.790 --> 00:09:15.960 line:100% position:50% align:middle
+of it, you say that, "This is a field on
+my document which I wish to unwind." Now
+
+00:09:15.960 --> 00:09:19.330 line:100% position:50% align:middle
+let's visualize some stuff here because
+this is getting a little bit hairy.
+
+00:09:19.330 --> 00:09:22.670 line:100% position:50% align:middle
+So we'll go into our store controller
+here. We get our stores,
+
+00:09:22.670 --> 00:09:27.160 line:100% position:50% align:middle
+and let's just say "res.json stores" and
+then refresh our tags page.
+
+00:09:27.160 --> 00:09:32.840 line:100% position:50% align:middle
+Oh, "store.get tags list" is not a
+function. Let's look at our "store.js"
+
+00:09:32.840 --> 00:09:38.120 line:100% position:50% align:middle
+file. I forgot to save. How does saving
+work? There we go. Okay,
+
+00:09:38.120 --> 00:09:44.610 line:100% position:50% align:middle
+so what's happening here is that our first
+bar, our first store was called "Brew
+
+00:09:44.610 --> 00:09:49.380 line:100% position:50% align:middle
+Bar," and it actually had a couple of
+different tags. It had one called "family
+
+00:09:49.380 --> 00:09:54.529 line:100% position:50% align:middle
+friendly" and "licensed," right?
+If we go to this in another page,
+
+00:09:55.140 --> 00:10:00.390 line:100% position:50% align:middle
+and we go to "Brew Bar," you see that it's
+"family friendly" and "licensed." So what
+
+00:10:00.390 --> 00:10:05.070 line:100% position:50% align:middle
+we need to do when we're trying to count
+our tags is we need to chalk one up for
+
+00:10:05.070 --> 00:10:09.870 line:100% position:50% align:middle
+"friendly family" and "family friendly,"
+and we need to chalk one up for
+
+00:10:09.870 --> 00:10:15.980 line:100% position:50% align:middle
+"licensed." So by unwinding them, what we
+do is we get an instance of a store for
+
+00:10:15.980 --> 00:10:20.800 line:100% position:50% align:middle
+"family friendly," and we get an instance
+of a store for "licensed." So the coffee
+
+00:10:20.800 --> 00:10:26.620 line:100% position:50% align:middle
+shop has "family friendly" and it also has
+"vegetarian." "Butcher and the Vegan" has
+
+00:10:26.620 --> 00:10:33.460 line:100% position:50% align:middle
+one for "WiFi," as well as "open late," as
+well as "family friendly." So it's
+
+00:10:33.460 --> 00:10:37.680 line:100% position:50% align:middle
+duplicating the content here, and we don't
+really care all that much because what we
+
+00:10:37.680 --> 00:10:43.440 line:100% position:50% align:middle
+need to do is each store needs to just
+have one tag per se, and then we're going
+
+00:10:43.440 --> 00:10:49.020 line:100% position:50% align:middle
+to now go ahead and group them in our next
+operator. So do comma here,
+
+00:10:49.020 --> 00:10:53.820 line:100% position:50% align:middle
+and we'll do another pipeline operator,
+which is going to be "$ group," and we
+
+00:10:53.820 --> 00:10:58.610 line:100% position:50% align:middle
+want to group by something.
+And what do we want to group it by?
+
+00:10:58.610 --> 00:11:02.750 line:100% position:50% align:middle
+We want to group it by tags as well as
+count them as we're on our way.
+
+00:11:02.750 --> 00:11:08.450 line:100% position:50% align:middle
+So you have another object here, which is
+the ID, which we're grouping it by.
+
+00:11:08.450 --> 00:11:15.420 line:100% position:50% align:middle
+It's going to be $ tags. And we are going
+to count. We're going to create a new
+
+00:11:15.420 --> 00:11:20.420 line:100% position:50% align:middle
+property here called "count" which is
+going to be equal to the sum.
+
+00:11:20.420 --> 00:11:24.200 line:100% position:50% align:middle
+And we're just going to add one. Now,
+whew! This will probably seem a little bit
+
+00:11:24.200 --> 00:11:27.260 line:100% position:50% align:middle
+weird, especially if you're coming from
+JavaScript, where you explicitly do
+
+00:11:27.260 --> 00:11:30.950 line:100% position:50% align:middle
+everything, and this is much more
+described. But what we're doing here is
+
+00:11:30.950 --> 00:11:36.350 line:100% position:50% align:middle
+that we are going to group everything
+based on the tag field, and then we're
+
+00:11:36.350 --> 00:11:42.420 line:100% position:50% align:middle
+going to create a new field in each of
+those groups called "count." Now each time
+
+00:11:42.420 --> 00:11:48.150 line:100% position:50% align:middle
+that we group one of these items, a count
+is going to sum itself by one,
+
+00:11:48.150 --> 00:11:51.770 line:100% position:50% align:middle
+or maybe it would be better if it was
+called "add itself by one," but it's
+
+00:11:51.770 --> 00:11:58.110 line:100% position:50% align:middle
+called "sum by one." So let's see what
+that gives us. Ah, this is more of what
+
+00:11:58.110 --> 00:12:01.760 line:100% position:50% align:middle
+we're looking for, so what that now
+returns is not a list of stores because we
+
+00:12:01.760 --> 00:12:05.200 line:100% position:50% align:middle
+don't care about the stores, we just care
+about a list of tags,
+
+00:12:05.200 --> 00:12:10.310 line:100% position:50% align:middle
+which will give us the ID, which is tags.
+That's what we grouped it by: "Open late,"
+
+00:12:10.310 --> 00:12:14.730 line:100% position:50% align:middle
+"WiFi," "Vegetarian," Licensed," and
+"Family friendly." And then we added a new
+
+00:12:14.730 --> 00:12:19.900 line:100% position:50% align:middle
+property called "Count" which is the sum
+of one, and will tell us how many are in
+
+00:12:19.900 --> 00:12:23.610 line:100% position:50% align:middle
+each of them. Finally, what we want to do
+is "sort by most popular" so "family
+
+00:12:23.610 --> 00:12:28.400 line:100% position:50% align:middle
+friendly" has six and "WiFi" has one. That
+should be the last, family friendly,
+
+00:12:28.400 --> 00:12:32.210 line:100% position:50% align:middle
+should be first, so that 's just another
+thing in our pipeline. We will use the
+
+00:12:32.210 --> 00:12:38.170 line:100% position:50% align:middle
+operator "sort" and we want to "sort by"
+the "count" property,
+
+00:12:38.170 --> 00:12:44.530 line:100% position:50% align:middle
+and you can either do it ascending or
+descending, which is one or negative one.
+
+00:12:44.530 --> 00:12:48.860 line:100% position:50% align:middle
+So when I write these things, I find
+myself often on stack overflow or looking
+
+00:12:48.860 --> 00:12:53.280 line:100% position:50% align:middle
+at little examples of what I'm trying to
+do because they can be fairly complicated,
+
+00:12:53.280 --> 00:12:57.670 line:100% position:50% align:middle
+but if you just break it down into the
+different pieces of...first unwind it,
+
+00:12:57.670 --> 00:13:02.730 line:100% position:50% align:middle
+then group it, then sort that. Then you're
+able to sort of see the different
+
+00:13:02.730 --> 00:13:06.572 line:100% position:50% align:middle
+factories of your piping data into one,
+out of the other, into another.
+
+00:13:06.572 --> 00:13:08.105 line:100% position:50% align:middle
+And I guess that's
+why it's called "Pipeline"
+
+00:13:08.105 --> 00:13:10.170 line:100% position:50% align:middle
+is because you're piping data
+in and out, in and out,
+
+00:13:10.170 --> 00:13:15.670 line:100% position:50% align:middle
+in and out of all of these different
+operators. So now if I refresh that here,
+
+00:13:15.670 --> 00:13:21.140 line:100% position:50% align:middle
+we actually have our list of tags. Good.
+So we can go back to our controller here,
+
+00:13:21.140 --> 00:13:25.530 line:100% position:50% align:middle
+and this should not be called "stores." It
+should be called "tags." So "const tags
+
+00:13:25.530 --> 00:13:30.850 line:100% position:50% align:middle
+= awaits store.tags." Now we're going
+to render out a tag pug file.
+
+00:13:30.850 --> 00:13:35.040 line:100% position:50% align:middle
+So we'll say "res.render." I'm going to
+render out the tag file,
+
+00:13:35.040 --> 00:13:40.320 line:100% position:50% align:middle
+and we're going to pass along a bunch of
+data, so we'll say the "tags = tags." And
+
+00:13:40.320 --> 00:13:43.020 line:100% position:50% align:middle
+you're probably getting sick of me saying
+this, but you know that you can just pass
+
+00:13:43.020 --> 00:13:47.180 line:100% position:50% align:middle
+it like that. Then what other data did we
+need? We need a title,
+
+00:13:47.180 --> 00:13:50.740 line:100% position:50% align:middle
+which is going to be...let's just call it
+"tags" for now. We're going to come back
+
+00:13:50.740 --> 00:13:57.070 line:100% position:50% align:middle
+and replace that. So that's good and then
+we'll make a new file in our views called
+
+00:13:57.070 --> 00:14:03.132 line:100% position:50% align:middle
+"tags.pug extend layout lock content,"
+give ourselves an "inner div" inside of
+
+00:14:03.132 --> 00:14:07.504 line:100% position:50% align:middle
+that "H2 = title." Let's just double check
+that that's actually working.
+
+00:14:07.504 --> 00:14:12.790 line:100% position:50% align:middle
+So now if I refresh this. "Failed to look
+up. View tag in..." because I called this
+
+00:14:12.790 --> 00:14:18.290 line:100% position:50% align:middle
+"tags" with an "s." I need to rename that
+to just "tag." There we go.
+
+00:14:18.290 --> 00:14:25.030 line:100% position:50% align:middle
+Refresh. You see tags. Can we do a quick
+dump? "Three = H.dump tags." There we go.
+
+00:14:25.030 --> 00:14:28.380 line:100% position:50% align:middle
+Now we see all of the actual data that we
+have. So we can just quickly loop over
+
+00:14:28.380 --> 00:14:33.800 line:100% position:50% align:middle
+those. You all with the class of "tags"
+then we say "each T N tags," so I'm just
+
+00:14:33.800 --> 00:14:39.950 line:100% position:50% align:middle
+going to call this one "short form T" and
+you'll say "li.tags" or "li.tag." A with a
+
+00:14:39.950 --> 00:14:49.420 line:100% position:50% align:middle
+class of "tag_ _ link" and that is going
+to link off to "/tags/" and this is how we
+
+00:14:49.420 --> 00:14:54.990 line:100% position:50% align:middle
+are going to grab it. So it's going to
+link to "/Open late/ Vegetarian." So if
+
+00:14:54.990 --> 00:15:01.650 line:100% position:50% align:middle
+"T" is the tag property object, then how
+do we get the ID? Well it's "T.
+
+00:15:01.650 --> 00:15:09.050 line:100% position:50% align:middle
+_ID." That's good, and then inside of
+that, we want to have a span with a class
+
+00:15:09.050 --> 00:15:14.990 line:100% position:50% align:middle
+of tag text, "Tag_ID." And we'll have
+another one with a tag "_count," which
+
+00:15:14.990 --> 00:15:18.500 line:100% position:50% align:middle
+will be a "T.count." Good. "Family
+Friendly," "Open Late," "Vegetarian,"
+
+00:15:18.500 --> 00:15:22.070 line:100% position:50% align:middle
+"Licensed" and "WiFi." Now if I were to
+click over to one of them,
+
+00:15:22.070 --> 00:15:26.040 line:100% position:50% align:middle
+you can take that a little bit further, so
+I'll click on "Open late." There we go.
+
+00:15:26.040 --> 00:15:29.760 line:100% position:50% align:middle
+Now we're on the "Open Late" page. It
+would be cool if we could highlight the
+
+00:15:29.760 --> 00:15:34.860 line:100% position:50% align:middle
+"Open Late" to be active. So in order to
+do that, we need to pass the data about
+
+00:15:34.860 --> 00:15:39.290 line:100% position:50% align:middle
+what page we're on over to our template.
+We'll head back to our store controller,
+
+00:15:39.290 --> 00:15:47.690 line:100% position:50% align:middle
+and up here we'll say, "const tag =
+request.params.tag" and then we'll pass
+
+00:15:47.690 --> 00:15:54.620 line:100% position:50% align:middle
+the data over here. Tag, and we'll go back
+into our file here and we could put in
+
+00:15:54.620 --> 00:15:58.860 line:100% position:50% align:middle
+parentheses...here if we make this just
+"H2 title " and then we could do another
+
+00:15:58.860 --> 00:16:06.000 line:100% position:50% align:middle
+one "Tag." Put it in parentheses, then if
+we are on "Open Late,
+
+00:16:06.000 --> 00:16:13.160 line:100% position:50% align:middle
+Vegetarian, Licensed, WiFi, then we could
+even replace the title altogether just
+
+00:16:13.160 --> 00:16:17.210 line:100% position:50% align:middle
+with the actual tag property. So now if we
+click through to each of them,
+
+00:16:17.210 --> 00:16:23.030 line:100% position:50% align:middle
+we're in good shape. Then we want to add
+an active class to this link when we are
+
+00:16:23.030 --> 00:16:27.870 line:100% position:50% align:middle
+on the page. So this link right here, we
+want to add a class. Even though we used a
+
+00:16:27.870 --> 00:16:31.760 line:100% position:50% align:middle
+class this way, you can also add class
+properties like this. And that class is
+
+00:16:31.760 --> 00:16:36.700 line:100% position:50% align:middle
+going to be equal to parentheses. And
+we're going to say, "If the tag
+
+00:16:36.700 --> 00:16:40.770 line:100% position:50% align:middle
+ID"...which is going to be the name of the
+tag..."is equal to"...
+
+00:16:40.770 --> 00:16:44.700 line:100% position:50% align:middle
+Triple equals the actual tag, so if
+they're the same, which means that if
+
+00:16:44.700 --> 00:16:49.940 line:100% position:50% align:middle
+we're on "Licensed," and the current
+iteration is licensed, then we want to...?
+
+00:16:49.940 --> 00:16:58.130 line:100% position:50% align:middle
+This is a turnary operator where you say
+"tag_link," "Only two - - active."
+
+00:16:58.130 --> 00:17:01.610 line:100% position:50% align:middle
+Otherwise, we're just going to put
+nothing. Give that a refresh.
+
+00:17:01.610 --> 00:17:08.130 line:100% position:50% align:middle
+And now you see like, when you are on that
+page, it will give it a class of "taglink
+
+00:17:08.130 --> 00:17:13.010 line:100% position:50% align:middle
+active," and then the CSS, which makes it
+purple, will kick in and actually
+
+00:17:13.010 --> 00:17:16.910 line:100% position:50% align:middle
+highlight that specific one. Good. We'll
+just go back to our tags page here.
+
+00:17:16.910 --> 00:17:19.810 line:100% position:50% align:middle
+You'll see that there is actually nothing
+here. So you could say,
+
+00:17:19.810 --> 00:17:27.110 line:100% position:50% align:middle
+"Tag" or "Tags" in the title. And then on
+the tags page, it's going to fall back to
+
+00:17:27.110 --> 00:17:30.916 line:100% position:50% align:middle
+the word "tags." And if we actually are on
+a specific tags page,
+
+00:17:30.916 --> 00:17:36.580 line:100% position:50% align:middle
+then we can see which one we have. Whew, I
+feel like that was a lot of me saying the
+
+00:17:36.580 --> 00:17:41.310 line:100% position:50% align:middle
+word "Tags," so let's take a break. Go
+grab a coffee, and I'll meet you back in
+
+00:17:41.310 --> 00:17:46.877 line:100% position:50% align:middle
+the next video where we look at how to
+query for specific stores that have that
+
+00:17:46.877 --> 00:17:48.045 line:100% position:50% align:middle
+specific...
+
+00:17:48.045 --> 00:17:50.045 line:100% position:50% align:middle
+♪ [music] ♪

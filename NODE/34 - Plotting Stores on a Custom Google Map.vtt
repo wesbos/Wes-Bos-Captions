@@ -1,0 +1,1211 @@
+WEBVTT
+
+00:00:00.764 --> 00:00:03.764 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.741 --> 00:00:13.968 line:100% position:50% align:middle
+Let's click on our map page.
+And, of course,
+
+00:00:13.968 --> 00:00:17.030 line:100% position:50% align:middle
+we're going to get a 404. So let's
+make a quick route for it,
+
+00:00:17.030 --> 00:00:20.930 line:100% position:50% align:middle
+then we'll make a PUG file, then we'll get
+into actually creating our JavaScript.
+
+00:00:20.930 --> 00:00:25.360 line:100% position:50% align:middle
+So we'll go to index.js, we'll go to the
+bottom here, and we will create a route.
+
+00:00:25.360 --> 00:00:29.780 line:100% position:50% align:middle
+I'm going to do it above our API stuff.
+Say "router.get". And when that happens,
+
+00:00:29.780 --> 00:00:33.700 line:100% position:50% align:middle
+we are going to use our storeController
+and we're going to go to the mapPage.
+
+00:00:33.700 --> 00:00:42.210 line:100% position:50% align:middle
+Good. Now open up our storeController.js
+and we'll make our mapPage method here.
+
+00:00:42.210 --> 00:00:49.200 line:100% position:50% align:middle
+And it's going to res.render out map.
+And the title is going to be Map.
+
+00:00:49.200 --> 00:00:55.973 line:100% position:50% align:middle
+Good. And then finally we will go into our
+views folder and create a map.pug file.
+
+00:00:59.240 --> 00:01:04.220 line:100% position:50% align:middle
+And we got our map page showing up. Good.
+So on this page we need just very minimal
+
+00:01:04.220 --> 00:01:09.210 line:100% position:50% align:middle
+markup because most of the stuff is going
+to be happening in our maps JavaScript.
+
+00:01:09.210 --> 00:01:15.960 line:100% position:50% align:middle
+So we need an inner div inside of here.
+Inside of that we'll have our h2.
+
+00:01:15.960 --> 00:01:22.130 line:100% position:50% align:middle
+We'll have a map div with a class of .map
+div. We'll have an .autocomplete.
+
+00:01:22.130 --> 00:01:26.701 line:100% position:50% align:middle
+Inside of that we're going to have an
+input with a class of autocomplete__input.
+
+00:01:29.459 --> 00:01:36.230 line:100% position:50% align:middle
+It's going to have a type of text.
+Placeholder of "Search for Anything."
+
+00:01:36.230 --> 00:01:40.620 line:100% position:50% align:middle
+And then name of geolocate, that's the
+most important part because that's how
+
+00:01:40.620 --> 00:01:44.160 line:100% position:50% align:middle
+we're going to actually select our input.
+Then as a sibling to autocomplete,
+
+00:01:44.160 --> 00:01:48.880 line:100% position:50% align:middle
+we need a div with an ID of map, and
+inside of that just put a paragraph tag
+
+00:01:48.880 --> 00:01:53.760 line:100% position:50% align:middle
+"Loading Map..." Good, so that's all of
+the PUG file we need to write,
+
+00:01:53.760 --> 00:01:57.980 line:100% position:50% align:middle
+so we can close that down. And we can also
+close down our controller.
+
+00:01:57.980 --> 00:02:01.700 line:100% position:50% align:middle
+What we need to now do is write the
+client-side JavaScript. So we're going to
+
+00:02:01.700 --> 00:02:07.640 line:100% position:50% align:middle
+go into our public folder, into our
+modules, and we're going to make a map.js
+
+00:02:07.640 --> 00:02:12.780 line:100% position:50% align:middle
+file. Then in here we're going to import
+axios, which is a nice library for
+
+00:02:12.780 --> 00:02:18.250 line:100% position:50% align:middle
+fetching AJAX again. And we're going to
+make a function called loadPlaces that
+
+00:02:18.250 --> 00:02:28.530 line:100% position:50% align:middle
+takes in a map, a lat, and a long. And
+we're going to default the lat to being
+
+00:02:28.530 --> 00:02:34.740 line:100% position:50% align:middle
+43.2. And the long is going to be
+defaulted to -79.8. And you could
+
+00:02:34.740 --> 00:02:37.240 line:100% position:50% align:middle
+automatically detect that
+from the user using
+
+00:02:37.240 --> 00:02:46.320 line:100% position:50% align:middle
+navigator.geolocation.getCurrentPosition.
+And I have a tutorial on how to do that on
+
+00:02:46.320 --> 00:02:50.710 line:100% position:50% align:middle
+javascript30.com. So if you are interested
+on how to make that dynamic rather than
+
+00:02:50.710 --> 00:02:57.180 line:100% position:50% align:middle
+fall back to a default here, go and take
+the day... Here we go,
+
+00:02:57.180 --> 00:03:01.980 line:100% position:50% align:middle
+Geolocation, Hardware Access. Go and take
+day 21 of JavaScript 30 and you'll know
+
+00:03:01.980 --> 00:03:06.680 line:100% position:50% align:middle
+exactly how to do that. So remove that
+there. Then we also need another function
+
+00:03:06.680 --> 00:03:12.570 line:100% position:50% align:middle
+from this loadPlaces called makeMap.
+Function makeMap. It takes the name
+
+00:03:12.570 --> 00:03:22.410 line:100% position:50% align:middle
+mapDiv. And then finally from that we are
+going to export default makeMap.
+
+00:03:22.410 --> 00:03:26.240 line:100% position:50% align:middle
+Good. So we import axios, we have a
+function called loadPlaces,
+
+00:03:26.240 --> 00:03:30.170 line:100% position:50% align:middle
+we have a function called makeMap, and
+then we export just the makeMap.
+
+00:03:30.170 --> 00:03:35.530 line:100% position:50% align:middle
+Let's open up our delicious-app.js and
+import the makeMap function.
+
+00:03:35.530 --> 00:03:42.890 line:100% position:50% align:middle
+And we'll go ahead and use it, makeMap,
+and we're going to use the bling.js to
+
+00:03:42.890 --> 00:03:50.600 line:100% position:50% align:middle
+give it an ID of map. All right, so we
+have everything up and running.
+
+00:03:50.600 --> 00:03:55.730 line:100% position:50% align:middle
+If we just go into this makeMap, we're
+going to console.log the mapDiv.
+
+00:03:55.730 --> 00:04:02.770 line:100% position:50% align:middle
+Go in here and see what we got. Oh,
+"Cannot find module". What did I do?
+
+00:04:02.770 --> 00:04:09.000 line:100% position:50% align:middle
+Come on now. There we go. There we go, we
+have our mapDiv showing up on this page.
+
+00:04:09.000 --> 00:04:12.620 line:100% position:50% align:middle
+Now if I were to go to my home page, it
+will say "null". Why? Because it doesn't
+
+00:04:12.620 --> 00:04:17.680 line:100% position:50% align:middle
+actually find anything on that page. So we
+can go into our makeMap and say,
+
+00:04:17.680 --> 00:04:22.880 line:100% position:50% align:middle
+"If there is no mapDiv, return." Right?
+And then that function will not run on
+
+00:04:22.880 --> 00:04:29.540 line:100% position:50% align:middle
+that specific page. Good. So if we look at
+our layout.js and go to the bottom.
+
+00:04:29.540 --> 00:04:32.090 line:100% position:50% align:middle
+We've already looked at this a couple
+times, but let's look at it again.
+
+00:04:32.090 --> 00:04:37.150 line:100% position:50% align:middle
+I have already loaded in the Google Maps
+JavaScript library for us,
+
+00:04:37.150 --> 00:04:41.340 line:100% position:50% align:middle
+so we don't need to load any of that in.
+We can actually just start to go ahead and
+
+00:04:41.340 --> 00:04:46.530 line:100% position:50% align:middle
+make our map. So we'll go back to our map
+page here and we're going to just get a
+
+00:04:46.530 --> 00:04:50.930 line:100% position:50% align:middle
+map on the page, and then worry about how
+do we load in the actual data.
+
+00:04:50.930 --> 00:04:55.140 line:100% position:50% align:middle
+So in order to do that we need some map
+options, some I'm going to put this above
+
+00:04:55.140 --> 00:05:02.180 line:100% position:50% align:middle
+here. Say "const mapOptions =", and you
+give it an object. It needs a center.
+
+00:05:02.180 --> 00:05:11.511 line:100% position:50% align:middle
+Again, it's going to have a lat that is
+equal to 43.2. And an L-N-G which is -79.8
+
+00:05:11.511 --> 00:05:17.690 line:100% position:50% align:middle
+And we're going to set a zoom level
+of two, and that's just how far in should
+
+00:05:17.690 --> 00:05:20.630 line:100% position:50% align:middle
+it be zoomed in. If you want to look at
+all the different options,
+
+00:05:20.630 --> 00:05:25.180 line:100% position:50% align:middle
+you can take a quick look at the docs for
+Google Maps. Then we'll go in here and
+
+00:05:25.180 --> 00:05:29.420 line:100% position:50% align:middle
+we'll actually make our map. So a little
+comment "make our map."
+
+00:05:29.420 --> 00:05:33.950 line:100% position:50% align:middle
+Then we're going to store it in a variable
+because we're going to need reference to
+
+00:05:33.950 --> 00:05:41.840 line:100% position:50% align:middle
+that map fairly often. So "const map = new
+google.maps. Map," capital M-A-P.
+
+00:05:41.840 --> 00:05:47.360 line:100% position:50% align:middle
+And then you pass it two things. First,
+where should it go, mapDiv.
+
+00:05:47.360 --> 00:05:51.420 line:100% position:50% align:middle
+Remember, we passed in this mapDiv, which
+is a div with the ID of map.
+
+00:05:51.420 --> 00:05:56.010 line:100% position:50% align:middle
+And then the second thing that we're
+passing in is an object of options,
+
+00:05:56.010 --> 00:06:03.540 line:100% position:50% align:middle
+mapOptions. Good. I think now if we
+refresh our actual page we should see a
+
+00:06:03.540 --> 00:06:07.640 line:100% position:50% align:middle
+map showing up. There we go, that's a nice
+little map showing up.
+
+00:06:07.640 --> 00:06:11.730 line:100% position:50% align:middle
+Zoom two, probably that's not a good idea,
+maybe eight. What does eight give us?
+
+00:06:11.730 --> 00:06:15.980 line:100% position:50% align:middle
+There we go, that's a little bit better
+zoomed in. But we have our map up and
+
+00:06:15.980 --> 00:06:21.490 line:100% position:50% align:middle
+running. Next thing that we need to do is
+to hook up this geolocation here.
+
+00:06:21.490 --> 00:06:24.580 line:100% position:50% align:middle
+Right? Because we did this on the other
+page, but this is a different one
+
+00:06:24.580 --> 00:06:29.740 line:100% position:50% align:middle
+altogether. So what we'll do is we'll grab
+that input. We'll say "const input,"
+
+00:06:29.740 --> 00:06:34.070 line:100% position:50% align:middle
+and we'll quickly get that right off the
+page with our bling.js.
+
+00:06:34.070 --> 00:06:38.340 line:100% position:50% align:middle
+Actually, we don't have our bling.js.
+Remember this one? The dollar sign is just
+
+00:06:38.340 --> 00:06:44.700 line:100% position:50% align:middle
+a nice shortcut to document.querySelector.
+So what you can do is import dollar sign
+
+00:06:44.700 --> 00:06:54.910 line:100% position:50% align:middle
+from bling. And then we can use it. So we
+want to get something that has a name of
+
+00:06:54.910 --> 00:06:59.970 line:100% position:50% align:middle
+geolocate. Let's just console.log the
+input to make sure that we know what we're
+
+00:06:59.970 --> 00:07:02.720 line:100% position:50% align:middle
+dealing with and that our selectors are
+working fine. So if I refresh,
+
+00:07:02.720 --> 00:07:07.200 line:100% position:50% align:middle
+I should see actual input. Good. That's
+this input right here,
+
+00:07:07.200 --> 00:07:11.460 line:100% position:50% align:middle
+geolocate. And then we're going to make it
+autocomplete just like we did before.
+
+00:07:11.460 --> 00:07:20.120 line:100% position:50% align:middle
+So we say "const autocomplete = new
+google.maps.places. Autocomplete."
+
+00:07:20.120 --> 00:07:25.400 line:100% position:50% align:middle
+And you pass it the actual input that
+you're looking for. Good.
+
+00:07:25.400 --> 00:07:28.960 line:100% position:50% align:middle
+Now if I give that a save, we should see a
+bunch of drop-down.
+
+00:07:28.960 --> 00:07:32.330 line:100% position:50% align:middle
+There we go. Arizona, Australia. And I'll
+hit enter. It doesn't do anything yet,
+
+00:07:32.330 --> 00:07:36.380 line:100% position:50% align:middle
+but we have that autocomplete working.
+We'll come back to that once we have this
+
+00:07:36.380 --> 00:07:42.770 line:100% position:50% align:middle
+map up and running. Now we're going to go
+over to this loadPlaces here because once
+
+00:07:42.770 --> 00:07:48.100 line:100% position:50% align:middle
+we actually have our map, we are going to
+run loadPlaces and we're going to pass it
+
+00:07:48.100 --> 00:07:53.370 line:100% position:50% align:middle
+our map. And then when somebody changes
+the autocomplete, we are also going to run
+
+00:07:53.370 --> 00:07:57.860 line:100% position:50% align:middle
+loadPlaces. But let's not get too excited
+now, let's work on this part right here.
+
+00:07:57.860 --> 00:08:03.010 line:100% position:50% align:middle
+So when the page loads, we are going to
+run makeMap, and that will create a map on
+
+00:08:03.010 --> 00:08:08.380 line:100% position:50% align:middle
+the page. And when the page map is done
+being created, we will run this loadPlaces
+
+00:08:08.380 --> 00:08:14.910 line:100% position:50% align:middle
+function, which asks for that specific
+map, as well as needs a specific lat and
+
+00:08:14.910 --> 00:08:19.120 line:100% position:50% align:middle
+long. And that's going to hit our endpoint
+and that's how we're going to search
+
+00:08:19.120 --> 00:08:24.730 line:100% position:50% align:middle
+inside of it. So what we do here is we are
+going to say "axios.get."
+
+00:08:24.730 --> 00:08:30.070 line:100% position:50% align:middle
+And we're going to use our API with
+backticks. "/api/stores/near."
+
+00:08:30.070 --> 00:08:35.780 line:100% position:50% align:middle
+And we need to pass it a lat property,
+which is just going to be our lat that
+
+00:08:35.780 --> 00:08:39.730 line:100% position:50% align:middle
+gets passed into the function. And we need
+to pass it a long property,
+
+00:08:39.730 --> 00:08:44.000 line:100% position:50% align:middle
+which is going to be our long that was
+passed into the function.
+
+00:08:44.000 --> 00:08:50.220 line:100% position:50% align:middle
+Then we have a response from the...
+Actually, I think I used R-E-S in the
+
+00:08:50.220 --> 00:08:55.580 line:100% position:50% align:middle
+other one. Let's keep it consistent, Wes.
+And from that we say "const places =
+
+00:08:55.580 --> 00:09:04.020 line:100% position:50% align:middle
+response.data." And let's just console.log
+the places. So page loads.
+
+00:09:04.020 --> 00:09:11.430 line:100% position:50% align:middle
+Oh, "Response is not defined." Because
+it's res. There we go. On page load what
+
+00:09:11.430 --> 00:09:15.910 line:100% position:50% align:middle
+happens? We make a map, we run loadPlaces,
+loadPlaces will take the default of this
+
+00:09:15.910 --> 00:09:19.250 line:100% position:50% align:middle
+lat and long, and we open that up. And
+because I have a whole bunch of places in
+
+00:09:19.250 --> 00:09:24.600 line:100% position:50% align:middle
+Hamilton, you'll see that this is the data
+that's coming back from our API,
+
+00:09:24.600 --> 00:09:28.590 line:100% position:50% align:middle
+right? We're hitting our own API and
+bringing back the data. Good.
+
+00:09:28.590 --> 00:09:36.140 line:100% position:50% align:middle
+I'm really happy with that. Now what we do
+that we have this data is we need to first
+
+00:09:36.140 --> 00:09:41.320 line:100% position:50% align:middle
+check if there are any places. So we'll
+say, "If there are no places.length,
+
+00:09:41.320 --> 00:09:44.580 line:100% position:50% align:middle
+then..." And in this case you can make
+some sort of interface.
+
+00:09:44.580 --> 00:09:49.750 line:100% position:50% align:middle
+We'll cheap out and just say "alert'no
+places found!'." But what you could do is
+
+00:09:49.750 --> 00:09:54.270 line:100% position:50% align:middle
+you could pop a little warning message on
+the top here, whatever it is that you like
+
+00:09:54.270 --> 00:09:58.060 line:100% position:50% align:middle
+to do, and then it we'll return from this
+function because there's nothing else for
+
+00:09:58.060 --> 00:10:04.280 line:100% position:50% align:middle
+us to actually do. Then what we want to do
+is make a whole bunch of markers.
+
+00:10:04.280 --> 00:10:08.350 line:100% position:50% align:middle
+So we'll say "const markers =." Markers
+are those little red pins that you see on
+
+00:10:08.350 --> 00:10:12.840 line:100% position:50% align:middle
+maps all over the place. We'll take our
+places array and we'll map over each one
+
+00:10:12.840 --> 00:10:19.030 line:100% position:50% align:middle
+of those places and return a marker from
+each of them. So we have our place,
+
+00:10:19.030 --> 00:10:30.580 line:100% position:50% align:middle
+and then we need to grab the lat and the
+long. Const placeLng and placeLat.
+
+00:10:30.580 --> 00:10:34.480 line:100% position:50% align:middle
+Notice how we're doing it long, lat here.
+Why? Because the data that comes back from
+
+00:10:34.480 --> 00:10:42.760 line:100% position:50% align:middle
+our database is long, lat, not lat, long.
+And place.location.coordinates.
+
+00:10:42.760 --> 00:10:47.740 line:100% position:50% align:middle
+And why is that? Well, place is going to
+be one of these Object. .location,
+
+00:10:47.740 --> 00:10:51.620 line:100% position:50% align:middle
+that's going to be a sub-object on that
+place. And then inside of that we're going
+
+00:10:51.620 --> 00:10:56.020 line:100% position:50% align:middle
+to have coordinates, which itself is an
+array. The first thing being the long,
+
+00:10:56.020 --> 00:10:59.500 line:100% position:50% align:middle
+the second thing being the lat. So what
+we're doing is we're using destructuring,
+
+00:10:59.500 --> 00:11:05.240 line:100% position:50% align:middle
+array destructuring, here saying, "Make a
+variable called placeLng out of the first
+
+00:11:05.240 --> 00:11:09.580 line:100% position:50% align:middle
+thing and make a variable called placeLat
+out of the second thing." And we could
+
+00:11:09.580 --> 00:11:19.270 line:100% position:50% align:middle
+just console.log placeLng and placeLat and
+watch this. Whoa. Well,
+
+00:11:19.270 --> 00:11:21.840 line:100% position:50% align:middle
+that's good, we get our lat and our long,
+or our long and our lat,
+
+00:11:21.840 --> 00:11:26.110 line:100% position:50% align:middle
+for every single place that we have. So
+good, we know that this loop is actually
+
+00:11:26.110 --> 00:11:30.000 line:100% position:50% align:middle
+starting to work. Then we need to make a
+position object for Google Maps.
+
+00:11:30.000 --> 00:11:37.580 line:100% position:50% align:middle
+So we'll say "const position =". Not
+"relative", it's equal to an object,
+
+00:11:37.580 --> 00:11:44.090 line:100% position:50% align:middle
+where the lat is the placeLat and the long
+is the placeLng. Good.
+
+00:11:44.090 --> 00:11:52.520 line:100% position:50% align:middle
+Then we can make our actual marker. So
+we'll say "const marker = new google.maps.
+
+00:11:52.520 --> 00:11:59.900 line:100% position:50% align:middle
+Marker." And that will take an object,
+which needs a couple things.
+
+00:11:59.900 --> 00:12:06.290 line:100% position:50% align:middle
+The map is going to be our mapDiv, so we
+can just do that. And position is going to
+
+00:12:06.290 --> 00:12:14.030 line:100% position:50% align:middle
+be our position. Again, if you have
+map-map, position-position,
+
+00:12:14.030 --> 00:12:20.040 line:100% position:50% align:middle
+we only need to do it once. And we can
+just bring those onto their own line just
+
+00:12:20.040 --> 00:12:26.490 line:100% position:50% align:middle
+to keep ourself sane. So we made a marker
+here, and then what we need to do is also
+
+00:12:26.490 --> 00:12:30.000 line:100% position:50% align:middle
+attach the place data to that marker.
+Because what is the place?
+
+00:12:30.000 --> 00:12:34.430 line:100% position:50% align:middle
+The place is the object with all the data
+from our API, and I want to attach that
+
+00:12:34.430 --> 00:12:38.470 line:100% position:50% align:middle
+data to the marker. Because when somebody
+clicks the marker, we need some way to
+
+00:12:38.470 --> 00:12:42.970 line:100% position:50% align:middle
+reference that actual place data. So we'll
+say marker.place is equal to our place
+
+00:12:42.970 --> 00:12:47.060 line:100% position:50% align:middle
+variable, which is going to be this.
+Right? That's the individual place that
+
+00:12:47.060 --> 00:12:50.840 line:100% position:50% align:middle
+we're going to store on the marker so we
+have access to it. And then finally,
+
+00:12:50.840 --> 00:12:55.610 line:100% position:50% align:middle
+finally, finally we are going to return
+the actual marker from that.
+
+00:12:55.610 --> 00:13:03.550 line:100% position:50% align:middle
+So if I were to console.log the markers,
+you'll see that I get a couple things
+
+00:13:03.550 --> 00:13:08.220 line:100% position:50% align:middle
+here. Awesome. First, the markers actually
+show up on our map here.
+
+00:13:08.220 --> 00:13:14.380 line:100% position:50% align:middle
+And why is that? Well, because we have
+created all of these markers.
+
+00:13:14.380 --> 00:13:19.970 line:100% position:50% align:middle
+And we said put it on our map, which is
+this map on our page. And put it at this
+
+00:13:19.970 --> 00:13:24.650 line:100% position:50% align:middle
+position, which is this object that we
+just made. And then we return those
+
+00:13:24.650 --> 00:13:28.690 line:100% position:50% align:middle
+markers into an array. And you can see
+here that we have a huge array of possible
+
+00:13:28.690 --> 00:13:32.170 line:100% position:50% align:middle
+markers. And there's a whole bunch of
+information that we can use for handling
+
+00:13:32.170 --> 00:13:35.710 line:100% position:50% align:middle
+clicks and whatnot, but what's most
+important is that each of these markers
+
+00:13:35.710 --> 00:13:40.040 line:100% position:50% align:middle
+has a place object. And if you open that
+up, you'll see that this is just the
+
+00:13:40.040 --> 00:13:44.550 line:100% position:50% align:middle
+object that actually came from our API.
+See? Donut Monster has a location,
+
+00:13:44.550 --> 00:13:48.720 line:100% position:50% align:middle
+has a slug, has a name, has an ID. So all
+of that information that we need about the
+
+00:13:48.720 --> 00:13:52.880 line:100% position:50% align:middle
+place is specifically there. So good. We
+don't need to console.log the markers just
+
+00:13:52.880 --> 00:13:58.110 line:100% position:50% align:middle
+yet. But there is one problem that we're
+having here, and that is this zoom level.
+
+00:13:58.110 --> 00:14:03.210 line:100% position:50% align:middle
+I don't know, I could say maybe zoom two
+here, and then refresh.
+
+00:14:03.210 --> 00:14:05.540 line:100% position:50% align:middle
+Although that's way zoomed out. So maybe
+like, what, is zoom 13,
+
+00:14:05.540 --> 00:14:10.350 line:100% position:50% align:middle
+I think, as high as you can go? That's way
+too zoomed in and it didn't actually
+
+00:14:10.350 --> 00:14:14.600 line:100% position:50% align:middle
+center it. So rather than trying to monkey
+around and guess with the zoom level,
+
+00:14:14.600 --> 00:14:19.960 line:100% position:50% align:middle
+what we can do is we can actually use
+something call bounds which will detect,
+
+00:14:19.960 --> 00:14:25.040 line:100% position:50% align:middle
+"Okay, this is where all the markers are.
+Let's just zoom in so that all of the
+
+00:14:25.040 --> 00:14:29.860 line:100% position:50% align:middle
+markers fit, but we are zoomed in as far
+as we can possibly go." So what we're
+
+00:14:29.860 --> 00:14:36.370 line:100% position:50% align:middle
+going to do is right above creating our
+markers we're going to create a bounds.
+
+00:14:36.370 --> 00:14:41.070 line:100% position:50% align:middle
+And then I'll show you how that works.
+We'll say "const bounds = new google.maps.
+
+00:14:41.070 --> 00:14:48.890 line:100% position:50% align:middle
+LatLngBounds". And bounds is something
+that we're going to take and extend for
+
+00:14:48.890 --> 00:14:54.930 line:100% position:50% align:middle
+every single marker. Then when we loop
+over each of these places,
+
+00:14:54.930 --> 00:15:00.770 line:100% position:50% align:middle
+we're also going to extend our bounds so
+that it will fit each of these markers.
+
+00:15:00.770 --> 00:15:04.690 line:100% position:50% align:middle
+So right before we make our marker we're
+going to go here and we're going to say
+
+00:15:04.690 --> 00:15:11.570 line:100% position:50% align:middle
+"bounds.extend" and we're going to pass it
+our position object.
+
+00:15:11.570 --> 00:15:15.310 line:100% position:50% align:middle
+So it's going to say, "Hey." All of a
+sudden we start with just a pinpoint.
+
+00:15:15.310 --> 00:15:19.350 line:100% position:50% align:middle
+And then it says, "Okay, this marker right
+here is on Wellington Street,
+
+00:15:19.350 --> 00:15:23.950 line:100% position:50% align:middle
+so make sure that we extend our bounds to
+include that." And then it is a little bit
+
+00:15:23.950 --> 00:15:27.490 line:100% position:50% align:middle
+bigger, the bounds. And then it says, "Oh,
+now there's one over here near Gibson,
+
+00:15:27.490 --> 00:15:30.240 line:100% position:50% align:middle
+let's extend our bounds to be at least
+that big." And then it finds another one
+
+00:15:30.240 --> 00:15:33.570 line:100% position:50% align:middle
+to the left here and says, "Oh, there's
+one over here," and it will extend the
+
+00:15:33.570 --> 00:15:37.020 line:100% position:50% align:middle
+bounds. And what that will do is it will,
+at the end of the day once it loops
+
+00:15:37.020 --> 00:15:40.450 line:100% position:50% align:middle
+through every single marker, it will give
+us a perfect square,
+
+00:15:40.450 --> 00:15:47.070 line:100% position:50% align:middle
+or a perfect rectangle, around all of the
+markers. And then we can then use that to
+
+00:15:47.070 --> 00:15:51.720 line:100% position:50% align:middle
+zoom in or zoom out our map so that
+everything fits perfectly.
+
+00:15:51.720 --> 00:15:56.790 line:100% position:50% align:middle
+So let's just double-check that everything
+is working. Give it a refresh.
+
+00:15:56.790 --> 00:16:03.040 line:100% position:50% align:middle
+"gogole," it's "google.maps.
+LatLngBounds". Refresh. Everything is
+
+00:16:03.040 --> 00:16:08.230 line:100% position:50% align:middle
+showing up. So we have this bounds value
+right here. What we want to do is after we
+
+00:16:08.230 --> 00:16:16.170 line:100% position:50% align:middle
+loop over all of our markers, we want to
+then zoom the map to fit all the markers
+
+00:16:16.170 --> 00:16:22.040 line:100% position:50% align:middle
+perfectly. So we'll take our map and we'll
+call .setCenter on it.
+
+00:16:22.040 --> 00:16:25.300 line:100% position:50% align:middle
+And where are we going to set the center?
+Well, we take our bounds and we call
+
+00:16:25.300 --> 00:16:29.970 line:100% position:50% align:middle
+getCenter from it. And the bounds, again,
+is like a circle or a square around all of
+
+00:16:29.970 --> 00:16:33.610 line:100% position:50% align:middle
+our pins and it will tell us where the
+actual center of it is.
+
+00:16:33.610 --> 00:16:40.200 line:100% position:50% align:middle
+Then I want to refresh. You'll see that on
+page load it moves a little bit.
+
+00:16:40.200 --> 00:16:43.160 line:100% position:50% align:middle
+And that's because as soon as these
+markers are loaded, it will perfectly
+
+00:16:43.160 --> 00:16:46.800 line:100% position:50% align:middle
+center those markers in the middle of the
+map. Now that's not good enough because
+
+00:16:46.800 --> 00:16:50.810 line:100% position:50% align:middle
+I'm zoomed way out here. Ideally I would
+be zoomed in something like this,
+
+00:16:50.810 --> 00:16:55.910 line:100% position:50% align:middle
+that would show me where they all are. So
+that's what we do, we say "map.fitBounds"
+
+00:16:55.910 --> 00:17:02.100 line:100% position:50% align:middle
+and you just pass it our actual bounds
+here. Now when we refresh,
+
+00:17:02.100 --> 00:17:05.710 line:100% position:50% align:middle
+hey, hey, look. You see how it was zoomed
+out at first? And then immediately once
+
+00:17:05.710 --> 00:17:10.570 line:100% position:50% align:middle
+the data is loaded, it will zoom ourselves
+on in to make sure that everything has
+
+00:17:10.570 --> 00:17:15.730 line:100% position:50% align:middle
+been fit properly. Good, so we got a
+couple of other pieces here with our map,
+
+00:17:15.730 --> 00:17:21.140 line:100% position:50% align:middle
+we got everything showing. But when I
+click on these, there's no actual data
+
+00:17:21.140 --> 00:17:25.730 line:100% position:50% align:middle
+that's showing up. And when you have a
+pop-up in Google Maps, that's something
+
+00:17:25.730 --> 00:17:29.670 line:100% position:50% align:middle
+called an info window. Google Maps is all
+about making just different pieces of the
+
+00:17:29.670 --> 00:17:35.410 line:100% position:50% align:middle
+map. Like we have our autocomplete, we
+have our markers, we have our map,
+
+00:17:35.410 --> 00:17:40.010 line:100% position:50% align:middle
+and now we're going to make a fourth,
+fifth thing called an info window.
+
+00:17:40.010 --> 00:17:45.200 line:100% position:50% align:middle
+So let's go ahead and make one info window
+variable. We'll put it right below our
+
+00:17:45.200 --> 00:17:49.430 line:100% position:50% align:middle
+bounds here so we can keep those things
+together. So "const infoWindow =,"
+
+00:17:49.430 --> 00:17:56.420 line:100% position:50% align:middle
+guess what, "new google.maps. InfoWindow."
+We don't need to pass any options to our
+
+00:17:56.420 --> 00:18:01.610 line:100% position:50% align:middle
+info window just yet because those options
+will be coming once we actually want to
+
+00:18:01.610 --> 00:18:06.980 line:100% position:50% align:middle
+click on them. Good. Now let's go right
+down below these markers,
+
+00:18:06.980 --> 00:18:11.620 line:100% position:50% align:middle
+we have this array of markers. And now
+what I want to do is I want to loop over
+
+00:18:11.620 --> 00:18:16.770 line:100% position:50% align:middle
+each of those markers and attach an event
+listener so that when somebody clicks on
+
+00:18:16.770 --> 00:18:21.120 line:100% position:50% align:middle
+one of these markers, we can actually show
+that info window. So we'll go right here
+
+00:18:21.120 --> 00:18:27.740 line:100% position:50% align:middle
+and we'll say, "When someone clicks on a
+marker, show the details of that place."
+
+00:18:27.740 --> 00:18:32.730 line:100% position:50% align:middle
+So we'll take our markers array and we
+will loop over each one with .forEach,
+
+00:18:32.730 --> 00:18:36.680 line:100% position:50% align:middle
+we'll have each marker. And what we're
+going to do is we're going to take that
+
+00:18:36.680 --> 00:18:42.360 line:100% position:50% align:middle
+marker and we're going to call
+addListener. Again, addListener is the
+
+00:18:42.360 --> 00:18:45.130 line:100% position:50% align:middle
+Google Maps equivalent of
+addEventListener. We're going to listen
+
+00:18:45.130 --> 00:18:48.330 line:100% position:50% align:middle
+for a click. And when that happens, we're
+going to run a function,
+
+00:18:48.330 --> 00:18:53.400 line:100% position:50% align:middle
+proper function here. Why? Because if you
+console.log this when you click on a
+
+00:18:53.400 --> 00:18:59.670 line:100% position:50% align:middle
+marker, let's see what we're working with
+here. So let me click on a marker.
+
+00:18:59.670 --> 00:19:04.140 line:100% position:50% align:middle
+This is the actual marker itself and
+there's all kinds of information about
+
+00:19:04.140 --> 00:19:10.030 line:100% position:50% align:middle
+that marker, like what map it is on, what
+position, if it's visible or not,
+
+00:19:10.030 --> 00:19:13.930 line:100% position:50% align:middle
+if it's clickable. But what we're
+concerned with here is this called place.
+
+00:19:13.930 --> 00:19:17.620 line:100% position:50% align:middle
+If you open up place, look at it.
+"Counter-server joint with an
+
+00:19:17.620 --> 00:19:20.820 line:100% position:50% align:middle
+ever-changing selection of elevated soups
+and burgers," right?
+
+00:19:20.820 --> 00:19:26.810 line:100% position:50% align:middle
+And then you click on another one and it's
+going to tell us that this .place is equal
+
+00:19:26.810 --> 00:19:29.430 line:100% position:50% align:middle
+to "High end French restaurant on the
+hippest street in town." Okay,
+
+00:19:29.430 --> 00:19:36.570 line:100% position:50% align:middle
+cool. So we can get the place with this
+.place, but we need to create some
+
+00:19:36.570 --> 00:19:41.190 line:100% position:50% align:middle
+information, we need to create some HTML
+so we can actually set the info window on
+
+00:19:41.190 --> 00:19:48.100 line:100% position:50% align:middle
+there. So let's try it with this right
+now. We'll say "infoWindow.setContent".
+
+00:19:48.100 --> 00:19:56.150 line:100% position:50% align:middle
+And let's just say "this.place.name." And
+then we'll say "infoWindow.open,"
+
+00:19:56.150 --> 00:19:59.720 line:100% position:50% align:middle
+and you tell it where do I want it to
+open. Well, you want to open it on the
+
+00:19:59.720 --> 00:20:04.290 line:100% position:50% align:middle
+map. Right? Because you could have
+multiple maps on your page and you could
+
+00:20:04.290 --> 00:20:07.980 line:100% position:50% align:middle
+have one info window going from map to map
+to map. In our case we just will want to
+
+00:20:07.980 --> 00:20:11.320 line:100% position:50% align:middle
+put it on our single map. And then where
+do we want it to go? Well,
+
+00:20:11.320 --> 00:20:17.160 line:100% position:50% align:middle
+you can just pass it a marker, which is
+either "this" or "marker."
+
+00:20:17.160 --> 00:20:20.180 line:100% position:50% align:middle
+Right? Because if you pass it "this," it's
+going to know, "Oh,
+
+00:20:20.180 --> 00:20:25.580 line:100% position:50% align:middle
+I should pop up this little info window on
+top of this, on top of the marker." You'll
+
+00:20:25.580 --> 00:20:32.510 line:100% position:50% align:middle
+see how that works. Sour on King, The
+French. You see that they automatically
+
+00:20:32.510 --> 00:20:36.300 line:100% position:50% align:middle
+close themselves because there's only one
+info window. And if you ask the info
+
+00:20:36.300 --> 00:20:40.640 line:100% position:50% align:middle
+window to open somewhere else, it's smart
+enough to know to close the other one.
+
+00:20:40.640 --> 00:20:44.690 line:100% position:50% align:middle
+So that's really nice, but we can go a
+little bit further and create some HTML
+
+00:20:44.690 --> 00:20:51.270 line:100% position:50% align:middle
+for each of those. So we'll say "const
+html =," backticks. And inside of that
+
+00:20:51.270 --> 00:21:03.330 line:100% position:50% align:middle
+we'll have a .popup div with a link to the
+store, "/${this.place.slug}."
+
+00:21:03.330 --> 00:21:10.200 line:100% position:50% align:middle
+Inside of that we'll give ourselves an
+image tag which will go to uploads,
+
+00:21:10.200 --> 00:21:20.530 line:100% position:50% align:middle
+"/${this.place.photo || 'store.png'}." The
+alt should be "${this.place.name}."
+
+00:21:20.530 --> 00:21:23.820 line:100% position:50% align:middle
+Right? And then finally we have a
+paragraph tag underneath it which is
+
+00:21:23.820 --> 00:21:30.070 line:100% position:50% align:middle
+"${this.place.name} - ." And then we can
+take the "${this.place.location.address}"
+
+00:21:30.070 --> 00:21:35.830 line:100% position:50% align:middle
+because that will tell us actually where
+it is. So we have this HTML that we just
+
+00:21:35.830 --> 00:21:39.540 line:100% position:50% align:middle
+created, now we can take that variable and
+put it into our setContent.
+
+00:21:39.540 --> 00:21:43.850 line:100% position:50% align:middle
+What's cool about this is that you can
+make any HTML here, and then you can style
+
+00:21:43.850 --> 00:21:48.230 line:100% position:50% align:middle
+it any which way you want with just your
+regular CSS because it's not in an iframe
+
+00:21:48.230 --> 00:21:53.320 line:100% position:50% align:middle
+or anything like that, it's actually part
+of your page. So refresh this sucker.
+
+00:21:53.320 --> 00:21:57.560 line:100% position:50% align:middle
+Now when I click on it, I get the picture,
+I get the name, I get the address,
+
+00:21:57.560 --> 00:22:04.500 line:100% position:50% align:middle
+and I'm able to click through to the
+actual store page. Good. One last piece.
+
+00:22:04.500 --> 00:22:08.980 line:100% position:50% align:middle
+Or you can bask in how amazing this is. So
+take a second to take it all in and read
+
+00:22:08.980 --> 00:22:15.000 line:100% position:50% align:middle
+through this. But the last piece is when I
+type in, let's say I was zoomed somewhere
+
+00:22:15.000 --> 00:22:19.740 line:100% position:50% align:middle
+totally different, and then I type in
+"Hamilton". What should happen is we
+
+00:22:19.740 --> 00:22:24.850 line:100% position:50% align:middle
+should get the lat, long of this, and then
+we should try loadPlaces for the lat and
+
+00:22:24.850 --> 00:22:29.710 line:100% position:50% align:middle
+long that the person has typed in. Right?
+Because this is not showing every store,
+
+00:22:29.710 --> 00:22:34.700 line:100% position:50% align:middle
+this is just showing us the 10 closest
+within 10 kilometers of our lat and our
+
+00:22:34.700 --> 00:22:39.300 line:100% position:50% align:middle
+long. So we can go back down to this
+makeMap function where we created our
+
+00:22:39.300 --> 00:22:43.840 line:100% position:50% align:middle
+autocomplete and we can listen for when
+that autocomplete changes itself.
+
+00:22:43.840 --> 00:22:49.040 line:100% position:50% align:middle
+So say "autocomplete," and we will add a
+listener. And the listener is called
+
+00:22:49.040 --> 00:22:53.430 line:100% position:50% align:middle
+place_changed. You remember this from the
+ad page, we've done it.
+
+00:22:53.430 --> 00:22:56.330 line:100% position:50% align:middle
+And when that happens we can run a quick
+little arrow function here,
+
+00:22:56.330 --> 00:23:00.250 line:100% position:50% align:middle
+don't need a full function because we
+don't need "this." And we'll say "const
+
+00:23:00.250 --> 00:23:06.650 line:100% position:50% align:middle
+place = autocomplete.getPlace."
+Console.log the place just to make sure
+
+00:23:06.650 --> 00:23:12.290 line:100% position:50% align:middle
+we're not doing anything wrong. So we'll
+type in "Hamilton." And you see that
+
+00:23:12.290 --> 00:23:17.240 line:100% position:50% align:middle
+console.log, you get all the information
+about this place that you did.
+
+00:23:17.240 --> 00:23:23.290 line:100% position:50% align:middle
+So if I were to say "Paris," again we're
+going to get all the information about
+
+00:23:23.290 --> 00:23:28.340 line:100% position:50% align:middle
+Paris. Oh, I actually have to select one
+of them, otherwise it just tells me
+
+00:23:28.340 --> 00:23:32.680 line:100% position:50% align:middle
+"Paris." There go. There's the information
+about it. You get the point,
+
+00:23:32.680 --> 00:23:37.880 line:100% position:50% align:middle
+right? So we have this place here. And all
+we really need to do now is call our
+
+00:23:37.880 --> 00:23:43.180 line:100% position:50% align:middle
+function, loadPlaces, and we pass it our
+map, we pass it our lat.
+
+00:23:43.180 --> 00:23:55.290 line:100% position:50% align:middle
+So place.geometry.location.lat. And then
+just take that sucker and change it out
+
+00:23:55.290 --> 00:24:05.370 line:100% position:50% align:middle
+with "lng." Okay, so we only have places
+in Hamilton right now,
+
+00:24:05.370 --> 00:24:10.100 line:100% position:50% align:middle
+so the way to test this is you can move
+yourself away somewhere where it doesn't
+
+00:24:10.100 --> 00:24:17.640 line:100% position:50% align:middle
+have any places. And then we will search
+for "Hamilton". And then it will go to our
+
+00:24:17.640 --> 00:24:22.870 line:100% position:50% align:middle
+API, come back. You can tell that it's
+actually working if you go to your network
+
+00:24:22.870 --> 00:24:31.510 line:100% position:50% align:middle
+tab and you were to look at XHR, and then
+make the actual call yourself.
+
+00:24:31.510 --> 00:24:35.910 line:100% position:50% align:middle
+And the request should show up in here.
+There we go, near lat,
+
+00:24:35.910 --> 00:24:39.520 line:100% position:50% align:middle
+long. You can see that the data actually
+comes back. If I were to search for
+
+00:24:39.520 --> 00:24:45.200 line:100% position:50% align:middle
+"Paris," somewhere where I do not have any
+places, "Paris," it tells us "no places
+
+00:24:45.200 --> 00:24:48.430 line:100% position:50% align:middle
+found" because that's all of the error
+handling we've introduced here.
+
+00:24:48.430 --> 00:24:52.520 line:100% position:50% align:middle
+Right? But if I were then to log in and
+add a place in Paris, let's try it.
+
+00:24:52.520 --> 00:24:57.480 line:100% position:50% align:middle
+Log in, let's add a new one. I was in
+Paris once, Au Père Louis.
+
+00:24:57.480 --> 00:25:05.600 line:100% position:50% align:middle
+There we go, that's where I want it. We'll
+call it Au Père Louis,
+
+00:25:05.600 --> 00:25:14.900 line:100% position:50% align:middle
+"Great place for snails." We'll upload a
+quick photo. Go to save.
+
+00:25:14.900 --> 00:25:20.680 line:100% position:50% align:middle
+There. So we added a place in Paris. Now
+if I were to go to our map and search for
+
+00:25:20.680 --> 00:25:27.160 line:100% position:50% align:middle
+"Paris," then it will find only one place
+and it will show us Au Père Louis.
+
+00:25:27.160 --> 00:25:32.480 line:100% position:50% align:middle
+I can open it up, I see a picture of it.
+Oh, one weird thing, that's not our actual
+
+00:25:32.480 --> 00:25:38.250 line:100% position:50% align:middle
+photo. We click through to it, it should
+be bread but it's showing us this.
+
+00:25:38.250 --> 00:25:44.460 line:100% position:50% align:middle
+So what's wrong with our HTML that we did?
+"this.place," does this place not have a
+
+00:25:44.460 --> 00:25:50.250 line:100% position:50% align:middle
+photo? The way we can tell, console.log
+this.place. Check it out,
+
+00:25:50.250 --> 00:25:56.110 line:100% position:50% align:middle
+search for "Paris." Click on it and we
+look it up. Description,
+
+00:25:56.110 --> 00:25:59.880 line:100% position:50% align:middle
+location, name, slug. Oh, you know what we
+didn't do is our API is not returning a
+
+00:25:59.880 --> 00:26:05.260 line:100% position:50% align:middle
+photo. Right? Because we didn't ask for
+it. So if we go into our storeController,
+
+00:26:05.260 --> 00:26:07.880 line:100% position:50% align:middle
+go down to where we made this. Remember we
+asked for the slug,
+
+00:26:07.880 --> 00:26:12.400 line:100% position:50% align:middle
+the name, description, and location, and
+then the photo. Watch this.
+
+00:26:12.400 --> 00:26:18.220 line:100% position:50% align:middle
+Refresh. Then we search for "Paris."
+Better see some bread. There we go,
+
+00:26:18.220 --> 00:26:21.860 line:100% position:50% align:middle
+then the actual bread is showing up. So
+our fallback was kicking in because we did
+
+00:26:21.860 --> 00:26:26.290 line:100% position:50% align:middle
+not explicitly ask for the photo. So that
+is our Google Maps up and running,
+
+00:26:26.290 --> 00:26:29.969 line:100% position:50% align:middle
+it's kind of a cool way to use
+an API on your own website.
+
+00:26:29.969 --> 00:26:32.969 line:100% position:50% align:middle
+♪ [music] ♪

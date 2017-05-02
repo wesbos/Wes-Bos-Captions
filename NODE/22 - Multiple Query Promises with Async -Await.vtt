@@ -1,0 +1,333 @@
+WEBVTT
+
+00:00:03.467 --> 00:00:06.500 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.270 --> 00:00:15.620 line:100% position:50% align:middle
+In this video, we're going to keep going
+with our tags crusade,
+
+00:00:15.620 --> 00:00:20.360 line:100% position:50% align:middle
+but we're going to do the filtering so
+that when you click on a specific tag,
+
+00:00:20.360 --> 00:00:24.940 line:100% position:50% align:middle
+you're going to see all of the stores
+associated with that one tag.
+
+00:00:24.940 --> 00:00:29.650 line:100% position:50% align:middle
+This is the first time we're doing two
+queries inside of one controller method.
+
+00:00:29.650 --> 00:00:32.910 line:100% position:50% align:middle
+So how do we do that? Well, what we could
+do is we can say tags equals that,
+
+00:00:32.910 --> 00:00:35.626 line:100% position:50% align:middle
+and we could say const -
+if we could spell it right -
+
+00:00:35.626 --> 00:00:39.436 line:100% position:50% align:middle
+'const stores = await store.find'
+
+00:00:39.436 --> 00:00:43.760 line:100% position:50% align:middle
+blah blah blah blah blah.
+But the problem with that is that 'await'
+
+00:00:43.760 --> 00:00:47.960 line:100% position:50% align:middle
+does exactly that. It waits, meaning
+that we're going to first search for the
+
+00:00:47.960 --> 00:00:52.970 line:100% position:50% align:middle
+tags, then they'll come back. And then
+second, we're going to then go and find
+
+00:00:52.970 --> 00:00:56.380 line:100% position:50% align:middle
+the latest ten stores or all of the stores
+depending on how we want to do it.
+
+00:00:56.380 --> 00:01:00.400 line:100% position:50% align:middle
+Now, that's not really great, because
+that's synchronous, meaning that we
+
+00:01:00.400 --> 00:01:04.090 line:100% position:50% align:middle
+shouldn't be...if these two things are not
+dependent on each other,
+
+00:01:04.090 --> 00:01:07.980 line:100% position:50% align:middle
+they should be fired off at the exact same
+time, because that's going to be the
+
+00:01:07.980 --> 00:01:13.540 line:100% position:50% align:middle
+absolute fastest. If you're making six
+different ajax calls and none of them need
+
+00:01:13.540 --> 00:01:16.760 line:100% position:50% align:middle
+to wait on the other ones, then you should
+make them all at the same time,
+
+00:01:16.760 --> 00:01:20.170 line:100% position:50% align:middle
+not wait for one to come back and then do
+the second, and then wait for the second
+
+00:01:20.170 --> 00:01:26.250 line:100% position:50% align:middle
+to come back, etc., etc. So what we want
+to do instead is to say tags promise
+
+00:01:26.250 --> 00:01:29.670 line:100% position:50% align:middle
+equals, and we'll get rid of this await
+here. We're going to bring it back in just
+
+00:01:29.670 --> 00:01:36.070 line:100% position:50% align:middle
+a second. But we put a tags promise into
+there, we store the promise,
+
+00:01:36.070 --> 00:01:41.260 line:100% position:50% align:middle
+that's going to fire it off, and then
+we're going to make a stores promise for a
+
+00:01:41.260 --> 00:01:47.360 line:100% position:50% align:middle
+similar thing. So it's like const stores
+promise is equal to store dot find,
+
+00:01:47.360 --> 00:01:56.070 line:100% position:50% align:middle
+and now we also want to find where the
+tags property includes our specific tag.
+
+00:01:56.070 --> 00:02:00.000 line:100% position:50% align:middle
+Actually, we're going to have to bring
+this tag variable up above it, because we
+
+00:02:00.000 --> 00:02:03.930 line:100% position:50% align:middle
+need it. So first of all, this will get
+our tags list. We did that last time.
+
+00:02:03.930 --> 00:02:10.790 line:100% position:50% align:middle
+Second of all, this will find all of the
+stores where the tags property of a store
+
+00:02:10.790 --> 00:02:15.860 line:100% position:50% align:middle
+includes that specific tag. And there's no
+weird thing that you have to do here where
+
+00:02:15.860 --> 00:02:22.030 line:100% position:50% align:middle
+it's tags dot includes. If the tag is
+wi-fi and the tags array includes wi-fi,
+
+00:02:22.030 --> 00:02:26.350 line:100% position:50% align:middle
+it will filter it out for us. So now we
+have these two promises, but we don't have
+
+00:02:26.350 --> 00:02:32.840 line:100% position:50% align:middle
+any of the actual data. So what we can
+do in here now is we can await for both
+
+00:02:32.840 --> 00:02:37.020 line:100% position:50% align:middle
+of these things to come back. If this
+thing takes one second and this thing
+
+00:02:37.020 --> 00:02:40.963 line:100% position:50% align:middle
+takes half a second, we're going to wait
+one second, because that's the slowest
+
+00:02:40.963 --> 00:02:46.428 line:100% position:50% align:middle
+one. So the way that you can wait for
+multiple promises to come back is with
+
+00:02:46.428 --> 00:02:57.000 line:100% position:50% align:middle
+something called 'promise.all.' So we can
+say 'const result = promise.all,'
+
+00:02:57.000 --> 00:03:00.000 line:100% position:50% align:middle
+pass it an array of promises. So what
+are our two promises?
+
+00:03:00.000 --> 00:03:06.558 line:100% position:50% align:middle
+Well, we have a tags promise, and we have
+a stores promise, which is going to return
+
+00:03:06.558 --> 00:03:11.440 line:100% position:50% align:middle
+us an array of actual data in
+result. Now a couple things again here,
+
+00:03:11.440 --> 00:03:16.440 line:100% position:50% align:middle
+we need to await that promise. So rather
+than awaiting each individual one,
+
+00:03:16.440 --> 00:03:22.360 line:100% position:50% align:middle
+we're going to await all of them from
+returning, and the result of that is going
+
+00:03:22.360 --> 00:03:28.100 line:100% position:50% align:middle
+to be put into result, okay? So let's
+comment out that res.render, and let's
+
+00:03:28.100 --> 00:03:32.860 line:100% position:50% align:middle
+just say 'res.JSON result.' See what
+we're dealing with here when we hit this
+
+00:03:32.860 --> 00:03:39.460 line:100% position:50% align:middle
+page. We're on vegetarian. We have three,
+a refresh. It should give us first an
+
+00:03:39.460 --> 00:03:43.760 line:100% position:50% align:middle
+array where the first thing of the array
+is another array of tags,
+
+00:03:43.760 --> 00:03:51.090 line:100% position:50% align:middle
+good. And then the second thing in the
+array is a list of coffee shops that all
+
+00:03:51.090 --> 00:03:57.100 line:100% position:50% align:middle
+have vegetarian in their actual values.
+Good. So you could do this.
+
+00:03:57.100 --> 00:04:05.910 line:100% position:50% align:middle
+You could say if our tags equals results
+square bracket zero and if our stores
+
+00:04:05.910 --> 00:04:10.320 line:100% position:50% align:middle
+equals alt one where the first thing is
+going to be the tags, the second thing is
+
+00:04:10.320 --> 00:04:13.950 line:100% position:50% align:middle
+going to be stores. But again, if you've
+taken my ES6 course, you'll know that we
+
+00:04:13.950 --> 00:04:18.380 line:100% position:50% align:middle
+could destructure that result immediately
+by instead of saying result,
+
+00:04:18.380 --> 00:04:22.780 line:100% position:50% align:middle
+we simply just destructure it into
+variables immediately saying tags and
+
+00:04:22.780 --> 00:04:27.570 line:100% position:50% align:middle
+stores is equal to await promise.alt
+tags promise and stores promise.
+
+00:04:27.570 --> 00:04:31.960 line:100% position:50% align:middle
+So, whew! Two queries, each returns a
+promise, and we wait for both of them to
+
+00:04:31.960 --> 00:04:36.560 line:100% position:50% align:middle
+come back with await. Then we destructure
+them into their own variable called tags
+
+00:04:36.560 --> 00:04:41.260 line:100% position:50% align:middle
+and stores. Now if you say 'res.JSON'
+tags, you should just see the tags.
+
+00:04:41.260 --> 00:04:46.480 line:100% position:50% align:middle
+And if you res.JSON these stores, you
+should just see the stores.
+
+00:04:46.480 --> 00:04:50.570 line:100% position:50% align:middle
+Good. Good, good, good. But we don't want
+to JSON it, we'll bring back this render
+
+00:04:50.570 --> 00:04:56.480 line:100% position:50% align:middle
+function that we have here, and we will
+pass along these stores as well.
+
+00:04:56.480 --> 00:05:02.550 line:100% position:50% align:middle
+Good. We'll now refresh this page. We see
+vegetarian. We see our list of tags.
+
+00:05:02.550 --> 00:05:07.650 line:100% position:50% align:middle
+That didn't get messed up at all. We can
+go back into here, take a quick dump,
+
+00:05:07.650 --> 00:05:17.880 line:100% position:50% align:middle
+pre equals h.dump stores. See there's
+our list of possible stores, and now it's
+
+00:05:17.880 --> 00:05:20.970 line:100% position:50% align:middle
+just a templating problem. We've got all
+the data to where we want it.
+
+00:05:20.970 --> 00:05:25.470 line:100% position:50% align:middle
+We can just go out and start to template
+it. So we'll say dot stores,
+
+00:05:25.470 --> 00:05:30.580 line:100% position:50% align:middle
+each store in stores, and we can reuse our
+store card that we made earlier.
+
+00:05:30.580 --> 00:05:36.350 line:100% position:50% align:middle
+Let's go up here and import that stores
+card. So we'll say include,
+
+00:05:36.350 --> 00:05:43.160 line:100% position:50% align:middle
+mixins/store card, and
+then we can use that mixin here saying
+
+00:05:43.160 --> 00:05:51.400 line:100% position:50% align:middle
+store card, pass the A store. Does that
+work? So again, store card is what we used
+
+00:05:51.400 --> 00:05:56.060 line:100% position:50% align:middle
+on the home page, so we could show our
+each of our stores. Refresh.
+
+00:05:56.060 --> 00:06:01.547 line:100% position:50% align:middle
+Beautiful. And now I should be able to
+flip from one tag page to another, and
+
+00:06:01.547 --> 00:06:05.760 line:100% position:50% align:middle
+it's going to immediately filter all of
+those items for us. Now that's not totally
+
+00:06:05.760 --> 00:06:10.740 line:100% position:50% align:middle
+perfect, because if you go to tags page
+now, we don't see anything, because there
+
+00:06:10.740 --> 00:06:16.380 line:100% position:50% align:middle
+is no tag specified. So what we can do is
+show all of the stores on this tag page
+
+00:06:16.380 --> 00:06:19.770 line:100% position:50% align:middle
+and then when you click through to a
+specific tag page, like family friendly,
+
+00:06:19.770 --> 00:06:24.510 line:100% position:50% align:middle
+we'll then filter off for each of those.
+So that's what we need to do now.
+
+00:06:24.510 --> 00:06:28.635 line:100% position:50% align:middle
+We take this tag here, and we're going to
+take it out, and above here, we're
+
+00:06:28.635 --> 00:06:34.420 line:100% position:50% align:middle
+going to say const tag query is equal to,
+it's either going to be the tag or
+
+00:06:34.420 --> 00:06:40.540 line:100% position:50% align:middle
+it's going to be a property that's called
+exists true. What this will do is if there
+
+00:06:40.540 --> 00:06:45.535 line:100% position:50% align:middle
+is no tag, it's just going to fall back
+to the second query which is, just give
+
+00:06:45.535 --> 00:06:51.320 line:100% position:50% align:middle
+me any store that has a tag property on it
+and then it will show us every single
+
+00:06:51.320 --> 00:06:56.770 line:100% position:50% align:middle
+store that has at least one tag on it. And
+we take this tag query variable and pass
+
+00:06:56.770 --> 00:07:02.460 line:100% position:50% align:middle
+it in here. So, whew! Let's see what we've
+got here. Refresh. There we go.
+
+00:07:02.460 --> 00:07:06.570 line:100% position:50% align:middle
+So now we're showing absolutely everything
+that has a tag, then we can filter for
+
+00:07:06.570 --> 00:07:09.553 line:100% position:50% align:middle
+specific ones as we need it there.
+
+00:07:10.750 --> 00:07:13.800 line:100% position:50% align:middle
+♪ [music] ♪

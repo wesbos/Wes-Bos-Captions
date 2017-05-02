@@ -1,0 +1,547 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.000 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:08.350 --> 00:00:12.720 line:100% position:50% align:middle
+Let's talk about one of the fundamental
+concepts behind Express,
+
+00:00:12.720 --> 00:00:16.840 line:100% position:50% align:middle
+it is routing. And this will happen in any
+application that you're working on.
+
+00:00:16.840 --> 00:00:21.850 line:100% position:50% align:middle
+Essentially, when people go to a URL, you
+need to do stuff. You need to query the
+
+00:00:21.850 --> 00:00:26.210 line:100% position:50% align:middle
+database, you need to filter through a
+list of stores, you need to modify that
+
+00:00:26.210 --> 00:00:31.030 line:100% position:50% align:middle
+data in some way, and finally, once you
+have all of the data that you want to send
+
+00:00:31.030 --> 00:00:34.910 line:100% position:50% align:middle
+to the user, you send it to them. So the
+way that the router works in Express is
+
+00:00:34.910 --> 00:00:39.180 line:100% position:50% align:middle
+that you...first you import Express, then
+you grab the router off of Express,
+
+00:00:39.180 --> 00:00:42.840 line:100% position:50% align:middle
+that's how we've done it here. We'll talk
+more about these importing and exporting
+
+00:00:42.840 --> 00:00:46.700 line:100% position:50% align:middle
+in future videos. And then you go ahead
+and define all of your routes. Now,
+
+00:00:46.700 --> 00:00:51.860 line:100% position:50% align:middle
+I'm defining all of our routes in
+index.js, and you can see that we're using
+
+00:00:51.860 --> 00:00:57.650 line:100% position:50% align:middle
+those routes because if we go and look for
+index, here we go, const routes = require,
+
+00:00:57.650 --> 00:01:02.630 line:100% position:50% align:middle
+here what we're doing is we're importing
+our routes from this file here and we're
+
+00:01:02.630 --> 00:01:07.380 line:100% position:50% align:middle
+exporting the router from there. And then
+we go ahead and tell Express to use that
+
+00:01:07.380 --> 00:01:08.555 line:100% position:50% align:middle
+right here.
+
+00:01:08.555 --> 00:01:14.881 line:100% position:50% align:middle
+So we say, anytime someone goes
+to "/anything" then we will hit this route
+
+00:01:14.881 --> 00:01:20.690 line:100% position:50% align:middle
+file and the route file here is going to
+handle every single URL hit that we get.
+
+00:01:20.690 --> 00:01:24.660 line:100% position:50% align:middle
+Now you could have multiple route handlers
+here, you could have a second one.
+
+00:01:24.660 --> 00:01:26.747 line:100% position:50% align:middle
+Sometimes I'll do a
+second file for admin
+
+00:01:26.747 --> 00:01:29.788 line:100% position:50% align:middle
+and I'll make that like
+admin routes, and then any
+
+00:01:29.788 --> 00:01:35.240 line:100% position:50% align:middle
+routes that go to "/admin" "/anything"
+we'll handle in that separate router. But
+
+00:01:35.240 --> 00:01:39.280 line:100% position:50% align:middle
+here, we're going to do it all in one file
+here. And this is how the router works,
+
+00:01:39.280 --> 00:01:44.110 line:100% position:50% align:middle
+you get the URL and then you have a
+callback function that will run whenever
+
+00:01:44.110 --> 00:01:49.080 line:100% position:50% align:middle
+somebody visits that specific URL. That
+function is going to give you three
+
+00:01:49.080 --> 00:01:54.180 line:100% position:50% align:middle
+things. The request, which is an object
+full of information that's coming in,
+
+00:01:54.180 --> 00:01:59.530 line:100% position:50% align:middle
+you have a response, which is an object
+full of methods for sending data back to
+
+00:01:59.530 --> 00:02:03.140 line:100% position:50% align:middle
+the user. And then we have a third one
+that's going to be called next and we're
+
+00:02:03.140 --> 00:02:06.790 line:100% position:50% align:middle
+going to review that in our
+middleware file because it's possible that
+
+00:02:06.790 --> 00:02:10.440 line:100% position:50% align:middle
+you do not want to send data back at this
+route or you just want to sort of pass it
+
+00:02:10.440 --> 00:02:12.910 line:100% position:50% align:middle
+off to somebody else to handle.
+
+00:02:12.910 --> 00:02:15.240 line:100% position:50% align:middle
+So here we have our function here. If
+you've never seen this,
+
+00:02:15.240 --> 00:02:19.560 line:100% position:50% align:middle
+this is just a normal function but I've
+swapped it out with an arrow function. But
+
+00:02:19.560 --> 00:02:24.070 line:100% position:50% align:middle
+if you've taken the ES6 class, you know
+all about that. And then we immediately
+
+00:02:24.070 --> 00:02:27.600 line:100% position:50% align:middle
+just send back, "Hey, it works." But we
+can do a lot more work in here,
+
+00:02:27.600 --> 00:02:29.176 line:100% position:50% align:middle
+you can console.log, "Hey!!!"
+
+00:02:29.176 --> 00:02:32.804 line:100% position:50% align:middle
+Now, when you refresh this,
+it's still the same, but if we were to go
+
+00:02:32.804 --> 00:02:36.560 line:100% position:50% align:middle
+to our terminal here, you'll see that we
+have console.logged, "Hey!!!"
+
+00:02:36.560 --> 00:02:40.610 line:100% position:50% align:middle
+So that means that anytime you
+console.log inside of an Express
+
+00:02:40.610 --> 00:02:44.720 line:100% position:50% align:middle
+application, you're going to see
+it in your actual terminal here,
+
+00:02:44.720 --> 00:02:46.070 line:100% position:50% align:middle
+so we see, "Hey!!!"
+
+00:02:46.070 --> 00:02:51.422 line:100% position:50% align:middle
+Now, what can we do with
+this? Obviously, we can do "request.send",
+
+00:02:51.422 --> 00:02:56.120 line:100% position:50% align:middle
+send is one of the methods that we can
+possibly use to send data.
+
+00:02:56.120 --> 00:03:00.580 line:100% position:50% align:middle
+And we can also use it to send JSON back,
+so let's say you have an object,
+
+00:03:00.580 --> 00:03:04.177 line:100% position:50% align:middle
+so "const wes =" you have
+a name, it's Wes,
+
+00:03:04.177 --> 00:03:09.709 line:100% position:50% align:middle
+age is 100, cool is a
+billion of true. And I want to send
+
+00:03:09.709 --> 00:03:15.450 line:100% position:50% align:middle
+that data back as JSON because maybe we're
+making a cool API. So what we do is we
+
+00:03:15.450 --> 00:03:19.465 line:100% position:50% align:middle
+take that variable, we comment out this
+request.send. So make sure that you're
+
+00:03:19.465 --> 00:03:21.981 line:100% position:50% align:middle
+never trying to send data
+more than once. So if I
+
+00:03:21.981 --> 00:03:23.950 line:100% position:50% align:middle
+was going to say request
+and the method we
+
+00:03:23.950 --> 00:03:30.000 line:100% position:50% align:middle
+want here is JSON, res.json(wes). Now
+we're trying to send data twice and you're
+
+00:03:30.000 --> 00:03:33.990 line:100% position:50% align:middle
+going to get an error that says, "Headers
+are already sent," because you've already
+
+00:03:33.990 --> 00:03:34.785 line:100% position:50% align:middle
+sent the request.
+
+00:03:34.785 --> 00:03:36.993 line:100% position:50% align:middle
+So if you ever get that error,
+that's because you've tried to send data
+
+00:03:36.993 --> 00:03:41.760 line:100% position:50% align:middle
+to the browser twice. So take that
+one out. We're going to JSON that. And
+
+00:03:41.760 --> 00:03:46.600 line:100% position:50% align:middle
+now when you refresh, you'll see that the
+browser has sent us back and it's
+
+00:03:46.600 --> 00:03:49.957 line:100% position:50% align:middle
+populated all the correct headers and
+everything and it's formatted it as
+
+00:03:49.957 --> 00:03:51.141 line:100% position:50% align:middle
+actual JSON.
+
+00:03:51.141 --> 00:03:56.046 line:100% position:50% align:middle
+I'm using a little Chrome plugin here,
+JSON Formatter, to highlight my JavaScript
+
+00:03:56.260 --> 00:04:01.070 line:100% position:50% align:middle
+but it has been pushed as JSON, which
+we're going to do a lot in this course,
+
+00:04:01.070 --> 00:04:04.820 line:100% position:50% align:middle
+we're going to be able to push out data as
+JSON and then on the client-side we're
+
+00:04:04.820 --> 00:04:08.282 line:100% position:50% align:middle
+going to be able to use AJAX
+to request that actual data.
+
+00:04:08.282 --> 00:04:14.420 line:100% position:50% align:middle
+So request.send and request.json are the
+two most basic ones, but we can also do a
+
+00:04:14.420 --> 00:04:20.660 line:100% position:50% align:middle
+little bit more here where we can pull in
+data from the URL. So let's say we are on
+
+00:04:20.660 --> 00:04:28.010 line:100% position:50% align:middle
+this URL here and it had some query
+parameters like name=wes, ampersand,
+
+00:04:28.010 --> 00:04:34.520 line:100% position:50% align:middle
+age=100, and I [inaudible] to hit Enter.
+How do I get the data that's in the URL?
+
+00:04:34.520 --> 00:04:40.110 line:100% position:50% align:middle
+Well, that's part of the request, so
+we can get that data by...let's comment
+
+00:04:40.110 --> 00:04:41.036 line:100% position:50% align:middle
+out this stuff again.
+
+00:04:41.036 --> 00:04:45.703 line:100% position:50% align:middle
+We could say request a
+response.send, and the data is available
+
+00:04:45.703 --> 00:04:53.760 line:100% position:50% align:middle
+on "request.query.", and then the actual
+parameter that we want. So, a name.
+
+00:04:53.760 --> 00:04:58.320 line:100% position:50% align:middle
+So let's see if we can get that, there we
+go. So now because the name is Wes, it's
+
+00:04:58.320 --> 00:05:03.271 line:100% position:50% align:middle
+going to send Wes, and if I change that to
+Kate, it's obviously going to change
+
+00:05:03.271 --> 00:05:04.243 line:100% position:50% align:middle
+to Kate.
+
+00:05:04.243 --> 00:05:09.080 line:100% position:50% align:middle
+You could also take the response.json
+and simply just send back the data
+
+00:05:09.080 --> 00:05:13.790 line:100% position:50% align:middle
+immediately. So "request.query" is an
+object full of all of the query parameters
+
+00:05:13.790 --> 00:05:19.430 line:100% position:50% align:middle
+and we just passed that directly to JSON.
+So now any of the data that gets passed is
+
+00:05:19.430 --> 00:05:28.003 line:100% position:50% align:middle
+automatically just echoed back in JSON,
+age=100, and cool=true. And you see that
+
+00:05:28.003 --> 00:05:33.367 line:100% position:50% align:middle
+we're just echoing the data back to it.
+So that is a "request.query".
+
+00:05:33.367 --> 00:05:36.595 line:100% position:50% align:middle
+That gives us all of the data,
+and the reason why we have
+
+00:05:36.595 --> 00:05:43.462 line:100% position:50% align:middle
+this query property on a request, is if
+we head back to app.js, I said that we
+
+00:05:43.462 --> 00:05:48.780 line:100% position:50% align:middle
+would sort of like go back to this app.js
+whenever we're using. You'll see online
+
+00:05:48.780 --> 00:05:56.050 line:100% position:50% align:middle
+27, 28-ish, you'll see bodyParser.json
+and bodyParser.url in the code.
+
+00:05:56.050 --> 00:05:59.300 line:100% position:50% align:middle
+So what this is allowing us to do, this
+is a concept called middleware which we're
+
+00:05:59.300 --> 00:06:03.780 line:100% position:50% align:middle
+going to run into in just a couple of
+videos, and what that does is before we
+
+00:06:03.780 --> 00:06:08.362 line:100% position:50% align:middle
+even hit these routes right here, what
+Express is going to do, is it's going to
+
+00:06:08.362 --> 00:06:11.138 line:100% position:50% align:middle
+check the URL and it's
+going to check if anyone
+
+00:06:11.138 --> 00:06:13.658 line:100% position:50% align:middle
+has posted data from
+like a form element
+
+00:06:13.658 --> 00:06:18.940 line:100% position:50% align:middle
+or something like that, and it's going to
+sort of put all the data in the request so
+
+00:06:18.940 --> 00:06:24.780 line:100% position:50% align:middle
+we can easily access it via saying things
+like request.query or request.body. Or
+
+00:06:24.780 --> 00:06:29.280 line:100% position:50% align:middle
+let's talk about a third one, which is
+request.params. Let's make a new route
+
+00:06:29.280 --> 00:06:35.090 line:100% position:50% align:middle
+here, router.get, and let's just say
+reverse/. Now, I want to make
+
+00:06:35.090 --> 00:06:40.410 line:100% position:50% align:middle
+an end point here where you hit a URL and
+then you say "reverse/Wes" and it will
+
+00:06:40.410 --> 00:06:46.960 line:100% position:50% align:middle
+give you seW, it will reverse whatever
+your name is. So how do we put variables
+
+00:06:46.960 --> 00:06:51.790 line:100% position:50% align:middle
+in a route? A way you do that is you put a
+colon and then you put a name, and that's
+
+00:06:51.790 --> 00:06:56.640 line:100% position:50% align:middle
+going to give us a name variable on each
+of our requests. So we can run a function
+
+00:06:56.640 --> 00:07:01.200 line:100% position:50% align:middle
+here, so we have our request, we have a
+response, and from that, let's just test
+
+00:07:01.200 --> 00:07:04.660 line:100% position:50% align:middle
+that it's working. So we'll
+say "response.send". It works.
+
+00:07:04.660 --> 00:07:15.030 line:100% position:50% align:middle
+Now we'll go to our URL here and our route
+was /reverse/Wes, and it says it works,
+
+00:07:15.030 --> 00:07:20.580 line:100% position:50% align:middle
+good. Now, how do I access this part of
+the URL, Wes? Well, that's stored in the
+
+00:07:20.580 --> 00:07:24.930 line:100% position:50% align:middle
+request, obviously, because, again, all of
+the data about our request is stored in
+
+00:07:24.930 --> 00:07:29.050 line:100% position:50% align:middle
+the request variable and we can just try
+to send it back immediately.
+
+00:07:29.050 --> 00:07:33.800 line:100% position:50% align:middle
+So res.params, because that
+will be an object containing all of it.
+
+00:07:33.800 --> 00:07:38.680 line:100% position:50% align:middle
+You could have multiple, name,
+last name, and cool, etc., etc., but
+
+00:07:38.680 --> 00:07:40.847 line:100% position:50% align:middle
+we just have name,
+request.params.name.
+
+00:07:40.847 --> 00:07:42.572 line:100% position:50% align:middle
+Let's see if we can
+send that back.
+
+00:07:45.231 --> 00:07:47.149 line:100% position:50% align:middle
+We've got a bit of an
+error here, so if you ever
+
+00:07:47.149 --> 00:07:53.870 line:100% position:50% align:middle
+see this like it's not working, what that
+means is that your Express application is
+
+00:07:53.870 --> 00:07:58.930 line:100% position:50% align:middle
+in the process of restarting. So if you
+try to refresh too quickly, it means it
+
+00:07:58.930 --> 00:08:00.482 line:100% position:50% align:middle
+hasn't restarted totally.
+
+00:08:00.482 --> 00:08:03.397 line:100% position:50% align:middle
+But if it doesn't
+restart ever, you have to go back to your
+
+00:08:03.397 --> 00:08:08.157 line:100% position:50% align:middle
+console here and see maybe there was a
+syntax error or something like that, and
+
+00:08:08.157 --> 00:08:10.441 line:100% position:50% align:middle
+it will give you some
+information about that
+
+00:08:10.441 --> 00:08:12.730 line:100% position:50% align:middle
+happening here.
+So, refresh, it will tell
+
+00:08:12.730 --> 00:08:14.829 line:100% position:50% align:middle
+me Wes, I'll give it kait.
+
+00:08:14.829 --> 00:08:18.748 line:100% position:50% align:middle
+If I give it racecar,
+you'll see that it's all working. Cool.
+
+00:08:18.748 --> 00:08:24.370 line:100% position:50% align:middle
+So what we could do is make a little end
+point here that would simply take in a
+
+00:08:24.370 --> 00:08:30.350 line:100% position:50% align:middle
+name and reverse it. So it's a const
+reverse =, and we're going to
+
+00:08:30.350 --> 00:08:31.308 line:100% position:50% align:middle
+split that string.
+
+00:08:31.308 --> 00:08:36.028 line:100% position:50% align:middle
+So req.params.name, we're going
+to make that into an array. If you're
+
+00:08:36.028 --> 00:08:40.895 line:100% position:50% align:middle
+wondering what this is, check my ES6
+videos. We are going to reverse that array
+
+00:08:40.895 --> 00:08:46.600 line:100% position:50% align:middle
+and then join it back together. So then we
+take the reverse that we have here and
+
+00:08:46.600 --> 00:08:53.130 line:100% position:50% align:middle
+just send it,. So now if I type in Wes,
+do we get seW? Yes, we do.
+
+00:08:53.130 --> 00:09:02.129 line:100% position:50% align:middle
+Type in kait. Tiak. I love you. uoy evol
+I. Or racecar, it should still say
+
+00:09:02.129 --> 00:09:03.368 line:100% position:50% align:middle
+racecar.
+
+00:09:03.368 --> 00:09:07.720 line:100% position:50% align:middle
+Good. So we learned a couple things here.
+Request has all the information,
+
+00:09:07.720 --> 00:09:13.690 line:100% position:50% align:middle
+response has all the methods for
+sending data back, and we have
+
+00:09:13.690 --> 00:09:16.970 line:100% position:50% align:middle
+request.query to get the query
+parameters, we have something called
+
+00:09:16.970 --> 00:09:21.570 line:100% position:50% align:middle
+request.body, which we'll be using for
+posted parameters, and then we have a
+
+00:09:21.570 --> 00:09:24.790 line:100% position:50% align:middle
+request.params in order to access
+the things that are in the URL.
+
+00:09:24.790 --> 00:09:30.420 line:100% position:50% align:middle
+All of the stuff is in the Express
+documentation, so if you need to look it
+
+00:09:30.420 --> 00:09:34.260 line:100% position:50% align:middle
+up or you want to see what else there is,
+go to the Express docs. In the sidebar,
+
+00:09:34.260 --> 00:09:37.963 line:100% position:50% align:middle
+you're going to see the request, the
+response, and you can open that up.
+
+00:09:37.963 --> 00:09:42.030 line:100% position:50% align:middle
+You can see all the information, see, here
+we go, they have a param called ID.
+
+00:09:42.030 --> 00:09:46.360 line:100% position:50% align:middle
+request.params.id. You can see, go
+to response and you can see all the
+
+00:09:46.360 --> 00:09:52.190 line:100% position:50% align:middle
+different methods that live on response,
+you know, open it up, here we go,
+
+00:09:52.190 --> 00:09:57.440 line:100% position:50% align:middle
+so request.json, jsonp, links, location,
+redirect if you want to redirect someone
+
+00:09:57.440 --> 00:10:02.600 line:100% position:50% align:middle
+to a new page. Render, that's coming up in
+the next video. You could send a file,
+
+00:10:02.600 --> 00:10:06.660 line:100% position:50% align:middle
+you could set a status, etc., etc. There's
+all kinds of good stuff here, but in
+
+00:10:06.660 --> 00:10:11.200 line:100% position:50% align:middle
+general, you're going to be using
+response.json and something called
+
+00:10:11.200 --> 00:10:14.225 line:100% position:50% align:middle
+response.render, which we're going to
+hit in the next video.
+
+00:10:14.225 --> 00:10:16.542 line:100% position:50% align:middle
+♪ [music] ♪

@@ -1,0 +1,483 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:02.893 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.380 --> 00:00:15.430 line:100% position:50% align:middle
+All of the data for our application is
+going to be stored in MongoDB.
+
+00:00:15.430 --> 00:00:19.090 line:100% position:50% align:middle
+Which is a type of database, fairly
+popular in the node community.
+
+00:00:19.090 --> 00:00:22.900 line:100% position:50% align:middle
+Now, in order to get a database up
+and running, we have two options:
+
+00:00:22.900 --> 00:00:30.070 line:100% position:50% align:middle
+First, we can use a database as a service,
+as a DBaaS, or we can use MongoDB and
+
+00:00:30.070 --> 00:00:33.720 line:100% position:50% align:middle
+host it ourselves. So, what I'm
+going to show you to do first is,
+
+00:00:33.720 --> 00:00:38.210 line:100% position:50% align:middle
+we're going to use a hosted service.
+Then I will show you how you can run it
+
+00:00:38.210 --> 00:00:42.260 line:100% position:50% align:middle
+yourself. So, I'm a big fan, and this is
+what I use for all of my own database
+
+00:00:42.260 --> 00:00:48.060 line:100% position:50% align:middle
+hosting. It's called mLab, mlab.com. And
+they provide the database hosting for you,
+
+00:00:48.060 --> 00:00:51.250 line:100% position:50% align:middle
+and they have a really good free plan,
+which is when you're just working on
+
+00:00:51.250 --> 00:00:56.980 line:100% position:50% align:middle
+development, that's exactly what you need.
+So go to mlab.com, and create an account,
+
+00:00:56.980 --> 00:01:00.730 line:100% position:50% align:middle
+and there's also, I should just tell you,
+that MongoDB themselves has a new
+
+00:01:00.730 --> 00:01:05.440 line:100% position:50% align:middle
+service called Atlas, which will allow
+you to build a free database as well.
+
+00:01:05.440 --> 00:01:09.160 line:100% position:50% align:middle
+You don't need to put a credit card in
+or anything like that. It's brand new,
+
+00:01:09.160 --> 00:01:13.100 line:100% position:50% align:middle
+it's experiencing some outage. It's been a
+little slow for me, so I'm not going to be
+
+00:01:13.100 --> 00:01:17.020 line:100% position:50% align:middle
+showing you how to do that, but I bet in
+the next couple of months it's going to
+
+00:01:17.020 --> 00:01:21.300 line:100% position:50% align:middle
+show up and look pretty good. So we're
+going to go over to MongoDB deployments.
+
+00:01:21.300 --> 00:01:26.680 line:100% position:50% align:middle
+We're going to create a new one. You can
+pick out where you'd like to store it.
+
+00:01:26.680 --> 00:01:30.240 line:100% position:50% align:middle
+I'm going to pick AWS, East one, that's
+kind of where I host a lot of my
+
+00:01:30.240 --> 00:01:37.420 line:100% position:50% align:middle
+stuff. You've got to click on single
+node and scroll all the way down to
+
+00:01:37.420 --> 00:01:43.620 line:100% position:50% align:middle
+where it says Sandbox Shared 0.5. Then you
+need to pick the version of MongoDB that
+
+00:01:43.620 --> 00:01:49.330 line:100% position:50% align:middle
+you're going to be running on. 3.2.x is
+just fine as long as you're on at least
+
+00:01:49.330 --> 00:01:52.370 line:100% position:50% align:middle
+that. We're going to be using
+some stuff that uses that today.
+
+00:01:52.370 --> 00:01:57.260 line:100% position:50% align:middle
+And then the database name, we're
+going to call that dang_thats_delicious.
+
+00:01:57.260 --> 00:02:02.150 line:100% position:50% align:middle
+That will then create our MongoDB
+deployment and it's going to
+
+00:02:02.150 --> 00:02:07.900 line:100% position:50% align:middle
+take just a second to set up. Once
+that's set up, you can click on through to
+
+00:02:07.900 --> 00:02:13.370 line:100% position:50% align:middle
+it, and we need to figure out what our
+connection string is. So, what I want you
+
+00:02:13.370 --> 00:02:17.250 line:100% position:50% align:middle
+to do is open up your files here,
+and you'll see that we have this
+
+00:02:17.250 --> 00:02:26.040 line:100% position:50% align:middle
+variables.m.sample. I want to open
+that up and rename it variables.env.
+
+00:02:26.040 --> 00:02:31.920 line:100% position:50% align:middle
+Take the .sample off of that, and this
+database, this is where we need
+
+00:02:31.920 --> 00:02:36.990 line:100% position:50% align:middle
+to specify the connection to
+our MongoDB. So we have
+
+00:02:36.990 --> 00:02:44.451 line:100% position:50% align:middle
+mongodb://user:password@host.com/port
+/database, and that's actually what they
+
+00:02:44.451 --> 00:02:49.704 line:100% position:50% align:middle
+provide with us here. So go ahead and copy
+that out and put that connection string in
+
+00:02:49.704 --> 00:02:53.500 line:100% position:50% align:middle
+right there. Now, that's not it so far. We
+also need to put in the username and the
+
+00:02:53.500 --> 00:02:58.460 line:100% position:50% align:middle
+password for our database. So,
+it's really important that you create it.
+
+00:02:58.460 --> 00:03:02.310 line:100% position:50% align:middle
+If you host your own MongoDB, some
+of them will not give you by default.
+
+00:03:02.310 --> 00:03:05.940 line:100% position:50% align:middle
+It will not have a username and password
+which is a huge security flaw.
+
+00:03:05.940 --> 00:03:10.160 line:100% position:50% align:middle
+So you want to make sure that you always
+create a username and a password for it.
+
+00:03:10.160 --> 00:03:14.090 line:100% position:50% align:middle
+MongoDB on mLab by default is going to
+have it. So we're going to go over to
+
+00:03:14.090 --> 00:03:19.520 line:100% position:50% align:middle
+users. We're going to add a database
+user. We're going to call it dang.
+
+00:03:19.520 --> 00:03:23.350 line:100% position:50% align:middle
+I'm going to make the password dang, and
+I'm going to convert it as dang.
+
+00:03:23.350 --> 00:03:26.900 line:100% position:50% align:middle
+Obviously make yours more secure than
+this, but that's what I'm working with
+
+00:03:26.900 --> 00:03:32.140 line:100% position:50% align:middle
+right now. I'm going to create and we're
+going to go back to our thing here,
+
+00:03:32.200 --> 00:03:35.910 line:100% position:50% align:middle
+I'm going to take out, including the
+angle brackets here. The username is
+
+00:03:35.910 --> 00:03:40.450 line:100% position:50% align:middle
+going to be dang, a colon and then the
+password is going to be dang. And that's
+
+00:03:40.450 --> 00:03:44.560 line:100% position:50% align:middle
+going to allow us connect to it. The way
+that we can tell if this has worked is
+
+00:03:44.560 --> 00:03:48.940 line:100% position:50% align:middle
+we're going to try to connect to our
+database with what's called a MongoDB
+
+00:03:48.940 --> 00:03:53.420 line:100% position:50% align:middle
+GUI. And what a GUIwill allow us to
+do is to log in to the database and
+
+00:03:53.420 --> 00:03:57.380 line:100% position:50% align:middle
+visualize all the data that we have.
+Often, a GUI will allow you to update,
+
+00:03:57.380 --> 00:04:01.380 line:100% position:50% align:middle
+create new data, edit existing data.
+If you've ever used something
+
+00:04:01.380 --> 00:04:06.440 line:100% position:50% align:middle
+like PHPMyAdmin for mysql database. This
+is sort of similar. There's all kinds of
+
+00:04:06.500 --> 00:04:10.660 line:100% position:50% align:middle
+GUIs out there, but we're going to be
+using one called MongoDB Compass.
+
+00:04:10.660 --> 00:04:14.670 line:100% position:50% align:middle
+And if you do a quick Google search for a
+MongoDB Compass, you go ahead and
+
+00:04:14.670 --> 00:04:18.910 line:100% position:50% align:middle
+download, I suggest you go on the latest
+beta. What ever version is current at the
+
+00:04:18.910 --> 00:04:22.700 line:100% position:50% align:middle
+time of you watching this, and then
+select whichever platform you're on,
+
+00:04:22.700 --> 00:04:28.020 line:100% position:50% align:middle
+download it, install it to your computer.
+Now, I want you to go ahead and copy this
+
+00:04:28.020 --> 00:04:31.220 line:100% position:50% align:middle
+whole query string that we have here
+MongoDB, blah, blah, blah, blah.
+
+00:04:31.300 --> 00:04:36.340 line:100% position:50% align:middle
+Go over to your MongoDB Compass
+beta, open it up. It's going to
+
+00:04:36.340 --> 00:04:42.290 line:100% position:50% align:middle
+automatically detect that I had copied it.
+I'm going to say Yes and what that will do
+
+00:04:42.290 --> 00:04:46.860 line:100% position:50% align:middle
+is it's going to automatically populate
+the hostname, the port, the way that we're
+
+00:04:46.860 --> 00:04:49.830 line:100% position:50% align:middle
+connecting, in this case, we're using
+a username and a password,
+
+00:04:49.830 --> 00:04:53.590 line:100% position:50% align:middle
+the database that we wish to connect to,
+and that's all that we got.
+
+00:04:53.590 --> 00:04:58.400 line:100% position:50% align:middle
+So go ahead and click on Connect, and if
+that has worked, then you will see that we
+
+00:04:58.400 --> 00:05:02.732 line:100% position:50% align:middle
+have connected to our dang-thats-delicious
+database, and that's all we're going to
+
+00:05:02.732 --> 00:05:06.110 line:100% position:50% align:middle
+see for now. But we're going to
+come back to this GUI when we
+
+00:05:06.110 --> 00:05:10.020 line:100% position:50% align:middle
+have created different data in here, where
+we're going to be able to visualize what
+
+00:05:10.020 --> 00:05:14.160 line:100% position:50% align:middle
+we have. So that's the very easiest
+way to get set up with MongoDB.
+
+00:05:14.160 --> 00:05:18.890 line:100% position:50% align:middle
+If you just want to keep going with this
+tutorial, stop right here and jump to the
+
+00:05:18.890 --> 00:05:21.680 line:100% position:50% align:middle
+next video. Now, if you're going to be
+doing this tutorial on an airplane,
+
+00:05:21.680 --> 00:05:26.060 line:100% position:50% align:middle
+or a train, or somewhere that just does
+not have an internet connection,
+
+00:05:26.060 --> 00:05:30.190 line:100% position:50% align:middle
+what we're going to need to do is install
+MongoDB on your actual computer.
+
+00:05:30.190 --> 00:05:34.920 line:100% position:50% align:middle
+So I'm on a Mac here and the
+easiest way to install on a Mac is first
+
+00:05:34.920 --> 00:05:38.050 line:100% position:50% align:middle
+you need something called Homebrew. If
+you don't have that go take a look at
+
+00:05:38.050 --> 00:05:43.390 line:100% position:50% align:middle
+that. There's tons of tutorials out there,
+and you simply just type brew update to go
+
+00:05:43.390 --> 00:05:48.750 line:100% position:50% align:middle
+and grab the latest definitions. If you're
+already up to date it will say up to date,
+
+00:05:48.750 --> 00:05:54.320 line:100% position:50% align:middle
+and then you do brew install MongoDB, and
+what that will do is it will go off an
+
+00:05:54.320 --> 00:05:58.020 line:100% position:50% align:middle
+install all of the things that you
+need. You can tell if you have it
+
+00:05:58.020 --> 00:06:03.750 line:100% position:50% align:middle
+installed properly when
+you type mongo - - version,
+
+00:06:03.750 --> 00:06:09.691 line:100% position:50% align:middle
+and when you hit that you're going to see,
+you should be on at least version 3.4 or I
+
+00:06:09.691 --> 00:06:14.540 line:100% position:50% align:middle
+guess we are on 3.2 as well. Those
+versions are just fine for us.
+
+00:06:14.540 --> 00:06:19.410 line:100% position:50% align:middle
+Now how do we actually start up
+MongoDB when we are connected?
+
+00:06:19.410 --> 00:06:23.850 line:100% position:50% align:middle
+You can get it started by typing mongod,
+but you probably will need to put a sudo
+
+00:06:23.850 --> 00:06:27.510 line:100% position:50% align:middle
+in front of it if you're on an OS X. When
+you hit enter it might ask you for your
+
+00:06:27.510 --> 00:06:31.610 line:100% position:50% align:middle
+password, but this will have it up and
+running. There's other commands
+
+00:06:31.610 --> 00:06:35.840 line:100% position:50% align:middle
+you can use to sort of open it
+and run it in a background task,
+
+00:06:35.840 --> 00:06:40.350 line:100% position:50% align:middle
+but I prefer to just to leave it open in a
+tab running, open up a fresh tab and have
+
+00:06:40.350 --> 00:06:44.680 line:100% position:50% align:middle
+MongoDB working. Now, can we test that
+that works? We'll go back to our MongoDB
+
+00:06:44.800 --> 00:06:48.310 line:100% position:50% align:middle
+Compass here. I don't want to connect to
+the string that's in my copy paste,
+
+00:06:48.310 --> 00:06:53.350 line:100% position:50% align:middle
+but here, we want to connect to the local
+host. By default, the port is 27017.
+
+00:06:53.350 --> 00:06:58.220 line:100% position:50% align:middle
+There's no authentication locally, so
+you can leave it on all of these here.
+
+00:06:58.220 --> 00:07:01.620 line:100% position:50% align:middle
+Go ahead and click connect and
+you're going to see, In this case, it's
+
+00:07:01.620 --> 00:07:04.600 line:100% position:50% align:middle
+going to show me all the different
+databases that I have locally.
+
+00:07:04.600 --> 00:07:07.910 line:100% position:50% align:middle
+You see that I have dang_thats_delicious
+just from one that I've done before.
+
+00:07:07.910 --> 00:07:11.100 line:100% position:50% align:middle
+We're going to go ahead and create our own
+database here, but you'll know your local
+
+00:07:11.100 --> 00:07:14.590 line:100% position:50% align:middle
+host is connected and then we'll be
+able to hear... This is kind of a look at
+
+00:07:14.590 --> 00:07:17.946 line:100% position:50% align:middle
+how it looks. We're going to have
+information about the authors. We're
+
+00:07:17.946 --> 00:07:21.420 line:100% position:50% align:middle
+going to have descriptions. We're going to
+have geolocation data that gets stored.
+
+00:07:21.420 --> 00:07:25.480 line:100% position:50% align:middle
+You can see all around the city,
+these dots are popping up. Names,
+
+00:07:25.480 --> 00:07:29.280 line:100% position:50% align:middle
+images, etc, and I can look at the
+documents, then you'll notice that this
+
+00:07:29.280 --> 00:07:33.390 line:100% position:50% align:middle
+looks just exactly like a javascript
+object. Which is exactly how we're
+
+00:07:33.390 --> 00:07:43.090 line:100% position:50% align:middle
+going to be working with MongoDB. If
+you are on Windows, let me go over to
+
+00:07:43.090 --> 00:07:47.050 line:100% position:50% align:middle
+mongodb.com, and click on download
+in the top right-hand corner.
+
+00:07:47.050 --> 00:07:50.750 line:100% position:50% align:middle
+Select the latest version for your
+current version of Windows,
+
+00:07:50.750 --> 00:07:53.330 line:100% position:50% align:middle
+and download that. It's going
+to ask you for some information,
+
+00:07:53.330 --> 00:07:56.470 line:100% position:50% align:middle
+but it's not necessary to put it in,
+because you'll see it's already
+
+00:07:56.470 --> 00:08:01.960 line:100% position:50% align:middle
+downloading. Once that download
+has finished, open it up,
+
+00:08:01.960 --> 00:08:05.955 line:100% position:50% align:middle
+go through next, next, next. It's just
+going to ask you which version you'd like
+
+00:08:05.955 --> 00:08:20.040 line:100% position:50% align:middle
+to install, and click on complete. Once
+it's installed, go to C:, Program Files,
+
+00:08:20.040 --> 00:08:23.151 line:100% position:50% align:middle
+MongoDB, Server, the current version and
+then bin. In there you're going to see all
+
+00:08:23.151 --> 00:08:27.000 line:100% position:50% align:middle
+the applications that we need, and the
+one we're looking for is mongod,
+
+00:08:27.000 --> 00:08:31.820 line:100% position:50% align:middle
+M-O-N-G-O-D, and that's going to
+run the database locally on our
+
+00:08:31.820 --> 00:08:35.780 line:100% position:50% align:middle
+computer. Now, to run it, open up your
+command and move into that folder,
+
+00:08:35.780 --> 00:08:43.440 line:100% position:50% align:middle
+So, here I'm going to go into Program
+Files, into MongoDB, then into the Server
+
+00:08:43.440 --> 00:08:50.900 line:100% position:50% align:middle
+folder, current version, and then bin.
+And to run it, we're going to type simply
+
+00:08:50.900 --> 00:08:55.722 line:100% position:50% align:middle
+M-O-N-G-O-D. Now, when you get this,
+you might get an error that says data
+
+00:08:55.722 --> 00:09:01.230 line:100% position:50% align:middle
+directory, data db not found, terminating,
+and that's because MongoDB needs a folder
+
+00:09:01.230 --> 00:09:08.970 line:100% position:50% align:middle
+on your C:/Data and a folder called db, in
+order to actually store the data that's
+
+00:09:08.970 --> 00:09:13.370 line:100% position:50% align:middle
+going to be saved to our db. So create
+that folder, try run the mongod command
+
+00:09:13.370 --> 00:09:22.900 line:100% position:50% align:middle
+again, and you are up and running. You can
+go to your MongoDB Compass, you should
+
+00:09:22.900 --> 00:09:25.796 line:100% position:50% align:middle
+be able to connect with
+the default settings.
+
+00:09:25.796 --> 00:09:28.712 line:100% position:50% align:middle
+♪ [music] ♪

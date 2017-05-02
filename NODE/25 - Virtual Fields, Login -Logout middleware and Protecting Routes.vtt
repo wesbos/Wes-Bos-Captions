@@ -1,0 +1,523 @@
+WEBVTT
+
+00:00:00.548 --> 00:00:03.548 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.350 --> 00:00:15.710 line:100% position:50% align:middle
+In this video, we're going to do a couple
+things now that we actually have our user
+
+00:00:15.710 --> 00:00:18.050 line:100% position:50% align:middle
+login. First of all, we're going to hook
+up this LOGOUT button.
+
+00:00:18.050 --> 00:00:21.750 line:100% position:50% align:middle
+Second, we're going to make the login form
+work again, and third,
+
+00:00:21.750 --> 00:00:25.790 line:100% position:50% align:middle
+we are going to create an avatar, and
+fourth, when you go to the ADD page,
+
+00:00:25.790 --> 00:00:29.750 line:100% position:50% align:middle
+we need to make sure that the user is
+actually logged in. So, couple things
+
+00:00:29.750 --> 00:00:31.470 line:100% position:50% align:middle
+going on here, but let's get started.
+
+00:00:31.470 --> 00:00:34.770 line:100% position:50% align:middle
+First of all, LOGOUT button. We'll open up
+our authController right here,
+
+00:00:34.770 --> 00:00:40.890 line:100% position:50% align:middle
+and we'll make a logout method. So,
+exports.logout equals request,
+
+00:00:40.890 --> 00:00:47.110 line:100% position:50% align:middle
+response, and to logout you simply just
+say, req.logout. That's it,
+
+00:00:47.110 --> 00:00:50.900 line:100% position:50% align:middle
+then you've logged a person out. But we
+also want to tell them that it worked,
+
+00:00:50.900 --> 00:01:00.570 line:100% position:50% align:middle
+so we'll say req.flash success. "You are
+now logged out!". Maybe put an emoji in
+
+00:01:00.570 --> 00:01:01.500 line:100% position:50% align:middle
+there.
+
+00:01:01.500 --> 00:01:05.800 line:100% position:50% align:middle
+Good. And then, finally, we want to
+redirect them, so res.redirect.
+
+00:01:05.800 --> 00:01:09.720 line:100% position:50% align:middle
+So, we actually need to handle this. I'll
+just redirect them to the homepage.
+
+00:01:09.720 --> 00:01:13.900 line:100% position:50% align:middle
+Good. Now, we'll open up our index.js, and
+if you click on this LOGOUT button,
+
+00:01:13.900 --> 00:01:19.150 line:100% position:50% align:middle
+it's going to /logout and it's 404ing, so
+we simply just need to make a route
+
+00:01:19.150 --> 00:01:26.830 line:100% position:50% align:middle
+handler for that, router.get /logout .
+We're going to say authController.logout.
+
+00:01:26.830 --> 00:01:32.290 line:100% position:50% align:middle
+That should do it. So now, if I click on
+LOGOUT, it says, "You are now logged out!"
+
+00:01:32.290 --> 00:01:36.420 line:100% position:50% align:middle
+and it has redirected me to the homepage,
+you can see that because if we take a look
+
+00:01:36.420 --> 00:01:45.460 line:100% position:50% align:middle
+at our layout.js...you see in our layout,
+we'll say locals.user,
+
+00:01:45.460 --> 00:01:49.230 line:100% position:50% align:middle
+or user.
+
+00:01:49.230 --> 00:01:53.620 line:100% position:50% align:middle
+So, if there's a user, then show them this
+logged in nav. Otherwise,
+
+00:01:53.620 --> 00:01:58.140 line:100% position:50% align:middle
+we show them the logged out nav. So,
+that's what we have going on here.
+
+00:01:58.140 --> 00:02:03.360 line:100% position:50% align:middle
+So there is no user being passed to all of
+the templates, so it's showing us the
+
+00:02:03.360 --> 00:02:04.070 line:100% position:50% align:middle
+logged out nav.
+
+00:02:04.070 --> 00:02:08.580 line:100% position:50% align:middle
+Good. So, we have that, now we'll click on
+LOG IN, and we have this happening here,
+
+00:02:08.580 --> 00:02:14.470 line:100% position:50% align:middle
+but we haven't yet actually set up the
+post, right? If I try sign in with
+
+00:02:14.470 --> 00:02:20.250 line:100% position:50% align:middle
+wesbos@gmail.com, and I put in wes and
+click LOG IN, it's going to 404.
+
+00:02:20.250 --> 00:02:29.020 line:100% position:50% align:middle
+Why? Because we do have a get login, but
+we do not have a post login.
+
+00:02:29.020 --> 00:02:36.840 line:100% position:50% align:middle
+So, we can do that now, and just say
+router.post /login, and then we simply
+
+00:02:36.840 --> 00:02:41.970 line:100% position:50% align:middle
+just need to take our authController and
+give it this login again,
+
+00:02:41.970 --> 00:02:45.330 line:100% position:50% align:middle
+because it will handle all of the local
+authentication for us.
+
+00:02:45.330 --> 00:02:47.790 line:100% position:50% align:middle
+Super easy, I really like that. So we'll
+take our authController,
+
+00:02:47.790 --> 00:02:53.930 line:100% position:50% align:middle
+and we'll say login. Now, go back here,
+click on LOG IN, try to login,
+
+00:02:53.930 --> 00:02:57.850 line:100% position:50% align:middle
+and then, it will successfully log us in.
+That's all that there is to that,
+
+00:02:57.850 --> 00:03:01.960 line:100% position:50% align:middle
+you can logout. Let's try it one more time
+for good old times' sake.
+
+00:03:01.960 --> 00:03:06.850 line:100% position:50% align:middle
+Beautiful. Nicely logged in. So, that's
+the first two pieces, logout and login.
+
+00:03:06.850 --> 00:03:10.750 line:100% position:50% align:middle
+All of that stuff is baked into
+passport.js, it's not anything we have to
+
+00:03:10.750 --> 00:03:14.380 line:100% position:50% align:middle
+worry worry about sessions, or deleting
+cookies, or anything like that.
+
+00:03:14.380 --> 00:03:20.590 line:100% position:50% align:middle
+Next up, we have this avatar right here,
+and if you open up the layout and look at
+
+00:03:20.590 --> 00:03:25.650 line:100% position:50% align:middle
+it, we'll just search for avatar. What
+we're saying is the user.gravatar.
+
+00:03:25.650 --> 00:03:29.390 line:100% position:50% align:middle
+Hmm, well, first of all, if you've never
+used a gravatar, it's a
+
+00:03:29.390 --> 00:03:33.400 line:100% position:50% align:middle
+globally-recognized avatar and
+essentially, what it does, is every single
+
+00:03:33.400 --> 00:03:37.268 line:100% position:50% align:middle
+time that you have a user's email address,
+you can actually drum up
+
+00:03:37.268 --> 00:03:39.200 line:100% position:50% align:middle
+their avatar from it.
+
+00:03:39.200 --> 00:03:43.480 line:100% position:50% align:middle
+So, we're not going to actually be
+handling the users uploading an image to
+
+00:03:43.480 --> 00:03:46.970 line:100% position:50% align:middle
+here, because nobody will actually do
+that. We're just going to use the built-in
+
+00:03:46.970 --> 00:03:50.800 line:100% position:50% align:middle
+gravatar service, which will show us their
+globally-recognized avatar.
+
+00:03:50.800 --> 00:03:54.550 line:100% position:50% align:middle
+So, if you've ever signed up for a
+WordPress before, then you're going to
+
+00:03:54.550 --> 00:03:59.460 line:100% position:50% align:middle
+have a gravatar that sort of follows you
+around throughout the entire internet,
+
+00:03:59.460 --> 00:04:04.590 line:100% position:50% align:middle
+so. This gravatar property, we haven't
+really done it, so let's open up our
+
+00:04:04.590 --> 00:04:10.290 line:100% position:50% align:middle
+user.js model, and we don't actually need
+to add a new property here called
+
+00:04:10.290 --> 00:04:16.370 line:100% position:50% align:middle
+gravatar, because it can be used with
+what's called a virtual field.
+
+00:04:16.370 --> 00:04:20.600 line:100% position:50% align:middle
+And a virtual field in Mongoose is
+essentially something that can be
+
+00:04:20.600 --> 00:04:26.610 line:100% position:50% align:middle
+generated. So rather than storing all the
+data about a user, sometimes your fields
+
+00:04:26.610 --> 00:04:30.980 line:100% position:50% align:middle
+can be generated. For example, if you're
+trying to store somebody's weight and
+
+00:04:30.980 --> 00:04:35.330 line:100% position:50% align:middle
+you're storing it in kilograms, you
+wouldn't also store it in pounds,
+
+00:04:35.330 --> 00:04:37.750 line:100% position:50% align:middle
+because that can just be
+generated on the fly.
+
+00:04:37.750 --> 00:04:41.470 line:100% position:50% align:middle
+If you have it in one, you can convert it
+to the other, no problem.
+
+00:04:41.470 --> 00:04:46.780 line:100% position:50% align:middle
+Same with if you are storing miles per
+hour, you can easily convert that to
+
+00:04:46.780 --> 00:04:51.380 line:100% position:50% align:middle
+kilometers an hour for people that use a
+sane metric system. So,
+
+00:04:51.380 --> 00:04:58.490 line:100% position:50% align:middle
+all we want to do is make a virtual field
+here, and I'll say userSchema.virtual,
+
+00:04:58.490 --> 00:05:03.470 line:100% position:50% align:middle
+and we're going to make
+the virtual gravatar.
+
+00:05:03.470 --> 00:05:05.980 line:100% position:50% align:middle
+From that, we can have both get and a set
+function. In our case,
+
+00:05:05.980 --> 00:05:11.470 line:100% position:50% align:middle
+we only need a get function here, and
+whatever you return from this function
+
+00:05:11.470 --> 00:05:14.990 line:100% position:50% align:middle
+here is going to be returned from the
+gravatar. So you can do something
+
+00:05:14.990 --> 00:05:22.070 line:100% position:50% align:middle
+hilarious, like search for "the rock
+picture." Go ahead. Images,
+
+00:05:22.070 --> 00:05:27.650 line:100% position:50% align:middle
+there we go. Visit the page. Oh, no,
+that's not what we want. View the image,
+
+00:05:27.650 --> 00:05:33.010 line:100% position:50% align:middle
+there we go. So what we could do from here
+is we could simply return the actual Rock,
+
+00:05:33.010 --> 00:05:34.200 line:100% position:50% align:middle
+right?
+
+00:05:34.200 --> 00:05:37.980 line:100% position:50% align:middle
+Now, I refresh the page. Oh, we don't
+actually see it. Let's check our layout.
+
+00:05:37.980 --> 00:05:42.170 line:100% position:50% align:middle
+It's because I've put this d=retro on it.
+We need that in a bit,
+
+00:05:42.170 --> 00:05:45.880 line:100% position:50% align:middle
+but take that off for now. In our refresh,
+you'll see The Rock showing up.
+
+00:05:45.880 --> 00:05:50.460 line:100% position:50% align:middle
+Why? Because I didn't add a new field. The
+Rock is not stored in the database.
+
+00:05:50.460 --> 00:05:55.170 line:100% position:50% align:middle
+The Rock is just virtual and is being
+pulled up via a virtual field called
+
+00:05:55.170 --> 00:05:59.970 line:100% position:50% align:middle
+gravatar, and whenever you want to use
+user.gravatar, it's going to generate that
+
+00:05:59.970 --> 00:06:01.980 line:100% position:50% align:middle
+field sort of on the fly for us.
+
+00:06:01.980 --> 00:06:05.150 line:100% position:50% align:middle
+So, that's what we want here. We're not
+going to use The Rock,
+
+00:06:05.150 --> 00:06:08.660 line:100% position:50% align:middle
+as awesome as he is. We are going to be
+using a gravatar. Now,
+
+00:06:08.660 --> 00:06:14.340 line:100% position:50% align:middle
+how do you get a gravatar? Well, a
+gravatar uses a hashing algorithm called
+
+00:06:14.340 --> 00:06:19.180 line:100% position:50% align:middle
+MD5, and essentially, it just takes the
+user's email address and hashes it so that
+
+00:06:19.180 --> 00:06:22.230 line:100% position:50% align:middle
+you're not going to leak the user's email
+address in the image source,
+
+00:06:22.230 --> 00:06:26.910 line:100% position:50% align:middle
+but you will show a hash of that. So, we
+go up to the top here,
+
+00:06:26.910 --> 00:06:33.300 line:100% position:50% align:middle
+and we've already imported our MD5
+library, and from it, we'll make a hash,
+
+00:06:33.300 --> 00:06:36.960 line:100% position:50% align:middle
+and we'll take md5, and you need the
+user's email address.
+
+00:06:36.960 --> 00:06:41.000 line:100% position:50% align:middle
+So we say this.email, right? Because this
+is going to be equal to the user,
+
+00:06:41.000 --> 00:06:44.430 line:100% position:50% align:middle
+and then, we can access any of the
+properties like email. That's why we've
+
+00:06:44.430 --> 00:06:47.740 line:100% position:50% align:middle
+used a proper function here and not an
+arrow function, and then,
+
+00:06:47.740 --> 00:06:59.630 line:100% position:50% align:middle
+from that we are going to return backticks
+and https://gravatar.com/avatar/ then this
+
+00:06:59.630 --> 00:07:07.040 line:100% position:50% align:middle
+is where you do the hash, and then
+question mark, size equals 200.
+
+00:07:07.040 --> 00:07:11.470 line:100% position:50% align:middle
+So, give that a refresh, and now, when we
+see that , what's going to happen is a
+
+00:07:11.470 --> 00:07:14.330 line:100% position:50% align:middle
+picture of me is going to pop up, or a
+picture of you is going to pop up,
+
+00:07:14.330 --> 00:07:17.650 line:100% position:50% align:middle
+or if you don't have a gravatar associated
+with that email address,
+
+00:07:17.650 --> 00:07:21.880 line:100% position:50% align:middle
+you'll just see like a G or some sort of
+default gravatar that gets passed in,
+
+00:07:21.880 --> 00:07:30.200 line:100% position:50% align:middle
+right? See this, 519c9ae? That's the MD5
+hash of wesbos@gmail.com.
+
+00:07:30.200 --> 00:07:34.690 line:100% position:50% align:middle
+So if I ever go to this URL here, I can
+see a picture of myself,
+
+00:07:34.690 --> 00:07:39.860 line:100% position:50% align:middle
+or if you would like a huge picture of
+myself, you can make it 2000.
+
+00:07:39.860 --> 00:07:43.790 line:100% position:50% align:middle
+Whoa! Too big! Too big! Too big! But you
+get the point, right?
+
+00:07:43.790 --> 00:07:49.020 line:100% position:50% align:middle
+This is a URL which can be then used in an
+image tag, that is auto-generated with
+
+00:07:49.020 --> 00:07:53.040 line:100% position:50% align:middle
+something that is called a virtual field.
+Hey, Rock! Similarities?
+
+00:07:53.040 --> 00:07:56.490 line:100% position:50% align:middle
+I think so. So, we've got that. What else
+do we need? We've got our avatar,
+
+00:07:56.490 --> 00:08:00.030 line:100% position:50% align:middle
+we got our login, we got our logout. Last
+thing that we need to do is...let's
+
+00:08:00.030 --> 00:08:00.290 line:100% position:50% align:middle
+logout.
+
+00:08:00.290 --> 00:08:06.660 line:100% position:50% align:middle
+Now let's go to the ADD page, and you
+shouldn't be able to add a store unless
+
+00:08:06.660 --> 00:08:11.810 line:100% position:50% align:middle
+you are logged in. So, what we'll do here
+is we'll go back to our authController,
+
+00:08:11.810 --> 00:08:15.750 line:100% position:50% align:middle
+and we're going to make a little piece of
+middleware that checks if the user is
+
+00:08:15.750 --> 00:08:24.720 line:100% position:50% align:middle
+logged in. So say exports.isLoggedIn
+equals request, and response,
+
+00:08:24.720 --> 00:08:30.370 line:100% position:50% align:middle
+and next, and we can check. First check if
+the user is
+
+00:08:30.370 --> 00:08:35.080 line:100% position:50% align:middle
+authenticated.if(req.isAuthenticated()).
+
+00:08:35.080 --> 00:08:41.340 line:100% position:50% align:middle
+That's a method there. That's not just a
+property, and what that will do is it'll
+
+00:08:41.340 --> 00:08:45.460 line:100% position:50% align:middle
+check with Passport if that user is there,
+and that's the beauty of using Passport
+
+00:08:45.460 --> 00:08:48.370 line:100% position:50% align:middle
+middleware, is that it puts all of these
+methods on for us that we can just go
+
+00:08:48.370 --> 00:08:52.380 line:100% position:50% align:middle
+ahead and use. And if that is true, then
+next(), we'll just say,
+
+00:08:52.380 --> 00:09:00.540 line:100% position:50% align:middle
+"carry on! They are logged in!" Otherwise,
+we can return here.
+
+00:09:00.540 --> 00:09:05.290 line:100% position:50% align:middle
+We're going to req.flash error.
+
+00:09:05.290 --> 00:09:09.690 line:100% position:50% align:middle
+It'll say, "Oops you must be logged in,"
+then we'll redirect them to the login
+
+00:09:09.690 --> 00:09:15.240 line:100% position:50% align:middle
+page.res.redirect. Good. So, we just made
+a little piece of middleware...
+
+00:09:15.240 --> 00:09:19.040 line:100% position:50% align:middle
+Oops! Arrow function. We made a little
+piece of middleware here that says if they
+
+00:09:19.040 --> 00:09:23.230 line:100% position:50% align:middle
+are authenticated, then continue on the
+middleware path, otherwise,
+
+00:09:23.230 --> 00:09:27.270 line:100% position:50% align:middle
+stop it right there, tell them that they
+must be logged in, and show them the
+
+00:09:27.270 --> 00:09:31.730 line:100% position:50% align:middle
+actual login page. So we can take this
+isLoggedIn middleware, go back to our
+
+00:09:31.730 --> 00:09:37.620 line:100% position:50% align:middle
+routes, find this route, which
+is /add right here.
+
+00:09:37.620 --> 00:09:41.180 line:100% position:50% align:middle
+Oh, no that's our post. This is our add,
+and before we show them the ADD STORE
+
+00:09:41.180 --> 00:09:46.580 line:100% position:50% align:middle
+form, we're simply going to take our
+authController and give them the
+
+00:09:46.580 --> 00:09:54.740 line:100% position:50% align:middle
+isLoggedIn, and then move them on to
+addStore. So, you will never make it past
+
+00:09:54.740 --> 00:09:58.290 line:100% position:50% align:middle
+this middleware unless we're logged in. If
+we are, then we'll make it to the second
+
+00:09:58.290 --> 00:10:02.100 line:100% position:50% align:middle
+piece of middleware in the stack. So now,
+if I go back to ADD,
+
+00:10:02.100 --> 00:10:05.310 line:100% position:50% align:middle
+it tells me, "Oops you must be logged in
+to do that!" and brings me to the login
+
+00:10:05.310 --> 00:10:08.000 line:100% position:50% align:middle
+page, so I cannot go to the ADD page.
+
+00:10:08.000 --> 00:10:14.500 line:100% position:50% align:middle
+But if I do login, then I go to ADD, it
+shows me the ADD page because I'm logged
+
+00:10:14.500 --> 00:10:20.730 line:100% position:50% align:middle
+in, right? Couple little goodies in there.
+Let's move on to doing the user accounts
+
+00:10:20.730 --> 00:10:21.526 line:100% position:50% align:middle
+screen.
+
+00:10:21.526 --> 00:10:24.526 line:100% position:50% align:middle
+♪ [music] ♪

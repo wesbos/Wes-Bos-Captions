@@ -1,0 +1,190 @@
+WEBVTT
+
+00:00:00.731 --> 00:00:03.622 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.318 --> 00:00:15.070 line:100% position:50% align:middle
+Now, when you click on your Heart icon,
+we get a 404, and that's because we don't
+
+00:00:15.070 --> 00:00:19.090 line:100% position:50% align:middle
+have a route for that. But when you do
+visit this page, we do want to query the
+
+00:00:19.090 --> 00:00:22.260 line:100% position:50% align:middle
+stores that are in our hearts. There's a
+couple different ways you can go about
+
+00:00:22.260 --> 00:00:25.860 line:100% position:50% align:middle
+this, and I encourage you to pause the
+video and actually try this one on your
+
+00:00:25.860 --> 00:00:29.486 line:100% position:50% align:middle
+own, because it's all stuff,
+pretty much, that we've done so far.
+
+00:00:29.486 --> 00:00:36.880 line:100% position:50% align:middle
+So let's open up our index.js for our
+routes, and let's add a new route for
+
+00:00:36.880 --> 00:00:41.420 line:100% position:50% align:middle
+getting our stores. So I'll say,
+"router.get". I'm going to look for
+
+00:00:41.420 --> 00:00:46.760 line:100% position:50% align:middle
+"hearts," and we're going to use
+the Store Controller, ".getHearts".
+
+00:00:46.760 --> 00:00:51.450 line:100% position:50% align:middle
+That's actually going to be [in a sink].
+So I'll wrap that sucker in catchErrors.
+
+00:00:51.450 --> 00:00:56.830 line:100% position:50% align:middle
+Good. Next up, what we want to do
+is open up our Store Controller.
+
+00:00:56.830 --> 00:01:03.726 line:100% position:50% align:middle
+Again, go to the bottom, make a new
+method called "exports.getHearts".
+
+00:01:03.726 --> 00:01:07.590 line:100% position:50% align:middle
+Now, there's actually two ways we can
+go ahead in finding all of these stores.
+
+00:01:07.590 --> 00:01:12.580 line:100% position:50% align:middle
+We could either query the current user
+and call ".populate" on their hearts.
+
+00:01:12.580 --> 00:01:15.970 line:100% position:50% align:middle
+What that will do is it will just get the
+user, and it will populate all of the
+
+00:01:15.970 --> 00:01:23.580 line:100% position:50% align:middle
+hearts. Or we can query a bunch of stores
+and find those stores whose ID are in our
+
+00:01:23.580 --> 00:01:27.640 line:100% position:50% align:middle
+current heart array. What?
+Let's try it. Let's do the second way.
+
+00:01:27.640 --> 00:01:32.400 line:100% position:50% align:middle
+We've done the first way already.
+We have already populated fields that
+
+00:01:32.400 --> 00:01:35.470 line:100% position:50% align:middle
+were a relationship. But we haven't
+done where an ID is in an array.
+
+00:01:35.470 --> 00:01:39.680 line:100% position:50% align:middle
+So what we're going to do is we're
+going to say, "const stores = await" our
+
+00:01:39.680 --> 00:01:46.550 line:100% position:50% align:middle
+"Store.find". And our query is going to be
+an object. It's kind of pretty interesting
+
+00:01:46.550 --> 00:01:54.440 line:100% position:50% align:middle
+what we have here. We're going to say,
+"where the ID property of the store is in
+
+00:01:54.440 --> 00:02:01.080 line:100% position:50% align:middle
+req.user.hearts". So what that will do is
+it will find any stores where their ID is
+
+00:02:01.080 --> 00:02:06.140 line:100% position:50% align:middle
+in an array, which is req.user.hearts.
+That's pretty neat, because then it will
+
+00:02:06.140 --> 00:02:09.090 line:100% position:50% align:middle
+look in the array for us and find
+all of the stores that we have.
+
+00:02:09.090 --> 00:02:12.970 line:100% position:50% align:middle
+So once we have that, let's just res.json
+the actual list of stores that we have
+
+00:02:12.970 --> 00:02:18.440 line:100% position:50% align:middle
+here, and we get a huge array of stores
+that I've hearted. Good. So what we can do
+
+00:02:18.440 --> 00:02:22.490 line:100% position:50% align:middle
+is just take that list of stores and
+pass it off to our store's URL.
+
+00:02:22.490 --> 00:02:26.400 line:100% position:50% align:middle
+So we'll say, "res.render" and we
+have a Stores layout already.
+
+00:02:26.400 --> 00:02:30.100 line:100% position:50% align:middle
+We don't need to make a new Pug file
+for this. The title is going to be
+
+00:02:30.100 --> 00:02:36.680 line:100% position:50% align:middle
+"Hearted Stores" and we need to pass
+along our stores, which we just found.
+
+00:02:36.680 --> 00:02:41.960 line:100% position:50% align:middle
+Again, we can just pass that as "stores".
+Good. So I give that a save and refresh.
+
+00:02:41.960 --> 00:02:44.820 line:100% position:50% align:middle
+That's it. That's the end of this
+tutorial. All we really have to do is
+
+00:02:44.820 --> 00:02:49.790 line:100% position:50% align:middle
+reuse our homepage layout, but do a
+different query where we want to find the
+
+00:02:49.790 --> 00:02:53.830 line:100% position:50% align:middle
+actual stores that we have here. One thing
+is if you open this up an Incognito
+
+00:02:53.830 --> 00:02:59.110 line:100% position:50% align:middle
+window, we actually get an error here,
+because we're trying to find the
+
+00:02:59.110 --> 00:03:04.580 line:100% position:50% align:middle
+req.user.hearts, and "user" doesn't exist.
+So what we really want to do here is put
+
+00:03:04.580 --> 00:03:07.960 line:100% position:50% align:middle
+a little bit of a middleware that will
+double-check if the person is actually
+
+00:03:07.960 --> 00:03:12.230 line:100% position:50% align:middle
+logged in before... Because they
+can't click on this in the URL.
+
+00:03:12.230 --> 00:03:15.780 line:100% position:50% align:middle
+But if someone were to send them
+a link to this, we need to tell them,
+
+00:03:15.780 --> 00:03:20.470 line:100% position:50% align:middle
+"Hey, you actually have to be logged in
+before you can specifically see those
+
+00:03:20.470 --> 00:03:24.620 line:100% position:50% align:middle
+hearts that you have hearted." So what
+we'll do is we'll go back to our index.js,
+
+00:03:24.620 --> 00:03:30.000 line:100% position:50% align:middle
+and we'll simply just say,
+"authController.isLoggedIn".
+
+00:03:30.000 --> 00:03:33.000 line:100% position:50% align:middle
+So we first check that they're logged in,
+and then we will go and get the hearts.
+
+00:03:33.000 --> 00:03:37.010 line:100% position:50% align:middle
+So go back to our Incognito window
+here and refresh. Then, it just says,
+
+00:03:37.010 --> 00:03:39.875 line:100% position:50% align:middle
+"Oops. You must be logged in to do that,"
+and it will show us the login form.
+
+00:03:39.875 --> 00:03:41.640 line:100% position:50% align:middle
+Pretty neat. See you in the next one.
+
+00:03:41.640 --> 00:03:44.752 line:100% position:50% align:middle
+♪ [music] ♪

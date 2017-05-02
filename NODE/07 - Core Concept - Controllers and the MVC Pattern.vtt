@@ -1,0 +1,355 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.000 line:100% position:50% align:middle
+♪[music]♪
+
+00:00:12.130 --> 00:00:16.640 line:100% position:50% align:middle
+This video we're going to learn about what
+controllers are. And in order for us to
+
+00:00:16.640 --> 00:00:21.110 line:100% position:50% align:middle
+understand what a controller is, we
+need to talk about the MVC pattern,
+
+00:00:21.110 --> 00:00:24.890 line:100% position:50% align:middle
+so I've made this little graph
+or chart, it's not a graph, it's a chart.
+
+00:00:24.890 --> 00:00:30.820 line:100% position:50% align:middle
+I made you this amazing chart and it sort
+of explains the design pattern that we're
+
+00:00:30.820 --> 00:00:35.030 line:100% position:50% align:middle
+going to be using. A design pattern is a
+way that you architect your code and a way
+
+00:00:35.030 --> 00:00:39.886 line:100% position:50% align:middle
+that you organize your code. So here we
+have a model which is the M, we've got
+
+00:00:39.886 --> 00:00:44.460 line:100% position:50% align:middle
+view, which is the V, and the controller
+which is the C. So the V, we've already
+
+00:00:44.460 --> 00:00:48.234 line:100% position:50% align:middle
+done, the View, that's our templates,
+that's our pug files that we actually
+
+00:00:48.234 --> 00:00:54.299 line:100% position:50% align:middle
+template everything else out in. The
+model is going to be the code that we
+
+00:00:54.299 --> 00:00:58.509 line:100% position:50% align:middle
+write in the data that is
+stored that accesses the database.
+
+00:00:58.509 --> 00:01:01.805 line:100% position:50% align:middle
+So if we need to query
+the top 10 stores or we need to find
+
+00:01:01.805 --> 00:01:06.332 line:100% position:50% align:middle
+stores that have a specific tag or we
+need to pull reviews that are related
+
+00:01:06.332 --> 00:01:11.280 line:100% position:50% align:middle
+to a store or we need to
+get a list of stores that are within 10
+
+00:01:11.280 --> 00:01:15.010 line:100% position:50% align:middle
+kilometers of the latitude or longitude.
+So all of those queries, all of that
+
+00:01:15.010 --> 00:01:19.450 line:100% position:50% align:middle
+stuff that interacts with fetching data
+from our database, that's our model layer
+
+00:01:19.450 --> 00:01:22.820 line:100% position:50% align:middle
+and we're going to go into that. Then we
+have a view layer which, is our templates.
+
+00:01:22.820 --> 00:01:28.450 line:100% position:50% align:middle
+And then the sort of the traffic cop in
+between the model and the view,
+
+00:01:28.450 --> 00:01:33.380 line:100% position:50% align:middle
+because it got to get data and put it
+into a template. So the person that or
+
+00:01:33.380 --> 00:01:37.360 line:100% position:50% align:middle
+the thing that gets the data and puts it
+into a template is called the controller.
+
+00:01:37.360 --> 00:01:40.947 line:100% position:50% align:middle
+And I like to think of the controller
+as just like traffic cop sort of
+
+00:01:40.947 --> 00:01:43.985 line:100% position:50% align:middle
+sitting in the middle and saying,
+"Hey model, give me some data."
+
+00:01:43.985 --> 00:01:46.185 line:100% position:50% align:middle
+It pulls it back, and
+then once it has the data,
+
+00:01:46.185 --> 00:01:51.530 line:100% position:50% align:middle
+it sends it over to the view. So
+if we were to think of...I always love
+
+00:01:51.530 --> 00:01:58.039 line:100% position:50% align:middle
+stupid ways to relate it to life. You
+know, if you have friends, many of you do,
+
+00:01:58.039 --> 00:02:02.580 line:100% position:50% align:middle
+you might have one of those friends in
+your group that's always organizing
+
+00:02:02.580 --> 00:02:08.140 line:100% position:50% align:middle
+everything. So you want to have a party,
+you might have friends who have alcohol
+
+00:02:08.140 --> 00:02:11.851 line:100% position:50% align:middle
+and snacks, that would be your model. You
+might have friends that have a place to
+
+00:02:11.851 --> 00:02:15.490 line:100% position:50% align:middle
+party, maybe they know a good restaurant
+or maybe they have a house that you can go
+
+00:02:15.490 --> 00:02:21.010 line:100% position:50% align:middle
+to, that would be your view. But those two
+people can't get along together because
+
+00:02:21.010 --> 00:02:24.770 line:100% position:50% align:middle
+they're just totally useless. They've got
+the goods but they can't get along.
+
+00:02:24.770 --> 00:02:29.060 line:100% position:50% align:middle
+So you always have that one friend that's
+texting everybody and making Facebook
+
+00:02:29.060 --> 00:02:33.200 line:100% position:50% align:middle
+events and sort of in between and
+making sure that it all comes together,
+
+00:02:33.200 --> 00:02:36.739 line:100% position:50% align:middle
+that's what the controller is.
+It has to be an examples here.
+
+00:02:36.739 --> 00:02:39.358 line:100% position:50% align:middle
+So if we look at this
+code here, you'll see that
+
+00:02:39.358 --> 00:02:44.724 line:100% position:50% align:middle
+we have written all of this logic
+and we've directly tied it to a route.
+
+00:02:44.724 --> 00:02:49.080 line:100% position:50% align:middle
+And that, after you've build a
+large application can get really really
+
+00:02:49.080 --> 00:02:54.070 line:100% position:50% align:middle
+messy, it can be really hard to test. It's
+not reusable at all, because like what
+
+00:02:54.070 --> 00:02:58.875 line:100% position:50% align:middle
+happens if you wanted to do similar or the
+same code on a different route? Like
+
+00:02:58.875 --> 00:03:05.057 line:100% position:50% align:middle
+"/hello" then you'll have to like copy
+paste the code? No. So what we do is we
+
+00:03:05.057 --> 00:03:10.376 line:100% position:50% align:middle
+factor this code out into its
+own controller. If you open up
+
+00:03:10.376 --> 00:03:12.878 line:100% position:50% align:middle
+your file system here,
+and you'll see we have a folder
+
+00:03:12.878 --> 00:03:15.345 line:100% position:50% align:middle
+called controllers, that's
+where all of our controllers are going to
+
+00:03:15.460 --> 00:03:21.190 line:100% position:50% align:middle
+live. And generally, I like to create a
+controller for every specific area of the
+
+00:03:21.190 --> 00:03:25.850 line:100% position:50% align:middle
+website, so we'll have a controller for
+dealing with stores, creating and finding
+
+00:03:25.850 --> 00:03:29.540 line:100% position:50% align:middle
+them, we'll have a controller for dealing
+with the users, we'll have a controller
+
+00:03:29.540 --> 00:03:34.040 line:100% position:50% align:middle
+for dealing with the reviews and surely
+each specific part of your application
+
+00:03:34.040 --> 00:03:37.720 line:100% position:50% align:middle
+each functional part of your
+application will have its own controller.
+
+00:03:37.720 --> 00:03:41.250 line:100% position:50% align:middle
+So we'll open that up, we'll make
+a new file. I'm going to call it store
+
+00:03:41.250 --> 00:03:47.726 line:100% position:50% align:middle
+controller, I like to camel case them
+.JS. And then we have to export all of
+
+00:03:47.726 --> 00:03:53.050 line:100% position:50% align:middle
+the different functions that happen. Now
+again, a controller is just this part of
+
+00:03:53.050 --> 00:03:58.795 line:100% position:50% align:middle
+our actual code, so we can go
+into here and on our exports variable.
+
+00:03:58.795 --> 00:04:02.133 line:100% position:50% align:middle
+So exports is sort of a global
+variable, and anything that you put
+
+00:04:02.133 --> 00:04:07.340 line:100% position:50% align:middle
+on the exports variable will
+be importable in another file.
+
+00:04:07.340 --> 00:04:11.680 line:100% position:50% align:middle
+So with the exports., and we'll call this
+home page because this is going to handle
+
+00:04:11.680 --> 00:04:16.280 line:100% position:50% align:middle
+whenever someone requests a home page and
+we'll set that to be an error function.
+
+00:04:16.280 --> 00:04:21.850 line:100% position:50% align:middle
+Here, we have our requests, we have our
+response and then we will simply just say
+
+00:04:21.850 --> 00:04:29.860 line:100% position:50% align:middle
+res.render our index file. Then we'll go
+into our index. JS and we can get rid of
+
+00:04:29.860 --> 00:04:35.171 line:100% position:50% align:middle
+all this, joking around here. So what
+have we done? We have rendered our gate/
+
+00:04:35.171 --> 00:04:40.082 line:100% position:50% align:middle
+and then we need to give it our
+controller function here. So first thing
+
+00:04:40.082 --> 00:04:44.650 line:100% position:50% align:middle
+we need to do is import it. Say
+cons store controller equals. And then
+
+00:04:44.650 --> 00:04:48.264 line:100% position:50% align:middle
+we're going to require
+dot full slash, because it's a relative
+
+00:04:48.264 --> 00:04:52.428 line:100% position:50% align:middle
+file into our controllers file.
+Oh, we actually know we need
+
+00:04:52.428 --> 00:04:55.550 line:100% position:50% align:middle
+to go up because
+what file are we in right now?
+
+00:04:55.550 --> 00:04:59.730 line:100% position:50% align:middle
+We're on the route, so we go upper level
+into our controllers and then get our
+
+00:04:59.730 --> 00:05:05.560 line:100% position:50% align:middle
+store controller . Well here, we'll say
+<i>store controller.</i> and then what was the
+
+00:05:05.560 --> 00:05:12.140 line:100% position:50% align:middle
+method we made? Our home page, .Homepage.
+And what this does is it will then take
+
+00:05:12.140 --> 00:05:21.300 line:100% position:50% align:middle
+this function here and we will essentially
+just copy and paste it into here,
+
+00:05:21.300 --> 00:05:27.150 line:100% position:50% align:middle
+But now that code is not directly tied to
+the route. It's just tied to being its own
+
+00:05:27.150 --> 00:05:30.890 line:100% position:50% align:middle
+function and we can pull that out
+and put it, attach it to any route that we
+
+00:05:30.890 --> 00:05:35.500 line:100% position:50% align:middle
+want at any time. Now, if you were to try
+and refresh this, we're going to see an
+
+00:05:35.500 --> 00:05:40.830 line:100% position:50% align:middle
+error here. As you can see fail to look at
+views index in views directory. And that's
+
+00:05:40.830 --> 00:05:45.142 line:100% position:50% align:middle
+because we haven't created our index file
+yet, right? We're trying to render index
+
+00:05:45.142 --> 00:05:49.730 line:100% position:50% align:middle
+but we haven't yet passed it anything. So
+we'll go to our views directory. We'll
+
+00:05:49.730 --> 00:05:52.867 line:100% position:50% align:middle
+create a new file named
+<i>index.pug</i> and if we just
+
+00:05:52.867 --> 00:05:55.883 line:100% position:50% align:middle
+put a paragraph that says,
+"Hi, in there." And refresh,
+
+00:05:55.883 --> 00:05:59.770 line:100% position:50% align:middle
+now you'll see that as rendering out
+our index.pug file. Now that's not good
+
+00:05:59.770 --> 00:06:04.950 line:100% position:50% align:middle
+enough. We want that extends the layout
+and we want to make, how did you...hi in
+
+00:06:04.950 --> 00:06:08.700 line:100% position:50% align:middle
+there whenever we have
+a block called content inside of that.
+
+00:06:08.700 --> 00:06:11.980 line:100% position:50% align:middle
+We invent at one level
+for our paragraph, so see how
+
+00:06:11.980 --> 00:06:15.260 line:100% position:50% align:middle
+we're doing there. There
+we go. Now it's showing up. We
+
+00:06:15.260 --> 00:06:19.720 line:100% position:50% align:middle
+have our high, we've got the rest of our
+page being laid out. So generally how it's
+
+00:06:19.720 --> 00:06:23.017 line:100% position:50% align:middle
+going to work, and this is how we are
+going to have it. It is our route file,
+
+00:06:23.017 --> 00:06:29.304 line:100% position:50% align:middle
+is simply just going to tell us what
+the URLs that we hit are, and then we will
+
+00:06:29.304 --> 00:06:35.381 line:100% position:50% align:middle
+always shell it off to a separate file to
+do the actual work. So we always
+
+00:06:35.381 --> 00:06:38.931 line:100% position:50% align:middle
+shell off the work to a store controller
+and sometimes we're going to multiple
+
+00:06:38.931 --> 00:06:42.244 line:100% position:50% align:middle
+in here, which is what we're going
+to learn next. It's called <i>Middleware</i>.
+
+00:06:42.244 --> 00:06:44.757 line:100% position:50% align:middle
+So that's it. Let's
+jump on to the next one.
+
+00:06:44.800 --> 00:06:47.800 line:100% position:50% align:middle
+♪[music]♪

@@ -1,0 +1,688 @@
+WEBVTT
+
+00:00:00.546 --> 00:00:03.546 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.900 --> 00:00:14.230 line:100% position:50% align:middle
+Now that I have some
+reviews being piped in,
+
+00:00:14.230 --> 00:00:17.480 line:100% position:50% align:middle
+how do we get them to show up when we
+visit a single store?
+
+00:00:17.480 --> 00:00:21.260 line:100% position:50% align:middle
+Going to click over to Randy's Joint here.
+I'm going to leave a quick review.
+
+00:00:21.260 --> 00:00:26.090 line:100% position:50% align:middle
+"Love this place." Give it a five star
+review, submit the review,
+
+00:00:26.090 --> 00:00:30.000 line:100% position:50% align:middle
+and it brings us right back to the
+specific review page. So no problem there.
+
+00:00:30.000 --> 00:00:34.460 line:100% position:50% align:middle
+But how do I actually pull in a list of
+reviews in here? Well,
+
+00:00:34.460 --> 00:00:39.240 line:100% position:50% align:middle
+"reviews" is its own data type and
+"stores" are its own data type,
+
+00:00:39.240 --> 00:00:42.660 line:100% position:50% align:middle
+so how do we sort of like, have a
+relationship between the two?
+
+00:00:42.660 --> 00:00:48.580 line:100% position:50% align:middle
+If we look at our review.js, we are saving
+the store here, but if we look at our
+
+00:00:48.580 --> 00:00:55.980 line:100% position:50% align:middle
+store, we don't have anything to do with
+the reviews that are on the storeSchema.
+
+00:00:55.980 --> 00:01:00.890 line:100% position:50% align:middle
+So, this would be a bit of a pain, because
+if we wanted to in the review save the
+
+00:01:00.890 --> 00:01:06.040 line:100% position:50% align:middle
+store, but then under the store save a
+list of actual reviews,
+
+00:01:06.040 --> 00:01:09.980 line:100% position:50% align:middle
+then all the sudden we're managing data in
+two places. We're managing the store and
+
+00:01:09.980 --> 00:01:13.400 line:100% position:50% align:middle
+the review, and the review and the store.
+And those can get out of sync really
+
+00:01:13.400 --> 00:01:17.130 line:100% position:50% align:middle
+quickly, not to mention how much of a pain
+it is to keep those up to date.
+
+00:01:17.130 --> 00:01:21.340 line:100% position:50% align:middle
+So really what we want to do is, when we
+visit a store page, we also want to do a
+
+00:01:21.340 --> 00:01:27.910 line:100% position:50% align:middle
+second query, which is going to search for
+any reviews where the store is equal to
+
+00:01:27.910 --> 00:01:32.260 line:100% position:50% align:middle
+the actual ID of the specific store. But,
+we can even go one better,
+
+00:01:32.260 --> 00:01:36.800 line:100% position:50% align:middle
+and this is a new thing in Mongoose, and
+it's called "virtual populate." So let's
+
+00:01:36.800 --> 00:01:39.840 line:100% position:50% align:middle
+close our review.js, because we actually
+aren't going to need it.
+
+00:01:39.840 --> 00:01:43.580 line:100% position:50% align:middle
+And right below the getTagsList, right
+before we actually make our model here,
+
+00:01:43.580 --> 00:01:46.810 line:100% position:50% align:middle
+we're going to add a new field to our
+schema called "Reviews."
+
+00:01:46.810 --> 00:01:52.010 line:100% position:50% align:middle
+So say "storeSchema.virtual," and the
+field is called "reviews." And the options
+
+00:01:52.010 --> 00:01:55.390 line:100% position:50% align:middle
+that we pass it is...before it was a
+function where we immediately return
+
+00:01:55.390 --> 00:01:59.830 line:100% position:50% align:middle
+something. But in this case we're going to
+tell it to go off to another model,
+
+00:01:59.830 --> 00:02:03.440 line:100% position:50% align:middle
+in this case our review model, and
+actually do a quick query for us.
+
+00:02:03.440 --> 00:02:07.570 line:100% position:50% align:middle
+So say, the reference is going to be a
+review. Why? Because if we look at our
+
+00:02:07.570 --> 00:02:13.210 line:100% position:50% align:middle
+review.js, the name of our model is
+capital R, "Review." So that's why it is
+
+00:02:13.210 --> 00:02:18.410 line:100% position:50% align:middle
+referenced to that model here. Then we say
+our local field and our foreign field are
+
+00:02:18.410 --> 00:02:21.650 line:100% position:50% align:middle
+"ID" and "store." So let's type this and
+I'll explain it, because this was a bit
+
+00:02:21.650 --> 00:02:23.110 line:100% position:50% align:middle
+trippy for me at first.
+
+00:02:23.110 --> 00:02:29.500 line:100% position:50% align:middle
+So our local field is "_id," and our
+foreign field is going to be equal to
+
+00:02:29.500 --> 00:02:34.820 line:100% position:50% align:middle
+"store." Now what does this mean? Well,
+our local field is, which field on our
+
+00:02:34.820 --> 00:02:41.490 line:100% position:50% align:middle
+Store needs to match up with which field
+on our foreign model?
+
+00:02:41.490 --> 00:02:47.390 line:100% position:50% align:middle
+Which, this just should say "Review
+field." Right? Like, "Which field on the
+
+00:02:47.390 --> 00:02:57.030 line:100% position:50% align:middle
+review?" And, "Which field on the store?"
+And, "What model to link?" Right?
+
+00:02:57.030 --> 00:03:05.110 line:100% position:50% align:middle
+So what this essentially says is, "Find
+reviews where the store's ID is equal to
+
+00:03:05.110 --> 00:03:13.220 line:100% position:50% align:middle
+the review's store property." It would
+say, "ID property." Right?
+
+00:03:13.220 --> 00:03:19.340 line:100% position:50% align:middle
+So if we open up our MongoDB Compass here,
+and I look at our stores,
+
+00:03:19.340 --> 00:03:27.620 line:100% position:50% align:middle
+we're saying, "Find a review where the
+store's ID, 58C0, is equal to a review's
+
+00:03:27.620 --> 00:03:32.390 line:100% position:50% align:middle
+store property, 58F..." Those aren't the
+same, but if they were the same,
+
+00:03:32.390 --> 00:03:35.950 line:100% position:50% align:middle
+then it would automatically populate
+that in the Reviews field,
+
+00:03:35.950 --> 00:03:40.980 line:100% position:50% align:middle
+because they then line up. So this is sort
+of like a join, if you've ever used SQL
+
+00:03:40.980 --> 00:03:46.050 line:100% position:50% align:middle
+before. But it's nice virtual field, so
+that we're actually not saving any sort of
+
+00:03:46.050 --> 00:03:50.010 line:100% position:50% align:middle
+relationship between the two. It's just
+100% virtual.
+
+00:03:50.010 --> 00:03:56.570 line:100% position:50% align:middle
+So now if we actually go back to our store
+controller, and we look at the method that
+
+00:03:56.570 --> 00:04:01.930 line:100% position:50% align:middle
+was used to do this page. Remember that
+was "getStore BySlug." There we go.
+
+00:04:01.930 --> 00:04:06.040 line:100% position:50% align:middle
+And we're already populating the author
+field. Now we can populate our new field,
+
+00:04:06.040 --> 00:04:11.260 line:100% position:50% align:middle
+which is "Reviews." Give that a save. Now
+here's a little funny thing that will trip
+
+00:04:11.260 --> 00:04:16.080 line:100% position:50% align:middle
+a lot of people up. If we go to our
+store.pug and try to do a dump - store.pug
+
+00:04:16.080 --> 00:04:20.490 line:100% position:50% align:middle
+- and we have some comments on Randy's,
+right? If you're not sure if your actual
+
+00:04:20.490 --> 00:04:25.310 line:100% position:50% align:middle
+store has some comments, make sure you
+say, "Love you." Make sure you add a
+
+00:04:25.310 --> 00:04:27.490 line:100% position:50% align:middle
+comment to that actual store.
+
+00:04:27.490 --> 00:04:34.730 line:100% position:50% align:middle
+Oh, it broke. What did I do? I broke it!
+Oh my goodness! Virtual is not a function.
+
+00:04:34.730 --> 00:04:40.400 line:100% position:50% align:middle
+I know how to spell. I bet I don't. Back
+up and running. Leave her a comment,
+
+00:04:40.400 --> 00:04:44.140 line:100% position:50% align:middle
+give it a review. There we go, we've added
+an element. So now we got a couple of
+
+00:04:44.140 --> 00:04:48.730 line:100% position:50% align:middle
+reviews for Randy's Joint. We were to go
+to store.pug and we do...take a quick
+
+00:04:48.730 --> 00:04:55.160 line:100% position:50% align:middle
+dump. "pre=h.dump," the store. And you'll
+see that we do have the author being
+
+00:04:55.160 --> 00:05:00.560 line:100% position:50% align:middle
+populated, but where is our reviews?
+Didn't we populate it?
+
+00:05:00.560 --> 00:05:05.600 line:100% position:50% align:middle
+And here, watch this. "store.reviews." So
+now if I explicitly call the reviews
+
+00:05:05.600 --> 00:05:10.150 line:100% position:50% align:middle
+property, something we don't see on it
+right here, there they are.
+
+00:05:10.150 --> 00:05:16.220 line:100% position:50% align:middle
+Huh. So that's something about, by
+default, virtual fields do not actually go
+
+00:05:16.220 --> 00:05:22.180 line:100% position:50% align:middle
+into either an object, or into JSON unless
+you explicitly ask it to,
+
+00:05:22.180 --> 00:05:26.990 line:100% position:50% align:middle
+right? So what we want to do here is open
+up your store.js and there are some
+
+00:05:26.990 --> 00:05:30.870 line:100% position:50% align:middle
+options on your schema which will allow
+you to actually bring those to JSON
+
+00:05:30.870 --> 00:05:34.490 line:100% position:50% align:middle
+[inaudible]. It's not an issue
+for us, because the data is there.
+
+00:05:34.490 --> 00:05:40.470 line:100% position:50% align:middle
+But whenever you convert your actual model
+data into an object or into JSON,
+
+00:05:40.470 --> 00:05:44.160 line:100% position:50% align:middle
+it will by default not put virtuals in
+that object or in that JSON.
+
+00:05:44.160 --> 00:05:49.200 line:100% position:50% align:middle
+So if you do want to change that, you can
+go to your schema here,
+
+00:05:49.200 --> 00:05:53.910 line:100% position:50% align:middle
+and we can go down here and pass an
+object, and we say, any time it is passed
+
+00:05:53.910 --> 00:06:03.940 line:100% position:50% align:middle
+to JSON, you can say the virtuals is true.
+And you can do the same to Object,
+
+00:06:03.940 --> 00:06:07.400 line:100% position:50% align:middle
+and say, "Virtual is true." And what that
+will do is, any time that a actual
+
+00:06:07.400 --> 00:06:11.600 line:100% position:50% align:middle
+document is converted to either JSON or to
+an object - in this case it's being
+
+00:06:11.600 --> 00:06:15.700 line:100% position:50% align:middle
+converted to an object, so we can dump it
+on the page - then it will actually bring
+
+00:06:15.700 --> 00:06:19.200 line:100% position:50% align:middle
+the virtuals along for the ride. Even
+though they are there, they're sort of
+
+00:06:19.200 --> 00:06:23.740 line:100% position:50% align:middle
+invisible to JSON and to Objects. So give
+it a refresh, and there you go.
+
+00:06:23.740 --> 00:06:28.550 line:100% position:50% align:middle
+See, all the sudden, the reviews field has
+been populated. It's not necessary to do
+
+00:06:28.550 --> 00:06:34.110 line:100% position:50% align:middle
+that unless you actually are worried about
+it not showing up in your ".dump," to view
+
+00:06:34.110 --> 00:06:38.370 line:100% position:50% align:middle
+it on the page. And I like to often see it
+on the page before I loop over each one.
+
+00:06:38.370 --> 00:06:43.420 line:100% position:50% align:middle
+So good. Now we're getting all of the
+reviews. We can actually go back into our
+
+00:06:43.420 --> 00:06:47.750 line:100% position:50% align:middle
+store.pug and start to loop over each of
+them. So we'll go down here,
+
+00:06:47.750 --> 00:06:53.370 line:100% position:50% align:middle
+below the "if user," and we'll say, "If
+store.reviews..." So if there are reviews,
+
+00:06:53.370 --> 00:06:56.700 line:100% position:50% align:middle
+we're going to give ourself a
+reviews div. And we'll say,
+
+00:06:56.700 --> 00:07:04.950 line:100% position:50% align:middle
+"Each review in store.reviews." We're
+going to have a review div.
+
+00:07:04.950 --> 00:07:12.300 line:100% position:50% align:middle
+And then we...let's just try output, like
+a paragraph tag with the review.text.
+
+00:07:12.300 --> 00:07:15.220 line:100% position:50% align:middle
+Just to see if we can get it up and
+running, then we'll make a little partial
+
+00:07:15.220 --> 00:07:19.270 line:100% position:50% align:middle
+for that to handle it. Refresh that.
+Scroll down. "This place rocks.
+
+00:07:19.270 --> 00:07:21.300 line:100% position:50% align:middle
+Love this place. Love this place so much."
+
+00:07:21.300 --> 00:07:25.770 line:100% position:50% align:middle
+Good. So let's make a new mixin that we
+can make a review in it.
+
+00:07:25.770 --> 00:07:32.590 line:100% position:50% align:middle
+So we'll go into our views mixins, and
+we'll make a "_review.pug" mix-in.
+
+00:07:32.590 --> 00:07:37.610 line:100% position:50% align:middle
+Hit "review," and it takes in a review.
+And at first we're going to have a review
+
+00:07:37.610 --> 00:07:44.560 line:100% position:50% align:middle
+header and we're going to have a review
+author. Below that we'll have a review
+
+00:07:44.560 --> 00:07:49.650 line:100% position:50% align:middle
+stars, we'll have a time tag with a class
+of review time. And then below the header
+
+00:07:49.650 --> 00:07:54.460 line:100% position:50% align:middle
+we'll have a review body, which is a
+paragraph tag with "Review.text."
+
+00:07:54.460 --> 00:07:57.750 line:100% position:50% align:middle
+So we're going to come back and fill these
+all in, but I'd like to just get the text
+
+00:07:57.750 --> 00:08:01.780 line:100% position:50% align:middle
+showing up for now. So give that a save.
+Back to your store.pug,
+
+00:08:01.780 --> 00:08:09.010 line:100% position:50% align:middle
+we need to import our mixin, and then go
+ahead and use it. So,
+
+00:08:09.010 --> 00:08:14.170 line:100% position:50% align:middle
+how do we use a mix-in? Plus review, pass
+it the actual review itself.
+
+00:08:14.170 --> 00:08:17.490 line:100% position:50% align:middle
+So the mixin's called "Review." Each of
+them is called "Review" here.
+
+00:08:17.490 --> 00:08:22.140 line:100% position:50% align:middle
+If that confuses you, that they're named
+the same thing, just call it "R." "Each R
+
+00:08:22.140 --> 00:08:25.520 line:100% position:50% align:middle
+in store.reviews." And then each review is
+called "R." Doesn't confuse me,
+
+00:08:25.520 --> 00:08:27.890 line:100% position:50% align:middle
+though. I'm going to keep it.
+
+00:08:27.890 --> 00:08:31.290 line:100% position:50% align:middle
+Now, there we go. "Love this place. This
+place rocks. Love this place so much."
+
+00:08:31.290 --> 00:08:36.020 line:100% position:50% align:middle
+We've got our three coming up, no problem
+there. So let's go back into the reviews
+
+00:08:36.020 --> 00:08:38.290 line:100% position:50% align:middle
+and start to work our way through.
+
+00:08:38.290 --> 00:08:44.460 line:100% position:50% align:middle
+So the first one is the review author, but
+if we look here, each review,
+
+00:08:44.460 --> 00:08:48.860 line:100% position:50% align:middle
+the author is just a number, right? Like,
+I guess we could say,
+
+00:08:48.860 --> 00:08:54.520 line:100% position:50% align:middle
+like, "Paragraph equals review.author,"
+and then, just display the author's actual
+
+00:08:54.520 --> 00:09:00.110 line:100% position:50% align:middle
+ID. That's who commented, 58F. Right? But
+that's not really what we want.
+
+00:09:00.110 --> 00:09:04.170 line:100% position:50% align:middle
+We want to populate that data with an
+avatar and some data about the user.
+
+00:09:04.170 --> 00:09:10.400 line:100% position:50% align:middle
+So what we're going to need to do is to go
+one step further, and make sure that when
+
+00:09:10.400 --> 00:09:16.400 line:100% position:50% align:middle
+the review is actually queried, it's going
+to auto-populate our actual author field
+
+00:09:16.400 --> 00:09:20.150 line:100% position:50% align:middle
+for us, because we need the information
+about that author.
+
+00:09:20.150 --> 00:09:25.920 line:100% position:50% align:middle
+So we'll go back into our review.js, our
+model, and we're going to make a function
+
+00:09:25.920 --> 00:09:32.920 line:100% position:50% align:middle
+called "Auto Populate." Function
+"autopopulate." Takes a "next".
+
+00:09:32.920 --> 00:09:38.540 line:100% position:50% align:middle
+And we're going to say
+"this.populate('author') call next." And
+
+00:09:38.540 --> 00:09:44.640 line:100% position:50% align:middle
+what this will do is we can add hooks to
+whenever this review is queried,
+
+00:09:44.640 --> 00:09:47.950 line:100% position:50% align:middle
+what we're going to do is automatically
+populate the author field,
+
+00:09:47.950 --> 00:09:52.460 line:100% position:50% align:middle
+so we don't have to explicitly go in and
+ask for the author field to be populated
+
+00:09:52.460 --> 00:09:57.810 line:100% position:50% align:middle
+every single time. So we'll take our
+review schema and we're going to say
+
+00:09:57.810 --> 00:10:00.750 line:100% position:50% align:middle
+"pre('find')." We're going to run
+autopopulate. And "pre('findOne')" we're
+
+00:10:00.750 --> 00:10:01.830 line:100% position:50% align:middle
+also going to populate.
+
+00:10:01.830 --> 00:10:06.280 line:100% position:50% align:middle
+So what this will do is it will add hooks.
+For any time somebody finds or finds one,
+
+00:10:06.280 --> 00:10:09.890 line:100% position:50% align:middle
+and it's going to populate the author
+field of each of those. Now if I give that
+
+00:10:09.890 --> 00:10:13.910 line:100% position:50% align:middle
+a save and refresh this, you see that the
+author field...oh, wow!
+
+00:10:13.910 --> 00:10:28.570 line:100% position:50% align:middle
+The author field just got updated to
+"wesbos@gmail.com." So each of the reviews
+
+00:10:28.570 --> 00:10:33.250 line:100% position:50% align:middle
+now has a subsequent author field which
+has been populated with all the possible
+
+00:10:33.250 --> 00:10:37.990 line:100% position:50% align:middle
+data that we need. So we're now dumping
+the entire value onto the field.
+
+00:10:37.990 --> 00:10:42.160 line:100% position:50% align:middle
+That's not what we need. So we'll go back
+to our review.pug and we'll swamp out this
+
+00:10:42.160 --> 00:10:45.260 line:100% position:50% align:middle
+review author with actually
+the markup that we need.
+
+00:10:45.260 --> 00:10:51.740 line:100% position:50% align:middle
+So we need image of the class of avatar,
+and the source attribute is going to be
+
+00:10:51.740 --> 00:10:56.660 line:100% position:50% align:middle
+the review.author.gravatar. Right? We're
+accessing a virtual property of a
+
+00:10:56.660 --> 00:11:01.230 line:100% position:50% align:middle
+populated document. And then below that,
+we'll have a paragraph tag which has your
+
+00:11:01.230 --> 00:11:09.170 line:100% position:50% align:middle
+review.author.name. See what that gives
+us. Good, we got three pictures of myself,
+
+00:11:09.170 --> 00:11:14.260 line:100% position:50% align:middle
+three names that are now being populated.
+Then in the stars, what we're going to do
+
+00:11:14.260 --> 00:11:19.940 line:100% position:50% align:middle
+is we're going to give that a title of
+"Rated..." And we'll take the
+
+00:11:19.940 --> 00:11:29.380 line:100% position:50% align:middle
+"reviews.rating," of five stars. See what
+that gives us. It's not going to show us
+
+00:11:29.380 --> 00:11:32.770 line:100% position:50% align:middle
+anything, but if we inspect it now. Rated
+five out of five stars.
+
+00:11:32.770 --> 00:11:35.640 line:100% position:50% align:middle
+Good. So that we're pulling that in,
+that's get for accessibility's sake.
+
+00:11:35.640 --> 00:11:40.500 line:100% position:50% align:middle
+And then, inside of that, we're going to
+have an equals, and I'm going to take -
+
+00:11:40.500 --> 00:11:44.560 line:100% position:50% align:middle
+you might need to go find this online -
+this is a unicode star,
+
+00:11:44.560 --> 00:11:49.850 line:100% position:50% align:middle
+and I call "repeat," because it's a
+string, "review.rating." That's going to
+
+00:11:49.850 --> 00:11:55.430 line:100% position:50% align:middle
+tell us how many...so if I rated it five,
+it's going to give us five stars.
+
+00:11:55.430 --> 00:11:58.830 line:100% position:50% align:middle
+Beautiful. I rated this one five stars
+three times. Let me give me two stars.
+
+00:11:58.830 --> 00:12:06.640 line:100% position:50% align:middle
+There we go. Meh. Two stars. But then I
+also what to show the empty stars for the
+
+00:12:06.640 --> 00:12:09.390 line:100% position:50% align:middle
+rest of them. So below it, I'm going to
+say "equals" and I'm going to give
+
+00:12:09.390 --> 00:12:15.310 line:100% position:50% align:middle
+ourselves the empty star, and we'll call
+it "repeat(5 - review.rating)." So if I
+
+00:12:15.310 --> 00:12:20.940 line:100% position:50% align:middle
+gave it two, there's going to be three
+empty stars that get repeated.
+
+00:12:20.940 --> 00:12:24.530 line:100% position:50% align:middle
+There we go. So two out of five. That's a
+nice little way. And the reason why I had
+
+00:12:24.530 --> 00:12:28.300 line:100% position:50% align:middle
+to do this title here is because it's not
+accessible to just show somebody a bunch
+
+00:12:28.300 --> 00:12:32.270 line:100% position:50% align:middle
+of stars on the page and get them to
+figure it out. So you need to be able
+
+00:12:32.270 --> 00:12:35.620 line:100% position:50% align:middle
+allow those of you
+[inaudible] to read that.
+
+00:12:35.620 --> 00:12:41.260 line:100% position:50% align:middle
+Finally, the review time. You always
+should have a "datetime=review.created."
+
+00:12:41.260 --> 00:12:47.850 line:100% position:50% align:middle
+What that will do is it will give a time
+stamp to screen readers and Google bots
+
+00:12:47.850 --> 00:12:52.090 line:100% position:50% align:middle
+and everything like that. That's how a
+time tag should be properly formatted.
+
+00:12:52.090 --> 00:12:56.310 line:100% position:50% align:middle
+Inside of it, we're going to take our
+h.moment. Ah! If you've ever used moment
+
+00:12:56.310 --> 00:13:00.540 line:100% position:50% align:middle
+js, that's a library, and if we open our
+helpers.js, you'll see that I've just put
+
+00:13:00.540 --> 00:13:06.020 line:100% position:50% align:middle
+the entire moment js library in our
+helpers, so that I can use it.
+
+00:13:06.020 --> 00:13:11.480 line:100% position:50% align:middle
+So we say, "h.moment, review.created." And
+then we can use a method called
+
+00:13:11.480 --> 00:13:16.490 line:100% position:50% align:middle
+".fromNow." So what this will do is it
+will make a moment js object,
+
+00:13:16.490 --> 00:13:20.520 line:100% position:50% align:middle
+which allows us to call these handy little
+methods like, "from now," which should
+
+00:13:20.520 --> 00:13:26.410 line:100% position:50% align:middle
+give us a, kind of like a "14 minutes ago,
+29 minutes ago, a minute ago," and then
+
+00:13:26.410 --> 00:13:29.340 line:100% position:50% align:middle
+it'll give you months and years, and all.
+It'll format it really really nicely, too.
+
+00:13:29.340 --> 00:13:35.390 line:100% position:50% align:middle
+So that's a cool use for passing libraries
+to your helper. Put them on your h.helper
+
+00:13:35.390 --> 00:13:39.390 line:100% position:50% align:middle
+valuable, and you have access to them
+anywhere inside of you actual template.
+
+00:13:39.390 --> 00:13:43.200 line:100% position:50% align:middle
+So this is our whole reviews that we've
+got up and running. I know that was quite
+
+00:13:43.200 --> 00:13:47.270 line:100% position:50% align:middle
+a bit, so I would probably at this point
+take a quick review of everything that we
+
+00:13:47.270 --> 00:13:52.010 line:100% position:50% align:middle
+did, specifically adding the auto
+populate, as well as when we are in our
+
+00:13:52.010 --> 00:13:59.230 line:100% position:50% align:middle
+store.js, we did the virtual fields that
+have a external document that hooks up to
+
+00:13:59.230 --> 00:14:00.121 line:100% position:50% align:middle
+itself.
+
+00:14:00.121 --> 00:14:04.730 line:100% position:50% align:middle
+In the next one, we are going to hook up
+this top page, we take an average of all
+
+00:14:04.730 --> 00:14:08.167 line:100% position:50% align:middle
+their reviews and get us to
+some advanced aggregation.
+
+00:14:08.167 --> 00:14:11.167 line:100% position:50% align:middle
+♪ [music] ♪

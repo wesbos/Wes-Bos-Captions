@@ -1,0 +1,749 @@
+WEBVTT
+
+00:00:03.000 --> 00:00:06.000 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.200 --> 00:00:13.620 line:100% position:50% align:middle
+In this video, we are going to start
+
+00:00:13.620 --> 00:00:17.610 line:100% position:50% align:middle
+learning about using our AJAX endpoint,
+and we're going to start with this little
+
+00:00:17.610 --> 00:00:21.970 line:100% position:50% align:middle
+search here. So if I were to search for
+'coffee,' what should happen is right
+
+00:00:21.970 --> 00:00:25.440 line:100% position:50% align:middle
+below, it should automatically
+autocomplete a list of stores that either
+
+00:00:25.440 --> 00:00:29.670 line:100% position:50% align:middle
+have 'coffee' in the name or 'coffee' in
+the description. So there's a couple new
+
+00:00:29.670 --> 00:00:34.320 line:100% position:50% align:middle
+concepts that we're going to learn about
+MongoDB here other than the res.json
+
+00:00:34.320 --> 00:00:39.280 line:100% position:50% align:middle
+in Express to actually send stuff
+back as JSON rather than actually dealing
+
+00:00:39.280 --> 00:00:44.760 line:100% position:50% align:middle
+with it in HTML. So first thing we need to
+do is learn about this concept called
+
+00:00:44.760 --> 00:00:50.920 line:100% position:50% align:middle
+indexes, and I think the docs do a great
+job talking about what indexes are.
+
+00:00:50.920 --> 00:00:54.540 line:100% position:50% align:middle
+So I'm going to read through and we'll
+start a ref on it until we understand.
+
+00:00:54.540 --> 00:00:58.520 line:100% position:50% align:middle
+So indexes support the efficient execution
+of queries in MongoDB.
+
+00:00:58.520 --> 00:01:02.280 line:100% position:50% align:middle
+So what does that mean? Indexes make
+things fast. Without indexes,
+
+00:01:02.280 --> 00:01:06.040 line:100% position:50% align:middle
+MongoDB must perform my collection scan,
+i.e.scan over every document in the
+
+00:01:06.040 --> 00:01:08.880 line:100% position:50% align:middle
+collection to select those documents that
+match the query statement.
+
+00:01:08.880 --> 00:01:13.100 line:100% position:50% align:middle
+So what does that mean? Let's say I have
+10,000 stores, and I'm going to search for
+
+00:01:13.100 --> 00:01:18.700 line:100% position:50% align:middle
+coffee. What MongoDB will do, if you don't
+have an index, is it's actually going to
+
+00:01:18.700 --> 00:01:22.730 line:100% position:50% align:middle
+just go over every single document in your
+collection and say,
+
+00:01:22.730 --> 00:01:25.990 line:100% position:50% align:middle
+"Do you have coffee in the title? Do you
+have coffee in the title?
+
+00:01:25.990 --> 00:01:31.610 line:100% position:50% align:middle
+Do you have coffee in the title?" And what
+indexing does is, as a developer,
+
+00:01:31.610 --> 00:01:36.100 line:100% position:50% align:middle
+you say, "Okay, I understand that we're
+going to be doing a lot of queries with
+
+00:01:36.100 --> 00:01:41.660 line:100% position:50% align:middle
+this field title and a lot of queries with
+the field description." So we tell MongoDB
+
+00:01:41.660 --> 00:01:46.080 line:100% position:50% align:middle
+ahead of time, "Hey, it would be great if
+you, like, did a little bit of homework
+
+00:01:46.080 --> 00:01:49.330 line:100% position:50% align:middle
+with these fields, if you, like, maybe
+read over them really quickly so you sort
+
+00:01:49.330 --> 00:01:54.030 line:100% position:50% align:middle
+of know what's in them, so that when I do
+a query against you,
+
+00:01:54.030 --> 00:01:58.720 line:100% position:50% align:middle
+like .find, then you're already going to
+know what is in those and you can do a
+
+00:01:58.720 --> 00:02:04.360 line:100% position:50% align:middle
+much faster, much more efficient execution
+of the query." So that's really great,
+
+00:02:04.360 --> 00:02:07.990 line:100% position:50% align:middle
+because I use mLab to do all of my
+hosting, and every week, they send me an
+
+00:02:07.990 --> 00:02:15.070 line:100% position:50% align:middle
+email, and they say like, "Hey, you are
+performing this specific query 10,000
+
+00:02:15.070 --> 00:02:20.070 line:100% position:50% align:middle
+times this week, and you're not indexing
+it." Like, let's say I was searching the
+
+00:02:20.070 --> 00:02:24.330 line:100% position:50% align:middle
+database for videos that match a specific
+course of mine, and it was saying,
+
+00:02:24.330 --> 00:02:29.930 line:100% position:50% align:middle
+"Hey, like, you're always looking up
+videos that have a code called React,
+
+00:02:29.930 --> 00:02:35.370 line:100% position:50% align:middle
+and you're not indexing it." So the query
+is taking like 2, 3 hundred milliseconds
+
+00:02:35.370 --> 00:02:39.560 line:100% position:50% align:middle
+to actually execute. Whereas if you told
+us to index it, we could sort of, like,
+
+00:02:39.560 --> 00:02:43.890 line:100% position:50% align:middle
+get the host ready. We could get stuff
+ready so that when someone does query us,
+
+00:02:43.890 --> 00:02:48.002 line:100% position:50% align:middle
+we can do it in a number of milliseconds
+rather than 2, 300 milliseconds." So,
+
+00:02:48.002 --> 00:02:52.120 line:100% position:50% align:middle
+as a developer, if you know
+that you're going to be hitting a field
+
+00:02:52.200 --> 00:02:56.580 line:100% position:50% align:middle
+if you're going to be searching by a
+field very often, it is good to index it,
+
+00:02:56.580 --> 00:02:59.780 line:100% position:50% align:middle
+and we're going to go over an example how
+to index text right now,
+
+00:02:59.780 --> 00:03:03.620 line:100% position:50% align:middle
+then we're also going to over an example
+how do we index our latitude and
+
+00:03:03.620 --> 00:03:11.630 line:100% position:50% align:middle
+longitude. So let's go over to our
+stores.js - or store.js - model,
+
+00:03:11.630 --> 00:03:15.410 line:100% position:50% align:middle
+and all of your indexing will always
+happen in your schema. So that's what
+
+00:03:15.410 --> 00:03:19.230 line:100% position:50% align:middle
+we're going to do. We're going to go down
+right below our schema here,
+
+00:03:19.230 --> 00:03:25.260 line:100% position:50% align:middle
+and this is where we define our index. One
+thing before we actually get into defining
+
+00:03:25.400 --> 00:03:29.710 line:100% position:50% align:middle
+our indexes, if we go back to our MongoDB
+compass here, then we go to stores,
+
+00:03:29.710 --> 00:03:33.400 line:100% position:50% align:middle
+you're going to see that there is an
+indexes that we can go to here.
+
+00:03:33.400 --> 00:03:37.060 line:100% position:50% align:middle
+And by default, your ID will always be
+indexed, because that's like the fastest
+
+00:03:37.060 --> 00:03:40.720 line:100% position:50% align:middle
+way to look something up. However, if you
+go to users, you'll see that we're
+
+00:03:40.720 --> 00:03:45.640 line:100% position:50% align:middle
+indexing ID, that's by default, and we're
+indexing email, and that's because our
+
+00:03:45.640 --> 00:03:50.800 line:100% position:50% align:middle
+users, we have that plug-in, and that
+plug-in has likely introduced an index
+
+00:03:50.800 --> 00:03:54.220 line:100% position:50% align:middle
+for us, because that plug-in always looks
+up people by their email address, as well.
+
+00:03:54.220 --> 00:03:57.810 line:100% position:50% align:middle
+So those are two indexes. We're going to
+learn about a couple more indexes before
+
+00:03:57.810 --> 00:04:01.930 line:100% position:50% align:middle
+the end of this course. So we only have
+our stores. We only have ID. But if we go
+
+00:04:01.930 --> 00:04:08.100 line:100% position:50% align:middle
+here and we take our schema, and we add an
+index of, and we tell it here which fields
+
+00:04:08.100 --> 00:04:13.300 line:100% position:50% align:middle
+would we like it to index. So it's an
+object, and we tell it. We want the name
+
+00:04:13.300 --> 00:04:18.070 line:100% position:50% align:middle
+field to be indexed, because the name of
+the store is important to be searched by,
+
+00:04:18.070 --> 00:04:21.520 line:100% position:50% align:middle
+and we want the description of the store
+to be able to search by.
+
+00:04:21.520 --> 00:04:26.820 line:100% position:50% align:middle
+So we take our name, and we're going to
+index it as text. I'll talk about that in
+
+00:04:26.820 --> 00:04:29.430 line:100% position:50% align:middle
+a second, and same with our description,
+we're also going to index
+
+00:04:29.430 --> 00:04:34.920 line:100% position:50% align:middle
+that as text. Another interesting thing
+about indexes is you tell MongoDB what you
+
+00:04:34.920 --> 00:04:38.890 line:100% position:50% align:middle
+would like it to be indexed as. In our
+case, we're indexing as text, because
+
+00:04:38.890 --> 00:04:44.830 line:100% position:50% align:middle
+that's going to make it possible to search
+within that very efficiently and do some
+
+00:04:44.830 --> 00:04:50.040 line:100% position:50% align:middle
+stuff like case sensitivity and whatnot.
+So we have our index for name and
+
+00:04:50.040 --> 00:04:56.140 line:100% position:50% align:middle
+description. And if you go back to your
+MongoDB compass and click on refresh or
+
+00:04:56.140 --> 00:05:00.550 line:100% position:50% align:middle
+apply, I think apply will do it, and you
+go to indexes, you should
+
+00:05:00.550 --> 00:05:04.270 line:100% position:50% align:middle
+now see you have name_text,
+description_text
+
+00:05:04.400 --> 00:05:08.000 line:100% position:50% align:middle
+So this is what's called
+the compound index, where it has two
+
+00:05:08.000 --> 00:05:14.630 line:100% position:50% align:middle
+fields being indexed as one, and the type
+of it is text. And it tells us the size,
+
+00:05:14.630 --> 00:05:19.490 line:100% position:50% align:middle
+because it does take a little bit of space
+up in your database or on your hard drive,
+
+00:05:19.490 --> 00:05:23.090 line:100% position:50% align:middle
+because it does need to save some metadata
+about it, and that will tell us that it's
+
+00:05:23.090 --> 00:05:28.750 line:100% position:50% align:middle
+a compound index. If it doesn't show up, I
+have had to quit this application and
+
+00:05:28.750 --> 00:05:33.500 line:100% position:50% align:middle
+start it again to make it show up. So
+don't worry too much if it doesn't show up
+
+00:05:33.500 --> 00:05:38.140 line:100% position:50% align:middle
+immediately. It will be working in just a
+second. And, again, if you have a larger
+
+00:05:38.140 --> 00:05:41.870 line:100% position:50% align:middle
+database, sometimes it will take a little
+bit of time to actually index the entire
+
+00:05:41.870 --> 00:05:46.650 line:100% position:50% align:middle
+database as well. In our case, we just
+have a dozen or so stores.
+
+00:05:46.650 --> 00:05:52.610 line:100% position:50% align:middle
+So now that we have that indexed as text,
+it's going to allow us to search via both
+
+00:05:52.610 --> 00:05:57.550 line:100% position:50% align:middle
+of these fields in one shot. So let's go
+and create our new route,
+
+00:05:57.550 --> 00:06:02.210 line:100% position:50% align:middle
+and this is going to be our API endpoint.
+So let's go into index.js,
+
+00:06:02.210 --> 00:06:08.630 line:100% position:50% align:middle
+and go all the way to the bottom here, and
+then make a new section for dealing with
+
+00:06:08.630 --> 00:06:13.500 line:100% position:50% align:middle
+the APIs. These are where our API
+endpoints are going to be, so say
+
+00:06:13.500 --> 00:06:19.720 line:100% position:50% align:middle
+router.get, and I like to prefix my
+endpoints with /API/search. Some people
+
+00:06:19.720 --> 00:06:23.520 line:100% position:50% align:middle
+also like to version their APIs so you
+have, like, version 1, and that's really
+
+00:06:23.520 --> 00:06:27.550 line:100% position:50% align:middle
+nice, because if you do make changes
+to your API and people are relying on it,
+
+00:06:27.550 --> 00:06:30.790 line:100% position:50% align:middle
+you can just make a version 2 of that.
+Well, that one will stick around. But, in
+
+00:06:30.790 --> 00:06:37.060 line:100% position:50% align:middle
+our case, I'm just going to keep it
+simple. We have /API/search. And when that
+
+00:06:37.060 --> 00:06:41.960 line:100% position:50% align:middle
+runs, we are going to catch errors and
+going to make a new method on our store
+
+00:06:41.960 --> 00:06:50.430 line:100% position:50% align:middle
+controller called 'search stores.' Okay.
+Then we will go to our store controller
+
+00:06:50.430 --> 00:06:55.965 line:100% position:50% align:middle
+and make that search stores method
+for the bottom here. Let's say
+
+00:06:55.965 --> 00:06:59.545 line:100% position:50% align:middle
+exports.searchstores is equal to
+
+00:06:59.545 --> 00:07:07.780 line:100% position:50% align:middle
+and a sync request a response. And
+from that, let's just say response.json.
+
+00:07:07.780 --> 00:07:14.410 line:100% position:50% align:middle
+We'll give a 'It worked.' Now, there we
+go. Nice little object that we're sending
+
+00:07:14.410 --> 00:07:21.210 line:100% position:50% align:middle
+back, a sync.. Here we go. So
+/API/search. Hit enter. There we go. It
+
+00:07:21.210 --> 00:07:24.410 line:100% position:50% align:middle
+worked. By the way, if you're wondering
+why mine looks like this, I'm using a
+
+00:07:24.410 --> 00:07:33.610 line:100% position:50% align:middle
+plug-in called JSON viewer, and that will
+do is it will give you some nice-looking
+
+00:07:33.610 --> 00:07:37.389 line:100% position:50% align:middle
+layout if you ever hit a JSON file.
+Otherwise, the RAW will just look like
+
+00:07:37.389 --> 00:07:41.190 line:100% position:50% align:middle
+this for you. But you probably figured
+that out by now. So now, via this,
+
+00:07:41.190 --> 00:07:43.163 line:100% position:50% align:middle
+we're going to take in a parameter
+
+00:07:43.163 --> 00:07:47.380 line:100% position:50% align:middle
+called a query or Q. So we will
+go on the end of this,
+
+00:07:47.380 --> 00:07:54.260 line:100% position:50% align:middle
+and we'll say Q equals beer. And what this
+will do is we will take all of the query
+
+00:07:54.260 --> 00:07:58.050 line:100% position:50% align:middle
+parameters, in our case, just one called
+Q, and we're going to pass it along where
+
+00:07:58.050 --> 00:08:02.390 line:100% position:50% align:middle
+it will take that beer and then search our
+database for anything that includes the
+
+00:08:02.390 --> 00:08:05.600 line:100% position:50% align:middle
+word "beer." But for now, let's just
+double check that we actually are getting
+
+00:08:05.600 --> 00:08:09.780 line:100% position:50% align:middle
+our data. And the way that you can access
+these parameters right here,
+
+00:08:09.780 --> 00:08:15.930 line:100% position:50% align:middle
+these aren't really params. They are
+queries. So we go to the request,
+
+00:08:15.930 --> 00:08:22.370 line:100% position:50% align:middle
+and we just send the query back, and when
+you refresh, [inaudible] request.
+
+00:08:22.370 --> 00:08:26.257 line:100% position:50% align:middle
+There we go. You see Q is equal to beer,
+but if I were to add multiple query params
+
+00:08:26.257 --> 00:08:30.832 line:100% position:50% align:middle
+onto the URL, Name equals Wes
+and Cool equals true,
+
+00:08:30.832 --> 00:08:32.996 line:100% position:50% align:middle
+hit enter. You see that all of these
+
+00:08:32.996 --> 00:08:37.980 line:100% position:50% align:middle
+queries are being passed along via the
+URL. So request.query dot whatever it is
+
+00:08:37.980 --> 00:08:42.730 line:100% position:50% align:middle
+that you're expecting. In our case, we're
+looking for Q. So let's go ahead and find
+
+00:08:42.730 --> 00:08:48.760 line:100% position:50% align:middle
+our stores. So we'll say cont stores
+equals store.find, and let's just leave it
+
+00:08:48.760 --> 00:08:52.550 line:100% position:50% align:middle
+at that right now, and we'll take our
+stores while we have to await them,
+
+00:08:52.550 --> 00:08:57.340 line:100% position:50% align:middle
+because it's asynchronous, and we'll just
+say res.jsonstores. Then when I refresh
+
+00:08:57.340 --> 00:08:59.760 line:100% position:50% align:middle
+here, I should just get a list of all of
+my stores being sent along.
+
+00:08:59.760 --> 00:09:03.280 line:100% position:50% align:middle
+Good So that's every single store. We
+don't necessarily need that just yet,
+
+00:09:03.280 --> 00:09:07.760 line:100% position:50% align:middle
+but we can see that our actual API
+endpoint is working just fine.
+
+00:09:07.760 --> 00:09:13.410 line:100% position:50% align:middle
+But what we really want to work on here is
+that this find needs to take an argument
+
+00:09:13.410 --> 00:09:18.740 line:100% position:50% align:middle
+which will tell us the search for the name
+property, right here,
+
+00:09:18.740 --> 00:09:24.060 line:100% position:50% align:middle
+and the description property or whatever
+the person passed along with Q.
+
+00:09:24.060 --> 00:09:29.540 line:100% position:50% align:middle
+Okay. So we open up a object here. We put
+it on its own line. Normally,
+
+00:09:29.540 --> 00:09:34.850 line:100% position:50% align:middle
+it'd say something like the name includes
+the query but then also or the description
+
+00:09:34.850 --> 00:09:38.030 line:100% position:50% align:middle
+includes the query. And what happens when
+you get into, like, really complex
+
+00:09:38.030 --> 00:09:43.481 line:100% position:50% align:middle
+queries? Do you have to take them out?
+No, because what we did here is
+
+00:09:43.481 --> 00:09:45.839 line:100% position:50% align:middle
+we have indexed those two fields
+
+00:09:45.839 --> 00:09:50.310 line:100% position:50% align:middle
+into what's called a compound
+index, and we've indexed them as text.
+
+00:09:50.310 --> 00:09:56.330 line:100% position:50% align:middle
+So what we can do is we can use a MongoDB
+text operator, which will perform a text
+
+00:09:56.330 --> 00:10:04.180 line:100% position:50% align:middle
+search on any fields that are indexed with
+a text index. So what we did by indexing
+
+00:10:04.180 --> 00:10:08.990 line:100% position:50% align:middle
+them as text is we essentially said,
+"These fields are indexed as text,
+
+00:10:08.990 --> 00:10:14.480 line:100% position:50% align:middle
+and we can perform a search on anything
+that is text." So we'll go back here,
+
+00:10:14.480 --> 00:10:19.710 line:100% position:50% align:middle
+and we'll say the dollar text - that's the
+operator - and we're going to open that
+
+00:10:19.710 --> 00:10:24.040 line:100% position:50% align:middle
+up, and there's a couple options, and the
+first obvious one we need is this search.
+
+00:10:24.040 --> 00:10:28.810 line:100% position:50% align:middle
+We want that to be the request.query.q,
+and there's a couple other
+
+00:10:28.810 --> 00:10:33.180 line:100% position:50% align:middle
+operators that we have here with our
+.text. So we can say language,
+
+00:10:33.180 --> 00:10:35.740 line:100% position:50% align:middle
+and this will determine what
+language it is. Case sensitive.
+
+00:10:35.740 --> 00:10:40.500 line:100% position:50% align:middle
+By default, it's case insensitive, meaning
+that if you have capital B beer or lower
+
+00:10:40.500 --> 00:10:49.450 line:100% position:50% align:middle
+case b beer, it will do both of them, and
+then diet tread, diarrhea,
+
+00:10:49.450 --> 00:10:53.310 line:100% position:50% align:middle
+diaractic sensitive. Whatever that word
+is, I had to Google it,
+
+00:10:53.310 --> 00:10:59.100 line:100% position:50% align:middle
+but what it means is that if you have like
+an e accent aigu in one of your
+
+00:10:59.100 --> 00:11:04.140 line:100% position:50% align:middle
+words, then it will just treat it as a
+regular e. So somebody is searching for
+
+00:11:04.140 --> 00:11:10.390 line:100% position:50% align:middle
+resume, and you search for resume, then it
+will ignore the accents and have
+
+00:11:10.390 --> 00:11:13.780 line:100% position:50% align:middle
+everything on that letter. So we don't
+need to pass any of these case sensitive
+
+00:11:13.780 --> 00:11:18.160 line:100% position:50% align:middle
+or diaractic sensitive as they are on by
+default. And I can't think of a whole lot
+
+00:11:18.160 --> 00:11:22.150 line:100% position:50% align:middle
+of situations where you would want to turn
+them off. So we have that search coming
+
+00:11:22.150 --> 00:11:26.260 line:100% position:50% align:middle
+in so far. Give that a save. Now if we go
+back here and refresh this URL here,
+
+00:11:26.260 --> 00:11:32.570 line:100% position:50% align:middle
+you'll see that we only now get one, two,
+three things back, because I searched for
+
+00:11:32.570 --> 00:11:39.510 line:100% position:50% align:middle
+beer. If I search for bread, we get
+nothing, because there's no stores with
+
+00:11:39.510 --> 00:11:45.780 line:100% position:50% align:middle
+that in there. Let's take a look at some
+of our other stores... sour. Let's try
+
+00:11:45.780 --> 00:11:48.725 line:100% position:50% align:middle
+that. One store, because one store has
+sour. What about coffee?
+
+00:11:48.725 --> 00:11:52.300 line:100% position:50% align:middle
+Now, the one thing that's wrong
+with this search for coffee
+
+00:11:52.300 --> 00:11:54.896 line:100% position:50% align:middle
+is that it doesn't put them
+in any specific order.
+
+00:11:54.896 --> 00:11:58.980 line:100% position:50% align:middle
+It actually just brings them back in the
+order in which they were added to the
+
+00:11:58.980 --> 00:12:06.500 line:100% position:50% align:middle
+database and the date created. So what we
+need to do is now sort these based on some
+
+00:12:06.500 --> 00:12:12.580 line:100% position:50% align:middle
+sort of score or invisible field that will
+allow us to see like if this one says
+
+00:12:12.580 --> 00:12:16.380 line:100% position:50% align:middle
+coffee a couple times, and the other one
+at the bottom only says coffee once,
+
+00:12:16.380 --> 00:12:19.860 line:100% position:50% align:middle
+then you want to score the one with the
+highest score first, and obviously the one
+
+00:12:19.860 --> 00:12:24.380 line:100% position:50% align:middle
+with the lowest score last. That's where
+we get, start getting into what's called
+
+00:12:24.380 --> 00:12:29.670 line:100% position:50% align:middle
+metadata in MongoDB. And if we look at
+this metaoperator in MongoDB,
+
+00:12:29.670 --> 00:12:36.150 line:100% position:50% align:middle
+what this does is will allow us to project
+in, and MongoDB's a fancy word for add
+
+00:12:36.150 --> 00:12:41.220 line:100% position:50% align:middle
+a field. It will allow us to add a
+field using some of this hidden data
+
+00:12:41.220 --> 00:12:47.720 line:100% position:50% align:middle
+that MongoDB has about our search results,
+and we can add that to the actual end
+
+00:12:47.720 --> 00:12:51.760 line:100% position:50% align:middle
+result. So we take our find here. Our find
+has one argument which is a query.
+
+00:12:51.760 --> 00:12:56.970 line:100% position:50% align:middle
+Good. Now we can have a second argument
+here, which is can also be an object,
+
+00:12:56.970 --> 00:13:01.840 line:100% position:50% align:middle
+and we are going to tell it to project.
+Again, project means add a field.
+
+00:13:01.840 --> 00:13:07.260 line:100% position:50% align:middle
+We're going to tell it to project a score
+field, and the score is going to be made
+
+00:13:07.260 --> 00:13:12.920 line:100% position:50% align:middle
+up of the metadata, which is something
+called a text score. And the text score is
+
+00:13:12.920 --> 00:13:18.290 line:100% position:50% align:middle
+the only metadata that is currently in
+MongoDB. I'm not sure if they have plans
+
+00:13:18.290 --> 00:13:21.890 line:100% position:50% align:middle
+for adding more, but in this case, when we
+search for beer, it's going to give it a
+
+00:13:21.890 --> 00:13:26.730 line:100% position:50% align:middle
+score of how close to that did we actually
+get. So we just projected a score on
+
+00:13:26.730 --> 00:13:32.590 line:100% position:50% align:middle
+there. Give it a save, and refresh this.
+Now you will see, let's take a look,
+
+00:13:32.590 --> 00:13:34.690 line:100% position:50% align:middle
+score. There it goes, 0.5454444. This one,
+0.8. This one, 1.2. You can see that it's
+
+00:13:34.690 --> 00:13:39.180 line:100% position:50% align:middle
+actually climbing, and we want the other
+way around, Mulberry Coffee.
+
+00:13:39.180 --> 00:13:42.540 line:100% position:50% align:middle
+It's in the name. It's in the description.
+So how do we then order that in the
+
+00:13:42.540 --> 00:13:54.400 line:100% position:50% align:middle
+opposite order? Well, we can take this
+semicolon off, chain on a .sort,
+
+00:13:54.400 --> 00:13:59.290 line:100% position:50% align:middle
+and we want to sort it based on our new
+metaproperty, which is score,
+
+00:13:59.290 --> 00:14:04.460 line:100% position:50% align:middle
+and the value of that is going to be meta
+and text score once more.
+
+00:14:04.460 --> 00:14:09.140 line:100% position:50% align:middle
+And that should take our meta value, which
+is score, and sort it by that actual
+
+00:14:09.140 --> 00:14:14.430 line:100% position:50% align:middle
+value. We refresh this now, and you see
+that our top-scoring one,
+
+00:14:14.430 --> 00:14:19.320 line:100% position:50% align:middle
+1.29 is at the top, and the lowest scoring
+one, 0.54 is at the very bottom.
+
+00:14:19.320 --> 00:14:22.950 line:100% position:50% align:middle
+So if this looks a little bit weird to
+you, it's because there's a lot of nested
+
+00:14:22.950 --> 00:14:28.380 line:100% position:50% align:middle
+objects in here. What I do like to do
+sometimes is to find on one line,
+
+00:14:28.380 --> 00:14:33.220 line:100% position:50% align:middle
+and then a sort on the next. You can write
+little comments. First find stores that
+
+00:14:33.220 --> 00:14:39.060 line:100% position:50% align:middle
+match, then sort them. And then finally we
+also want to only return five, because if
+
+00:14:39.060 --> 00:14:45.720 line:100% position:50% align:middle
+we had 10,000, we only want to hit the top
+5. So we can limit to only 5 results.
+
+00:14:45.720 --> 00:14:50.790 line:100% position:50% align:middle
+Let's say .limit5. You see how you can
+like sort of chain, find,
+
+00:14:50.790 --> 00:14:56.620 line:100% position:50% align:middle
+sort, and limit all along in one query?
+Very nice that way. So that's the first
+
+00:14:56.620 --> 00:15:00.500 line:100% position:50% align:middle
+half of actually creating our API. On the
+next video, what we're going to do is
+
+00:15:00.500 --> 00:15:05.170 line:100% position:50% align:middle
+we're going to go on our frontend and use
+that to actually pull it in when somebody
+
+00:15:05.170 --> 00:15:12.000 line:100% position:50% align:middle
+searches in that search bar.
+
+00:15:12.000 --> 00:15:14.000 line:100% position:50% align:middle
+♪ [music] ♪

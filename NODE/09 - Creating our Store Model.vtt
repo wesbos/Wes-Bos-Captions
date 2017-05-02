@@ -1,0 +1,610 @@
+WEBVTT
+
+00:00:00.745 --> 00:00:03.155 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.181 --> 00:00:14.317 line:100% position:50% align:middle
+Let's do a little bit of clean up. We're
+going to get rid of this
+
+00:00:14.317 --> 00:00:17.260 line:100% position:50% align:middle
+myMiddleware here, not
+necessary for us to need it
+
+00:00:17.260 --> 00:00:21.370 line:100% position:50% align:middle
+anymore. And then we'll open up our
+index.js which has our routes file and
+
+00:00:21.370 --> 00:00:23.940 line:100% position:50% align:middle
+we'll take out that middleware. We're
+going to be using a lot more middleware in
+
+00:00:23.940 --> 00:00:28.260 line:100% position:50% align:middle
+this course. But for now, our main route,
+we'll only get our storeController
+
+00:00:28.260 --> 00:00:33.730 line:100% position:50% align:middle
+homepage. Now, let's talk about models.
+Models are where our data is going to be
+
+00:00:33.730 --> 00:00:38.100 line:100% position:50% align:middle
+stored. And before we can actually create
+a piece of data, we're going to be able to
+
+00:00:38.100 --> 00:00:43.050 line:100% position:50% align:middle
+create stores. Before we can create a
+piece of data, we need to sort of describe
+
+00:00:43.050 --> 00:00:47.160 line:100% position:50% align:middle
+what that data will look like ahead of
+time. The simplest way that I can put it
+
+00:00:47.160 --> 00:00:51.630 line:100% position:50% align:middle
+is if you were making a spreadsheet, what
+would you do ahead of time is you would
+
+00:00:51.630 --> 00:00:56.950 line:100% position:50% align:middle
+start to create all of the column headings
+for the different data that you expect to
+
+00:00:56.950 --> 00:01:00.490 line:100% position:50% align:middle
+have. Now, a model can go a little bit
+further in terms of telling what type of
+
+00:01:00.490 --> 00:01:04.960 line:100% position:50% align:middle
+data it expects whether it's a string or
+an array. It can do a little bit of clean
+
+00:01:04.960 --> 00:01:08.580 line:100% position:50% align:middle
+up before the data is saved. It can do
+things like creating a slug.
+
+00:01:08.580 --> 00:01:11.100 line:100% position:50% align:middle
+We're going to be looking into all of
+that. And that's how we do it.
+
+00:01:11.100 --> 00:01:16.450 line:100% position:50% align:middle
+Now, before we get into this, I just want
+to say MongoDB can be what's called a
+
+00:01:16.450 --> 00:01:20.860 line:100% position:50% align:middle
+loose database. Meaning that you do not
+need to specify what your data will look
+
+00:01:20.860 --> 00:01:24.800 line:100% position:50% align:middle
+like ahead of time. Sort of, like, if you
+have a JavaScript object,
+
+00:01:24.800 --> 00:01:28.510 line:100% position:50% align:middle
+and you don't need to specify what the
+properties on that object are.
+
+00:01:28.510 --> 00:01:32.550 line:100% position:50% align:middle
+You just go ahead and start using them.
+However, by default, out of the box,
+
+00:01:32.550 --> 00:01:38.940 line:100% position:50% align:middle
+MongoDB is strict in terms of it will only
+allow you to save data that it knows about
+
+00:01:38.940 --> 00:01:42.130 line:100% position:50% align:middle
+beforehand, and that's the way that I like
+to keep it. Because if you sort of just
+
+00:01:42.130 --> 00:01:46.050 line:100% position:50% align:middle
+start going willy-nilly, adding data
+wherever it is that you would like,
+
+00:01:46.050 --> 00:01:49.320 line:100% position:50% align:middle
+sort of, like, if you had an object and
+you started going willy-nilly,
+
+00:01:49.320 --> 00:01:54.220 line:100% position:50% align:middle
+adding data to your object, it can get out
+of hand really quickly and it leads to
+
+00:01:54.220 --> 00:01:57.560 line:100% position:50% align:middle
+some headaches down the road once you
+start trying to scale your application.
+
+00:01:57.560 --> 00:02:01.280 line:100% position:50% align:middle
+So we're going to be doing everything in
+strict mode. Which means that you need to
+
+00:02:01.280 --> 00:02:03.910 line:100% position:50% align:middle
+define your schema beforehand.
+
+00:02:03.910 --> 00:02:09.250 line:100% position:50% align:middle
+So let's go ahead and go to our model's
+folder and we are going to create a new
+
+00:02:09.250 --> 00:02:16.110 line:100% position:50% align:middle
+model called Store.js, capital S on that.
+And in that model, we're going to need a
+
+00:02:16.110 --> 00:02:21.590 line:100% position:50% align:middle
+couple things. First, we're going to need
+a package called "mongoose." So MongoDB is
+
+00:02:21.590 --> 00:02:26.500 line:100% position:50% align:middle
+our database and mongoose is the package
+that we use to interface.
+
+00:02:26.500 --> 00:02:30.750 line:100% position:50% align:middle
+Because MongoDB can be used with any
+language, whether you're doing Python or
+
+00:02:30.750 --> 00:02:37.870 line:100% position:50% align:middle
+Ruby or PHP. And one of the popular ways
+to interface with MongoDB in node is with
+
+00:02:37.870 --> 00:02:44.950 line:100% position:50% align:middle
+a mongoose package. Const mongoose=,
+require the mongoose package.
+
+00:02:44.950 --> 00:02:51.430 line:100% position:50% align:middle
+Next, we also need to tell mongoose that
+the Promise to use is the global.
+
+00:02:51.430 --> 00:02:55.470 line:100% position:50% align:middle
+Promise. And what does that mean there?
+When we get into queering our database,
+
+00:02:55.470 --> 00:02:59.410 line:100% position:50% align:middle
+there's a couple of ways that we can wait
+for our data to come back from the
+
+00:02:59.410 --> 00:03:04.370 line:100% position:50% align:middle
+database because it happens synchronously.
+You can use the built-in callbacks.
+
+00:03:04.370 --> 00:03:08.410 line:100% position:50% align:middle
+You can use a external library, Promise
+library like Bluebird.
+
+00:03:08.410 --> 00:03:11.670 line:100% position:50% align:middle
+Or what we're going to be doing, because
+we're going to be learning about something
+
+00:03:11.670 --> 00:03:15.650 line:100% position:50% align:middle
+called async/await is that we are using
+the built-in ES6 Promise.
+
+00:03:15.650 --> 00:03:20.570 line:100% position:50% align:middle
+So we essentially set the mongoose Promise
+property to be global which is sort of,
+
+00:03:20.570 --> 00:03:24.960 line:100% position:50% align:middle
+like, the Window in the browser. That's
+our global variable. And the access is the
+
+00:03:24.960 --> 00:03:30.000 line:100% position:50% align:middle
+capital P, Promise. So that's like if you
+were to open up your DevTools here and
+
+00:03:30.000 --> 00:03:33.240 line:100% position:50% align:middle
+type in "Promise", you'll see that you get
+the native Promise.
+
+00:03:33.240 --> 00:03:35.010 line:100% position:50% align:middle
+That's exactly what we're doing here.
+
+00:03:35.010 --> 00:03:40.160 line:100% position:50% align:middle
+Now that global, don't ever put stuff on
+it. It's tempting just to put everything
+
+00:03:40.160 --> 00:03:44.340 line:100% position:50% align:middle
+on the global as you have on the Window,
+but it's generally not what you want.
+
+00:03:44.340 --> 00:03:47.870 line:100% position:50% align:middle
+Finally, we need a library called slugs.
+So const slug=require('slugs'),
+
+00:03:47.870 --> 00:03:52.730 line:100% position:50% align:middle
+make sure you have a S on there. What
+that's going to do is it's going to allow
+
+00:03:52.730 --> 00:03:57.820 line:100% position:50% align:middle
+us to make URL friendly names for our
+slugs, sort of, like, if you've ever used
+
+00:03:57.820 --> 00:04:01.920 line:100% position:50% align:middle
+the word "press permalink". Now we need to
+go ahead and make our schema.
+
+00:04:01.920 --> 00:04:11.370 line:100% position:50% align:middle
+So we will make it, storeSchema=new
+mongoose. Schema. Pass that an object.
+
+00:04:11.370 --> 00:04:15.300 line:100% position:50% align:middle
+And then before we even specify any of the
+properties on our schema,
+
+00:04:15.300 --> 00:04:19.660 line:100% position:50% align:middle
+we'll go ahead and export that sucker. Now
+previously, we did export.
+
+00:04:19.660 --> 00:04:25.860 line:100% position:50% align:middle
+whatever it is that we wanted, is equal
+to a function. Now if you are...if the
+
+00:04:25.860 --> 00:04:31.120 line:100% position:50% align:middle
+main thing that you're exporting from a
+file is going to be importable,
+
+00:04:31.120 --> 00:04:37.760 line:100% position:50% align:middle
+then you can put it on module.exports=. So
+you see here, we just say,
+
+00:04:37.760 --> 00:04:40.910 line:100% position:50% align:middle
+here, we do module exports because it's
+the main thing that we're exporting.
+
+00:04:40.910 --> 00:04:44.600 line:100% position:50% align:middle
+But if we open up our storeController, you
+notice that we're just exporting
+
+00:04:44.600 --> 00:04:49.560 line:100% position:50% align:middle
+properties on the export variable. And the
+difference between that is not a huge
+
+00:04:49.560 --> 00:04:56.840 line:100% position:50% align:middle
+thing. But it all boils down to when you
+import a package, is the main thing that
+
+00:04:56.840 --> 00:05:02.490 line:100% position:50% align:middle
+you import from it going to be a function
+or are you just importing an object that
+
+00:05:02.490 --> 00:05:06.280 line:100% position:50% align:middle
+has many properties on it, or they can
+also be both. So we'll go more into that.
+
+00:05:06.280 --> 00:05:09.220 line:100% position:50% align:middle
+You'll see more examples. So that's why
+it's module.exports.
+
+00:05:09.220 --> 00:05:15.510 line:100% position:50% align:middle
+And we'll say mongoose.model, and we're
+going to name that model capital S,
+
+00:05:15.510 --> 00:05:20.290 line:100% position:50% align:middle
+Store, and we're going to give our schema
+which, again, will describe what our data
+
+00:05:20.290 --> 00:05:24.480 line:100% position:50% align:middle
+looks like. Good, now we can go ahead and
+start putting all of our properties.
+
+00:05:24.480 --> 00:05:26.930 line:100% position:50% align:middle
+So the first thing that we're going to
+have, we're going to have a name,
+
+00:05:26.930 --> 00:05:32.370 line:100% position:50% align:middle
+we're going to have a slug, we are going
+to have a description,
+
+00:05:32.370 --> 00:05:36.690 line:100% position:50% align:middle
+and we are going to have tags. The name is
+going to be a String.
+
+00:05:36.690 --> 00:05:40.940 line:100% position:50% align:middle
+So we could just type string here, and
+that will know that when it saves it to
+
+00:05:40.940 --> 00:05:45.720 line:100% position:50% align:middle
+the database, it will be saved as a
+string. But there's a couple other things
+
+00:05:45.720 --> 00:05:49.110 line:100% position:50% align:middle
+that we need to pass along here. So rather
+than just passing string,
+
+00:05:49.110 --> 00:05:53.350 line:100% position:50% align:middle
+you can also pass it an object which has
+all of our properties on it.
+
+00:05:53.350 --> 00:05:58.700 line:100% position:50% align:middle
+So the type is going to be a String. And
+we can also specific different properties
+
+00:05:58.700 --> 00:06:03.170 line:100% position:50% align:middle
+like trim, and that's going to be set to
+true. So if somebody tries to pass in a
+
+00:06:03.170 --> 00:06:09.020 line:100% position:50% align:middle
+name or has, like, a Store Name here, what
+it will automatically do before it saves
+
+00:06:09.020 --> 00:06:11.950 line:100% position:50% align:middle
+it is it's going to take out the white
+space on either end.
+
+00:06:11.950 --> 00:06:19.900 line:100% position:50% align:middle
+So my general rule of thumb is do all of
+your data normalization as close to the
+
+00:06:19.900 --> 00:06:25.100 line:100% position:50% align:middle
+model as possible. So if the model has a
+property built-in that will trim it,
+
+00:06:25.100 --> 00:06:29.800 line:100% position:50% align:middle
+do it on the model rather than having to
+do it right before you save it and do any
+
+00:06:29.800 --> 00:06:33.740 line:100% position:50% align:middle
+validation. So we'll say trim is true. And
+it's also required...so we can say
+
+00:06:33.740 --> 00:06:39.140 line:100% position:50% align:middle
+required, true. However, if you try to
+save a Store without a name,
+
+00:06:39.140 --> 00:06:43.820 line:100% position:50% align:middle
+it's going to give us some, like, ugly
+MongoDB error message which isn't very
+
+00:06:43.820 --> 00:06:47.960 line:100% position:50% align:middle
+user-friendly. So rather than passing it
+true [inaudible] we can pass it an error
+
+00:06:47.960 --> 00:06:53.330 line:100% position:50% align:middle
+message which will act as true as well as
+give us the error if someone doesn't pass
+
+00:06:53.330 --> 00:06:58.260 line:100% position:50% align:middle
+it. So let's say, "Please enter a store
+name." Good, so that's it.
+
+00:06:58.260 --> 00:07:04.190 line:100% position:50% align:middle
+The slug, what will the slug be? Slug will
+just be a String, so not necessary to do
+
+00:07:04.190 --> 00:07:10.210 line:100% position:50% align:middle
+an object here because it's just a String.
+The description is going to be a String as
+
+00:07:10.210 --> 00:07:16.410 line:100% position:50% align:middle
+well. So we'll say type, we'll say String,
+and we'll also trim it to be true.
+
+00:07:16.410 --> 00:07:23.580 line:100% position:50% align:middle
+And our tags is going to be an array of
+Strings. So what we do there is we
+
+00:07:23.580 --> 00:07:27.870 line:100% position:50% align:middle
+pass it an array here and we say it
+will be an array of Strings,
+
+00:07:27.870 --> 00:07:31.540 line:100% position:50% align:middle
+and that means we'll pass multiple Strings
+sometimes, because there's going to be
+
+00:07:31.540 --> 00:07:36.980 line:100% position:50% align:middle
+multiple tags, and each one of them will
+be put inside an array like that.
+
+00:07:36.980 --> 00:07:42.490 line:100% position:50% align:middle
+So we give that a save. And we need to
+know kick-start this model and make
+
+00:07:42.490 --> 00:07:45.867 line:100% position:50% align:middle
+MongoDB known about it. Oh, I got a red
+error here, make sure
+
+00:07:45.867 --> 00:07:48.280 line:100% position:50% align:middle
+you put a comma right there.
+
+00:07:48.280 --> 00:07:52.730 line:100% position:50% align:middle
+So how do we make MongoDB know about this
+actual model? Because we've created the
+
+00:07:52.730 --> 00:07:56.030 line:100% position:50% align:middle
+model here, however we haven't import it
+into our application anywhere.
+
+00:07:56.030 --> 00:07:59.480 line:100% position:50% align:middle
+Well, we're go into our Store.js. We'll go
+right where it says,
+
+00:07:59.480 --> 00:08:03.990 line:100% position:50% align:middle
+"Ready, let's go." and we are going to
+import all of our models.
+
+00:08:03.990 --> 00:08:09.690 line:100% position:50% align:middle
+So let's say import all our models. And
+importing our models, you only have to do
+
+00:08:09.690 --> 00:08:15.240 line:100% position:50% align:middle
+it once because as soon as you connect to
+MongoDB and as soon as you import your
+
+00:08:15.240 --> 00:08:19.070 line:100% position:50% align:middle
+models, MongoDB will know about them
+throughout your entire application.
+
+00:08:19.070 --> 00:08:23.640 line:100% position:50% align:middle
+It's using a concept in node called a
+singleton which means that once you
+
+00:08:23.640 --> 00:08:27.050 line:100% position:50% align:middle
+configure it, you don't have to keep doing
+it in every single file because that would
+
+00:08:27.050 --> 00:08:31.140 line:100% position:50% align:middle
+be a bit of a pain to have to import our
+models and connect to the database on the
+
+00:08:31.140 --> 00:08:37.240 line:100% position:50% align:middle
+top of every single file. So we're simply
+just going to require our models folder,
+
+00:08:37.240 --> 00:08:41.260 line:100% position:50% align:middle
+and this one's called Store.js. Again, you
+don't need to put the .js on the end,
+
+00:08:41.260 --> 00:08:44.273 line:100% position:50% align:middle
+it is assumed. So we'll come back to that,
+import the rest of our
+
+00:08:44.273 --> 00:08:46.910 line:100% position:50% align:middle
+models as we have it running.
+
+00:08:46.910 --> 00:08:49.900 line:100% position:50% align:middle
+Just to make sure that everything is
+running fine, let's go back to our local
+
+00:08:49.900 --> 00:08:55.960 line:100% position:50% align:middle
+host and refresh. I got an error here,
+let's open it up. String is not defined.
+
+00:08:55.960 --> 00:08:58.550 line:100% position:50% align:middle
+Let's go back to our Store here. You're
+probably yelling at me,
+
+00:08:58.550 --> 00:09:03.750 line:100% position:50% align:middle
+"Oh, silly Wes." Capital S, String. There
+we go. Refresh the page,
+
+00:09:03.750 --> 00:09:08.880 line:100% position:50% align:middle
+and you should see your "hi" pop up on the
+page. That's how you know nothing has gone
+
+00:09:08.880 --> 00:09:12.260 line:100% position:50% align:middle
+wrong while we created this. But take a
+look at our data here,
+
+00:09:12.260 --> 00:09:15.990 line:100% position:50% align:middle
+name, slug, description, and tags, we're
+going to be supplying with the name,
+
+00:09:15.990 --> 00:09:20.300 line:100% position:50% align:middle
+the description, and the tags. However,
+the slug is gonna be auto generated
+
+00:09:20.300 --> 00:09:25.870 line:100% position:50% align:middle
+whenever somebody saves. What we use for
+that is a pre-save hook in MongoDB.
+
+00:09:25.870 --> 00:09:32.040 line:100% position:50% align:middle
+Meaning that before somebody saves a
+Store, we are going to auto generate the
+
+00:09:32.040 --> 00:09:37.360 line:100% position:50% align:middle
+slug field so that they can be passed in.
+So the way we do that is we take our
+
+00:09:37.360 --> 00:09:44.120 line:100% position:50% align:middle
+storage schema and we pre-save. So before
+it is saved, we are going to run a
+
+00:09:44.120 --> 00:09:49.010 line:100% position:50% align:middle
+function which gives us a next value. So
+this has to be a proper function,
+
+00:09:49.010 --> 00:09:52.760 line:100% position:50% align:middle
+not an arrow here. And the reason why is
+because we need this.
+
+00:09:52.760 --> 00:09:57.750 line:100% position:50% align:middle
+What is this going to be equal to? This
+will be equal to the Store that we are
+
+00:09:57.750 --> 00:10:05.750 line:100% position:50% align:middle
+trying to save. So we will say
+this.slug=slug(this.name). And what that
+
+00:10:05.750 --> 00:10:10.230 line:100% position:50% align:middle
+will do is it will take the name that you
+passed it, run it through our slug package
+
+00:10:10.230 --> 00:10:14.093 line:100% position:50% align:middle
+that we imported at the top here and set
+the slug property to be
+
+00:10:14.093 --> 00:10:16.510 line:100% position:50% align:middle
+whatever the output of the slug is.
+
+00:10:16.510 --> 00:10:19.320 line:100% position:50% align:middle
+Once we've done that, we call next which
+is...this is sort of,
+
+00:10:19.320 --> 00:10:23.590 line:100% position:50% align:middle
+like, a middleware as well where you set
+the slug property and then you move along
+
+00:10:23.590 --> 00:10:27.490 line:100% position:50% align:middle
+which will allow us to save. Remember,
+doing this before the save so the save
+
+00:10:27.490 --> 00:10:32.110 line:100% position:50% align:middle
+will not happen until we're done, whatever
+work it is that we're trying to do inside
+
+00:10:32.110 --> 00:10:36.680 line:100% position:50% align:middle
+of this function. Now that will happen
+every single time that we save a Store,
+
+00:10:36.680 --> 00:10:41.650 line:100% position:50% align:middle
+which is not what we need. We only need to
+run this function when the name has been
+
+00:10:41.650 --> 00:10:47.290 line:100% position:50% align:middle
+changed. So we'll go up here. We'll say if
+[inaudible] this.isModified,
+
+00:10:47.290 --> 00:10:53.970 line:100% position:50% align:middle
+name, so we wanna say if the Store's name
+is not modified then we just want to call
+
+00:10:53.970 --> 00:11:02.030 line:100% position:50% align:middle
+next, skip it, and return which will stop
+this function from running.
+
+00:11:02.030 --> 00:11:06.820 line:100% position:50% align:middle
+Sometimes you'll see people say return
+next in one line, absolutely fine as well.
+
+00:11:06.820 --> 00:11:12.950 line:100% position:50% align:middle
+I'm just doing it for explicitly sake, to
+be explicit. So we have our next,
+
+00:11:12.950 --> 00:11:17.210 line:100% position:50% align:middle
+we have a return if the name is not, we're
+going to skip it. Otherwise,
+
+00:11:17.210 --> 00:11:21.220 line:100% position:50% align:middle
+we're going to set the slug to be the slug
+of this.name and call next.
+
+00:11:21.220 --> 00:11:26.890 line:100% position:50% align:middle
+Now, that is going to be okay for now but
+we're going to come back and do a little
+
+00:11:26.890 --> 00:11:31.920 line:100% position:50% align:middle
+bit more advanced version in the future.
+Because if people have a store named Tim
+
+00:11:31.920 --> 00:11:36.150 line:100% position:50% align:middle
+Hortons, then you're going to have
+overlapping slugs, and you can't have
+
+00:11:36.150 --> 00:11:42.870 line:100% position:50% align:middle
+that. So we'll come back and it will say
+TODO make more resilient so slugs are
+
+00:11:42.870 --> 00:11:46.920 line:100% position:50% align:middle
+unique, and we'll check there. So we can
+do unique 1, unique 2,
+
+00:11:46.920 --> 00:11:51.640 line:100% position:50% align:middle
+unique 3, depending on if that slug
+already exists. Good. Give it a quick
+
+00:11:51.640 --> 00:11:56.952 line:100% position:50% align:middle
+refresh. No errors, I'm happy. Let's move
+on to actually saving some data.
+
+00:11:57.751 --> 00:12:00.157 line:100% position:50% align:middle
+♪ [music] ♪

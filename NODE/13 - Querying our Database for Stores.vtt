@@ -1,0 +1,578 @@
+WEBVTT
+
+00:00:00.916 --> 00:00:03.916 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.000 --> 00:00:15.320 line:100% position:50% align:middle
+Let's get to actually displaying our
+stores. Now that we've added two or three
+
+00:00:15.320 --> 00:00:18.920 line:100% position:50% align:middle
+to our database, we need to show them on
+the actual page. Now,
+
+00:00:18.920 --> 00:00:22.170 line:100% position:50% align:middle
+where is that going to happen? It's going
+to happen first on the homepage.
+
+00:00:22.170 --> 00:00:26.400 line:100% position:50% align:middle
+Second, it's also going to show when you
+visit your store's page directly.
+
+00:00:26.400 --> 00:00:31.930 line:100% position:50% align:middle
+So we need a controller method that's
+going to run on both of those routes.
+
+00:00:31.930 --> 00:00:38.940 line:100% position:50% align:middle
+We'll do that right now. We'll say,
+"exports.getStores =". That's going to be
+
+00:00:38.940 --> 00:00:44.370 line:100% position:50% align:middle
+a request, and then I have a response.
+Then, inside of that let's just say,
+
+00:00:44.370 --> 00:00:50.290 line:100% position:50% align:middle
+"res.render". We're going to render out
+the "stores" URL and the title of that is
+
+00:00:50.290 --> 00:00:56.490 line:100% position:50% align:middle
+going to be "Stores". So let's try that
+out. We go back to our routes,
+
+00:00:56.490 --> 00:01:02.740 line:100% position:50% align:middle
+index.js, and we'll say "router.get" is no
+longer going to be our homepage.
+
+00:01:02.740 --> 00:01:06.650 line:100% position:50% align:middle
+It's now going to be "getStores." So you
+see the beauty of this.
+
+00:01:06.650 --> 00:01:10.740 line:100% position:50% align:middle
+Then, it would just duplicate that line.
+We'll just hit CMD+SHIFT+E,
+
+00:01:10.740 --> 00:01:14.580 line:100% position:50% align:middle
+and you want to say anytime you visit the
+"stores", you also want to run that.
+
+00:01:14.580 --> 00:01:18.930 line:100% position:50% align:middle
+So give that a save. If we refresh that,
+it should tell us it doesn't find the
+
+00:01:18.930 --> 00:01:25.440 line:100% position:50% align:middle
+template. There we go, cannot find it. So
+let's go and open up our views and make a
+
+00:01:25.440 --> 00:01:34.700 line:100% position:50% align:middle
+new file called "stores.pug". Again, you
+can take this over if you want to go to
+
+00:01:34.700 --> 00:01:39.660 line:100% position:50% align:middle
+something like editStore if you just want
+to take that and paste it in here.
+
+00:01:39.660 --> 00:01:44.040 line:100% position:50% align:middle
+It extends the layout. We don't need the
+store form there. You have a "block
+
+00:01:44.040 --> 00:01:51.330 line:100% position:50% align:middle
+content" h2 title, and take the store form
+out. So let's go through that real quick.
+
+00:01:51.330 --> 00:01:56.480 line:100% position:50% align:middle
+When somebody hits our route, which is
+either "/" or "/stores",
+
+00:01:56.480 --> 00:02:01.200 line:100% position:50% align:middle
+use the controller method, getStores, for
+both of them, which is "getStores".
+
+00:02:01.200 --> 00:02:06.580 line:100% position:50% align:middle
+Then, that will immediately render out the
+"stores" URL with just a title called
+
+00:02:06.580 --> 00:02:12.190 line:100% position:50% align:middle
+"Stores". We'll see if that works. There
+we go. "Stores" on the homepage.
+
+00:02:12.190 --> 00:02:16.120 line:100% position:50% align:middle
+That works as well on the Stores page.
+Both of those pages are working.
+
+00:02:16.120 --> 00:02:22.420 line:100% position:50% align:middle
+Good. Now, that's not all. What we need to
+do here is before we get the stores,
+
+00:02:22.420 --> 00:02:31.900 line:100% position:50% align:middle
+we need to first query the database for a
+list of all stores before we can actually
+
+00:02:31.900 --> 00:02:37.750 line:100% position:50% align:middle
+show them on the page. So the way that we
+do that is very similar to how we saved a
+
+00:02:37.750 --> 00:02:41.700 line:100% position:50% align:middle
+store in the last couple videos. But now,
+we're going to be querying the database
+
+00:02:41.700 --> 00:02:45.400 line:100% position:50% align:middle
+for a list of our new stores. So the first
+thing we need to do is make this an async
+
+00:02:45.400 --> 00:02:51.760 line:100% position:50% align:middle
+function. When you have an async function,
+you must go back to your routes and find
+
+00:02:51.760 --> 00:02:58.570 line:100% position:50% align:middle
+your Store controller, and wrap it in
+catchErrors, because we're going to be
+
+00:02:58.570 --> 00:03:04.400 line:100% position:50% align:middle
+using our async/await without any
+try-catch here. Good. Go back here,
+
+00:03:04.400 --> 00:03:10.870 line:100% position:50% align:middle
+and we will take our store and we will use
+".find". What ".find" will do is it will
+
+00:03:10.870 --> 00:03:14.790 line:100% position:50% align:middle
+query the database for all of them. Now,
+there's a whole bunch of different things
+
+00:03:14.790 --> 00:03:20.140 line:100% position:50% align:middle
+we can chain on here to limit and search
+for ones that only contain a specific word
+
+00:03:20.140 --> 00:03:23.730 line:100% position:50% align:middle
+in the title. We're going to get into more
+queries. But for now,
+
+00:03:23.730 --> 00:03:26.180 line:100% position:50% align:middle
+we're just going to find them all, and
+then later we'll come back and do
+
+00:03:26.180 --> 00:03:30.550 line:100% position:50% align:middle
+patching and things like that. So
+"Store.find", and how do save that in a
+
+00:03:30.550 --> 00:03:35.980 line:100% position:50% align:middle
+database? Well, we simply say, "const
+stores = Store.find". "Store.find" is
+
+00:03:35.980 --> 00:03:41.510 line:100% position:50% align:middle
+going to return a promise. So how do we
+wait for "Store.find" to come back before
+
+00:03:41.510 --> 00:03:46.170 line:100% position:50% align:middle
+we actually send data to the user and
+render it out? Well, you await it,
+
+00:03:46.170 --> 00:03:50.850 line:100% position:50% align:middle
+"await Store.find", and then on the next
+line you should be able to console.log all
+
+00:03:50.850 --> 00:03:55.590 line:100% position:50% align:middle
+the stores. So let's give that a save. I'm
+going to open up my terminal here,
+
+00:03:55.590 --> 00:04:00.000 line:100% position:50% align:middle
+clear it out, refresh. Whoa. You see that
+it still loads "stores",
+
+00:04:00.000 --> 00:04:06.910 line:100% position:50% align:middle
+but our "console.log" here has
+console.logged an array of every single
+
+00:04:06.910 --> 00:04:12.100 line:100% position:50% align:middle
+store that is available to us. So we now
+want to take that "stores" variable and
+
+00:04:12.100 --> 00:04:16.380 line:100% position:50% align:middle
+give it to our actually template, so we
+can loop over it. The way that we do that
+
+00:04:16.380 --> 00:04:20.260 line:100% position:50% align:middle
+is you simply just pass it the "stores"
+property, and we're going to pass it the
+
+00:04:20.260 --> 00:04:24.390 line:100% position:50% align:middle
+"stores" variable. Or if you've taken my
+ES6 course, you'll know I've got a little
+
+00:04:24.390 --> 00:04:29.570 line:100% position:50% align:middle
+red underline there. If the property name
+is the same as the variable that you are
+
+00:04:29.570 --> 00:04:33.450 line:100% position:50% align:middle
+passing along, so property name is
+"stores", the variable that we're passing
+
+00:04:33.450 --> 00:04:37.510 line:100% position:50% align:middle
+along is also "stores", you can simply
+just pass the variable.
+
+00:04:37.510 --> 00:04:42.630 line:100% position:50% align:middle
+That will do the same thing as we're doing
+there. So if we go back in,
+
+00:04:42.630 --> 00:04:48.390 line:100% position:50% align:middle
+nothing will change. But we can go into
+our stores, and maybe do a "pre= h.",
+
+00:04:48.390 --> 00:04:54.540 line:100% position:50% align:middle
+take a dump, sorry, and try to dump our
+stores onto the page. What do we got
+
+00:04:54.540 --> 00:05:00.810 line:100% position:50% align:middle
+there? Hey. So if you dump your "stores"
+variable, you'll see that before we render
+
+00:05:00.810 --> 00:05:05.600 line:100% position:50% align:middle
+out this page, we quickly hit the database
+for an array of all of our stores.
+
+00:05:05.600 --> 00:05:09.460 line:100% position:50% align:middle
+You see the Bakery, the Fish Market, the
+test, and Testing 123.
+
+00:05:09.460 --> 00:05:14.930 line:100% position:50% align:middle
+Those are the four that if you go back to
+your database here and give it a refresh,
+
+00:05:14.930 --> 00:05:20.020 line:100% position:50% align:middle
+you'll see one, two, three, four. Those
+are all of our stores that we have.
+
+00:05:20.020 --> 00:05:24.590 line:100% position:50% align:middle
+Good. Now, how do we loop over all of
+that? How do we actually get them
+
+00:05:24.590 --> 00:05:29.310 line:100% position:50% align:middle
+displaying? Well, let's look at that now.
+Take out that dump and we're going to give
+
+00:05:29.310 --> 00:05:32.640 line:100% position:50% align:middle
+ourselves a div with a class of "stores",
+and then we're going to loop over with
+
+00:05:32.640 --> 00:05:40.030 line:100% position:50% align:middle
+"each store in stores". For each one,
+let's just try to give ourselves an h2
+
+00:05:40.030 --> 00:05:45.090 line:100% position:50% align:middle
+"store.name". What's that give us? Here we
+go, Bakery, Fish Market,
+
+00:05:45.090 --> 00:05:51.430 line:100% position:50% align:middle
+test, Testing 123. Good. But what we
+actually want to do is to shell off this
+
+00:05:51.430 --> 00:05:56.470 line:100% position:50% align:middle
+displaying of each individual stores to a
+separate mixin, and I'm going to call that
+
+00:05:56.470 --> 00:06:02.760 line:100% position:50% align:middle
+a "storeCard". We'll go back into our
+views, mixins, New File.
+
+00:06:02.760 --> 00:06:12.230 line:100% position:50% align:middle
+We'll call it "_storeCard.pug", and we'll
+make a mixin called "mixin storeCard".
+
+00:06:12.230 --> 00:06:18.650 line:100% position:50% align:middle
+It takes in a "store" that will default to
+being blank. Then, we will have inside of
+
+00:06:18.650 --> 00:06:24.300 line:100% position:50% align:middle
+that a store which has a ".store__hero".
+Inside of that, we're going to have the
+
+00:06:24.300 --> 00:06:32.700 line:100% position:50% align:middle
+image tag with a source that is equal to
+backticks, and that is either going to be
+
+00:06:32.700 --> 00:06:38.650 line:100% position:50% align:middle
+"/uploads/". We're going to try to see if
+the store has a photo.
+
+00:06:38.650 --> 00:06:42.060 line:100% position:50% align:middle
+You'll know now it doesn't have a photo,
+because we haven't done that part yet.
+
+00:06:42.060 --> 00:06:45.260 line:100% position:50% align:middle
+But if it doesn't have a store photo,
+we're simply just going to give it
+
+00:06:45.260 --> 00:06:50.640 line:100% position:50% align:middle
+store.png, and that will fall back to
+something that I've got in this.
+
+00:06:50.640 --> 00:06:56.190 line:100% position:50% align:middle
+If we go to public, uploads, you'll see
+this store.png. This is what we're going
+
+00:06:56.190 --> 00:07:01.280 line:100% position:50% align:middle
+to fall back to if it does not exist.
+Store.png, and then also what do we want
+
+00:07:01.280 --> 00:07:07.380 line:100% position:50% align:middle
+to put in there? We want to have an h2
+with a class of "title" and we have a link
+
+00:07:07.380 --> 00:07:11.760 line:100% position:50% align:middle
+in there that's going to link to
+"a(href=". Now, we need to generate this
+
+00:07:11.760 --> 00:07:19.930 line:100% position:50% align:middle
+URL. So it's going to be backticks
+"/store/${store.slug}", because the store
+
+00:07:19.930 --> 00:07:24.610 line:100% position:50% align:middle
+is going to have a slug. Then, inside of
+that, we can use "store.name".
+
+00:07:24.610 --> 00:07:31.520 line:100% position:50% align:middle
+Now, again, let me remind you of how silly
+this is. If you want to generate an
+
+00:07:31.520 --> 00:07:37.960 line:100% position:50% align:middle
+attribute like this, you have to use
+backticks and the ES6 ${}.
+
+00:07:37.960 --> 00:07:42.400 line:100% position:50% align:middle
+If you want to put a variable inside of
+the text content of a node,
+
+00:07:42.400 --> 00:07:46.460 line:100% position:50% align:middle
+you have to use the hash properties.
+That's a little bit weird that you have to
+
+00:07:46.460 --> 00:07:50.460 line:100% position:50% align:middle
+know both of those, but you'll get used to
+it pretty quickly. So we just made this
+
+00:07:50.460 --> 00:07:54.450 line:100% position:50% align:middle
+mixin here called "storeCard". If we go
+back to our stores here,
+
+00:07:54.450 --> 00:08:01.210 line:100% position:50% align:middle
+can we import it really quickly? Yes, we
+can. We'll say, "include mixins".
+
+00:08:01.210 --> 00:08:04.850 line:100% position:50% align:middle
+Notice how there's no quotes around here,
+"storeCard", because that's the name of
+
+00:08:04.850 --> 00:08:09.790 line:100% position:50% align:middle
+the file. Then, here, instead of having an
+h2, we're going to delete that and you
+
+00:08:09.790 --> 00:08:14.650 line:100% position:50% align:middle
+just use our storeCard, which you pass it
+all the data it needs,
+
+00:08:14.650 --> 00:08:18.880 line:100% position:50% align:middle
+which is our "store" variable. So woo,
+let's see if that works.
+
+00:08:18.880 --> 00:08:24.590 line:100% position:50% align:middle
+Cross your fingers. Beautiful. We've got
+our Baker, our test, Fish Market,
+
+00:08:24.590 --> 00:08:28.140 line:100% position:50% align:middle
+and you can click on one of them. It
+should actually bring you to the URL.
+
+00:08:28.140 --> 00:08:33.280 line:100% position:50% align:middle
+Obviously, it's still 404. We don't have
+that page. But we are now listing out all
+
+00:08:33.280 --> 00:08:35.550 line:100% position:50% align:middle
+of the stores. Now, we can take that a
+little bit further out.
+
+00:08:35.550 --> 00:08:39.520 line:100% position:50% align:middle
+Say, we haven't put everything into it. So
+let's go back to our storeCard here.
+
+00:08:39.520 --> 00:08:44.600 line:100% position:50% align:middle
+Now, down here, we have our
+"store__details". That's just the CSS
+
+00:08:44.600 --> 00:08:47.300 line:100% position:50% align:middle
+class. So again, we're going to have a
+"hero", and we're going to have a
+
+00:08:47.300 --> 00:08:50.790 line:100% position:50% align:middle
+"details" as a sibling that. Inside of
+that, we'll have a paragraph tag,
+
+00:08:50.790 --> 00:08:55.510 line:100% position:50% align:middle
+which will include the "store.description"
+property. Now, if I refresh that,
+
+00:08:55.510 --> 00:08:59.660 line:100% position:50% align:middle
+you'll see that our descriptions are now
+popping up inside of our store details
+
+00:08:59.660 --> 00:09:04.050 line:100% position:50% align:middle
+divs. They're all properly spaced like
+that. One thing that could possibly happen
+
+00:09:04.050 --> 00:09:10.780 line:100% position:50% align:middle
+is somebody could add a really long store.
+So here I can say, "Really Long Store
+
+00:09:10.780 --> 00:09:17.950 line:100% position:50% align:middle
+Name". We get a whole bunch of "lorem
+ipsum" here. Someone could add a really
+
+00:09:17.950 --> 00:09:22.890 line:100% position:50% align:middle
+long description in here and save. I
+successfully created it, go back to my
+
+00:09:22.890 --> 00:09:28.160 line:100% position:50% align:middle
+Stores page. Now, we've got a bit of a
+problem with this really long description
+
+00:09:28.160 --> 00:09:34.820 line:100% position:50% align:middle
+here. So what we could do is say like,
+maximum 25 words in our template when
+
+00:09:34.820 --> 00:09:38.560 line:100% position:50% align:middle
+you're viewing a storeCard. That's pretty
+good. We can just take description,
+
+00:09:38.560 --> 00:09:44.150 line:100% position:50% align:middle
+and because Pug is just JavaScript, you
+can immediately split it on a space.
+
+00:09:44.150 --> 00:09:49.710 line:100% position:50% align:middle
+You can then take that array that it
+returns and slice it for the first 25
+
+00:09:49.710 --> 00:09:57.370 line:100% position:50% align:middle
+words. Then, you can join it back together
+with a space. That will cut it down to...
+
+00:09:57.370 --> 00:10:02.620 line:100% position:50% align:middle
+Oh, no. All right. Let's see what we've
+got here. "Unexpected token." Oh,
+
+00:10:02.620 --> 00:10:06.410 line:100% position:50% align:middle
+you can't do semicolons in Pug. Because
+while it is JavaScript,
+
+00:10:06.410 --> 00:10:12.270 line:100% position:50% align:middle
+there are no semicolons in Pug. There we
+go. What that did is it trimmed it to 25
+
+00:10:12.270 --> 00:10:19.360 line:100% position:50% align:middle
+words. What happened there? Well, let's
+say we have that string here.
+
+00:10:19.360 --> 00:10:24.450 line:100% position:50% align:middle
+So I'll say, "const string" or maybe
+"words =" and we'll put it in a string.
+
+00:10:24.450 --> 00:10:31.070 line:100% position:50% align:middle
+So I have our words. If you've split
+something on a space, that will give you
+
+00:10:31.070 --> 00:10:36.190 line:100% position:50% align:middle
+an array of all of the words. Here, we
+have 50 words. So immediately,
+
+00:10:36.190 --> 00:10:42.170 line:100% position:50% align:middle
+you can take that array and you can slice
+it, getting the first to the 25th word,
+
+00:10:42.170 --> 00:10:49.110 line:100% position:50% align:middle
+and that returns us an array with a length
+of 25 words. Then, we're going to turn
+
+00:10:49.110 --> 00:10:54.950 line:100% position:50% align:middle
+that array right back into a sentence,
+with join with a space again,
+
+00:10:54.950 --> 00:11:00.960 line:100% position:50% align:middle
+and that's a nice quick way to slice a
+sentence without slicing it in the middle
+
+00:11:00.960 --> 00:11:06.450 line:100% position:50% align:middle
+of any of your possible words. So you'll
+do that quite a bit, where you do have the
+
+00:11:06.450 --> 00:11:11.160 line:100% position:50% align:middle
+data, but you just need to massage it in a
+little bit. It's totally fine just to do a
+
+00:11:11.160 --> 00:11:16.420 line:100% position:50% align:middle
+little bit of work inside of your template
+when you rather not do it inside of your
+
+00:11:16.420 --> 00:11:21.630 line:100% position:50% align:middle
+controller. So we've got our store details
+showing up. Everything is starting to look
+
+00:11:21.630 --> 00:11:24.790 line:100% position:50% align:middle
+pretty good. One last thing is it's
+looking a little bit squished here,
+
+00:11:24.790 --> 00:11:27.890 line:100% position:50% align:middle
+and that's because we haven't added the
+store actions just yet,
+
+00:11:27.890 --> 00:11:31.990 line:100% position:50% align:middle
+and that's going to allow us to heart and
+favorite, and remove all of those things.
+
+00:11:31.990 --> 00:11:36.070 line:100% position:50% align:middle
+So what we want to do here is just go
+inside of your "hero". The first line,
+
+00:11:36.070 --> 00:11:42.130 line:100% position:50% align:middle
+give yourself a "store__actions" and
+inside of that you can just give yourself
+
+00:11:42.130 --> 00:11:49.550 line:100% position:50% align:middle
+a button that says "Soon". Then, what that
+will do is it'll put us a little button
+
+00:11:49.550 --> 00:11:52.600 line:100% position:50% align:middle
+there. Eventually, we're going to come
+back and change that out and that'll kick
+
+00:11:52.600 --> 00:11:59.060 line:100% position:50% align:middle
+in the CSS, so things start to look a lot
+better. So that is looping over all of our
+
+00:11:59.060 --> 00:12:04.270 line:100% position:50% align:middle
+data. Again, let's review that real quick.
+We have a route which calls our getStores
+
+00:12:04.270 --> 00:12:09.300 line:100% position:50% align:middle
+controller. Our Stores controller is
+responsible for two things.
+
+00:12:09.300 --> 00:12:16.390 line:100% position:50% align:middle
+It's going to get the data, and then it's
+going to pass the data to our template,
+
+00:12:16.390 --> 00:12:22.000 line:100% position:50% align:middle
+which will then in turn be used in a mixin
+and a template, to loop over and explain
+
+00:12:22.000 --> 00:12:25.490 line:100% position:50% align:middle
+all of that data. You can take those
+console.logs out. It sort of muddies up
+
+00:12:25.490 --> 00:12:30.640 line:100% position:50% align:middle
+your actual terminal window. Refresh.
+Good. We're in good shape.
+
+00:12:30.640 --> 00:12:32.272 line:100% position:50% align:middle
+I'll see you in the next one.
+
+00:12:32.272 --> 00:12:34.272 line:100% position:50% align:middle
+♪ [music] ♪

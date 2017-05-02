@@ -1,0 +1,730 @@
+WEBVTT
+
+00:00:00.497 --> 00:00:03.497 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.070 --> 00:00:14.270 line:100% position:50% align:middle
+The last thing we need to nail before we
+can get building this sucker is the
+
+00:00:14.270 --> 00:00:19.000 line:100% position:50% align:middle
+concept of middleware. Now, middleware is
+fairly fundamental to Express.
+
+00:00:19.000 --> 00:00:23.830 line:100% position:50% align:middle
+It's how almost all Express plugins are
+working, so it's pretty important that at
+
+00:00:23.830 --> 00:00:28.820 line:100% position:50% align:middle
+least we get an introduction to it here,
+and then we'll be coming back to it over
+
+00:00:28.820 --> 00:00:31.940 line:100% position:50% align:middle
+and over throughout this entire
+course. So what is middleware?
+
+00:00:31.940 --> 00:00:36.570 line:100% position:50% align:middle
+Well, if we look at our method here,
+homePage, you know we have a request and
+
+00:00:36.570 --> 00:00:40.120 line:100% position:50% align:middle
+you know we have a response. So request is
+the data that sort of comes in,
+
+00:00:40.120 --> 00:00:45.520 line:100% position:50% align:middle
+and the response is the data that goes
+out. Now, in between the request and the
+
+00:00:45.520 --> 00:00:51.440 line:100% position:50% align:middle
+response, sometimes a bunch of work needs
+to happen. You might need to call the
+
+00:00:51.440 --> 00:00:55.760 line:100% position:50% align:middle
+database, you might need to do some data
+normalization. So any work that needs to
+
+00:00:55.760 --> 00:00:59.540 line:100% position:50% align:middle
+happen along the way, of course it could
+happen inside of the homePage,
+
+00:00:59.540 --> 00:01:05.170 line:100% position:50% align:middle
+but if I were, say, uploading a file, I
+might write in middleware to handle the
+
+00:01:05.170 --> 00:01:08.890 line:100% position:50% align:middle
+uploading of the file, and to
+rename the file, and to resize it,
+
+00:01:08.890 --> 00:01:13.210 line:100% position:50% align:middle
+because I don't want to associate that
+code just with the homePage.
+
+00:01:13.210 --> 00:01:18.400 line:100% position:50% align:middle
+Because uploading a file code could happen
+on any specific page.
+
+00:01:18.400 --> 00:01:21.750 line:100% position:50% align:middle
+So what we can do, if we take a look at
+this diagram that I have,
+
+00:01:21.750 --> 00:01:26.330 line:100% position:50% align:middle
+you see we start with our request and we
+end with displaying a profile or
+
+00:01:26.330 --> 00:01:29.870 line:100% position:50% align:middle
+displaying a login. So like, let's assume
+that somebody is trying to login to a form
+
+00:01:29.870 --> 00:01:35.380 line:100% position:50% align:middle
+tag with a POST request, and at the end of
+the day, they either are logged in,
+
+00:01:35.380 --> 00:01:41.090 line:100% position:50% align:middle
+we show them their account, or they are
+not logged in, and we show them an error
+
+00:01:41.090 --> 00:01:44.990 line:100% position:50% align:middle
+and we redirect them to the login page.
+But in between the request,
+
+00:01:44.990 --> 00:01:49.220 line:100% position:50% align:middle
+the beginning, and the response, the end,
+we need to do a whole bunch of stuff.
+
+00:01:49.220 --> 00:01:53.900 line:100% position:50% align:middle
+So we might, first of all, do something
+called a bodyParser, which is some
+
+00:01:53.900 --> 00:01:57.340 line:100% position:50% align:middle
+middleware we're using in our app.js.
+We'll look at it in just a second,
+
+00:01:57.340 --> 00:02:04.300 line:100% position:50% align:middle
+and what that will do is, when somebody
+POSTs a form, it will make the form field,
+
+00:02:04.300 --> 00:02:07.260 line:100% position:50% align:middle
+email and password,
+available to us on the request.
+
+00:02:07.260 --> 00:02:11.780 line:100% position:50% align:middle
+That doesn't happen by default, but the
+bodyParser is going to take the data from
+
+00:02:11.780 --> 00:02:16.490 line:100% position:50% align:middle
+the request and make them into nice
+properties on our req.body.
+
+00:02:16.490 --> 00:02:19.390 line:100% position:50% align:middle
+Then we'll call something called next,
+which is essentially like,
+
+00:02:19.390 --> 00:02:23.410 line:100% position:50% align:middle
+"Done with this middleware, on to the next
+one." And then maybe we'll have a function
+
+00:02:23.410 --> 00:02:27.980 line:100% position:50% align:middle
+called emailNormailze where, you know,
+sometimes people try to login with,
+
+00:02:27.980 --> 00:02:33.020 line:100% position:50% align:middle
+like, mixed case and spaces, and maybe
+your database needs no spaces and all
+
+00:02:33.020 --> 00:02:38.160 line:100% position:50% align:middle
+lowercase. So what do you do? You take the
+req.body.email that the bodyParser gave
+
+00:02:38.160 --> 00:02:43.530 line:100% position:50% align:middle
+you in the last function, and we'll trim
+it and lowercase it so that we know that
+
+00:02:43.530 --> 00:02:49.900 line:100% position:50% align:middle
+it's nice and clean data. Now, the
+req.body.email is in a situation where we
+
+00:02:49.900 --> 00:02:54.010 line:100% position:50% align:middle
+can start calling a database. Then we call
+next, because we're done with that piece
+
+00:02:54.010 --> 00:02:57.930 line:100% position:50% align:middle
+of middleware. We'll move on to
+authorizeUser, and auth middleware is
+
+00:02:57.930 --> 00:03:01.410 line:100% position:50% align:middle
+going to lookup the user, it's going to
+check that the password is correct,
+
+00:03:01.410 --> 00:03:05.740 line:100% position:50% align:middle
+it's going to check that they're actually
+a user, and if that is true,
+
+00:03:05.740 --> 00:03:10.780 line:100% position:50% align:middle
+then it's going to put the user's
+information on the request object.
+
+00:03:10.780 --> 00:03:16.450 line:100% position:50% align:middle
+So you sort of see how the request is
+going through, like, an assembly line of
+
+00:03:16.450 --> 00:03:21.210 line:100% position:50% align:middle
+different middlewares, and as we go along
+we just start tacking stuff that we might
+
+00:03:21.210 --> 00:03:25.820 line:100% position:50% align:middle
+need down the road onto the request
+object. That's sort of the catch-all,
+
+00:03:25.820 --> 00:03:30.830 line:100% position:50% align:middle
+that's how we put data into an object in
+order to get it somewhere down the line.
+
+00:03:30.830 --> 00:03:37.400 line:100% position:50% align:middle
+So in here, if I was valid logged in, then
+the next middleware would kick in,
+
+00:03:37.400 --> 00:03:41.190 line:100% position:50% align:middle
+which is displayProfile. Otherwise, we
+would an hit an invalid,
+
+00:03:41.190 --> 00:03:44.040 line:100% position:50% align:middle
+we would catch that error, we're going to
+look at that when we display the login,
+
+00:03:44.040 --> 00:03:47.670 line:100% position:50% align:middle
+where we do something called flashing and
+redirect them.
+
+00:03:47.670 --> 00:03:51.010 line:100% position:50% align:middle
+So if we take a look at our
+storeController here, what we could do is,
+
+00:03:51.010 --> 00:03:56.760 line:100% position:50% align:middle
+we could say exports.myMiddleware = (req,
+res,
+
+00:03:56.760 --> 00:04:00.380 line:100% position:50% align:middle
+and now, if you are writing middleware,
+you need to pass the next),
+
+00:04:00.380 --> 00:04:04.230 line:100% position:50% align:middle
+and I'll show you why. So we'll do an
+arrow function here,
+
+00:04:04.230 --> 00:04:10.750 line:100% position:50% align:middle
+and then on this, we'll just say req.name
+= 'Wes' and then we'll call next.
+
+00:04:10.750 --> 00:04:14.690 line:100% position:50% align:middle
+And what next will do is say, "Okay, I've
+done my work in this middleware,
+
+00:04:14.690 --> 00:04:18.470 line:100% position:50% align:middle
+pass it off to the next piece." And then
+we have our homePage.
+
+00:04:18.470 --> 00:04:23.140 line:100% position:50% align:middle
+So how do we use that then? We'll go back
+our routes, and now our routes are saying,
+
+00:04:23.140 --> 00:04:28.860 line:100% position:50% align:middle
+"When someone visits forward slash, pass
+them to the homePage." But now we're going
+
+00:04:28.860 --> 00:04:33.980 line:100% position:50% align:middle
+to say, "When somebody gets to the forward
+slash, pass them to..." What did we call
+
+00:04:33.980 --> 00:04:39.650 line:100% position:50% align:middle
+it here? myMiddleware, and then we pass it
+as a next parameter,
+
+00:04:39.650 --> 00:04:46.130 line:100% position:50% align:middle
+we pass it homePage. And because this
+myMiddleware here will call .next,
+
+00:04:46.130 --> 00:04:51.200 line:100% position:50% align:middle
+then it will just pass it on to the next
+function that is in line.
+
+00:04:51.200 --> 00:04:56.020 line:100% position:50% align:middle
+You could handle the response right inside
+of myMiddleware, maybe there was an error
+
+00:04:56.020 --> 00:05:00.020 line:100% position:50% align:middle
+and we could redirect them to a different
+page, but in this case,
+
+00:05:00.020 --> 00:05:04.790 line:100% position:50% align:middle
+we're calling next, which is going to pass
+it to the next one down the road.
+
+00:05:04.790 --> 00:05:09.180 line:100% position:50% align:middle
+So if I give this a save now and I were to
+go into our storeController,
+
+00:05:09.180 --> 00:05:13.090 line:100% position:50% align:middle
+I could go into my homePage and
+console.log(req.name).
+
+00:05:13.090 --> 00:05:18.040 line:100% position:50% align:middle
+And I should be able to see 'Wes' because
+it's been set in a previous middleware as
+
+00:05:18.040 --> 00:05:22.050 line:100% position:50% align:middle
+we go. So let's open up our terminal here,
+let's clear it out,
+
+00:05:22.050 --> 00:05:26.540 line:100% position:50% align:middle
+and I've refreshed the page, and I now see
+Wes. Even though these are two separate
+
+00:05:26.540 --> 00:05:31.980 line:100% position:50% align:middle
+functions, I've sort of passed it
+downstream by putting it on the request
+
+00:05:31.980 --> 00:05:37.330 line:100% position:50% align:middle
+object. So middleware is something that
+will allow you to dip in.
+
+00:05:37.330 --> 00:05:41.590 line:100% position:50% align:middle
+It's sort of like in React, we have
+lifecycle hooks, where you can hook in at
+
+00:05:41.590 --> 00:05:47.330 line:100% position:50% align:middle
+any point in time. Middleware allows us to
+run code after the request but before the
+
+00:05:47.330 --> 00:05:53.150 line:100% position:50% align:middle
+response actually happens. So that's an
+example of route-specific middleware,
+
+00:05:53.150 --> 00:05:58.300 line:100% position:50% align:middle
+however Express also has global
+middlewares, where every single request
+
+00:05:58.300 --> 00:06:01.600 line:100% position:50% align:middle
+that goes through the application will run
+through the middleware,
+
+00:06:01.600 --> 00:06:05.130 line:100% position:50% align:middle
+before it even gets to your router, it's
+going to run through some middleware.
+
+00:06:05.130 --> 00:06:09.850 line:100% position:50% align:middle
+And that's generally where we introduce
+any application wide functionality,
+
+00:06:09.850 --> 00:06:12.610 line:100% position:50% align:middle
+or features, or plugins, or anything that
+needs to happen like that.
+
+00:06:12.610 --> 00:06:16.580 line:100% position:50% align:middle
+And where does that happen? Well, that's
+what most of app.js is,
+
+00:06:16.580 --> 00:06:19.800 line:100% position:50% align:middle
+and if you're looking at this and thinking
+there's a lot of setup code,
+
+00:06:19.800 --> 00:06:25.100 line:100% position:50% align:middle
+this is where we start to break it down.
+So let's go and open up our app.js here,
+
+00:06:25.100 --> 00:06:31.910 line:100% position:50% align:middle
+and we will take a look. Anywhere you see
+app.use, what that means is that we are
+
+00:06:31.910 --> 00:06:38.630 line:100% position:50% align:middle
+using this global middleware. So even
+before we get to our routes,
+
+00:06:38.630 --> 00:06:40.860 line:100% position:50% align:middle
+we are going to run all
+of these middlewares.
+
+00:06:40.860 --> 00:06:46.460 line:100% position:50% align:middle
+So we have app.use(express.static. What
+does that mean? Well, that means that we
+
+00:06:46.460 --> 00:06:51.550 line:100% position:50% align:middle
+have a folder here, called public, and we
+have images, and we have sass,
+
+00:06:51.550 --> 00:06:56.450 line:100% position:50% align:middle
+and we have uploads, and all kinds of
+stuff that goes in these folders,
+
+00:06:56.450 --> 00:07:02.640 line:100% position:50% align:middle
+and if somebody requests anything from the
+public folder, it's just going to serve up
+
+00:07:02.640 --> 00:07:06.610 line:100% position:50% align:middle
+that actual image before it even tries to
+think if it's a route or not.
+
+00:07:06.610 --> 00:07:11.610 line:100% position:50% align:middle
+Because if you look for dog.jpeg, it's not
+going to go in here and look for dog.jpeg.
+
+00:07:11.610 --> 00:07:15.580 line:100% position:50% align:middle
+It will know, because it's in the public
+folder, just give them the file that
+
+00:07:15.580 --> 00:07:21.950 line:100% position:50% align:middle
+they're looking for. Next one is
+bodyParser.json and the
+
+00:07:21.950 --> 00:07:26.720 line:100% position:50% align:middle
+bodyParser.urlencoded. That means that
+anytime somebody submits data via a form
+
+00:07:26.720 --> 00:07:33.180 line:100% position:50% align:middle
+tag what will happen is that you will get
+that data that has been submitted on your
+
+00:07:33.180 --> 00:07:38.890 line:100% position:50% align:middle
+req.body and it's all going to be url
+encoded, and you don't have to worry about
+
+00:07:38.890 --> 00:07:43.400 line:100% position:50% align:middle
+dissecting it from the request at all.
+It's just going to be, if someone submits
+
+00:07:43.400 --> 00:07:47.260 line:100% position:50% align:middle
+a form with a name, and email, and a
+password, you're going to have three
+
+00:07:47.260 --> 00:07:49.620 line:100% position:50% align:middle
+properties called name,
+email, and password.
+
+00:07:49.620 --> 00:07:56.540 line:100% position:50% align:middle
+And the bodyParser makes that, that's part
+of Express' bodyParser package.
+
+00:07:56.540 --> 00:08:01.160 line:100% position:50% align:middle
+So Express doesn't come with it built in,
+but they maintain it and you can add it in
+
+00:08:01.160 --> 00:08:05.630 line:100% position:50% align:middle
+should you need that. Then we have
+something called expressValidator,
+
+00:08:05.630 --> 00:08:09.480 line:100% position:50% align:middle
+which is going to validate any sort of
+email stuff. We'll be looking at that when
+
+00:08:09.480 --> 00:08:14.230 line:100% position:50% align:middle
+we get more into submitting forms and
+logging in. Then we have a cookieParser.
+
+00:08:14.230 --> 00:08:19.890 line:100% position:50% align:middle
+So by default Express doesn't do anything
+with cookies, but if you want to set
+
+00:08:19.890 --> 00:08:25.080 line:100% position:50% align:middle
+cookies, you can, because by using the
+cookieParser middleware it will then give
+
+00:08:25.080 --> 00:08:29.890 line:100% position:50% align:middle
+you req.cookies, and we're going to need
+that to be working with our log in
+
+00:08:29.890 --> 00:08:34.860 line:100% position:50% align:middle
+sessions. But what you could do is, you
+could go to your middleware here in our
+
+00:08:34.860 --> 00:08:35.570 line:100% position:50% align:middle
+storeController.
+
+00:08:35.570 --> 00:08:42.530 line:100% position:50% align:middle
+We can say res.cookie and we could set a
+name cookie to be 'Wes is cool' and you
+
+00:08:42.530 --> 00:08:46.470 line:100% position:50% align:middle
+want to set that...there's some options in
+here like maxAge, how long the cookie
+
+00:08:46.470 --> 00:08:52.970 line:100% position:50% align:middle
+would be valid for. And now, if I refresh
+this page and open up my DevTools here to
+
+00:08:52.970 --> 00:08:57.570 line:100% position:50% align:middle
+our Application tab and look at Cookies,
+you'll see that there,
+
+00:08:57.570 --> 00:09:02.150 line:100% position:50% align:middle
+name cookie is now set to 'Wes is cool. '
+And there's also one called sweetsesh,
+
+00:09:02.150 --> 00:09:05.530 line:100% position:50% align:middle
+which we'll talk about in just a second.
+So that's what the cookie middleware will
+
+00:09:05.530 --> 00:09:10.280 line:100% position:50% align:middle
+allow us to do if you ever need to set
+cookies. We don't directly use that,
+
+00:09:10.280 --> 00:09:15.730 line:100% position:50% align:middle
+but using sessions in our application, we
+will. If we keep going along,
+
+00:09:15.730 --> 00:09:21.810 line:100% position:50% align:middle
+here's the session part. So what sessions
+will allow us to do is to store data on
+
+00:09:21.810 --> 00:09:25.090 line:100% position:50% align:middle
+our visitors, their logged in state, how
+long they've been logged in,
+
+00:09:25.090 --> 00:09:29.720 line:100% position:50% align:middle
+any information that you need to go from
+request to request, that's going to be
+
+00:09:29.720 --> 00:09:30.880 line:100% position:50% align:middle
+stored in our session.
+
+00:09:30.880 --> 00:09:35.550 line:100% position:50% align:middle
+So we use that to set up, and we'll go
+more into that once we start talking about
+
+00:09:35.550 --> 00:09:40.560 line:100% position:50% align:middle
+it. Sessions are stored in our MongoDB
+database, and then we have our passport.
+
+00:09:40.560 --> 00:09:44.210 line:100% position:50% align:middle
+We'll talk more about that when we do
+login, we'll talk more about flashing once
+
+00:09:44.210 --> 00:09:48.970 line:100% position:50% align:middle
+we get into logging in and
+showing status of logged in or not.
+
+00:09:48.970 --> 00:09:53.810 line:100% position:50% align:middle
+This middleware will give us all of our
+local helpers, that's what allows us to
+
+00:09:53.810 --> 00:09:59.370 line:100% position:50% align:middle
+get that H variable that we used a little
+bit earlier. Then after all that above
+
+00:09:59.370 --> 00:10:03.010 line:100% position:50% align:middle
+middleware, we finally inject
+our own routes.
+
+00:10:03.010 --> 00:10:07.580 line:100% position:50% align:middle
+So we say app.use('/', so anything that
+comes after the forward slash,
+
+00:10:07.580 --> 00:10:12.320 line:100% position:50% align:middle
+use our routes file. And then our routes
+files exports our router,
+
+00:10:12.320 --> 00:10:16.910 line:100% position:50% align:middle
+which will then handle the individual
+forward slash routes that are needed.
+
+00:10:16.910 --> 00:10:20.650 line:100% position:50% align:middle
+So that's why we have that here, and then
+after, you're actually going to see a
+
+00:10:20.650 --> 00:10:26.550 line:100% position:50% align:middle
+couple more middlewares after the routes,
+because if something goes wrong in this
+
+00:10:26.550 --> 00:10:29.800 line:100% position:50% align:middle
+route, what happens? Remember how all of
+the stuff is sequential,
+
+00:10:29.800 --> 00:10:34.100 line:100% position:50% align:middle
+right? Above it we do all the cookie
+stuff, and the helpers, and the flashing,
+
+00:10:34.100 --> 00:10:39.900 line:100% position:50% align:middle
+and our sessions, and our bodyParser. That
+all need to happen before we hit a route,
+
+00:10:39.900 --> 00:10:44.760 line:100% position:50% align:middle
+then we do all of our url routes, but if
+something happens here,
+
+00:10:44.760 --> 00:10:49.590 line:100% position:50% align:middle
+we need some stuff after the fact to sort
+of like be a safety net,
+
+00:10:49.590 --> 00:10:55.010 line:100% position:50% align:middle
+and those are called error handlers. So
+first we say if there was no route here
+
+00:10:55.010 --> 00:10:58.440 line:100% position:50% align:middle
+found, then it's just going to keep moving
+on to the next middleware.
+
+00:10:58.440 --> 00:11:00.140 line:100% position:50% align:middle
+You see how we sort of queued
+up these middlewares?
+
+00:11:00.140 --> 00:11:06.100 line:100% position:50% align:middle
+If nothing is found in here, like if I go
+to /nope, what happens?
+
+00:11:06.100 --> 00:11:09.560 line:100% position:50% align:middle
+We hit a 404, and that's when the notFound
+middleware, and I've put these in their
+
+00:11:09.560 --> 00:11:12.200 line:100% position:50% align:middle
+own file, if we open up errorHandlers. And
+don't worry if this doesn't make a whole
+
+00:11:12.200 --> 00:11:15.040 line:100% position:50% align:middle
+lot of sense just yet, I just kind of want
+to give you an idea,
+
+00:11:15.040 --> 00:11:19.100 line:100% position:50% align:middle
+and then as we learn in this application,
+you'll get a better idea.
+
+00:11:19.100 --> 00:11:29.920 line:100% position:50% align:middle
+So we have a notFound, which is simply
+just a middleware that will make a new
+
+00:11:29.920 --> 00:11:34.370 line:100% position:50% align:middle
+error, and then it'll set the error status
+to 404 and then call next.
+
+00:11:34.370 --> 00:11:39.860 line:100% position:50% align:middle
+But if you pass next something, it will
+assume that what you are passing it is an
+
+00:11:39.860 --> 00:11:44.600 line:100% position:50% align:middle
+error. So we set a little bit of
+information about what error happened,
+
+00:11:44.600 --> 00:11:49.270 line:100% position:50% align:middle
+and we pass it along, which was here, and
+then the next one. So if we're in
+
+00:11:49.270 --> 00:11:52.570 line:100% position:50% align:middle
+development, we're going to handle
+development errors, which will show us
+
+00:11:52.570 --> 00:11:55.430 line:100% position:50% align:middle
+what's called a stack trace, all the
+information about what happened,
+
+00:11:55.430 --> 00:11:59.970 line:100% position:50% align:middle
+but if we are in production, we don't want
+to show the user, "Oh,
+
+00:11:59.970 --> 00:12:02.690 line:100% position:50% align:middle
+there was an error that happened on this
+line of code."
+
+00:12:02.690 --> 00:12:06.800 line:100% position:50% align:middle
+You just want to say, "Oops. Something
+went wrong," and handle that internally,
+
+00:12:06.800 --> 00:12:10.740 line:100% position:50% align:middle
+so that will happen with production
+errors. So it's sort of this like this
+
+00:12:10.740 --> 00:12:16.370 line:100% position:50% align:middle
+Plinko machine, where you put a request in
+at the top and it just filters its way all
+
+00:12:16.370 --> 00:12:22.420 line:100% position:50% align:middle
+the way through all of these middlewares,
+and in most cases, our out point is in the
+
+00:12:22.420 --> 00:12:27.170 line:100% position:50% align:middle
+routes. But if something were to go wrong,
+then after our error handling middleware
+
+00:12:27.170 --> 00:12:30.730 line:100% position:50% align:middle
+is going to kick in, and I can show you
+how to use that. We'll be doing it a lot,
+
+00:12:30.730 --> 00:12:34.220 line:100% position:50% align:middle
+but if we go to our storeController, and
+maybe even before next,
+
+00:12:34.220 --> 00:12:39.770 line:100% position:50% align:middle
+we were to say, if(req.name === 'Wes')
+
+00:12:39.770 --> 00:12:48.790 line:100% position:50% align:middle
+then we could simply just throw
+Error('That is a stupid name').
+
+00:12:48.790 --> 00:12:55.010 line:100% position:50% align:middle
+And then when we refresh this, go to our
+home, say That is a stupid name.
+
+00:12:55.010 --> 00:13:00.120 line:100% position:50% align:middle
+And then it tells us on storeController.js
+line 4, right here,
+
+00:13:00.120 --> 00:13:03.550 line:100% position:50% align:middle
+that's where the error happened, and then
+it gives us information,
+
+00:13:03.550 --> 00:13:08.440 line:100% position:50% align:middle
+this is called a stack trace here is what
+led up until this error.
+
+00:13:08.440 --> 00:13:12.900 line:100% position:50% align:middle
+Most cases, you just need a couple lines
+to figure out what happened,
+
+00:13:12.900 --> 00:13:16.140 line:100% position:50% align:middle
+and then we display the actual error. If
+this was in production,
+
+00:13:16.140 --> 00:13:20.880 line:100% position:50% align:middle
+you would not see the stack trace here,
+you would just see the specific error that
+
+00:13:20.880 --> 00:13:25.390 line:100% position:50% align:middle
+happened. The user would see that. So in
+this case, the next never got called.
+
+00:13:25.390 --> 00:13:31.110 line:100% position:50% align:middle
+Why? Because an error was thrown and then
+our middleware picked it up,
+
+00:13:31.110 --> 00:13:37.610 line:100% position:50% align:middle
+and our development error handler figured
+it out. I just did a little find and
+
+00:13:37.610 --> 00:13:42.470 line:100% position:50% align:middle
+replace on the file names here, just
+because I hate looking at these stack
+
+00:13:42.470 --> 00:13:47.390 line:100% position:50% align:middle
+traces and I find that if you highlight
+them, it can tell you really quickly where
+
+00:13:47.390 --> 00:13:51.050 line:100% position:50% align:middle
+you need to look, and more often that not,
+you accidentally misspelled something or
+
+00:13:51.050 --> 00:13:53.460 line:100% position:50% align:middle
+did a semicolon in the wrong spot.
+
+00:13:53.460 --> 00:13:57.510 line:100% position:50% align:middle
+So that's sort of a high level, and don't
+worry too too much if that doesn't make a
+
+00:13:57.510 --> 00:14:01.290 line:100% position:50% align:middle
+whole lot of sense, just because this is
+all theoretical. I think,
+
+00:14:01.290 --> 00:14:05.660 line:100% position:50% align:middle
+at least for me, where this starts to
+click in is when we actually start to put
+
+00:14:05.660 --> 00:14:08.141 line:100% position:50% align:middle
+it into use. So let's get doing that.
+
+00:14:08.141 --> 00:14:11.141 line:100% position:50% align:middle
+♪ [music] ♪

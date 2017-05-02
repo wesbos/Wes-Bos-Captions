@@ -1,0 +1,1046 @@
+WEBVTT
+
+00:00:01.434 --> 00:00:04.435 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:10.400 --> 00:00:16.390 line:100% position:50% align:middle
+- Now that we've got our data being
+added to our form field whenever we either
+
+00:00:16.390 --> 00:00:21.260 line:100% position:50% align:middle
+create a new store or update one, let's
+add the ability to upload a photo every
+
+00:00:21.260 --> 00:00:25.770 line:100% position:50% align:middle
+single time that we have. So, this is
+sorta going to be like a three-stage
+
+00:00:25.770 --> 00:00:30.200 line:100% position:50% align:middle
+process. First, we need to modify our form
+to accept file uploads.
+
+00:00:30.200 --> 00:00:35.210 line:100% position:50% align:middle
+Second, we need to add some Middleware in
+between. If we open up our store
+
+00:00:35.210 --> 00:00:41.470 line:100% position:50% align:middle
+controller, we have, "Create store." So,
+before we even create the store,
+
+00:00:41.470 --> 00:00:46.730 line:100% position:50% align:middle
+we need to add some logic to both, upload
+the file as well as resize the file.
+
+00:00:46.730 --> 00:00:50.360 line:100% position:50% align:middle
+We're going to be using some external
+Middleware packages called multer,
+
+00:00:50.360 --> 00:00:54.020 line:100% position:50% align:middle
+which is going to allow us to upload the
+file and we're going to be using something
+
+00:00:54.020 --> 00:00:59.640 line:100% position:50% align:middle
+called, "GIMP" which will help us resize a
+file. So we've got this export stack,
+
+00:00:59.640 --> 00:01:04.590 line:100% position:50% align:middle
+"create store" here but before we even do
+that, we need to upload the file.
+
+00:01:04.590 --> 00:01:12.530 line:100% position:50% align:middle
+So, let's open up our store form. And we
+will change the encoding type of our form
+
+00:01:12.530 --> 00:01:18.250 line:100% position:50% align:middle
+to multipart/form-data. What this allows
+us to do is, any time you're uploading
+
+00:01:18.250 --> 00:01:23.400 line:100% position:50% align:middle
+files to a server, you need to make sure
+that the browser will send it as a
+
+00:01:23.400 --> 00:01:33.000 line:100% position:50% align:middle
+multipart. So we say, "enctype=
+multipart/form-data" and earlier we did
+
+00:01:33.000 --> 00:01:37.670 line:100% position:50% align:middle
+that, we added it and nothing actually got
+sent through and we had to delete it,
+
+00:01:37.670 --> 00:01:47.130 line:100% position:50% align:middle
+and that's because we had not setup
+express to handle multipart form data just
+
+00:01:47.130 --> 00:01:52.420 line:100% position:50% align:middle
+yet. So now that it is changed, we need to
+use a package called multer to actually
+
+00:01:52.420 --> 00:01:58.220 line:100% position:50% align:middle
+handle all of those fields that are being
+passed to us. So let's go over to our
+
+00:01:58.220 --> 00:02:05.150 line:100% position:50% align:middle
+store controller here and we'll say,
+"const multer = require multer".
+
+00:02:05.150 --> 00:02:09.130 line:100% position:50% align:middle
+Then we need some options as to what's to
+happen with multer before we even make our
+
+00:02:09.130 --> 00:02:15.490 line:100% position:50% align:middle
+Middleware route. So we say, "const multer
+options = " and that's going to be an
+
+00:02:15.490 --> 00:02:18.620 line:100% position:50% align:middle
+object. Now there's two things here that
+we need. We need to say,
+
+00:02:18.620 --> 00:02:23.770 line:100% position:50% align:middle
+"Where will the file be stored when it's
+uploaded?" And second,
+
+00:02:23.770 --> 00:02:27.570 line:100% position:50% align:middle
+"What types of files are allowed?" because
+what's going to happen is,
+
+00:02:27.570 --> 00:02:33.540 line:100% position:50% align:middle
+multer is going to handle the upload
+request and we need to tell it,
+
+00:02:33.540 --> 00:02:38.320 line:100% position:50% align:middle
+"This is where you put the photo and this
+is only the types of files that you should
+
+00:02:38.320 --> 00:02:42.880 line:100% position:50% align:middle
+possibly require." So first we say,
+"storage" and there's whole bunch of
+
+00:02:42.880 --> 00:02:47.640 line:100% position:50% align:middle
+different storage options with multer. You
+can save it to disk or in our case we're
+
+00:02:47.640 --> 00:02:51.280 line:100% position:50% align:middle
+going to save it just right into memory
+and the reason is because we don't
+
+00:02:51.280 --> 00:02:55.490 line:100% position:50% align:middle
+actually want to keep the original
+uploaded file. We want to just read it
+
+00:02:55.490 --> 00:03:00.680 line:100% position:50% align:middle
+into memory and then we're going to resize
+it and then save the resized version to
+
+00:03:00.680 --> 00:03:05.150 line:100% position:50% align:middle
+file. So, if somebody uploads a really big
+file we're not going to be running out of
+
+00:03:05.150 --> 00:03:09.090 line:100% position:50% align:middle
+disk space. In some situations you might
+want to save the original as well as the
+
+00:03:09.090 --> 00:03:13.510 line:100% position:50% align:middle
+resized version but for now we're just
+going to read it right into memory.
+
+00:03:13.510 --> 00:03:18.960 line:100% position:50% align:middle
+So we want to say, "multer.memorystorage"
+and that will give us the values that we
+
+00:03:18.960 --> 00:03:24.810 line:100% position:50% align:middle
+need. And then we say, "filefilter" and
+"filefilter" is going to be a function
+
+00:03:24.810 --> 00:03:29.970 line:100% position:50% align:middle
+that gives us a request, a file and a next
+value or a callback value as the doc says.
+
+00:03:29.970 --> 00:03:34.470 line:100% position:50% align:middle
+So we'll use next because we've been using
+that as we go along.
+
+00:03:34.470 --> 00:03:39.730 line:100% position:50% align:middle
+Now, what you can do is you can use the
+shorthand ES6 method syntax because
+
+00:03:39.730 --> 00:03:44.770 line:100% position:50% align:middle
+"filefilter" is just a function. You can
+delete the function and the colon and just
+
+00:03:44.770 --> 00:03:48.490 line:100% position:50% align:middle
+do it like that. So we have "filefilter",
+we get the request, we get the file and we
+
+00:03:48.490 --> 00:03:53.400 line:100% position:50% align:middle
+get next and from this what we need to do
+is either say, "Yes,
+
+00:03:53.400 --> 00:04:00.140 line:100% position:50% align:middle
+this file is fine, continue it on." Or,
+"No. This file type isn't allowed." So
+
+00:04:00.140 --> 00:04:04.960 line:100% position:50% align:middle
+we'll say, "const is photo" and we will
+check that the file.mime type.
+
+00:04:04.960 --> 00:04:11.423 line:100% position:50% align:middle
+So, a file's mime type essentially will
+tell you what type of photo it is.
+
+00:04:11.423 --> 00:04:17.440 line:100% position:50% align:middle
+What's going to be image/png, image/jpeg.
+Every file in the history of computers has
+
+00:04:17.440 --> 00:04:22.120 line:100% position:50% align:middle
+it's own mime type to describe what type
+it is because you can't rely on,
+
+00:04:22.120 --> 00:04:26.460 line:100% position:50% align:middle
+like the extension of the file to actually
+be true because someone could easily take
+
+00:04:26.460 --> 00:04:34.630 line:100% position:50% align:middle
+like virus.exe and rename it to be
+image.jpeg. But you can rely on the mime
+
+00:04:34.630 --> 00:04:40.830 line:100% position:50% align:middle
+type of the file that's coming in. So
+we'll check that the mime type starts with
+
+00:04:40.830 --> 00:04:47.685 line:100% position:50% align:middle
+image/ or in that case we could check for
+image/jpeg or PNG or GIF or we're
+
+00:04:47.685 --> 00:04:50.670 line:100% position:50% align:middle
+accepting any type of image that comes in
+here. So we're just going to say,
+
+00:04:50.670 --> 00:04:58.480 line:100% position:50% align:middle
+"starts with" and then we just say, "if is
+photo" then we'll just call next and we'll
+
+00:04:58.480 --> 00:05:02.890 line:100% position:50% align:middle
+say, "no" and "true." Now, we haven't
+been really working with callback based
+
+00:05:02.890 --> 00:05:07.890 line:100% position:50% align:middle
+stuff because we've been using a sync or
+wait or promises but you will often see
+
+00:05:07.890 --> 00:05:14.460 line:100% position:50% align:middle
+this sort of callback premise in node. If
+you call next and you pass it something as
+
+00:05:14.460 --> 00:05:19.860 line:100% position:50% align:middle
+a first value, that means it's an error.
+If you call next and you pass it null
+
+00:05:19.860 --> 00:05:23.580 line:100% position:50% align:middle
+in the second value, that means it worked
+in the second value that you're passing it
+
+00:05:23.580 --> 00:05:26.590 line:100% position:50% align:middle
+is one that needs to get passed along.
+So in our case we're just saying,
+
+00:05:26.590 --> 00:05:30.970 line:100% position:50% align:middle
+"Yeah, it's fine. It starts with image.
+Continue on. Continue with the file
+
+00:05:30.970 --> 00:05:35.070 line:100% position:50% align:middle
+uploading." Otherwise we're going to say,
+"else" we'll say, "next" and we will pass
+
+00:05:35.070 --> 00:05:44.390 line:100% position:50% align:middle
+it, an object with a message that says,
+"That file type isn't allowed." And we
+
+00:05:44.390 --> 00:05:48.490 line:100% position:50% align:middle
+need to either use back text or escape
+that there and then we'll say,
+
+00:05:48.490 --> 00:05:52.450 line:100% position:50% align:middle
+"false" because it wasn't allowed. So
+that's the multer options we have there.
+
+00:05:52.450 --> 00:05:56.640 line:100% position:50% align:middle
+Again, we're going to read the photo into
+storage and then we're going to also check
+
+00:05:56.640 --> 00:06:00.130 line:100% position:50% align:middle
+that this is allowed type of file to be
+uploaded because we don't want people
+
+00:06:00.130 --> 00:06:07.150 line:100% position:50% align:middle
+uploading PDFs or MP4 or anything like
+that. Good. Next, we need to make our
+
+00:06:07.150 --> 00:06:12.100 line:100% position:50% align:middle
+Middleware for actually working with our
+create store. So, maybe just before create
+
+00:06:12.100 --> 00:06:21.877 line:100% position:50% align:middle
+store, it doesn't matter where you do this
+but you say, "exports.upload = multer"
+
+00:06:21.877 --> 00:06:29.020 line:100% position:50% align:middle
+we'll pass at the multer options and then
+we'll say, "We are looking for a single
+
+00:06:29.020 --> 00:06:33.680 line:100% position:50% align:middle
+field." So you can have multiple fields
+that multer will handle but essentially
+
+00:06:33.680 --> 00:06:36.920 line:100% position:50% align:middle
+what we're going to say here, is just say,
+"We just want a single field that's called
+
+00:06:36.920 --> 00:06:43.670 line:100% position:50% align:middle
+a photo." Now, we've done that, let's go
+to our store form and modify our store
+
+00:06:43.670 --> 00:06:50.570 line:100% position:50% align:middle
+form to take a photo. So we go in to our
+description, address, lat-long,
+
+00:06:50.570 --> 00:06:58.690 line:100% position:50% align:middle
+maybe before the address we'll do it. Say,
+"image upload" say, "label for photo,
+
+00:06:58.690 --> 00:07:06.660 line:100% position:50% align:middle
+photo" then we'll have an input, the input
+inside of it with a type of file,
+
+00:07:06.660 --> 00:07:14.360 line:100% position:50% align:middle
+a name of photo, ID of photo and we can
+also tell it to some client side
+
+00:07:14.360 --> 00:07:22.038 line:100% position:50% align:middle
+validation as well where we say, "accept =
+image/gif, image/png,
+
+00:07:22.038 --> 00:07:29.580 line:100% position:50% align:middle
+image/jpeg" with an E. Obviously somebody
+could go ahead and remove that with dev
+
+00:07:29.580 --> 00:07:33.510 line:100% position:50% align:middle
+tools and that's why we did that server
+side validation with multer.
+
+00:07:33.510 --> 00:07:38.220 line:100% position:50% align:middle
+But this would just be nice, if someone
+uploads like a PDF for whatever reason,
+
+00:07:38.220 --> 00:07:41.450 line:100% position:50% align:middle
+they don't have to go and submit and find
+out it didn't work. They'll know
+
+00:07:41.450 --> 00:07:45.600 line:100% position:50% align:middle
+immediately or they won't even be able to
+select that value from there.
+
+00:07:45.600 --> 00:07:49.870 line:100% position:50% align:middle
+Then we'll say...still inside this, we'll
+say, "if there is a store.photo," we'll
+
+00:07:49.870 --> 00:07:55.140 line:100% position:50% align:middle
+just give ourselves an image tag which
+links out to where the image will be.
+
+00:07:55.140 --> 00:08:02.260 line:100% position:50% align:middle
+So, "/uploads, /store.photo" we'll give it
+an alt of, I guess we could say,
+
+00:08:02.260 --> 00:08:08.320 line:100% position:50% align:middle
+"store.name" we just say the store name,
+then we give it a width of 200.
+
+00:08:08.320 --> 00:08:14.210 line:100% position:50% align:middle
+All right. Now that we have our upload
+Middleware all coded up and we also have
+
+00:08:14.210 --> 00:08:18.560 line:100% position:50% align:middle
+this photo showing up. You can click on,
+"Choose file" and you go to your public
+
+00:08:18.560 --> 00:08:23.110 line:100% position:50% align:middle
+images, photos, you can see that I've
+shipped this project with a bunch of very
+
+00:08:23.110 --> 00:08:28.450 line:100% position:50% align:middle
+fancy photos and a lot of them are fairly
+large. We want to have them resized down
+
+00:08:28.450 --> 00:08:34.880 line:100% position:50% align:middle
+before we actually use them . So, let's
+cancel that and go back to our store
+
+00:08:34.880 --> 00:08:38.760 line:100% position:50% align:middle
+controller here. We're going to build a
+second piece of Middleware because the
+
+00:08:38.760 --> 00:08:43.287 line:100% position:50% align:middle
+first one upload reads it into memory.
+So what that means is that it actually
+
+00:08:43.287 --> 00:08:49.300 line:100% position:50% align:middle
+doesn't save the file to disk but it just
+stores it in the memory of your server and
+
+00:08:49.300 --> 00:08:53.260 line:100% position:50% align:middle
+that's just temporary because right away
+we're going to resize it and then save it
+
+00:08:53.260 --> 00:08:58.370 line:100% position:50% align:middle
+to our actual folder. So, let's go up to
+top here. We're going to import a package
+
+00:08:58.370 --> 00:09:02.799 line:100% position:50% align:middle
+called GIMP which will allow us to resize
+our photos. So let's say,
+
+00:09:02.799 --> 00:09:08.169 line:100% position:50% align:middle
+"constgimp = require gimp" and then we
+also need something that's going to allow
+
+00:09:08.169 --> 00:09:14.220 line:100% position:50% align:middle
+us to make the file names unique because
+if somebody uploads dog.jpeg and then
+
+00:09:14.220 --> 00:09:18.260 line:100% position:50% align:middle
+somebody else comes along and uploads
+dog.jpeg a week later, they shouldn't
+
+00:09:18.260 --> 00:09:23.160 line:100% position:50% align:middle
+overwrite it each other and I don't feel
+like writing the logic to say "dog 2,
+
+00:09:23.160 --> 00:09:29.490 line:100% position:50% align:middle
+dog 3, dog 4." So, we will use a package
+called UUID which is a unique identifier
+
+00:09:29.490 --> 00:09:35.050 line:100% position:50% align:middle
+package. So we'll say, "constUUID =
+require UUID" and that will just give us
+
+00:09:35.050 --> 00:09:38.970 line:100% position:50% align:middle
+a unique identifiers for everything single
+images...image that gets uploaded.
+
+00:09:38.970 --> 00:09:43.600 line:100% position:50% align:middle
+Good. So we'll go down. Right below our
+upload we will now make our resize
+
+00:09:43.600 --> 00:09:48.390 line:100% position:50% align:middle
+function, "export.resize = " and it's
+going to be in a sync function that has a
+
+00:09:48.390 --> 00:09:53.400 line:100% position:50% align:middle
+request and a response and a next. The
+reason why we pass next there is
+
+00:09:53.400 --> 00:09:57.810 line:100% position:50% align:middle
+because...this is a Middleware, we're not
+going to be doing any rendering or sending
+
+00:09:57.810 --> 00:10:03.820 line:100% position:50% align:middle
+back to the client. We're just going to be
+saving the image, recording what the file
+
+00:10:03.820 --> 00:10:07.040 line:100% position:50% align:middle
+name is and then passing it along to
+create store. So it's going to go,
+
+00:10:07.040 --> 00:10:10.450 line:100% position:50% align:middle
+"upload, resize, create store" Good.
+So, first thing we need to do is,
+
+00:10:10.450 --> 00:10:14.860 line:100% position:50% align:middle
+not every single time that we edit our
+store are we uploading a new file and if
+
+00:10:14.860 --> 00:10:18.380 line:100% position:50% align:middle
+that is the case, multer is not going to
+pass us anything. So we just need to
+
+00:10:18.380 --> 00:10:26.130 line:100% position:50% align:middle
+check if there is no new file to resize,
+if there is no request.file and it's
+
+00:10:26.130 --> 00:10:32.580 line:100% position:50% align:middle
+request.file because multer will put the
+actual file onto the file property of the
+
+00:10:32.580 --> 00:10:36.480 line:100% position:50% align:middle
+request. That's the whole point of
+Middleware, is somebody that came before
+
+00:10:36.480 --> 00:10:42.250 line:100% position:50% align:middle
+you, makes and preps some data right for
+you. So if there is no request,
+
+00:10:42.250 --> 00:10:48.040 line:100% position:50% align:middle
+we are simply going to call next which
+will skip to the next Middleware.
+
+00:10:48.040 --> 00:10:52.220 line:100% position:50% align:middle
+Remember how we have upload, upload will
+finish and call next for us.
+
+00:10:52.220 --> 00:10:56.030 line:100% position:50% align:middle
+Then we have resize, we're going to resize
+the photo and call next and then we're
+
+00:10:56.030 --> 00:10:59.420 line:100% position:50% align:middle
+going to create the store. But if there is
+no file to upload, we're just going to
+
+00:10:59.420 --> 00:11:04.190 line:100% position:50% align:middle
+call next immediately which is going to
+skip down to create store or it's going to
+
+00:11:04.190 --> 00:11:08.550 line:100% position:50% align:middle
+help us to update the store. Good. So we
+have next and then we're going to return,
+
+00:11:08.550 --> 00:11:11.420 line:100% position:50% align:middle
+obviously that'll stop this function from
+running any further.
+
+00:11:11.420 --> 00:11:16.841 line:100% position:50% align:middle
+Let's just console.log the actual
+request.file and just see what we're
+
+00:11:16.841 --> 00:11:22.760 line:100% position:50% align:middle
+working with. So give that a save,
+open up your terminal here and...Oh,
+
+00:11:22.760 --> 00:11:28.720 line:100% position:50% align:middle
+no. I did something wrong. Sync equals...
+Yeah, I don't know how to code Javascript.
+
+00:11:28.720 --> 00:11:29.558 line:100% position:50% align:middle
+There we go.
+
+00:11:29.558 --> 00:11:33.190 line:100% position:50% align:middle
+Now, before we go any further let's just
+actually get some data showing.
+
+00:11:33.190 --> 00:11:36.320 line:100% position:50% align:middle
+I don't like to write too much code
+without actually seeing that it's working
+
+00:11:36.320 --> 00:11:42.210 line:100% position:50% align:middle
+along the way. So let's console log
+request.file and we will first hookup both
+
+00:11:42.210 --> 00:11:45.980 line:100% position:50% align:middle
+of these Middlewares and then we'll look
+at our console to see if the console.log
+
+00:11:45.980 --> 00:11:52.550 line:100% position:50% align:middle
+is actually working. So, go back to your
+index.js and this page here,
+
+00:11:52.550 --> 00:11:58.890 line:100% position:50% align:middle
+add store is, when we submit it, it's
+post/add. Now our only function,
+
+00:11:58.890 --> 00:12:04.260 line:100% position:50% align:middle
+our only controller function here is just
+create store. But like I said,
+
+00:12:04.260 --> 00:12:09.330 line:100% position:50% align:middle
+we need to first run multer, which is
+upload and then we need to run resize and
+
+00:12:09.330 --> 00:12:14.430 line:100% position:50% align:middle
+then we need to run create store. So let's
+take a look here. What I like to do is put
+
+00:12:14.430 --> 00:12:18.090 line:100% position:50% align:middle
+these on their own line just because it
+starts to get a little bit hairy.
+
+00:12:18.090 --> 00:12:31.740 line:100% position:50% align:middle
+So we have, "storecontroller.upload,
+storecontroller.resize" and then
+
+00:12:31.740 --> 00:12:37.210 line:100% position:50% align:middle
+"storecontroller.createstore" and we'll
+have to wrap resize because it's in a sync
+
+00:12:37.210 --> 00:12:42.920 line:100% position:50% align:middle
+function. Wrap that sucker in a catch
+error. Now, see how this is getting kind
+
+00:12:42.920 --> 00:12:46.475 line:100% position:50% align:middle
+of hairy? We'll put these on their own
+line so we can easily read it.
+
+00:12:46.475 --> 00:12:49.914 line:100% position:50% align:middle
+So first is upload, then it's resize,
+
+00:12:49.914 --> 00:12:53.620 line:100% position:50% align:middle
+then it's create store
+and then this route is really,
+
+00:12:53.620 --> 00:12:57.820 line:100% position:50% align:middle
+really easy to read because you say,
+"word/add, upload, resize,
+
+00:12:57.820 --> 00:13:02.066 line:100% position:50% align:middle
+create store" Good. Give that a save.
+Go back to your store here, refresh
+
+00:13:02.066 --> 00:13:08.380 line:100% position:50% align:middle
+the add page. Open up your terminal.
+Clear that out, and we're going to try to
+
+00:13:08.380 --> 00:13:12.870 line:100% position:50% align:middle
+add a store ourselves. So I'm going to
+say, "Mulberry Coffee" it's coffee.
+
+00:13:12.870 --> 00:13:17.630 line:100% position:50% align:middle
+Going to try and add one of the photos
+that we have here. That one looks good.
+
+00:13:17.630 --> 00:13:22.580 line:100% position:50% align:middle
+And I'm going to add in Hamilton, just
+some lat and long and then give it some
+
+00:13:22.580 --> 00:13:29.470 line:100% position:50% align:middle
+values. Click on save. Woah! You see what
+happened there? We just console
+
+00:13:29.470 --> 00:13:35.210 line:100% position:50% align:middle
+logged...go back to your controller. We
+just console logged request.file and what
+
+00:13:35.210 --> 00:13:39.650 line:100% position:50% align:middle
+do we have here? Request.file is, field
+name was photo because that's the field
+
+00:13:39.650 --> 00:13:44.310 line:100% position:50% align:middle
+name that came from our form. The original
+name was 1.jpeg, that's what I uploaded
+
+00:13:44.310 --> 00:13:48.540 line:100% position:50% align:middle
+right here. The encoding type, the mime
+type, we talked about that earlier and
+
+00:13:48.540 --> 00:13:52.960 line:100% position:50% align:middle
+then this is what's really important here,
+the buffer. What is the buffer?
+
+00:13:52.960 --> 00:13:57.610 line:100% position:50% align:middle
+Well, I told you earlier that we're not
+actually saving this file to any hard
+
+00:13:57.610 --> 00:14:02.090 line:100% position:50% align:middle
+drive. We're actually just reading in to
+memory and buffer is just a representation
+
+00:14:02.090 --> 00:14:07.330 line:100% position:50% align:middle
+of that file in memory. And then we didn't
+do anything after I console logged.
+
+00:14:07.330 --> 00:14:11.570 line:100% position:50% align:middle
+So, here if I bring this down. You see
+how it's just spinning forever,
+
+00:14:11.570 --> 00:14:15.100 line:100% position:50% align:middle
+that's because we haven't actually done
+anything with the response and this will
+
+00:14:15.100 --> 00:14:20.410 line:100% position:50% align:middle
+eventually tell us that there's been a
+timeout on our server because we haven't
+
+00:14:20.410 --> 00:14:25.330 line:100% position:50% align:middle
+responded to it in anyway. So that's good.
+We have this reuqest.file and what we need
+
+00:14:25.330 --> 00:14:30.490 line:100% position:50% align:middle
+to pull from that file here is we need
+the extension which is JPEG.
+
+00:14:30.490 --> 00:14:36.420 line:100% position:50% align:middle
+Again, don't rely on the user's uploaded
+extension because they might goof it up.
+
+00:14:36.420 --> 00:14:41.080 line:100% position:50% align:middle
+We want to rely on the mime type that the
+server has inferred for us.
+
+00:14:41.080 --> 00:14:49.110 line:100% position:50% align:middle
+So we will say, "const file type" or maybe
+const extension = request.file.mimetype.
+
+00:14:49.110 --> 00:14:58.750 line:100% position:50% align:middle
+split on the forward slash, right? Because
+we have this, and if you have that image,
+
+00:14:58.750 --> 00:15:03.150 line:100% position:50% align:middle
+/JPEG and you split it on the forward
+slash. Getting array of two pieces
+
+00:15:03.150 --> 00:15:07.080 line:100% position:50% align:middle
+and then we want the second piece which is
+going to be the extension.
+
+00:15:07.080 --> 00:15:12.910 line:100% position:50% align:middle
+So we will say split and we want the
+second piece which is one.
+
+00:15:12.910 --> 00:15:20.760 line:100% position:50% align:middle
+Good. Then we want to set it up so that
+create store is going to have the info for
+
+00:15:20.760 --> 00:15:25.980 line:100% position:50% align:middle
+when it actually stores. So, we say,
+"request.photo" right? We're just going to
+
+00:15:25.980 --> 00:15:31.210 line:100% position:50% align:middle
+pass it along to the next one that can
+pull that off of the request. Or no
+
+00:15:31.210 --> 00:15:37.500 line:100% position:50% align:middle
+"request.body.photo" because remember we
+save a store with request.body and if we
+
+00:15:37.500 --> 00:15:41.370 line:100% position:50% align:middle
+put the photo on the body then it's going
+to get stored into our database.
+
+00:15:41.370 --> 00:15:47.100 line:100% position:50% align:middle
+And that is going to be equal to some back
+text. We need a unique identifier for that
+
+00:15:47.100 --> 00:15:54.350 line:100% position:50% align:middle
+so we'll say, "UUID.v4" and that will
+generate a unique string which will make
+
+00:15:54.350 --> 00:15:57.890 line:100% position:50% align:middle
+sure that we don't have file names
+that are overlapping each other.
+
+00:15:57.890 --> 00:16:03.446 line:100% position:50% align:middle
+Then we want a dot and you put the
+extension on there. So that's going to be
+
+00:16:03.446 --> 00:16:09.451 line:100% position:50% align:middle
+like "h99..." whatever, ".JPEG" and that's
+going to be the name of our actual photo.
+
+00:16:09.451 --> 00:16:13.459 line:100% position:50% align:middle
+Now, we actually have to do the resizing.
+
+00:16:13.459 --> 00:16:24.158 line:100% position:50% align:middle
+Now we resize. So we say, "constphoto =
+O8 GIMP.read" now GIMP.read you have to
+
+00:16:24.158 --> 00:16:30.070 line:100% position:50% align:middle
+either pass it a file path that's on your
+server or you pass it a buffer which is,
+
+00:16:30.070 --> 00:16:35.290 line:100% position:50% align:middle
+again, our photo is currently in memory
+just for a few seconds before we actually
+
+00:16:35.290 --> 00:16:39.420 line:100% position:50% align:middle
+read it and resize it. So you,
+"request.file.buffer"
+
+00:16:39.420 --> 00:16:46.020 line:100% position:50% align:middle
+remember? Let's go back here,
+"request.file.buffer." These FFD8OO,
+
+00:16:46.020 --> 00:16:52.800 line:100% position:50% align:middle
+that means delicious salami, some fish,
+jam, on a wooden board.
+
+00:16:52.800 --> 00:16:58.270 line:100% position:50% align:middle
+That's what that means in the buffer.
+Good. So we have it and because GIMP is a
+
+00:16:58.270 --> 00:17:03.970 line:100% position:50% align:middle
+package that is based on promises, we can
+just await the actual result and put it in
+
+00:17:03.970 --> 00:17:13.640 line:100% position:50% align:middle
+to photo. Good. Now we can await
+photo.resize, we want to resize it to 800
+
+00:17:13.640 --> 00:17:19.050 line:100% position:50% align:middle
+pixels by...and we want to say like auto.
+So width is a hundred and the height is
+
+00:17:19.050 --> 00:17:22.718 line:100% position:50% align:middle
+going to be auto. So the way that you can
+reference auto is, you say,
+
+00:17:22.718 --> 00:17:29.040 line:100% position:50% align:middle
+"GIMP.auto" and this is all in the GIMP
+documentation if you need to pull that up.
+
+00:17:29.040 --> 00:17:34.400 line:100% position:50% align:middle
+So we resized it and now we write it
+to our actual folder. So let's say await,
+
+00:17:34.400 --> 00:17:38.550 line:100% position:50% align:middle
+photo.write. Again, because all the stuff
+is asynchronous, we need to wait until
+
+00:17:38.550 --> 00:17:46.610 line:100% position:50% align:middle
+they're done before we go ahead. Write
+and it's going to be in public/uploads/
+
+00:17:46.610 --> 00:17:55.620 line:100% position:50% align:middle
+then we're going to say the photo name.
+Just request.body.photo. Woo!
+
+00:17:55.620 --> 00:18:04.790 line:100% position:50% align:middle
+Then, finally when we're done, once we
+have written the photo to our file system,
+
+00:18:04.790 --> 00:18:10.700 line:100% position:50% align:middle
+keep going, right? Because the whole point
+of this resize function is to resize it,
+
+00:18:10.700 --> 00:18:16.800 line:100% position:50% align:middle
+to save it to disk and then just to save
+reference to what the photo is called so
+
+00:18:16.800 --> 00:18:21.530 line:100% position:50% align:middle
+that the next step, create store, will
+just store at that path to the photo
+
+00:18:21.530 --> 00:18:26.400 line:100% position:50% align:middle
+that's on our actual hard drive. So let's
+say next. Good. So that will skip it,
+
+00:18:26.400 --> 00:18:30.470 line:100% position:50% align:middle
+that's the next Middleware that we have
+here. You noticed how I saved it now,
+
+00:18:30.470 --> 00:18:35.110 line:100% position:50% align:middle
+this page broke because it was finally up
+and running. Just give it a refresh.
+
+00:18:35.110 --> 00:18:40.599 line:100% position:50% align:middle
+Now let's try and add something. So,
+we say, "west..." Actually, let me open
+
+00:18:40.599 --> 00:18:46.700 line:100% position:50% align:middle
+up my uploads folder just so we
+can see it come in hot. So, uploads,
+
+00:18:46.700 --> 00:18:52.014 line:100% position:50% align:middle
+I'm going to sort by date modified, just
+so that when I actually do upload
+
+00:18:52.014 --> 00:18:59.328 line:100% position:50% align:middle
+some file, it will be popped right
+up in there. Okay, so we have west.
+
+00:18:59.328 --> 00:19:06.500 line:100% position:50% align:middle
+Our description is going to be, "Great
+coffee." We're going to try and upload a
+
+00:19:06.500 --> 00:19:11.190 line:100% position:50% align:middle
+photo for our first one. Let's pick this
+one of oysters. Maybe we'll call it,
+
+00:19:11.190 --> 00:19:17.970 line:100% position:50% align:middle
+"Oyster Shack." Then our oyster, maybe
+Oyster Bay, United States,
+
+00:19:17.970 --> 00:19:23.230 line:100% position:50% align:middle
+we got our lat and our long, we get some
+tags. Now we're going to click save
+
+00:19:23.230 --> 00:19:28.250 line:100% position:50% align:middle
+and...oh no! We broke it. "Cannot read
+property split of undefined." That
+
+00:19:28.250 --> 00:19:33.145 line:100% position:50% align:middle
+happened in store controller on line 35.
+We're going to store controller.
+
+00:19:33.145 --> 00:19:39.150 line:100% position:50% align:middle
+Line 35. Request.file.mim type, you're
+probably screaming at me for the last 10
+
+00:19:39.150 --> 00:19:43.780 line:100% position:50% align:middle
+minutes. Mime type. There we go, let's try
+it again. I can just refresh that page and
+
+00:19:43.780 --> 00:19:51.520 line:100% position:50% align:middle
+it should repost all that data that we
+had. So, continue. "You must supply an
+
+00:19:51.520 --> 00:19:56.730 line:100% position:50% align:middle
+address." No, it didn't work. So we'll try
+once more. Oyster Shack,
+
+00:19:56.730 --> 00:20:02.460 line:100% position:50% align:middle
+great. Upload the photo of the oyster.
+That's it. Oyster Bay. Give it some tags.
+
+00:20:02.460 --> 00:20:08.440 line:100% position:50% align:middle
+Give it a save. There we go. Successfully
+created Oyster Shack.
+
+00:20:08.440 --> 00:20:13.160 line:100% position:50% align:middle
+Now if I go back to my Finder here, today
+at 3:32 p.m. that's what time it is right
+
+00:20:13.160 --> 00:20:20.370 line:100% position:50% align:middle
+now. I open that sucker up, 800 pixels by
+auto. So it's been refreshed.
+
+00:20:20.370 --> 00:20:24.660 line:100% position:50% align:middle
+Now if I go back to my homepage here, you
+see Oyster Shack but we still have this
+
+00:20:24.660 --> 00:20:27.400 line:100% position:50% align:middle
+photo here that it actually isn't working.
+
+00:20:27.400 --> 00:20:31.306 line:100% position:50% align:middle
+So let's maybe take a look
+at our edit screen here.
+
+00:20:31.306 --> 00:20:36.350 line:100% position:50% align:middle
+Let's go back to our store form. We'll
+just do a quick dump of what we have,
+
+00:20:36.350 --> 00:20:47.020 line:100% position:50% align:middle
+"pre = h.dump store." We'll see what data
+we're working with. So Oyster Shack has,
+
+00:20:47.020 --> 00:20:52.070 line:100% position:50% align:middle
+ID, slug, name, description, location,
+tags, it's got...oh, you tell me why
+
+00:20:52.070 --> 00:20:55.510 line:100% position:50% align:middle
+didn't it actually work. It saved the
+photo but why didn't it save it to the
+
+00:20:55.510 --> 00:20:59.269 line:100% position:50% align:middle
+database? Because our schema
+is not setup to actually handle that,
+
+00:20:59.269 --> 00:21:03.350 line:100% position:50% align:middle
+right? We have name, slug, description,
+tags created, location,
+
+00:21:03.350 --> 00:21:08.520 line:100% position:50% align:middle
+we don't have image yet or photo. So we
+just say, "photo is going to be equal to a
+
+00:21:08.520 --> 00:21:16.490 line:100% position:50% align:middle
+string." Now let's try upload a photo
+once more. Again, we can't update it just
+
+00:21:16.490 --> 00:21:19.370 line:100% position:50% align:middle
+yet because we haven't set the Middleware
+for updating one just yet.
+
+00:21:19.370 --> 00:21:23.100 line:100% position:50% align:middle
+So we have to add a new one.
+We'll call this one, let's see,
+
+00:21:23.100 --> 00:21:29.710 line:100% position:50% align:middle
+one of these fun photos. Doughnut Monster.
+Yum! We upload a photo,
+
+00:21:29.710 --> 00:21:38.510 line:100% position:50% align:middle
+we say, "Doughnuts" with a difference.
+Cool. Family friendly. Then we save it.
+
+00:21:38.510 --> 00:21:43.300 line:100% position:50% align:middle
+Bam! "Created Doughnut Monster." Can we go
+here, we see a doughnut?
+
+00:21:43.300 --> 00:21:49.510 line:100% position:50% align:middle
+Sure do. Now if we go to homepage, you see
+that the doughnut photo is actually being
+
+00:21:49.510 --> 00:21:55.290 line:100% position:50% align:middle
+pulled in. Why? Because we added it to our
+schema before we were passing it a photo
+
+00:21:55.290 --> 00:21:58.260 line:100% position:50% align:middle
+property, but we didn't have it in our
+schema. So our schema's like,
+
+00:21:58.260 --> 00:22:02.780 line:100% position:50% align:middle
+"Ugh, I don't know what this photo is. I'm
+not going to do anything with it because
+
+00:22:02.780 --> 00:22:07.120 line:100% position:50% align:middle
+we have a strict schema." So that is
+uploading a photo. The last thing we want
+
+00:22:07.120 --> 00:22:13.410 line:100% position:50% align:middle
+to do is be able to edit some of these
+existing ones. So go back to our routes
+
+00:22:13.410 --> 00:22:19.590 line:100% position:50% align:middle
+here and we'll do the same thing for our
+update route which is add/ID.
+
+00:22:19.590 --> 00:22:24.180 line:100% position:50% align:middle
+Put that on it's own line and we'll simply
+just take this upload and resize and put
+
+00:22:24.180 --> 00:22:30.190 line:100% position:50% align:middle
+them alongside "catch errors, update
+store." So let's see here.
+
+00:22:30.190 --> 00:22:38.280 line:100% position:50% align:middle
+Now we'll go to Brew Bar. We will try to
+edit one of these. Let's find something
+
+00:22:38.280 --> 00:22:42.850 line:100% position:50% align:middle
+good. Yeah that looks good. Burgers
+and brews. Upload the file,
+
+00:22:42.850 --> 00:22:48.540 line:100% position:50% align:middle
+give it a save. We've successfully updated
+it. Did it make it into our folder?
+
+00:22:48.540 --> 00:22:54.090 line:100% position:50% align:middle
+There it is. We go to our homepage, you
+see Brew Bar now has a picture of those
+
+00:22:54.090 --> 00:22:58.550 line:100% position:50% align:middle
+burgers being pushed in. Great. So I
+really hope that solidifies the idea of
+
+00:22:58.550 --> 00:23:04.700 line:100% position:50% align:middle
+Middleware is, rather than...I often see
+people just like dump all their logic into
+
+00:23:04.700 --> 00:23:10.900 line:100% position:50% align:middle
+one controller method, when the reality is
+that, uploading and resizing could really
+
+00:23:10.900 --> 00:23:14.920 line:100% position:50% align:middle
+be done on any route. And if you need to
+upload something, if you need to resize
+
+00:23:14.920 --> 00:23:19.300 line:100% position:50% align:middle
+something, no problem. You just pop a
+Middleware in there and then your final
+
+00:23:19.300 --> 00:23:22.637 line:100% position:50% align:middle
+route is one that that is actually going
+to take care of storing it
+
+00:23:22.637 --> 00:23:23.801 line:100% position:50% align:middle
+in the database.
+
+00:23:23.801 --> 00:23:26.900 line:100% position:50% align:middle
+♪ [music] ♪

@@ -1,0 +1,1161 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.000 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.538 --> 00:00:13.056 line:100% position:50% align:middle
+All right, now we're
+going to be working
+
+00:00:13.056 --> 00:00:16.960 line:100% position:50% align:middle
+with this Top page, this is the answer
+that I've got here, and we're going to get
+
+00:00:16.960 --> 00:00:23.441 line:100% position:50% align:middle
+the list of top 10 stores based on their
+average rating. So, huh, this is going to
+
+00:00:23.441 --> 00:00:28.997 line:100% position:50% align:middle
+get a little bit complex because how do
+you query stores based on something that
+
+00:00:28.997 --> 00:00:30.903 line:100% position:50% align:middle
+each store doesn't even have?
+
+00:00:30.903 --> 00:00:34.317 line:100% position:50% align:middle
+We have reviews and we have
+stores, and they're kind of
+
+00:00:34.317 --> 00:00:40.010 line:100% position:50% align:middle
+related because we have those fields, but
+we don't actually have the data of reviews
+
+00:00:40.010 --> 00:00:44.570 line:100% position:50% align:middle
+in the stores. So what we need to do, and
+this is a perfect use case for an
+
+00:00:44.570 --> 00:00:49.080 line:100% position:50% align:middle
+aggregation. Remember, an aggregation is
+what you use in MongoDB whenever you need
+
+00:00:49.080 --> 00:00:54.444 line:100% position:50% align:middle
+to do either multi-stepped or very complex
+queries. So in this case, we want to grab
+
+00:00:54.444 --> 00:00:58.207 line:100% position:50% align:middle
+a list of all of our stores, populate
+their ratings, and then find out what the
+
+00:00:58.207 --> 00:01:01.052 line:100% position:50% align:middle
+average rating of that
+actual store is.
+
+00:01:01.052 --> 00:01:03.788 line:100% position:50% align:middle
+But then, I also don't want
+to show stores that only
+
+00:01:03.788 --> 00:01:07.640 line:100% position:50% align:middle
+have one rating because one person could
+rate it five stars and they go right to
+
+00:01:07.640 --> 00:01:12.860 line:100% position:50% align:middle
+the top, right? So let's open up our...or
+let's go back to our actual application
+
+00:01:12.860 --> 00:01:17.090 line:100% position:50% align:middle
+here, click on Top, we get a 404. So
+we'll go to our index, search as, and
+
+00:01:17.090 --> 00:01:18.430 line:100% position:50% align:middle
+we'll make a route for that top.
+
+00:01:18.430 --> 00:01:26.060 line:100% position:50% align:middle
+So, go down to here. So
+router.get/top, and when that
+
+00:01:26.060 --> 00:01:29.710 line:100% position:50% align:middle
+happens, we are going to catch the errors
+and we'll use our storeController
+
+00:01:29.710 --> 00:01:36.090 line:100% position:50% align:middle
+getTopStores, okay? And we'll open up
+our storeController here,
+
+00:01:36.090 --> 00:01:42.030 line:100% position:50% align:middle
+go down to the bottom.
+exports.getTopStores = async.
+
+00:01:42.030 --> 00:01:45.940 line:100% position:50% align:middle
+Request response. I feel really sad, this
+is the last method we're going to be
+
+00:01:45.940 --> 00:01:49.850 line:100% position:50% align:middle
+building together, and then you're
+a little butterfly out on your own.
+
+00:01:49.850 --> 00:01:54.720 line:100% position:50% align:middle
+So here we go. So we're going to say
+const stores = ...oh, wait,
+
+00:01:54.720 --> 00:02:03.230 line:100% position:50% align:middle
+Store dot...what do I do here? Find? No,
+no. What we're going to do is we're going
+
+00:02:03.230 --> 00:02:09.050 line:100% position:50% align:middle
+to make up a new method called getTop
+Stores, then we're going to render out a
+
+00:02:09.050 --> 00:02:16.190 line:100% position:50% align:middle
+TopStores.pug file, then the stores are
+going to be passed and the title is going
+
+00:02:16.190 --> 00:02:16.933 line:100% position:50% align:middle
+to be "Top Stores!"
+
+00:02:16.933 --> 00:02:22.870 line:100% position:50% align:middle
+Okay, so this getTopStores
+right here, how do we actually do that?
+
+00:02:22.870 --> 00:02:27.760 line:100% position:50% align:middle
+Well, as a general rule of thumb, any time
+I have a complex query,
+
+00:02:27.760 --> 00:02:32.800 line:100% position:50% align:middle
+it's not great to do that inside of your
+controller. It's best to put that on the
+
+00:02:32.800 --> 00:02:37.120 line:100% position:50% align:middle
+model itself. It's fine to do like a find,
+and you have a couple little queries here
+
+00:02:37.120 --> 00:02:41.120 line:100% position:50% align:middle
+and there, but whenever we're going to get
+into like seven, eight lines of querying
+
+00:02:41.120 --> 00:02:45.290 line:100% position:50% align:middle
+in our aggregation, I like to stick that
+in my model. Keep it as close to the model
+
+00:02:45.290 --> 00:02:51.100 line:100% position:50% align:middle
+as you can without making it a rule that
+you follow blindly.
+
+00:02:51.100 --> 00:02:56.381 line:100% position:50% align:middle
+So we'll open up our store model,
+store.js, and we'll go down to the bottom.
+
+00:02:56.530 --> 00:02:59.770 line:100% position:50% align:middle
+You see here, we have storeSchema.statics
+that didn't get TagsList.
+
+00:02:59.770 --> 00:03:03.440 line:100% position:50% align:middle
+That's exactly what we're going to be
+doing, but we're going to be getting one
+
+00:03:03.440 --> 00:03:06.700 line:100% position:50% align:middle
+called getTopStores. So we can put it
+below and the order here doesn't really
+
+00:03:06.700 --> 00:03:09.330 line:100% position:50% align:middle
+matter, but as long as you have it on
+before you create your model.
+
+00:03:09.330 --> 00:03:20.520 line:100% position:50% align:middle
+Just say storeSchema.statics.getTopStores.
+And that's = function,
+
+00:03:20.520 --> 00:03:23.900 line:100% position:50% align:middle
+proper function because we're going to
+need this in just a second.
+
+00:03:23.900 --> 00:03:30.480 line:100% position:50% align:middle
+Open that up. Now, from that, we are going
+to return this .aggregate and you pass it
+
+00:03:30.480 --> 00:03:34.840 line:100% position:50% align:middle
+in array. So what that will do is, again,
+aggregate is like a query function.
+
+00:03:34.840 --> 00:03:39.470 line:100% position:50% align:middle
+It's much like .find, except we can do
+much more complex stuff inside of it.
+
+00:03:39.470 --> 00:03:43.160 line:100% position:50% align:middle
+And by returning that, that means it's
+going to return the promise so that we can
+
+00:03:43.160 --> 00:03:48.030 line:100% position:50% align:middle
+await the result of getTopStores and put
+it into our actual variable there.
+
+00:03:48.030 --> 00:03:53.180 line:100% position:50% align:middle
+So that's why we have that. Now, I have...
+I'm going to paste in some things that we
+
+00:03:53.180 --> 00:03:56.680 line:100% position:50% align:middle
+need to do here, because I want to like
+get an idea of what we're doing beforehand
+
+00:03:56.680 --> 00:03:58.800 line:100% position:50% align:middle
+rather than just blindly
+following the typing.
+
+00:03:58.800 --> 00:04:04.060 line:100% position:50% align:middle
+So paste this in. First what we want to do
+is look up stores and populate their
+
+00:04:04.060 --> 00:04:04.565 line:100% position:50% align:middle
+reviews.
+
+00:04:04.565 --> 00:04:08.519 line:100% position:50% align:middle
+Okay, so first thing first, is that we
+can't actually use our virtual reviews
+
+00:04:08.519 --> 00:04:15.530 line:100% position:50% align:middle
+here because this virtual reviews is a
+Mongoose-specific thing and this aggregate
+
+00:04:15.530 --> 00:04:20.360 line:100% position:50% align:middle
+is not Mongoose-specific, it just passes
+it right through to MongoDB.
+
+00:04:20.360 --> 00:04:25.790 line:100% position:50% align:middle
+So sort of a downside to some of these
+convenience methods in Mongoose is that
+
+00:04:25.790 --> 00:04:30.495 line:100% position:50% align:middle
+you can't use them every possible place
+because if you're doing something like
+
+00:04:30.495 --> 00:04:35.060 line:100% position:50% align:middle
+aggregate, it doesn't know about...this is
+a lower level MongoDB function,
+
+00:04:35.060 --> 00:04:38.760 line:100% position:50% align:middle
+it doesn't know about these higher-level
+Mongoose things, it's just MongoDB.
+
+00:04:38.760 --> 00:04:43.950 line:100% position:50% align:middle
+So we need to do something similar to what
+we did here with our virtual but we need
+
+00:04:43.950 --> 00:04:49.000 line:100% position:50% align:middle
+to look up the stores. Then once we have a
+list of stores which each store has their
+
+00:04:49.000 --> 00:04:55.020 line:100% position:50% align:middle
+reviews populated, we want to filter for
+stores that only have two or more reviews,
+
+00:04:55.020 --> 00:04:59.580 line:100% position:50% align:middle
+right? So we first need to get the stores,
+then populate the reviews, then figure out
+
+00:04:59.580 --> 00:05:04.240 line:100% position:50% align:middle
+if they have two or more reviews because
+we don't want to show stores that have one
+
+00:05:04.240 --> 00:05:09.580 line:100% position:50% align:middle
+review. Then we want to add a new field
+called average reviews because we don't
+
+00:05:09.580 --> 00:05:13.330 line:100% position:50% align:middle
+know what the average review is of each
+store and that's something that needs to
+
+00:05:13.330 --> 00:05:16.940 line:100% position:50% align:middle
+be calculated on the fly, and that's
+exactly what aggregation is for.
+
+00:05:16.940 --> 00:05:20.850 line:100% position:50% align:middle
+Finally, we want to sort by our new field,
+highest reviews first.
+
+00:05:20.850 --> 00:05:24.200 line:100% position:50% align:middle
+So we want to put the people at the...
+the highest review at the top. And then,
+
+00:05:24.200 --> 00:05:27.720 line:100% position:50% align:middle
+finally, if we have more than 10,
+we'll limit it to actually having 10.
+
+00:05:27.720 --> 00:05:32.910 line:100% position:50% align:middle
+So you see sort of what an aggregation is
+for, many steps of a complex query.
+
+00:05:32.910 --> 00:05:36.590 line:100% position:50% align:middle
+So first thing first, each one of these
+steps is going to be an object.
+
+00:05:36.590 --> 00:05:40.280 line:100% position:50% align:middle
+So first of all, what we're going to do is
+called a lookup and a lookup will populate
+
+00:05:40.280 --> 00:05:47.780 line:100% position:50% align:middle
+a field that is sort of like our virtuals.
+So we want to look up from reviews, and
+
+00:05:47.780 --> 00:05:56.230 line:100% position:50% align:middle
+I'll talk about that in a second. Our
+localField is going to be the id.
+
+00:05:56.230 --> 00:06:04.640 line:100% position:50% align:middle
+Our foreignField is store, just like we
+did down here. And we're going to say as:
+
+00:06:04.640 --> 00:06:09.195 line:100% position:50% align:middle
+reviews, and that's what the
+actual field is going to be called.
+
+00:06:09.195 --> 00:06:12.910 line:100% position:50% align:middle
+So that's pretty much the same thing here,
+we made a field called reviews where you
+
+00:06:12.910 --> 00:06:17.500 line:100% position:50% align:middle
+have a foreignField and a localField.
+The only difference here is that our from
+
+00:06:17.500 --> 00:06:22.760 line:100% position:50% align:middle
+is reviews, and down we did ref =
+Reviews. And this, like,
+
+00:06:22.760 --> 00:06:26.660 line:100% position:50% align:middle
+took me the longest time to figure out. I
+was like, "Where is this coming from?" I
+
+00:06:26.660 --> 00:06:29.800 line:100% position:50% align:middle
+was looking at all these examples and I'm
+like, "I don't understand," like this is
+
+00:06:29.800 --> 00:06:35.710 line:100% position:50% align:middle
+nowhere in my actual review model. But
+what actually happens is that MongoDB will
+
+00:06:35.710 --> 00:06:41.140 line:100% position:50% align:middle
+lower-case it and put an S on the end for
+you. So it will take your model name,
+
+00:06:41.140 --> 00:06:45.670 line:100% position:50% align:middle
+which is Review, and it will lower-
+case it and add an S onto the end.
+
+00:06:45.670 --> 00:06:49.600 line:100% position:50% align:middle
+So just so you know that, that's something
+that tripped me up for a while,
+
+00:06:49.600 --> 00:06:51.070 line:100% position:50% align:middle
+the comma, that's the first thing.
+
+00:06:51.070 --> 00:06:54.150 line:100% position:50% align:middle
+Actually, we can sort of like follow along
+as we're doing this.
+
+00:06:54.150 --> 00:07:00.080 line:100% position:50% align:middle
+So let's save that so far and let's go...
+oh, I have a bit of an error here,
+
+00:07:00.080 --> 00:07:05.930 line:100% position:50% align:middle
+our lookup needs to be an object in
+itself. This stuff sometimes gets a little
+
+00:07:05.930 --> 00:07:09.520 line:100% position:50% align:middle
+bit hairy. If it's looking a little bit
+complicated for you, you can put it on its
+
+00:07:09.520 --> 00:07:15.830 line:100% position:50% align:middle
+own line where the lookup has its own
+values being pulled in but I can put it on
+
+00:07:15.830 --> 00:07:21.570 line:100% position:50% align:middle
+its own line. So we have two objects, the
+first one being the aggregation line, and
+
+00:07:21.570 --> 00:07:25.960 line:100% position:50% align:middle
+then we lookup and then we pass it a
+second object for the lookup.
+
+00:07:25.960 --> 00:07:28.560 line:100% position:50% align:middle
+So give that a save, we'll go back to
+our storeController here.
+
+00:07:28.560 --> 00:07:32.220 line:100% position:50% align:middle
+And instead of rendering, let's just do a
+JSON so we can see if our stores are
+
+00:07:32.220 --> 00:07:38.070 line:100% position:50% align:middle
+working. There we go, now what we have
+here is we've got a ton of data being
+
+00:07:38.070 --> 00:07:43.890 line:100% position:50% align:middle
+passed back. Well, we have a list of all
+of our stores and each store has a Reviews
+
+00:07:43.890 --> 00:07:48.280 line:100% position:50% align:middle
+field which has a list of all the reviews
+for that specific store,
+
+00:07:48.280 --> 00:07:54.097 line:100% position:50% align:middle
+right? And that's exactly what this is,
+as... I could say as: WESISCOOL.
+
+00:07:56.705 --> 00:08:00.000 line:100% position:50% align:middle
+And now the field is actually called
+WESISCOOL because I did it like that.
+
+00:08:00.000 --> 00:08:03.720 line:100% position:50% align:middle
+So that's how we name what the field is,
+this is where we get it from,
+
+00:08:03.720 --> 00:08:07.990 line:100% position:50% align:middle
+Review. And then this is how we link the
+two. So what we did there is we took two
+
+00:08:07.990 --> 00:08:12.058 line:100% position:50% align:middle
+separate documents, our store documents
+and our reviews documents, and we merged
+
+00:08:12.440 --> 00:08:12.940 line:100% position:50% align:middle
+them together.
+
+00:08:12.940 --> 00:08:16.650 line:100% position:50% align:middle
+Now what we want to do is take this data
+and whittle it down a little bit because
+
+00:08:16.650 --> 00:08:20.740 line:100% position:50% align:middle
+we don't want everything, we just want to
+filter for items that only have two or
+
+00:08:20.740 --> 00:08:25.360 line:100% position:50% align:middle
+more reviews. So we're going to use a
+match in the next one. So make sure you
+
+00:08:25.360 --> 00:08:30.900 line:100% position:50% align:middle
+put a comma after that last one,
+$match. So out of this last one,
+
+00:08:30.900 --> 00:08:35.000 line:100% position:50% align:middle
+we're piping it in here and we're going to
+whittle it down by matching,
+
+00:08:35.000 --> 00:08:42.770 line:100% position:50% align:middle
+which is an object, only ones that have a
+reviews.1 and another object here,
+
+00:08:42.770 --> 00:08:48.090 line:100% position:50% align:middle
+we're going to say $exists: true. So,
+woo, what? So we're going to match
+
+00:08:48.090 --> 00:08:53.690 line:100% position:50% align:middle
+documents where reviews.1, this is
+how you access things that are index-based
+
+00:08:53.690 --> 00:08:57.580 line:100% position:50% align:middle
+in MongoDB, so reviews.0 would be the
+first thing, reviews.1.
+
+00:08:57.580 --> 00:09:00.080 line:100% position:50% align:middle
+I know we don't have that in JavaScript,
+but that's how we do it in MongoDB.
+
+00:09:00.080 --> 00:09:07.160 line:100% position:50% align:middle
+So we want to say it like where the second
+item in reviews exists is true, and what
+
+00:09:07.160 --> 00:09:11.230 line:100% position:50% align:middle
+that will do is that'll just whittle it
+down. So places that only have one review
+
+00:09:11.230 --> 00:09:16.390 line:100% position:50% align:middle
+will be totally taken out of it. So here,
+this one has absolutely no reviews.
+
+00:09:16.390 --> 00:09:19.940 line:100% position:50% align:middle
+Most of them actually have no reviews,
+we'll look at populating some extra data
+
+00:09:19.940 --> 00:09:24.360 line:100% position:50% align:middle
+in just a second. So give that a save, and
+now I've only got this one store coming
+
+00:09:24.360 --> 00:09:28.730 line:100% position:50% align:middle
+back because that's all the actual data we
+have. So we need to pause this for just a
+
+00:09:28.730 --> 00:09:30.000 line:100% position:50% align:middle
+second because we need more data.
+
+00:09:30.000 --> 00:09:35.630 line:100% position:50% align:middle
+And remember, we had this file here in our
+data folder called load-sample-data.
+
+00:09:35.630 --> 00:09:42.220 line:100% position:50% align:middle
+What we can do now is we can go back and
+load in, uncomment, these one,
+
+00:09:42.220 --> 00:09:49.560 line:100% position:50% align:middle
+two, three, and four, sorry, at the top,
+there's a fourth one. So uncomment those
+
+00:09:49.560 --> 00:09:55.590 line:100% position:50% align:middle
+four things we commented out previously,
+and let's go back to our terminal here.
+
+00:09:55.590 --> 00:09:58.966 line:100% position:50% align:middle
+Kill it, and we're going to run the
+script, well, let's look at our
+
+00:09:58.966 --> 00:10:00.310 line:100% position:50% align:middle
+package.json.
+
+00:10:00.310 --> 00:10:03.572 line:100% position:50% align:middle
+We're going to run the script, blow it
+all the way, because that's going to
+
+00:10:03.572 --> 00:10:08.255 line:100% position:50% align:middle
+delete all of our current stores and load
+into new ones. So, npm run blowitallaway.
+
+00:10:11.594 --> 00:10:15.460 line:100% position:50% align:middle
+And that deleted all of
+our data. So now we should have no actual
+
+00:10:15.460 --> 00:10:21.890 line:100% position:50% align:middle
+data, go back to MongoDB and refresh this.
+There are no reviews, there are no stores,
+
+00:10:21.890 --> 00:10:26.510 line:100% position:50% align:middle
+there are no users. Then we can run our
+data, which is called sample,
+
+00:10:26.510 --> 00:10:28.725 line:100% position:50% align:middle
+npm run sample.
+
+00:10:32.101 --> 00:10:35.280 line:100% position:50% align:middle
+That loaded a whole bunch
+of data in for us, going to clear it out.
+
+00:10:35.280 --> 00:10:37.278 line:100% position:50% align:middle
+npm start, once more.
+
+00:10:42.235 --> 00:10:47.890 line:100% position:50% align:middle
+And now if I refresh this page, we're
+getting all kinds of data coming back and
+
+00:10:47.890 --> 00:10:52.290 line:100% position:50% align:middle
+you can also see if you go to the actual
+website, we got all of our stores back,
+
+00:10:52.290 --> 00:10:56.300 line:100% position:50% align:middle
+and then each of our stores should now
+have a bunch of, here we go,
+
+00:10:56.300 --> 00:11:00.901 line:100% position:50% align:middle
+bunch of reviews being popped up in the
+bottom as we see it there.
+
+00:11:00.901 --> 00:11:03.950 line:100% position:50% align:middle
+Good, so we have some data. Let's go back
+to that end point, which is /top.
+
+00:11:03.950 --> 00:11:09.180 line:100% position:50% align:middle
+Let's keep working on our aggregation
+here in store.js. We want to add a new
+
+00:11:09.180 --> 00:11:13.551 line:100% position:50% align:middle
+field for the average rating. So that's
+like we don't have an actual average
+
+00:11:13.551 --> 00:11:14.786 line:100% position:50% align:middle
+rating just yet.
+
+00:11:14.786 --> 00:11:18.226 line:100% position:50% align:middle
+In order for us to sort by the
+average rating, that field needs to be
+
+00:11:18.226 --> 00:11:23.660 line:100% position:50% align:middle
+correct, that field needs to be created
+first. So give yourselves an object here,
+
+00:11:23.660 --> 00:11:27.468 line:100% position:50% align:middle
+and we are going to use the $project and
+what is $project? $project means,
+
+00:11:27.468 --> 00:11:30.057 line:100% position:50% align:middle
+essentially, like, add a
+field to the actual one.
+
+00:11:30.057 --> 00:11:31.754 line:100% position:50% align:middle
+There's a little bit of
+a downside to this,
+
+00:11:31.754 --> 00:11:35.950 line:100% position:50% align:middle
+and I'll explain that in just a second. So
+we are going to $project and this is going
+
+00:11:35.950 --> 00:11:40.600 line:100% position:50% align:middle
+to be an object itself. Put it on its own
+line here, and we're going to $project an
+
+00:11:40.600 --> 00:11:47.401 line:100% position:50% align:middle
+average rating property, and the value of
+that is going to be set to the average
+
+00:11:47.401 --> 00:11:54.520 line:100% position:50% align:middle
+$avg of $reviews.rating. So what it's
+saying here is that, create a new field
+
+00:11:54.520 --> 00:11:59.330 line:100% position:50% align:middle
+called averageRating and set the value of
+that to be the average of each of the
+
+00:11:59.330 --> 00:12:04.860 line:100% position:50% align:middle
+review's rating field, and it's going to
+do the actual math for us.
+
+00:12:04.860 --> 00:12:09.260 line:100% position:50% align:middle
+The same we also have some as we have all
+these operators that will do math against
+
+00:12:09.260 --> 00:12:10.030 line:100% position:50% align:middle
+fields.
+
+00:12:10.030 --> 00:12:16.140 line:100% position:50% align:middle
+And the dollar sign means that it is a
+field from the data being piped in,
+
+00:12:16.140 --> 00:12:20.070 line:100% position:50% align:middle
+in our case, it's being piped in from our
+match. So if I give that a refresh,
+
+00:12:20.070 --> 00:12:23.880 line:100% position:50% align:middle
+we should see averageRating show up now.
+There we go, we've got averageRating
+
+00:12:23.880 --> 00:12:30.920 line:100% position:50% align:middle
+five, one, three, four, two, three, but
+what happened to the rest of our data?
+
+00:12:30.920 --> 00:12:35.790 line:100% position:50% align:middle
+Now, this is the weird thing about
+aggregations, is currently I'm actually
+
+00:12:35.790 --> 00:12:42.560 line:100% position:50% align:middle
+running MongoDB 3.2 in mLab. Here I've got
+my mLab open and I was just showing you
+
+00:12:42.560 --> 00:12:45.520 line:100% position:50% align:middle
+here when you create a new sandbox, at
+least when I'm recording this,
+
+00:12:45.520 --> 00:12:51.620 line:100% position:50% align:middle
+I don't have a MongoDB version 3.4. And
+version 3.4 will just have this thing
+
+00:12:51.620 --> 00:12:56.290 line:100% position:50% align:middle
+called $addField, and then that's all you
+need. And it's going to take your existing
+
+00:12:56.290 --> 00:13:01.533 line:100% position:50% align:middle
+document and just add a new field to it,
+right? But with MongoDB 3.2,
+
+00:13:01.533 --> 00:13:06.540 line:100% position:50% align:middle
+if you're on that version, and the way you
+can you can tell what version you're on is
+
+00:13:06.540 --> 00:13:10.720 line:100% position:50% align:middle
+you can always go to your MongoDB Compass
+and it will tell you what version of
+
+00:13:10.720 --> 00:13:18.970 line:100% position:50% align:middle
+MongoDB you're on. See, 3.2.1.2. So what
+can we do about this? Well, we can either
+
+00:13:18.970 --> 00:13:24.520 line:100% position:50% align:middle
+upgrade MongoDB 3.4, or if you're on mLab
+and you don't have that option just yet,
+
+00:13:24.520 --> 00:13:27.410 line:100% position:50% align:middle
+or maybe it is by the time
+you're watching this, we have to go back
+
+00:13:27.410 --> 00:13:32.470 line:100% position:50% align:middle
+to $project. And you have to add all the
+fields back in that you explicitly want.
+
+00:13:32.470 --> 00:13:36.250 line:100% position:50% align:middle
+So that's fine, because we only need a
+couple of pieces here. We need the photo,
+
+00:13:36.250 --> 00:13:40.470 line:100% position:50% align:middle
+we need the name, we need the reviews, or
+at least the count of the reviews,
+
+00:13:40.470 --> 00:13:41.310 line:100% position:50% align:middle
+and that's it.
+
+00:13:41.310 --> 00:13:45.380 line:100% position:50% align:middle
+So we can do that, no problem. We'll say
+photo = and here you can take
+
+00:13:45.380 --> 00:13:49.610 line:100% position:50% align:middle
+the $$ROOT variable, which is
+going to be...that's going to be the equal
+
+00:13:49.610 --> 00:13:53.320 line:100% position:50% align:middle
+to the original document.photo,
+and there we go. There's our...our photo
+
+00:13:53.320 --> 00:13:59.830 line:100% position:50% align:middle
+is back, and what else do we need? We
+need the name and we need the reviews and
+
+00:13:59.830 --> 00:14:04.510 line:100% position:50% align:middle
+we need the reviews. And there we go,
+we've got our...id always comes with you,
+
+00:14:04.510 --> 00:14:07.680 line:100% position:50% align:middle
+the name, the photo, a list of
+reviews, and our average rating.
+
+00:14:07.680 --> 00:14:11.220 line:100% position:50% align:middle
+So we just sort of like created our own
+new document, and that's exactly what
+
+00:14:11.220 --> 00:14:15.780 line:100% position:50% align:middle
+aggregations are for. So we've got that up
+and running. Next we'll need to sort it by
+
+00:14:15.780 --> 00:14:19.620 line:100% position:50% align:middle
+our new field. So, again, put
+a comma after the last one,
+
+00:14:19.620 --> 00:14:25.010 line:100% position:50% align:middle
+give yourself a new object, and we are
+going to sort based on what? Well,
+
+00:14:25.010 --> 00:14:28.245 line:100% position:50% align:middle
+it's going to be averageRating. Why?
+Because that's our last one. And then you
+
+00:14:28.245 --> 00:14:30.123 line:100% position:50% align:middle
+either tell a -1 or a 1.
+
+00:14:30.123 --> 00:14:32.084 line:100% position:50% align:middle
+So we want -1
+because we want to go
+
+00:14:32.084 --> 00:14:38.950 line:100% position:50% align:middle
+highest to lowest. Now, at the top, our
+averageRating is five right here,
+
+00:14:38.950 --> 00:14:45.530 line:100% position:50% align:middle
+go all the way to the bottom. Our
+averageRating is 1.6. So we've got those,
+
+00:14:45.530 --> 00:14:50.280 line:100% position:50% align:middle
+and then finally, limit this to at most
+10. Why? Because how many items are coming
+
+00:14:50.280 --> 00:14:54.100 line:100% position:50% align:middle
+back? We've got one, two, three, four.
+We've got a lot, 15 or so.
+
+00:14:54.100 --> 00:14:59.550 line:100% position:50% align:middle
+So we want to limit it to at most 10.
+So, again, we'll pipe it into our next
+
+00:14:59.550 --> 00:15:06.114 line:100% position:50% align:middle
+operator, $limit: 10. That one luckily
+doesn't have a nested object in it.
+
+00:15:06.830 --> 00:15:10.883 line:100% position:50% align:middle
+Now we're getting 10 back, you
+can test that by make it 1.
+
+00:15:12.240 --> 00:15:16.619 line:100% position:50% align:middle
+And you see, you only get one back. So
+this will give us at least or at the most
+
+00:15:16.619 --> 00:15:20.563 line:100% position:50% align:middle
+10. Good, so that...woo, that was a
+massive aggregation that we have used
+
+00:15:20.563 --> 00:15:21.635 line:100% position:50% align:middle
+here.
+
+00:15:21.635 --> 00:15:25.197 line:100% position:50% align:middle
+We had to do some weird stuff around
+$project, but if you are on MongoDB
+
+00:15:25.197 --> 00:15:30.639 line:100% position:50% align:middle
+3.4, you can just use addField and not
+have to do any of these extra three lines
+
+00:15:30.639 --> 00:15:31.880 line:100% position:50% align:middle
+of code here.
+
+00:15:31.880 --> 00:15:35.520 line:100% position:50% align:middle
+Good, then we'll go back into our
+storeController and we don't actually
+
+00:15:35.520 --> 00:15:40.770 line:100% position:50% align:middle
+want to JSON it, we want to render out
+TopStores, which we're going to make a new
+
+00:15:40.770 --> 00:15:45.638 line:100% position:50% align:middle
+view for it, call it topStores.pug,
+capital S. And we'll give ourselves our
+
+00:15:45.638 --> 00:15:48.904 line:100% position:50% align:middle
+.inner, we will give ourselves h2.
+
+00:15:48.904 --> 00:15:52.113 line:100% position:50% align:middle
+You'll say Top,
+how many stores?
+
+00:15:52.113 --> 00:15:57.195 line:100% position:50% align:middle
+Well, we can interpellate this data here,
+we just take the number of stores and get
+
+00:15:57.195 --> 00:16:01.605 line:100% position:50% align:middle
+the length, stores. Get that to
+save. Now when we refresh this page,
+
+00:16:01.605 --> 00:16:06.950 line:100% position:50% align:middle
+we see top 10 stores, and if we were to
+change the amount of stores that were
+
+00:16:06.950 --> 00:16:12.578 line:100% position:50% align:middle
+coming back, limit it to 5, that should
+just update this to top 5 stores.
+
+00:16:13.390 --> 00:16:17.620 line:100% position:50% align:middle
+Beautiful! And that will also work if you
+only actually have six stores in your
+
+00:16:17.620 --> 00:16:22.730 line:100% position:50% align:middle
+database, it's only going to give you six.
+So we have our top stores, then we need to
+
+00:16:22.730 --> 00:16:28.510 line:100% position:50% align:middle
+actually code up a table here. So
+table.table, thead. It's been years
+
+00:16:28.510 --> 00:16:35.020 line:100% position:50% align:middle
+since I've coded a table. And we need a
+photo, a ranking, a name,
+
+00:16:35.020 --> 00:16:42.060 line:100% position:50% align:middle
+a number of reviews, and an average
+rating. Okay, all those don't need to all
+
+00:16:42.060 --> 00:16:49.480 line:100% position:50% align:middle
+be on their own line. And each of them is
+going to be a td. Then we can loop over
+
+00:16:49.480 --> 00:16:55.300 line:100% position:50% align:middle
+each of the stores here,
+so each store, i in stores.
+
+00:16:55.300 --> 00:16:59.920 line:100% position:50% align:middle
+So in this case, we also need the index,
+so we say store, i, and that's going to
+
+00:16:59.920 --> 00:17:04.240 line:100% position:50% align:middle
+give us one, two, three, four, five. And
+for each of those we need a table row and
+
+00:17:04.240 --> 00:17:08.940 line:100% position:50% align:middle
+then a td inside of that. We need
+an image with a width of 200,
+
+00:17:08.940 --> 00:17:16.260 line:100% position:50% align:middle
+a source of, then we'll do our uploads/.
+You could probably make a nice
+
+00:17:16.260 --> 00:17:19.210 line:100% position:50% align:middle
+little helper. We've coded this whole
+uploads thing a couple times.
+
+00:17:19.210 --> 00:17:23.270 line:100% position:50% align:middle
+It'd be nice to have a helper function to
+do this for us rather than have to code it
+
+00:17:23.270 --> 00:17:30.585 line:100% position:50% align:middle
+every single time in our template.
+store.photo or store.png.
+
+00:17:30.960 --> 00:17:34.930 line:100% position:50% align:middle
+And then the alt of that will be the
+store.name. So let's give that a save,
+
+00:17:34.930 --> 00:17:41.280 line:100% position:50% align:middle
+refresh. We've got our top 10 stores being
+piped in here, and if you inspect it,
+
+00:17:41.280 --> 00:17:44.250 line:100% position:50% align:middle
+it's going to alt="Charred" and it's
+giving our actual photo, good.
+
+00:17:44.250 --> 00:17:47.740 line:100% position:50% align:middle
+So we've got that up and running. Now feel
+free to pause the video and just do the
+
+00:17:47.740 --> 00:17:52.542 line:100% position:50% align:middle
+rest yourself. It's simply just
+templating out some data.
+
+00:17:52.542 --> 00:17:58.710 line:100% position:50% align:middle
+td is going to be =, our td will
+have the i, but if we just use i, it's
+
+00:17:58.710 --> 00:18:00.523 line:100% position:50% align:middle
+going to actually start at zero.
+
+00:18:00.523 --> 00:18:03.441 line:100% position:50% align:middle
+It's ranking zero and we
+actually want it to start at
+
+00:18:03.441 --> 00:18:08.990 line:100% position:50% align:middle
+one. We'll index it by one. We have a td,
+inside of that, we have an a. And
+
+00:18:08.990 --> 00:18:12.337 line:100% position:50% align:middle
+by the way, if you do this, like td:,
+you're able to do it on one line,
+
+00:18:12.337 --> 00:18:14.216 line:100% position:50% align:middle
+otherwise, you have to
+indent it like that.
+
+00:18:14.216 --> 00:18:23.057 line:100% position:50% align:middle
+So td: a, the href is going to be
+= /stores/store.slug. Again,
+
+00:18:23.057 --> 00:18:26.960 line:100% position:50% align:middle
+you could also make that a nice little
+helper function that would generate the
+
+00:18:26.960 --> 00:18:32.210 line:100% position:50% align:middle
+URL given the store.slug. And then inside
+of that, we'll have a store.name.
+
+00:18:32.210 --> 00:18:37.540 line:100% position:50% align:middle
+Looking good, looking good. Finally, we
+have a td, which is going to have the
+
+00:18:37.540 --> 00:18:41.810 line:100% position:50% align:middle
+store.averageRating inside of it.
+That's not going to do much for us,
+
+00:18:41.810 --> 00:18:45.950 line:100% position:50% align:middle
+but we can see, looks good. But the
+problem is that when we only have values
+
+00:18:45.950 --> 00:18:50.700 line:100% position:50% align:middle
+that look like this. So what we need to do
+is to round it in so that we can get
+
+00:18:50.700 --> 00:18:55.540 line:100% position:50% align:middle
+something like 4.3 out of 5. So how do we
+do that? Well, wrap that whole thing in
+
+00:18:55.540 --> 00:19:03.840 line:100% position:50% align:middle
+Math.round. Multiply that by 10, then
+divide it by 10, and what will that give
+
+00:19:03.840 --> 00:19:09.130 line:100% position:50% align:middle
+us? There we go, 4.3. So what we did was
+we just bumped up the decimal,
+
+00:19:09.130 --> 00:19:13.090 line:100% position:50% align:middle
+rounded it, then bumped down the decimal,
+and we get a nice little quick number.
+
+00:19:13.090 --> 00:19:17.990 line:100% position:50% align:middle
+And then we can just put an out-of-five on
+the end to just show us what we've got.
+
+00:19:17.990 --> 00:19:21.990 line:100% position:50% align:middle
+Good, so we have all this up and running,
+click it. We probably should wrap our
+
+00:19:21.990 --> 00:19:29.560 line:100% position:50% align:middle
+img tag in a link as well, so we'll do
+td: a(href from the other one.
+
+00:19:29.560 --> 00:19:36.460 line:100% position:50% align:middle
+Oh, no! What did I do? Maybe I can't mix
+these. So td, a, img all nested inside,
+
+00:19:36.460 --> 00:19:40.747 line:100% position:50% align:middle
+there we go. Now when I click on one of
+them...oh, no! It doesn't put in the
+
+00:19:40.747 --> 00:19:44.552 line:100% position:50% align:middle
+store.slug. Oh, why is that?
+
+00:19:44.552 --> 00:19:46.468 line:100% position:50% align:middle
+When you click on
+them we get undefined because we didn't
+
+00:19:46.468 --> 00:19:50.790 line:100% position:50% align:middle
+ask for the store.slug when we made our
+aggregation. Remember,
+
+00:19:50.790 --> 00:19:56.130 line:100% position:50% align:middle
+we had this problem here? We also need to
+ask for the slug value, then I click
+
+00:19:56.130 --> 00:19:56.600 line:100% position:50% align:middle
+on one.
+
+00:19:56.600 --> 00:20:00.570 line:100% position:50% align:middle
+Now I got the French, oh, and finally,
+I am messing up all over the place.
+
+00:20:00.570 --> 00:20:08.330 line:100% position:50% align:middle
+I think it's S and S. Again,
+if I had a nice little helper function for
+
+00:20:08.330 --> 00:20:12.550 line:100% position:50% align:middle
+that, I wouldn't screw that up every
+single time that I actually wrote it.
+
+00:20:12.550 --> 00:20:15.620 line:100% position:50% align:middle
+There we go, we actually get to
+see what charred looks like. Good,
+
+00:20:15.620 --> 00:20:21.030 line:100% position:50% align:middle
+so that is our actual aggregation for the
+top stores. Really, the last thing that we
+
+00:20:21.030 --> 00:20:26.130 line:100% position:50% align:middle
+want to do here is also when somebody
+views a store, we want to show them how
+
+00:20:26.130 --> 00:20:31.753 line:100% position:50% align:middle
+many reviews are on that specific store.
+If we open up our storeCard.pug
+
+00:20:31.753 --> 00:20:34.130 line:100% position:50% align:middle
+and we're looking for something like
+this, this is the answer here.
+
+00:20:34.130 --> 00:20:38.300 line:100% position:50% align:middle
+If it has four views, I want it to show
+a little four right beside it, etc., etc.
+
+00:20:38.300 --> 00:20:42.620 line:100% position:50% align:middle
+So if we open up our storeCard.pug,
+and we do a quick dump of our store,
+
+00:20:42.620 --> 00:20:47.030 line:100% position:50% align:middle
+you'll see that each of the stores
+actually doesn't have a reviews.
+
+00:20:47.030 --> 00:20:51.710 line:100% position:50% align:middle
+It's set to null and the reason is because
+we have not yet called populate on every
+
+00:20:51.710 --> 00:20:55.920 line:100% position:50% align:middle
+single time that we want it. So if we go
+back to our storeController and look for
+
+00:20:55.920 --> 00:21:01.780 line:100% position:50% align:middle
+getStores, and you see that we have
+Store.find, and we could call it .populate
+
+00:21:01.780 --> 00:21:05.780 line:100% position:50% align:middle
+on the end, and we ask for
+reviews field to be populated.
+
+00:21:05.780 --> 00:21:09.420 line:100% position:50% align:middle
+Now, if I refresh that, all the reviews
+are being populated, no problem.
+
+00:21:09.420 --> 00:21:14.430 line:100% position:50% align:middle
+You see, bok, bok, bok, all of these
+things. But I don't feel like doing that
+
+00:21:14.430 --> 00:21:18.330 line:100% position:50% align:middle
+every single time that I need it, so we
+could use our autopopulate function that
+
+00:21:18.330 --> 00:21:20.740 line:100% position:50% align:middle
+we've done for our other one.
+
+00:21:20.740 --> 00:21:25.402 line:100% position:50% align:middle
+So we'll go into our store.js, we will
+find...make a function called
+
+00:21:25.402 --> 00:21:26.792 line:100% position:50% align:middle
+autopopulate.
+
+00:21:26.792 --> 00:21:30.480 line:100% position:50% align:middle
+Next, I'm going to say this.populate. What
+do we want to populate?
+
+00:21:30.480 --> 00:21:36.970 line:100% position:50% align:middle
+The reviews, next. And then we take
+our schema and we run our hooks, so we'll
+
+00:21:36.970 --> 00:21:43.310 line:100% position:50% align:middle
+say storeSchema.pre('find'. We're going to
+autopopulate. And then we also want to do,
+
+00:21:43.310 --> 00:21:48.540 line:100% position:50% align:middle
+we need to do findOne. And that means
+whenever I query a store, it should also
+
+00:21:48.540 --> 00:21:53.190 line:100% position:50% align:middle
+populate all of the reviews for that
+store. Here we go, showing up just fine,
+
+00:21:53.190 --> 00:21:58.330 line:100% position:50% align:middle
+go back to our storeCard here, you can get
+rid of that dump. And we'll go down here.
+
+00:21:58.330 --> 00:22:05.820 line:100% position:50% align:middle
+We have our storeCard heart, we have our
+storeCard edit. Let's do another one down
+
+00:22:05.820 --> 00:22:14.160 line:100% position:50% align:middle
+here. We'll say if store.reviews,
+store__action.store__action--count.
+
+00:22:14.160 --> 00:22:18.370 line:100% position:50% align:middle
+I'm going to do another one of those,
+h.icon. We look for the review
+
+00:22:18.370 --> 00:22:22.410 line:100% position:50% align:middle
+icon, and below that, we'll just give
+ourselves the span with the
+
+00:22:22.410 --> 00:22:29.130 line:100% position:50% align:middle
+store.reviews.length. So the number of
+reviews that are specifically on that.
+
+00:22:29.130 --> 00:22:32.510 line:100% position:50% align:middle
+So give that a refresh, there we go, and
+now we see the number of reviews popping
+
+00:22:32.510 --> 00:22:36.880 line:100% position:50% align:middle
+up for every single one of our reviews.
+And if we go to our Tags page,
+
+00:22:36.880 --> 00:22:40.420 line:100% position:50% align:middle
+you can click on any of the tags, you see
+how that's always getting populated
+
+00:22:40.420 --> 00:22:43.570 line:100% position:50% align:middle
+regardless of what query you were doing?
+We didn't have to update six or seven
+
+00:22:43.570 --> 00:22:46.122 line:100% position:50% align:middle
+queries, it's just going to be
+autopopulated every single time.
+
+00:22:46.122 --> 00:22:48.874 line:100% position:50% align:middle
+♪ [music] ♪

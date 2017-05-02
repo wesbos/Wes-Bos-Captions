@@ -1,0 +1,687 @@
+WEBVTT
+
+00:00:00.488 --> 00:00:03.488 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:11.000 --> 00:00:15.560 line:100% position:50% align:middle
+Next up, we need to work on reviews.
+Reviews are going to be actually powering
+
+00:00:15.560 --> 00:00:18.970 line:100% position:50% align:middle
+quite a bit of our website. First of all,
+when you're viewing a storeCard,
+
+00:00:18.970 --> 00:00:23.490 line:100% position:50% align:middle
+it will tell you how many reviews that
+actual place has. You can click through to
+
+00:00:23.490 --> 00:00:28.320 line:100% position:50% align:middle
+it, and you can see that there is a number
+of reviews for each of the stores,
+
+00:00:28.320 --> 00:00:33.330 line:100% position:50% align:middle
+the different people who have left those
+reviews. You can also see when they have
+
+00:00:33.330 --> 00:00:38.090 line:100% position:50% align:middle
+left the review. Then, finally, when you
+are logged in, you can leave a review
+
+00:00:38.090 --> 00:00:41.690 line:100% position:50% align:middle
+yourself, as well as leave a number of
+stars. So that's what we're going to be
+
+00:00:41.690 --> 00:00:44.640 line:100% position:50% align:middle
+going for here. It's also going to be
+powering our top layout,
+
+00:00:44.640 --> 00:00:48.800 line:100% position:50% align:middle
+which will give us the average rating of
+reviews, and we're going to rank them
+
+00:00:48.800 --> 00:00:54.890 line:100% position:50% align:middle
+based on that. So let's go over to our
+models here. If you're feeling fairly
+
+00:00:54.890 --> 00:00:58.280 line:100% position:50% align:middle
+comfortable with this sort of thing, maybe
+we can take a pause and try to do this
+
+00:00:58.280 --> 00:01:03.300 line:100% position:50% align:middle
+yourself. Otherwise, gear up for the ride,
+because here we go.
+
+00:01:03.300 --> 00:01:06.140 line:100% position:50% align:middle
+We're going into our models here, and
+we're going to make a new one called
+
+00:01:06.140 --> 00:01:10.870 line:100% position:50% align:middle
+"Review.js". We're going to do the same
+thing we've been doing before.
+
+00:01:10.870 --> 00:01:15.110 line:100% position:50% align:middle
+We're going to import Mongoose. We're
+going to set the promise to "global".
+
+00:01:15.110 --> 00:01:18.720 line:100% position:50% align:middle
+Then, we'll make our schema. Then, we will
+export the model itself.
+
+00:01:18.720 --> 00:01:22.360 line:100% position:50% align:middle
+Good. So we're all set up with our model
+here. The last thing we want to do is go
+
+00:01:22.360 --> 00:01:26.740 line:100% position:50% align:middle
+to our start.js and import our model here,
+and we're ready to go.
+
+00:01:26.740 --> 00:01:30.880 line:100% position:50% align:middle
+So what are the different fields that we
+need on our Review Schema?
+
+00:01:30.880 --> 00:01:35.450 line:100% position:50% align:middle
+Well, we need the following. We need to
+create a date. We need an author.
+
+00:01:35.450 --> 00:01:40.870 line:100% position:50% align:middle
+We need a store for which that review was
+being sent for. We need the text of the
+
+00:01:40.870 --> 00:01:46.370 line:100% position:50% align:middle
+review. We need a rating of the review,
+and that's all that we actually need.
+
+00:01:46.370 --> 00:01:51.510 line:100% position:50% align:middle
+So created is going to be a date. So let's
+open that one right up.
+
+00:01:51.510 --> 00:01:57.970 line:100% position:50% align:middle
+We'll say type is a "Date", and the
+default is going to be "Date.now".
+
+00:01:57.970 --> 00:02:02.040 line:100% position:50% align:middle
+Then, the author is going to be a type
+of... Well, this one can be a
+
+00:02:02.040 --> 00:02:05.370 line:100% position:50% align:middle
+relationship, because you need one of your
+existing users to be the author.
+
+00:02:05.370 --> 00:02:12.910 line:100% position:50% align:middle
+So it's going to be "mongoose. Schema.
+ObjectID". The ref is going to be our user
+
+00:02:12.910 --> 00:02:17.320 line:100% position:50% align:middle
+model. Right? Because it's going to
+reference another document in our
+
+00:02:17.320 --> 00:02:21.580 line:100% position:50% align:middle
+database. Then, "required" is going to say
+something like, "You must supply an
+
+00:02:21.580 --> 00:02:27.430 line:100% position:50% align:middle
+author!" Now, our store is going to be
+very similar to that. We are going to have
+
+00:02:27.430 --> 00:02:33.660 line:100% position:50% align:middle
+a type of the object ID. The reference is
+going to be our store model,
+
+00:02:33.660 --> 00:02:40.480 line:100% position:50% align:middle
+and the required is, "You must supply a
+store!" The text is simply going to be a
+
+00:02:40.480 --> 00:02:45.770 line:100% position:50% align:middle
+string and it required, "Your review must
+have text!" Then, finally,
+
+00:02:45.770 --> 00:02:50.570 line:100% position:50% align:middle
+our rating is going to be a type of
+"Number" and it's going to have a min of
+
+00:02:50.570 --> 00:02:55.920 line:100% position:50% align:middle
+one and a max of five. So that will give
+us the values that we need there.
+
+00:02:55.920 --> 00:03:00.530 line:100% position:50% align:middle
+If someone tries to submit something on
+either end of that, it will error out for
+
+00:03:00.530 --> 00:03:06.250 line:100% position:50% align:middle
+us. Now, what we need to do is to create
+the interface for actually submitting a
+
+00:03:06.250 --> 00:03:10.060 line:100% position:50% align:middle
+review. So we're going to be doing that on
+one of our single store pages.
+
+00:03:10.060 --> 00:03:15.010 line:100% position:50% align:middle
+So that would be on our Store.pug. That
+would be down here. Now,
+
+00:03:15.010 --> 00:03:18.590 line:100% position:50% align:middle
+I don't want to do just the review code
+right inside of here. We're going to do
+
+00:03:18.590 --> 00:03:24.320 line:100% position:50% align:middle
+that inside of a mixin. So we'll open up
+our sidebar here. We'll go into our views,
+
+00:03:24.320 --> 00:03:29.300 line:100% position:50% align:middle
+go into our mixins
+folder, and we'll make an
+
+00:03:29.300 --> 00:03:33.250 line:100% position:50% align:middle
+"_reviewForm.pug", and we'll make our
+mixin called "reviewForm".
+
+00:03:33.250 --> 00:03:38.740 line:100% position:50% align:middle
+That takes in a store, and from that we
+are going to return a form tag,
+
+00:03:38.740 --> 00:03:43.910 line:100% position:50% align:middle
+which has an action of, we'll need some
+backticks here, "/reviews/".
+
+00:03:43.910 --> 00:03:50.600 line:100% position:50% align:middle
+We'll put the store ID in the action URL
+route no problem. So "store_id".
+
+00:03:50.600 --> 00:03:57.440 line:100% position:50% align:middle
+The method will be "POST", and we'll give
+it a class of "reviewer".
+
+00:03:57.440 --> 00:04:04.580 line:100% position:50% align:middle
+Inside of that, we need a text area with
+the name of "text", because that's going
+
+00:04:04.580 --> 00:04:08.600 line:100% position:50% align:middle
+to line up with the field that we have
+here. Then, we need a placeholder,
+
+00:04:08.600 --> 00:04:11.930 line:100% position:50% align:middle
+and that will be set to, "Did you try this
+place? Have something to say?
+
+00:04:11.930 --> 00:04:17.110 line:100% position:50% align:middle
+Leave a review..." Then, we need the
+review meta. Well, actually,
+
+00:04:17.110 --> 00:04:22.090 line:100% position:50% align:middle
+let's just get that going for a sec, so we
+can actually see what that will look like.
+
+00:04:22.090 --> 00:04:26.860 line:100% position:50% align:middle
+So we'll go back into our Store.pug. We'll
+go above our "block content" and we'll
+
+00:04:26.860 --> 00:04:34.540 line:100% position:50% align:middle
+include our actual mixin. So
+"mixins/_reviewForm". Then, down here we
+
+00:04:34.540 --> 00:04:39.020 line:100% position:50% align:middle
+can say we want to make sure that they are
+logged in. So "if user",
+
+00:04:39.020 --> 00:04:43.410 line:100% position:50% align:middle
+then if that is true, we'll just use our
+"reviewForm" and we'll pass it the store.
+
+00:04:43.410 --> 00:04:46.310 line:100% position:50% align:middle
+Right? Because we have the "store"
+variable, it's already available to us,
+
+00:04:46.310 --> 00:04:50.490 line:100% position:50% align:middle
+if we pass it to the store, it should be
+able to accept that data.
+
+00:04:50.490 --> 00:04:55.240 line:100% position:50% align:middle
+Now, if I refresh this page layout now,
+oh, no. We get an error.
+
+00:04:55.240 --> 00:04:59.620 line:100% position:50% align:middle
+Let's see what we did here. It's telling
+us that there is no re-...
+
+00:04:59.620 --> 00:05:04.360 line:100% position:50% align:middle
+"Oh, you have to learn how to spell before
+you do this stuff. "reviewForm",
+
+00:05:04.360 --> 00:05:07.520 line:100% position:50% align:middle
+there we go. Let's see now. Now, I'm not
+seeing anything, because I'm not logged
+
+00:05:07.520 --> 00:05:11.160 line:100% position:50% align:middle
+in. So I'll log in real quick and now I'm
+seeing the, "Did you try this place?
+
+00:05:11.160 --> 00:05:14.470 line:100% position:50% align:middle
+Have something to say? Leave a review..."
+So that's our text area.
+
+00:05:14.470 --> 00:05:18.620 line:100% position:50% align:middle
+Then, we can go back to our review form
+here and just [continue] on with what we
+
+00:05:18.620 --> 00:05:22.470 line:100% position:50% align:middle
+have. Now, the HTML layout of this is
+pretty important, because what I want to
+
+00:05:22.470 --> 00:05:26.580 line:100% position:50% align:middle
+have is this actual Stars layout, where
+you hover over the stars and it will
+
+00:05:26.580 --> 00:05:31.530 line:100% position:50% align:middle
+correspond with an actual radio button
+input. So as a sibling to text area,
+
+00:05:31.530 --> 00:05:39.160 line:100% position:50% align:middle
+we'll have a "reviewer__meta". Inside of
+that, we'll have a "reviewer__stars".
+
+00:05:39.160 --> 00:05:42.710 line:100% position:50% align:middle
+Inside of that, we are going to do a loop
+for one, two, three,
+
+00:05:42.710 --> 00:05:46.890 line:100% position:50% align:middle
+four, five, because we need five inputs
+here that are going to be checkboxes.
+
+00:05:46.890 --> 00:05:50.140 line:100% position:50% align:middle
+However, I am going to do it backwards,
+and I'll explain this in just a second.
+
+00:05:50.140 --> 00:05:54.110 line:100% position:50% align:middle
+So I'll say, "each num in", and we'll just
+make an array here,
+
+00:05:54.110 --> 00:05:59.850 line:100% position:50% align:middle
+"5, 4, 3, 2, 1". Then, for each of those,
+we need an input with the type of "radio"
+
+00:05:59.850 --> 00:06:04.830 line:100% position:50% align:middle
+button. We want a required attribute. The
+idea of it is going to be,
+
+00:06:04.830 --> 00:06:10.590 line:100% position:50% align:middle
+backticks, "stars" and we'll put the "num"
+in there. So stars 1,
+
+00:06:10.590 --> 00:06:15.210 line:100% position:50% align:middle
+stars 2, stars 3, etc. , etc. The name of
+this is going to be "rating",
+
+00:06:15.210 --> 00:06:19.600 line:100% position:50% align:middle
+because this is going to be sent over to
+our model, and that's what "rating" is
+
+00:06:19.600 --> 00:06:26.100 line:100% position:50% align:middle
+right here. The value of it is going to be
+the "num". So if I give that a refresh
+
+00:06:26.100 --> 00:06:30.260 line:100% position:50% align:middle
+now, you're not going to see anything. If
+I inspect it, you will see that it's
+
+00:06:30.260 --> 00:06:34.210 line:100% position:50% align:middle
+there. But I'm actually hiding it with
+CSS. So crack that open.
+
+00:06:34.210 --> 00:06:39.220 line:100% position:50% align:middle
+Crack that open. You'll see here, "5, 4,
+3, 2, 1", they are being displayed "none",
+
+00:06:39.220 --> 00:06:42.830 line:100% position:50% align:middle
+and that's because I don't actually want
+the inputs themselves to show up.
+
+00:06:42.830 --> 00:06:47.480 line:100% position:50% align:middle
+But we are going to be using the labels to
+show stars in place of these.
+
+00:06:47.480 --> 00:06:53.190 line:100% position:50% align:middle
+So we'll give it a label here, and it's
+going to have a "for" attribute of
+
+00:06:53.190 --> 00:06:58.760 line:100% position:50% align:middle
+"`stars${num}`". The reason why I do that
+is because if you want to be able to click
+
+00:06:58.760 --> 00:07:03.320 line:100% position:50% align:middle
+a label and select the input that's
+associated with it, then you must make
+
+00:07:03.320 --> 00:07:07.270 line:100% position:50% align:middle
+sure that your "for" and your "id" are the
+exact same thing. Then,
+
+00:07:07.270 --> 00:07:14.840 line:100% position:50% align:middle
+inside of that, we can use our "#{num}
+stars" just as a label that we have there.
+
+00:07:14.840 --> 00:07:19.880 line:100% position:50% align:middle
+So if I give that a refresh now, you'll
+see that I've got this nifty little Stars
+
+00:07:19.880 --> 00:07:25.760 line:100% position:50% align:middle
+layout, that when I hover over top of it,
+I'm able to click on it and select the
+
+00:07:25.760 --> 00:07:29.970 line:100% position:50% align:middle
+number of stars. It is backwards now.
+However, that is going to all make sense
+
+00:07:29.970 --> 00:07:33.670 line:100% position:50% align:middle
+in just a second. Let's go back to a
+sibling of ".reviewer__stars" and give
+
+00:07:33.670 --> 00:07:37.120 line:100% position:50% align:middle
+ourselves an input with a class of
+"button", and that's going to be a type of
+
+00:07:37.120 --> 00:07:43.580 line:100% position:50% align:middle
+"submit", and a value equals "Submit
+Review". So now, when I give that a
+
+00:07:43.580 --> 00:07:47.910 line:100% position:50% align:middle
+refresh, you see that these are side by
+side. Now, when I hover over it,
+
+00:07:47.910 --> 00:07:51.050 line:100% position:50% align:middle
+you see that we actually highlight our
+stars. It is still backwards,
+
+00:07:51.050 --> 00:07:56.530 line:100% position:50% align:middle
+and that is because this should be "star"
+singular, not "stars".
+
+00:07:56.530 --> 00:08:04.710 line:100% position:50% align:middle
+Refresh that. If you look at
+"reviewer.scss", what we're doing is we're
+
+00:08:04.710 --> 00:08:11.980 line:100% position:50% align:middle
+doing Flexbox to reorder them. So 5 is
+Order 5, 4 is 4, 3 is 3,
+
+00:08:11.980 --> 00:08:16.170 line:100% position:50% align:middle
+2 is 2, 1 is 1. The reason why we're doing
+that is because when something is
+
+00:08:16.170 --> 00:08:24.970 line:100% position:50% align:middle
+selected, or when something is hovered,
+the labels that are in the future of them
+
+00:08:24.970 --> 00:08:29.530 line:100% position:50% align:middle
+will be turned into yellow. So that's a
+little CSS hack that you can use,
+
+00:08:29.530 --> 00:08:34.220 line:100% position:50% align:middle
+is if you do them in the opposite way, and
+then reorder them either with floats or
+
+00:08:34.220 --> 00:08:38.730 line:100% position:50% align:middle
+with Flexbox, you can do this little trick
+where you can have this highlighted,
+
+00:08:38.730 --> 00:08:43.080 line:100% position:50% align:middle
+and you can just select all the stores
+that are in the future.
+
+00:08:43.080 --> 00:08:46.980 line:100% position:50% align:middle
+So you can see here, if I highlight over
+the last one, it's one.
+
+00:08:46.980 --> 00:08:51.790 line:100% position:50% align:middle
+But really, the last one is the first one,
+because I have reordered them in my CSS.
+
+00:08:51.790 --> 00:08:55.320 line:100% position:50% align:middle
+So a little bit confusing there. But if
+you want to dive a little bit more into
+
+00:08:55.320 --> 00:09:00.160 line:100% position:50% align:middle
+CSS and see that little trick that we did,
+the big thing here is that these are now
+
+00:09:00.160 --> 00:09:05.650 line:100% position:50% align:middle
+just selecting the associated radio input
+for us. That means when we submit this
+
+00:09:05.650 --> 00:09:10.110 line:100% position:50% align:middle
+form, we're going to get the value of the
+actual input here. So we have this thing,
+
+00:09:10.110 --> 00:09:15.340 line:100% position:50% align:middle
+and if I were to say, "Pretty good," and
+submit that review, we get a 404,
+
+00:09:15.340 --> 00:09:21.050 line:100% position:50% align:middle
+because we do not have a route handler for
+"reviews/" the ID. So let's do that now.
+
+00:09:21.050 --> 00:09:30.990 line:100% position:50% align:middle
+Open up our index.js. Go down to the
+bottom here, right above our API and we'll
+
+00:09:30.990 --> 00:09:36.820 line:100% position:50% align:middle
+say, "router.post(`/reviews/:id`, )". When
+that happens, we are going to first make
+
+00:09:36.820 --> 00:09:40.440 line:100% position:50% align:middle
+sure that they are logged in. So we'll
+say, "authController.isLoggedIn",
+
+00:09:40.440 --> 00:09:44.340 line:100% position:50% align:middle
+because we want to make sure that they're
+actually a user before they post data
+
+00:09:44.340 --> 00:09:49.320 line:100% position:50% align:middle
+here. Then, second, we want to catch
+errors, and we're going to use a new
+
+00:09:49.320 --> 00:09:54.170 line:100% position:50% align:middle
+controller that we're going to make called
+"reviewController" and the method is going
+
+00:09:54.170 --> 00:09:57.520 line:100% position:50% align:middle
+to be called "addReview". Good. So we make
+sure they're logged in,
+
+00:09:57.520 --> 00:10:01.580 line:100% position:50% align:middle
+and of course we can write this on its own
+line if this is getting a little bit hairy
+
+00:10:01.580 --> 00:10:06.270 line:100% position:50% align:middle
+for you to read. Then, we have
+"catchErrors" on the next line and put
+
+00:10:06.270 --> 00:10:09.830 line:100% position:50% align:middle
+that there. Good. Now, you can see my
+editor is yelling at me,
+
+00:10:09.830 --> 00:10:14.850 line:100% position:50% align:middle
+"Review Controller is not to find." Let's
+go to the top, and let's import our Review
+
+00:10:14.850 --> 00:10:19.020 line:100% position:50% align:middle
+controller. So we can just duplicate the
+auth. Select your word "auth" and replace
+
+00:10:19.020 --> 00:10:26.170 line:100% position:50% align:middle
+it with "review". Then, let's make that
+controller and grab in Mongoose,
+
+00:10:26.170 --> 00:10:30.050 line:100% position:50% align:middle
+reference our review model, and then start
+to add that handler,
+
+00:10:30.050 --> 00:10:37.940 line:100% position:50% align:middle
+"exports.addReview =". It's an async. We
+have a request and we have a response,
+
+00:10:37.940 --> 00:10:42.500 line:100% position:50% align:middle
+and from that we need a couple things. So
+first of all, we're going to get this big
+
+00:10:42.500 --> 00:10:46.710 line:100% position:50% align:middle
+payload where we have a couple of
+different fields that are coming in.
+
+00:10:46.710 --> 00:10:51.070 line:100% position:50% align:middle
+We have our text field and we have our
+review field that are coming in.
+
+00:10:51.070 --> 00:10:58.170 line:100% position:50% align:middle
+So let's just try to immediately
+"res.json" the "req.body" just to see what
+
+00:10:58.170 --> 00:11:00.910 line:100% position:50% align:middle
+sort of data we're getting in. So I am
+going to have three stars,
+
+00:11:00.910 --> 00:11:05.200 line:100% position:50% align:middle
+say "P good", submit that review. It
+broke. Let me see what's going on here.
+
+00:11:05.200 --> 00:11:13.170 line:100% position:50% align:middle
+I've got a crash, "required", require
+"Mongoose". If I go back to my Olive Oil
+
+00:11:13.170 --> 00:11:18.430 line:100% position:50% align:middle
+store, I'll say it's "P good", give me
+three stars, submit that review.
+
+00:11:18.430 --> 00:11:22.620 line:100% position:50% align:middle
+Then, you can see, if we're sending back
+the data that we're getting in the body,
+
+00:11:22.620 --> 00:11:26.110 line:100% position:50% align:middle
+we have a text and a rating. Those two
+other pieces of data that we need before
+
+00:11:26.110 --> 00:11:29.250 line:100% position:50% align:middle
+that is the author and the store. So what
+we'll do is we'll say,
+
+00:11:29.250 --> 00:11:39.870 line:100% position:50% align:middle
+"req.body.author =" "req.user. _id". So
+far, so good. Let's refresh this,
+
+00:11:39.870 --> 00:11:42.940 line:100% position:50% align:middle
+and you see that the author ID is coming
+along, because I'm signed in.
+
+00:11:42.940 --> 00:11:50.760 line:100% position:50% align:middle
+That's my ID. Then, I'm going to duplicate
+that and say the "req.body.store = req.".
+
+00:11:50.760 --> 00:11:56.440 line:100% position:50% align:middle
+Now, where is the store ID? It's in the
+URL here. Right? "Req.params.id",
+
+00:11:56.440 --> 00:12:02.520 line:100% position:50% align:middle
+so that's the ID that's coming in from the
+URL, and this is the ID that's coming in
+
+00:12:02.520 --> 00:12:07.770 line:100% position:50% align:middle
+from the currently logged in user. Give
+that a save, and if I resubmit that form,
+
+00:12:07.770 --> 00:12:10.350 line:100% position:50% align:middle
+then I'll see that I'm getting a text, the
+rating, the author,
+
+00:12:10.350 --> 00:12:15.610 line:100% position:50% align:middle
+and the store values coming in no problem.
+Good. So we can get rid of that "res.json"
+
+00:12:15.610 --> 00:12:18.410 line:100% position:50% align:middle
+and we can start to save our new review.
+So let's make a variable,
+
+00:12:18.410 --> 00:12:23.550 line:100% position:50% align:middle
+"newReview", and that's equal to a "new
+Review" model. We simply just need to pass
+
+00:12:23.550 --> 00:12:27.830 line:100% position:50% align:middle
+it the "req.body", because that is going
+to have the text, the rating,
+
+00:12:27.830 --> 00:12:34.220 line:100% position:50% align:middle
+the author, and the store on it. Then, we
+can await the "newReview.save".
+
+00:12:34.220 --> 00:12:39.660 line:100% position:50% align:middle
+Once that has saved, we will redirect them
+back to the page where they came from.
+
+00:12:39.660 --> 00:12:42.490 line:100% position:50% align:middle
+At this point, we can also tell them that
+their review was successfully saved.
+
+00:12:42.490 --> 00:12:50.730 line:100% position:50% align:middle
+So we can say, "req.flash(`success`,
+`Review Saved!`)". Good. So when somebody
+
+00:12:50.730 --> 00:12:54.870 line:100% position:50% align:middle
+posts this URL, we're going to save the
+author and the store. We're going to take
+
+00:12:54.870 --> 00:12:59.290 line:100% position:50% align:middle
+the existing text and rating that they've
+passed us, and then we are going to save
+
+00:12:59.290 --> 00:13:03.240 line:100% position:50% align:middle
+it into our review, and then redirect them
+back to the page. So let's go back to our
+
+00:13:03.240 --> 00:13:07.740 line:100% position:50% align:middle
+homepage here. Let's go to one of our
+stores here. I'm going to go to Randy's
+
+00:13:07.740 --> 00:13:13.770 line:100% position:50% align:middle
+Joint and I'm going to say, "This place
+rocks!", give that a five-star review,
+
+00:13:13.770 --> 00:13:18.470 line:100% position:50% align:middle
+and then submit it. It says, "Review
+saved!" and redirects us right back to
+
+00:13:18.470 --> 00:13:23.650 line:100% position:50% align:middle
+Randy's Joint. Now, it's not showing up,
+but if we open our MongoDB Compass here
+
+00:13:23.650 --> 00:13:28.890 line:100% position:50% align:middle
+and we go back to our schema, and apply,
+it should be showing up in the sidebar
+
+00:13:28.890 --> 00:13:35.140 line:100% position:50% align:middle
+here. I am not seeing it. But if we give
+it a refresh, I just did a CMD+R and let
+
+00:13:35.140 --> 00:13:39.140 line:100% position:50% align:middle
+it reconnect, there we go. Our reviews are
+now popping up. There is one review.
+
+00:13:39.140 --> 00:13:42.750 line:100% position:50% align:middle
+I can open that up. I can look at my
+documents here and say, "This place
+
+00:13:42.750 --> 00:13:48.640 line:100% position:50% align:middle
+rocks!" The rating is five. The author is
+an object ID, and the store is also an
+
+00:13:48.640 --> 00:13:55.500 line:100% position:50% align:middle
+object ID. So both of those pieces of data
+are associated with the actual store.
+
+00:13:55.500 --> 00:14:00.310 line:100% position:50% align:middle
+Now comes the question of how do we
+actually pull in a list of reviews for
+
+00:14:00.310 --> 00:14:03.584 line:100% position:50% align:middle
+this specific store. That's what we'll be
+doing in the next video.
+
+00:14:03.584 --> 00:14:06.584 line:100% position:50% align:middle
+♪ [music] ♪

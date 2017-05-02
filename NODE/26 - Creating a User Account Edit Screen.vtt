@@ -1,0 +1,386 @@
+WEBVTT
+
+00:00:00.500 --> 00:00:03.500 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.000 --> 00:00:16.070 line:100% position:50% align:middle
+Now, when you click on your avatar,
+you go to this URL, /account,
+
+00:00:16.070 --> 00:00:19.630 line:100% position:50% align:middle
+and of course it 404s. So let's
+handle that now. Open up our routes,
+
+00:00:19.630 --> 00:00:26.753 line:100% position:50% align:middle
+index.js. Go to the bottom here and
+we'll say, router.get('/account',).
+
+00:00:26.753 --> 00:00:31.600 line:100% position:50% align:middle
+And when somebody does that, we will take
+our userController and we'll just say,
+
+00:00:31.600 --> 00:00:36.820 line:100% position:50% align:middle
+.account. Good. Now, let's open up our
+userController, and we'll create a method
+
+00:00:36.820 --> 00:00:42.170 line:100% position:50% align:middle
+to handle that. So I'll say,
+exports.account = (req, res). This is
+
+00:00:42.170 --> 00:00:51.280 line:100% position:50% align:middle
+simply going to be res.render, the
+('account'), and the title will be 'Edit
+
+00:00:51.280 --> 00:00:57.710 line:100% position:50% align:middle
+Your Account'. Good. Now, we should see
+that it cannot find the account views
+
+00:00:57.710 --> 00:01:04.680 line:100% position:50% align:middle
+file. Good. I'll open up our views
+folder and create a view for that.
+
+00:01:11.418 --> 00:01:15.580 line:100% position:50% align:middle
+There we go. It works. Now, what do
+we need? First, we need an .inner.
+
+00:01:15.580 --> 00:01:20.150 line:100% position:50% align:middle
+Then, we need a form with the action of
+"/account". So we're going to post to
+
+00:01:20.150 --> 00:01:23.240 line:100% position:50% align:middle
+ourselves, and then we can start
+making our Edit Account interface.
+
+00:01:23.240 --> 00:01:31.790 line:100% position:50% align:middle
+So I'll say, h2 Edit Your Account. We have
+our form, which has a method of "POST",
+
+00:01:31.790 --> 00:01:36.684 line:100% position:50% align:middle
+and we have a label for the
+"name", input name of "name",
+
+00:01:36.684 --> 00:01:40.798 line:100% position:50% align:middle
+and then the value is
+going to be user.name.
+
+00:01:40.798 --> 00:01:44.571 line:100% position:50% align:middle
+Ah, okay. Interesting. Because
+user is going to be passed to every
+
+00:01:44.571 --> 00:01:52.450 line:100% position:50% align:middle
+single request. We open up our
+app.js and we'll say, locals.user.
+
+00:01:52.450 --> 00:01:56.860 line:100% position:50% align:middle
+What this is doing is it's taking the
+req.user, which Passport will make
+
+00:01:56.860 --> 00:02:02.120 line:100% position:50% align:middle
+available to us, and we're passing the
+user to our locals, which are all the
+
+00:02:02.120 --> 00:02:05.370 line:100% position:50% align:middle
+variables that our template is going to
+have, and we're going to pass it along.
+
+00:02:05.370 --> 00:02:08.740 line:100% position:50% align:middle
+Now, before, that was just null,
+because we were not logged in.
+
+00:02:08.740 --> 00:02:13.100 line:100% position:50% align:middle
+However, in this case, now that we have
+req.user, which Passport gives us,
+
+00:02:13.100 --> 00:02:16.950 line:100% position:50% align:middle
+we can pass it along to our locals.
+So we can give it user.name.
+
+00:02:16.950 --> 00:02:20.810 line:100% position:50% align:middle
+Let's just see if that works so far.
+There we go. Name is Wes.
+
+00:02:20.810 --> 00:02:28.150 line:100% position:50% align:middle
+Good. I like it. Then, we'll have
+label(for="email"), input(type="email"),
+
+00:02:28.150 --> 00:02:33.773 line:100% position:50% align:middle
+name="email", and value=user.email.
+Then, finally, I'll have a Save.
+
+00:02:35.290 --> 00:02:38.560 line:100% position:50% align:middle
+Name, email, Save button. We don't have
+password here. That's going to come
+
+00:02:38.560 --> 00:02:41.070 line:100% position:50% align:middle
+next. We just have Name and Email.
+Those are the only two pieces of
+
+00:02:41.070 --> 00:02:45.370 line:100% position:50% align:middle
+information we have on our account right
+now. Good. Now, if I were to change this
+
+00:02:45.370 --> 00:02:52.520 line:100% position:50% align:middle
+to Wesley and update my account, it's
+404-ing. The reason why is because when
+
+00:02:52.520 --> 00:02:55.870 line:100% position:50% align:middle
+you visit your account, that's get.
+But when you post the data,
+
+00:02:55.870 --> 00:03:00.150 line:100% position:50% align:middle
+that's router.post, and we don't have
+a route to handle that just yet.
+
+00:03:00.150 --> 00:03:05.490 line:100% position:50% align:middle
+So we can go ahead, back to our index.js
+here, and we'll go to our '/account' here.
+
+00:03:05.490 --> 00:03:08.670 line:100% position:50% align:middle
+First, actually, we need to make sure that
+they're logged in before they can go to an
+
+00:03:08.670 --> 00:03:16.470 line:100% position:50% align:middle
+account URL. So we'll just say,
+authController.isLoggedIn, and then
+
+00:03:16.470 --> 00:03:19.170 line:100% position:50% align:middle
+user.account. And that'll just make
+sure that they're logged in before,
+
+00:03:19.170 --> 00:03:25.820 line:100% position:50% align:middle
+and then the redirect will kick in for us.
+Now, we'll have router.post('/account',
+
+00:03:25.820 --> 00:03:29.979 line:100% position:50% align:middle
+and we'll run
+userController.updateAccount.
+
+00:03:29.979 --> 00:03:37.020 line:100% position:50% align:middle
+Now, that's going to be using async/await,
+so we can wrap it in catchErrors. Good.
+
+00:03:37.020 --> 00:03:41.030 line:100% position:50% align:middle
+So now, we need to make an updateAccount
+method on our userController.
+
+00:03:41.619 --> 00:03:49.260 line:100% position:50% align:middle
+Go down here, exports.updateAccount.
+We'll do async (req, res).
+
+00:03:51.910 --> 00:03:58.476 line:100% position:50% align:middle
+Now, what we need to do is take all the
+data that the user has sent us and update
+
+00:03:58.476 --> 00:04:02.110 line:100% position:50% align:middle
+their account with it. But in this case,
+we don't want to update the hash or
+
+00:04:02.110 --> 00:04:05.590 line:100% position:50% align:middle
+anything like that. So we're going to make
+a separate variable of just called
+
+00:04:05.590 --> 00:04:13.212 line:100% position:50% align:middle
+updates. const updates =. And the name
+might be updated, so req.body.name and
+
+00:04:13.212 --> 00:04:17.970 line:100% position:50% align:middle
+the email might be updated, so
+email: req.body.email. Good.
+
+00:04:17.970 --> 00:04:21.950 line:100% position:50% align:middle
+Now, what we're going to do is we're
+going to take our user model and call
+
+00:04:21.950 --> 00:04:27.585 line:100% position:50% align:middle
+findOneAndUpdate. And what that will do is
+it's going to query for a specific user,
+
+00:04:27.585 --> 00:04:31.510 line:100% position:50% align:middle
+and then we're going to update
+that actual user. So we'll say,
+
+00:04:31.510 --> 00:04:39.580 line:100% position:50% align:middle
+const user = await User, that's our model,
+.findOneAndUpdate, and this will take
+
+00:04:39.580 --> 00:04:43.260 line:100% position:50% align:middle
+three things. We've used one similar
+to this before. First, the query.
+
+00:04:43.260 --> 00:04:48.860 line:100% position:50% align:middle
+Second, the updates. And then, third, some
+options, which it's going to allow us to
+
+00:04:48.860 --> 00:04:51.240 line:100% position:50% align:middle
+run the validators on it. Right?
+So I'll start with the first one,
+
+00:04:51.240 --> 00:04:54.334 line:100% position:50% align:middle
+the query. I'm going to put these each on
+their own line, because they can get a
+
+00:04:54.334 --> 00:04:59.880 line:100% position:50% align:middle
+little bit long. The query is going to
+be based on the ID of the user.
+
+00:04:59.880 --> 00:05:06.250 line:100% position:50% align:middle
+So we can simply say the
+_id is req.user. _id
+
+00:05:06.250 --> 00:05:09.147 line:100% position:50% align:middle
+and that's really important,
+that you actually pull the ID
+
+00:05:09.147 --> 00:05:12.430 line:100% position:50% align:middle
+from the request, rather than
+having the user give you their
+
+00:05:12.430 --> 00:05:15.960 line:100% position:50% align:middle
+ID. Because that could easily be monkeyed
+with, and you don't want them actually
+
+00:05:15.960 --> 00:05:22.430 line:100% position:50% align:middle
+faking the ID. So req.user. _id, that's
+the query. Second, the update is going to
+
+00:05:22.430 --> 00:05:28.800 line:100% position:50% align:middle
+be something called $set: updates, and
+what that will do is it's going to take
+
+00:05:28.800 --> 00:05:33.857 line:100% position:50% align:middle
+this and set it on top of what already
+exists in the user, because these are the
+
+00:05:33.857 --> 00:05:37.361 line:100% position:50% align:middle
+only two pieces of information we're
+updating. Although, our user could have a
+
+00:05:37.361 --> 00:05:41.880 line:100% position:50% align:middle
+lot more data associated with it.
+Then, third was the options,
+
+00:05:41.880 --> 00:05:46.649 line:100% position:50% align:middle
+which is going to be new: true,. That
+means it returns the new actual user.
+
+00:05:46.649 --> 00:05:51.820 line:100% position:50% align:middle
+Second, runValidators is going to
+be true, and that will make sure that if
+
+00:05:51.820 --> 00:05:55.761 line:100% position:50% align:middle
+the user is running any sort of monkey
+business, that it's just going to run them
+
+00:05:55.761 --> 00:06:00.920 line:100% position:50% align:middle
+through all the actual validation steps.
+And then context is going to be 'query'.
+
+00:06:00.920 --> 00:06:04.400 line:100% position:50% align:middle
+Context is required for Mongoose to
+actually do the query properly.
+
+00:06:04.400 --> 00:06:08.479 line:100% position:50% align:middle
+If you want to look into that, it's a bit
+boring. But it needs to be there.
+
+00:06:08.479 --> 00:06:14.580 line:100% position:50% align:middle
+Now, once we have that, let's just say,
+res.json(user). I would like to just see
+
+00:06:14.580 --> 00:06:20.110 line:100% position:50% align:middle
+what the actual user is on. So go to our
+user profile now, and I'll try to update
+
+00:06:20.110 --> 00:06:24.740 line:100% position:50% align:middle
+it to Wesley, Update My Account, and
+ha-ha. There we go. We're automatically
+
+00:06:24.740 --> 00:06:28.790 line:100% position:50% align:middle
+sending back the user, and you can
+see that the name is now Wesley.
+
+00:06:28.790 --> 00:06:32.551 line:100% position:50% align:middle
+But we don't need to send them to json.
+What we really need to do is just say,
+
+00:06:32.551 --> 00:06:36.299 line:100% position:50% align:middle
+res.redirect and in this case we
+could either do two things.
+
+00:06:36.299 --> 00:06:39.930 line:100% position:50% align:middle
+We could just say 'back' or we
+could redirect them to '/account'.
+
+00:06:39.930 --> 00:06:44.670 line:100% position:50% align:middle
+It doesn't matter and if you say 'back',
+it will just redirect you to the URL that
+
+00:06:44.670 --> 00:06:50.310 line:100% position:50% align:middle
+they came from. When that's helpful is
+if this was ever working on multiple
+
+00:06:50.310 --> 00:06:53.380 line:100% position:50% align:middle
+endpoints, 'back' would just send them
+right back to the other one that they
+
+00:06:53.380 --> 00:06:59.170 line:100% position:50% align:middle
+have. So let's refresh this, go to
+Account, change this to Westerhoff,
+
+00:07:00.083 --> 00:07:04.800 line:100% position:50% align:middle
+go to save, and you can see
+automatically Westerhoff is saved.
+
+00:07:04.800 --> 00:07:07.025 line:100% position:50% align:middle
+What we could do is
+give ourselves a success,
+
+00:07:07.025 --> 00:07:12.002 line:100% position:50% align:middle
+req.flash('success',
+'Updated the profile!').
+
+00:07:12.002 --> 00:07:17.320 line:100% position:50% align:middle
+So Wassssley, Update. Then,
+we get our flash, Updated
+
+00:07:17.320 --> 00:07:21.200 line:100% position:50% align:middle
+the profile and we see the updated
+pieces of information showing.
+
+00:07:21.200 --> 00:07:25.700 line:100% position:50% align:middle
+Good. One more thing I just wanted to show
+you is that you always have this req.user
+
+00:07:25.700 --> 00:07:29.460 line:100% position:50% align:middle
+available to you. So what you could do is,
+you could go to any one of these pages,
+
+00:07:29.460 --> 00:07:36.630 line:100% position:50% align:middle
+and you could do a quick dump,
+pre= h.dump(req.user). Or no,
+
+00:07:36.630 --> 00:07:41.207 line:100% position:50% align:middle
+it's just user, because in this case
+it's locals.user. And if you refresh,
+
+00:07:41.207 --> 00:07:44.790 line:100% position:50% align:middle
+you're going to see a dump of the actual
+user and it's going to have the ID,
+
+00:07:44.790 --> 00:07:48.542 line:100% position:50% align:middle
+unique identifier, your name, and your
+email. Of course, we're going to get into
+
+00:07:48.542 --> 00:07:53.090 line:100% position:50% align:middle
+a lot more with hearting our actual
+stores. So that is editing our account.
+
+00:07:53.090 --> 00:07:57.686 line:100% position:50% align:middle
+Let's move on to the next piece, which
+is creating a password reset flow,
+
+00:07:57.686 --> 00:07:59.700 line:100% position:50% align:middle
+if we've forgotten our password.
+
+00:08:00.100 --> 00:08:03.100 line:100% position:50% align:middle
+♪ [music] ♪

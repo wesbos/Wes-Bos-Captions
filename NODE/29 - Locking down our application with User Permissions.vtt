@@ -1,0 +1,690 @@
+WEBVTT
+
+00:00:01.000 --> 00:00:04.001 line:100% position:50% align:middle
+♪ [music] ♪
+
+00:00:12.110 --> 00:00:16.520 line:100% position:50% align:middle
+So far we have stores and we have users,
+but we don't have any way to sort of
+
+00:00:16.520 --> 00:00:20.580 line:100% position:50% align:middle
+connect the two. And essentially when
+we're creating a store, we need to be able
+
+00:00:20.580 --> 00:00:25.880 line:100% position:50% align:middle
+to set an author property on our stores
+that is linked to one of the users in our
+
+00:00:25.880 --> 00:00:28.820 line:100% position:50% align:middle
+database. That's what's called a
+relationship, and this is how we're going
+
+00:00:28.820 --> 00:00:34.130 line:100% position:50% align:middle
+to create a relationship in MongoDB. So
+what we do is we're going to open up our
+
+00:00:34.130 --> 00:00:39.030 line:100% position:50% align:middle
+store model here, so store.js, and we're
+going to scroll down to the bottom where
+
+00:00:39.030 --> 00:00:43.570 line:100% position:50% align:middle
+it says photo: String. And we're going to
+add a new field called an author.
+
+00:00:43.570 --> 00:00:45.190 line:100% position:50% align:middle
+And the author's going to be an object.
+
+00:00:45.190 --> 00:00:52.190 line:100% position:50% align:middle
+The type of the author is not going to be
+a String. It's not going to be a Number.
+
+00:00:52.190 --> 00:00:57.060 line:100% position:50% align:middle
+It's actually going to be an ObjectID.
+Hmm, interesting. Well,
+
+00:00:57.060 --> 00:01:01.070 line:100% position:50% align:middle
+let's look at our users here, and we look
+at our Documents here.
+
+00:01:01.070 --> 00:01:08.190 line:100% position:50% align:middle
+You're going to see that the ID of a
+person is not a string, as we have here.
+
+00:01:08.190 --> 00:01:12.780 line:100% position:50% align:middle
+It's not a date, as we have here. It's not
+a number. It's not anything else that we
+
+00:01:12.780 --> 00:01:17.820 line:100% position:50% align:middle
+could use. The ID is actually its own
+type. And you'll see that it's a type
+
+00:01:17.820 --> 00:01:23.000 line:100% position:50% align:middle
+called an ObjectID. And that's what we
+want to set the author to be because it's
+
+00:01:23.000 --> 00:01:26.980 line:100% position:50% align:middle
+going to be a relationship between the
+store and the actual user.
+
+00:01:26.980 --> 00:01:31.730 line:100% position:50% align:middle
+So the type is going to be
+mongoose.capital "S," schema. And then we
+
+00:01:31.730 --> 00:01:37.390 line:100% position:50% align:middle
+say ObjectID, so that's a custom type that
+we have here. And then we say the ref is
+
+00:01:37.390 --> 00:01:44.870 line:100% position:50% align:middle
+going to be 'User'. Ah, so this is where
+we tell MongoDB in our Schema that the
+
+00:01:44.870 --> 00:01:49.440 line:100% position:50% align:middle
+author is going to be referenced to our
+User. Let's open that up real quick,
+
+00:01:49.440 --> 00:01:55.070 line:100% position:50% align:middle
+User.js. Let's scroll down here. You see
+that the User is right here with a capital
+
+00:01:55.070 --> 00:01:59.580 line:100% position:50% align:middle
+"U," User, the model called that. So we're
+telling it, "This is going to be an
+
+00:01:59.580 --> 00:02:04.010 line:100% position:50% align:middle
+object." But when somebody gives us an
+ObjectID, we're going to store just the
+
+00:02:04.010 --> 00:02:07.040 line:100% position:50% align:middle
+object, and it's going to be
+referenced to the actual User.
+
+00:02:07.040 --> 00:02:11.000 line:100% position:50% align:middle
+So we're going to be able to come back and
+populate the author of each of our stores
+
+00:02:11.000 --> 00:02:15.770 line:100% position:50% align:middle
+without having to save all the data about
+myself. We just simply have a pointer
+
+00:02:15.770 --> 00:02:20.700 line:100% position:50% align:middle
+arrow to another piece of data, another
+document which is going to be Wes,
+
+00:02:20.700 --> 00:02:24.330 line:100% position:50% align:middle
+or whatever is on there. And then finally,
+we can make this required.
+
+00:02:24.330 --> 00:02:28.760 line:100% position:50% align:middle
+Just say 'You must supply an author'. And
+in our case, it's always going to be past
+
+00:02:28.760 --> 00:02:33.230 line:100% position:50% align:middle
+because we're going to do it as we save a
+store. So we'll give that a Save now.
+
+00:02:33.230 --> 00:02:38.540 line:100% position:50% align:middle
+And when we create a store here, it
+actually needs to have an author
+
+00:02:38.540 --> 00:02:47.110 line:100% position:50% align:middle
+associated with it. So let's open up our
+storeController and let's go to our
+
+00:02:47.110 --> 00:02:50.750 line:100% position:50% align:middle
+createStore method. Here we go,
+exports.createStore. And what we're going
+
+00:02:50.750 --> 00:02:56.520 line:100% position:50% align:middle
+to do before we even create the store,
+we're just going to say req.body.author,
+
+00:02:56.520 --> 00:03:01.550 line:100% position:50% align:middle
+because that's the new field that we're
+working with, =, now how do we get the
+
+00:03:01.550 --> 00:03:08.790 line:100% position:50% align:middle
+current user's ID? Well, req.user._id;.
+And what that will do is it will take the
+
+00:03:08.790 --> 00:03:13.610 line:100% position:50% align:middle
+ID of the currently logged in user, and
+it's going to put it into the author
+
+00:03:13.610 --> 00:03:18.040 line:100% position:50% align:middle
+field. And now when we actually create a
+store, what's going to happen is that we
+
+00:03:18.040 --> 00:03:20.420 line:100% position:50% align:middle
+will be able to populate that data.
+
+00:03:20.420 --> 00:03:25.720 line:100% position:50% align:middle
+So give that a Save. Let's try and log in
+here. We're going to create a new store
+
+00:03:25.720 --> 00:03:32.650 line:100% position:50% align:middle
+real quick. So just went ahead and created
+our new store. Now if we look that up in
+
+00:03:32.650 --> 00:03:38.580 line:100% position:50% align:middle
+our MongoDB here, go to stores and we
+scroll down all the way to the bottom.
+
+00:03:38.580 --> 00:03:45.167 line:100% position:50% align:middle
+You see "New Store." You'll see that the
+author is ObjectID('58f4d5.
+
+00:03:45.167 --> 00:03:54.360 line:100% position:50% align:middle
+And if we go back to our users, you'll see
+that wesbos is 58f4d5.
+
+00:03:54.360 --> 00:03:59.610 line:100% position:50% align:middle
+So the ObjectID is now our relationship
+between the two. And what we're able to
+
+00:03:59.610 --> 00:04:06.000 line:100% position:50% align:middle
+do, if we go to store.pug, and we just do
+a quick dump of the store somewhere.
+
+00:04:06.000 --> 00:04:10.700 line:100% position:50% align:middle
+So pre= h.dump(store).
+
+00:04:12.920 --> 00:04:19.080 line:100% position:50% align:middle
+You'll see that the author property comes
+along with us, but it's just an actual ID.
+
+00:04:19.080 --> 00:04:23.330 line:100% position:50% align:middle
+Now if we were to do something called a
+"populate," what it will do is it will
+
+00:04:23.330 --> 00:04:27.250 line:100% position:50% align:middle
+bring along all the information about that
+author and put it in here.
+
+00:04:27.250 --> 00:04:32.260 line:100% position:50% align:middle
+It's going to replace it with the actual
+author data. So let's find our
+
+00:04:32.260 --> 00:04:40.020 line:100% position:50% align:middle
+storeController. Let's go to where we get
+a store, which is going to be
+
+00:04:40.020 --> 00:04:48.220 line:100% position:50% align:middle
+getStoreBySlug. And in here we're doing
+Store.findOne. And if you do .populate on
+
+00:04:48.220 --> 00:04:53.030 line:100% position:50% align:middle
+the end, and you ask it to populate the
+('author') field, just by adding that
+
+00:04:53.030 --> 00:04:59.020 line:100% position:50% align:middle
+populate on the end it should then say,
+"Oh, this field needs to be populated so
+
+00:04:59.020 --> 00:05:03.540 line:100% position:50% align:middle
+let me go off and find the actual document
+that's associated with this ID,
+
+00:05:03.540 --> 00:05:05.170 line:100% position:50% align:middle
+rather than just giving them the ID."
+
+00:05:05.170 --> 00:05:08.930 line:100% position:50% align:middle
+So if I refresh now, a-ha, there we go. We
+have our author with an ID,
+
+00:05:08.930 --> 00:05:12.530 line:100% position:50% align:middle
+an email, a name. And then we also see the
+PasswordToken stuff,
+
+00:05:12.530 --> 00:05:15.510 line:100% position:50% align:middle
+just because I requested a reset and it
+actually didn't reset my password.
+
+00:05:15.510 --> 00:05:19.720 line:100% position:50% align:middle
+If I did, those would be deleted no
+problem. So if you need to populate some
+
+00:05:19.720 --> 00:05:24.780 line:100% position:50% align:middle
+fields, you simply just say .populate on
+the end and it will go off and find the
+
+00:05:24.780 --> 00:05:29.390 line:100% position:50% align:middle
+associated document for that person and
+fill it in for you. So that's really nice
+
+00:05:29.390 --> 00:05:32.980 line:100% position:50% align:middle
+because we have one document here. We only
+have to find one store,
+
+00:05:32.980 --> 00:05:37.410 line:100% position:50% align:middle
+but by calling populate it will fill in
+the additional data that we need.
+
+00:05:37.410 --> 00:05:40.920 line:100% position:50% align:middle
+Good. So in this case I don't necessarily
+need it and you should also be careful
+
+00:05:40.920 --> 00:05:44.170 line:100% position:50% align:middle
+that you're not accidentally leaking any
+of your user sensitive data.
+
+00:05:44.170 --> 00:05:47.180 line:100% position:50% align:middle
+You'll see that the password, and the
+hash, and the salt, none of that stuff is
+
+00:05:47.180 --> 00:05:50.880 line:100% position:50% align:middle
+automatically populated because it's
+sensitive information. But sometimes you
+
+00:05:50.880 --> 00:05:54.710 line:100% position:50% align:middle
+do need the email. Other times you
+shouldn't be printing it out.
+
+00:05:54.710 --> 00:05:56.160 line:100% position:50% align:middle
+So that's our first part right here.
+
+00:05:56.160 --> 00:06:02.940 line:100% position:50% align:middle
+The second part is we need to be able to
+stop people from editing stores which they
+
+00:06:02.940 --> 00:06:09.510 line:100% position:50% align:middle
+do not own. So where do we have...let's go
+to our...here's our editStore layout.
+
+00:06:09.510 --> 00:06:13.580 line:100% position:50% align:middle
+What we need to do right here is before
+they can actually edit the store,
+
+00:06:13.580 --> 00:06:20.000 line:100% position:50% align:middle
+we need to confirm that they are the
+actual owner. So what we'll do is maybe
+
+00:06:20.000 --> 00:06:24.390 line:100% position:50% align:middle
+right above this editStore we'll make a
+new function here. We'll call it
+
+00:06:24.390 --> 00:06:31.860 line:100% position:50% align:middle
+confirmOwner. So say const confirmOwner =,
+it's a function that takes in a store and
+
+00:06:31.860 --> 00:06:37.030 line:100% position:50% align:middle
+takes in a user. It's going to check if
+the user and the store are the same thing.
+
+00:06:37.030 --> 00:06:43.880 line:100% position:50% align:middle
+So we'll say if there is
+(!store.author.equals). So equals is a
+
+00:06:43.880 --> 00:06:50.230 line:100% position:50% align:middle
+method that comes along. Why? Because the
+store.author is going to be an ObjectID.
+
+00:06:50.230 --> 00:06:55.560 line:100% position:50% align:middle
+And in order to compare an ObjectID with
+an actual string you need to use the
+
+00:06:55.560 --> 00:06:57.770 line:100% position:50% align:middle
+.equals method that lives inside of it.
+
+00:06:57.770 --> 00:07:03.990 line:100% position:50% align:middle
+We check if it's equal to the user._id,
+and in this case we're checking for not,
+
+00:07:03.990 --> 00:07:08.288 line:100% position:50% align:middle
+that's what the bang is. So if the store
+author is not equal to the (user._id),
+
+00:07:08.288 --> 00:07:15.850 line:100% position:50% align:middle
+then we're just going to throw an
+Error that says ('You must own a store in
+
+00:07:15.850 --> 00:07:21.900 line:100% position:50% align:middle
+order to edit it!');. So in this case, we
+are going to be doing this not as
+
+00:07:21.900 --> 00:07:26.510 line:100% position:50% align:middle
+middleware because we actually need to
+find the store before we can do a check.
+
+00:07:26.510 --> 00:07:31.070 line:100% position:50% align:middle
+So what we're doing here is we're making a
+function called confirmOwner.
+
+00:07:31.070 --> 00:07:36.570 line:100% position:50% align:middle
+And before we actually render it out, but
+after we have found the store,
+
+00:07:36.570 --> 00:07:40.080 line:100% position:50% align:middle
+which is why we have this TODO here. We're
+just going to run that function,
+
+00:07:40.080 --> 00:07:44.660 line:100% position:50% align:middle
+confirmOwner, then we're going to pass it
+the store. Then we're going to pass it the
+
+00:07:44.660 --> 00:07:48.410 line:100% position:50% align:middle
+current owner, or the current
+user, which is req.user.
+
+00:07:48.410 --> 00:07:54.840 line:100% position:50% align:middle
+And what this will do is if they are the
+owner, then it's going to just keep going.
+
+00:07:54.840 --> 00:07:59.040 line:100% position:50% align:middle
+If they are not, it's going to throw an
+Error, which hopefully means that our
+
+00:07:59.040 --> 00:08:03.240 line:100% position:50% align:middle
+Error handling middleware will pick up
+this actual error from happening.
+
+00:08:03.240 --> 00:08:07.470 line:100% position:50% align:middle
+We'll give it a refresh. And I'll go back
+to my thing right here.
+
+00:08:07.470 --> 00:08:11.670 line:100% position:50% align:middle
+I'm going to find the only one that has an
+author is this New Store right here.
+
+00:08:11.670 --> 00:08:15.270 line:100% position:50% align:middle
+And if I click on edit, it lets
+me edit it no problem.
+
+00:08:15.270 --> 00:08:19.880 line:100% position:50% align:middle
+Let's go to one of these stores that
+doesn't have an author, Coffee Shop.
+
+00:08:19.880 --> 00:08:24.280 line:100% position:50% align:middle
+It tells me...oh, in this case we actually
+hit an error altogether because we sort of
+
+00:08:24.280 --> 00:08:28.110 line:100% position:50% align:middle
+have incomplete data because some stores
+don't have authors because they were
+
+00:08:28.110 --> 00:08:33.800 line:100% position:50% align:middle
+created before we actually had some users.
+So what we have to do now is go to our
+
+00:08:33.800 --> 00:08:38.050 line:100% position:50% align:middle
+actual MongoDB database, go to our stores,
+and we have to delete everything that
+
+00:08:38.050 --> 00:08:42.450 line:100% position:50% align:middle
+doesn't have an actual author. So real
+quick I'm just going to super speed delete
+
+00:08:42.450 --> 00:08:44.371 line:100% position:50% align:middle
+them all except for that
+one that we just made.
+
+00:08:44.371 --> 00:08:45.639 line:100% position:50% align:middle
+You should do this, too.
+
+00:08:49.450 --> 00:08:52.740 line:100% position:50% align:middle
+Make sure you hit Refresh a couple times
+on here to make sure that you only have
+
+00:08:52.740 --> 00:08:56.110 line:100% position:50% align:middle
+your new store. This may be solved by the
+time you're viewing this,
+
+00:08:56.110 --> 00:09:00.000 line:100% position:50% align:middle
+but it does seem that if you delete things
+it doesn't actually delete it sometimes.
+
+00:09:00.000 --> 00:09:03.950 line:100% position:50% align:middle
+A bit of a bug in the software right now.
+So we go back to our home page.
+
+00:09:03.950 --> 00:09:09.070 line:100% position:50% align:middle
+You should just see one store. Now I'm
+going to log out and I'm going to register
+
+00:09:09.070 --> 00:09:13.630 line:100% position:50% align:middle
+under a new email address.
+So I'll say "Randy," and I'll say
+
+00:09:13.630 --> 00:09:19.330 line:100% position:50% align:middle
+"wesbos+randy@gmail.com." That's another
+way that you can make a fake email address
+
+00:09:19.330 --> 00:09:25.920 line:100% position:50% align:middle
+here. The password is going to be "wes,
+wes." Good. Register. I'm logged in.
+
+00:09:25.920 --> 00:09:32.390 line:100% position:50% align:middle
+I'm going to now create a new store, which
+is going to be "Randy's Joint,
+
+00:09:32.390 --> 00:09:40.300 line:100% position:50% align:middle
+Good BBQ." Upload a nice little file here.
+Now let's see, Randy's Donuts,
+
+00:09:40.300 --> 00:09:44.200 line:100% position:50% align:middle
+Inglewood, CA. Sounds like
+a nice place. And Save.
+
+00:09:44.200 --> 00:09:49.060 line:100% position:50% align:middle
+Good. So we've created two joints now.
+We've got Randy's Joints and the New
+
+00:09:49.060 --> 00:09:52.960 line:100% position:50% align:middle
+Store. I shouldn't be able to edit New
+Store because I did not create that.
+
+00:09:52.960 --> 00:09:56.390 line:100% position:50% align:middle
+Again, I'm logged in as Randy right now.
+So edit it, there we go.
+
+00:09:56.390 --> 00:10:00.080 line:100% position:50% align:middle
+"You must own a store to edit it!" Right?
+And all we did there is throw the Error
+
+00:10:00.080 --> 00:10:06.540 line:100% position:50% align:middle
+and it shows us here. We could have also
+had flashed an error and redirected them.
+
+00:10:06.540 --> 00:10:12.030 line:100% position:50% align:middle
+But in this case, I've just threw the
+actual Error and it will bring us to that
+
+00:10:12.030 --> 00:10:16.000 line:100% position:50% align:middle
+error message right here. Otherwise, I
+should be able to edit this one because I
+
+00:10:16.000 --> 00:10:18.790 line:100% position:50% align:middle
+made it. And there we go, I can see it.
+
+00:10:18.790 --> 00:10:22.270 line:100% position:50% align:middle
+So let's update our interface real quick.
+I shouldn't be able to see this pencil
+
+00:10:22.270 --> 00:10:26.980 line:100% position:50% align:middle
+icon right here. I should only see the
+pencil icon if I actually own the store.
+
+00:10:26.980 --> 00:10:35.080 line:100% position:50% align:middle
+So let's open up our storeCard .pug, and
+you see that we have these three lines
+
+00:10:35.080 --> 00:10:38.960 line:100% position:50% align:middle
+right here where we have the edit. Right
+above it we're going to say if,
+
+00:10:38.960 --> 00:10:48.080 line:100% position:50% align:middle
+and we're going to say store.author.equals
+the (user._id), then we are going to go
+
+00:10:48.080 --> 00:10:56.160 line:100% position:50% align:middle
+ahead and show it. Now previously I said
+store.author.id equals,
+
+00:10:56.160 --> 00:11:00.130 line:100% position:50% align:middle
+but in this case it's just
+store.author.equals. Why is that? Well,
+
+00:11:00.130 --> 00:11:03.890 line:100% position:50% align:middle
+in this case we're not actually populating
+the author because we don't need the
+
+00:11:03.890 --> 00:11:07.560 line:100% position:50% align:middle
+author in this case. All we need is just
+the ID of the author.
+
+00:11:07.560 --> 00:11:12.620 line:100% position:50% align:middle
+So you generally only want to populate
+fields if you actually need them for each
+
+00:11:12.620 --> 00:11:15.660 line:100% position:50% align:middle
+of the stores, otherwise in this case
+we're just going to be seeing the ID.
+
+00:11:15.660 --> 00:11:19.560 line:100% position:50% align:middle
+And if that doesn't make a whole lot of
+sense to you, you can just do a quick pre=
+
+00:11:19.560 --> 00:11:25.110 line:100% position:50% align:middle
+h.dump where we take the (store) and
+you'll see. Or we can just show the
+
+00:11:25.110 --> 00:11:31.150 line:100% position:50% align:middle
+(store.author). And you'll see in this
+case it's just an ID, it's not the actual
+
+00:11:31.150 --> 00:11:34.810 line:100% position:50% align:middle
+whole populated author because we didn't
+need the author in this view.
+
+00:11:34.810 --> 00:11:38.460 line:100% position:50% align:middle
+So we're using
+store.author.equals(user._id).
+
+00:11:38.460 --> 00:11:42.440 line:100% position:50% align:middle
+One problem, this works fine. See how I
+see edit under Randy but not under this
+
+00:11:42.440 --> 00:11:47.410 line:100% position:50% align:middle
+one? If I were to open this in incognito
+you'll see that we get an error.
+
+00:11:47.410 --> 00:11:52.410 line:100% position:50% align:middle
+And the problem is...well, let's take a
+quick look at what it's telling us.
+
+00:11:52.410 --> 00:11:57.740 line:100% position:50% align:middle
+"Cannot read property '_id' of null." So
+it's trying to find ID of something that
+
+00:11:57.740 --> 00:12:01.920 line:100% position:50% align:middle
+doesn't exist, user. And that's because
+you're not logged in at this point.
+
+00:12:01.920 --> 00:12:06.990 line:100% position:50% align:middle
+This is just a regular person browsing
+this website. So if there is no user,
+
+00:12:06.990 --> 00:12:09.560 line:100% position:50% align:middle
+there obviously is going
+to be no ID property.
+
+00:12:09.560 --> 00:12:14.560 line:100% position:50% align:middle
+So what we need to do is check first if
+there's a user, so if user &amp;&amp;
+
+00:12:14.560 --> 00:12:20.000 line:100% position:50% align:middle
+store.author. So if this is false it's not
+going to try to evaluate this part.
+
+00:12:20.000 --> 00:12:23.740 line:100% position:50% align:middle
+So we first check if there's a user, and
+if there is we're going to check if the
+
+00:12:23.740 --> 00:12:28.110 line:100% position:50% align:middle
+store author is equal to the user._id. So
+we just need to make sure that you catch
+
+00:12:28.110 --> 00:12:32.040 line:100% position:50% align:middle
+little edge cases like that because logged
+in and logged out states can be different.
+
+00:12:32.040 --> 00:12:35.060 line:100% position:50% align:middle
+Give that a refresh, there we go. This
+person can't edit anything because they're
+
+00:12:35.060 --> 00:12:38.900 line:100% position:50% align:middle
+not logged in. But here,
+I'm on Randy's Joint.
+
+00:12:38.900 --> 00:12:45.570 line:100% position:50% align:middle
+If I do a quick log out and log in, now
+I'm able to edit this one because that's
+
+00:12:45.570 --> 00:12:49.820 line:100% position:50% align:middle
+the one I had previously made and I'm not
+able to edit Randy's Joint because I am
+
+00:12:49.820 --> 00:12:54.370 line:100% position:50% align:middle
+not able to edit that. So that's very
+basic permissions. What you could also do,
+
+00:12:54.370 --> 00:12:59.580 line:100% position:50% align:middle
+and I've done this previously, is you have
+different levels. So a level 1 would be
+
+00:12:59.580 --> 00:13:05.300 line:100% position:50% align:middle
+able, like an Admin. A level 2 would be an
+Editor. Or I do a level 10 and a level 20
+
+00:13:05.300 --> 00:13:09.750 line:100% position:50% align:middle
+just so I have some room in between in
+case I want to make an in-between,
+
+00:13:09.750 --> 00:13:12.540 line:100% position:50% align:middle
+like an adminEditor where they have some
+features and not.
+
+00:13:12.540 --> 00:13:17.530 line:100% position:50% align:middle
+And then what you could do at this point
+is you could create additional
+
+00:13:17.530 --> 00:13:22.890 line:100% position:50% align:middle
+confirmOwner. You could say if the store
+author equals (user._id),
+
+00:13:22.890 --> 00:13:30.070 line:100% position:50% align:middle
+or the user.level is > or < than 10. And
+then you say, if they are like an admin,
+
+00:13:30.070 --> 00:13:35.160 line:100% position:50% align:middle
+then anyone can actually go ahead and edit
+it. So you can really make that a lot more
+
+00:13:35.160 --> 00:13:38.110 line:100% position:50% align:middle
+complicated if you need to have admin and
+different types of users.
+
+00:13:38.110 --> 00:13:41.350 line:100% position:50% align:middle
+But in this case we're just going to stick
+to being able...the person that created it
+
+00:13:41.350 --> 00:13:45.290 line:100% position:50% align:middle
+is the only one that will be able to
+actually edit it. Delete this.
+
+00:13:45.290 --> 00:13:48.440 line:100% position:50% align:middle
+So now that we've locked down both the
+interface, being able to edit it,
+
+00:13:48.440 --> 00:13:53.070 line:100% position:50% align:middle
+as well as confirmed that the person is an
+owner once they try to actually edit and
+
+00:13:53.070 --> 00:13:58.070 line:100% position:50% align:middle
+update an actual store, let's move onto
+our next piece of this application,
+
+00:13:58.070 --> 00:14:00.842 line:100% position:50% align:middle
+which is working and building with an API.
+
+00:14:00.842 --> 00:14:03.842 line:100% position:50% align:middle
+♪ [music] ♪
