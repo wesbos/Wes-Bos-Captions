@@ -1,0 +1,558 @@
+﻿WEBVTT
+
+1
+00:00:00.119 --> 00:00:03.213 line:15% 
+(metal music)
+
+2
+00:00:03.213 --> 00:00:04.612
+<v ->Alright, let's talk about how to get</v>
+
+3
+00:00:04.612 --> 00:00:07.673
+sort of a Bootstrap CSS Grid in place.
+
+4
+00:00:07.673 --> 00:00:09.877
+And while I think that you should try to,
+
+5
+00:00:09.877 --> 00:00:11.945
+I always tell people to embrace the flex.
+
+6
+00:00:11.945 --> 00:00:15.803
+Meaning, Grid is by nature very flexible,
+
+7
+00:00:15.803 --> 00:00:19.151
+very responsive, very able to sort of flex
+
+8
+00:00:19.151 --> 00:00:20.915
+to the actual size of the content
+
+9
+00:00:20.915 --> 00:00:24.965
+as well as how much extra space is around.
+
+10
+00:00:24.965 --> 00:00:28.160
+Whereas these Bootstrap based grids are extremely rigid,
+
+11
+00:00:28.160 --> 00:00:31.792
+in that you have 12 columns and you start to add them up.
+
+12
+00:00:31.792 --> 00:00:35.330
+So, first of all try to maybe adjust your zine
+
+13
+00:00:35.330 --> 00:00:37.716
+so that they work with how much content you have,
+
+14
+00:00:37.716 --> 00:00:40.684
+but that said, there is still valid use cases
+
+15
+00:00:40.684 --> 00:00:43.717
+for having a very rigid grid system.
+
+16
+00:00:43.717 --> 00:00:47.254
+So what you can do is, I've got this four items here.
+
+17
+00:00:47.254 --> 00:00:48.947
+I'm going to go to my grid and chop it up
+
+18
+00:00:48.947 --> 00:00:51.016
+into 12 different columns.
+
+19
+00:00:51.016 --> 00:00:52.491
+So we'll go in here and we'll say
+
+20
+00:00:52.491 --> 00:00:56.658
+grid-template-columns: repeat(12, 1fr)
+
+21
+00:00:57.783 --> 00:01:01.608
+and we will also forget the display grid
+
+22
+00:01:01.608 --> 00:01:04.125
+on the actual item itself.
+
+23
+00:01:04.125 --> 00:01:04.958
+Good.
+
+24
+00:01:04.958 --> 00:01:08.394
+Now, and we'll put some grid gap on there.
+
+25
+00:01:08.394 --> 00:01:09.227
+Beautiful.
+
+26
+00:01:09.227 --> 00:01:10.506
+Now we've got 12 different columns.
+
+27
+00:01:10.506 --> 00:01:13.336
+Each one eating itself up.
+
+28
+00:01:13.336 --> 00:01:16.033
+Now, I'm gonna show you one little like bug that I ran into.
+
+29
+00:01:16.033 --> 00:01:18.687
+I'm not sure if it's a bug or by design or whatever.
+
+30
+00:01:18.687 --> 00:01:21.902
+But if one of these things has like wesbos in it,
+
+31
+00:01:21.902 --> 00:01:23.212
+it's a bit wider.
+
+32
+00:01:23.212 --> 00:01:26.345
+You'll notice that now they are not equal,
+
+33
+00:01:26.345 --> 00:01:28.256
+because what does fr stand for?
+
+34
+00:01:28.256 --> 00:01:29.939
+Free space right?
+
+35
+00:01:29.939 --> 00:01:33.531
+And what happens is CSS Grid lays the items
+
+36
+00:01:33.531 --> 00:01:36.018
+out that it needs to first and then will
+
+37
+00:01:36.018 --> 00:01:38.762
+distribute the rest of the spots to it.
+
+38
+00:01:38.762 --> 00:01:41.431
+So this is eating into our free space.
+
+39
+00:01:41.431 --> 00:01:42.548
+So what do you have to do?
+
+40
+00:01:42.548 --> 00:01:44.586
+Do you have to take your 100% divide it by 12
+
+41
+00:01:44.586 --> 00:01:47.238
+and make each one 8.3%?
+
+42
+00:01:47.238 --> 00:01:48.426
+Well that still really doesn't work,
+
+43
+00:01:48.426 --> 00:01:50.270
+because you've got this grid-gap.
+
+44
+00:01:50.270 --> 00:01:54.270
+So do you have to like calc 8.3% - 20px,
+
+45
+00:01:57.473 --> 00:01:59.053
+well that also doesn't work, because there's
+
+46
+00:01:59.053 --> 00:02:01.425
+no margin on the left or the right.
+
+47
+00:02:01.425 --> 00:02:03.851
+Or clack, you get the point right?
+
+48
+00:02:03.851 --> 00:02:06.809
+It's not ideal to have to be able to do something like that.
+
+49
+00:02:06.809 --> 00:02:09.585
+So what I have found as a fix for that is
+
+50
+00:02:09.585 --> 00:02:13.022
+either you can go onto your item and give yourself
+
+51
+00:02:13.022 --> 00:02:17.054
+a min-width of zero and that will make each one
+
+52
+00:02:17.054 --> 00:02:20.100
+actually the same size and then you can deal
+
+53
+00:02:20.100 --> 00:02:23.241
+with any overflowing text or whatever.
+
+54
+00:02:23.241 --> 00:02:25.065
+Accordingly, which is great.
+
+55
+00:02:25.065 --> 00:02:28.994
+Or, and let me just double check that looks the same
+
+56
+00:02:28.994 --> 00:02:30.145
+in Chrome, yep.
+
+57
+00:02:30.145 --> 00:02:33.164
+So it works in Chrome as well.
+
+58
+00:02:33.164 --> 00:02:35.450
+But, I think ideally you would do
+
+59
+00:02:35.450 --> 00:02:37.407
+something like this, instead we'll bring back
+
+60
+00:02:37.407 --> 00:02:41.411
+that actual error here and we will do a minmax.
+
+61
+00:02:41.411 --> 00:02:45.100
+And you give it a min-width of zero and a max of 1fr.
+
+62
+00:02:45.100 --> 00:02:46.676
+That will give it a min-width of zero
+
+63
+00:02:46.676 --> 00:02:48.011
+and then however we still have to go on
+
+64
+00:02:48.011 --> 00:02:51.293
+to our item and give it a width of 100%.
+
+65
+00:02:51.293 --> 00:02:53.980
+And that will snap it back to what we're looking for.
+
+66
+00:02:53.980 --> 00:02:55.937
+Either one will work for you.
+
+67
+00:02:55.937 --> 00:02:58.249
+Sometimes you're gonna already going to be using minmax
+
+68
+00:02:58.249 --> 00:03:00.662
+so you can use that and just pop the width on there.
+
+69
+00:03:00.662 --> 00:03:02.951
+Otherwise you can pop a min-width, any width
+
+70
+00:03:02.951 --> 00:03:04.283
+on each individual one.
+
+71
+00:03:04.283 --> 00:03:05.585
+Let's go back to Chrome, double check
+
+72
+00:03:05.585 --> 00:03:07.663
+that's still looking exactly the same.
+
+73
+00:03:07.663 --> 00:03:08.496
+Good.
+
+74
+00:03:08.496 --> 00:03:10.973
+Now that we have this, what we can do is
+
+75
+00:03:10.973 --> 00:03:14.304
+we can start to go spanning our different items.
+
+76
+00:03:14.304 --> 00:03:16.550
+And one cool way that we could do that
+
+77
+00:03:16.550 --> 00:03:18.368
+is with CSSs variables.
+
+78
+00:03:18.368 --> 00:03:20.215
+So you could make a whole grid framework.
+
+79
+00:03:20.215 --> 00:03:22.199
+And I'm sure there'll be lots of frameworks
+
+80
+00:03:22.199 --> 00:03:25.290
+announced where you have like span three
+
+81
+00:03:25.290 --> 00:03:28.290
+or something like that, and that will span three for you.
+
+82
+00:03:28.290 --> 00:03:30.000
+But we could also do something like this.
+
+83
+00:03:30.000 --> 00:03:33.453
+We could say grid-column, and that is
+
+84
+00:03:33.453 --> 00:03:36.529
+going to just span one, each one of those will span one.
+
+85
+00:03:36.529 --> 00:03:38.272
+That's the actual default.
+
+86
+00:03:38.272 --> 00:03:41.182
+But we could change that to a variable
+
+87
+00:03:41.182 --> 00:03:43.775
+where we could make a variable called span
+
+88
+00:03:43.775 --> 00:03:45.892
+and set that to be one.
+
+89
+00:03:45.892 --> 00:03:49.426
+And then set that variable here to be span.
+
+90
+00:03:49.426 --> 00:03:51.924
+And then in each of your items,
+
+91
+00:03:51.924 --> 00:03:53.480
+you can overwrite that variable
+
+92
+00:03:53.480 --> 00:03:55.386
+with an inline style attribute.
+
+93
+00:03:55.386 --> 00:03:58.886
+You could say something like --span three.
+
+94
+00:04:01.343 --> 00:04:04.039
+And then it's going to override that span variable
+
+95
+00:04:04.039 --> 00:04:07.313
+on the item and it's gonna kick in to there.
+
+96
+00:04:07.313 --> 00:04:08.555
+So whatever you feel like.
+
+97
+00:04:08.555 --> 00:04:09.988
+I think some people still might prefer
+
+98
+00:04:09.988 --> 00:04:12.740
+just a nice clean class of span three.
+
+99
+00:04:12.740 --> 00:04:14.603
+But it's kind of neat that you can
+
+100
+00:04:14.603 --> 00:04:18.601
+also use CSS variables in order to dice it up.
+
+101
+00:04:18.601 --> 00:04:21.002
+Similarily you could also use that on your grid.
+
+102
+00:04:21.002 --> 00:04:23.434
+Where you could say style and then you could say
+
+103
+00:04:23.434 --> 00:04:25.267
+<v ->-cols is equal to 10.</v>
+
+104
+00:04:26.414 --> 00:04:28.686
+And if I only wanted 10 columns, I could
+
+105
+00:04:28.686 --> 00:04:31.699
+go into here and I could then say
+
+106
+00:04:31.699 --> 00:04:35.699
+right here var--cols, and that would give me 10.
+
+107
+00:04:36.831 --> 00:04:39.726
+And I believe var will also give you a fallback,
+
+108
+00:04:39.726 --> 00:04:42.617
+so if it's not there you can fall back to 12
+
+109
+00:04:42.617 --> 00:04:44.789
+rather than having to set a variable like I did here.
+
+110
+00:04:44.789 --> 00:04:46.657
+I just showed you two different ways that we can do it.
+
+111
+00:04:46.657 --> 00:04:48.316
+So there we go that's 10, and if I were to
+
+112
+00:04:48.316 --> 00:04:51.816
+remove the number of columns that we have,
+
+113
+00:04:52.949 --> 00:04:55.020
+then it will fall back to 12.
+
+114
+00:04:55.020 --> 00:04:57.390
+That is how you do a rigid Bootstrap grid.
+
+115
+00:04:57.390 --> 00:04:58.971
+Let's actually fill this up here.
+
+116
+00:04:58.971 --> 00:04:59.804
+So, seven.
+
+117
+00:05:01.747 --> 00:05:03.999
+Good so we've filled up all of our spots here.
+
+118
+00:05:03.999 --> 00:05:05.445
+And then in this one, let's actually do
+
+119
+00:05:05.445 --> 00:05:08.297
+another nested grid inside of it.
+
+120
+00:05:08.297 --> 00:05:09.130
+So,
+
+121
+00:05:10.001 --> 00:05:13.530
+we'll go say .grid and then inside of that
+
+122
+00:05:13.530 --> 00:05:17.697
+we'll have items, maybe you'll say style equals --cols two.
+
+123
+00:05:20.173 --> 00:05:23.288
+Item times two, one and two.
+
+124
+00:05:23.288 --> 00:05:27.455
+And that will dice up it further into columns one and two.
+
+125
+00:05:28.451 --> 00:05:31.018
+You will get the sort of the double grid-gap
+
+126
+00:05:31.018 --> 00:05:33.011
+happening here and if you would like to get
+
+127
+00:05:33.011 --> 00:05:35.116
+rid of that so you have clean lines.
+
+128
+00:05:35.116 --> 00:05:36.693
+You can use a negative margin
+
+129
+00:05:36.693 --> 00:05:39.963
+that would offset it the same amount of the grid-gap.
+
+130
+00:05:39.963 --> 00:05:41.169
+So hopefully that helps.
+
+131
+00:05:41.169 --> 00:05:43.676
+I'm still not sure if people are going to
+
+132
+00:05:43.676 --> 00:05:47.528
+migrate more towards using a CSS Grid framework.
+
+133
+00:05:47.528 --> 00:05:50.689
+Like maybe Foundation or whatever will come out with one,
+
+134
+00:05:50.689 --> 00:05:53.428
+or if this will just be enough.
+
+135
+00:05:53.428 --> 00:05:56.552
+And for myself, I haven't used a grid framework
+
+136
+00:05:56.552 --> 00:05:59.385
+in many years just 'cause of I think that it's easier
+
+137
+00:05:59.385 --> 00:06:01.945
+to do it with Flexbox but that's another personal
+
+138
+00:06:01.945 --> 00:06:03.682
+choice that you can make yourself.
+
+139
+00:06:03.682 --> 00:06:06.182 line:15% 
+(metal music)
+

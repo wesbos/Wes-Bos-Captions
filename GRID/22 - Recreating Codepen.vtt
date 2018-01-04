@@ -1,0 +1,1354 @@
+﻿WEBVTT
+
+1
+00:00:00.569 --> 00:00:03.693
+(abrupt loud guitar)
+
+2
+00:00:03.693 --> 00:00:06.456
+<v Narrator>One really nice thing that CSS grid is good for</v>
+
+3
+00:00:06.456 --> 00:00:09.260
+is when you have an application rather than a website.
+
+4
+00:00:09.260 --> 00:00:12.449
+And I mean that, like when the entire browser
+
+5
+00:00:12.449 --> 00:00:16.332
+is multiple windows sometimes you got scrolling
+
+6
+00:00:16.332 --> 00:00:18.390
+and you got different parts and pieces
+
+7
+00:00:18.390 --> 00:00:20.753
+and it all needs to fit into
+
+8
+00:00:20.753 --> 00:00:23.161
+however big the actual view port is.
+
+9
+00:00:23.161 --> 00:00:25.305
+And CodePen is a great example of this,
+
+10
+00:00:25.305 --> 00:00:27.114
+where you've got your title,
+
+11
+00:00:27.114 --> 00:00:29.759
+you've got all these different places to write your code,
+
+12
+00:00:29.759 --> 00:00:31.112
+you have a preview window,
+
+13
+00:00:31.112 --> 00:00:32.449
+you've got some settings down here.
+
+14
+00:00:32.449 --> 00:00:35.107
+So, what we're going to be doing in this exercise
+
+15
+00:00:35.107 --> 00:00:37.861
+is creating CodePen from scratch.
+
+16
+00:00:37.861 --> 00:00:41.111
+So I've started you off with some HTML.
+
+17
+00:00:41.111 --> 00:00:44.012
+And the idea behind the HTML,
+
+18
+00:00:44.012 --> 00:00:47.496
+let's do a quick inspect element on this,
+
+19
+00:00:47.496 --> 00:00:49.334
+is that it's four main parts.
+
+20
+00:00:49.334 --> 00:00:51.741
+So if you look we have a div of the class of CodePen
+
+21
+00:00:51.741 --> 00:00:52.709
+that's the entire thing.
+
+22
+00:00:52.709 --> 00:00:55.452
+And then inside of that we have our pen
+
+23
+00:00:55.452 --> 00:00:57.634
+which is sort of the header,
+
+24
+00:00:57.634 --> 00:01:00.005
+we have the code which is the the three panes,
+
+25
+00:01:00.005 --> 00:01:03.042
+the preview which is like just an iFrame to preview it,
+
+26
+00:01:03.042 --> 00:01:06.188
+and the settings which is the little bar at the bottom here.
+
+27
+00:01:06.188 --> 00:01:07.898
+And then inside of each of those
+
+28
+00:01:07.898 --> 00:01:11.162
+they are all their sort of smaller subset grids.
+
+29
+00:01:11.162 --> 00:01:15.325
+So if this is something you would like to maybe try yourself
+
+30
+00:01:15.325 --> 00:01:17.965
+please go ahead and give it a shot.
+
+31
+00:01:17.965 --> 00:01:20.983
+I did do it entirely in CSS grid
+
+32
+00:01:20.983 --> 00:01:22.616
+though there's a lot of use cases
+
+33
+00:01:22.616 --> 00:01:25.338
+where you could use FluxBox as well.
+
+34
+00:01:25.338 --> 00:01:27.806
+So let's open up style-START
+
+35
+00:01:27.806 --> 00:01:28.951
+if you're going to go ahead with me.
+
+36
+00:01:28.951 --> 00:01:30.938
+And I've provided you with very minimal
+
+37
+00:01:30.938 --> 00:01:33.658
+there's no grid stuff this is just sort of your base
+
+38
+00:01:33.658 --> 00:01:37.663
+setting the font size and the color and whatnot.
+
+39
+00:01:37.663 --> 00:01:40.492
+So going to open this one up, CodePen start.
+
+40
+00:01:40.492 --> 00:01:42.567
+Good, so this is what we're looking at
+
+41
+00:01:42.567 --> 00:01:46.137
+and let's actually go ahead and start with the main CodePen
+
+42
+00:01:46.137 --> 00:01:48.196
+and we're going to dice it up into different pieces.
+
+43
+00:01:48.196 --> 00:01:51.454
+So how big are these things going to be?
+
+44
+00:01:51.454 --> 00:01:54.308
+Well the four different pieces are,
+
+45
+00:01:54.308 --> 00:01:57.808
+I want the header to take up as much room as it needs.
+
+46
+00:01:57.808 --> 00:02:01.262
+I want the footer to take up as much room as it needs.
+
+47
+00:02:01.262 --> 00:02:03.550
+And then these two ones I just want to sort of
+
+48
+00:02:03.550 --> 00:02:05.480
+split the difference between the two.
+
+49
+00:02:05.480 --> 00:02:09.658
+And real CodePen you're able to resize it and whatnot
+
+50
+00:02:09.658 --> 00:02:11.094
+cause they use some JavaScript.
+
+51
+00:02:11.094 --> 00:02:13.796
+But I did my best with just CSS,
+
+52
+00:02:13.796 --> 00:02:16.446
+it's as far as I could get it and there's no vertical resize
+
+53
+00:02:16.446 --> 00:02:18.564
+but if you'd like to add some JavaScript you can.
+
+54
+00:02:18.564 --> 00:02:20.921
+So we're going to grab our CodePen,
+
+55
+00:02:20.921 --> 00:02:24.305
+and we're going to display grid on that.
+
+56
+00:02:24.305 --> 00:02:27.007
+Then we need to cut it up into the four different pieces
+
+57
+00:02:27.007 --> 00:02:28.746
+and in this case it's not actually columns
+
+58
+00:02:28.746 --> 00:02:30.018
+it's going to be rows.
+
+59
+00:02:30.018 --> 00:02:32.185
+So GTR grid template rows,
+
+60
+00:02:33.108 --> 00:02:36.446
+and we want it to be auto, the first one to be auto size.
+
+61
+00:02:36.446 --> 00:02:39.174
+The next one to be 1fr, the next one 1fr and then auto.
+
+62
+00:02:39.174 --> 00:02:40.958
+And what that should do,
+
+63
+00:02:40.958 --> 00:02:42.574
+it's a little bit hard to see it.
+
+64
+00:02:42.574 --> 00:02:45.655
+So first we're going to have to be closing our dev tools
+
+65
+00:02:45.655 --> 00:02:48.402
+so we can get the full look of what it's like.
+
+66
+00:02:48.402 --> 00:02:50.468
+And then we'll also take our CodePen
+
+67
+00:02:50.468 --> 00:02:53.178
+each of the direct descendants each of the items
+
+68
+00:02:53.178 --> 00:02:55.887
+and we'll just put a border one pixel of black
+
+69
+00:02:55.887 --> 00:02:58.481
+just so we can see where each of the items is.
+
+70
+00:02:58.481 --> 00:03:02.326
+Now this is not working because shouldn't this code
+
+71
+00:03:02.326 --> 00:03:05.462
+assets and commands, shouldn't that be at the bottom?
+
+72
+00:03:05.462 --> 00:03:08.167
+And that's because the CodePen doesn't have a height on it
+
+73
+00:03:08.167 --> 00:03:11.025
+and you need an explicit height in order for it to work.
+
+74
+00:03:11.025 --> 00:03:11.858
+So what we're going to do is
+
+75
+00:03:11.858 --> 00:03:14.495
+we're going to put a height on it.
+
+76
+00:03:14.495 --> 00:03:17.171
+And the height of that is just going to be 100vh,
+
+77
+00:03:17.171 --> 00:03:21.208
+which is the view port height that will be 100 percent high.
+
+78
+00:03:21.208 --> 00:03:23.227
+And we give that a save view you'll now see that
+
+79
+00:03:23.227 --> 00:03:25.176
+it's sticking to the bottom sticking to the top.
+
+80
+00:03:25.176 --> 00:03:27.924
+And then the difference between the two are then split.
+
+81
+00:03:27.924 --> 00:03:29.114
+Now let's move on.
+
+82
+00:03:29.114 --> 00:03:33.525
+Let's do this right here which is the editors that we have.
+
+83
+00:03:33.525 --> 00:03:36.373
+So that has a class of code on it.
+
+84
+00:03:36.373 --> 00:03:39.586
+And we can inspect element real quick on that.
+
+85
+00:03:39.586 --> 00:03:41.774
+See we have div with a class of code.
+
+86
+00:03:41.774 --> 00:03:43.903
+And then we have three items which is editor, editor, editor
+
+87
+00:03:43.903 --> 00:03:45.988
+for each multi ss and JavaScript.
+
+88
+00:03:45.988 --> 00:03:48.304
+So we can display grid on that.
+
+89
+00:03:48.304 --> 00:03:51.531
+And then we will equally size them
+
+90
+00:03:51.531 --> 00:03:55.698
+with grid template columns and we'll repeat 3 1fr.
+
+91
+00:03:58.134 --> 00:03:59.988
+And that will put them all side by side.
+
+92
+00:03:59.988 --> 00:04:01.374
+Good I'm pretty happy with that.
+
+93
+00:04:01.374 --> 00:04:05.017
+Now let's move up to this head right here.
+
+94
+00:04:05.017 --> 00:04:07.813
+So header with a class of pen.
+
+95
+00:04:07.813 --> 00:04:09.928
+So we'll go down here .pen,
+
+96
+00:04:09.928 --> 00:04:13.538
+and we need...let's look at what the different pieces
+
+97
+00:04:13.538 --> 00:04:15.372
+of code are inside of it.
+
+98
+00:04:15.372 --> 00:04:18.801
+We've got the pen details and beside that we have
+
+99
+00:04:18.801 --> 00:04:21.199
+a bunch of buttons, and this is very similar
+
+100
+00:04:21.199 --> 00:04:22.513
+to the one that we looked at earlier
+
+101
+00:04:22.513 --> 00:04:25.693
+when we looked at the FlexBox versus the grid.
+
+102
+00:04:25.693 --> 00:04:28.804
+And what the pen details take up as much room as it can
+
+103
+00:04:28.804 --> 00:04:32.592
+minus whatever size the buttons and the avatar are in.
+
+104
+00:04:32.592 --> 00:04:34.925
+So display grid right there.
+
+105
+00:04:36.588 --> 00:04:38.755
+Grid template columns 1fr,
+
+106
+00:04:41.192 --> 00:04:45.084
+we'll do the same thing that we did previously.
+
+107
+00:04:45.084 --> 00:04:47.584
+And then grid autoflow column.
+
+108
+00:04:51.985 --> 00:04:53.891
+And what that will do is it will stick
+
+109
+00:04:53.891 --> 00:04:56.374
+all the additional items to the right there.
+
+110
+00:04:56.374 --> 00:04:57.904
+Now these are being stretched,
+
+111
+00:04:57.904 --> 00:04:59.631
+the image is not being stretched
+
+112
+00:04:59.631 --> 00:05:01.964
+so we can align items center
+
+113
+00:05:03.424 --> 00:05:06.839
+and that will get us in a good spot for there.
+
+114
+00:05:06.839 --> 00:05:08.622
+We'll deal with some...
+
+115
+00:05:08.622 --> 00:05:09.455
+Here I'll put a little bit of grid gap on there as well 10px
+
+116
+00:05:09.455 --> 00:05:11.955
+bump them off from each other.
+
+117
+00:05:13.426 --> 00:05:14.559
+Good, I'm really happy with that.
+
+118
+00:05:14.559 --> 00:05:17.892
+So that was the header, we did the code.
+
+119
+00:05:20.359 --> 00:05:23.099
+The preview we need we've got an iFrame in here
+
+120
+00:05:23.099 --> 00:05:27.033
+we want that to sort of span the entire place.
+
+121
+00:05:27.033 --> 00:05:31.568
+And all we need for that is preview display grid.
+
+122
+00:05:31.568 --> 00:05:34.210
+And by default it will be one column by one column
+
+123
+00:05:34.210 --> 00:05:37.139
+and the default item is stretched so there's nothing else
+
+124
+00:05:37.139 --> 00:05:40.125
+that we need to do for that specific one.
+
+125
+00:05:40.125 --> 00:05:43.293
+And then the settings here there's no need to do the grid.
+
+126
+00:05:43.293 --> 00:05:47.362
+So good, we just did the entire layout here
+
+127
+00:05:47.362 --> 00:05:50.724
+by just saying grid three times and laying them out.
+
+128
+00:05:50.724 --> 00:05:53.796
+Now let's go to get into each of the individual ones,
+
+129
+00:05:53.796 --> 00:05:56.271
+and start working with it so.
+
+130
+00:05:56.271 --> 00:05:58.238
+Let's start at the top here
+
+131
+00:05:58.238 --> 00:06:01.938
+and start some styling on Some Amazing Pen name.
+
+132
+00:06:01.938 --> 00:06:03.942
+And that again, that is our pen.
+
+133
+00:06:03.942 --> 00:06:06.109
+We'll do background black,
+
+134
+00:06:07.224 --> 00:06:09.224
+border bottom 5px solid.
+
+135
+00:06:12.371 --> 00:06:15.621
+And the CodePen color is 3,4, 3,4, 3,6.
+
+136
+00:06:18.928 --> 00:06:21.568
+And that's actually a color we use fairly often
+
+137
+00:06:21.568 --> 00:06:25.400
+so let's put that into a variable called gray.
+
+138
+00:06:25.400 --> 00:06:28.680
+And then let's go up to the top here,
+
+139
+00:06:28.680 --> 00:06:32.847
+on the root selector and set the variable gray to be that.
+
+140
+00:06:35.323 --> 00:06:38.990
+Did I spell that wrong g-r-e-y g-r-e-y good.
+
+141
+00:06:40.114 --> 00:06:42.785
+In Canada sometimes they spell it with an A.
+
+142
+00:06:42.785 --> 00:06:45.317
+And a padding of 10px on that header.
+
+143
+00:06:45.317 --> 00:06:48.067
+Good now header's looking in pretty good shape,
+
+144
+00:06:48.067 --> 00:06:49.991
+I'm pretty happy with that it's all nicely aligned.
+
+145
+00:06:49.991 --> 00:06:53.074
+Let's go ahead and style the buttons,
+
+146
+00:06:55.513 --> 00:06:57.559
+and they each have a class of button.
+
+147
+00:06:57.559 --> 00:07:01.136
+So the background of each of our buttons is going to be
+
+148
+00:07:01.136 --> 00:07:03.636
+the variable gray border zero,
+
+149
+00:07:08.795 --> 00:07:10.878
+color white padding 10px,
+
+150
+00:07:15.029 --> 00:07:17.362
+and a border radius of 10px.
+
+151
+00:07:20.469 --> 00:07:22.886
+no that's too much, 5px good.
+
+152
+00:07:24.918 --> 00:07:26.918
+And a font size of 15px.
+
+153
+00:07:28.988 --> 00:07:31.304
+Awesome, looking pretty pretty good to me.
+
+154
+00:07:31.304 --> 00:07:33.714
+We also have the concept of small buttons down here.
+
+155
+00:07:33.714 --> 00:07:35.157
+So what I'm going to do that
+
+156
+00:07:35.157 --> 00:07:39.241
+is say anything with a button that has a small on it
+
+157
+00:07:39.241 --> 00:07:41.682
+we're simply just going to change the font size to 12,
+
+158
+00:07:41.682 --> 00:07:43.765
+and make the padding 4px.
+
+159
+00:07:44.684 --> 00:07:46.848
+Okay we've got these little buttons down here,
+
+160
+00:07:46.848 --> 00:07:48.062
+and these little buttons here,
+
+161
+00:07:48.062 --> 00:07:51.117
+and then these are our regular large buttons.
+
+162
+00:07:51.117 --> 00:07:54.480
+Good, also this button right here has a class
+
+163
+00:07:54.480 --> 00:07:57.293
+of dirty on it if you look at the answer here,
+
+164
+00:07:57.293 --> 00:07:59.850
+it'll give us this little (sliding voop sound).
+
+165
+00:07:59.850 --> 00:08:04.831
+So what we can do is select a button that has a dirty state.
+
+166
+00:08:04.831 --> 00:08:09.192
+And in order to get this little line right here,
+
+167
+00:08:09.192 --> 00:08:12.596
+what I've done is I've used a before attribute.
+
+168
+00:08:12.596 --> 00:08:16.715
+So we'll say before and the background after that
+
+169
+00:08:16.715 --> 00:08:18.548
+is going to be yellow,
+
+170
+00:08:19.557 --> 00:08:21.390
+It's my yellow ffc600.
+
+171
+00:08:23.199 --> 00:08:24.620
+And we'll do the whole song and dance
+
+172
+00:08:24.620 --> 00:08:27.226
+if you've used a before before.
+
+173
+00:08:27.226 --> 00:08:30.891
+So let's say display block content nothing
+
+174
+00:08:30.891 --> 00:08:35.341
+height 2px, width it's going to be a 100 percent.
+
+175
+00:08:35.341 --> 00:08:37.279
+But we don't want it to go all the way across.
+
+176
+00:08:37.279 --> 00:08:39.576
+Here let's actually look at what we're dealing with there.
+
+177
+00:08:39.576 --> 00:08:41.988
+It looks pretty good.
+
+178
+00:08:41.988 --> 00:08:45.460
+But we're going to make it position absolute,
+
+179
+00:08:45.460 --> 00:08:49.055
+and from the left it's going to be 3px.
+
+180
+00:08:49.055 --> 00:08:50.679
+So now we run into a bit an issue where it's going
+
+181
+00:08:50.679 --> 00:08:53.592
+all the way across so we back up to our button,
+
+182
+00:08:53.592 --> 00:08:55.471
+and make that position relative
+
+183
+00:08:55.471 --> 00:08:57.203
+and that will put it inside of it.
+
+184
+00:08:57.203 --> 00:09:01.370
+But the problem is that if the button is a 100 percent wide
+
+185
+00:09:03.587 --> 00:09:05.487
+then it goes all the way across.
+
+186
+00:09:05.487 --> 00:09:08.312
+But we want it to go start from three pixels over.
+
+187
+00:09:08.312 --> 00:09:11.716
+So really we want it 100 pixels less six,
+
+188
+00:09:11.716 --> 00:09:13.808
+three pixels on each side.
+
+189
+00:09:13.808 --> 00:09:17.975
+So we can use calc for that, so 100 percent minus 6px.
+
+190
+00:09:19.370 --> 00:09:21.250
+Looking good.
+
+191
+00:09:21.250 --> 00:09:23.583
+And then on top 3px as well.
+
+192
+00:09:25.124 --> 00:09:26.805
+Good, I'm happy with that.
+
+193
+00:09:26.805 --> 00:09:29.500
+Now let's move on these editors here.
+
+194
+00:09:29.500 --> 00:09:33.440
+Each editor in itself we open some of those up,
+
+195
+00:09:33.440 --> 00:09:36.191
+but not the code go into the editor.
+
+196
+00:09:36.191 --> 00:09:39.168
+The editor header itself needs to be side by side.
+
+197
+00:09:39.168 --> 00:09:41.618
+See if you look at this editor header we've got
+
+198
+00:09:41.618 --> 00:09:43.641
+the little drop down on the right,
+
+199
+00:09:43.641 --> 00:09:46.356
+whereas the rest of the items are over here.
+
+200
+00:09:46.356 --> 00:09:50.867
+So the way we can do that is grab the editor header,
+
+201
+00:09:50.867 --> 00:09:52.617
+display grid on that.
+
+202
+00:09:53.953 --> 00:09:58.195
+And we will give ourselves three columns,
+
+203
+00:09:58.195 --> 00:09:59.695
+Auto 1fr and auto.
+
+204
+00:10:01.875 --> 00:10:03.645
+And what that should do
+
+205
+00:10:03.645 --> 00:10:06.312
+is the middle item here the CSS,
+
+206
+00:10:07.453 --> 00:10:09.345
+that will span as wide as it needs to
+
+207
+00:10:09.345 --> 00:10:11.400
+less the size of the button,
+
+208
+00:10:11.400 --> 00:10:14.233
+buttons on the right and the left.
+
+209
+00:10:15.126 --> 00:10:16.959
+Good but I don't want the buttons,
+
+210
+00:10:16.959 --> 00:10:18.933
+the buttons are currently now stretching
+
+211
+00:10:18.933 --> 00:10:23.576
+so how do I do that, we'll justify items center,
+
+212
+00:10:23.576 --> 00:10:25.581
+no that's not what I wanted.
+
+213
+00:10:25.581 --> 00:10:28.058
+It's align items center.
+
+214
+00:10:28.058 --> 00:10:30.202
+There we go they're no longer stretching.
+
+215
+00:10:30.202 --> 00:10:32.337
+Put a little bit of padding on the header,
+
+216
+00:10:32.337 --> 00:10:33.754
+5px looking good.
+
+217
+00:10:35.204 --> 00:10:38.954
+And we'll also put some grid gap 5px on that.
+
+218
+00:10:41.858 --> 00:10:43.610
+Good now just a little bit of color.
+
+219
+00:10:43.610 --> 00:10:47.027
+Background is going to be RGBA 0,0,0,0.1.
+
+220
+00:10:49.717 --> 00:10:50.845
+And what's that's going to do
+
+221
+00:10:50.845 --> 00:10:52.383
+is it's going to sort of see through whatever
+
+222
+00:10:52.383 --> 00:10:55.321
+the actual background of the editor is.
+
+223
+00:10:55.321 --> 00:10:58.158
+So let's go back up to maybe we'll put the selector
+
+224
+00:10:58.158 --> 00:11:01.741
+with our editor so we don't get too gnarly.
+
+225
+00:11:02.798 --> 00:11:06.548
+Where did our editor, oh it's the code here's
+
+226
+00:11:09.359 --> 00:11:12.442
+editor pen header, put that in there.
+
+227
+00:11:15.895 --> 00:11:19.530
+Now each of our code blocks the background to that.
+
+228
+00:11:19.530 --> 00:11:22.784
+It's going to be # and I just pulled this off of
+
+229
+00:11:22.784 --> 00:11:25.034
+the CodePen website 1b2b34.
+
+230
+00:11:27.668 --> 00:11:30.196
+That causes this to be unreadable.
+
+231
+00:11:30.196 --> 00:11:32.403
+Let's actually just go up to CodePen
+
+232
+00:11:32.403 --> 00:11:35.074
+and just set the color to be white on that in general.
+
+233
+00:11:35.074 --> 00:11:36.330
+And that'll make everything white
+
+234
+00:11:36.330 --> 00:11:37.726
+that's generally what we need happening
+
+235
+00:11:37.726 --> 00:11:40.100
+rather than having to reset it on each one.
+
+236
+00:11:40.100 --> 00:11:42.517
+Good now let's go to the editor,
+
+237
+00:11:42.517 --> 00:11:45.872
+and that's each individual one we have three editors.
+
+238
+00:11:45.872 --> 00:11:49.374
+And of the editors we have editor header,
+
+239
+00:11:49.374 --> 00:11:52.169
+and then we have this editor code which should be the rest.
+
+240
+00:11:52.169 --> 00:11:53.994
+And you see that it's currently not
+
+241
+00:11:53.994 --> 00:11:55.115
+being as high as it should be,
+
+242
+00:11:55.115 --> 00:11:57.313
+it should take up this entire space.
+
+243
+00:11:57.313 --> 00:12:01.480
+So we need to now make the editor itself display grid,
+
+244
+00:12:02.544 --> 00:12:06.693
+and we want the header to take up as much room as it needs.
+
+245
+00:12:06.693 --> 00:12:09.883
+And then we want the code to take up the rest of the room.
+
+246
+00:12:09.883 --> 00:12:14.050
+So say grid template rows one or auto, that's the header
+
+247
+00:12:15.923 --> 00:12:18.973
+and then 1fr to take up the rest.
+
+248
+00:12:18.973 --> 00:12:20.704
+And that didn't seem like it did much
+
+249
+00:12:20.704 --> 00:12:23.915
+but now if you hover over top of the header in the code,
+
+250
+00:12:23.915 --> 00:12:27.203
+you'll see that they are now taking up the entire space.
+
+251
+00:12:27.203 --> 00:12:30.803
+And then the editor code in itself
+
+252
+00:12:30.803 --> 00:12:35.003
+also needs to be display grid because the child of the code,
+
+253
+00:12:35.003 --> 00:12:37.173
+which is there is the gutter,
+
+254
+00:12:37.173 --> 00:12:38.655
+and then there is the input
+
+255
+00:12:38.655 --> 00:12:42.055
+so those two things now need to go below each other.
+
+256
+00:12:42.055 --> 00:12:44.055
+So editor code,
+
+257
+00:12:44.055 --> 00:12:46.714
+that one will be displayed grid,
+
+258
+00:12:46.714 --> 00:12:50.631
+and the gutter is going to be very, very small.
+
+259
+00:12:52.074 --> 00:12:55.314
+And then this text area is gonna take up the rest
+
+260
+00:12:55.314 --> 00:12:56.492
+of the area.
+
+261
+00:12:56.492 --> 00:12:59.575
+So let's say grid, template, columns,
+
+262
+00:13:00.412 --> 00:13:01.245
+auto 1fr.
+
+263
+00:13:02.703 --> 00:13:03.772
+(whistling)
+
+264
+00:13:03.772 --> 00:13:04.605
+Starting to look good.
+
+265
+00:13:04.605 --> 00:13:07.602
+Oh the reason why this one didn't expand is because
+
+266
+00:13:07.602 --> 00:13:08.562
+I've been,
+
+267
+00:13:08.562 --> 00:13:10.842
+I was playing with it and then I set it
+
+268
+00:13:10.842 --> 00:13:12.442
+inline width to it,
+
+269
+00:13:12.442 --> 00:13:13.310
+which is not what we want.
+
+270
+00:13:13.310 --> 00:13:14.191
+So I'm just gonna delete that,
+
+271
+00:13:14.191 --> 00:13:16.082
+and you'll see that it goes back
+
+272
+00:13:16.082 --> 00:13:17.532
+and snaps too.
+
+273
+00:13:17.532 --> 00:13:19.931
+The gutter is going to be as wide as it needs to be
+
+274
+00:13:19.931 --> 00:13:21.892
+and we're gonna take these spans
+
+275
+00:13:21.892 --> 00:13:23.141
+or the class of the line number
+
+276
+00:13:23.141 --> 00:13:24.503
+and we're gonna make them blocks,
+
+277
+00:13:24.503 --> 00:13:26.271
+so that they go onto their own lines.
+
+278
+00:13:26.271 --> 00:13:28.972
+So we'll grab the class on each of those numbers,
+
+279
+00:13:28.972 --> 00:13:31.389
+editor number, display block.
+
+280
+00:13:32.551 --> 00:13:34.263
+And that should make them stack.
+
+281
+00:13:34.263 --> 00:13:35.430
+And I believe,
+
+282
+00:13:36.991 --> 00:13:40.423
+put a little bit of padding on either side of that,
+
+283
+00:13:40.423 --> 00:13:41.256
+good.
+
+284
+00:13:42.821 --> 00:13:44.852
+Now let's go to our editor input,
+
+285
+00:13:44.852 --> 00:13:47.831
+this little text area that we have here.
+
+286
+00:13:47.831 --> 00:13:50.322
+As a class of editor input.
+
+287
+00:13:50.322 --> 00:13:52.722
+We're going to make it resize none,
+
+288
+00:13:52.722 --> 00:13:54.812
+take off that little thing.
+
+289
+00:13:54.812 --> 00:13:56.229
+Background, none.
+
+290
+00:13:59.572 --> 00:14:00.572
+Border zero.
+
+291
+00:14:02.491 --> 00:14:03.491
+Color, gray.
+
+292
+00:14:04.962 --> 00:14:06.795
+Make the font size 16.
+
+293
+00:14:08.671 --> 00:14:10.823
+And line height 25.
+
+294
+00:14:10.823 --> 00:14:11.959
+I was just playing around with that.
+
+295
+00:14:11.959 --> 00:14:12.792
+Whoa.
+
+296
+00:14:12.792 --> 00:14:13.625
+PX.
+
+297
+00:14:15.572 --> 00:14:16.941
+That's not any good,
+
+298
+00:14:16.941 --> 00:14:18.644
+you see it's not lining up here.
+
+299
+00:14:18.644 --> 00:14:20.492
+All right you're probably at the,
+
+300
+00:14:20.492 --> 00:14:23.244
+there's probably some scientific way to line it up,
+
+301
+00:14:23.244 --> 00:14:25.611
+but I'm just gonna cheat it.
+
+302
+00:14:25.611 --> 00:14:27.004
+Ah good enough.
+
+303
+00:14:27.004 --> 00:14:28.012
+19.
+
+304
+00:14:28.012 --> 00:14:29.914
+Yeah 19 pixels looks good to me.
+
+305
+00:14:29.914 --> 00:14:31.363
+So it's lining up.
+
+306
+00:14:31.363 --> 00:14:32.954
+What else do we have to do here?
+
+307
+00:14:32.954 --> 00:14:34.834
+I think, oh we got this footer here.
+
+308
+00:14:34.834 --> 00:14:35.667
+I think we're done
+
+309
+00:14:35.667 --> 00:14:38.812
+all of the alignment stuff using grid
+
+310
+00:14:38.812 --> 00:14:42.444
+and I think that the last little piece is to go down
+
+311
+00:14:42.444 --> 00:14:46.277
+to this last little one which is the settings.
+
+312
+00:14:47.284 --> 00:14:49.794
+Here and say settings.
+
+313
+00:14:49.794 --> 00:14:50.627
+Padding.
+
+314
+00:14:50.627 --> 00:14:52.783
+Put a little maybe 10PX on that.
+
+315
+00:14:52.783 --> 00:14:53.616
+That's too much.
+
+316
+00:14:53.616 --> 00:14:55.172
+5PX?
+
+317
+00:14:55.172 --> 00:14:56.005
+Good, good.
+
+318
+00:14:56.005 --> 00:15:00.204
+Background is going to be that gray color.
+
+319
+00:15:00.204 --> 00:15:01.124
+Good,
+
+320
+00:15:01.124 --> 00:15:03.372
+no that's the same color as the,
+
+321
+00:15:03.372 --> 00:15:04.812
+make it just black.
+
+322
+00:15:04.812 --> 00:15:06.044
+Good.
+
+323
+00:15:06.044 --> 00:15:09.294
+And border dash top when PX solid gray.
+
+324
+00:15:12.194 --> 00:15:13.050
+Looking good.
+
+325
+00:15:13.050 --> 00:15:13.892
+Looking good.
+
+326
+00:15:13.892 --> 00:15:16.052
+There's a couple little things if you look at the answer,
+
+327
+00:15:16.052 --> 00:15:18.132
+I've got a couple more borders here and there
+
+328
+00:15:18.132 --> 00:15:19.052
+and whatnot,
+
+329
+00:15:19.052 --> 00:15:22.052
+but I'll let you spend some time finessing
+
+330
+00:15:22.052 --> 00:15:23.514
+the borders and whatnot.
+
+331
+00:15:23.514 --> 00:15:27.623
+The idea here is that we built all of this stuff with grid
+
+332
+00:15:27.623 --> 00:15:30.844
+and we're actually making it look pretty good.
+
+333
+00:15:30.844 --> 00:15:34.181
+It's pretty easy to snap together an application
+
+334
+00:15:34.181 --> 00:15:38.022
+that seems relatively complex just with using grid
+
+335
+00:15:38.022 --> 00:15:40.524
+nested inside of each other a couple times over.
+
+336
+00:15:40.524 --> 00:15:41.942
+So hopefully you enjoyed that one.
+
+337
+00:15:41.942 --> 00:15:43.084
+I'll see you in the next one.
+
+338
+00:15:43.084 --> 00:15:45.604
+(upbeat music)
+

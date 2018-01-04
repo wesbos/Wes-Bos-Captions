@@ -1,0 +1,2402 @@
+﻿WEBVTT
+
+1
+00:00:04.291 --> 00:00:06.354
+<v Speaker>All right, in this episode,</v>
+
+2
+00:00:06.354 --> 00:00:10.324
+we're gonna be making an image gallery using CSS Grid,
+
+3
+00:00:10.324 --> 00:00:11.774
+and it's actually pretty nifty because
+
+4
+00:00:11.774 --> 00:00:14.246
+as wide as the image gallery gets,
+
+5
+00:00:14.246 --> 00:00:17.980
+you see that these items sort of just fit into each other
+
+6
+00:00:17.980 --> 00:00:21.801
+and that's using our grid autoflow dense that we have.
+
+7
+00:00:21.801 --> 00:00:23.598
+And then when you click on one of them,
+
+8
+00:00:23.598 --> 00:00:25.266
+it pops up a little overlay here,
+
+9
+00:00:25.266 --> 00:00:27.037
+and will show you the actual full image.
+
+10
+00:00:27.037 --> 00:00:29.147
+Just some of them are tiny little slivers.
+
+11
+00:00:29.147 --> 00:00:31.457
+You could click them and see the full version, so
+
+12
+00:00:31.457 --> 00:00:34.766
+let me talk about the idea behind this image gallery.
+
+13
+00:00:34.766 --> 00:00:38.433
+The idea is that, as we know, with CSS Grid,
+
+14
+00:00:39.589 --> 00:00:42.766
+not everything fits into each other perfectly.
+
+15
+00:00:42.766 --> 00:00:45.578
+You just can't throw a whole bunch of random sized things
+
+16
+00:00:45.578 --> 00:00:47.971
+and expect them all to fit in perfectly.
+
+17
+00:00:47.971 --> 00:00:50.659
+Let me open up inspect element here
+
+18
+00:00:50.659 --> 00:00:53.326
+and turn on our layout for grid.
+
+19
+00:00:54.205 --> 00:00:55.689
+This is our gallery here.
+
+20
+00:00:55.689 --> 00:00:58.254
+So what the idea behind this is that I'm making all of these
+
+21
+00:00:58.254 --> 00:01:01.921
+possible sizes, I'm making them all based on
+
+22
+00:01:03.074 --> 00:01:07.056
+a hundred pixel grid, so our grid is always gonna be
+
+23
+00:01:07.056 --> 00:01:08.824
+a hundred pixels by a hundred pixels,
+
+24
+00:01:08.824 --> 00:01:11.706
+and then each of these images is just going to span
+
+25
+00:01:11.706 --> 00:01:15.706
+a random amount, between one wide and four wide,
+
+26
+00:01:17.153 --> 00:01:20.131
+and one high and four wide.
+
+27
+00:01:20.131 --> 00:01:22.317
+You can see, sometimes they're tiny, one by one.
+
+28
+00:01:22.317 --> 00:01:25.811
+Sometimes, they're gonna be huge by going four by four.
+
+29
+00:01:25.811 --> 00:01:27.437
+And that's gonna be totally random,
+
+30
+00:01:27.437 --> 00:01:31.800
+but my idea is that by having a lot of these extra little
+
+31
+00:01:31.800 --> 00:01:34.923
+one by ones, like right here,
+
+32
+00:01:34.923 --> 00:01:39.503
+it's going to hopefully fill all of the gaps.
+
+33
+00:01:39.503 --> 00:01:41.370
+You can see it's not perfect, in this case,
+
+34
+00:01:41.370 --> 00:01:44.634
+there is one missing, 'cause maybe there wasn't enough,
+
+35
+00:01:44.634 --> 00:01:46.045
+but if I were to refresh this,
+
+36
+00:01:46.045 --> 00:01:48.700
+you see that it's actually starting to look pretty good
+
+37
+00:01:48.700 --> 00:01:51.096
+at the end, maybe we'll add a couple extra one by ones so
+
+38
+00:01:51.096 --> 00:01:53.677
+I like to think of these little ones as sort of filler,
+
+39
+00:01:53.677 --> 00:01:56.804
+and they will sort of fill up, so we'll add
+
+40
+00:01:56.804 --> 00:01:59.009
+a little bit more to fix those up,
+
+41
+00:01:59.009 --> 00:02:02.236
+so this is going to require a little bit of Javascript,
+
+42
+00:02:02.236 --> 00:02:07.113
+so options here, if you don't feel like writing Javascript,
+
+43
+00:02:07.113 --> 00:02:10.319
+you can just go into the finished version
+
+44
+00:02:10.319 --> 00:02:12.972
+and just copy paste all of the Javascript
+
+45
+00:02:12.972 --> 00:02:15.512
+and that will get you up and running,
+
+46
+00:02:15.512 --> 00:02:17.496
+but, I don't know, it's fun.
+
+47
+00:02:17.496 --> 00:02:19.874
+I think a lot of you will like to sort of
+
+48
+00:02:19.874 --> 00:02:21.984
+code along with it, so feel free to give this one a shot.
+
+49
+00:02:21.984 --> 00:02:24.141
+This one's a little bit more advanced, so
+
+50
+00:02:24.141 --> 00:02:28.731
+don't feel like you have to do this one all by yourselves.
+
+51
+00:02:28.731 --> 00:02:31.001
+You can start a code along with me.
+
+52
+00:02:31.001 --> 00:02:33.767
+Good, all right, let's kick it off,
+
+53
+00:02:33.767 --> 00:02:35.649
+just understanding what we're sort of starting with here
+
+54
+00:02:35.649 --> 00:02:36.748
+in our starter files.
+
+55
+00:02:36.748 --> 00:02:40.442
+First, we have an overlay, and that's going to be this ...
+
+56
+00:02:40.442 --> 00:02:42.396
+When you click on one of them, that's gonna be this
+
+57
+00:02:42.396 --> 00:02:43.883
+gray or black overlay.
+
+58
+00:02:43.883 --> 00:02:47.289
+And then inside of that, we have an overlay inner,
+
+59
+00:02:47.289 --> 00:02:50.711
+which has just two things, just a button to close it
+
+60
+00:02:50.711 --> 00:02:53.361
+and an image, a tag that is actually
+
+61
+00:02:53.361 --> 00:02:55.544
+going to be showing the image.
+
+62
+00:02:55.544 --> 00:02:59.354
+This isn't the most bulletproof image gallery ever made,
+
+63
+00:02:59.354 --> 00:03:01.933
+but it should give you a sort of a good head start
+
+64
+00:03:01.933 --> 00:03:03.247
+to making your own.
+
+65
+00:03:03.247 --> 00:03:07.230
+Then we also have our gallery which is going to be our grid,
+
+66
+00:03:07.230 --> 00:03:08.543
+that's this thing right here,
+
+67
+00:03:08.543 --> 00:03:11.039
+and there's nothing in it because I don't wanna manually
+
+68
+00:03:11.039 --> 00:03:13.307
+code all of these sizes by hand,
+
+69
+00:03:13.307 --> 00:03:16.244
+so we're actually gonna generate them with Javascript.
+
+70
+00:03:16.244 --> 00:03:20.400
+Similarly, in the image folder, I've just got a bunch
+
+71
+00:03:20.400 --> 00:03:22.507
+of 500 by 500 pixel images.
+
+72
+00:03:22.507 --> 00:03:25.088
+They're all gonna be 500 pixels wide,
+
+73
+00:03:25.088 --> 00:03:28.285
+and then we're going to be using the future of CSS,
+
+74
+00:03:28.285 --> 00:03:32.452
+called object fit, in order to make them fit perfectly,
+
+75
+00:03:33.345 --> 00:03:35.426
+sort of like background size cover,
+
+76
+00:03:35.426 --> 00:03:36.596
+if you've ever used that.
+
+77
+00:03:36.596 --> 00:03:39.397
+Let's keep going in the starter files,
+
+78
+00:03:39.397 --> 00:03:40.462
+what else do we got?
+
+79
+00:03:40.462 --> 00:03:42.159
+Some base CSS here.
+
+80
+00:03:42.159 --> 00:03:44.995
+I haven't imported that other base CSS in here.
+
+81
+00:03:44.995 --> 00:03:47.422
+This is just some stuff that we have.
+
+82
+00:03:47.422 --> 00:03:49.691
+I have styled the close button
+
+83
+00:03:49.691 --> 00:03:52.191
+and the actual overlay itself.
+
+84
+00:03:53.299 --> 00:03:55.025
+We'll go back into what that is,
+
+85
+00:03:55.025 --> 00:03:56.783
+but it's sort of the heavy lifting,
+
+86
+00:03:56.783 --> 00:03:58.617
+which is the grid right here.
+
+87
+00:03:58.617 --> 00:04:00.814
+Haven't done any of that with you,
+
+88
+00:04:00.814 --> 00:04:04.936
+as well as the sort of, the centering and the little
+
+89
+00:04:04.936 --> 00:04:06.634
+animation that we have going on here.
+
+90
+00:04:06.634 --> 00:04:07.873
+So, let's get it going.
+
+91
+00:04:07.873 --> 00:04:10.909
+The first thing we wanna do is actually generate
+
+92
+00:04:10.909 --> 00:04:14.619
+some gallery images, so let's go down to the
+
+93
+00:04:14.619 --> 00:04:17.137
+script tag here, and start writing some code.
+
+94
+00:04:17.137 --> 00:04:20.598
+We want to first select the gallery itself,
+
+95
+00:04:20.598 --> 00:04:24.160
+so we'll get the gallery, and then I also need the overlay
+
+96
+00:04:24.160 --> 00:04:26.388
+and these things are going to be very similar,
+
+97
+00:04:26.388 --> 00:04:30.380
+so I'll just say const gallery equals document
+
+98
+00:04:30.380 --> 00:04:34.530
+dot query selector, and we're gonna select something
+
+99
+00:04:34.530 --> 00:04:37.251
+with a class gallery and a class overlay.
+
+100
+00:04:37.251 --> 00:04:40.349
+And then inside the overlay, we also need the image itself
+
+101
+00:04:40.349 --> 00:04:43.044
+so that we can update it when you click it
+
+102
+00:04:43.044 --> 00:04:46.439
+and the close button, which is that, so we'll say
+
+103
+00:04:46.439 --> 00:04:50.544
+const overlay image is equal to overlay dot query selector.
+
+104
+00:04:50.544 --> 00:04:52.611
+We'll look inside of that for the image tag
+
+105
+00:04:52.611 --> 00:04:56.636
+and then we'll also look inside of it for the button.
+
+106
+00:04:56.636 --> 00:05:00.512
+Actually, we'll call this close, and that has a class
+
+107
+00:05:00.512 --> 00:05:01.601
+of close on it.
+
+108
+00:05:01.601 --> 00:05:05.768
+Good, now what we need is a sort of a little function here
+
+109
+00:05:06.732 --> 00:05:09.411
+that's going to generate some html for us
+
+110
+00:05:09.411 --> 00:05:12.578
+based on passed in widths and heights,
+
+111
+00:05:13.566 --> 00:05:17.199
+so again, the idea behind this is that it's going to ...
+
+112
+00:05:17.199 --> 00:05:20.699
+Between one and four width, or horizontal,
+
+113
+00:05:21.908 --> 00:05:25.046
+and one and four height, or vertical,
+
+114
+00:05:25.046 --> 00:05:27.612
+I'm gonna be calling it, and then in our CSS,
+
+115
+00:05:27.612 --> 00:05:29.776
+we're going to just assign, let me show you here
+
+116
+00:05:29.776 --> 00:05:32.076
+what it's actually looking like.
+
+117
+00:05:32.076 --> 00:05:36.056
+Whoa, firefox screenshots, whoa, this is not what I wanted.
+
+118
+00:05:36.056 --> 00:05:38.675
+Okay, hold on, right click, inspect element,
+
+119
+00:05:38.675 --> 00:05:42.073
+and if we open our gallery up, you see actually
+
+120
+00:05:42.073 --> 00:05:45.197
+what's being generated is that they all have a H,
+
+121
+00:05:45.197 --> 00:05:48.861
+like one, H four, H two, and each of those
+
+122
+00:05:48.861 --> 00:05:52.258
+H one, H four, H twos correspond with a different
+
+123
+00:05:52.258 --> 00:05:56.947
+span value, so this one has a H two, which means
+
+124
+00:05:56.947 --> 00:05:59.702
+that it's gonna horizontally span two on the column,
+
+125
+00:05:59.702 --> 00:06:02.509
+and then it has a V three, which means it's going to
+
+126
+00:06:02.509 --> 00:06:05.252
+vertically span the row three.
+
+127
+00:06:05.252 --> 00:06:06.334
+You get the point, right?
+
+128
+00:06:06.334 --> 00:06:08.316
+So here we'll make a function called
+
+129
+00:06:08.316 --> 00:06:12.019
+generate html, and that's going to take in a
+
+130
+00:06:12.019 --> 00:06:14.186
+horizontal and a vertical.
+
+131
+00:06:16.798 --> 00:06:18.955
+I've used destructuring there, if you're not sure
+
+132
+00:06:18.955 --> 00:06:20.592
+what that little thing was.
+
+133
+00:06:20.592 --> 00:06:22.048
+And then from that, we are gonna return
+
+134
+00:06:22.048 --> 00:06:23.645
+just some backtext that we have here
+
+135
+00:06:23.645 --> 00:06:27.670
+and that will give us a ... let's give ourselves a div,
+
+136
+00:06:27.670 --> 00:06:30.920
+and that div will have a class of item,
+
+137
+00:06:32.673 --> 00:06:36.584
+and then the H value that gets passed in,
+
+138
+00:06:36.584 --> 00:06:39.634
+oh, that's not pound, it's dollar sign
+
+139
+00:06:39.634 --> 00:06:43.801
+and the V with the V sign that we've passed in, good.
+
+140
+00:06:45.475 --> 00:06:47.424
+And then inside of that, we need image tag
+
+141
+00:06:47.424 --> 00:06:51.591
+with the source is going to be images forward slash ...
+
+142
+00:06:53.368 --> 00:06:55.923
+And we've got one, two, three, four, five, six, seven,
+
+143
+00:06:55.923 --> 00:06:58.848
+eight, nine, let's just use one dot jpeg for now,
+
+144
+00:06:58.848 --> 00:07:03.015
+and then we will also give an overlay item to this
+
+145
+00:07:03.953 --> 00:07:07.219
+and that's this little yellow spot that sort of comes up
+
+146
+00:07:07.219 --> 00:07:10.020
+from the bottom when you hover over top of it, so
+
+147
+00:07:10.020 --> 00:07:14.650
+that is going to be a div with the class of item
+
+148
+00:07:14.650 --> 00:07:18.884
+underscore, underscore overlay, I'm just using some
+
+149
+00:07:18.884 --> 00:07:21.717
+Bem here, and then inside of that,
+
+150
+00:07:23.303 --> 00:07:27.519
+we'll have a button that will say, "View".
+
+151
+00:07:27.519 --> 00:07:31.362
+And that button is going to trigger the actual opening
+
+152
+00:07:31.362 --> 00:07:33.572
+of the value that we have, good.
+
+153
+00:07:33.572 --> 00:07:36.084
+So we have this generate html function here.
+
+154
+00:07:36.084 --> 00:07:38.993
+Next up, I want to make a quick little helper function
+
+155
+00:07:38.993 --> 00:07:40.403
+that's gonna give us a random number
+
+156
+00:07:40.403 --> 00:07:44.053
+between one and something, so we'll say function,
+
+157
+00:07:44.053 --> 00:07:45.220
+random number,
+
+158
+00:07:49.814 --> 00:07:52.099
+and I'm gonna pass in sort of like an upper limit,
+
+159
+00:07:52.099 --> 00:07:55.763
+and from that, we're gonna return math dot four,
+
+160
+00:07:55.763 --> 00:07:59.180
+math dot random times the limit plus one.
+
+161
+00:08:03.463 --> 00:08:05.023
+And then what we can do up here
+
+162
+00:08:05.023 --> 00:08:08.773
+is swap out this one with the actual function
+
+163
+00:08:09.882 --> 00:08:13.745
+that we just made, which is random number.
+
+164
+00:08:13.745 --> 00:08:16.013
+I have 12 images, so it's gonna give us
+
+165
+00:08:16.013 --> 00:08:18.180
+between 1 and 12 dot jpeg.
+
+166
+00:08:19.896 --> 00:08:23.630
+Cool, and all right, let's go ahead and start making
+
+167
+00:08:23.630 --> 00:08:26.582
+a bunch of images, so I wanna do ...
+
+168
+00:08:26.582 --> 00:08:28.636
+Let's start with 50 images, and we can pop them
+
+169
+00:08:28.636 --> 00:08:30.191
+on the actual screen.
+
+170
+00:08:30.191 --> 00:08:33.524
+So what I like to do is, I need an array
+
+171
+00:08:35.655 --> 00:08:39.601
+of a bunch of arrays, meaning that I wanna just get
+
+172
+00:08:39.601 --> 00:08:42.140
+a bunch of things that are ... maybe the first one is
+
+173
+00:08:42.140 --> 00:08:45.796
+one wide and four high, and then maybe the next one is
+
+174
+00:08:45.796 --> 00:08:48.459
+two wide and two high, and maybe the next one is
+
+175
+00:08:48.459 --> 00:08:51.226
+three or four wide, and one high, right?
+
+176
+00:08:51.226 --> 00:08:54.738
+I basically just want a bunch of random arrays
+
+177
+00:08:54.738 --> 00:08:56.346
+where the first thing is going to be
+
+178
+00:08:56.346 --> 00:08:58.402
+how many columns it spans, and the second thing
+
+179
+00:08:58.402 --> 00:09:01.402
+is how many rows it's going to span.
+
+180
+00:09:02.339 --> 00:09:04.575
+So the way that I figured we could do that is
+
+181
+00:09:04.575 --> 00:09:06.616
+we'll just make a digits variable here
+
+182
+00:09:06.616 --> 00:09:08.613
+and we'll just make a empty array,
+
+183
+00:09:08.613 --> 00:09:11.050
+and the way that you can make an empty array
+
+184
+00:09:11.050 --> 00:09:13.532
+with the 50 blank spots is just using
+
+185
+00:09:13.532 --> 00:09:16.826
+the array dot from, and you pass it an object
+
+186
+00:09:16.826 --> 00:09:19.358
+that just has a length property on it.
+
+187
+00:09:19.358 --> 00:09:21.759
+Pretty neat little trick, oops.
+
+188
+00:09:21.759 --> 00:09:25.981
+Array dot from also takes a map function,
+
+189
+00:09:25.981 --> 00:09:29.335
+which will allow us to populate what goes into
+
+190
+00:09:29.335 --> 00:09:32.700
+each one of those, so what will go into each one
+
+191
+00:09:32.700 --> 00:09:35.812
+is a random number between one and four
+
+192
+00:09:35.812 --> 00:09:39.803
+and then another random number between one and four.
+
+193
+00:09:39.803 --> 00:09:42.198
+So let's just console dot log the digits
+
+194
+00:09:42.198 --> 00:09:44.478
+and see what we're dealing with.
+
+195
+00:09:44.478 --> 00:09:46.660
+Go to our console tab here, good.
+
+196
+00:09:46.660 --> 00:09:49.379
+So when we load the page, we are getting an array
+
+197
+00:09:49.379 --> 00:09:53.052
+of arrays, and we get 50 items, and each one has
+
+198
+00:09:53.052 --> 00:09:56.385
+two two, three four, four one, four two,
+
+199
+00:09:57.999 --> 00:09:59.089
+you get the point, right?
+
+200
+00:09:59.089 --> 00:10:01.165
+And this is great because this is just a bunch
+
+201
+00:10:01.165 --> 00:10:04.317
+of random things that we're then going to pass
+
+202
+00:10:04.317 --> 00:10:06.838
+into this generate html.
+
+203
+00:10:06.838 --> 00:10:10.626
+So what we need to do now is make an html variable,
+
+204
+00:10:10.626 --> 00:10:12.961
+so we'll say const html is equal to,
+
+205
+00:10:12.961 --> 00:10:15.486
+we'll take that digits array, and we'll map over
+
+206
+00:10:15.486 --> 00:10:18.123
+each one, and we'll simply just pass it to
+
+207
+00:10:18.123 --> 00:10:19.706
+this generate html.
+
+208
+00:10:21.534 --> 00:10:25.028
+So see what's going to happen is for each of these,
+
+209
+00:10:25.028 --> 00:10:27.722
+it's going to pass in the array one three,
+
+210
+00:10:27.722 --> 00:10:30.900
+and those are immediately going to be destructured
+
+211
+00:10:30.900 --> 00:10:34.932
+into the horizontal and the vertical values
+
+212
+00:10:34.932 --> 00:10:37.226
+and they're gonna be put into here.
+
+213
+00:10:37.226 --> 00:10:39.768
+So digits dot map, generate html,
+
+214
+00:10:39.768 --> 00:10:41.960
+we'll join it on the end, just so that it will
+
+215
+00:10:41.960 --> 00:10:44.673
+convert it to a string, and let's just console dot log
+
+216
+00:10:44.673 --> 00:10:47.027
+that html, see what we're dealing with.
+
+217
+00:10:47.027 --> 00:10:48.465
+Woohoo, look at this.
+
+218
+00:10:48.465 --> 00:10:50.379
+So we got a div with a class of item
+
+219
+00:10:50.379 --> 00:10:52.115
+and then every single one,
+
+220
+00:10:52.115 --> 00:10:53.624
+watch as I refresh the page, they're always
+
+221
+00:10:53.624 --> 00:10:56.753
+gonna be different, H four, H two, H one, H four, H four,
+
+222
+00:10:56.753 --> 00:10:59.806
+H four, seems like H four a lot, H one.
+
+223
+00:10:59.806 --> 00:11:01.718
+You get the point, right?
+
+224
+00:11:01.718 --> 00:11:03.954
+We're just generating a whole bunch of html,
+
+225
+00:11:03.954 --> 00:11:06.548
+and now what we can do is we can take our gallery,
+
+226
+00:11:06.548 --> 00:11:10.002
+which is this value that we've selected up here,
+
+227
+00:11:10.002 --> 00:11:12.325
+and we can just set the inner html
+
+228
+00:11:12.325 --> 00:11:14.534
+to be that html that we have.
+
+229
+00:11:14.534 --> 00:11:17.187
+And there we go, watch this, when the page loads,
+
+230
+00:11:17.187 --> 00:11:21.270
+we're going to get a whole bunch of random images
+
+231
+00:11:22.279 --> 00:11:26.130
+popping up, see, every time it loads,
+
+232
+00:11:26.130 --> 00:11:28.838
+this is going to be different random images,
+
+233
+00:11:28.838 --> 00:11:30.867
+and they all are gonna have different classes.
+
+234
+00:11:30.867 --> 00:11:32.963
+Good, so that's enough Javascript for now,
+
+235
+00:11:32.963 --> 00:11:36.070
+now let's get into the actual CSS of it,
+
+236
+00:11:36.070 --> 00:11:40.053
+so let's go into our gallery, and we'll display grid
+
+237
+00:11:40.053 --> 00:11:44.406
+on the actual grid, and again, we need to make it
+
+238
+00:11:44.406 --> 00:11:46.823
+100 pixels wide for each one.
+
+239
+00:11:50.009 --> 00:11:53.585
+Oh, somebody at my door, who's there?
+
+240
+00:11:53.585 --> 00:11:57.164
+Oh, no it was just motion, excuse me.
+
+241
+00:11:57.164 --> 00:11:59.132
+What were we doing?
+
+242
+00:11:59.132 --> 00:12:01.369
+Oh yeah, we're making a grid of 100 pixels,
+
+243
+00:12:01.369 --> 00:12:03.952
+so grid, template, columns, did this 100 times,
+
+244
+00:12:03.952 --> 00:12:06.177
+and how many do we need?
+
+245
+00:12:06.177 --> 00:12:09.030
+Well, we don't know, as many as it is wide.
+
+246
+00:12:09.030 --> 00:12:11.909
+So we can just repeat, autofill,
+
+247
+00:12:11.909 --> 00:12:15.987
+remember we learned about that, 100 pixels each one, good.
+
+248
+00:12:15.987 --> 00:12:18.258
+Give that a save and ooh, look what we're
+
+249
+00:12:18.258 --> 00:12:19.312
+working with so far.
+
+250
+00:12:19.312 --> 00:12:23.535
+If we inspect element, let's turn on our layout tools
+
+251
+00:12:23.535 --> 00:12:24.644
+for the gallery.
+
+252
+00:12:24.644 --> 00:12:29.111
+You can see that there's nine, but if it goes bigger,
+
+253
+00:12:29.111 --> 00:12:33.715
+10, 11, 12, each one is being slotted into the grid.
+
+254
+00:12:33.715 --> 00:12:36.512
+So that's our columns, our horizontal,
+
+255
+00:12:36.512 --> 00:12:40.679
+that we're working with, but we also need the vertical.
+
+256
+00:12:41.720 --> 00:12:44.159
+Now, the thing about the vertical is we don't know
+
+257
+00:12:44.159 --> 00:12:46.382
+how many there are going to be vertical,
+
+258
+00:12:46.382 --> 00:12:49.203
+so instead of explicitly telling it what the rows will be,
+
+259
+00:12:49.203 --> 00:12:52.160
+we'll just size the automatic rows that get created.
+
+260
+00:12:52.160 --> 00:12:55.315
+We'll size the implicit, or the auto rows.
+
+261
+00:12:55.315 --> 00:12:57.248
+So say grid, auto rows,
+
+262
+00:12:57.248 --> 00:12:59.844
+and that is going to be 100 pixels high.
+
+263
+00:12:59.844 --> 00:13:04.011
+All right, so now it looks like we're getting somewhere
+
+264
+00:13:04.949 --> 00:13:08.291
+with this actual grid, as I get bigger and bigger,
+
+265
+00:13:08.291 --> 00:13:09.970
+each one seems to be taking up,
+
+266
+00:13:09.970 --> 00:13:13.610
+but now they're also kind of spilling out,
+
+267
+00:13:13.610 --> 00:13:17.684
+so let's work on actually sizing them first,
+
+268
+00:13:17.684 --> 00:13:20.851
+so we'll take our base item and we ...
+
+269
+00:13:24.423 --> 00:13:27.379
+We actually don't need to tell it to by default span
+
+270
+00:13:27.379 --> 00:13:30.313
+one by one because that's the default of it.
+
+271
+00:13:30.313 --> 00:13:34.146
+But we'll say any item that has a V two on it,
+
+272
+00:13:35.132 --> 00:13:37.627
+meaning that it is spanning vertical two,
+
+273
+00:13:37.627 --> 00:13:39.294
+grid, row, span two.
+
+274
+00:13:40.796 --> 00:13:44.296
+And now you'll see, let's go and find one.
+
+275
+00:13:46.032 --> 00:13:49.369
+There's this one right here, the second one,
+
+276
+00:13:49.369 --> 00:13:51.202
+that was spanning two.
+
+277
+00:13:52.620 --> 00:13:53.801
+If I hover over top of it,
+
+278
+00:13:53.801 --> 00:13:56.472
+you'll see that it is now taking up two vertical spots.
+
+279
+00:13:56.472 --> 00:13:58.438
+You can't see the image taking up two spots.
+
+280
+00:13:58.438 --> 00:14:01.604
+That's 'cause the images are still spilling out
+
+281
+00:14:01.604 --> 00:14:03.659
+of each of them, maybe if we did something like this.
+
+282
+00:14:03.659 --> 00:14:06.953
+Item overflow hidden, maybe that will
+
+283
+00:14:06.953 --> 00:14:08.620
+work a little bit better, there we go, okay.
+
+284
+00:14:08.620 --> 00:14:10.909
+So you see that these ones right here
+
+285
+00:14:10.909 --> 00:14:14.281
+are being too high, and let's just keep going,
+
+286
+00:14:14.281 --> 00:14:17.693
+doing the rest, so anything that has a V three
+
+287
+00:14:17.693 --> 00:14:21.360
+is gonna be that, and anything that has four
+
+288
+00:14:23.711 --> 00:14:25.577
+is going to span four.
+
+289
+00:14:25.577 --> 00:14:26.410
+Beautiful.
+
+290
+00:14:27.574 --> 00:14:30.646
+Now let's do that with the horizontal versions as well,
+
+291
+00:14:30.646 --> 00:14:31.896
+let's see here.
+
+292
+00:14:33.836 --> 00:14:36.603
+Can we do a little bit of keyboard shortcuts?
+
+293
+00:14:36.603 --> 00:14:40.103
+Duplicate it all, select that, H ... whoo.
+
+294
+00:14:44.064 --> 00:14:45.059
+Did that work?
+
+295
+00:14:45.059 --> 00:14:47.329
+So this one has horizontal two,
+
+296
+00:14:47.329 --> 00:14:49.069
+oh no, obviously it's not gonna work
+
+297
+00:14:49.069 --> 00:14:52.937
+'cause it's grid row, not grid column,
+
+298
+00:14:52.937 --> 00:14:55.020
+so we'll say grid column.
+
+299
+00:14:55.858 --> 00:14:58.199
+A-ha, now we're getting somewhere.
+
+300
+00:14:58.199 --> 00:15:00.524
+So we've got all of our items,
+
+301
+00:15:00.524 --> 00:15:03.137
+they are all being sized appropriately.
+
+302
+00:15:03.137 --> 00:15:07.304
+The only problem is that we have all of these empty spaces
+
+303
+00:15:08.410 --> 00:15:10.048
+and that's because by default,
+
+304
+00:15:10.048 --> 00:15:13.230
+whenever it runs into a spot that it cannot fit,
+
+305
+00:15:13.230 --> 00:15:15.197
+and let's run through how this works.
+
+306
+00:15:15.197 --> 00:15:18.282
+That one fits, that one fits, that one fits,
+
+307
+00:15:18.282 --> 00:15:20.507
+that one fits, but then the next one,
+
+308
+00:15:20.507 --> 00:15:25.250
+which needs to be four horizontal and two high,
+
+309
+00:15:25.250 --> 00:15:27.563
+it doesn't fit right here because we only have
+
+310
+00:15:27.563 --> 00:15:31.297
+three wide and one high, so it just keeps going on
+
+311
+00:15:31.297 --> 00:15:33.423
+until it finds a spot, and that's here.
+
+312
+00:15:33.423 --> 00:15:36.560
+And then that space is forever going to be unused
+
+313
+00:15:36.560 --> 00:15:40.043
+because the browser does not go back to fill it.
+
+314
+00:15:40.043 --> 00:15:42.096
+So we know how we can fix that.
+
+315
+00:15:42.096 --> 00:15:45.005
+We'll go back up to our grid here, gallery,
+
+316
+00:15:45.005 --> 00:15:49.172
+and we'll say grid auto flow, and we'll call it dense.
+
+317
+00:15:50.640 --> 00:15:54.125
+And then it will start to fill it in
+
+318
+00:15:54.125 --> 00:15:56.458
+as we have these little one by one-ers,
+
+319
+00:15:56.458 --> 00:16:00.499
+it'll start to go back and fill in the values as we want,
+
+320
+00:16:00.499 --> 00:16:03.647
+so that's looking pretty good, but let's take a look.
+
+321
+00:16:03.647 --> 00:16:07.914
+We start to now have a bunch of little spots
+
+322
+00:16:07.914 --> 00:16:10.493
+because there just isn't enough of these little
+
+323
+00:16:10.493 --> 00:16:14.172
+filler one by ones that can fit itself in.
+
+324
+00:16:14.172 --> 00:16:16.560
+So the first time I did that, I was like aw,
+
+325
+00:16:16.560 --> 00:16:18.553
+that's kind of a bummer.
+
+326
+00:16:18.553 --> 00:16:21.660
+I don't know, maybe you could design something cool
+
+327
+00:16:21.660 --> 00:16:22.888
+that would fit in there, but
+
+328
+00:16:22.888 --> 00:16:26.127
+if this was like a Wordpress blog where you were having
+
+329
+00:16:26.127 --> 00:16:29.294
+a bunch of blogposts, what I would do,
+
+330
+00:16:30.135 --> 00:16:31.614
+and that's what we're gonna do here,
+
+331
+00:16:31.614 --> 00:16:33.958
+is we're gonna load it up with a bunch of extra
+
+332
+00:16:33.958 --> 00:16:37.838
+one by ones, so that they'll all fill themselves in
+
+333
+00:16:37.838 --> 00:16:41.030
+so let's go back to where we generated all this html
+
+334
+00:16:41.030 --> 00:16:44.613
+in our Javascript, and that was right here.
+
+335
+00:16:45.963 --> 00:16:48.638
+We're just going to concat an array,
+
+336
+00:16:48.638 --> 00:16:50.128
+and inside of that array, we're just gonna concat
+
+337
+00:16:50.128 --> 00:16:53.092
+a bunch of new arrays that are just one by ones,
+
+338
+00:16:53.092 --> 00:16:57.500
+so take that and doot, doot, doo, doo, doo, doo, doo.
+
+339
+00:16:57.500 --> 00:16:59.740
+All right, that looks good to me, that should be enough.
+
+340
+00:16:59.740 --> 00:17:03.262
+And let's see it load, I think I broke it.
+
+341
+00:17:03.262 --> 00:17:06.012
+Let's open up our dev tools here.
+
+342
+00:17:07.640 --> 00:17:11.203
+Array dot contact, what am I doing?
+
+343
+00:17:11.203 --> 00:17:13.131
+Concat, there we go.
+
+344
+00:17:13.131 --> 00:17:15.471
+Whoa, looking good.
+
+345
+00:17:15.471 --> 00:17:17.521
+Do we have any holes?
+
+346
+00:17:17.521 --> 00:17:19.521
+Let's see, looking good.
+
+347
+00:17:21.334 --> 00:17:23.270
+There's almost too many extras here,
+
+348
+00:17:23.270 --> 00:17:25.297
+maybe I'll refresh it a couple times.
+
+349
+00:17:25.297 --> 00:17:27.776
+Yeah, you know what, that's too many extra one by ones,
+
+350
+00:17:27.776 --> 00:17:29.759
+so in my case, I would ... you could probably also
+
+351
+00:17:29.759 --> 00:17:32.467
+write some sort of algorithm that would detect
+
+352
+00:17:32.467 --> 00:17:35.920
+empty holes and fill them as we need it.
+
+353
+00:17:35.920 --> 00:17:39.116
+There's a couple extra there at the bottom, couple.
+
+354
+00:17:39.116 --> 00:17:42.057
+Here, maybe I deleted too many.
+
+355
+00:17:42.057 --> 00:17:43.850
+I don't know, you get the point.
+
+356
+00:17:43.850 --> 00:17:46.307
+You can sort of play with it and see exactly ...
+
+357
+00:17:46.307 --> 00:17:47.684
+There, that's looking good to me.
+
+358
+00:17:47.684 --> 00:17:50.100
+Awesome, so that's the first part of it,
+
+359
+00:17:50.100 --> 00:17:53.434
+but now we need to write some more CSS
+
+360
+00:17:53.434 --> 00:17:55.802
+to actually get them clickable
+
+361
+00:17:55.802 --> 00:17:58.670
+and have this sort of overlay pop-up.
+
+362
+00:17:58.670 --> 00:18:00.241
+So if you're happy with this,
+
+363
+00:18:00.241 --> 00:18:02.545
+you can stop this video now and move onto the next one,
+
+364
+00:18:02.545 --> 00:18:04.461
+but if you'd rather learn a little bit more CSS
+
+365
+00:18:04.461 --> 00:18:07.461
+and Javascript, then let's keep on trucking.
+
+366
+00:18:07.461 --> 00:18:10.017
+All right, let's first start, if we look at this here,
+
+367
+00:18:10.017 --> 00:18:11.482
+let's start with these little overlays,
+
+368
+00:18:11.482 --> 00:18:15.265
+and also, these images are much better cropped
+
+369
+00:18:15.265 --> 00:18:18.688
+than they are here, you see here, they're just taking
+
+370
+00:18:18.688 --> 00:18:20.084
+the top right hand corner of the image
+
+371
+00:18:20.084 --> 00:18:23.140
+and the rest is spilling out, so we're actually gonna make
+
+372
+00:18:23.140 --> 00:18:25.573
+each of these individual items a grid as well,
+
+373
+00:18:25.573 --> 00:18:28.240
+so scroll to your item selector,
+
+374
+00:18:29.338 --> 00:18:31.922
+and we are going to display grid on it,
+
+375
+00:18:31.922 --> 00:18:34.378
+and we're just going to make it a one by one grid,
+
+376
+00:18:34.378 --> 00:18:36.298
+so I'll explain this in a second.
+
+377
+00:18:36.298 --> 00:18:39.079
+So grid, template, column one,
+
+378
+00:18:39.079 --> 00:18:41.579
+and grid, template, rows, one.
+
+379
+00:18:43.901 --> 00:18:46.810
+And what that should do, if I now go and
+
+380
+00:18:46.810 --> 00:18:50.576
+go to the layout tab and take one of the first ones
+
+381
+00:18:50.576 --> 00:18:54.514
+and inspect it, it's just a one by one grid
+
+382
+00:18:54.514 --> 00:18:56.377
+and the reason why I do that is because
+
+383
+00:18:56.377 --> 00:19:00.373
+CSS Grid is also really good for overlapping elements.
+
+384
+00:19:00.373 --> 00:19:03.767
+Instead of us using position absolute
+
+385
+00:19:03.767 --> 00:19:06.808
+in order to overlap our items on top of here,
+
+386
+00:19:06.808 --> 00:19:09.972
+'cause this yellow little item details,
+
+387
+00:19:09.972 --> 00:19:14.007
+that needs to be overlapped on top of the image,
+
+388
+00:19:14.007 --> 00:19:16.946
+so if that was the case, then I'd either have to
+
+389
+00:19:16.946 --> 00:19:19.813
+make the details or the image, or both of them,
+
+390
+00:19:19.813 --> 00:19:23.068
+position absolute, and I don't wanna have to do that.
+
+391
+00:19:23.068 --> 00:19:24.450
+And I'm gonna show you how to do it exactly with
+
+392
+00:19:24.450 --> 00:19:26.390
+just using CSS grid.
+
+393
+00:19:26.390 --> 00:19:29.284
+So we'll take our item, let's do the image first,
+
+394
+00:19:29.284 --> 00:19:33.451
+and we're going to say grid, column, one, negative one,
+
+395
+00:19:36.082 --> 00:19:38.337
+so span across the entire thing
+
+396
+00:19:38.337 --> 00:19:40.773
+and the row, also span across the entire thing,
+
+397
+00:19:40.773 --> 00:19:43.984
+and then we're gonna give the image a width of 100%,
+
+398
+00:19:43.984 --> 00:19:48.067
+a height of 100%, and now this starts to ...
+
+399
+00:19:49.446 --> 00:19:51.570
+Oh, this is the wrong one, that's the answer.
+
+400
+00:19:51.570 --> 00:19:53.509
+Here we go, this is what we're working with.
+
+401
+00:19:53.509 --> 00:19:57.249
+You see that these images are now being stretched,
+
+402
+00:19:57.249 --> 00:20:00.070
+so what we can do to that is give ourselves
+
+403
+00:20:00.070 --> 00:20:03.607
+and object fit, and call it cover,
+
+404
+00:20:03.607 --> 00:20:07.032
+and that will just, it's sort of like background size cover
+
+405
+00:20:07.032 --> 00:20:10.987
+where it will trim the left or the top or the bottom
+
+406
+00:20:10.987 --> 00:20:13.635
+or the left and the right to make sure that it fits
+
+407
+00:20:13.635 --> 00:20:15.672
+perfectly inside of it, while still showing
+
+408
+00:20:15.672 --> 00:20:17.233
+as much of the image as we can.
+
+409
+00:20:17.233 --> 00:20:19.982
+We also have contain in there as well,
+
+410
+00:20:19.982 --> 00:20:21.508
+but that's not what we're looking for,
+
+411
+00:20:21.508 --> 00:20:23.222
+'cause that would show the entire image.
+
+412
+00:20:23.222 --> 00:20:25.544
+So background size cover does work
+
+413
+00:20:25.544 --> 00:20:28.920
+with the ability to do spanning across, one to one,
+
+414
+00:20:28.920 --> 00:20:31.589
+but you do also need this 100%, 100%
+
+415
+00:20:31.589 --> 00:20:34.400
+in order for that to work properly.
+
+416
+00:20:34.400 --> 00:20:37.907
+Good, then the details, the item overlay,
+
+417
+00:20:37.907 --> 00:20:41.331
+let's grab that, so the item overlay.
+
+418
+00:20:41.331 --> 00:20:44.283
+And I'm just gonna say background red.
+
+419
+00:20:44.283 --> 00:20:47.827
+And you see that the item overlay is sort of
+
+420
+00:20:47.827 --> 00:20:52.148
+below the actual item, and we want it to overlap
+
+421
+00:20:52.148 --> 00:20:55.221
+on top of this image, so we're just gonna take this
+
+422
+00:20:55.221 --> 00:20:57.676
+grid column and grid row details
+
+423
+00:20:57.676 --> 00:21:00.104
+and put it on the item overlay as well.
+
+424
+00:21:00.104 --> 00:21:01.801
+And this is something we have not done
+
+425
+00:21:01.801 --> 00:21:04.194
+in our previous one, and that is the ability
+
+426
+00:21:04.194 --> 00:21:06.615
+to overlap items on top of each other
+
+427
+00:21:06.615 --> 00:21:10.552
+if you place them on the same row and column,
+
+428
+00:21:10.552 --> 00:21:12.382
+they will just overlap each other,
+
+429
+00:21:12.382 --> 00:21:14.335
+and then Z index comes into play,
+
+430
+00:21:14.335 --> 00:21:16.915
+and if i wanted this to ... I think I can do
+
+431
+00:21:16.915 --> 00:21:19.781
+position rel, Z index two,
+
+432
+00:21:19.781 --> 00:21:21.507
+and that would put the image on top,
+
+433
+00:21:21.507 --> 00:21:24.117
+but because of source hoarder in html,
+
+434
+00:21:24.117 --> 00:21:28.337
+the overlay is just fine, so the background red here.
+
+435
+00:21:28.337 --> 00:21:32.449
+Oh, gotta get rid of this position rel stuff,
+
+436
+00:21:32.449 --> 00:21:33.858
+that's why that didn't go away.
+
+437
+00:21:33.858 --> 00:21:35.785
+So we don't actually want background red.
+
+438
+00:21:35.785 --> 00:21:38.340
+I want my yellow, specific yellow, which is that,
+
+439
+00:21:38.340 --> 00:21:43.201
+and I'm going to put 32, which is 70% opaque.
+
+440
+00:21:43.201 --> 00:21:46.201
+This is RRGGBBAA, and that 32 is Hex
+
+441
+00:21:48.561 --> 00:21:50.947
+for 70% transparent.
+
+442
+00:21:50.947 --> 00:21:53.085
+Good, I'm happy with that,
+
+443
+00:21:53.085 --> 00:21:56.002
+let's do position relative on this.
+
+444
+00:21:57.133 --> 00:22:00.628
+And let's add a little bit of padding, 10 PX,
+
+445
+00:22:00.628 --> 00:22:04.406
+good, now I want to totally center this button
+
+446
+00:22:04.406 --> 00:22:06.487
+in the middle, so how can I center something
+
+447
+00:22:06.487 --> 00:22:07.481
+in the middle?
+
+448
+00:22:07.481 --> 00:22:09.204
+Actually we don't need this padding
+
+449
+00:22:09.204 --> 00:22:10.656
+because we're gonna center it,
+
+450
+00:22:10.656 --> 00:22:14.823
+so let's do display grid on the actual item there,
+
+451
+00:22:16.215 --> 00:22:19.524
+and you see by default, what is the align items
+
+452
+00:22:19.524 --> 00:22:20.692
+and justify item?
+
+453
+00:22:20.692 --> 00:22:22.232
+It's stretch.
+
+454
+00:22:22.232 --> 00:22:24.816
+So the entire thing ... this actually looks kind of cool.
+
+455
+00:22:24.816 --> 00:22:29.424
+The entire thing is a button now, which is crazy,
+
+456
+00:22:29.424 --> 00:22:31.234
+but we want it to just go in the middle, so
+
+457
+00:22:31.234 --> 00:22:35.151
+we say justify items, and that is the x axis
+
+458
+00:22:36.641 --> 00:22:38.593
+on the row, and we'll say center,
+
+459
+00:22:38.593 --> 00:22:41.531
+and that will put the button in the middle of each of them,
+
+460
+00:22:41.531 --> 00:22:45.031
+and align items, that is along the y axis,
+
+461
+00:22:46.222 --> 00:22:49.287
+that will center it perfectly for us, good.
+
+462
+00:22:49.287 --> 00:22:52.704
+Let's also just say item, overlay button,
+
+463
+00:22:54.111 --> 00:22:57.778
+I realize I'm mixing my Bem and my selector,
+
+464
+00:22:59.898 --> 00:23:00.893
+so forgive me.
+
+465
+00:23:00.893 --> 00:23:03.694
+Let's say background none,
+
+466
+00:23:03.694 --> 00:23:06.194
+border two pixels solid white,
+
+467
+00:23:07.745 --> 00:23:10.912
+color white, text transform uppercase,
+
+468
+00:23:16.022 --> 00:23:19.939
+background, let's do a little RGBA values here.
+
+469
+00:23:21.002 --> 00:23:25.849
+Looking pretty good, maybe a little padding on that.
+
+470
+00:23:25.849 --> 00:23:28.766
+Five pixels, cool, so we have that.
+
+471
+00:23:31.112 --> 00:23:33.369
+Now I also want to slide it down,
+
+472
+00:23:33.369 --> 00:23:36.442
+and the way that we can slide something totally
+
+473
+00:23:36.442 --> 00:23:39.942
+outside of the item is by using transform.
+
+474
+00:23:41.407 --> 00:23:43.789
+So we'll go back up to our overlay here,
+
+475
+00:23:43.789 --> 00:23:45.456
+we'll say transform,
+
+476
+00:23:47.711 --> 00:23:52.217
+translate y 100%, actually just do 50%,
+
+477
+00:23:52.217 --> 00:23:53.913
+so you can see what's actually happening here.
+
+478
+00:23:53.913 --> 00:23:56.186
+50% will bring it down, obviously halfway,
+
+479
+00:23:56.186 --> 00:24:00.353
+so 100% will bring it just off the actual item.
+
+480
+00:24:01.748 --> 00:24:05.665
+And then what we can do is say when the item is
+
+481
+00:24:07.307 --> 00:24:11.474
+hovered, then the item overlay is going to be a transform
+
+482
+00:24:14.433 --> 00:24:18.600
+of translate Y zero, we'll bring it back to where we are.
+
+483
+00:24:20.854 --> 00:24:21.859
+So now when I hover over top of it,
+
+484
+00:24:21.859 --> 00:24:23.234
+they automatically show up,
+
+485
+00:24:23.234 --> 00:24:25.861
+and if I would like, I can go up to my overlay
+
+486
+00:24:25.861 --> 00:24:27.368
+and put a transition
+
+487
+00:24:27.368 --> 00:24:31.368
+zero point five seconds, or something like that,
+
+488
+00:24:32.448 --> 00:24:35.384
+and that will animate it up, that's too slow.
+
+489
+00:24:35.384 --> 00:24:37.080
+Zero point two seconds.
+
+490
+00:24:37.080 --> 00:24:40.346
+Whoo, all right, we're in business now.
+
+491
+00:24:40.346 --> 00:24:43.830
+I think that's all the CSS we have for overlapping
+
+492
+00:24:43.830 --> 00:24:45.854
+and overlaying things on it.
+
+493
+00:24:45.854 --> 00:24:48.703
+Now let's go down to the script tags
+
+494
+00:24:48.703 --> 00:24:49.915
+and write a little bit of Javascript
+
+495
+00:24:49.915 --> 00:24:52.232
+so when somebody clicks one of these items,
+
+496
+00:24:52.232 --> 00:24:54.649
+we can then show the overlay.
+
+497
+00:24:56.037 --> 00:24:58.859
+So gonna go down here and the reason why I'm going to
+
+498
+00:24:58.859 --> 00:25:01.724
+select these elements after they've been created
+
+499
+00:25:01.724 --> 00:25:05.237
+is because otherwise, I have to get into event delegation,
+
+500
+00:25:05.237 --> 00:25:07.933
+and I've got videos on that in my Javascript 30,
+
+501
+00:25:07.933 --> 00:25:08.937
+but I'm not gonna do it here.
+
+502
+00:25:08.937 --> 00:25:11.053
+So I'll say const items is equal to document
+
+503
+00:25:11.053 --> 00:25:13.720
+dot query selector all dot item.
+
+504
+00:25:14.778 --> 00:25:16.971
+Then we'll take each of the items,
+
+505
+00:25:16.971 --> 00:25:19.595
+and we'll loop over it, and we'll say
+
+506
+00:25:19.595 --> 00:25:23.333
+for each item, item dot add event listener,
+
+507
+00:25:23.333 --> 00:25:24.831
+we're gonna listen for a click,
+
+508
+00:25:24.831 --> 00:25:27.127
+and then when that happens, we're going to handle
+
+509
+00:25:27.127 --> 00:25:29.184
+the click, so we need to make a function
+
+510
+00:25:29.184 --> 00:25:30.409
+called handle click.
+
+511
+00:25:30.409 --> 00:25:31.776
+Let's do that up here.
+
+512
+00:25:31.776 --> 00:25:34.456
+Function handle click, takes in the event
+
+513
+00:25:34.456 --> 00:25:38.623
+and let's just console log the event dot current target.
+
+514
+00:25:40.362 --> 00:25:44.637
+So open up dev tools here, go to our console,
+
+515
+00:25:44.637 --> 00:25:46.649
+and now when you click on an item,
+
+516
+00:25:46.649 --> 00:25:49.946
+we'll see that specific item that we have.
+
+517
+00:25:49.946 --> 00:25:52.870
+Now inside of that, we need a couple things.
+
+518
+00:25:52.870 --> 00:25:55.978
+First we need the actual source of the image,
+
+519
+00:25:55.978 --> 00:25:57.930
+so if we click on the item,
+
+520
+00:25:57.930 --> 00:25:59.785
+we want the image one dot jpeg,
+
+521
+00:25:59.785 --> 00:26:04.036
+so in here, we'll say const SRC is equal to E
+
+522
+00:26:04.036 --> 00:26:07.574
+dot current target dot query selector,
+
+523
+00:26:07.574 --> 00:26:10.385
+we'll look inside of that for the image tag,
+
+524
+00:26:10.385 --> 00:26:12.307
+and then we'll grab the source attribute right
+
+525
+00:26:12.307 --> 00:26:14.244
+off of that image tag, so
+
+526
+00:26:14.244 --> 00:26:16.100
+we have the image, we look for the image ...
+
+527
+00:26:16.100 --> 00:26:17.460
+Sorry, we have the item,
+
+528
+00:26:17.460 --> 00:26:20.306
+we look for the image tag, and then we grab the
+
+529
+00:26:20.306 --> 00:26:22.275
+source attribute right off of that,
+
+530
+00:26:22.275 --> 00:26:24.816
+and I can console log the source now.
+
+531
+00:26:24.816 --> 00:26:26.483
+Top of that, so see.
+
+532
+00:26:29.398 --> 00:26:32.958
+Beautiful, I'm getting all of my jpegs,
+
+533
+00:26:32.958 --> 00:26:35.708
+now we can take our overlay image
+
+534
+00:26:37.052 --> 00:26:38.991
+and set the source of that to be
+
+535
+00:26:38.991 --> 00:26:40.930
+the source that we just pulled, and
+
+536
+00:26:40.930 --> 00:26:41.985
+what is the overlay image?
+
+537
+00:26:41.985 --> 00:26:43.859
+That is, we scroll to the top here,
+
+538
+00:26:43.859 --> 00:26:47.662
+that is this empty image that currently
+
+539
+00:26:47.662 --> 00:26:52.275
+does not have a source, but will also be showing it.
+
+540
+00:26:52.275 --> 00:26:54.066
+Good, I'm happy with that.
+
+541
+00:26:54.066 --> 00:26:56.175
+Now the last thing we wanna do is
+
+542
+00:26:56.175 --> 00:27:00.030
+have the ability to open the entire overlay.
+
+543
+00:27:00.030 --> 00:27:04.081
+And you'll see that if the overlay has a class of open,
+
+544
+00:27:04.081 --> 00:27:06.602
+it is display gridded.
+
+545
+00:27:06.602 --> 00:27:09.681
+Otherwise, it is display none-d.
+
+546
+00:27:09.681 --> 00:27:11.168
+That's what I've done here.
+
+547
+00:27:11.168 --> 00:27:14.918
+So we will make another function called open.
+
+548
+00:27:16.872 --> 00:27:20.254
+And in that function it'll just say overlay dot class list
+
+549
+00:27:20.254 --> 00:27:21.421
+dot add, open.
+
+550
+00:27:23.988 --> 00:27:26.696
+And we'll make a function called close,
+
+551
+00:27:26.696 --> 00:27:29.335
+which will do the opposite of this.
+
+552
+00:27:29.335 --> 00:27:32.585
+Good, then inside of this handle click,
+
+553
+00:27:33.819 --> 00:27:36.069
+we'll just simply say open,
+
+554
+00:27:36.980 --> 00:27:39.559
+actually, we don't need an entire open function for this.
+
+555
+00:27:39.559 --> 00:27:42.400
+Let's just put this in here, good.
+
+556
+00:27:42.400 --> 00:27:44.233
+Then, when I click it,
+
+557
+00:27:45.209 --> 00:27:46.934
+whoa, looking good-ish.
+
+558
+00:27:46.934 --> 00:27:49.287
+So that did pop it up for us.
+
+559
+00:27:49.287 --> 00:27:51.617
+Seems like that image is a little bit big.
+
+560
+00:27:51.617 --> 00:27:53.770
+The close button doesn't work, so let's wire up
+
+561
+00:27:53.770 --> 00:27:55.664
+that close button first, and we'll figure out
+
+562
+00:27:55.664 --> 00:27:57.652
+what's going on with the CSS here.
+
+563
+00:27:57.652 --> 00:28:01.819
+So we'll say overlay close dot add event listener,
+
+564
+00:28:02.822 --> 00:28:05.128
+click, and when someone clicks it, we're gonna
+
+565
+00:28:05.128 --> 00:28:06.355
+run the close function.
+
+566
+00:28:06.355 --> 00:28:10.272
+Open it up, click the close, nope, not working.
+
+567
+00:28:11.744 --> 00:28:12.942
+Any errors?
+
+568
+00:28:12.942 --> 00:28:16.918
+Go to our console, class list dot close.
+
+569
+00:28:16.918 --> 00:28:18.501
+What am I doing?
+
+570
+00:28:18.501 --> 00:28:19.621
+Do I even know?
+
+571
+00:28:19.621 --> 00:28:21.941
+Remove, you're probably screaming at me.
+
+572
+00:28:21.941 --> 00:28:22.984
+There we go, open it up,
+
+573
+00:28:22.984 --> 00:28:26.068
+close works just beautifully.
+
+574
+00:28:26.068 --> 00:28:27.734
+You can also hook that function up to run
+
+575
+00:28:27.734 --> 00:28:30.171
+when somebody hits the escape key.
+
+576
+00:28:30.171 --> 00:28:32.835
+We've done that a couple times in my Javascript 30.
+
+577
+00:28:32.835 --> 00:28:35.678
+So view that, good, and let's just take a quick look at
+
+578
+00:28:35.678 --> 00:28:38.511
+what's going on with this overlay.
+
+579
+00:28:40.467 --> 00:28:43.177
+Over, overlay inner ...
+
+580
+00:28:43.177 --> 00:28:45.510
+Let's take a look at my CSS.
+
+581
+00:28:46.514 --> 00:28:48.640
+Oh, it's 'cause I had a figure.
+
+582
+00:28:48.640 --> 00:28:52.223
+Gonna change this to overlay inner instead.
+
+583
+00:28:59.201 --> 00:29:02.631
+Beautiful, one other thing is it's actually not centered
+
+584
+00:29:02.631 --> 00:29:06.348
+here, so what we can do is go back to our overlay
+
+585
+00:29:06.348 --> 00:29:08.598
+and go say when it is open,
+
+586
+00:29:11.999 --> 00:29:14.221
+we're gonna display grid, and then we're just gonna say
+
+587
+00:29:14.221 --> 00:29:17.971
+align items center, and justify items center.
+
+588
+00:29:19.453 --> 00:29:20.794
+You see how we do that quite a bit?
+
+589
+00:29:20.794 --> 00:29:23.289
+Open it up, whoo, look at that, beautiful.
+
+590
+00:29:23.289 --> 00:29:25.840
+I can't see the close button anymore, so
+
+591
+00:29:25.840 --> 00:29:30.007
+go up to our dot close selector and color should be black.
+
+592
+00:29:34.943 --> 00:29:38.433
+View, beautiful, looking good to me.
+
+593
+00:29:38.433 --> 00:29:39.775
+I'm a big fan of that.
+
+594
+00:29:39.775 --> 00:29:43.192
+Cool, so that is our very simple CSS grid
+
+595
+00:29:44.317 --> 00:29:46.538
+image gallery using object fit dense.
+
+596
+00:29:46.538 --> 00:29:47.950
+Hopefully you learned a few things.
+
+597
+00:29:47.950 --> 00:29:50.677
+I especially liked the overlapping part.
+
+598
+00:29:50.677 --> 00:29:53.210
+I use that a lot with CSS Grid to overlap items
+
+599
+00:29:53.210 --> 00:29:54.537
+on top of it.
+
+600
+00:29:54.537 --> 00:29:57.787
+Good job, I'll see you in the next one.
+
