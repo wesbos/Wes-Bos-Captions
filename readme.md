@@ -10,6 +10,8 @@ This is a Github Repo containing all the captions for my video courses. Edits ar
 
 `NODE` → [Learn Node](https://LearnNode.com)
 
+`GRID` → [CSS Grid.io](https://CSSGrid.io)
+
 
 ## Translations
 Translations are welcome - just append the language code to the file name. Example: 
