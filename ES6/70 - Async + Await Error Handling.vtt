@@ -1,0 +1,1031 @@
+﻿WEBVTT
+
+1
+00:00:00.535 --> 00:00:02.631 line:15% 
+(bright instrumental music)
+
+2
+00:00:02.631 --> 00:00:04.061
+<v Wes>Error handling for async/await</v>
+
+3
+00:00:04.061 --> 00:00:05.347
+is actually very simple,
+
+4
+00:00:05.347 --> 00:00:07.560
+although it doesn't look as nice in your code,
+
+5
+00:00:07.560 --> 00:00:11.142
+which leads some people to not be all that excited about it.
+
+6
+00:00:11.142 --> 00:00:13.323
+So, the way that it works is you simply just take
+
+7
+00:00:13.323 --> 00:00:15.660
+all or one of your Await functions,
+
+8
+00:00:15.660 --> 00:00:17.676
+anything that needs to be awaited,
+
+9
+00:00:17.676 --> 00:00:20.451
+and you wrap the entire thing in a try-catch block.
+
+10
+00:00:20.451 --> 00:00:22.697
+So essentially, we say try,
+
+11
+00:00:22.697 --> 00:00:24.364
+do all of this code,
+
+12
+00:00:27.723 --> 00:00:29.918
+and if anything happens,
+
+13
+00:00:29.918 --> 00:00:30.751
+don't worry.
+
+14
+00:00:30.751 --> 00:00:32.581
+We're sort of like sandboxed in the confines
+
+15
+00:00:32.581 --> 00:00:34.435
+of these curly brackets here.
+
+16
+00:00:34.435 --> 00:00:36.685
+So we will catch the error.
+
+17
+00:00:38.091 --> 00:00:38.953
+And then in here,
+
+18
+00:00:38.953 --> 00:00:43.120
+we can just do console.error('Ohhhh nooo!!!'),
+
+19
+00:00:44.381 --> 00:00:48.464
+and console.error, the actual error that we have.
+
+20
+00:00:50.088 --> 00:00:50.921
+So there we go.
+
+21
+00:00:50.921 --> 00:00:52.306
+Start, Ohhhh nooo!!!
+
+22
+00:00:52.306 --> 00:00:53.618
+That value was too small.
+
+23
+00:00:53.618 --> 00:00:54.451
+And then at that point,
+
+24
+00:00:54.451 --> 00:00:57.575
+we'd be able to show our user our actual values.
+
+25
+00:00:57.575 --> 00:00:59.968
+There is a bit more of a complicated way
+
+26
+00:00:59.968 --> 00:01:00.981
+that we can do it
+
+27
+00:01:00.981 --> 00:01:03.517
+by using something called a high-order function.
+
+28
+00:01:03.517 --> 00:01:04.778
+So let me just explain to you
+
+29
+00:01:04.778 --> 00:01:08.126
+where I stumbled upon this more advanced function,
+
+30
+00:01:08.126 --> 00:01:09.260
+and it was in my Node course.
+
+31
+00:01:09.260 --> 00:01:11.167
+So in my Node course, we do things often
+
+32
+00:01:11.167 --> 00:01:14.784
+where we put our routes into variables.
+
+33
+00:01:14.784 --> 00:01:18.546
+So we'll say like const userPage =, and then we'll have
+
+34
+00:01:18.546 --> 00:01:23.369
+our router.get, and when somebody visits the userPage,
+
+35
+00:01:23.369 --> 00:01:27.536
+we're going to run a function that has a request object
+
+36
+00:01:28.593 --> 00:01:30.374
+with information about the data coming in.
+
+37
+00:01:30.374 --> 00:01:31.597
+We have a response object,
+
+38
+00:01:31.597 --> 00:01:34.585
+which is the information going back to the browser
+
+39
+00:01:34.585 --> 00:01:37.029
+or to the actual thing that requested it,
+
+40
+00:01:37.029 --> 00:01:38.906
+and then we have a function called next,
+
+41
+00:01:38.906 --> 00:01:43.491
+which will allow us to skip on over to the next route
+
+42
+00:01:43.491 --> 00:01:44.324
+that is in the thing,
+
+43
+00:01:44.324 --> 00:01:47.504
+or eventually it will trickle down into our error page.
+
+44
+00:01:47.504 --> 00:01:48.854
+Now, that was really handy,
+
+45
+00:01:48.854 --> 00:01:52.252
+because what we needed to do is do a database lookup
+
+46
+00:01:52.252 --> 00:01:55.355
+where we'd see something like const users =,
+
+47
+00:01:55.355 --> 00:01:58.337
+we'll take our user model, and we would like find them all,
+
+48
+00:01:58.337 --> 00:02:01.545
+or find them all where the email is equal to wesbos,
+
+49
+00:02:01.545 --> 00:02:02.684
+or something like that, right?
+
+50
+00:02:02.684 --> 00:02:05.004
+So, let's say for example this would return,
+
+51
+00:02:05.004 --> 00:02:06.939
+like, 10 users.
+
+52
+00:02:06.939 --> 00:02:10.500
+The problem here is that this User.find was promisified.
+
+53
+00:02:10.500 --> 00:02:11.333
+So that's pretty simple.
+
+54
+00:02:11.333 --> 00:02:13.143
+We can just type await in front of it
+
+55
+00:02:13.143 --> 00:02:16.352
+and then make this callback function here async.
+
+56
+00:02:16.352 --> 00:02:19.444
+And then we would wait for the database to come back
+
+57
+00:02:19.444 --> 00:02:20.745
+with all of its information
+
+58
+00:02:20.745 --> 00:02:22.486
+and put it into our users variable.
+
+59
+00:02:22.486 --> 00:02:25.204
+That is a perfect user of async/await,
+
+60
+00:02:25.204 --> 00:02:26.506
+because there's no callbacks.
+
+61
+00:02:26.506 --> 00:02:29.922
+There are multilevels of functions using there.
+
+62
+00:02:29.922 --> 00:02:33.561
+The downside is that if anything were to ever go awry
+
+63
+00:02:33.561 --> 00:02:35.395
+with our database lookup,
+
+64
+00:02:35.395 --> 00:02:37.408
+where maybe the database is connected,
+
+65
+00:02:37.408 --> 00:02:39.130
+or we had a syntax error,
+
+66
+00:02:39.130 --> 00:02:41.599
+or anything that were to go wrong here,
+
+67
+00:02:41.599 --> 00:02:42.432
+the whole thing would break,
+
+68
+00:02:42.432 --> 00:02:44.139
+and eventually what's gonna happen
+
+69
+00:02:44.139 --> 00:02:46.317
+is your node process is just gonna exit.
+
+70
+00:02:46.317 --> 00:02:50.484
+So you do need to wrap this entire thing in a try,
+
+71
+00:02:52.417 --> 00:02:55.602
+and then you would catch the actual error,
+
+72
+00:02:55.602 --> 00:02:56.435
+and then in here,
+
+73
+00:02:56.435 --> 00:03:00.451
+you would say res.render out the error page.
+
+74
+00:03:00.451 --> 00:03:03.724
+But the thing here is that this error page,
+
+75
+00:03:03.724 --> 00:03:06.026
+we would need to do this for every single route.
+
+76
+00:03:06.026 --> 00:03:08.586
+And if you have 30, 40 pages on your website,
+
+77
+00:03:08.586 --> 00:03:10.621
+try-catching and rendering out the error page
+
+78
+00:03:10.621 --> 00:03:14.223
+for every single one is not exactly ideal.
+
+79
+00:03:14.223 --> 00:03:16.048
+So, what we can do is actually use a concept
+
+80
+00:03:16.048 --> 00:03:17.803
+called a high-order function,
+
+81
+00:03:17.803 --> 00:03:18.636
+which will allow us
+
+82
+00:03:18.636 --> 00:03:22.413
+to sort of wrap this userPage function that we made here
+
+83
+00:03:22.413 --> 00:03:25.263
+in another function that will act
+
+84
+00:03:25.263 --> 00:03:27.091
+as sort of a catch-all for all of 'em.
+
+85
+00:03:27.091 --> 00:03:29.929
+So, let's take a look at how that works right now.
+
+86
+00:03:29.929 --> 00:03:31.402
+So, obviously, we don't need this code here.
+
+87
+00:03:31.402 --> 00:03:32.325
+That was just an example.
+
+88
+00:03:32.325 --> 00:03:33.400
+So go ahead and delete it.
+
+89
+00:03:33.400 --> 00:03:36.197
+And then I also you want you to delete the catch
+
+90
+00:03:36.197 --> 00:03:38.227
+along with the console.errors
+
+91
+00:03:38.227 --> 00:03:41.035
+and the try in our sync function.
+
+92
+00:03:41.035 --> 00:03:42.867
+So we are just running an async function
+
+93
+00:03:42.867 --> 00:03:46.167
+with await inside of it, no try-catch to save us
+
+94
+00:03:46.167 --> 00:03:47.895
+for when this actually errors.
+
+95
+00:03:47.895 --> 00:03:48.803
+And let's just double-check
+
+96
+00:03:48.803 --> 00:03:50.824
+that we're gonna get our uncaught in Promise.
+
+97
+00:03:50.824 --> 00:03:51.657
+Good.
+
+98
+00:03:51.657 --> 00:03:53.193
+Then what we can do is we can make
+
+99
+00:03:53.193 --> 00:03:55.554
+what's called a high-order function
+
+100
+00:03:55.554 --> 00:03:58.107
+that's going to wrap this function ourselves.
+
+101
+00:03:58.107 --> 00:04:01.637
+And you can do some more research into what this is,
+
+102
+00:04:01.637 --> 00:04:03.378
+but essentially what a high-order function is
+
+103
+00:04:03.378 --> 00:04:06.545
+is a function that takes in a function
+
+104
+00:04:07.795 --> 00:04:12.586
+as an argument and returns a new function to yourself.
+
+105
+00:04:12.586 --> 00:04:15.730
+So, it's sort of like a little function factory
+
+106
+00:04:15.730 --> 00:04:17.183
+that takes in a function,
+
+107
+00:04:17.183 --> 00:04:20.077
+adds a little bit of its own sparkle on top,
+
+108
+00:04:20.077 --> 00:04:23.100
+and then returns to you a brand-new function.
+
+109
+00:04:23.100 --> 00:04:25.007
+So let's go right here,
+
+110
+00:04:25.007 --> 00:04:26.946
+and we're going to make a function
+
+111
+00:04:26.946 --> 00:04:28.529
+called catchErrors,
+
+112
+00:04:29.421 --> 00:04:31.560
+and that is going to take in a function,
+
+113
+00:04:31.560 --> 00:04:32.766
+we'll call it fn.
+
+114
+00:04:32.766 --> 00:04:33.599
+Now from that,
+
+115
+00:04:33.599 --> 00:04:35.409
+we're actually going to be returning a function.
+
+116
+00:04:35.409 --> 00:04:36.699
+But let me stop real quick.
+
+117
+00:04:36.699 --> 00:04:38.589
+This fn that's getting passed in,
+
+118
+00:04:38.589 --> 00:04:40.016
+that's gonna be any function.
+
+119
+00:04:40.016 --> 00:04:44.244
+You know when I have like an array of items,
+
+120
+00:04:44.244 --> 00:04:45.933
+and you call .map,
+
+121
+00:04:45.933 --> 00:04:48.255
+and what is the argument that you give to map?
+
+122
+00:04:48.255 --> 00:04:50.576
+Well, you give it a function,
+
+123
+00:04:50.576 --> 00:04:52.246
+or maybe you have like a little arrow function.
+
+124
+00:04:52.246 --> 00:04:54.475
+Whether it's an arrow function or a regular function,
+
+125
+00:04:54.475 --> 00:04:56.792
+it doesn't matter, but that is to say
+
+126
+00:04:56.792 --> 00:05:01.440
+that the argument for map is in itself a function.
+
+127
+00:05:01.440 --> 00:05:03.671
+And often, people are very comfortable using these map
+
+128
+00:05:03.671 --> 00:05:06.312
+things no problem and passing the argument to a function,
+
+129
+00:05:06.312 --> 00:05:08.650
+but when you're on the other side
+
+130
+00:05:08.650 --> 00:05:11.112
+actually creating a function that takes in a function
+
+131
+00:05:11.112 --> 00:05:14.094
+as an argument, it can get a little bit wishy-washy.
+
+132
+00:05:14.094 --> 00:05:15.151
+So stick with me here.
+
+133
+00:05:15.151 --> 00:05:16.010
+Don't worry if this doesn't
+
+134
+00:05:16.010 --> 00:05:18.315
+totally make sense right off the bat.
+
+135
+00:05:18.315 --> 00:05:22.236
+It will definitely comes to you after a couple go's over it.
+
+136
+00:05:22.236 --> 00:05:23.636
+So, we're taking in a function,
+
+137
+00:05:23.636 --> 00:05:27.243
+and then we're going to immediately just return
+
+138
+00:05:27.243 --> 00:05:28.493
+a new function,
+
+139
+00:05:30.018 --> 00:05:35.006
+and let's just like, console.log the actual function
+
+140
+00:05:35.006 --> 00:05:35.839
+that came in.
+
+141
+00:05:35.839 --> 00:05:38.064
+So, and then the way that this is going to work
+
+142
+00:05:38.064 --> 00:05:40.891
+is we're not going to run go directly right here.
+
+143
+00:05:40.891 --> 00:05:43.244
+What we're going to do is make a wrapped function.
+
+144
+00:05:43.244 --> 00:05:47.411
+So let's say const wrappedFunction = catchErrors,
+
+145
+00:05:49.250 --> 00:05:50.213
+and then we're gonna pass it
+
+146
+00:05:50.213 --> 00:05:51.981
+the name of the function that we wanna run.
+
+147
+00:05:51.981 --> 00:05:53.225
+So, go.
+
+148
+00:05:53.225 --> 00:05:55.900
+Now we have this new function called wrappedFunction.
+
+149
+00:05:55.900 --> 00:05:57.190
+Let me show you.
+
+150
+00:05:57.190 --> 00:05:58.318
+Nothing is there,
+
+151
+00:05:58.318 --> 00:06:01.401
+but if I looked at my wrappedFunction
+
+152
+00:06:02.760 --> 00:06:04.044
+here, you'll see that this
+
+153
+00:06:04.044 --> 00:06:06.469
+is just a function that console logs it.
+
+154
+00:06:06.469 --> 00:06:08.732
+It's a pretty standard little function.
+
+155
+00:06:08.732 --> 00:06:11.490
+But if I were to run that,
+
+156
+00:06:11.490 --> 00:06:14.571
+then we still don't run our same function,
+
+157
+00:06:14.571 --> 00:06:17.014
+but we actually see that the function
+
+158
+00:06:17.014 --> 00:06:19.136
+is then being passed in.
+
+159
+00:06:19.136 --> 00:06:22.129
+Now, here is where the magic comes in.
+
+160
+00:06:22.129 --> 00:06:24.880
+From that, we are going to return
+
+161
+00:06:24.880 --> 00:06:27.866
+the actual function itself, but we're gonna run it.
+
+162
+00:06:27.866 --> 00:06:32.245
+So again, at this point, fn is really our go function.
+
+163
+00:06:32.245 --> 00:06:33.641
+So we're kind of returning go,
+
+164
+00:06:33.641 --> 00:06:35.574
+but we're making this nice and flexible
+
+165
+00:06:35.574 --> 00:06:37.519
+so you can pass in any function.
+
+166
+00:06:37.519 --> 00:06:41.725
+And then we're going to tack on the .catch onto the end,
+
+167
+00:06:41.725 --> 00:06:45.182
+because this is Promise's after all,
+
+168
+00:06:45.182 --> 00:06:48.422
+so you can always just tack on a .catch on the end
+
+169
+00:06:48.422 --> 00:06:52.261
+and then inside of there, you could either pass that off
+
+170
+00:06:52.261 --> 00:06:55.365
+to an external, like, handleErrors function,
+
+171
+00:06:55.365 --> 00:06:57.500
+or you could handle the error right then and there.
+
+172
+00:06:57.500 --> 00:06:58.718
+So let's just do that real quick.
+
+173
+00:06:58.718 --> 00:07:01.023
+We get the error, and then let's just
+
+174
+00:07:01.023 --> 00:07:05.190
+console.error('Ohhhh nooo!!!!!'),
+
+175
+00:07:07.570 --> 00:07:10.487
+and console.error the actual error.
+
+176
+00:07:12.598 --> 00:07:15.361
+So we have a function that returns a function
+
+177
+00:07:15.361 --> 00:07:18.111
+that returns a function that runs
+
+178
+00:07:19.146 --> 00:07:20.832
+but with a catch on the end.
+
+179
+00:07:20.832 --> 00:07:23.261
+So all this function is doing is running it
+
+180
+00:07:23.261 --> 00:07:26.518
+and tacking on a catch to catch any errors that we have.
+
+181
+00:07:26.518 --> 00:07:28.964
+Now we have this wrappedFunction down here,
+
+182
+00:07:28.964 --> 00:07:31.496
+and if we were to run that wrappedFunction
+
+183
+00:07:31.496 --> 00:07:33.019
+at the end of the day, we're running go.
+
+184
+00:07:33.019 --> 00:07:37.179
+We're sort of like taking go, wrapping it in catchErrors,
+
+185
+00:07:37.179 --> 00:07:40.540
+sprinkling a little bit of extra something something on top
+
+186
+00:07:40.540 --> 00:07:41.460
+with catchErrors,
+
+187
+00:07:41.460 --> 00:07:45.422
+and then that gives us a brand-new wrappedFunction function.
+
+188
+00:07:45.422 --> 00:07:47.834
+So now, when we refresh, there we go.
+
+189
+00:07:47.834 --> 00:07:50.478
+We hit our first error, which is under 500,
+
+190
+00:07:50.478 --> 00:07:52.123
+and then we get our Ohhhh nooo!!!!!
+
+191
+00:07:52.123 --> 00:07:54.060
+That is too small of a value,
+
+192
+00:07:54.060 --> 00:07:56.167
+because we've wrapped it in this value.
+
+193
+00:07:56.167 --> 00:07:58.912
+So one other question I get fairly often
+
+194
+00:07:58.912 --> 00:08:02.682
+is like, that's great, but what if my go function
+
+195
+00:08:02.682 --> 00:08:05.341
+took an argument, like name,
+
+196
+00:08:05.341 --> 00:08:08.216
+and then we were gonna like, maybe like,
+
+197
+00:08:08.216 --> 00:08:11.870
+starting for, and we'll put the person's name,
+
+198
+00:08:11.870 --> 00:08:13.787
+right, inside of there?
+
+199
+00:08:14.754 --> 00:08:16.267
+Well, how does that work?
+
+200
+00:08:16.267 --> 00:08:20.538
+Well, again, you can just pass wrappedFunction('Wes'),
+
+201
+00:08:20.538 --> 00:08:23.179
+and when we rerun this, it's not gonna work, but watch.
+
+202
+00:08:23.179 --> 00:08:25.178
+Starting for undefined,
+
+203
+00:08:25.178 --> 00:08:28.966
+so, how does, how do we get the arguments
+
+204
+00:08:28.966 --> 00:08:31.522
+to pass themselves through?
+
+205
+00:08:31.522 --> 00:08:35.118
+Well, what we can do is we can take name in here
+
+206
+00:08:35.118 --> 00:08:36.859
+and then pass the name here.
+
+207
+00:08:36.859 --> 00:08:38.605
+That'll work, right?
+
+208
+00:08:38.605 --> 00:08:39.873
+STarting for Wes!!!
+It works good,
+
+209
+00:08:39.873 --> 00:08:42.137
+but like, that's not very flexible,
+
+210
+00:08:42.137 --> 00:08:46.615
+because how do we know how many arguments are coming
+
+211
+00:08:46.615 --> 00:08:49.458
+and what the names of the arguments and parameters are?
+
+212
+00:08:49.458 --> 00:08:50.291
+So what we can do,
+
+213
+00:08:50.291 --> 00:08:54.291
+look back to our ES6 rest and spread parameters,
+
+214
+00:08:55.479 --> 00:08:58.396
+is we can use a rest here, ...args,
+
+215
+00:09:00.783 --> 00:09:04.237
+to capture all the arguments into an array,
+
+216
+00:09:04.237 --> 00:09:08.449
+and then we can use our spread ...args to spread
+
+217
+00:09:08.449 --> 00:09:12.137
+all those arguments immediately back into that function.
+
+218
+00:09:12.137 --> 00:09:14.515
+So give it a save, refresh.
+
+219
+00:09:14.515 --> 00:09:15.544
+STarting for Wes!!!
+
+220
+00:09:15.544 --> 00:09:16.945
+Good, it works no problem,
+
+221
+00:09:16.945 --> 00:09:20.730
+and if I were to add like a, like a last name variable
+
+222
+00:09:20.730 --> 00:09:23.791
+where we were to put the person's last name in there
+
+223
+00:09:23.791 --> 00:09:26.874
+as well, and I were to pass Bos here,
+
+224
+00:09:27.898 --> 00:09:28.856
+it should just work
+
+225
+00:09:28.856 --> 00:09:32.895
+without having to modify our catchErrors function.
+
+226
+00:09:32.895 --> 00:09:35.159
+Beautiful, STarting for Wes Bos!!!
+
+227
+00:09:35.159 --> 00:09:37.142
+So, give that a couple times over.
+
+228
+00:09:37.142 --> 00:09:40.889
+Maybe give it a bit of a read through a few times.
+
+229
+00:09:40.889 --> 00:09:45.007
+But this catchErrors is going to be really handy.
+
+230
+00:09:45.007 --> 00:09:48.230
+That said, it shouldn't be used absolutely all the time,
+
+231
+00:09:48.230 --> 00:09:51.515
+because in many cases, you do wanna catch the error
+
+232
+00:09:51.515 --> 00:09:52.835
+right inside of your function
+
+233
+00:09:52.835 --> 00:09:55.263
+because you specifically know how to handle it.
+
+234
+00:09:55.263 --> 00:09:57.924
+If you are catching a form validation error,
+
+235
+00:09:57.924 --> 00:09:59.797
+you'll wanna handle that differently
+
+236
+00:09:59.797 --> 00:10:02.827
+than when you're encountering any type
+
+237
+00:10:02.827 --> 00:10:05.128
+of like a timer error or any other error
+
+238
+00:10:05.128 --> 00:10:07.202
+that's going to encounter on your website.
+
+239
+00:10:07.202 --> 00:10:10.834
+So, this is great for a use case where you're handling
+
+240
+00:10:10.834 --> 00:10:12.940
+all the errors in a similar way
+
+241
+00:10:12.940 --> 00:10:15.237
+and you don't wanna have to write a try-catch
+
+242
+00:10:15.237 --> 00:10:16.984
+for every single one,
+
+243
+00:10:16.984 --> 00:10:19.404
+exactly how we've done it in the Learn Node.
+
+244
+00:10:19.404 --> 00:10:21.128
+We've got lots of different URLs,
+
+245
+00:10:21.128 --> 00:10:23.394
+and if any URL breaks,
+
+246
+00:10:23.394 --> 00:10:26.118
+then we immediately will do the exact same thing
+
+247
+00:10:26.118 --> 00:10:26.951
+for each of 'em.
+
+248
+00:10:26.951 --> 00:10:28.721
+We will render out the error page
+
+249
+00:10:28.721 --> 00:10:30.327
+and show them the actual error.
+
+250
+00:10:30.327 --> 00:10:32.576
+However, in some other use cases,
+
+251
+00:10:32.576 --> 00:10:34.267
+we wanna have a custom error.
+
+252
+00:10:34.267 --> 00:10:35.716
+And if that's the case,
+
+253
+00:10:35.716 --> 00:10:38.038
+then we will catch it ourselves
+
+254
+00:10:38.038 --> 00:10:39.334
+and deal with it directly.
+
+255
+00:10:39.334 --> 00:10:41.283
+So, hopefully that helps you a little bit.
+
+256
+00:10:41.283 --> 00:10:42.739
+I know this stuff's a little bit hairy,
+
+257
+00:10:42.739 --> 00:10:45.103
+but I'll see you in the next video.
+

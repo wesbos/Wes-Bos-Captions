@@ -1,0 +1,710 @@
+﻿WEBVTT
+
+1
+00:00:03.073 --> 00:00:05.403
+<v Instructor>Alright, let's do a quick review of Promises.</v>
+
+2
+00:00:05.403 --> 00:00:07.647
+I know we went through Promises in some earlier videos
+
+3
+00:00:07.647 --> 00:00:09.168
+but if you're just checking out these videos
+
+4
+00:00:09.168 --> 00:00:11.046
+because they're updated for async/await,
+
+5
+00:00:11.046 --> 00:00:12.296
+we're going to do a quick review and
+
+6
+00:00:12.296 --> 00:00:14.055
+it's also going to set the stage for us
+
+7
+00:00:14.055 --> 00:00:17.498
+refactoring some Promise code into async/await
+
+8
+00:00:17.498 --> 00:00:19.717
+so first we're going to start off with some native Promises,
+
+9
+00:00:19.717 --> 00:00:21.168
+things that are built into the browser
+
+10
+00:00:21.168 --> 00:00:22.280
+then we're going to look at building
+
+11
+00:00:22.280 --> 00:00:24.720
+some of our own Promise based functions.
+
+12
+00:00:24.720 --> 00:00:27.825
+Now, a lot of the browser APIs that are coming out
+
+13
+00:00:27.825 --> 00:00:30.928
+that are new, they are all Promise based,
+
+14
+00:00:30.928 --> 00:00:32.789
+meaning that you don't have to have a success
+
+15
+00:00:32.789 --> 00:00:34.124
+in error call back anymore.
+
+16
+00:00:34.124 --> 00:00:37.157
+They all return a Promise and we use either
+
+17
+00:00:37.157 --> 00:00:40.754
+then then then catch or async/await try-catch,
+
+18
+00:00:40.754 --> 00:00:42.291
+to be able to deal with them.
+
+19
+00:00:42.291 --> 00:00:45.514
+So, let's start off with the fetch APIs,
+
+20
+00:00:45.514 --> 00:00:48.717
+probably the, not the first but one of the most popular APIs
+
+21
+00:00:48.717 --> 00:00:51.566
+that have come along for completing AJAX request.
+
+22
+00:00:51.566 --> 00:00:53.810
+So we're gonna take fetch and we're gonna go
+
+23
+00:00:53.810 --> 00:00:56.069
+to github an grab my github info so,
+
+24
+00:00:56.069 --> 00:01:00.236
+https://api.github.com/users/wesbos.
+
+25
+00:01:03.701 --> 00:01:06.863
+That's gonna go ahead and fetch the data that we have there.
+
+26
+00:01:06.863 --> 00:01:09.202
+Now, if we were to do this, like,
+
+27
+00:01:09.202 --> 00:01:12.047
+cons response equal to that, and then we were to
+
+28
+00:01:12.047 --> 00:01:14.886
+console.log that response, what are we gonna get?
+
+29
+00:01:14.886 --> 00:01:16.246
+Let's take a look.
+
+30
+00:01:16.246 --> 00:01:18.831
+We get the Promise, so this is not the actual data,
+
+31
+00:01:18.831 --> 00:01:20.410
+this is just a promise that the data
+
+32
+00:01:20.410 --> 00:01:22.296
+will come back eventually,
+
+33
+00:01:22.296 --> 00:01:26.149
+so in order for us to actually transform this Promise
+
+34
+00:01:26.149 --> 00:01:28.523
+or listen for when the data comes back
+
+35
+00:01:28.523 --> 00:01:31.196
+we need to attach a dot then not to the end.
+
+36
+00:01:31.196 --> 00:01:34.165
+So I'm gonna get rid of this console.log here,
+
+37
+00:01:34.165 --> 00:01:35.976
+get rid of this, and then we're just gonna tack on
+
+38
+00:01:35.976 --> 00:01:38.664
+a dot then, and that's going to give us a response,
+
+39
+00:01:38.664 --> 00:01:40.833
+I'm gonna use a little arrow function here,
+
+40
+00:01:40.833 --> 00:01:44.566
+and we can just console.log the response.
+
+41
+00:01:44.566 --> 00:01:47.566
+So let's give that a, whoa, console!
+
+42
+00:01:50.495 --> 00:01:52.023
+So there we go, there's our response,
+
+43
+00:01:52.023 --> 00:01:53.573
+it comes back fairly quickly but you never know,
+
+44
+00:01:53.573 --> 00:01:56.968
+sometimes, a API takes a number of seconds to come back,
+
+45
+00:01:56.968 --> 00:02:00.468
+but I open that up, we have some info but,
+
+46
+00:02:01.541 --> 00:02:05.032
+headers, body, or if you click these dots,
+
+47
+00:02:05.032 --> 00:02:07.177
+you get a body, a readable stream,
+
+48
+00:02:07.177 --> 00:02:09.605
+which is locked: false, I don't know,
+
+49
+00:02:09.605 --> 00:02:11.090
+like, where is my actual data,
+
+50
+00:02:11.090 --> 00:02:13.829
+and that's because fetch does not assume Json,
+
+51
+00:02:13.829 --> 00:02:15.928
+like a lot of other libraries, like axios,
+
+52
+00:02:15.928 --> 00:02:19.084
+so it's just a really good Promise based library,
+
+53
+00:02:19.084 --> 00:02:23.282
+so we need to, again, convert this response into Json.
+
+54
+00:02:23.282 --> 00:02:25.528
+And the way we can do that is we can just return
+
+55
+00:02:25.528 --> 00:02:28.133
+the response and call a method called json,
+
+56
+00:02:28.133 --> 00:02:30.492
+which in turn is going to return a promise,
+
+57
+00:02:30.492 --> 00:02:33.302
+that means we can chain another, then on the end,
+
+58
+00:02:33.302 --> 00:02:35.428
+we'll get another response, and then we can
+
+59
+00:02:35.428 --> 00:02:39.726
+console.log that response and see what we get.
+
+60
+00:02:39.726 --> 00:02:43.244
+Beauty, so here is a nice object full of all of our data,
+
+61
+00:02:43.244 --> 00:02:45.381
+the last thing that we need to know is if,
+
+62
+00:02:45.381 --> 00:02:47.551
+for some reason, I did something wrong, like,
+
+63
+00:02:47.551 --> 00:02:50.719
+for example, I forgot to put the https on the front,
+
+64
+00:02:50.719 --> 00:02:53.478
+then, what's gonna happen is, it's gonna break.
+
+65
+00:02:53.478 --> 00:02:57.873
+And we get an error here, Uncaught (in promise) TypeError
+
+66
+00:02:57.873 --> 00:03:00.835
+failed to fetch, so, this fetch function
+
+67
+00:03:00.835 --> 00:03:03.634
+before we even return data to get to this then,
+
+68
+00:03:03.634 --> 00:03:06.658
+the whole thing broke, because it encountered a url
+
+69
+00:03:06.658 --> 00:03:08.972
+that doesn't actually exist, right?
+
+70
+00:03:08.972 --> 00:03:12.044
+It's looking on my hard drive here
+
+71
+00:03:12.044 --> 00:03:14.348
+locally for that actual thing.
+
+72
+00:03:14.348 --> 00:03:16.364
+So, that's not exactly what we want,
+
+73
+00:03:16.364 --> 00:03:18.620
+so the way that we catch that is we have a catch
+
+74
+00:03:18.620 --> 00:03:20.348
+and then we can take the error,
+
+75
+00:03:20.348 --> 00:03:21.929
+and then once we have that we can like
+
+76
+00:03:21.929 --> 00:03:23.929
+console.log like, oh no!
+
+77
+00:03:25.413 --> 00:03:28.808
+And console.log, the actual error itself,
+
+78
+00:03:28.808 --> 00:03:31.857
+and you can see that now it actually caught the error,
+
+79
+00:03:31.857 --> 00:03:34.834
+maybe probably better to do in console.error.
+
+80
+00:03:34.834 --> 00:03:37.580
+So it gives us some information, oh no, type error,
+
+81
+00:03:37.580 --> 00:03:40.149
+failed to fetch, and we get a little stack trace
+
+82
+00:03:40.149 --> 00:03:42.273
+coming along, in terms of, where we had that
+
+83
+00:03:42.273 --> 00:03:43.954
+and at this point we need to display
+
+84
+00:03:43.954 --> 00:03:46.124
+some sort of interface to the user,
+
+85
+00:03:46.124 --> 00:03:49.461
+or try it again, or do something with that actual error,
+
+86
+00:03:49.461 --> 00:03:51.141
+so that the user knows that,
+
+87
+00:03:51.141 --> 00:03:53.132
+they're not just sitting around waiting for it.
+
+88
+00:03:53.132 --> 00:03:55.254
+So, that's fetch, that's the very basics of it,
+
+89
+00:03:55.254 --> 00:03:56.587
+we are gonna keep that around,
+
+90
+00:03:56.587 --> 00:03:58.005
+I'm just gonna comment it out,
+
+91
+00:03:58.005 --> 00:03:58.994
+because we're gonna switch it over
+
+92
+00:03:58.994 --> 00:04:00.805
+to async/await fairly shortly.
+
+93
+00:04:00.805 --> 00:04:02.645
+The other one I wanted to show you is the
+
+94
+00:04:02.645 --> 00:04:05.333
+GetUserMedia, which is your webcam,
+
+95
+00:04:05.333 --> 00:04:07.470
+it allows us to access the user's webcam,
+
+96
+00:04:07.470 --> 00:04:10.303
+so I've got a video element right here,
+
+97
+00:04:10.303 --> 00:04:11.576
+and what we're gonna do is run a
+
+98
+00:04:11.576 --> 00:04:15.326
+select that video element with QuerySelector.
+
+99
+00:04:16.610 --> 00:04:19.525
+Then, we're gonna go ahead and ask for the user's webcam,
+
+100
+00:04:19.525 --> 00:04:23.108
+now if you've taken my JavaScript30 course,
+
+101
+00:04:24.072 --> 00:04:27.471
+you'll know that, what day is, what date did we do it?
+
+102
+00:04:27.471 --> 00:04:31.638
+We did it on the webcam fun,
+
+103
+00:04:33.885 --> 00:04:37.318
+there we go, on day 19th we accessed the user's webcam,
+
+104
+00:04:37.318 --> 00:04:39.766
+and what's cool about that is that the getUserMedia
+
+105
+00:04:39.766 --> 00:04:43.139
+also returns a Promise, which will let us
+
+106
+00:04:43.139 --> 00:04:45.249
+use then and catch for it.
+
+107
+00:04:45.249 --> 00:04:48.259
+So we take our navigator and we go
+
+108
+00:04:48.259 --> 00:04:50.528
+to the mediaDevices property
+
+109
+00:04:50.528 --> 00:04:52.905
+that will have access to all our media devices,
+
+110
+00:04:52.905 --> 00:04:55.545
+and then we specifically ask for the video stream.
+
+111
+00:04:55.545 --> 00:04:59.228
+So it's like getUserMedia, and then we'll ask
+
+112
+00:04:59.228 --> 00:05:00.464
+the video to be true,
+
+113
+00:05:00.464 --> 00:05:02.444
+you can also ask for audio at that point
+
+114
+00:05:02.444 --> 00:05:04.528
+but I'm not all that concerned with it.
+
+115
+00:05:04.528 --> 00:05:07.785
+Then, when the user successfully grants us access
+
+116
+00:05:07.785 --> 00:05:10.138
+to their webcam, they click that little box that says okay,
+
+117
+00:05:10.138 --> 00:05:13.030
+we tack a dot, then on the end,
+
+118
+00:05:13.030 --> 00:05:15.683
+which is going to give us what they call mediaStream,
+
+119
+00:05:15.683 --> 00:05:19.350
+and let's just console.log that mediaStream.
+
+120
+00:05:21.660 --> 00:05:22.787
+Let's see what we've got here.
+
+121
+00:05:22.787 --> 00:05:26.028
+Now, if I refresh this, we're gonna click allow,
+
+122
+00:05:26.028 --> 00:05:28.766
+and it gives us this raw MediaStream,
+
+123
+00:05:28.766 --> 00:05:32.895
+which has an id, active, and some information null.
+
+124
+00:05:32.895 --> 00:05:35.097
+Now what we can do with that MediaStream that we have it,
+
+125
+00:05:35.097 --> 00:05:37.139
+well, we can just go ahead and take our video element
+
+126
+00:05:37.139 --> 00:05:39.164
+and we can set this source object
+
+127
+00:05:39.164 --> 00:05:42.227
+to be equal to the mediaStream,
+
+128
+00:05:42.227 --> 00:05:45.500
+and that will take the blob of data that's coming off
+
+129
+00:05:45.500 --> 00:05:47.535
+hot-of-your-webcam, set it right
+
+130
+00:05:47.535 --> 00:05:49.564
+into your actual video element.
+
+131
+00:05:49.564 --> 00:05:52.649
+You can also do it with video.src is equal to
+
+132
+00:05:52.649 --> 00:05:56.555
+window.URL dot something like that...
+
+133
+00:05:56.555 --> 00:05:59.885
+URL.createObjectURL and then pass it,
+
+134
+00:05:59.885 --> 00:06:02.661
+the mediaStream, but that comes with some,
+
+135
+00:06:02.661 --> 00:06:03.530
+it's a little bit different,
+
+136
+00:06:03.530 --> 00:06:04.797
+that's the older way that we've done it,
+
+137
+00:06:04.797 --> 00:06:06.146
+that's how I did it at my JavaScript30,
+
+138
+00:06:06.146 --> 00:06:10.647
+but the new way is just by setting those srcObject directly.
+
+139
+00:06:10.647 --> 00:06:12.519
+So, let's see what that gets us so far,
+
+140
+00:06:12.519 --> 00:06:14.151
+I click allow, which will then
+
+141
+00:06:14.151 --> 00:06:16.622
+trigger the then that we have,
+
+142
+00:06:16.622 --> 00:06:19.922
+good, and then it's, I see like I got one frame,
+
+143
+00:06:19.922 --> 00:06:22.077
+oh, there we go, you see like,
+
+144
+00:06:22.077 --> 00:06:23.378
+it's kind of frozen right now,
+
+145
+00:06:23.378 --> 00:06:25.815
+but if I move my, I scroll the page
+
+146
+00:06:25.815 --> 00:06:28.407
+it updates a little bit, apologies,
+
+147
+00:06:28.407 --> 00:06:31.633
+I'm using the wrong webcam on my computer,
+
+148
+00:06:31.633 --> 00:06:34.586
+which is overhead, so, how do you work it?
+
+149
+00:06:34.586 --> 00:06:37.299
+Well, you just say video.load, you load it up,
+
+150
+00:06:37.299 --> 00:06:39.939
+and then you just call video.play,
+
+151
+00:06:39.939 --> 00:06:42.544
+which will actually start streaming it from the webcam.
+
+152
+00:06:42.544 --> 00:06:46.711
+So I click allow, and bam, all of it is coming in.
+
+153
+00:06:47.890 --> 00:06:52.224
+Hello, you can see me up there, it looks pretty good.
+
+154
+00:06:52.224 --> 00:06:56.224
+Now, what if I refresh the page and I say block.
+
+155
+00:06:57.338 --> 00:06:59.533
+We get this Uncaught in promise,
+
+156
+00:06:59.533 --> 00:07:01.729
+someone said, permission denied.
+
+157
+00:07:01.729 --> 00:07:03.719
+Oh, okay, well, how do we handle that?
+
+158
+00:07:03.719 --> 00:07:06.215
+Well, we just type on catch until the end,
+
+159
+00:07:06.215 --> 00:07:08.317
+which is gonna give us the error,
+
+160
+00:07:08.317 --> 00:07:10.765
+and then we can just deal with that error however we want.
+
+161
+00:07:10.765 --> 00:07:13.584
+So let's just console.log, error,
+
+162
+00:07:13.584 --> 00:07:15.539
+see what the error is giving us,
+
+163
+00:07:15.539 --> 00:07:19.008
+so refresh, block, here's the error,
+
+164
+00:07:19.008 --> 00:07:21.744
+and then the name is PermissionDeniedError.
+
+165
+00:07:21.744 --> 00:07:26.304
+So in this case you could maybe put a little arrow to here,
+
+166
+00:07:26.304 --> 00:07:28.461
+where the user would be able to click this
+
+167
+00:07:28.461 --> 00:07:30.624
+and turn things on and off.
+
+168
+00:07:30.624 --> 00:07:32.627
+Here we go, you can click on this webcam
+
+169
+00:07:32.627 --> 00:07:35.782
+and you can allow it to access your webcam
+
+170
+00:07:35.782 --> 00:07:38.819
+or continue to block it, so you would have to post up
+
+171
+00:07:38.819 --> 00:07:40.629
+some information to the user to say,
+
+172
+00:07:40.629 --> 00:07:42.551
+hey, things didn't work.
+
+173
+00:07:42.551 --> 00:07:44.928
+Cool, so, that is two built-in native promises,
+
+174
+00:07:44.928 --> 00:07:46.979
+in the next video we're going to look at
+
+175
+00:07:46.979 --> 00:07:49.488
+some custom hand-crafted promises
+
+176
+00:07:49.488 --> 00:07:51.562
+and then we'll sort of switch it around
+
+177
+00:07:51.562 --> 00:07:55.119
+and conform both all these things to async/await
+

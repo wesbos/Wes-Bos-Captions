@@ -1,0 +1,478 @@
+﻿WEBVTT
+
+1
+00:00:02.912 --> 00:00:04.033
+<v Instructor>Now you can clearly see</v>
+
+2
+00:00:04.033 --> 00:00:05.981
+that by my enthusiasm by ES6 and promises
+
+3
+00:00:05.981 --> 00:00:09.385
+is that I would love to code absolutely everything in that,
+
+4
+00:00:09.385 --> 00:00:11.782
+however the reality is that there is still a lot
+
+5
+00:00:11.782 --> 00:00:14.400
+of Java script either native browser APIs
+
+6
+00:00:14.400 --> 00:00:16.324
+or existing libraries that you're using
+
+7
+00:00:16.324 --> 00:00:18.400
+that are all callback based.
+
+8
+00:00:18.400 --> 00:00:21.249
+Now some really nice libraries are changing
+
+9
+00:00:21.249 --> 00:00:22.987
+where the both returner promise
+
+10
+00:00:22.987 --> 00:00:26.392
+as well as still accept a callback for older legacy code.
+
+11
+00:00:26.392 --> 00:00:28.778
+But if you are in the situation where
+
+12
+00:00:28.778 --> 00:00:30.958
+you are only in callback
+
+13
+00:00:30.958 --> 00:00:32.938
+and you want to use promises
+
+14
+00:00:32.938 --> 00:00:36.378
+I'm going to show you how to promisify an existing function.
+
+15
+00:00:36.378 --> 00:00:37.722
+Now there's libraries out there
+
+16
+00:00:37.722 --> 00:00:38.702
+that will do this for you,
+
+17
+00:00:38.702 --> 00:00:40.124
+but it's actually very simple to be able
+
+18
+00:00:40.124 --> 00:00:41.702
+to promisify it yourself.
+
+19
+00:00:41.702 --> 00:00:43.870
+So for my example I'm going to be using
+
+20
+00:00:43.870 --> 00:00:47.537
+navigator.geolocation to get the coordinates
+
+21
+00:00:48.478 --> 00:00:49.820
+of where I am right now.
+
+22
+00:00:49.820 --> 00:00:52.022
+And that's a bit of an older API
+
+23
+00:00:52.022 --> 00:00:54.881
+that uses a callback based function.
+
+24
+00:00:54.881 --> 00:00:57.058
+So here's how we do it right now.
+
+25
+00:00:57.058 --> 00:01:01.225
+We'll say navigator.geolocation.getcurrentposition
+
+26
+00:01:02.064 --> 00:01:05.808
+and what happens is that it takes two arguments,
+
+27
+00:01:05.808 --> 00:01:08.744
+a success function and a error function,
+
+28
+00:01:08.744 --> 00:01:10.836
+so what we'll do here is we'll say
+
+29
+00:01:10.836 --> 00:01:14.503
+function and that will give us our position.
+
+30
+00:01:16.383 --> 00:01:17.740
+And then here we have a function
+
+31
+00:01:17.740 --> 00:01:20.789
+which will give us the error.
+
+32
+00:01:20.789 --> 00:01:24.956
+And then inside of here we can console.log it worked.
+
+33
+00:01:26.025 --> 00:01:28.525
+And here we can say it failed.
+
+34
+00:01:30.381 --> 00:01:34.429
+And here we'll console.log the position.
+
+35
+00:01:34.429 --> 00:01:37.234
+And down here we'll console log the error.
+
+36
+00:01:37.234 --> 00:01:39.753
+Alright lets take a look at what this all looks like.
+
+37
+00:01:39.753 --> 00:01:40.897
+So I give this a refresh.
+
+38
+00:01:40.897 --> 00:01:43.438
+It's gonna ask us can we have your location.
+
+39
+00:01:43.438 --> 00:01:46.659
+And I click allow and it takes a second or two
+
+40
+00:01:46.659 --> 00:01:49.718
+depending on how quick the geo location is working.
+
+41
+00:01:49.718 --> 00:01:50.551
+There we go.
+
+42
+00:01:50.551 --> 00:01:51.610
+It says it worked.
+
+43
+00:01:51.610 --> 00:01:53.349
+So the success function ran.
+
+44
+00:01:53.349 --> 00:01:56.362
+And then it gives us the position and the coordinates
+
+45
+00:01:56.362 --> 00:01:58.289
+of everything right now.
+
+46
+00:01:58.289 --> 00:01:59.410
+Now if I were to refresh that
+
+47
+00:01:59.410 --> 00:02:03.305
+and block it it's immediately going to hit the failed one.
+
+48
+00:02:03.305 --> 00:02:05.581
+That's great, but that's callback based.
+
+49
+00:02:05.581 --> 00:02:08.946
+So how can we promisify this into our own function.
+
+50
+00:02:08.946 --> 00:02:10.873
+So let's comment that out.
+
+51
+00:02:10.873 --> 00:02:12.568
+So we're going to make a function
+
+52
+00:02:12.568 --> 00:02:14.791
+called get current position.
+
+53
+00:02:14.791 --> 00:02:16.968
+And I always like to name them as the same
+
+54
+00:02:16.968 --> 00:02:20.115
+as the method was, so it shows me that it's the version.
+
+55
+00:02:20.115 --> 00:02:22.755
+Or some people will write promisified current position.
+
+56
+00:02:22.755 --> 00:02:25.087
+Whatever you prefer.
+
+57
+00:02:25.087 --> 00:02:26.273
+And then from that we're going
+
+58
+00:02:26.273 --> 00:02:29.279
+to return a new promise, right.
+
+59
+00:02:29.279 --> 00:02:32.849
+And then the promise will have a resolve and a reject.
+
+60
+00:02:32.849 --> 00:02:35.656
+We'll use an arrow function there.
+
+61
+00:02:35.656 --> 00:02:38.078
+And then inside of that we just do our work.
+
+62
+00:02:38.078 --> 00:02:42.841
+So we'll say navigator.geolocation.getcurrentposition.
+
+63
+00:02:42.841 --> 00:02:45.192
+Now here's the question, what do we pass
+
+64
+00:02:45.192 --> 00:02:47.150
+for our success function?
+
+65
+00:02:47.150 --> 00:02:48.108
+Resolve.
+
+66
+00:02:48.108 --> 00:02:51.294
+What do we pass for our failure function?
+
+67
+00:02:51.294 --> 00:02:52.237
+Reject.
+
+68
+00:02:52.237 --> 00:02:53.304
+Right?
+
+69
+00:02:53.304 --> 00:02:56.985
+So if it is properly done resolve will send
+
+70
+00:02:56.985 --> 00:02:58.543
+back that position data to us.
+
+71
+00:02:58.543 --> 00:03:01.767
+And if something happens reject will reject it
+
+72
+00:03:01.767 --> 00:03:04.484
+and throw an error with whatever error gets passed here.
+
+73
+00:03:04.484 --> 00:03:07.102
+So that's it and then we can go ahead
+
+74
+00:03:07.102 --> 00:03:09.409
+and use it so we'll need to make ourselves
+
+75
+00:03:09.409 --> 00:03:11.797
+an async function called go.
+
+76
+00:03:11.797 --> 00:03:15.091
+And again the reason being I'm not just doing
+
+77
+00:03:15.091 --> 00:03:17.870
+this out in the open like I did with this code right here is
+
+78
+00:03:17.870 --> 00:03:20.181
+because you can not await things out in the open.
+
+79
+00:03:20.181 --> 00:03:22.557
+You must be inside of an async function.
+
+80
+00:03:22.557 --> 00:03:26.553
+And let's just run that on page load go.
+
+81
+00:03:26.553 --> 00:03:29.548
+Then I'll say const position is equal
+
+82
+00:03:29.548 --> 00:03:32.048
+to await get current position.
+
+83
+00:03:35.146 --> 00:03:36.873
+And that's it.
+
+84
+00:03:36.873 --> 00:03:38.288
+We should be able to console.log
+
+85
+00:03:38.288 --> 00:03:39.697
+the position right after that.
+
+86
+00:03:39.697 --> 00:03:41.075
+Right, so now there's no callback
+
+87
+00:03:41.075 --> 00:03:42.627
+we simply use our await keyword
+
+88
+00:03:42.627 --> 00:03:44.127
+and we click allow
+
+89
+00:03:47.265 --> 00:03:49.042
+and then after a couple seconds
+
+90
+00:03:49.042 --> 00:03:51.109
+we should see that data come back, there we go.
+
+91
+00:03:51.109 --> 00:03:52.405
+Data comes back immediately.
+
+92
+00:03:52.405 --> 00:03:53.822
+And you can see that this is working
+
+93
+00:03:53.822 --> 00:03:57.322
+because if up here you were to console log
+
+94
+00:03:58.555 --> 00:03:59.388
+starting
+
+95
+00:04:01.394 --> 00:04:05.061
+and down here you were going to say finished
+
+96
+00:04:06.015 --> 00:04:07.595
+you'll see the starting is done immediately,
+
+97
+00:04:07.595 --> 00:04:09.741
+now we're awaiting.
+
+98
+00:04:09.741 --> 00:04:11.321
+And then eventually once it's done, there we go,
+
+99
+00:04:11.321 --> 00:04:12.804
+then the position comes and then
+
+100
+00:04:12.804 --> 00:04:16.437
+the finished console log actually runs itself.
+
+101
+00:04:16.437 --> 00:04:17.980
+Last thing I want to do is get current position
+
+102
+00:04:17.980 --> 00:04:19.722
+actually takes some arguments.
+
+103
+00:04:19.722 --> 00:04:23.085
+Sometimes you can set things like how accurate
+
+104
+00:04:23.085 --> 00:04:24.812
+you want to be depending on how much battery life
+
+105
+00:04:24.812 --> 00:04:27.498
+the person has and what not.
+
+106
+00:04:27.498 --> 00:04:30.130
+So in our case we'll use a rest to capture
+
+107
+00:04:30.130 --> 00:04:32.383
+all those arguments and then we'll
+
+108
+00:04:32.383 --> 00:04:35.487
+use a spread to pass in spread into those arguments
+
+109
+00:04:35.487 --> 00:04:38.863
+before resolve and reject that gets passed in there.
+
+110
+00:04:38.863 --> 00:04:40.861
+And now if I refresh it, allow it,
+
+111
+00:04:40.861 --> 00:04:43.671
+it still works just as we want,
+
+112
+00:04:43.671 --> 00:04:45.331
+but if some were to pass us with
+
+113
+00:04:45.331 --> 00:04:47.084
+an options object inside of there
+
+114
+00:04:47.084 --> 00:04:50.162
+those would get passed along no problem.
+
+115
+00:04:50.162 --> 00:04:52.808
+So that's promisifying without any sort of library.
+
+116
+00:04:52.808 --> 00:04:56.615
+If you do want to library you can check out ES6-promisify,
+
+117
+00:04:56.615 --> 00:04:59.059
+or if you're using Node there's even
+
+118
+00:04:59.059 --> 00:05:01.640
+a built in utility in the util package
+
+119
+00:05:01.640 --> 00:05:03.727
+that comes baked right in with Node.
+

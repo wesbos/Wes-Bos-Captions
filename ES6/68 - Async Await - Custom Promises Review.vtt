@@ -1,0 +1,434 @@
+﻿WEBVTT
+
+1
+00:00:00.419 --> 00:00:03.320 line:15% 
+(musical chime)
+
+2
+00:00:03.320 --> 00:00:04.657
+<v Instructor>Alright, let's do a quick review</v>
+
+3
+00:00:04.657 --> 00:00:05.939
+of custom promises.
+
+4
+00:00:05.939 --> 00:00:09.880
+Any function that returns a promise has a promise-based API
+
+5
+00:00:09.880 --> 00:00:12.621
+and can be used interchangeably with either
+
+6
+00:00:12.621 --> 00:00:14.696
+then then then catch or the async await,
+
+7
+00:00:14.696 --> 00:00:16.256
+which we're gonna learn about in a second.
+
+8
+00:00:16.256 --> 00:00:19.022
+So, let's take an example of a function where you want to
+
+9
+00:00:19.022 --> 00:00:22.142
+maybe, like, sleep or breathe or wait for a couple seconds.
+
+10
+00:00:22.142 --> 00:00:24.744
+It's not a function that's gonna execute and run
+
+11
+00:00:24.744 --> 00:00:27.342
+immediately, we sort of, like, want to make a breathe
+
+12
+00:00:27.342 --> 00:00:29.800
+function that waits for four sections, and then after
+
+13
+00:00:29.800 --> 00:00:33.400
+that four seconds is finished, we will then do whatever
+
+14
+00:00:33.400 --> 00:00:35.682
+the next task at hand is.
+
+15
+00:00:35.682 --> 00:00:37.719
+So, previously, the way that worked is, we would have,
+
+16
+00:00:37.719 --> 00:00:41.303
+like, a breathe function, we would breathe for a second,
+
+17
+00:00:41.303 --> 00:00:43.522
+and then, when that's over, we would have a function
+
+18
+00:00:43.522 --> 00:00:46.024
+that's a callback, and then if we wanted a breathe
+
+19
+00:00:46.024 --> 00:00:48.894
+inside of that, well, we would just copy that
+
+20
+00:00:48.894 --> 00:00:52.184
+and then breathe inside there, and maybe that one
+
+21
+00:00:52.184 --> 00:00:54.744
+would be, like, two seconds, and you get the point, right?
+
+22
+00:00:54.744 --> 00:00:57.144
+All of a sudden, we start getting, like, I could just start
+
+23
+00:00:57.144 --> 00:00:59.943
+pasting them in, paste them in, I might pretty
+
+24
+00:00:59.943 --> 00:01:04.274
+or clean it up, what we're writing is callback hell.
+
+25
+00:01:04.274 --> 00:01:06.236
+We don't want to be doing that, we want to be writing it
+
+26
+00:01:06.236 --> 00:01:09.079
+as sort of, like, flat as possible.
+
+27
+00:01:09.079 --> 00:01:11.255
+So, a really nice solution to that is allow your function
+
+28
+00:01:11.255 --> 00:01:14.156
+to return a promise, so we're gonna make a function called
+
+29
+00:01:14.156 --> 00:01:17.559
+breathe, and that's going to take an amount
+
+30
+00:01:17.559 --> 00:01:21.255
+that we should breathe, and from that, we're just going to
+
+31
+00:01:21.255 --> 00:01:25.422
+immediately return a new promise, and that promise
+
+32
+00:01:26.898 --> 00:01:30.656
+takes the function as well, so we're going to have a resolve
+
+33
+00:01:30.656 --> 00:01:33.735
+function for when the promise is successfully done,
+
+34
+00:01:33.735 --> 00:01:36.674
+and we have a reject function for when anything goes wrong
+
+35
+00:01:36.674 --> 00:01:38.775
+inside of this promise and we need to abort
+
+36
+00:01:38.775 --> 00:01:41.319
+or bail on the function together.
+
+37
+00:01:41.319 --> 00:01:43.450
+So, good, we've got that up and running here.
+
+38
+00:01:43.450 --> 00:01:45.807
+Now what we're going to do is just wait for the amount
+
+39
+00:01:45.807 --> 00:01:49.109
+of time that they want to breathe before we resolve.
+
+40
+00:01:49.109 --> 00:01:51.647
+So we'll use a setTimeout for that, and we are going
+
+41
+00:01:51.647 --> 00:01:54.010
+to just run a little in-line arrow function
+
+42
+00:01:54.010 --> 00:01:56.970
+where we will resolve and say done.
+
+43
+00:01:56.970 --> 00:02:00.010
+And when you resolve a function, you sometimes want
+
+44
+00:02:00.010 --> 00:02:03.685
+to pass back a value to the actual user, so actually,
+
+45
+00:02:03.685 --> 00:02:06.906
+maybe we should interpolate the extra value that we have,
+
+46
+00:02:06.906 --> 00:02:10.739
+so, done for amount milliseconds.
+
+47
+00:02:14.509 --> 00:02:17.245
+Good, and then we also want to run that after the amount.
+
+48
+00:02:17.245 --> 00:02:20.010
+So this is just a little timer that will wait however long,
+
+49
+00:02:20.010 --> 00:02:24.380
+then we pass it, and then console log done for that amount.
+
+50
+00:02:24.380 --> 00:02:26.577
+So let's go ahead and try to use this.
+
+51
+00:02:26.577 --> 00:02:29.537
+We'll say breathe, we want to breathe for maybe a second,
+
+52
+00:02:29.537 --> 00:02:33.238
+and then, when that is finished, we are going to get
+
+53
+00:02:33.238 --> 00:02:36.678
+the response that comes back, and let's just console.log
+
+54
+00:02:36.678 --> 00:02:39.958
+the response to see what that looks like.
+
+55
+00:02:39.958 --> 00:02:43.521
+So, open this up, I'll refresh, and after a second,
+
+56
+00:02:43.521 --> 00:02:45.718
+we get done for a hundred milliseconds.
+
+57
+00:02:45.718 --> 00:02:48.460
+Now, what if we wanted to do four or five of those,
+
+58
+00:02:48.460 --> 00:02:49.777
+one after another?
+
+59
+00:02:49.777 --> 00:02:52.417
+Well, what we can do here is we can just return another
+
+60
+00:02:52.417 --> 00:02:56.584
+breathe function, which will go for maybe 500 milliseconds.
+
+61
+00:02:59.297 --> 00:03:02.718
+And we'll chain a .then onto that.
+
+62
+00:03:02.718 --> 00:03:04.198
+There was a response.
+
+63
+00:03:04.198 --> 00:03:05.201
+You get the point, right?
+
+64
+00:03:05.201 --> 00:03:08.004
+We can console log here and see what what we got.
+
+65
+00:03:08.004 --> 00:03:12.544
+So, one second, half a second later, we've got those values.
+
+66
+00:03:12.544 --> 00:03:14.230
+Let's just go nuts a little bit here.
+
+67
+00:03:14.230 --> 00:03:17.366
+You can just copy/paste these, chain them on as far
+
+68
+00:03:17.366 --> 00:03:19.551
+as we want, and then just change the values
+
+69
+00:03:19.551 --> 00:03:21.727
+for however many we want.
+
+70
+00:03:21.727 --> 00:03:26.384
+That's not what I want, we want a return, a breathe of
+
+71
+00:03:26.384 --> 00:03:29.227
+maybe 600 milliseconds, and then we can just chain these on
+
+72
+00:03:29.227 --> 00:03:32.310
+for as long as we could possibly want.
+
+73
+00:03:32.310 --> 00:03:36.477
+So here, 500, 600, 200, 500,
+
+74
+00:03:38.027 --> 00:03:42.194
+2000, 250, 300, 600, good.
+
+75
+00:03:44.326 --> 00:03:46.826
+So let's see what we got here.
+
+76
+00:03:50.923 --> 00:03:53.526
+There, we've nicely chained these along with a fairly
+
+77
+00:03:53.526 --> 00:03:56.624
+good-looking API, which is our then then then then.
+
+78
+00:03:56.624 --> 00:03:58.464
+Well, what about this reject here?
+
+79
+00:03:58.464 --> 00:04:01.946
+We've only resolved, and in a perfect world, your functions
+
+80
+00:04:01.946 --> 00:04:04.144
+will always work out perfectly, but what if something
+
+81
+00:04:04.144 --> 00:04:05.344
+were to go wrong?
+
+82
+00:04:05.344 --> 00:04:08.667
+So, let's say, for example, you should pass
+
+83
+00:04:08.667 --> 00:04:11.488
+at a minimum, 500 milliseconds, anything under
+
+84
+00:04:11.488 --> 00:04:14.905
+500 milliseconds is going to be an error.
+
+85
+00:04:15.894 --> 00:04:18.443
+So what we can do here is we can say if the amount
+
+86
+00:04:18.443 --> 00:04:22.610
+is less than 500, we can reject, and the way that would
+
+87
+00:04:23.648 --> 00:04:27.315
+reject is say, that is too small of a value.
+
+88
+00:04:30.646 --> 00:04:33.664
+Now when we run this thing, we get one second,
+
+89
+00:04:33.664 --> 00:04:36.944
+500 milliseconds, 600, and then, bzz, we get an error here.
+
+90
+00:04:36.944 --> 00:04:39.883
+Uncaught in promise, that is too small a value, right?
+
+91
+00:04:39.883 --> 00:04:43.104
+So the error got thrown, but we didn't actually catch it,
+
+92
+00:04:43.104 --> 00:04:45.227
+we didn't do anything with it, and ideally,
+
+93
+00:04:45.227 --> 00:04:48.683
+we would show that to the user as some sort of mistake.
+
+94
+00:04:48.683 --> 00:04:51.951
+So what we can do is, if anywhere along these then then
+
+95
+00:04:51.951 --> 00:04:54.902
+then then then then thens, something that goes wrong,
+
+96
+00:04:54.902 --> 00:04:58.683
+we tack a .catch onto the end, which'll give us our error,
+
+97
+00:04:58.683 --> 00:05:02.960
+and we can just say console.error, which is the err,
+
+98
+00:05:02.960 --> 00:05:06.710
+and maybe just console error, you screwed up.
+
+99
+00:05:09.760 --> 00:05:11.093
+You scwrewed up!
+
+100
+00:05:12.043 --> 00:05:13.460
+Dwight Schrute.
+
+101
+00:05:13.460 --> 00:05:15.217
+Alright, here we go, you scwrewed up.
+
+102
+00:05:15.217 --> 00:05:16.643
+That's too small a value, good.
+
+103
+00:05:16.643 --> 00:05:18.204
+So we've actually caught the error.
+
+104
+00:05:18.204 --> 00:05:21.349
+So that's the basics of promises.
+
+105
+00:05:21.349 --> 00:05:24.088
+If you want more experience with that, go back to all
+
+106
+00:05:24.088 --> 00:05:26.508
+the videos that we have on promises, but what we're gonna do
+
+107
+00:05:26.508 --> 00:05:29.308
+now is dive into how can we make this look a little bit
+
+108
+00:05:29.308 --> 00:05:32.725
+better with something called async await.
+

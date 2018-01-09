@@ -1,0 +1,830 @@
+﻿WEBVTT
+
+1
+00:00:02.968 --> 00:00:04.637
+<v Wes>Real quick before we dive into async/await</v>
+
+2
+00:00:04.637 --> 00:00:07.195
+let's just talk about what do those words even mean?
+
+3
+00:00:07.195 --> 00:00:09.126
+Asynchronous and synchronous,
+
+4
+00:00:09.126 --> 00:00:12.595
+you hear them thrown around a lot in JavaScript land,
+
+5
+00:00:12.595 --> 00:00:14.985
+but let's take a quick look at what that actually means.
+
+6
+00:00:14.985 --> 00:00:17.275
+So when you execute something synchronously
+
+7
+00:00:17.275 --> 00:00:20.734
+you wait for the task to be done
+
+8
+00:00:20.734 --> 00:00:24.243
+before you continue on with the rest of your actual code.
+
+9
+00:00:24.243 --> 00:00:26.235
+Where has when you do something asynchronously,
+
+10
+00:00:26.235 --> 00:00:27.475
+you start the task
+
+11
+00:00:27.475 --> 00:00:30.913
+but then you immediately move on to the next actual value.
+
+12
+00:00:30.913 --> 00:00:32.825
+That's why we can't do something like this
+
+13
+00:00:32.825 --> 00:00:36.270
+where we previously had say const response
+
+14
+00:00:36.270 --> 00:00:38.482
+is equal to fetch
+
+15
+00:00:38.482 --> 00:00:43.214
+and then fetched something from like https://github.com
+
+16
+00:00:43.214 --> 00:00:44.491
+and then the next line
+
+17
+00:00:44.491 --> 00:00:48.491
+immediately we try to console.log that response.
+
+18
+00:00:49.553 --> 00:00:52.673
+The reason why response is gonna be equal to a promise
+
+19
+00:00:52.673 --> 00:00:55.171
+and not the actual value is that
+
+20
+00:00:55.171 --> 00:00:58.073
+most things in JavaScript do not wait for anyone
+
+21
+00:00:58.073 --> 00:01:00.763
+meaning that they will execute the fetch,
+
+22
+00:01:00.763 --> 00:01:02.582
+however, they're not going to sit around
+
+23
+00:01:02.582 --> 00:01:04.283
+and pause all of JavaScript
+
+24
+00:01:04.283 --> 00:01:07.793
+and just wait until it comes back.
+
+25
+00:01:07.793 --> 00:01:09.751
+That's what's called blocking in JavaScript
+
+26
+00:01:09.751 --> 00:01:12.211
+where you block the rest of JavaScript from running
+
+27
+00:01:12.211 --> 00:01:14.437
+while you wait on this one single thing.
+
+28
+00:01:14.437 --> 00:01:16.590
+A good example of something that is blocking
+
+29
+00:01:16.590 --> 00:01:18.064
+is actually alert.
+
+30
+00:01:18.064 --> 00:01:20.276
+If we were to just start by
+
+31
+00:01:20.276 --> 00:01:22.193
+let's do a set interval
+
+32
+00:01:24.894 --> 00:01:27.311
+let's do something like every
+
+33
+00:01:28.350 --> 00:01:31.024
+one second or every 500 milliseconds
+
+34
+00:01:31.024 --> 00:01:33.385
+will run console.log date.now.
+
+35
+00:01:33.385 --> 00:01:34.684
+So let's see what we got here.
+
+36
+00:01:34.684 --> 00:01:35.517
+Good.
+
+37
+00:01:35.517 --> 00:01:38.950
+Now we're logging the current number of milliseconds,
+
+38
+00:01:38.950 --> 00:01:40.492
+every 500 milliseconds
+
+39
+00:01:40.492 --> 00:01:43.081
+but if I were to run alert("hi")
+
+40
+00:01:43.081 --> 00:01:44.923
+in the middle of this.
+
+41
+00:01:44.923 --> 00:01:48.987
+You notice how the console logging of date.now just stops?
+
+42
+00:01:48.987 --> 00:01:51.739
+That's because the alert is blocking
+
+43
+00:01:51.739 --> 00:01:53.827
+and is not letting anything else go on
+
+44
+00:01:53.827 --> 00:01:55.529
+and alert, in prompt, and confirm
+
+45
+00:01:55.529 --> 00:01:57.178
+they're some of the very few things
+
+46
+00:01:57.178 --> 00:01:59.241
+that actually do do that in JavaScript
+
+47
+00:01:59.241 --> 00:02:01.717
+and almost absolutely everything else in JavaScript
+
+48
+00:02:01.717 --> 00:02:03.445
+is asynchronous meaning that
+
+49
+00:02:03.445 --> 00:02:05.109
+you can launch something up
+
+50
+00:02:05.109 --> 00:02:09.276
+like for example if I were to try console.log hello.
+
+51
+00:02:10.149 --> 00:02:11.517
+It's just going to interpolate that
+
+52
+00:02:11.517 --> 00:02:14.877
+hello well this other stuff keeps on running
+
+53
+00:02:14.877 --> 00:02:18.472
+not a big deal for that to actually happen.
+
+54
+00:02:18.472 --> 00:02:20.687
+That is great but it becomes a problem
+
+55
+00:02:20.687 --> 00:02:22.384
+when we want flow control.
+
+56
+00:02:22.384 --> 00:02:23.887
+When we want one thing to happen
+
+57
+00:02:23.887 --> 00:02:25.675
+and then we wanna deal with the response
+
+58
+00:02:25.675 --> 00:02:27.938
+and then we wanna deal with the second response, right?
+
+59
+00:02:27.938 --> 00:02:30.766
+Just like we did with our native promises
+
+60
+00:02:30.766 --> 00:02:32.105
+where we first needed to wait
+
+61
+00:02:32.105 --> 00:02:34.237
+until we got access to the webcam
+
+62
+00:02:34.237 --> 00:02:36.339
+and then we wanted to set it to the actually
+
+63
+00:02:36.339 --> 00:02:38.192
+media and media stream.
+
+64
+00:02:38.192 --> 00:02:41.163
+Same thing when we did with our custom promises
+
+65
+00:02:41.163 --> 00:02:42.723
+review that we had here.
+
+66
+00:02:42.723 --> 00:02:44.901
+We ended up with this okay API
+
+67
+00:02:44.901 --> 00:02:47.868
+which is chaining then, then, then, then, then
+
+68
+00:02:47.868 --> 00:02:49.339
+one after another,
+
+69
+00:02:49.339 --> 00:02:51.715
+but we still don't have the ability
+
+70
+00:02:51.715 --> 00:02:53.717
+to do something like this.
+
+71
+00:02:53.717 --> 00:02:55.517
+Where I could just run
+
+72
+00:02:55.517 --> 00:02:58.478
+breathe, breathe, breathe, breathe, breathe, breathe
+
+73
+00:02:58.478 --> 00:03:01.144
+and after every single one
+
+74
+00:03:01.144 --> 00:03:03.208
+you would wait a second then run the next line,
+
+75
+00:03:03.208 --> 00:03:05.795
+wait a second then run the next line, wait a second
+
+76
+00:03:05.795 --> 00:03:07.928
+or wait for another ajax request
+
+77
+00:03:07.928 --> 00:03:09.544
+and then run the second ajax request.
+
+78
+00:03:09.544 --> 00:03:10.976
+You get the point right?
+
+79
+00:03:10.976 --> 00:03:13.291
+We need a way to essentially
+
+80
+00:03:13.291 --> 00:03:15.134
+not really pause JavaScript,
+
+81
+00:03:15.134 --> 00:03:16.915
+but just wait for a second
+
+82
+00:03:16.915 --> 00:03:19.443
+while the current line finishes executing
+
+83
+00:03:19.443 --> 00:03:22.307
+without having the downside of the alert
+
+84
+00:03:22.307 --> 00:03:24.344
+where you block all other JavaScript from running
+
+85
+00:03:24.344 --> 00:03:26.413
+cause you might have other background tasks,
+
+86
+00:03:26.413 --> 00:03:29.114
+notifications, downloading stuff,
+
+87
+00:03:29.114 --> 00:03:31.587
+listening for clicks on other items.
+
+88
+00:03:31.587 --> 00:03:33.605
+You don't wanna block all of JavaScript from running
+
+89
+00:03:33.605 --> 00:03:36.296
+just because you have this one piece of your application.
+
+90
+00:03:36.296 --> 00:03:39.352
+That is where async/await comes in
+
+91
+00:03:39.352 --> 00:03:41.211
+and why it's called async/await
+
+92
+00:03:41.211 --> 00:03:45.160
+is because you need to first make an asynchronous function
+
+93
+00:03:45.160 --> 00:03:49.213
+and then inside of that function you can await values.
+
+94
+00:03:49.213 --> 00:03:52.016
+Let's actually go back into our custom promises
+
+95
+00:03:52.016 --> 00:03:56.142
+and let's just take out this breathe function real quick
+
+96
+00:03:56.142 --> 00:03:58.836
+and let's go ahead and paste it in.
+
+97
+00:03:58.836 --> 00:04:00.832
+Now there's nothing that we need to do
+
+98
+00:04:00.832 --> 00:04:02.829
+to this breathe function
+
+99
+00:04:02.829 --> 00:04:04.395
+to make it async/await
+
+100
+00:04:04.395 --> 00:04:06.547
+because at the core
+
+101
+00:04:06.547 --> 00:04:09.650
+async/await is just built on top of promises.
+
+102
+00:04:09.650 --> 00:04:12.288
+It is not a alternative to promises,
+
+103
+00:04:12.288 --> 00:04:14.650
+it is not a totally different way of doing it.
+
+104
+00:04:14.650 --> 00:04:18.049
+You must have a function that is based on promises
+
+105
+00:04:18.049 --> 00:04:20.697
+in order to async/await anything.
+
+106
+00:04:20.697 --> 00:04:22.341
+That's why we have all these APIs
+
+107
+00:04:22.341 --> 00:04:23.861
+that are built on promises
+
+108
+00:04:23.861 --> 00:04:25.922
+and then we're going to be able to async/await
+
+109
+00:04:25.922 --> 00:04:27.215
+the actual values that come.
+
+110
+00:04:27.215 --> 00:04:28.048
+Good.
+
+111
+00:04:28.048 --> 00:04:30.798
+Don't touch that function at all.
+
+112
+00:04:31.705 --> 00:04:32.911
+The way it's gonna work is we're gonna say
+
+113
+00:04:32.911 --> 00:04:35.828
+await breathe(100)
+
+114
+00:04:37.189 --> 00:04:40.783
+and then we're going to await breathe(500)
+
+115
+00:04:40.783 --> 00:04:43.563
+and we're going to await breathe(5000).
+
+116
+00:04:43.563 --> 00:04:44.453
+You get the point right?
+
+117
+00:04:44.453 --> 00:04:46.434
+On and on and on one line after another
+
+118
+00:04:46.434 --> 00:04:49.226
+without any thens, without any callbacks, without anything
+
+119
+00:04:49.226 --> 00:04:51.554
+but this is what is called top level await.
+
+120
+00:04:51.554 --> 00:04:53.426
+We are not allowed to do this.
+
+121
+00:04:53.426 --> 00:04:56.434
+If I actually were to run this and refresh
+
+122
+00:04:56.434 --> 00:04:59.495
+it'll tell us await is only valid in an async function
+
+123
+00:04:59.495 --> 00:05:01.664
+because this await function
+
+124
+00:05:01.664 --> 00:05:04.333
+cannot just be done willy nilly out in the open.
+
+125
+00:05:04.333 --> 00:05:06.005
+It needs to be done in a function
+
+126
+00:05:06.005 --> 00:05:08.186
+that's been marked as async.
+
+127
+00:05:08.186 --> 00:05:10.786
+So what we're gonna do is we're gonna make a function.
+
+128
+00:05:10.786 --> 00:05:13.575
+I'll say function, we'll call it go()
+
+129
+00:05:13.575 --> 00:05:16.555
+and we can then inside of that await
+
+130
+00:05:16.555 --> 00:05:17.430
+and it's still gonna break,
+
+131
+00:05:17.430 --> 00:05:18.269
+but I'm gonna show you.
+
+132
+00:05:18.269 --> 00:05:20.362
+We'll say await,
+
+133
+00:05:20.362 --> 00:05:23.016
+we're going to await the breathe function
+
+134
+00:05:23.016 --> 00:05:26.594
+which is going to wait for 600 milliseconds.
+
+135
+00:05:26.594 --> 00:05:28.532
+Now we're still gonna get that error.
+
+136
+00:05:28.532 --> 00:05:31.200
+Await is only valid in an async function,
+
+137
+00:05:31.200 --> 00:05:33.863
+however, if we now mark this function as async
+
+138
+00:05:33.863 --> 00:05:35.472
+by just putting the word async
+
+139
+00:05:35.472 --> 00:05:37.013
+in front of the word function.
+
+140
+00:05:37.013 --> 00:05:39.555
+You can also mark a arrow function async
+
+141
+00:05:39.555 --> 00:05:43.472
+by doing things like const go is equal to async
+
+142
+00:05:44.443 --> 00:05:46.412
+and then it's just in a regular old arrow function
+
+143
+00:05:46.412 --> 00:05:47.353
+that we have there.
+
+144
+00:05:47.353 --> 00:05:49.139
+That's the way that you mark that.
+
+145
+00:05:49.139 --> 00:05:52.268
+Then we we are able to use the await inside of it.
+
+146
+00:05:52.268 --> 00:05:53.226
+So watch this.
+
+147
+00:05:53.226 --> 00:05:56.084
+If we console.log('start')
+
+148
+00:05:56.084 --> 00:06:00.762
+and console.log('end') in the middle.
+
+149
+00:06:00.762 --> 00:06:02.849
+Oh yeah, I guess we have to call this function
+
+150
+00:06:02.849 --> 00:06:05.650
+on page loader from the console or something like that.
+
+151
+00:06:05.650 --> 00:06:07.082
+Then we see start immediately
+
+152
+00:06:07.082 --> 00:06:10.002
+and then after one second we see end, right?
+
+153
+00:06:10.002 --> 00:06:12.860
+You notice there is no chaining of callbacks here,
+
+154
+00:06:12.860 --> 00:06:15.122
+there's no thens that we need to do,
+
+155
+00:06:15.122 --> 00:06:17.239
+there's no scoping that gets introduced,
+
+156
+00:06:17.239 --> 00:06:18.623
+it's all one level
+
+157
+00:06:18.623 --> 00:06:21.063
+and I could do these as long as I want.
+
+158
+00:06:21.063 --> 00:06:25.248
+We can also capture the value that this function returns.
+
+159
+00:06:25.248 --> 00:06:27.282
+If I were to say like const the response
+
+160
+00:06:27.282 --> 00:06:28.764
+is equal to await breathe,
+
+161
+00:06:28.764 --> 00:06:31.097
+in console.log the response.
+
+162
+00:06:32.212 --> 00:06:36.352
+Then I could do this a couple times over, why not?
+
+163
+00:06:36.352 --> 00:06:37.185
+600,
+
+164
+00:06:38.189 --> 00:06:39.022
+750, 900.
+
+165
+00:06:41.602 --> 00:06:44.583
+and we can't use response over and over and over again.
+
+166
+00:06:44.583 --> 00:06:45.416
+Why?
+
+167
+00:06:45.416 --> 00:06:47.583
+Because it's response two,
+
+168
+00:06:48.495 --> 00:06:51.924
+response three, and four cause there is a const there.
+
+169
+00:06:51.924 --> 00:06:53.391
+Good, start.
+
+170
+00:06:53.391 --> 00:06:55.100
+Uncaught console.logo.
+
+171
+00:06:55.100 --> 00:06:57.528
+What am I doing here?
+
+172
+00:06:57.528 --> 00:06:58.361
+Log.
+
+173
+00:07:00.314 --> 00:07:01.147
+Done.
+
+174
+00:07:01.147 --> 00:07:04.203
+See we're getting the values that are being resolved
+
+175
+00:07:04.203 --> 00:07:06.223
+from our promise function
+
+176
+00:07:06.223 --> 00:07:08.752
+and we're sticking them directly into
+
+177
+00:07:08.752 --> 00:07:10.423
+our actual variable there.
+
+178
+00:07:10.423 --> 00:07:12.330
+If I took this await off
+
+179
+00:07:12.330 --> 00:07:14.764
+breathe would return a promise,
+
+180
+00:07:14.764 --> 00:07:17.624
+but by putting the await in front of the promise
+
+181
+00:07:17.624 --> 00:07:19.764
+breathe will immediately return the promise,
+
+182
+00:07:19.764 --> 00:07:22.466
+but the await function will sort of just be like
+
+183
+00:07:22.466 --> 00:07:25.053
+all right everybody hold on for a couple seconds
+
+184
+00:07:25.053 --> 00:07:27.695
+I'm gonna wait until this breathe function
+
+185
+00:07:27.695 --> 00:07:31.186
+either resolves a value to me or rejects it
+
+186
+00:07:31.186 --> 00:07:33.994
+and in that case we have some sort of error.
+
+187
+00:07:33.994 --> 00:07:37.655
+So that's the very basics of how we do async/await.
+
+188
+00:07:37.655 --> 00:07:39.716
+The most important part that you need to know here
+
+189
+00:07:39.716 --> 00:07:42.255
+is that there is no top level await
+
+190
+00:07:42.255 --> 00:07:46.023
+meaning that you cannot just use await out in the open.
+
+191
+00:07:46.023 --> 00:07:47.964
+You cannot use await just anywhere
+
+192
+00:07:47.964 --> 00:07:51.543
+you must have to put an async on the word function.
+
+193
+00:07:51.543 --> 00:07:54.532
+That said sometimes I'm in just a regular old function
+
+194
+00:07:54.532 --> 00:07:57.783
+and I need to be able to wait for something.
+
+195
+00:07:57.783 --> 00:08:00.892
+It's no problem to make a function async
+
+196
+00:08:00.892 --> 00:08:03.431
+to be able to add just a single await inside of it.
+
+197
+00:08:03.431 --> 00:08:06.932
+There's no other detrimental effects that come of that.
+
+198
+00:08:06.932 --> 00:08:09.897
+Let's see it one more time,
+
+199
+00:08:09.897 --> 00:08:11.159
+working really nicely.
+
+200
+00:08:11.159 --> 00:08:13.431
+Now, what about this?
+
+201
+00:08:13.431 --> 00:08:16.751
+Where we have this problem if it's less than 500.
+
+202
+00:08:16.751 --> 00:08:18.334
+Let's make this 300
+
+203
+00:08:21.252 --> 00:08:22.874
+and we get an error.
+
+204
+00:08:22.874 --> 00:08:26.500
+Uncaught in promise that is too small of a value.
+
+205
+00:08:26.500 --> 00:08:28.298
+So the next video we're actually going to deal with
+
+206
+00:08:28.298 --> 00:08:31.431
+how do we catch that error if there is no
+
+207
+00:08:31.431 --> 00:08:35.598
+dot then then then catch in async/await.
+

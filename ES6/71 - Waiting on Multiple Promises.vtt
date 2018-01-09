@@ -1,0 +1,642 @@
+﻿WEBVTT
+
+1
+00:00:00.141 --> 00:00:02.669
+(upbeat whistling)
+
+2
+00:00:02.669 --> 00:00:04.261
+<v ->Dealing with multiple promises is something</v>
+
+3
+00:00:04.261 --> 00:00:06.891
+that I've frequently run into when I'm writing code
+
+4
+00:00:06.891 --> 00:00:08.969
+and you sort of need to be careful here
+
+5
+00:00:08.969 --> 00:00:10.901
+with this whole await thing.
+
+6
+00:00:10.901 --> 00:00:12.560
+And the reason behind that is because
+
+7
+00:00:12.560 --> 00:00:16.021
+not always do you want to do one thing after another,
+
+8
+00:00:16.021 --> 00:00:18.600
+often you want to maybe fire off six or seven
+
+9
+00:00:18.600 --> 00:00:20.619
+tasks at the exact same time and then
+
+10
+00:00:20.619 --> 00:00:23.531
+wait for them all to come back at the end of the day.
+
+11
+00:00:23.531 --> 00:00:26.788
+So right here I've got my fetch coming off and I'm
+
+12
+00:00:26.788 --> 00:00:29.701
+going to go off to github to grab my data
+
+13
+00:00:29.701 --> 00:00:32.051
+and then after that I'm going to go and grab
+
+14
+00:00:32.051 --> 00:00:33.901
+Scott Talinski's github data.
+
+15
+00:00:33.901 --> 00:00:35.837
+So what I could do here is I could just pop a
+
+16
+00:00:35.837 --> 00:00:37.749
+quick await in front of both of them,
+
+17
+00:00:37.749 --> 00:00:40.351
+but that's going to take much longer than it has to
+
+18
+00:00:40.351 --> 00:00:42.811
+because it's going to finish this one,
+
+19
+00:00:42.811 --> 00:00:45.038
+before it even starts this one.
+
+20
+00:00:45.038 --> 00:00:46.432
+Ideally what we want is for them both
+
+21
+00:00:46.432 --> 00:00:49.720
+to be gone at the exact same time.
+
+22
+00:00:49.720 --> 00:00:51.840
+So what we're gonna do is we're going to store
+
+23
+00:00:51.840 --> 00:00:53.840
+not the returned results,
+
+24
+00:00:53.840 --> 00:00:55.512
+which is what await would give us,
+
+25
+00:00:55.512 --> 00:00:58.501
+but we're gonna store the promise in a variable
+
+26
+00:00:58.501 --> 00:01:00.531
+called promise one, P1.
+
+27
+00:01:00.531 --> 00:01:02.560
+And then a variable called P2.
+
+28
+00:01:02.560 --> 00:01:07.088
+Now I'm down here, how do I wait for both of them
+
+29
+00:01:07.088 --> 00:01:08.171
+to come back?
+
+30
+00:01:10.859 --> 00:01:13.080
+Well the way that we do that is we can make a variable,
+
+31
+00:01:13.080 --> 00:01:17.247
+let's call it response and we wrap it in a promise.all,
+
+32
+00:01:18.396 --> 00:01:21.669
+and promise.all takes an array of promises.
+
+33
+00:01:21.669 --> 00:01:23.477
+So we'll say promise one and promise two.
+
+34
+00:01:23.477 --> 00:01:25.736
+What that's gonna do is it's sorta gonna make one
+
+35
+00:01:25.736 --> 00:01:28.437
+mega promise out of these two smaller ones
+
+36
+00:01:28.437 --> 00:01:31.487
+and the mega promise will not resolve itself
+
+37
+00:01:31.487 --> 00:01:35.887
+until both promises, promise one and promise two come back.
+
+38
+00:01:35.887 --> 00:01:37.999
+So if wesbos comes back in a second,
+
+39
+00:01:37.999 --> 00:01:39.439
+but Scott's takes 10 seconds,
+
+40
+00:01:39.439 --> 00:01:42.359
+the whole thing is gonna take 10 seconds altogether.
+
+41
+00:01:42.359 --> 00:01:44.010
+And of course we need to await that,
+
+42
+00:01:44.010 --> 00:01:46.500
+so we pop await in front of it and then we will
+
+43
+00:01:46.500 --> 00:01:48.831
+console.log the response there.
+
+44
+00:01:48.831 --> 00:01:51.882
+So now if I refresh you'll see response, response,
+
+45
+00:01:51.882 --> 00:01:55.781
+this is not the end user data you may remember
+
+46
+00:01:55.781 --> 00:01:58.181
+that this fetch requires us to do sort of a
+
+47
+00:01:58.181 --> 00:02:00.882
+two parter, where first you fetch the data,
+
+48
+00:02:00.882 --> 00:02:04.698
+and then you turn it into json which turns another promise.
+
+49
+00:02:04.698 --> 00:02:06.130
+So there's a couple ways around that.
+
+50
+00:02:06.130 --> 00:02:09.301
+First and probably easiest is you can just tack a
+
+51
+00:02:09.301 --> 00:02:13.629
+.then onto each of these so dot then you get your response
+
+52
+00:02:13.629 --> 00:02:16.018
+and you return the response .json,
+
+53
+00:02:16.018 --> 00:02:18.258
+you could just use R there to keep it short.
+
+54
+00:02:18.258 --> 00:02:21.327
+And I'll tack both of that onto each one.
+
+55
+00:02:21.327 --> 00:02:24.271
+And what that will do is this promise right here
+
+56
+00:02:24.271 --> 00:02:27.558
+will actually be the second promise that gets returned
+
+57
+00:02:27.558 --> 00:02:30.759
+right here, not the actual initial fetch one.
+
+58
+00:02:30.759 --> 00:02:32.427
+Let's see if that works.
+
+59
+00:02:32.427 --> 00:02:35.327
+There we go, refresh and then we've got --
+
+60
+00:02:35.327 --> 00:02:39.358
+Oh! No, that's not our data, why is it not working?
+
+61
+00:02:39.358 --> 00:02:41.300
+Because we're returning the function json,
+
+62
+00:02:41.300 --> 00:02:43.159
+make sure you put parenthesis on the end
+
+63
+00:02:43.159 --> 00:02:44.788
+of our json there.
+
+64
+00:02:44.788 --> 00:02:46.129
+There we go.
+
+65
+00:02:46.129 --> 00:02:50.138
+Now open that up, it's an array wesbos and stalinski.
+
+66
+00:02:50.138 --> 00:02:51.111
+We've got both of 'em.
+
+67
+00:02:51.111 --> 00:02:52.978
+The other way that you could do it if you don't feel like
+
+68
+00:02:52.978 --> 00:02:55.380
+tacking a then onto each of them,
+
+69
+00:02:55.380 --> 00:02:59.128
+is you could take that array of promises,
+
+70
+00:02:59.128 --> 00:03:00.939
+and map over them.
+
+71
+00:03:00.939 --> 00:03:04.009
+So here we have is, we await our promise and this is
+
+72
+00:03:04.009 --> 00:03:07.503
+actually going to be an array and what we could do is
+
+73
+00:03:07.503 --> 00:03:10.852
+then turn that into another thing that we promise all.
+
+74
+00:03:10.852 --> 00:03:13.435
+We'll say const data, promises,
+
+75
+00:03:15.263 --> 00:03:18.401
+you can take the response promises and we just map over
+
+76
+00:03:18.401 --> 00:03:19.234
+each one.
+
+77
+00:03:19.234 --> 00:03:21.861
+For each response we're gonna return the response
+
+78
+00:03:21.861 --> 00:03:25.052
+.json and then this data promises,
+
+79
+00:03:25.052 --> 00:03:27.343
+if we were to console.log that,
+
+80
+00:03:27.343 --> 00:03:30.073
+it's not gonna be our data just yet,
+
+81
+00:03:30.073 --> 00:03:32.192
+but you're gonna see that it is an array of
+
+82
+00:03:32.192 --> 00:03:36.303
+two extra promises which is turning it into json.
+
+83
+00:03:36.303 --> 00:03:41.001
+So then we could say const wesAndScott is equal to
+
+84
+00:03:41.001 --> 00:03:44.918
+promise.all and we'll give it our data promises
+
+85
+00:03:47.052 --> 00:03:48.620
+and of course we wanna pop an await
+
+86
+00:03:48.620 --> 00:03:50.620
+in front of all of that.
+
+87
+00:03:53.001 --> 00:03:56.668
+Then finally we can console.log wesAndScott,
+
+88
+00:04:00.703 --> 00:04:04.060
+open that up there's the same data that we actually have.
+
+89
+00:04:04.060 --> 00:04:06.248
+That's totally up to you however you like it.
+
+90
+00:04:06.248 --> 00:04:08.549
+One other thing I really like to use in conjunction of this
+
+91
+00:04:08.549 --> 00:04:11.409
+is array destructuring because
+
+92
+00:04:11.409 --> 00:04:12.911
+I made this variable wesAndScott,
+
+93
+00:04:12.911 --> 00:04:16.550
+but what we can do here instead is destructure those values
+
+94
+00:04:16.550 --> 00:04:20.479
+immediately into separate variables wes and Scott
+
+95
+00:04:20.479 --> 00:04:23.146
+and then we have separate variables called wes and Scott
+
+96
+00:04:23.146 --> 00:04:25.528
+and then you'll see watch this.
+
+97
+00:04:25.528 --> 00:04:27.988
+Now we have two separate variables that each have
+
+98
+00:04:27.988 --> 00:04:29.697
+their actual data inside of it.
+
+99
+00:04:29.697 --> 00:04:31.740
+That's really handy, especially if you have
+
+100
+00:04:31.740 --> 00:04:33.780
+an array of values which you need you need to fire off
+
+101
+00:04:33.780 --> 00:04:36.220
+an ajax request for each of the values.
+
+102
+00:04:36.220 --> 00:04:38.967
+Let's do another little example here.
+
+103
+00:04:38.967 --> 00:04:40.929
+Let's comment that out,
+
+104
+00:04:40.929 --> 00:04:44.429
+and we'll make a function called get data.
+
+105
+00:04:48.049 --> 00:04:50.209
+And I'll just run the get data,
+
+106
+00:04:50.209 --> 00:04:53.018
+on load and maybe actually we'll pass it
+
+107
+00:04:53.018 --> 00:04:55.251
+an array of github names.
+
+108
+00:04:55.251 --> 00:04:57.334
+So wesbos, and stalinski.
+
+109
+00:04:58.840 --> 00:05:00.861
+How do you spell his name?
+
+110
+00:05:00.861 --> 00:05:01.861
+There we go.
+
+111
+00:05:02.760 --> 00:05:07.221
+And then this is going to take in an array of names.
+
+112
+00:05:07.221 --> 00:05:09.771
+Now, what you could do here is instead of manually doing
+
+113
+00:05:09.771 --> 00:05:12.771
+P1, P2, we could say const promises,
+
+114
+00:05:15.329 --> 00:05:17.741
+is equal to names.map.
+
+115
+00:05:17.741 --> 00:05:20.891
+So for each name, we're going to map over the name,
+
+116
+00:05:20.891 --> 00:05:25.091
+and from that we're going to return a fetch.
+
+117
+00:05:25.091 --> 00:05:28.640
+And that fetch is going to be going to,
+
+118
+00:05:28.640 --> 00:05:30.890
+I'll just take this URL now
+
+119
+00:05:34.519 --> 00:05:39.239
+and replace my name with the name property that
+
+120
+00:05:39.239 --> 00:05:42.169
+we're looping over each one and then we can also
+
+121
+00:05:42.169 --> 00:05:46.252
+if we'd like we can tack a .then on the end where
+
+122
+00:05:48.396 --> 00:05:52.140
+the response is turned into json right away.
+
+123
+00:05:52.140 --> 00:05:54.340
+And then finally all we have to do is
+
+124
+00:05:54.340 --> 00:05:56.257
+await all the promises.
+
+125
+00:05:57.512 --> 00:06:01.253
+We'll say const wes, Scott is equal to await,
+
+126
+00:06:01.253 --> 00:06:05.420
+promise.all and we'll pass it that list of actual promises.
+
+127
+00:06:08.701 --> 00:06:10.200
+That's really simple, let me go over --
+
+128
+00:06:10.200 --> 00:06:12.829
+Actually let's make sure it works first.
+
+129
+00:06:12.829 --> 00:06:13.861
+Oh no!
+
+130
+00:06:13.861 --> 00:06:16.021
+Then is not a function.
+
+131
+00:06:16.021 --> 00:06:20.133
+That's because I put the then on the wrong side
+
+132
+00:06:20.133 --> 00:06:21.872
+of the quote.
+
+133
+00:06:21.872 --> 00:06:25.821
+And then I could console.log, wes and Scott,
+
+134
+00:06:25.821 --> 00:06:28.173
+separately, give it save and then when I refresh I see
+
+135
+00:06:28.173 --> 00:06:30.092
+two separate variables.
+
+136
+00:06:30.092 --> 00:06:31.443
+What's cool about that is that
+
+137
+00:06:31.443 --> 00:06:36.291
+I can also just say people and put that into an array
+
+138
+00:06:36.291 --> 00:06:39.043
+itself if we don't know how many people are coming in
+
+139
+00:06:39.043 --> 00:06:40.973
+and if we were to add a third,
+
+140
+00:06:40.973 --> 00:06:42.390
+like darcyclarke,
+
+141
+00:06:45.424 --> 00:06:47.714
+it's gonna automatically just make three requests for us
+
+142
+00:06:47.714 --> 00:06:50.092
+each with all of them you can go to the network tab
+
+143
+00:06:50.092 --> 00:06:53.981
+and see all three of our actual requests have been made.
+
+144
+00:06:53.981 --> 00:06:56.592
+There's a lot you can do with all of the map
+
+145
+00:06:56.592 --> 00:06:59.581
+and reduce and all of those other methods
+
+146
+00:06:59.581 --> 00:07:02.021
+that we learned about in our java script 30 course.
+
+147
+00:07:02.021 --> 00:07:05.963
+And they can be used in conjunction with a sync,
+
+148
+00:07:05.963 --> 00:07:07.963
+await and a promise.all.
+
+149
+00:07:08.973 --> 00:07:11.072
+Last one I want to show you is you can also use
+
+150
+00:07:11.072 --> 00:07:14.453
+promise.race, we learned about this in a previous video.
+
+151
+00:07:14.453 --> 00:07:18.053
+For example, if you had multiple requests going off
+
+152
+00:07:18.053 --> 00:07:22.061
+at once and you only cared for the quickest one to
+
+153
+00:07:22.061 --> 00:07:25.031
+come back then you could use promise.race and that will
+
+154
+00:07:25.031 --> 00:07:27.901
+resolve as soon as the first promise of the array
+
+155
+00:07:27.901 --> 00:07:29.301
+of promises that come back.
+
+156
+00:07:29.301 --> 00:07:31.380
+I've never actually had to use that in a real world
+
+157
+00:07:31.380 --> 00:07:34.220
+situation but there could be some use cases there
+
+158
+00:07:34.220 --> 00:07:36.643
+where you're picking multiple URL's and you
+
+159
+00:07:36.643 --> 00:07:38.952
+only care about the fastest one to get back to you.
+
+160
+00:07:38.952 --> 00:07:42.404
+Other than that, I will see you in the next one.
+
