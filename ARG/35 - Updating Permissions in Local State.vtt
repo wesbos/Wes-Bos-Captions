@@ -1,0 +1,866 @@
+﻿WEBVTT
+
+1
+00:00:00.789 --> 00:00:02.792
+<v ->In Last video we set up these little check boxes here that</v>
+
+2
+00:00:02.792 --> 00:00:05.786
+displays all the permissions. In this video we actually
+
+3
+00:00:05.786 --> 00:00:07.801
+going to hook them up so that if the user has that
+
+4
+00:00:07.801 --> 00:00:10.791
+permission, it will show as checked and if the user does not
+
+5
+00:00:10.791 --> 00:00:12.793
+have that it will show as unchecked. Now we are actually
+
+6
+00:00:12.793 --> 00:00:14.793
+going to code up the mutations that allows us to update
+
+7
+00:00:14.793 --> 00:00:17.797
+somebody specific permission. First thing I am going to do
+
+8
+00:00:17.797 --> 00:00:21.793
+is hop into our capital P permission that Jas in. Lets just
+
+9
+00:00:21.793 --> 00:00:24.789
+set some prop types up. Import PropTypes from Prop-types
+
+10
+00:00:24.789 --> 00:00:29.456
+and lets go down to not our permission component but are
+
+11
+00:00:30.795 --> 00:00:32.812
+user component we have here, lets set the PpropTypes on
+
+12
+00:00:32.812 --> 00:00:37.479
+there so Static PropTypes equals to that to the one Prop
+
+13
+00:00:39.796 --> 00:00:43.798
+that this user needs is that user being passed in. Now
+
+14
+00:00:43.798 --> 00:00:46.812
+normally when you pass in an object like that you might
+
+15
+00:00:46.812 --> 00:00:50.813
+do something like a PropTypes dot Object dot IsRequired
+
+16
+00:00:50.813 --> 00:00:54.802
+and that will make sure that object is passed in. But we can
+
+17
+00:00:54.802 --> 00:00:56.804
+take it little step further and actually shape it because we
+
+18
+00:00:56.804 --> 00:01:01.637
+know that in order to pass in a user, we need their name ,
+
+19
+00:01:02.794 --> 00:01:06.801
+email, Id and permissions so we can actually shape the
+
+20
+00:01:06.801 --> 00:01:09.794
+PropTypes to have those sub fields. So say PropType dot
+
+21
+00:01:09.794 --> 00:01:12.794
+shapes and inside of that we can go on set further and will
+
+22
+00:01:12.794 --> 00:01:16.877
+say the Name is going to be PropTypes dot string
+
+23
+00:01:17.784 --> 00:01:20.790
+and then the email is going to be PropTypes dot string and
+
+24
+00:01:20.790 --> 00:01:22.003
+the Id
+
+25
+00:01:22.003 --> 00:01:26.797
+PropTypes dot string and then finally the permissions is
+
+26
+00:01:26.797 --> 00:01:29.779
+going to be PropTypes dot array and we can make this whole
+
+27
+00:01:29.779 --> 00:01:33.804
+thing is required on top of that and that way when you
+
+28
+00:01:33.804 --> 00:01:36.802
+pass in the user it's going to check that it has an object
+
+29
+00:01:36.802 --> 00:01:38.789
+with all of these fields and they are all in the correct
+
+30
+00:01:38.789 --> 00:01:43.372
+type that we have. Good. Next thing that we need to do
+
+31
+00:01:44.791 --> 00:01:47.821
+is to set some initial state so idea here is that our
+
+32
+00:01:47.821 --> 00:01:48.738
+permissions
+
+33
+00:01:50.796 --> 00:01:53.773
+loops over all of the users and then we need to inject the
+
+34
+00:01:53.773 --> 00:01:56.811
+permissions into the specific user and set sort of like a
+
+35
+00:01:56.811 --> 00:01:59.797
+what's called C Data and we are going to set the permissions
+
+36
+00:01:59.797 --> 00:02:04.792
+internally in this user. So we want to go, lets go right
+
+37
+00:02:04.792 --> 00:02:07.789
+below the static PropTypes and say state is equal to
+
+38
+00:02:07.789 --> 00:02:11.807
+curly brackets and inside there we are going to set the
+
+39
+00:02:11.807 --> 00:02:14.809
+permissions. Now the permissions are going to be set from
+
+40
+00:02:14.809 --> 00:02:19.800
+props so say this dot props dot user dot Permissions, now
+
+41
+00:02:19.800 --> 00:02:22.799
+let me talk about this real quick because there is sort of a
+
+42
+00:02:22.799 --> 00:02:26.786
+no no or bad practice in reacting, that is don't use props
+
+43
+00:02:26.786 --> 00:02:30.808
+to populate initial state and the reason behind that is
+
+44
+00:02:30.808 --> 00:02:33.799
+because here I am taking the props that are being fed into
+
+45
+00:02:33.799 --> 00:02:34.632
+the user
+
+46
+00:02:34.632 --> 00:02:37.817
+and setting them into state. Now if they were to ever change
+
+47
+00:02:37.817 --> 00:02:41.774
+at the higher level, they will not be updated into state and
+
+48
+00:02:41.774 --> 00:02:44.791
+then you end up with this problem that you never want to
+
+49
+00:02:44.791 --> 00:02:47.794
+have in React which is you have differing data in two
+
+50
+00:02:47.794 --> 00:02:50.803
+different spots.You always want to have one source of truth.
+
+51
+00:02:50.803 --> 00:02:53.788
+However, this is totally fine in this used case because we
+
+52
+00:02:53.788 --> 00:02:56.791
+are seeding that data meaning the initial data is coming
+
+53
+00:02:56.791 --> 00:03:00.791
+from props but then whenever somebody changes a permission
+
+54
+00:03:00.791 --> 00:03:04.798
+inside of the user then its going to be updated to the state
+
+55
+00:03:04.798 --> 00:03:06.816
+and then when you click save its going to be sent off to the
+
+56
+00:03:06.816 --> 00:03:09.801
+backend. So this is totally fine when we use it as seeding
+
+57
+00:03:09.801 --> 00:03:13.786
+of an initial state and then if this were to be changed up
+
+58
+00:03:13.786 --> 00:03:15.792
+top that will never actually happen in our used case but if
+
+59
+00:03:15.792 --> 00:03:18.811
+it were it does not matter because we have our own internal
+
+60
+00:03:18.811 --> 00:03:22.794
+state. Good. So that is the that is the state and I am going
+
+61
+00:03:22.794 --> 00:03:27.794
+to open up Reactive tools. Bit of an error here, lets come
+
+62
+00:03:27.795 --> 00:03:30.810
+back and address these in just a second and these warnings
+
+63
+00:03:30.810 --> 00:03:34.004
+that we can hit. Lets go to React search for a user
+
+64
+00:03:34.004 --> 00:03:37.805
+component , you see that we have all 4 of our, this is
+
+65
+00:03:37.805 --> 00:03:40.799
+another user component may be we should have named it
+
+66
+00:03:40.799 --> 00:03:42.800
+something little bit different. Lets say that we change that
+
+67
+00:03:42.800 --> 00:03:47.383
+real quick. We call it User permissions so , here we go
+
+68
+00:03:49.798 --> 00:03:52.789
+now they are called User Permissions and you see that out
+
+69
+00:03:52.789 --> 00:03:56.817
+State now has an array of each of the different permissions
+
+70
+00:03:56.817 --> 00:03:59.803
+that each one has. All of them have user and the one that we
+
+71
+00:03:59.803 --> 00:04:04.785
+initially changed has a user and admin.Good. Lets fix these
+
+72
+00:04:04.785 --> 00:04:07.807
+little errors that we have gone on here. First warning
+
+73
+00:04:07.807 --> 00:04:10.800
+Component declare PropTypes instead of PropTypes, Did you
+
+74
+00:04:10.800 --> 00:04:13.789
+misspelled the property assignment. I probably did. Thank
+
+75
+00:04:13.789 --> 00:04:17.813
+you very much. Where did I do that. That looks like in my
+
+76
+00:04:17.813 --> 00:04:20.811
+user component not even the one we are working on, where we
+
+77
+00:04:20.811 --> 00:04:24.812
+got PropTypes. Here we go. User dot lowercase P. It's kind
+
+78
+00:04:24.812 --> 00:04:26.800
+of, its annoys me a lot where its Capital P proptypes is the
+
+79
+00:04:26.800 --> 00:04:30.781
+package, property is lowercase P, Capital T and the package
+
+80
+00:04:30.781 --> 00:04:34.796
+you imported in is prop dash types. Its always get me . So
+
+81
+00:04:34.796 --> 00:04:39.796
+that one should be fixed. Lets give it a refresh. That works
+
+82
+00:04:39.809 --> 00:04:41.795
+and then in this one each child in an array or iterator
+
+83
+00:04:41.795 --> 00:04:46.786
+needs a unique key prop, check the render method of query.
+
+84
+00:04:46.786 --> 00:04:50.792
+So lets take a look here.Looks like its this loop right
+
+85
+00:04:50.792 --> 00:04:54.801
+here, this th needs a key so just say key equal to and then
+
+86
+00:04:54.801 --> 00:04:57.777
+again key always needs to be something that is unique and in
+
+87
+00:04:57.777 --> 00:05:00.782
+our case the permission is going to be unique so that should
+
+88
+00:05:00.782 --> 00:05:04.782
+solve that. Lets see if any more pop up.
+
+89
+00:05:04.782 --> 00:05:05.615
+One more.
+
+90
+00:05:07.805 --> 00:05:08.638
+Line 29.
+
+91
+00:05:09.803 --> 00:05:12.804
+Anytime you have a loop over anything so this one as well,
+
+92
+00:05:12.804 --> 00:05:16.806
+we probably need to put in a key in here as well so key is
+
+93
+00:05:16.806 --> 00:05:19.811
+equal to, we will use the user Id in this case because that
+
+94
+00:05:19.811 --> 00:05:21.805
+is going to be unique. We got one more popping up here and
+
+95
+00:05:21.805 --> 00:05:25.767
+that's likely because we are mapping. Anytime you map you
+
+96
+00:05:25.767 --> 00:05:29.784
+probably you need to put in a key so say key is equal to
+
+97
+00:05:29.784 --> 00:05:34.701
+permission. That's going to be unique for that one and they
+
+98
+00:05:35.772 --> 00:05:39.772
+all gone. Hurray.Ok so we are in a good shape there so we
+
+99
+00:05:39.772 --> 00:05:42.804
+set the Prop text, we set the stuff to initial state, now
+
+100
+00:05:42.804 --> 00:05:45.812
+lets work on getting this Input here checked. We set the
+
+101
+00:05:45.812 --> 00:05:48.791
+checked attribute, if I set that to Checked equal to true
+
+102
+00:05:48.791 --> 00:05:51.798
+You will see that they all checked in. If I were to remove
+
+103
+00:05:51.798 --> 00:05:55.773
+this, they all will UnChecked. But we want to do is that we
+
+104
+00:05:55.773 --> 00:05:58.801
+want to have little condition here that says that this dot
+
+105
+00:05:58.801 --> 00:06:00.634
+state dot permissions
+
+106
+00:06:03.826 --> 00:06:05.807
+dot includes because its an array and
+
+107
+00:06:05.807 --> 00:06:07.784
+then if it include the current permission that we are
+
+108
+00:06:07.784 --> 00:06:08.867
+looping over
+
+109
+00:06:10.794 --> 00:06:12.772
+and that should just check the one. So it will
+
+110
+00:06:12.772 --> 00:06:16.765
+always check against the state that it has and you will see
+
+111
+00:06:16.765 --> 00:06:19.816
+that the Admin and User of the one we worked on is checked
+
+112
+00:06:19.816 --> 00:06:21.776
+and rest just have the user.Now if we open up depth tools,
+
+113
+00:06:21.776 --> 00:06:24.803
+we are going to see little error here. Says Failed propType
+
+114
+00:06:24.803 --> 00:06:28.787
+you provided a Checked prop without an on change handler
+
+115
+00:06:28.787 --> 00:06:31.820
+that was rendered a read only field and watch this If I
+
+116
+00:06:31.820 --> 00:06:34.803
+check them they will immediately uncheck themselves and
+
+117
+00:06:34.803 --> 00:06:38.795
+that because if you tie the value or the checked attribute
+
+118
+00:06:38.795 --> 00:06:42.789
+of an input to something that is in state then you need to
+
+119
+00:06:42.789 --> 00:06:46.785
+go to state that actually make that thing to check or
+
+120
+00:06:46.785 --> 00:06:49.803
+unCheck. That's exactly what we are going to do right now.
+
+121
+00:06:49.803 --> 00:06:54.775
+We go right beside this checked right here and first of all
+
+122
+00:06:54.775 --> 00:06:56.800
+we are going to say value of this input going to be
+
+123
+00:06:56.800 --> 00:07:01.550
+permission and then we need to add in onChange handler so
+
+124
+00:07:02.808 --> 00:07:06.802
+that one someone does check in we can put that value into
+
+125
+00:07:06.802 --> 00:07:08.813
+state or when someone Unchecks in then we can take that
+
+126
+00:07:08.813 --> 00:07:13.813
+value out of State. And then that will allow us to then
+
+127
+00:07:13.843 --> 00:07:16.798
+update the UI so on Change and we will just shell that off
+
+128
+00:07:16.798 --> 00:07:21.715
+to a separate methods. So this dot handle permission change
+
+129
+00:07:26.813 --> 00:07:28.777
+and up above render we will make that handle permission
+
+130
+00:07:28.777 --> 00:07:31.797
+change , its going to be an error function as we need access
+
+131
+00:07:31.797 --> 00:07:35.797
+to this and inside here just Console dot log , we need to
+
+132
+00:07:35.797 --> 00:07:40.464
+pass the event here and just console the log the event.
+
+133
+00:07:41.781 --> 00:07:44.795
+Now you see when I click one of these we get this event
+
+134
+00:07:44.795 --> 00:07:47.792
+happening right here , if we were to console log the event
+
+135
+00:07:47.792 --> 00:07:50.375
+dot target, when that happens,
+
+136
+00:07:51.812 --> 00:07:52.794
+you see that we get the
+
+137
+00:07:52.794 --> 00:07:55.762
+actual input and then we actually have access to the value
+
+138
+00:07:55.762 --> 00:07:59.796
+of the target as well as the checked attribute of whether
+
+139
+00:07:59.796 --> 00:08:03.765
+or not the user was checking it. So let me clear this out
+
+140
+00:08:03.765 --> 00:08:06.802
+here and I am going to check item Create and it says Item
+
+141
+00:08:06.802 --> 00:08:09.801
+create and true and if I have to that over and over again
+
+142
+00:08:09.801 --> 00:08:13.821
+its always going to say true that because I am not able to
+
+143
+00:08:13.821 --> 00:08:15.794
+actually set it to checked but in here what we need to do
+
+144
+00:08:15.794 --> 00:08:20.461
+is either add this permission to our permission state or
+
+145
+00:08:22.800 --> 00:08:25.791
+remove it from our permission state and that will in turn
+
+146
+00:08:25.791 --> 00:08:29.794
+actually update the Input UI that we have here. So lets get
+
+147
+00:08:29.794 --> 00:08:32.807
+rid of these console logs and lets just get a Check Box
+
+148
+00:08:32.807 --> 00:08:37.390
+variable, so CheckBox is equal to e dot target and then
+
+149
+00:08:38.794 --> 00:08:39.961
+we take a copy
+
+150
+00:08:41.786 --> 00:08:43.953
+of the current permissions
+
+151
+00:08:45.802 --> 00:08:46.798
+we will call that
+
+152
+00:08:46.798 --> 00:08:49.776
+Updated permissions and the way you can copy an array very
+
+153
+00:08:49.776 --> 00:08:52.807
+efficiently in Java Script is that you can spread this dot
+
+154
+00:08:52.807 --> 00:08:56.803
+state dot permissions, again the reason why we don't just
+
+155
+00:08:56.803 --> 00:09:00.826
+say this dot state dot permission is that , that is just
+
+156
+00:09:00.826 --> 00:09:02.800
+going to create a variable that reference the state and you
+
+157
+00:09:02.800 --> 00:09:05.828
+know in Reactive that you never want to mutate, you never
+
+158
+00:09:05.828 --> 00:09:08.787
+want to update State directly, You always want to take a
+
+159
+00:09:08.787 --> 00:09:12.825
+copy of state, update you data and then put it back into
+
+160
+00:09:12.825 --> 00:09:16.768
+State. So in our case here, we simply just going to take a
+
+161
+00:09:16.768 --> 00:09:19.794
+copy and this will this will take a top levels copy of all
+
+162
+00:09:19.794 --> 00:09:22.773
+of the items that are inside of the permissions. Lets just
+
+163
+00:09:22.773 --> 00:09:25.856
+console log that update permissions.
+
+164
+00:09:26.741 --> 00:09:29.491
+See what we are working with here
+
+165
+00:09:30.770 --> 00:09:32.797
+So every time I check it you see where user Admin
+
+166
+00:09:32.797 --> 00:09:34.797
+user Admin those are the copy of the current permissions
+
+167
+00:09:34.797 --> 00:09:37.806
+of , I have to do on another one we just get user. Now here
+
+168
+00:09:37.806 --> 00:09:42.771
+is where we say figure out if we need to remove or add this
+
+169
+00:09:42.771 --> 00:09:43.771
+permission.
+
+170
+00:09:44.790 --> 00:09:48.623
+So if the check box has a checked attribute on
+
+171
+00:09:49.813 --> 00:09:52.313
+it then we need to add it in.
+
+172
+00:09:55.769 --> 00:09:56.810
+So its just take the updated
+
+173
+00:09:56.810 --> 00:09:57.810
+permissions
+
+174
+00:09:59.953 --> 00:10:01.817
+and we push the new permission on to it which
+
+175
+00:10:01.817 --> 00:10:03.734
+was checkbox dot value
+
+176
+00:10:06.805 --> 00:10:08.773
+and you can see here if I have to
+
+177
+00:10:08.773 --> 00:10:12.790
+console log the updated permission. Now we should see that
+
+178
+00:10:12.790 --> 00:10:16.758
+that value is being added to our updated array so click
+
+179
+00:10:16.758 --> 00:10:20.796
+on Item Create , you see that the array is now 3 items but
+
+180
+00:10:20.796 --> 00:10:24.785
+we still doesn't update that box that because we have yet
+
+181
+00:10:24.785 --> 00:10:27.827
+to put that into State. So lets do that right now. So
+
+182
+00:10:27.827 --> 00:10:32.782
+this dot State we are going to update the permissions
+
+183
+00:10:32.782 --> 00:10:36.802
+part of State with our new updated array which is Updated
+
+184
+00:10:36.802 --> 00:10:37.885
+permissions.
+
+185
+00:10:39.799 --> 00:10:41.802
+So lets check that out now. If I check it you
+
+186
+00:10:41.802 --> 00:10:44.821
+see that now it checks but I am unable to actually remove
+
+187
+00:10:44.821 --> 00:10:48.817
+it, that's because we have to do the other part of this.
+
+188
+00:10:48.817 --> 00:10:53.567
+So we will do an else and say updated permission is equal
+
+189
+00:10:56.796 --> 00:11:01.793
+to update permissions dot filter. Wow BiquadFilernode that's
+
+190
+00:11:01.793 --> 00:11:06.793
+not what we want and we will just loop over all of the
+
+191
+00:11:06.806 --> 00:11:10.791
+current permissions and remove that one from the updated
+
+192
+00:11:10.791 --> 00:11:13.291
+permissions. So say permission
+
+193
+00:11:15.805 --> 00:11:17.808
+arrow function and we only
+
+194
+00:11:17.808 --> 00:11:21.818
+want to filer if it is does not equal to the current check
+
+195
+00:11:21.818 --> 00:11:25.784
+box values. So its the Permission not equal to the check
+
+196
+00:11:25.784 --> 00:11:30.784
+box dot value and what that will do is if we have an array
+
+197
+00:11:30.796 --> 00:11:33.801
+of users Admin and item Create and the one we UnChecked
+
+198
+00:11:33.801 --> 00:11:37.791
+was admin, its going to say , oh if it is admin take it away
+
+199
+00:11:37.791 --> 00:11:40.805
+from the array and then the updated permissions value
+
+200
+00:11:40.805 --> 00:11:44.779
+variable is what we have there.Now we should be able to
+
+201
+00:11:44.779 --> 00:11:48.792
+check it unCheck it. Oh little bit of an error, updated
+
+202
+00:11:48.792 --> 00:11:51.783
+permissions is read only. Oh that because I made this a
+
+203
+00:11:51.783 --> 00:11:54.786
+const, change that to a let. That's a perfect use case of
+
+204
+00:11:54.786 --> 00:11:58.786
+when you might want to use let and know it works
+
+205
+00:11:59.805 --> 00:12:02.818
+beautifully.Good. So lets triple check if we are going to
+
+206
+00:12:02.818 --> 00:12:06.785
+rec depth tools, search for the User permissions, look at
+
+207
+00:12:06.785 --> 00:12:10.796
+State for this user, now if I were to open up this one
+
+208
+00:12:10.796 --> 00:12:14.296
+we are looking for , looking for this one,
+
+209
+00:12:18.782 --> 00:12:19.823
+Now check it you see
+
+210
+00:12:19.823 --> 00:12:22.804
+these items are being pushed into State and then when I
+
+211
+00:12:22.804 --> 00:12:25.805
+remove them, you see that they being removed. So good. We
+
+212
+00:12:25.805 --> 00:12:28.829
+have got it working locally and the browser but if I were to
+
+213
+00:12:28.829 --> 00:12:32.803
+refresh, that's immediately gone because we have not yet
+
+214
+00:12:32.803 --> 00:12:35.803
+coded the mutation that's going to push these updated
+
+215
+00:12:35.803 --> 00:12:39.791
+permissions to our backend and that's exactly what we are
+
+216
+00:12:39.791 --> 00:12:43.439
+going to be doing in next episode. So I will see you then.
+

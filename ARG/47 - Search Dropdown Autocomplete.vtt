@@ -1,0 +1,1486 @@
+﻿WEBVTT
+
+1
+00:00:01.160 --> 00:00:03.330
+<v Wes>Alright, now we're going to tackle the search</v>
+
+2
+00:00:03.330 --> 00:00:06.102
+on the website, and I actually kinda like this one because
+
+3
+00:00:06.102 --> 00:00:08.890
+we're gonna be using a package that's called Downshift.
+
+4
+00:00:08.890 --> 00:00:11.630
+And it's released by PayPal.
+
+5
+00:00:11.630 --> 00:00:14.730
+And it uses the whole Render Prop mentality
+
+6
+00:00:14.730 --> 00:00:17.860
+to allow us to have all of the functionality of
+
+7
+00:00:17.860 --> 00:00:20.880
+sort of a search like this with a drop down,
+
+8
+00:00:20.880 --> 00:00:23.610
+so if I were to search for N, then it would show me
+
+9
+00:00:23.610 --> 00:00:25.260
+all of the items that are inside of it
+
+10
+00:00:25.260 --> 00:00:27.160
+and I can use my arrow keys to go up and down,
+
+11
+00:00:27.160 --> 00:00:29.770
+I can click on them, I can hit enter
+
+12
+00:00:29.770 --> 00:00:31.850
+on one of them and then route to it.
+
+13
+00:00:31.850 --> 00:00:35.440
+So all of that functionality is part of Downshift,
+
+14
+00:00:35.440 --> 00:00:38.500
+but none of the interface is part of Downshift.
+
+15
+00:00:38.500 --> 00:00:41.870
+And I think that's the real power of using a Render Prop
+
+16
+00:00:41.870 --> 00:00:44.260
+when you want to code a whole bunch of React components
+
+17
+00:00:44.260 --> 00:00:48.230
+that are just functionality, and it's not tied at all
+
+18
+00:00:48.230 --> 00:00:49.337
+to what it looks like.
+
+19
+00:00:49.337 --> 00:00:52.060
+That's exactly what we're gonna be using now with Downshift.
+
+20
+00:00:52.060 --> 00:00:55.850
+We've got kind of a lot to do here, because we have to
+
+21
+00:00:55.850 --> 00:00:58.730
+write a query that's going to do sort of a search
+
+22
+00:00:58.730 --> 00:01:00.880
+against the database, and we need to write
+
+23
+00:01:00.880 --> 00:01:03.740
+a component that's going to render out those results.
+
+24
+00:01:03.740 --> 00:01:06.500
+And then we're also gonna run into a bit of a
+
+25
+00:01:06.500 --> 00:01:09.970
+interesting situation where we need to query
+
+26
+00:01:09.970 --> 00:01:11.970
+not on page load, everything so far
+
+27
+00:01:11.970 --> 00:01:13.880
+has been a query on page load.
+
+28
+00:01:13.880 --> 00:01:16.410
+But when this loads, this search box,
+
+29
+00:01:16.410 --> 00:01:18.830
+we don't want it to search for anything
+
+30
+00:01:18.830 --> 00:01:21.240
+until I start to type something in here,
+
+31
+00:01:21.240 --> 00:01:23.540
+and then I'll be able to go off and search
+
+32
+00:01:23.540 --> 00:01:25.780
+for different things that I want to see.
+
+33
+00:01:25.780 --> 00:01:27.730
+So we're gonna figure out how do we actually get
+
+34
+00:01:27.730 --> 00:01:30.708
+queries to run on demand, not queries to run
+
+35
+00:01:30.708 --> 00:01:33.330
+on page load, which is what we're used to.
+
+36
+00:01:33.330 --> 00:01:34.830
+So let's go on in here.
+
+37
+00:01:34.830 --> 00:01:36.640
+We're gonna make a new component,
+
+38
+00:01:36.640 --> 00:01:38.543
+and it's going to be called Search.js.
+
+39
+00:01:40.100 --> 00:01:44.100
+And we're gonna do a regular import React from 'react'.
+
+40
+00:01:45.588 --> 00:01:50.213
+We're going to import Downshift from the Downshift package.
+
+41
+00:01:52.240 --> 00:01:55.450
+Import our router from next/router,
+
+42
+00:01:55.450 --> 00:01:57.170
+and that's gonna allow us to change the page.
+
+43
+00:01:57.170 --> 00:01:58.333
+We've used that before.
+
+44
+00:01:59.280 --> 00:02:02.560
+Import, and this is where we've never done this
+
+45
+00:02:02.560 --> 00:02:05.410
+with React Apollo, it's called an Apollo Consumer
+
+46
+00:02:06.260 --> 00:02:07.893
+from React Apollo.
+
+47
+00:02:09.230 --> 00:02:11.930
+And that's going to allow us to run these queries on demand
+
+48
+00:02:11.930 --> 00:02:15.070
+and not on page load with a regular query or a mutation.
+
+49
+00:02:15.070 --> 00:02:17.773
+Import GQL from GraphQL tag.
+
+50
+00:02:18.724 --> 00:02:23.440
+Import Debounce from lodash.debounce.
+
+51
+00:02:23.440 --> 00:02:27.020
+I'll explain why we need that a little bit later on.
+
+52
+00:02:27.020 --> 00:02:29.120
+And then finally we need a bunch of styles
+
+53
+00:02:29.120 --> 00:02:31.380
+from our DropDown styles.
+
+54
+00:02:31.380 --> 00:02:34.810
+So if you look in here, we've got a regular DropDown,
+
+55
+00:02:34.810 --> 00:02:38.890
+we have our DropDown Items, we have a glow key frame,
+
+56
+00:02:38.890 --> 00:02:41.620
+and then we have some regular search styles.
+
+57
+00:02:41.620 --> 00:02:45.410
+So I've exported those all as named exports.
+
+58
+00:02:45.410 --> 00:02:48.120
+So we can actually use, just take this
+
+59
+00:02:48.120 --> 00:02:53.120
+and import them all from the styles DropDown file.
+
+60
+00:02:57.240 --> 00:02:58.700
+Alright, so those are all of our imports.
+
+61
+00:02:58.700 --> 00:03:00.650
+We're going to go through each of one of those
+
+62
+00:03:00.650 --> 00:03:03.070
+over the next couple videos.
+
+63
+00:03:03.070 --> 00:03:04.490
+Then, what we want to do is make
+
+64
+00:03:04.490 --> 00:03:06.360
+an Autocomplete component here.
+
+65
+00:03:06.360 --> 00:03:08.210
+So we'll say class AutoComplete
+
+66
+00:03:10.320 --> 00:03:13.253
+extends React.component.
+
+67
+00:03:14.310 --> 00:03:16.860
+Inside of that, we need a render.
+
+68
+00:03:16.860 --> 00:03:20.020
+Inside of that, let's grab our SearchStyles.
+
+69
+00:03:20.020 --> 00:03:21.980
+Inside of that we need a div.
+
+70
+00:03:21.980 --> 00:03:26.980
+Then we need an input with the type of search.
+
+71
+00:03:28.030 --> 00:03:31.950
+And we need a DropDown Styles that we imported from here.
+
+72
+00:03:31.950 --> 00:03:34.100
+And then inside of there, just put a paragraph tag
+
+73
+00:03:34.100 --> 00:03:37.420
+that says items will go here.
+
+74
+00:03:37.420 --> 00:03:39.900
+It's kind of our layout that we have.
+
+75
+00:03:39.900 --> 00:03:43.713
+Then I'll say export default AutoComplete.
+
+76
+00:03:45.800 --> 00:03:46.920
+Looking pretty good so far.
+
+77
+00:03:46.920 --> 00:03:48.823
+Oh, this should be return.
+
+78
+00:03:50.276 --> 00:03:52.123
+Let me just pop a return in front of it.
+
+79
+00:03:53.340 --> 00:03:57.993
+Then let's go up to our Header.js, import our search,
+
+80
+00:04:04.270 --> 00:04:09.000
+and then swap out the paragraph that says search
+
+81
+00:04:09.000 --> 00:04:11.393
+with the actual Search.
+
+82
+00:04:13.560 --> 00:04:14.393
+Looks good.
+
+83
+00:04:14.393 --> 00:04:17.410
+Let's head back to our actual application and test it out.
+
+84
+00:04:17.410 --> 00:04:20.850
+Good, so that's a general layout of the search box
+
+85
+00:04:20.850 --> 00:04:22.370
+as well as the display.
+
+86
+00:04:22.370 --> 00:04:25.220
+Let's move into the actual query that we're gonna write
+
+87
+00:04:25.220 --> 00:04:28.820
+that's going to go off and search our items.
+
+88
+00:04:28.820 --> 00:04:30.570
+If you flip back to your server side
+
+89
+00:04:30.570 --> 00:04:32.950
+and look at your Schema.GraphQL,
+
+90
+00:04:32.950 --> 00:04:34.950
+you'll notice that we have this items query
+
+91
+00:04:34.950 --> 00:04:37.250
+which we've used before to grab all of our items.
+
+92
+00:04:37.250 --> 00:04:41.730
+However, we've also passed this where ItemWhereInput.
+
+93
+00:04:41.730 --> 00:04:44.000
+And that's what's going to allow us to actually search
+
+94
+00:04:44.000 --> 00:04:46.967
+based on the name of the item and the name,
+
+95
+00:04:46.967 --> 00:04:49.000
+the description of the item.
+
+96
+00:04:49.000 --> 00:04:50.920
+So let's flip back to our front end here
+
+97
+00:04:50.920 --> 00:04:53.380
+and go ahead and code up that query.
+
+98
+00:04:53.380 --> 00:04:58.253
+Say const Search Items Query is equal to gql.
+
+99
+00:05:01.570 --> 00:05:04.840
+Inside of that we'll have a query called Search Items Query
+
+100
+00:05:04.840 --> 00:05:08.663
+that takes in a search term, and that is going to be
+
+101
+00:05:10.630 --> 00:05:12.513
+a string that is required.
+
+102
+00:05:14.190 --> 00:05:16.370
+Then we are going to run our Items.
+
+103
+00:05:16.370 --> 00:05:19.310
+Remember that's this one right here, items.
+
+104
+00:05:19.310 --> 00:05:21.390
+And we can pass a Where input.
+
+105
+00:05:21.390 --> 00:05:25.890
+So we go for the items, we want to say where.
+
+106
+00:05:25.890 --> 00:05:28.380
+Now this is going to be, normally we would say
+
+107
+00:05:28.380 --> 00:05:31.500
+something like the title is equal to something,
+
+108
+00:05:31.500 --> 00:05:34.560
+but we can't say it's exactly title.
+
+109
+00:05:34.560 --> 00:05:37.763
+So we use another property called title contains.
+
+110
+00:05:39.420 --> 00:05:42.770
+And that is going to contain the search term.
+
+111
+00:05:42.770 --> 00:05:45.170
+But then we also want to check the description.
+
+112
+00:05:45.170 --> 00:05:50.170
+So we'll say description contains the search term.
+
+113
+00:05:53.800 --> 00:05:56.320
+So that will check where, it'll look for items
+
+114
+00:05:56.320 --> 00:05:58.520
+where the title contains the search term
+
+115
+00:05:58.520 --> 00:06:01.480
+and the description contains the search term.
+
+116
+00:06:01.480 --> 00:06:03.910
+But that's, that's not great because
+
+117
+00:06:03.910 --> 00:06:06.820
+if we're searching for AirMax,
+
+118
+00:06:06.820 --> 00:06:10.270
+that might only be in the title and not the description.
+
+119
+00:06:10.270 --> 00:06:15.270
+So what we can do here is instead of passing this directly,
+
+120
+00:06:15.560 --> 00:06:19.423
+we can set a property called OR, which is an array.
+
+121
+00:06:20.590 --> 00:06:25.020
+And then you can give it a bunch of objects.
+
+122
+00:06:25.020 --> 00:06:29.647
+So the first one would be an object with title contains.
+
+123
+00:06:29.647 --> 00:06:32.110
+And the second one would be an object
+
+124
+00:06:34.830 --> 00:06:37.030
+with description contains.
+
+125
+00:06:37.030 --> 00:06:39.880
+And that will say find me items where
+
+126
+00:06:39.880 --> 00:06:42.830
+one of these is true, the title contains the search term
+
+127
+00:06:42.830 --> 00:06:45.980
+or the description contains the search term.
+
+128
+00:06:45.980 --> 00:06:48.250
+And that will search both of those fields for us.
+
+129
+00:06:48.250 --> 00:06:51.160
+All of these are provided by prisma by default.
+
+130
+00:06:51.160 --> 00:06:53.800
+Again, if you want to see it you go to your generated
+
+131
+00:06:53.800 --> 00:06:57.240
+prisma.graphql file and you search for
+
+132
+00:06:57.240 --> 00:07:00.970
+the item where, what is it called?
+
+133
+00:07:00.970 --> 00:07:05.600
+Item where input, so just search for input, item where input
+
+134
+00:07:05.600 --> 00:07:10.090
+and you can see that the item where input will take
+
+135
+00:07:10.090 --> 00:07:12.590
+an array of or's of itself, actually,
+
+136
+00:07:12.590 --> 00:07:15.360
+so you can nest them as deeply as you want.
+
+137
+00:07:15.360 --> 00:07:17.110
+And then if we scroll down here,
+
+138
+00:07:17.110 --> 00:07:19.930
+we can search for specific id's
+
+139
+00:07:19.930 --> 00:07:21.800
+where an id is not equal to something,
+
+140
+00:07:21.800 --> 00:07:26.310
+id is in an array of id's, id is greater than, less than,
+
+141
+00:07:26.310 --> 00:07:28.480
+id not contains, id contains.
+
+142
+00:07:28.480 --> 00:07:31.310
+And then these are the ones that we're looking for,
+
+143
+00:07:31.310 --> 00:07:34.770
+is the title contains, and then for every single field
+
+144
+00:07:34.770 --> 00:07:38.610
+that is on our item, we'll get the whole in, not in,
+
+145
+00:07:38.610 --> 00:07:40.610
+contains, does not contain, greater than,
+
+146
+00:07:40.610 --> 00:07:42.850
+less than, you get the point, right?
+
+147
+00:07:42.850 --> 00:07:44.840
+That's the beauty of Prisma is that it gives us
+
+148
+00:07:44.840 --> 00:07:48.250
+that whole query for ourselves.
+
+149
+00:07:48.250 --> 00:07:50.700
+Then returned from each of those,
+
+150
+00:07:50.700 --> 00:07:52.550
+we just need the id of the item,
+
+151
+00:07:52.550 --> 00:07:55.230
+the image of the item, and then the title of the item
+
+152
+00:07:55.230 --> 00:07:57.840
+'cause those are the only three pieces
+
+153
+00:07:57.840 --> 00:08:00.530
+that we are interested in to display to the user.
+
+154
+00:08:00.530 --> 00:08:03.180
+Even though we're searching the description,
+
+155
+00:08:03.180 --> 00:08:05.530
+we're not gonna display the description
+
+156
+00:08:05.530 --> 00:08:08.360
+in the dropdown that we have.
+
+157
+00:08:08.360 --> 00:08:10.700
+Next if we go down to this input here,
+
+158
+00:08:10.700 --> 00:08:12.610
+this is where the input, when somebody types
+
+159
+00:08:12.610 --> 00:08:15.480
+into this input, we need to fire off an on change event,
+
+160
+00:08:15.480 --> 00:08:17.330
+and then that needs to go to our database
+
+161
+00:08:17.330 --> 00:08:18.810
+and run this query.
+
+162
+00:08:18.810 --> 00:08:20.730
+The problem is that the only way that we know
+
+163
+00:08:20.730 --> 00:08:24.050
+how to expose a query to an input right now
+
+164
+00:08:24.050 --> 00:08:27.230
+is if we were to take the query component
+
+165
+00:08:27.230 --> 00:08:29.220
+and wrap it in an input.
+
+166
+00:08:29.220 --> 00:08:31.610
+But what that would do is it would trigger the query
+
+167
+00:08:31.610 --> 00:08:33.600
+on page load, and then every single time
+
+168
+00:08:33.600 --> 00:08:36.950
+someone loads a page, you'd have this unnecessary query
+
+169
+00:08:36.950 --> 00:08:39.410
+that's firing off, not to mention how do you
+
+170
+00:08:39.410 --> 00:08:42.480
+refire it when someone has changed the value in it?
+
+171
+00:08:42.480 --> 00:08:45.210
+So this is where we actually need direct access
+
+172
+00:08:45.210 --> 00:08:48.960
+to our Apollo Client, because on our Apollo Client
+
+173
+00:08:48.960 --> 00:08:51.010
+we can manually fire off these queries
+
+174
+00:08:51.010 --> 00:08:53.250
+rather than using a Render Prop.
+
+175
+00:08:53.250 --> 00:08:56.630
+So that's exactly why we imported this Apollo Consumer.
+
+176
+00:08:56.630 --> 00:08:58.300
+And what the Apollo Consumer will do
+
+177
+00:08:58.300 --> 00:09:01.450
+is it will expose the client to us
+
+178
+00:09:01.450 --> 00:09:04.670
+so that we can manually run these queries ourselves.
+
+179
+00:09:04.670 --> 00:09:08.950
+So we're gonna go right above this input
+
+180
+00:09:08.950 --> 00:09:13.400
+and grab our Apollo Consumer and wrap
+
+181
+00:09:14.300 --> 00:09:16.533
+the input that we have.
+
+182
+00:09:17.560 --> 00:09:19.640
+Then inside of the Apollo Consumer,
+
+183
+00:09:19.640 --> 00:09:21.340
+we're going to have a Render Prop.
+
+184
+00:09:23.970 --> 00:09:28.970
+And the thing that it will give us is the Apollo Client.
+
+185
+00:09:31.210 --> 00:09:34.800
+And then inside of this input we can return it.
+
+186
+00:09:34.800 --> 00:09:38.970
+Then we can wire up an on change event to that,
+
+187
+00:09:38.970 --> 00:09:41.390
+and we can simply just right here, let's just run
+
+188
+00:09:41.390 --> 00:09:43.190
+a little inline function for the time being
+
+189
+00:09:43.190 --> 00:09:45.020
+that says console.log the client.
+
+190
+00:09:45.020 --> 00:09:48.399
+I just want to see that we've got everything working here.
+
+191
+00:09:48.399 --> 00:09:51.660
+A little bit of an error, element type is invalid.
+
+192
+00:09:51.660 --> 00:09:54.380
+Did we import the Apollo Consumer properly?
+
+193
+00:09:54.380 --> 00:09:56.470
+Oh, I imported it from React Adopt.
+
+194
+00:09:56.470 --> 00:09:59.863
+Obviously not React Adopt, it's React Apollo.
+
+195
+00:10:02.270 --> 00:10:03.103
+There we go.
+
+196
+00:10:03.103 --> 00:10:04.490
+Let's open our dev tools here.
+
+197
+00:10:07.120 --> 00:10:08.993
+And then whenever I type into here,
+
+198
+00:10:10.110 --> 00:10:14.130
+we're getting access to the Apollo Client.
+
+199
+00:10:14.130 --> 00:10:17.320
+And inside of that you can see we have the cache,
+
+200
+00:10:17.320 --> 00:10:18.930
+which holds all of our data.
+
+201
+00:10:18.930 --> 00:10:20.450
+This is, look at, here's all of the items
+
+202
+00:10:20.450 --> 00:10:23.130
+and this is all of the data that lives in our Apollo Client.
+
+203
+00:10:23.130 --> 00:10:25.570
+All the config, all the optimistic stuff
+
+204
+00:10:25.570 --> 00:10:26.680
+that we talked about earlier,
+
+205
+00:10:26.680 --> 00:10:28.970
+all of the things that's being watched.
+
+206
+00:10:28.970 --> 00:10:31.060
+But what we're concerned about is this query.
+
+207
+00:10:31.060 --> 00:10:34.180
+See this is a query function and this is a mutate function.
+
+208
+00:10:34.180 --> 00:10:36.790
+This is going to allow us to manually call mutations
+
+209
+00:10:36.790 --> 00:10:40.020
+and queries rather than us having to use a Render Prop.
+
+210
+00:10:40.020 --> 00:10:42.200
+And that is exactly what we want to do.
+
+211
+00:10:42.200 --> 00:10:44.690
+So let's go back to this on change here.
+
+212
+00:10:44.690 --> 00:10:47.030
+And we'll swap that out with an event,
+
+213
+00:10:47.030 --> 00:10:50.400
+and that event needs to call e.persist.
+
+214
+00:10:50.400 --> 00:10:53.000
+And then next we're going to call this.onchange.
+
+215
+00:10:53.000 --> 00:10:55.450
+We're gonna pass the event that we have
+
+216
+00:10:55.450 --> 00:10:57.850
+as well as we're gonna pass the client.
+
+217
+00:10:57.850 --> 00:11:00.420
+And what that will do is this Apollo Consumer
+
+218
+00:11:00.420 --> 00:11:04.310
+exposes the client to us, and then when somebody types,
+
+219
+00:11:04.310 --> 00:11:08.090
+we're gonna pass the client to a separate function.
+
+220
+00:11:08.090 --> 00:11:10.340
+And that allows us to go above the render
+
+221
+00:11:10.340 --> 00:11:12.340
+and make an onchange handler here
+
+222
+00:11:14.090 --> 00:11:17.403
+that accepts that event and the client.
+
+223
+00:11:20.490 --> 00:11:23.940
+And we can go in here and say I'm inside
+
+224
+00:11:23.940 --> 00:11:28.940
+the onchange handler, and console log the client.
+
+225
+00:11:29.300 --> 00:11:30.650
+Make sure we still have it.
+
+226
+00:11:34.080 --> 00:11:36.290
+So go and type into here.
+
+227
+00:11:36.290 --> 00:11:38.790
+You see every single time that I make a change,
+
+228
+00:11:38.790 --> 00:11:41.330
+we're going to see the default client.
+
+229
+00:11:41.330 --> 00:11:43.600
+Now that we have this onchange handler,
+
+230
+00:11:43.600 --> 00:11:45.750
+let's get rid of these console logs here.
+
+231
+00:11:45.750 --> 00:11:49.100
+Let's actually fire off a query for ourselves.
+
+232
+00:11:49.100 --> 00:11:52.670
+So we can say const the response
+
+233
+00:11:52.670 --> 00:11:55.623
+is equal to await client.query.
+
+234
+00:11:56.460 --> 00:11:58.860
+The query that we want to fire off
+
+235
+00:11:58.860 --> 00:12:01.300
+is going to be called search items query.
+
+236
+00:12:01.300 --> 00:12:05.670
+So query, it's called search items query.
+
+237
+00:12:05.670 --> 00:12:09.410
+And then the variables that we're gonna pass
+
+238
+00:12:09.410 --> 00:12:14.410
+is the search term, and that is going to be equal to
+
+239
+00:12:14.970 --> 00:12:19.903
+whatever was inside of the input, so e.target.value.
+
+240
+00:12:21.270 --> 00:12:23.600
+Now this is not an async function,
+
+241
+00:12:23.600 --> 00:12:26.290
+so we can change it to an async function.
+
+242
+00:12:26.290 --> 00:12:31.130
+And then right here we can console log the response
+
+243
+00:12:31.130 --> 00:12:32.933
+that comes back from that query.
+
+244
+00:12:39.480 --> 00:12:41.463
+So I'm gonna type in an A here,
+
+245
+00:12:42.790 --> 00:12:44.850
+and we get an error message.
+
+246
+00:12:44.850 --> 00:12:48.965
+Or field is not defined by item where unique input.
+
+247
+00:12:48.965 --> 00:12:50.667
+Did we goof something up?
+
+248
+00:12:50.667 --> 00:12:51.500
+Oh, here we did.
+
+249
+00:12:51.500 --> 00:12:53.210
+We searched for item, not items.
+
+250
+00:12:53.210 --> 00:12:54.910
+So make sure you put an S on that.
+
+251
+00:12:55.890 --> 00:12:57.797
+Give it a refresh.
+
+252
+00:12:57.797 --> 00:13:01.050
+I'm gonna type in A, and then just a split second later
+
+253
+00:13:01.050 --> 00:13:02.600
+you see the response here.
+
+254
+00:13:02.600 --> 00:13:04.750
+Inside of the data you have your items,
+
+255
+00:13:04.750 --> 00:13:05.950
+and those are all of the items
+
+256
+00:13:05.950 --> 00:13:08.130
+that have matched my actual search.
+
+257
+00:13:08.130 --> 00:13:12.930
+So when somebody comes in here and triggers a change
+
+258
+00:13:12.930 --> 00:13:16.507
+on the input, then we trigger this,
+
+259
+00:13:16.507 --> 00:13:19.130
+and we manually, maybe we should put a comma there,
+
+260
+00:13:19.130 --> 00:13:24.130
+manually query Apollo Client.
+
+261
+00:13:26.080 --> 00:13:27.530
+And then we have this response.
+
+262
+00:13:27.530 --> 00:13:29.800
+So the next question is like what do we do
+
+263
+00:13:29.800 --> 00:13:30.860
+with this list of items?
+
+264
+00:13:30.860 --> 00:13:33.010
+Well, we're going to put them into state
+
+265
+00:13:33.010 --> 00:13:36.100
+so that we in turn can actually loop through them
+
+266
+00:13:36.100 --> 00:13:39.863
+inside of our dropdown and display them to the users.
+
+267
+00:13:41.350 --> 00:13:43.960
+So we'll go up here and we'll set our initial state.
+
+268
+00:13:43.960 --> 00:13:45.860
+Our initial state is going to be items,
+
+269
+00:13:45.860 --> 00:13:47.200
+which is an empty array.
+
+270
+00:13:47.200 --> 00:13:49.550
+And then we're also going to have the handler own,
+
+271
+00:13:49.550 --> 00:13:51.670
+whether it's loading, true or false.
+
+272
+00:13:51.670 --> 00:13:53.070
+Because we don't have the convenience
+
+273
+00:13:53.070 --> 00:13:55.160
+of our query or our mutation components,
+
+274
+00:13:55.160 --> 00:13:57.670
+we have to take care of the loading state ourselves.
+
+275
+00:13:57.670 --> 00:14:00.270
+So we'll say loading is false.
+
+276
+00:14:00.270 --> 00:14:02.510
+Then we'll go back into our onchange handler.
+
+277
+00:14:02.510 --> 00:14:04.800
+The first thing we need to do is turn that loading on.
+
+278
+00:14:04.800 --> 00:14:07.720
+So I'll say turn loading on.
+
+279
+00:14:07.720 --> 00:14:10.770
+So this.setState loading is true.
+
+280
+00:14:10.770 --> 00:14:12.860
+And then down here when we actually get the response,
+
+281
+00:14:12.860 --> 00:14:14.690
+we gotta put those items into state.
+
+282
+00:14:14.690 --> 00:14:16.193
+So we'll say this.setState.
+
+283
+00:14:17.700 --> 00:14:21.683
+Items is going to be equal to the response.data.items.
+
+284
+00:14:23.080 --> 00:14:25.763
+And then the loading is going to be set to false.
+
+285
+00:14:26.800 --> 00:14:30.160
+We'll show you where to set that loading in just a sec.
+
+286
+00:14:30.160 --> 00:14:34.810
+So we should now be able to go into our React dev tools,
+
+287
+00:14:34.810 --> 00:14:36.883
+look for our AutoComplete.
+
+288
+00:14:39.010 --> 00:14:40.240
+Let me give it a good refresh.
+
+289
+00:14:40.240 --> 00:14:42.120
+I don't see my empty state in there.
+
+290
+00:14:42.120 --> 00:14:45.680
+Let me check again, AutoComplete, there we go.
+
+291
+00:14:45.680 --> 00:14:48.410
+My state has zero items in it, but if I were to type
+
+292
+00:14:48.410 --> 00:14:51.550
+an A in here, you see that it temporarily
+
+293
+00:14:51.550 --> 00:14:54.260
+put loading to true, but then when it came back,
+
+294
+00:14:54.260 --> 00:14:56.400
+we now have our four items.
+
+295
+00:14:56.400 --> 00:14:57.880
+So that's working really well.
+
+296
+00:14:57.880 --> 00:15:00.330
+One little problem that we have is if you're to type in this
+
+297
+00:15:00.330 --> 00:15:02.950
+really quickly, like you were searching for a coat,
+
+298
+00:15:02.950 --> 00:15:06.180
+that would fire off one two three four requests
+
+299
+00:15:06.180 --> 00:15:08.540
+one after another, and that's not a really good thing.
+
+300
+00:15:08.540 --> 00:15:10.890
+You could probably dedauth your own website.
+
+301
+00:15:10.890 --> 00:15:12.380
+So that's exactly why we've taken
+
+302
+00:15:12.380 --> 00:15:14.670
+this debounce function in from lodash.
+
+303
+00:15:14.670 --> 00:15:17.120
+And what debounce will do is it will
+
+304
+00:15:17.120 --> 00:15:19.480
+take all of those events that are fired within
+
+305
+00:15:19.480 --> 00:15:24.420
+maybe 350 milliseconds and then only after 350 milliseconds
+
+306
+00:15:24.420 --> 00:15:26.710
+has finished it will actually fire that.
+
+307
+00:15:26.710 --> 00:15:29.260
+So it will make sure that we're not unnecessarily
+
+308
+00:15:29.260 --> 00:15:30.980
+firing off on every key up.
+
+309
+00:15:30.980 --> 00:15:32.470
+And that's pretty easy to do that.
+
+310
+00:15:32.470 --> 00:15:34.570
+You simply just take your onchange
+
+311
+00:15:34.570 --> 00:15:36.343
+and you wrap it in a debounce.
+
+312
+00:15:40.164 --> 00:15:41.564
+And then it'll go down here.
+
+313
+00:15:44.000 --> 00:15:47.070
+And then the second argument is how much
+
+314
+00:15:47.070 --> 00:15:48.020
+do you want to debounce it?
+
+315
+00:15:48.020 --> 00:15:50.690
+We'll say 350 milliseconds.
+
+316
+00:15:50.690 --> 00:15:54.673
+And let's just console.log searching inside of here
+
+317
+00:15:57.013 --> 00:16:00.230
+just so we know, see how often that's actually running.
+
+318
+00:16:00.230 --> 00:16:02.450
+So go to our console here, clear it out.
+
+319
+00:16:02.450 --> 00:16:04.320
+Now if I were to type in coat,
+
+320
+00:16:04.320 --> 00:16:06.450
+you'll see that it only fires once there.
+
+321
+00:16:06.450 --> 00:16:10.270
+If I were to keep typing I love coats,
+
+322
+00:16:10.270 --> 00:16:12.860
+you see that it only fires once or twice
+
+323
+00:16:12.860 --> 00:16:15.800
+depending on how quickly I can type it.
+
+324
+00:16:15.800 --> 00:16:17.380
+That's really gonna save our back end
+
+325
+00:16:17.380 --> 00:16:18.940
+with just a little bit of debounce.
+
+326
+00:16:18.940 --> 00:16:20.240
+Super handy just to be able to wrap a function
+
+327
+00:16:20.240 --> 00:16:24.480
+and then it will only run once every 350 milliseconds.
+
+328
+00:16:24.480 --> 00:16:26.360
+Next one we want to do is start to
+
+329
+00:16:26.360 --> 00:16:27.970
+display some of our items.
+
+330
+00:16:27.970 --> 00:16:30.150
+So let's go down to this dropdown here.
+
+331
+00:16:30.150 --> 00:16:33.643
+And we simply will take this.state.items.
+
+332
+00:16:35.400 --> 00:16:38.870
+And we'll map over it, and we'll take each item
+
+333
+00:16:38.870 --> 00:16:42.220
+and return a dropdown item.
+
+334
+00:16:42.220 --> 00:16:44.690
+Inside of that, we want an image tag,
+
+335
+00:16:44.690 --> 00:16:47.803
+we'll put a width of 50 on it.
+
+336
+00:16:48.750 --> 00:16:52.100
+Source is going to be the item.image.
+
+337
+00:16:52.100 --> 00:16:55.300
+The alt is going to be the item.title.
+
+338
+00:16:55.300 --> 00:16:58.210
+Below that, we'll just pop in the item.title.
+
+339
+00:16:58.210 --> 00:16:59.962
+And if I give it a refresh here,
+
+340
+00:16:59.962 --> 00:17:01.530
+and see, there's nothing there.
+
+341
+00:17:01.530 --> 00:17:05.040
+If I were to type A, then those items come back
+
+342
+00:17:05.040 --> 00:17:05.920
+and start showing up.
+
+343
+00:17:05.920 --> 00:17:08.300
+We're getting a bit of an error because we didn't do
+
+344
+00:17:08.300 --> 00:17:10.750
+a key on it, so we'll go to this dropdown item
+
+345
+00:17:10.750 --> 00:17:13.930
+and say key is equal to the item.id.
+
+346
+00:17:13.930 --> 00:17:16.930
+And that stops that from happening.
+
+347
+00:17:16.930 --> 00:17:19.180
+So that is, actually has nothing to do
+
+348
+00:17:19.180 --> 00:17:20.550
+with downshift just yet.
+
+349
+00:17:20.550 --> 00:17:24.360
+That's just a fairly simple being able to query
+
+350
+00:17:24.360 --> 00:17:26.830
+against our API, pull back the data,
+
+351
+00:17:26.830 --> 00:17:30.100
+set it into state, and then loop over and display it.
+
+352
+00:17:30.100 --> 00:17:32.860
+Where Downshift starts to come in is
+
+353
+00:17:32.860 --> 00:17:35.010
+if we want to click on these or if we want to use
+
+354
+00:17:35.010 --> 00:17:36.630
+our arrow keys to go up and down.
+
+355
+00:17:36.630 --> 00:17:39.480
+And it might seem like a kind of simple kind of thing,
+
+356
+00:17:39.480 --> 00:17:41.090
+where maybe we could just wrap each of these
+
+357
+00:17:41.090 --> 00:17:43.050
+in an anchor tag and call it a day,
+
+358
+00:17:43.050 --> 00:17:44.760
+but there's a lot of finesse when you're doing
+
+359
+00:17:44.760 --> 00:17:46.630
+an AutoComplete dropdown like this,
+
+360
+00:17:46.630 --> 00:17:49.420
+where you want it to be accessible,
+
+361
+00:17:49.420 --> 00:17:51.300
+which is a feat of its own.
+
+362
+00:17:51.300 --> 00:17:53.740
+It's very hard to make these things accessible.
+
+363
+00:17:53.740 --> 00:17:56.880
+And then you also want all of the little arrow keys to work
+
+364
+00:17:56.880 --> 00:17:59.130
+and when somebody focuses away from that,
+
+365
+00:17:59.130 --> 00:18:01.020
+you want it to hide itself.
+
+366
+00:18:01.020 --> 00:18:02.230
+And when you hit the escape key,
+
+367
+00:18:02.230 --> 00:18:03.800
+you want it to hide itself.
+
+368
+00:18:03.800 --> 00:18:05.350
+And there's really a lot to it.
+
+369
+00:18:05.350 --> 00:18:06.730
+And that's exactly why we're going to
+
+370
+00:18:06.730 --> 00:18:08.690
+be using this Downshift library.
+
+371
+00:18:08.690 --> 00:18:11.563
+And in the next video we'll jump into that.
+

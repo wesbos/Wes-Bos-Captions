@@ -1,0 +1,950 @@
+﻿WEBVTT
+
+1
+00:00:01.170 --> 00:00:02.003
+<v Wes>Alright in this video</v>
+
+2
+00:00:02.003 --> 00:00:03.900
+we're gonna get set up with Next.js.
+
+3
+00:00:03.900 --> 00:00:05.090
+If you've never heard of it before,
+
+4
+00:00:05.090 --> 00:00:08.130
+Next.js is a react framework,
+
+5
+00:00:08.130 --> 00:00:10.900
+for building websites and web applications,
+
+6
+00:00:10.900 --> 00:00:12.820
+and it makes life so much easier.
+
+7
+00:00:12.820 --> 00:00:14.460
+So it does a couple things
+
+8
+00:00:14.460 --> 00:00:17.200
+that are much needed and fairly difficult
+
+9
+00:00:17.200 --> 00:00:18.380
+when you don't use your framework
+
+10
+00:00:18.380 --> 00:00:19.520
+and the first one is,
+
+11
+00:00:19.520 --> 00:00:21.601
+it does all of the tooling for you.
+
+12
+00:00:21.601 --> 00:00:24.890
+So, all of your webpack compiling,
+
+13
+00:00:24.890 --> 00:00:26.690
+and code splitting and all of that stuff,
+
+14
+00:00:26.690 --> 00:00:28.940
+it will do that for you under the hood.
+
+15
+00:00:28.940 --> 00:00:30.790
+So all you have to do is type next,
+
+16
+00:00:30.790 --> 00:00:32.380
+and it will do it sort of,
+
+17
+00:00:32.380 --> 00:00:33.430
+behind the scenes for you.
+
+18
+00:00:33.430 --> 00:00:37.049
+You can actually expose the webpack config
+
+19
+00:00:37.049 --> 00:00:38.117
+and the babel config for you,
+
+20
+00:00:38.117 --> 00:00:39.430
+and in fact we do that.
+
+21
+00:00:39.430 --> 00:00:41.190
+If you open up the package.json,
+
+22
+00:00:42.130 --> 00:00:46.120
+you'll see that I do give my own babel config here,
+
+23
+00:00:46.120 --> 00:00:48.920
+and basically it just takes their own babel config,
+
+24
+00:00:48.920 --> 00:00:50.570
+which is next/babel,
+
+25
+00:00:50.570 --> 00:00:53.680
+and then adds styled-components config on top of that.
+
+26
+00:00:53.680 --> 00:00:55.980
+I'll talk about why we do that in,
+
+27
+00:00:55.980 --> 00:00:57.300
+in just a second when we hit
+
+28
+00:00:57.300 --> 00:00:59.180
+the style components video.
+
+29
+00:00:59.180 --> 00:01:00.820
+So it does all the tooling for you;
+
+30
+00:01:00.820 --> 00:01:02.200
+it also does something really important,
+
+31
+00:01:02.200 --> 00:01:04.299
+which is server side rendering.
+
+32
+00:01:04.299 --> 00:01:06.270
+So if you care about instant loading,
+
+33
+00:01:06.270 --> 00:01:08.450
+or if you care about SEO,
+
+34
+00:01:08.450 --> 00:01:11.960
+or you care about pre-loading certain pages,
+
+35
+00:01:11.960 --> 00:01:12.970
+server-side rendering
+
+36
+00:01:12.970 --> 00:01:14.610
+is definitely something that you need.
+
+37
+00:01:14.610 --> 00:01:16.610
+So here I've got an example open here,
+
+38
+00:01:16.610 --> 00:01:17.443
+and if I just go ahead
+
+39
+00:01:17.443 --> 00:01:19.730
+and view source on this page,
+
+40
+00:01:19.730 --> 00:01:23.727
+I'll be able to search for vapor max;
+
+41
+00:01:23.727 --> 00:01:24.570
+there we go.
+
+42
+00:01:24.570 --> 00:01:27.040
+You see that the title is Vapormax,
+
+43
+00:01:27.040 --> 00:01:29.300
+and I'm sure we can find an image,
+
+44
+00:01:29.300 --> 00:01:31.208
+has it all to vapormax,
+
+45
+00:01:31.208 --> 00:01:33.921
+and an H2 viewing vapormax.
+
+46
+00:01:33.921 --> 00:01:35.250
+You can see that all of these things
+
+47
+00:01:35.250 --> 00:01:36.610
+are being server rendered,
+
+48
+00:01:36.610 --> 00:01:38.470
+because it allows me to view source;
+
+49
+00:01:38.470 --> 00:01:40.100
+that's really important.
+
+50
+00:01:40.100 --> 00:01:42.420
+It provides this thing called get initial props,
+
+51
+00:01:42.420 --> 00:01:45.320
+which is going to allow you to
+
+52
+00:01:45.320 --> 00:01:47.160
+fetch data on the server,
+
+53
+00:01:47.160 --> 00:01:48.370
+and it's always hard
+
+54
+00:01:48.370 --> 00:01:51.130
+with asynchronous data on the server because,
+
+55
+00:01:51.130 --> 00:01:53.810
+it's never very clear when to actually,
+
+56
+00:01:53.810 --> 00:01:55.700
+when the data fetching is done,
+
+57
+00:01:55.700 --> 00:01:58.100
+and when you can send the response,
+
+58
+00:01:58.100 --> 00:02:00.610
+from the server back to the client and resolve the page.
+
+59
+00:02:00.610 --> 00:02:03.550
+So they introduced this new life cycle method,
+
+60
+00:02:03.550 --> 00:02:05.400
+in react called get initial props,
+
+61
+00:02:05.400 --> 00:02:07.760
+which allows us to wait on that data to resolve
+
+62
+00:02:07.760 --> 00:02:09.970
+before the page is actually shipped out to the browser,
+
+63
+00:02:09.970 --> 00:02:11.937
+and then finally it does routing for you,
+
+64
+00:02:11.937 --> 00:02:15.850
+and I particularly really like this because,
+
+65
+00:02:15.850 --> 00:02:18.360
+there is no routing; you just have to simply make pages.
+
+66
+00:02:18.360 --> 00:02:20.100
+So let's actually start with that.
+
+67
+00:02:20.100 --> 00:02:21.410
+First thing we wanna do,
+
+68
+00:02:21.410 --> 00:02:23.720
+is go over to our terminal here,
+
+69
+00:02:23.720 --> 00:02:26.240
+and make sure you're in the frontend directory,
+
+70
+00:02:26.240 --> 00:02:28.910
+and in a last video we did an npm install.
+
+71
+00:02:28.910 --> 00:02:30.810
+If you haven't done that, go ahead and do it.
+
+72
+00:02:30.810 --> 00:02:34.020
+And then, if we crack open the package.json
+
+73
+00:02:34.020 --> 00:02:35.830
+for out frontend here,
+
+74
+00:02:35.830 --> 00:02:38.080
+and take a look at the script set we have,
+
+75
+00:02:38.080 --> 00:02:40.800
+you'll see that the dev command
+
+76
+00:02:40.800 --> 00:02:42.010
+is what we're looking for,
+
+77
+00:02:42.010 --> 00:02:44.550
+and that will just run the command next
+
+78
+00:02:44.550 --> 00:02:47.300
+on port 7777.
+
+79
+00:02:47.300 --> 00:02:48.990
+So if you have something running on that port,
+
+80
+00:02:48.990 --> 00:02:51.640
+or if you want to run on a separate port,
+
+81
+00:02:51.640 --> 00:02:53.930
+you could just change that value right there.
+
+82
+00:02:53.930 --> 00:02:58.050
+And then we simply just need to npm run dev;
+
+83
+00:02:58.050 --> 00:03:01.000
+that's gonna kick up our next application.
+
+84
+00:03:01.000 --> 00:03:03.800
+It's going to say ready on local host,
+
+85
+00:03:03.800 --> 00:03:05.370
+and if I go to that in my browser.
+
+86
+00:03:05.370 --> 00:03:07.560
+You refresh; it's gonna give us a 404
+
+87
+00:03:07.560 --> 00:03:09.170
+'cause we haven't created anything.
+
+88
+00:03:09.170 --> 00:03:11.330
+Now let's go back and look
+
+89
+00:03:11.330 --> 00:03:13.370
+at the folders that we've got here,
+
+90
+00:03:13.370 --> 00:03:14.790
+and let's actually take
+
+91
+00:03:14.790 --> 00:03:16.253
+just a quick look here.
+
+92
+00:03:17.850 --> 00:03:19.550
+We've got a components folder
+
+93
+00:03:19.550 --> 00:03:20.980
+which has nothing in it.
+
+94
+00:03:20.980 --> 00:03:23.060
+Well it's got some styles; we'll go into that,
+
+95
+00:03:23.060 --> 00:03:25.700
+but there are none of the components written for us yet.
+
+96
+00:03:25.700 --> 00:03:27.880
+And then there is a pages folder,
+
+97
+00:03:27.880 --> 00:03:29.720
+which is also going to be really important.
+
+98
+00:03:29.720 --> 00:03:31.430
+And the way that this works,
+
+99
+00:03:31.430 --> 00:03:33.380
+is that every single page
+
+100
+00:03:33.380 --> 00:03:34.640
+that you wanna visit,
+
+101
+00:03:34.640 --> 00:03:36.030
+like item page,
+
+102
+00:03:36.030 --> 00:03:38.970
+or the items page,
+
+103
+00:03:38.970 --> 00:03:41.260
+or the sell page,
+
+104
+00:03:41.260 --> 00:03:42.570
+or the orders page.
+
+105
+00:03:42.570 --> 00:03:44.940
+All of these different pages that we have here,
+
+106
+00:03:44.940 --> 00:03:47.560
+those are going to be .JS files.
+
+107
+00:03:47.560 --> 00:03:50.190
+This is very much like php,
+
+108
+00:03:50.190 --> 00:03:52.920
+where you simply just create a .php file,
+
+109
+00:03:52.920 --> 00:03:55.380
+and you automatically have that page available to you.
+
+110
+00:03:55.380 --> 00:03:57.220
+That works exactly the same way in here.
+
+111
+00:03:57.220 --> 00:03:59.730
+So all of our top level pages will go in here,
+
+112
+00:03:59.730 --> 00:04:01.540
+we're gonna create a new file,
+
+113
+00:04:01.540 --> 00:04:02.440
+and we're going to--
+
+114
+00:04:02.440 --> 00:04:05.660
+Let's just call that index.JS as our first one,
+
+115
+00:04:05.660 --> 00:04:08.020
+and in here we could just make a react component,
+
+116
+00:04:08.020 --> 00:04:11.810
+so we'll just import react from react,
+
+117
+00:04:11.810 --> 00:04:12.643
+and then we'll make
+
+118
+00:04:12.643 --> 00:04:17.187
+a class home extends react.component,
+
+119
+00:04:21.400 --> 00:04:25.190
+and let's just give ourselves a render,
+
+120
+00:04:25.190 --> 00:04:28.080
+return a paragraph tag that says hey,
+
+121
+00:04:28.080 --> 00:04:31.053
+and then export default home.
+
+122
+00:04:31.930 --> 00:04:34.100
+Okay, and now if we go back here,
+
+123
+00:04:34.100 --> 00:04:36.070
+and be able to refresh that page,
+
+124
+00:04:36.070 --> 00:04:37.610
+you'll see that it says hey, right?
+
+125
+00:04:37.610 --> 00:04:39.120
+This is our main component.
+
+126
+00:04:39.120 --> 00:04:40.320
+Also, in here it's likely
+
+127
+00:04:40.320 --> 00:04:43.150
+that we actually don't need a full blown react component.
+
+128
+00:04:43.150 --> 00:04:45.020
+We'll go more into that when we use
+
+129
+00:04:45.020 --> 00:04:47.380
+some high order components to fetch the data,
+
+130
+00:04:47.380 --> 00:04:48.740
+but it's likely that we just need
+
+131
+00:04:48.740 --> 00:04:50.160
+a stateless functional component,
+
+132
+00:04:50.160 --> 00:04:51.810
+so let's change that up to,
+
+133
+00:04:51.810 --> 00:04:53.853
+const home is equal to,
+
+134
+00:04:53.853 --> 00:04:55.780
+then we have our props,
+
+135
+00:04:55.780 --> 00:04:58.050
+and we're just going to return
+
+136
+00:04:58.050 --> 00:05:00.510
+a paragraph tag that says hey.
+
+137
+00:05:00.510 --> 00:05:02.400
+Actually, let's return a div.
+
+138
+00:05:02.400 --> 00:05:05.340
+Inside of that, put a paragraph tag that says hey,
+
+139
+00:05:05.340 --> 00:05:07.220
+and then we'll remove this one right here,
+
+140
+00:05:07.220 --> 00:05:08.053
+see it gives us the--
+
+141
+00:05:08.053 --> 00:05:09.560
+Also we have this hot reloading;
+
+142
+00:05:09.560 --> 00:05:10.950
+you can see it immediately.
+
+143
+00:05:10.950 --> 00:05:11.783
+it'll say, "Hey!"
+
+144
+00:05:11.783 --> 00:05:14.540
+"You've got the definition home twice."
+
+145
+00:05:14.540 --> 00:05:16.296
+Let's get rid of that,
+
+146
+00:05:16.296 --> 00:05:17.710
+so we can get rid of that.
+
+147
+00:05:17.710 --> 00:05:19.080
+Good, we also don't even need
+
+148
+00:05:19.080 --> 00:05:20.980
+to import react in here,
+
+149
+00:05:20.980 --> 00:05:22.880
+'cause next JS will take care of
+
+150
+00:05:22.880 --> 00:05:25.380
+actually importing it for us in that one,
+
+151
+00:05:25.380 --> 00:05:27.130
+and now we've got it up and running.
+
+152
+00:05:27.130 --> 00:05:29.730
+Similarly, if we want to create a second page;
+
+153
+00:05:29.730 --> 00:05:32.220
+let's call that sell.JS.
+
+154
+00:05:32.220 --> 00:05:33.450
+What I like to do is just copy
+
+155
+00:05:33.450 --> 00:05:35.620
+everything from index into sell,
+
+156
+00:05:35.620 --> 00:05:37.950
+go ahead and rename that,
+
+157
+00:05:37.950 --> 00:05:39.943
+and we'll just say sell.
+
+158
+00:05:41.860 --> 00:05:44.710
+Then if we go to /sell,
+
+159
+00:05:44.710 --> 00:05:46.120
+and then it's rendered out, look at that!
+
+160
+00:05:46.120 --> 00:05:48.940
+We don't have to handle any sort of routing config,
+
+161
+00:05:48.940 --> 00:05:50.487
+or setting it up, or anything like that.
+
+162
+00:05:50.487 --> 00:05:53.770
+We simply just create pages in our pages directory,
+
+163
+00:05:53.770 --> 00:05:56.900
+and they start to show up inside of the sell.
+
+164
+00:05:56.900 --> 00:05:59.130
+Now, Next.js also provides
+
+165
+00:05:59.130 --> 00:06:01.790
+a whole bunch of stuff for linking
+
+166
+00:06:01.790 --> 00:06:04.040
+and moving between pages.
+
+167
+00:06:04.040 --> 00:06:05.420
+They also have some C-S-S stuff;
+
+168
+00:06:05.420 --> 00:06:07.930
+we'll talk all about that.
+
+169
+00:06:07.930 --> 00:06:09.420
+They have custom app and document--
+
+170
+00:06:09.420 --> 00:06:10.410
+That's in the next video,
+
+171
+00:06:10.410 --> 00:06:12.010
+but for right now let's go ahead,
+
+172
+00:06:12.010 --> 00:06:14.360
+and do the linking between the two,
+
+173
+00:06:14.360 --> 00:06:17.240
+because we could just go on the home page here,
+
+174
+00:06:17.240 --> 00:06:18.910
+and give our selves an anchor link,
+
+175
+00:06:18.910 --> 00:06:21.310
+where it goes to /sell,
+
+176
+00:06:21.310 --> 00:06:22.363
+and we say sell,
+
+177
+00:06:23.456 --> 00:06:25.490
+and we'll go home to the home page,
+
+178
+00:06:25.490 --> 00:06:27.560
+and you click on it and it will work...
+
+179
+00:06:27.560 --> 00:06:29.080
+But this is a react application,
+
+180
+00:06:29.080 --> 00:06:31.680
+and we wanna use HTML5 pushstate,
+
+181
+00:06:31.680 --> 00:06:34.260
+in order to route from one page to another
+
+182
+00:06:34.260 --> 00:06:36.030
+without having to refresh the page,
+
+183
+00:06:36.030 --> 00:06:37.580
+and that's gonna be really important,
+
+184
+00:06:37.580 --> 00:06:40.670
+when we have data in our cache.
+
+185
+00:06:40.670 --> 00:06:41.503
+Things like:
+
+186
+00:06:41.503 --> 00:06:42.670
+we are logged in,
+
+187
+00:06:42.670 --> 00:06:44.180
+or if the cart is open or closed,
+
+188
+00:06:44.180 --> 00:06:47.200
+or any of that data needs to stay in the cache,
+
+189
+00:06:47.200 --> 00:06:49.220
+so if we were to refresh the page,
+
+190
+00:06:49.220 --> 00:06:50.230
+we would lose all that,
+
+191
+00:06:50.230 --> 00:06:51.980
+and have to go back to the server to get it.
+
+192
+00:06:51.980 --> 00:06:55.280
+So what we use, is we use the link.
+
+193
+00:06:55.280 --> 00:06:59.750
+So we say import the link from--
+
+194
+00:06:59.750 --> 00:07:02.750
+Next exports them in;
+
+195
+00:07:02.750 --> 00:07:04.240
+all in their own packages.
+
+196
+00:07:04.240 --> 00:07:08.250
+So, next/link and then what you do is,
+
+197
+00:07:08.250 --> 00:07:10.440
+you take the link out,
+
+198
+00:07:10.440 --> 00:07:12.460
+and you wrap that in a link tag,
+
+199
+00:07:12.460 --> 00:07:15.110
+you put the actual anchor link inside of it,
+
+200
+00:07:15.110 --> 00:07:17.880
+but then you put the hreft or h-ref;
+
+201
+00:07:17.880 --> 00:07:19.890
+people always give me a hard time for saying hreft,
+
+202
+00:07:19.890 --> 00:07:21.340
+so I'm sorry if I'm the only person
+
+203
+00:07:21.340 --> 00:07:22.900
+in the world that says that.
+
+204
+00:07:22.900 --> 00:07:24.480
+But we have the link tag,
+
+205
+00:07:24.480 --> 00:07:26.270
+you give it an h-ref,
+
+206
+00:07:26.270 --> 00:07:28.960
+and you link it to where you want it to go.
+
+207
+00:07:28.960 --> 00:07:29.793
+And then you just put
+
+208
+00:07:29.793 --> 00:07:31.950
+a regular anchor link inside of that,
+
+209
+00:07:31.950 --> 00:07:33.500
+and that's going to transform it
+
+210
+00:07:33.500 --> 00:07:36.350
+into a anchor link on the page.
+
+211
+00:07:36.350 --> 00:07:38.780
+So let's go over here,
+
+212
+00:07:38.780 --> 00:07:41.133
+and if we were to inspect it,
+
+213
+00:07:42.640 --> 00:07:44.500
+you'll see that it's just a regular anchor link,
+
+214
+00:07:44.500 --> 00:07:47.840
+but it has been bound to HTML5 pushstate,
+
+215
+00:07:47.840 --> 00:07:50.350
+and I can go ahead and click it immediately
+
+216
+00:07:50.350 --> 00:07:52.200
+and it will go over to that--
+
+217
+00:07:52.200 --> 00:07:55.810
+Same thing, I can go to the sell page,
+
+218
+00:07:55.810 --> 00:07:58.563
+and put in a link back to home.
+
+219
+00:08:01.520 --> 00:08:04.753
+And then we'll import link from next link.
+
+220
+00:08:08.050 --> 00:08:10.940
+Go home, sell, home, sell, home, sell, home, sell;
+
+221
+00:08:10.940 --> 00:08:14.160
+and we're never actually refreshing the page,
+
+222
+00:08:14.160 --> 00:08:14.993
+to go in between there.
+
+223
+00:08:14.993 --> 00:08:17.810
+Obviously, we're gonna re-factor this out into nav.
+
+224
+00:08:17.810 --> 00:08:22.130
+But that is the basics of using Next.js,
+
+225
+00:08:22.130 --> 00:08:23.650
+and then any other==
+
+226
+00:08:23.650 --> 00:08:25.290
+Anything that is not a page,
+
+227
+00:08:25.290 --> 00:08:27.700
+anything that is a reusable will go into component,
+
+228
+00:08:27.700 --> 00:08:29.890
+and the reality is that our pages
+
+229
+00:08:29.890 --> 00:08:31.430
+are going to be fairly light
+
+230
+00:08:31.430 --> 00:08:33.640
+and almost all of the logic
+
+231
+00:08:33.640 --> 00:08:36.330
+and heavy duty lifting
+
+232
+00:08:36.330 --> 00:08:38.580
+is gonna go in our components folder.
+
+233
+00:08:38.580 --> 00:08:39.960
+So in the next video what we're gonna do,
+
+234
+00:08:39.960 --> 00:08:41.430
+is we're gonna look at
+
+235
+00:08:41.430 --> 00:08:44.490
+how do we make a reusable page component,
+
+236
+00:08:44.490 --> 00:08:48.090
+and then how do we also do a custom document,
+
+237
+00:08:48.090 --> 00:08:49.790
+so I'll see you in the next video.
+

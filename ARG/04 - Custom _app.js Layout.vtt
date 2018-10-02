@@ -1,0 +1,1054 @@
+﻿WEBVTT
+
+1
+00:00:01.248 --> 00:00:03.760
+<v Wes>In this video, we need to do a little bit of layout,</v>
+
+2
+00:00:03.760 --> 00:00:07.040
+both visually, in terms of what the overall layout
+
+3
+00:00:07.040 --> 00:00:09.180
+of what our application is going to look like,
+
+4
+00:00:09.180 --> 00:00:11.720
+as well as, like, a architecture for something
+
+5
+00:00:11.720 --> 00:00:13.660
+that's a little bit higher than these pages.
+
+6
+00:00:13.660 --> 00:00:15.070
+So let me explain, kind of,
+
+7
+00:00:15.070 --> 00:00:16.680
+what the problem is that we have right now.
+
+8
+00:00:16.680 --> 00:00:19.987
+We've got this index.js, and we've got this cell.js.
+
+9
+00:00:19.987 --> 00:00:22.930
+These are sort of as high as you can go
+
+10
+00:00:22.930 --> 00:00:26.810
+in the component tree, in our React application right now,
+
+11
+00:00:26.810 --> 00:00:28.950
+and that's not too much of an issue,
+
+12
+00:00:28.950 --> 00:00:31.370
+but there becomes a bit of a problem when
+
+13
+00:00:31.370 --> 00:00:34.360
+what happens when you wanna share data between pages?
+
+14
+00:00:34.360 --> 00:00:37.087
+Like, you're going from index to cell.
+
+15
+00:00:37.087 --> 00:00:40.720
+What's the parent of both of these pages?
+
+16
+00:00:40.720 --> 00:00:43.530
+Where would I put my state, right?
+
+17
+00:00:43.530 --> 00:00:47.000
+So, Next.js, by default, actually wraps
+
+18
+00:00:47.000 --> 00:00:50.160
+your entire application in what's called an app component,
+
+19
+00:00:50.160 --> 00:00:52.360
+and that's great, because you can get up and running,
+
+20
+00:00:52.360 --> 00:00:55.330
+really quickly, and it will give you its own app component.
+
+21
+00:00:55.330 --> 00:00:58.008
+However, sometimes you want to do custom.
+
+22
+00:00:58.008 --> 00:01:00.520
+You want to have, like, a custom wrapper component
+
+23
+00:01:00.520 --> 00:01:03.060
+around all of the pages, and that's where
+
+24
+00:01:03.060 --> 00:01:04.960
+we get into running a custom app,
+
+25
+00:01:04.960 --> 00:01:07.770
+and it says it perfectly, here.
+
+26
+00:01:07.770 --> 00:01:09.990
+It's good for persisting layout between pages,
+
+27
+00:01:09.990 --> 00:01:12.930
+it's good for keeping state when navigating pages,
+
+28
+00:01:12.930 --> 00:01:17.930
+so the fact that I can add something to my cart, right here,
+
+29
+00:01:19.400 --> 00:01:23.450
+and I can open my cart, and then I can go to another page,
+
+30
+00:01:23.450 --> 00:01:25.820
+and the fact that the cart is still open
+
+31
+00:01:25.820 --> 00:01:27.550
+and it knows what's in my cart,
+
+32
+00:01:27.550 --> 00:01:30.348
+that's persisting state between pages,
+
+33
+00:01:30.348 --> 00:01:31.490
+and that's exactly what we're gonna do
+
+34
+00:01:31.490 --> 00:01:33.700
+with our Apollo store.
+
+35
+00:01:33.700 --> 00:01:36.740
+So in order to do this, you create a custom app.
+
+36
+00:01:36.740 --> 00:01:41.170
+The name of the file is going to be underscore app.js,
+
+37
+00:01:41.170 --> 00:01:43.150
+and then, inside of here, what we do is we
+
+38
+00:01:43.150 --> 00:01:47.870
+import the app component and the container component,
+
+39
+00:01:47.870 --> 00:01:51.450
+which is exported from next forward slash app.
+
+40
+00:01:51.450 --> 00:01:53.100
+We're actually gonna be coming back to this
+
+41
+00:01:53.100 --> 00:01:54.650
+and significantly coding it out,
+
+42
+00:01:54.650 --> 00:01:57.130
+once we get into making our Apollo store,
+
+43
+00:01:57.130 --> 00:01:58.870
+but let's do very basics, right now.
+
+44
+00:01:58.870 --> 00:02:01.560
+So, we make a new React component,
+
+45
+00:02:01.560 --> 00:02:02.450
+that's going to wrap everything.
+
+46
+00:02:02.450 --> 00:02:04.210
+We'll call that MyAPP,
+
+47
+00:02:04.210 --> 00:02:06.650
+and that extends, not React.component,
+
+48
+00:02:06.650 --> 00:02:09.230
+but it extends the app component
+
+49
+00:02:09.230 --> 00:02:12.405
+that we imported from next/app, which is good,
+
+50
+00:02:12.405 --> 00:02:13.740
+and then let's just go ahead
+
+51
+00:02:13.740 --> 00:02:16.623
+and export default MyApp, right away,
+
+52
+00:02:17.810 --> 00:02:20.313
+and then inside of here, we'll have a render,
+
+53
+00:02:21.420 --> 00:02:26.413
+where we need to grab the component from this.props.
+
+54
+00:02:28.250 --> 00:02:31.260
+And then from here, we return that container component
+
+55
+00:02:31.260 --> 00:02:33.590
+that we have imported from next,
+
+56
+00:02:33.590 --> 00:02:36.090
+and then inside of that, we can put something like
+
+57
+00:02:37.938 --> 00:02:40.488
+hey, I'm on every page, and then render out the ...
+
+58
+00:02:41.740 --> 00:02:42.820
+Oh, what am I doing here?
+
+59
+00:02:42.820 --> 00:02:45.900
+Const component from, how does JavaScript work?
+
+60
+00:02:45.900 --> 00:02:46.733
+Equals.
+
+61
+00:02:46.733 --> 00:02:49.840
+We destructure the component value from the stop props,
+
+62
+00:02:49.840 --> 00:02:51.700
+and then inside of here,
+
+63
+00:02:51.700 --> 00:02:56.250
+we render out the component that we have.
+
+64
+00:02:56.250 --> 00:03:00.600
+So, what this does, is a component is going to be
+
+65
+00:03:00.600 --> 00:03:03.450
+cell or index, when we visit the page,
+
+66
+00:03:03.450 --> 00:03:06.510
+and then it should also pop a paragraph tag
+
+67
+00:03:06.510 --> 00:03:08.560
+on top of every page that we have,
+
+68
+00:03:08.560 --> 00:03:11.800
+so I'll give it a refresh, doesn't seem to be working.
+
+69
+00:03:11.800 --> 00:03:13.630
+We maybe have to give it a restart.
+
+70
+00:03:13.630 --> 00:03:15.690
+Let's open up our terminal, here,
+
+71
+00:03:15.690 --> 00:03:19.170
+kill it, start it again, there we go.
+
+72
+00:03:19.170 --> 00:03:21.910
+Hey, I'm on every page, go to cell.
+
+73
+00:03:21.910 --> 00:03:24.970
+You can see that it's now being wrapped in every single one,
+
+74
+00:03:24.970 --> 00:03:29.523
+and if we are open up our React dev tools that we have here,
+
+75
+00:03:31.220 --> 00:03:32.750
+you'll see that's our app container,
+
+76
+00:03:32.750 --> 00:03:35.280
+this is our app component that we've created,
+
+77
+00:03:35.280 --> 00:03:37.860
+and then our container has hey, I'm on every page,
+
+78
+00:03:37.860 --> 00:03:39.720
+and then it will have the actual component
+
+79
+00:03:39.720 --> 00:03:40.553
+that we're trying to render.
+
+80
+00:03:40.553 --> 00:03:42.699
+In this case, it's home, but if I click on cell,
+
+81
+00:03:42.699 --> 00:03:46.669
+it'll swap just that component out, really quickly,
+
+82
+00:03:46.669 --> 00:03:49.500
+and still persisting everything else that we have, there,
+
+83
+00:03:49.500 --> 00:03:51.300
+and you can imagine that if we were
+
+84
+00:03:51.300 --> 00:03:54.090
+to put a Redux store, or our Apollo store,
+
+85
+00:03:54.090 --> 00:03:56.950
+or just local state, inside of my app,
+
+86
+00:03:56.950 --> 00:04:00.383
+that state would stay from one page to another.
+
+87
+00:04:01.482 --> 00:04:03.960
+Now we actually wanna take this paragraph,
+
+88
+00:04:03.960 --> 00:04:06.130
+Hey I'm on every page, we actually wanna take that out
+
+89
+00:04:06.130 --> 00:04:08.000
+because this app.js is actually not
+
+90
+00:04:08.000 --> 00:04:09.450
+where we wanna put that stuff.
+
+91
+00:04:09.450 --> 00:04:13.230
+We wanna factor that out into its own page component.
+
+92
+00:04:13.230 --> 00:04:14.320
+So what we're going to do here
+
+93
+00:04:14.320 --> 00:04:16.370
+is we're going to go into our components folder
+
+94
+00:04:16.370 --> 00:04:20.350
+and make a new file called capital P Page.js.
+
+95
+00:04:20.350 --> 00:04:24.170
+I'm going to import React and make a component, so rcc tab.
+
+96
+00:04:24.170 --> 00:04:28.150
+I have this little package called Reactjs code snippets
+
+97
+00:04:28.150 --> 00:04:30.080
+and so do half a million of you.
+
+98
+00:04:30.080 --> 00:04:32.160
+I highly recommend that you install it
+
+99
+00:04:32.160 --> 00:04:35.800
+because it can do things like rcc
+
+100
+00:04:35.800 --> 00:04:39.000
+and that will import React, import the component,
+
+101
+00:04:39.000 --> 00:04:40.670
+by the way it doesn't really matter,
+
+102
+00:04:40.670 --> 00:04:43.600
+it doesn't matter at all, if you import the component
+
+103
+00:04:43.600 --> 00:04:46.330
+like that or if you do React.component,
+
+104
+00:04:46.330 --> 00:04:48.010
+both will work just fine.
+
+105
+00:04:48.010 --> 00:04:48.843
+I'm gonna stick with this just
+
+106
+00:04:48.843 --> 00:04:50.579
+because that is what the snippet does.
+
+107
+00:04:50.579 --> 00:04:55.480
+And then it exports it all in one go.
+
+108
+00:04:55.480 --> 00:04:58.380
+That's totally fine, you can also export default
+
+109
+00:05:00.980 --> 00:05:04.080
+page at the end of it, whatever is your preference.
+
+110
+00:05:04.080 --> 00:05:07.410
+And inside of here, we are just going to have a &lt;div&gt;.
+
+111
+00:05:07.410 --> 00:05:12.410
+Let's just put a paragraph, Hey I'm the page component,
+
+112
+00:05:12.480 --> 00:05:16.133
+and then down here we'll say this.props.children,
+
+113
+00:05:17.110 --> 00:05:19.300
+and that will render out anything.
+
+114
+00:05:19.300 --> 00:05:21.830
+Now we'll go back to our app.js component
+
+115
+00:05:21.830 --> 00:05:24.500
+and we'll import the page component
+
+116
+00:05:24.500 --> 00:05:28.570
+from the components folder and the page component,
+
+117
+00:05:28.570 --> 00:05:31.323
+and then we'll wrap that in a page component.
+
+118
+00:05:34.830 --> 00:05:36.940
+Beautiful, now we'll go back here,
+
+119
+00:05:36.940 --> 00:05:38.240
+Hey I'm the page component.
+
+120
+00:05:38.240 --> 00:05:40.670
+When I go back and forth between all of them
+
+121
+00:05:40.670 --> 00:05:42.880
+you see that our page component is always
+
+122
+00:05:42.880 --> 00:05:45.470
+going to be wrapping each of them.
+
+123
+00:05:45.470 --> 00:05:48.940
+And that's great because if you ever want different layouts
+
+124
+00:05:48.940 --> 00:05:51.100
+you can create different page components that you want,
+
+125
+00:05:51.100 --> 00:05:53.890
+it's all, it can all be factored into its own component.
+
+126
+00:05:53.890 --> 00:05:57.440
+Now, inside of this page.js we're going to be doing things
+
+127
+00:05:57.440 --> 00:06:00.710
+like theming and styling the width
+
+128
+00:06:00.710 --> 00:06:02.140
+and the height of all these things,
+
+129
+00:06:02.140 --> 00:06:04.720
+but that's gonna come in a feature video.
+
+130
+00:06:04.720 --> 00:06:05.680
+For now we just need to know
+
+131
+00:06:05.680 --> 00:06:07.560
+that we have this page component.
+
+132
+00:06:07.560 --> 00:06:08.940
+Now inside of this page component,
+
+133
+00:06:08.940 --> 00:06:11.890
+we can start writing components for things
+
+134
+00:06:11.890 --> 00:06:14.240
+that need to show up on absolutely every page,
+
+135
+00:06:14.240 --> 00:06:15.430
+just like we have this paragraph tag.
+
+136
+00:06:15.430 --> 00:06:17.400
+So let's actually remove that
+
+137
+00:06:17.400 --> 00:06:19.050
+and let's make a header component.
+
+138
+00:06:19.050 --> 00:06:21.430
+So in our components folder we'll make a new file,
+
+139
+00:06:21.430 --> 00:06:23.800
+capital H header.js.
+
+140
+00:06:23.800 --> 00:06:28.200
+In that we'll say const header is equal to
+
+141
+00:06:29.930 --> 00:06:32.180
+a stateless functional component,
+
+142
+00:06:32.180 --> 00:06:34.810
+and inside of that we'll have a &lt;div&gt;,
+
+143
+00:06:34.810 --> 00:06:37.873
+inside of that we'll have a &lt;div&gt; with a class of bar.
+
+144
+00:06:39.230 --> 00:06:40.970
+This will all make sense in just a second
+
+145
+00:06:40.970 --> 00:06:44.100
+once we get into styling in the next video.
+
+146
+00:06:44.100 --> 00:06:47.360
+And then inside of that let's just have an anchor link,
+
+147
+00:06:47.360 --> 00:06:51.447
+sick fits, below that we'll have a &lt;div&gt;
+
+148
+00:06:51.447 --> 00:06:55.913
+with a class of sub bar, sub sub, sub bar.
+
+149
+00:06:58.170 --> 00:07:01.033
+And inside of that just a paragraph, just say search.
+
+150
+00:07:03.110 --> 00:07:05.630
+And then we'll have another &lt;div&gt; that says cart.
+
+151
+00:07:05.630 --> 00:07:08.920
+We'll go back and actually fill these out with what we want
+
+152
+00:07:08.920 --> 00:07:12.030
+but we just know that this is our header,
+
+153
+00:07:12.030 --> 00:07:15.230
+oh export default header.
+
+154
+00:07:15.230 --> 00:07:17.130
+Then we'll go back into our page component
+
+155
+00:07:17.130 --> 00:07:21.927
+and import the header from components header,
+
+156
+00:07:22.820 --> 00:07:25.170
+and then we can just stick that header in here.
+
+157
+00:07:29.000 --> 00:07:32.090
+See that we've got, regardless of what page we have,
+
+158
+00:07:32.090 --> 00:07:33.040
+it's showing up.
+
+159
+00:07:33.040 --> 00:07:35.870
+We'll probably also do that with a nav component.
+
+160
+00:07:35.870 --> 00:07:40.520
+Let's go into components, create a nav.js.
+
+161
+00:07:40.520 --> 00:07:44.173
+Nav is equal to a stateless functional component.
+
+162
+00:07:45.610 --> 00:07:47.180
+Just give yourself a &lt;div&gt;, we're gonna come
+
+163
+00:07:47.180 --> 00:07:50.460
+and swap these out with stock components in the next video
+
+164
+00:07:50.460 --> 00:07:55.460
+and let's just inside of there import link from next/link,
+
+165
+00:07:57.890 --> 00:08:01.060
+and inside of there let's give ourselves a link,
+
+166
+00:08:01.060 --> 00:08:04.400
+which actually let's just grab 'em from here.
+
+167
+00:08:04.400 --> 00:08:06.010
+We don't need them on each page now
+
+168
+00:08:06.010 --> 00:08:07.310
+because we're gonna have them in that.
+
+169
+00:08:07.310 --> 00:08:09.540
+So remove it from the index.js
+
+170
+00:08:09.540 --> 00:08:10.903
+and put it into your nav.
+
+171
+00:08:13.720 --> 00:08:16.253
+And remove it from your sell.js.
+
+172
+00:08:21.630 --> 00:08:22.613
+Put it in your nav.
+
+173
+00:08:24.470 --> 00:08:26.520
+Then we'll go into our header.js
+
+174
+00:08:26.520 --> 00:08:30.070
+and import the nav from the sibling file.
+
+175
+00:08:30.070 --> 00:08:32.280
+Again we don't need to directly import that
+
+176
+00:08:32.280 --> 00:08:35.690
+into page.js unless you wanted it to be a sibling of header.
+
+177
+00:08:35.690 --> 00:08:38.640
+You can just import it from header.js
+
+178
+00:08:38.640 --> 00:08:41.600
+and then go ahead and use it.
+
+179
+00:08:41.600 --> 00:08:44.979
+And right below the link we'll give ourselves a nav tag,
+
+180
+00:08:44.979 --> 00:08:47.730
+and oh got a little error.
+
+181
+00:08:47.730 --> 00:08:49.620
+This is one thing I really like about Next.js
+
+182
+00:08:49.620 --> 00:08:51.100
+and Create React app does this as well.
+
+183
+00:08:51.100 --> 00:08:53.330
+It gives you the errors directly inside of it
+
+184
+00:08:53.330 --> 00:08:55.930
+so you don't actually have to go rooting around
+
+185
+00:08:55.930 --> 00:08:56.780
+inside of here.
+
+186
+00:08:56.780 --> 00:09:00.040
+It says, "export default imported as nav was not found."
+
+187
+00:09:00.040 --> 00:09:01.380
+Back in our nav, oops!
+
+188
+00:09:01.380 --> 00:09:03.248
+Export default nav.
+
+189
+00:09:03.248 --> 00:09:05.280
+We forgot to export that thing.
+
+190
+00:09:05.280 --> 00:09:06.650
+There we go.
+
+191
+00:09:06.650 --> 00:09:09.440
+And obviously home, style home, style our nav
+
+192
+00:09:09.440 --> 00:09:11.830
+is on every single page that we need it.
+
+193
+00:09:11.830 --> 00:09:13.300
+So that's our nav, that's our header.
+
+194
+00:09:13.300 --> 00:09:15.470
+One other component that we're going to need
+
+195
+00:09:15.470 --> 00:09:19.780
+is called a meta, a meta component.
+
+196
+00:09:19.780 --> 00:09:23.300
+And that's going to take care of all of the meta tags
+
+197
+00:09:23.300 --> 00:09:25.859
+that you would normally see in an html document.
+
+198
+00:09:25.859 --> 00:09:30.410
+So, you're title tag, any external css
+
+199
+00:09:30.410 --> 00:09:31.980
+that you need to roll in,
+
+200
+00:09:31.980 --> 00:09:35.350
+any Facebook meta tags, Twitter meta tag, open graft,
+
+201
+00:09:35.350 --> 00:09:37.210
+all the things that you would normally
+
+202
+00:09:37.210 --> 00:09:41.160
+put in the head tag of an html document.
+
+203
+00:09:41.160 --> 00:09:42.800
+So we're going to go into components,
+
+204
+00:09:42.800 --> 00:09:45.050
+we're gonna capital m Meta.js
+
+205
+00:09:45.890 --> 00:09:50.890
+and up here we're going to import head from next/head.
+
+206
+00:09:53.211 --> 00:09:58.077
+Next.js does some tricky, tricky stuff behind the scenes
+
+207
+00:09:58.077 --> 00:10:00.990
+in order to actually update the head of it.
+
+208
+00:10:00.990 --> 00:10:03.350
+So we need to import their custom head
+
+209
+00:10:03.350 --> 00:10:05.990
+and that will do the side effect behind the scenes.
+
+210
+00:10:05.990 --> 00:10:10.990
+Say const Meta is equal to a stateless functional component.
+
+211
+00:10:12.570 --> 00:10:13.960
+You notice that we're using a lot of these
+
+212
+00:10:13.960 --> 00:10:15.990
+stateless functional components in this course
+
+213
+00:10:15.990 --> 00:10:20.080
+because a lot of the state and lifecycle methods
+
+214
+00:10:20.080 --> 00:10:23.740
+are going to be handled in some of the other
+
+215
+00:10:23.740 --> 00:10:24.637
+sort of high order components,
+
+216
+00:10:24.637 --> 00:10:26.220
+and we'll get much into that.
+
+217
+00:10:26.220 --> 00:10:28.490
+These ones are just display components.
+
+218
+00:10:28.490 --> 00:10:30.980
+Export default Meta,
+
+219
+00:10:30.980 --> 00:10:33.170
+and inside of that we'll put all of our Meta tags.
+
+220
+00:10:33.170 --> 00:10:34.820
+I'm just gonna go ahead and copy this,
+
+221
+00:10:34.820 --> 00:10:38.240
+feel free to grab this from the finished files Meta.js.
+
+222
+00:10:38.240 --> 00:10:39.270
+I'm gonna paste it in here.
+
+223
+00:10:39.270 --> 00:10:40.480
+So this is a view port.
+
+224
+00:10:40.480 --> 00:10:42.950
+This allows us to have responsive design.
+
+225
+00:10:42.950 --> 00:10:45.048
+This makes sure that we're using utf eight
+
+226
+00:10:45.048 --> 00:10:47.957
+because that's the character incoding that we're using.
+
+227
+00:10:47.957 --> 00:10:52.130
+This is for the fap icon that lives in the static directory.
+
+228
+00:10:52.130 --> 00:10:54.690
+If you open up static you're gonna see inside of here
+
+229
+00:10:54.690 --> 00:10:58.630
+we have our fap icon as well as some external css
+
+230
+00:10:58.630 --> 00:10:59.463
+that we're loading in.
+
+231
+00:10:59.463 --> 00:11:01.459
+I'll talk about that in just a second.
+
+232
+00:11:01.459 --> 00:11:04.140
+That's why we are loading it in here
+
+233
+00:11:04.140 --> 00:11:06.850
+and we are loading in nprogress.css.
+
+234
+00:11:06.850 --> 00:11:09.663
+That nprogress is that cool little red bar
+
+235
+00:11:09.663 --> 00:11:11.220
+that you see across the top here.
+
+236
+00:11:11.220 --> 00:11:12.800
+You probably see that on a lot of websites
+
+237
+00:11:12.800 --> 00:11:13.840
+that are built in React.
+
+238
+00:11:13.840 --> 00:11:16.010
+And then finally, you have a title tag,
+
+239
+00:11:16.010 --> 00:11:18.330
+which we are going to overwrite.
+
+240
+00:11:18.330 --> 00:11:21.820
+So you see here it says Sick Fits page one of two.
+
+241
+00:11:21.820 --> 00:11:23.949
+Right click through to this one.
+
+242
+00:11:23.949 --> 00:11:26.770
+It'll say nice 270s so this will be our default,
+
+243
+00:11:26.770 --> 00:11:29.620
+which says Sick Fits, and then anytime we wanna overwrite
+
+244
+00:11:29.620 --> 00:11:31.330
+that I'm going to show you how to do that
+
+245
+00:11:31.330 --> 00:11:32.978
+from within a component where you can sort of
+
+246
+00:11:32.978 --> 00:11:37.460
+reach outside and update the head as a side effect.
+
+247
+00:11:37.460 --> 00:11:38.940
+So you have that there.
+
+248
+00:11:38.940 --> 00:11:43.940
+Let's go back into our page.js and import the Meta.
+
+249
+00:11:45.720 --> 00:11:47.590
+Just above the header we're gonna give ourselves
+
+250
+00:11:47.590 --> 00:11:50.900
+our Meta component and that should,
+
+251
+00:11:50.900 --> 00:11:52.363
+see if we've got any errors.
+
+252
+00:11:53.410 --> 00:11:54.800
+Seems like it's working.
+
+253
+00:11:54.800 --> 00:11:56.860
+Give it a page refresh.
+
+254
+00:11:56.860 --> 00:11:58.240
+See that we've got, there we go,
+
+255
+00:11:58.240 --> 00:12:01.190
+see we've got our view port being pulled in,
+
+256
+00:12:01.190 --> 00:12:05.690
+our character set, fab icon is being pulled in,
+
+257
+00:12:05.690 --> 00:12:08.970
+you should see it showing up in your browser tab there.
+
+258
+00:12:08.970 --> 00:12:10.860
+So, that's just a whole bunch of boiler plate
+
+259
+00:12:10.860 --> 00:12:12.870
+that we need to sort of get out of the way
+
+260
+00:12:12.870 --> 00:12:16.190
+in order to start actually building our application.
+
+261
+00:12:16.190 --> 00:12:18.619
+In the next video we're going to dive into
+
+262
+00:12:18.619 --> 00:12:22.139
+writing some styles and scaffolding out the actual look
+
+263
+00:12:22.139 --> 00:12:24.273
+and feel of this application.
+

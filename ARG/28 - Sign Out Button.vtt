@@ -1,0 +1,494 @@
+﻿WEBVTT
+
+1
+00:00:01.415 --> 00:00:02.816
+<v Wes>Alright, let's go ahead</v>
+
+2
+00:00:02.816 --> 00:00:04.116
+and create a sign out button
+
+3
+00:00:04.116 --> 00:00:05.851
+that we can put in the nav here.
+
+4
+00:00:05.851 --> 00:00:08.450
+So first thing we do, we open up the Schematic GraphQL,
+
+5
+00:00:08.450 --> 00:00:09.983
+you're gonna go into the mutation
+
+6
+00:00:09.983 --> 00:00:12.600
+and create a signout function
+
+7
+00:00:12.600 --> 00:00:14.286
+that actually doesn't take any arguments
+
+8
+00:00:14.286 --> 00:00:15.949
+'cause it's simply just going to sign out.
+
+9
+00:00:15.949 --> 00:00:17.835
+And like, my question here is like,
+
+10
+00:00:17.835 --> 00:00:19.252
+what is it gonna return?
+
+11
+00:00:19.252 --> 00:00:21.953
+Well, it doesn't really need to return anything,
+
+12
+00:00:21.953 --> 00:00:23.456
+but what I'm gonna do here is
+
+13
+00:00:23.456 --> 00:00:25.667
+I'm gonna show you how you can return a custom type
+
+14
+00:00:25.667 --> 00:00:28.924
+that isn't necessarily tied to our Prisma backend,
+
+15
+00:00:28.924 --> 00:00:30.395
+and that's going to return what's called
+
+16
+00:00:30.395 --> 00:00:32.900
+a Success Message because sometimes you
+
+17
+00:00:32.900 --> 00:00:35.150
+want to just perform things
+
+18
+00:00:36.463 --> 00:00:38.551
+and return some sort of messages to okay,
+
+19
+00:00:38.551 --> 00:00:40.126
+this was successfully deleted
+
+20
+00:00:40.126 --> 00:00:43.301
+or you are successfully signed out,
+
+21
+00:00:43.301 --> 00:00:45.013
+or make sure you do this.
+
+22
+00:00:45.013 --> 00:00:47.401
+So, if you just wanna return a message
+
+23
+00:00:47.401 --> 00:00:50.268
+to the user, we can create our own type for that.
+
+24
+00:00:50.268 --> 00:00:52.320
+So what you can do is we'll go up here,
+
+25
+00:00:52.320 --> 00:00:55.187
+we'll make a type SuccessMessage,
+
+26
+00:00:55.187 --> 00:00:58.270
+and that will have a message property
+
+27
+00:01:00.923 --> 00:01:02.434
+that is a string.
+
+28
+00:01:02.434 --> 00:01:03.696
+And that's it!
+
+29
+00:01:03.696 --> 00:01:05.196
+So if you ever do want to create your own
+
+30
+00:01:05.196 --> 00:01:08.350
+types that are not a thing on your backend
+
+31
+00:01:08.350 --> 00:01:09.567
+but you just wanna return like
+
+32
+00:01:09.567 --> 00:01:12.348
+a specific shape of an object,
+
+33
+00:01:12.348 --> 00:01:14.020
+you can create a custom type
+
+34
+00:01:14.020 --> 00:01:17.632
+inside of your schema and return that from here,
+
+35
+00:01:17.632 --> 00:01:20.503
+then we'll open up our mutations.js
+
+36
+00:01:20.503 --> 00:01:22.878
+and go ahead and write the resolver
+
+37
+00:01:22.878 --> 00:01:24.173
+for that mutation.
+
+38
+00:01:24.173 --> 00:01:25.340
+So, signout...
+
+39
+00:01:28.393 --> 00:01:29.907
+You guessed it!
+
+40
+00:01:29.907 --> 00:01:34.074
+It gets a parent, args, the context, and the info,
+
+41
+00:01:35.913 --> 00:01:38.430
+and this one is going to be super simple,
+
+42
+00:01:38.430 --> 00:01:42.430
+we simply take the context.response.clearCookie,
+
+43
+00:01:43.502 --> 00:01:45.572
+and the reason why we can call clearCookie
+
+44
+00:01:45.572 --> 00:01:48.820
+is because in our index.js we use this cookie parser
+
+45
+00:01:48.820 --> 00:01:51.201
+and that gives us these handy little methods
+
+46
+00:01:51.201 --> 00:01:54.550
+called clearCookie, I'm gonna clear the token cookie,
+
+47
+00:01:54.550 --> 00:01:56.562
+then we simply return and object
+
+48
+00:01:56.562 --> 00:01:57.964
+that has a message on it
+
+49
+00:01:57.964 --> 00:01:59.978
+that says 'Goodbye!'
+
+50
+00:01:59.978 --> 00:02:01.531
+Though, if you wanted, we're not actually
+
+51
+00:02:01.531 --> 00:02:03.045
+gonna be displaying that to the user anywhere,
+
+52
+00:02:03.045 --> 00:02:04.540
+but if you would like to you could
+
+53
+00:02:04.540 --> 00:02:07.206
+display that in an alert or some sort of message box
+
+54
+00:02:07.206 --> 00:02:08.555
+to the user.
+
+55
+00:02:08.555 --> 00:02:10.859
+That's it, now flip over to our frontend,
+
+56
+00:02:10.859 --> 00:02:13.512
+and we'll open up our components,
+
+57
+00:02:13.512 --> 00:02:16.129
+we'll make a new component called Signout,
+
+58
+00:02:16.129 --> 00:02:17.451
+capital S, .js
+
+59
+00:02:17.451 --> 00:02:20.868
+Let's make a quick little component here.
+
+60
+00:02:26.314 --> 00:02:28.392
+This actually could be done as a stateless,
+
+61
+00:02:28.392 --> 00:02:31.309
+so const Signout is equal to props.
+
+62
+00:02:32.982 --> 00:02:35.536
+From that, we also need to import the mutation,
+
+63
+00:02:35.536 --> 00:02:38.036
+import mutation, react apollo.
+
+64
+00:02:39.465 --> 00:02:40.882
+We also need gql,
+
+65
+00:02:44.849 --> 00:02:46.629
+and we also need that current user query,
+
+66
+00:02:46.629 --> 00:02:48.110
+because as soon as they signout
+
+67
+00:02:48.110 --> 00:02:50.919
+we need to refetch the current user so we can update the UI
+
+68
+00:02:50.919 --> 00:02:54.185
+so that will be, current_suer (laughs)
+
+69
+00:02:54.185 --> 00:02:57.102
+user_query from the user component.
+
+70
+00:02:59.012 --> 00:03:01.929
+Let's just give ourselves a button,
+
+71
+00:03:03.323 --> 00:03:04.990
+that says 'Sign Out'
+
+72
+00:03:07.373 --> 00:03:08.956
+and open up our nav
+
+73
+00:03:10.996 --> 00:03:14.491
+import that, and the last thing we'll do here
+
+74
+00:03:14.491 --> 00:03:17.824
+is we'll just give ourselves a sign out.
+
+75
+00:03:20.829 --> 00:03:24.329
+Then I'll go ahead and sign in real quick.
+
+76
+00:03:25.645 --> 00:03:27.470
+There's my Sign Out button.
+
+77
+00:03:27.470 --> 00:03:29.722
+And, the reason why it is styled the same-
+
+78
+00:03:29.722 --> 00:03:34.059
+actually, it's a little bit, let's check that out.
+
+79
+00:03:34.059 --> 00:03:36.059
+Open up our navstyles.js
+
+80
+00:03:37.261 --> 00:03:39.541
+and you see that we have all of our links,
+
+81
+00:03:39.541 --> 00:03:42.540
+and our buttons are gonna be styled the same way.
+
+82
+00:03:42.540 --> 00:03:45.790
+Font weight, let's try font weight 800.
+
+83
+00:03:48.648 --> 00:03:52.200
+There, no, that still makes it a little bit different.
+
+84
+00:03:52.200 --> 00:03:56.251
+Oh, you know what's different about it?
+
+85
+00:03:56.251 --> 00:03:59.251
+It's not the weight, it's the color.
+
+86
+00:04:01.007 --> 00:04:04.590
+It's the color that's gonna be props black.
+
+87
+00:04:07.203 --> 00:04:09.601
+It also is the weight.
+
+88
+00:04:09.601 --> 00:04:13.434
+Alright, those are looking all about the same.
+
+89
+00:04:18.016 --> 00:04:19.857
+I think that looks the same.
+
+90
+00:04:19.857 --> 00:04:22.474
+You can debug it a little further if it bugs you
+
+91
+00:04:22.474 --> 00:04:24.876
+But, we've got the sign out button, good.
+
+92
+00:04:24.876 --> 00:04:26.511
+Now we need to go back to our sign out,
+
+93
+00:04:26.511 --> 00:04:28.530
+and create the mutation.
+
+94
+00:04:28.530 --> 00:04:30.780
+So, const SIGN_OUT_MUTATION
+
+95
+00:04:35.116 --> 00:04:39.616
+simply say, sign out and we want to turn that message.
+
+96
+00:04:40.644 --> 00:04:43.047
+Now we can go down here to our actual component,
+
+97
+00:04:43.047 --> 00:04:46.714
+and we'll wrap that in a mutation component.
+
+98
+00:04:49.119 --> 00:04:52.567
+And that mutation takes a mutation param
+
+99
+00:04:52.567 --> 00:04:55.067
+which is the sign out mutation
+
+100
+00:05:00.197 --> 00:05:04.780
+and then of course, we'll swap that out with a function
+
+101
+00:05:05.745 --> 00:05:09.446
+that gives us access to the sign out
+
+102
+00:05:09.446 --> 00:05:12.297
+and we'll hook that up to the on click.
+
+103
+00:05:12.297 --> 00:05:14.714
+On click is equal to signout.
+
+104
+00:05:18.288 --> 00:05:19.881
+The way we can tell if this works
+
+105
+00:05:19.881 --> 00:05:22.445
+is we'll open up our application, go to cookies,
+
+106
+00:05:22.445 --> 00:05:23.993
+you see the token there.
+
+107
+00:05:23.993 --> 00:05:26.579
+If I click it, the token disappears.
+
+108
+00:05:26.579 --> 00:05:29.117
+But this doesn't rerender, and that's because
+
+109
+00:05:29.117 --> 00:05:32.284
+we also need a refetchQueries on here.
+
+110
+00:05:43.836 --> 00:05:46.719
+So, we have a mutation that exposes the signout.
+
+111
+00:05:46.719 --> 00:05:49.273
+When someone clicks that button, it's going to run it,
+
+112
+00:05:49.273 --> 00:05:50.887
+and when this mutation is complete,
+
+113
+00:05:50.887 --> 00:05:52.699
+it's going to refetch the current user,
+
+114
+00:05:52.699 --> 00:05:55.257
+which should in turn rerender our navigation
+
+115
+00:05:55.257 --> 00:05:58.466
+and anywhere else on the page that relies on that query.
+
+116
+00:05:58.466 --> 00:06:02.383
+So, let's try that again, I'm going to sign in.
+
+117
+00:06:05.909 --> 00:06:07.683
+And then I click on sign out,
+
+118
+00:06:07.683 --> 00:06:08.999
+and you see that it changes it.
+
+119
+00:06:08.999 --> 00:06:10.300
+So that is awesome!
+
+120
+00:06:10.300 --> 00:06:12.540
+Because we never need to reload the page,
+
+121
+00:06:12.540 --> 00:06:14.750
+it's all just dealing with tokens behind the scene,
+
+122
+00:06:14.750 --> 00:06:17.938
+and it just makes a really snappy user interface.
+
+123
+00:06:17.938 --> 00:06:20.688
+So, let's jump into the next one.
+

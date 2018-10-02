@@ -1,0 +1,930 @@
+﻿WEBVTT
+
+1
+00:00:00.320 --> 00:00:02.270
+<v Presenter>One of the reasons people don't</v>
+
+2
+00:00:02.270 --> 00:00:05.330
+necessarily like the whole idea of CSS in JS
+
+3
+00:00:05.330 --> 00:00:07.340
+is because it scopes things.
+
+4
+00:00:07.340 --> 00:00:09.793
+Like, one of the benefits to CSS in JS
+
+5
+00:00:09.793 --> 00:00:11.500
+is that it is scoping things.
+
+6
+00:00:11.500 --> 00:00:15.599
+Meaning that if you apply a specific style to this header,
+
+7
+00:00:15.599 --> 00:00:20.010
+no other H1 on the page is going to have that styles
+
+8
+00:00:20.010 --> 00:00:22.961
+leak into it unless you explicitly give it those styles.
+
+9
+00:00:22.961 --> 00:00:26.001
+And there's sort of this other argument on the other side
+
+10
+00:00:26.001 --> 00:00:30.467
+where people say, well, do you know what CSS stands for?
+
+11
+00:00:30.467 --> 00:00:32.663
+It's cascading.
+
+12
+00:00:33.570 --> 00:00:34.536
+How do you spell it?
+
+13
+00:00:34.536 --> 00:00:38.620
+It is Cascading Style Sheets.
+
+14
+00:00:38.620 --> 00:00:40.072
+And the cascading means that you can apply
+
+15
+00:00:40.072 --> 00:00:43.282
+styles at a very high level, maybe at a page level,
+
+16
+00:00:43.282 --> 00:00:45.970
+and then they'll apply to everything on the page.
+
+17
+00:00:45.970 --> 00:00:47.540
+That's the beauty of CSS,
+
+18
+00:00:47.540 --> 00:00:51.270
+and you can totally do that in CSS in JS.
+
+19
+00:00:51.270 --> 00:00:52.505
+In fact, I recommend it because things
+
+20
+00:00:52.505 --> 00:00:55.760
+like setting font colors and font sizes
+
+21
+00:00:55.760 --> 00:01:00.142
+and typography and resetting boarders
+
+22
+00:01:00.142 --> 00:01:03.022
+and margin and padding all of that stuff,
+
+23
+00:01:03.022 --> 00:01:05.430
+it's not something that you should have to
+
+24
+00:01:05.430 --> 00:01:07.080
+redo every single time that you
+
+25
+00:01:07.080 --> 00:01:08.328
+crack open a style component,
+
+26
+00:01:08.328 --> 00:01:10.013
+because that gets really repetitive,
+
+27
+00:01:10.013 --> 00:01:11.486
+and it gets very hard to manage if
+
+28
+00:01:11.486 --> 00:01:13.988
+you were to ever change one of those things like the font.
+
+29
+00:01:13.988 --> 00:01:18.982
+So what I'm going to do now is to do some global styling,
+
+30
+00:01:18.982 --> 00:01:22.455
+and I tend to just reset my padding,
+
+31
+00:01:22.455 --> 00:01:24.743
+set background colors, set font sizes,
+
+32
+00:01:24.743 --> 00:01:27.230
+and set typography globally,
+
+33
+00:01:27.230 --> 00:01:29.820
+and then all of my other styles will live in components.
+
+34
+00:01:29.820 --> 00:01:31.722
+And that's why we've imported this
+
+35
+00:01:31.722 --> 00:01:34.830
+injectGlobal function that we have here,
+
+36
+00:01:34.830 --> 00:01:36.180
+and it's coming from styled components.
+
+37
+00:01:36.180 --> 00:01:38.884
+Actually this is red because it's sort of a best practice
+
+38
+00:01:38.884 --> 00:01:42.738
+to always import your packages first
+
+39
+00:01:42.738 --> 00:01:47.640
+and then import your local components after that.
+
+40
+00:01:47.640 --> 00:01:49.220
+So I have a little ESLint rule that will
+
+41
+00:01:49.220 --> 00:01:50.910
+yell at me if I accidentally do that.
+
+42
+00:01:50.910 --> 00:01:52.628
+Similarly it will give me a warning
+
+43
+00:01:52.628 --> 00:01:54.580
+if I have an unused piece.
+
+44
+00:01:54.580 --> 00:01:56.582
+In this case I have not used injectGlobal yet.
+
+45
+00:01:56.582 --> 00:02:00.003
+However, now we simply need to go ahead and use it,
+
+46
+00:02:00.003 --> 00:02:02.460
+so anywhere on this page.
+
+47
+00:02:02.460 --> 00:02:03.760
+This is a little bit weird because
+
+48
+00:02:03.760 --> 00:02:05.200
+you don't assign it to a variable
+
+49
+00:02:05.200 --> 00:02:06.290
+and set it somewhere.
+
+50
+00:02:06.290 --> 00:02:08.338
+You just need to call it anywhere in your application,
+
+51
+00:02:08.338 --> 00:02:11.440
+and that's going to inject the global CSS.
+
+52
+00:02:11.440 --> 00:02:13.317
+We simply call it injectGlobal,
+
+53
+00:02:14.610 --> 00:02:17.300
+and we'll go ahead and write some selectors.
+
+54
+00:02:17.300 --> 00:02:18.687
+Make sure you actually write your selector here
+
+55
+00:02:18.687 --> 00:02:21.190
+and not just start doing something, like background:red,
+
+56
+00:02:21.190 --> 00:02:23.024
+because that's not going to be applied to anything.
+
+57
+00:02:23.024 --> 00:02:26.021
+Because this is global CSS, you do need your selector,
+
+58
+00:02:26.021 --> 00:02:31.021
+and then inside of that we'll say box-sizing: border-box,
+
+59
+00:02:31.366 --> 00:02:35.198
+and font-size: 10px,
+
+60
+00:02:35.198 --> 00:02:37.510
+and that's going to set the base
+
+61
+00:02:37.510 --> 00:02:40.400
+font of the document as 10px
+
+62
+00:02:40.400 --> 00:02:42.450
+and then I'm going to use rems as a base 10.
+
+63
+00:02:42.450 --> 00:02:43.545
+I'll come back to that in a second.
+
+64
+00:02:43.545 --> 00:02:47.000
+Next we want to select star.
+
+65
+00:02:47.000 --> 00:02:50.793
+We want to star before and star after.
+
+66
+00:02:52.150 --> 00:02:55.740
+And what that's going to do is we can grab our box sizing
+
+67
+00:02:55.740 --> 00:02:57.140
+and change that to inherit.
+
+68
+00:02:57.140 --> 00:03:00.780
+Apparently this is the best way to set box sizing
+
+69
+00:03:00.780 --> 00:03:02.440
+border box on absolutely everything
+
+70
+00:03:02.440 --> 00:03:04.447
+is set it on the root of your document in HTML
+
+71
+00:03:04.447 --> 00:03:08.790
+and then inherit it on absolutely everything else.
+
+72
+00:03:08.790 --> 00:03:10.020
+Then we want to select our body,
+
+73
+00:03:10.020 --> 00:03:14.287
+and on that body we'll do padding: 0, margin: 0,
+
+74
+00:03:14.287 --> 00:03:15.610
+and if we give this a save,
+
+75
+00:03:15.610 --> 00:03:19.049
+we should now see that the margin that we had before.
+
+76
+00:03:19.049 --> 00:03:20.883
+If we comment these out,
+
+77
+00:03:23.580 --> 00:03:25.240
+we see that we do have some padding
+
+78
+00:03:25.240 --> 00:03:27.393
+to the left and to the right on that body.
+
+79
+00:03:27.393 --> 00:03:31.373
+Then we put 'em back on, they will be totally gone.
+
+80
+00:03:32.490 --> 00:03:35.348
+We want to set the font size to 1.5rem,
+
+81
+00:03:35.348 --> 00:03:38.391
+and the reason why I did it 10px here
+
+82
+00:03:38.391 --> 00:03:40.860
+is so that everything is base 10 for me,
+
+83
+00:03:40.860 --> 00:03:44.340
+and that I know 1.5rem is going to be 15 pixels
+
+84
+00:03:44.340 --> 00:03:45.239
+and I don't have to do the math,
+
+85
+00:03:45.239 --> 00:03:47.562
+'cause I believe the base font size for
+
+86
+00:03:47.562 --> 00:03:49.850
+the browser is something like 16,
+
+87
+00:03:49.850 --> 00:03:52.156
+and then you're always working base 16
+
+88
+00:03:52.156 --> 00:03:53.839
+and I'm not that good at math.
+
+89
+00:03:53.839 --> 00:03:58.643
+We'll set a line height to 2.
+
+90
+00:03:59.860 --> 00:04:01.200
+Things are starting to look good.
+
+91
+00:04:01.200 --> 00:04:02.824
+Let's actually tackle font family,
+
+92
+00:04:02.824 --> 00:04:05.296
+and how do you do custom fonts?
+
+93
+00:04:05.296 --> 00:04:08.330
+If you take a look at your static folder,
+
+94
+00:04:08.330 --> 00:04:10.219
+you'll see that I have this red Nika Next
+
+95
+00:04:10.219 --> 00:04:12.640
+web font there for you.
+
+96
+00:04:12.640 --> 00:04:14.207
+So we wanna load that in ourselves.
+
+97
+00:04:14.207 --> 00:04:16.420
+And the way that you do that is just like you did
+
+98
+00:04:16.420 --> 00:04:20.850
+within any normal CSS, so we define a font face
+
+99
+00:04:20.850 --> 00:04:24.707
+and we name it the font-family as rednika_next.
+
+100
+00:04:33.303 --> 00:04:34.290
+Say the source of that is URL,
+
+101
+00:04:34.290 --> 00:04:39.290
+and we're going to go to the root /static/rednikanext woff,
+
+102
+00:04:41.324 --> 00:04:45.183
+and the format is going to be woff2.
+
+103
+00:04:46.027 --> 00:04:47.960
+That's all we need to support
+
+104
+00:04:47.960 --> 00:04:49.270
+the latest and greatest browsers.
+
+105
+00:04:49.270 --> 00:04:51.114
+And then font-weight is going to be normal,
+
+106
+00:04:51.114 --> 00:04:56.114
+and the font-style is going to be normal.
+
+107
+00:04:57.000 --> 00:04:59.243
+Now we should be able to just take this font family
+
+108
+00:04:59.243 --> 00:05:01.731
+and pop it either on our document.
+
+109
+00:05:01.731 --> 00:05:03.252
+Our HTML, doesn't really matter,
+
+110
+00:05:03.252 --> 00:05:04.810
+and that should change.
+
+111
+00:05:04.810 --> 00:05:05.643
+There we go.
+
+112
+00:05:05.643 --> 00:05:08.281
+We got this red Nika Next font popping up for us.
+
+113
+00:05:08.281 --> 00:05:10.090
+I'm pretty happy about that.
+
+114
+00:05:10.090 --> 00:05:11.381
+Let's select our anchor links,
+
+115
+00:05:11.381 --> 00:05:15.397
+and we'll say text-decoration: none.
+
+116
+00:05:15.397 --> 00:05:17.453
+Take off that underline.
+
+117
+00:05:17.453 --> 00:05:22.453
+Color is going to be the theme black that we have.
+
+118
+00:05:22.550 --> 00:05:24.119
+And normally you would do something like this
+
+119
+00:05:24.119 --> 00:05:26.236
+where you would grab the props.
+
+120
+00:05:26.236 --> 00:05:28.780
+You'll say props.theme.black.
+
+121
+00:05:28.780 --> 00:05:30.520
+However, that is not going to work,
+
+122
+00:05:30.520 --> 00:05:31.360
+and I'll tell you why.
+
+123
+00:05:31.360 --> 00:05:32.556
+Make sure you put a semicolon there.
+
+124
+00:05:32.556 --> 00:05:34.454
+Because we're not inside of
+
+125
+00:05:34.454 --> 00:05:36.348
+the theme provider at this point.
+
+126
+00:05:36.348 --> 00:05:38.647
+Any component inside of the theme provider
+
+127
+00:05:38.647 --> 00:05:41.141
+can have access to this props.theme,
+
+128
+00:05:41.141 --> 00:05:43.573
+however, because we're just injecting global
+
+129
+00:05:43.573 --> 00:05:45.359
+or settings in global styles here,
+
+130
+00:05:45.359 --> 00:05:48.174
+we don't have access to that props.theme.black.
+
+131
+00:05:48.174 --> 00:05:51.227
+However, luckily it's in the same file,
+
+132
+00:05:51.227 --> 00:05:53.550
+so it's within scope of this module,
+
+133
+00:05:53.550 --> 00:05:55.949
+and I'm able to just access the theme variable
+
+134
+00:05:55.949 --> 00:05:58.130
+and the black on top of it.
+
+135
+00:05:58.130 --> 00:05:59.240
+If that wasn't the case,
+
+136
+00:05:59.240 --> 00:06:01.203
+you'd have to export it from this file
+
+137
+00:06:01.203 --> 00:06:05.030
+and then import it in or refactor it out into its own file.
+
+138
+00:06:05.030 --> 00:06:07.321
+So let's go back and we can just replace
+
+139
+00:06:07.321 --> 00:06:09.438
+all of this with just theme.black,
+
+140
+00:06:09.438 --> 00:06:13.114
+and things are starting to look good.
+
+141
+00:06:13.114 --> 00:06:15.500
+Let me just double check my answer here.
+
+142
+00:06:15.500 --> 00:06:16.637
+Make sure we've got all of
+
+143
+00:06:16.637 --> 00:06:19.373
+the styles that we're looking for.
+
+144
+00:06:22.381 --> 00:06:24.160
+Looks like we're in good shape.
+
+145
+00:06:24.160 --> 00:06:26.609
+Next what we need to do is spend
+
+146
+00:06:26.609 --> 00:06:30.163
+a bit of time styling up our nav.
+
+147
+00:06:31.330 --> 00:06:34.320
+Let's crack open up the nav.js
+
+148
+00:06:34.320 --> 00:06:36.249
+and you'll see that I also have given you this file
+
+149
+00:06:36.249 --> 00:06:40.659
+called NavStyles where I'm just creating a unordered list
+
+150
+00:06:40.659 --> 00:06:43.620
+and inside of that we have a whole bunch.
+
+151
+00:06:43.620 --> 00:06:46.752
+I have display: flex on it, I have justified it to the end.
+
+152
+00:06:46.752 --> 00:06:49.454
+I've styled both links and buttons
+
+153
+00:06:49.454 --> 00:06:52.790
+that live in the nav are going to look exactly the same
+
+154
+00:06:52.790 --> 00:06:53.910
+and I'll show you why.
+
+155
+00:06:53.910 --> 00:06:55.076
+It's because this cart button.
+
+156
+00:06:55.076 --> 00:06:56.552
+That's actually a button.
+
+157
+00:06:56.552 --> 00:06:58.697
+And then the rest of them are actually,
+
+158
+00:06:58.697 --> 00:07:01.190
+well, I don't have it running right now,
+
+159
+00:07:01.190 --> 00:07:03.110
+but the rest of them are actually just links.
+
+160
+00:07:03.110 --> 00:07:06.574
+So I've selected both of them to run at the exact same time.
+
+161
+00:07:06.574 --> 00:07:08.583
+There's a couple of media queries in here.
+
+162
+00:07:08.583 --> 00:07:12.686
+And what else is kind of interesting?
+
+163
+00:07:12.686 --> 00:07:15.592
+This little cool underline dealie
+
+164
+00:07:15.592 --> 00:07:18.955
+when you underline something it will be red.
+
+165
+00:07:18.955 --> 00:07:22.520
+That's using the after pseudo-element.
+
+166
+00:07:22.520 --> 00:07:23.980
+I've made it 2 pixels high,
+
+167
+00:07:23.980 --> 00:07:26.273
+and I've just done some tricky trickerson
+
+168
+00:07:26.273 --> 00:07:30.727
+in my CSS in order to make that work.
+
+169
+00:07:30.727 --> 00:07:32.857
+So there's not a whole lot going on here.
+
+170
+00:07:32.857 --> 00:07:35.135
+I'm not gonna sit here and spend half an hour
+
+171
+00:07:35.135 --> 00:07:36.691
+typing this all out for you.
+
+172
+00:07:36.691 --> 00:07:39.851
+Just know that a lot of the style components
+
+173
+00:07:39.851 --> 00:07:41.475
+that I've given you for this course,
+
+174
+00:07:41.475 --> 00:07:44.830
+they already live in this styles folder
+
+175
+00:07:44.830 --> 00:07:48.960
+and we'll be pulling upon them for the rest of this course.
+
+176
+00:07:48.960 --> 00:07:50.687
+And we'll still be writing some CSS,
+
+177
+00:07:50.687 --> 00:07:52.800
+but a majority of it will be in here.
+
+178
+00:07:52.800 --> 00:07:54.704
+So let's go into our nav here
+
+179
+00:07:54.704 --> 00:07:58.580
+and let's go ahead and import that component.
+
+180
+00:07:58.580 --> 00:08:01.223
+So NavStyles from, whoops,
+
+181
+00:08:06.303 --> 00:08:07.136
+NavStyles.
+
+182
+00:08:09.540 --> 00:08:13.120
+And then we'll swap out this div with the NavStyles.
+
+183
+00:08:13.120 --> 00:08:15.183
+This is actually gonna be an unordered list.
+
+184
+00:08:15.183 --> 00:08:16.770
+Give that a save.
+
+185
+00:08:16.770 --> 00:08:18.873
+Let's see how we, oh ho, look at that.
+
+186
+00:08:18.873 --> 00:08:20.122
+It's already looking way better.
+
+187
+00:08:20.122 --> 00:08:21.970
+You've got this kind of,
+
+188
+00:08:21.970 --> 00:08:23.230
+oh, that's actually another cool thing.
+
+189
+00:08:23.230 --> 00:08:25.800
+Let me show you how I got those angled lines.
+
+190
+00:08:25.800 --> 00:08:28.150
+I thought that was, I was pretty proud of that.
+
+191
+00:08:30.100 --> 00:08:33.233
+Skew 20 degrees.
+
+192
+00:08:34.560 --> 00:08:35.990
+No.
+
+193
+00:08:35.990 --> 00:08:37.053
+I think it is skew.
+
+194
+00:08:39.510 --> 00:08:42.497
+Yeah, so just by skewing, I used to think I would have to
+
+195
+00:08:42.497 --> 00:08:47.497
+take the before element, which is just this gray line
+
+196
+00:08:47.740 --> 00:08:50.440
+and I had to rotate it and then stretch it to fit.
+
+197
+00:08:50.440 --> 00:08:53.227
+But apparently just by doing skew, it will both rotate it
+
+198
+00:08:53.227 --> 00:08:55.780
+from the center and make sure that
+
+199
+00:08:55.780 --> 00:08:58.680
+they hit perfectly top and bottom.
+
+200
+00:08:58.680 --> 00:09:00.860
+I was pretty happy about learning that.
+
+201
+00:09:00.860 --> 00:09:02.237
+So we have all of our elements in here,
+
+202
+00:09:02.237 --> 00:09:04.603
+and then inside of our nav we simply just need to have links
+
+203
+00:09:04.603 --> 00:09:09.440
+to all of the different things that are on our site.
+
+204
+00:09:09.440 --> 00:09:12.067
+So let's take a quick look.
+
+205
+00:09:12.067 --> 00:09:15.195
+We have items, we have sell, we have signup, we have orders,
+
+206
+00:09:15.195 --> 00:09:17.680
+and we have account.
+
+207
+00:09:17.680 --> 00:09:19.520
+And these are gonna be shown and hidden
+
+208
+00:09:19.520 --> 00:09:21.610
+based on if the user is logged in or not,
+
+209
+00:09:21.610 --> 00:09:22.983
+but for now we're just gonna wrap
+
+210
+00:09:22.983 --> 00:09:25.490
+each of them in a link tag.
+
+211
+00:09:25.490 --> 00:09:27.893
+So I'm going to get rid of these links right here
+
+212
+00:09:27.893 --> 00:09:32.893
+and we're just going to write some link tags.
+
+213
+00:09:33.640 --> 00:09:37.155
+Href equals forward slash that.
+
+214
+00:09:37.155 --> 00:09:39.340
+Then inside of each of these,
+
+215
+00:09:39.340 --> 00:09:42.854
+we have a anchor link that goes to nothing
+
+216
+00:09:42.854 --> 00:09:45.680
+and then the word, and we'll go through each of these.
+
+217
+00:09:45.680 --> 00:09:48.620
+So items.
+
+218
+00:09:48.620 --> 00:09:50.830
+This is going to be sell.
+
+219
+00:09:50.830 --> 00:09:52.467
+This will just be signup.
+
+220
+00:09:53.510 --> 00:09:56.488
+This will be orders.
+
+221
+00:09:56.488 --> 00:10:00.073
+And this would be account.
+
+222
+00:10:01.638 --> 00:10:02.970
+Bam.
+
+223
+00:10:02.970 --> 00:10:04.582
+Obviously these aren't gonna work if you click on them.
+
+224
+00:10:04.582 --> 00:10:06.850
+You're gonna get an error.
+
+225
+00:10:06.850 --> 00:10:08.030
+An unexpected error has occurred,
+
+226
+00:10:08.030 --> 00:10:09.554
+'cause they don't exist just yet.
+
+227
+00:10:09.554 --> 00:10:13.816
+Only the home page and the sell page will currently work.
+
+228
+00:10:13.816 --> 00:10:16.468
+But we are gonna come back and create all of these pages
+
+229
+00:10:16.468 --> 00:10:20.350
+plus a couple more for administrative purposes.
+
+230
+00:10:20.350 --> 00:10:22.270
+Things are starting to look pretty good now.
+
+231
+00:10:22.270 --> 00:10:25.866
+Let's jump into a couple more things with the routing
+
+232
+00:10:25.866 --> 00:10:28.353
+and then we're good for graphic UL.
+

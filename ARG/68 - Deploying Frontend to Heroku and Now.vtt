@@ -1,0 +1,826 @@
+﻿WEBVTT
+
+1
+00:00:00.870 --> 00:00:02.260
+<v Educator>Now it's time to deploy</v>
+
+2
+00:00:02.260 --> 00:00:03.890
+our front end of our application.
+
+3
+00:00:03.890 --> 00:00:05.470
+There's one quick change we need to make
+
+4
+00:00:05.470 --> 00:00:07.720
+and if you open up here withData.js,
+
+5
+00:00:07.720 --> 00:00:08.710
+you remember that we did this,
+
+6
+00:00:08.710 --> 00:00:10.950
+when we connect to our Apollo client,
+
+7
+00:00:10.950 --> 00:00:12.440
+we're checking if we're in development
+
+8
+00:00:12.440 --> 00:00:14.000
+and we're turning the endpoint,
+
+9
+00:00:14.000 --> 00:00:16.720
+otherwise returning the env node point itself.
+
+10
+00:00:16.720 --> 00:00:18.160
+So we need to swap that env.
+
+11
+00:00:18.160 --> 00:00:20.840
+You could also make this an environmental variable
+
+12
+00:00:20.840 --> 00:00:25.020
+but because it's the only thing, it's not worth doing.
+
+13
+00:00:25.020 --> 00:00:27.210
+For me I just want to put it in a config file.
+
+14
+00:00:27.210 --> 00:00:30.210
+So let's open up the config file, let's make a new one.
+
+15
+00:00:30.210 --> 00:00:32.720
+So export cost, let's call it prodEndpoint
+
+16
+00:00:33.640 --> 00:00:36.640
+and then inside of there you paste the end point
+
+17
+00:00:36.640 --> 00:00:41.640
+to your Yoga service either on now or on heroku.
+
+18
+00:00:42.430 --> 00:00:44.200
+Then what we'll do here is we'll say,
+
+19
+00:00:44.200 --> 00:00:46.910
+if its development will grab the regular end point
+
+20
+00:00:46.910 --> 00:00:49.497
+otherwise we'll do the prodEndpoint.
+
+21
+00:00:51.230 --> 00:00:54.373
+And we also need to import the prodEndpoint
+
+22
+00:00:55.470 --> 00:00:57.470
+from our config file, good.
+
+23
+00:00:57.470 --> 00:00:58.303
+That's all we need.
+
+24
+00:00:58.303 --> 00:00:59.720
+Close those two down, we're going
+
+25
+00:00:59.720 --> 00:01:02.320
+to go to our terminal here.
+
+26
+00:01:02.320 --> 00:01:04.370
+Make sure you are in the main folder.
+
+27
+00:01:04.370 --> 00:01:05.540
+So let's take a look here.
+
+28
+00:01:05.540 --> 00:01:08.150
+We'll type git remote-v.
+
+29
+00:01:08.150 --> 00:01:10.610
+You remember that we have our heroku back in here.
+
+30
+00:01:10.610 --> 00:01:13.500
+We're gonna do the same song and dance for the front end.
+
+31
+00:01:13.500 --> 00:01:17.580
+We'll type heroku apps create:
+
+32
+00:01:17.580 --> 00:01:19.990
+sickfits-yoga-prod
+
+33
+00:01:19.990 --> 00:01:23.423
+and we will call this sickfits-next-prod
+
+34
+00:01:26.000 --> 00:01:27.283
+or react-prod.
+
+35
+00:01:29.450 --> 00:01:32.480
+It's going to create a new git repo for us
+
+36
+00:01:35.020 --> 00:01:37.690
+and I'm gonna type git remote
+
+37
+00:01:37.690 --> 00:01:41.030
+add heroku-front end
+
+38
+00:01:42.450 --> 00:01:45.560
+and then paste in that URL that we have there.
+
+39
+00:01:45.560 --> 00:01:49.400
+Now if we type git remote-v, let's see now we have
+
+40
+00:01:49.400 --> 00:01:51.820
+our back-end and our front end.
+
+41
+00:01:51.820 --> 00:01:54.410
+So we can do the same subtree push
+
+42
+00:01:54.410 --> 00:01:55.390
+that we previously had done.
+
+43
+00:01:55.390 --> 00:01:58.420
+So let's go ahead and add everything that we just did;
+
+44
+00:01:58.420 --> 00:02:02.720
+git commit - m prod url.
+
+45
+00:02:02.720 --> 00:02:05.190
+Now before we push this git subtree up,
+
+46
+00:02:05.190 --> 00:02:08.450
+I need to explain how Next works in production
+
+47
+00:02:08.450 --> 00:02:10.570
+because we've been running npm run dev.
+
+48
+00:02:10.570 --> 00:02:15.570
+If you take at look this, it will run just next on port 7777
+
+49
+00:02:15.630 --> 00:02:18.490
+but when we run next start,
+
+50
+00:02:18.490 --> 00:02:21.570
+it actually has to be built at that point.
+
+51
+00:02:21.570 --> 00:02:23.620
+So if you open up your folder,
+
+52
+00:02:23.620 --> 00:02:26.450
+you're going to see that there is a .next folder
+
+53
+00:02:26.450 --> 00:02:28.350
+and inside of there is all the information.
+
+54
+00:02:28.350 --> 00:02:32.723
+However, if I were to delete that and run npm start,
+
+55
+00:02:33.630 --> 00:02:34.920
+It doesn't work because there's
+
+56
+00:02:34.920 --> 00:02:37.100
+that next folder is not there.
+
+57
+00:02:37.100 --> 00:02:40.750
+So we have to run npm run build first
+
+58
+00:02:40.750 --> 00:02:44.083
+and that's going to create that .next folder for us.
+
+59
+00:02:45.440 --> 00:02:49.150
+And that's where the actual build of our application
+
+60
+00:02:49.150 --> 00:02:50.800
+is getting dumped into.
+
+61
+00:02:50.800 --> 00:02:52.360
+The problem with that is that,
+
+62
+00:02:52.360 --> 00:02:56.040
+you don't want to put this .next on a git repo
+
+63
+00:02:56.040 --> 00:02:57.830
+because it's just a bundled version,
+
+64
+00:02:57.830 --> 00:02:59.780
+it's a compiled version of it
+
+65
+00:02:59.780 --> 00:03:03.910
+but because heroku uses git to push it,
+
+66
+00:03:03.910 --> 00:03:06.240
+we're in sort of a pickle where I don't want this part
+
+67
+00:03:06.240 --> 00:03:08.830
+of my report but I do want to push it to heroku.
+
+68
+00:03:08.830 --> 00:03:11.310
+So what we're gonna do is we're gonna add a little hook
+
+69
+00:03:11.310 --> 00:03:14.640
+for heroku that is going to actually build this for us
+
+70
+00:03:14.640 --> 00:03:16.200
+but on their server.
+
+71
+00:03:16.200 --> 00:03:18.200
+So what we do here, is you just go down to your scripts
+
+72
+00:03:18.200 --> 00:03:20.240
+in your package json of your front-end
+
+73
+00:03:20.240 --> 00:03:23.293
+and you add a new script called heroku-postbuild
+
+74
+00:03:24.600 --> 00:03:27.440
+and that's heroku is going to check for this
+
+75
+00:03:27.440 --> 00:03:31.820
+and we're going to manually run ourselves next build
+
+76
+00:03:31.820 --> 00:03:33.970
+and that will just run that before it actually
+
+77
+00:03:33.970 --> 00:03:36.630
+goes ahead and starts it.
+
+78
+00:03:36.630 --> 00:03:39.450
+The other thing we want to do is modify our start command
+
+79
+00:03:39.450 --> 00:03:42.050
+because heroku is going to pass us a port.
+
+80
+00:03:42.050 --> 00:03:44.410
+So we need to tell it which port to listen on.
+
+81
+00:03:44.410 --> 00:03:47.390
+So say -p $PORT
+
+82
+00:03:47.390 --> 00:03:50.130
+and heroku will run the start command
+
+83
+00:03:50.130 --> 00:03:51.740
+and pass the port and tell it
+
+84
+00:03:51.740 --> 00:03:53.070
+what port to actually...
+
+85
+00:03:53.070 --> 00:03:56.380
+I believe it will proxy at over a port 80 or 443 for us
+
+86
+00:03:56.380 --> 00:03:59.180
+but it will run it on its own internal port.
+
+87
+00:03:59.180 --> 00:04:02.170
+So we added the start, we added the heroku post build.
+
+88
+00:04:02.170 --> 00:04:06.760
+Now if we go here, we git add everything we commit it.
+
+89
+00:04:06.760 --> 00:04:08.680
+Then we should be able to make sure
+
+90
+00:04:08.680 --> 00:04:12.110
+you're in the main folder not the front end folder.
+
+91
+00:04:12.110 --> 00:04:14.960
+we're gonna get subtree push prefix front-end
+
+92
+00:04:14.960 --> 00:04:16.950
+that means we're going to push up the front end folder
+
+93
+00:04:16.950 --> 00:04:18.543
+and then we're going to push
+
+94
+00:04:18.543 --> 00:04:22.210
+to the remote called heroku-front-end and we're going
+
+95
+00:04:22.210 --> 00:04:25.193
+to push our local branch of master to that.
+
+96
+00:04:28.270 --> 00:04:31.030
+Now, we start seeing the remote pop up here
+
+97
+00:04:31.030 --> 00:04:33.580
+and we should see that it is going
+
+98
+00:04:33.580 --> 00:04:35.470
+to run the build command for us
+
+99
+00:04:35.470 --> 00:04:38.040
+before it actually runs the start command.
+
+100
+00:04:38.040 --> 00:04:40.790
+So we are storing the cache, building dependencies.
+
+101
+00:04:40.790 --> 00:04:42.300
+If you deploy more than once,
+
+102
+00:04:42.300 --> 00:04:45.085
+it won't do the whole npm install thing for you
+
+103
+00:04:45.085 --> 00:04:47.790
+which is really nice because then it goes
+
+104
+00:04:47.790 --> 00:04:48.700
+a little bit quicker.
+
+105
+00:04:48.700 --> 00:04:51.430
+Here we go, running heroku post build,
+
+106
+00:04:51.430 --> 00:04:54.800
+it's running next build for us which is great.
+
+107
+00:04:54.800 --> 00:04:56.280
+It'll probably take a minute or two
+
+108
+00:04:56.280 --> 00:04:57.910
+to actually build the application
+
+109
+00:04:57.910 --> 00:05:01.530
+and then it should run the start command for us.
+
+110
+00:05:01.530 --> 00:05:02.880
+See that it's now launching
+
+111
+00:05:02.880 --> 00:05:05.680
+and we should be able to go to this and see if it works.
+
+112
+00:05:05.680 --> 00:05:07.680
+There might be a couple more things you need to iron out.
+
+113
+00:05:07.680 --> 00:05:09.820
+Let's take a quick look here.
+
+114
+00:05:09.820 --> 00:05:12.550
+And we get access to fetch
+
+115
+00:05:13.500 --> 00:05:15.010
+from this has been blocked
+
+116
+00:05:15.010 --> 00:05:16.920
+and that's because we're trying to use
+
+117
+00:05:16.920 --> 00:05:21.820
+this sixfits-next-prod.herokuapp.comm
+
+118
+00:05:21.820 --> 00:05:26.630
+and our current front-end URL set to localhost 777.
+
+119
+00:05:26.630 --> 00:05:29.980
+If this core stuff is making you frustrated,
+
+120
+00:05:29.980 --> 00:05:32.510
+you can turn it off, just be aware
+
+121
+00:05:32.510 --> 00:05:34.350
+of what turning it off is.
+
+122
+00:05:34.350 --> 00:05:38.270
+There is many use cases for turning cors off,
+
+123
+00:05:38.270 --> 00:05:40.500
+if you want to be able to pull it from any website
+
+124
+00:05:40.500 --> 00:05:42.130
+but if you're just trying to get it to work,
+
+125
+00:05:42.130 --> 00:05:46.660
+you can turn it off by going to your server side
+
+126
+00:05:46.660 --> 00:05:51.053
+and commenting out, this whole object right here.
+
+127
+00:05:53.750 --> 00:05:57.020
+And then you can also go to your client side
+
+128
+00:05:57.020 --> 00:06:00.660
+and go to the withdata and remove the fetch options.
+
+129
+00:06:00.660 --> 00:06:03.450
+I believe that will remove all of your cors options.
+
+130
+00:06:03.450 --> 00:06:05.920
+But let's actually fix it properly,
+
+131
+00:06:05.920 --> 00:06:08.860
+just to have best security we can.
+
+132
+00:06:08.860 --> 00:06:11.260
+So we'll go here, we'll edit this,
+
+133
+00:06:11.260 --> 00:06:15.460
+we'll give it the URL of our front-end, I'll save it.
+
+134
+00:06:15.460 --> 00:06:19.070
+You also have the ability, I should say, in your back-end
+
+135
+00:06:19.070 --> 00:06:21.100
+instead of passing it just one origin,
+
+136
+00:06:21.100 --> 00:06:24.210
+you can pass it in an array of origins as well as a regex.
+
+137
+00:06:24.210 --> 00:06:27.640
+So if you wanted to do like start.herokuapp.com
+
+138
+00:06:27.640 --> 00:06:30.380
+or something like that to be able to pass it, you could.
+
+139
+00:06:30.380 --> 00:06:32.950
+These are just express cors options,
+
+140
+00:06:32.950 --> 00:06:36.010
+so you just have to look up express cors
+
+141
+00:06:36.010 --> 00:06:38.310
+and then look at all the options.
+
+142
+00:06:38.310 --> 00:06:40.150
+Now when you do change this,
+
+143
+00:06:40.150 --> 00:06:43.410
+you do need to reboot your server-side.
+
+144
+00:06:43.410 --> 00:06:45.260
+So we're gonna restart that
+
+145
+00:06:45.260 --> 00:06:46.610
+and then while we wait for that,
+
+146
+00:06:46.610 --> 00:06:48.180
+we'll just refresh this a couple times
+
+147
+00:06:48.180 --> 00:06:49.760
+until we see it working.
+
+148
+00:06:49.760 --> 00:06:51.420
+Looks like we get one new error here,
+
+149
+00:06:51.420 --> 00:06:54.630
+it cannot read field orders on type of user
+
+150
+00:06:54.630 --> 00:06:56.580
+and this is actually because I forgot.
+
+151
+00:06:56.580 --> 00:06:58.450
+If we go to our schema.graphql,
+
+152
+00:06:58.450 --> 00:07:00.010
+I forgot to put the orders here.
+
+153
+00:07:00.010 --> 00:07:03.941
+So we'll say orders is an array of order item
+
+154
+00:07:03.941 --> 00:07:07.300
+and neither will be required so that it will be empty,
+
+155
+00:07:07.300 --> 00:07:08.640
+if we don't have any.
+
+156
+00:07:08.640 --> 00:07:11.690
+Then we'll have to go ahead and redeploy our back-end again.
+
+157
+00:07:11.690 --> 00:07:16.280
+So get add everything git commit order schema
+
+158
+00:07:16.280 --> 00:07:19.840
+and then we will get subtree push the back-end up.
+
+159
+00:07:19.840 --> 00:07:22.640
+That should make us be able to refresh this
+
+160
+00:07:22.640 --> 00:07:24.963
+and sign up to our actual application.
+
+161
+00:07:35.249 --> 00:07:36.180
+Looks like it redeployed.
+
+162
+00:07:36.180 --> 00:07:40.570
+So now if we refresh this, we do see our application
+
+163
+00:07:40.570 --> 00:07:41.780
+with no items in it.
+
+164
+00:07:41.780 --> 00:07:44.303
+We can go ahead and sign up for an account.
+
+165
+00:07:45.840 --> 00:07:47.630
+There we go, we're signed in.
+
+166
+00:07:47.630 --> 00:07:50.080
+You can probably go ahead and try sell something.
+
+167
+00:07:56.810 --> 00:07:58.680
+That is it and up and running.
+
+168
+00:07:58.680 --> 00:08:00.670
+If we want to host it on now, it's very similar.
+
+169
+00:08:00.670 --> 00:08:02.580
+If we go to our front-end,
+
+170
+00:08:02.580 --> 00:08:07.240
+we just need to take this -p $PORT site who's built now.
+
+171
+00:08:07.240 --> 00:08:09.410
+They also have built Next, so it just works.
+
+172
+00:08:09.410 --> 00:08:12.030
+You don't have to pass a port, you just remove that.
+
+173
+00:08:12.030 --> 00:08:14.590
+We'll go over to our front-end here.
+
+174
+00:08:14.590 --> 00:08:17.350
+Make sure you go into the front-end folder
+
+175
+00:08:17.350 --> 00:08:19.920
+and then you just type now.
+
+176
+00:08:19.920 --> 00:08:22.330
+That's going to go ahead and deploy it
+
+177
+00:08:22.330 --> 00:08:25.240
+and it's going to apply it to this URL here.
+
+178
+00:08:25.240 --> 00:08:26.410
+We can go ahead and visit it.
+
+179
+00:08:26.410 --> 00:08:28.120
+While we wait for that to actually deploy,
+
+180
+00:08:28.120 --> 00:08:30.340
+let's take this URL and change that
+
+181
+00:08:30.340 --> 00:08:32.093
+in our front-end URL here.
+
+182
+00:08:34.120 --> 00:08:35.630
+Give it a save.
+
+183
+00:08:35.630 --> 00:08:38.060
+We're gonna reboot our back-end while we wait
+
+184
+00:08:38.060 --> 00:08:39.493
+for the front-end to deploy.
+
+185
+00:08:43.180 --> 00:08:45.780
+You see that it's running next build already for us,
+
+186
+00:08:45.780 --> 00:08:47.910
+not because we have any hook or anything
+
+187
+00:08:47.910 --> 00:08:51.810
+just because now seems to take a lot of the setup
+
+188
+00:08:51.810 --> 00:08:55.540
+for out of it for you and it knows to run the build command
+
+189
+00:08:55.540 --> 00:08:57.903
+before you actually start the thing.
+
+190
+00:09:00.220 --> 00:09:02.400
+And after a quick second, it redirects us.
+
+191
+00:09:02.400 --> 00:09:04.880
+Let's open up this real quick.
+
+192
+00:09:04.880 --> 00:09:08.340
+We get the blocked URL here and maybe
+
+193
+00:09:08.340 --> 00:09:11.653
+that is because, did we put the proper URL in here?
+
+194
+00:09:13.450 --> 00:09:15.730
+Oh maybe don't put the forward slash on there.
+
+195
+00:09:15.730 --> 00:09:18.650
+Save Changes, restart.
+
+196
+00:09:18.650 --> 00:09:20.550
+Now when I refresh the page,
+
+197
+00:09:20.550 --> 00:09:23.890
+you'll see that we've got everything up and running
+
+198
+00:09:23.890 --> 00:09:26.900
+and I'm able to see that earlier one that I created.
+
+199
+00:09:26.900 --> 00:09:28.960
+So that's deploying the front end.
+
+200
+00:09:28.960 --> 00:09:30.570
+You do really need to make sure
+
+201
+00:09:30.570 --> 00:09:32.890
+that you have all that cors stuff set up.
+
+202
+00:09:32.890 --> 00:09:35.170
+It can be a bit of a pain but it's well worth
+
+203
+00:09:35.170 --> 00:09:36.800
+investing a little bit of time in making sure
+
+204
+00:09:36.800 --> 00:09:38.650
+that is all up and running.
+
+205
+00:09:38.650 --> 00:09:40.520
+So hopefully you enjoyed that.
+
+206
+00:09:40.520 --> 00:09:42.670
+We'll see in the next little wrap-up video.
+

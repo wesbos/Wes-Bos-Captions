@@ -1,0 +1,994 @@
+﻿WEBVTT
+
+1
+00:00:01.353 --> 00:00:02.186
+<v Wes>All right, let's look at how</v>
+
+2
+00:00:02.186 --> 00:00:04.430
+we can deploy our Yoga server.
+
+3
+00:00:04.430 --> 00:00:07.530
+We're gonna both do it to heroku as well as Now.
+
+4
+00:00:07.530 --> 00:00:09.310
+So let's do Heroku first.
+
+5
+00:00:09.310 --> 00:00:13.220
+First thing you need to do is install the Heroku CLI.
+
+6
+00:00:13.220 --> 00:00:16.470
+If you're on a Mac, just run brew install Heroku
+
+7
+00:00:16.470 --> 00:00:18.320
+and that will install it for you.
+
+8
+00:00:18.320 --> 00:00:19.550
+If you don't know what brew is,
+
+9
+00:00:19.550 --> 00:00:21.400
+you can also download an installer.
+
+10
+00:00:21.400 --> 00:00:22.960
+If you're on Windows or Ubuntu
+
+11
+00:00:22.960 --> 00:00:24.980
+you can also install it this way.
+
+12
+00:00:24.980 --> 00:00:26.260
+The way you can tell that that works
+
+13
+00:00:26.260 --> 00:00:28.050
+is if you go to your terminal
+
+14
+00:00:28.050 --> 00:00:30.560
+and you type heroku --help
+
+15
+00:00:30.560 --> 00:00:32.750
+you should see all of the possible commands
+
+16
+00:00:32.750 --> 00:00:33.860
+that you can have.
+
+17
+00:00:33.860 --> 00:00:35.960
+Once you're in there, type heroku login
+
+18
+00:00:35.960 --> 00:00:38.430
+and that's going to prompt you for your username
+
+19
+00:00:38.430 --> 00:00:40.990
+and password to login into your heroku account.
+
+20
+00:00:40.990 --> 00:00:43.130
+If you don't have an account, go ahead and create one.
+
+21
+00:00:43.130 --> 00:00:45.400
+I think you can have about five free applications running
+
+22
+00:00:45.400 --> 00:00:48.430
+before you have to pay, which is pretty cool.
+
+23
+00:00:48.430 --> 00:00:51.480
+Now, this is gonna be a little bit different
+
+24
+00:00:51.480 --> 00:00:55.480
+than most heroku because I am running a single git repo
+
+25
+00:00:55.480 --> 00:00:57.190
+with two applications in it.
+
+26
+00:00:57.190 --> 00:01:00.760
+Now, you might be running separate git repos
+
+27
+00:01:00.760 --> 00:01:02.380
+for your backend and your frontend.
+
+28
+00:01:02.380 --> 00:01:03.710
+That's a pretty common thing to do,
+
+29
+00:01:03.710 --> 00:01:06.650
+and it would be pretty similar to this.
+
+30
+00:01:06.650 --> 00:01:09.020
+I'll make a note of what the differences would be.
+
+31
+00:01:09.020 --> 00:01:11.370
+But because I've been doing this entire thing
+
+32
+00:01:11.370 --> 00:01:14.450
+in a single git repo, and likely you have as well,
+
+33
+00:01:14.450 --> 00:01:16.570
+you do need to be able to do this.
+
+34
+00:01:16.570 --> 00:01:18.400
+So, first thing you need to do
+
+35
+00:01:18.400 --> 00:01:19.870
+is you need to have a git repo,
+
+36
+00:01:19.870 --> 00:01:21.147
+so if you don't, you type git init,
+
+37
+00:01:21.147 --> 00:01:23.157
+and that will create an empty git repo.
+
+38
+00:01:23.157 --> 00:01:26.590
+And you type git add -a and that will add everything.
+
+39
+00:01:26.590 --> 00:01:28.810
+And then you need to git commit -m
+
+40
+00:01:28.810 --> 00:01:33.000
+and say something like, all my code,
+
+41
+00:01:33.000 --> 00:01:35.030
+and then that will commit it.
+
+42
+00:01:35.030 --> 00:01:36.401
+So, that's it.
+
+43
+00:01:36.401 --> 00:01:39.800
+It has nothing to do with using GitHub at this point.
+
+44
+00:01:39.800 --> 00:01:40.883
+It's just using git.
+
+45
+00:01:41.950 --> 00:01:46.390
+Then what we need to do is create a heroku application.
+
+46
+00:01:46.390 --> 00:01:50.680
+So we'll type heroku apps:create
+
+47
+00:01:50.680 --> 00:01:52.800
+and then you type the name of the application that you want.
+
+48
+00:01:52.800 --> 00:01:57.663
+I'm gonna call mine sickfits-yoga-prod.
+
+49
+00:02:00.909 --> 00:02:03.520
+It went ahead and created that application for us.
+
+50
+00:02:03.520 --> 00:02:06.330
+If you refresh this, your dashboard,
+
+51
+00:02:06.330 --> 00:02:09.540
+you should see sickfits-yoga-proj showing up in there.
+
+52
+00:02:09.540 --> 00:02:13.620
+Now, it will give you this git URL right here.
+
+53
+00:02:13.620 --> 00:02:17.380
+And by default it's going to get it listed as a remote.
+
+54
+00:02:17.380 --> 00:02:19.910
+So if you type git remote -v
+
+55
+00:02:19.910 --> 00:02:24.120
+you'll see that this is listed as a remote called heroku.
+
+56
+00:02:24.120 --> 00:02:25.460
+However, we're not actually
+
+57
+00:02:25.460 --> 00:02:27.840
+going to be using the heroku remote
+
+58
+00:02:27.840 --> 00:02:31.010
+because we need to just deploy sub-folders.
+
+59
+00:02:31.010 --> 00:02:33.250
+If I were to deploy this git repo,
+
+60
+00:02:33.250 --> 00:02:35.010
+it wouldn't know how to start the application
+
+61
+00:02:35.010 --> 00:02:38.430
+because the backend app, the Yoga apps in backend folder,
+
+62
+00:02:38.430 --> 00:02:40.490
+and the frontend application,
+
+63
+00:02:40.490 --> 00:02:43.100
+has a Next.js node application in it.
+
+64
+00:02:43.100 --> 00:02:45.300
+So, what were gonna do is were gonna add some
+
+65
+00:02:45.300 --> 00:02:48.780
+more remotes that are for heroku frontend
+
+66
+00:02:48.780 --> 00:02:50.710
+and heroku backend.
+
+67
+00:02:50.710 --> 00:02:51.890
+So the way that we do that is you
+
+68
+00:02:51.890 --> 00:02:55.080
+go ahead and copy that git that you have right here
+
+69
+00:02:56.500 --> 00:02:59.643
+or you can just copy it from typing git remote-v.
+
+70
+00:03:00.860 --> 00:03:05.860
+Then were gonna type git remote add and we'll call it
+
+71
+00:03:06.020 --> 00:03:10.120
+heroku-backend and then paste the actual remote
+
+72
+00:03:10.120 --> 00:03:11.530
+that you have there.
+
+73
+00:03:11.530 --> 00:03:14.880
+And now if you type git remote -v you'll see
+
+74
+00:03:14.880 --> 00:03:18.410
+that we now have another remote called heroku-backend.
+
+75
+00:03:18.410 --> 00:03:22.970
+Now the way that you push up just a sub folder to our remote
+
+76
+00:03:22.970 --> 00:03:26.870
+git repo is with something called git sub tree and what
+
+77
+00:03:26.870 --> 00:03:29.850
+that will do again is it's only gonna push up the contents
+
+78
+00:03:29.850 --> 00:03:33.680
+of the backend folder to our heroku.
+
+79
+00:03:33.680 --> 00:03:38.680
+So we type, git subtree push --prefix backend
+
+80
+00:03:39.310 --> 00:03:42.913
+so -- prefix backend means push up the back end folder.
+
+81
+00:03:43.768 --> 00:03:45.978
+Then its normal git commands,
+
+82
+00:03:45.978 --> 00:03:48.950
+where do we want to push, to what remote?
+
+83
+00:03:48.950 --> 00:03:53.950
+heroko-backend and what local brand do we want to push?
+
+84
+00:03:54.197 --> 00:03:56.073
+And in our case we're on master.
+
+85
+00:03:58.370 --> 00:04:02.420
+That's gonna automatically push up our backend here.
+
+86
+00:04:02.420 --> 00:04:04.640
+And then it will show you all of the remote.
+
+87
+00:04:04.640 --> 00:04:07.040
+It will detect that it's a node application
+
+88
+00:04:07.040 --> 00:04:08.450
+so there's no specific stuff
+
+89
+00:04:08.450 --> 00:04:10.280
+we need to do in order to tell it
+
+90
+00:04:10.280 --> 00:04:13.350
+that it's a node application, which is pretty nifty.
+
+91
+00:04:13.350 --> 00:04:15.320
+Then we'll just wait for it to go ahead and install,
+
+92
+00:04:15.320 --> 00:04:18.470
+all the dependencies are in our app.js.
+
+93
+00:04:18.470 --> 00:04:21.330
+It is using node version eight.
+
+94
+00:04:21.330 --> 00:04:24.960
+So if you do need to have a newer version of node running
+
+95
+00:04:24.960 --> 00:04:27.780
+I think this should be fine for application but if you do
+
+96
+00:04:27.780 --> 00:04:32.780
+need a newer version you can specify in engines object
+
+97
+00:04:32.990 --> 00:04:34.380
+inside of your package.json
+
+98
+00:04:34.380 --> 00:04:37.280
+that has a node property inside of that.
+
+99
+00:04:37.280 --> 00:04:40.750
+You can set that to greater or equal to nine or 10 or 11
+
+100
+00:04:40.750 --> 00:04:43.250
+or whatever it is at the time of you watching this.
+
+101
+00:04:43.250 --> 00:04:44.920
+While we wait for this lets just take a quick look
+
+102
+00:04:44.920 --> 00:04:47.520
+at our package.json that we have here.
+
+103
+00:04:47.520 --> 00:04:48.650
+It is going to run,
+
+104
+00:04:48.650 --> 00:04:52.400
+we've been running npm run dev, which is this.
+
+105
+00:04:52.400 --> 00:04:54.820
+But what were gonna be doing in production
+
+106
+00:04:54.820 --> 00:04:57.010
+is by default it will just npm start.
+
+107
+00:04:57.010 --> 00:04:59.270
+And that's gonna run the nodemon command
+
+108
+00:04:59.270 --> 00:05:02.240
+which will watch our .js and .graphql files.
+
+109
+00:05:02.240 --> 00:05:06.733
+And it's going to run the command node index.js.
+
+110
+00:05:07.790 --> 00:05:11.377
+Looks like it has worked, it deployed it, it will give you
+
+111
+00:05:11.377 --> 00:05:13.380
+a URL to your application.
+
+112
+00:05:13.380 --> 00:05:15.570
+If you click on that you can tell
+
+113
+00:05:15.570 --> 00:05:17.840
+everything has gone right because it's going to load up
+
+114
+00:05:17.840 --> 00:05:20.180
+the playground, the GraphQL playground for us.
+
+115
+00:05:20.180 --> 00:05:22.370
+Now it doesn't seem to be starting, I think I know why,
+
+116
+00:05:22.370 --> 00:05:23.330
+I forgot a step.
+
+117
+00:05:23.330 --> 00:05:25.950
+But if you want to know why it isn't starting
+
+118
+00:05:25.950 --> 00:05:28.150
+or if there is an error that tells you about logs
+
+119
+00:05:28.150 --> 00:05:32.550
+heroku logs --tail
+
+120
+00:05:33.420 --> 00:05:35.710
+and that will give you the actual tail,
+
+121
+00:05:35.710 --> 00:05:39.670
+oh in this case I have multiple remotes so we want to say
+
+122
+00:05:39.670 --> 00:05:43.583
+heroku --tail --app sickfits-yoga-prod
+
+123
+00:05:51.830 --> 00:05:53.607
+and it will stream all of it.
+
+124
+00:05:53.607 --> 00:05:56.950
+And this is the actual error that it's throwing.
+
+125
+00:05:56.950 --> 00:05:59.050
+No Prisma endpoint found.
+
+126
+00:05:59.050 --> 00:06:02.020
+That's because we did not do the environmental variables.
+
+127
+00:06:02.020 --> 00:06:04.300
+When we were doing it locally we were putting all
+
+128
+00:06:04.300 --> 00:06:07.400
+our environmental variables in this variables.env file.
+
+129
+00:06:07.400 --> 00:06:10.100
+The problem is because were using git and were git ignoring
+
+130
+00:06:10.100 --> 00:06:13.014
+this file, this file doesn't make it ways up.
+
+131
+00:06:13.014 --> 00:06:15.315
+So you never want to put variables
+
+132
+00:06:15.315 --> 00:06:17.504
+that you .env into a git repo.
+
+133
+00:06:17.504 --> 00:06:19.690
+Sorta the unfortunate downside
+
+134
+00:06:19.690 --> 00:06:23.140
+to using heroku with git is that you can't push this up.
+
+135
+00:06:23.140 --> 00:06:24.900
+However it's a pretty easy fix.
+
+136
+00:06:24.900 --> 00:06:27.700
+All you need to do is go to your heroku backend here,
+
+137
+00:06:27.700 --> 00:06:29.250
+find your yoga production.
+
+138
+00:06:29.250 --> 00:06:32.363
+I think we go to our settings,
+
+139
+00:06:33.550 --> 00:06:35.550
+click on reveal config vars,
+
+140
+00:06:35.550 --> 00:06:37.190
+and then you just need to quickly
+
+141
+00:06:37.190 --> 00:06:41.340
+copy, paste all of these values in here.
+
+142
+00:06:41.340 --> 00:06:45.320
+In this case I'm still gonna put localhost:7777,
+
+143
+00:06:45.320 --> 00:06:47.840
+but this would be the URL of where your react,
+
+144
+00:06:47.840 --> 00:06:50.870
+where your frontend application gets deployed.
+
+145
+00:06:50.870 --> 00:06:53.550
+Then you just go ahead and do the rest.
+
+146
+00:06:53.550 --> 00:06:55.937
+The really important one here is the PRISMA_ENDPOINT
+
+147
+00:06:55.937 --> 00:06:58.690
+and actually that's our development endpoint.
+
+148
+00:06:58.690 --> 00:07:00.340
+We actually wanna use this one right here,
+
+149
+00:07:00.340 --> 00:07:03.990
+which got swapped out when we just deployed our Prism
+
+150
+00:07:03.990 --> 00:07:06.100
+of backend, so I'm gonna paste that in here.
+
+151
+00:07:06.100 --> 00:07:07.820
+Then I'm just gonna go ahead and quickly add
+
+152
+00:07:07.820 --> 00:07:08.693
+the rest of them.
+
+153
+00:07:10.640 --> 00:07:13.550
+Here is where you would put not a test stripe token
+
+154
+00:07:13.550 --> 00:07:16.147
+but a real live stripe token.
+
+155
+00:07:16.147 --> 00:07:19.680
+Here is where you put your actual SMTP host.
+
+156
+00:07:19.680 --> 00:07:21.950
+Something like Postmark or Mailjet
+
+157
+00:07:21.950 --> 00:07:25.683
+or any of the other ones, Mandrill.
+
+158
+00:07:27.186 --> 00:07:28.019
+There we go.
+
+159
+00:07:28.019 --> 00:07:31.210
+At this point you can either make a, you can quit this.
+
+160
+00:07:31.210 --> 00:07:33.520
+You can either make a tiny change to something
+
+161
+00:07:33.520 --> 00:07:36.980
+in your application and redeploy it or you can go
+
+162
+00:07:36.980 --> 00:07:41.920
+to your application here and run more,
+
+163
+00:07:41.920 --> 00:07:43.550
+and restart all dynos.
+
+164
+00:07:43.550 --> 00:07:45.820
+I'm just gonna show you how to do it from the command line
+
+165
+00:07:45.820 --> 00:07:47.980
+just so we can get more comfortable with it.
+
+166
+00:07:47.980 --> 00:07:49.633
+So, let's go here.
+
+167
+00:07:50.870 --> 00:07:55.123
+What could we change that, maybe index.js, start it!
+
+168
+00:07:57.360 --> 00:07:59.780
+Now something has been added
+
+169
+00:07:59.780 --> 00:08:01.930
+so I'm gonna git add all,
+
+170
+00:08:01.930 --> 00:08:06.511
+git commit -m yay.
+
+171
+00:08:06.511 --> 00:08:09.820
+And there were going to git subtree push --prefix backend
+
+172
+00:08:09.820 --> 00:08:11.750
+heroku-backend master
+
+173
+00:08:11.750 --> 00:08:15.351
+That should push up the dif up to heroku.
+
+174
+00:08:15.351 --> 00:08:19.010
+Then it's gonna do the whole restart of the dyno,
+
+175
+00:08:19.010 --> 00:08:21.610
+which is the actual machine that were running it on.
+
+176
+00:08:26.270 --> 00:08:29.740
+Looks like it's launching, lets go ahead and visit that URL.
+
+177
+00:08:29.740 --> 00:08:32.800
+Might take a second as the application starts itself.
+
+178
+00:08:32.800 --> 00:08:36.420
+Looks like it's done, and looks like .graphql playground
+
+179
+00:08:36.420 --> 00:08:40.413
+if we open up our schema you will see, these are all
+
+180
+00:08:40.413 --> 00:08:42.620
+of our mutations and all of our queries.
+
+181
+00:08:42.620 --> 00:08:44.020
+These aren't everything in Prisma
+
+182
+00:08:44.020 --> 00:08:45.690
+but these are the public facing ones
+
+183
+00:08:45.690 --> 00:08:47.200
+that we do want to be able to see.
+
+184
+00:08:47.200 --> 00:08:50.270
+So someone should be able to query the items,
+
+185
+00:08:50.270 --> 00:08:51.950
+so maybe we'll make a query here
+
+186
+00:08:51.950 --> 00:08:55.110
+for items, bump this font size up,
+
+187
+00:08:55.110 --> 00:08:56.560
+and then we'll grab the ID
+
+188
+00:08:56.560 --> 00:08:58.760
+and the title for every single item.
+
+189
+00:08:58.760 --> 00:08:59.593
+Run it.
+
+190
+00:09:00.833 --> 00:09:02.469
+Obviously were not gonna get a list of items
+
+191
+00:09:02.469 --> 00:09:05.530
+because there's nothing, there are no items in here,
+
+192
+00:09:05.530 --> 00:09:07.420
+you could run create items.
+
+193
+00:09:07.420 --> 00:09:12.420
+If you were to run the query users and just grab the user ID
+
+194
+00:09:12.524 --> 00:09:15.060
+it should tell us you must be logged into that.
+
+195
+00:09:15.060 --> 00:09:19.310
+So we know that our yoga server is running properly.
+
+196
+00:09:19.310 --> 00:09:22.490
+Good, I'm gonna also show you now how to deploy it to now.
+
+197
+00:09:22.490 --> 00:09:26.670
+So if you go to now.sh you'll see that this a hosting
+
+198
+00:09:26.670 --> 00:09:28.300
+platform by ZEIT.
+
+199
+00:09:28.300 --> 00:09:31.030
+I am a big fan of it I host a lot
+
+200
+00:09:31.030 --> 00:09:33.520
+of my own applications on this.
+
+201
+00:09:33.520 --> 00:09:35.080
+They haven't paid me, neither has heroku,
+
+202
+00:09:35.080 --> 00:09:37.320
+I'm just a big fan of it.
+
+203
+00:09:37.320 --> 00:09:38.610
+There support is really good
+
+204
+00:09:38.610 --> 00:09:41.910
+and it's dead simple to actually use it.
+
+205
+00:09:41.910 --> 00:09:43.900
+So the way that it works is that you obviously sign up
+
+206
+00:09:43.900 --> 00:09:48.900
+for a account and then you npm install now -g
+
+207
+00:09:49.740 --> 00:09:52.844
+and that will install the now CLI tool for you.
+
+208
+00:09:52.844 --> 00:09:55.730
+Then you simply just go into the folder that you want
+
+209
+00:09:55.730 --> 00:09:57.370
+so make sure you're in the backend folder,
+
+210
+00:09:57.370 --> 00:10:00.190
+it's not in the main folder like we did for the last one.
+
+211
+00:10:00.190 --> 00:10:01.463
+So we just type now.
+
+212
+00:10:10.420 --> 00:10:12.640
+It's gonna automatically give you a URL.
+
+213
+00:10:12.640 --> 00:10:14.660
+You can open that up and you can sorta watch
+
+214
+00:10:14.660 --> 00:10:17.280
+as it does this whole song and dance of installing
+
+215
+00:10:17.280 --> 00:10:18.690
+all of our dependencies and attempting
+
+216
+00:10:18.690 --> 00:10:20.810
+to start the application.
+
+217
+00:10:20.810 --> 00:10:24.018
+You will see these, the security audit pop up.
+
+218
+00:10:24.018 --> 00:10:26.480
+These happen quite often in node,
+
+219
+00:10:26.480 --> 00:10:28.900
+they now tell you when there are issues
+
+220
+00:10:28.900 --> 00:10:30.750
+in the node packages.
+
+221
+00:10:30.750 --> 00:10:34.220
+Right now there are no fixes to any of these that I have.
+
+222
+00:10:34.220 --> 00:10:36.280
+I've installed the latest version of everything,
+
+223
+00:10:36.280 --> 00:10:39.080
+and it still tells you that there's a security issue.
+
+224
+00:10:39.080 --> 00:10:41.390
+It's worth checking out what the issues are
+
+225
+00:10:41.390 --> 00:10:43.600
+and making sure that your not using the packaging in
+
+226
+00:10:43.600 --> 00:10:45.790
+any way that could possibly be done.
+
+227
+00:10:45.790 --> 00:10:48.330
+Usually they're, when you use a package
+
+228
+00:10:48.330 --> 00:10:51.620
+in a specific way, so don't be to scared
+
+229
+00:10:51.620 --> 00:10:53.556
+of 'em, but don't ignore them either.
+
+230
+00:10:53.556 --> 00:10:57.570
+Looks like we are deploying this sucker, looks good.
+
+231
+00:10:57.570 --> 00:10:59.090
+Looks like it's now running.
+
+232
+00:10:59.090 --> 00:11:03.664
+I believe if I were to refresh this,
+
+233
+00:11:03.664 --> 00:11:06.010
+we now get pushed off to the backend.
+
+234
+00:11:06.010 --> 00:11:08.820
+This is using our, see you can see everything
+
+235
+00:11:08.820 --> 00:11:11.793
+that's in here, all of our mutations, all of our queries.
+
+236
+00:11:13.770 --> 00:11:16.600
+This is using our variables.env file,
+
+237
+00:11:16.600 --> 00:11:18.490
+you can overwrite that when you deploy it
+
+238
+00:11:18.490 --> 00:11:23.490
+with the now environmental variables --dotenv file.
+
+239
+00:11:24.570 --> 00:11:26.730
+So when you deploy it you just simply pass
+
+240
+00:11:26.730 --> 00:11:29.570
+a --dotenv and you can create a separate file
+
+241
+00:11:29.570 --> 00:11:32.147
+for your production environmental variables
+
+242
+00:11:32.147 --> 00:11:34.220
+and that will take that file along for the ride
+
+243
+00:11:34.220 --> 00:11:37.730
+and apply all those environmental variables for you.
+
+244
+00:11:37.730 --> 00:11:39.363
+Which is really, really good.
+
+245
+00:11:40.520 --> 00:11:42.610
+So that's now, pretty simple to get up
+
+246
+00:11:42.610 --> 00:11:43.920
+and running with that.
+
+247
+00:11:43.920 --> 00:11:45.510
+Let's move on to actually deploying
+
+248
+00:11:45.510 --> 00:11:47.153
+the frontend of the application.
+

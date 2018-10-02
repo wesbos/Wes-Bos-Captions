@@ -1,0 +1,1046 @@
+﻿WEBVTT
+
+1
+00:00:00.860 --> 00:00:02.180
+<v Wes>Alright, hold on to your pants,</v>
+
+2
+00:00:02.180 --> 00:00:03.350
+because, in this video,
+
+3
+00:00:03.350 --> 00:00:06.300
+we are going to be making things look great.
+
+4
+00:00:06.300 --> 00:00:09.250
+We're gonna be using a library called Styled Components
+
+5
+00:00:09.250 --> 00:00:11.230
+in order to write the CSS
+
+6
+00:00:11.230 --> 00:00:14.036
+that we need to style our application now.
+
+7
+00:00:14.036 --> 00:00:18.380
+Let's talk about CSS in React real quick,
+
+8
+00:00:18.380 --> 00:00:22.290
+so there's a couple ways to do CSS in a React application.
+
+9
+00:00:22.290 --> 00:00:25.840
+The most basic being, do it the way you've always done it.
+
+10
+00:00:25.840 --> 00:00:27.320
+So, what you can do
+
+11
+00:00:27.320 --> 00:00:30.540
+is you can simply write your CSS in a .css file.
+
+12
+00:00:30.540 --> 00:00:33.270
+You could open up your meta file,
+
+13
+00:00:33.270 --> 00:00:36.190
+and just do a regular old link tag,
+
+14
+00:00:36.190 --> 00:00:37.870
+and then, inside of all your components,
+
+15
+00:00:37.870 --> 00:00:39.700
+you can add classes to your elements,
+
+16
+00:00:39.700 --> 00:00:41.580
+and select them based on that,
+
+17
+00:00:41.580 --> 00:00:42.413
+and you're good to go.
+
+18
+00:00:42.413 --> 00:00:45.910
+Or, you can run SASS, and compile that to CSS,
+
+19
+00:00:45.910 --> 00:00:47.412
+and put it in there.
+
+20
+00:00:47.412 --> 00:00:50.140
+However, there is a fairly popular way
+
+21
+00:00:50.140 --> 00:00:52.810
+of writing CSS in React application
+
+22
+00:00:52.810 --> 00:00:56.940
+that's sort of got the name CSS in JS.
+
+23
+00:00:56.940 --> 00:00:58.730
+Used to be called Inline CSS,
+
+24
+00:00:58.730 --> 00:01:02.680
+which I think rubbed people wrong, the wrong way.
+
+25
+00:01:02.680 --> 00:01:05.440
+So, it's sort of settle on CSS in JS.
+
+26
+00:01:05.440 --> 00:01:07.674
+And, essentially, what that means
+
+27
+00:01:07.674 --> 00:01:10.074
+is you are writing the styles for your application
+
+28
+00:01:10.074 --> 00:01:13.320
+inside of your JavaScript application,
+
+29
+00:01:13.320 --> 00:01:16.070
+and usually they're fairly coupled
+
+30
+00:01:16.070 --> 00:01:18.980
+with the actual components that need to be created.
+
+31
+00:01:18.980 --> 00:01:21.560
+So, if I have a button that needs to be
+
+32
+00:01:21.560 --> 00:01:24.911
+red and white text and a certain font size,
+
+33
+00:01:24.911 --> 00:01:28.580
+I might couple that with the actual button itself
+
+34
+00:01:28.580 --> 00:01:30.070
+because they go together.
+
+35
+00:01:30.070 --> 00:01:32.950
+Or, even when style components in a couple of
+
+36
+00:01:32.950 --> 00:01:35.310
+these libraries you can make a reusable button
+
+37
+00:01:35.310 --> 00:01:37.620
+that you can use to write your application.
+
+38
+00:01:37.620 --> 00:01:39.650
+Similar to how you would create a class
+
+39
+00:01:39.650 --> 00:01:42.120
+that you could reuse throughout your entire application.
+
+40
+00:01:42.120 --> 00:01:44.840
+Now, what's the benefit of that?
+
+41
+00:01:44.840 --> 00:01:46.530
+Well, the biggest benefit of it
+
+42
+00:01:46.530 --> 00:01:50.430
+is that you don't have the concept of global styling.
+
+43
+00:01:50.430 --> 00:01:52.140
+We do, we're actually going to be using that.
+
+44
+00:01:52.140 --> 00:01:56.320
+But, if you write a specific styles for that button,
+
+45
+00:01:56.320 --> 00:01:58.560
+there's no way for it to leak outside
+
+46
+00:01:58.560 --> 00:02:02.760
+and maybe accidentally apply those styles to something else.
+
+47
+00:02:02.760 --> 00:02:05.160
+Have you ever written some CSS
+
+48
+00:02:05.160 --> 00:02:08.110
+where you applied a class to something
+
+49
+00:02:08.110 --> 00:02:11.390
+or you wrote a selector based on an element
+
+50
+00:02:11.390 --> 00:02:13.270
+and then something else on the page broke
+
+51
+00:02:13.270 --> 00:02:16.120
+because the styles accidentally applied to that?
+
+52
+00:02:16.120 --> 00:02:18.870
+With this, we're really going to be containing our styles.
+
+53
+00:02:18.870 --> 00:02:20.610
+Now, there's all kinds of opinions
+
+54
+00:02:20.610 --> 00:02:23.160
+whether this is the best way or a terrible way
+
+55
+00:02:23.160 --> 00:02:25.413
+or if people have a problem with CSS,
+
+56
+00:02:25.413 --> 00:02:28.130
+then you might already have, like, you may be using them.
+
+57
+00:02:28.130 --> 00:02:29.350
+You might be really happy with that,
+
+58
+00:02:29.350 --> 00:02:32.108
+and I would encourage you to keep going with that,
+
+59
+00:02:32.108 --> 00:02:36.130
+if you are familiar and you're comfortable with that.
+
+60
+00:02:36.130 --> 00:02:39.300
+So, I'm not really forcing any one on anyone,
+
+61
+00:02:39.300 --> 00:02:42.320
+but we are going to be using Styled Components in this.
+
+62
+00:02:42.320 --> 00:02:43.750
+There's a whole bunch of other ones.
+
+63
+00:02:43.750 --> 00:02:45.527
+A whole bunch of other CSS in JS1's.
+
+64
+00:02:45.527 --> 00:02:47.626
+But, I really like this one.
+
+65
+00:02:47.626 --> 00:02:49.620
+I use it in my own applications,
+
+66
+00:02:49.620 --> 00:02:51.510
+and the reason why I like it the best
+
+67
+00:02:51.510 --> 00:02:55.440
+is because it looks exactly like normal CSS.
+
+68
+00:02:55.440 --> 00:02:57.850
+Some of them have you writing objects
+
+69
+00:02:57.850 --> 00:03:00.380
+where you have to camelcase stuff,
+
+70
+00:03:00.380 --> 00:03:01.860
+and you have property values,
+
+71
+00:03:01.860 --> 00:03:03.948
+and it gets a little bit hairy.
+
+72
+00:03:03.948 --> 00:03:07.090
+And, if your doing media queries it gets pretty hairy.
+
+73
+00:03:07.090 --> 00:03:09.425
+And, in this, you are writing your CSS
+
+74
+00:03:09.425 --> 00:03:12.364
+just as if you are writing it in a .dot CS file.
+
+75
+00:03:12.364 --> 00:03:15.370
+And, that's what I really like about it,
+
+76
+00:03:15.370 --> 00:03:16.780
+with a couple little exceptions.
+
+77
+00:03:16.780 --> 00:03:19.640
+So, let's take a look at how this actually works.
+
+78
+00:03:19.640 --> 00:03:21.800
+First of all, before you even get started,
+
+79
+00:03:21.800 --> 00:03:24.850
+make sure that you have a, if you're using VS code,
+
+80
+00:03:24.850 --> 00:03:28.250
+grab the VS code styled components extension
+
+81
+00:03:28.250 --> 00:03:29.910
+and what that's going to do is it's going to give you
+
+82
+00:03:29.910 --> 00:03:33.943
+regular CSS highlighting inside of our JavaScript files.
+
+83
+00:03:33.943 --> 00:03:38.943
+Now, the way that we us style components is, well,
+
+84
+00:03:39.740 --> 00:03:40.760
+let's back it up.
+
+85
+00:03:40.760 --> 00:03:43.360
+Open up page.js and let's give ourselves
+
+86
+00:03:43.360 --> 00:03:45.510
+just a regular button.
+
+87
+00:03:45.510 --> 00:03:46.770
+Oh, a button.
+
+88
+00:03:46.770 --> 00:03:49.020
+A button that says click me.
+
+89
+00:03:49.020 --> 00:03:50.750
+And, if I wanted to make this button
+
+90
+00:03:50.750 --> 00:03:53.580
+red with white text and a large font size,
+
+91
+00:03:53.580 --> 00:03:56.160
+normally what you'd do is give it a class name
+
+92
+00:03:56.160 --> 00:03:57.760
+of, like, a button
+
+93
+00:03:57.760 --> 00:04:00.470
+and then you might use like ben, or button.
+
+94
+00:04:00.470 --> 00:04:02.010
+Underscore, underscore, large,
+
+95
+00:04:02.010 --> 00:04:04.560
+and then maybe button underscore, underscore,
+
+96
+00:04:04.560 --> 00:04:06.290
+large dash, dash, red.
+
+97
+00:04:06.290 --> 00:04:08.040
+You get the point, right?
+
+98
+00:04:08.040 --> 00:04:09.190
+You can go on from there.
+
+99
+00:04:09.190 --> 00:04:10.620
+But, that's not what we want to do.
+
+100
+00:04:10.620 --> 00:04:11.740
+With styled components,
+
+101
+00:04:11.740 --> 00:04:14.840
+you essentially replace the actual element itself
+
+102
+00:04:14.840 --> 00:04:19.210
+with a custom component that has the styles attached to it.
+
+103
+00:04:19.210 --> 00:04:20.620
+So, we can go up here
+
+104
+00:04:20.620 --> 00:04:24.664
+and import styled from Styled Components,
+
+105
+00:04:24.664 --> 00:04:28.082
+and that styled inside of it has access
+
+106
+00:04:28.082 --> 00:04:30.650
+to all the different elements that you might want to create.
+
+107
+00:04:30.650 --> 00:04:31.530
+So, we can go here
+
+108
+00:04:31.530 --> 00:04:35.563
+and say const MyButton is equal to styled.
+
+109
+00:04:36.639 --> 00:04:39.920
+And, then, we simply choose the element
+
+110
+00:04:39.920 --> 00:04:40.790
+that we wish to create.
+
+111
+00:04:40.790 --> 00:04:41.900
+Might be a div.
+
+112
+00:04:41.900 --> 00:04:43.090
+Might be a unordered list.
+
+113
+00:04:43.090 --> 00:04:44.570
+Might be a h1 tag.
+
+114
+00:04:44.570 --> 00:04:46.542
+In our case, we want to make a button
+
+115
+00:04:46.542 --> 00:04:48.960
+and you give it back text.
+
+116
+00:04:48.960 --> 00:04:50.930
+Now, if you've taken my ES6 course,
+
+117
+00:04:50.930 --> 00:04:52.930
+you'll know that this is what is called
+
+118
+00:04:52.930 --> 00:04:54.880
+a tag template literal,
+
+119
+00:04:54.880 --> 00:04:57.620
+where it works similar to how a function works,
+
+120
+00:04:57.620 --> 00:04:59.970
+where you can just have a button
+
+121
+00:04:59.970 --> 00:05:01.600
+and put all of your styles in here.
+
+122
+00:05:01.600 --> 00:05:03.160
+But, instead of it being a function
+
+123
+00:05:03.160 --> 00:05:04.398
+and passing it arguments,
+
+124
+00:05:04.398 --> 00:05:07.430
+it's just a string that has been tagged
+
+125
+00:05:07.430 --> 00:05:09.750
+with this specific styled.button,
+
+126
+00:05:09.750 --> 00:05:11.840
+and then inside of there we simply just go
+
+127
+00:05:11.840 --> 00:05:16.840
+and say, like, background: red, font-size: 100px,
+
+128
+00:05:19.460 --> 00:05:21.740
+and then we go down here to where the button is
+
+129
+00:05:21.740 --> 00:05:24.190
+and you replace that with your custom component,
+
+130
+00:05:24.190 --> 00:05:25.699
+which is MyButton.
+
+131
+00:05:25.699 --> 00:05:29.340
+And, then, that is essentially just going to create
+
+132
+00:05:29.340 --> 00:05:32.877
+a button HTML element with the following styles
+
+133
+00:05:32.877 --> 00:05:34.460
+that have been attached to it.
+
+134
+00:05:34.460 --> 00:05:37.610
+And, we're gonna see how we can put these in separate files.
+
+135
+00:05:37.610 --> 00:05:39.480
+You can export and import them
+
+136
+00:05:39.480 --> 00:05:41.670
+and make them reusable throughout your entire application.
+
+137
+00:05:41.670 --> 00:05:43.550
+But, for now, I'm just putting them in the same file.
+
+138
+00:05:43.550 --> 00:05:45.740
+If we go back to our application here.
+
+139
+00:05:45.740 --> 00:05:46.738
+Oh, there we go.
+
+140
+00:05:46.738 --> 00:05:50.890
+We see that our button is now being used,
+
+141
+00:05:50.890 --> 00:05:53.800
+and anytime that I want those styles to be applied,
+
+142
+00:05:53.800 --> 00:05:56.515
+I can just use the component MyButton,
+
+143
+00:05:56.515 --> 00:06:00.090
+as many times as I want, and it is going to apply styles.
+
+144
+00:06:00.090 --> 00:06:00.923
+Under the hood,
+
+145
+00:06:00.923 --> 00:06:04.620
+you can actually see what it's doing in HTML CSS land,
+
+146
+00:06:04.620 --> 00:06:08.893
+as it gives it these kinda unique classes VvnLs,
+
+147
+00:06:10.650 --> 00:06:14.360
+and there you see that the CSS is being applied to it.
+
+148
+00:06:14.360 --> 00:06:17.150
+Now, there's a couple more things we need to know
+
+149
+00:06:17.150 --> 00:06:18.830
+about how Style Components work.
+
+150
+00:06:18.830 --> 00:06:20.490
+Let's go into those right now.
+
+151
+00:06:20.490 --> 00:06:24.755
+What happens if you have, like, a span inside of it,
+
+152
+00:06:24.755 --> 00:06:29.070
+and, inside that span, you maybe have like, I don't know,
+
+153
+00:06:29.070 --> 00:06:30.296
+a poop emoji,
+
+154
+00:06:30.296 --> 00:06:33.640
+and you want to make that poop emoji even bigger.
+
+155
+00:06:33.640 --> 00:06:34.890
+Let's make this 50px.
+
+156
+00:06:38.570 --> 00:06:40.230
+And, you got the poop emoji.
+
+157
+00:06:40.230 --> 00:06:43.390
+Like, how do you make this poop emoji even bigger?
+
+158
+00:06:43.390 --> 00:06:45.906
+Well, there's kinda two options here.
+
+159
+00:06:45.906 --> 00:06:47.810
+First of all, what you can do
+
+160
+00:06:47.810 --> 00:06:50.350
+is you can make another styled component,
+
+161
+00:06:50.350 --> 00:06:55.350
+const BigPoop is equal to, don't tweet this, styled.span
+
+162
+00:06:56.488 --> 00:07:00.690
+and we'll say font size 100px.
+
+163
+00:07:00.690 --> 00:07:05.580
+And, then, we just swap out our span with a BigPoop,
+
+164
+00:07:09.710 --> 00:07:11.660
+and you'll see that it is swapping it out.
+
+165
+00:07:11.660 --> 00:07:14.531
+However, that probably seems like a little bit much
+
+166
+00:07:14.531 --> 00:07:18.460
+because it's likely that this big poop
+
+167
+00:07:18.460 --> 00:07:20.930
+is always going to be inside of my button.
+
+168
+00:07:20.930 --> 00:07:23.370
+And, if you don't need to reuse this big poop
+
+169
+00:07:23.370 --> 00:07:25.772
+anywhere else in this entire project,
+
+170
+00:07:25.772 --> 00:07:28.771
+then you can just bring it back to a span
+
+171
+00:07:28.771 --> 00:07:32.800
+and get rid of the second component that we've created.
+
+172
+00:07:32.800 --> 00:07:35.490
+And, you can just use like nested selectors inside of here.
+
+173
+00:07:35.490 --> 00:07:39.395
+So, you can just say span, it's going to be font-size 100.
+
+174
+00:07:39.395 --> 00:07:42.912
+And, that will give us exactly what we're looking for.
+
+175
+00:07:42.912 --> 00:07:44.860
+What I really like about that
+
+176
+00:07:44.860 --> 00:07:47.910
+is there's no need to actually give this a class,
+
+177
+00:07:47.910 --> 00:07:49.990
+unless you had a couple spans in there
+
+178
+00:07:49.990 --> 00:07:52.420
+and you want to target that one specifically.
+
+179
+00:07:52.420 --> 00:07:55.160
+But, there's no use in having
+
+180
+00:07:55.160 --> 00:07:57.459
+very specific class names inside of here
+
+181
+00:07:57.459 --> 00:07:59.987
+because I'll never have to,
+
+182
+00:07:59.987 --> 00:08:02.980
+I only have to be as specific as I need it.
+
+183
+00:08:02.980 --> 00:08:03.813
+In this case,
+
+184
+00:08:03.813 --> 00:08:05.875
+I can just grab the span that's inside of it, right?
+
+185
+00:08:05.875 --> 00:08:10.548
+If you wanted to, you could give it a class name of poop.
+
+186
+00:08:10.548 --> 00:08:14.835
+And then you go up here and just swap that out with a .poop,
+
+187
+00:08:14.835 --> 00:08:16.957
+and, if we inspect it,
+
+188
+00:08:16.957 --> 00:08:19.150
+you'll see that it still looks exactly the same.
+
+189
+00:08:19.150 --> 00:08:21.080
+But, if you were to inspect it,
+
+190
+00:08:21.080 --> 00:08:23.430
+you'll see that the class is poop,
+
+191
+00:08:23.430 --> 00:08:26.040
+which could be tainted from outside,
+
+192
+00:08:26.040 --> 00:08:28.477
+but the selector that we have written
+
+193
+00:08:28.477 --> 00:08:33.230
+has that unique identifier being applied to each one.
+
+194
+00:08:33.230 --> 00:08:34.610
+So, I'm a big fan of that.
+
+195
+00:08:34.610 --> 00:08:36.740
+I tend to not go overboard
+
+196
+00:08:36.740 --> 00:08:38.980
+with creating individual style components,
+
+197
+00:08:38.980 --> 00:08:41.660
+unless I find myself being like, huh,
+
+198
+00:08:41.660 --> 00:08:44.030
+I'd like to reuse that one little piece.
+
+199
+00:08:44.030 --> 00:08:45.880
+Maybe I'll refactor that out
+
+200
+00:08:45.880 --> 00:08:48.890
+into a separate styled component
+
+201
+00:08:48.890 --> 00:08:52.480
+that I can reuse throughout the application.
+
+202
+00:08:52.480 --> 00:08:54.179
+Otherwise, I think it's fine to use
+
+203
+00:08:54.179 --> 00:08:58.420
+nested selectors inside of your main component
+
+204
+00:08:58.420 --> 00:08:59.434
+that you have here.
+
+205
+00:08:59.434 --> 00:09:01.240
+Otherwise, I find it gets a little bit out of hand.
+
+206
+00:09:01.240 --> 00:09:04.430
+You'll probably stumble upon a cadence similar to that
+
+207
+00:09:04.430 --> 00:09:08.115
+or something that you prefer for you and your team.
+
+208
+00:09:08.115 --> 00:09:10.310
+The last thing that we need to know
+
+209
+00:09:10.310 --> 00:09:14.700
+about these styled components is that they can have props.
+
+210
+00:09:14.700 --> 00:09:17.720
+So, if I just had a huge prop right here.
+
+211
+00:09:17.720 --> 00:09:21.210
+What we can do is, inside of here,
+
+212
+00:09:21.210 --> 00:09:23.940
+because this is just JavaScript at the end of the day.
+
+213
+00:09:23.940 --> 00:09:26.200
+We have the entire language of JavaScript
+
+214
+00:09:26.200 --> 00:09:28.660
+available to us to do things like logic,
+
+215
+00:09:28.660 --> 00:09:30.760
+and if statements and switches,
+
+216
+00:09:30.760 --> 00:09:32.020
+and whatever you would like.
+
+217
+00:09:32.020 --> 00:09:34.278
+So, I could just replace font-size
+
+218
+00:09:34.278 --> 00:09:38.550
+with a interpolated string right here,
+
+219
+00:09:38.550 --> 00:09:40.350
+'cause, remember, this is just back text
+
+220
+00:09:40.350 --> 00:09:41.183
+at the end of the day.
+
+221
+00:09:41.183 --> 00:09:43.640
+So, we can use our ES interpolation here
+
+222
+00:09:43.640 --> 00:09:46.380
+and you have to give it a function.
+
+223
+00:09:46.380 --> 00:09:51.380
+So, you say props and we'll use a arrow function here.
+
+224
+00:09:51.410 --> 00:09:55.260
+And, say props .huge,
+
+225
+00:09:55.260 --> 00:09:57.830
+if that is true the font size is going to be a 100px,
+
+226
+00:09:57.830 --> 00:10:01.253
+otherwise it's going to be 50px.
+
+227
+00:10:02.730 --> 00:10:05.290
+And, got a bit of an error here.
+
+228
+00:10:05.290 --> 00:10:06.590
+I think I goofed up something.
+
+229
+00:10:06.590 --> 00:10:07.860
+Here we are, I forgot a quote.
+
+230
+00:10:07.860 --> 00:10:08.693
+Good.
+
+231
+00:10:10.600 --> 00:10:12.080
+And, you see that it's huge there,
+
+232
+00:10:12.080 --> 00:10:13.858
+but, if I were to duplicate this button
+
+233
+00:10:13.858 --> 00:10:17.600
+and not have the huge attribute on,
+
+234
+00:10:17.600 --> 00:10:19.290
+the other one should be a bit smaller.
+
+235
+00:10:19.290 --> 00:10:22.100
+So, you can create a sort of variance on it.
+
+236
+00:10:22.100 --> 00:10:25.940
+You can pass arguments to it by doing something like
+
+237
+00:10:25.940 --> 00:10:30.940
+huge="100" and you can literally pass the value
+
+238
+00:10:31.370 --> 00:10:33.576
+to the CSS if you wanted to do that.
+
+239
+00:10:33.576 --> 00:10:35.510
+It's really nice and flexible.
+
+240
+00:10:35.510 --> 00:10:36.990
+I'm a big fan of it.
+
+241
+00:10:36.990 --> 00:10:38.150
+And, that's what we're going to be using
+
+242
+00:10:38.150 --> 00:10:39.800
+throughout this course.
+
+243
+00:10:39.800 --> 00:10:41.340
+So, with that said,
+
+244
+00:10:41.340 --> 00:10:43.130
+let's go through and start scaffolding out
+
+245
+00:10:43.130 --> 00:10:44.632
+the rest of the application.
+
+246
+00:10:44.632 --> 00:10:47.832
+Getting our fonts in place, getting our theme values,
+
+247
+00:10:47.832 --> 00:10:49.210
+that's one thing we haven't done,
+
+248
+00:10:49.210 --> 00:10:51.090
+is you can also use theme values
+
+249
+00:10:51.090 --> 00:10:52.274
+inside of Styled Components.
+
+250
+00:10:52.274 --> 00:10:54.991
+And, just get it looking decent,
+
+251
+00:10:54.991 --> 00:10:57.100
+so that we can start cutting loose,
+
+252
+00:10:57.100 --> 00:11:00.050
+learning GraphQL get Prisma set up and all that good stuff.
+
+253
+00:11:00.050 --> 00:11:01.780
+So, let's back this up,
+
+254
+00:11:01.780 --> 00:11:04.333
+which is unnecessary for our actual application.
+
+255
+00:11:04.333 --> 00:11:06.818
+Delete, delete, delete, delete.
+
+256
+00:11:06.818 --> 00:11:08.720
+Good.
+
+257
+00:11:08.720 --> 00:11:10.170
+And, then, I will remove.
+
+258
+00:11:10.170 --> 00:11:12.574
+That's kinda nice VS code will gray out
+
+259
+00:11:12.574 --> 00:11:15.060
+any import statements that are unused,
+
+260
+00:11:15.060 --> 00:11:16.710
+so you can just remove them from there.
+
+261
+00:11:16.710 --> 00:11:18.260
+I'll see you in the next video.
+

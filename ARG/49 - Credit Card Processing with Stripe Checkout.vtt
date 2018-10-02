@@ -1,0 +1,1366 @@
+﻿WEBVTT
+
+1
+00:00:00.850 --> 00:00:01.920
+<v Wes>Now, we're gonna move into</v>
+
+2
+00:00:01.920 --> 00:00:04.790
+the actual checkout of the user's cart.
+
+3
+00:00:04.790 --> 00:00:06.750
+So, once you have a cart with a whole bunch of items in it,
+
+4
+00:00:06.750 --> 00:00:09.210
+we click on checkout, it's gonna be a couple steps.
+
+5
+00:00:09.210 --> 00:00:10.150
+First, what we're gonna do is,
+
+6
+00:00:10.150 --> 00:00:13.580
+we're gonna pop open a credit card checkout dialogue,
+
+7
+00:00:13.580 --> 00:00:15.960
+in order to actually charge the user's credit card.
+
+8
+00:00:15.960 --> 00:00:17.700
+That's gonna give us something called a token.
+
+9
+00:00:17.700 --> 00:00:19.020
+And, I'll explain a little more about
+
+10
+00:00:19.020 --> 00:00:21.790
+the whole token process in a future video.
+
+11
+00:00:21.790 --> 00:00:24.410
+And, then we take that token on the server-side.
+
+12
+00:00:24.410 --> 00:00:26.810
+We're going to actually charge the credit card
+
+13
+00:00:26.810 --> 00:00:29.520
+with that token, and then we're gonna convert these items
+
+14
+00:00:29.520 --> 00:00:31.070
+into something called order items.
+
+15
+00:00:31.070 --> 00:00:33.140
+Right now, they're cart items.
+
+16
+00:00:33.140 --> 00:00:34.380
+And then, we're also going to create
+
+17
+00:00:34.380 --> 00:00:36.290
+a new type called an order.
+
+18
+00:00:36.290 --> 00:00:39.490
+We'll be able to show receipts, and all that good stuff.
+
+19
+00:00:39.490 --> 00:00:41.700
+So, we're going to be using a credit card processor
+
+20
+00:00:41.700 --> 00:00:42.533
+called Stripe.
+
+21
+00:00:42.533 --> 00:00:44.150
+I'm a big fan of Stripe.
+
+22
+00:00:44.150 --> 00:00:45.690
+They're very developer friendly.
+
+23
+00:00:45.690 --> 00:00:48.590
+It feels like it's the credit card processor
+
+24
+00:00:48.590 --> 00:00:50.880
+that has been built for developers.
+
+25
+00:00:50.880 --> 00:00:53.380
+It works really well, I use it in my own business.
+
+26
+00:00:53.380 --> 00:00:54.830
+And then, they also have some tools
+
+27
+00:00:54.830 --> 00:00:59.180
+that make doing JavaScript credit card processing
+
+28
+00:00:59.180 --> 00:01:01.380
+very, very simple, and very easy.
+
+29
+00:01:01.380 --> 00:01:04.513
+So, go to stripe.com, and sign up for an account.
+
+30
+00:01:09.610 --> 00:01:11.270
+Once you sign up, you'll probably get an email
+
+31
+00:01:11.270 --> 00:01:12.530
+from Stripe to confirm.
+
+32
+00:01:12.530 --> 00:01:15.430
+Make sure you go ahead, and click on that confirmation link.
+
+33
+00:01:15.430 --> 00:01:17.950
+I always like to add a name to my account,
+
+34
+00:01:17.950 --> 00:01:20.410
+so I'm gonna call that Wes Bos Tutorials.
+
+35
+00:01:20.410 --> 00:01:24.020
+And then, you'll notice here, there's a viewing test data.
+
+36
+00:01:24.020 --> 00:01:26.160
+That will be flipped between a live
+
+37
+00:01:26.160 --> 00:01:29.480
+production data, and actual test data.
+
+38
+00:01:29.480 --> 00:01:31.330
+Make sure you're always on the test,
+
+39
+00:01:31.330 --> 00:01:33.500
+when we are working on this tutorial.
+
+40
+00:01:33.500 --> 00:01:36.390
+And then of course, you can flip that over to production
+
+41
+00:01:36.390 --> 00:01:39.490
+if you are ready to build an application for production.
+
+42
+00:01:39.490 --> 00:01:40.670
+First thing we're gonna need to do
+
+43
+00:01:40.670 --> 00:01:42.280
+is to head over to developers,
+
+44
+00:01:42.280 --> 00:01:45.470
+and grab ourself a set of API keys.
+
+45
+00:01:45.470 --> 00:01:48.180
+Gonna go to the side here, and click on API keys.
+
+46
+00:01:48.180 --> 00:01:51.160
+And, triple check that you're in test mode
+
+47
+00:01:51.160 --> 00:01:52.580
+on the side right here.
+
+48
+00:01:52.580 --> 00:01:55.100
+And, you're going to see a publishable key.
+
+49
+00:01:55.100 --> 00:01:58.590
+And, this is a key that will go in the client-side.
+
+50
+00:01:58.590 --> 00:02:00.270
+So, this is your JavaScript key
+
+51
+00:02:00.270 --> 00:02:02.500
+that will go in the actual browser.
+
+52
+00:02:02.500 --> 00:02:05.100
+And, it's totally fine if anyone in the world
+
+53
+00:02:05.100 --> 00:02:07.090
+is able to see your publishable key.
+
+54
+00:02:07.090 --> 00:02:08.460
+What you don't want people to have
+
+55
+00:02:08.460 --> 00:02:10.010
+is what's called your secret key,
+
+56
+00:02:10.010 --> 00:02:11.910
+and that's what we're going to be able to use
+
+57
+00:02:11.910 --> 00:02:16.880
+on our server-side to actually push through the transaction.
+
+58
+00:02:16.880 --> 00:02:18.810
+So, I'm gonna go ahead, and just copy
+
+59
+00:02:18.810 --> 00:02:21.010
+this publishable key for now.
+
+60
+00:02:21.010 --> 00:02:23.360
+We're gonna need that to set up, and we're gonna come back,
+
+61
+00:02:23.360 --> 00:02:26.480
+and grab the secret key in just a second.
+
+62
+00:02:26.480 --> 00:02:29.000
+Let's head back up to our front end here.
+
+63
+00:02:29.000 --> 00:02:31.350
+And, we're gonna be creating a new component
+
+64
+00:02:31.350 --> 00:02:33.210
+that's called, TakeMyMoney.
+
+65
+00:02:33.210 --> 00:02:35.570
+Gonna go up to our components, new file,
+
+66
+00:02:35.570 --> 00:02:40.050
+TakeMyMoney.jf, capital T, capital M, capital M.
+
+67
+00:02:40.050 --> 00:02:42.880
+Inside of here, we're gonna import React from react.
+
+68
+00:02:42.880 --> 00:02:44.530
+We're gonna import StripeCheckout
+
+69
+00:02:45.890 --> 00:02:49.450
+from the react-stripe-checkout package.
+
+70
+00:02:49.450 --> 00:02:53.120
+We're gonna import Mutation from react-apollo.
+
+71
+00:02:53.120 --> 00:02:57.183
+Import the Router from next/router.
+
+72
+00:02:58.950 --> 00:03:03.040
+Import NProgress from nprogress
+
+73
+00:03:04.470 --> 00:03:05.480
+It's going to allow us to show
+
+74
+00:03:05.480 --> 00:03:09.420
+that little red bar at the top that we're changing pages.
+
+75
+00:03:09.420 --> 00:03:10.503
+We'll grab PropTypes.
+
+76
+00:03:14.720 --> 00:03:18.633
+Import gql from graphql-tag.
+
+77
+00:03:21.080 --> 00:03:25.860
+Import calcTotalPrice, that's gonna be from,
+
+78
+00:03:25.860 --> 00:03:28.130
+if we go up a level into our lib directory,
+
+79
+00:03:28.130 --> 00:03:30.650
+there's a file called calcTotalPrice,
+
+80
+00:03:30.650 --> 00:03:31.620
+if you just take a look at it,
+
+81
+00:03:31.620 --> 00:03:34.400
+it takes in our cart, and it's going to tally up
+
+82
+00:03:34.400 --> 00:03:37.483
+the entire cart total for us.
+
+83
+00:03:38.630 --> 00:03:42.137
+Import our Error from ErrorMessage.
+
+84
+00:03:45.390 --> 00:03:48.210
+And then finally, we want to import our User component
+
+85
+00:03:48.210 --> 00:03:52.907
+as well as the CURRENT_USER_QUERY from the User component.
+
+86
+00:04:01.480 --> 00:04:02.680
+So, that's everything we're going to need
+
+87
+00:04:02.680 --> 00:04:04.410
+over the next couple of videos.
+
+88
+00:04:04.410 --> 00:04:05.823
+So, let's just triple check.
+
+89
+00:04:07.010 --> 00:04:08.870
+What's going on here?
+
+90
+00:04:08.870 --> 00:04:10.173
+We forgot a from.
+
+91
+00:04:11.400 --> 00:04:12.233
+Awesome.
+
+92
+00:04:12.233 --> 00:04:17.203
+Then, we're going to go ahead and make our class.
+
+93
+00:04:17.203 --> 00:04:22.203
+TakeMyMoney extends React.Component.
+
+94
+00:04:23.120 --> 00:04:25.893
+Let's export default TakeMyMoney.
+
+95
+00:04:27.990 --> 00:04:30.223
+Inside of that, we need a render function.
+
+96
+00:04:31.180 --> 00:04:33.543
+Then, we're going to simply just return,
+
+97
+00:04:36.190 --> 00:04:38.583
+from that, we will return a User component.
+
+98
+00:04:39.450 --> 00:04:42.170
+So, we can expose the user's cart.
+
+99
+00:04:42.170 --> 00:04:44.920
+Inside of that, we'll give ourselves a render function.
+
+100
+00:04:46.420 --> 00:04:51.420
+Data me, and inside of that let's give ourselves,
+
+101
+00:04:51.663 --> 00:04:54.990
+it's just a paragraph that says checkout.
+
+102
+00:04:54.990 --> 00:04:57.390
+Alright, now we're gonna go into our cart Digest,
+
+103
+00:04:57.390 --> 00:04:59.042
+and import that TakeMyMoney.
+
+104
+00:04:59.042 --> 00:05:01.742
+So, I'm gonna say import TakeMyMoney from TakeMyMoney.
+
+105
+00:05:06.170 --> 00:05:08.470
+And, this TakeMyMoney component is actually going to
+
+106
+00:05:08.470 --> 00:05:11.290
+just surround our existing checkout button.
+
+107
+00:05:11.290 --> 00:05:12.440
+So, the way that's gonna work,
+
+108
+00:05:12.440 --> 00:05:15.070
+if you go down to the SickButton that says checkout,
+
+109
+00:05:15.070 --> 00:05:17.440
+we simply just say TakeMyMoney,
+
+110
+00:05:17.440 --> 00:05:20.030
+and we're gonna put the SickButton inside of it.
+
+111
+00:05:20.030 --> 00:05:23.840
+Now, if we look at it now, it just says checkout.
+
+112
+00:05:23.840 --> 00:05:27.130
+So, how do we get this SickButton to actually show up?
+
+113
+00:05:27.130 --> 00:05:29.150
+Well, if we head back to our TakeMyMoney,
+
+114
+00:05:29.150 --> 00:05:31.520
+you can actually replace the word checkout
+
+115
+00:05:31.520 --> 00:05:36.520
+with this.props.children, and then whatever gets passed
+
+116
+00:05:38.620 --> 00:05:40.530
+as a child, when we're using it,
+
+117
+00:05:40.530 --> 00:05:42.498
+in this case, it's just a SickButton,
+
+118
+00:05:42.498 --> 00:05:44.380
+will be rendered inside of, in this case,
+
+119
+00:05:44.380 --> 00:05:47.150
+it's a paragraph tag, and we'll see it in there,
+
+120
+00:05:47.150 --> 00:05:48.690
+and that's kinda cool because I could,
+
+121
+00:05:48.690 --> 00:05:52.070
+technically, have two TakeMyMoney buttons.
+
+122
+00:05:52.070 --> 00:05:57.050
+And, the second one could just be, like, Wes Is Cool.
+
+123
+00:05:57.050 --> 00:05:58.783
+And, a paragraph that says Heyyy.
+
+124
+00:06:00.530 --> 00:06:02.270
+And you see that, that's gonna be rendered out.
+
+125
+00:06:02.270 --> 00:06:03.760
+Well, both of them are gonna have
+
+126
+00:06:03.760 --> 00:06:05.500
+the actual checkout functionality.
+
+127
+00:06:05.500 --> 00:06:08.070
+That's not actually what we want, so we'll get rid of that.
+
+128
+00:06:08.070 --> 00:06:10.450
+Now, how do we make that button
+
+129
+00:06:10.450 --> 00:06:13.040
+pop up a Stripe checkout dialogue?
+
+130
+00:06:13.040 --> 00:06:15.790
+Well, instead of having a paragraph tag here,
+
+131
+00:06:15.790 --> 00:06:18.120
+what we're gonna be doing is we're going to swap
+
+132
+00:06:18.120 --> 00:06:21.067
+that out with a Stripe checkout component.
+
+133
+00:06:26.320 --> 00:06:28.480
+Give that a save, and I'm not sure
+
+134
+00:06:28.480 --> 00:06:30.100
+if this will work without any settings
+
+135
+00:06:30.100 --> 00:06:31.530
+but let's go ahead, and give it a shot.
+
+136
+00:06:31.530 --> 00:06:33.980
+If we now click on that, hey, hey, there we go.
+
+137
+00:06:33.980 --> 00:06:37.550
+Immediately, it will pop open the Stripe checkout dialogue.
+
+138
+00:06:37.550 --> 00:06:39.260
+It shows us we're in test mode.
+
+139
+00:06:39.260 --> 00:06:41.410
+And, this is opening Stripe's built-in
+
+140
+00:06:41.410 --> 00:06:43.760
+JavaScript checkout dialogue.
+
+141
+00:06:43.760 --> 00:06:45.180
+Now, there's a little bit more we need to do
+
+142
+00:06:45.180 --> 00:06:46.990
+to actually get this to work.
+
+143
+00:06:46.990 --> 00:06:48.280
+So, let's go in here.
+
+144
+00:06:48.280 --> 00:06:52.820
+Stripe checkout's going to take a whole bunch of parameters.
+
+145
+00:06:52.820 --> 00:06:55.203
+And, if you're interested in what all of the possible
+
+146
+00:06:55.203 --> 00:06:57.410
+ones are, we can just do a quick google
+
+147
+00:06:57.410 --> 00:07:00.713
+for the documentation, react stripe checkout.
+
+148
+00:07:05.230 --> 00:07:08.480
+And, it tells us all of the possible props
+
+149
+00:07:08.480 --> 00:07:10.660
+that we can pass through to it.
+
+150
+00:07:10.660 --> 00:07:13.030
+So, let's go ahead, and start implementing
+
+151
+00:07:13.030 --> 00:07:14.540
+all the props that we need in ours.
+
+152
+00:07:14.540 --> 00:07:19.540
+First, the amount of the checkout is going to be
+
+153
+00:07:19.790 --> 00:07:24.043
+the CalcTotalPrice, and we're just gonna pass me.cart,
+
+154
+00:07:26.930 --> 00:07:30.380
+and now, if I were to open the checkout,
+
+155
+00:07:30.380 --> 00:07:34.590
+It tells us that we're gonna pay $14,301.60.
+
+156
+00:07:34.590 --> 00:07:36.630
+You see, that's exactly what we have here.
+
+157
+00:07:36.630 --> 00:07:41.450
+You do always need to pass cents to Stripe.
+
+158
+00:07:41.450 --> 00:07:44.400
+So, that's why, everything we've been doing so far
+
+159
+00:07:44.400 --> 00:07:46.520
+is cents, and it's just kinda sound advice
+
+160
+00:07:46.520 --> 00:07:49.660
+for anytime, you're dealing with money in JavaScript.
+
+161
+00:07:49.660 --> 00:07:53.320
+The name is going to be Sick Fits.
+
+162
+00:07:53.320 --> 00:07:58.230
+The description is going to be, let's do backticks here,
+
+163
+00:07:58.230 --> 00:08:01.650
+order of, and let's count the number
+
+164
+00:08:01.650 --> 00:08:03.797
+of total items that they have.
+
+165
+00:08:03.797 --> 00:08:05.630
+So, we're gonna write a little function
+
+166
+00:08:05.630 --> 00:08:06.780
+here called totalItems.
+
+167
+00:08:07.630 --> 00:08:10.430
+That takes in the cart, and will return
+
+168
+00:08:10.430 --> 00:08:11.700
+the number of items that we have.
+
+169
+00:08:11.700 --> 00:08:13.760
+So, let's go, just do it up here.
+
+170
+00:08:13.760 --> 00:08:18.200
+So, we'll say function, totalItems, takes in a cart,
+
+171
+00:08:18.200 --> 00:08:22.140
+and it's going to return the cart.reduce.
+
+172
+00:08:22.140 --> 00:08:24.390
+We're gonna grab the tally, and the cartItem.
+
+173
+00:08:29.800 --> 00:08:34.223
+And from that, return the tally plus the cartItem.quantity,
+
+174
+00:08:35.770 --> 00:08:38.163
+also gonna start that reduce as a zero.
+
+175
+00:08:43.070 --> 00:08:47.037
+And now, when I click on checkout it says order of 15,
+
+176
+00:08:47.037 --> 00:08:52.037
+and we can go back to our little checkout here, items.
+
+177
+00:08:56.880 --> 00:08:59.600
+Order of 15 items, so it's gonna be kinda dynamic,
+
+178
+00:08:59.600 --> 00:09:03.120
+obviously I have 15 things in my cart showing up here.
+
+179
+00:09:03.120 --> 00:09:06.610
+Image is equal to, you can stick a little image up top here.
+
+180
+00:09:06.610 --> 00:09:08.850
+And, what I like to do is just take the first item
+
+181
+00:09:08.850 --> 00:09:10.500
+that's in the cart, and show that,
+
+182
+00:09:10.500 --> 00:09:14.190
+so we'll say me.cart, and we'll grab the first item,
+
+183
+00:09:14.190 --> 00:09:16.160
+cartItem, and then we'll grab the item inside
+
+184
+00:09:16.160 --> 00:09:18.053
+of that, and we'll grab the image.
+
+185
+00:09:19.550 --> 00:09:22.270
+Now, when I open that up, you see it shows me shoes.
+
+186
+00:09:22.270 --> 00:09:24.240
+One little thing you want to make sure of is that
+
+187
+00:09:24.240 --> 00:09:27.910
+if this item gets deleted, then we don't want to show that.
+
+188
+00:09:27.910 --> 00:09:30.970
+So, we'll just check if there actually is an item there
+
+189
+00:09:30.970 --> 00:09:32.870
+before we do it 'cause that could lead to some
+
+190
+00:09:32.870 --> 00:09:34.970
+weird syntax errors, so we'll just check,
+
+191
+00:09:34.970 --> 00:09:39.970
+me.cart[0].item &amp;&amp;, and if there is no item,
+
+192
+00:09:42.100 --> 00:09:44.040
+it won't return any image at all.
+
+193
+00:09:44.040 --> 00:09:46.630
+Just a little bit of safety there.
+
+194
+00:09:46.630 --> 00:09:51.473
+The Stripekey is going to be set to the value
+
+195
+00:09:52.680 --> 00:09:56.350
+that we just had, so if we jump back to our back end here.
+
+196
+00:09:56.350 --> 00:09:58.710
+Grab that Stripekey, paste it in there,
+
+197
+00:09:58.710 --> 00:10:01.570
+you could also stick that in an environmental variable
+
+198
+00:10:01.570 --> 00:10:03.320
+If you'd like to switch it out.
+
+199
+00:10:03.320 --> 00:10:06.207
+The currency is going to be USD.
+
+200
+00:10:07.470 --> 00:10:11.160
+And then, the email for the person is going to be
+
+201
+00:10:11.160 --> 00:10:13.840
+me.email, so whoever is currently logged in,
+
+202
+00:10:13.840 --> 00:10:16.590
+its going to be their actual email address.
+
+203
+00:10:16.590 --> 00:10:19.523
+So, I'm giving this a hard refresh, try to checkout.
+
+204
+00:10:21.490 --> 00:10:23.900
+Everything looks good, they have their email,
+
+205
+00:10:23.900 --> 00:10:26.580
+the number of items, the different items that are in here,
+
+206
+00:10:26.580 --> 00:10:30.200
+and the total number of things that we have.
+
+207
+00:10:30.200 --> 00:10:32.690
+Now, what's gonna happen is that you're gonna
+
+208
+00:10:32.690 --> 00:10:35.090
+put your credit card number in here,
+
+209
+00:10:35.090 --> 00:10:37.670
+and then you're gonna put your expiry date,
+
+210
+00:10:37.670 --> 00:10:40.330
+and your CVC, and we're going to pay it.
+
+211
+00:10:40.330 --> 00:10:42.580
+And then, what's going to happen is Stripe
+
+212
+00:10:42.580 --> 00:10:44.650
+is not gonna actually charge the credit card,
+
+213
+00:10:44.650 --> 00:10:46.850
+but it's gonna create what's called a token,
+
+214
+00:10:46.850 --> 00:10:50.090
+and then that token we take to our server-side,
+
+215
+00:10:50.090 --> 00:10:52.340
+and actually charge the credit card.
+
+216
+00:10:52.340 --> 00:10:55.290
+And, the reason why we do this token system
+
+217
+00:10:55.290 --> 00:10:56.910
+is because we don't actually want
+
+218
+00:10:56.910 --> 00:10:58.840
+to send the user's credit card details
+
+219
+00:10:58.840 --> 00:11:02.380
+to our server, that's a whole 'nother level of liability
+
+220
+00:11:02.380 --> 00:11:04.360
+that we're not interested in doing.
+
+221
+00:11:04.360 --> 00:11:06.840
+So, what happens is, we take their credit card number.
+
+222
+00:11:06.840 --> 00:11:10.980
+We send that to Stripe, Stripe then gives us a token
+
+223
+00:11:10.980 --> 00:11:13.900
+that's good for charging the credit card once.
+
+224
+00:11:13.900 --> 00:11:15.760
+And then, we can just simply bring that token
+
+225
+00:11:15.760 --> 00:11:18.240
+to our server, and not have to worry about
+
+226
+00:11:18.240 --> 00:11:21.600
+handling users' sensitive information like that.
+
+227
+00:11:21.600 --> 00:11:24.490
+We'll leave all that heavy lifting up to Stripe.
+
+228
+00:11:24.490 --> 00:11:26.990
+So, that's the last little one that we have here,
+
+229
+00:11:26.990 --> 00:11:29.750
+is, what do we do, when we actually
+
+230
+00:11:29.750 --> 00:11:32.200
+get that token back from the user?
+
+231
+00:11:32.200 --> 00:11:34.980
+And, that's the token property here,
+
+232
+00:11:34.980 --> 00:11:38.050
+and when that happens, we are simply going to
+
+233
+00:11:38.050 --> 00:11:40.380
+take the response from the token,
+
+234
+00:11:40.380 --> 00:11:42.230
+and we're going to call a method,
+
+235
+00:11:42.230 --> 00:11:44.930
+which we're going to code in just a second called onToken.
+
+236
+00:11:44.930 --> 00:11:48.990
+So, it's gonna say this.onToken response.
+
+237
+00:11:48.990 --> 00:11:51.700
+And, the reason why I don't just type this.onToken in here
+
+238
+00:11:51.700 --> 00:11:54.600
+is 'cause we're gonna need to pass a mutation as well.
+
+239
+00:11:54.600 --> 00:11:57.980
+But, hold onto your pants 'cause we're not there just yet.
+
+240
+00:11:57.980 --> 00:11:59.200
+When we go above our render,
+
+241
+00:11:59.200 --> 00:12:00.940
+and let's actually code up that token,
+
+242
+00:12:00.940 --> 00:12:05.810
+onToken is equal to, we get the response in there.
+
+243
+00:12:05.810 --> 00:12:08.760
+And, let's just console.log the response,
+
+244
+00:12:08.760 --> 00:12:12.733
+and we'll console.log On Token Called!
+
+245
+00:12:14.120 --> 00:12:17.650
+So, now go ahead, and put your own credit card, I'm joking.
+
+246
+00:12:17.650 --> 00:12:19.840
+Don't put your own credit card number in there.
+
+247
+00:12:19.840 --> 00:12:22.500 line:15% 
+Stripe has a number of dummy credit card numbers
+
+248
+00:12:22.500 --> 00:12:24.800 line:15% 
+that are used specifically for testing.
+
+249
+00:12:24.800 --> 00:12:27.020
+We can take a quick look at those right now.
+
+250
+00:12:27.020 --> 00:12:29.570
+Stripe testing credit cards.
+
+251
+00:12:29.570 --> 00:12:31.420
+You see, these are all of the numbers,
+
+252
+00:12:31.420 --> 00:12:33.530
+this is a Visa, a Visa debit card,
+
+253
+00:12:33.530 --> 00:12:36.610
+a MasterCard, all of the different types
+
+254
+00:12:36.610 --> 00:12:38.850
+of credit cards that you will have.
+
+255
+00:12:38.850 --> 00:12:41.100
+And then, you can also use these credit cards
+
+256
+00:12:41.940 --> 00:12:45.180
+for specific errors, so if you want
+
+257
+00:12:45.180 --> 00:12:47.330
+a specific error, and you want to make sure
+
+258
+00:12:47.330 --> 00:12:50.390
+that you handle all of these different types properly,
+
+259
+00:12:50.390 --> 00:12:52.120
+maybe one of the credit card failed,
+
+260
+00:12:52.120 --> 00:12:54.380
+and you want to tell the user, hey,
+
+261
+00:12:54.380 --> 00:12:56.960
+it has failed, or sometimes there's a risk level
+
+262
+00:12:56.960 --> 00:12:58.470
+of elevated, that you don't want to
+
+263
+00:12:58.470 --> 00:13:00.430
+actually go ahead, and charge the credit card.
+
+264
+00:13:00.430 --> 00:13:02.390
+So, these can be very helpful.
+
+265
+00:13:02.390 --> 00:13:04.600
+The one that we're going to be using in this course
+
+266
+00:13:04.600 --> 00:13:09.600
+is simply just 42424242424242.
+
+267
+00:13:09.610 --> 00:13:12.860
+I set up a little thing, where if I type in :42,
+
+268
+00:13:12.860 --> 00:13:14.810
+it will automatically expand out to that.
+
+269
+00:13:14.810 --> 00:13:17.300
+I recommend you do that yourself via something
+
+270
+00:13:17.300 --> 00:13:20.203
+like TextExpander or built in expansions in OS X.
+
+271
+00:13:21.450 --> 00:13:22.850
+The expiry date can be anything,
+
+272
+00:13:22.850 --> 00:13:26.760
+so I usually just type 222, and that gives me 02/22.
+
+273
+00:13:26.760 --> 00:13:29.700
+And then, the CVC, I also make it 222
+
+274
+00:13:29.700 --> 00:13:31.130
+just 'cause I do this a lot,
+
+275
+00:13:31.130 --> 00:13:32.890
+and there is no way to automatically
+
+276
+00:13:32.890 --> 00:13:34.690
+populate their credit card number.
+
+277
+00:13:34.690 --> 00:13:39.493
+Open up your dev tools here, and if you click on pay,
+
+278
+00:13:42.390 --> 00:13:45.470
+you see what happened there, is,
+
+279
+00:13:45.470 --> 00:13:47.960
+it charged the credit card, it went to Stripe,
+
+280
+00:13:47.960 --> 00:13:52.050
+and then came back and actually ran that onToken.
+
+281
+00:13:52.050 --> 00:13:56.550
+However, it tells us this.fn is not a function
+
+282
+00:13:56.550 --> 00:13:57.743
+So, let's see here.
+
+283
+00:13:58.990 --> 00:14:01.300
+Bit of an issue, you see the actual error's
+
+284
+00:14:01.300 --> 00:14:04.050
+coming from Stripe's own checkout,
+
+285
+00:14:04.050 --> 00:14:06.640
+and it's telling it that it's likely
+
+286
+00:14:06.640 --> 00:14:09.850
+that this token is not a proper function.
+
+287
+00:14:09.850 --> 00:14:12.490
+So, let's just change that real quick.
+
+288
+00:14:12.490 --> 00:14:14.510
+The way I like to debug these things is just give it
+
+289
+00:14:14.510 --> 00:14:17.960
+console.log, and that will just console.log anything,
+
+290
+00:14:17.960 --> 00:14:19.493
+when the token comes back.
+
+291
+00:14:20.433 --> 00:14:21.883
+Gonna checkout one more time.
+
+292
+00:14:27.990 --> 00:14:30.190
+And, there we go, we get a full token
+
+293
+00:14:30.190 --> 00:14:31.480
+with all the information back.
+
+294
+00:14:31.480 --> 00:14:33.980
+So, let's bring it back to what I had.
+
+295
+00:14:33.980 --> 00:14:36.300
+It might just be that I need to give it a refresh
+
+296
+00:14:36.300 --> 00:14:39.820
+because this Stripe is not a native react component
+
+297
+00:14:39.820 --> 00:14:43.010
+it's just a react component wrapper around their library.
+
+298
+00:14:43.010 --> 00:14:44.590
+That's something that might be an issue.
+
+299
+00:14:44.590 --> 00:14:46.490
+Let's try it one more time here.
+
+300
+00:14:46.490 --> 00:14:51.430
+Checkout, there we go, it was just 'cause I had to refresh.
+
+301
+00:14:57.000 --> 00:15:00.620
+Bit of a weird issue there, but this is the response
+
+302
+00:15:00.620 --> 00:15:04.180
+that we're console logging, and inside of that response
+
+303
+00:15:04.180 --> 00:15:08.490
+you see the user's card, and in here you see
+
+304
+00:15:08.490 --> 00:15:10.270
+the brand, the country.
+
+305
+00:15:10.270 --> 00:15:12.640
+If you did, there's some settings you can put
+
+306
+00:15:12.640 --> 00:15:13.940
+in the Stripe checkout, which you can
+
+307
+00:15:13.940 --> 00:15:15.811
+also get the user's country.
+
+308
+00:15:15.811 --> 00:15:20.040
+I do that myself, so that I can get less declines
+
+309
+00:15:20.040 --> 00:15:21.830
+on credit cards because the more information
+
+310
+00:15:21.830 --> 00:15:24.290
+you provide to a credit card processor
+
+311
+00:15:24.290 --> 00:15:27.050
+the higher likelihood that it's not going to get declined.
+
+312
+00:15:27.050 --> 00:15:28.840
+It tells you if things have passed,
+
+313
+00:15:28.840 --> 00:15:30.530
+and then a whole bunch of other information
+
+314
+00:15:30.530 --> 00:15:34.070
+like the name, and all kinds of whatever that we have.
+
+315
+00:15:34.070 --> 00:15:36.700
+Now, what we are really concerned about
+
+316
+00:15:36.700 --> 00:15:40.440
+is this ID right here, this is a Stripe token.
+
+317
+00:15:40.440 --> 00:15:42.470
+This is a one-time use token.
+
+318
+00:15:42.470 --> 00:15:46.040
+And, you need to then take this to your server-side,
+
+319
+00:15:46.040 --> 00:15:48.230
+and then charge it, and we're going to be using
+
+320
+00:15:48.230 --> 00:15:50.780
+a Stripe package on the server-side.
+
+321
+00:15:50.780 --> 00:15:53.120
+That token is kind of like a little, like
+
+322
+00:15:53.120 --> 00:15:55.920
+a meal ticket, or like a drink ticket at a wedding
+
+323
+00:15:55.920 --> 00:15:58.450
+where you take it to the bartender, and you say "hey,
+
+324
+00:15:58.450 --> 00:16:00.580
+I was told I could get some money for this.
+
+325
+00:16:00.580 --> 00:16:03.460
+And then, you give them the token, and they will actually
+
+326
+00:16:03.460 --> 00:16:05.770
+go ahead, and charge the credit card,
+
+327
+00:16:05.770 --> 00:16:08.520
+and then deposit the money into your bank account.
+
+328
+00:16:08.520 --> 00:16:10.960
+So, that's exactly what we need here.
+
+329
+00:16:10.960 --> 00:16:13.270
+Let's just console.log res.id
+
+330
+00:16:13.270 --> 00:16:15.440
+That is the only thing that we need there,
+
+331
+00:16:15.440 --> 00:16:19.010
+that ID that we have, and everything else we can get
+
+332
+00:16:19.010 --> 00:16:21.940
+if we do need the user's email address,
+
+333
+00:16:21.940 --> 00:16:25.420
+or anything like that, we can also grab that.
+
+334
+00:16:25.420 --> 00:16:28.220
+On the server-side, we just care about the token right now.
+
+335
+00:16:28.220 --> 00:16:31.640
+So, we have the StripeCheckout working.
+
+336
+00:16:31.640 --> 00:16:33.290
+We are charging the credit card,
+
+337
+00:16:33.290 --> 00:16:36.440
+and then we are getting the token at this point,
+
+338
+00:16:36.440 --> 00:16:38.860
+and that's the next video, we need to send
+
+339
+00:16:38.860 --> 00:16:41.720
+this ID to the server-side in order to
+
+340
+00:16:41.720 --> 00:16:43.410
+actually finish our transaction.
+
+341
+00:16:43.410 --> 00:16:44.960
+So, I'll see you in that video.
+

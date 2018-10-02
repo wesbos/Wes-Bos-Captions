@@ -1,0 +1,1342 @@
+﻿WEBVTT
+
+1
+00:00:01.375 --> 00:00:02.880
+<v Wes>All right, so every video up until now</v>
+
+2
+00:00:02.880 --> 00:00:04.330
+has just been getting React
+
+3
+00:00:04.330 --> 00:00:05.910
+with server side rendering set up.
+
+4
+00:00:05.910 --> 00:00:07.490
+Now we're going to switch gears
+
+5
+00:00:07.490 --> 00:00:09.720
+into more of the backend part of it.
+
+6
+00:00:09.720 --> 00:00:11.200
+But before we even do that,
+
+7
+00:00:11.200 --> 00:00:12.980
+we need to understand like, what is GraphQL?
+
+8
+00:00:12.980 --> 00:00:15.370
+Why am I taking this tutorial?
+
+9
+00:00:15.370 --> 00:00:16.570
+What's so good about it?
+
+10
+00:00:16.570 --> 00:00:18.450
+What are the different ideas behind it?
+
+11
+00:00:18.450 --> 00:00:20.370
+So this is going to be one of those videos
+
+12
+00:00:20.370 --> 00:00:21.880
+where you don't do any coding.
+
+13
+00:00:21.880 --> 00:00:23.180
+You're pretty much just going to be sitting
+
+14
+00:00:23.180 --> 00:00:25.550
+on your hands and listening to me attempt
+
+15
+00:00:25.550 --> 00:00:27.270
+to explain what GraphQL is.
+
+16
+00:00:27.270 --> 00:00:29.850
+So if you want to grab a beer or a coffee
+
+17
+00:00:29.850 --> 00:00:33.090
+or a chai or a vape, whatever your vice is,
+
+18
+00:00:33.090 --> 00:00:34.700
+go and grab it right now because we're
+
+19
+00:00:34.700 --> 00:00:36.660
+gonna be talking about GraphQL
+
+20
+00:00:36.660 --> 00:00:37.760
+for the next couple of minutes.
+
+21
+00:00:37.760 --> 00:00:40.317
+So first of all, what is GraphQL?
+
+22
+00:00:40.317 --> 00:00:42.960
+GraphQL is a specification built to
+
+23
+00:00:44.170 --> 00:00:47.970
+implement both a server in GraphQL to serve
+
+24
+00:00:47.970 --> 00:00:50.690
+up data as well as be able to fetch
+
+25
+00:00:50.690 --> 00:00:52.233
+that data from the client.
+
+26
+00:00:53.740 --> 00:00:56.800
+Important parts of what I just said there is that,
+
+27
+00:00:56.800 --> 00:01:00.460
+first of all, GraphQL is agnostic to the language,
+
+28
+00:01:00.460 --> 00:01:03.200
+meaning that your server can
+
+29
+00:01:03.200 --> 00:01:06.140
+implement GraphQL in any language that it wants,
+
+30
+00:01:06.140 --> 00:01:09.730
+and your front end, or the thing that consumes your GraphQL,
+
+31
+00:01:09.730 --> 00:01:12.630
+doesn't even necessarily have to be in the web browser.
+
+32
+00:01:12.630 --> 00:01:14.890
+It could be an Arduino
+
+33
+00:01:14.890 --> 00:01:18.090
+or it could be a microcontroller or anything
+
+34
+00:01:18.090 --> 00:01:20.220
+that needs to consume the data,
+
+35
+00:01:20.220 --> 00:01:22.830
+could interface with a GraphQL interface.
+
+36
+00:01:22.830 --> 00:01:25.590
+The second part is that GraphQL is a SPEC.
+
+37
+00:01:25.590 --> 00:01:28.620
+So previously what we had for fetching data,
+
+38
+00:01:28.620 --> 00:01:30.910
+we sort of standardized on this,
+
+39
+00:01:30.910 --> 00:01:33.217
+or as far as you can say standardized on
+
+40
+00:01:33.217 --> 00:01:35.490
+what is called JSON APIs
+
+41
+00:01:35.490 --> 00:01:38.156
+where we're fetching data from an API.
+
+42
+00:01:38.156 --> 00:01:41.815
+And the fact, I just went to api.com.
+
+43
+00:01:41.815 --> 00:01:45.216
+Api.github.com/users/wesbos.
+
+44
+00:01:45.216 --> 00:01:48.110
+The fact that that's /users/wesbos,
+
+45
+00:01:48.110 --> 00:01:50.740
+that's not part of a specification,
+
+46
+00:01:50.740 --> 00:01:52.270
+GitHub just made that up,
+
+47
+00:01:52.270 --> 00:01:54.950
+and every single time that you need to learn an API
+
+48
+00:01:54.950 --> 00:01:56.240
+you need to learn like, okay,
+
+49
+00:01:56.240 --> 00:01:58.580
+how does this API work?
+
+50
+00:01:58.580 --> 00:02:02.410
+What tokens do I need to specifically pass this API
+
+51
+00:02:02.410 --> 00:02:03.440
+in order for it to work?
+
+52
+00:02:03.440 --> 00:02:06.530
+Do I need to have it as a get request or a post request.
+
+53
+00:02:06.530 --> 00:02:08.950
+If I'm creating an item, is it a post or a put?
+
+54
+00:02:08.950 --> 00:02:10.193
+If I'm deleting an item,
+
+55
+00:02:11.430 --> 00:02:13.560
+is it a post request or delete request?
+
+56
+00:02:13.560 --> 00:02:15.690
+And it gets a little bit confusing
+
+57
+00:02:15.690 --> 00:02:17.840
+that you have to relearn how APIs work
+
+58
+00:02:17.840 --> 00:02:19.280
+across every single one.
+
+59
+00:02:19.280 --> 00:02:22.630
+Second of all, when I'm hitting this API for GitHub here,
+
+60
+00:02:22.630 --> 00:02:25.430
+like what if I don't care about any of this stuff?
+
+61
+00:02:25.430 --> 00:02:28.400
+What if I just wanted to get the URL
+
+62
+00:02:28.400 --> 00:02:32.150
+or the type and the name of the person, right?
+
+63
+00:02:32.150 --> 00:02:33.950
+Like all this extra data that's coming
+
+64
+00:02:33.950 --> 00:02:36.340
+across the wire is unnecessary
+
+65
+00:02:36.340 --> 00:02:39.420
+or I get into some points about that in GraphQL.
+
+66
+00:02:39.420 --> 00:02:42.960
+So GraphQL is sorta out there to either
+
+67
+00:02:42.960 --> 00:02:47.170
+replace rest or you can also set up a GraphQL server
+
+68
+00:02:47.170 --> 00:02:49.860
+that sits in front of a rest API that will
+
+69
+00:02:49.860 --> 00:02:52.030
+sort of proxy the data in between it.
+
+70
+00:02:52.030 --> 00:02:54.030
+But at the very basics, we need to
+
+71
+00:02:54.030 --> 00:02:56.290
+understand that GraphQL is a specification
+
+72
+00:02:56.290 --> 00:02:57.330
+that's being put out
+
+73
+00:02:57.330 --> 00:02:59.370
+and you can implement this in any language.
+
+74
+00:02:59.370 --> 00:03:01.040
+We're obviously going to be implementing it
+
+75
+00:03:01.040 --> 00:03:03.970
+on our front end with a library called Apollo,
+
+76
+00:03:03.970 --> 00:03:06.170
+and we're gonna be implementing it on the back end
+
+77
+00:03:06.170 --> 00:03:07.960
+with a library called Prisma
+
+78
+00:03:07.960 --> 00:03:11.150
+and another library called GraphQL Yoga.
+
+79
+00:03:11.150 --> 00:03:13.738
+Now I have opened up here,
+
+80
+00:03:13.738 --> 00:03:17.150
+the API end point for my Prisma server.
+
+81
+00:03:17.150 --> 00:03:21.200
+You don't have to do this, but I've just opened it on up
+
+82
+00:03:21.200 --> 00:03:24.320
+and I've also took off the credentials for it.
+
+83
+00:03:24.320 --> 00:03:25.820
+Again, we'll get into this as well.
+
+84
+00:03:25.820 --> 00:03:27.380
+and I just kinda want to show you
+
+85
+00:03:27.380 --> 00:03:31.630
+a couple core ideas behind GraphQL and how it works.
+
+86
+00:03:31.630 --> 00:03:32.750
+So first of all,
+
+87
+00:03:32.750 --> 00:03:36.020
+GraphQL is a single end point that you hit
+
+88
+00:03:36.020 --> 00:03:38.510
+and that's very different than with a rest API
+
+89
+00:03:38.510 --> 00:03:42.660
+where you would have many different URLs that you would hit.
+
+90
+00:03:42.660 --> 00:03:45.080
+And if you wanted to grab data from a multiple,
+
+91
+00:03:45.080 --> 00:03:46.860
+you'd have to make multiple requests.
+
+92
+00:03:46.860 --> 00:03:48.240
+With GraphQL what you can do
+
+93
+00:03:48.240 --> 00:03:50.110
+is you just have one end point
+
+94
+00:03:50.110 --> 00:03:52.160
+and you send it your query
+
+95
+00:03:52.160 --> 00:03:54.450
+and then it will return the data
+
+96
+00:03:54.450 --> 00:03:56.550
+and only the data that you have requested.
+
+97
+00:03:56.550 --> 00:04:00.400
+So here I have an empty thing in Playground
+
+98
+00:04:00.400 --> 00:04:02.010
+and I want to query something
+
+99
+00:04:02.010 --> 00:04:05.178
+and I can go ahead and ask for all of the items
+
+100
+00:04:05.178 --> 00:04:08.770
+and on each item I want to ask for maybe the ID
+
+101
+00:04:08.770 --> 00:04:11.400
+of the item and maybe the title of the item,
+
+102
+00:04:11.400 --> 00:04:13.100
+and then when I go ahead and run that,
+
+103
+00:04:13.100 --> 00:04:14.858
+it's just going to return to me
+
+104
+00:04:14.858 --> 00:04:18.160
+the items along with the ID and the title.
+
+105
+00:04:18.160 --> 00:04:21.890
+So GraphQL is really cool because your queries
+
+106
+00:04:21.890 --> 00:04:24.410
+essentially look like the JSON of the things
+
+107
+00:04:24.410 --> 00:04:26.730
+that you want and then it just returns you
+
+108
+00:04:26.730 --> 00:04:28.890
+the same structure of that data
+
+109
+00:04:28.890 --> 00:04:32.190
+but with the actual values that have been pulled
+
+110
+00:04:32.190 --> 00:04:35.569
+from the database and filled up.
+
+111
+00:04:35.569 --> 00:04:38.750
+That's really cool because I can pull in items,
+
+112
+00:04:38.750 --> 00:04:40.890
+but then if I also wanted to pull in
+
+113
+00:04:40.890 --> 00:04:43.700
+a list of users and their names,
+
+114
+00:04:43.700 --> 00:04:45.650
+I could do that no problem by pulling in items
+
+115
+00:04:45.650 --> 00:04:49.850
+and an array of the actual users that's coming in.
+
+116
+00:04:49.850 --> 00:04:51.640
+See how this is just one end point,
+
+117
+00:04:51.640 --> 00:04:55.148
+one request only pulling in the minimal data that I need
+
+118
+00:04:55.148 --> 00:04:57.360
+to pull in for each one.
+
+119
+00:04:57.360 --> 00:04:59.120
+It's also self-documenting,
+
+120
+00:04:59.120 --> 00:05:00.830
+which is really cool because actually maybe
+
+121
+00:05:00.830 --> 00:05:02.990
+I should talk about how it's typed real quick.
+
+122
+00:05:02.990 --> 00:05:04.470
+Let me look at the example.
+
+123
+00:05:04.470 --> 00:05:08.740
+I'm in the backend/prisma/datamodel.graphql,
+
+124
+00:05:08.740 --> 00:05:11.190
+and GraphQL is a typed language,
+
+125
+00:05:11.190 --> 00:05:14.080
+and if you're coming from any background
+
+126
+00:05:14.080 --> 00:05:16.810
+that has a typed language or if you use typescript,
+
+127
+00:05:16.810 --> 00:05:18.600
+you probably can skip this part
+
+128
+00:05:18.600 --> 00:05:20.330
+because you understand what that means.
+
+129
+00:05:20.330 --> 00:05:23.720
+But if you are coming from a JavaScript background,
+
+130
+00:05:23.720 --> 00:05:26.410
+you'll know that JavaScript is what is called loosely typed,
+
+131
+00:05:26.410 --> 00:05:31.020
+meaning that you can expect a string or a number
+
+132
+00:05:31.020 --> 00:05:32.480
+or an object or an array
+
+133
+00:05:32.480 --> 00:05:35.960
+and you can return any value, you can call arguments,
+
+134
+00:05:35.960 --> 00:05:37.890
+you can call a function where maybe you
+
+135
+00:05:37.890 --> 00:05:40.447
+are expecting to pass it a number,
+
+136
+00:05:40.447 --> 00:05:41.280
+but you pass it a string,
+
+137
+00:05:41.280 --> 00:05:44.910
+and it's not going to yell at you in any means.
+
+138
+00:05:44.910 --> 00:05:48.850
+However, with GraphQL, when you define your data,
+
+139
+00:05:48.850 --> 00:05:50.690
+you have to specifically define
+
+140
+00:05:50.690 --> 00:05:54.010
+what type of everything is going to be.
+
+141
+00:05:54.010 --> 00:05:56.700
+So like, let's take a look at our items.
+
+142
+00:05:56.700 --> 00:05:58.810
+Our item has a whole bunch of properties in it,
+
+143
+00:05:58.810 --> 00:06:00.560
+like we have an ID and we have a title
+
+144
+00:06:00.560 --> 00:06:03.680
+and a description and created at and an updated at
+
+145
+00:06:03.680 --> 00:06:06.250
+and a price and we go ahead and define
+
+146
+00:06:06.250 --> 00:06:09.430
+that those things are either their own custom types,
+
+147
+00:06:09.430 --> 00:06:11.750
+which is an ID, or they're just things
+
+148
+00:06:11.750 --> 00:06:12.640
+that you already know about,
+
+149
+00:06:12.640 --> 00:06:14.848
+strings, integers, date types,
+
+150
+00:06:14.848 --> 00:06:17.490
+or you can have relationships to others,
+
+151
+00:06:17.490 --> 00:06:20.770
+like this one, an item is created by a user
+
+152
+00:06:20.770 --> 00:06:22.970
+and then you have a relationship of a user,
+
+153
+00:06:22.970 --> 00:06:25.630
+which in turn will have a whole bunch of
+
+154
+00:06:25.630 --> 00:06:28.600
+other fields, things like an array of permissions
+
+155
+00:06:28.600 --> 00:06:31.210
+or an array of orders or a name
+
+156
+00:06:31.210 --> 00:06:33.250
+or a password or an email address.
+
+157
+00:06:33.250 --> 00:06:36.220
+You sorta get the point that we have it on there.
+
+158
+00:06:36.220 --> 00:06:38.430
+Now, that's really cool because
+
+159
+00:06:38.430 --> 00:06:42.090
+when you make your programming language so strictly typed,
+
+160
+00:06:42.090 --> 00:06:43.880
+you get the benefit of tools
+
+161
+00:06:43.880 --> 00:06:46.690
+being able to analyze your code
+
+162
+00:06:46.690 --> 00:06:49.100
+and provide to you a whole bunch of documentation.
+
+163
+00:06:49.100 --> 00:06:51.810
+So in here, if I'm saying, okay,
+
+164
+00:06:51.810 --> 00:06:55.250
+items I can just hit my control space character
+
+165
+00:06:55.250 --> 00:06:57.940
+on a new line and it will suggest to me
+
+166
+00:06:57.940 --> 00:06:59.820
+what the possible fields are.
+
+167
+00:06:59.820 --> 00:07:02.810
+If this was just a willy nilly JavaScript application,
+
+168
+00:07:02.810 --> 00:07:06.270
+it wouldn't know what the possible returned values are.
+
+169
+00:07:06.270 --> 00:07:09.410
+So I can say, oh, I want to have the description,
+
+170
+00:07:09.410 --> 00:07:11.610
+and then you just run that sucker again
+
+171
+00:07:11.610 --> 00:07:14.700
+and it gives you the description added to that.
+
+172
+00:07:14.700 --> 00:07:16.990
+Similarly, you can click on this little Schema tab
+
+173
+00:07:16.990 --> 00:07:19.510
+in the corner here and it's going to show us
+
+174
+00:07:19.510 --> 00:07:21.650
+all of the different queries and mutations.
+
+175
+00:07:21.650 --> 00:07:24.730
+I'll talk about what mutations are in just a second.
+
+176
+00:07:24.730 --> 00:07:27.930
+It shows me all of the different queries that we have.
+
+177
+00:07:27.930 --> 00:07:30.473
+So I say, okay, like how do I query,
+
+178
+00:07:30.473 --> 00:07:32.240
+what do I have available to me?
+
+179
+00:07:32.240 --> 00:07:35.210
+I can query orders, I can query cart items,
+
+180
+00:07:35.210 --> 00:07:36.660
+I can create different users,
+
+181
+00:07:36.660 --> 00:07:39.670
+I can inquiry either orders, et cetera, et cetera,
+
+182
+00:07:39.670 --> 00:07:43.950
+or I can do the opposite of pulling data,
+
+183
+00:07:43.950 --> 00:07:46.360
+which is I want to push data to the server,
+
+184
+00:07:46.360 --> 00:07:48.717
+I want to update data, I want to create new data.
+
+185
+00:07:48.717 --> 00:07:50.930
+And that is what is referred to as a mutation.
+
+186
+00:07:50.930 --> 00:07:52.930
+So GraphQL really just has two things,
+
+187
+00:07:52.930 --> 00:07:56.720
+queries, pulling data, and mutations, putting data,
+
+188
+00:07:56.720 --> 00:07:59.120
+updating data, creating new data, deleting.
+
+189
+00:07:59.120 --> 00:08:02.110
+Anytime you're actually making a change to the data
+
+190
+00:08:02.110 --> 00:08:04.160
+other than just observing it via a query,
+
+191
+00:08:04.160 --> 00:08:06.130
+that is what is called a mutation.
+
+192
+00:08:06.130 --> 00:08:09.500
+So now that brings me to my next point of a GraphQL
+
+193
+00:08:09.500 --> 00:08:10.810
+is that these queries
+
+194
+00:08:10.810 --> 00:08:13.930
+make writing relationships very, very simple.
+
+195
+00:08:13.930 --> 00:08:17.060
+So let me get rid of the list of users that I was querying,
+
+196
+00:08:17.060 --> 00:08:19.547
+and right here we're just going to query a list of items.
+
+197
+00:08:19.547 --> 00:08:23.140
+And for each item, you can pull back the ID,
+
+198
+00:08:23.140 --> 00:08:24.470
+and see how I just clicked on that
+
+199
+00:08:24.470 --> 00:08:26.236
+and it opened up the documentation.
+
+200
+00:08:26.236 --> 00:08:28.944
+It says like I can query items by,
+
+201
+00:08:28.944 --> 00:08:31.180
+and these are the arguments that it can give it.
+
+202
+00:08:31.180 --> 00:08:33.510
+So if I only wanted the first three or the last three
+
+203
+00:08:33.510 --> 00:08:35.990
+or wanted to skip the first two and show me the second one,
+
+204
+00:08:35.990 --> 00:08:38.300
+we'll get into that when we do pagination.
+
+205
+00:08:38.300 --> 00:08:41.250
+but then it also tells you the type of item
+
+206
+00:08:41.250 --> 00:08:45.044
+has all of these properties on it, which is pretty neat.
+
+207
+00:08:45.044 --> 00:08:46.260
+So I'm going to close that up.
+
+208
+00:08:46.260 --> 00:08:48.810
+And on each of the items we're just gonna,
+
+209
+00:08:48.810 --> 00:08:50.790
+let's just grab the title, see if it works.
+
+210
+00:08:50.790 --> 00:08:53.760
+Good, and then on there it shows me
+
+211
+00:08:53.760 --> 00:08:55.870
+that I can grab the user.
+
+212
+00:08:55.870 --> 00:08:58.870
+So if I were to grab the user and run it,
+
+213
+00:08:58.870 --> 00:08:59.880
+it's gonna give me an error
+
+214
+00:08:59.880 --> 00:09:01.970
+because it says user must have a sub-selection
+
+215
+00:09:01.970 --> 00:09:04.380
+and that's because there's a relationship here.
+
+216
+00:09:04.380 --> 00:09:06.360
+An item is created by a user.
+
+217
+00:09:06.360 --> 00:09:08.820
+So if I want to know who created that item,
+
+218
+00:09:08.820 --> 00:09:10.440
+I just have to grab the user,
+
+219
+00:09:10.440 --> 00:09:13.630
+and then the way that you query properties of the users,
+
+220
+00:09:13.630 --> 00:09:15.657
+is you just give yourself,
+
+221
+00:09:15.657 --> 00:09:16.490
+and remember it's kind of like JSON,
+
+222
+00:09:16.490 --> 00:09:19.160
+but just without the actual values being returned.
+
+223
+00:09:19.160 --> 00:09:22.410
+So I could say the user name and the user ID.
+
+224
+00:09:22.410 --> 00:09:23.950
+Let's see.
+
+225
+00:09:23.950 --> 00:09:24.783
+So there we go.
+
+226
+00:09:24.783 --> 00:09:26.950
+So the items, here's an array of items.
+
+227
+00:09:26.950 --> 00:09:29.240
+The first item is called the Nudie Jeans Belt,
+
+228
+00:09:29.240 --> 00:09:33.130
+and that user is Wes Bos, and they have an ID of that.
+
+229
+00:09:33.130 --> 00:09:34.300
+And you can even go further
+
+230
+00:09:34.300 --> 00:09:37.000
+because a user will also have, like,
+
+231
+00:09:37.000 --> 00:09:39.490
+let's look at this data that we have here.
+
+232
+00:09:39.490 --> 00:09:41.820
+A user will also have orders
+
+233
+00:09:41.820 --> 00:09:44.190
+and they'll also have a cart
+
+234
+00:09:44.190 --> 00:09:46.900
+and then they also have a permissions and what not.
+
+235
+00:09:46.900 --> 00:09:48.300
+But let's look at orders and carts.
+
+236
+00:09:48.300 --> 00:09:49.590
+So I want to know, okay,
+
+237
+00:09:49.590 --> 00:09:52.020
+does that user have this item in the cart?
+
+238
+00:09:52.020 --> 00:09:54.780
+Very easy to figure out 'cause I could just say
+
+239
+00:09:54.780 --> 00:09:57.820
+show me their carts and for each of the items
+
+240
+00:09:57.820 --> 00:10:00.610
+in their car return to me,
+
+241
+00:10:00.610 --> 00:10:01.920
+I don't know what the values are.
+
+242
+00:10:01.920 --> 00:10:05.090
+I could just hit control space and get the ID,
+
+243
+00:10:05.090 --> 00:10:07.010
+the quantity, the item, the user.
+
+244
+00:10:07.010 --> 00:10:09.170
+So let's say the quantity,
+
+245
+00:10:09.170 --> 00:10:13.410
+and each cart item, I want to know what the item is,
+
+246
+00:10:13.410 --> 00:10:16.330
+'cause a cart item could be multiple of a same item.
+
+247
+00:10:16.330 --> 00:10:18.010
+We'll get into that as well.
+
+248
+00:10:18.010 --> 00:10:20.690
+So for each item I wanna grab the title.
+
+249
+00:10:20.690 --> 00:10:22.280
+Let's go ahead and run it.
+
+250
+00:10:22.280 --> 00:10:25.060
+So, for each of the items,
+
+251
+00:10:25.060 --> 00:10:28.590
+this is the Nudie Jeans Belt, was created by Wes Bos.
+
+252
+00:10:28.590 --> 00:10:31.960
+Wes Bos also has a cart where these are the items
+
+253
+00:10:31.960 --> 00:10:33.750
+that are inside of his cart
+
+254
+00:10:33.750 --> 00:10:36.490
+and each cart item also has a relationship
+
+255
+00:10:36.490 --> 00:10:37.800
+to another item.
+
+256
+00:10:37.800 --> 00:10:39.500
+You see how we're querying items
+
+257
+00:10:39.500 --> 00:10:42.210
+and then in turn also querying other items
+
+258
+00:10:42.210 --> 00:10:43.980
+and we could go infinitely,
+
+259
+00:10:43.980 --> 00:10:44.813
+and we could say, okay,
+
+260
+00:10:44.813 --> 00:10:48.660
+who is the user that created this item
+
+261
+00:10:48.660 --> 00:10:51.200
+that is in the other person's cart?
+
+262
+00:10:51.200 --> 00:10:54.810
+And there we go, I actually put my own item in my cart,
+
+263
+00:10:54.810 --> 00:10:57.550
+but theoretically could be a different people,
+
+264
+00:10:57.550 --> 00:11:01.170
+and this will go as long as you have relationships
+
+265
+00:11:01.170 --> 00:11:03.620
+between your data, you can go as far as you want
+
+266
+00:11:03.620 --> 00:11:05.496
+and you notice that I'm only picking
+
+267
+00:11:05.496 --> 00:11:08.083
+the little pieces of the data that I want.
+
+268
+00:11:09.220 --> 00:11:11.350
+Similarly we can also, if I were to just,
+
+269
+00:11:11.350 --> 00:11:13.360
+let me pop open a new tab here,
+
+270
+00:11:13.360 --> 00:11:16.480
+if I were to query, I want items,
+
+271
+00:11:16.480 --> 00:11:19.200
+and before I was just saying give me the item name
+
+272
+00:11:20.340 --> 00:11:22.003
+or not the name, the title,
+
+273
+00:11:23.850 --> 00:11:26.740
+but what you can do is that these are functions as well
+
+274
+00:11:26.740 --> 00:11:28.900
+where you can pass them where,
+
+275
+00:11:28.900 --> 00:11:30.150
+and this is part of Prisma.
+
+276
+00:11:30.150 --> 00:11:32.400
+This is not a GraphQL standard.
+
+277
+00:11:32.400 --> 00:11:34.730
+Part of the thing that threw me with GraphQL
+
+278
+00:11:34.730 --> 00:11:36.880
+is that it's called GraphQL.
+
+279
+00:11:36.880 --> 00:11:39.920
+The QL stands for query language,
+
+280
+00:11:39.920 --> 00:11:43.130
+but by default GraphQL actually has no,
+
+281
+00:11:43.130 --> 00:11:45.953
+like no filtering, no sorting,
+
+282
+00:11:45.953 --> 00:11:48.510
+they don't have any of the stuff you would assume
+
+283
+00:11:48.510 --> 00:11:51.810
+that you have from like MySQL or something like that.
+
+284
+00:11:51.810 --> 00:11:56.050
+So part of getting over the fact of what is GraphQL
+
+285
+00:11:56.050 --> 00:11:59.650
+is that it itself does not fetch the data
+
+286
+00:11:59.650 --> 00:12:04.650
+and filter the data and provide sorting and all that stuff.
+
+287
+00:12:05.131 --> 00:12:10.131
+GraphQL is simply just a way to vocalize what you want,
+
+288
+00:12:10.580 --> 00:12:12.930
+and then that gets passed to your server
+
+289
+00:12:12.930 --> 00:12:14.370
+and then your server implements
+
+290
+00:12:14.370 --> 00:12:16.560
+these things called resolvers.
+
+291
+00:12:16.560 --> 00:12:18.950
+And resolvers essentially answer the question,
+
+292
+00:12:18.950 --> 00:12:21.770
+how and where do I get this data from?
+
+293
+00:12:21.770 --> 00:12:26.150
+And that's where you end up using your MySQL,
+
+294
+00:12:26.150 --> 00:12:30.310
+or your MongoDB or text-based return of value.
+
+295
+00:12:30.310 --> 00:12:32.510
+That's where you actually handle
+
+296
+00:12:32.510 --> 00:12:34.100
+all of the filtering and sorting
+
+297
+00:12:34.100 --> 00:12:36.030
+and finding of your data.
+
+298
+00:12:36.030 --> 00:12:38.870
+So GraphQL by itself is not a replacement
+
+299
+00:12:38.870 --> 00:12:41.380
+for these different database things.
+
+300
+00:12:41.380 --> 00:12:44.550
+It's simply just a way to, a standard to
+
+301
+00:12:44.550 --> 00:12:46.150
+request a specific data.
+
+302
+00:12:46.150 --> 00:12:47.833
+So if I go into this where,
+
+303
+00:12:48.770 --> 00:12:51.810
+and the where will give me a number of options,
+
+304
+00:12:51.810 --> 00:12:54.900
+and again, this is part of what Prisma gives us by default.
+
+305
+00:12:54.900 --> 00:12:59.440
+So we want to say like the title is,
+
+306
+00:12:59.440 --> 00:13:03.283
+contains, let's just say Belt.
+
+307
+00:13:04.570 --> 00:13:06.430
+And then for each of those results
+
+308
+00:13:06.430 --> 00:13:10.120
+I want to return the title of it and maybe the description.
+
+309
+00:13:10.120 --> 00:13:11.420
+And if I were to run that,
+
+310
+00:13:12.700 --> 00:13:13.840
+Oh, I got an error here.
+
+311
+00:13:13.840 --> 00:13:17.010
+So what happened, I didn't use double quotes.
+
+312
+00:13:17.010 --> 00:13:19.060
+Whole entire course is me gonna be
+
+313
+00:13:19.931 --> 00:13:21.729
+screwing up that double quotes.
+
+314
+00:13:21.729 --> 00:13:23.560
+So now I run it and it says any items
+
+315
+00:13:23.560 --> 00:13:25.230
+that contain the word Belt,
+
+316
+00:13:25.230 --> 00:13:27.420
+I want to return the title and the description.
+
+317
+00:13:27.420 --> 00:13:30.370
+And you can see that I've returned two items here,
+
+318
+00:13:30.370 --> 00:13:32.430
+Nudie Belt and Nudie Jeans Belt.
+
+319
+00:13:32.430 --> 00:13:35.320
+So if I put vapor in there,
+
+320
+00:13:35.320 --> 00:13:37.670
+I will only return one item that we have.
+
+321
+00:13:37.670 --> 00:13:39.880
+So really, really exciting.
+
+322
+00:13:39.880 --> 00:13:41.770
+GraphQL definitely requires you
+
+323
+00:13:41.770 --> 00:13:44.230
+to rethink how you approach things,
+
+324
+00:13:44.230 --> 00:13:46.610
+especially if you're coming from years and years,
+
+325
+00:13:46.610 --> 00:13:49.140
+like myself, from rest APIs,
+
+326
+00:13:49.140 --> 00:13:50.710
+where you have specific APIs,
+
+327
+00:13:50.710 --> 00:13:54.280
+and in this case we only have one API endpoint
+
+328
+00:13:54.280 --> 00:13:57.020
+and it's all in the queries and the mutations
+
+329
+00:13:57.020 --> 00:13:59.850
+and how we push and pull data to that API.
+
+330
+00:13:59.850 --> 00:14:01.830
+Hopefully that's a nice high-level overview
+
+331
+00:14:01.830 --> 00:14:03.480
+of how GraphQL works.
+
+332
+00:14:03.480 --> 00:14:05.330
+I think it's going to really start to set in
+
+333
+00:14:05.330 --> 00:14:08.710
+once we start to write our own resolvers
+
+334
+00:14:08.710 --> 00:14:10.390
+and write our own data models
+
+335
+00:14:10.390 --> 00:14:12.820
+and have the data relational between the two.
+

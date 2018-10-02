@@ -1,0 +1,582 @@
+﻿WEBVTT
+
+1
+00:00:00.690 --> 00:00:02.930
+<v ->Alright, let's talk about deploying.</v>
+
+2
+00:00:02.930 --> 00:00:04.470
+This is not the easiest thing in the world
+
+3
+00:00:04.470 --> 00:00:06.500
+because we've got three different pieces
+
+4
+00:00:06.500 --> 00:00:09.470
+that we need to manage and get up on the internet.
+
+5
+00:00:09.470 --> 00:00:12.300
+Now normally with an application you either have
+
+6
+00:00:12.300 --> 00:00:14.799
+one deploy, you have a server-side rendered application
+
+7
+00:00:14.799 --> 00:00:17.250
+and you just push that thing live.
+
+8
+00:00:17.250 --> 00:00:20.330
+Or you have two deploys where you have a rest back end.
+
+9
+00:00:20.330 --> 00:00:23.100
+That's an API and then you have react application
+
+10
+00:00:23.100 --> 00:00:25.510
+on the front end, so you've got your back end and front end.
+
+11
+00:00:25.510 --> 00:00:28.450
+In our case we have three because we have the Prisma Server
+
+12
+00:00:28.450 --> 00:00:30.980
+which also needs a MySQL database.
+
+13
+00:00:30.980 --> 00:00:32.569
+So that is going to be providing,
+
+14
+00:00:32.569 --> 00:00:35.930
+that's where we deploy our schema to.
+
+15
+00:00:35.930 --> 00:00:37.970
+Then we have our Yoga Server which,
+
+16
+00:00:37.970 --> 00:00:42.820
+that has our Mutation and Query Resolvers in it.
+
+17
+00:00:42.820 --> 00:00:44.570
+And then we have our React application
+
+18
+00:00:44.570 --> 00:00:47.710
+which is actually a node server that runs next.js
+
+19
+00:00:47.710 --> 00:00:49.070
+and that makes sure that we can do
+
+20
+00:00:49.070 --> 00:00:50.710
+all of our server-side rendering.
+
+21
+00:00:50.710 --> 00:00:52.894
+So you get three different things to deploy.
+
+22
+00:00:52.894 --> 00:00:54.891
+We're gonna jump in on that.
+
+23
+00:00:54.891 --> 00:00:56.270
+First thing we're gonna do is get
+
+24
+00:00:56.270 --> 00:00:57.640
+our Prisma Server up and running.
+
+25
+00:00:57.640 --> 00:00:59.110
+Then we'll do our Yoga Server and then
+
+26
+00:00:59.110 --> 00:01:00.550
+we'll do our React application.
+
+27
+00:01:00.550 --> 00:01:02.300
+So let's host this on Heroku.
+
+28
+00:01:02.300 --> 00:01:05.420
+The reason I'm choosing Heroku for this one is
+
+29
+00:01:05.420 --> 00:01:08.405
+because it will support both the front end
+
+30
+00:01:08.405 --> 00:01:11.435
+of our application as well as our back end
+
+31
+00:01:11.435 --> 00:01:15.630
+and Prisma has a tight integration with Heroku
+
+32
+00:01:15.630 --> 00:01:16.670
+which is really nice.
+
+33
+00:01:16.670 --> 00:01:18.650
+So what we want to do here is
+
+34
+00:01:18.650 --> 00:01:21.250
+sign into your Prisma back end.
+
+35
+00:01:21.250 --> 00:01:23.030
+These things, the servers that Prisma gives you,
+
+36
+00:01:23.030 --> 00:01:24.380
+these are just development servers.
+
+37
+00:01:24.380 --> 00:01:25.642
+You can't use these in production.
+
+38
+00:01:25.642 --> 00:01:28.450
+You actually need to go ahead and host your own.
+
+39
+00:01:28.450 --> 00:01:30.790
+However you can use the Prisma dashboard
+
+40
+00:01:30.790 --> 00:01:33.885
+in order to manage the data and actually interface
+
+41
+00:01:33.885 --> 00:01:35.870
+with your Prisma which is pretty nifty.
+
+42
+00:01:35.870 --> 00:01:39.330
+So we're going to go ahead and click on Add A Server.
+
+43
+00:01:39.330 --> 00:01:42.250
+You also have the ability to just create a Host It server
+
+44
+00:01:42.250 --> 00:01:46.640
+and put in your own MySQL database info in here.
+
+45
+00:01:46.640 --> 00:01:48.827
+But we are going to be clicking on Add A Server.
+
+46
+00:01:48.827 --> 00:01:53.827
+And we're gonna create it, call it Sick Fits Production.
+
+47
+00:01:56.280 --> 00:01:58.900
+And then we will say a description.
+
+48
+00:01:58.900 --> 00:02:00.530
+Prod of Sick Fits.
+
+49
+00:02:00.530 --> 00:02:02.150
+You might have to call it something different
+
+50
+00:02:02.150 --> 00:02:04.600
+'cause I might have just taken it.
+
+51
+00:02:04.600 --> 00:02:07.120
+We're gonna go ahead and create a server.
+
+52
+00:02:07.120 --> 00:02:10.380
+We're going to, you can connect to an existing database
+
+53
+00:02:10.380 --> 00:02:14.920
+which if you connect to, you can host your own databases.
+
+54
+00:02:14.920 --> 00:02:18.470
+Or you can create a new database which is on Heroku.
+
+55
+00:02:18.470 --> 00:02:20.250
+So go ahead and you're gonna go do that.
+
+56
+00:02:20.250 --> 00:02:23.743
+And then you need to sign in with your Heroku account.
+
+57
+00:02:33.470 --> 00:02:35.004
+You can select the type of database,
+
+58
+00:02:35.004 --> 00:02:37.350
+right now it's just postgreSQL,
+
+59
+00:02:37.350 --> 00:02:40.750
+but it should be MySQl and everything in the future.
+
+60
+00:02:40.750 --> 00:02:43.200
+You want to shoot where you want it to go.
+
+61
+00:02:43.200 --> 00:02:47.360
+And then I just want 10,000 rows for the hobby plan.
+
+62
+00:02:47.360 --> 00:02:50.983
+Obviously you can scale that up if you need more.
+
+63
+00:02:51.930 --> 00:02:53.520
+Run a click create database.
+
+64
+00:02:53.520 --> 00:02:58.010
+And you see that our database has been successfully created.
+
+65
+00:02:58.010 --> 00:02:59.520
+And now we need to set up the server,
+
+66
+00:02:59.520 --> 00:03:01.630
+so go ahead and click on set up server.
+
+67
+00:03:01.630 --> 00:03:04.530
+We're also going to use Heroku for this so click on that.
+
+68
+00:03:04.530 --> 00:03:09.080
+We're going to use the free, gonna create a server.
+
+69
+00:03:09.080 --> 00:03:11.430
+And you can imagine that if you were not going
+
+70
+00:03:11.430 --> 00:03:14.150
+through this little dialogue then you would
+
+71
+00:03:14.150 --> 00:03:16.620
+also need to set up a MySQL database
+
+72
+00:03:16.620 --> 00:03:19.330
+or get one from somewhere like Amazon AWS.
+
+73
+00:03:19.330 --> 00:03:21.200
+And then also set up a server that's
+
+74
+00:03:21.200 --> 00:03:24.160
+going to sit on top of your database here
+
+75
+00:03:24.160 --> 00:03:25.460
+and that's exactly where we're
+
+76
+00:03:25.460 --> 00:03:28.270
+putting both of these things on Heroku.
+
+77
+00:03:28.270 --> 00:03:29.570
+After a couple of minutes it told me
+
+78
+00:03:29.570 --> 00:03:32.377
+the Prisma server was successfully deployed,
+
+79
+00:03:32.377 --> 00:03:35.024
+you can go ahead and view the server.
+
+80
+00:03:35.024 --> 00:03:37.750
+And here it is, here's our Sick Fitz,
+
+81
+00:03:37.750 --> 00:03:39.130
+it looks like it's booting.
+
+82
+00:03:39.130 --> 00:03:41.580
+After a couple of minutes this shows up as healthy.
+
+83
+00:03:41.580 --> 00:03:45.320
+You can click through to it and you will see
+
+84
+00:03:45.320 --> 00:03:47.660
+that we have all the information here.
+
+85
+00:03:47.660 --> 00:03:49.140
+We now go to our services.
+
+86
+00:03:49.140 --> 00:03:52.543
+So we have this server here but we don't have
+
+87
+00:03:52.543 --> 00:03:56.470
+the service which is our actual application.
+
+88
+00:03:56.470 --> 00:03:58.511
+So what we need to do is deploy
+
+89
+00:03:58.511 --> 00:04:02.160
+our application to this service.
+
+90
+00:04:02.160 --> 00:04:05.240
+So let's go into our backend and are going
+
+91
+00:04:05.240 --> 00:04:07.840
+to open it up on our terminal as well.
+
+92
+00:04:07.840 --> 00:04:11.440
+And normally when we deploy or run npm run deploy,
+
+93
+00:04:11.440 --> 00:04:14.810
+and that's going to deploy to our basic one.
+
+94
+00:04:14.810 --> 00:04:17.580
+But if you were to check out all of the commands
+
+95
+00:04:17.580 --> 00:04:20.670
+under Prisma if you have globally installed Prisma,
+
+96
+00:04:20.670 --> 00:04:23.603
+you say Prisma deploy, dash-dash-help.
+
+97
+00:04:24.630 --> 00:04:27.760
+You see all of the flats that we have for Prisma
+
+98
+00:04:29.126 --> 00:04:31.007
+are dry-run, env-file, force.
+
+99
+00:04:31.007 --> 00:04:32.390
+We are using the env-file because
+
+100
+00:04:32.390 --> 00:04:34.520
+if you look at your Prisma-dot-yml
+
+101
+00:04:34.520 --> 00:04:37.240
+we have environmental variables which we store
+
+102
+00:04:37.240 --> 00:04:39.749
+in this variables-dot-env file.
+
+103
+00:04:39.749 --> 00:04:42.360
+So one kinda cool thing that we can do
+
+104
+00:04:42.360 --> 00:04:47.360
+is if you run Prisma deploy or npm run deploy
+
+105
+00:04:49.140 --> 00:04:52.830
+and then past the dash-dash-dash-n flag,
+
+106
+00:04:52.830 --> 00:04:57.450
+the dash-dash tells npm to append the following things
+
+107
+00:04:57.450 --> 00:04:59.860
+to the command that you're about to run.
+
+108
+00:04:59.860 --> 00:05:03.178
+And then we are appending the dash-n to the end.
+
+109
+00:05:03.178 --> 00:05:06.900
+And that will run Prisma deploy, a regular command.
+
+110
+00:05:06.900 --> 00:05:11.310
+Hold on, hold, Prisma deploy, env-file variables the env.
+
+111
+00:05:11.310 --> 00:05:14.040
+And then we pass the dash-n onto the end.
+
+112
+00:05:14.040 --> 00:05:16.182
+And now Prisma says would you like to set up a new one
+
+113
+00:05:16.182 --> 00:05:20.980
+or use and deploy an existing server?
+
+114
+00:05:20.980 --> 00:05:23.829
+And you can see there is our Sick Fits production.
+
+115
+00:05:23.829 --> 00:05:25.270
+I'm going to click that.
+
+116
+00:05:25.270 --> 00:05:26.840
+Chose a name for your service.
+
+117
+00:05:26.840 --> 00:05:29.013
+I'm gonna call it Sick Fits Prod.
+
+118
+00:05:30.410 --> 00:05:32.043
+Stage: Prod.
+
+119
+00:05:44.580 --> 00:05:47.000
+And it looks like it pushed everything
+
+120
+00:05:47.000 --> 00:05:49.730
+up and we should be able to take a look.
+
+121
+00:05:49.730 --> 00:05:52.400
+Refresh our list of services here.
+
+122
+00:05:52.400 --> 00:05:55.390
+And now we see our production in here.
+
+123
+00:05:55.390 --> 00:05:57.420
+And there's gonna be no data in here
+
+124
+00:05:57.420 --> 00:05:58.577
+but you do see that our schema has
+
+125
+00:05:58.577 --> 00:06:01.400
+now been pushed up to this.
+
+126
+00:06:01.400 --> 00:06:03.420
+If you head back to your Prisma-dot-yml file
+
+127
+00:06:03.420 --> 00:06:05.710
+you'll see that it commented out our old one here.
+
+128
+00:06:05.710 --> 00:06:09.520
+And then also put in our new endpoint
+
+129
+00:06:09.520 --> 00:06:12.637
+which is the Heroku app that we're going towards.
+
+130
+00:06:12.637 --> 00:06:15.460
+We also do want to put a secret on that
+
+131
+00:06:15.460 --> 00:06:17.230
+so I'm going to actually comment that out.
+
+132
+00:06:17.230 --> 00:06:20.331
+So npm run deploy, don't use the dash-n there.
+
+133
+00:06:20.331 --> 00:06:22.410
+It's going to deploy it to our
+
+134
+00:06:22.410 --> 00:06:24.320
+Heroku now with the new secret.
+
+135
+00:06:24.320 --> 00:06:26.426
+Looks like everything works.
+
+136
+00:06:26.426 --> 00:06:30.180
+So that is deploying our back end to our Heroku.
+
+137
+00:06:30.180 --> 00:06:32.580
+That's probably the easiest way you can do it.
+
+138
+00:06:32.580 --> 00:06:34.630
+Obviously you can host, Prisma's all open source.
+
+139
+00:06:34.630 --> 00:06:36.500
+You can host your own, there's docker images
+
+140
+00:06:36.500 --> 00:06:38.650
+that you'll be able to use but that for me
+
+141
+00:06:38.650 --> 00:06:41.086
+is the most straight forward way to go ahead
+
+142
+00:06:41.086 --> 00:06:43.070
+and deploy the back end.
+
+143
+00:06:43.070 --> 00:06:45.820
+So let's get into using our Yoga Server.
+
+144
+00:06:45.820 --> 00:06:47.390
+We're gonna put that on Heroku as well.
+
+145
+00:06:47.390 --> 00:06:49.340
+And then finally our React application.
+

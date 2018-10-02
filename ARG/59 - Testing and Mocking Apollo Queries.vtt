@@ -1,0 +1,1510 @@
+﻿WEBVTT
+
+1
+00:00:00.912 --> 00:00:02.984
+<v Wes>All right in this video we're gonna talk about</v>
+
+2
+00:00:02.984 --> 00:00:05.487
+writing tests for our SingleItem.
+
+3
+00:00:05.487 --> 00:00:09.852
+This is gonna sorta set the way for writing the test
+
+4
+00:00:09.852 --> 00:00:12.010
+for the rest of our components that all have queries
+
+5
+00:00:12.010 --> 00:00:13.874
+inside of them and then we're also gonna learn
+
+6
+00:00:13.874 --> 00:00:16.085
+how to do mutations in a coming video.
+
+7
+00:00:16.085 --> 00:00:18.540
+So this is a component where we have our SingleItem
+
+8
+00:00:18.540 --> 00:00:20.899
+but in order for the SingleItem to work
+
+9
+00:00:20.899 --> 00:00:23.988
+it requires a query that's past the id of an item
+
+10
+00:00:23.988 --> 00:00:27.079
+that will hit the database and come back with that item,
+
+11
+00:00:27.079 --> 00:00:29.079
+and then we'll be able to go ahead and either
+
+12
+00:00:29.079 --> 00:00:31.649
+render out the Error, render out Loading...
+
+13
+00:00:31.649 --> 00:00:34.501
+or actually render out No Item Found
+
+14
+00:00:34.501 --> 00:00:37.106
+or finally render out the SingleItem.
+
+15
+00:00:37.106 --> 00:00:38.875
+So we need to write tests that make sure
+
+16
+00:00:38.875 --> 00:00:42.747
+that all four of these things are going to be working.
+
+17
+00:00:42.747 --> 00:00:44.170
+So this is what we're gonna do.
+
+18
+00:00:44.170 --> 00:00:46.113
+We're going to be using something called mocking.
+
+19
+00:00:46.113 --> 00:00:49.022
+Now it's not going to be mocking a function
+
+20
+00:00:49.022 --> 00:00:50.890
+like I showed you earlier, but we're actually
+
+21
+00:00:50.890 --> 00:00:53.778
+going to mocking the entire Apollo store
+
+22
+00:00:53.778 --> 00:00:57.020
+and feeding it dummy data that it should resolve to,
+
+23
+00:00:57.020 --> 00:01:01.379
+so it's not actually gonna reach outside to the database.
+
+24
+00:01:01.379 --> 00:01:03.088
+So let's open up our test folder
+
+25
+00:01:03.088 --> 00:01:06.838
+and make a new one called SingleItem.test.js.
+
+26
+00:01:09.265 --> 00:01:10.884
+Inside of there we'll import.
+
+27
+00:01:10.884 --> 00:01:13.260
+We're gonna mount these ones, and in order for us
+
+28
+00:01:13.260 --> 00:01:17.680
+to actually test that everything works we need to mount.
+
+29
+00:01:17.680 --> 00:01:20.571
+Now that's because if we were just to shallow render this,
+
+30
+00:01:20.571 --> 00:01:22.779
+we would just render out the query tag,
+
+31
+00:01:22.779 --> 00:01:24.223
+and then the actual important stuff
+
+32
+00:01:24.223 --> 00:01:27.698
+which is the styles and the image tag
+
+33
+00:01:27.698 --> 00:01:30.647
+and the divs and everything, all of that stuff
+
+34
+00:01:30.647 --> 00:01:32.614
+needs to be shown in order for us to see
+
+35
+00:01:32.614 --> 00:01:35.123
+that we need to do a full on mount.
+
+36
+00:01:35.123 --> 00:01:38.540
+So we'll import { mount } from 'enzyme';.
+
+37
+00:01:41.856 --> 00:01:46.820
+We're gonna import our toJSON from 'enzyme-to-json';.
+
+38
+00:01:46.820 --> 00:01:50.661
+I'm going to import wait from 'waait';,
+
+39
+00:01:50.661 --> 00:01:55.125
+W-A-A-I-T, and I'll explain why we need
+
+40
+00:01:55.125 --> 00:01:55.958
+that in just a second.
+
+41
+00:01:55.958 --> 00:01:59.376
+This is just a little package that I wrote myself.
+
+42
+00:01:59.376 --> 00:02:03.157
+Then we need to import our SingleItem as well as,
+
+43
+00:02:03.157 --> 00:02:06.311
+let's open up SingleItem real quick and triple check.
+
+44
+00:02:06.311 --> 00:02:07.417
+Oh, we didn't export it.
+
+45
+00:02:07.417 --> 00:02:11.999
+We need this SingleItem but we also need this query
+
+46
+00:02:11.999 --> 00:02:16.107
+that we wrote here, so let's export that as well.
+
+47
+00:02:16.107 --> 00:02:17.573
+Make sure you go ahead and do that.
+
+48
+00:02:17.573 --> 00:02:19.381
+It's probably going to need to make sure
+
+49
+00:02:19.381 --> 00:02:20.964
+that we export all of our queries
+
+50
+00:02:20.964 --> 00:02:23.474
+and mutations from each of the components
+
+51
+00:02:23.474 --> 00:02:26.176
+so that we can go into here and import it.
+
+52
+00:02:26.176 --> 00:02:28.484
+We'll go into that component
+
+53
+00:02:28.484 --> 00:02:31.651
+and we'll grab it from our SingleItem.
+
+54
+00:02:32.556 --> 00:02:35.973
+Next we need to import from React Apollo.
+
+55
+00:02:36.866 --> 00:02:40.792
+We need to import a MockedProvider and that is
+
+56
+00:02:40.792 --> 00:02:44.292
+from 'react-apollo/test-utils',
+
+57
+00:02:45.686 --> 00:02:46.907
+so this is sort of a sub-package
+
+58
+00:02:46.907 --> 00:02:48.194
+that we're importing it from,
+
+59
+00:02:48.194 --> 00:02:52.214
+and I'll show you how and why we are using that.
+
+60
+00:02:52.214 --> 00:02:55.747
+Next we need to import a fakeItem
+
+61
+00:02:55.747 --> 00:02:58.524
+from to go up a level into our '../lib/
+
+62
+00:02:58.524 --> 00:03:00.475
+and grab it from testUtils.
+
+63
+00:03:00.475 --> 00:03:02.952
+So if we open up testUtils right here,
+
+64
+00:03:02.952 --> 00:03:05.841
+you're going to see that...
+
+65
+00:03:05.841 --> 00:03:08.609
+Let's explain what's going on right here.
+
+66
+00:03:08.609 --> 00:03:13.477
+So we have a fakeItem that has an Item, an id, a price,
+
+67
+00:03:13.477 --> 00:03:15.822
+an image, a title, description, and a largeImage.
+
+68
+00:03:15.822 --> 00:03:19.652
+Then we have a fakeUser, which has obviously an id.
+
+69
+00:03:19.652 --> 00:03:21.774
+I'm using this package called casual,
+
+70
+00:03:21.774 --> 00:03:24.850
+which is sort of a dummy data generator,
+
+71
+00:03:24.850 --> 00:03:28.377
+and then we seed it by giving it a consistent number,
+
+72
+00:03:28.377 --> 00:03:31.854
+and what that will do is ensure that we consistently
+
+73
+00:03:31.854 --> 00:03:35.521
+get the same random name and id from casual.
+
+74
+00:03:36.614 --> 00:03:39.562
+Otherwise every single time that we run this testUtil
+
+75
+00:03:39.562 --> 00:03:41.410
+it's gonna give us a new random name,
+
+76
+00:03:41.410 --> 00:03:44.892
+and then that's not good for our consistency of tests
+
+77
+00:03:44.892 --> 00:03:47.830
+and snapshots because we need it to be exactly the same.
+
+78
+00:03:47.830 --> 00:03:49.821
+So by running seed it makes sure
+
+79
+00:03:49.821 --> 00:03:51.873
+that they're consistently random.
+
+80
+00:03:51.873 --> 00:03:53.748
+Does that make sense? (laughs)
+
+81
+00:03:53.748 --> 00:03:57.177
+But we grab a name and an email,
+
+82
+00:03:57.177 --> 00:04:02.177
+we create fakeOrderitems, fakeOrders, fakeCartItems,
+
+83
+00:04:02.316 --> 00:04:04.800
+and then I think that is it.
+
+84
+00:04:04.800 --> 00:04:07.240
+There's a LocalStorageMock in here as well.
+
+85
+00:04:07.240 --> 00:04:09.448
+If you ever need to
+
+86
+00:04:09.448 --> 00:04:14.448
+fake LocalStorage this is what you'll use to do that because
+
+87
+00:04:15.543 --> 00:04:18.155
+we're not actually running it in a browser environment.
+
+88
+00:04:18.155 --> 00:04:21.013
+We're running it in node and LocalStorage is just
+
+89
+00:04:21.013 --> 00:04:25.805
+a browser API so this is us mocking that entire thing.
+
+90
+00:04:25.805 --> 00:04:27.918
+So that's all of our dummy data that we have there.
+
+91
+00:04:27.918 --> 00:04:32.806
+We are just importing fakeItem from the testUtils.
+
+92
+00:04:32.806 --> 00:04:34.971
+And I believe we can get going.
+
+93
+00:04:34.971 --> 00:04:39.138
+So first thing we'll do is describe the SingleItem
+
+94
+00:04:40.924 --> 00:04:42.518
+and the first thing we'll say
+
+95
+00:04:42.518 --> 00:04:46.435
+it('renders with proper data',
+
+96
+00:04:48.380 --> 00:04:50.129
+make that an async function and
+
+97
+00:04:50.129 --> 00:04:53.144
+I'll show you why in just a second.
+
+98
+00:04:53.144 --> 00:04:56.535
+Now this is the important part.
+
+99
+00:04:56.535 --> 00:05:01.087
+I'm gonna show you how we can try do it without any mocking,
+
+100
+00:05:01.087 --> 00:05:02.682
+and I'll show you why it actually fails.
+
+101
+00:05:02.682 --> 00:05:05.754
+So let's try, go ahead and mount this thing.
+
+102
+00:05:05.754 --> 00:05:08.996
+So const wrapper = mount
+
+103
+00:05:08.996 --> 00:05:12.496
+and we'll just go ahead and say SingleItem
+
+104
+00:05:13.809 --> 00:05:16.476
+and that needs an id="123".
+
+105
+00:05:18.725 --> 00:05:22.735
+Then if we were to try Run that specific test.
+
+106
+00:05:22.735 --> 00:05:24.235
+I'll run npm test.
+
+107
+00:05:26.940 --> 00:05:31.412
+And this test should fail. Here we go, let's see why.
+
+108
+00:05:31.412 --> 00:05:33.443
+&lt;SingleItem/&gt; &gt; renders with data.
+
+109
+00:05:33.443 --> 00:05:36.464
+Invariant Violation; Could not find "client"
+
+110
+00:05:36.464 --> 00:05:39.534
+in the context of Query or as passed props.
+
+111
+00:05:39.534 --> 00:05:41.937
+Wrap the root component in an &lt;ApolloProvider&gt;.
+
+112
+00:05:41.937 --> 00:05:44.737
+So what we're trying to do here is we are trying
+
+113
+00:05:44.737 --> 00:05:48.689
+to render out a SingleItem where the SingleItem,
+
+114
+00:05:48.689 --> 00:05:51.536
+it's assuming that you're always going to render
+
+115
+00:05:51.536 --> 00:05:55.286
+the SingleItem inside of a provider.
+
+116
+00:05:55.286 --> 00:05:57.189
+Right, if we take a look at our, what is it,
+
+117
+00:05:57.189 --> 00:05:59.327
+our app.js, here we go.
+
+118
+00:05:59.327 --> 00:06:01.959
+We are always wrapping our entire application
+
+119
+00:06:01.959 --> 00:06:05.693
+in an ApolloProvider, but in the case of our test
+
+120
+00:06:05.693 --> 00:06:09.023
+we're taking it totally outside of the context
+
+121
+00:06:09.023 --> 00:06:11.526
+that we have in our application,
+
+122
+00:06:11.526 --> 00:06:14.257
+and what happens when a SingleItem tries
+
+123
+00:06:14.257 --> 00:06:17.475
+to query something, it looks to it's parents,
+
+124
+00:06:17.475 --> 00:06:21.441
+it looks in contexts for a Apollo client
+
+125
+00:06:21.441 --> 00:06:22.959
+to actually query it against,
+
+126
+00:06:22.959 --> 00:06:26.337
+and if there is no Apollo client that it can query against
+
+127
+00:06:26.337 --> 00:06:29.634
+then it's going to break and that's exactly why we have it.
+
+128
+00:06:29.634 --> 00:06:32.310
+Now, we're not actually gonna hook it up to our
+
+129
+00:06:32.310 --> 00:06:34.911
+real database because that would make it very brittle,
+
+130
+00:06:34.911 --> 00:06:36.469
+so what we're going to do is we're going to
+
+131
+00:06:36.469 --> 00:06:39.569
+mock the entire provider, and the way that we do that
+
+132
+00:06:39.569 --> 00:06:43.819
+is you, I'm gonna put these each on their own line.
+
+133
+00:06:44.725 --> 00:06:48.274
+And we're going to use a MockedProvider that we have there
+
+134
+00:06:48.274 --> 00:06:51.497
+and put the item inside of it.
+
+135
+00:06:51.497 --> 00:06:54.780
+And then we need to provide what are called mocks
+
+136
+00:06:54.780 --> 00:06:58.942
+to the MockedProvider so that when we run it
+
+137
+00:06:58.942 --> 00:07:01.331
+the data will resolve to it.
+
+138
+00:07:01.331 --> 00:07:04.127
+So let's go right above here and we'll say
+
+139
+00:07:04.127 --> 00:07:07.233
+const mocks =, you can give it an array,
+
+140
+00:07:07.233 --> 00:07:10.988
+and each item in the array is going to be an object.
+
+141
+00:07:10.988 --> 00:07:13.394
+And then inside of that we are going to say
+
+142
+00:07:13.394 --> 00:07:16.729
+request;, which is an object itself,
+
+143
+00:07:16.729 --> 00:07:20.229
+the { query: SINGLE_ITEM_QUERY, variables;
+
+144
+00:07:23.105 --> 00:07:26.688
+is going to be an object with the id;'123'.
+
+145
+00:07:27.776 --> 00:07:31.193
+So what we're doing here, that's request,
+
+146
+00:07:32.573 --> 00:07:36.044
+what we're doing here is that we are going to make
+
+147
+00:07:36.044 --> 00:07:38.980
+some fake data that gets returned,
+
+148
+00:07:38.980 --> 00:07:43.980
+and we're saying // when someone makes a request with this
+
+149
+00:07:46.792 --> 00:07:51.346
+query and variable combo //
+
+150
+00:07:51.346 --> 00:07:53.596
+then return this fake data,
+
+151
+00:07:55.578 --> 00:07:56.578
+mocked data,
+
+152
+00:07:57.465 --> 00:08:00.300
+so then we say the result
+
+153
+00:08:00.300 --> 00:08:02.686
+is going to be exactly as our GraphQL database is
+
+154
+00:08:02.686 --> 00:08:07.002
+returning to us, so the data is going to be
+
+155
+00:08:07.002 --> 00:08:10.535
+an object that has an item inside of it
+
+156
+00:08:10.535 --> 00:08:14.211
+and that item: is going to be a fakeItem().
+
+157
+00:08:14.211 --> 00:08:16.040
+Let's go over that real quick once more.
+
+158
+00:08:16.040 --> 00:08:19.099
+Mocks are pairs of requests and results,
+
+159
+00:08:19.099 --> 00:08:22.279
+saying that when somebody, when the application
+
+160
+00:08:22.279 --> 00:08:25.779
+fires off a query that matches this
+
+161
+00:08:25.779 --> 00:08:28.155
+and matches this id,
+
+162
+00:08:28.155 --> 00:08:31.618
+then let's return the following fake data.
+
+163
+00:08:31.618 --> 00:08:33.672
+And then we can go to our MockedProvider
+
+164
+00:08:33.672 --> 00:08:35.384
+and pass at those mocks.
+
+165
+00:08:35.384 --> 00:08:37.217
+We'll say mocks =
+
+166
+00:08:39.755 --> 00:08:42.879
+the mocks variable that we just created right here.
+
+167
+00:08:42.879 --> 00:08:45.700
+And then what happens is when this SingleItem
+
+168
+00:08:45.700 --> 00:08:48.454
+renders itself out, it should be using
+
+169
+00:08:48.454 --> 00:08:50.898
+that fakeItem in here, so let's go
+
+170
+00:08:50.898 --> 00:08:53.565
+and just console.log the wrapper
+
+171
+00:08:54.532 --> 00:08:58.645
+and debug it to see if it's actually working.
+
+172
+00:08:58.645 --> 00:09:00.439
+Go here. There we go.
+
+173
+00:09:00.439 --> 00:09:02.911
+This is what we were looking for so far.
+
+174
+00:09:02.911 --> 00:09:05.823
+We got the ApolloProvider that has been mocked up.
+
+175
+00:09:05.823 --> 00:09:07.909
+Then we get our SingleItem inside of it.
+
+176
+00:09:07.909 --> 00:09:10.525
+The query gets run, and we are initially
+
+177
+00:09:10.525 --> 00:09:12.849
+seeing Loading... so that's exactly what we wanna see
+
+178
+00:09:12.849 --> 00:09:16.845
+because on the initial, the first render you will see
+
+179
+00:09:16.845 --> 00:09:21.845
+Loading... because it's currently querying the database.
+
+180
+00:09:22.297 --> 00:09:24.061
+So, we can check for that.
+
+181
+00:09:24.061 --> 00:09:25.394
+We'll say expect
+
+182
+00:09:27.538 --> 00:09:32.538
+the (wrapper.text()).toContain('Loading...');
+
+183
+00:09:33.396 --> 00:09:37.072
+and I think that's, is that what we typed into here?
+
+184
+00:09:37.072 --> 00:09:38.405
+Loading..., yep.
+
+185
+00:09:39.487 --> 00:09:40.320
+And...
+
+186
+00:09:41.657 --> 00:09:44.280
+Looks like it's working. Good.
+
+187
+00:09:44.280 --> 00:09:46.341
+I'm gonna take that debug out.
+
+188
+00:09:46.341 --> 00:09:48.786
+Now we need to, how do you wait
+
+189
+00:09:48.786 --> 00:09:51.157
+until it has actually finished?
+
+190
+00:09:51.157 --> 00:09:55.105
+Well, there's a couple options that we have here.
+
+191
+00:09:55.105 --> 00:09:59.106
+You can actually pass a delay of like 55 milliseconds
+
+192
+00:09:59.106 --> 00:10:02.204
+and that will allow us to wait 55 milliseconds.
+
+193
+00:10:02.204 --> 00:10:04.891
+I never do that because I don't actually want to
+
+194
+00:10:04.891 --> 00:10:07.778
+introduce any sort of waiting into my tests,
+
+195
+00:10:07.778 --> 00:10:11.028
+but what happens is that if you were to
+
+196
+00:10:11.961 --> 00:10:13.839
+wait for one tick,
+
+197
+00:10:13.839 --> 00:10:15.533
+and the way that JavaScript events work
+
+198
+00:10:15.533 --> 00:10:20.533
+is if you simply just introduce a zero second time mount
+
+199
+00:10:20.576 --> 00:10:23.067
+the next line of code will be put on
+
+200
+00:10:23.067 --> 00:10:26.210
+to the end of the call stack in JavaScript.
+
+201
+00:10:26.210 --> 00:10:28.793
+So by waiting zero milliseconds
+
+202
+00:10:29.817 --> 00:10:33.029
+it will wait until the next render has actually happened
+
+203
+00:10:33.029 --> 00:10:35.251
+because we put this at the end of the call stack
+
+204
+00:10:35.251 --> 00:10:39.289
+and then we know that our SingleItem will be fixed.
+
+205
+00:10:39.289 --> 00:10:42.646
+I actually had to do a whole bunch of research into
+
+206
+00:10:42.646 --> 00:10:46.017
+why this wasn't working and I ended up making
+
+207
+00:10:46.017 --> 00:10:48.332
+this little package called
+
+208
+00:10:48.332 --> 00:10:49.165
+npm.waait,
+
+209
+00:10:54.444 --> 00:10:56.912
+and, oh, wow, this package seems to have taken off.
+
+210
+00:10:56.912 --> 00:10:58.952
+I think it's because
+
+211
+00:10:58.952 --> 00:10:59.785
+they
+
+212
+00:11:00.682 --> 00:11:02.514
+put it in the docks...
+
+213
+00:11:02.514 --> 00:11:04.857
+Yes, so testing the final state,
+
+214
+00:11:04.857 --> 00:11:06.311
+this is the package that I've made.
+
+215
+00:11:06.311 --> 00:11:09.205
+It's now part of the Apollo documentation
+
+216
+00:11:09.205 --> 00:11:13.448
+where you will get the loading state initially
+
+217
+00:11:13.448 --> 00:11:15.307
+and if you wait zero milliseconds
+
+218
+00:11:15.307 --> 00:11:17.045
+then you'll be able to find what you want.
+
+219
+00:11:17.045 --> 00:11:21.559
+So all this package does is await zero milliseconds.
+
+220
+00:11:21.559 --> 00:11:23.947
+If you were to look it up on GitHub
+
+221
+00:11:23.947 --> 00:11:28.614
+and look at the index.JS this is all the code behind it.
+
+222
+00:11:30.234 --> 00:11:33.343
+It's a function that returns a promise
+
+223
+00:11:33.343 --> 00:11:36.738
+that resolves after a set amount of time,
+
+224
+00:11:36.738 --> 00:11:40.288
+and by default it will resolve after zero milliseconds.
+
+225
+00:11:40.288 --> 00:11:42.307
+And that's just a weird thing about JavaScript,
+
+226
+00:11:42.307 --> 00:11:44.355
+in that if you wait for zero milliseconds
+
+227
+00:11:44.355 --> 00:11:46.605
+it will put it on the end of the call stack.
+
+228
+00:11:46.605 --> 00:11:48.397
+We could also use that for waiting
+
+229
+00:11:48.397 --> 00:11:50.042
+any number of milliseconds if we want.
+
+230
+00:11:50.042 --> 00:11:52.335
+But we'll go here and so we'll just
+
+231
+00:11:52.335 --> 00:11:55.765
+await wait(); and then
+
+232
+00:11:55.765 --> 00:11:59.340
+we can console.log the wrapper again.
+
+233
+00:11:59.340 --> 00:12:00.968
+I believe that will update.
+
+234
+00:12:00.968 --> 00:12:02.531
+We might have to manually update it ourselves.
+
+235
+00:12:02.531 --> 00:12:03.781
+Let's see here.
+
+236
+00:12:05.673 --> 00:12:08.256
+And we still get the Loading...
+
+237
+00:12:09.426 --> 00:12:14.426
+state so I think if we call wrapper.update();
+
+238
+00:12:15.564 --> 00:12:19.237
+There we go. Then it will actually go,
+
+239
+00:12:19.237 --> 00:12:21.907
+it'll go back to the component, update itself,
+
+240
+00:12:21.907 --> 00:12:22.979
+and then we can debug.
+
+241
+00:12:22.979 --> 00:12:25.108
+So let's see what we're working on right here.
+
+242
+00:12:25.108 --> 00:12:28.906
+Network error: No more mocked responses for query
+
+243
+00:12:28.906 --> 00:12:30.156
+SINGLE_ITEM id.
+
+244
+00:12:31.173 --> 00:12:33.090
+Where are the id? Okay.
+
+245
+00:12:34.062 --> 00:12:38.130
+That's fine. So what that's saying is that we have a query
+
+246
+00:12:38.130 --> 00:12:42.436
+that is trying to use the id="123" and, ah, there it is.
+
+247
+00:12:42.436 --> 00:12:44.888
+It's not matching up with anything in our mocks.
+
+248
+00:12:44.888 --> 00:12:47.647
+That's because I spelled variables wrong.
+
+249
+00:12:47.647 --> 00:12:51.828
+Story of my life. Hey, hey! It looks like it's working.
+
+250
+00:12:51.828 --> 00:12:53.967
+We've got our image with the dog in there.
+
+251
+00:12:53.967 --> 00:12:55.675
+We are viewing dogs are the best.
+
+252
+00:12:55.675 --> 00:12:57.415
+Our paragraph that says dogs.
+
+253
+00:12:57.415 --> 00:13:02.074
+So you see how it's now rendering out with our mocked data
+
+254
+00:13:02.074 --> 00:13:04.662
+pretty good, pretty excited about that.
+
+255
+00:13:04.662 --> 00:13:06.336
+So we can go ahead and start doing
+
+256
+00:13:06.336 --> 00:13:08.503
+some more assertions here.
+
+257
+00:13:13.496 --> 00:13:18.496
+We'll expect, we'll just stick it in a (toJSON())
+
+258
+00:13:21.086 --> 00:13:23.669
+the wrapper.find, the 'h2' tag,
+
+259
+00:13:24.927 --> 00:13:29.657
+and I wanna say toMatchSnapshot();.
+
+260
+00:13:29.657 --> 00:13:32.418
+So what I'm doing here is I'm not going to
+
+261
+00:13:32.418 --> 00:13:34.566
+Snapshot the entire component because
+
+262
+00:13:34.566 --> 00:13:35.801
+I'll show you why I'm not.
+
+263
+00:13:35.801 --> 00:13:38.149
+Let's try snapshotting the entire component.
+
+264
+00:13:38.149 --> 00:13:43.149
+Expect the (toJSON(wrapper)).toMatchSnapshot.
+
+265
+00:13:46.286 --> 00:13:49.401
+Give it a save. It will run. It wrote.
+
+266
+00:13:49.401 --> 00:13:52.470
+It wrote a little snapshot for us so that's good,
+
+267
+00:13:52.470 --> 00:13:54.419
+and we can go ahead and view that snapshot,
+
+268
+00:13:54.419 --> 00:13:57.126
+and holy, look at this!
+
+269
+00:13:57.126 --> 00:14:01.285
+This is not a good snapshot, why, because the entire
+
+270
+00:14:01.285 --> 00:14:03.820
+mocked ApolloProvider is gonna come along
+
+271
+00:14:03.820 --> 00:14:07.132
+for the ride in that snapshot,
+
+272
+00:14:07.132 --> 00:14:10.417
+and that doesn't make for a very good snapshot.
+
+273
+00:14:10.417 --> 00:14:14.062
+So we could snapshot just this little part right here,
+
+274
+00:14:14.062 --> 00:14:16.274
+but what I prefer to do is just find the pieces
+
+275
+00:14:16.274 --> 00:14:19.041
+that you're trying to make sure are looking good
+
+276
+00:14:19.041 --> 00:14:21.246
+and just snapshot those individually.
+
+277
+00:14:21.246 --> 00:14:23.854
+So that's exactly what we're going to do right now.
+
+278
+00:14:23.854 --> 00:14:26.371
+We'll close that. We will get rid of that.
+
+279
+00:14:26.371 --> 00:14:28.287
+Bring this back, we're gonna find the 'h2'
+
+280
+00:14:28.287 --> 00:14:31.190
+and we're gonna match the snapshot with that.
+
+281
+00:14:31.190 --> 00:14:34.773
+And we will replace anything that shows up.
+
+282
+00:14:35.888 --> 00:14:37.806
+Click you. That's good.
+
+283
+00:14:37.806 --> 00:14:40.714
+And I'm also gonna duplicate this three more times,
+
+284
+00:14:40.714 --> 00:14:45.645
+so we want the image and we want the paragraph tag.
+
+285
+00:14:45.645 --> 00:14:50.491
+So let's go back to our terminal here, update them all
+
+286
+00:14:50.491 --> 00:14:52.876
+and then let's just check out our SingleItem snapshot
+
+287
+00:14:52.876 --> 00:14:54.346
+to make sure everything is working.
+
+288
+00:14:54.346 --> 00:14:59.068
+So SingleItem, the h2, viewing dogs are the best,
+
+289
+00:14:59.068 --> 00:15:01.740
+we have our image tag, good, and then we also
+
+290
+00:15:01.740 --> 00:15:04.911
+have our description that's showing up here.
+
+291
+00:15:04.911 --> 00:15:07.994
+So those are all looking really good,
+
+292
+00:15:08.967 --> 00:15:09.912
+really happy about that.
+
+293
+00:15:09.912 --> 00:15:13.767
+So that is how you will test most of your components.
+
+294
+00:15:13.767 --> 00:15:15.320
+You write a mock and then you go ahead
+
+295
+00:15:15.320 --> 00:15:16.790
+and mount it with a MockedProvider,
+
+296
+00:15:16.790 --> 00:15:20.623
+you will wait for the Loading... state to pass
+
+297
+00:15:22.048 --> 00:15:23.990
+and then you can go ahead and start
+
+298
+00:15:23.990 --> 00:15:25.816
+testing how everything works.
+
+299
+00:15:25.816 --> 00:15:27.921
+Now, there's a couple other things we need to test
+
+300
+00:15:27.921 --> 00:15:32.921
+in here as well, so we'll it(Errors with a not found item',
+
+301
+00:15:37.556 --> 00:15:40.306
+make sure you mark that as async.
+
+302
+00:15:44.192 --> 00:15:46.422
+We'll make some new mocks here
+
+303
+00:15:46.422 --> 00:15:49.005
+const mocks = [] an array,
+
+304
+00:15:50.682 --> 00:15:53.615
+in that array you have as many mocks as you want.
+
+305
+00:15:53.615 --> 00:15:56.128
+We'll look at some examples where you have multiple mocks
+
+306
+00:15:56.128 --> 00:15:58.262
+because sometimes a query could be fetched
+
+307
+00:15:58.262 --> 00:16:00.801
+two or three times and every single time you fetch it
+
+308
+00:16:00.801 --> 00:16:03.042
+maybe the data will change from one thing to another,
+
+309
+00:16:03.042 --> 00:16:05.424
+so we'll look at that, don't worry, that's coming up.
+
+310
+00:16:05.424 --> 00:16:08.139
+Inside of that we want the request,
+
+311
+00:16:08.139 --> 00:16:10.113
+it's going to be a query.
+
+312
+00:16:10.113 --> 00:16:11.329
+This is actually the exact same
+
+313
+00:16:11.329 --> 00:16:13.829
+so we can copy this from here.
+
+314
+00:16:18.265 --> 00:16:19.515
+Then the result
+
+315
+00:16:21.831 --> 00:16:23.771
+is going to instead of specifying
+
+316
+00:16:23.771 --> 00:16:26.047
+what data gets passed we are going to specify
+
+317
+00:16:26.047 --> 00:16:30.106
+the errors that get thrown in this specific use case.
+
+318
+00:16:30.106 --> 00:16:34.507
+So we'll say the errors are an array of errors.
+
+319
+00:16:34.507 --> 00:16:36.282
+The first error is going to have a message
+
+320
+00:16:36.282 --> 00:16:38.449
+that says Items Not Found!
+
+321
+00:16:41.901 --> 00:16:44.139
+Then we'll go ahead and render that sucker out,
+
+322
+00:16:44.139 --> 00:16:47.306
+so you can just take this whole sucker
+
+323
+00:16:49.246 --> 00:16:51.079
+and pop it right here.
+
+324
+00:16:52.683 --> 00:16:55.003
+Then we'll await wait(); zero
+
+325
+00:16:55.003 --> 00:16:58.264
+we don't care about the Loading... state in this case.
+
+326
+00:16:58.264 --> 00:16:59.764
+We will update it,
+
+327
+00:17:02.694 --> 00:17:07.671
+and then we will, let's just console.log the wrapper
+
+328
+00:17:07.671 --> 00:17:08.614
+and debug it.
+
+329
+00:17:08.614 --> 00:17:11.461
+See what we're working with here.
+
+330
+00:17:11.461 --> 00:17:14.479
+There we go. It says items not found.
+
+331
+00:17:14.479 --> 00:17:18.478
+So we can go ahead and grab that error
+
+332
+00:17:18.478 --> 00:17:21.539
+and then go ahead and check that it says
+
+333
+00:17:21.539 --> 00:17:23.290
+Items Not Found! inside of it.
+
+334
+00:17:23.290 --> 00:17:24.383
+Now I'm going to show you another
+
+335
+00:17:24.383 --> 00:17:26.205
+little trick that I like to use.
+
+336
+00:17:26.205 --> 00:17:29.237
+Being able to grab onto this specific component
+
+337
+00:17:29.237 --> 00:17:32.498
+ErrorMessage, ErrorStyles, there's not really anything
+
+338
+00:17:32.498 --> 00:17:34.915
+good on here except for this,
+
+339
+00:17:36.485 --> 00:17:38.534
+where I've put a data-test.
+
+340
+00:17:38.534 --> 00:17:41.896
+So where it's a use case where you're finding it
+
+341
+00:17:41.896 --> 00:17:44.462
+a little bit hard to actually grab on to the element
+
+342
+00:17:44.462 --> 00:17:47.795
+that you want, I often will put just a data-test
+
+343
+00:17:47.795 --> 00:17:52.032
+attribute on the element that you're looking to grab,
+
+344
+00:17:52.032 --> 00:17:54.900
+and that will make it really easy to
+
+345
+00:17:54.900 --> 00:17:56.688
+actually go ahead and pull out.
+
+346
+00:17:56.688 --> 00:17:58.981
+So we might be going back into a lot of our components
+
+347
+00:17:58.981 --> 00:18:01.225
+now and adding these data-tests.
+
+348
+00:18:01.225 --> 00:18:02.190
+And how do you select that?
+
+349
+00:18:02.190 --> 00:18:07.190
+Well, we'll say const item = wrapper.find()
+
+350
+00:18:09.252 --> 00:18:13.919
+and we're gonna look for data-test="graphql-error".
+
+351
+00:18:17.875 --> 00:18:21.225
+I believe that's right, yep, graphql-error
+
+352
+00:18:21.225 --> 00:18:26.225
+and let's console.log(item.debug());
+
+353
+00:18:26.739 --> 00:18:28.666
+And now you actually see, see this is what we're
+
+354
+00:18:28.666 --> 00:18:31.062
+really looking for and at this point
+
+355
+00:18:31.062 --> 00:18:36.062
+we can expect(item.text()).toContain
+
+356
+00:18:38.071 --> 00:18:41.060
+something like, what did it say here?
+
+357
+00:18:41.060 --> 00:18:42.393
+Items Not Found!
+
+358
+00:18:44.657 --> 00:18:47.084
+Give it a save. And that will pass.
+
+359
+00:18:47.084 --> 00:18:49.196
+Another thing we could do is, and I like this
+
+360
+00:18:49.196 --> 00:18:51.101
+a little bit better, is to just a snapshot.
+
+361
+00:18:51.101 --> 00:18:56.101
+So expect(toJSON(item)).toMatchSnapshot();.
+
+362
+00:19:00.033 --> 00:19:02.271
+And that will update another item.
+
+363
+00:19:02.271 --> 00:19:04.354
+We go back into our snapshot here
+
+364
+00:19:04.354 --> 00:19:05.437
+and we say...
+
+365
+00:19:06.464 --> 00:19:07.409
+Where did it go?
+
+366
+00:19:07.409 --> 00:19:08.382
+Maybe it's at the top here. Here we go.
+
+367
+00:19:08.382 --> 00:19:10.780
+&lt;SingleItem/&gt; Errors with a not found item
+
+368
+00:19:10.780 --> 00:19:13.823
+and we have our paragraph tag with our Shoot!
+
+369
+00:19:13.823 --> 00:19:16.006
+And our Items Not Found!
+
+370
+00:19:16.006 --> 00:19:17.360
+Good, good, good.
+
+371
+00:19:17.360 --> 00:19:20.420
+So that is testing our single component,
+
+372
+00:19:20.420 --> 00:19:23.494
+that is how all of our queries are going to work.
+
+373
+00:19:23.494 --> 00:19:26.565
+Now getting into mutations is a little more difficult,
+
+374
+00:19:26.565 --> 00:19:29.960
+but it does follow the exact same principles
+
+375
+00:19:29.960 --> 00:19:33.240
+in terms of mocking and returning data.
+
+376
+00:19:33.240 --> 00:19:35.800
+We're just gonna have a couple more mocks that come along,
+
+377
+00:19:35.800 --> 00:19:40.050
+as well as simulating some click and submit events.
+

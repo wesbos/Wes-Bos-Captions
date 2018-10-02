@@ -1,0 +1,890 @@
+﻿WEBVTT
+
+1
+00:00:01.350 --> 00:00:02.690
+<v Instructor>Right now we're going to take a look at</v>
+
+2
+00:00:02.690 --> 00:00:04.390
+how we can actually remove items from
+
+3
+00:00:04.390 --> 00:00:06.110
+our cart with a button.
+
+4
+00:00:06.110 --> 00:00:08.040
+First thing we wanna do is open up our schema.
+
+5
+00:00:08.040 --> 00:00:09.380
+We're on the backend here.
+
+6
+00:00:09.380 --> 00:00:11.946
+We're gonna go down to our mutation and just create
+
+7
+00:00:11.946 --> 00:00:16.660
+a removeFromCart, the ticks and an ID,
+
+8
+00:00:16.660 --> 00:00:18.040
+very much like it, and it's going to
+
+9
+00:00:18.040 --> 00:00:19.610
+return that cart item.
+
+10
+00:00:19.610 --> 00:00:22.150
+It's gonna return the removed cart item.
+
+11
+00:00:22.150 --> 00:00:23.940
+I'll show you why in the next video,
+
+12
+00:00:23.940 --> 00:00:26.790
+why it's important to remove the cart item.
+
+13
+00:00:26.790 --> 00:00:27.623
+Give that a save.
+
+14
+00:00:27.623 --> 00:00:29.943
+Let's open up our mutation.js and code up
+
+15
+00:00:29.943 --> 00:00:33.343
+a resolver that matches that removeFromCart.
+
+16
+00:00:34.291 --> 00:00:35.910
+Go here, make an async function called
+
+17
+00:00:35.910 --> 00:00:40.910
+removeFromCart, parent, args, ctx, info.
+
+18
+00:00:44.160 --> 00:00:45.173
+Fino.
+
+19
+00:00:46.120 --> 00:00:48.233
+Inside of here, we need to do three things.
+
+20
+00:00:49.761 --> 00:00:53.200
+First we need to find the cart item.
+
+21
+00:00:53.200 --> 00:00:56.270
+Second, we need to make sure they
+
+22
+00:00:56.270 --> 00:00:59.100
+own that cart item.
+
+23
+00:00:59.100 --> 00:01:01.120
+We don't want people deleting items from their cart
+
+24
+00:01:01.120 --> 00:01:03.920
+if they're not their cart.
+
+25
+00:01:03.920 --> 00:01:06.320
+And then third, we wanna actually
+
+26
+00:01:06.320 --> 00:01:09.210
+delete that cart item.
+
+27
+00:01:09.210 --> 00:01:12.320
+This one's a pretty simple one, I would say.
+
+28
+00:01:12.320 --> 00:01:14.150
+So if you want a little bit of a challenge,
+
+29
+00:01:14.150 --> 00:01:16.900
+maybe try to code this up yourself
+
+30
+00:01:16.900 --> 00:01:18.160
+and then meet me back.
+
+31
+00:01:18.160 --> 00:01:20.150
+Otherwise let's do it right now.
+
+32
+00:01:20.150 --> 00:01:21.750
+First thing is find the cart item,
+
+33
+00:01:21.750 --> 00:01:26.270
+so const cartItem is equal to await.
+
+34
+00:01:26.270 --> 00:01:28.110
+Don't forget that; remember we did that once?
+
+35
+00:01:28.110 --> 00:01:29.040
+That sucked.
+
+36
+00:01:29.040 --> 00:01:31.163
+Ctx.db.query.cartItem,
+
+37
+00:01:32.450 --> 00:01:35.453
+because we know the ID of the item
+
+38
+00:01:35.453 --> 00:01:38.300
+because it's gonna come in via the args.
+
+39
+00:01:38.300 --> 00:01:40.180
+We just coded up the schema saying when someone
+
+40
+00:01:40.180 --> 00:01:44.490
+calls removeFromCart, we're going to accept an ID.
+
+41
+00:01:44.490 --> 00:01:47.570
+That's why we are grabbing the argument ID.
+
+42
+00:01:47.570 --> 00:01:49.530
+For that cart item, we actually wanna grab
+
+43
+00:01:49.530 --> 00:01:51.400
+the who owns the cart item.
+
+44
+00:01:51.400 --> 00:01:52.930
+So instead of passing info here
+
+45
+00:01:52.930 --> 00:01:56.210
+because our final query is not going to
+
+46
+00:01:56.210 --> 00:01:58.660
+ask for the user, just for the basics,
+
+47
+00:01:58.660 --> 00:01:59.790
+we really just need the ID.
+
+48
+00:01:59.790 --> 00:02:02.410
+But here we need to know the user's ID that owns it,
+
+49
+00:02:02.410 --> 00:02:05.350
+so we pass a manual query here,
+
+50
+00:02:05.350 --> 00:02:08.160
+and that is we want the ID of the cart item.
+
+51
+00:02:08.160 --> 00:02:10.520
+We also want the user of the cart item
+
+52
+00:02:10.520 --> 00:02:13.390
+along with the user's ID.
+
+53
+00:02:13.390 --> 00:02:15.380
+Next, we need to make sure they own that cart item.
+
+54
+00:02:15.380 --> 00:02:16.700
+But actually, before we even do that,
+
+55
+00:02:16.700 --> 00:02:19.080
+let's do a 1.5 here.
+
+56
+00:02:19.080 --> 00:02:21.840
+Make sure we found an item,
+
+57
+00:02:21.840 --> 00:02:23.110
+because this is a possibility that someone
+
+58
+00:02:23.110 --> 00:02:25.360
+hit this endpoint without actually
+
+59
+00:02:25.360 --> 00:02:27.070
+giving us an ID, and then we don't wanna
+
+60
+00:02:27.070 --> 00:02:27.950
+move forward with anything.
+
+61
+00:02:27.950 --> 00:02:31.310
+So we say if there's no cart item,
+
+62
+00:02:31.310 --> 00:02:33.113
+we'll just throw a new error,
+
+63
+00:02:34.100 --> 00:02:36.683
+No CartItem Found!
+
+64
+00:02:38.290 --> 00:02:39.200
+Cool.
+
+65
+00:02:39.200 --> 00:02:40.490
+Two, make sure that they own it.
+
+66
+00:02:40.490 --> 00:02:45.370
+So we'll say if the cartItem.user.id,
+
+67
+00:02:45.370 --> 00:02:50.270
+so if the cart item's user ID doesn't equal
+
+68
+00:02:50.270 --> 00:02:55.270
+the ctx.request.userId, then we're just going to
+
+69
+00:02:56.810 --> 00:02:59.997
+throw a new error, Cheatin huhhhh.
+
+70
+00:03:01.310 --> 00:03:02.750
+In this case, we don't necessarily have to
+
+71
+00:03:02.750 --> 00:03:04.170
+check that they're logged in
+
+72
+00:03:04.170 --> 00:03:06.130
+because you'll always have a request,
+
+73
+00:03:06.130 --> 00:03:09.050
+and if there is no user ID, then it's still gonna
+
+74
+00:03:09.050 --> 00:03:11.840
+throw that Cheatin huhhhh error that we have.
+
+75
+00:03:11.840 --> 00:03:13.940
+And then third, we wanna actually delete that item.
+
+76
+00:03:13.940 --> 00:03:15.840
+So we're just gonna return the promise from here.
+
+77
+00:03:15.840 --> 00:03:18.973
+Ctx.db.mutation.deleteCartItem.
+
+78
+00:03:20.220 --> 00:03:23.710
+Remember, if we go to our generated prisma.graphql,
+
+79
+00:03:23.710 --> 00:03:27.000
+there's going to be a mutation called deleteCartItem
+
+80
+00:03:27.000 --> 00:03:29.810
+and that takes a where where the ID is there.
+
+81
+00:03:29.810 --> 00:03:31.570
+So we'll say delete the cart item
+
+82
+00:03:33.130 --> 00:03:38.013
+where the ID is equal to the args.id.
+
+83
+00:03:41.010 --> 00:03:43.830
+And then we'll pass the info,
+
+84
+00:03:43.830 --> 00:03:45.560
+which is the query that's coming in
+
+85
+00:03:45.560 --> 00:03:48.080
+from the client side, and that should be
+
+86
+00:03:48.080 --> 00:03:50.460
+enough for us to do that.
+
+87
+00:03:50.460 --> 00:03:52.650
+Let's flip over to the client side,
+
+88
+00:03:52.650 --> 00:03:54.120
+so go to yellow.
+
+89
+00:03:54.120 --> 00:03:56.989
+We're gonna create a new component called
+
+90
+00:03:56.989 --> 00:03:58.239
+RemoveFromCart.
+
+91
+00:03:59.870 --> 00:04:04.130
+Go to my components, RemoveFromCart.js.
+
+92
+00:04:04.130 --> 00:04:06.343
+Import React from react.
+
+93
+00:04:07.210 --> 00:04:09.483
+Import our mutation from react-apollo.
+
+94
+00:04:10.420 --> 00:04:11.530
+We're gonna do a little bit of styling,
+
+95
+00:04:11.530 --> 00:04:15.600
+so import styled-components, import PropTypes,
+
+96
+00:04:15.600 --> 00:04:19.240
+import gql, and then finally we wanna import
+
+97
+00:04:19.240 --> 00:04:20.618
+the current user query.
+
+98
+00:04:20.618 --> 00:04:21.680
+I'm gonna show you in the next video
+
+99
+00:04:21.680 --> 00:04:22.783
+why we're doing that.
+
+100
+00:04:23.720 --> 00:04:27.243
+Now go ahead and make our RemoveFromCart.
+
+101
+00:04:28.753 --> 00:04:29.700
+It's going to have a render.
+
+102
+00:04:29.700 --> 00:04:34.700
+Let's export default RemoveFromCart immediately.
+
+103
+00:04:34.990 --> 00:04:36.190
+What else do we need in here?
+
+104
+00:04:36.190 --> 00:04:38.090
+We need a button that's a styled component,
+
+105
+00:04:38.090 --> 00:04:41.006
+so const, we'll call it a BigButton,
+
+106
+00:04:41.006 --> 00:04:42.283
+the styled.button.
+
+107
+00:04:45.390 --> 00:04:49.070
+And inside of that, let's make font size 3rem,
+
+108
+00:04:49.070 --> 00:04:53.440
+background none, border none,
+
+109
+00:04:53.440 --> 00:04:55.430
+and we wanna just change the color
+
+110
+00:04:55.430 --> 00:04:56.623
+when someone hovers.
+
+111
+00:04:58.220 --> 00:05:02.823
+So we'll just say color, grab it from our theme, red.
+
+112
+00:05:03.720 --> 00:05:06.973
+Say cursor, pointer.
+
+113
+00:05:08.310 --> 00:05:12.117
+Inside of this render, we'll return a BigButton.
+
+114
+00:05:14.770 --> 00:05:18.543
+Has a title of Delete Item.
+
+115
+00:05:22.180 --> 00:05:23.410
+And then inside of that,
+
+116
+00:05:24.710 --> 00:05:27.810
+I'll just render out a times symbol.
+
+117
+00:05:27.810 --> 00:05:30.250
+All right, I think I'm in pretty good shape
+
+118
+00:05:30.250 --> 00:05:32.780
+just to get something showing up on the page.
+
+119
+00:05:32.780 --> 00:05:34.840
+Let's open up our CartItem component
+
+120
+00:05:34.840 --> 00:05:37.213
+and import that RemoveFromCart button.
+
+121
+00:05:40.260 --> 00:05:43.420
+Scroll right below the closing div
+
+122
+00:05:43.420 --> 00:05:45.830
+above the CartItemStyles and let's give ourselves
+
+123
+00:05:45.830 --> 00:05:47.563
+a RemoveFromCart button.
+
+124
+00:05:48.750 --> 00:05:50.710
+The one thing that we will have to pass to
+
+125
+00:05:50.710 --> 00:05:53.620
+this RemoveFromCart button is the ID of
+
+126
+00:05:53.620 --> 00:05:55.850
+the item that we wish to remove.
+
+127
+00:05:55.850 --> 00:05:59.010
+Sorry, the ID of the cart item that we wish to remove.
+
+128
+00:05:59.010 --> 00:06:03.260
+So we'll say ID is equal to cartItem.id,
+
+129
+00:06:03.260 --> 00:06:04.840
+and then let's also make sure that
+
+130
+00:06:04.840 --> 00:06:08.480
+we're going to accept that via propTypes.
+
+131
+00:06:08.480 --> 00:06:13.480
+Up here, just gonna say static propTypes is equal to,
+
+132
+00:06:13.870 --> 00:06:17.720
+gonna grab an ID, which is a PropTypes.string
+
+133
+00:06:17.720 --> 00:06:18.923
+and that's required.
+
+134
+00:06:21.160 --> 00:06:23.160
+And things are looking good.
+
+135
+00:06:23.160 --> 00:06:25.010
+We've got this button here.
+
+136
+00:06:25.010 --> 00:06:26.660
+When you click it, it obviously does nothing,
+
+137
+00:06:26.660 --> 00:06:29.410
+but that's going to allow us to remove it.
+
+138
+00:06:29.410 --> 00:06:32.652
+Next step is that we need to code up a query
+
+139
+00:06:32.652 --> 00:06:35.780
+for our mutation that will run
+
+140
+00:06:35.780 --> 00:06:37.030
+when somebody clicks it.
+
+141
+00:06:37.030 --> 00:06:38.453
+Let's do that above here.
+
+142
+00:06:40.040 --> 00:06:42.053
+We'll call it Remove From Cart Mutation.
+
+143
+00:06:44.430 --> 00:06:46.850
+Then we'll call up removeFromCart method,
+
+144
+00:06:46.850 --> 00:06:49.900
+we'll pass the ID along for the ride,
+
+145
+00:06:49.900 --> 00:06:52.140
+and then all we care about getting back is
+
+146
+00:06:52.140 --> 00:06:54.460
+the ID of the item that was deleted.
+
+147
+00:06:54.460 --> 00:06:55.680
+We don't care about what the title
+
+148
+00:06:55.680 --> 00:06:57.200
+or the description or the image of
+
+149
+00:06:57.200 --> 00:07:00.310
+the removed cart item is.
+
+150
+00:07:00.310 --> 00:07:03.310
+Give that a save, then we can take our mutation
+
+151
+00:07:03.310 --> 00:07:05.630
+and infuse this thing into it.
+
+152
+00:07:05.630 --> 00:07:07.843
+We'll go to our BigButton here,
+
+153
+00:07:09.540 --> 00:07:11.223
+give ourselves a mutation.
+
+154
+00:07:13.270 --> 00:07:16.503
+Mutation is equal to Remove From Cart Mutation.
+
+155
+00:07:17.610 --> 00:07:20.283
+And the child of this is an arrow function.
+
+156
+00:07:23.440 --> 00:07:27.660
+That will give us a removeFromCart method.
+
+157
+00:07:27.660 --> 00:07:31.223
+I'll also de-structure the loading and the error.
+
+158
+00:07:32.500 --> 00:07:34.400
+We'll bring our button inside of here.
+
+159
+00:07:39.010 --> 00:07:40.233
+I goofed something up.
+
+160
+00:07:41.842 --> 00:07:43.200
+(sings)
+
+161
+00:07:43.200 --> 00:07:44.943
+Mutation equals remove.
+
+162
+00:07:48.130 --> 00:07:50.323
+That; there we go.
+
+163
+00:07:53.730 --> 00:07:55.740
+Then when somebody clicks this button ...
+
+164
+00:07:55.740 --> 00:07:57.550
+So we'll take this button here,
+
+165
+00:07:57.550 --> 00:08:00.470
+say onClick is equal to,
+
+166
+00:08:00.470 --> 00:08:02.770
+and I'm gonna do a little arrow function here.
+
+167
+00:08:03.930 --> 00:08:07.600
+We will first call the removeFromCart method.
+
+168
+00:08:12.690 --> 00:08:15.620
+We can also take the loading boolean
+
+169
+00:08:15.620 --> 00:08:17.490
+and disable this button if we need to.
+
+170
+00:08:17.490 --> 00:08:18.743
+So we'll say disabled.
+
+171
+00:08:21.260 --> 00:08:23.120
+And then if anything goes awry,
+
+172
+00:08:23.120 --> 00:08:24.570
+if we throw one of those errors
+
+173
+00:08:24.570 --> 00:08:25.823
+we were talking about here,
+
+174
+00:08:25.823 --> 00:08:29.093
+we could potentially throw the Cheatin error,
+
+175
+00:08:30.167 --> 00:08:32.310
+or if they've not found a cart item.
+
+176
+00:08:32.310 --> 00:08:34.440
+So we need to display that to a user somehow,
+
+177
+00:08:34.440 --> 00:08:37.970
+so we'll just tag a catch onto the end
+
+178
+00:08:37.970 --> 00:08:42.970
+and then alert the err.message if anything goes awry.
+
+179
+00:08:46.858 --> 00:08:49.410
+I think this is gonna work, (laughs)
+
+180
+00:08:49.410 --> 00:08:52.760
+but it's not actually gonna visually remove it.
+
+181
+00:08:52.760 --> 00:08:53.820
+That's what we're gonna show you how to do
+
+182
+00:08:53.820 --> 00:08:54.810
+in the next video.
+
+183
+00:08:54.810 --> 00:08:57.023
+Let's click on this one; click.
+
+184
+00:08:58.640 --> 00:09:00.140
+Received a status code of 400.
+
+185
+00:09:00.140 --> 00:09:01.590
+Okay, so bit of an error.
+
+186
+00:09:01.590 --> 00:09:04.083
+Let's double-check our backend here.
+
+187
+00:09:05.120 --> 00:09:09.730
+Variable ID, required type of ID was not provided.
+
+188
+00:09:09.730 --> 00:09:12.250
+Oh, I see what we did; we forgot to actually
+
+189
+00:09:12.250 --> 00:09:14.820
+pass the ID along with the mutation.
+
+190
+00:09:14.820 --> 00:09:16.820
+So two ways we could pass the ID.
+
+191
+00:09:16.820 --> 00:09:19.971
+We could either pass it to the removeFromCart,
+
+192
+00:09:19.971 --> 00:09:21.677
+so we could go in here.
+
+193
+00:09:21.677 --> 00:09:23.730
+We could say the variables are going to be
+
+194
+00:09:23.730 --> 00:09:27.420
+this.props.id, or in the way I prefer to do it,
+
+195
+00:09:27.420 --> 00:09:29.390
+let me back that up, is just pass it
+
+196
+00:09:29.390 --> 00:09:31.320
+right in the mutation.
+
+197
+00:09:31.320 --> 00:09:36.313
+Variables is equal to ID, this.props.id.
+
+198
+00:09:44.370 --> 00:09:46.170
+That broke again because this should be
+
+199
+00:09:46.170 --> 00:09:48.690
+an object literal, so pop another set of
+
+200
+00:09:48.690 --> 00:09:50.003
+curly brackets around.
+
+201
+00:09:52.660 --> 00:09:53.810
+Should be in good shape.
+
+202
+00:09:53.810 --> 00:09:54.833
+Let's delete it.
+
+203
+00:09:55.900 --> 00:09:56.760
+So I think it worked.
+
+204
+00:09:56.760 --> 00:09:58.883
+If I refresh now, that should be gone.
+
+205
+00:10:00.120 --> 00:10:00.953
+Gone.
+
+206
+00:10:01.990 --> 00:10:05.453
+Why doesn't it remove?
+
+207
+00:10:05.453 --> 00:10:09.240
+First of all, we aren't doing the re-fetch of
+
+208
+00:10:09.240 --> 00:10:12.450
+the user's cart, which is what we did
+
+209
+00:10:12.450 --> 00:10:13.687
+in the AddToCart.
+
+210
+00:10:15.070 --> 00:10:15.903
+Where did we do?
+
+211
+00:10:15.903 --> 00:10:17.660
+Re-fetch queries, fetching.
+
+212
+00:10:17.660 --> 00:10:18.780
+But you'll notice that there's a bit of
+
+213
+00:10:18.780 --> 00:10:21.023
+an issue where if I click on this,
+
+214
+00:10:21.990 --> 00:10:24.500
+there's a split second where it goes to
+
+215
+00:10:24.500 --> 00:10:25.810
+the backend and comes back,
+
+216
+00:10:25.810 --> 00:10:27.962
+and I'm on a fairly fast connection.
+
+217
+00:10:27.962 --> 00:10:31.060
+What we're gonna do is we're going to
+
+218
+00:10:31.060 --> 00:10:35.190
+actually update the cache as soon as this is
+
+219
+00:10:35.190 --> 00:10:37.530
+successfully deleted from the server.
+
+220
+00:10:37.530 --> 00:10:39.450
+And then in the background, we can go back
+
+221
+00:10:39.450 --> 00:10:41.930
+and re-fetch behind the scenes.
+
+222
+00:10:41.930 --> 00:10:44.280
+Stay tuned and we'll do that in the next video.
+

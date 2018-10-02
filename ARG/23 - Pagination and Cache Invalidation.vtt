@@ -1,0 +1,930 @@
+﻿WEBVTT
+
+1
+00:00:01.110 --> 00:00:01.943
+<v Wes>In the last video,</v>
+
+2
+00:00:01.943 --> 00:00:04.240
+we did this little pagination,
+
+3
+00:00:04.240 --> 00:00:05.750
+where you can click back and forth
+
+4
+00:00:05.750 --> 00:00:07.540
+but it doesn't actually affect the items.
+
+5
+00:00:07.540 --> 00:00:09.210
+So that's what we're going to be doing in here.
+
+6
+00:00:09.210 --> 00:00:11.180
+First thing we need to do is flip to our backend,
+
+7
+00:00:11.180 --> 00:00:13.490
+and open up our schema out of graph.ql,
+
+8
+00:00:13.490 --> 00:00:17.440
+and we need to be able to modify this item's query here
+
+9
+00:00:17.440 --> 00:00:19.900
+to take a couple of arguments 'cause right now,
+
+10
+00:00:19.900 --> 00:00:22.450
+all the items query does is it just returns you
+
+11
+00:00:22.450 --> 00:00:23.577
+a list of all of the items
+
+12
+00:00:23.577 --> 00:00:26.070
+and there is no way to tell you how many you want,
+
+13
+00:00:26.070 --> 00:00:27.020
+which ones you want...
+
+14
+00:00:27.020 --> 00:00:29.080
+What are the different arguments that you want to pass it,
+
+15
+00:00:29.080 --> 00:00:31.230
+so we're going to modify that here.
+
+16
+00:00:31.230 --> 00:00:33.370
+It's gonna take in a number of different arguments.
+
+17
+00:00:33.370 --> 00:00:34.720
+First one is going to be where,
+
+18
+00:00:34.720 --> 00:00:37.630
+in case we want to be able to do searching, which we will.
+
+19
+00:00:37.630 --> 00:00:40.680
+It's going to be item where input,
+
+20
+00:00:40.680 --> 00:00:42.870
+then we also want to have order by;
+
+21
+00:00:42.870 --> 00:00:46.510
+if you want to order them by most recent or least recent--
+
+22
+00:00:46.510 --> 00:00:49.393
+So item order by input;
+
+23
+00:00:50.460 --> 00:00:52.070
+we want to have a skip value,
+
+24
+00:00:52.070 --> 00:00:53.920
+which is going to be an integer,
+
+25
+00:00:53.920 --> 00:00:55.520
+and we want a first value
+
+26
+00:00:55.520 --> 00:00:57.700
+which is going to be an integer as well.
+
+27
+00:00:57.700 --> 00:00:59.900
+The first and the skip are going to say,
+
+28
+00:00:59.900 --> 00:01:03.870
+I want to skip the first four items,
+
+29
+00:01:03.870 --> 00:01:07.360
+but I want to bring back four items in total.
+
+30
+00:01:07.360 --> 00:01:10.000
+So that will give us five through eight.
+
+31
+00:01:10.000 --> 00:01:12.200
+I think that's all we need on the backend.
+
+32
+00:01:12.200 --> 00:01:13.880
+Flip over to our front end now,
+
+33
+00:01:13.880 --> 00:01:15.677
+and let's go up to our all items query
+
+34
+00:01:15.677 --> 00:01:17.620
+and actually modify that query.
+
+35
+00:01:17.620 --> 00:01:20.680
+So it's going to be taking in a couple different arguments.
+
+36
+00:01:20.680 --> 00:01:24.120
+First we want to take in a skip argument,
+
+37
+00:01:24.120 --> 00:01:25.790
+which is going to be an integer,
+
+38
+00:01:25.790 --> 00:01:28.200
+and we're going to default that to zero,
+
+39
+00:01:28.200 --> 00:01:31.620
+and then we also want to take in a first argument,
+
+40
+00:01:31.620 --> 00:01:33.443
+which is going to be an integer,
+
+41
+00:01:34.750 --> 00:01:38.840
+and we're going to default that to the per page variable
+
+42
+00:01:38.840 --> 00:01:40.810
+that we have imported from our settings.
+
+43
+00:01:40.810 --> 00:01:43.010
+So let's go ahead and import that right now.
+
+44
+00:01:45.320 --> 00:01:47.280
+Then when we actually run the items query,
+
+45
+00:01:47.280 --> 00:01:49.803
+we need to pass those values to it.
+
+46
+00:01:51.690 --> 00:01:54.760
+So first is the first,
+
+47
+00:01:54.760 --> 00:01:57.680
+the skip is the skip variable,
+
+48
+00:01:57.680 --> 00:02:00.230
+and we also want to pass the order by,
+
+49
+00:02:00.230 --> 00:02:05.120
+which is the created at descending
+
+50
+00:02:05.120 --> 00:02:07.560
+just so that we can get our most recent values
+
+51
+00:02:07.560 --> 00:02:09.420
+that are going to be coming in.
+
+52
+00:02:09.420 --> 00:02:12.250
+Now we'll go down to our actual query,
+
+53
+00:02:12.250 --> 00:02:13.710
+where we have the all items query,
+
+54
+00:02:13.710 --> 00:02:14.717
+and we'll pass some of those variables.
+
+55
+00:02:14.717 --> 00:02:16.607
+So it's a variables--
+
+56
+00:02:17.840 --> 00:02:19.750
+Variables that we are going to pass,
+
+57
+00:02:19.750 --> 00:02:24.750
+and let's just say skip two, and first four.
+
+58
+00:02:25.150 --> 00:02:26.820
+We'll obviously come back.
+
+59
+00:02:26.820 --> 00:02:28.150
+Now when I refresh this--
+
+60
+00:02:28.150 --> 00:02:29.280
+Oh, bit of an error here.
+
+61
+00:02:29.280 --> 00:02:30.403
+Let's debug that.
+
+62
+00:02:33.920 --> 00:02:37.380
+Export default imported as per page was not found...
+
+63
+00:02:37.380 --> 00:02:39.033
+Oh, I see what I did.
+
+64
+00:02:40.320 --> 00:02:43.300
+When I imported that per page variable, it's not a--
+
+65
+00:02:43.300 --> 00:02:45.770
+If I see if I look at the config,
+
+66
+00:02:45.770 --> 00:02:48.324
+you see that it's not a default export.
+
+67
+00:02:48.324 --> 00:02:50.250
+It's a named export so we need
+
+68
+00:02:50.250 --> 00:02:52.690
+to import it as a named import.
+
+69
+00:02:52.690 --> 00:02:54.313
+So, does that work now?
+
+70
+00:02:55.830 --> 00:02:59.510
+Awesome, so now we're getting four items actually in.
+
+71
+00:02:59.510 --> 00:03:03.830
+See, if I were to change this to skip zero,
+
+72
+00:03:03.830 --> 00:03:05.440
+we get four different items.
+
+73
+00:03:05.440 --> 00:03:07.860
+If I were to only ask for the first one,
+
+74
+00:03:07.860 --> 00:03:09.960
+you see we'll only get one item.
+
+75
+00:03:09.960 --> 00:03:12.740
+Then we could just manually change that skip value,
+
+76
+00:03:12.740 --> 00:03:14.940
+and you'll see that we get
+
+77
+00:03:14.940 --> 00:03:16.290
+a different item every single time.
+
+78
+00:03:16.290 --> 00:03:17.770
+So these are sort of the knobs
+
+79
+00:03:17.770 --> 00:03:19.200
+that we're going to be turning,
+
+80
+00:03:19.200 --> 00:03:21.790
+in order to actually figure out what we want to show.
+
+81
+00:03:21.790 --> 00:03:24.120
+So, how do we make these dynamic?
+
+82
+00:03:24.120 --> 00:03:25.580
+Well, the skip value is going to be
+
+83
+00:03:25.580 --> 00:03:30.580
+this.props.page times per page minus per page.
+
+84
+00:03:31.270 --> 00:03:32.750
+And what that will do is--
+
+85
+00:03:32.750 --> 00:03:34.580
+How many do we want to skip?
+
+86
+00:03:34.580 --> 00:03:37.158
+Well if it's on page one,
+
+87
+00:03:37.158 --> 00:03:40.710
+we want to skip four minus four,
+
+88
+00:03:40.710 --> 00:03:42.210
+meaning we want to skip zero.
+
+89
+00:03:42.210 --> 00:03:44.590
+If it's on page two,
+
+90
+00:03:44.590 --> 00:03:48.870
+two times four is eight, minus four is four!
+
+91
+00:03:48.870 --> 00:03:51.130
+And that's going to give you the--
+
+92
+00:03:51.130 --> 00:03:52.450
+You're going to skip the first four,
+
+93
+00:03:52.450 --> 00:03:53.830
+which would be for page one,
+
+94
+00:03:53.830 --> 00:03:56.170
+and it's going to show you the next four,
+
+95
+00:03:56.170 --> 00:03:57.860
+which is what we're going to put in here,
+
+96
+00:03:57.860 --> 00:04:00.183
+which is going to be our per page variable.
+
+97
+00:04:02.530 --> 00:04:06.470
+Now refresh, and looks like our items are coming in.
+
+98
+00:04:06.470 --> 00:04:10.410
+I believe we could actually omit this first right here,
+
+99
+00:04:10.410 --> 00:04:12.130
+because that is going to default--
+
+100
+00:04:12.130 --> 00:04:12.963
+There we go, yeah!
+
+101
+00:04:12.963 --> 00:04:15.660
+We don't necessarily need to, we can just leave it out
+
+102
+00:04:15.660 --> 00:04:16.900
+because it's going to fall back
+
+103
+00:04:16.900 --> 00:04:18.403
+to the four that is in here.
+
+104
+00:04:18.403 --> 00:04:21.260
+There's no need to pass it right there.
+
+105
+00:04:21.260 --> 00:04:23.280
+Now, do all of our pages work?
+
+106
+00:04:23.280 --> 00:04:24.963
+Looks like it's going!
+
+107
+00:04:26.120 --> 00:04:26.953
+Big fan of that.
+
+108
+00:04:26.953 --> 00:04:28.950
+See how nice and snappy that is once--
+
+109
+00:04:28.950 --> 00:04:32.120
+Go on maybe on the first page, refresh it manually.
+
+110
+00:04:32.120 --> 00:04:33.600
+Now click on the second page;
+
+111
+00:04:33.600 --> 00:04:37.330
+you see it's a slight little delay there while it loads,
+
+112
+00:04:37.330 --> 00:04:38.930
+but then after that it's all instant.
+
+113
+00:04:38.930 --> 00:04:40.220
+And when you're in production,
+
+114
+00:04:40.220 --> 00:04:42.060
+those are going to be pre-loaded,
+
+115
+00:04:42.060 --> 00:04:44.280
+so that when I hit the first page,
+
+116
+00:04:44.280 --> 00:04:46.320
+the next page is already going to be pre-loaded,
+
+117
+00:04:46.320 --> 00:04:47.160
+so that when I click it,
+
+118
+00:04:47.160 --> 00:04:49.350
+it's going to be that instant cut-over
+
+119
+00:04:49.350 --> 00:04:51.100
+that we've really been looking for.
+
+120
+00:04:52.770 --> 00:04:54.760
+Last thing I wanted to say is that,
+
+121
+00:04:54.760 --> 00:04:56.820
+if I were to add a new item now...
+
+122
+00:04:56.820 --> 00:04:57.770
+Let me do that.
+
+123
+00:04:57.770 --> 00:05:01.190
+So, if I were to choose something in here,
+
+124
+00:05:01.190 --> 00:05:04.653
+let's do the Canada goose.
+
+125
+00:05:05.600 --> 00:05:07.813
+Just say just added.
+
+126
+00:05:15.380 --> 00:05:17.510
+But if we go to the home page,
+
+127
+00:05:17.510 --> 00:05:18.960
+it's nowhere to be found.
+
+128
+00:05:18.960 --> 00:05:20.370
+And why is that?
+
+129
+00:05:20.370 --> 00:05:22.670
+Well, that's because the home page
+
+130
+00:05:22.670 --> 00:05:24.850
+was already fetched once before.
+
+131
+00:05:24.850 --> 00:05:28.900
+And now the fact that the home page is updated,
+
+132
+00:05:28.900 --> 00:05:30.980
+then that means page one is out of date.
+
+133
+00:05:30.980 --> 00:05:32.480
+Then that means page two is out of date,
+
+134
+00:05:32.480 --> 00:05:34.190
+and that means page three is out of date!
+
+135
+00:05:34.190 --> 00:05:35.760
+So, we get into this sort of,
+
+136
+00:05:35.760 --> 00:05:40.580
+existential crisis where I don't really know where to...
+
+137
+00:05:40.580 --> 00:05:42.890
+How to actually handle this pagination,
+
+138
+00:05:42.890 --> 00:05:45.480
+'cause we need something else called cache invalidation,
+
+139
+00:05:45.480 --> 00:05:47.920
+where we actually need to delete
+
+140
+00:05:47.920 --> 00:05:49.270
+the page one and page two
+
+141
+00:05:49.270 --> 00:05:51.120
+and page three pieces of the cache,
+
+142
+00:05:51.120 --> 00:05:53.180
+because now they're all out of date.
+
+143
+00:05:53.180 --> 00:05:56.210
+Now, if I were to add an item to the end,
+
+144
+00:05:56.210 --> 00:05:58.990
+then only pages one and two would be fine,
+
+145
+00:05:58.990 --> 00:06:01.700
+and page three would need to be invalidated
+
+146
+00:06:01.700 --> 00:06:02.540
+and switched out.
+
+147
+00:06:02.540 --> 00:06:05.693
+Or, if I were to delete an item, like right here.
+
+148
+00:06:06.620 --> 00:06:08.640
+If I were to delete this ultra boost,
+
+149
+00:06:08.640 --> 00:06:11.310
+then page one would be out of date,
+
+150
+00:06:11.310 --> 00:06:13.390
+and also page two would be out of date, and page three--
+
+151
+00:06:13.390 --> 00:06:14.240
+You get the point, right?
+
+152
+00:06:14.240 --> 00:06:17.660
+As soon as you delete one of them or add an item,
+
+153
+00:06:17.660 --> 00:06:19.470
+you're going to make a ripple effect
+
+154
+00:06:19.470 --> 00:06:21.420
+either in front of it or behind it,
+
+155
+00:06:21.420 --> 00:06:24.760
+where all of the other previously cached pages
+
+156
+00:06:24.760 --> 00:06:25.970
+are out of date.
+
+157
+00:06:25.970 --> 00:06:27.620
+So, one way to solve that is you can
+
+158
+00:06:27.620 --> 00:06:29.780
+make your query manually hit the network.
+
+159
+00:06:29.780 --> 00:06:31.730
+So that could look a little something like this,
+
+160
+00:06:31.730 --> 00:06:33.720
+where you could say the fetch policy
+
+161
+00:06:33.720 --> 00:06:37.863
+is equal to network only.
+
+162
+00:06:39.590 --> 00:06:43.800
+And you see now when I hit these items,
+
+163
+00:06:43.800 --> 00:06:46.140
+You see how it's taking a second every single time?
+
+164
+00:06:46.140 --> 00:06:49.310
+That's because it's never using the cache.
+
+165
+00:06:49.310 --> 00:06:51.370
+It's only ever fetching the network--
+
+166
+00:06:51.370 --> 00:06:53.470
+The network only fetch policy is one way
+
+167
+00:06:53.470 --> 00:06:54.440
+that we could solve that.
+
+168
+00:06:54.440 --> 00:06:55.470
+But that's not great because
+
+169
+00:06:55.470 --> 00:06:56.980
+then you lose all of the benefits
+
+170
+00:06:56.980 --> 00:06:58.360
+of actually using the cache,
+
+171
+00:06:58.360 --> 00:07:01.170
+where every single time that someone hits a page
+
+172
+00:07:01.170 --> 00:07:02.490
+that they've already been on,
+
+173
+00:07:02.490 --> 00:07:04.530
+we need to make a round trip to the server
+
+174
+00:07:04.530 --> 00:07:07.760
+and actually redownload all of that data, right?
+
+175
+00:07:07.760 --> 00:07:09.040
+Another way we can do it;
+
+176
+00:07:09.040 --> 00:07:10.793
+let me comment this out here,
+
+177
+00:07:12.550 --> 00:07:15.010
+is you can use something called re-fetch query,
+
+178
+00:07:15.010 --> 00:07:18.120
+so if we go to our sell page,
+
+179
+00:07:18.120 --> 00:07:21.210
+and we go to our create item component,
+
+180
+00:07:21.210 --> 00:07:23.060
+you remember that we have this mutation here.
+
+181
+00:07:23.060 --> 00:07:28.013
+There's a possibility here to pass it a re-fetch queries,
+
+182
+00:07:31.350 --> 00:07:33.450
+and the re-fetch queries allow us to pass
+
+183
+00:07:33.450 --> 00:07:35.490
+an array of queries that need to then
+
+184
+00:07:35.490 --> 00:07:37.840
+refresh themselves based on the server.
+
+185
+00:07:37.840 --> 00:07:41.550
+So we could pass it the query of our items.js
+
+186
+00:07:41.550 --> 00:07:44.130
+which is our query all items query.
+
+187
+00:07:44.130 --> 00:07:46.230
+The problem is that...
+
+188
+00:07:46.230 --> 00:07:47.650
+Which ones do we tell it?
+
+189
+00:07:47.650 --> 00:07:50.530
+You can't just tell it to refresh all of the items queries,
+
+190
+00:07:50.530 --> 00:07:54.210
+you have to pass it the skip and the first values,
+
+191
+00:07:54.210 --> 00:07:55.480
+and if that's the case then
+
+192
+00:07:55.480 --> 00:07:57.770
+how do you know how many pages there are,
+
+193
+00:07:57.770 --> 00:07:58.603
+and you would have to do
+
+194
+00:07:58.603 --> 00:08:00.390
+a whole bunch of calculations and that's--
+
+195
+00:08:00.390 --> 00:08:02.740
+You're potentially re-fetching hundreds of pages
+
+196
+00:08:02.740 --> 00:08:05.710
+if you have hundreds of pages loaded into the cache.
+
+197
+00:08:05.710 --> 00:08:10.140
+So, re-fetch queries is not really a good solution either.
+
+198
+00:08:10.140 --> 00:08:12.910
+Really, what the solution would be in this case,
+
+199
+00:08:12.910 --> 00:08:15.300
+is to delete all the items from the cache,
+
+200
+00:08:15.300 --> 00:08:18.320
+and there currently is no way to delete
+
+201
+00:08:18.320 --> 00:08:19.840
+partial items from the cache.
+
+202
+00:08:19.840 --> 00:08:23.230
+Or there's currently no way to set a time limit
+
+203
+00:08:23.230 --> 00:08:25.070
+on the cache items being in there.
+
+204
+00:08:25.070 --> 00:08:27.200
+Maybe like after two minutes,
+
+205
+00:08:27.200 --> 00:08:29.120
+re-fetch them from the thing.
+
+206
+00:08:29.120 --> 00:08:30.980
+I've talked to the developers at Apollo,
+
+207
+00:08:30.980 --> 00:08:32.030
+and they are well aware of
+
+208
+00:08:32.030 --> 00:08:34.080
+this conundrum that you can run into.
+
+209
+00:08:34.080 --> 00:08:37.440
+I wouldn't necessarily call it a bug, but it's a conundrum.
+
+210
+00:08:37.440 --> 00:08:40.610
+It's something that we don't really know how to best solve,
+
+211
+00:08:40.610 --> 00:08:44.600
+and because there is no way to delete part of the cache.
+
+212
+00:08:44.600 --> 00:08:47.100
+There is something that you can delete the entire cache,
+
+213
+00:08:47.100 --> 00:08:48.820
+but that's not a good solution
+
+214
+00:08:48.820 --> 00:08:50.690
+because if we have items in our cart,
+
+215
+00:08:50.690 --> 00:08:53.530
+or we're signed in, or there's orders that we viewed--
+
+216
+00:08:53.530 --> 00:08:54.800
+Those would all go as well.
+
+217
+00:08:54.800 --> 00:08:58.240
+So, there currently is no solution for it.
+
+218
+00:08:58.240 --> 00:09:02.170
+And, they are planning to introduce something
+
+219
+00:09:02.170 --> 00:09:05.220
+which would allow us to invalidate part of the cache
+
+220
+00:09:05.220 --> 00:09:08.250
+without having to blow the entire cache away.
+
+221
+00:09:08.250 --> 00:09:10.730
+So, just sit on your hands for now
+
+222
+00:09:10.730 --> 00:09:12.040
+because I will be updating it.
+
+223
+00:09:12.040 --> 00:09:14.010
+This is one of the things that kept me
+
+224
+00:09:14.010 --> 00:09:15.720
+from actually recording this course,
+
+225
+00:09:15.720 --> 00:09:17.680
+and there is no good way--
+
+226
+00:09:17.680 --> 00:09:19.130
+I'm not the only one with this problem,
+
+227
+00:09:19.130 --> 00:09:20.320
+and we will be running--
+
+228
+00:09:20.320 --> 00:09:24.173
+We will be figuring out how to solve it in the future.
+
+229
+00:09:25.010 --> 00:09:28.410
+Alright, so with that said, we are all in good shape.
+
+230
+00:09:28.410 --> 00:09:30.980
+We have all of our caches, and everything working.
+
+231
+00:09:30.980 --> 00:09:33.030
+Our pagination is working beautiful,
+
+232
+00:09:33.030 --> 00:09:35.663
+let's step into the next part of the course.
+

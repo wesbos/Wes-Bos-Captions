@@ -1,0 +1,1306 @@
+﻿WEBVTT
+
+1
+00:00:00.930 --> 00:00:03.130
+<v Wes>Alright, now we're gonna be working on Pagination,</v>
+
+2
+00:00:03.130 --> 00:00:06.590
+so what I want you to do, is make at least nine
+
+3
+00:00:06.590 --> 00:00:09.560
+different items in here, and then I'll meet you
+
+4
+00:00:09.560 --> 00:00:11.743
+back here when you've got your nine items.
+
+5
+00:00:17.890 --> 00:00:18.723
+Alright, I've added a couple now,
+
+6
+00:00:18.723 --> 00:00:20.330
+I just want to show you one little problem
+
+7
+00:00:20.330 --> 00:00:21.461
+that we're gonna be running into.
+
+8
+00:00:21.461 --> 00:00:24.300
+If you click on your homepage after you've added something,
+
+9
+00:00:24.300 --> 00:00:26.690
+you might not see all of the items that you've added.
+
+10
+00:00:26.690 --> 00:00:28.220
+I just added the denim here,
+
+11
+00:00:28.220 --> 00:00:30.840
+and it's not showing up, until I actually refresh,
+
+12
+00:00:30.840 --> 00:00:33.169
+and that's actually a problem because the cache
+
+13
+00:00:33.169 --> 00:00:36.710
+is caching all of the items, and when we go back
+
+14
+00:00:36.710 --> 00:00:38.900
+to the homepage, it goes, oh, I already have that query.
+
+15
+00:00:38.900 --> 00:00:40.840
+So, we're gonna need to look at how we can
+
+16
+00:00:40.840 --> 00:00:42.300
+actually invalidate that query,
+
+17
+00:00:42.300 --> 00:00:43.730
+and there's a couple of options that we can do.
+
+18
+00:00:43.730 --> 00:00:45.230
+Also, there's gonna be some stuff
+
+19
+00:00:45.230 --> 00:00:48.430
+coming to Apollo fairly soon, and I'll make sure
+
+20
+00:00:48.430 --> 00:00:51.600
+to update these videos once they actually are in Apollo,
+
+21
+00:00:51.600 --> 00:00:52.980
+because right now, it's a bit of a problem.
+
+22
+00:00:52.980 --> 00:00:55.840
+Especially as we get in to Pagination.
+
+23
+00:00:55.840 --> 00:00:57.240
+But, I've got my nine items here,
+
+24
+00:00:57.240 --> 00:00:59.250
+let's go ahead and start making it.
+
+25
+00:00:59.250 --> 00:01:00.940
+We're gonna go into the front end here,
+
+26
+00:01:00.940 --> 00:01:02.130
+and you're making new component
+
+27
+00:01:02.130 --> 00:01:04.133
+called Pagination with a capital P.
+
+28
+00:01:05.066 --> 00:01:06.960
+Let's go ahead and we'll code it manually,
+
+29
+00:01:06.960 --> 00:01:10.780
+now import react from react, import our Pagination
+
+30
+00:01:10.780 --> 00:01:15.310
+styles from the styles folder,
+
+31
+00:01:15.310 --> 00:01:18.063
+and let's just make it a stateless functional component.
+
+32
+00:01:19.840 --> 00:01:20.683
+Export it.
+
+33
+00:01:21.800 --> 00:01:24.000
+Now, let's go into our items component,
+
+34
+00:01:24.000 --> 00:01:27.310
+and import our Pagination, and we can just stick
+
+35
+00:01:27.310 --> 00:01:28.700
+that Pagination component wherever
+
+36
+00:01:28.700 --> 00:01:30.710
+it is that we want to put it.
+
+37
+00:01:30.710 --> 00:01:34.293
+So, let's do it right above the query,
+
+38
+00:01:36.170 --> 00:01:38.830
+and let's do one right below the query,
+
+39
+00:01:38.830 --> 00:01:41.870
+so we can get one above and below, and there we go.
+
+40
+00:01:41.870 --> 00:01:43.840
+High on the Pagination, and we've got another one
+
+41
+00:01:43.840 --> 00:01:45.720
+showing up on the bottom.
+
+42
+00:01:45.720 --> 00:01:47.120
+Good, now there's a couple things
+
+43
+00:01:47.120 --> 00:01:49.510
+we actually need in order to make our Pagination.
+
+44
+00:01:49.510 --> 00:01:52.250
+We need to know how many items are in the database of total,
+
+45
+00:01:52.250 --> 00:01:54.540
+how many items are on the current page,
+
+46
+00:01:54.540 --> 00:01:57.040
+how many items are we displaying per page,
+
+47
+00:01:57.040 --> 00:01:59.420
+and we could do that right now because we're displaying
+
+48
+00:01:59.420 --> 00:02:01.497
+them all on one page, but if this were to have
+
+49
+00:02:01.497 --> 00:02:05.460
+a thousand items, we don't want to write a query
+
+50
+00:02:05.460 --> 00:02:08.050
+that's going to fetch one thousand items
+
+51
+00:02:08.050 --> 00:02:10.125
+or even something simple, like fetch the ID's
+
+52
+00:02:10.125 --> 00:02:12.600
+of one thousand items, as that would be too large,
+
+53
+00:02:12.600 --> 00:02:15.150
+and that's where prizma connections come in.
+
+54
+00:02:15.150 --> 00:02:17.490
+Now, let's go back to our back end here,
+
+55
+00:02:17.490 --> 00:02:20.680
+and let's look at the generated esquema
+
+56
+00:02:20.680 --> 00:02:23.230
+that comes out, and just search for connection.
+
+57
+00:02:23.230 --> 00:02:24.330
+If we look at our queries here,
+
+58
+00:02:24.330 --> 00:02:26.240
+you'll see that we really only have two types.
+
+59
+00:02:26.240 --> 00:02:29.354
+We have users and user, and item and items,
+
+60
+00:02:29.354 --> 00:02:31.400
+so that's going to grab both of our types.
+
+61
+00:02:31.400 --> 00:02:33.930
+However, each of them also have an additional query,
+
+62
+00:02:33.930 --> 00:02:36.757
+called the user connection or the item connection,
+
+63
+00:02:36.757 --> 00:02:39.160
+and that's going to return to us aggregate data
+
+64
+00:02:39.160 --> 00:02:42.180
+about the actual data itself, and specifically,
+
+65
+00:02:42.180 --> 00:02:45.940
+we need to know how many items are available to us.
+
+66
+00:02:45.940 --> 00:02:47.940
+That's what we need to do in our own esquema here,
+
+67
+00:02:47.940 --> 00:02:51.760
+we need to go into our schematic GraphQL on the backend,
+
+68
+00:02:51.760 --> 00:02:54.190
+and under our query, we're going to type
+
+69
+00:02:54.190 --> 00:02:58.640
+our items connection, and that is only going to take
+
+70
+00:02:58.640 --> 00:03:01.090
+one argument item where input.
+
+71
+00:03:01.090 --> 00:03:04.390
+You could also pass them order by, first, last, and skip
+
+72
+00:03:04.390 --> 00:03:08.420
+in this case, but we only care about the where in this case,
+
+73
+00:03:08.420 --> 00:03:11.234
+and that's going to return in item connection.
+
+74
+00:03:11.234 --> 00:03:13.360
+That is required.
+
+75
+00:03:13.360 --> 00:03:15.990
+Good, now let's go into our resolvers,
+
+76
+00:03:15.990 --> 00:03:19.360
+so query.js, and we're just going to duplicate this
+
+77
+00:03:19.360 --> 00:03:22.370
+and make it items connection, and we're gonna forward that
+
+78
+00:03:22.370 --> 00:03:24.160
+directly to the database as well,
+
+79
+00:03:24.160 --> 00:03:25.840
+and the way we can test if this has worked,
+
+80
+00:03:25.840 --> 00:03:30.840
+is we can open up our local API and try to connect to it.
+
+81
+00:03:31.010 --> 00:03:33.941
+So, let's go through local host four, four, four, four.
+
+82
+00:03:33.941 --> 00:03:36.290
+We'll just write a quick query here,
+
+83
+00:03:36.290 --> 00:03:40.170
+and we'll just call that query data about items,
+
+84
+00:03:40.170 --> 00:03:41.970
+and we're going to use our item,
+
+85
+00:03:41.970 --> 00:03:44.060
+there it is, there's our items connection query,
+
+86
+00:03:44.060 --> 00:03:46.530
+we don't need to necessarily pass a where right now,
+
+87
+00:03:46.530 --> 00:03:49.670
+we can just say items connection, and returning from that,
+
+88
+00:03:49.670 --> 00:03:51.120
+we can return a couple things.
+
+89
+00:03:51.120 --> 00:03:54.420
+The edges, the page info, or the aggregate.
+
+90
+00:03:54.420 --> 00:03:57.550
+The edges and the page info, that's used for when
+
+91
+00:03:57.550 --> 00:03:59.810
+you're sort of doing infinite scroll.
+
+92
+00:03:59.810 --> 00:04:02.240
+Let's say you're on Pinterest and you loaded in 20 items,
+
+93
+00:04:02.240 --> 00:04:04.940
+and what you could do, is that's going to tell you
+
+94
+00:04:04.940 --> 00:04:08.300
+what the last item was, and then when you do a second query,
+
+95
+00:04:08.300 --> 00:04:10.870
+you can tell it, give me the items that are past this.
+
+96
+00:04:10.870 --> 00:04:13.150
+Now, we're doing traditional Pagination here,
+
+97
+00:04:13.150 --> 00:04:15.570
+instead of that sort of infinite scroll here,
+
+98
+00:04:15.570 --> 00:04:17.900
+so we're not going to be using edges or page info.
+
+99
+00:04:17.900 --> 00:04:19.790
+In this one, we're going to be using aggregate,
+
+100
+00:04:19.790 --> 00:04:21.657
+and doing the calculations ourself.
+
+101
+00:04:21.657 --> 00:04:23.960
+From the aggregate, the only thing we can query
+
+102
+00:04:23.960 --> 00:04:25.170
+of that is the count.
+
+103
+00:04:25.170 --> 00:04:27.220
+Now, if I were to run it, it will run,
+
+104
+00:04:27.220 --> 00:04:31.570
+and it tells us that we have nine items in our database.
+
+105
+00:04:31.570 --> 00:04:35.640
+If you were to change this, you could also use
+
+106
+00:04:35.640 --> 00:04:37.840
+this on a search page that you're Paginating.
+
+107
+00:04:37.840 --> 00:04:42.840
+You could say where the title contains, let's say shoes,
+
+108
+00:04:46.750 --> 00:04:48.260
+run it, nothing comes back.
+
+109
+00:04:48.260 --> 00:04:49.890
+What are some of the items that we have?
+
+110
+00:04:49.890 --> 00:04:51.010
+Pullover.
+
+111
+00:04:51.010 --> 00:04:55.220
+Where the title contains pullover, and it gives us one item.
+
+112
+00:04:57.770 --> 00:05:00.560
+So, you see how you could pass possible arguments to this.
+
+113
+00:05:00.560 --> 00:05:01.840
+This would also be extremely helpful
+
+114
+00:05:01.840 --> 00:05:05.070
+if you had categories and you needed to Paginate things
+
+115
+00:05:05.070 --> 00:05:07.260
+that were just based on the category.
+
+116
+00:05:07.260 --> 00:05:09.800
+Let's go up into our front end now,
+
+117
+00:05:09.800 --> 00:05:12.360
+now that it's all working, and go into our Pagination
+
+118
+00:05:12.360 --> 00:05:14.048
+and start working on our query.
+
+119
+00:05:14.048 --> 00:05:18.210
+We're only going to get the actual linking
+
+120
+00:05:18.210 --> 00:05:19.090
+working right now.
+
+121
+00:05:19.090 --> 00:05:20.920
+I just want to change the URL by clicking
+
+122
+00:05:20.920 --> 00:05:23.340
+all of these numbers, and then we're gonna circle back
+
+123
+00:05:23.340 --> 00:05:25.470
+and actually modify the items component,
+
+124
+00:05:25.470 --> 00:05:27.890
+which is showing all of them right now,
+
+125
+00:05:27.890 --> 00:05:28.930
+and we want to be able to show
+
+126
+00:05:28.930 --> 00:05:30.930
+just however many that we want.
+
+127
+00:05:30.930 --> 00:05:34.633
+So, we'll import GQL from GraphQL tools,
+
+128
+00:05:36.460 --> 00:05:41.460
+and we'll make a query, and we'll write our query,
+
+129
+00:05:41.670 --> 00:05:45.510
+and call that Pagination query,
+
+130
+00:05:45.510 --> 00:05:47.340
+and we'll go ahead and write our query
+
+131
+00:05:47.340 --> 00:05:49.460
+called Pagination query.
+
+132
+00:05:49.460 --> 00:05:51.100
+We actually don't need to pass at anything,
+
+133
+00:05:51.100 --> 00:05:52.730
+so I put parentheses there, you don't need it,
+
+134
+00:05:52.730 --> 00:05:55.507
+because if you look at our backend here,
+
+135
+00:05:55.507 --> 00:05:57.840
+you see our items connection where item input,
+
+136
+00:05:57.840 --> 00:05:59.670
+we actually don't need that, cause we just care about
+
+137
+00:05:59.670 --> 00:06:01.380
+how many items are in the database,
+
+138
+00:06:01.380 --> 00:06:03.280
+the current page, the number per page,
+
+139
+00:06:03.280 --> 00:06:04.590
+and all that other information
+
+140
+00:06:04.590 --> 00:06:06.330
+is either gonna be pulled from settings,
+
+141
+00:06:06.330 --> 00:06:09.670
+from the URL, or calculated when we render the component,
+
+142
+00:06:09.670 --> 00:06:12.530
+so we have our Pagination query here,
+
+143
+00:06:12.530 --> 00:06:14.820
+we are going to have the items connection,
+
+144
+00:06:14.820 --> 00:06:19.760
+that's our query name, and from that we are going to return
+
+145
+00:06:19.760 --> 00:06:24.570
+the aggregate, and that is going to give us the count.
+
+146
+00:06:24.570 --> 00:06:29.333
+Now, we can use a query component to pull that in.
+
+147
+00:06:33.570 --> 00:06:36.513
+Go in here, give ourselves a query component,
+
+148
+00:06:37.610 --> 00:06:42.610
+query will be Pagination query,
+
+149
+00:06:42.660 --> 00:06:47.190
+and inside of that, we will get our data,
+
+150
+00:06:47.190 --> 00:06:48.943
+our loading, and our error.
+
+151
+00:06:52.480 --> 00:06:54.363
+From that, let's just return.
+
+152
+00:06:55.570 --> 00:06:57.363
+Hi, I'm the Pagination.
+
+153
+00:06:58.370 --> 00:07:00.480
+It's broken, let's see what it is.
+
+154
+00:07:00.480 --> 00:07:01.870
+I've got a red underline.
+
+155
+00:07:01.870 --> 00:07:06.620
+GraphQL tools should be listed in the dependencies.
+
+156
+00:07:06.620 --> 00:07:09.733
+No, it's not GraphQL tools, it's GraphQL tag,
+
+157
+00:07:11.110 --> 00:07:16.110
+and that should go down here.
+
+158
+00:07:16.150 --> 00:07:18.270
+My question is, are we able to render out
+
+159
+00:07:18.270 --> 00:07:21.810
+the data to itemsconnection.aggregate.count?
+
+160
+00:07:28.480 --> 00:07:29.313
+There I go.
+
+161
+00:07:29.313 --> 00:07:31.520
+Nine, it tells us we have nine items that are on there,
+
+162
+00:07:31.520 --> 00:07:33.500
+so that means we are in good shape.
+
+163
+00:07:33.500 --> 00:07:35.370
+Going to change this from a implicit return
+
+164
+00:07:35.370 --> 00:07:37.550
+to an explicit return, so what we're going to do here
+
+165
+00:07:37.550 --> 00:07:40.493
+is put some curly brackets around it.
+
+166
+00:07:43.570 --> 00:07:45.700
+Down here, we're gonna type return,
+
+167
+00:07:45.700 --> 00:07:49.500
+and let's just say if loading turn loading.
+
+168
+00:07:49.500 --> 00:07:50.970
+Just need to have some sort of if statement,
+
+169
+00:07:50.970 --> 00:07:52.470
+so my prettier doesn't get it.
+
+170
+00:07:54.170 --> 00:07:56.143
+It looks like it's working well.
+
+171
+00:07:57.990 --> 00:08:00.140
+Now we need a couple pieces of information.
+
+172
+00:08:00.140 --> 00:08:01.720
+First, we need to figure out how many pages
+
+173
+00:08:01.720 --> 00:08:05.190
+are there going to be based on our per page,
+
+174
+00:08:05.190 --> 00:08:07.430
+so if you open up the config.js,
+
+175
+00:08:07.430 --> 00:08:10.660
+you'll see that we have this little number four right here,
+
+176
+00:08:10.660 --> 00:08:12.210
+so I like to put that in a separate file
+
+177
+00:08:12.210 --> 00:08:14.050
+so that if I ever change Pagination,
+
+178
+00:08:14.050 --> 00:08:16.330
+it will just ripple through the entire application.
+
+179
+00:08:16.330 --> 00:08:17.890
+So, we're gonna import that.
+
+180
+00:08:17.890 --> 00:08:21.020
+Import per page from...
+
+181
+00:08:23.610 --> 00:08:24.890
+First I'm gonna put this count
+
+182
+00:08:24.890 --> 00:08:28.193
+in it's own variable, just called count.
+
+183
+00:08:29.460 --> 00:08:32.420
+And here, we'll just say const count is equal to that.
+
+184
+00:08:32.420 --> 00:08:34.170
+Then we'll make a new variable called pages
+
+185
+00:08:34.170 --> 00:08:38.310
+is equal to count, divided by per page,
+
+186
+00:08:38.310 --> 00:08:43.310
+and let's just start writing some information here.
+
+187
+00:08:44.950 --> 00:08:49.950
+Say you are on page, this is page one of pages.
+
+188
+00:08:53.387 --> 00:08:54.980
+It says, you are on page one of two point two five.
+
+189
+00:08:54.980 --> 00:08:55.813
+Why?
+
+190
+00:08:55.813 --> 00:08:56.646
+That's cause I have nine items.
+
+191
+00:08:56.646 --> 00:08:57.590
+Obviously, we can't deal with that,
+
+192
+00:08:57.590 --> 00:09:01.000
+so what we can do is wrap that in a math.seal.
+
+193
+00:09:01.000 --> 00:09:02.810
+Seal, ah, just joking.
+
+194
+00:09:02.810 --> 00:09:06.330
+Ceil, it's not the animal.
+
+195
+00:09:06.330 --> 00:09:09.760
+Here we go, page on of three, looking good.
+
+196
+00:09:09.760 --> 00:09:11.670
+Now, how do we get the actual current page?
+
+197
+00:09:11.670 --> 00:09:14.830
+Well, let's actually go to our items,
+
+198
+00:09:14.830 --> 00:09:16.530
+and it's going to look a little bit
+
+199
+00:09:16.530 --> 00:09:18.720
+something like this, page equals two.
+
+200
+00:09:18.720 --> 00:09:21.580
+Now, that page equals two is going to be coming in
+
+201
+00:09:21.580 --> 00:09:25.290
+via the items page as a prop, so we need to pass it down.
+
+202
+00:09:25.290 --> 00:09:29.630
+Let's go to our items page, and oh,
+
+203
+00:09:29.630 --> 00:09:31.490
+it's actually not done in our items.
+
+204
+00:09:31.490 --> 00:09:32.550
+Actually, we gotta rename that
+
+205
+00:09:32.550 --> 00:09:34.743
+to items real quick, it's not home.
+
+206
+00:09:35.610 --> 00:09:37.670
+But, it's in our index.js,
+
+207
+00:09:37.670 --> 00:09:39.370
+that's where we're actually doing the heavy lifting,
+
+208
+00:09:39.370 --> 00:09:41.610
+right here, and we have it via our prop,
+
+209
+00:09:41.610 --> 00:09:46.610
+so we are going to say page is equal to props.query.page,
+
+210
+00:09:50.980 --> 00:09:52.750
+and then our Pagination component should
+
+211
+00:09:52.750 --> 00:09:55.203
+then have access to it if we inspect it.
+
+212
+00:09:56.500 --> 00:09:58.203
+Check out our react dev tools.
+
+213
+00:09:59.670 --> 00:10:04.220
+Search for Pagination, doesn't look like we have access
+
+214
+00:10:04.220 --> 00:10:09.220
+to it, and that is because I haven't passed it down yet.
+
+215
+00:10:09.320 --> 00:10:11.970
+So, I passed it from the page down to items,
+
+216
+00:10:11.970 --> 00:10:15.330
+and then we need to go into items and pass it down
+
+217
+00:10:15.330 --> 00:10:18.100
+to Pagination, so we'll grab both instances,
+
+218
+00:10:18.100 --> 00:10:21.913
+and just say page is equal to this.props.page.
+
+219
+00:10:23.047 --> 00:10:23.980
+And then, does it show up here?
+
+220
+00:10:23.980 --> 00:10:24.910
+There we go.
+
+221
+00:10:24.910 --> 00:10:29.000
+Page is showing up, it is showing up as a string though,
+
+222
+00:10:29.000 --> 00:10:30.400
+that's gonna be a problem for us.
+
+223
+00:10:30.400 --> 00:10:35.400
+So, what we'll do in our index, is before we pass it,
+
+224
+00:10:35.530 --> 00:10:38.773
+we'll wrap it in a parseFloat.
+
+225
+00:10:40.900 --> 00:10:45.580
+Give it a refresh, and you see it's passed as a number now,
+
+226
+00:10:48.610 --> 00:10:49.800
+there's no quotes around that.
+
+227
+00:10:49.800 --> 00:10:52.870
+Good, so we can go into...
+
+228
+00:10:52.870 --> 00:10:56.350
+Back to our Pagination and replace that with,
+
+229
+00:10:56.350 --> 00:11:00.660
+we can say this.props.page.
+
+230
+00:11:00.660 --> 00:11:03.403
+Nope, it's not this.props, it's just props.page.
+
+231
+00:11:04.381 --> 00:11:05.850
+There we go, it's being passed in.
+
+232
+00:11:05.850 --> 00:11:08.900
+However, if we go to just forward slash items,
+
+233
+00:11:08.900 --> 00:11:11.590
+we get naan, so what we'll need to do here,
+
+234
+00:11:11.590 --> 00:11:16.590
+is back to our index such as, and pass either that or one,
+
+235
+00:11:20.730 --> 00:11:23.760
+and that will fall back to one if it's on the first page.
+
+236
+00:11:23.760 --> 00:11:27.170
+Now, if I go to page three,
+
+237
+00:11:27.170 --> 00:11:29.530
+it will say page three of three, good.
+
+238
+00:11:29.530 --> 00:11:30.870
+Let's actually get some links working
+
+239
+00:11:30.870 --> 00:11:33.030
+so I don't have to manually type it into the URL bar.
+
+240
+00:11:33.030 --> 00:11:34.510
+Back to our Pagination here.
+
+241
+00:11:34.510 --> 00:11:36.700
+I actually wanna bring these Pagination styles
+
+242
+00:11:36.700 --> 00:11:40.430
+down inside of the return, cause I only wanna display
+
+243
+00:11:40.430 --> 00:11:43.640
+them when the Pagination is actually shown.
+
+244
+00:11:43.640 --> 00:11:45.540
+Then, inside of that, we can,
+
+245
+00:11:45.540 --> 00:11:48.010
+let's actually update the title bar,
+
+246
+00:11:48.010 --> 00:11:49.530
+just like we did on the last one.
+
+247
+00:11:49.530 --> 00:11:51.283
+Import head from next head,
+
+248
+00:11:56.660 --> 00:12:00.890
+and here we can say head, title, sick fits.
+
+249
+00:12:03.760 --> 00:12:04.593
+Flicks?
+
+250
+00:12:06.870 --> 00:12:11.870
+Fits, page, page of pages.
+
+251
+00:12:14.180 --> 00:12:16.850
+It's not showing up, cause let's make a quick variable,
+
+252
+00:12:16.850 --> 00:12:19.793
+const page equals props.page.
+
+253
+00:12:22.229 --> 00:12:24.500
+There we go, you see that the URL bar is now showing up.
+
+254
+00:12:24.500 --> 00:12:27.253
+Maybe put a little M dash in between that.
+
+255
+00:12:28.390 --> 00:12:29.740
+Let's get ourselves some links.
+
+256
+00:12:29.740 --> 00:12:34.740
+We'll import the link from next link,
+
+257
+00:12:34.830 --> 00:12:36.230
+and of course, we wanna move these
+
+258
+00:12:36.230 --> 00:12:39.210
+above our relative imports.
+
+259
+00:12:39.210 --> 00:12:41.830
+I always like to do my MPM imports,
+
+260
+00:12:41.830 --> 00:12:44.660
+then my relative imports, then we'll go down here,
+
+261
+00:12:44.660 --> 00:12:47.961
+above the paragraph tag, we'll give ourselves a link tag.
+
+262
+00:12:47.961 --> 00:12:52.961
+That link tag always takes a HREF, which is an object.
+
+263
+00:12:55.227 --> 00:12:58.360
+The path name is going to be items,
+
+264
+00:12:58.360 --> 00:13:01.323
+and the query is going to be page,
+
+265
+00:13:02.660 --> 00:13:05.720
+and this is going to be the page, minus one.
+
+266
+00:13:05.720 --> 00:13:09.070
+If we're on page two, it's going to be page one,
+
+267
+00:13:09.070 --> 00:13:11.250
+if we're on page three, it's gonna be page two.
+
+268
+00:13:11.250 --> 00:13:13.940
+We'll look at how we can disable that in just a second.
+
+269
+00:13:13.940 --> 00:13:16.270
+Then, inside of there, you want an empty link
+
+270
+00:13:16.270 --> 00:13:20.250
+with no HREF on it, and then that will just say prev.
+
+271
+00:13:22.490 --> 00:13:24.343
+Let's take a look at how that looks.
+
+272
+00:13:26.000 --> 00:13:27.570
+Here we go, got our prev showing up.
+
+273
+00:13:27.570 --> 00:13:28.600
+Now, a couple things here.
+
+274
+00:13:28.600 --> 00:13:32.890
+First, I want you to go ahead and put a pre-fetch
+
+275
+00:13:32.890 --> 00:13:35.440
+attribute on your link, and what that's gonna do,
+
+276
+00:13:35.440 --> 00:13:38.060
+is in production, it's gonna go off and pre-render
+
+277
+00:13:38.060 --> 00:13:42.130
+both the previous and the forward looking page,
+
+278
+00:13:42.130 --> 00:13:45.077
+so that you are always pre-loading the next
+
+279
+00:13:45.077 --> 00:13:48.320
+and the previous one, so that when you hit your Pagination,
+
+280
+00:13:48.320 --> 00:13:49.680
+it's going to be absolutely instant.
+
+281
+00:13:49.680 --> 00:13:52.020
+This pre-fetch does not work in development mode,
+
+282
+00:13:52.020 --> 00:13:53.580
+so it might be a little bit slow for us,
+
+283
+00:13:53.580 --> 00:13:56.046
+but it will always work in production mode
+
+284
+00:13:56.046 --> 00:13:58.530
+to pre-load other pages.
+
+285
+00:13:58.530 --> 00:14:01.290
+You can put this pre-fetch attribute on any of your links,
+
+286
+00:14:01.290 --> 00:14:03.890
+and it'll make your website just so much snappier
+
+287
+00:14:03.890 --> 00:14:05.640
+and it's just such a nice little
+
+288
+00:14:05.640 --> 00:14:07.290
+performance boost that you have.
+
+289
+00:14:07.290 --> 00:14:09.300
+This link here needs a class name,
+
+290
+00:14:09.300 --> 00:14:11.700
+so class name is equal to prev.
+
+291
+00:14:11.700 --> 00:14:14.070
+And then, we will give it a disable attribute.
+
+292
+00:14:14.070 --> 00:14:15.770
+If we're on the first page, then obviously,
+
+293
+00:14:15.770 --> 00:14:18.240
+we don't want to give a previous one,
+
+294
+00:14:18.240 --> 00:14:20.752
+so we'll say aria dash disabled,
+
+295
+00:14:20.752 --> 00:14:24.930
+is equal to the current page, is less or equal to one.
+
+296
+00:14:24.930 --> 00:14:26.040
+So, now it's working.
+
+297
+00:14:26.040 --> 00:14:29.040
+If I were to go onto page one, you see it's disabled,
+
+298
+00:14:29.040 --> 00:14:30.760
+cause obviously, there's no page zero.
+
+299
+00:14:30.760 --> 00:14:32.233
+I don't want to go into it.
+
+300
+00:14:33.230 --> 00:14:34.720
+Then, we have our paragraph,
+
+301
+00:14:34.720 --> 00:14:36.120
+tells us how many pages there are.
+
+302
+00:14:36.120 --> 00:14:37.720
+Let's give ourselves another paragraph
+
+303
+00:14:37.720 --> 00:14:42.720
+that says, count items total,
+
+304
+00:14:42.840 --> 00:14:44.370
+so it will tell us how many items we have.
+
+305
+00:14:44.370 --> 00:14:46.203
+So, previous, page one of three,
+
+306
+00:14:47.190 --> 00:14:50.883
+nine items total, and then we can just take this link here,
+
+307
+00:14:53.220 --> 00:14:58.220
+paste it below, and we can say that it is the page plus one.
+
+308
+00:14:59.260 --> 00:15:02.820
+It's going to be disabled if the current page
+
+309
+00:15:02.820 --> 00:15:05.750
+is greater or equal to the number of pages,
+
+310
+00:15:05.750 --> 00:15:07.883
+and this will just say next.
+
+311
+00:15:09.740 --> 00:15:11.500
+That's a little text expander snip that I have
+
+312
+00:15:11.500 --> 00:15:14.400
+if I do two angle brackets ever, it'll automatically
+
+313
+00:15:14.400 --> 00:15:16.900
+make it an arrow, cause I use that so often.
+
+314
+00:15:16.900 --> 00:15:20.240
+Give it a save, and now it seems to be working.
+
+315
+00:15:20.240 --> 00:15:23.400
+If I click on next, it's going to load up page two.
+
+316
+00:15:23.400 --> 00:15:25.050
+You see our previous are kicking in.
+
+317
+00:15:25.050 --> 00:15:27.340
+Next is gonna load page three, then it's disabled,
+
+318
+00:15:27.340 --> 00:15:29.330
+doesn't work, so I can go back and forth,
+
+319
+00:15:29.330 --> 00:15:31.970
+back and forth, next, next, next, prev, prev, previous,
+
+320
+00:15:31.970 --> 00:15:34.180
+and these items get updated as we go.
+
+321
+00:15:34.180 --> 00:15:36.400
+What's not happening, is that the actual items
+
+322
+00:15:36.400 --> 00:15:38.210
+on the page aren't updating themselves,
+
+323
+00:15:38.210 --> 00:15:39.510
+so that's a bit of a problem.
+
+324
+00:15:39.510 --> 00:15:42.010
+In the next video, we are going to tackle
+
+325
+00:15:42.010 --> 00:15:44.004
+how do we modify this items component
+
+326
+00:15:44.004 --> 00:15:46.753
+to actually take the page number into account.
+

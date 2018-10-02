@@ -1,0 +1,754 @@
+﻿WEBVTT
+
+1
+00:00:01.440 --> 00:00:02.560
+<v Presenter>Alright, in this video,</v>
+
+2
+00:00:02.560 --> 00:00:04.660
+before we get into some of the react stuff,
+
+3
+00:00:04.660 --> 00:00:06.370
+I wanna go over one more concept.
+
+4
+00:00:06.370 --> 00:00:07.421
+That's called mocking.
+
+5
+00:00:07.421 --> 00:00:09.472
+It's a very simple concept,
+
+6
+00:00:09.472 --> 00:00:12.000
+but sometimes it takes a little bit to really
+
+7
+00:00:12.000 --> 00:00:13.797
+understand what it is, so we're just gonna take mocking
+
+8
+00:00:13.797 --> 00:00:16.210
+totally outside of react just to understand
+
+9
+00:00:16.210 --> 00:00:17.497
+what it is and why might you want to use it.
+
+10
+00:00:17.497 --> 00:00:19.319
+So let's open up our tests,
+
+11
+00:00:19.319 --> 00:00:24.319
+and let's make a mocking.test.js.
+
+12
+00:00:26.050 --> 00:00:29.160
+Inside of that let's just do a quick describe.
+
+13
+00:00:29.160 --> 00:00:31.763
+Mocking learning.
+
+14
+00:00:32.770 --> 00:00:37.770
+Then inside of there we'll say it mocks a reg function.
+
+15
+00:00:39.482 --> 00:00:41.700
+Like this.
+
+16
+00:00:41.700 --> 00:00:45.475
+Now, what mocking is, is sometimes you'll have some code
+
+17
+00:00:45.475 --> 00:00:48.960
+that is connected to some other piece of your application.
+
+18
+00:00:48.960 --> 00:00:51.090
+You might have some code that makes a database call.
+
+19
+00:00:51.090 --> 00:00:54.780
+You might have some code that hits an API end-point.
+
+20
+00:00:54.780 --> 00:00:56.957
+So generally what happens is that these things
+
+21
+00:00:56.957 --> 00:01:00.655
+reach outside of your application to an external service
+
+22
+00:01:00.655 --> 00:01:03.829
+or to another piece of the application
+
+23
+00:01:03.829 --> 00:01:06.321
+that would be tested by itself,
+
+24
+00:01:06.321 --> 00:01:09.420
+and you don't want to necessarily connect those two things
+
+25
+00:01:09.420 --> 00:01:10.895
+inside of your test because, like,
+
+26
+00:01:10.895 --> 00:01:14.110
+let's use the API for an example.
+
+27
+00:01:14.110 --> 00:01:17.234
+If you're reaching outside to an external API,
+
+28
+00:01:17.234 --> 00:01:20.181
+that's both gonna make your test really slow
+
+29
+00:01:20.181 --> 00:01:23.426
+because you have to make an external request,
+
+30
+00:01:23.426 --> 00:01:26.441
+and second it makes your test really brittle,
+
+31
+00:01:26.441 --> 00:01:28.859
+because you're relying on that API
+
+32
+00:01:28.859 --> 00:01:31.030
+to be working 100% of the time
+
+33
+00:01:31.030 --> 00:01:32.560
+in order for your test to pass.
+
+34
+00:01:32.560 --> 00:01:35.050
+Whereas that API will have its own test
+
+35
+00:01:35.050 --> 00:01:38.330
+and its own database call test inside of it.
+
+36
+00:01:38.330 --> 00:01:40.712
+So what you can do with a mock is you can pretend
+
+37
+00:01:40.712 --> 00:01:43.964
+that function to fetch the data actually went,
+
+38
+00:01:43.964 --> 00:01:47.090
+and you can pretend what data comes back from it.
+
+39
+00:01:47.090 --> 00:01:48.850
+And what that does is it makes
+
+40
+00:01:48.850 --> 00:01:50.970
+your unit test very self-contained.
+
+41
+00:01:50.970 --> 00:01:55.665
+Let's just do a very simple example that we have here.
+
+42
+00:01:55.665 --> 00:01:57.150
+And then we'll look at an example
+
+43
+00:01:57.150 --> 00:02:00.411
+where to actually fetch some data.
+
+44
+00:02:00.411 --> 00:02:02.143
+In here let's just say
+
+45
+00:02:02.143 --> 00:02:06.920
+const fetchDogs is equal to,
+
+46
+00:02:06.920 --> 00:02:08.300
+and then you want to make that,
+
+47
+00:02:08.300 --> 00:02:12.034
+usually that would be an external API end-point.
+
+48
+00:02:12.034 --> 00:02:14.299
+Maybe that would be inside of your test somewhere
+
+49
+00:02:14.299 --> 00:02:17.740
+and we wanna override that with a mock function.
+
+50
+00:02:17.740 --> 00:02:20.060
+So what we do is we say jest.fn,
+
+51
+00:02:20.060 --> 00:02:21.116
+and what that does is it makes
+
+52
+00:02:21.116 --> 00:02:23.444
+this fetchDogs a mock function.
+
+53
+00:02:23.444 --> 00:02:26.559
+And if we were just to console.log the fetchDogs now
+
+54
+00:02:26.559 --> 00:02:31.469
+and take a look at our terminal here,
+
+55
+00:02:31.469 --> 00:02:35.134
+you'll see that the function that we have is an actual mock.
+
+56
+00:02:35.134 --> 00:02:37.054
+Now, what we could do is we can do
+
+57
+00:02:37.054 --> 00:02:39.803
+something like just call fetchDogs.
+
+58
+00:02:40.850 --> 00:02:42.292
+And now we can expect
+
+59
+00:02:42.292 --> 00:02:46.600
+the fetchDogs function toHaveBeenCalled.
+
+60
+00:02:51.977 --> 00:02:55.027
+And now that has been called.
+
+61
+00:02:55.027 --> 00:02:56.226
+And then we could say expect
+
+62
+00:02:56.226 --> 00:03:01.226
+the fetchDogs function toHaveBeenCalledWith snickers.
+
+63
+00:03:06.670 --> 00:03:07.840
+And now we get an error, right?
+
+64
+00:03:07.840 --> 00:03:09.626
+So it was called,
+
+65
+00:03:09.626 --> 00:03:12.608
+but snickers, as an argument 1,
+
+66
+00:03:12.608 --> 00:03:15.890
+was called with undefined, so then we could go back here,
+
+67
+00:03:15.890 --> 00:03:17.910
+we could run it with snickers.
+
+68
+00:03:17.910 --> 00:03:20.520
+I guess that would have to be a lowercase.
+
+69
+00:03:20.520 --> 00:03:21.353
+There we go.
+
+70
+00:03:21.353 --> 00:03:23.490
+We could also do a couple more.
+
+71
+00:03:23.490 --> 00:03:28.160
+Expect the fetchDogs toHaveBeenCalledTimes, 2 times.
+
+72
+00:03:30.598 --> 00:03:32.560
+Now it's gonna fail, right?
+
+73
+00:03:32.560 --> 00:03:36.543
+Maybe we'll call it again: fetchDogs hugo.
+
+74
+00:03:37.760 --> 00:03:38.930
+Now it's working, right?
+
+75
+00:03:38.930 --> 00:03:40.960
+So you can imagine this fetchDogs function
+
+76
+00:03:40.960 --> 00:03:42.863
+would live inside of a react component
+
+77
+00:03:42.863 --> 00:03:46.948
+and then you can override it with a mock function here.
+
+78
+00:03:46.948 --> 00:03:50.033
+And then we'll be able to peer into that mock function
+
+79
+00:03:50.033 --> 00:03:51.574
+and see if it's been called,
+
+80
+00:03:51.574 --> 00:03:54.230
+see what it's being called with,
+
+81
+00:03:54.230 --> 00:03:56.003
+see how many times it's been called.
+
+82
+00:03:56.003 --> 00:03:58.900
+You can also mock all of the return values,
+
+83
+00:03:58.900 --> 00:04:01.064
+so let's just head over to the Jest documentation.
+
+84
+00:04:01.064 --> 00:04:03.582
+Go down to mock functions here,
+
+85
+00:04:03.582 --> 00:04:08.582
+and you see that you can access all of these properties.
+
+86
+00:04:08.740 --> 00:04:10.582
+You can clear a mock, you can restore it,
+
+87
+00:04:10.582 --> 00:04:14.483
+and then you can also mock promises
+
+88
+00:04:14.483 --> 00:04:17.148
+of what it's going to be returned with,
+
+89
+00:04:17.148 --> 00:04:19.620
+or it could be rejected with.
+
+90
+00:04:19.620 --> 00:04:20.660
+So let's take a look at how
+
+91
+00:04:20.660 --> 00:04:22.140
+to actually do that with promises,
+
+92
+00:04:22.140 --> 00:04:25.540
+'cause that's likely what something is gonna go.
+
+93
+00:04:25.540 --> 00:04:27.216
+So let's go up to the top here
+
+94
+00:04:27.216 --> 00:04:32.216
+and let's just write a function that
+
+95
+00:04:32.610 --> 00:04:34.280
+would probably be in a library
+
+96
+00:04:34.280 --> 00:04:35.760
+somewhere in one of our components.
+
+97
+00:04:35.760 --> 00:04:38.360
+And generally you might import a component
+
+98
+00:04:38.360 --> 00:04:39.490
+and then you can override it,
+
+99
+00:04:39.490 --> 00:04:40.590
+but let's just write it in here.
+
+100
+00:04:40.590 --> 00:04:43.459
+So we'll say function Person
+
+101
+00:04:43.459 --> 00:04:47.211
+takes in a name and takes in an array of foods.
+
+102
+00:04:47.211 --> 00:04:50.040
+And I'll say this.name is equal to the name,
+
+103
+00:04:50.040 --> 00:04:52.793
+and this.foods is equal to the foods.
+
+104
+00:04:52.793 --> 00:04:54.550
+Then we'll modify the prototype,
+
+105
+00:04:54.550 --> 00:04:57.673
+so Person.prototype.fetchFavFoods.
+
+106
+00:04:59.920 --> 00:05:03.360
+That is equal to an arrow function.
+
+107
+00:05:03.360 --> 00:05:08.360
+And then we're just going to return a new promise
+
+108
+00:05:09.070 --> 00:05:11.883
+that has a resolve and a reject.
+
+109
+00:05:12.836 --> 00:05:16.800
+And then after two seconds, so setTimeout,
+
+110
+00:05:18.540 --> 00:05:23.540
+we'll resolve with this.foods after two seconds.
+
+111
+00:05:24.400 --> 00:05:26.062
+So what this is doing here is that
+
+112
+00:05:26.062 --> 00:05:29.455
+we are making a function that lives
+
+113
+00:05:29.455 --> 00:05:32.504
+on every single person called fetchFavFoods,
+
+114
+00:05:32.504 --> 00:05:35.190
+and then after two seconds we are
+
+115
+00:05:35.190 --> 00:05:37.600
+going to return their favorite foods.
+
+116
+00:05:37.600 --> 00:05:41.413
+And this is just like simulating an API.
+
+117
+00:05:43.140 --> 00:05:45.300
+So in the real world this would probably go off
+
+118
+00:05:45.300 --> 00:05:46.973
+to some external API and actually fetch
+
+119
+00:05:46.973 --> 00:05:49.792
+the data that we have there.
+
+120
+00:05:49.792 --> 00:05:53.243
+Now we're gonna go down here and (mumbling).
+
+121
+00:05:53.243 --> 00:05:55.440
+Let's just test if that function actually works
+
+122
+00:05:55.440 --> 00:05:57.943
+so it can create a person.
+
+123
+00:05:59.697 --> 00:06:03.620
+And we'll create a person right inside this test,
+
+124
+00:06:03.620 --> 00:06:08.620
+so const me is equal to new Person, say Wes,
+
+125
+00:06:08.730 --> 00:06:12.293
+and our favorite food is pizza and burgs.
+
+126
+00:06:13.410 --> 00:06:18.410
+Then we can just expect the person.name toBe Wes.
+
+127
+00:06:22.135 --> 00:06:24.123
+Doesn't work.
+
+128
+00:06:25.250 --> 00:06:26.913
+What is our error here?
+
+129
+00:06:30.610 --> 00:06:33.383
+Oh, not person.name, it's me.name.
+
+130
+00:06:34.670 --> 00:06:35.503
+There we go.
+
+131
+00:06:35.503 --> 00:06:37.000
+So that seems to be working.
+
+132
+00:06:37.000 --> 00:06:39.360
+But let's try it with the actual fetching of food.
+
+133
+00:06:39.360 --> 00:06:42.993
+So it can fetch foods.
+
+134
+00:06:44.090 --> 00:06:46.973
+And let's just take this mean, duplicate it down to here.
+
+135
+00:06:48.440 --> 00:06:51.820
+And we'll go here and we'll say const favFoods
+
+136
+00:06:54.990 --> 00:06:57.990
+is equal to me.fetchFavFoods,
+
+137
+00:06:59.630 --> 00:07:01.330
+and that is going to return a promise,
+
+138
+00:07:01.330 --> 00:07:04.535
+so we'll await it and then mark this as a sync.
+
+139
+00:07:04.535 --> 00:07:06.464
+And then here what we're gonna do
+
+140
+00:07:06.464 --> 00:07:10.673
+is you can just console log the favFoods.
+
+141
+00:07:11.610 --> 00:07:16.023
+Then we'll expect favFoods toContain pizza.
+
+142
+00:07:24.079 --> 00:07:25.130
+Error.
+
+143
+00:07:25.130 --> 00:07:26.120
+What do we got here?
+
+144
+00:07:26.120 --> 00:07:28.107
+Cannot read property foods of undefined.
+
+145
+00:07:28.107 --> 00:07:32.193
+I believe that is because we need a regular function here.
+
+146
+00:07:37.160 --> 00:07:38.953
+Let's move this inside of here.
+
+147
+00:07:44.160 --> 00:07:45.590
+And everything works,
+
+148
+00:07:45.590 --> 00:07:48.380
+but you see how long this test takes?
+
+149
+00:07:48.380 --> 00:07:53.380
+2.005 seconds, and that's really slow,
+
+150
+00:07:53.677 --> 00:07:55.890
+because every time I want to rerun it,
+
+151
+00:07:55.890 --> 00:07:58.560
+it's gonna go off to that external API,
+
+152
+00:07:58.560 --> 00:07:59.963
+the simulation of an API,
+
+153
+00:07:59.963 --> 00:08:02.240
+and it's gonna take however long it needs to do.
+
+154
+00:08:02.240 --> 00:08:05.100
+And for some reason, maybe this API would be down
+
+155
+00:08:05.100 --> 00:08:06.450
+and then our test won't be passing,
+
+156
+00:08:06.450 --> 00:08:08.083
+and we wouldn't be able to push our build.
+
+157
+00:08:08.083 --> 00:08:10.810
+So what you can do is you can swap out
+
+158
+00:08:10.810 --> 00:08:14.370
+this fetchFavFoods with a mock function
+
+159
+00:08:14.370 --> 00:08:16.390
+and just simulate it returning some data.
+
+160
+00:08:16.390 --> 00:08:18.530
+So let's go down here.
+
+161
+00:08:18.530 --> 00:08:21.273
+And before we actually fetch the favorite foods,
+
+162
+00:08:21.273 --> 00:08:26.273
+let's mock the favFoods function.
+
+163
+00:08:29.300 --> 00:08:33.027
+So we'll say me.fetchFavFoods is equal to jest.fn,
+
+164
+00:08:33.027 --> 00:08:36.560
+and that's going to make it a function,
+
+165
+00:08:36.560 --> 00:08:38.731
+but we also want to mock what gets returned.
+
+166
+00:08:38.731 --> 00:08:40.483
+So we'll say .mockResolvedValue.
+
+167
+00:08:47.040 --> 00:08:51.020
+And we're just going to mock it returning.
+
+168
+00:08:51.020 --> 00:08:55.687
+An array of, let's say, sushi and ramen.
+
+169
+00:08:59.620 --> 00:09:01.410
+Now our test is obviously failing
+
+170
+00:09:01.410 --> 00:09:04.590
+because it's expecting an array of sushi and ramen
+
+171
+00:09:04.590 --> 00:09:07.562
+and it isn't finding pizza.
+
+172
+00:09:07.562 --> 00:09:08.849
+We change this to sushi.
+
+173
+00:09:08.849 --> 00:09:11.390
+You see that it is working just fine,
+
+174
+00:09:11.390 --> 00:09:13.510
+and now it's running in three milliseconds,
+
+175
+00:09:13.510 --> 00:09:15.387
+and we no longer have that brittle dependency
+
+176
+00:09:15.387 --> 00:09:18.270
+on a quote-unquote external function.
+
+177
+00:09:18.270 --> 00:09:21.180
+I know that we just made a fake API here,
+
+178
+00:09:21.180 --> 00:09:22.150
+but imagine that was,
+
+179
+00:09:22.150 --> 00:09:23.310
+and that's exactly what we're gonna
+
+180
+00:09:23.310 --> 00:09:25.535
+be doing with our Apollo store.
+
+181
+00:09:25.535 --> 00:09:29.654
+We don't actually wanna hook up to an external Apollo store
+
+182
+00:09:29.654 --> 00:09:32.323
+and have to query a database for all of that stuff.
+
+183
+00:09:32.323 --> 00:09:36.611
+We want to fake return some data to our components
+
+184
+00:09:36.611 --> 00:09:38.344
+and then check if those components
+
+185
+00:09:38.344 --> 00:09:40.560
+are rendering out properly,
+
+186
+00:09:40.560 --> 00:09:42.130
+so that is exactly what mocking is.
+
+187
+00:09:42.130 --> 00:09:44.082
+And in the coming videos we are
+
+188
+00:09:44.082 --> 00:09:46.483
+going to be mocking our Apollo store.
+

@@ -1,0 +1,1558 @@
+﻿WEBVTT
+
+1
+00:00:01.158 --> 00:00:03.630
+<v Wes>All right, now let's work on the sign in</v>
+
+2
+00:00:03.630 --> 00:00:08.610
+which is going to be happening in at the sign up page.
+
+3
+00:00:08.610 --> 00:00:10.120
+So we've got the sign up for an account.
+
+4
+00:00:10.120 --> 00:00:13.550
+We are already signed up then we want a secondary form here
+
+5
+00:00:13.550 --> 00:00:15.000
+that's going to be sign in.
+
+6
+00:00:15.000 --> 00:00:18.190
+So, we're gonna be basically repeating the whole process
+
+7
+00:00:18.190 --> 00:00:20.090
+and hopefully you're starting to get into a bit of a cadence
+
+8
+00:00:20.090 --> 00:00:22.740
+with this whole add it to the schema,
+
+9
+00:00:22.740 --> 00:00:25.410
+add a resolver that's either a query or a mutation,
+
+10
+00:00:25.410 --> 00:00:26.930
+flip over to the frontend,
+
+11
+00:00:26.930 --> 00:00:28.517
+build some sort of interface for it
+
+12
+00:00:28.517 --> 00:00:30.010
+and then manage it from there.
+
+13
+00:00:30.010 --> 00:00:31.820
+So, lots jump over to the backend
+
+14
+00:00:31.820 --> 00:00:34.700
+and we're going to be in schema.GraphQL
+
+15
+00:00:34.700 --> 00:00:37.300
+and we're going to be making a mutation
+
+16
+00:00:37.300 --> 00:00:38.960
+that's called sign in.
+
+17
+00:00:38.960 --> 00:00:41.240
+That takes in an email which is a string
+
+18
+00:00:41.240 --> 00:00:42.970
+and required in a password,
+
+19
+00:00:42.970 --> 00:00:45.710
+which is a string and trust required.
+
+20
+00:00:45.710 --> 00:00:49.580
+That is going to return to us a user that is required.
+
+21
+00:00:49.580 --> 00:00:50.413
+Okay, that's good.
+
+22
+00:00:50.413 --> 00:00:52.500
+Now we'll move over to our mutation.js
+
+23
+00:00:52.500 --> 00:00:54.710
+and actually implement the sign in.
+
+24
+00:00:54.710 --> 00:00:55.730
+So we'll do the same thing.
+
+25
+00:00:55.730 --> 00:00:59.573
+We'll say it's in a synchronous function called sign in.
+
+26
+00:01:01.040 --> 00:01:04.210
+That takes the parent,
+
+27
+00:01:04.210 --> 00:01:05.050
+the args,
+
+28
+00:01:05.050 --> 00:01:07.640
+the context and the info.
+
+29
+00:01:07.640 --> 00:01:09.724
+And what I'm gonna do here is show you a little example,
+
+30
+00:01:09.724 --> 00:01:13.020
+instead of saying args.email and args.password
+
+31
+00:01:13.020 --> 00:01:13.870
+when we're trying to use it
+
+32
+00:01:13.870 --> 00:01:17.980
+we can destructure args into email and password
+
+33
+00:01:17.980 --> 00:01:21.370
+directly right into the signature of that function.
+
+34
+00:01:21.370 --> 00:01:22.360
+Then inside of here,
+
+35
+00:01:22.360 --> 00:01:23.310
+what we're gonna do is
+
+36
+00:01:23.310 --> 00:01:28.310
+first check if there is a user with that email two,
+
+37
+00:01:29.670 --> 00:01:31.170
+we'll put a one beside that,
+
+38
+00:01:31.170 --> 00:01:34.940
+check if their password is correct
+
+39
+00:01:34.940 --> 00:01:36.000
+and then three,
+
+40
+00:01:36.000 --> 00:01:39.860
+generate the jwt token
+
+41
+00:01:39.860 --> 00:01:41.260
+and four,
+
+42
+00:01:41.260 --> 00:01:45.893
+set the cookie with the token.
+
+43
+00:01:47.580 --> 00:01:50.423
+Five, return the user.
+
+44
+00:01:51.410 --> 00:01:52.243
+Cool!
+
+45
+00:01:52.243 --> 00:01:53.076
+So, first step,
+
+46
+00:01:53.076 --> 00:01:55.050
+check if there is a user with the password.
+
+47
+00:01:55.050 --> 00:02:00.050
+So, we'll say const user equals await ctx.db.query.user.
+
+48
+00:02:03.900 --> 00:02:05.583
+Then we get to say where,
+
+49
+00:02:06.720 --> 00:02:11.510
+the email is going to be equal to the email.
+
+50
+00:02:11.510 --> 00:02:12.820
+And the reason why I destructured that
+
+51
+00:02:12.820 --> 00:02:13.930
+is so we can simply just say,
+
+52
+00:02:13.930 --> 00:02:17.400
+where the email is equal to the email in one go.
+
+53
+00:02:17.400 --> 00:02:18.500
+On the next line we're gonna check
+
+54
+00:02:18.500 --> 00:02:20.740
+if there is no user with that email address.
+
+55
+00:02:20.740 --> 00:02:23.610
+So, if there is no user
+
+56
+00:02:23.610 --> 00:02:27.707
+then we're going to throw a new error that says,
+
+57
+00:02:27.707 --> 00:02:32.707
+"No such user found for email."
+
+58
+00:02:32.800 --> 00:02:37.800
+Actually, let's flip that over to backticks,
+
+59
+00:02:39.350 --> 00:02:40.183
+email.
+
+60
+00:02:40.183 --> 00:02:41.370
+Now, some people consider
+
+61
+00:02:41.370 --> 00:02:45.790
+telling a user if there is no account for that email
+
+62
+00:02:45.790 --> 00:02:47.080
+a security issue.
+
+63
+00:02:47.080 --> 00:02:48.110
+It's kind of up for debate,
+
+64
+00:02:48.110 --> 00:02:50.470
+I don't necessarily consider it an issue.
+
+65
+00:02:50.470 --> 00:02:51.710
+Just because,
+
+66
+00:02:51.710 --> 00:02:53.950
+who cares if someone knows that you have an account.
+
+67
+00:02:53.950 --> 00:02:57.060
+I guess if it's an online dating website
+
+68
+00:02:57.060 --> 00:02:57.968
+or something like that maybe
+
+69
+00:02:57.968 --> 00:03:01.290
+but in this case I don't really care if people know
+
+70
+00:03:01.290 --> 00:03:04.058
+if there is an account for the email or not.
+
+71
+00:03:04.058 --> 00:03:07.557
+I had turned my own Chorus platform to doing this, I said,
+
+72
+00:03:07.557 --> 00:03:08.950
+"If there is an"
+
+73
+00:03:08.950 --> 00:03:10.260
+with a password reset,
+
+74
+00:03:10.260 --> 00:03:11.093
+I would say,
+
+75
+00:03:11.093 --> 00:03:13.957
+"If there is an account associated with this,"
+
+76
+00:03:13.957 --> 00:03:15.700
+"I will send you a password reset email."
+
+77
+00:03:15.700 --> 00:03:18.257
+And I get so much support of people being like,
+
+78
+00:03:18.257 --> 00:03:20.790
+"Hey, the password reset email's not showing up!"
+
+79
+00:03:20.790 --> 00:03:21.623
+Where as
+
+80
+00:03:21.623 --> 00:03:24.010
+they never actually had an account in the first place.
+
+81
+00:03:24.010 --> 00:03:28.150
+So, I like to tell people if it's not a real security issue
+
+82
+00:03:28.150 --> 00:03:31.760
+that there is no account with that email.
+
+83
+00:03:31.760 --> 00:03:33.290
+And by throwing the error,
+
+84
+00:03:33.290 --> 00:03:35.070
+what that's gonna do on the frontend,
+
+85
+00:03:35.070 --> 00:03:39.150
+is it's going to be caught in our query or mutation
+
+86
+00:03:39.150 --> 00:03:42.370
+and we'll be able to display this specific error to the user
+
+87
+00:03:42.370 --> 00:03:44.620
+which is great because you don't have to do anything else,
+
+88
+00:03:44.620 --> 00:03:46.770
+you just throw an error and you were done.
+
+89
+00:03:46.770 --> 00:03:48.240
+Otherwise if it is good,
+
+90
+00:03:48.240 --> 00:03:50.980
+we're going to check if it's proper.
+
+91
+00:03:50.980 --> 00:03:52.029
+So we'll say,
+
+92
+00:03:52.029 --> 00:03:57.029
+const valid is equal to await bcrypt.compare.
+
+93
+00:03:58.020 --> 00:03:59.188
+So bcrypt.compare,
+
+94
+00:03:59.188 --> 00:04:02.600
+it returns a promise so we can simply await it.
+
+95
+00:04:02.600 --> 00:04:07.600
+We're gonna compare the password against the user.password.
+
+96
+00:04:08.500 --> 00:04:09.333
+Right?
+
+97
+00:04:09.333 --> 00:04:10.810
+So we're simply just going to take
+
+98
+00:04:10.810 --> 00:04:11.960
+the password that they gave us,
+
+99
+00:04:11.960 --> 00:04:13.830
+we're gonna hash it and we're gonna compare it
+
+100
+00:04:13.830 --> 00:04:15.570
+against the has that we have on file
+
+101
+00:04:15.570 --> 00:04:17.730
+and if those two things are exactly the same hash
+
+102
+00:04:17.730 --> 00:04:19.070
+then it is valid.
+
+103
+00:04:19.070 --> 00:04:21.123
+So say if it is not valid,
+
+104
+00:04:22.670 --> 00:04:26.107
+then again we're gonna throw a new error,
+
+105
+00:04:26.107 --> 00:04:28.597
+"invalid password".
+
+106
+00:04:31.990 --> 00:04:34.110
+And if it is valid we can keep going.
+
+107
+00:04:34.110 --> 00:04:36.180
+And we're going to generate the jwt.
+
+108
+00:04:36.180 --> 00:04:37.110
+So we'll do this,
+
+109
+00:04:37.110 --> 00:04:41.230
+const token equals jwt.sign
+
+110
+00:04:41.230 --> 00:04:43.590
+and we can actually just go ahead up here
+
+111
+00:04:43.590 --> 00:04:48.488
+and take this entire line here and paste it in.
+
+112
+00:04:48.488 --> 00:04:50.120
+And then we'll set the cookie.
+
+113
+00:04:50.120 --> 00:04:53.587
+So, ctx.response.cookie.
+
+114
+00:04:56.290 --> 00:04:57.284
+We have to set the token.
+
+115
+00:04:57.284 --> 00:04:59.540
+These two lines here are going to be exactly the same
+
+116
+00:04:59.540 --> 00:05:03.410
+so you could create a separate secondary function
+
+117
+00:05:03.410 --> 00:05:06.940
+that would simply just take in the token and do these things
+
+118
+00:05:06.940 --> 00:05:08.750
+I'm just gonna do it twice here,
+
+119
+00:05:08.750 --> 00:05:10.330
+but if you had to do it more than that
+
+120
+00:05:10.330 --> 00:05:13.293
+I would probably refactor out into a separate function.
+
+121
+00:05:14.140 --> 00:05:16.570
+So, we're gonna set the token to be the token
+
+122
+00:05:16.570 --> 00:05:18.973
+and http only is true.
+
+123
+00:05:20.830 --> 00:05:23.920
+And the max age is again
+
+124
+00:05:23.920 --> 00:05:28.777
+1000 times 60 . 60 times 24 times 365.
+
+125
+00:05:34.740 --> 00:05:35.920
+And finally,
+
+126
+00:05:35.920 --> 00:05:37.780
+we just return the user right?
+
+127
+00:05:37.780 --> 00:05:39.180
+So that's the whole sign in flow,
+
+128
+00:05:39.180 --> 00:05:40.820
+it's surprisingly simple right?
+
+129
+00:05:40.820 --> 00:05:42.080
+Check if there's someone there,
+
+130
+00:05:42.080 --> 00:05:43.530
+check if their password's right.
+
+131
+00:05:43.530 --> 00:05:44.380
+If it is,
+
+132
+00:05:44.380 --> 00:05:45.670
+generate a jwt,
+
+133
+00:05:45.670 --> 00:05:50.220
+stick it in a cookie and return the user from that response.
+
+134
+00:05:50.220 --> 00:05:51.617
+That's good.
+
+135
+00:05:51.617 --> 00:05:53.883
+Now let's go and,
+
+136
+00:05:58.630 --> 00:06:00.010
+now let's flip over to the frontend
+
+137
+00:06:00.010 --> 00:06:01.420
+and create a sign in form.
+
+138
+00:06:01.420 --> 00:06:02.737
+So I'm gonna open up,
+
+139
+00:06:02.737 --> 00:06:03.760
+on the side here,
+
+140
+00:06:03.760 --> 00:06:04.660
+go to components,
+
+141
+00:06:04.660 --> 00:06:05.768
+create a capital S,
+
+142
+00:06:05.768 --> 00:06:08.063
+signin.js.
+
+143
+00:06:09.340 --> 00:06:13.140
+Gonna open up my signup.js
+
+144
+00:06:13.140 --> 00:06:16.670
+and I'm just gonna take everything from signup.js
+
+145
+00:06:16.670 --> 00:06:18.810
+and paste it into the signin.js
+
+146
+00:06:18.810 --> 00:06:22.530
+and we are going to rename this sign up mutation
+
+147
+00:06:22.530 --> 00:06:25.303
+to a sign in mutation.
+
+148
+00:06:26.470 --> 00:06:28.560
+Then we're gonna rename the actual function that we called
+
+149
+00:06:28.560 --> 00:06:30.471
+to sign in.
+
+150
+00:06:30.471 --> 00:06:33.900
+We're going to remove the dependency of the name
+
+151
+00:06:33.900 --> 00:06:37.423
+because we don't pass the name as we go ahead.
+
+152
+00:06:38.270 --> 00:06:41.760
+It's fine to return the ID email and the name there.
+
+153
+00:06:41.760 --> 00:06:44.590
+We'll rename this class to sign in.
+
+154
+00:06:49.970 --> 00:06:52.640
+Just double check that actually gets exported as sign in,
+
+155
+00:06:52.640 --> 00:06:53.473
+good.
+
+156
+00:06:55.120 --> 00:06:58.143
+We'll take the whole name label outta here.
+
+157
+00:07:02.120 --> 00:07:06.410
+And let's open up the sign up page to actually import it.
+
+158
+00:07:06.410 --> 00:07:09.563
+So, we're gonna import the sign up and the sign in.
+
+159
+00:07:11.530 --> 00:07:13.800
+I'll change to get rid of one of these extra.
+
+160
+00:07:13.800 --> 00:07:15.190
+Make this a sign in.
+
+161
+00:07:15.190 --> 00:07:16.280
+There we go!
+
+162
+00:07:16.280 --> 00:07:19.560
+So, we gotta sign in for an account.
+
+163
+00:07:19.560 --> 00:07:22.460
+We'll probably have to change that heading tag right here.
+
+164
+00:07:28.660 --> 00:07:31.430
+And I think we're at a point where we can test it out.
+
+165
+00:07:31.430 --> 00:07:33.840
+So what I'm gonna do actually right now,
+
+166
+00:07:33.840 --> 00:07:35.750
+is go into our application,
+
+167
+00:07:35.750 --> 00:07:37.800
+because we don't have a way to sign out right now.
+
+168
+00:07:37.800 --> 00:07:39.070
+So I'm gonna manually do that
+
+169
+00:07:39.070 --> 00:07:41.370
+and just blow away everything in my cookies,
+
+170
+00:07:41.370 --> 00:07:46.220
+go back to our sign in and I'm going to enter in fatdogs123.
+
+171
+00:07:48.290 --> 00:07:49.650
+Oh, shoot!
+
+172
+00:07:49.650 --> 00:07:51.210
+Failed to fetch.
+
+173
+00:07:51.210 --> 00:07:52.670
+Got a bit of an error again.
+
+174
+00:07:52.670 --> 00:07:55.070
+What is the thing?
+
+175
+00:07:55.070 --> 00:07:58.127
+Field password couldn't find type strign.
+
+176
+00:07:59.315 --> 00:08:01.193
+Did I goof it up in the backend?
+
+177
+00:08:02.090 --> 00:08:03.173
+Put up my schema.
+
+178
+00:08:04.470 --> 00:08:05.430
+There we go!
+
+179
+00:08:05.430 --> 00:08:06.553
+It's a string.
+
+180
+00:08:10.080 --> 00:08:14.440
+So, that's kinda nice that it tells us what the error is.
+
+181
+00:08:14.440 --> 00:08:15.630
+So let's try,
+
+182
+00:08:15.630 --> 00:08:19.623
+also that should say sign in.
+
+183
+00:08:21.800 --> 00:08:22.633
+Ha!
+
+184
+00:08:22.633 --> 00:08:23.829
+You see what happened there?
+
+185
+00:08:23.829 --> 00:08:26.660
+It went off and tried to sign in
+
+186
+00:08:26.660 --> 00:08:27.660
+and then what happened is
+
+187
+00:08:27.660 --> 00:08:30.200
+that the token got set in the cookie.
+
+188
+00:08:30.200 --> 00:08:32.420
+However, it doesn't tell me that I'm logged in yet
+
+189
+00:08:32.420 --> 00:08:34.610
+and we're gonna get to that in just a second,
+
+190
+00:08:34.610 --> 00:08:36.910
+of how you can actually do it but I'm willing to bet
+
+191
+00:08:36.910 --> 00:08:38.510
+if I can refresh this,
+
+192
+00:08:38.510 --> 00:08:40.070
+you see that I'm signed in.
+
+193
+00:08:40.070 --> 00:08:42.820
+If I go ahead and remove that,
+
+194
+00:08:42.820 --> 00:08:45.220
+give it a refresh again I'm signed out
+
+195
+00:08:45.220 --> 00:08:48.680
+and let's see if I pass in like a wrong password.
+
+196
+00:08:48.680 --> 00:08:50.150
+Let's see what it tells us.
+
+197
+00:08:50.150 --> 00:08:50.983
+Shoot,
+
+198
+00:08:50.983 --> 00:08:51.880
+invalid password.
+
+199
+00:08:51.880 --> 00:08:55.493
+And if I pass in an account where it doesn't exist,
+
+200
+00:08:57.330 --> 00:08:58.163
+it tells us,
+
+201
+00:08:58.163 --> 00:08:59.350
+"No such user found for that email."
+
+202
+00:08:59.350 --> 00:09:01.320
+So, you see how nice that error-handling is?
+
+203
+00:09:01.320 --> 00:09:04.010
+Where you simply can just throw an error on the backend
+
+204
+00:09:04.010 --> 00:09:07.090
+and it will be handled nice and cleanly in the frontend?
+
+205
+00:09:07.090 --> 00:09:08.270
+Big fan of that!
+
+206
+00:09:08.270 --> 00:09:11.170
+Let's try it one more time with something that does exist.
+
+207
+00:09:12.930 --> 00:09:13.763
+Dogs123.
+
+208
+00:09:14.900 --> 00:09:15.733
+Sign in.
+
+209
+00:09:15.733 --> 00:09:16.566
+Bam!
+
+210
+00:09:16.566 --> 00:09:17.670
+That token is there.
+
+211
+00:09:17.670 --> 00:09:21.760
+Now, this is kind of an interesting one with React
+
+212
+00:09:21.760 --> 00:09:25.040
+is that because you're not reloading a page
+
+213
+00:09:25.040 --> 00:09:27.460
+like you would with a server side refresh.
+
+214
+00:09:27.460 --> 00:09:29.020
+You have to actually go back
+
+215
+00:09:29.020 --> 00:09:33.611
+and do that current user query a couple more times.
+
+216
+00:09:33.611 --> 00:09:38.611
+This is where the mutation argument called "refetchQueries"
+
+217
+00:09:38.640 --> 00:09:40.130
+comes in really, really handy.
+
+218
+00:09:40.130 --> 00:09:44.130
+So let's open up user real quick.
+
+219
+00:09:44.130 --> 00:09:46.360
+And you see that we have this current user query.
+
+220
+00:09:46.360 --> 00:09:47.940
+We can simply ask Apollo
+
+221
+00:09:47.940 --> 00:09:50.569
+to just refetch this current user query for us
+
+222
+00:09:50.569 --> 00:09:55.190
+and then it will re-render the parts of the application
+
+223
+00:09:55.190 --> 00:09:57.120
+that are signed in and signed out.
+
+224
+00:09:57.120 --> 00:10:01.620
+So this exactly why we exported the query from user.js
+
+225
+00:10:01.620 --> 00:10:05.190
+because we can go into sign in and import that query.
+
+226
+00:10:05.190 --> 00:10:07.123
+So import, current,
+
+227
+00:10:09.680 --> 00:10:10.520
+user,
+
+228
+00:10:10.520 --> 00:10:14.693
+query from user.
+
+229
+00:10:15.570 --> 00:10:16.830
+Then what we'll do is,
+
+230
+00:10:16.830 --> 00:10:19.590
+we'll go down to our mutation here.
+
+231
+00:10:19.590 --> 00:10:22.410
+See, our mutation has a couple options mutation,
+
+232
+00:10:22.410 --> 00:10:23.440
+variables.
+
+233
+00:10:23.440 --> 00:10:25.750
+And then it has a refetchQueries
+
+234
+00:10:27.140 --> 00:10:31.310
+where you can pass it an array of queries to refetch.
+
+235
+00:10:31.310 --> 00:10:32.920
+So the first query is going to be,
+
+236
+00:10:32.920 --> 00:10:35.680
+query, current, user, query.
+
+237
+00:10:35.680 --> 00:10:37.290
+And then also if you had variables
+
+238
+00:10:37.290 --> 00:10:39.660
+you could pass them along for that as well,
+
+239
+00:10:39.660 --> 00:10:42.250
+but we just have a query.
+
+240
+00:10:42.250 --> 00:10:43.560
+And what that should do is,
+
+241
+00:10:43.560 --> 00:10:46.830
+when this mutation is successfully finished,
+
+242
+00:10:46.830 --> 00:10:51.180
+it will go into the Apollo store and refetch this query
+
+243
+00:10:51.180 --> 00:10:53.330
+so that this little piece of our application
+
+244
+00:10:53.330 --> 00:10:54.340
+should update itself.
+
+245
+00:10:54.340 --> 00:10:56.590
+So, I'm gonna clear this out.
+
+246
+00:10:56.590 --> 00:10:58.673
+Gonna give it a hard refresh.
+
+247
+00:11:00.120 --> 00:11:01.780
+Dogs123.
+
+248
+00:11:01.780 --> 00:11:02.840
+Sign in.
+
+249
+00:11:02.840 --> 00:11:03.692
+Bam!
+
+250
+00:11:03.692 --> 00:11:06.250
+And you see this little part re-rendered itself?
+
+251
+00:11:06.250 --> 00:11:08.850
+That because as soon as the mutation came back
+
+252
+00:11:08.850 --> 00:11:12.560
+it went off again and refetched that specific query.
+
+253
+00:11:12.560 --> 00:11:14.171
+So that's really handy
+
+254
+00:11:14.171 --> 00:11:18.597
+for when you need to update specific queries that we have.
+
+255
+00:11:18.597 --> 00:11:20.410
+That would be helpful when,
+
+256
+00:11:20.410 --> 00:11:22.910
+remember when we ran into that issue with Pagination?
+
+257
+00:11:22.910 --> 00:11:26.290
+Where we could say refetchQuery current items?
+
+258
+00:11:26.290 --> 00:11:28.040
+But the problem with that on our items
+
+259
+00:11:28.040 --> 00:11:30.380
+is that you would also need to pass the page numbers
+
+260
+00:11:30.380 --> 00:11:33.520
+and you would have to pass it an array of queries
+
+261
+00:11:33.520 --> 00:11:35.060
+for every single page
+
+262
+00:11:35.060 --> 00:11:37.210
+and that could be potentially hundreds of queries
+
+263
+00:11:37.210 --> 00:11:39.151
+if you have hundreds of pages.
+
+264
+00:11:39.151 --> 00:11:41.940
+We also want to do that on the sign up.
+
+265
+00:11:41.940 --> 00:11:44.280
+So let's go to our sign up component
+
+266
+00:11:46.070 --> 00:11:48.453
+and we'll import that same query.
+
+267
+00:11:52.020 --> 00:11:54.830
+And we'll go to our sign up mutation here
+
+268
+00:11:56.150 --> 00:11:59.150
+and we'll also add it as a refetch.
+
+269
+00:12:00.450 --> 00:12:03.963
+RefetchQueries is equal to an array.
+
+270
+00:12:05.210 --> 00:12:07.496
+And in that array we have a query
+
+271
+00:12:07.496 --> 00:12:09.133
+which is current user query.
+
+272
+00:12:10.100 --> 00:12:11.010
+Good!
+
+273
+00:12:11.010 --> 00:12:15.370
+And what that should do then is if I delete all these tokens
+
+274
+00:12:15.370 --> 00:12:20.370
+and if I try to sign up for like doglover123@yahoo.net
+
+275
+00:12:24.727 --> 00:12:25.910
+and I'll say doglover.
+
+276
+00:12:25.910 --> 00:12:29.000
+Password dogs123.
+
+277
+00:12:29.000 --> 00:12:32.710
+When I sign up you see how it set a token
+
+278
+00:12:32.710 --> 00:12:35.380
+and also refetched that current user query
+
+279
+00:12:35.380 --> 00:12:37.410
+without us having to reload the page.
+
+280
+00:12:37.410 --> 00:12:40.030
+So, big fan of this refreshQueries.
+
+281
+00:12:40.030 --> 00:12:42.420
+There's no waiting for things to be done,
+
+282
+00:12:42.420 --> 00:12:45.430
+you simply just give it an array of queries to refetch
+
+283
+00:12:45.430 --> 00:12:48.703
+and it will do that heavy-lifting for you.
+
+284
+00:12:49.580 --> 00:12:50.830
+Last thing we need to do is
+
+285
+00:12:50.830 --> 00:12:54.040
+actually create a sign out button
+
+286
+00:12:54.040 --> 00:12:57.610
+because otherwise we're not going to be able to again,
+
+287
+00:12:57.610 --> 00:13:00.030
+ask your user to manually go and delete the cookie.
+
+288
+00:13:00.030 --> 00:13:02.190
+Before we do the the sign out,
+
+289
+00:13:02.190 --> 00:13:05.110
+let's just open up our nav.js and rejig this a little bit.
+
+290
+00:13:05.110 --> 00:13:07.730
+I want the user Render Prop component
+
+291
+00:13:07.730 --> 00:13:09.360
+to be as high as possible.
+
+292
+00:13:09.360 --> 00:13:11.730
+So that we can show and hide these links
+
+293
+00:13:11.730 --> 00:13:14.660
+depending on if they're signed in or signed out.
+
+294
+00:13:14.660 --> 00:13:18.470
+So what we're gonna do here is we're going to first
+
+295
+00:13:18.470 --> 00:13:21.080
+get rid of all three of these things right here
+
+296
+00:13:21.080 --> 00:13:24.890
+and let's remake this an implicit return.
+
+297
+00:13:24.890 --> 00:13:26.910
+So, take the curly brackets
+
+298
+00:13:26.910 --> 00:13:30.950
+and replace them with smooth brackets, parentheses.
+
+299
+00:13:30.950 --> 00:13:33.340
+Then put your NavStyles inside of it
+
+300
+00:13:33.340 --> 00:13:36.143
+as well as everything else.
+
+301
+00:13:40.200 --> 00:13:41.033
+Okay,
+
+302
+00:13:41.033 --> 00:13:41.866
+so we have our user,
+
+303
+00:13:41.866 --> 00:13:43.930
+then we have our Render Prop here,
+
+304
+00:13:43.930 --> 00:13:46.170
+then we have our NavStyles
+
+305
+00:13:46.170 --> 00:13:47.790
+and then we have all of our links.
+
+306
+00:13:47.790 --> 00:13:50.270
+Now, here is where we're going to show and hide.
+
+307
+00:13:50.270 --> 00:13:52.380
+So regardless of if they're signed in or not,
+
+308
+00:13:52.380 --> 00:13:54.250
+we're always gonna show shop.
+
+309
+00:13:54.250 --> 00:13:58.160
+However we only want to show the sell if they are signed in.
+
+310
+00:13:58.160 --> 00:13:59.860
+We only want to show the orders,
+
+311
+00:13:59.860 --> 00:14:00.740
+now let's bring that up,
+
+312
+00:14:00.740 --> 00:14:02.080
+if they are signed in.
+
+313
+00:14:02.080 --> 00:14:02.913
+And then,
+
+314
+00:14:02.913 --> 00:14:06.180
+we only want to show the account if they are signed in.
+
+315
+00:14:06.180 --> 00:14:08.170
+And then we only want to show the sign up,
+
+316
+00:14:08.170 --> 00:14:09.003
+or the,
+
+317
+00:14:09.003 --> 00:14:10.283
+let's make that sign in,
+
+318
+00:14:12.630 --> 00:14:14.580
+if they are logged out.
+
+319
+00:14:14.580 --> 00:14:15.413
+Right?
+
+320
+00:14:15.413 --> 00:14:16.246
+So the way that we do that is,
+
+321
+00:14:16.246 --> 00:14:18.240
+we check if someone is signed in.
+
+322
+00:14:18.240 --> 00:14:20.540
+We can just simply say me, and and.
+
+323
+00:14:20.540 --> 00:14:23.000
+And this is that little trick I showed you earlier,
+
+324
+00:14:23.000 --> 00:14:24.830
+in parentheses.
+
+325
+00:14:24.830 --> 00:14:27.570
+Then we can put everything that we wanna show
+
+326
+00:14:27.570 --> 00:14:29.410
+if they are signed in, in here.
+
+327
+00:14:29.410 --> 00:14:30.860
+That's just a nice little trick to say,
+
+328
+00:14:30.860 --> 00:14:34.230
+if the person is signed in then go ahead and return this
+
+329
+00:14:34.230 --> 00:14:36.560
+and then we can do the opposite for this one.
+
+330
+00:14:36.560 --> 00:14:38.860
+So say, bang me,
+
+331
+00:14:38.860 --> 00:14:40.407
+and and,
+
+332
+00:14:40.407 --> 00:14:42.023
+parentheses,
+
+333
+00:14:44.860 --> 00:14:47.283
+I'll put that link inside of there.
+
+334
+00:14:48.170 --> 00:14:49.620
+All right, I've got a little bit of an error,
+
+335
+00:14:49.620 --> 00:14:51.520
+let's debug it.
+
+336
+00:14:51.520 --> 00:14:52.370
+Invalid password.
+
+337
+00:14:52.370 --> 00:14:54.280
+That was from much before.
+
+338
+00:14:54.280 --> 00:14:57.330
+So what's on the frontend side?
+
+339
+00:14:57.330 --> 00:14:58.643
+Oh, here's the error!
+
+340
+00:14:58.643 --> 00:15:02.350
+Adjacent JSX elements must be wrapped in an enclosing tag!
+
+341
+00:15:02.350 --> 00:15:04.700
+Of course they cannot be doing that right?
+
+342
+00:15:04.700 --> 00:15:07.740
+Right here I'm trying to return three things
+
+343
+00:15:07.740 --> 00:15:11.240
+and if you wanna return more than one sibling element
+
+344
+00:15:11.240 --> 00:15:12.820
+you must always wrap it in something.
+
+345
+00:15:12.820 --> 00:15:16.390
+And the way that we used to do that is wrap it in a div.
+
+346
+00:15:16.390 --> 00:15:18.740
+However, there is a new way to do it in React,
+
+347
+00:15:18.740 --> 00:15:20.800
+it's called a React Fragments.
+
+348
+00:15:20.800 --> 00:15:22.048
+And the way that fragments work,
+
+349
+00:15:22.048 --> 00:15:26.170
+specifically in Next.js because it's using Babel 7,
+
+350
+00:15:26.170 --> 00:15:29.970
+you can simply just use the empty angle brackets
+
+351
+00:15:29.970 --> 00:15:32.990
+and then the empty closing angle bracket
+
+352
+00:15:32.990 --> 00:15:34.720
+and that will be a fragment.
+
+353
+00:15:34.720 --> 00:15:36.600
+It's giving me a little grief here.
+
+354
+00:15:36.600 --> 00:15:37.920
+Unexpected token.
+
+355
+00:15:37.920 --> 00:15:38.800
+Come on!
+
+356
+00:15:38.800 --> 00:15:40.150
+That's probably fine.
+
+357
+00:15:40.150 --> 00:15:41.030
+We'll see, refresh,
+
+358
+00:15:41.030 --> 00:15:42.020
+it works fine!
+
+359
+00:15:42.020 --> 00:15:46.203
+Maybe my eslint is not up to date with the latest.
+
+360
+00:15:46.203 --> 00:15:48.740
+This fragment thing in react is pretty new.
+
+361
+00:15:48.740 --> 00:15:51.440
+So that's kind of a nice way to return multiple elements.
+
+362
+00:15:51.440 --> 00:15:53.056
+It's like a ghost element.
+
+363
+00:15:53.056 --> 00:15:55.660
+Rather than me having to put some div in there,
+
+364
+00:15:55.660 --> 00:15:58.750
+which is always a pain because previously
+
+365
+00:15:58.750 --> 00:16:01.570
+if you had a (mumbles) Flexbox or a CSS Grid
+
+366
+00:16:01.570 --> 00:16:03.990
+and you wanted to have parent, child relationship
+
+367
+00:16:03.990 --> 00:16:05.620
+it really throws a wrench into your plans
+
+368
+00:16:05.620 --> 00:16:08.350
+when you have to put a secondary wrapping element.
+
+369
+00:16:08.350 --> 00:16:10.109
+So this by having a fragment in here,
+
+370
+00:16:10.109 --> 00:16:13.830
+it is a invisible-rendered piece.
+
+371
+00:16:13.830 --> 00:16:14.663
+Okay!
+
+372
+00:16:14.663 --> 00:16:16.160
+Now, this is the question!
+
+373
+00:16:16.160 --> 00:16:18.150
+We have shop and sign in.
+
+374
+00:16:18.150 --> 00:16:19.410
+So if I click on the sign in
+
+375
+00:16:19.410 --> 00:16:20.940
+and I go ahead and try to sign in.
+
+376
+00:16:20.940 --> 00:16:23.480
+Dogs123, signin and bam!
+
+377
+00:16:23.480 --> 00:16:26.980
+You see that whole thing just updates itself?
+
+378
+00:16:26.980 --> 00:16:30.690
+And then we will create a sign out link.
+
+379
+00:16:30.690 --> 00:16:31.710
+See that in the next video.
+
+380
+00:16:31.710 --> 00:16:33.210
+I think we've done enough in this video
+
+381
+00:16:33.210 --> 00:16:36.750
+and the next video a nice quick one for sign out.
+
+382
+00:16:36.750 --> 00:16:39.400
+If you are maybe feeling a little bit comfortable with this
+
+383
+00:16:39.400 --> 00:16:43.240
+maybe try to do the sign out mutation yourself.
+
+384
+00:16:43.240 --> 00:16:44.730
+You'll be adding it to the schema,
+
+385
+00:16:44.730 --> 00:16:47.460
+you'll be writing a mutation that deletes that cookie.
+
+386
+00:16:47.460 --> 00:16:51.140
+And then you'll be writing a button in your Nav
+
+387
+00:16:51.140 --> 00:16:52.930
+that will then trigger that mutation.
+
+388
+00:16:52.930 --> 00:16:53.960
+So, maybe try it yourself!
+
+389
+00:16:53.960 --> 00:16:55.903
+Otherwise, I'll see you in the next video.
+

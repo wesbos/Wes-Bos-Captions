@@ -1,0 +1,1418 @@
+﻿WEBVTT
+
+1
+00:00:00.654 --> 00:00:02.683
+<v Presenter>Alright, right now when we check out</v>
+
+2
+00:00:02.683 --> 00:00:05.430
+an input or credit card, we just get a token.
+
+3
+00:00:05.430 --> 00:00:06.883
+So now what we're gonna do right now
+
+4
+00:00:06.883 --> 00:00:10.209
+is we're gonna both charge that token on the server side
+
+5
+00:00:10.209 --> 00:00:13.091
+as well as we need to convert these cart items
+
+6
+00:00:13.091 --> 00:00:15.263
+into something called an order item.
+
+7
+00:00:15.263 --> 00:00:18.690
+As well as create a new type called a order,
+
+8
+00:00:18.690 --> 00:00:20.410
+which will contain all of the items
+
+9
+00:00:20.410 --> 00:00:22.510
+that were ordered in that order.
+
+10
+00:00:22.510 --> 00:00:24.830
+So that's gonna require some backend lifting
+
+11
+00:00:24.830 --> 00:00:26.687
+in our schema and in our data model.
+
+12
+00:00:26.687 --> 00:00:27.937
+So I'm in the backend here.
+
+13
+00:00:27.937 --> 00:00:30.313
+I'm gonna open up datamodel.graphql.
+
+14
+00:00:32.411 --> 00:00:33.244
+And we're gonna go down here
+
+15
+00:00:33.244 --> 00:00:36.240
+and make a new type called OrderItem.
+
+16
+00:00:36.240 --> 00:00:39.860
+And that order item is not gonna be just like CartItem,
+
+17
+00:00:39.860 --> 00:00:42.576
+because CartItem has a relationship to an actual item.
+
+18
+00:00:42.576 --> 00:00:45.072
+The problem with an OrderItem is that
+
+19
+00:00:45.072 --> 00:00:47.794
+we can't have a direct relationship to an item
+
+20
+00:00:47.794 --> 00:00:50.771
+because it's possible that item will get deleted
+
+21
+00:00:50.771 --> 00:00:52.800
+and then you'd be in the situation where
+
+22
+00:00:52.800 --> 00:00:55.270
+somebody has bought something,
+
+23
+00:00:55.270 --> 00:00:58.930
+but the item has been deleted.
+
+24
+00:00:58.930 --> 00:01:02.348
+Or even worse, if you had a relationship to an item,
+
+25
+00:01:02.348 --> 00:01:04.791
+the price could change,
+
+26
+00:01:04.791 --> 00:01:08.770
+but then we don't want to change their invoice
+
+27
+00:01:08.770 --> 00:01:10.819
+of how much they paid so we sort of need to cement
+
+28
+00:01:10.819 --> 00:01:14.168
+both all of the images, all of the descriptions.
+
+29
+00:01:14.168 --> 00:01:17.730
+Everything about the item needs to be cemented at the time
+
+30
+00:01:17.730 --> 00:01:20.044
+and we're gonna sort of take a copy of all the fields
+
+31
+00:01:20.044 --> 00:01:22.627
+of the item into an order item.
+
+32
+00:01:22.627 --> 00:01:25.075
+That way if the item ever were to change in the future,
+
+33
+00:01:25.075 --> 00:01:27.231
+the actual details of what the person bought
+
+34
+00:01:27.231 --> 00:01:29.830
+at that time will not change.
+
+35
+00:01:29.830 --> 00:01:31.044
+So we'll go to our order item here.
+
+36
+00:01:31.044 --> 00:01:32.650
+And the fields that we want are in id,
+
+37
+00:01:32.650 --> 00:01:35.248
+which is going to be a type of id that's required.
+
+38
+00:01:35.248 --> 00:01:37.490
+We're gonna be a @unique on that.
+
+39
+00:01:37.490 --> 00:01:40.004
+Need a title, just say string.
+
+40
+00:01:40.004 --> 00:01:45.004
+Need a description, image, a large image, a price,
+
+41
+00:01:47.190 --> 00:01:51.923
+which is an integer, quantity, just gonna be integer,
+
+42
+00:01:51.923 --> 00:01:56.923
+and we're gonna default that to a value of 1.
+
+43
+00:01:57.280 --> 00:01:59.416
+And then we're going to associate that
+
+44
+00:01:59.416 --> 00:02:01.064
+with the user in case any time that
+
+45
+00:02:01.064 --> 00:02:03.660
+we're querying order items we never need to populate it.
+
+46
+00:02:03.660 --> 00:02:05.590
+We're not gonna be specifically
+
+47
+00:02:05.590 --> 00:02:07.160
+using that in any of our queries,
+
+48
+00:02:07.160 --> 00:02:08.509
+but it is always helpful should you ever
+
+49
+00:02:08.509 --> 00:02:10.607
+do any sort of reporting or something like that
+
+50
+00:02:10.607 --> 00:02:12.643
+and you want to see who is the owner
+
+51
+00:02:12.643 --> 00:02:15.756
+and who is the user that bought this item.
+
+52
+00:02:15.756 --> 00:02:17.328
+Then we also want to make an order,
+
+53
+00:02:17.328 --> 00:02:20.421
+which is going to contain many order items,
+
+54
+00:02:20.421 --> 00:02:22.557
+so that, of course, has an id,
+
+55
+00:02:22.557 --> 00:02:25.893
+the type of id that's @unique.
+
+56
+00:02:27.570 --> 00:02:29.620
+We want to give it some items,
+
+57
+00:02:29.620 --> 00:02:32.510
+which is going to be an array of order items.
+
+58
+00:02:32.510 --> 00:02:34.030
+Both of those being required.
+
+59
+00:02:34.030 --> 00:02:38.408
+We're gonna have a total, which is an integer.
+
+60
+00:02:38.408 --> 00:02:43.083
+We're going to have a user, which is a user.
+
+61
+00:02:44.300 --> 00:02:45.623
+And then we're going to have a charge,
+
+62
+00:02:45.623 --> 00:02:47.922
+which is going to be a string.
+
+63
+00:02:47.922 --> 00:02:50.390
+And when the Stripe charge goes through
+
+64
+00:02:50.390 --> 00:02:51.697
+we're gonna get another id that
+
+65
+00:02:51.697 --> 00:02:55.073
+we put on the specific order.
+
+66
+00:02:55.073 --> 00:02:57.337
+Now anytime we edit our data model,
+
+67
+00:02:57.337 --> 00:03:01.423
+we need to go to our terminal here and run a deploy.
+
+68
+00:03:03.150 --> 00:03:04.590
+And it deployed everything.
+
+69
+00:03:04.590 --> 00:03:06.447
+Looks like we got our order item and our order
+
+70
+00:03:06.447 --> 00:03:08.850
+with all of our different fields
+
+71
+00:03:08.850 --> 00:03:11.810
+and all of our relationships that we have inside of that.
+
+72
+00:03:11.810 --> 00:03:12.643
+Good.
+
+73
+00:03:12.643 --> 00:03:14.213
+I'm gonna npm run dev again.
+
+74
+00:03:20.021 --> 00:03:22.938
+Then we're gonna open up our schema
+
+75
+00:03:25.564 --> 00:03:28.980
+and add the createOrder mutation.
+
+76
+00:03:28.980 --> 00:03:30.643
+That's going to take in a token.
+
+77
+00:03:30.643 --> 00:03:33.120
+That is a string and is required,
+
+78
+00:03:33.120 --> 00:03:38.120
+and it's going to return an order that is required.
+
+79
+00:03:38.130 --> 00:03:39.230
+Give that a save,
+
+80
+00:03:39.230 --> 00:03:42.500
+and of course, anytime that we create a mutation,
+
+81
+00:03:42.500 --> 00:03:44.943
+we also have to create a resolver for that mutation.
+
+82
+00:03:44.943 --> 00:03:47.743
+So let's head back to the bottom here.
+
+83
+00:03:50.110 --> 00:03:52.563
+Making a sync called createOrder,
+
+84
+00:03:54.360 --> 00:03:58.373
+parent, args, ctx and info.
+
+85
+00:03:59.670 --> 00:04:02.180
+So we need to do a whole bunch of stuff in here,
+
+86
+00:04:02.180 --> 00:04:03.678
+so let's write some pseudo-code first.
+
+87
+00:04:03.678 --> 00:04:07.080
+First we need to query the current user.
+
+88
+00:04:07.080 --> 00:04:12.080
+And make sure they are signed in.
+
+89
+00:04:13.200 --> 00:04:18.200
+Two, we need to recalculate the total for the price.
+
+90
+00:04:20.930 --> 00:04:22.254
+And this is really important because
+
+91
+00:04:22.254 --> 00:04:24.464
+I often see people do Stripe tutorials
+
+92
+00:04:24.464 --> 00:04:29.160
+and they take the price from the client side.
+
+93
+00:04:29.160 --> 00:04:32.131
+Meaning that if I were to check out and it says $14,000
+
+94
+00:04:32.131 --> 00:04:35.925
+and I can go ahead and check out with this,
+
+95
+00:04:35.925 --> 00:04:37.320
+there's a possibility,
+
+96
+00:04:37.320 --> 00:04:39.105
+and I have people do this to me all the time,
+
+97
+00:04:39.105 --> 00:04:41.374
+where you can just go into the JavaScript
+
+98
+00:04:41.374 --> 00:04:44.716
+and change the value of this to 1 cent.
+
+99
+00:04:44.716 --> 00:04:46.847
+And then they would send over the price
+
+100
+00:04:46.847 --> 00:04:48.224
+along with the token,
+
+101
+00:04:48.224 --> 00:04:50.930
+and then charge for the price on the server side.
+
+102
+00:04:50.930 --> 00:04:52.630
+But you don't want your users
+
+103
+00:04:52.630 --> 00:04:54.380
+to tell you how much to charge.
+
+104
+00:04:54.380 --> 00:04:55.700
+You should recalculate it.
+
+105
+00:04:55.700 --> 00:04:57.895
+And even though if the user were to trick,
+
+106
+00:04:57.895 --> 00:04:59.438
+I have this all time.
+
+107
+00:04:59.438 --> 00:05:03.380
+People try to change the price of my courses to one cent.
+
+108
+00:05:03.380 --> 00:05:06.496
+That's why we also say the price on the server side,
+
+109
+00:05:06.496 --> 00:05:08.587
+and they actually don't have to match up.
+
+110
+00:05:08.587 --> 00:05:10.982
+So if someone tries to trick it on the client side,
+
+111
+00:05:10.982 --> 00:05:12.853
+the true price will always be
+
+112
+00:05:12.853 --> 00:05:15.140
+recalculated on the server side.
+
+113
+00:05:15.140 --> 00:05:16.750
+It's not something you have to worry about.
+
+114
+00:05:16.750 --> 00:05:18.290
+So that's what we want to do.
+
+115
+00:05:18.290 --> 00:05:23.290
+Third, we want to create the Stripe charge.
+
+116
+00:05:24.490 --> 00:05:29.490
+Four, we're going to convert the CartItems to OrderItems.
+
+117
+00:05:32.064 --> 00:05:33.040
+'Cause remember,
+
+118
+00:05:33.040 --> 00:05:34.573
+we talked about why we're doing that earlier.
+
+119
+00:05:34.573 --> 00:05:38.490
+Five, we're going to create the order.
+
+120
+00:05:38.490 --> 00:05:40.911
+Six, we're going to clean up.
+
+121
+00:05:40.911 --> 00:05:42.981
+We're gonna clear the user's cart,
+
+122
+00:05:42.981 --> 00:05:45.529
+'cause once they've bought the items,
+
+123
+00:05:45.529 --> 00:05:48.360
+they shouldn't be in the cart anymore.
+
+124
+00:05:48.360 --> 00:05:51.963
+And then we also need to delete CartItems
+
+125
+00:05:53.288 --> 00:05:54.470
+just because we don't want those hanging around
+
+126
+00:05:54.470 --> 00:05:56.730
+in our database if they're not necessary.
+
+127
+00:05:56.730 --> 00:06:00.730
+And seven, return the order to the client.
+
+128
+00:06:00.730 --> 00:06:02.760
+So, woo, lots to go on here.
+
+129
+00:06:02.760 --> 00:06:05.500
+So let's kick it off now.
+
+130
+00:06:05.500 --> 00:06:07.310
+First thing we're gonna do is query the current user.
+
+131
+00:06:07.310 --> 00:06:12.310
+So say const userId is equal to ctx.request.
+
+132
+00:06:14.177 --> 00:06:19.177
+And then we'll say if there's no userId, throw error,
+
+133
+00:06:19.810 --> 00:06:24.810
+you must be signed in to complete this order.
+
+134
+00:06:28.850 --> 00:06:30.770
+Then we need to actually query the current user.
+
+135
+00:06:30.770 --> 00:06:35.770
+So I'll say const user is equal to await ctx.db.query.user.
+
+136
+00:06:36.863 --> 00:06:38.023
+Where.
+
+137
+00:06:41.010 --> 00:06:44.838
+The id of the user is equal to the userId.
+
+138
+00:06:44.838 --> 00:06:46.819
+And the query that we want is a
+
+139
+00:06:46.819 --> 00:06:49.210
+manual one that we're gonna pass.
+
+140
+00:06:49.210 --> 00:06:53.693
+And for that we want the id name and email of the user.
+
+141
+00:06:54.930 --> 00:06:56.380
+As well as their cart,
+
+142
+00:06:56.380 --> 00:06:58.620
+and then from each cart item inside of that,
+
+143
+00:06:58.620 --> 00:07:00.544
+we want the id and the quantity,
+
+144
+00:07:00.544 --> 00:07:02.737
+and then from each item inside of a cart item,
+
+145
+00:07:02.737 --> 00:07:04.550
+we wanna go a little bit further
+
+146
+00:07:04.550 --> 00:07:09.550
+and grab the title, the price, the id, the description,
+
+147
+00:07:11.530 --> 00:07:13.240
+and the image from each one.
+
+148
+00:07:13.240 --> 00:07:16.653
+So if you want you can also format this a little bit nicer.
+
+149
+00:07:19.850 --> 00:07:24.310
+And this should be wrapped in its own set of curly brackets.
+
+150
+00:07:24.310 --> 00:07:25.143
+There we go.
+
+151
+00:07:25.143 --> 00:07:27.130
+And if you like, you can format it a little bit nicer.
+
+152
+00:07:27.130 --> 00:07:28.820
+Doesn't auto-format it here for us,
+
+153
+00:07:28.820 --> 00:07:30.280
+so let's just do that right now
+
+154
+00:07:30.280 --> 00:07:32.780
+so you can see exactly what we're working with.
+
+155
+00:07:32.780 --> 00:07:37.780
+From each cart you want the id, the quantity, and the item.
+
+156
+00:07:39.480 --> 00:07:44.328
+And then from each item, you want those fields.
+
+157
+00:07:44.328 --> 00:07:45.463
+Beautiful.
+
+158
+00:07:46.368 --> 00:07:48.914
+Next what we wanna do is recalculate
+
+159
+00:07:48.914 --> 00:07:53.097
+the total for the price, so we'll do that now.
+
+160
+00:07:53.097 --> 00:07:58.097
+And say const amount is equal to user.cart.reduce,
+
+161
+00:07:58.510 --> 00:08:00.310
+and we've rewritten this a couple times.
+
+162
+00:08:00.310 --> 00:08:01.970
+Now, the reason why I'm not
+
+163
+00:08:01.970 --> 00:08:03.310
+reaching for that helper function
+
+164
+00:08:03.310 --> 00:08:04.200
+that we wrote is 'cause it's actually
+
+165
+00:08:04.200 --> 00:08:05.729
+in a separate code base
+
+166
+00:08:05.729 --> 00:08:08.647
+and sharing code between the two code bases
+
+167
+00:08:08.647 --> 00:08:11.862
+is not the easiest thing to do once we get into deployment,
+
+168
+00:08:11.862 --> 00:08:14.053
+so I'm just gonna write the little tally
+
+169
+00:08:14.053 --> 00:08:16.683
+and cartItem one once more.
+
+170
+00:08:17.810 --> 00:08:21.530
+For each one, we're going to return the tally,
+
+171
+00:08:21.530 --> 00:08:26.530
+plus the cartItem.item.price times cartItem.quantity.
+
+172
+00:08:30.790 --> 00:08:34.193
+Now start with 0 cents.
+
+173
+00:08:36.762 --> 00:08:40.332
+And let's stop there for a second
+
+174
+00:08:40.332 --> 00:08:42.380
+because I want to make sure this is all working
+
+175
+00:08:42.380 --> 00:08:43.630
+before we write the whole thing
+
+176
+00:08:43.630 --> 00:08:44.850
+and not even hook it up.
+
+177
+00:08:44.850 --> 00:08:46.370
+So let's just console.log,
+
+178
+00:08:46.370 --> 00:08:51.370
+going to charge for a total of $amount.
+
+179
+00:08:56.120 --> 00:08:57.926
+Now let's just flip back to our client side
+
+180
+00:08:57.926 --> 00:09:01.427
+and see if we can get this console log showing up.
+
+181
+00:09:01.427 --> 00:09:03.490
+It's not actually gonna work yet,
+
+182
+00:09:03.490 --> 00:09:05.330
+but let's just get the console log working.
+
+183
+00:09:05.330 --> 00:09:07.780
+So we're gonna flip back to our client side here.
+
+184
+00:09:08.880 --> 00:09:12.056
+We're gonna open up our TakeMyMoney,
+
+185
+00:09:12.056 --> 00:09:14.689
+and we're gonna write that mutation query.
+
+186
+00:09:14.689 --> 00:09:19.689
+So say const CREATE_ORDER_MUTATION is equal to gql.
+
+187
+00:09:21.843 --> 00:09:24.860
+Inside of that we'll make a mutation called createOrder.
+
+188
+00:09:24.860 --> 00:09:29.860
+That takes in a token with a type of a string.
+
+189
+00:09:30.400 --> 00:09:33.248
+From that we'll call the server side
+
+190
+00:09:33.248 --> 00:09:36.863
+createOrder mutation past the token,
+
+191
+00:09:39.239 --> 00:09:42.240
+and back from that we'll ask for the id,
+
+192
+00:09:42.240 --> 00:09:44.483
+the charge, the total,
+
+193
+00:09:45.801 --> 00:09:50.070
+the items that are inside of that with the id,
+
+194
+00:09:50.070 --> 00:09:51.163
+and the title.
+
+195
+00:09:53.720 --> 00:09:57.920
+Then in order to expose this to our Stripe checkout,
+
+196
+00:09:57.920 --> 00:10:01.060
+we're gonna need to put another mutation inside of here.
+
+197
+00:10:01.060 --> 00:10:02.490
+So we'll grab a mutation.
+
+198
+00:10:02.490 --> 00:10:06.650
+A mutation is going to be equal to CREATE_ORDER_MUTATION.
+
+199
+00:10:06.650 --> 00:10:07.990
+And once this has finished,
+
+200
+00:10:07.990 --> 00:10:12.580
+we just wanna refetch the query that is the current user.
+
+201
+00:10:12.580 --> 00:10:13.960
+Because once it's all done,
+
+202
+00:10:13.960 --> 00:10:15.254
+we want to refetch the user's cart
+
+203
+00:10:15.254 --> 00:10:18.060
+so that we show them that their cart is empty.
+
+204
+00:10:18.060 --> 00:10:20.536
+So we'll call refetch queries
+
+205
+00:10:20.536 --> 00:10:24.093
+That is always an array of queries.
+
+206
+00:10:26.060 --> 00:10:27.433
+And that's gonna be the current user query
+
+207
+00:10:27.433 --> 00:10:29.970
+that we'd like to refetch there.
+
+208
+00:10:29.970 --> 00:10:31.208
+Then inside of this mutation
+
+209
+00:10:31.208 --> 00:10:33.833
+you wanna give yourself an arrow function.
+
+210
+00:10:36.718 --> 00:10:37.865
+That arrow function is gonna
+
+211
+00:10:37.865 --> 00:10:41.853
+give us the createOrder mutation.
+
+212
+00:10:43.130 --> 00:10:44.346
+And then we'll pop this at
+
+213
+00:10:44.346 --> 00:10:46.553
+the other end of the Stripe checkout.
+
+214
+00:10:52.732 --> 00:10:55.680
+Now this is our mutation called createOrder.
+
+215
+00:10:55.680 --> 00:10:59.120
+The question is how do we get it up to this onToken?
+
+216
+00:10:59.120 --> 00:11:01.007
+Because we cannot call the createOrder
+
+217
+00:11:01.007 --> 00:11:04.921
+until we have this token right here.
+
+218
+00:11:04.921 --> 00:11:06.512
+So what we can do here,
+
+219
+00:11:06.512 --> 00:11:09.500
+and this is why we did a little arrow function here,
+
+220
+00:11:09.500 --> 00:11:11.960
+is we can pass the createOrder function
+
+221
+00:11:11.960 --> 00:11:13.810
+as a secondary argument to our onToken.
+
+222
+00:11:13.810 --> 00:11:16.623
+Then we can accept it inside of
+
+223
+00:11:16.623 --> 00:11:19.713
+our onToken along side a response.
+
+224
+00:11:22.180 --> 00:11:26.630
+And then we can manually call the mutation
+
+225
+00:11:28.700 --> 00:11:32.283
+once we have the Stripe token.
+
+226
+00:11:33.230 --> 00:11:34.190
+And that's what we'll do.
+
+227
+00:11:34.190 --> 00:11:35.990
+We'll just call it createOrder
+
+228
+00:11:39.006 --> 00:11:41.423
+and we'll pass the variables.
+
+229
+00:11:42.843 --> 00:11:46.363
+Token is going to be a res.id.
+
+230
+00:11:47.340 --> 00:11:51.310
+And then we'll just catch any errors that happen on there
+
+231
+00:11:51.310 --> 00:11:53.943
+and alert the err.message.
+
+232
+00:11:56.223 --> 00:11:59.350
+So if that works, what should happen is that
+
+233
+00:11:59.350 --> 00:12:02.409
+we'll fill out the credit card form, we'll get our token,
+
+234
+00:12:02.409 --> 00:12:06.001
+and then we'll call our mutation on the server side.
+
+235
+00:12:06.001 --> 00:12:08.859
+That will then query the current user,
+
+236
+00:12:08.859 --> 00:12:11.370
+tally up the cart and console log.
+
+237
+00:12:11.370 --> 00:12:13.270
+That's how far we should be right now.
+
+238
+00:12:24.050 --> 00:12:25.290
+Boom.
+
+239
+00:12:25.290 --> 00:12:27.470
+So that obviously worked.
+
+240
+00:12:27.470 --> 00:12:28.890
+Now let's go to our server side,
+
+241
+00:12:28.890 --> 00:12:31.670
+and this is what we got.
+
+242
+00:12:31.670 --> 00:12:34.063
+Going to charge for a total of,
+
+243
+00:12:36.041 --> 00:12:37.570
+see, that's the perfect amount.
+
+244
+00:12:37.570 --> 00:12:39.269
+That's the exact amount that we're displaying
+
+245
+00:12:39.269 --> 00:12:41.761
+on the client side since we recalculated it.
+
+246
+00:12:41.761 --> 00:12:43.220
+Don't worry about this error.
+
+247
+00:12:43.220 --> 00:12:47.300
+That's 'cause we haven't finished our resolver just yet.
+
+248
+00:12:47.300 --> 00:12:49.410
+But everything is in good shape.
+
+249
+00:12:49.410 --> 00:12:52.200
+Let's keep going with the mutation on the client side.
+
+250
+00:12:52.200 --> 00:12:54.538
+So you can leave that console log in here just for now.
+
+251
+00:12:54.538 --> 00:12:56.570
+Next we need to create a Stripe charge,
+
+252
+00:12:56.570 --> 00:13:01.200
+and that is gonna be turn token into money.
+
+253
+00:13:01.200 --> 00:13:02.610
+And in order for us to do that,
+
+254
+00:13:02.610 --> 00:13:05.690
+we also need to configure our Stripe locally.
+
+255
+00:13:05.690 --> 00:13:07.519
+So I always like to do this in a separate file
+
+256
+00:13:07.519 --> 00:13:12.519
+because then I can import the Stripe into any of my files
+
+257
+00:13:13.500 --> 00:13:16.080
+and not have to reconfigure it with that secret token.
+
+258
+00:13:16.080 --> 00:13:18.134
+So that's exactly what we're gonna do right now.
+
+259
+00:13:18.134 --> 00:13:20.350
+We're gonna go into our source folder,
+
+260
+00:13:20.350 --> 00:13:23.441
+and inside of there you'll see that we have a Stripe.js.
+
+261
+00:13:23.441 --> 00:13:26.752
+And all this does is it requires the Stripe node module,
+
+262
+00:13:26.752 --> 00:13:30.680
+which is the officially supported Stripe module from Stripe.
+
+263
+00:13:30.680 --> 00:13:32.157
+And then you run that,
+
+264
+00:13:32.157 --> 00:13:35.267
+and you configuring it by passing it your Stripe secret.
+
+265
+00:13:35.267 --> 00:13:37.220
+And then I export that.
+
+266
+00:13:37.220 --> 00:13:38.430
+So that's all in one line.
+
+267
+00:13:38.430 --> 00:13:40.649
+This how it'd look like if it was a little bit more verbose.
+
+268
+00:13:40.649 --> 00:13:45.313
+So say const Stripe is equal to require Stripe.
+
+269
+00:13:47.910 --> 00:13:51.218
+And then const config is equal to Stripe,
+
+270
+00:13:51.218 --> 00:13:55.331
+and then we would just call it with our actual token.
+
+271
+00:13:55.331 --> 00:13:58.623
+But in our case, we're putting it in process.env.
+
+272
+00:14:01.609 --> 00:14:03.890
+And then you export that config.
+
+273
+00:14:03.890 --> 00:14:08.720
+Module.exports is equal to config.
+
+274
+00:14:08.720 --> 00:14:10.760
+However, we can just do it in one little line here.
+
+275
+00:14:10.760 --> 00:14:12.410
+The only thing we need to do is
+
+276
+00:14:12.410 --> 00:14:14.033
+to head back to our Stripe backend.
+
+277
+00:14:14.033 --> 00:14:17.787
+Reveal your token, copy your secret key.
+
+278
+00:14:17.787 --> 00:14:20.553
+We're gonna open up variables.env.
+
+279
+00:14:22.578 --> 00:14:25.903
+And then paste it into there.
+
+280
+00:14:29.460 --> 00:14:31.900
+And I'll go back to our mutation and import that.
+
+281
+00:14:31.900 --> 00:14:36.900
+So const Stripe is equal to require Stripe.
+
+282
+00:14:41.130 --> 00:14:44.040
+And then this Stripe has all of the methods on side of it
+
+283
+00:14:44.040 --> 00:14:46.870
+for doing things like charging and pulling data
+
+284
+00:14:46.870 --> 00:14:49.418
+and making refunds and pulling receipts
+
+285
+00:14:49.418 --> 00:14:51.590
+and all of that good stuff that the Stripe module
+
+286
+00:14:51.590 --> 00:14:53.953
+will actually do for us, so let's go back to our
+
+287
+00:14:53.953 --> 00:14:56.220
+mutation that we've got here.
+
+288
+00:14:56.220 --> 00:15:01.220
+Say const charge is equal to await,
+
+289
+00:15:02.630 --> 00:15:05.330
+'cause the method that we're gonna use returns a promise,
+
+290
+00:15:05.330 --> 00:15:06.680
+so we can just await it.
+
+291
+00:15:06.680 --> 00:15:11.353
+Stripe.charges.create.
+
+292
+00:15:12.700 --> 00:15:13.955
+And then inside of the charge
+
+293
+00:15:13.955 --> 00:15:17.220
+we need to pass a couple different pieces of info it needs.
+
+294
+00:15:17.220 --> 00:15:19.947
+First the amount that we need to pass, which is the amount.
+
+295
+00:15:19.947 --> 00:15:21.963
+Again, we can just pass amount.
+
+296
+00:15:22.990 --> 00:15:24.469
+Second, the currency.
+
+297
+00:15:24.469 --> 00:15:26.047
+It's gonna be USD.
+
+298
+00:15:27.580 --> 00:15:30.065
+And the source is going to be the token
+
+299
+00:15:30.065 --> 00:15:32.660
+that we got from the client side,
+
+300
+00:15:32.660 --> 00:15:35.610
+and that is coming in from our args.token, right?
+
+301
+00:15:35.610 --> 00:15:37.005
+Because if you look at our schema,
+
+302
+00:15:37.005 --> 00:15:39.510
+the one thing that we're passing is the token
+
+303
+00:15:39.510 --> 00:15:43.340
+and that's gonna be serviced to us via our args.
+
+304
+00:15:43.340 --> 00:15:45.350
+So that's going to take that.
+
+305
+00:15:45.350 --> 00:15:47.610
+It's gonna go to Stripe and come back,
+
+306
+00:15:47.610 --> 00:15:49.681
+and that's what's actually going to finish this transaction.
+
+307
+00:15:49.681 --> 00:15:53.220
+Let's pause it there and see if this actually works.
+
+308
+00:15:53.220 --> 00:15:54.860
+This is a fairly big part for us.
+
+309
+00:15:54.860 --> 00:15:56.170
+So we're gonna go back here.
+
+310
+00:15:56.170 --> 00:15:57.630
+Gonna go to my cart.
+
+311
+00:15:57.630 --> 00:15:59.153
+Gonna checkout.
+
+312
+00:16:08.830 --> 00:16:10.224
+Looks like it worked.
+
+313
+00:16:10.224 --> 00:16:13.170
+We obviously are gonna get an error here.
+
+314
+00:16:13.170 --> 00:16:16.427
+Cannot return non-nullable field for Mutation.createOrder.
+
+315
+00:16:16.427 --> 00:16:19.150
+That's 'cause we haven't done this last little bit here,
+
+316
+00:16:19.150 --> 00:16:20.810
+return the order to the client.
+
+317
+00:16:20.810 --> 00:16:21.970
+That's totally fine.
+
+318
+00:16:21.970 --> 00:16:23.938
+But I think if we go to
+
+319
+00:16:23.938 --> 00:16:26.849
+our payments in our Stripe dashboard.
+
+320
+00:16:26.849 --> 00:16:28.139
+Woohoo!
+
+321
+00:16:28.139 --> 00:16:29.742
+We're rich!
+
+322
+00:16:29.742 --> 00:16:32.580
+Look at all this cash flowing in.
+
+323
+00:16:32.580 --> 00:16:34.393
+So obviously we've taken that token
+
+324
+00:16:34.393 --> 00:16:37.069
+and we've actually turned it into a charge
+
+325
+00:16:37.069 --> 00:16:41.363
+and then it shows up to us in the Stripe backend
+
+326
+00:16:41.363 --> 00:16:42.948
+and gives us all of the information
+
+327
+00:16:42.948 --> 00:16:46.720
+about how much was paid, what our fees are.
+
+328
+00:16:46.720 --> 00:16:49.055
+In my case, it converted it to Canadian
+
+329
+00:16:49.055 --> 00:16:51.920
+'cause I don't have it set up with a US bank account.
+
+330
+00:16:51.920 --> 00:16:53.030
+That is something you can do
+
+331
+00:16:53.030 --> 00:16:54.954
+if you do have Stripe setup.
+
+332
+00:16:54.954 --> 00:16:59.314
+And looks like everything worked really nicely.
+
+333
+00:16:59.314 --> 00:17:00.632
+Another thing you can do is
+
+334
+00:17:00.632 --> 00:17:03.484
+you can pass along a description at this point.
+
+335
+00:17:03.484 --> 00:17:07.589
+So if you did want to put an order id
+
+336
+00:17:07.589 --> 00:17:11.073
+or a quick explanation of what the charge was for,
+
+337
+00:17:11.073 --> 00:17:13.600
+you could put a description along with that.
+
+338
+00:17:13.600 --> 00:17:16.440
+You just look up the docs for Stripe.charges.create.
+
+339
+00:17:16.440 --> 00:17:17.560
+You can see all of the different
+
+340
+00:17:17.560 --> 00:17:19.300
+arguments that you can pass here.
+
+341
+00:17:19.300 --> 00:17:21.513
+So that is the actual charging of the credit card.
+
+342
+00:17:21.513 --> 00:17:23.727
+But we're still on the hook
+
+343
+00:17:23.727 --> 00:17:27.100
+for a whole bunch of other things on our end,
+
+344
+00:17:27.100 --> 00:17:30.050
+which is converting the CartItems to OrderItems,
+
+345
+00:17:30.050 --> 00:17:31.797
+converting it to an order, cleaning up,
+
+346
+00:17:31.797 --> 00:17:33.580
+and then returning the final data.
+
+347
+00:17:33.580 --> 00:17:35.521
+So that's what we'll pick up in the next video.
+
+348
+00:17:35.521 --> 00:17:36.709
+If you do want to try
+
+349
+00:17:36.709 --> 00:17:38.982
+and tackle these final things yourself,
+
+350
+00:17:38.982 --> 00:17:40.800
+I think it's fairly straightforward.
+
+351
+00:17:40.800 --> 00:17:42.259
+It's just a whole bunch of CRUD operations
+
+352
+00:17:42.259 --> 00:17:44.982
+that is inside of our ctx.db
+
+353
+00:17:44.982 --> 00:17:47.790
+all of the available Prisma things that we have.
+
+354
+00:17:47.790 --> 00:17:49.740
+If not, I'll see you in the next video.
+

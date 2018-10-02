@@ -1,0 +1,2562 @@
+﻿WEBVTT
+
+1
+00:00:01.497 --> 00:00:03.450
+<v Wes>All right, we are going to be doing</v>
+
+2
+00:00:03.450 --> 00:00:05.370
+the C part of CRUD, which is we're actually going
+
+3
+00:00:05.370 --> 00:00:07.300
+to be creating an item, and then we're going to be doing
+
+4
+00:00:07.300 --> 00:00:10.133
+that via the sell page, where we have a little form here
+
+5
+00:00:10.133 --> 00:00:13.790
+that takes in a title, a price, as well as a description
+
+6
+00:00:13.790 --> 00:00:15.630
+for the item, and then you can also go ahead
+
+7
+00:00:15.630 --> 00:00:16.463
+and upload an image.
+
+8
+00:00:16.463 --> 00:00:18.810
+We're gonna hold on the image part until the next video
+
+9
+00:00:18.810 --> 00:00:19.920
+and that's where we're going to learn
+
+10
+00:00:19.920 --> 00:00:24.130
+how to interface with external upload APIs.
+
+11
+00:00:24.130 --> 00:00:25.140
+Specifically, we're going to be
+
+12
+00:00:25.140 --> 00:00:26.520
+using one called Cloudinary.
+
+13
+00:00:26.520 --> 00:00:31.520
+So, open up your sell.js file and then also open up--
+
+14
+00:00:32.080 --> 00:00:33.700
+Or actually, we have to create this ourselves.
+
+15
+00:00:33.700 --> 00:00:36.660
+Go into your components folder and make a capital C,
+
+16
+00:00:36.660 --> 00:00:40.390
+capital I, CreateItem.js and we will scaffold
+
+17
+00:00:40.390 --> 00:00:42.700
+out a little react component there--
+
+18
+00:00:42.700 --> 00:00:44.380
+Ooh, that was a wrong one.
+
+19
+00:00:44.380 --> 00:00:45.914
+RRC, oh, that's for redux.
+
+20
+00:00:45.914 --> 00:00:47.600
+RCC.
+
+21
+00:00:47.600 --> 00:00:48.520
+Beautiful.
+
+22
+00:00:48.520 --> 00:00:51.544
+I also like to export them at the bottom.
+
+23
+00:00:51.544 --> 00:00:52.461
+CreateItem.
+
+24
+00:00:53.700 --> 00:00:54.540
+Very good.
+
+25
+00:00:54.540 --> 00:00:56.330
+We also need a couple more things to import here.
+
+26
+00:00:56.330 --> 00:01:01.330
+We're gonna import the mutation component from react-apollo.
+
+27
+00:01:02.050 --> 00:01:04.010
+That's going to allow us to actually push data.
+
+28
+00:01:04.010 --> 00:01:05.330
+Remember query mutation.
+
+29
+00:01:05.330 --> 00:01:07.770
+Query is when you pull data, mutation is when you push
+
+30
+00:01:07.770 --> 00:01:09.530
+and actually make it change.
+
+31
+00:01:09.530 --> 00:01:14.530
+We are also going to import the form tag from our styles.
+
+32
+00:01:15.170 --> 00:01:20.170
+So, import form from styles/Form, capital F Form.
+
+33
+00:01:21.800 --> 00:01:24.600
+We need that formatMoney function that we've used before
+
+34
+00:01:28.230 --> 00:01:31.260
+and we also need GraphQL, GQL.
+
+35
+00:01:31.260 --> 00:01:35.880
+So, input gql from graphql-tag.
+
+36
+00:01:35.880 --> 00:01:37.800
+And we got couple more things we want to import
+
+37
+00:01:37.800 --> 00:01:41.310
+But let's pump the brakes on importing things
+
+38
+00:01:41.310 --> 00:01:42.580
+until we actually need it so we can
+
+39
+00:01:42.580 --> 00:01:43.490
+actually understand what they do.
+
+40
+00:01:43.490 --> 00:01:46.080
+So first thing: let's just render out a form tag,
+
+41
+00:01:46.080 --> 00:01:48.380
+capital F Form, and inside of that,
+
+42
+00:01:48.380 --> 00:01:51.493
+give yourself an H2 that says sell an item.
+
+43
+00:01:52.711 --> 00:01:54.770
+Then we'll go to our sell page over here
+
+44
+00:01:56.780 --> 00:01:57.613
+and, oh--
+
+45
+00:01:57.613 --> 00:01:58.446
+Obviously it's not working yet
+
+46
+00:01:58.446 --> 00:01:59.800
+because we have to go back to our sell page,
+
+47
+00:01:59.800 --> 00:02:04.800
+import the CreateItem method from our components.
+
+48
+00:02:04.980 --> 00:02:06.140
+Do do do.
+
+49
+00:02:06.140 --> 00:02:10.310
+Components/CreateItem, there we go.
+
+50
+00:02:10.310 --> 00:02:12.630
+And then we can replace this paragraph tag here
+
+51
+00:02:12.630 --> 00:02:15.193
+with the CreateItem component,
+
+52
+00:02:16.500 --> 00:02:17.680
+Sell an item.
+
+53
+00:02:17.680 --> 00:02:19.210
+Looking good!
+
+54
+00:02:19.210 --> 00:02:23.100
+Okay next, what we want to do is I actually want a fieldset
+
+55
+00:02:23.100 --> 00:02:25.620
+and I'll explain why I want a fieldset
+
+56
+00:02:25.620 --> 00:02:28.850
+in just a quick second.
+
+57
+00:02:28.850 --> 00:02:31.320
+And then, inside of that we need a bunch of inputs.
+
+58
+00:02:31.320 --> 00:02:33.030
+Let's take a look at here.
+
+59
+00:02:33.030 --> 00:02:34.680
+So, first one is for title.
+
+60
+00:02:34.680 --> 00:02:35.780
+I'm going to have it label
+
+61
+00:02:35.780 --> 00:02:37.450
+and I'm going to call that title.
+
+62
+00:02:37.450 --> 00:02:41.060
+So we use htmlFor in React instead of regular for,
+
+63
+00:02:41.060 --> 00:02:44.440
+just because for is a reserved word in JavaScript.
+
+64
+00:02:44.440 --> 00:02:46.863
+So they use htmlFor, so that's for title.
+
+65
+00:02:46.863 --> 00:02:51.863
+Then I'm going to do my title, there.
+
+66
+00:02:51.990 --> 00:02:55.330
+And then we want to input type of text,
+
+67
+00:02:55.330 --> 00:03:00.330
+id of title and name of title,
+
+68
+00:03:00.620 --> 00:03:04.880
+placeholder of title, a required attribute.
+
+69
+00:03:04.880 --> 00:03:08.770
+Now, let's talk about where the data is going to come from.
+
+70
+00:03:08.770 --> 00:03:11.729
+This CreateItem is going to have a local state inside of it.
+
+71
+00:03:11.729 --> 00:03:13.477
+And this is kind of cool because you might think,
+
+72
+00:03:13.477 --> 00:03:15.770
+"Oh we're using Apollo, we have no need for state."
+
+73
+00:03:15.770 --> 00:03:18.700
+But state is really helpful for when you want
+
+74
+00:03:18.700 --> 00:03:21.520
+to just contain data locally within a component.
+
+75
+00:03:21.520 --> 00:03:25.950
+And before we actually send all the data to our GraphQL API,
+
+76
+00:03:25.950 --> 00:03:27.870
+we need to store it somewhere, right?
+
+77
+00:03:27.870 --> 00:03:30.500
+So we're going to be temporarily storing that in state.
+
+78
+00:03:30.500 --> 00:03:31.930
+So we're actually gonna go up here,
+
+79
+00:03:31.930 --> 00:03:33.930
+and we're gonna say state, statte!
+
+80
+00:03:33.930 --> 00:03:37.710
+State is equal to, and our state is going to have
+
+81
+00:03:37.710 --> 00:03:40.530
+a default state of the following values:
+
+82
+00:03:40.530 --> 00:03:43.670
+title nothing, description nothing, image, large image,
+
+83
+00:03:43.670 --> 00:03:45.670
+all those empty strings, and then price is going
+
+84
+00:03:45.670 --> 00:03:47.950
+to be zero, which is an empty number.
+
+85
+00:03:47.950 --> 00:03:50.700
+Then what we can do here is we can say the value
+
+86
+00:03:50.700 --> 00:03:55.573
+is bound to state, so this.state.title.
+
+87
+00:03:58.350 --> 00:03:59.360
+Let's see how that looks.
+
+88
+00:03:59.360 --> 00:04:03.260
+Oh, cannot read title of undefined.
+
+89
+00:04:03.260 --> 00:04:04.110
+Why not?
+
+90
+00:04:04.110 --> 00:04:06.780
+Maybe this is one of those ones that I need to just refresh.
+
+91
+00:04:06.780 --> 00:04:10.030
+Yeah, that was one of those ones where I had to refresh
+
+92
+00:04:10.030 --> 00:04:12.820
+and if I put something in title like cool shoes.
+
+93
+00:04:12.820 --> 00:04:16.540
+Now, when you go ahead and try to change the value in here,
+
+94
+00:04:16.540 --> 00:04:18.360
+it actually won't work and if we open
+
+95
+00:04:18.360 --> 00:04:20.413
+up our dev tools, we're going to see why.
+
+96
+00:04:22.387 --> 00:04:24.717
+"Failed prop type: you provided value prop
+
+97
+00:04:24.717 --> 00:04:26.827
+"to a form field without an onChange handler.
+
+98
+00:04:26.827 --> 00:04:28.760
+"This will render a read-only field."
+
+99
+00:04:28.760 --> 00:04:32.260
+So, the idea behind these inputs with React
+
+100
+00:04:32.260 --> 00:04:34.920
+is that if you ever tie something
+
+101
+00:04:34.920 --> 00:04:38.300
+that is changeable in the dom to state,
+
+102
+00:04:38.300 --> 00:04:40.060
+then you're in a little bit of hot water
+
+103
+00:04:40.060 --> 00:04:42.260
+because now there's two places where that data lives.
+
+104
+00:04:42.260 --> 00:04:45.330
+That data lives in your text area, as well as in state,
+
+105
+00:04:45.330 --> 00:04:47.440
+and the whole idea with react is that you always
+
+106
+00:04:47.440 --> 00:04:49.400
+want a single source of truth,
+
+107
+00:04:49.400 --> 00:04:52.180
+and you always want your data to live in one spot.
+
+108
+00:04:52.180 --> 00:04:55.090
+So, the way that you handle that, when it actually changes,
+
+109
+00:04:55.090 --> 00:04:59.080
+is kind of a bit of a roundabout where you listen
+
+110
+00:04:59.080 --> 00:05:02.220
+for the change event on this input, you intercept
+
+111
+00:05:02.220 --> 00:05:05.730
+that event, you grab the value that the user had hoped they
+
+112
+00:05:05.730 --> 00:05:08.130
+had typed, and then you set that to state,
+
+113
+00:05:08.130 --> 00:05:09.197
+which will then actually make the input change.
+
+114
+00:05:09.197 --> 00:05:11.340
+It's just this whole roundabout way.
+
+115
+00:05:11.340 --> 00:05:15.490
+So, let's do an onChange handler for this input here.
+
+116
+00:05:15.490 --> 00:05:19.000
+So let's say OnChange is equal to and we'll just say
+
+117
+00:05:19.000 --> 00:05:23.130
+this.handleChange and then we'll go up here
+
+118
+00:05:23.130 --> 00:05:26.969
+and we'll make a method handleChange.
+
+119
+00:05:26.969 --> 00:05:29.500
+The reason why we make that an arrow function
+
+120
+00:05:29.500 --> 00:05:30.960
+is that because--
+
+121
+00:05:30.960 --> 00:05:32.760
+This is what is called an instance property
+
+122
+00:05:32.760 --> 00:05:35.720
+and inside of this, we're going to be able to access this,
+
+123
+00:05:35.720 --> 00:05:36.840
+which is important 'cause we need
+
+124
+00:05:36.840 --> 00:05:38.850
+to call this.setState, right?
+
+125
+00:05:38.850 --> 00:05:41.160
+If this was a regular method,
+
+126
+00:05:41.160 --> 00:05:44.530
+ES6 classes do not bind regular methods
+
+127
+00:05:44.530 --> 00:05:46.640
+to the instance of the property.
+
+128
+00:05:46.640 --> 00:05:48.920
+And then if you've taken my React for Beginners course,
+
+129
+00:05:48.920 --> 00:05:51.760
+you know you have to do this terrible thing
+
+130
+00:05:51.760 --> 00:05:54.040
+where you have your constructor
+
+131
+00:05:54.040 --> 00:05:56.020
+and you call super and then you say
+
+132
+00:05:56.020 --> 00:06:00.500
+this.handleChange = this.handleChange.bind(this)
+
+133
+00:06:00.500 --> 00:06:03.290
+and that's a bit of a mess.
+
+134
+00:06:03.290 --> 00:06:06.600
+But what that does is where you do have access to this,
+
+135
+00:06:06.600 --> 00:06:09.910
+you overwrite the handleChange function
+
+136
+00:06:09.910 --> 00:06:12.700
+and you bind it to that instance of this.
+
+137
+00:06:12.700 --> 00:06:14.945
+So, nightmare situation.
+
+138
+00:06:14.945 --> 00:06:16.930
+So, the way that we can get around
+
+139
+00:06:16.930 --> 00:06:18.950
+that is with instance properties.
+
+140
+00:06:18.950 --> 00:06:21.470
+Indent setting it to an arrow function
+
+141
+00:06:21.470 --> 00:06:23.710
+and that will then we able to access this
+
+142
+00:06:23.710 --> 00:06:25.700
+and all of the other things that we need.
+
+143
+00:06:25.700 --> 00:06:27.800
+So, handleChange will give us an event.
+
+144
+00:06:27.800 --> 00:06:30.160
+And let's just actually console.log the event
+
+145
+00:06:30.160 --> 00:06:31.730
+and see what we're working with here.
+
+146
+00:06:31.730 --> 00:06:34.283
+So, open up your dev tools.
+
+147
+00:06:36.380 --> 00:06:38.530
+See, I'm gonna type the letter 'x'
+
+148
+00:06:38.530 --> 00:06:41.160
+or any time I type a letter, we get the event
+
+149
+00:06:41.160 --> 00:06:44.780
+and inside of that event is a number of things
+
+150
+00:06:44.780 --> 00:06:47.250
+but the target is actually what we're looking for.
+
+151
+00:06:47.250 --> 00:06:49.113
+So, let's e.target,
+
+152
+00:06:52.220 --> 00:06:54.613
+that's the input, .value.
+
+153
+00:06:55.670 --> 00:06:57.750
+So, cool shoesx.
+
+154
+00:06:57.750 --> 00:07:01.800
+See, it's telling us what we wish we had typed, cool shoesx,
+
+155
+00:07:01.800 --> 00:07:04.297
+but then React automatically backspaces it and goes,
+
+156
+00:07:04.297 --> 00:07:06.850
+"Uh-uh-uh, not allowed,"
+
+157
+00:07:06.850 --> 00:07:10.500
+because then you have your state in two places.
+
+158
+00:07:10.500 --> 00:07:13.710
+So, what we need to do is we say this.setState
+
+159
+00:07:15.690 --> 00:07:20.690
+and we'll say the title is going to be e.target.value.
+
+160
+00:07:23.010 --> 00:07:25.210
+And then you type in an 'x' and that allows us
+
+161
+00:07:25.210 --> 00:07:27.700
+to actually type into here.
+
+162
+00:07:27.700 --> 00:07:32.100
+And if we were to inspect that component here,
+
+163
+00:07:32.100 --> 00:07:34.460
+and we find our CreateItem, you see
+
+164
+00:07:34.460 --> 00:07:38.390
+that the title state is being updated as I type.
+
+165
+00:07:38.390 --> 00:07:40.970
+Now, we can make this handleChange function
+
+166
+00:07:40.970 --> 00:07:44.100
+a little bit more resilient and it can be reused
+
+167
+00:07:44.100 --> 00:07:45.630
+for all of the different inputs
+
+168
+00:07:45.630 --> 00:07:47.390
+that we have on that specific page.
+
+169
+00:07:47.390 --> 00:07:49.300
+So, first thing we want to do is we want
+
+170
+00:07:49.300 --> 00:07:51.530
+to get the name, the type, and the value.
+
+171
+00:07:51.530 --> 00:07:56.530
+So, say const {name, type, value} = e.target
+
+172
+00:07:57.970 --> 00:08:00.790
+and what that's going to do is it's going to give us access
+
+173
+00:08:00.790 --> 00:08:04.090
+to the input's name, the input's type, and the input's value
+
+174
+00:08:04.090 --> 00:08:07.713
+And we can just go ahead and console.log all three of those.
+
+175
+00:08:10.880 --> 00:08:12.410
+It's a little trick I like to do instead
+
+176
+00:08:12.410 --> 00:08:14.980
+of just console logging name, type, value.
+
+177
+00:08:14.980 --> 00:08:17.170
+Here, let me show you what that looks like.
+
+178
+00:08:17.170 --> 00:08:20.680
+The name of title, the type of text, so the name,
+
+179
+00:08:20.680 --> 00:08:24.080
+which comes from here, the type, which is text,
+
+180
+00:08:24.080 --> 00:08:25.790
+and then the value is whatever someone
+
+181
+00:08:25.790 --> 00:08:28.000
+had typed into that box.
+
+182
+00:08:28.000 --> 00:08:30.910
+But what I like to do is to wrap it in curly brackets
+
+183
+00:08:32.180 --> 00:08:35.090
+and then it actually gives you some keys for it
+
+184
+00:08:35.090 --> 00:08:37.030
+so you know exactly what you're looking at.
+
+185
+00:08:37.030 --> 00:08:39.275
+That's just using ES6.
+
+186
+00:08:39.275 --> 00:08:41.040
+It's the same thing as saying name: name,
+
+187
+00:08:41.040 --> 00:08:43.890
+type: type, value: value.
+
+188
+00:08:43.890 --> 00:08:44.723
+So, that's good.
+
+189
+00:08:44.723 --> 00:08:45.914
+We have those values there.
+
+190
+00:08:45.914 --> 00:08:49.526
+Then what we need to do is say const val is equal to,
+
+191
+00:08:49.526 --> 00:08:52.350
+and if this is a number, we need to make sure
+
+192
+00:08:52.350 --> 00:08:54.910
+that it is a proper number because any text that comes out
+
+193
+00:08:54.910 --> 00:08:57.610
+of an input, even if it's a type of number,
+
+194
+00:08:57.610 --> 00:08:59.450
+it will still come out as a string
+
+195
+00:08:59.450 --> 00:09:02.960
+and we need to coerce that into a proper number.
+
+196
+00:09:02.960 --> 00:09:04.140
+So, we'll say if the
+
+197
+00:09:04.140 --> 00:09:09.140
+type === number ? parseFloat(value) : value.
+
+198
+00:09:13.780 --> 00:09:16.220
+Otherwise, we're just going to return the regular value.
+
+199
+00:09:16.220 --> 00:09:18.563
+So, we have this new variable called val.
+
+200
+00:09:19.440 --> 00:09:22.190
+Gotta get that out of there, I accidentally typed that.
+
+201
+00:09:23.550 --> 00:09:27.240
+And then we can modify this.setState
+
+202
+00:09:27.240 --> 00:09:31.590
+to be not e.target.value but just with val.
+
+203
+00:09:31.590 --> 00:09:33.890
+Let's see if it's still working.
+
+204
+00:09:33.890 --> 00:09:35.180
+Still works great.
+
+205
+00:09:35.180 --> 00:09:39.090
+However, we don't want to make this function just work
+
+206
+00:09:39.090 --> 00:09:42.310
+for the title input, we want to make it work for any input.
+
+207
+00:09:42.310 --> 00:09:45.990
+So, what we can use is computed property names
+
+208
+00:09:45.990 --> 00:09:49.300
+where we can set the name of it
+
+209
+00:09:49.300 --> 00:09:52.270
+and that's going to be title, price, description,
+
+210
+00:09:52.270 --> 00:09:54.690
+file, any input that we have,
+
+211
+00:09:54.690 --> 00:09:57.130
+and then it will mirror that change to state.
+
+212
+00:09:57.130 --> 00:09:59.020
+So, let's see if it still works.
+
+213
+00:09:59.020 --> 00:10:00.180
+Very nicely.
+
+214
+00:10:00.180 --> 00:10:01.910
+Now, that means that we should be able
+
+215
+00:10:01.910 --> 00:10:04.363
+to take this one label that we have here,
+
+216
+00:10:05.390 --> 00:10:08.863
+paste it, change this over to price,
+
+217
+00:10:09.950 --> 00:10:12.793
+change the input type to a number,
+
+218
+00:10:15.010 --> 00:10:16.313
+call Price,
+
+219
+00:10:18.170 --> 00:10:20.030
+and I should be able to--
+
+220
+00:10:20.030 --> 00:10:21.120
+There we go.
+
+221
+00:10:21.120 --> 00:10:25.110
+Use these inputs or actually paste a regular number in there
+
+222
+00:10:25.110 --> 00:10:27.410
+and then the values in my React
+
+223
+00:10:29.660 --> 00:10:30.493
+state
+
+224
+00:10:32.780 --> 00:10:33.750
+are looking good.
+
+225
+00:10:33.750 --> 00:10:36.850
+That's a bit of an expensive thing to buy.
+
+226
+00:10:36.850 --> 00:10:37.790
+There we go.
+
+227
+00:10:37.790 --> 00:10:39.480
+You can see that there's no quotes around it
+
+228
+00:10:39.480 --> 00:10:40.790
+because we're doing that little check.
+
+229
+00:10:40.790 --> 00:10:45.040
+So, I love this little handleChange event handler
+
+230
+00:10:45.040 --> 00:10:48.060
+that I have because it's just a couple lines of code
+
+231
+00:10:48.060 --> 00:10:53.060
+and it allows you to mirror multiple inputs to your state
+
+232
+00:10:53.440 --> 00:10:56.070
+so that if you were adding more inputs in the future,
+
+233
+00:10:56.070 --> 00:11:00.690
+there's no extra handlers that you would have to create.
+
+234
+00:11:00.690 --> 00:11:04.028
+So, let's do the last one for the description.
+
+235
+00:11:04.028 --> 00:11:05.950
+(imitates trumpet)
+
+236
+00:11:05.950 --> 00:11:10.950
+Label for description and--
+
+237
+00:11:10.950 --> 00:11:13.663
+Oh, this shouldn't be title, this should be price,
+
+238
+00:11:17.600 --> 00:11:19.040
+description.
+
+239
+00:11:19.040 --> 00:11:22.140
+This is going to be a text area and normally in HTML,
+
+240
+00:11:22.140 --> 00:11:24.330
+you're not allowed to self-close a text area
+
+241
+00:11:24.330 --> 00:11:26.800
+but because it's React, it's smart enough to know.
+
+242
+00:11:26.800 --> 00:11:30.210
+As well as normally, a text area cannot have a value prop
+
+243
+00:11:30.210 --> 00:11:34.000
+but in React it can because we can bind
+
+244
+00:11:34.000 --> 00:11:35.550
+that to our specific state.
+
+245
+00:11:35.550 --> 00:11:37.350
+So, input type--
+
+246
+00:11:37.350 --> 00:11:38.563
+Oh, who's here?
+
+247
+00:11:39.470 --> 00:11:42.610
+Oh ho ho! (laughs)
+
+248
+00:11:42.610 --> 00:11:45.160
+My wife got some Sephora.
+
+249
+00:11:45.160 --> 00:11:46.153
+Thank you!
+
+250
+00:11:47.820 --> 00:11:48.773
+Thank you!
+
+251
+00:11:51.030 --> 00:11:53.850
+Okay, oh, that's enough of that.
+
+252
+00:11:53.850 --> 00:11:54.980
+So, let's (laughs) go back here.
+
+253
+00:11:54.980 --> 00:11:56.830
+Type, number, don't need that.
+
+254
+00:11:56.830 --> 00:12:01.310
+Id=description, name=description,
+
+255
+00:12:01.310 --> 00:12:06.310
+placeholder=Enter A Description, required attribute
+
+256
+00:12:06.870 --> 00:12:10.530
+the value is going to be set to this.state.description,
+
+257
+00:12:10.530 --> 00:12:11.363
+and then the onChange.
+
+258
+00:12:11.363 --> 00:12:14.493
+So, let's see if that still works.
+
+259
+00:12:15.610 --> 00:12:16.443
+Beautiful.
+
+260
+00:12:16.443 --> 00:12:18.870
+You can see it's being mirrored to my state here
+
+261
+00:12:18.870 --> 00:12:21.490
+and the price just works just fine.
+
+262
+00:12:21.490 --> 00:12:22.323
+Cool.
+
+263
+00:12:22.323 --> 00:12:25.790
+Now, what we want to do is we need a button for submit.
+
+264
+00:12:25.790 --> 00:12:30.790
+So, button type=submit and that's going to say Submit.
+
+265
+00:12:33.380 --> 00:12:36.240
+And normally, when you go ahead and submit this,
+
+266
+00:12:36.240 --> 00:12:39.770
+it's actually just going to put it all in the URL bar,
+
+267
+00:12:39.770 --> 00:12:43.260
+which is not what we want to do so we need to listen
+
+268
+00:12:43.260 --> 00:12:45.570
+for the submit event on this form
+
+269
+00:12:45.570 --> 00:12:48.600
+and actually push it up to our server.
+
+270
+00:12:48.600 --> 00:12:50.570
+So, let's do that here.
+
+271
+00:12:50.570 --> 00:12:54.070
+I'll say Form onSubmit is equal to curly brackets--
+
+272
+00:12:54.070 --> 00:12:55.720
+We can actually do this right in line
+
+273
+00:12:55.720 --> 00:12:57.480
+because the submit event handler is just going
+
+274
+00:12:57.480 --> 00:12:58.850
+to be a couple lines of code.
+
+275
+00:12:58.850 --> 00:13:01.533
+So, say we got the event.
+
+276
+00:13:02.620 --> 00:13:03.453
+The first thing you want to do
+
+277
+00:13:03.453 --> 00:13:05.350
+with the form is call it e.preventDefault.
+
+278
+00:13:05.350 --> 00:13:07.410
+That's going to stop the form from actually submitting
+
+279
+00:13:07.410 --> 00:13:08.900
+and that's going to stop that, like,
+
+280
+00:13:08.900 --> 00:13:11.000
+URL thing that was happening earlier.
+
+281
+00:13:11.000 --> 00:13:13.640
+And then let's just console.log(this.state)
+
+282
+00:13:13.640 --> 00:13:15.363
+to see what we're working with.
+
+283
+00:13:16.290 --> 00:13:18.750
+So, one thing I do like to do when I'm testing
+
+284
+00:13:18.750 --> 00:13:23.290
+this stuff out all the time is just put some default content
+
+285
+00:13:23.290 --> 00:13:25.730
+into my states so I'm not spending my whole day
+
+286
+00:13:25.730 --> 00:13:27.970
+just typing in random boxes.
+
+287
+00:13:27.970 --> 00:13:29.313
+So, dog.jpg,
+
+288
+00:13:30.200 --> 00:13:34.433
+Large-dog.jpg, and price 1000.
+
+289
+00:13:35.920 --> 00:13:38.900
+Now, if I refresh this now all I have to do is
+
+290
+00:13:38.900 --> 00:13:40.810
+hit the submit button and you see
+
+291
+00:13:40.810 --> 00:13:42.780
+that we are stopping the form from submitting
+
+292
+00:13:42.780 --> 00:13:45.260
+and we actually have our state.
+
+293
+00:13:45.260 --> 00:13:46.093
+Good!
+
+294
+00:13:46.093 --> 00:13:47.090
+Now, here's the question.
+
+295
+00:13:47.090 --> 00:13:52.090
+How do we get it to push the data to our GraphQL server?
+
+296
+00:13:53.060 --> 00:13:57.057
+And that's done with a mutation but the question is, like,
+
+297
+00:13:57.057 --> 00:13:57.890
+"How do I do that?
+
+298
+00:13:57.890 --> 00:13:59.247
+"Like, where do I send the data?
+
+299
+00:13:59.247 --> 00:14:01.180
+"Do I send it to mutation?"
+
+300
+00:14:01.180 --> 00:14:04.410
+And we first need to write a query that is going
+
+301
+00:14:04.410 --> 00:14:06.070
+to submit the data and then we need
+
+302
+00:14:06.070 --> 00:14:10.810
+to expose that query's function to our form tag here
+
+303
+00:14:10.810 --> 00:14:13.820
+via a mutation component.
+
+304
+00:14:13.820 --> 00:14:15.930
+So, what we'll do up here is we'll write
+
+305
+00:14:15.930 --> 00:14:18.133
+our query for the mutation.
+
+306
+00:14:20.486 --> 00:14:22.330
+CREATE_ITEM_MUTATION.
+
+307
+00:14:22.330 --> 00:14:24.180
+You see how I always finish off my variables
+
+308
+00:14:24.180 --> 00:14:26.450
+with _mutation or _query?
+
+309
+00:14:26.450 --> 00:14:27.600
+That's gonna help you in the long run,
+
+310
+00:14:27.600 --> 00:14:30.210
+especially once we hit testing.
+
+311
+00:14:30.210 --> 00:14:33.970
+You know that you need to mock it up in a specific way.
+
+312
+00:14:33.970 --> 00:14:36.700
+And that is going to be equal to gql``.
+
+313
+00:14:36.700 --> 00:14:39.810
+And before we even do anything more,
+
+314
+00:14:39.810 --> 00:14:42.140
+what we want to do is actually export this.
+
+315
+00:14:42.140 --> 00:14:45.800
+And that's going to be useful for both testing much later
+
+316
+00:14:45.800 --> 00:14:48.180
+in this course, as well as sharing
+
+317
+00:14:48.180 --> 00:14:50.470
+this query amongst other components.
+
+318
+00:14:50.470 --> 00:14:52.090
+So, let's export that.
+
+319
+00:14:52.090 --> 00:14:53.640
+We've already used the default export
+
+320
+00:14:53.640 --> 00:14:57.350
+so we can use a named export in ES6 to export that.
+
+321
+00:14:57.350 --> 00:15:00.890
+I think we also need to do that for items as well
+
+322
+00:15:00.890 --> 00:15:03.080
+where we have this ALL_ITEMS_QUERY.
+
+323
+00:15:03.080 --> 00:15:05.630
+Let's export the ALL_ITEMS_QUERY
+
+324
+00:15:05.630 --> 00:15:08.460
+'cause we're gonna need that throughout the application.
+
+325
+00:15:08.460 --> 00:15:11.610
+Uh, unexpected, oof.
+
+326
+00:15:11.610 --> 00:15:13.750
+Oof, what happened?
+
+327
+00:15:13.750 --> 00:15:15.900
+Oh, it's GraphQL error 'cause I haven't
+
+328
+00:15:15.900 --> 00:15:18.140
+actually written anything in here.
+
+329
+00:15:18.140 --> 00:15:19.430
+No problem.
+
+330
+00:15:19.430 --> 00:15:21.170
+We're going to write a mutation
+
+331
+00:15:22.710 --> 00:15:27.120
+called CREATE_ITEM_MUTATION and that is going
+
+332
+00:15:27.120 --> 00:15:29.660
+to run the createItem, remember?
+
+333
+00:15:29.660 --> 00:15:31.690
+Let's go to our schema real quick.
+
+334
+00:15:31.690 --> 00:15:32.523
+Oh, it's not on.
+
+335
+00:15:32.523 --> 00:15:33.356
+This is the front end.
+
+336
+00:15:33.356 --> 00:15:35.880
+Let's go to our back end, let's open up our schema.
+
+337
+00:15:35.880 --> 00:15:37.083
+What is our mutation called?
+
+338
+00:15:37.083 --> 00:15:38.820
+It's called createItem.
+
+339
+00:15:38.820 --> 00:15:41.550
+So then we can hop here, we can call createItem.
+
+340
+00:15:41.550 --> 00:15:43.600
+What are the arguments that it takes?
+
+341
+00:15:43.600 --> 00:15:46.970
+Well, it takes a title, a description, a price,
+
+342
+00:15:46.970 --> 00:15:49.399
+an image, and a largeImage,
+
+343
+00:15:49.399 --> 00:15:51.949
+so, we'll hop back here, we'll run that createItem,
+
+344
+00:15:52.810 --> 00:15:55.190
+and we will paste them in.
+
+345
+00:15:55.190 --> 00:15:57.070
+I like to put them each on their own line.
+
+346
+00:15:57.070 --> 00:15:58.410
+Now, what's going on here?
+
+347
+00:15:58.410 --> 00:16:03.320
+How do we, like, get the data to these ones?
+
+348
+00:16:03.320 --> 00:16:06.920
+We title this.state but, like, this is a separate query.
+
+349
+00:16:06.920 --> 00:16:09.210
+How does it know the data that is in here?
+
+350
+00:16:09.210 --> 00:16:10.970
+And that's where we need to set up our queries
+
+351
+00:16:10.970 --> 00:16:13.930
+and mutations to actually accept arguments.
+
+352
+00:16:13.930 --> 00:16:16.760
+So, we can go into this mutation CREATE_ITEM_MUTATION
+
+353
+00:16:16.760 --> 00:16:18.330
+and we're going to say that it's going
+
+354
+00:16:18.330 --> 00:16:21.300
+to take a bunch of arguments and those arguments
+
+355
+00:16:21.300 --> 00:16:25.220
+are going to be of the same name, title, description, price,
+
+356
+00:16:25.220 --> 00:16:28.120
+image, and we have to type them out.
+
+357
+00:16:28.120 --> 00:16:31.860
+So, this is going to be a string that is required.
+
+358
+00:16:31.860 --> 00:16:34.570
+It's going to be a description that is required.
+
+359
+00:16:34.570 --> 00:16:38.520
+This is going to be an int that is required.
+
+360
+00:16:38.520 --> 00:16:41.210
+This is a string that is not required.
+
+361
+00:16:41.210 --> 00:16:43.810
+And this is a string that is also not required.
+
+362
+00:16:43.810 --> 00:16:47.144
+Then, what that will do is when you call this
+
+363
+00:16:47.144 --> 00:16:49.960
+CREATE_ITEM_MUTATION mutation,
+
+364
+00:16:49.960 --> 00:16:53.960
+we're going to pass it arguments of these names
+
+365
+00:16:53.960 --> 00:16:57.170
+with these types and they're going to be available
+
+366
+00:16:57.170 --> 00:16:59.530
+to us via variables inside of here.
+
+367
+00:16:59.530 --> 00:17:02.790
+So, this gets a little bit weird but we basically
+
+368
+00:17:02.790 --> 00:17:04.270
+just have to take all of those
+
+369
+00:17:04.270 --> 00:17:08.963
+and say use the variable of the exact same name.
+
+370
+00:17:11.410 --> 00:17:14.980
+And then from that query, we are going to return the id.
+
+371
+00:17:14.980 --> 00:17:15.870
+So, woo!
+
+372
+00:17:15.870 --> 00:17:16.703
+Let's actually--
+
+373
+00:17:16.703 --> 00:17:18.830
+Let me just tone that down to see
+
+374
+00:17:18.830 --> 00:17:20.290
+exactly what we're working with.
+
+375
+00:17:20.290 --> 00:17:21.830
+Imagine that was just title
+
+376
+00:17:23.240 --> 00:17:25.313
+and we'll put that on their own lines.
+
+377
+00:17:26.910 --> 00:17:30.000
+So, this is sort of like a function called
+
+378
+00:17:30.000 --> 00:17:32.920
+CREATE_ITEM_MUTATION and that is going
+
+379
+00:17:32.920 --> 00:17:35.910
+to take in one variable called title,
+
+380
+00:17:35.910 --> 00:17:38.130
+which you should expect it to be a string.
+
+381
+00:17:38.130 --> 00:17:41.380
+Now, when it is called, run the actual mutation
+
+382
+00:17:41.380 --> 00:17:44.370
+called createItem, which we've previously specified
+
+383
+00:17:44.370 --> 00:17:47.380
+in our schema that's the back end,
+
+384
+00:17:47.380 --> 00:17:52.180
+and then use the passed in variable as title.
+
+385
+00:17:52.180 --> 00:17:54.860
+So, anything that gets passed in here called title
+
+386
+00:17:54.860 --> 00:17:57.620
+is available inside of it via dollar
+
+387
+00:17:57.620 --> 00:17:58.640
+and you can reference it.
+
+388
+00:17:58.640 --> 00:18:00.870
+The fact that they're exactly the same name is just
+
+389
+00:18:00.870 --> 00:18:03.130
+because that's what I've done but you could really just
+
+390
+00:18:03.130 --> 00:18:07.680
+pass in a string in here if you wanted
+
+391
+00:18:08.990 --> 00:18:10.940
+but we are passing them in as variables.
+
+392
+00:18:10.940 --> 00:18:13.160
+So, let's back that back up to what we have.
+
+393
+00:18:13.160 --> 00:18:14.960
+Do do do.
+
+394
+00:18:14.960 --> 00:18:17.980
+So, our mutation takes five arguments.
+
+395
+00:18:17.980 --> 00:18:20.830
+Then we will run it with these five arguments,
+
+396
+00:18:20.830 --> 00:18:24.720
+passing each as a variable, and then we simply just care
+
+397
+00:18:24.720 --> 00:18:29.210
+about getting the item's id back once it has been created.
+
+398
+00:18:29.210 --> 00:18:31.137
+So, what do we got here?
+
+399
+00:18:31.137 --> 00:18:33.700
+"Expected dollar, found name."
+
+400
+00:18:33.700 --> 00:18:38.200
+Oh, I forgot to put dollar signs in front of all of these.
+
+401
+00:18:38.200 --> 00:18:40.510
+And that also helps the syntax as well.
+
+402
+00:18:40.510 --> 00:18:44.000
+So, the variable title is going to be a string when called
+
+403
+00:18:44.000 --> 00:18:46.520
+and then it's available to us with the variable title.
+
+404
+00:18:46.520 --> 00:18:47.513
+Give that a save.
+
+405
+00:18:48.350 --> 00:18:49.830
+Looks like it's working.
+
+406
+00:18:49.830 --> 00:18:54.370
+So, that is our mutation query that we have.
+
+407
+00:18:54.370 --> 00:18:57.050
+Now, we want to go down here into our component
+
+408
+00:18:57.050 --> 00:19:01.350
+and actually expose this CREATE_ITEM_MUTATION function.
+
+409
+00:19:01.350 --> 00:19:02.360
+So, how do we do that?
+
+410
+00:19:02.360 --> 00:19:05.510
+Well, we're going to wrap our entire form tag
+
+411
+00:19:05.510 --> 00:19:07.560
+in a mutation component.
+
+412
+00:19:07.560 --> 00:19:09.603
+So, we go up here, say Mutation,
+
+413
+00:19:10.579 --> 00:19:14.260
+and then Mutation is going to take a query
+
+414
+00:19:14.260 --> 00:19:17.730
+and the query is going to be the CREATE_ITEM_MUTATION.
+
+415
+00:19:17.730 --> 00:19:20.100
+A couple other things that need to be passed along.
+
+416
+00:19:20.100 --> 00:19:23.950
+The variables that are passed when the mutation runs.
+
+417
+00:19:23.950 --> 00:19:26.850
+They can be specified in the actual component itself.
+
+418
+00:19:26.850 --> 00:19:29.260
+You can also pass them at run time
+
+419
+00:19:29.260 --> 00:19:30.940
+when you actually call the function
+
+420
+00:19:30.940 --> 00:19:34.850
+but I prefer to do it in the component here.
+
+421
+00:19:34.850 --> 00:19:37.200
+So, we'll say variables is equal to.
+
+422
+00:19:37.200 --> 00:19:38.270
+Well, what are the variables?
+
+423
+00:19:38.270 --> 00:19:39.500
+This.state, right?
+
+424
+00:19:39.500 --> 00:19:43.010
+So, when this mutation fires, it's just going to take a copy
+
+425
+00:19:43.010 --> 00:19:46.250
+of this.state and send all of those values along
+
+426
+00:19:46.250 --> 00:19:49.580
+for the ride, which just so happens to line up with all
+
+427
+00:19:49.580 --> 00:19:51.240
+of the things that it's expecting.
+
+428
+00:19:51.240 --> 00:19:52.090
+So, that's good.
+
+429
+00:19:52.090 --> 00:19:55.550
+Then, just like query, the only child of a mutation
+
+430
+00:19:55.550 --> 00:19:57.740
+or a query can be an actual function.
+
+431
+00:19:57.740 --> 00:20:00.016
+So, let's write a little function that we have here.
+
+432
+00:20:00.016 --> 00:20:03.090
+And this one is a little bit different.
+
+433
+00:20:03.090 --> 00:20:06.140
+Instead of taking a payload, just a payload,
+
+434
+00:20:06.140 --> 00:20:10.890
+it gives us the mutationfunction and the payload.
+
+435
+00:20:10.890 --> 00:20:13.900
+And instead of calling it mutationfunction and payload,
+
+436
+00:20:13.900 --> 00:20:16.660
+I like to call it createItem.
+
+437
+00:20:16.660 --> 00:20:18.100
+I like to always just match it up with
+
+438
+00:20:18.100 --> 00:20:21.140
+what it looks like on the server side.
+
+439
+00:20:21.140 --> 00:20:23.790
+And then you can destructure this payload similarly
+
+440
+00:20:25.100 --> 00:20:27.130
+to how we did it last time.
+
+441
+00:20:27.130 --> 00:20:29.880
+And we only care about loading and error.
+
+442
+00:20:29.880 --> 00:20:34.230
+There's also one called called here, as well as data.
+
+443
+00:20:34.230 --> 00:20:37.410
+Called will give you a Boolean if it's been run or not
+
+444
+00:20:37.410 --> 00:20:40.360
+and data will give you the data that has actually come back
+
+445
+00:20:40.360 --> 00:20:41.560
+but we don't care about those two
+
+446
+00:20:41.560 --> 00:20:43.960
+and I'll show you why in just a second.
+
+447
+00:20:43.960 --> 00:20:47.890
+Then, from here, you wanna return some JSX
+
+448
+00:20:47.890 --> 00:20:49.820
+but what we actually want to return
+
+449
+00:20:49.820 --> 00:20:52.620
+from this is everything down here.
+
+450
+00:20:52.620 --> 00:20:56.370
+So, what we'll do instead of having an explicit return
+
+451
+00:20:56.370 --> 00:20:59.970
+where you return, like, a paragraph tag that says hey,
+
+452
+00:20:59.970 --> 00:21:03.280
+we'll simply just replace these curly brackets here
+
+453
+00:21:03.280 --> 00:21:05.880
+with parentheses and that will give us
+
+454
+00:21:05.880 --> 00:21:08.560
+what's called an implicit return in ES6.
+
+455
+00:21:08.560 --> 00:21:12.600
+An implicit return is it will just return whatever is there
+
+456
+00:21:12.600 --> 00:21:16.680
+without actually having to use the return keyword.
+
+457
+00:21:16.680 --> 00:21:18.380
+Then we take this one and this one
+
+458
+00:21:18.380 --> 00:21:20.950
+and we're going to, do do do, go for a bit of a ride
+
+459
+00:21:20.950 --> 00:21:22.890
+all the way down to the closing form tag.
+
+460
+00:21:22.890 --> 00:21:24.567
+Do do do, do do do.
+
+461
+00:21:25.683 --> 00:21:26.516
+There we go.
+
+462
+00:21:26.516 --> 00:21:28.650
+Thank goodness for Prettier 'cause I'm gonna give it a save
+
+463
+00:21:28.650 --> 00:21:31.663
+and all of my indentation will work just fine.
+
+464
+00:21:33.070 --> 00:21:35.467
+So, let's take a quick look at what we've got going on here.
+
+465
+00:21:35.467 --> 00:21:37.567
+"Argument undefined passed to parser
+
+466
+00:21:37.567 --> 00:21:42.030
+"was not a valid GraphQL DocumentNode."
+
+467
+00:21:42.030 --> 00:21:43.063
+Why not?
+
+468
+00:21:46.980 --> 00:21:49.959
+So, this error is telling us that the mutation
+
+469
+00:21:49.959 --> 00:21:52.010
+that we passed in, this little query
+
+470
+00:21:52.010 --> 00:21:54.410
+that we wrote here, is not valid.
+
+471
+00:21:54.410 --> 00:21:56.180
+And I took a quick look at my answer
+
+472
+00:21:56.180 --> 00:21:58.370
+and this is actually not query, it's mutation.
+
+473
+00:21:58.370 --> 00:22:01.610
+So, if it's a query component then you pass it in query.
+
+474
+00:22:01.610 --> 00:22:03.900
+If it's a mutation component then it's a mutation.
+
+475
+00:22:03.900 --> 00:22:05.130
+Makes sense to me.
+
+476
+00:22:05.130 --> 00:22:06.330
+I just forgot about that.
+
+477
+00:22:06.330 --> 00:22:10.000
+So, if we give that a save, now everything works to us.
+
+478
+00:22:10.000 --> 00:22:13.670
+Now, all of that work was to just do a couple things.
+
+479
+00:22:13.670 --> 00:22:17.260
+First, we want to expose this createItem function
+
+480
+00:22:17.260 --> 00:22:18.610
+and then second, we also want
+
+481
+00:22:18.610 --> 00:22:21.207
+to expose the loading and the error state.
+
+482
+00:22:21.207 --> 00:22:23.120
+So, let's start with the error state first.
+
+483
+00:22:23.120 --> 00:22:27.780
+So, I've given you a component called ErrorMessage.js
+
+484
+00:22:27.780 --> 00:22:30.800
+and that's just in our components thing right here.
+
+485
+00:22:30.800 --> 00:22:34.100
+And what we're doing here is we first have some ErrorStyles
+
+486
+00:22:34.100 --> 00:22:36.750
+that we have but this essentially just takes
+
+487
+00:22:36.750 --> 00:22:39.940
+in any type of error that might come in,
+
+488
+00:22:39.940 --> 00:22:43.280
+either a singular error or an array of errors.
+
+489
+00:22:43.280 --> 00:22:46.610
+So, Apollo will give us two different types of errors.
+
+490
+00:22:46.610 --> 00:22:48.620
+It'll give us a network error,
+
+491
+00:22:48.620 --> 00:22:50.010
+which will always have multiple,
+
+492
+00:22:50.010 --> 00:22:51.940
+or it will just give us a singular error,
+
+493
+00:22:51.940 --> 00:22:53.500
+which we can put in there.
+
+494
+00:22:53.500 --> 00:22:56.100
+So, what this does it either loops over each one
+
+495
+00:22:56.100 --> 00:22:59.370
+and displays an error at the top of the page for us,
+
+496
+00:22:59.370 --> 00:23:02.060
+and then I also just replaced the words GraphQL error
+
+497
+00:23:02.060 --> 00:23:05.490
+with nothing, or it just gives us that one error
+
+498
+00:23:05.490 --> 00:23:07.907
+in a paragraph tag with some nice styles on it
+
+499
+00:23:07.907 --> 00:23:10.060
+and it even shows us the actual error message.
+
+500
+00:23:10.060 --> 00:23:12.740
+So, we get to reuse this throughout our entire application.
+
+501
+00:23:12.740 --> 00:23:14.323
+Let's import that real quick.
+
+502
+00:23:15.260 --> 00:23:17.250
+So, import Error from './ErrorMessage'.
+
+503
+00:23:17.250 --> 00:23:18.980
+You can call it ErrorMessages if you want.
+
+504
+00:23:18.980 --> 00:23:20.590
+I'm just gonna call it Error.
+
+505
+00:23:20.590 --> 00:23:24.150
+Then we'll go down into here and in this case,
+
+506
+00:23:24.150 --> 00:23:28.200
+we actually don't want to show only the error
+
+507
+00:23:28.200 --> 00:23:30.140
+or the form, we want to show both.
+
+508
+00:23:30.140 --> 00:23:32.890
+And the reason behind that is because sometimes we're going
+
+509
+00:23:32.890 --> 00:23:35.000
+to try to submit it and it's gonna tell us that something
+
+510
+00:23:35.000 --> 00:23:36.510
+was wrong with one of our fields
+
+511
+00:23:36.510 --> 00:23:39.100
+and we want to be able to fix it and hit submit again.
+
+512
+00:23:39.100 --> 00:23:41.900
+So, just above this fieldset here we're gonna give ourselves
+
+513
+00:23:41.900 --> 00:23:46.230
+an error component and we'll pass the error of error
+
+514
+00:23:46.230 --> 00:23:49.040
+and if there is any sort of error, this component
+
+515
+00:23:49.040 --> 00:23:50.540
+is going to render itself out.
+
+516
+00:23:50.540 --> 00:23:53.530
+Otherwise, it's not going to render anything to the page.
+
+517
+00:23:53.530 --> 00:23:54.989
+So, good, we took care of that.
+
+518
+00:23:54.989 --> 00:23:57.810
+Next, let's take care of the loading.
+
+519
+00:23:57.810 --> 00:24:00.040
+Now, the loading is kind of interesting in this case
+
+520
+00:24:00.040 --> 00:24:02.560
+because as soon as we hit submit,
+
+521
+00:24:02.560 --> 00:24:04.770
+what's gonna happen is that it's gonna go off
+
+522
+00:24:04.770 --> 00:24:07.580
+to the back end and then come back, hopefully quickly
+
+523
+00:24:07.580 --> 00:24:09.200
+but it could take a second or two depending
+
+524
+00:24:09.200 --> 00:24:11.460
+on network and server conditions.
+
+525
+00:24:11.460 --> 00:24:14.810
+So, we want to stop the user from being able to mess
+
+526
+00:24:14.810 --> 00:24:17.760
+with this, edit it, or hit the submit button again
+
+527
+00:24:17.760 --> 00:24:19.970
+and one way that I really like to do that is
+
+528
+00:24:19.970 --> 00:24:22.838
+to wrap everything in what's called a fieldset.
+
+529
+00:24:22.838 --> 00:24:26.430
+A fieldset takes a disabled attribute where you can set it
+
+530
+00:24:26.430 --> 00:24:29.590
+to true and that will just gray everything out.
+
+531
+00:24:29.590 --> 00:24:31.970
+See how I can't submit and I can't change these?
+
+532
+00:24:31.970 --> 00:24:35.430
+Because it's set to true.
+
+533
+00:24:35.430 --> 00:24:38.900
+But I can just set that to loading and if loading is true,
+
+534
+00:24:38.900 --> 00:24:41.460
+then it will be disabled and if loading is not true,
+
+535
+00:24:41.460 --> 00:24:44.050
+if it's false, then it won't be disabled.
+
+536
+00:24:44.050 --> 00:24:47.210
+Then I also like to add the aria-busy attribute.
+
+537
+00:24:47.210 --> 00:24:49.600
+This is for accessibility.
+
+538
+00:24:49.600 --> 00:24:54.380
+It will tell the user if this group of fields is busy or not
+
+539
+00:24:54.380 --> 00:24:56.780
+So, we just set that on there as well.
+
+540
+00:24:56.780 --> 00:24:59.740
+And I really like that because first, it's accessible,
+
+541
+00:24:59.740 --> 00:25:03.770
+it's great for your users, but second, what it's going to do
+
+542
+00:25:03.770 --> 00:25:08.683
+when we turn that to true, let's turn both of them to true,
+
+543
+00:25:10.690 --> 00:25:13.780
+is it's going to do this little animation that we have there
+
+544
+00:25:13.780 --> 00:25:15.750
+And let me just show you real quick what you've done there.
+
+545
+00:25:15.750 --> 00:25:20.610
+If we open up the form styles, we say...
+
+546
+00:25:20.610 --> 00:25:23.130
+The fieldset has a before pseudo-element
+
+547
+00:25:23.130 --> 00:25:24.990
+that has a height of ten pixels
+
+548
+00:25:24.990 --> 00:25:27.590
+and a background of this linear-gradient.
+
+549
+00:25:27.590 --> 00:25:32.070
+However, when the fieldset also has an aria-busy attribute
+
+550
+00:25:32.070 --> 00:25:34.330
+on it, I'm just applying an animation
+
+551
+00:25:34.330 --> 00:25:36.760
+of loading over half a second.
+
+552
+00:25:36.760 --> 00:25:39.570
+And then if we go up here, in styled-components
+
+553
+00:25:39.570 --> 00:25:41.020
+this is how you do keyframes.
+
+554
+00:25:41.020 --> 00:25:43.410
+You just import the keyframes from styled-components
+
+555
+00:25:43.410 --> 00:25:44.660
+and then you write your keyframes
+
+556
+00:25:44.660 --> 00:25:46.300
+just as you normally would in CSS.
+
+557
+00:25:46.300 --> 00:25:49.130
+And I'm just going from background-position zero
+
+558
+00:25:49.130 --> 00:25:50.520
+to background-position 100.
+
+559
+00:25:50.520 --> 00:25:52.230
+I tried to do some fun stuff with--
+
+560
+00:25:52.230 --> 00:25:53.460
+Here, let me show you
+
+561
+00:25:53.460 --> 00:25:55.233
+what happens here with that.
+
+562
+00:25:56.200 --> 00:25:57.580
+Woo!
+
+563
+00:25:57.580 --> 00:26:00.470
+So, obviously that's not (laughs) usable
+
+564
+00:26:00.470 --> 00:26:02.830
+but you can leave it in there and have some fun with it.
+
+565
+00:26:02.830 --> 00:26:06.410
+So, anything from anything it will animate it from one
+
+566
+00:26:06.410 --> 00:26:08.720
+to another and that's just a nice way to do loading.
+
+567
+00:26:08.720 --> 00:26:10.360
+You both disable it and show the user
+
+568
+00:26:10.360 --> 00:26:12.920
+that something is happening.
+
+569
+00:26:12.920 --> 00:26:14.970
+So, let's go back to this createItem here.
+
+570
+00:26:14.970 --> 00:26:17.560
+We'll turn our disabled and aria-busy
+
+571
+00:26:17.560 --> 00:26:19.880
+over to the loading attribute and then--
+
+572
+00:26:19.880 --> 00:26:22.670
+That's what I really like about Apollo is that it's going
+
+573
+00:26:22.670 --> 00:26:25.750
+to flip those loadings onto true or false for us
+
+574
+00:26:25.750 --> 00:26:29.170
+and we don't have to worry about turning Booleans on and off
+
+575
+00:26:29.170 --> 00:26:32.780
+ourselves because it will give us all of that for us.
+
+576
+00:26:32.780 --> 00:26:33.613
+Good.
+
+577
+00:26:33.613 --> 00:26:35.930
+The last thing we (laughs) actually need to do is
+
+578
+00:26:35.930 --> 00:26:39.310
+go ahead and handle the actual submit.
+
+579
+00:26:39.310 --> 00:26:41.370
+'Cause if I submit this thing right now,
+
+580
+00:26:41.370 --> 00:26:43.550
+you see that we're just getting a console log
+
+581
+00:26:43.550 --> 00:26:45.630
+of the data that is in there.
+
+582
+00:26:45.630 --> 00:26:48.100
+So, what we can do and say
+
+583
+00:26:48.100 --> 00:26:53.100
+const res = await createItem function, right?
+
+584
+00:26:54.940 --> 00:26:58.780
+CreateItem is how we exposed it via the mutation render prop
+
+585
+00:26:58.780 --> 00:27:00.850
+and then we have access to it here.
+
+586
+00:27:00.850 --> 00:27:04.210
+Now, we also need to make this an async function
+
+587
+00:27:04.210 --> 00:27:06.460
+so that we can await inside of it
+
+588
+00:27:06.460 --> 00:27:09.420
+and then we simply just console.log the response
+
+589
+00:27:09.420 --> 00:27:12.290
+to see exactly what we're working with here.
+
+590
+00:27:12.290 --> 00:27:13.820
+So, I'm just gonna give it a refresh,
+
+591
+00:27:13.820 --> 00:27:16.643
+make sure I'm coming at it fresh, give it a submit.
+
+592
+00:27:18.240 --> 00:27:19.970
+What came back?
+
+593
+00:27:19.970 --> 00:27:24.110
+Data, createItem, and it came back with the id
+
+594
+00:27:24.110 --> 00:27:25.860
+of the item that has been created.
+
+595
+00:27:25.860 --> 00:27:28.410
+So, we can actually go ahead and look in our Prisma database
+
+596
+00:27:28.410 --> 00:27:31.410
+to see if this new item has been created.
+
+597
+00:27:31.410 --> 00:27:32.243
+There it is.
+
+598
+00:27:32.243 --> 00:27:33.076
+I love those--
+
+599
+00:27:33.076 --> 00:27:34.920
+Did I write, "I love those context"?
+
+600
+00:27:34.920 --> 00:27:35.753
+What am I doing?
+
+601
+00:27:35.753 --> 00:27:36.730
+Shoes!
+
+602
+00:27:36.730 --> 00:27:40.020
+Is what I love and that item has come in there.
+
+603
+00:27:40.020 --> 00:27:41.910
+Now, we don't want to just do that 'cause--
+
+604
+00:27:41.910 --> 00:27:45.090
+You see how it just temporarily ran that
+
+605
+00:27:45.090 --> 00:27:47.040
+and then brought it back?
+
+606
+00:27:47.040 --> 00:27:48.970
+There's a couple things that we actually want to do.
+
+607
+00:27:48.970 --> 00:27:53.590
+So, let's go inside of this event handler here.
+
+608
+00:27:53.590 --> 00:27:55.100
+So, let's write some comments.
+
+609
+00:27:55.100 --> 00:27:56.683
+Stop the form from submitting.
+
+610
+00:28:01.410 --> 00:28:03.030
+Call the mutation.
+
+611
+00:28:03.030 --> 00:28:08.030
+And then we are going to change them to the single item page
+
+612
+00:28:09.670 --> 00:28:12.070
+So, what's going to happen after they create the item?
+
+613
+00:28:12.070 --> 00:28:14.850
+We're going to bring them to this page.
+
+614
+00:28:14.850 --> 00:28:16.200
+Here, let me show you here.
+
+615
+00:28:19.110 --> 00:28:21.410
+This page item id and then we're going
+
+616
+00:28:21.410 --> 00:28:23.950
+to use the item id in there to route them.
+
+617
+00:28:23.950 --> 00:28:25.950
+So, how do you programmatically route someone?
+
+618
+00:28:25.950 --> 00:28:29.490
+We've only been routing people via the link tag.
+
+619
+00:28:29.490 --> 00:28:34.490
+Well, what we can do is import the Router from next/router,
+
+620
+00:28:36.280 --> 00:28:39.860
+bring that up a level so that it comes before our imports
+
+621
+00:28:41.980 --> 00:28:46.160
+and then down here, where we console logged the response,
+
+622
+00:28:46.160 --> 00:28:51.160
+we're gonna say Router.push pathname is going to be /item
+
+623
+00:28:54.860 --> 00:28:56.200
+and the query is going to be--
+
+624
+00:28:56.200 --> 00:28:58.370
+This is exactly how we passed it to our link tag.
+
+625
+00:28:58.370 --> 00:29:03.370
+The item is going to be the res.data.createItem.id
+
+626
+00:29:07.070 --> 00:29:08.800
+and that's going to give us the actual id.
+
+627
+00:29:08.800 --> 00:29:11.230
+You see how we drilled a little bit deep?
+
+628
+00:29:11.230 --> 00:29:13.070
+Let's just give it a quick test.
+
+629
+00:29:13.070 --> 00:29:18.070
+Say it's a Canada Goose jacket for that much and super cool.
+
+630
+00:29:19.680 --> 00:29:21.300
+Go ahead and submit it
+
+631
+00:29:21.300 --> 00:29:24.130
+and it routes us to the specific page that we want.
+
+632
+00:29:24.130 --> 00:29:24.963
+Good.
+
+633
+00:29:24.963 --> 00:29:26.300
+We are going to have to come back to this
+
+634
+00:29:26.300 --> 00:29:28.750
+'cause we're going to hit a little issue with our pagination
+
+635
+00:29:28.750 --> 00:29:31.780
+but for now, it's working and when we hit pagination,
+
+636
+00:29:31.780 --> 00:29:33.570
+we're gonna come back and modify this component
+
+637
+00:29:33.570 --> 00:29:36.070
+just a little bit so that we can do something
+
+638
+00:29:36.070 --> 00:29:39.410
+called re-fetching queries where we can re-fetch the items
+
+639
+00:29:39.410 --> 00:29:40.640
+that are on the home page.
+
+640
+00:29:40.640 --> 00:29:43.640
+So, I'll see you in the next video where we deal with images
+

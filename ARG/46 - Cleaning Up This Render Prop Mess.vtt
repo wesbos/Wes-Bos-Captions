@@ -1,0 +1,530 @@
+﻿WEBVTT
+
+1
+00:00:00.970 --> 00:00:02.970
+<v Wes>All right, we're dealing with a bit of a mess</v>
+
+2
+00:00:02.970 --> 00:00:04.490
+in our cart.js file.
+
+3
+00:00:04.490 --> 00:00:07.010
+We have this user component, which is a query,
+
+4
+00:00:07.010 --> 00:00:08.330
+that queries the current user.
+
+5
+00:00:08.330 --> 00:00:10.640
+Inside of that we have a mutation which exposes
+
+6
+00:00:10.640 --> 00:00:13.060
+the mutation to toggle the cart open and close,
+
+7
+00:00:13.060 --> 00:00:14.120
+and then we also have a query
+
+8
+00:00:14.120 --> 00:00:16.030
+that's gonna grab our local state.
+
+9
+00:00:16.030 --> 00:00:17.340
+This is not a uncommon thing
+
+10
+00:00:17.340 --> 00:00:18.530
+that you're gonna stumble across
+
+11
+00:00:18.530 --> 00:00:20.650
+in your queries and mutations,
+
+12
+00:00:20.650 --> 00:00:22.270
+where you're gonna have three, four,
+
+13
+00:00:22.270 --> 00:00:25.610
+five, a couple of them inside of it,
+
+14
+00:00:25.610 --> 00:00:27.890
+and it gets to be pretty hairy
+
+15
+00:00:27.890 --> 00:00:30.790
+with all of the actual component itself.
+
+16
+00:00:30.790 --> 00:00:32.650
+And then you have the arrow function,
+
+17
+00:00:32.650 --> 00:00:35.620
+and generally have some sorta de-structuring inside of that.
+
+18
+00:00:35.620 --> 00:00:38.120
+And you just nest them forever.
+
+19
+00:00:38.120 --> 00:00:41.070
+So this makes me really anxious,
+
+20
+00:00:41.070 --> 00:00:43.660
+because you have nest of content in it forever,
+
+21
+00:00:43.660 --> 00:00:45.250
+and it gets really hard to read.
+
+22
+00:00:45.250 --> 00:00:48.260
+We're gonna look at using something called react-adopt,
+
+23
+00:00:48.260 --> 00:00:51.500
+which is gonna compose all of our render prop functions
+
+24
+00:00:51.500 --> 00:00:53.931
+into a single composed function,
+
+25
+00:00:53.931 --> 00:00:55.940
+or a single composed component,
+
+26
+00:00:55.940 --> 00:01:00.350
+that will expose me, toggleCart mutation,
+
+27
+00:01:00.350 --> 00:01:03.470
+and the local data that we need here.
+
+28
+00:01:03.470 --> 00:01:06.660
+So we're gonna go up to the top of our cart.js,
+
+29
+00:01:06.660 --> 00:01:10.533
+and we're going to import a named import called adopt,
+
+30
+00:01:11.660 --> 00:01:15.670
+and that comes from a package called react-adopt.
+
+31
+00:01:15.670 --> 00:01:17.540
+And that is specifically made for dealing
+
+32
+00:01:17.540 --> 00:01:20.880
+with this render prop mess that we found ourself in here.
+
+33
+00:01:20.880 --> 00:01:21.713
+Then we're gonna go here
+
+34
+00:01:21.713 --> 00:01:24.350
+and we're gonna make a new component called Composed.
+
+35
+00:01:24.350 --> 00:01:27.813
+So const Composed, as you can do adopt.
+
+36
+00:01:29.940 --> 00:01:31.860
+And adopt is going to take an object
+
+37
+00:01:31.860 --> 00:01:34.660
+of all of the things we'd like to compose into each other.
+
+38
+00:01:34.660 --> 00:01:38.790
+So first we want to compose the user component,
+
+39
+00:01:38.790 --> 00:01:39.793
+so let's say user.
+
+40
+00:01:42.080 --> 00:01:45.650
+And that is going to be equal to a user component.
+
+41
+00:01:45.650 --> 00:01:47.280
+So you just tell it that,
+
+42
+00:01:47.280 --> 00:01:51.439
+then we want to also give ourselves a toggleCart,
+
+43
+00:01:51.439 --> 00:01:52.630
+which is going to be equal to,
+
+44
+00:01:52.630 --> 00:01:54.423
+let's just grab this mutation here.
+
+45
+00:01:56.690 --> 00:01:57.910
+And let's self close.
+
+46
+00:01:57.910 --> 00:01:59.950
+These self closing one are going to give us an issue,
+
+47
+00:01:59.950 --> 00:02:02.000
+we'll come back and fix that in just a second.
+
+48
+00:02:02.000 --> 00:02:04.830
+And then the final one would be a localState.
+
+49
+00:02:06.510 --> 00:02:08.841
+So we'll call it localState,
+
+50
+00:02:08.841 --> 00:02:12.860
+and that is going to be equal to this query right here.
+
+51
+00:02:14.930 --> 00:02:15.763
+Good.
+
+52
+00:02:15.763 --> 00:02:16.803
+Now what we need to do,
+
+53
+00:02:17.730 --> 00:02:19.340
+oops, that's gotta close itself.
+
+54
+00:02:19.340 --> 00:02:20.873
+And delete that.
+
+55
+00:02:22.050 --> 00:02:24.740
+So now what we need to do is go ahead and,
+
+56
+00:02:24.740 --> 00:02:26.340
+let's actually swap out the user
+
+57
+00:02:26.340 --> 00:02:28.990
+with the Composed component.
+
+58
+00:02:28.990 --> 00:02:31.140
+So we have Composed there,
+
+59
+00:02:31.140 --> 00:02:33.260
+and we close the Composed here.
+
+60
+00:02:33.260 --> 00:02:35.710
+Now this is where it gets a little bit hairy.
+
+61
+00:02:35.710 --> 00:02:38.250
+The payload that we're going to take,
+
+62
+00:02:38.250 --> 00:02:39.700
+let's remove this,
+
+63
+00:02:39.700 --> 00:02:41.440
+is going to be just one object
+
+64
+00:02:41.440 --> 00:02:44.579
+and we can de-structure it into user,
+
+65
+00:02:44.579 --> 00:02:46.829
+toggleCart, and localState.
+
+66
+00:02:48.860 --> 00:02:49.693
+If you really wanted to,
+
+67
+00:02:49.693 --> 00:02:53.450
+you could further de-structure the user into data,
+
+68
+00:02:53.450 --> 00:02:54.560
+and then into me,
+
+69
+00:02:54.560 --> 00:02:56.550
+however I find that a little bit hard to read.
+
+70
+00:02:56.550 --> 00:03:00.830
+So what I'll do here is I'll just simply say
+
+71
+00:03:01.740 --> 00:03:06.740
+const me is equal to user.data.me.
+
+72
+00:03:10.200 --> 00:03:12.458
+And that needs to go above our check.
+
+73
+00:03:12.458 --> 00:03:15.540
+Then we need to go ahead and remove
+
+74
+00:03:15.540 --> 00:03:18.390
+this toggle cart mutation in the open,
+
+75
+00:03:18.390 --> 00:03:20.790
+so go ahead and delete that.
+
+76
+00:03:20.790 --> 00:03:23.690
+And then go down to the closing mutation,
+
+77
+00:03:23.690 --> 00:03:27.253
+and the corresponding closing function, and delete that.
+
+78
+00:03:28.760 --> 00:03:31.870
+Then what that did is it is going to expose
+
+79
+00:03:31.870 --> 00:03:34.430
+this toggleCart to us right here.
+
+80
+00:03:34.430 --> 00:03:37.090
+It's still called toggleCart, I think that'll still work.
+
+81
+00:03:37.090 --> 00:03:39.640
+And then the third one is this localState query.
+
+82
+00:03:39.640 --> 00:03:42.140
+So we're gonna go to this query here,
+
+83
+00:03:42.140 --> 00:03:45.120
+in this opening, delete it.
+
+84
+00:03:45.120 --> 00:03:49.600
+Find our closing query in the closing brackets, delete that.
+
+85
+00:03:49.600 --> 00:03:51.720
+And then the only thing that we need to change here
+
+86
+00:03:51.720 --> 00:03:54.810
+is this open is set to data.cartOpen.
+
+87
+00:03:54.810 --> 00:03:58.323
+We need to set that to localState.data.cartOpen.
+
+88
+00:03:59.710 --> 00:04:02.220
+Now if everything has worked properly,
+
+89
+00:04:02.220 --> 00:04:04.440
+we should be able to go here.
+
+90
+00:04:04.440 --> 00:04:06.640
+And everything should still work just fine.
+
+91
+00:04:06.640 --> 00:04:08.410
+Opens and closes just fine.
+
+92
+00:04:08.410 --> 00:04:11.230
+Our query of our current user is working just fine,
+
+93
+00:04:11.230 --> 00:04:13.770
+and our local data is working just fine.
+
+94
+00:04:13.770 --> 00:04:15.030
+So everything works,
+
+95
+00:04:15.030 --> 00:04:16.410
+but we get these three warnings
+
+96
+00:04:16.410 --> 00:04:18.870
+that are showing up in our console here.
+
+97
+00:04:18.870 --> 00:04:20.240
+It says failed prop type,
+
+98
+00:04:20.240 --> 00:04:22.930
+the prop children is marked as required in user,
+
+99
+00:04:22.930 --> 00:04:26.280
+mutation, and query, but we passed it undefined.
+
+100
+00:04:26.280 --> 00:04:29.396
+And that's because we actually haven't provided any children
+
+101
+00:04:29.396 --> 00:04:31.990
+to these components here.
+
+102
+00:04:31.990 --> 00:04:34.990
+So I don't really like that this happens,
+
+103
+00:04:34.990 --> 00:04:37.320
+because I wish that you could just turn those arrows off,
+
+104
+00:04:37.320 --> 00:04:38.820
+because it works just fine.
+
+105
+00:04:38.820 --> 00:04:41.970
+However the way around it is we simply provide
+
+106
+00:04:41.970 --> 00:04:44.810
+a little arrow function here that returns a user,
+
+107
+00:04:44.810 --> 00:04:47.883
+and you simply de-structure the render function,
+
+108
+00:04:48.900 --> 00:04:52.633
+and then return a open and a close user.
+
+109
+00:04:55.080 --> 00:04:57.653
+Which puts the render function as a child.
+
+110
+00:04:59.220 --> 00:05:01.630
+And that will stop it complaining for one of 'em,
+
+111
+00:05:01.630 --> 00:05:02.910
+and we'll do that for the other one.
+
+112
+00:05:02.910 --> 00:05:06.483
+So arrow function, de-structure the render.
+
+113
+00:05:08.270 --> 00:05:11.053
+Then provide open and a close mutation.
+
+114
+00:05:15.560 --> 00:05:17.163
+And pass in a render.
+
+115
+00:05:18.390 --> 00:05:23.210
+And then finally you can do it for localState.
+
+116
+00:05:33.710 --> 00:05:36.660
+Give it a hard refresh, everything is lookin' good,
+
+117
+00:05:36.660 --> 00:05:39.410
+same thing works exactly as always.
+
+118
+00:05:39.410 --> 00:05:41.250
+We are getting some eslint errors
+
+119
+00:05:41.250 --> 00:05:43.524
+depending on what your eslint setup is,
+
+120
+00:05:43.524 --> 00:05:45.720
+but what I do for something like that
+
+121
+00:05:45.720 --> 00:05:50.130
+is I just do a little eslint-disable.
+
+122
+00:05:52.390 --> 00:05:53.943
+And then turn it back on.
+
+123
+00:05:57.040 --> 00:05:59.280
+And everything is in good shape.
+
+124
+00:05:59.280 --> 00:06:00.730
+So, that is how you do it.
+
+125
+00:06:00.730 --> 00:06:02.066
+This is much nicer,
+
+126
+00:06:02.066 --> 00:06:04.780
+because the payload allows us to de-structure
+
+127
+00:06:04.780 --> 00:06:07.430
+those three render prop components
+
+128
+00:06:07.430 --> 00:06:10.380
+into a single composed render prop component.
+
+129
+00:06:10.380 --> 00:06:12.310
+And then this is much easier to read,
+
+130
+00:06:12.310 --> 00:06:15.073
+because we just inject it all at the top level.
+
+131
+00:06:15.073 --> 00:06:16.480
+So keep that handy,
+
+132
+00:06:16.480 --> 00:06:19.183
+you'll probably need it a lot throughout your projects.
+

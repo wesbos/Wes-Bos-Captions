@@ -1,0 +1,1114 @@
+﻿WEBVTT
+
+1
+00:00:01.221 --> 00:00:02.118
+<v Narrator>Alright, now we need</v>
+
+2
+00:00:02.118 --> 00:00:03.584
+to start implementing Downshift.
+
+3
+00:00:03.584 --> 00:00:04.768
+And the way that it works is
+
+4
+00:00:04.768 --> 00:00:06.227
+we're gonna take the Downshift component
+
+5
+00:00:06.227 --> 00:00:09.299
+and wrap our entire component that we have here,
+
+6
+00:00:09.299 --> 00:00:12.427
+except for the SearchStyles in a Downshift component.
+
+7
+00:00:12.427 --> 00:00:14.027
+And that's going to be a render prop
+
+8
+00:00:14.027 --> 00:00:17.437
+that then exposes a bunch of props to us.
+
+9
+00:00:17.437 --> 00:00:20.604
+So we'll go in here and say Downshift.
+
+10
+00:00:23.879 --> 00:00:25.780
+Lower case s on that.
+
+11
+00:00:25.780 --> 00:00:29.530
+Inside of that we have we have a render prop.
+
+12
+00:00:35.861 --> 00:00:37.021
+The render prop payload gives us
+
+13
+00:00:37.021 --> 00:00:39.603
+a couple things which we can destructure.
+
+14
+00:00:39.603 --> 00:00:40.936
+So getInputProps
+
+15
+00:00:42.813 --> 00:00:43.813
+getItemProps
+
+16
+00:00:47.523 --> 00:00:48.573
+isOpen
+
+17
+00:00:48.573 --> 00:00:51.323
+That's gonna be if the drop down is currently open.
+
+18
+00:00:51.323 --> 00:00:54.740
+The inputValue, and the highlightedIndex.
+
+19
+00:00:56.992 --> 00:00:58.683
+That's gonna tell us which one we're currently on.
+
+20
+00:00:58.683 --> 00:01:01.061
+And we're going to go through and use all of these
+
+21
+00:01:01.061 --> 00:01:03.173
+in the actual markup below.
+
+22
+00:01:03.173 --> 00:01:04.443
+So I'm going to open up
+
+23
+00:01:04.443 --> 00:01:07.490
+that close of the function and the Downshift.
+
+24
+00:01:07.490 --> 00:01:08.635
+We're gonna take those two things
+
+25
+00:01:08.635 --> 00:01:10.282
+and bring them all down right before
+
+26
+00:01:10.282 --> 00:01:12.082
+the closing SearchStyles.
+
+27
+00:01:12.082 --> 00:01:14.482
+First thing we're gonna do is take this getInputProps
+
+28
+00:01:14.482 --> 00:01:16.442
+which we've destructured from Downshift,
+
+29
+00:01:16.442 --> 00:01:19.722
+and we're going to use that to apply all the props
+
+30
+00:01:19.722 --> 00:01:21.082
+to our input here.
+
+31
+00:01:21.082 --> 00:01:22.941
+So we can go here
+
+32
+00:01:22.941 --> 00:01:24.591
+we'll say getInputProps,
+
+33
+00:01:24.591 --> 00:01:26.992
+that then is going to be spread into it.
+
+34
+00:01:26.992 --> 00:01:30.341
+So we'll wrap it in curly brackets and dot dot dot
+
+35
+00:01:30.341 --> 00:01:32.053
+Then getInputProps is going to take
+
+36
+00:01:32.053 --> 00:01:34.811
+any of the props that we'd like to apply to it.
+
+37
+00:01:34.811 --> 00:01:36.813
+So give it an object,
+
+38
+00:01:36.813 --> 00:01:38.561
+we're gonna take this onChange
+
+39
+00:01:38.561 --> 00:01:39.693
+move it inside.
+
+40
+00:01:39.693 --> 00:01:43.591
+Switch it over from a prop to a object.
+
+41
+00:01:43.591 --> 00:01:45.591
+So that's gonna be colon
+
+42
+00:01:49.544 --> 00:01:52.461
+and remove the curly brackets here.
+
+43
+00:01:56.064 --> 00:01:57.693
+We'll also put the type in here.
+
+44
+00:01:57.693 --> 00:01:59.276
+So say type search.
+
+45
+00:02:02.893 --> 00:02:04.726
+We need a placeholder.
+
+46
+00:02:06.634 --> 00:02:08.634
+Just search for an item.
+
+47
+00:02:11.074 --> 00:02:13.241
+The id is gonna be search.
+
+48
+00:02:14.845 --> 00:02:16.293
+Class name is going to be,
+
+49
+00:02:16.293 --> 00:02:18.354
+if it's this.state.loading
+
+50
+00:02:18.354 --> 00:02:20.223
+we're gonna add a class name of loading.
+
+51
+00:02:20.223 --> 00:02:21.565
+Otherwise a class name of nothing,
+
+52
+00:02:21.565 --> 00:02:25.053
+and that's gonna apply some CSS transition to it.
+
+53
+00:02:25.053 --> 00:02:26.553
+This.state.loading
+
+54
+00:02:27.605 --> 00:02:29.605
+Otherwise apply nothing.
+
+55
+00:02:31.754 --> 00:02:34.442
+And we'll give this a refresh make sure it's still working.
+
+56
+00:02:34.442 --> 00:02:37.093
+This cart opens every time I do a hard refresh,
+
+57
+00:02:37.093 --> 00:02:38.533
+let's change that real quick.
+
+58
+00:02:38.533 --> 00:02:40.383
+Open up your with data,
+
+59
+00:02:40.383 --> 00:02:45.291
+and let's set the default of cart open to be false
+
+60
+00:02:45.291 --> 00:02:48.784
+That should allow me have the cart close by default.
+
+61
+00:02:48.784 --> 00:02:52.062
+No if I type a you see that temporarily
+
+62
+00:02:52.062 --> 00:02:54.233
+we got that yellow glow to it.
+
+63
+00:02:54.233 --> 00:02:55.453
+That's really helpful because it
+
+64
+00:02:55.453 --> 00:02:59.226
+shows us when there's an actual loading state on it.
+
+65
+00:02:59.226 --> 00:03:01.466
+The reason why we use this getInputProps,
+
+66
+00:03:01.466 --> 00:03:04.907
+is because when we do actually do click on one of these,
+
+67
+00:03:04.907 --> 00:03:07.613
+it's going to be able to use this getInputProps
+
+68
+00:03:07.613 --> 00:03:12.181
+to fill the text of this into this search box right here.
+
+69
+00:03:12.181 --> 00:03:14.881
+So that's really important we'll come back to
+
+70
+00:03:14.881 --> 00:03:17.430
+that in just a second.
+
+71
+00:03:17.430 --> 00:03:21.272
+Now what we need to do is go down here to our DropDown.
+
+72
+00:03:21.272 --> 00:03:24.952
+And we only want to show it when it is in the open state.
+
+73
+00:03:24.952 --> 00:03:26.461
+Because when somebody clicks on it
+
+74
+00:03:26.461 --> 00:03:28.013
+and then focuses away,
+
+75
+00:03:28.013 --> 00:03:28.952
+we want to hide it.
+
+76
+00:03:28.952 --> 00:03:30.752
+So what we can do is wrap this entire thing
+
+77
+00:03:30.752 --> 00:03:33.040
+in an isOpen boolean,
+
+78
+00:03:33.040 --> 00:03:36.901
+'cause that's what we've destructured right here.
+
+79
+00:03:36.901 --> 00:03:38.541
+So we'll take some curly brackets
+
+80
+00:03:38.541 --> 00:03:42.246
+and we'll say if it's open then and and,
+
+81
+00:03:42.246 --> 00:03:44.675
+set of parenthesis, and we'll just pop the entire
+
+82
+00:03:44.675 --> 00:03:47.675
+DropDown inside of that parenthesis.
+
+83
+00:03:49.995 --> 00:03:53.096
+And now, when you click into it and type a,
+
+84
+00:03:53.096 --> 00:03:54.755
+you see that it shows up but if I were
+
+85
+00:03:54.755 --> 00:03:58.016
+to hit my escape key, it disappears.
+
+86
+00:03:58.016 --> 00:03:59.805
+If I we're to go back in and type a,
+
+87
+00:03:59.805 --> 00:04:01.703
+then click outside of it, then it disappears.
+
+88
+00:04:01.703 --> 00:04:05.424
+So that functionality is what Downshift gives us for free,
+
+89
+00:04:05.424 --> 00:04:07.326
+we don't have to worry about clicking outside,
+
+90
+00:04:07.326 --> 00:04:09.835
+or hitting the escape key, or anything like that,
+
+91
+00:04:09.835 --> 00:04:11.252
+which is awesome.
+
+92
+00:04:12.115 --> 00:04:14.278
+Next we wanna do is if I were to search
+
+93
+00:04:14.278 --> 00:04:16.909
+for something, a, and I hit my down keys,
+
+94
+00:04:16.909 --> 00:04:19.640
+I wanna be able to highlight the current one.
+
+95
+00:04:19.640 --> 00:04:22.378
+So we're gonna go down to our DropDownItem,
+
+96
+00:04:22.378 --> 00:04:26.938
+right above key we're going to use another spread,
+
+97
+00:04:26.938 --> 00:04:28.938
+which is ...getItemProps
+
+98
+00:04:31.756 --> 00:04:35.923
+and we're simply going to pass the item into that.
+
+99
+00:04:36.941 --> 00:04:38.491
+Give that a save.
+
+100
+00:04:38.491 --> 00:04:40.021
+Next when we're looping over items,
+
+101
+00:04:40.021 --> 00:04:43.149
+we wanna pass down the index of which number it is.
+
+102
+00:04:43.149 --> 00:04:45.621
+So if I were to type in a right here,
+
+103
+00:04:45.621 --> 00:04:49.228
+and I hit down, we're gonna know to hit the zero,
+
+104
+00:04:49.228 --> 00:04:50.838
+and then when I hit down again,
+
+105
+00:04:50.838 --> 00:04:52.840
+it's gonna know to highlight the second one.
+
+106
+00:04:52.840 --> 00:04:55.170
+So we need to pass the index when we loop over them.
+
+107
+00:04:55.170 --> 00:04:59.131
+So cover that in parenthesis and pass the index as well.
+
+108
+00:04:59.131 --> 00:05:02.439
+And we'll go down to our DropDownItem, right after key,
+
+109
+00:05:02.439 --> 00:05:06.850
+and we'll just say highlighted is equal to,
+
+110
+00:05:06.850 --> 00:05:11.839
+and if the index is equal to the highlighted index,
+
+111
+00:05:11.839 --> 00:05:16.079
+and that highlighted index comes from Downshift itself,
+
+112
+00:05:16.079 --> 00:05:19.049
+and here we're just making a prop called highlighted,
+
+113
+00:05:19.049 --> 00:05:22.543
+and if we open up our drop down styles,
+
+114
+00:05:22.543 --> 00:05:25.880
+you'll see here that we have this DropDownItem,
+
+115
+00:05:25.880 --> 00:05:30.121
+and then we check if the prop highlighted is
+
+116
+00:05:30.121 --> 00:05:33.492
+set to true then make it light grey,
+
+117
+00:05:33.492 --> 00:05:35.442
+otherwise make the border white.
+
+118
+00:05:35.442 --> 00:05:39.172
+And that should be able to, go in here,
+
+119
+00:05:39.172 --> 00:05:44.172
+type in a, and know when I hit my down and up arrow keys,
+
+120
+00:05:44.516 --> 00:05:47.949
+you see I'm able to highlight the current one that we are on
+
+121
+00:05:47.949 --> 00:05:49.466
+So that's that.
+
+122
+00:05:49.466 --> 00:05:53.949
+Now if I were to hit enter and click on one of them,
+
+123
+00:05:53.949 --> 00:05:58.280
+you'll see that the value of it is object object.
+
+124
+00:05:58.280 --> 00:05:59.706
+And why is that?
+
+125
+00:05:59.706 --> 00:06:03.366
+Well because when you select an item in Downshift,
+
+126
+00:06:03.366 --> 00:06:06.957
+by default it's just going to take the entire item,
+
+127
+00:06:06.957 --> 00:06:10.007
+convert it to a string, and then put it into the input.
+
+128
+00:06:10.007 --> 00:06:11.643
+But our entire item is an object,
+
+129
+00:06:11.643 --> 00:06:14.235
+and if you try to convert an object to a string,
+
+130
+00:06:14.235 --> 00:06:15.700
+then you just get object object.
+
+131
+00:06:15.700 --> 00:06:19.928
+So, if we go back to our search right here,
+
+132
+00:06:19.928 --> 00:06:22.845
+and go all the way up to Downshift,
+
+133
+00:06:25.108 --> 00:06:29.206
+we can specify how items get turned into strings,
+
+134
+00:06:29.206 --> 00:06:31.789
+with the itemToString property.
+
+135
+00:06:34.075 --> 00:06:37.187
+And that will give us the item.
+
+136
+00:06:37.187 --> 00:06:41.515
+And we'll say if the item is equal to null,
+
+137
+00:06:41.515 --> 00:06:43.755
+then we will return nothing,
+
+138
+00:06:43.755 --> 00:06:47.672
+Otherwise we're going to just return item.title
+
+139
+00:06:49.813 --> 00:06:51.974
+And that's what we wanna show up in here.
+
+140
+00:06:51.974 --> 00:06:54.225
+So now if I just give it a refresh.
+
+141
+00:06:54.225 --> 00:06:56.642
+Type in a down down hit enter
+
+142
+00:06:57.585 --> 00:06:59.334
+Then it will automatically take the title,
+
+143
+00:06:59.334 --> 00:07:02.251
+and put it into that value's input.
+
+144
+00:07:03.814 --> 00:07:05.204
+The next thing we need to do is
+
+145
+00:07:05.204 --> 00:07:07.585
+what happens when I actually select one of them, right.
+
+146
+00:07:07.585 --> 00:07:10.025
+Because we actually need to route to that item.
+
+147
+00:07:10.025 --> 00:07:14.926
+And that's with the onChange handler directly on Downshift.
+
+148
+00:07:14.926 --> 00:07:18.106
+And we're going to make a function that's called routeToItem
+
+149
+00:07:18.106 --> 00:07:20.526
+And in this case it's not going to be this routeToItem
+
+150
+00:07:20.526 --> 00:07:22.006
+because it doesn't actually have to be
+
+151
+00:07:22.006 --> 00:07:23.517
+part of this component,
+
+152
+00:07:23.517 --> 00:07:26.706
+you can just make a function in this file called routeToItem
+
+153
+00:07:26.706 --> 00:07:28.346
+So let's just do that.
+
+154
+00:07:28.346 --> 00:07:30.536
+Right above AutoComplete we'll make
+
+155
+00:07:30.536 --> 00:07:32.536
+a function called routeToItem
+
+156
+00:07:32.536 --> 00:07:34.176
+It's gonna take in the item.
+
+157
+00:07:34.176 --> 00:07:38.926
+And let's just console that log the item inside of there.
+
+158
+00:07:39.808 --> 00:07:42.186
+Open up your dev tools here.
+
+159
+00:07:42.186 --> 00:07:43.928
+We got a couple errors showing up here,
+
+160
+00:07:43.928 --> 00:07:46.288
+if you are getting that just clear them out,
+
+161
+00:07:46.288 --> 00:07:49.618
+we'll make sure we solve them all before.
+
+162
+00:07:49.618 --> 00:07:51.858
+Type a, oh here it is!
+
+163
+00:07:51.858 --> 00:07:53.587
+A cross origin error was thrown,
+
+164
+00:07:53.587 --> 00:07:55.696
+React doesn't seem to have access to the actual
+
+165
+00:07:55.696 --> 00:07:58.547
+error object in development.
+
+166
+00:07:58.547 --> 00:08:03.547
+Now is not defined at proxy (mumbles).
+
+167
+00:08:03.958 --> 00:08:05.125
+Huh, I wonder,
+
+168
+00:08:07.083 --> 00:08:08.734
+let's fix that right now.
+
+169
+00:08:08.734 --> 00:08:12.403
+I wonder if that has to do with our persist.
+
+170
+00:08:12.403 --> 00:08:14.184
+You know in here, what we're doing
+
+171
+00:08:14.184 --> 00:08:15.984
+is we're running e.persist
+
+172
+00:08:15.984 --> 00:08:20.817
+Let's take that out real quick and see if that comes back.
+
+173
+00:08:24.584 --> 00:08:26.794
+Synthetic event is reused for performance reasons.
+
+174
+00:08:26.794 --> 00:08:28.254
+If you're seeing this, you're accessing
+
+175
+00:08:28.254 --> 00:08:31.261
+the property target on the released nullified
+
+176
+00:08:31.261 --> 00:08:35.856
+So, in this case we are debouncing this event,
+
+177
+00:08:35.856 --> 00:08:38.488
+and then later using the event's value.
+
+178
+00:08:38.488 --> 00:08:41.128
+And by the time we try to use this value,
+
+179
+00:08:41.128 --> 00:08:42.947
+we no longer have access to it.
+
+180
+00:08:42.947 --> 00:08:44.176
+So this is exactly why we have
+
+181
+00:08:44.176 --> 00:08:46.687
+that event dot persist in there.
+
+182
+00:08:46.687 --> 00:08:49.354
+But we're getting another issue.
+
+183
+00:08:51.856 --> 00:08:53.397
+Doesn't seem to be popping up right now,
+
+184
+00:08:53.397 --> 00:08:55.437
+I'll keep an eye on it just to make sure
+
+185
+00:08:55.437 --> 00:08:56.856
+it's not giving us any problems.
+
+186
+00:08:56.856 --> 00:09:00.384
+It might be just because we've developing this right here.
+
+187
+00:09:00.384 --> 00:09:03.476
+And then the hot reloading is goofing up with the event.
+
+188
+00:09:03.476 --> 00:09:06.705
+So if you do have those issues just give it a refresh.
+
+189
+00:09:06.705 --> 00:09:08.537
+We'll make sure that those don't actually happen
+
+190
+00:09:08.537 --> 00:09:11.847
+as we use the application, and as we test it.
+
+191
+00:09:11.847 --> 00:09:14.585
+So we were dealing with this routeToItem,
+
+192
+00:09:14.585 --> 00:09:16.865
+so if I were to type in something
+
+193
+00:09:16.865 --> 00:09:19.743
+and hit enter on this Rimowa now,
+
+194
+00:09:19.743 --> 00:09:21.983
+then you see that this item is then
+
+195
+00:09:21.983 --> 00:09:24.900
+passed to our routeToItem function.
+
+196
+00:09:26.825 --> 00:09:28.258
+And from here we can actually just go ahead
+
+197
+00:09:28.258 --> 00:09:31.591
+and change the name with the Router.push
+
+198
+00:09:32.807 --> 00:09:35.047
+And the path name that we are going to
+
+199
+00:09:35.047 --> 00:09:37.726
+is going to be forward slash item,
+
+200
+00:09:37.726 --> 00:09:41.226
+and the query is going to be id of item.id
+
+201
+00:09:42.505 --> 00:09:45.727
+Yeah, it's because we're editing this
+
+202
+00:09:45.727 --> 00:09:47.460
+JavaScript here and refreshing it.
+
+203
+00:09:47.460 --> 00:09:49.161
+Something's goofed up with the hot reloading,
+
+204
+00:09:49.161 --> 00:09:51.618
+I've definitely seen that before.
+
+205
+00:09:51.618 --> 00:09:53.841
+Now if I hit enter, you'll see that
+
+206
+00:09:53.841 --> 00:09:55.441
+it automatically pushes us to
+
+207
+00:09:55.441 --> 00:09:58.180
+item forward slash that item id
+
+208
+00:09:58.180 --> 00:10:00.921
+We're able to view the item on its singular page.
+
+209
+00:10:00.921 --> 00:10:04.485
+So that is the search, let's double check
+
+210
+00:10:04.485 --> 00:10:08.178
+that we have nothing else left to do.
+
+211
+00:10:08.178 --> 00:10:09.648
+Last thing we wanna do is if we search
+
+212
+00:10:09.648 --> 00:10:12.398
+for something that doesn't exist,
+
+213
+00:10:14.408 --> 00:10:16.670
+we wanna make sure that we actually show
+
+214
+00:10:16.670 --> 00:10:20.200
+the user that there's nothing found for that.
+
+215
+00:10:20.200 --> 00:10:23.533
+So we'll go down here, right below this.
+
+216
+00:10:25.774 --> 00:10:30.774
+If there's no items in state this.state.items.length
+
+217
+00:10:30.843 --> 00:10:32.913
+and we're not in a loading state,
+
+218
+00:10:32.913 --> 00:10:34.292
+because there's the possibility
+
+219
+00:10:34.292 --> 00:10:37.772
+that we're loading but there's no items just yet.
+
+220
+00:10:37.772 --> 00:10:39.522
+So this.state.loading
+
+221
+00:10:42.452 --> 00:10:44.621
+then we will simply
+
+222
+00:10:44.621 --> 00:10:46.371
+return a DropDownItem
+
+223
+00:10:49.294 --> 00:10:51.627
+that says nothing found for,
+
+224
+00:10:53.097 --> 00:10:54.279
+we can just interpolate the
+
+225
+00:10:54.279 --> 00:10:57.097
+actual search term right in there.
+
+226
+00:10:57.097 --> 00:10:59.514
+With the input value variable
+
+227
+00:11:06.449 --> 00:11:08.255
+This should not be curly bracket,
+
+228
+00:11:08.255 --> 00:11:10.505
+it should be a parenthesis.
+
+229
+00:11:12.678 --> 00:11:15.095
+Now when I search for adidas,
+
+230
+00:11:15.959 --> 00:11:18.724
+it will tell me nothing found for adidas.
+
+231
+00:11:18.724 --> 00:11:20.265
+And then we just click outside of that,
+
+232
+00:11:20.265 --> 00:11:21.474
+and it will clear it out.
+
+233
+00:11:21.474 --> 00:11:23.933
+Last thing that we want to do here is that,
+
+234
+00:11:23.933 --> 00:11:26.535
+we get this warning that's showing up from Downshift,
+
+235
+00:11:26.535 --> 00:11:28.084
+aria-labelledby did not match.
+
+236
+00:11:28.084 --> 00:11:30.141
+Server gave us downshift-4-label,
+
+237
+00:11:30.141 --> 00:11:31.935
+client gave us downshift-0-label.
+
+238
+00:11:31.935 --> 00:11:33.863
+So what happens is that if you have
+
+239
+00:11:33.863 --> 00:11:35.260
+multiple instances of Downshift,
+
+240
+00:11:35.260 --> 00:11:38.253
+or if you are rendering something multiple times,
+
+241
+00:11:38.253 --> 00:11:40.629
+Downshift will just give a unique identifier
+
+242
+00:11:40.629 --> 00:11:42.082
+to each of their labels.
+
+243
+00:11:42.082 --> 00:11:44.141
+And when you server render something
+
+244
+00:11:44.141 --> 00:11:46.082
+and then when you client render something,
+
+245
+00:11:46.082 --> 00:11:48.141
+it tries to pick up from where you left off.
+
+246
+00:11:48.141 --> 00:11:49.985
+And when they look different,
+
+247
+00:11:49.985 --> 00:11:52.375
+in this case it's zero, in this case it's four.
+
+248
+00:11:52.375 --> 00:11:54.084
+I think if I just refresh it will be,
+
+249
+00:11:54.084 --> 00:11:57.345
+now it's six, that one's zero, that one's eight,
+
+250
+00:11:57.345 --> 00:12:00.933
+you see that every single time that I refresh,
+
+251
+00:12:00.933 --> 00:12:02.884
+it's incrementing it because it has
+
+252
+00:12:02.884 --> 00:12:06.199
+an internal counter that the server is running,
+
+253
+00:12:06.199 --> 00:12:07.809
+and then on the client that's being
+
+254
+00:12:07.809 --> 00:12:09.169
+reset every single time.
+
+255
+00:12:09.169 --> 00:12:12.014
+So PayPal has on downshift docs,
+
+256
+00:12:12.014 --> 00:12:13.932
+they just have this reset counter id,
+
+257
+00:12:13.932 --> 00:12:16.110
+that you can call manually yourself,
+
+258
+00:12:16.110 --> 00:12:19.401
+and then that will take care of that problem on it.
+
+259
+00:12:19.401 --> 00:12:20.234
+So what we're going to do is
+
+260
+00:12:20.234 --> 00:12:21.496
+go up to Downshift and we're going to
+
+261
+00:12:21.496 --> 00:12:24.198
+import that reset counter id,
+
+262
+00:12:24.198 --> 00:12:25.797
+then we're going to go right down
+
+263
+00:12:25.797 --> 00:12:29.769
+to our render function and just manually call that ourselves
+
+264
+00:12:29.769 --> 00:12:33.019
+so that error goes away, and that's it.
+
+265
+00:12:33.877 --> 00:12:35.529
+So that is the dropdown,
+
+266
+00:12:35.529 --> 00:12:37.827
+there's a lot of code going on here.
+
+267
+00:12:37.827 --> 00:12:39.598
+I find it a little bit confusing,
+
+268
+00:12:39.598 --> 00:12:42.297
+with all of the render props that we have here.
+
+269
+00:12:42.297 --> 00:12:43.784
+But if you can break it down into
+
+270
+00:12:43.784 --> 00:12:45.397
+the multiple pieces like we did,
+
+271
+00:12:45.397 --> 00:12:48.216
+where you just code up the interface first,
+
+272
+00:12:48.216 --> 00:12:51.616
+and then code up the actual query with your ApolloConsumer,
+
+273
+00:12:51.616 --> 00:12:54.427
+and then we just sprinkle on a little bit
+
+274
+00:12:54.427 --> 00:12:56.896
+of Downshift to handle all of the selecting
+
+275
+00:12:56.896 --> 00:12:59.528
+and arrows and clicking outside,
+
+276
+00:12:59.528 --> 00:13:03.094
+it's fairly easy to get your dropdowns up and running.
+
+277
+00:13:03.094 --> 00:13:04.408
+Hopefully you enjoyed that,
+
+278
+00:13:04.408 --> 00:13:07.631
+let's move on to the next section of this course.
+

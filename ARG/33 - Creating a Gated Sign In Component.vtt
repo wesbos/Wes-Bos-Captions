@@ -1,0 +1,342 @@
+﻿WEBVTT
+
+1
+00:00:01.177 --> 00:00:02.571
+<v ->All right, in this video we're gonna make</v>
+
+2
+00:00:02.571 --> 00:00:05.896
+a wrapper component that will check if someone is signed in,
+
+3
+00:00:05.896 --> 00:00:08.824
+and that way we can put components on the page.
+
+4
+00:00:08.824 --> 00:00:10.530
+And if someone's not signed in it's just gonna
+
+5
+00:00:10.530 --> 00:00:13.602
+tell them to go ahead and sign in.
+
+6
+00:00:13.602 --> 00:00:17.749
+So, we're gonna open up our sidebar here and we're gonna
+
+7
+00:00:17.749 --> 00:00:22.749
+make a new component called PleaseSignIn.js and we're
+
+8
+00:00:22.918 --> 00:00:25.425
+gonna need a couple things here first we wanna import query
+
+9
+00:00:25.425 --> 00:00:29.442
+from react-apollo then we wanna import the current user
+
+10
+00:00:29.442 --> 00:00:31.979
+query from the user component cause we're gonna have
+
+11
+00:00:31.979 --> 00:00:36.081
+to check if the current user is signed in.
+
+12
+00:00:36.081 --> 00:00:40.664
+We're gonna import that sign in component from sign in.
+
+13
+00:00:42.513 --> 00:00:46.689
+Then we're gonna make our component const PleaseSignIn is
+
+14
+00:00:46.689 --> 00:00:47.939
+equal to props.
+
+15
+00:00:50.791 --> 00:00:54.374
+And then we'll export default PleaseSignIn.
+
+16
+00:00:56.123 --> 00:01:00.451
+From here we'll just return a please sign in.
+
+17
+00:01:00.451 --> 00:01:02.708
+Alright, let's see how we're doing now we'll go to the sell
+
+18
+00:01:02.708 --> 00:01:07.458
+page and we will import PleaseSignIn from our components.
+
+19
+00:01:14.721 --> 00:01:17.105
+And then we're just gonna wrap the whatever component you
+
+20
+00:01:17.105 --> 00:01:20.431
+want to make sure the user is signed in with we're just
+
+21
+00:01:20.431 --> 00:01:23.780
+going to wrap so we're gonna say please sign in.
+
+22
+00:01:23.780 --> 00:01:28.004
+Put the CreateItem inside of it then I'm going to sign out
+
+23
+00:01:28.004 --> 00:01:31.921
+and manually go to the forward slash sell page.
+
+24
+00:01:33.803 --> 00:01:35.876
+And you can see it's gonna tell us simply sign in.
+
+25
+00:01:35.876 --> 00:01:39.907
+So the idea with this PleaseSignIn is if we inside of that
+
+26
+00:01:39.907 --> 00:01:41.907
+let's just return a div.
+
+27
+00:01:43.649 --> 00:01:45.597
+Inside of that we just return
+
+28
+00:01:45.597 --> 00:01:50.503
+props.children it's just going to return whatever is
+
+29
+00:01:50.503 --> 00:01:54.247
+has been wrapped in it right so the child of PleaseSignIn is
+
+30
+00:01:54.247 --> 00:01:57.559
+this CreateItem component and then we're just showing it
+
+31
+00:01:57.559 --> 00:02:01.947
+so we sorta need to do a quick check before we do anything.
+
+32
+00:02:01.947 --> 00:02:03.905
+So actually we're gonna get rid of all this we're gonna
+
+33
+00:02:03.905 --> 00:02:07.275
+give ourselves a query component and then the query is
+
+34
+00:02:07.275 --> 00:02:10.192
+going to be the current user query.
+
+35
+00:02:12.283 --> 00:02:15.450
+Then inside of that we have a function
+
+36
+00:02:16.420 --> 00:02:20.298
+that has our data and our loading and inside
+
+37
+00:02:20.298 --> 00:02:23.911
+of that we're gonna say if there is loading return paragraph
+
+38
+00:02:23.911 --> 00:02:28.314
+loading otherwise we're going to check if the user is
+
+39
+00:02:28.314 --> 00:02:31.231
+signed in so if there is no data.me
+
+40
+00:02:33.097 --> 00:02:35.847
+then we are going to return a div
+
+41
+00:02:38.714 --> 00:02:42.327
+that says paragraph please sign in before
+
+42
+00:02:42.327 --> 00:02:46.025
+continuing and then we're just gonna pop in the SignIn
+
+43
+00:02:46.025 --> 00:02:49.405
+component that's the beauty of using React is that we can
+
+44
+00:02:49.405 --> 00:02:52.647
+put the SignIn component wherever it is that we possibly
+
+45
+00:02:52.647 --> 00:02:56.022
+would want and so finally otherwise if they are signed in
+
+46
+00:02:56.022 --> 00:02:58.983
+we simply just wanna like bypass this component
+
+47
+00:02:58.983 --> 00:03:02.608
+entirely and just return the props.children.
+
+48
+00:03:02.608 --> 00:03:04.025
+Now I get a bit of an error here.
+
+49
+00:03:04.025 --> 00:03:07.072
+Element type is invalid, expected string for built-in
+
+50
+00:03:07.072 --> 00:03:10.265
+components, you likely forgot to export your component.
+
+51
+00:03:10.265 --> 00:03:12.435
+Okay so let's debug this real quick.
+
+52
+00:03:12.435 --> 00:03:16.828
+Something is being returned from here that is not nice so
+
+53
+00:03:16.828 --> 00:03:19.936
+what I like to do in this case is just first check if
+
+54
+00:03:19.936 --> 00:03:23.788
+this is working so it's at the top return paragraph hey.
+
+55
+00:03:23.788 --> 00:03:27.456
+That works okay, good now if I were to get rid of this whole
+
+56
+00:03:27.456 --> 00:03:30.364
+chunk here would it work?
+
+57
+00:03:30.364 --> 00:03:33.135
+Okay good so it's obviously the error is somewhere in here
+
+58
+00:03:33.135 --> 00:03:36.316
+and I'm willing to bet it's this component if I delete that
+
+59
+00:03:36.316 --> 00:03:37.961
+component does it work?
+
+60
+00:03:37.961 --> 00:03:42.735
+It does but if I leave it in it breaks so SignIn oh I see
+
+61
+00:03:42.735 --> 00:03:46.780
+if we open up our SignIn.js you see it's exported default
+
+62
+00:03:46.780 --> 00:03:50.585
+I imported it as a named import with curly brackets so
+
+63
+00:03:50.585 --> 00:03:53.452
+we'll take those off and I bet it'll all work.
+
+64
+00:03:53.452 --> 00:03:56.508
+Beautiful so here we are on the sell page this says please
+
+65
+00:03:56.508 --> 00:04:00.652
+sign in before continuing then we get the actual sign in
+
+66
+00:04:00.652 --> 00:04:01.569
+thing here.
+
+67
+00:04:02.443 --> 00:04:04.193
+I can try to sign in.
+
+68
+00:04:09.794 --> 00:04:12.578
+You see we're signed in here although this still shows
+
+69
+00:04:12.578 --> 00:04:15.820
+please sign in before continuing so what I'm wondering
+
+70
+00:04:15.820 --> 00:04:19.584
+is is this query working properly the way that we can debug
+
+71
+00:04:19.584 --> 00:04:23.777
+that is just console log the data and see if that's actually
+
+72
+00:04:23.777 --> 00:04:28.583
+getting some data so if we were to refresh both times
+
+73
+00:04:28.583 --> 00:04:31.000
+we get the data do we get me?
+
+74
+00:04:34.191 --> 00:04:38.273
+Oh I see why it's cause I did not de-structure this this is
+
+75
+00:04:38.273 --> 00:04:42.126
+the payload and not two arguments but if I de-structure
+
+76
+00:04:42.126 --> 00:04:46.926
+that payload into data and loading I bet it will work.
+
+77
+00:04:46.926 --> 00:04:50.513
+There we go so now we have the sell so if I sign out it
+
+78
+00:04:50.513 --> 00:04:53.009
+immediately shows us the sign into your account.
+
+79
+00:04:53.009 --> 00:04:57.607
+If I sign in it immediately shows us the sale page so it's
+
+80
+00:04:57.607 --> 00:05:00.583
+nice to be able to flip-flop and what we're gonna do later
+
+81
+00:05:00.583 --> 00:05:03.844
+is extend this PleaseSignIn to also handle different
+
+82
+00:05:03.844 --> 00:05:07.530
+permissions that the user may have but for now it's a nice
+
+83
+00:05:07.530 --> 00:05:10.759
+simple wrapper component that we can use on all of our
+
+84
+00:05:10.759 --> 00:05:13.614
+pages that need someone to be signed in before that
+
+85
+00:05:13.614 --> 00:05:16.697
+actual component is actually being displayed.
+

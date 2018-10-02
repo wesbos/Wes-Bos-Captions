@@ -1,0 +1,1374 @@
+﻿WEBVTT
+
+1
+00:00:00.870 --> 00:00:02.750
+<v Wes>Before we get too heavy into mutations,</v>
+
+2
+00:00:02.750 --> 00:00:04.260
+let's write a couple more query tests
+
+3
+00:00:04.260 --> 00:00:08.672
+so we can feel comfortable with this whole writing mocks.
+
+4
+00:00:08.672 --> 00:00:13.010
+We're going to test the PleaseSignIn component.
+
+5
+00:00:13.010 --> 00:00:15.380
+It's pretty simple: it queries a current user.
+
+6
+00:00:15.380 --> 00:00:18.750
+If the user is not signed in, it will ask them
+
+7
+00:00:18.750 --> 00:00:20.500
+to sign in, render out the Signin;
+
+8
+00:00:20.500 --> 00:00:22.580
+otherwise, it will return the children,
+
+9
+00:00:22.580 --> 00:00:24.670
+and you could also expand this component
+
+10
+00:00:24.670 --> 00:00:27.500
+to take an array of permissions as well,
+
+11
+00:00:27.500 --> 00:00:29.010
+but we haven't done that here.
+
+12
+00:00:29.010 --> 00:00:30.840
+So we're going to create a new file
+
+13
+00:00:30.840 --> 00:00:34.213
+in our test folder called PleaseSignIn.test.js,
+
+14
+00:00:38.360 --> 00:00:41.410
+and I want you to go to your SingleItem.test.js
+
+15
+00:00:41.410 --> 00:00:44.010
+and just pull all the imports from that
+
+16
+00:00:44.010 --> 00:00:47.800
+and paste them into here, so we got mount, toJSON, wait,
+
+17
+00:00:47.800 --> 00:00:51.220
+we are going to import, not a SingleItem,
+
+18
+00:00:51.220 --> 00:00:54.647
+but we are going to be importing the PleaseSignIn,
+
+19
+00:00:56.620 --> 00:01:01.580
+from the PleaseSignIn component.
+
+20
+00:01:01.580 --> 00:01:03.253
+We also want to import the
+
+21
+00:01:07.046 --> 00:01:09.067
+CURRENT_USER_QUERY from our user component.
+
+22
+00:01:14.720 --> 00:01:18.153
+Let's just triple check we exported that User.js.
+
+23
+00:01:19.300 --> 00:01:21.200
+There we go, we exported it just fine.
+
+24
+00:01:23.510 --> 00:01:26.930
+We have our MockedProvider, and then we have our fakeItem.
+
+25
+00:01:26.930 --> 00:01:29.250
+I don't think we need that, let's open up our testUtils.
+
+26
+00:01:29.250 --> 00:01:32.080
+I believe we need a fake user to be pulled in,
+
+27
+00:01:32.080 --> 00:01:33.873
+so let's grab fakeUser.
+
+28
+00:01:34.780 --> 00:01:36.880
+Awesome, now let's make some mocks first.
+
+29
+00:01:36.880 --> 00:01:40.130
+In the last example, I did my mocks right inside
+
+30
+00:01:40.130 --> 00:01:43.070
+of the test; however, if these mocks are gonna be used
+
+31
+00:01:43.070 --> 00:01:46.200
+more than once, you can describe them outside your test,
+
+32
+00:01:46.200 --> 00:01:48.100
+which will make them a little bit more reusable,
+
+33
+00:01:48.100 --> 00:01:49.280
+so let's do that.
+
+34
+00:01:49.280 --> 00:01:54.280
+Say const notSignedInMocks is equal to an array of mocks,
+
+35
+00:01:55.110 --> 00:02:00.110
+and the first mock is going to be an object with a request.
+
+36
+00:02:00.600 --> 00:02:04.610
+That is going to be query of the CURRENT_USER_QUERY
+
+37
+00:02:04.610 --> 00:02:09.083
+and then the result is going to be data,
+
+38
+00:02:11.600 --> 00:02:15.240
+and then that result is going to have me is equal to null
+
+39
+00:02:15.240 --> 00:02:17.200
+'cause that's not signed in, right?
+
+40
+00:02:17.200 --> 00:02:19.850
+Then we'll make another mock for the signed in mocks,
+
+41
+00:02:21.380 --> 00:02:22.420
+so signedInMocks
+
+42
+00:02:25.630 --> 00:02:27.113
+equals an array.
+
+43
+00:02:30.470 --> 00:02:33.970
+Yep, a request, actually we can just pop this,
+
+44
+00:02:33.970 --> 00:02:36.960
+let's just grab that, paste it in,
+
+45
+00:02:36.960 --> 00:02:41.513
+and then the me is just going to be a fakeUser.
+
+46
+00:02:45.493 --> 00:02:46.900
+Now we can go ahead and write our test so
+
+47
+00:02:46.900 --> 00:02:48.300
+describe('&lt;PleaseSignIn/&gt;'),
+
+48
+00:02:51.550 --> 00:02:53.090
+and we'll do our first test:
+
+49
+00:02:53.090 --> 00:02:57.690
+it('renders the sign in dialog
+
+50
+00:02:59.050 --> 00:03:03.510
+to logged out users',
+
+51
+00:03:03.510 --> 00:03:04.433
+make that async,
+
+52
+00:03:09.560 --> 00:03:12.763
+We'll make our wrapper, and we'll mount.
+
+53
+00:03:14.070 --> 00:03:17.173
+Inside of that we need our MockedProvider.
+
+54
+00:03:18.930 --> 00:03:20.500
+The mocks that we pass to that
+
+55
+00:03:20.500 --> 00:03:25.170
+are the notSignedInMocks, and then inside of that
+
+56
+00:03:25.170 --> 00:03:28.703
+we'll have our PleaseSignIn component.
+
+57
+00:03:33.110 --> 00:03:36.420
+Let's just go ahead and console.log
+
+58
+00:03:36.420 --> 00:03:39.360
+wrapper.debug.
+
+59
+00:03:39.360 --> 00:03:41.810
+We get loading here, so if you wanted to
+
+60
+00:03:41.810 --> 00:03:43.790
+you could test that it shows loading,
+
+61
+00:03:43.790 --> 00:03:46.340
+but we don't really care so we'll just
+
+62
+00:03:46.340 --> 00:03:51.340
+await wait wrapper.update, and now debug.
+
+63
+00:03:54.650 --> 00:03:57.393
+Bam, there we get, there's our sign in.
+
+64
+00:03:58.280 --> 00:04:01.020
+Looks like it's working just fine.
+
+65
+00:04:01.020 --> 00:04:03.800
+So let's go ahead and write some tests
+
+66
+00:04:03.800 --> 00:04:06.563
+that will assert that this looks fine.
+
+67
+00:04:11.260 --> 00:04:13.880
+Expect that the wrapper.text
+
+68
+00:04:15.987 --> 00:04:16.820
+toContain
+
+69
+00:04:20.590 --> 00:04:23.340
+('Please sign in
+
+70
+00:04:24.330 --> 00:04:28.210
+before continuing').
+
+71
+00:04:28.210 --> 00:04:30.003
+I think that's what we wrote.
+
+72
+00:04:31.200 --> 00:04:35.173
+Oh, little error here, expected.
+
+73
+00:04:40.280 --> 00:04:44.360
+Oh, lowercase, so I like to copy paste that.
+
+74
+00:04:44.360 --> 00:04:46.320
+I think there is a capital C on continuing,
+
+75
+00:04:46.320 --> 00:04:48.170
+but I'm just gonna paste it right in,
+
+76
+00:04:49.164 --> 00:04:51.320
+and it looks that test passed!
+
+77
+00:04:51.320 --> 00:04:54.820
+Good, we can also test that that SignIn component
+
+78
+00:04:54.820 --> 00:04:59.320
+is showing, so expect(wrapper.find
+
+79
+00:05:00.257 --> 00:05:04.660
+('SignIn').exists
+
+80
+00:05:07.402 --> 00:05:09.267
+.toBe(true).
+
+81
+00:05:12.240 --> 00:05:15.260
+Eh, that didn't work so how would I debug this?
+
+82
+00:05:15.260 --> 00:05:17.380
+First I'll just try to put it in its own variable,
+
+83
+00:05:17.380 --> 00:05:21.617
+so const SignIn is equal to wrapper.find
+
+84
+00:05:26.820 --> 00:05:27.653
+SignIn
+
+85
+00:05:33.030 --> 00:05:34.830
+and we'll console.log(SignIn.debug).
+
+86
+00:05:39.000 --> 00:05:40.350
+Let's see what we got here.
+
+87
+00:05:42.760 --> 00:05:47.760
+Gives me nothing, okay, um, it's not finding it,
+
+88
+00:05:47.760 --> 00:05:50.460
+so let's just do a wrapper debug then,
+
+89
+00:05:50.460 --> 00:05:52.253
+see what its actually called.
+
+90
+00:05:54.900 --> 00:05:57.743
+Oh, lowercase I, that's probably what it is.
+
+91
+00:06:03.470 --> 00:06:05.670
+Here we go, there's our sign in,
+
+92
+00:06:05.670 --> 00:06:07.320
+so this expect
+
+93
+00:06:08.474 --> 00:06:09.307
+SignIn
+
+94
+00:06:11.750 --> 00:06:13.380
+exists .toBe(true).
+
+95
+00:06:13.380 --> 00:06:17.063
+We can replace this with our variable that we just created.
+
+96
+00:06:19.290 --> 00:06:20.610
+Looks like its working!
+
+97
+00:06:20.610 --> 00:06:22.950
+Get rid of these console logs,
+
+98
+00:06:22.950 --> 00:06:26.100
+and I think that's good enough, I think our test passed.
+
+99
+00:06:26.100 --> 00:06:30.870
+Next one we want to: it('renders the child
+
+100
+00:06:32.460 --> 00:06:36.490
+component when the user is signed in').
+
+101
+00:06:39.080 --> 00:06:40.103
+Make that async.
+
+102
+00:06:43.584 --> 00:06:46.560
+We can just go ahead and grab this mount here,
+
+103
+00:06:46.560 --> 00:06:48.690
+paste it in, and then swap out
+
+104
+00:06:48.690 --> 00:06:50.473
+the mocks with the signedInMocks.
+
+105
+00:06:56.423 --> 00:06:58.673
+And if we do our await wait
+
+106
+00:07:01.380 --> 00:07:03.580
+wrapper.update
+
+107
+00:07:03.580 --> 00:07:04.930
+console.log(wrapper.debug).
+
+108
+00:07:09.690 --> 00:07:13.600
+Oh, and I guess the way that PleaseSignIn works
+
+109
+00:07:13.600 --> 00:07:16.950
+is that PleaseSignIn needs a child component
+
+110
+00:07:16.950 --> 00:07:18.270
+to actually show it, so let's make
+
+111
+00:07:18.270 --> 00:07:21.060
+a quick little child component here.
+
+112
+00:07:21.060 --> 00:07:26.040
+We'll say, const Hey is equal to
+
+113
+00:07:27.810 --> 00:07:28.643
+Hey!
+
+114
+00:07:30.410 --> 00:07:33.513
+And then we need a PleaseSignIn open close,
+
+115
+00:07:34.670 --> 00:07:38.373
+and we'll put a Hey tag in the middle.
+
+116
+00:07:39.670 --> 00:07:42.240
+So if this worked properly, we should see a paragraph
+
+117
+00:07:42.240 --> 00:07:45.393
+with Hey! rendering inside of the PleaseSignIn.
+
+118
+00:07:46.360 --> 00:07:47.523
+There it is.
+
+119
+00:07:50.855 --> 00:07:52.570
+And now we can run some assertions:
+
+120
+00:07:52.570 --> 00:07:56.396
+expect(wrapper.find)
+
+121
+00:07:56.396 --> 00:07:57.937
+a Hey tag .exists
+
+122
+00:08:00.327 --> 00:08:01.160
+.toBe(true).
+
+123
+00:08:04.860 --> 00:08:07.240
+Passes with flying colors!
+
+124
+00:08:07.240 --> 00:08:09.690
+I think we can also, let's try another one there:
+
+125
+00:08:11.440 --> 00:08:14.940
+expect(wrapper.contains)
+
+126
+00:08:19.697 --> 00:08:20.530
+a Hey tag.
+
+127
+00:08:22.520 --> 00:08:23.353
+Does that work, too?
+
+128
+00:08:23.353 --> 00:08:25.670
+Hey hey, that works as well, hey hey!
+
+129
+00:08:25.670 --> 00:08:28.505
+So either one, this is kinda neat because
+
+130
+00:08:28.505 --> 00:08:31.500
+this you're actually giving it the component itself,
+
+131
+00:08:31.500 --> 00:08:33.030
+this you're just using a selector,
+
+132
+00:08:33.030 --> 00:08:35.020
+so I think this one would probably be a little bit better
+
+133
+00:08:35.020 --> 00:08:37.330
+in this use case, you could use either one, though.
+
+134
+00:08:37.330 --> 00:08:39.020
+Both of them work pretty well.
+
+135
+00:08:39.020 --> 00:08:40.620
+I don't think you'd run into any hot water.
+
+136
+00:08:40.620 --> 00:08:43.290
+So that's PleaseSignIn, I like that one.
+
+137
+00:08:43.290 --> 00:08:45.023
+Let's do a couple more real quick.
+
+138
+00:08:47.370 --> 00:08:49.113
+Let's look at the Nav.js.
+
+139
+00:08:50.070 --> 00:08:53.050
+What do we gotta test about our nav?
+
+140
+00:08:53.050 --> 00:08:56.100
+We just want to make sure that the nav is rendering properly
+
+141
+00:08:56.100 --> 00:09:00.910
+when they're in a logged-in and logged-out status,
+
+142
+00:09:00.910 --> 00:09:05.910
+so let's go ahead and write a test for that.
+
+143
+00:09:05.980 --> 00:09:10.643
+Let's go into our test folder, make a new file: Nav.test.js.
+
+144
+00:09:12.320 --> 00:09:15.670
+we'll go ahead and grab all of the imports.
+
+145
+00:09:15.670 --> 00:09:17.020
+Actually, let's clean this up real quick.
+
+146
+00:09:17.020 --> 00:09:20.690
+The PleaseSignIn doesn't need the toJSON
+
+147
+00:09:20.690 --> 00:09:22.070
+and everything else is needed.
+
+148
+00:09:22.070 --> 00:09:26.483
+So let's copy that, go into our Nav and paste it in.
+
+149
+00:09:27.690 --> 00:09:29.370
+Then we need some mocks for both
+
+150
+00:09:29.370 --> 00:09:30.810
+being signed in and signed out,
+
+151
+00:09:30.810 --> 00:09:33.510
+so you could just export these and import them in,
+
+152
+00:09:33.510 --> 00:09:34.790
+but I'm just gonna copy paste them
+
+153
+00:09:34.790 --> 00:09:37.990
+so I keep this test nice and self contained,
+
+154
+00:09:37.990 --> 00:09:42.210
+so copy, paste it in there, and we can go ahead
+
+155
+00:09:42.210 --> 00:09:45.363
+and start to describe our tests.
+
+156
+00:09:47.200 --> 00:09:48.693
+So we'll say Nav,
+
+157
+00:09:51.390 --> 00:09:56.390
+we'll say it('renders a minimal nav when signed out')
+
+158
+00:10:00.012 --> 00:10:02.595
+const wrapper is equal to mount
+
+159
+00:10:04.648 --> 00:10:07.550
+MockedProvider inside of that,
+
+160
+00:10:07.550 --> 00:10:10.910
+We want our Nav tagged, did we import that?
+
+161
+00:10:10.910 --> 00:10:13.000
+Don't think that we did, no.
+
+162
+00:10:13.000 --> 00:10:15.923
+So let's just switch this PleaseSignIn to Nav,
+
+163
+00:10:19.290 --> 00:10:23.800
+and our MockedProvider needs some mocks,
+
+164
+00:10:23.800 --> 00:10:25.650
+we'll call that the notSignedInMocks.
+
+165
+00:10:29.200 --> 00:10:31.403
+Then we will wait,
+
+166
+00:10:33.940 --> 00:10:34.773
+update,
+
+167
+00:10:37.410 --> 00:10:39.210
+and then console.log(wrapper.debug).
+
+168
+00:10:46.693 --> 00:10:49.030
+Let's see what were working with here.
+
+169
+00:10:49.030 --> 00:10:52.670
+We've got our Nav, we have our unordered list,
+
+170
+00:10:52.670 --> 00:10:56.470
+and inside of that you've got two links,
+
+171
+00:10:56.470 --> 00:10:58.900
+one to items and one to signup.
+
+172
+00:10:58.900 --> 00:11:00.840
+So it's a couple things we could test here.
+
+173
+00:11:00.840 --> 00:11:02.750
+We could test that there are two children,
+
+174
+00:11:02.750 --> 00:11:07.050
+we could test that the links are shop and sign in,
+
+175
+00:11:07.050 --> 00:11:09.990
+we could test that they go to the right place,
+
+176
+00:11:09.990 --> 00:11:12.950
+but I think a snapshot is probably the best use case in here
+
+177
+00:11:12.950 --> 00:11:17.040
+because we can cover all of that in just a single look.
+
+178
+00:11:17.040 --> 00:11:19.613
+So what I'm gonna do is open up our Nav.js,
+
+179
+00:11:20.480 --> 00:11:23.690
+and let's find the actual piece that we're looking to test,
+
+180
+00:11:23.690 --> 00:11:26.800
+and that's this right here, NavStyles is on our list,
+
+181
+00:11:26.800 --> 00:11:29.940
+and we'll put a data-test on there,
+
+182
+00:11:29.940 --> 00:11:31.860
+and we'll call that our nav.
+
+183
+00:11:31.860 --> 00:11:34.100
+Then what we can do in here is find that,
+
+184
+00:11:34.100 --> 00:11:38.270
+so const nav is equal to wrapper.find
+
+185
+00:11:40.960 --> 00:11:45.010
+data-test is equal to nav,
+
+186
+00:11:45.010 --> 00:11:47.750
+and then let's console.log the nav.debug,
+
+187
+00:11:47.750 --> 00:11:50.830
+see if were working with the right piece.
+
+188
+00:11:50.830 --> 00:11:53.730
+There we go, there's our Nav, everything is in there,
+
+189
+00:11:53.730 --> 00:11:55.600
+and we can just do a quick little snapshot,
+
+190
+00:11:55.600 --> 00:11:56.700
+so expect(toJSON(nav))
+
+191
+00:12:00.902 --> 00:12:02.319
+.toMatchSnapshot.
+
+192
+00:12:06.290 --> 00:12:08.877
+Bah, not working, toJSON is not defined.
+
+193
+00:12:08.877 --> 00:12:10.153
+Oh, I didn't import it.
+
+194
+00:12:11.370 --> 00:12:16.370
+It's gotta go up here import toJSON from 'enzyme-to-json'.
+
+195
+00:12:18.930 --> 00:12:20.460
+Passes with flying colors.
+
+196
+00:12:20.460 --> 00:12:21.833
+We should check our test,
+
+197
+00:12:22.770 --> 00:12:27.200
+Nav.test.js.snap,
+
+198
+00:12:27.200 --> 00:12:30.550
+and then we say renders a minimal nav when signed out.
+
+199
+00:12:30.550 --> 00:12:32.680
+We see our unordered list, we see
+
+200
+00:12:32.680 --> 00:12:36.090
+our two links showing up there, good.
+
+201
+00:12:36.090 --> 00:12:39.290
+Now we'll do the opposite, which is
+
+202
+00:12:39.290 --> 00:12:40.347
+it('renders full nav when signed in').
+
+203
+00:12:49.530 --> 00:12:52.513
+We can go ahead and just take this mount,
+
+204
+00:12:53.830 --> 00:12:55.700
+pass it the signedInMocks,
+
+205
+00:13:00.960 --> 00:13:03.253
+do our whole wait and update dance,
+
+206
+00:13:07.680 --> 00:13:09.050
+find the wrapper.
+
+207
+00:13:09.050 --> 00:13:10.710
+This is actually almost exactly the same.
+
+208
+00:13:10.710 --> 00:13:13.000
+We could probably write some abstractions on here,
+
+209
+00:13:13.000 --> 00:13:15.550
+and then let's go ahead and console.log(nav.debug).
+
+210
+00:13:19.710 --> 00:13:21.590
+Bum, there it is.
+
+211
+00:13:21.590 --> 00:13:24.660
+We see items, sells, orders, me,
+
+212
+00:13:24.660 --> 00:13:27.170
+there's a sign out button in there,
+
+213
+00:13:27.170 --> 00:13:32.170
+and then there is a cart that has zero items inside of it.
+
+214
+00:13:32.610 --> 00:13:34.610
+So that looking good, we can basically
+
+215
+00:13:34.610 --> 00:13:37.610
+just do the same thing where we can expect the nav
+
+216
+00:13:37.610 --> 00:13:40.713
+to match the snapshot that we have there,
+
+217
+00:13:42.750 --> 00:13:44.730
+and those pass as well.
+
+218
+00:13:44.730 --> 00:13:47.240
+One other thing you could do here is
+
+219
+00:13:47.240 --> 00:13:52.240
+you could modify this to show a user with items in the cart.
+
+220
+00:13:52.930 --> 00:13:54.360
+That would be something you could do.
+
+221
+00:13:54.360 --> 00:13:56.270
+Let's do that real quick:
+
+222
+00:13:56.270 --> 00:13:57.347
+it('renders the amount of items in the cart'),
+
+223
+00:14:00.740 --> 00:14:02.950
+and this is a little bit unnecessary
+
+224
+00:14:02.950 --> 00:14:05.760
+because we've already written a test for cart count
+
+225
+00:14:05.760 --> 00:14:07.970
+and we know that that works, but just to show you
+
+226
+00:14:07.970 --> 00:14:11.710
+how you could modify the data here to do that,
+
+227
+00:14:11.710 --> 00:14:15.623
+let's go ahead and just take the whole thing, actually.
+
+228
+00:14:22.210 --> 00:14:25.783
+And then I am just gonna make a signedInMocksWithCartItems.
+
+229
+00:14:27.090 --> 00:14:31.303
+We'll go up here and duplicate this,
+
+230
+00:14:34.389 --> 00:14:36.639
+signedInMocksWithCartItems,
+
+231
+00:14:38.390 --> 00:14:43.300
+and then the me is going to be an object,
+
+232
+00:14:43.300 --> 00:14:47.050
+and we can spread the fakeUser into it so we can copy it,
+
+233
+00:14:47.050 --> 00:14:48.200
+which is going to give us,
+
+234
+00:14:48.200 --> 00:14:50.660
+let's look at our testUtils real quick,
+
+235
+00:14:50.660 --> 00:14:53.770
+it's gonna give us somebody with an empty cart,
+
+236
+00:14:53.770 --> 00:14:57.980
+but what we can do is we can override that cart
+
+237
+00:14:57.980 --> 00:14:59.930
+with a whole bunch of cart items,
+
+238
+00:14:59.930 --> 00:15:01.470
+and, in this case, I think we can just
+
+239
+00:15:01.470 --> 00:15:06.360
+give ourselves empty objects because
+
+240
+00:15:06.360 --> 00:15:09.290
+it only counts the amount of items that are in the cart.
+
+241
+00:15:09.290 --> 00:15:11.580
+That might be wrong, but let's try.
+
+242
+00:15:11.580 --> 00:15:13.293
+Let's see what that looks like.
+
+243
+00:15:15.740 --> 00:15:20.740
+Ah, missing field typename in, oh yeah, in ID
+
+244
+00:15:21.000 --> 00:15:22.180
+quantity, I see,
+
+245
+00:15:22.180 --> 00:15:24.960
+because you can't just give it an empty thing
+
+246
+00:15:24.960 --> 00:15:26.510
+because it's asking for the ID
+
+247
+00:15:26.510 --> 00:15:28.510
+and the quantity and the item in there,
+
+248
+00:15:28.510 --> 00:15:30.240
+so it's gonna give us all these warnings in here.
+
+249
+00:15:30.240 --> 00:15:35.240
+So let's fix that, go back up to the top of our Nav.test,
+
+250
+00:15:36.500 --> 00:15:40.037
+and we will import the fakeCartItem.
+
+251
+00:15:46.870 --> 00:15:50.883
+Then we'll make a whole bunch of fakeCartItems in here.
+
+252
+00:15:55.180 --> 00:15:59.880
+I've also set up this fakeCartItem to take in any overrides
+
+253
+00:15:59.880 --> 00:16:02.610
+so that if you want to change the ID
+
+254
+00:16:02.610 --> 00:16:04.870
+or the quantity or the actual item itself,
+
+255
+00:16:04.870 --> 00:16:08.200
+you can override it and they will overlap those.
+
+256
+00:16:08.200 --> 00:16:09.803
+So does that fix it?
+
+257
+00:16:10.750 --> 00:16:13.380
+Let's update those snapshots,
+
+258
+00:16:13.380 --> 00:16:15.680
+take a look at our Nav snapshot,
+
+259
+00:16:15.680 --> 00:16:20.680
+and then look for the test that we're running here.
+
+260
+00:16:21.350 --> 00:16:23.823
+Renders the amount of items in the cart.
+
+261
+00:16:25.230 --> 00:16:27.650
+Let's find that in here, NavStyles.
+
+262
+00:16:32.054 --> 00:16:33.780
+Ah, you know what's happening here?
+
+263
+00:16:33.780 --> 00:16:35.820
+'Kay, this is too much, we're gonna fix this,
+
+264
+00:16:35.820 --> 00:16:38.460
+but let's just triple check that it actually works.
+
+265
+00:16:38.460 --> 00:16:42.570
+There we go, count, there's nine items in the cart.
+
+266
+00:16:42.570 --> 00:16:45.690
+That makes sense because we added three items
+
+267
+00:16:45.690 --> 00:16:47.810
+and, by default, there's three quantity of those
+
+268
+00:16:47.810 --> 00:16:51.330
+so three time three is nine, but what's going on here?
+
+269
+00:16:51.330 --> 00:16:55.320
+These snapshots are way too big, 1700 lines,
+
+270
+00:16:55.320 --> 00:16:58.650
+and the reason why we're getting this much is
+
+271
+00:16:58.650 --> 00:17:01.900
+because both of these tests, it renders them,
+
+272
+00:17:01.900 --> 00:17:05.300
+both of the signed in tests that we have here
+
+273
+00:17:05.300 --> 00:17:08.290
+are rendering the sign out button,
+
+274
+00:17:08.290 --> 00:17:12.230
+and then the sign out button in turn
+
+275
+00:17:12.230 --> 00:17:15.980
+has a mutation inside of it, so it's getting too big.
+
+276
+00:17:15.980 --> 00:17:19.810
+So we can't just snapshot the entire thing, in this case,
+
+277
+00:17:19.810 --> 00:17:22.910
+we have to kind of selectively pick
+
+278
+00:17:22.910 --> 00:17:24.910
+some of our items that we have there, so
+
+279
+00:17:26.190 --> 00:17:31.073
+let's remove that, and let's remove that,
+
+280
+00:17:34.210 --> 00:17:36.710
+and just go to your terminal and
+
+281
+00:17:36.710 --> 00:17:40.580
+remove those obsolete snapshots, good.
+
+282
+00:17:40.580 --> 00:17:43.080
+Then we have to rewrite some of this expects here:
+
+283
+00:17:44.030 --> 00:17:45.120
+expect
+
+284
+00:17:49.165 --> 00:17:54.165
+(nav.children().length).toBe(2).
+
+285
+00:17:57.196 --> 00:17:58.040
+Does that work?
+
+286
+00:17:58.040 --> 00:18:00.430
+Oh, it's seven, not two, obviously,
+
+287
+00:18:00.430 --> 00:18:02.063
+so there's seven items in there.
+
+288
+00:18:03.930 --> 00:18:08.260
+Looking good, we could also expect(nav.text)
+
+289
+00:18:09.201 --> 00:18:12.451
+.toContain('SignOut').
+
+290
+00:18:18.570 --> 00:18:20.720
+Ah, one more error we got here:
+
+291
+00:18:20.720 --> 00:18:23.100
+Text is only meant to be run on a single node.
+
+292
+00:18:23.100 --> 00:18:25.420
+Found two instead.
+
+293
+00:18:25.420 --> 00:18:29.980
+So this problem is coming because of styled components.
+
+294
+00:18:29.980 --> 00:18:33.470
+If we take a loot at our Nav.js here,
+
+295
+00:18:33.470 --> 00:18:36.250
+and we put this data-test, styled components
+
+296
+00:18:36.250 --> 00:18:38.630
+puts a NavStyles here, but then it's also gonna
+
+297
+00:18:38.630 --> 00:18:41.170
+duplicate that and give us an unordered list
+
+298
+00:18:41.170 --> 00:18:43.530
+with the same attributes on it.
+
+299
+00:18:43.530 --> 00:18:45.930
+So what we really need to do here
+
+300
+00:18:45.930 --> 00:18:50.790
+is change our selector to just a ul
+
+301
+00:18:51.710 --> 00:18:53.610
+and we should do that up here as well,
+
+302
+00:18:58.250 --> 00:19:02.450
+so it's telling us here that the snapshot has changed,
+
+303
+00:19:02.450 --> 00:19:04.310
+so we actually want the unordered list,
+
+304
+00:19:04.310 --> 00:19:06.840
+not the NavStyles, so that's fine, I'm gonna accept that.
+
+305
+00:19:06.840 --> 00:19:09.840
+But now we got one problem here,
+
+306
+00:19:09.840 --> 00:19:12.380
+we're expecting seven children and now we have six.
+
+307
+00:19:12.380 --> 00:19:14.603
+That makes sense because we just changed it,
+
+308
+00:19:15.860 --> 00:19:18.960
+six, good, that's passing.
+
+309
+00:19:18.960 --> 00:19:21.300
+Now what else do we want to test to make sure
+
+310
+00:19:21.300 --> 00:19:23.140
+that our nav is in the state that we want?
+
+311
+00:19:23.140 --> 00:19:25.040
+Let's just take a quick look at
+
+312
+00:19:25.040 --> 00:19:26.730
+what the nav looks like in this state.
+
+313
+00:19:26.730 --> 00:19:29.640
+Console.log(nav.debug)
+
+314
+00:19:33.390 --> 00:19:34.713
+and we got our links, so we wanna make sure
+
+315
+00:19:34.713 --> 00:19:36.910
+there's shop in there, you wanna make sure
+
+316
+00:19:36.910 --> 00:19:41.340
+there's sell in there, orders, account and sign out.
+
+317
+00:19:41.340 --> 00:19:42.640
+So you could write one of these
+
+318
+00:19:42.640 --> 00:19:43.860
+for every single one of those,
+
+319
+00:19:43.860 --> 00:19:46.480
+you could check that the href is all the same,
+
+320
+00:19:46.480 --> 00:19:47.830
+I'll let you kind of deal with that,
+
+321
+00:19:47.830 --> 00:19:48.790
+I think you get the point here.
+
+322
+00:19:48.790 --> 00:19:51.000
+You just want to check that there all on the page
+
+323
+00:19:51.000 --> 00:19:53.100
+and maybe that the links are rendering out
+
+324
+00:19:54.070 --> 00:19:56.030
+properly how you have them.
+
+325
+00:19:56.030 --> 00:19:58.780
+In here, all we want to make sure is that
+
+326
+00:19:58.780 --> 00:20:02.970
+the cart count contains the right amount that we have,
+
+327
+00:20:02.970 --> 00:20:05.400
+so if we just search for that,
+
+328
+00:20:05.400 --> 00:20:08.070
+we want to look for something with a class of count
+
+329
+00:20:08.070 --> 00:20:11.600
+and look for the text inside of it, so we'll say
+
+330
+00:20:11.600 --> 00:20:15.180
+const count is equal to Nav.find
+
+331
+00:20:17.217 --> 00:20:18.050
+.count,
+
+332
+00:20:19.750 --> 00:20:21.283
+let's console.log that.
+
+333
+00:20:24.420 --> 00:20:25.710
+Nope, we are getting multiple again.
+
+334
+00:20:25.710 --> 00:20:27.880
+We want to make sure that's a div with a class of count.
+
+335
+00:20:27.880 --> 00:20:30.690
+There it is, and we can do a little snapshot there,
+
+336
+00:20:30.690 --> 00:20:35.690
+so expect the count to match the snapshot, that is nine.
+
+337
+00:20:37.350 --> 00:20:39.890
+Let's go back into our snapshot and see, there we go,
+
+338
+00:20:39.890 --> 00:20:43.760
+now it's like 39 lines, not 1700 like we had before.
+
+339
+00:20:43.760 --> 00:20:45.260
+Let's do one more in the next video
+
+340
+00:20:45.260 --> 00:20:48.010
+and that is the pagination, this ones a little bit tricky
+
+341
+00:20:48.010 --> 00:20:51.090
+because it has disabled and enabled attributes.
+
+342
+00:20:51.090 --> 00:20:52.820
+Feel free to give that one a shot if you want.
+
+343
+00:20:52.820 --> 00:20:54.843
+Otherwise, I'll see you in the next video.
+

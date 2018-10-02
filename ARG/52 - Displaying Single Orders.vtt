@@ -1,0 +1,1350 @@
+﻿WEBVTT
+
+1
+00:00:00.980 --> 00:00:02.310
+<v Instructor>Right now, when you create an order</v>
+
+2
+00:00:02.310 --> 00:00:03.960
+your cart just becomes empty.
+
+3
+00:00:03.960 --> 00:00:05.950
+What I'd like to do is just transition the user
+
+4
+00:00:05.950 --> 00:00:09.010
+to a page that shows their actual order.
+
+5
+00:00:09.010 --> 00:00:09.843
+So, let's do that.
+
+6
+00:00:09.843 --> 00:00:11.350
+Let's make the page that has the order
+
+7
+00:00:11.350 --> 00:00:12.280
+and then we'll override the query
+
+8
+00:00:12.280 --> 00:00:15.310
+to actually pull all the details of the order.
+
+9
+00:00:15.310 --> 00:00:17.160
+So we're gonna go, not to our components folder
+
+10
+00:00:17.160 --> 00:00:18.563
+but to our pages folder,
+
+11
+00:00:19.455 --> 00:00:21.940
+and make it lowercase order.js.
+
+12
+00:00:21.940 --> 00:00:23.943
+Lets just open sell.js.
+
+13
+00:00:24.970 --> 00:00:26.750
+Take all the code from there.
+
+14
+00:00:26.750 --> 00:00:29.500
+Paste it into order.js.
+
+15
+00:00:29.500 --> 00:00:32.193
+And we don't need to create item.
+
+16
+00:00:33.730 --> 00:00:35.930
+Inside here, let's just take paragraph.
+
+17
+00:00:35.930 --> 00:00:38.363
+This is a single order.
+
+18
+00:00:40.040 --> 00:00:40.873
+Good.
+
+19
+00:00:40.873 --> 00:00:43.433
+Let's rename this from sell to order.
+
+20
+00:00:45.650 --> 00:00:50.123
+Now what we want to do is flip back to our Takemymoney.js.
+
+21
+00:00:51.270 --> 00:00:53.640
+And we'll go up to our ontoken,
+
+22
+00:00:53.640 --> 00:00:56.710
+which is where we are working with the order right here.
+
+23
+00:00:56.710 --> 00:00:58.690
+And if you scroll to the top you'll see that we imported
+
+24
+00:00:58.690 --> 00:01:02.090
+the router, we imported nprogress, and we'd be able
+
+25
+00:01:02.090 --> 00:01:06.300
+to use those two things inside of here to change the page.
+
+26
+00:01:06.300 --> 00:01:07.670
+So, we're going to go with the last line
+
+27
+00:01:07.670 --> 00:01:09.453
+here and say, router.push.
+
+28
+00:01:10.690 --> 00:01:15.690
+The pathname is going to be, /order
+
+29
+00:01:16.270 --> 00:01:19.423
+and the query is going to be,
+
+30
+00:01:20.270 --> 00:01:25.163
+the ID is going to be order.data.createorder.ID.
+
+31
+00:01:26.170 --> 00:01:29.080
+That's how we know were going to push over to that ID.
+
+32
+00:01:29.080 --> 00:01:31.000
+The other thing I want to do is up here,
+
+33
+00:01:31.000 --> 00:01:33.423
+we're going to call nprogress.start.
+
+34
+00:01:36.070 --> 00:01:38.649
+And what that will do is, there's this kind of like
+
+35
+00:01:38.649 --> 00:01:41.083
+this in-between that we have here when you check out.
+
+36
+00:01:42.810 --> 00:01:44.640
+As soon as we hit submit
+
+37
+00:01:44.640 --> 00:01:47.190
+the thing will go over to stripe
+
+38
+00:01:47.190 --> 00:01:50.610
+and come back with a stripe token and then this will close.
+
+39
+00:01:50.610 --> 00:01:52.710
+However, we still have another step which is,
+
+40
+00:01:52.710 --> 00:01:55.370
+we need to take that token and send it to the
+
+41
+00:01:55.370 --> 00:01:58.260
+server side and then come back with that result.
+
+42
+00:01:58.260 --> 00:02:00.470
+So there's a sort of like dead area in-between
+
+43
+00:02:00.470 --> 00:02:02.490
+and right now we're not showing the user that any sort
+
+44
+00:02:02.490 --> 00:02:04.640
+of interface is changing.
+
+45
+00:02:04.640 --> 00:02:06.830
+So, the way we can solve that is we simply
+
+46
+00:02:06.830 --> 00:02:08.300
+just call nprogress.start,
+
+47
+00:02:08.300 --> 00:02:09.133
+and now I think when we check out,
+
+48
+00:02:09.133 --> 00:02:11.080
+I'm just going to give it a refresh.
+
+49
+00:02:11.080 --> 00:02:13.910
+Triple check that everything is queued up properly.
+
+50
+00:02:13.910 --> 00:02:17.150
+We should see the little red progress meter start
+
+51
+00:02:17.150 --> 00:02:19.290
+right about now, there we go.
+
+52
+00:02:19.290 --> 00:02:21.690
+Now it's on the back end, so about coming back
+
+53
+00:02:21.690 --> 00:02:22.620
+and there we go.
+
+54
+00:02:22.620 --> 00:02:25.400
+The response came back and we go to this order
+
+55
+00:02:25.400 --> 00:02:27.610
+and we pass along the order ID.
+
+56
+00:02:27.610 --> 00:02:29.100
+Let's triple check that we can access
+
+57
+00:02:29.100 --> 00:02:32.220
+that order ID inside of our order.js.
+
+58
+00:02:32.220 --> 00:02:35.113
+Props.query.ID.
+
+59
+00:02:37.800 --> 00:02:39.513
+There we go, now we have the ID.
+
+60
+00:02:40.704 --> 00:02:42.260
+So, next step is we're gonna take this ID,
+
+61
+00:02:42.260 --> 00:02:43.920
+pass it down to some other component
+
+62
+00:02:43.920 --> 00:02:46.513
+and then do the query for that specific order.
+
+63
+00:02:49.220 --> 00:02:51.610
+Let's create a new component called, order.js.
+
+64
+00:02:51.610 --> 00:02:53.670
+So go under our components folder, make a new file,
+
+65
+00:02:53.670 --> 00:02:55.663
+capital O, Order.js.
+
+66
+00:02:55.663 --> 00:02:58.510
+Then go back to our order.js page and we'll import
+
+67
+00:02:58.510 --> 00:03:00.510
+that order.js component.
+
+68
+00:03:00.510 --> 00:03:02.700
+Let's hop real quick into order.js
+
+69
+00:03:02.700 --> 00:03:03.943
+and make that component.
+
+70
+00:03:08.350 --> 00:03:10.080
+Let's write the prop type right away.
+
+71
+00:03:10.080 --> 00:03:12.300
+I often forget to write the prop type.
+
+72
+00:03:12.300 --> 00:03:16.573
+Import prop types from prop dash types.
+
+73
+00:03:19.730 --> 00:03:20.897
+We're looking for an ID
+
+74
+00:03:20.897 --> 00:03:22.553
+and that's going to be a string.
+
+75
+00:03:26.860 --> 00:03:29.400
+And let's just go in here and give ourselves a paragraph
+
+76
+00:03:29.400 --> 00:03:34.293
+that says, order ID this .props.ID.
+
+77
+00:03:35.600 --> 00:03:39.000
+And go back into order.js and swap it out
+
+78
+00:03:39.000 --> 00:03:43.800
+and we'll pass the id along which is, props.query.ID.
+
+79
+00:03:43.800 --> 00:03:46.050
+Duplicate that declaration, I always do this.
+
+80
+00:03:47.990 --> 00:03:50.940
+I make the page the same name as the imported component.
+
+81
+00:03:50.940 --> 00:03:52.363
+So well call it Order Page.
+
+82
+00:03:53.959 --> 00:03:55.570
+There we go, now we see the order page is rendering.
+
+83
+00:03:55.570 --> 00:03:57.540
+We render out the order component,
+
+84
+00:03:57.540 --> 00:04:01.160
+pass down the ID of that via props.
+
+85
+00:04:01.160 --> 00:04:04.070
+Next we need to import just a couple more things.
+
+86
+00:04:04.070 --> 00:04:05.840
+So let's import query.
+
+87
+00:04:05.840 --> 00:04:06.900
+We're going to need that to query
+
+88
+00:04:06.900 --> 00:04:09.343
+the current order from react apollo.
+
+89
+00:04:10.930 --> 00:04:13.510
+We're going to need a format function
+
+90
+00:04:13.510 --> 00:04:17.741
+from this thing called date functions, date fns.
+
+91
+00:04:17.741 --> 00:04:19.230
+It's kind of like moment js,
+
+92
+00:04:19.230 --> 00:04:21.420
+but it does all of the new things
+
+93
+00:04:21.420 --> 00:04:23.990
+that you want in terms of tree shaking
+
+94
+00:04:23.990 --> 00:04:26.570
+and being functional and whatnot,
+
+95
+00:04:26.570 --> 00:04:29.250
+so it's a pretty nifty little library.
+
+96
+00:04:29.250 --> 00:04:33.970
+We want to Import head from next head.
+
+97
+00:04:33.970 --> 00:04:37.120
+That's going to allow us to change the title
+
+98
+00:04:37.120 --> 00:04:38.570
+which we've done in the past.
+
+99
+00:04:38.570 --> 00:04:41.063
+Import gql from graphql tag.
+
+100
+00:04:42.620 --> 00:04:44.970
+We're going to import our formatMoney function,
+
+101
+00:04:45.860 --> 00:04:47.343
+import our error component,
+
+102
+00:04:48.740 --> 00:04:50.800
+and import our OrderStyles,
+
+103
+00:04:50.800 --> 00:04:52.700
+which comes from our styles directory.
+
+104
+00:04:54.450 --> 00:04:57.590
+So let's flip over to the back-end
+
+105
+00:04:57.590 --> 00:05:00.910
+and open up our schema.
+
+106
+00:05:00.910 --> 00:05:02.830
+Going to go down to our query.
+
+107
+00:05:02.830 --> 00:05:05.333
+Say we need an order query.
+
+108
+00:05:05.333 --> 00:05:07.730
+That takes an ID with a type of an ID
+
+109
+00:05:07.730 --> 00:05:10.250
+and it's going to return an order.
+
+110
+00:05:10.250 --> 00:05:13.733
+And that is not required 'cause it's possible
+
+111
+00:05:13.733 --> 00:05:18.270
+that there is no order found, so we will leave that off.
+
+112
+00:05:18.270 --> 00:05:19.850
+Then we'll open up our mutation.
+
+113
+00:05:19.850 --> 00:05:22.450
+Actually no not mutational, we open up our query.js
+
+114
+00:05:22.450 --> 00:05:26.070
+and write the resolver for that specific one.
+
+115
+00:05:26.070 --> 00:05:27.633
+So go down here async,
+
+116
+00:05:28.480 --> 00:05:30.713
+order, parent,
+
+117
+00:05:31.690 --> 00:05:34.810
+args, ctx and info.
+
+118
+00:05:34.810 --> 00:05:36.490
+Need to do a couple thing inside of here.
+
+119
+00:05:36.490 --> 00:05:40.410
+First, make sure they are logged in.
+
+120
+00:05:40.410 --> 00:05:44.423
+Two, we're going to query the current order.
+
+121
+00:05:45.680 --> 00:05:50.490
+Three, we're going to check if they have the permissions
+
+122
+00:05:50.490 --> 00:05:55.490
+to see this order.
+
+123
+00:05:55.650 --> 00:06:00.650
+And then finally, four, return the order if all goes right.
+
+124
+00:06:00.990 --> 00:06:05.585
+First, if there's no contacts that request
+
+125
+00:06:05.585 --> 00:06:10.300
+the user ID, throw second query,
+
+126
+00:06:10.300 --> 00:06:11.253
+the current order,
+
+127
+00:06:12.158 --> 00:06:16.790
+so const order ctx.db.query.order.
+
+128
+00:06:16.790 --> 00:06:21.560
+We just have to say where the ID is equal to the args.id.
+
+129
+00:06:21.560 --> 00:06:23.310
+'Cause it's going to be passed in.
+
+130
+00:06:23.310 --> 00:06:25.990
+And we do need to put in await in front of that
+
+131
+00:06:25.990 --> 00:06:29.160
+and triple check that we've marked this function as a sync.
+
+132
+00:06:29.160 --> 00:06:32.840
+Good, we also need to pass in the info here 'cause
+
+133
+00:06:32.840 --> 00:06:35.330
+that's how we're going to define what fields
+
+134
+00:06:35.330 --> 00:06:37.440
+we're pulling that's coming in from the client's side.
+
+135
+00:06:37.440 --> 00:06:40.610
+Three, check if they have permission to see this order.
+
+136
+00:06:40.610 --> 00:06:42.620
+So I'm going to make some bullions like we did last time.
+
+137
+00:06:42.620 --> 00:06:44.970
+So it's, const ownsOrder;
+
+138
+00:06:44.970 --> 00:06:47.610
+say, order.user.ID
+
+139
+00:06:49.100 --> 00:06:54.100
+is equal to ctx.request.user ID.
+
+140
+00:06:54.660 --> 00:06:56.730
+So that will check it if they own it or not.
+
+141
+00:06:56.730 --> 00:06:58.300
+And we'll make another bullion here.
+
+142
+00:06:58.300 --> 00:07:01.060
+We'll say, const has permission
+
+143
+00:07:03.430 --> 00:07:06.003
+to see order.
+
+144
+00:07:07.520 --> 00:07:08.890
+It's going to take the current user,
+
+145
+00:07:08.890 --> 00:07:11.863
+so contacts that request that user.permissions.
+
+146
+00:07:13.310 --> 00:07:15.080
+That includes,
+
+147
+00:07:15.080 --> 00:07:17.270
+I'm just going to check if they have admin privileges
+
+148
+00:07:17.270 --> 00:07:19.050
+to be able to see that order.
+
+149
+00:07:19.050 --> 00:07:23.150
+Then here we'll say, if they don't own the order
+
+150
+00:07:32.450 --> 00:07:36.580
+or they don't has permission to see the order,
+
+151
+00:07:36.580 --> 00:07:38.563
+then we'll throw in a new error,
+
+152
+00:07:39.410 --> 00:07:41.793
+you can't see this budd.
+
+153
+00:07:43.350 --> 00:07:46.713
+And finally return the order so it's, return order.
+
+154
+00:07:48.286 --> 00:07:49.340
+I think that's in good shape.
+
+155
+00:07:49.340 --> 00:07:50.670
+Nice little query that we wrote.
+
+156
+00:07:50.670 --> 00:07:52.940
+Let's flip back to our client side: yellow
+
+157
+00:07:52.940 --> 00:07:55.153
+and write the query up here.
+
+158
+00:07:56.080 --> 00:08:00.570
+Const single order query
+
+159
+00:08:03.790 --> 00:08:06.700
+is equal to gql.
+
+160
+00:08:06.700 --> 00:08:07.700
+Well make the query.
+
+161
+00:08:10.570 --> 00:08:13.223
+Takes an ID, type of ID.
+
+162
+00:08:14.290 --> 00:08:18.210
+Then runs against a server order, we pass that ID.
+
+163
+00:08:18.210 --> 00:08:20.830
+And from that we're gonna need a whole bunch of fields.
+
+164
+00:08:20.830 --> 00:08:23.480
+We need the ID, the charge,
+
+165
+00:08:23.480 --> 00:08:27.710
+the total, the created at.
+
+166
+00:08:27.710 --> 00:08:31.220
+We need the user of that order and their ID.
+
+167
+00:08:31.220 --> 00:08:34.060
+Then we need the items inside of that order
+
+168
+00:08:34.060 --> 00:08:36.490
+and for each of the items, we need the ID,
+
+169
+00:08:36.490 --> 00:08:38.733
+the title, the description,
+
+170
+00:08:40.150 --> 00:08:43.623
+the price, the image, and the quantity.
+
+171
+00:08:44.840 --> 00:08:47.313
+Then we'll take a little query component.
+
+172
+00:08:51.010 --> 00:08:52.083
+Wrap it around here.
+
+173
+00:08:57.040 --> 00:08:59.760
+The query is obviously gonna be the one that we just wrote.
+
+174
+00:08:59.760 --> 00:09:01.020
+Single order query.
+
+175
+00:09:01.020 --> 00:09:02.843
+The variables can be passed here.
+
+176
+00:09:03.770 --> 00:09:08.083
+It's really just the ID which comes in from this .props.ID.
+
+177
+00:09:11.000 --> 00:09:13.790
+And then we can expose that order down here
+
+178
+00:09:14.740 --> 00:09:16.273
+via an arrow function.
+
+179
+00:09:26.430 --> 00:09:27.920
+And use a bracket here.
+
+180
+00:09:27.920 --> 00:09:31.010
+'Cause we wanna say, if there is an error,
+
+181
+00:09:31.010 --> 00:09:33.923
+return error.
+
+182
+00:09:39.790 --> 00:09:42.380
+And I'm just going to duplicate that if it's loading,
+
+183
+00:09:42.380 --> 00:09:46.253
+return paragraph, loading,
+
+184
+00:09:47.410 --> 00:09:49.360
+and then otherwise we are going to
+
+185
+00:09:49.360 --> 00:09:50.813
+return this div down here.
+
+186
+00:09:59.360 --> 00:10:00.470
+Oh, I'm getting an error.
+
+187
+00:10:00.470 --> 00:10:04.390
+Cannot query field createdAt on type of order.
+
+188
+00:10:04.390 --> 00:10:06.510
+So we're asking for createdAt,
+
+189
+00:10:06.510 --> 00:10:09.590
+but it's telling us that that order doesn't have that field.
+
+190
+00:10:09.590 --> 00:10:11.590
+And I think I lied to you.
+
+191
+00:10:11.590 --> 00:10:13.530
+Let's jump into our back-end.
+
+192
+00:10:13.530 --> 00:10:17.270
+Earlier I told you we don't actually need to pass these two
+
+193
+00:10:17.270 --> 00:10:19.930
+fields right here, createdAt and updatedAt
+
+194
+00:10:19.930 --> 00:10:21.000
+and I think that's a lie.
+
+195
+00:10:21.000 --> 00:10:24.930
+So Prizmo will create these automatically for you,
+
+196
+00:10:24.930 --> 00:10:27.600
+but it will not, I guess, surface or expose
+
+197
+00:10:27.600 --> 00:10:30.150
+them to you unless you explicitly put them
+
+198
+00:10:30.150 --> 00:10:32.400
+in your data model so I don't think that's an issue,
+
+199
+00:10:32.400 --> 00:10:34.490
+I think we can just add them and still pull that data
+
+200
+00:10:34.490 --> 00:10:37.120
+even though we've already created these orders.
+
+201
+00:10:37.120 --> 00:10:40.530
+I'm just adding createdAt and updatedAt to my order types.
+
+202
+00:10:40.530 --> 00:10:42.130
+And if you need dates for anything else,
+
+203
+00:10:42.130 --> 00:10:44.160
+just add those to those types as well.
+
+204
+00:10:44.160 --> 00:10:48.763
+Let's go and try to run deploy against that.
+
+205
+00:10:55.680 --> 00:10:58.023
+Done, run mpm, run dev again.
+
+206
+00:11:01.430 --> 00:11:04.300
+Refresh this page, this page works fine.
+
+207
+00:11:04.300 --> 00:11:06.000
+I'm just gonna triple check that the data
+
+208
+00:11:06.000 --> 00:11:07.370
+is actually showing up.
+
+209
+00:11:07.370 --> 00:11:08.913
+So if we go to our order here.
+
+210
+00:11:11.890 --> 00:11:13.563
+Just to console log the data.
+
+211
+00:11:15.180 --> 00:11:17.500
+Let's open up our console here.
+
+212
+00:11:17.500 --> 00:11:18.683
+Go to refresh.
+
+213
+00:11:19.710 --> 00:11:22.370
+And there we go, there's our order.
+
+214
+00:11:22.370 --> 00:11:24.440
+And here we go, there's a created ad field.
+
+215
+00:11:24.440 --> 00:11:25.580
+So yeah, no sweat.
+
+216
+00:11:25.580 --> 00:11:27.710
+You just add it to your actual data model
+
+217
+00:11:27.710 --> 00:11:30.500
+and then re-deploy that and that will be able to show us
+
+218
+00:11:30.500 --> 00:11:32.820
+the date, when the order was created,
+
+219
+00:11:32.820 --> 00:11:34.310
+that's fairly important information
+
+220
+00:11:34.310 --> 00:11:36.723
+for things like eCommerce.
+
+221
+00:11:37.590 --> 00:11:39.880
+Now it's just a templating problem from here on out.
+
+222
+00:11:39.880 --> 00:11:41.840
+We just get to put the data on the page,
+
+223
+00:11:41.840 --> 00:11:42.673
+which is kind of fun.
+
+224
+00:11:42.673 --> 00:11:43.506
+So I'm just going to say
+
+225
+00:11:43.506 --> 00:11:46.523
+const order is equal to data.order.
+
+226
+00:11:47.810 --> 00:11:50.190
+And then we'll go here and I'll place that div
+
+227
+00:11:50.190 --> 00:11:51.783
+with the order styles.
+
+228
+00:11:53.150 --> 00:11:55.700
+Inside of that we want a head tag.
+
+229
+00:11:55.700 --> 00:11:56.850
+Capital H head.
+
+230
+00:11:56.850 --> 00:11:59.310
+That's the head that we imported from next.
+
+231
+00:11:59.310 --> 00:12:02.060
+The reason why we want that is 'cause we want to change
+
+232
+00:12:02.916 --> 00:12:06.610
+the title, so let's say, Sick Fit's Order
+
+233
+00:12:06.610 --> 00:12:09.233
+and we'll put the order.ID in the title,
+
+234
+00:12:10.430 --> 00:12:13.703
+then it should show up here, oh, a bit of an issue.
+
+235
+00:12:15.440 --> 00:12:18.760
+Order styles didn't auto-complete it for me.
+
+236
+00:12:18.760 --> 00:12:20.790
+There you go, you see the order ID showing up
+
+237
+00:12:20.790 --> 00:12:23.000
+in your browsers title tag.
+
+238
+00:12:23.000 --> 00:12:25.360
+That's great, that's a side effect.
+
+239
+00:12:25.360 --> 00:12:28.010
+And that's the way we could change things that are outside
+
+240
+00:12:28.010 --> 00:12:29.370
+of our control in React.
+
+241
+00:12:29.370 --> 00:12:32.423
+Then we simply just need a couple of different paragraphs.
+
+242
+00:12:34.320 --> 00:12:36.320
+Let's take the first paragraph
+
+243
+00:12:37.380 --> 00:12:40.030
+and around each one let's wrap a span.
+
+244
+00:12:40.030 --> 00:12:42.163
+So order ID and the actual ID.
+
+245
+00:12:48.750 --> 00:12:52.490
+Oh, uh, oh, then well give ourselves another paragraph.
+
+246
+00:12:52.490 --> 00:12:55.450
+Span, charge.
+
+247
+00:12:55.450 --> 00:12:56.403
+Span.
+
+248
+00:13:00.570 --> 00:13:01.870
+Order.charge.
+
+249
+00:13:01.870 --> 00:13:03.810
+Duplicate that.
+
+250
+00:13:03.810 --> 00:13:06.430
+Change it to date and then inside of here,
+
+251
+00:13:06.430 --> 00:13:09.156
+we normally just say order.createdAt,
+
+252
+00:13:09.156 --> 00:13:10.810
+and that will just spit out a time stamp
+
+253
+00:13:10.810 --> 00:13:12.500
+but that's not very useful to a user
+
+254
+00:13:12.500 --> 00:13:13.780
+to actually read that.
+
+255
+00:13:13.780 --> 00:13:17.060
+So what we can do is just wrap it in our format tag.
+
+256
+00:13:17.060 --> 00:13:20.030
+And the second argument to format is the time stamp
+
+257
+00:13:20.030 --> 00:13:21.260
+that we want to format it out.
+
+258
+00:13:21.260 --> 00:13:24.020
+So well say, month, month, month, month,
+
+259
+00:13:24.020 --> 00:13:28.500
+day, year, year, year, year,
+
+260
+00:13:28.500 --> 00:13:32.760
+lower case H, colon, mm, capital A.
+
+261
+00:13:32.760 --> 00:13:35.130
+And all of these, if you look at the documentation,
+
+262
+00:13:35.130 --> 00:13:37.360
+I think these are the same as php as well.
+
+263
+00:13:37.360 --> 00:13:39.360
+There's probably some sort of international standard
+
+264
+00:13:39.360 --> 00:13:41.940
+for them that will give us all of thing.
+
+265
+00:13:41.940 --> 00:13:45.890
+Here at 2:13 I don't think that A is right.
+
+266
+00:13:45.890 --> 00:13:47.830
+I just did that about 20 minutes ago.
+
+267
+00:13:47.830 --> 00:13:50.940
+That should be PM, August 236.
+
+268
+00:13:50.940 --> 00:13:51.890
+I don't think that's right.
+
+269
+00:13:51.890 --> 00:13:54.940
+Oh, I had that same bug on our podcast website as well.
+
+270
+00:13:54.940 --> 00:13:57.190
+It goes to lowercase D, there we go.
+
+271
+00:13:57.190 --> 00:14:01.270
+August 24, 20188 at 2:13, and I think this may
+
+272
+00:14:01.270 --> 00:14:04.220
+be a lowercase A, yeah, there we go.
+
+273
+00:14:04.220 --> 00:14:06.410
+Lowercase D and lowercase A, not capitals.
+
+274
+00:14:06.410 --> 00:14:08.810
+That seems to have changed in a recent version
+
+275
+00:14:08.810 --> 00:14:10.710
+of this date functions library.
+
+276
+00:14:10.710 --> 00:14:13.704
+That's good, we can show the order total as well.
+
+277
+00:14:13.704 --> 00:14:15.100
+I'm just going to take another one of these,
+
+278
+00:14:15.100 --> 00:14:16.823
+duplicate it, move it down here.
+
+279
+00:14:23.580 --> 00:14:24.963
+So, order.total.
+
+280
+00:14:26.020 --> 00:14:28.100
+Again, that's gonna show us in cents, so what do we do?
+
+281
+00:14:28.100 --> 00:14:29.210
+Wrap it in our format.
+
+282
+00:14:29.210 --> 00:14:33.240
+Money function that we wrote.
+
+283
+00:14:33.240 --> 00:14:34.623
+(whistles) Looking good!
+
+284
+00:14:38.884 --> 00:14:40.797
+Then we'll say, item count.
+
+285
+00:14:48.580 --> 00:14:50.730
+Order.items.length.
+
+286
+00:14:50.730 --> 00:14:52.830
+Oh, we don't need to format that as money.
+
+287
+00:14:55.540 --> 00:14:57.750
+One item in that one, very good.
+
+288
+00:14:57.750 --> 00:15:01.340
+Now we are going to loop over all of the items
+
+289
+00:15:01.340 --> 00:15:02.980
+that were in that, so we'll give ourselves
+
+290
+00:15:02.980 --> 00:15:05.543
+a div with a class of items with an S.
+
+291
+00:15:07.360 --> 00:15:10.020
+Inside of that, we'll need to loop over all the order items.
+
+292
+00:15:10.020 --> 00:15:12.553
+So we'll say, order.items.map.
+
+293
+00:15:14.800 --> 00:15:15.750
+We'll take the item
+
+294
+00:15:18.680 --> 00:15:20.623
+and do an implicit return here.
+
+295
+00:15:27.390 --> 00:15:30.030
+Give yourself a class of order-item
+
+296
+00:15:30.030 --> 00:15:32.810
+and this is at a point it might make sense
+
+297
+00:15:32.810 --> 00:15:34.800
+to make this as a separate component,
+
+298
+00:15:34.800 --> 00:15:36.293
+just 'cause when you start writing enough
+
+299
+00:15:36.293 --> 00:15:38.370
+of this templating in here,
+
+300
+00:15:38.370 --> 00:15:40.530
+maybe each order item should be its own component.
+
+301
+00:15:40.530 --> 00:15:41.640
+I'm going to keep it in here but feel free
+
+302
+00:15:41.640 --> 00:15:44.163
+to move it out into a separate component.
+
+303
+00:15:45.462 --> 00:15:47.060
+You should probably put a key on that before it starts
+
+304
+00:15:47.060 --> 00:15:49.680
+yelling at us, 'cause its happened enough.
+
+305
+00:15:49.680 --> 00:15:52.493
+So let's say, order., or no, item.ID,
+
+306
+00:15:54.027 --> 00:15:55.477
+then we'll need an image tag.
+
+307
+00:15:57.940 --> 00:15:59.953
+That is in item.image.
+
+308
+00:16:00.950 --> 00:16:04.763
+And item.title.
+
+309
+00:16:08.130 --> 00:16:09.810
+Got a token somewhere.
+
+310
+00:16:09.810 --> 00:16:13.747
+Ta-ta-da, what did I do?
+
+311
+00:16:13.747 --> 00:16:16.320
+Oh, I deleted one of my parenthesis here.
+
+312
+00:16:16.320 --> 00:16:18.610
+See the image popping up, good.
+
+313
+00:16:18.610 --> 00:16:20.750
+Then we'll give another div down here
+
+314
+00:16:20.750 --> 00:16:22.933
+with a class of item details.
+
+315
+00:16:25.100 --> 00:16:27.043
+That will have an h2.
+
+316
+00:16:32.450 --> 00:16:33.623
+Item.title.
+
+317
+00:16:34.730 --> 00:16:37.403
+We'll put the quantity that they bought,
+
+318
+00:16:40.780 --> 00:16:42.883
+and we'll say how much each one was.
+
+319
+00:16:52.140 --> 00:16:53.640
+We'll put a subtotal on there.
+
+320
+00:17:06.310 --> 00:17:07.700
+Put the subtotal on there just in case
+
+321
+00:17:07.700 --> 00:17:10.920
+they'd have ordered multiple of something.
+
+322
+00:17:10.920 --> 00:17:13.720
+Then finally underneath, we'll put the item description.
+
+323
+00:17:22.060 --> 00:17:24.730
+Beautiful and we'd see one of those for every single item
+
+324
+00:17:24.730 --> 00:17:25.563
+that is in our cart.
+
+325
+00:17:25.563 --> 00:17:28.730
+So that is a singular order item showing up.
+
+326
+00:17:28.730 --> 00:17:29.660
+Pretty straightforward.
+
+327
+00:17:29.660 --> 00:17:32.070
+You just pull all the data from the database.
+
+328
+00:17:32.070 --> 00:17:35.400
+You write a resolver in your queries on the server side
+
+329
+00:17:35.400 --> 00:17:37.410
+and then you just template out all of the data.
+
+330
+00:17:37.410 --> 00:17:38.630
+In this case, it's a lot of data
+
+331
+00:17:38.630 --> 00:17:41.530
+to template out on the thing.
+
+332
+00:17:41.530 --> 00:17:43.400
+Next, what we're gonna do is go make a code
+
+333
+00:17:43.400 --> 00:17:46.670
+up the Orders Page that has every single thing
+
+334
+00:17:46.670 --> 00:17:48.620
+that we have ordered and then that will allow us
+
+335
+00:17:48.620 --> 00:17:50.130
+to click through and get to this page,
+
+336
+00:17:50.130 --> 00:17:52.200
+where we can view specific information
+
+337
+00:17:52.200 --> 00:17:53.903
+about each individual order.
+

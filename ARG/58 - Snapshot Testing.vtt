@@ -1,0 +1,1130 @@
+﻿WEBVTT
+
+1
+00:00:00.973 --> 00:00:03.694
+<v Wes>Let's talk about something called snapshot testing.</v>
+
+2
+00:00:03.694 --> 00:00:07.623
+I'm a big fan of snapshot testing because
+
+3
+00:00:07.623 --> 00:00:12.002
+it allows you to take a photo of a component,
+
+4
+00:00:12.002 --> 00:00:13.303
+or an object, or a string art.
+
+5
+00:00:13.303 --> 00:00:16.268
+You can take a photo of anything
+
+6
+00:00:16.268 --> 00:00:17.595
+and if that were to ever change,
+
+7
+00:00:17.595 --> 00:00:19.563
+maybe for some reason it accidentally
+
+8
+00:00:19.563 --> 00:00:22.774
+got flipped over to a country where they don't use
+
+9
+00:00:22.774 --> 00:00:25.714
+dots for cents, where they use commas for that,
+
+10
+00:00:25.714 --> 00:00:27.494
+then you would immediately be notified that
+
+11
+00:00:27.494 --> 00:00:30.222
+hey, something changed in the component,
+
+12
+00:00:30.222 --> 00:00:32.763
+and these two snapshots, these two photos
+
+13
+00:00:32.763 --> 00:00:36.096
+of the things are not exactly lining up.
+
+14
+00:00:37.533 --> 00:00:40.334
+I'm a big fan of this because you don't have
+
+15
+00:00:40.334 --> 00:00:42.795
+to do all of this finding and traversal
+
+16
+00:00:42.795 --> 00:00:45.963
+and checking for the text inside of something.
+
+17
+00:00:45.963 --> 00:00:48.035
+You can just take a picture of a component
+
+18
+00:00:48.035 --> 00:00:50.894
+and if that picture ever changes for whatever reason
+
+19
+00:00:50.894 --> 00:00:55.203
+then it's going to alert you that your tests are failing.
+
+20
+00:00:55.203 --> 00:00:58.321
+Let's actually go into our item.test js
+
+21
+00:00:58.321 --> 00:01:01.883
+and let's comment out all of the tests that we have
+
+22
+00:01:01.883 --> 00:01:05.854
+written so far, and let's just do a very simple
+
+23
+00:01:05.854 --> 00:01:08.292
+snapshot test with outside of a react component.
+
+24
+00:01:08.292 --> 00:01:12.959
+We'll say, it renders
+
+25
+00:01:14.539 --> 00:01:16.622
+and matches the snapshot.
+
+26
+00:01:20.209 --> 00:01:22.387
+I'm just gonna use a very, very simple string
+
+27
+00:01:22.387 --> 00:01:24.269
+to show you the difference here.
+
+28
+00:01:24.269 --> 00:01:29.269
+I'll say, const price is equal to $50.34.
+
+29
+00:01:31.590 --> 00:01:34.000
+I'm gonna take a snapshot of that string,
+
+30
+00:01:34.000 --> 00:01:38.566
+so we will expect the price
+
+31
+00:01:38.566 --> 00:01:41.483
+to match snapshot.
+
+32
+00:01:42.530 --> 00:01:44.363
+That's going to be it.
+
+33
+00:01:45.842 --> 00:01:48.996
+What happens is the test is automatically going to fail.
+
+34
+00:01:48.996 --> 00:01:51.911
+If we open up our tests right here,
+
+35
+00:01:51.911 --> 00:01:55.269
+it's going to tell us one snapshot written in one
+
+36
+00:01:55.269 --> 00:01:58.812
+test suite and I guess this is also telling me
+
+37
+00:01:58.812 --> 00:02:01.052
+if I give it another save it will then pass,
+
+38
+00:02:01.052 --> 00:02:02.931
+cause the snapshot has been written.
+
+39
+00:02:02.931 --> 00:02:04.671
+If you open up your sidebar here,
+
+40
+00:02:04.671 --> 00:02:06.402
+you're going to see this new folder,
+
+41
+00:02:06.402 --> 00:02:08.071
+underscore, underscore, snapshots,
+
+42
+00:02:08.071 --> 00:02:11.971
+and you open that up and you'll see a snapshot file
+
+43
+00:02:11.971 --> 00:02:14.629
+that relates to the tests that you've written.
+
+44
+00:02:14.629 --> 00:02:17.031
+If we open it up, you'll see that the snapshot
+
+45
+00:02:17.031 --> 00:02:19.972
+tells us what the actual test is, the item renders
+
+46
+00:02:19.972 --> 00:02:22.429
+and matches the snapshot, and then it tells
+
+47
+00:02:22.429 --> 00:02:24.508
+us what it's expecting.
+
+48
+00:02:24.508 --> 00:02:28.511
+If the thing it took a snapshot of will ever change,
+
+49
+00:02:28.511 --> 00:02:31.401
+then we will immediately be notified.
+
+50
+00:02:31.401 --> 00:02:34.431
+If I were to change this to $50.35,
+
+51
+00:02:34.431 --> 00:02:36.532
+and give it a save, now all of a sudden
+
+52
+00:02:36.532 --> 00:02:41.532
+our test is failing because our snapshot has broken.
+
+53
+00:02:41.612 --> 00:02:46.519
+Here it is, it's telling us that it received the value
+
+54
+00:02:46.519 --> 00:02:50.711
+of 35 cents, and this always has seemed backwards to me,
+
+55
+00:02:50.711 --> 00:02:55.180
+the red plus, this is not an error with JS,
+
+56
+00:02:55.180 --> 00:02:56.299
+this is just how it works.
+
+57
+00:02:56.299 --> 00:03:00.150
+The thing that we were expecting is in red,
+
+58
+00:03:00.150 --> 00:03:03.471
+and the thing that is stored in the snapshot is in green,
+
+59
+00:03:03.471 --> 00:03:06.751
+so it it'll tell us what the difference is between the two
+
+60
+00:03:06.751 --> 00:03:08.151
+and it's frozen error.
+
+61
+00:03:08.151 --> 00:03:11.111
+At this point, we are failing our tests,
+
+62
+00:03:11.111 --> 00:03:12.602
+and we can either do two things,
+
+63
+00:03:12.602 --> 00:03:15.549
+we can go in and figure out why our tests are failing,
+
+64
+00:03:15.549 --> 00:03:17.852
+or we can just update our snapshot and be like
+
+65
+00:03:17.852 --> 00:03:19.962
+yeah, I meant for that to happen.
+
+66
+00:03:19.962 --> 00:03:22.311
+If you updated a component and you changed a little bit
+
+67
+00:03:22.311 --> 00:03:24.460
+of text, maybe you added an extra element,
+
+68
+00:03:24.460 --> 00:03:27.071
+you say, yeah I added those extra elements,
+
+69
+00:03:27.071 --> 00:03:28.882
+go ahead and update the snapshot.
+
+70
+00:03:28.882 --> 00:03:30.692
+The way that you update your snapshot is you press
+
+71
+00:03:30.692 --> 00:03:34.951
+U, everything is good, go back into the snapshot,
+
+72
+00:03:34.951 --> 00:03:37.819
+now it's showing me 35 cents.
+
+73
+00:03:37.819 --> 00:03:40.780
+What we can do is, we can get rid of this
+
+74
+00:03:40.780 --> 00:03:44.613
+snapshot here, and get rid of this price here.
+
+75
+00:03:45.952 --> 00:03:50.952
+Now it's telling us that there are obsolete snapshots.
+
+76
+00:03:51.089 --> 00:03:53.751
+We're no longer testing, so you can press U,
+
+77
+00:03:53.751 --> 00:03:55.119
+it's gonna delete, you see that.
+
+78
+00:03:55.119 --> 00:03:57.310
+Close the tab there and I no longer have
+
+79
+00:03:57.310 --> 00:03:59.938
+that snapshot in my snapshot folder.
+
+80
+00:03:59.938 --> 00:04:01.789
+What we can do here is go ahead and render out
+
+81
+00:04:01.789 --> 00:04:06.789
+our component, so const wrapper = shallow.
+
+82
+00:04:06.877 --> 00:04:09.877
+We'll render out our item component,
+
+83
+00:04:11.780 --> 00:04:15.947
+we'll pass the item, which is still our fake item.
+
+84
+00:04:19.583 --> 00:04:22.374
+Then, we simply need to say,
+
+85
+00:04:22.374 --> 00:04:27.374
+expect the wrapper.to match snapshot
+
+86
+00:04:32.250 --> 00:04:35.960
+There we go, it went ahead and created a snapshot.
+
+87
+00:04:35.960 --> 00:04:40.318
+You always have to check your snapshot the very first time
+
+88
+00:04:40.318 --> 00:04:44.068
+because this could put anything in this file.
+
+89
+00:04:45.082 --> 00:04:47.173
+This is sort of a slippery slope and why
+
+90
+00:04:47.173 --> 00:04:48.952
+people don't like snapshot is because
+
+91
+00:04:48.952 --> 00:04:51.162
+it could put anything into that snapshot,
+
+92
+00:04:51.162 --> 00:04:53.771
+it could put undefined and then your tests would be
+
+93
+00:04:53.771 --> 00:04:55.540
+passing and you can go on your merry way.
+
+94
+00:04:55.540 --> 00:04:58.779
+Always go in and triple check your snapshot
+
+95
+00:04:58.779 --> 00:05:00.219
+that we have here.
+
+96
+00:05:00.219 --> 00:05:03.333
+You're gonna see that our snapshot is shallow wrapper.
+
+97
+00:05:03.333 --> 00:05:05.173
+That's the actual wrapper, it has a length,
+
+98
+00:05:05.173 --> 00:05:08.981
+all these symbols on it, and inside of it-
+
+99
+00:05:08.981 --> 00:05:11.441
+there's our actual title, this is the actual code
+
+100
+00:05:11.441 --> 00:05:12.274
+that we're in.
+
+101
+00:05:12.274 --> 00:05:15.533
+What we actually need is a separate serializer
+
+102
+00:05:15.533 --> 00:05:18.630
+to take this shallowly rendered react component
+
+103
+00:05:18.630 --> 00:05:23.562
+and use what we used in debug to show us
+
+104
+00:05:23.562 --> 00:05:25.482
+the piece that we care about, and not
+
+105
+00:05:25.482 --> 00:05:27.221
+any of these other properties.
+
+106
+00:05:27.221 --> 00:05:30.420
+What we're gonna do here is we're gonna go up
+
+107
+00:05:30.420 --> 00:05:33.170
+and import toJSON
+
+108
+00:05:35.236 --> 00:05:36.997
+from this package called
+
+109
+00:05:36.997 --> 00:05:39.819
+enzyme-to-jSON and this is just an adapter
+
+110
+00:05:39.819 --> 00:05:42.008
+that's gonna convert our react components
+
+111
+00:05:42.008 --> 00:05:44.448
+to the HTML that we're used to seeing when
+
+112
+00:05:44.448 --> 00:05:46.517
+we console log the debug.
+
+113
+00:05:46.517 --> 00:05:51.517
+Then we go back here and we expect the toJSON wrapper
+
+114
+00:05:52.209 --> 00:05:54.206
+to match snapshot.
+
+115
+00:05:54.206 --> 00:05:56.777
+It's gonna fail because our snapshot is now different,
+
+116
+00:05:56.777 --> 00:05:59.689
+so we're gonna press U to update it.
+
+117
+00:05:59.689 --> 00:06:02.209
+Now, if we go and look at our snapshot this is
+
+118
+00:06:02.209 --> 00:06:03.379
+what we're looking for.
+
+119
+00:06:03.379 --> 00:06:07.095
+We are expecting the item that renders and matches
+
+120
+00:06:07.095 --> 00:06:09.356
+the snapshot, and then it just shows us that
+
+121
+00:06:09.356 --> 00:06:11.257
+we have our item here, we have our image,
+
+122
+00:06:11.257 --> 00:06:13.667
+we have our title, all of our paths
+
+123
+00:06:13.667 --> 00:06:16.417
+and query ID's look the same, a cool item
+
+124
+00:06:16.417 --> 00:06:18.416
+is in there, we get our button list
+
+125
+00:06:18.416 --> 00:06:19.807
+with everything that we want.
+
+126
+00:06:19.807 --> 00:06:21.759
+This is all the HTML that we're looking for,
+
+127
+00:06:21.759 --> 00:06:23.329
+so I'm really happy about that.
+
+128
+00:06:23.329 --> 00:06:26.809
+Now, if anything were to ever change about our data-
+
+129
+00:06:26.809 --> 00:06:28.518
+so let's change the price from $50
+
+130
+00:06:28.518 --> 00:06:32.308
+to $40, give it a save, and immediately our snapshots
+
+131
+00:06:32.308 --> 00:06:34.899
+start to fail and it tells us exactly,
+
+132
+00:06:34.899 --> 00:06:39.899
+oh I'm now getting $40, but the snapshot shows me $50.
+
+133
+00:06:40.474 --> 00:06:44.657
+You can go ahead and update those yourself
+
+134
+00:06:44.657 --> 00:06:47.339
+by pressing U, and then the snapshot will be updated.
+
+135
+00:06:47.339 --> 00:06:50.499
+One really cool thing about that, is that your snapshots
+
+136
+00:06:50.499 --> 00:06:53.580
+is gonna be part of your git repo, and whenever you
+
+137
+00:06:53.580 --> 00:06:57.051
+check in a changed react component-
+
+138
+00:06:57.051 --> 00:07:00.468
+Let's go ahead and try and change item.js
+
+139
+00:07:01.759 --> 00:07:05.509
+and let's put a poop beside it.
+
+140
+00:07:07.563 --> 00:07:10.961
+Wouldn't be a tutorial with me without an emoji poop.
+
+141
+00:07:10.961 --> 00:07:14.803
+Then all of a sudden, you are going to see
+
+142
+00:07:14.803 --> 00:07:16.494
+that this was added.
+
+143
+00:07:16.494 --> 00:07:19.942
+I can press update to update my snapshot, U,
+
+144
+00:07:19.942 --> 00:07:23.571
+and then the snapshots go into your git repo.
+
+145
+00:07:23.571 --> 00:07:26.440
+Anytime I commit a change to a react component,
+
+146
+00:07:26.440 --> 00:07:30.149
+that PO request is also gonna come along
+
+147
+00:07:30.149 --> 00:07:33.449
+with a snapshot that shows me just the pieces
+
+148
+00:07:33.449 --> 00:07:35.601
+of it that have changed, and in our case
+
+149
+00:07:35.601 --> 00:07:37.567
+it's just adding a little poop emoji,
+
+150
+00:07:37.567 --> 00:07:39.618
+and then the reviewer will be able to say okay,
+
+151
+00:07:39.618 --> 00:07:43.161
+here is the logic in the code of the component that changed,
+
+152
+00:07:43.161 --> 00:07:46.940
+and here is the change of the output at the end of the day.
+
+153
+00:07:46.940 --> 00:07:49.951
+That's why I really like snapshot testing.
+
+154
+00:07:49.951 --> 00:07:52.701
+Let's take that poop outta there,
+
+155
+00:07:57.341 --> 00:08:01.062
+update our snapshot, and we're in good shape.
+
+156
+00:08:01.062 --> 00:08:03.849
+One other component that I wanna work on snapshots
+
+157
+00:08:03.849 --> 00:08:07.065
+with you, so let's test this out right now,
+
+158
+00:08:07.065 --> 00:08:09.632
+is our cart count.js.
+
+159
+00:08:09.632 --> 00:08:12.341
+This is our cart count component that will simply
+
+160
+00:08:12.341 --> 00:08:16.320
+just take in an amount and display in a red dot
+
+161
+00:08:16.320 --> 00:08:17.600
+how many items are in there.
+
+162
+00:08:17.600 --> 00:08:19.730
+It's very simple, let's write a quick test for it.
+
+163
+00:08:19.730 --> 00:08:24.480
+Go into our test folder, make cart count.test.js,
+
+164
+00:08:25.620 --> 00:08:30.620
+and let's import both shallow, and mount from enzyme,
+
+165
+00:08:33.634 --> 00:08:38.384
+we import our toJSON from enzyme-to-json,
+
+166
+00:08:43.024 --> 00:08:47.024
+import cart count from our components directory,
+
+167
+00:08:52.644 --> 00:08:55.084
+now go ahead and describe our test.
+
+168
+00:08:55.084 --> 00:08:57.167
+It's gonna be cart count,
+
+169
+00:09:00.607 --> 00:09:03.285
+and inside of there we're gonna say it renders.
+
+170
+00:09:03.285 --> 00:09:05.325
+What I like to do is always just make sure that
+
+171
+00:09:05.325 --> 00:09:07.841
+it renders out fine, and then go ahead
+
+172
+00:09:07.841 --> 00:09:09.953
+and try to do a separate snapshot.
+
+173
+00:09:09.953 --> 00:09:13.008
+What that will do is it will make sure that if
+
+174
+00:09:13.008 --> 00:09:14.776
+your component is having trouble rendering,
+
+175
+00:09:14.776 --> 00:09:17.227
+it's gonna fail the render test before it fails
+
+176
+00:09:17.227 --> 00:09:19.358
+the snapshot test.
+
+177
+00:09:19.358 --> 00:09:21.420
+We'll just say it renders.
+
+178
+00:09:21.420 --> 00:09:26.420
+Shallow render the cart count component.
+
+179
+00:09:27.411 --> 00:09:31.160
+That will take account of, let's just call it 10.
+
+180
+00:09:31.160 --> 00:09:33.952
+In this case we don't even need an expect
+
+181
+00:09:33.952 --> 00:09:37.850
+because if something goes wrong with shallow rendering this,
+
+182
+00:09:37.850 --> 00:09:39.272
+it's going to error out,
+
+183
+00:09:39.272 --> 00:09:42.597
+and that's gonna make the test fail and that's really nice.
+
+184
+00:09:42.597 --> 00:09:46.803
+If I were to go here and forget to export this,
+
+185
+00:09:46.803 --> 00:09:50.483
+all of a sudden my test is failing and
+
+186
+00:09:50.483 --> 00:09:52.974
+it says cart count is failing to render,
+
+187
+00:09:52.974 --> 00:09:55.265
+so we know that something is wrong with that.
+
+188
+00:09:55.265 --> 00:09:57.134
+That's the first nice little quick test.
+
+189
+00:09:57.134 --> 00:10:01.551
+Next one, we'll say it matches the snapshot,
+
+190
+00:10:11.175 --> 00:10:12.925
+we'll make a wrapper,
+
+191
+00:10:24.686 --> 00:10:29.248
+and we'll expect the
+
+192
+00:10:29.248 --> 00:10:32.947
+toJSON of the wrapper
+
+193
+00:10:32.947 --> 00:10:34.780
+to match the snapshot.
+
+194
+00:10:39.153 --> 00:10:41.067
+It looks like it wrote a new snapshot,
+
+195
+00:10:41.067 --> 00:10:44.215
+let's go ahead and look at it.
+
+196
+00:10:44.215 --> 00:10:45.736
+In here, we have our transition group,
+
+197
+00:10:45.736 --> 00:10:48.134
+we have our CSS transition, inside of that we have
+
+198
+00:10:48.134 --> 00:10:50.742
+our count cart dot and it shows us 10.
+
+199
+00:10:50.742 --> 00:10:53.825
+If we were to ever change that to 11,
+
+200
+00:10:58.061 --> 00:11:00.559
+you see that we're gonna fail, and it tells us
+
+201
+00:11:00.559 --> 00:11:02.770
+that we went from 11 to 12.
+
+202
+00:11:02.770 --> 00:11:04.752
+I can go ahead and update that, and all of
+
+203
+00:11:04.752 --> 00:11:07.461
+my snapshots are now matching.
+
+204
+00:11:07.461 --> 00:11:08.794
+Looking good.
+
+205
+00:11:10.864 --> 00:11:12.734
+One other thing I should say about the snapshot,
+
+206
+00:11:12.734 --> 00:11:15.670
+is that you don't have to snapshot the entire component.
+
+207
+00:11:15.670 --> 00:11:19.829
+You can also wrapper.find, you can find a span
+
+208
+00:11:19.829 --> 00:11:22.582
+inside of that and just snapshot that piece.
+
+209
+00:11:22.582 --> 00:11:25.233
+If you're feeling a little bit uneasy, kind of going
+
+210
+00:11:25.233 --> 00:11:28.112
+carte blanche just snapshotting the entire component.
+
+211
+00:11:28.112 --> 00:11:31.036
+You could have multiple snapshots of different pieces
+
+212
+00:11:31.036 --> 00:11:32.971
+of your component that will match it.
+
+213
+00:11:32.971 --> 00:11:34.739
+That's certainly something we're gonna be doing
+
+214
+00:11:34.739 --> 00:11:38.529
+as we test through the different components in this course.
+
+215
+00:11:38.529 --> 00:11:41.161
+Next one, we want to check if it can update
+
+216
+00:11:41.161 --> 00:11:43.888
+it's props properly and then show us.
+
+217
+00:11:43.888 --> 00:11:45.888
+It updates via props,
+
+218
+00:11:49.199 --> 00:11:50.759
+so we'll grab our wrapper again.
+
+219
+00:11:50.759 --> 00:11:52.309
+I'm just gonna duplicate this one here,
+
+220
+00:11:52.309 --> 00:11:54.517
+so we're doing the same thing.
+
+221
+00:11:54.517 --> 00:11:56.684
+We're gonna start with 50,
+
+222
+00:11:58.582 --> 00:12:03.582
+and we're gonna expect the toJSON of the wrapper
+
+223
+00:12:05.361 --> 00:12:10.361
+to match snapshot, then we're going to update the prop,
+
+224
+00:12:11.063 --> 00:12:14.051
+so we say wrapper.set props
+
+225
+00:12:14.051 --> 00:12:18.493
+and we're just going to update the count to 10.
+
+226
+00:12:18.493 --> 00:12:21.693
+Then we're just gonna check the snapshot again.
+
+227
+00:12:21.693 --> 00:12:25.413
+Were gonna snapshot it, change the count,
+
+228
+00:12:25.413 --> 00:12:28.234
+and then snapshot it again and what that should do,
+
+229
+00:12:28.234 --> 00:12:32.252
+if we go here, you should see the snapshot has then
+
+230
+00:12:32.252 --> 00:12:36.333
+been changed to 10 here, but the previous one was set to 50.
+
+231
+00:12:36.333 --> 00:12:39.503
+We know that if we update a prop it's actually going to
+
+232
+00:12:39.503 --> 00:12:43.754
+update the HTML that gets shown at the end of the day.
+
+233
+00:12:43.754 --> 00:12:45.240
+I'm a big fan of snapshots.
+
+234
+00:12:45.240 --> 00:12:48.592
+This little VS Code thing I have allows you
+
+235
+00:12:48.592 --> 00:12:51.043
+to actually view the snapshot right from here,
+
+236
+00:12:51.043 --> 00:12:54.142
+which I find pretty handy as well, cause you can just hover
+
+237
+00:12:54.142 --> 00:12:57.510
+over top and click view snapshot, so pretty nifty.
+
+238
+00:12:57.510 --> 00:12:59.462
+That is snapshot testing.
+
+239
+00:12:59.462 --> 00:13:01.571
+One other thing I wanna show you is the difference
+
+240
+00:13:01.571 --> 00:13:05.150
+between mounting and shallow.
+
+241
+00:13:05.150 --> 00:13:06.503
+This has been shallow so far,
+
+242
+00:13:06.503 --> 00:13:09.086
+but let's change that to mount.
+
+243
+00:13:12.215 --> 00:13:17.215
+Nevermind the failing snapshots, but let's just console log
+
+244
+00:13:17.943 --> 00:13:19.443
+the wrapper.debug.
+
+245
+00:13:28.961 --> 00:13:31.304
+We'll just return after that.
+
+246
+00:13:31.304 --> 00:13:34.346
+Let's just get rid of all these errors we got going on here.
+
+247
+00:13:34.346 --> 00:13:35.496
+There we go.
+
+248
+00:13:35.496 --> 00:13:40.496
+What's going on here is that now that I mounted it,
+
+249
+00:13:41.010 --> 00:13:43.818
+you're seeing that we actually have real spans
+
+250
+00:13:43.818 --> 00:13:47.327
+and we have real class names, and we have real classes
+
+251
+00:13:47.327 --> 00:13:49.077
+that got added to it.
+
+252
+00:13:49.928 --> 00:13:52.517
+You'll see here they have class names and everything
+
+253
+00:13:52.517 --> 00:13:55.178
+because mounting it will actually run it in sort
+
+254
+00:13:55.178 --> 00:13:58.448
+of a browser environment, whereas shallow will only
+
+255
+00:13:58.448 --> 00:14:00.104
+go one level deep.
+
+256
+00:14:00.104 --> 00:14:03.168
+In most cases, in this course, we are going to actually
+
+257
+00:14:03.168 --> 00:14:05.285
+be mounting it and the reason why we do that is
+
+258
+00:14:05.285 --> 00:14:08.768
+because not all of our components, most of our components
+
+259
+00:14:08.768 --> 00:14:11.968
+aren't gonna be as clean as this item in the cart count
+
+260
+00:14:11.968 --> 00:14:15.047
+where we simply just pass in via props and we can
+
+261
+00:14:15.047 --> 00:14:16.686
+check all of the data inside of them.
+
+262
+00:14:16.686 --> 00:14:19.818
+Most of them are going to have nested mutations
+
+263
+00:14:19.818 --> 00:14:21.786
+and queries inside of them where we do need
+
+264
+00:14:21.786 --> 00:14:23.887
+to mount it six or seven levels deep
+
+265
+00:14:23.887 --> 00:14:26.677
+in order to get the thing actually working.
+
+266
+00:14:26.677 --> 00:14:29.145
+Another benefit to mounting is that you're actually
+
+267
+00:14:29.145 --> 00:14:33.363
+running it, sort of as if it were running in the browser
+
+268
+00:14:33.363 --> 00:14:36.959
+and I kind of go along with the idea of your tests
+
+269
+00:14:36.959 --> 00:14:38.868
+should be as close to actually running them
+
+270
+00:14:38.868 --> 00:14:40.146
+in the browser as possible.
+
+271
+00:14:40.146 --> 00:14:42.378
+As close to the user will be using them
+
+272
+00:14:42.378 --> 00:14:44.201
+at the end of the day.
+
+273
+00:14:44.201 --> 00:14:46.674
+We can't mount anything just yet cause we
+
+274
+00:14:46.674 --> 00:14:49.502
+don't know how to mock our Apollo store,
+
+275
+00:14:49.502 --> 00:14:51.083
+but that what we're gonna be doing in the
+
+276
+00:14:51.083 --> 00:14:53.614
+next couple of videos is learning how to mock Apollo,
+
+277
+00:14:53.614 --> 00:14:56.134
+so we can mount these things and start to trigger
+
+278
+00:14:56.134 --> 00:15:00.353
+things like clicks, and whatnot, that are in there.
+
+279
+00:15:00.353 --> 00:15:03.520
+Let's bring this back to just shallow,
+
+280
+00:15:09.472 --> 00:15:12.870
+and everything is up and running, make sure all your
+
+281
+00:15:12.870 --> 00:15:16.084
+tests are passing, and your snapshots look good.
+
+282
+00:15:16.084 --> 00:15:18.169
+Let's jump on into the next video.
+

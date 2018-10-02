@@ -1,0 +1,618 @@
+﻿WEBVTT
+
+1
+00:00:00.312 --> 00:00:01.251
+(swift swooshing)
+
+2
+00:00:01.251 --> 00:00:03.052
+<v Wes>One interesting problem that we run into</v>
+
+3
+00:00:03.052 --> 00:00:06.203
+when we build single page applications with React is that
+
+4
+00:00:06.203 --> 00:00:08.406
+when you click from page to page or
+
+5
+00:00:08.406 --> 00:00:11.400
+when you change stuff, it's not actually changing the page.
+
+6
+00:00:11.400 --> 00:00:12.872
+It's just changing the URL
+
+7
+00:00:12.872 --> 00:00:15.339
+and we're dynamically loading in new data
+
+8
+00:00:15.339 --> 00:00:18.181
+and re-rendering new components and all that stuff.
+
+9
+00:00:18.181 --> 00:00:20.010
+And you lose the little spinner
+
+10
+00:00:20.010 --> 00:00:22.257
+that shows in the browser, and
+
+11
+00:00:22.257 --> 00:00:24.505
+in the bottom left-hand corner a lot of browsers
+
+12
+00:00:24.505 --> 00:00:26.528
+will show you when it's actually requesting resources
+
+13
+00:00:26.528 --> 00:00:28.227
+or waiting for something.
+
+14
+00:00:28.227 --> 00:00:31.854
+Whereas with Next.js and most React applications that
+
+15
+00:00:31.854 --> 00:00:34.436
+you use a router, you're just changing the URL.
+
+16
+00:00:34.436 --> 00:00:37.642
+So, how do we visually notify the user that something
+
+17
+00:00:37.642 --> 00:00:40.031
+is happening behind the scenes?
+
+18
+00:00:40.031 --> 00:00:43.868
+What we're doing here in the "Sick Fits" application
+
+19
+00:00:43.868 --> 00:00:46.825
+is we are using this thing called NProgress.
+
+20
+00:00:46.825 --> 00:00:49.473
+NProgress is just a little library that's used on...
+
+21
+00:00:49.473 --> 00:00:52.061
+you probably are familiar with n-progress...
+
+22
+00:00:52.061 --> 00:00:55.745
+Let's see, you probably are pretty familiar
+
+23
+00:00:55.745 --> 00:00:58.599
+with seeing these things on websites
+
+24
+00:00:58.599 --> 00:01:00.732
+where you have a little top bar here
+
+25
+00:01:00.732 --> 00:01:03.188
+and you start it off and you can increment it.
+
+26
+00:01:03.188 --> 00:01:05.063
+You can keep incrementing and
+
+27
+00:01:05.063 --> 00:01:06.904
+then when you're done, you run it.
+
+28
+00:01:06.904 --> 00:01:09.139
+So we're going to hook into the router event
+
+29
+00:01:09.139 --> 00:01:11.517
+of Next.js in order to do that so
+
+30
+00:01:11.517 --> 00:01:13.318
+let's just take a quick look here.
+
+31
+00:01:13.318 --> 00:01:15.052
+You will notice that sometimes when you visit
+
+32
+00:01:15.052 --> 00:01:17.002
+a page -- do you see right now -- see how that
+
+33
+00:01:17.002 --> 00:01:19.267
+took like a second or two?
+
+34
+00:01:19.267 --> 00:01:20.936
+You may be saying like, "Oh wow.
+
+35
+00:01:20.936 --> 00:01:22.545
+"Next.js sure is slow.
+
+36
+00:01:22.545 --> 00:01:25.602
+"I would never want that. It should be instant."
+
+37
+00:01:25.602 --> 00:01:28.419
+The reason why that's happening in Next.js
+
+38
+00:01:28.419 --> 00:01:30.727
+is that because they don't generate
+
+39
+00:01:30.727 --> 00:01:32.448
+all the pages when you start.
+
+40
+00:01:32.448 --> 00:01:34.923
+They only generate them on demand,
+
+41
+00:01:34.923 --> 00:01:37.081
+and then they'll up date them as you are editing the code.
+
+42
+00:01:37.081 --> 00:01:38.497
+So that's a development-only thing.
+
+43
+00:01:38.497 --> 00:01:40.443
+Now if I click around they're instant.
+
+44
+00:01:40.443 --> 00:01:42.858
+But the very first time that I hit a page,
+
+45
+00:01:42.858 --> 00:01:44.747
+it takes a second to actually here...
+
+46
+00:01:44.747 --> 00:01:48.814
+Let me bring this over right now and I'll go to the...
+
+47
+00:01:48.814 --> 00:01:52.287
+Actually let me kill it and start it again.
+
+48
+00:01:52.287 --> 00:01:54.295
+Let's just show you what my terminal
+
+49
+00:01:54.295 --> 00:01:55.756
+is actually going to say.
+
+50
+00:01:55.756 --> 00:01:58.273
+So it's Building page: forward-slash, right?
+
+51
+00:01:58.273 --> 00:01:59.172
+So I visited that and
+
+52
+00:01:59.172 --> 00:02:01.453
+now I'm going to go to forward-slash Sell.
+
+53
+00:02:01.453 --> 00:02:05.013
+Click on it and it says, Building page: /sell.
+
+54
+00:02:05.013 --> 00:02:07.844
+Also, it will build them on demand as you visit them,
+
+55
+00:02:07.844 --> 00:02:10.541
+however when we go to production, it will pre-build
+
+56
+00:02:10.541 --> 00:02:13.257
+all of those pages, and we also have the ability
+
+57
+00:02:13.257 --> 00:02:17.142
+to attach this things called a pre-fetch to our link tag
+
+58
+00:02:17.142 --> 00:02:20.897
+which will actually go out and fetch the data
+
+59
+00:02:20.897 --> 00:02:22.569
+that is needed for that page.
+
+60
+00:02:22.569 --> 00:02:25.091
+So not only is it built, but the data could be
+
+61
+00:02:25.091 --> 00:02:27.352
+pre-fetched for that specific page so that
+
+62
+00:02:27.352 --> 00:02:28.544
+when you click on something, it's gonna be
+
+63
+00:02:28.544 --> 00:02:31.659
+instant cut-over and you're gonna see a nice quick little,
+
+64
+00:02:31.659 --> 00:02:33.809
+like that, nice quick little red line
+
+65
+00:02:33.809 --> 00:02:34.966
+pop up on the top.
+
+66
+00:02:34.966 --> 00:02:36.430
+So, how do we do that?
+
+67
+00:02:36.430 --> 00:02:40.180
+Well, we need to import the Router from Next.js
+
+68
+00:02:40.180 --> 00:02:43.052
+and I like to do this in Header.js, however,
+
+69
+00:02:43.052 --> 00:02:45.713
+it actually doesn't matter which page you're doing it in.
+
+70
+00:02:45.713 --> 00:02:50.655
+So we're gonna go here and I'm going to bring my Nav there.
+
+71
+00:02:50.655 --> 00:02:52.321
+I'm going to import the Router
+
+72
+00:02:52.321 --> 00:02:55.279
+from next forward-slash router
+
+73
+00:02:55.279 --> 00:02:58.029
+and we're gonna import Nprogress.
+
+74
+00:02:58.928 --> 00:03:00.389
+Oh, I have a little text expander that
+
+75
+00:03:00.389 --> 00:03:02.838
+anytime I type two capitals at the start of a word
+
+76
+00:03:02.838 --> 00:03:06.088
+it will correct me, but I need it here.
+
+77
+00:03:07.305 --> 00:03:08.722
+From 'nprogress'.
+
+78
+00:03:10.730 --> 00:03:12.606
+That's a package we have.
+
+79
+00:03:12.606 --> 00:03:15.353
+And then we simply listen for the events
+
+80
+00:03:15.353 --> 00:03:16.672
+are on the router.
+
+81
+00:03:16.672 --> 00:03:19.922
+If you go to the docs for Next.js and
+
+82
+00:03:19.922 --> 00:03:22.988
+you go to Routing, you can see here you can
+
+83
+00:03:22.988 --> 00:03:25.379
+route with link which is something that we've done, right?
+
+84
+00:03:25.379 --> 00:03:27.537
+We have a link with a href on it.
+
+85
+00:03:27.537 --> 00:03:29.426
+We are also going to be looking at links
+
+86
+00:03:29.426 --> 00:03:32.392
+where you can pass an a path in a query.
+
+87
+00:03:32.392 --> 00:03:33.977
+We'll be getting into that.
+
+88
+00:03:33.977 --> 00:03:36.954
+However, you ca also route Imperatively.
+
+89
+00:03:36.954 --> 00:03:38.393
+Which means that you can...
+
+90
+00:03:38.393 --> 00:03:42.072
+Ideally you would route when you click a link.
+
+91
+00:03:42.072 --> 00:03:43.780
+However, sometimes you need to
+
+92
+00:03:43.780 --> 00:03:46.435
+change the page with code, right?
+
+93
+00:03:46.435 --> 00:03:47.751
+And the way that you do that is you
+
+94
+00:03:47.751 --> 00:03:49.548
+access the Router from importing it
+
+95
+00:03:49.548 --> 00:03:52.689
+and you can change the page by pushing
+
+96
+00:03:52.689 --> 00:03:55.925
+and what we care about is all of these events.
+
+97
+00:03:55.925 --> 00:03:59.550
+So onRouteChangeStart, onRouteChangeComplete,
+
+98
+00:03:59.550 --> 00:04:02.016
+on ChangeError, on HistoryChange
+
+99
+00:04:02.016 --> 00:04:03.909
+on ChangeStart, on ChangeComplete.
+
+100
+00:04:03.909 --> 00:04:07.867
+So let's just go ahead and we are going to be
+
+101
+00:04:07.867 --> 00:04:11.250
+listening on these three right here
+
+102
+00:04:11.250 --> 00:04:15.291
+just onRouteChangeStart, onRouteChangeComplete,
+
+103
+00:04:15.291 --> 00:04:17.208
+and onRouteChangeError.
+
+104
+00:04:18.047 --> 00:04:21.209
+Those are all on the router that we've imported.
+
+105
+00:04:21.209 --> 00:04:25.006
+We simply set each of them to be a function.
+
+106
+00:04:25.006 --> 00:04:27.589
+So let's just console that log.
+
+107
+00:04:29.355 --> 00:04:31.272
+Can we? Yeah triggered.
+
+108
+00:04:34.281 --> 00:04:37.330
+And then go to our application and
+
+109
+00:04:37.330 --> 00:04:38.878
+we only have two pages right now.
+
+110
+00:04:38.878 --> 00:04:40.219
+Home page and Sell.
+
+111
+00:04:40.219 --> 00:04:41.969
+So let's just "sell".
+
+112
+00:04:43.676 --> 00:04:46.606
+You see how as we go, when we clear it out again.
+
+113
+00:04:46.606 --> 00:04:50.136
+I click on one, onRouteChangeStart triggered,
+
+114
+00:04:50.136 --> 00:04:54.480
+onRouteChangeComplete triggered and then...
+
+115
+00:04:54.480 --> 00:04:57.188
+There is also, we're listening for error
+
+116
+00:04:57.188 --> 00:04:58.979
+just because if something happens on error
+
+117
+00:04:58.979 --> 00:05:01.384
+then we are going to display an error to them.
+
+118
+00:05:01.384 --> 00:05:04.751
+We want to stop that, so what we need to go into here
+
+119
+00:05:04.751 --> 00:05:08.584
+is when it starts we type NProgress dot start.
+
+120
+00:05:09.917 --> 00:05:11.917
+Let's see if that works.
+
+121
+00:05:13.328 --> 00:05:14.296
+Now you see?
+
+122
+00:05:14.296 --> 00:05:17.088
+And we didn't have to import any html or anything like that.
+
+123
+00:05:17.088 --> 00:05:19.704
+So it just by importing it,
+
+124
+00:05:19.704 --> 00:05:21.812
+it will just stick that thing at the top.
+
+125
+00:05:21.812 --> 00:05:24.337
+Then also in our Meta, I've also
+
+126
+00:05:24.337 --> 00:05:28.606
+linked the external CSS that is required for that.
+
+127
+00:05:28.606 --> 00:05:30.497
+Then when the change is complete,
+
+128
+00:05:30.497 --> 00:05:32.747
+we just NProgress dot done.
+
+129
+00:05:35.779 --> 00:05:39.225
+And we also, if there's an error we'll done it as well.
+
+130
+00:05:39.225 --> 00:05:40.558
+And there we go.
+
+131
+00:05:41.801 --> 00:05:43.608
+(sings ta-da-da-da!)
+
+132
+00:05:43.608 --> 00:05:44.683
+Lookin' good!
+
+133
+00:05:44.683 --> 00:05:47.123
+One little problem that's unrelated to this,
+
+134
+00:05:47.123 --> 00:05:50.360
+but you see when I refresh it? It's like...
+
+135
+00:05:50.360 --> 00:05:54.263
+You got like a split second of the CSS not working?
+
+136
+00:05:54.263 --> 00:05:56.255
+And that's the next little thing that we need to tackle
+
+137
+00:05:56.255 --> 00:05:58.816
+is that Style Components by default doesn't work
+
+138
+00:05:58.816 --> 00:06:03.049
+on the server and in order for us to render
+
+139
+00:06:03.049 --> 00:06:05.545
+like what happens with Nextjs is that
+
+140
+00:06:05.545 --> 00:06:08.320
+when you visit a page it will render it on the server
+
+141
+00:06:08.320 --> 00:06:11.544
+and then the client side will pick it up from there
+
+142
+00:06:11.544 --> 00:06:14.316
+and it will start re-rendering it on the client, right?
+
+143
+00:06:14.316 --> 00:06:15.789
+So we have React on the server
+
+144
+00:06:15.789 --> 00:06:17.050
+and we have React on the front end
+
+145
+00:06:17.050 --> 00:06:18.839
+and Next.js takes care of all of that.
+
+146
+00:06:18.839 --> 00:06:20.343
+However, sometimes when you get
+
+147
+00:06:20.343 --> 00:06:22.671
+into these packages like Style Components,
+
+148
+00:06:22.671 --> 00:06:27.397
+you need a little bit more config in order to make it
+
+149
+00:06:27.397 --> 00:06:30.612
+render the CSS on the client side
+
+150
+00:06:30.612 --> 00:06:32.635
+as well as on the server side.
+
+151
+00:06:32.635 --> 00:06:35.088
+So let's fix that right now because
+
+152
+00:06:35.088 --> 00:06:37.861
+when we refresh we should be instantly showing us
+
+153
+00:06:37.861 --> 00:06:39.860
+this CSS and we shouldn't get that
+
+154
+00:06:39.860 --> 00:06:42.222
+flash of un-styled for a split second.
+

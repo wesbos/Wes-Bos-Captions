@@ -1,0 +1,1870 @@
+﻿WEBVTT
+
+1
+00:00:01.056 --> 00:00:02.755
+<v Narrator>Hi, in this video we're gonna make</v>
+
+2
+00:00:02.755 --> 00:00:04.564
+this interface here where you're able
+
+3
+00:00:04.564 --> 00:00:06.245
+to manage the users permissions.
+
+4
+00:00:06.245 --> 00:00:08.275
+So there's a lot really going on here
+
+5
+00:00:08.275 --> 00:00:09.383
+because we've got.
+
+6
+00:00:09.383 --> 00:00:12.124
+First of all, we need a new query to fetch all of the users
+
+7
+00:00:12.124 --> 00:00:14.952
+and their permissions and then second we need a new mutation
+
+8
+00:00:14.952 --> 00:00:16.821
+which will allow the user to update it.
+
+9
+00:00:16.821 --> 00:00:21.369
+And at the same time, we also need to you check if the user
+
+10
+00:00:21.369 --> 00:00:24.612
+who is updating permissions has the permission
+
+11
+00:00:24.612 --> 00:00:27.545
+to update permissions like, what!
+
+12
+00:00:27.545 --> 00:00:30.686
+This is gonna be cyclical, so hold on.
+
+13
+00:00:30.686 --> 00:00:32.623
+Let's kind of break it down into a couple things.
+
+14
+00:00:32.623 --> 00:00:35.549
+So first thing we wanna do is let's just get a list of users
+
+15
+00:00:35.549 --> 00:00:37.645
+and their respective permissions,
+
+16
+00:00:37.645 --> 00:00:40.337
+showing up on the page here.
+
+17
+00:00:40.337 --> 00:00:43.351
+So, that's going to be a new query
+
+18
+00:00:43.351 --> 00:00:46.112
+and we're gonna do that on the back end.
+
+19
+00:00:46.112 --> 00:00:48.160
+So let's open up our schema.
+
+20
+00:00:48.160 --> 00:00:50.689
+Let's go to our query and we're just going to say,
+
+21
+00:00:50.689 --> 00:00:52.692
+we want a new query called users.
+
+22
+00:00:52.692 --> 00:00:57.440
+And that is going to return an array of users
+
+23
+00:00:57.440 --> 00:01:00.286
+or user sorry, and then we're gonna have a bang on the end.
+
+24
+00:01:00.286 --> 00:01:01.744
+The reason why we have a bang here is
+
+25
+00:01:01.744 --> 00:01:06.123
+that the array itself is required to be returned,
+
+26
+00:01:06.123 --> 00:01:08.321
+but the array might be empty.
+
+27
+00:01:08.321 --> 00:01:12.965
+So we're not going to make the actual user itself a query
+
+28
+00:01:12.965 --> 00:01:14.160
+because then you could run into issues
+
+29
+00:01:14.160 --> 00:01:15.948
+where there's no users in your database
+
+30
+00:01:15.948 --> 00:01:19.123
+or your specific filter, it returns no one.
+
+31
+00:01:19.123 --> 00:01:21.266
+And we do want it to return an empty array.
+
+32
+00:01:21.266 --> 00:01:23.658
+Then what do you do when you modify your schema?
+
+33
+00:01:23.658 --> 00:01:25.156
+You set up a resolver.
+
+34
+00:01:25.156 --> 00:01:28.454
+So let's open up our query.js.
+
+35
+00:01:28.454 --> 00:01:30.079
+This is that, we haven't done much work in here.
+
+36
+00:01:30.079 --> 00:01:30.982
+A lot of our stuff has been done
+
+37
+00:01:30.982 --> 00:01:34.267
+in the mutation.js of writing resolvers.
+
+38
+00:01:34.267 --> 00:01:36.916
+But now we're flipping over to query.js right here.
+
+39
+00:01:36.916 --> 00:01:39.394
+And lets say we have our me showing up here.
+
+40
+00:01:39.394 --> 00:01:42.068
+So we're gonna make a new one called users,
+
+41
+00:01:42.068 --> 00:01:43.452
+and that's going to be a sync,
+
+42
+00:01:43.452 --> 00:01:46.207
+and inside of that we have parent,
+
+43
+00:01:46.207 --> 00:01:49.935
+our args, our context, and our info.
+
+44
+00:01:49.935 --> 00:01:52.682
+Then inside of that, we really just need to do two things.
+
+45
+00:01:52.682 --> 00:01:57.682
+First, check if the user has the permissions
+
+46
+00:01:57.818 --> 00:01:59.829
+to query all the users.
+
+47
+00:01:59.829 --> 00:02:01.819
+Because we don't want anyone just come into our API
+
+48
+00:02:01.819 --> 00:02:04.703
+and running a query and getting the user's email address
+
+49
+00:02:04.703 --> 00:02:07.315
+and their cards and anything like that.
+
+50
+00:02:07.315 --> 00:02:09.455
+And second thing what we want to do is
+
+51
+00:02:09.455 --> 00:02:14.455
+if they do query all the users.
+
+52
+00:02:15.003 --> 00:02:16.219
+So, first thing I'm gonna do is check
+
+53
+00:02:16.219 --> 00:02:17.640
+if they're logged in actually.
+
+54
+00:02:17.640 --> 00:02:21.381
+So, one is check if they are logged in
+
+55
+00:02:21.381 --> 00:02:24.059
+and then two is check if they have any questions.
+
+56
+00:02:24.059 --> 00:02:27.142
+So if there's no ctx.requests.
+
+57
+00:02:28.525 --> 00:02:29.699
+.userid
+
+58
+00:02:29.699 --> 00:02:32.896
+then somebody just throw a new error in
+
+59
+00:02:32.896 --> 00:02:34.637
+and this is something we've done three or four times.
+
+60
+00:02:34.637 --> 00:02:37.637
+Now you could probably refactor this out
+
+61
+00:02:37.637 --> 00:02:39.680
+into a separate function that says is logged in.
+
+62
+00:02:39.680 --> 00:02:42.619
+That will check, that we'll take in the request
+
+63
+00:02:42.619 --> 00:02:44.719
+and check for a user ID.
+
+64
+00:02:44.719 --> 00:02:46.644
+But it's fairly simple, so I don't mind keeping
+
+65
+00:02:46.644 --> 00:02:47.650
+it as explicit right here.
+
+66
+00:02:47.650 --> 00:02:51.317
+So throw a new error, you must be logged in.
+
+67
+00:02:52.258 --> 00:02:53.231
+Okay.
+
+68
+00:02:53.231 --> 00:02:55.340
+Then and what we're going to do is check if the user
+
+69
+00:02:55.340 --> 00:02:56.173
+has a permission.
+
+70
+00:02:56.173 --> 00:02:59.950
+So if you open up this utils.js file in the source folder.
+
+71
+00:02:59.950 --> 00:03:01.896
+You see I gave you this little function called
+
+72
+00:03:01.896 --> 00:03:03.344
+has permission.
+
+73
+00:03:03.344 --> 00:03:04.924
+And the reason why I've given you this
+
+74
+00:03:04.924 --> 00:03:06.054
+is because it's a little bit complicated.
+
+75
+00:03:06.054 --> 00:03:08.023
+Because you might have like a user
+
+76
+00:03:08.023 --> 00:03:09.811
+which looks like something like this,
+
+77
+00:03:09.811 --> 00:03:11.366
+or you have the name is Wes.
+
+78
+00:03:11.366 --> 00:03:14.979
+And the permissions on that user are going
+
+79
+00:03:14.979 --> 00:03:19.979
+to be something like admin and item update.
+
+80
+00:03:20.095 --> 00:03:22.891
+Right, those are the two permissions that that user has.
+
+81
+00:03:22.891 --> 00:03:24.980
+But then you also wanna like check,
+
+82
+00:03:24.980 --> 00:03:28.205
+if they have any of these.
+
+83
+00:03:28.205 --> 00:03:31.990
+And we wanna check, do they have permission update or admin?
+
+84
+00:03:31.990 --> 00:03:34.740
+Right, so we're not checking if they have all of these,
+
+85
+00:03:34.740 --> 00:03:35.573
+we're just checking like,
+
+86
+00:03:35.573 --> 00:03:39.066
+is there any overlap between what they have?
+
+87
+00:03:39.066 --> 00:03:40.699
+and what we're looking for, right?
+
+88
+00:03:40.699 --> 00:03:42.729
+Because we only need them to have one.
+
+89
+00:03:42.729 --> 00:03:45.947
+So, what we do here is we make this function
+
+90
+00:03:45.947 --> 00:03:49.675
+that takes in the user and takes in an array of permissions
+
+91
+00:03:49.675 --> 00:03:50.955
+that are needed.
+
+92
+00:03:50.955 --> 00:03:55.955
+And then we filter the users permissions to see if any of
+
+93
+00:03:56.086 --> 00:03:59.686
+them match the ones that we're specifically looking for.
+
+94
+00:03:59.686 --> 00:04:02.344
+So we loop over every single permission and we say,
+
+95
+00:04:02.344 --> 00:04:04.419
+is the permission that is needed included
+
+96
+00:04:04.419 --> 00:04:06.786
+in the permission that they have?
+
+97
+00:04:06.786 --> 00:04:10.747
+If so, put it in the array and if that array has no length
+
+98
+00:04:10.747 --> 00:04:13.647
+at the end of the day, meaning that they have no permissions
+
+99
+00:04:13.647 --> 00:04:15.415
+we just throw an error.
+
+100
+00:04:15.415 --> 00:04:17.445
+And I'd like to do this for debugging purposes,
+
+101
+00:04:17.445 --> 00:04:19.387
+is show the permissions that are needed,
+
+102
+00:04:19.387 --> 00:04:21.673
+and show the permissions that the user has.
+
+103
+00:04:21.673 --> 00:04:24.372
+And then that will give us a little bit of a more visual
+
+104
+00:04:24.372 --> 00:04:25.205
+look into it.
+
+105
+00:04:25.205 --> 00:04:26.783
+And otherwise, we don't do anything.
+
+106
+00:04:26.783 --> 00:04:28.387
+And no error we'll be thrown
+
+107
+00:04:28.387 --> 00:04:30.667
+and that function will just will not return anything
+
+108
+00:04:30.667 --> 00:04:32.067
+and then we 'll just keep going.
+
+109
+00:04:32.067 --> 00:04:35.187
+So what we want to do, is go back to our query digest
+
+110
+00:04:35.187 --> 00:04:36.328
+and import that.
+
+111
+00:04:36.328 --> 00:04:39.995
+So, we're going to say const has permissions
+
+112
+00:04:41.284 --> 00:04:46.284
+is equal to require, utils
+
+113
+00:04:46.605 --> 00:04:48.346
+and we'll take that has permissions function
+
+114
+00:04:48.346 --> 00:04:49.179
+and go down here.
+
+115
+00:04:49.179 --> 00:04:51.078
+So we'll just say has permissions
+
+116
+00:04:51.078 --> 00:04:55.999
+request.ctx.request.user
+
+117
+00:04:55.999 --> 00:04:57.599
+and we're going to check if they either
+
+118
+00:04:57.599 --> 00:04:59.015
+have the admit privilege,
+
+119
+00:04:59.015 --> 00:05:04.015
+or, or and/or the permission update.
+
+120
+00:05:04.308 --> 00:05:05.921
+Because we don't want to show them this unless
+
+121
+00:05:05.921 --> 00:05:08.382
+they're able to actually update it.
+
+122
+00:05:08.382 --> 00:05:11.328
+And then that if that is fine
+
+123
+00:05:11.328 --> 00:05:13.479
+then it'll keep going if it's not it'll throw an error
+
+124
+00:05:13.479 --> 00:05:15.725
+and we'll be able to display that on the client side.
+
+125
+00:05:15.725 --> 00:05:18.655
+And then finally if they are requiring all the users,
+
+126
+00:05:18.655 --> 00:05:22.488
+so finally we can just return ctx.db.users.
+
+127
+00:05:23.741 --> 00:05:26.253
+And we can pass an empty where object
+
+128
+00:05:26.253 --> 00:05:28.479
+because we just want to query all of the users.
+
+129
+00:05:28.479 --> 00:05:30.359
+And then we just pass the info
+
+130
+00:05:30.359 --> 00:05:33.831
+and again the info is going to include the graph QL query
+
+131
+00:05:33.831 --> 00:05:36.939
+that contains the fields that we're requesting
+
+132
+00:05:36.939 --> 00:05:38.522
+from the front end.
+
+133
+00:05:39.891 --> 00:05:42.440
+So that looks pretty good.
+
+134
+00:05:42.440 --> 00:05:47.440
+Now what we want to do, is flip over to our front end
+
+135
+00:05:47.644 --> 00:05:49.716
+and see if it even works.
+
+136
+00:05:49.716 --> 00:05:52.966
+So let's go back to our front end here.
+
+137
+00:05:54.533 --> 00:05:58.287
+Let's create a new page called permissions.
+
+138
+00:05:58.287 --> 00:06:01.524
+So not in the components folder in the pages folder.
+
+139
+00:06:01.524 --> 00:06:06.357
+Js, its gonna take all the code from cell.js.
+
+140
+00:06:08.027 --> 00:06:09.919
+Paste it into my permissions
+
+141
+00:06:09.919 --> 00:06:11.148
+and then just start deleting stuff.
+
+142
+00:06:11.148 --> 00:06:13.546
+So I don't need that.
+
+143
+00:06:13.546 --> 00:06:17.370
+We can keep the place sign-in and inside of here.
+
+144
+00:06:17.370 --> 00:06:21.188
+We're just going to put a paragraph as permissions
+
+145
+00:06:21.188 --> 00:06:25.105
+and we'll rename this component to permissions.
+
+146
+00:06:26.658 --> 00:06:27.949
+Looking good.
+
+147
+00:06:27.949 --> 00:06:29.727
+So if we go back to our application
+
+148
+00:06:29.727 --> 00:06:31.327
+and go to four slash permissions,
+
+149
+00:06:31.327 --> 00:06:34.244
+doesn't work cause I got to start my app.
+
+150
+00:06:34.244 --> 00:06:35.636
+Moreover here I'll check it, oh.
+
+151
+00:06:35.636 --> 00:06:39.671
+I think I goofed up another thing on my back-end.
+
+152
+00:06:39.671 --> 00:06:42.087
+Do I not know how spell require?
+
+153
+00:06:42.087 --> 00:06:44.337
+Probably screaming at me, and we see
+
+154
+00:06:44.337 --> 00:06:47.420
+that we have our permissions page popping up.
+
+155
+00:06:47.420 --> 00:06:49.271
+Good, and then let's go ahead
+
+156
+00:06:49.271 --> 00:06:51.789
+and make a permissions component cause we didn't.
+
+157
+00:06:51.789 --> 00:06:53.429
+You never really wanna do a whole bunch of work
+
+158
+00:06:53.429 --> 00:06:55.473
+on a specific page, not to put everything in
+
+159
+00:06:55.473 --> 00:06:56.621
+its own component.
+
+160
+00:06:56.621 --> 00:07:00.371
+So I'm gonna flip over to the front end here.
+
+161
+00:07:01.624 --> 00:07:04.856
+Go to my components and create a new one called
+
+162
+00:07:04.856 --> 00:07:06.689
+capital P permissions.
+
+163
+00:07:07.576 --> 00:07:11.606
+JS and we're gonna import query from react-apollo.
+
+164
+00:07:11.606 --> 00:07:15.023
+I'm gonna make our permissions component.
+
+165
+00:07:23.942 --> 00:07:27.622
+And then inside of that, we want a query component
+
+166
+00:07:27.622 --> 00:07:31.590
+that takes in a query called all users query.
+
+167
+00:07:31.590 --> 00:07:36.590
+We haven't written that yet but we will in just a second.
+
+168
+00:07:36.645 --> 00:07:39.978
+Inside of that, we'll give ourselves the
+
+169
+00:07:42.003 --> 00:07:43.971
+brackets of death.
+
+170
+00:07:43.971 --> 00:07:47.061
+Just paragraph hey and inside of there
+
+171
+00:07:47.061 --> 00:07:50.978
+it will have data loading an error.
+
+172
+00:07:52.602 --> 00:07:55.435
+Up here will import the error from
+
+173
+00:07:58.584 --> 00:08:00.167
+error message
+
+174
+00:08:03.925 --> 00:08:06.425
+and will render out the error.
+
+175
+00:08:10.357 --> 00:08:11.190
+Aah!
+
+176
+00:08:15.324 --> 00:08:17.942
+I'm gonna wrap that in a div
+
+177
+00:08:17.942 --> 00:08:19.352
+and put the arrow inside of that
+
+178
+00:08:19.352 --> 00:08:22.742
+and the paragraph just says hey.
+
+179
+00:08:22.742 --> 00:08:26.659
+All right we got to export default permissions,
+
+180
+00:08:28.989 --> 00:08:30.896
+and then we'll go back to our permissions page
+
+181
+00:08:30.896 --> 00:08:32.658
+and import the permissions component.
+
+182
+00:08:32.658 --> 00:08:37.491
+So import permissions from
+
+183
+00:08:44.870 --> 00:08:46.756
+then render out instead of a paragraph.
+
+184
+00:08:46.756 --> 00:08:49.423
+Let's render out the permissions
+
+185
+00:08:53.276 --> 00:08:54.461
+component.
+
+186
+00:08:54.461 --> 00:08:58.044
+All right, so what do we got going on here?
+
+187
+00:08:59.588 --> 00:09:00.975
+Duplicate declaration permission.
+
+188
+00:09:00.975 --> 00:09:03.823
+Okay, cause you can't import a component
+
+189
+00:09:03.823 --> 00:09:05.242
+and also have this thing.
+
+190
+00:09:05.242 --> 00:09:10.242
+So let's change this thing to permissions page.
+
+191
+00:09:14.302 --> 00:09:15.465
+All users queries not too fine.
+
+192
+00:09:15.465 --> 00:09:16.809
+Okay, now we're back in business.
+
+193
+00:09:16.809 --> 00:09:18.979
+We'll go back here, we got to write this query here.
+
+194
+00:09:18.979 --> 00:09:23.300
+So say const all_users_query is equals to
+
+195
+00:09:23.300 --> 00:09:25.133
+we need to import gql.
+
+196
+00:09:26.511 --> 00:09:28.020
+So we'll go ahead and write a query.
+
+197
+00:09:28.020 --> 00:09:30.671
+That's going to query all of our users and from each user
+
+198
+00:09:30.671 --> 00:09:34.212
+we wanna return the ID, the name, the email
+
+199
+00:09:34.212 --> 00:09:37.044
+and the permissions of that specific user.
+
+200
+00:09:37.044 --> 00:09:40.822
+Lowercase p on that, and now that we have
+
+201
+00:09:40.822 --> 00:09:43.272
+this query running, are you able to refresh.
+
+202
+00:09:43.272 --> 00:09:46.342
+Gql is not defined, I don't know how to type!
+
+203
+00:09:46.342 --> 00:09:49.967
+There we go, shoot has permissions is not a function.
+
+204
+00:09:49.967 --> 00:09:52.043
+Flip back to the back end here.
+
+205
+00:09:52.043 --> 00:09:54.649
+Const has permissions, is that not called
+
+206
+00:09:54.649 --> 00:09:57.759
+has permission S?
+
+207
+00:09:57.759 --> 00:10:00.138
+So take off the S there.
+
+208
+00:10:00.138 --> 00:10:02.138
+And take off the S here.
+
+209
+00:10:07.038 --> 00:10:10.237
+Out read property permissions of undefined,
+
+210
+00:10:10.237 --> 00:10:12.646
+and the reason why this is happening is
+
+211
+00:10:12.646 --> 00:10:17.646
+because we are passing the user to the has permission,
+
+212
+00:10:17.897 --> 00:10:20.295
+and then if we open up our utils it's looking
+
+213
+00:10:20.295 --> 00:10:22.139
+for user.permissions.
+
+214
+00:10:22.139 --> 00:10:24.245
+But one thing that we actually forgot to do,
+
+215
+00:10:24.245 --> 00:10:27.656
+I forgot to do is that, we never populated the user
+
+216
+00:10:27.656 --> 00:10:29.273
+on every thing or request.
+
+217
+00:10:29.273 --> 00:10:31.975
+We only are populating the users ID
+
+218
+00:10:31.975 --> 00:10:35.157
+and if you remember back, way back a couple videos ago.
+
+219
+00:10:35.157 --> 00:10:37.934
+How did we actually populate the users ID
+
+220
+00:10:37.934 --> 00:10:38.906
+on every single request?
+
+221
+00:10:38.906 --> 00:10:41.335
+We'll use a little bit of Express middleware.
+
+222
+00:10:41.335 --> 00:10:43.565
+So we can write another piece of Express middleware
+
+223
+00:10:43.565 --> 00:10:46.549
+that's going to populate the user on every single request.
+
+224
+00:10:46.549 --> 00:10:47.435
+So let's do that now.
+
+225
+00:10:47.435 --> 00:10:51.714
+I think it's in index.js, here we go and then this is
+
+226
+00:10:51.714 --> 00:10:53.324
+where we decoded the JWT.
+
+227
+00:10:53.324 --> 00:10:56.023
+So we can put the user ID on each request
+
+228
+00:10:56.023 --> 00:10:58.098
+and we just popped a little bit of middleware in there
+
+229
+00:10:58.098 --> 00:11:00.623
+where we decoded that and put it
+
+230
+00:11:00.623 --> 00:11:02.343
+on the request and called next.
+
+231
+00:11:02.343 --> 00:11:04.994
+So what we're going to do here is the second piece
+
+232
+00:11:04.994 --> 00:11:09.270
+of middleware is create a middleware
+
+233
+00:11:09.270 --> 00:11:14.270
+that populates the user on each request
+
+234
+00:11:14.349 --> 00:11:16.736
+cause we want access to the user on each request,
+
+235
+00:11:16.736 --> 00:11:18.520
+if they are logged in.
+
+236
+00:11:18.520 --> 00:11:19.353
+Pretty simple,
+
+237
+00:11:19.353 --> 00:11:24.353
+so we will take the server.express.use.
+
+238
+00:11:27.828 --> 00:11:31.152
+That takes in a request, a response, and a next
+
+239
+00:11:31.152 --> 00:11:34.723
+and first thing I say, if they aren't logged in
+
+240
+00:11:34.723 --> 00:11:38.723
+skip this, so if there is no quest that user ID,
+
+241
+00:11:42.382 --> 00:11:43.632
+just call next.
+
+242
+00:11:45.470 --> 00:11:49.576
+And we actually want to return next because
+
+243
+00:11:49.576 --> 00:11:52.004
+then we want this function from stop running.
+
+244
+00:11:52.004 --> 00:11:53.395
+Otherwise we're going to query them.
+
+245
+00:11:53.395 --> 00:11:55.937
+So set const the user is equal to a weight.
+
+246
+00:11:55.937 --> 00:11:58.559
+So we should actually mark this as a sync,
+
+247
+00:11:58.559 --> 00:12:01.429
+if we're gonna use a weight and we're gonna use the db.
+
+248
+00:12:01.429 --> 00:12:04.837
+Remember we imported the database up here.
+
+249
+00:12:04.837 --> 00:12:06.420
+Database.query.user
+
+250
+00:12:08.825 --> 00:12:11.252
+and the where of the user is going
+
+251
+00:12:11.252 --> 00:12:15.151
+to be equal to the ID is the request.userID.
+
+252
+00:12:15.151 --> 00:12:18.454
+So we're gonna find a user where the ID is equal
+
+253
+00:12:18.454 --> 00:12:20.544
+to the request ID which we populated
+
+254
+00:12:20.544 --> 00:12:24.853
+in the previous middleware and we're awaiting it.
+
+255
+00:12:24.853 --> 00:12:26.630
+And then we also need to pass you know
+
+256
+00:12:26.630 --> 00:12:28.798
+that these queries here take two arguments.
+
+257
+00:12:28.798 --> 00:12:31.853
+First, the where query but second, we need to know
+
+258
+00:12:31.853 --> 00:12:33.373
+what fields we're gonna be grabbing.
+
+259
+00:12:33.373 --> 00:12:36.620
+So we can just pass that in single ticks
+
+260
+00:12:36.620 --> 00:12:38.545
+and this can just be a graph QL query.
+
+261
+00:12:38.545 --> 00:12:40.782
+We want the ID of the user, we want the permissions
+
+262
+00:12:40.782 --> 00:12:42.672
+of the user, we want the email
+
+263
+00:12:42.672 --> 00:12:45.963
+and we want the name of the user.
+
+264
+00:12:45.963 --> 00:12:49.546
+Then if we, let's just console.log the user
+
+265
+00:12:51.002 --> 00:12:53.002
+and hit next.
+
+266
+00:12:54.473 --> 00:12:58.652
+A bet on every single request that we have now,
+
+267
+00:12:58.652 --> 00:13:00.492
+we're going to see the information about these are,
+
+268
+00:13:00.492 --> 00:13:02.576
+if you are signed in.
+
+269
+00:13:02.576 --> 00:13:04.925
+There we go, so every single request that you have
+
+270
+00:13:04.925 --> 00:13:06.301
+it's gonna hit the database real quick
+
+271
+00:13:06.301 --> 00:13:10.213
+and grab the current user that we're looking for.
+
+272
+00:13:10.213 --> 00:13:12.138
+And then we see the permissions.
+
+273
+00:13:12.138 --> 00:13:14.135
+The last thing we need to do to get rid
+
+274
+00:13:14.135 --> 00:13:16.037
+of this cannot read permissions on to find.
+
+275
+00:13:16.037 --> 00:13:17.356
+Is you need to put this user
+
+276
+00:13:17.356 --> 00:13:20.696
+on the request much like we did right here.
+
+277
+00:13:20.696 --> 00:13:24.226
+So simply say a request.user is equal to user
+
+278
+00:13:24.226 --> 00:13:26.157
+and then call next.
+
+279
+00:13:26.157 --> 00:13:31.157
+Give that a save, and a bet now if your refresh this page,
+
+280
+00:13:31.168 --> 00:13:32.787
+now it actually worked.
+
+281
+00:13:32.787 --> 00:13:35.453
+But now it tells us we do not have submission,
+
+282
+00:13:35.453 --> 00:13:38.813
+sufficient permissions and min permission,
+
+283
+00:13:38.813 --> 00:13:40.864
+update, you have user.
+
+284
+00:13:40.864 --> 00:13:42.904
+So that's fine, but this is a bit of a chicken
+
+285
+00:13:42.904 --> 00:13:44.724
+and the egg problem because like how are you going
+
+286
+00:13:44.724 --> 00:13:46.874
+to get permission update or admin,
+
+287
+00:13:46.874 --> 00:13:48.812
+if you don't have the interface?
+
+288
+00:13:48.812 --> 00:13:50.047
+And how will you build the interface
+
+289
+00:13:50.047 --> 00:13:53.689
+if you don't have the administrative privileges?
+
+290
+00:13:53.689 --> 00:13:55.619
+So what I like to do for this is you can
+
+291
+00:13:55.619 --> 00:13:58.038
+either like write some code where the first person
+
+292
+00:13:58.038 --> 00:14:01.576
+who signs up for this application is an admin
+
+293
+00:14:01.576 --> 00:14:03.878
+and you could you could do that when you sign up.
+
+294
+00:14:03.878 --> 00:14:06.529
+You query all the users, and if there are no existing users
+
+295
+00:14:06.529 --> 00:14:08.992
+then that person is the admin or you can just manually
+
+296
+00:14:08.992 --> 00:14:11.851
+go into your database and add that in as you need to.
+
+297
+00:14:11.851 --> 00:14:13.440
+And that's exactly what I'm going to do here.
+
+298
+00:14:13.440 --> 00:14:15.386
+So we're going to go into Sick Fits, I'm going
+
+299
+00:14:15.386 --> 00:14:18.474
+to find myself and you see that my permissions
+
+300
+00:14:18.474 --> 00:14:20.882
+already has user in it because that was the default
+
+301
+00:14:20.882 --> 00:14:22.962
+that we put in the signup mutation.
+
+302
+00:14:22.962 --> 00:14:25.694
+I'm also going to add in the admin.
+
+303
+00:14:25.694 --> 00:14:28.122
+So go ahead and update.
+
+304
+00:14:28.122 --> 00:14:30.789
+Now if i refresh this.
+
+305
+00:14:32.466 --> 00:14:35.734
+(laughing) one more error, all kinds of trouble here.
+
+306
+00:14:35.734 --> 00:14:39.367
+Shoot ctx.db.users is not a function.
+
+307
+00:14:39.367 --> 00:14:43.620
+So let's go back to our query here,ctx.bd.
+
+308
+00:14:43.620 --> 00:14:47.165
+I think it is not ctx.db
+
+309
+00:14:47.165 --> 00:14:51.248
+and of course, it's ctx.db.query.users.
+
+310
+00:14:52.813 --> 00:14:54.003
+And will this be it?
+
+311
+00:14:54.003 --> 00:14:55.170
+Will it be it?
+
+312
+00:14:56.146 --> 00:14:59.616
+It works, awesome,so we are returning users.
+
+313
+00:14:59.616 --> 00:15:02.086
+Now we can head back to our front end
+
+314
+00:15:02.086 --> 00:15:05.014
+which is our permissions here and we should be able
+
+315
+00:15:05.014 --> 00:15:08.347
+to go in here and console.log, the data,
+
+316
+00:15:09.859 --> 00:15:11.886
+or, or and this is that little trick again
+
+317
+00:15:11.886 --> 00:15:15.374
+if you console log data or, or, it will still return
+
+318
+00:15:15.374 --> 00:15:16.592
+this data here.
+
+319
+00:15:16.592 --> 00:15:19.990
+But more importantly console.log the data that we have here.
+
+320
+00:15:19.990 --> 00:15:22.998
+So let's see if that works, open up your dev tools.
+
+321
+00:15:22.998 --> 00:15:25.786
+Give it a refresh, you'll see that under permissions
+
+322
+00:15:25.786 --> 00:15:28.485
+on line 18 or console logging the users
+
+323
+00:15:28.485 --> 00:15:31.955
+that gives us an array and in every single one
+
+324
+00:15:31.955 --> 00:15:33.792
+you see the email, the ID, the name
+
+325
+00:15:33.792 --> 00:15:35.768
+and the actual permissions.
+
+326
+00:15:35.768 --> 00:15:37.787
+Good, so let's write a little bit of code just
+
+327
+00:15:37.787 --> 00:15:39.526
+to loop over those users so we can actually
+
+328
+00:15:39.526 --> 00:15:41.776
+get them visually showing up.
+
+329
+00:15:41.776 --> 00:15:45.693
+Give yourself a div H1 tag, manage permissions.
+
+330
+00:15:46.906 --> 00:15:49.085
+We are going to use a style table
+
+331
+00:15:49.085 --> 00:15:50.456
+that I've already created for you.
+
+332
+00:15:50.456 --> 00:15:52.513
+So let's jump up to the top of this file
+
+333
+00:15:52.513 --> 00:15:54.933
+and import the capital T table
+
+334
+00:15:54.933 --> 00:15:58.016
+from the styled components directory.
+
+335
+00:16:02.005 --> 00:16:03.277
+And then we'll go down here
+
+336
+00:16:03.277 --> 00:16:05.947
+and give ourselves a capital T table,
+
+337
+00:16:05.947 --> 00:16:08.697
+inside of that you need a T head,
+
+338
+00:16:09.773 --> 00:16:12.514
+inside of that you need a table of row,
+
+339
+00:16:12.514 --> 00:16:13.934
+inside of that you need a TH.
+
+340
+00:16:13.934 --> 00:16:15.824
+Aren't you glad we don't have to do tables anymore?
+
+341
+00:16:15.824 --> 00:16:16.657
+This is a nightmare.
+
+342
+00:16:16.657 --> 00:16:19.240
+Name, email
+
+343
+00:16:20.697 --> 00:16:25.175
+and then we'll go down right below T head
+
+344
+00:16:25.175 --> 00:16:27.508
+and give ourselves a T body.
+
+345
+00:16:28.493 --> 00:16:33.013
+And we'll take the data.users
+
+346
+00:16:33.013 --> 00:16:35.930
+and map over it, and for each user.
+
+347
+00:16:37.523 --> 00:16:41.853
+Let's just return the user.name just to dump it
+
+348
+00:16:41.853 --> 00:16:44.106
+on the page, make sure it's working.
+
+349
+00:16:44.106 --> 00:16:47.098
+There we go, we've got the name and the email
+
+350
+00:16:47.098 --> 00:16:50.466
+and then you see Wesboss, Wesboss, Wesboss, dog lover.
+
+351
+00:16:50.466 --> 00:16:52.182
+Now the other thing that we need, you can see
+
+352
+00:16:52.182 --> 00:16:55.128
+that here we need to have a heading
+
+353
+00:16:55.128 --> 00:16:59.199
+for every single permission that we possibly have.
+
+354
+00:16:59.199 --> 00:17:01.563
+So what I'm going to do is make a quick little array
+
+355
+00:17:01.563 --> 00:17:03.733
+of all of the possible permissions.
+
+356
+00:17:03.733 --> 00:17:06.744
+We could also write a query here to query this
+
+357
+00:17:06.744 --> 00:17:10.230
+from the back end, a list of possible permissions
+
+358
+00:17:10.230 --> 00:17:12.593
+and then that query would return a list of them
+
+359
+00:17:12.593 --> 00:17:13.673
+and we could loop over it.
+
+360
+00:17:13.673 --> 00:17:14.654
+But find it's easier just
+
+361
+00:17:14.654 --> 00:17:17.684
+to maintain an array of possible permissions.
+
+362
+00:17:17.684 --> 00:17:19.271
+So we'll go here and I'm going to paste it
+
+363
+00:17:19.271 --> 00:17:21.572
+in const possible permissions equal
+
+364
+00:17:21.572 --> 00:17:23.591
+it's an array of admin user.
+
+365
+00:17:23.591 --> 00:17:27.148
+I don't create, update, delete and permission update.
+
+366
+00:17:27.148 --> 00:17:29.209
+Those are the ones that we're using in this tutorial.
+
+367
+00:17:29.209 --> 00:17:30.398
+You can make up your own.
+
+368
+00:17:30.398 --> 00:17:33.398
+Additionally just make sure that you mirror them
+
+369
+00:17:33.398 --> 00:17:36.668
+to the enum that we we did on the back end.
+
+370
+00:17:36.668 --> 00:17:40.835
+So we'll go back over here or underneath the email
+
+371
+00:17:42.308 --> 00:17:46.847
+and we'll take the possible permissions
+
+372
+00:17:46.847 --> 00:17:48.430
+and map over those.
+
+373
+00:17:49.282 --> 00:17:52.172
+Take each permission and from each permission,
+
+374
+00:17:52.172 --> 00:17:57.005
+we're just gonna return a TH that has the permission
+
+375
+00:17:58.209 --> 00:17:59.042
+in it.
+
+376
+00:18:00.165 --> 00:18:04.022
+There we go, so name, email and then a heading
+
+377
+00:18:04.022 --> 00:18:06.054
+for each of the possible permissions.
+
+378
+00:18:06.054 --> 00:18:10.387
+And then we're going to have a final TH.
+
+379
+00:18:12.053 --> 00:18:15.622
+Just as a pointing down emoji or an arrow
+
+380
+00:18:15.622 --> 00:18:18.588
+or something that's going to be this one right here
+
+381
+00:18:18.588 --> 00:18:22.215
+because we need another row for our update.
+
+382
+00:18:22.215 --> 00:18:24.584
+All right that's looking pretty good and now we need
+
+383
+00:18:24.584 --> 00:18:26.202
+to like fix this right here where
+
+384
+00:18:26.202 --> 00:18:27.883
+we're mapping over the users.
+
+385
+00:18:27.883 --> 00:18:31.182
+And rather than map over every single user right inside
+
+386
+00:18:31.182 --> 00:18:33.468
+of this, there's going to be a lot of logic
+
+387
+00:18:33.468 --> 00:18:36.136
+that's involved with updating their permissions.
+
+388
+00:18:36.136 --> 00:18:38.276
+So we're going to kick off that
+
+389
+00:18:38.276 --> 00:18:40.596
+to a separate component which we'll create right here.
+
+390
+00:18:40.596 --> 00:18:44.596
+So we'll say class user extends react component.
+
+391
+00:18:47.468 --> 00:18:50.193
+Right now we just have a render, which is going
+
+392
+00:18:50.193 --> 00:18:54.624
+to return a TR as we return a table row inside
+
+393
+00:18:54.624 --> 00:18:57.634
+of the table body for every single user that we have.
+
+394
+00:18:57.634 --> 00:19:01.405
+And then inside of that we just need to have some TD,
+
+395
+00:19:01.405 --> 00:19:03.634
+table datas that will match up with all
+
+396
+00:19:03.634 --> 00:19:06.402
+of the table headings, name, email, each permission
+
+397
+00:19:06.402 --> 00:19:07.842
+and then a button to update.
+
+398
+00:19:07.842 --> 00:19:10.092
+So let's say here we'll say
+
+399
+00:19:13.459 --> 00:19:16.679
+const user is equal this.props.user
+
+400
+00:19:16.679 --> 00:19:21.140
+and then inside of here, let's just put the user.name
+
+401
+00:19:21.140 --> 00:19:22.723
+and the user.email.
+
+402
+00:19:24.237 --> 00:19:27.449
+Then we should be able to map over this.
+
+403
+00:19:27.449 --> 00:19:31.407
+For each user we're gonna render out a user component
+
+404
+00:19:31.407 --> 00:19:34.907
+that has a user prop passed in.
+
+405
+00:19:37.847 --> 00:19:39.849
+And it's yelling at me here,
+
+406
+00:19:39.849 --> 00:19:44.639
+your render method should have a return statement.
+
+407
+00:19:44.639 --> 00:19:47.479
+You should know how to spell return, there we go.
+
+408
+00:19:47.479 --> 00:19:48.636
+Hey, look at this!
+
+409
+00:19:48.636 --> 00:19:52.985
+Okay, so this is the heading part that we did,
+
+410
+00:19:52.985 --> 00:19:56.255
+and then these are each of the table rows.
+
+411
+00:19:56.255 --> 00:19:57.655
+And now what we need to do
+
+412
+00:19:57.655 --> 00:20:01.113
+is loop over the users permissions and put checkboxes
+
+413
+00:20:01.113 --> 00:20:04.196
+for if they have those things or not.
+
+414
+00:20:05.412 --> 00:20:09.245
+So we'll take each of the possible permissions
+
+415
+00:20:10.361 --> 00:20:13.209
+and we'll map over those again,
+
+416
+00:20:13.209 --> 00:20:17.042
+and for each permission we are going to return
+
+417
+00:20:19.091 --> 00:20:19.924
+a TD.
+
+418
+00:20:22.083 --> 00:20:24.583
+Then inside of that of a label
+
+419
+00:20:26.363 --> 00:20:28.718
+and this is gonna be calculated since it's going
+
+420
+00:20:28.718 --> 00:20:31.809
+to be unique to the user and the permission.
+
+421
+00:20:31.809 --> 00:20:34.659
+So you can use curly brackets and backticks in there
+
+422
+00:20:34.659 --> 00:20:36.720
+and we're going to use
+
+423
+00:20:36.720 --> 00:20:40.159
+the user.id
+
+424
+00:20:40.159 --> 00:20:43.659
+a dash permission dash
+
+425
+00:20:47.616 --> 00:20:52.066
+the actual permission that we're looping over here in that,
+
+426
+00:20:52.066 --> 00:20:53.506
+and then inside of the label.
+
+427
+00:20:53.506 --> 00:20:57.245
+We're just going to give ourselves an input with the type
+
+428
+00:20:57.245 --> 00:20:58.245
+of checkbox.
+
+429
+00:20:59.164 --> 00:21:01.564
+And we're gonna have a whole bunch of properties,
+
+430
+00:21:01.564 --> 00:21:04.266
+on this input that are going to allow us
+
+431
+00:21:04.266 --> 00:21:06.375
+to update the user's permissions
+
+432
+00:21:06.375 --> 00:21:07.903
+and save it in state locally.
+
+433
+00:21:07.903 --> 00:21:09.813
+That's gonna be in the next video, but right now,
+
+434
+00:21:09.813 --> 00:21:11.194
+this is getting a little bit confusing.
+
+435
+00:21:11.194 --> 00:21:13.765
+So I wanna make sure that we've got all on the page here.
+
+436
+00:21:13.765 --> 00:21:15.675
+There we go, we've got all
+
+437
+00:21:15.675 --> 00:21:18.756
+of the different users checkboxes showing up.
+
+438
+00:21:18.756 --> 00:21:20.734
+Finally below this loop, we want low
+
+439
+00:21:20.734 --> 00:21:22.984
+and last TD inside of that.
+
+440
+00:21:24.422 --> 00:21:27.044
+We want to give ourselves a sick button, I think I given.
+
+441
+00:21:27.044 --> 00:21:28.470
+Yeah, we have a sick button.
+
+442
+00:21:28.470 --> 00:21:31.470
+Let's import that import sick button
+
+443
+00:21:35.020 --> 00:21:36.137
+and go down here.
+
+444
+00:21:36.137 --> 00:21:37.470
+It solves a sick
+
+445
+00:21:40.727 --> 00:21:41.973
+button
+
+446
+00:21:41.973 --> 00:21:43.390
+that says update.
+
+447
+00:21:44.880 --> 00:21:48.001
+Bam, so this doesn't do anything yet, we have
+
+448
+00:21:48.001 --> 00:21:50.941
+to code a whole lot of logic in mutations in here.
+
+449
+00:21:50.941 --> 00:21:54.090
+But so far what we did in this video, is we've queried
+
+450
+00:21:54.090 --> 00:21:56.169
+all the possible users, we did a whole bunch
+
+451
+00:21:56.169 --> 00:21:58.134
+of work on the back end to make sure that if anyone
+
+452
+00:21:58.134 --> 00:22:00.425
+is running this query they do have access
+
+453
+00:22:00.425 --> 00:22:02.396
+to be able to run this query.
+
+454
+00:22:02.396 --> 00:22:05.956
+We take it, and we can actually delete that.
+
+455
+00:22:05.956 --> 00:22:09.395
+We are checking for errors in splaying if there are any
+
+456
+00:22:09.395 --> 00:22:11.656
+and then we take all the possible permissions
+
+457
+00:22:11.656 --> 00:22:12.563
+to loop over them.
+
+458
+00:22:12.563 --> 00:22:14.573
+We take all of the users and loop over them,
+
+459
+00:22:14.573 --> 00:22:18.663
+and then for each user we loop over the possible permissions
+
+460
+00:22:18.663 --> 00:22:20.093
+and output a checkbox.
+
+461
+00:22:20.093 --> 00:22:21.490
+Now we're going to set those to checked
+
+462
+00:22:21.490 --> 00:22:24.010
+and unchecked depending on, if they have
+
+463
+00:22:24.010 --> 00:22:25.037
+that permission or not
+
+464
+00:22:25.037 --> 00:22:26.627
+and then we're gonna write the mutations, so that
+
+465
+00:22:26.627 --> 00:22:29.568
+when someone clicks on update, it will go to the back end
+
+466
+00:22:29.568 --> 00:22:30.833
+and perform that mutation.
+
+467
+00:22:30.833 --> 00:22:33.391
+So hopefully you got that one, we'll see you next video
+

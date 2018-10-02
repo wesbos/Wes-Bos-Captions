@@ -1,0 +1,2354 @@
+﻿WEBVTT
+
+1
+00:00:01.016 --> 00:00:02.170
+<v Wes>All right, now we're going to get</v>
+
+2
+00:00:02.170 --> 00:00:04.360
+into the React side of things
+
+3
+00:00:04.360 --> 00:00:05.800
+where we're gonna be writing queries
+
+4
+00:00:05.800 --> 00:00:09.570
+to both pull down a list of items, to update items,
+
+5
+00:00:09.570 --> 00:00:11.600
+to add new items, to delete items,
+
+6
+00:00:11.600 --> 00:00:14.260
+we're gonna do the whole crud of our items,
+
+7
+00:00:14.260 --> 00:00:16.520
+and then we'll sort of go back and forth
+
+8
+00:00:16.520 --> 00:00:18.470
+and do that throughout the rest of the course
+
+9
+00:00:18.470 --> 00:00:20.850
+with orders and cart and buying things
+
+10
+00:00:20.850 --> 00:00:22.710
+and charging credit cards and sending email
+
+11
+00:00:22.710 --> 00:00:23.760
+and all that good stuff.
+
+12
+00:00:23.760 --> 00:00:26.456
+So let's get up and running.
+
+13
+00:00:26.456 --> 00:00:27.930
+Just to show you real quick,
+
+14
+00:00:27.930 --> 00:00:29.870
+the homepage is going to be the list
+
+15
+00:00:29.870 --> 00:00:31.810
+of the four most recent items,
+
+16
+00:00:31.810 --> 00:00:33.400
+and then when you click on shop
+
+17
+00:00:33.400 --> 00:00:35.240
+it's gonna bring us to /items,
+
+18
+00:00:35.240 --> 00:00:36.750
+and it's also going to be,
+
+19
+00:00:36.750 --> 00:00:39.240
+so these are gonna be the exact same page,
+
+20
+00:00:39.240 --> 00:00:42.360
+and then as we go through to page two,
+
+21
+00:00:42.360 --> 00:00:46.153
+it's gonna be the items page with a query param of page two
+
+22
+00:00:46.153 --> 00:00:47.653
+being passed over there.
+
+23
+00:00:48.536 --> 00:00:50.890
+So, actually what we wanna do is open up index.js,
+
+24
+00:00:50.890 --> 00:00:52.180
+which is the homepage.
+
+25
+00:00:52.180 --> 00:00:54.637
+And we wanna go into our pages folder
+
+26
+00:00:54.637 --> 00:00:59.030
+and we're going to make a new file called items.js as well.
+
+27
+00:00:59.030 --> 00:01:03.333
+And all we're going to do is import Home from index.
+
+28
+00:01:04.820 --> 00:01:07.550
+And then export default Home.
+
+29
+00:01:07.550 --> 00:01:10.760
+So the way that we can reuse the same page
+
+30
+00:01:10.760 --> 00:01:14.070
+from multiple pages is simply just to import that
+
+31
+00:01:14.070 --> 00:01:15.667
+and then export it immediately.
+
+32
+00:01:15.667 --> 00:01:19.560
+And if we go to our application now and we go to items.
+
+33
+00:01:19.560 --> 00:01:20.640
+Actually, what did we call it here?
+
+34
+00:01:20.640 --> 00:01:21.473
+We called it shop.
+
+35
+00:01:21.473 --> 00:01:22.540
+Let's change that real quick.
+
+36
+00:01:22.540 --> 00:01:23.490
+We'll go to nav.js,
+
+37
+00:01:24.800 --> 00:01:26.263
+and let's call that shop.
+
+38
+00:01:29.703 --> 00:01:30.536
+There we go.
+
+39
+00:01:30.536 --> 00:01:31.369
+Now we click on shop.
+
+40
+00:01:31.369 --> 00:01:33.020
+It brings me to /items and it's still
+
+41
+00:01:33.020 --> 00:01:37.250
+showing me the index homepage, good.
+
+42
+00:01:37.250 --> 00:01:40.090
+So we'll close down nav, we'll close down items.
+
+43
+00:01:40.090 --> 00:01:42.500
+Now what we're gonna do here on our index.js,
+
+44
+00:01:42.500 --> 00:01:44.633
+we can actually remove this link tag here.
+
+45
+00:01:45.530 --> 00:01:48.200
+We're going to create a component that's called item.
+
+46
+00:01:48.200 --> 00:01:49.610
+So go into your components folder,
+
+47
+00:01:49.610 --> 00:01:53.070
+make a new file called the items.js I.
+
+48
+00:01:53.070 --> 00:01:57.361
+Gonna scaffold out a component rcc tab, there we go.
+
+49
+00:01:57.361 --> 00:02:00.810
+And we create a component called items.
+
+50
+00:02:00.810 --> 00:02:03.290
+Now we are importing React and the component.
+
+51
+00:02:03.290 --> 00:02:07.130
+We also need to import query from React Apollo,
+
+52
+00:02:07.130 --> 00:02:09.010
+'cause that's what's going to allow us
+
+53
+00:02:09.010 --> 00:02:12.670
+to actually query data directly into this component,
+
+54
+00:02:12.670 --> 00:02:17.350
+and then let's just give ourselves a div inside of that,
+
+55
+00:02:17.350 --> 00:02:19.853
+just paragraph, say items.
+
+56
+00:02:21.724 --> 00:02:23.210
+Now we'll go back into our index.js
+
+57
+00:02:23.210 --> 00:02:24.733
+and import that items.
+
+58
+00:02:26.450 --> 00:02:28.243
+And go ahead and use it.
+
+59
+00:02:29.520 --> 00:02:30.353
+There we go.
+
+60
+00:02:30.353 --> 00:02:31.870
+So now our items component is showing up.
+
+61
+00:02:31.870 --> 00:02:34.542
+We can double check in our React dev tools
+
+62
+00:02:34.542 --> 00:02:38.080
+that our items is there, beautiful.
+
+63
+00:02:38.080 --> 00:02:38.960
+That's our component.
+
+64
+00:02:38.960 --> 00:02:43.490
+Now most of our work is going to be done in the items.js.
+
+65
+00:02:43.490 --> 00:02:46.170
+I can close down any other files that we have.
+
+66
+00:02:46.170 --> 00:02:47.890
+All right, so first thing we wanna do
+
+67
+00:02:47.890 --> 00:02:49.950
+is let's just get some data on the page
+
+68
+00:02:49.950 --> 00:02:51.930
+and learn how to actually query some stuff
+
+69
+00:02:51.930 --> 00:02:56.190
+from our Apollo store before we can get into styling
+
+70
+00:02:56.190 --> 00:02:58.641
+and looping over and what not.
+
+71
+00:02:58.641 --> 00:03:00.750
+The first thing that we need to do is write a query.
+
+72
+00:03:00.750 --> 00:03:03.110
+And the way that you can write a query in this
+
+73
+00:03:03.110 --> 00:03:05.610
+is by using the GraphQL tag.
+
+74
+00:03:05.610 --> 00:03:10.610
+So we will import gql from GraphQL tag.
+
+75
+00:03:11.080 --> 00:03:13.310
+And then we are going to make a query.
+
+76
+00:03:13.310 --> 00:03:14.960
+Now there's a couple options that we have here.
+
+77
+00:03:14.960 --> 00:03:18.960
+Some people like to put their queries in a separate file
+
+78
+00:03:18.960 --> 00:03:20.850
+and leave them in a queries file
+
+79
+00:03:20.850 --> 00:03:23.540
+and then import them into that file as you need it,
+
+80
+00:03:23.540 --> 00:03:26.044
+or what I like to do, and this is what comes recommended
+
+81
+00:03:26.044 --> 00:03:29.780
+from the Apollo devs, is that just locate the queries
+
+82
+00:03:29.780 --> 00:03:31.760
+in the actual files where you're going
+
+83
+00:03:31.760 --> 00:03:33.060
+to be doing the querying,
+
+84
+00:03:33.060 --> 00:03:36.930
+and then if you need to access that query in multiple files
+
+85
+00:03:36.930 --> 00:03:39.390
+then you can just export it from one of those
+
+86
+00:03:39.390 --> 00:03:40.880
+and import it into the rest.
+
+87
+00:03:40.880 --> 00:03:42.510
+So, that's exactly what we're gonna be doing.
+
+88
+00:03:42.510 --> 00:03:46.170
+I'm a big fan of just putting everything in the same file
+
+89
+00:03:46.170 --> 00:03:49.480
+until it becomes a problem and then refactoring it out.
+
+90
+00:03:49.480 --> 00:03:52.640
+So say const ALL_ITEMS_QUERY,
+
+91
+00:03:52.640 --> 00:03:54.040
+and it's sort of a best practice
+
+92
+00:03:54.040 --> 00:03:56.200
+to put all of your queries in caps.
+
+93
+00:03:56.200 --> 00:03:58.161
+And we say = gql back text.
+
+94
+00:03:58.161 --> 00:04:01.425
+So this works the exact same way that style components works
+
+95
+00:04:01.425 --> 00:04:05.160
+is that we write our queries in a string
+
+96
+00:04:05.160 --> 00:04:07.950
+and then you just tag it with a gql.
+
+97
+00:04:07.950 --> 00:04:09.950
+So make sure that you use back ticks here.
+
+98
+00:04:09.950 --> 00:04:11.940
+And then in here we just write the query.
+
+99
+00:04:11.940 --> 00:04:13.940
+We are going to name all of our queries,
+
+100
+00:04:13.940 --> 00:04:17.190
+and what I like to do is name them the same thing
+
+101
+00:04:17.190 --> 00:04:19.780
+as the actual variable that it lives in,
+
+102
+00:04:19.780 --> 00:04:21.400
+just for your own sanity's sake,
+
+103
+00:04:21.400 --> 00:04:24.350
+because then you're gonna be having query variables,
+
+104
+00:04:24.350 --> 00:04:26.710
+you're gonna be having names of queries,
+
+105
+00:04:26.710 --> 00:04:29.720
+and then you're also going to have the name of the query
+
+106
+00:04:29.720 --> 00:04:32.090
+or the mutation that's on the client side,
+
+107
+00:04:32.090 --> 00:04:33.420
+and it can get out of hand real quick.
+
+108
+00:04:33.420 --> 00:04:36.640
+So we're going to call it ALL_ITEMS_QUERY,
+
+109
+00:04:36.640 --> 00:04:38.760
+and then inside of that we simply just start
+
+110
+00:04:38.760 --> 00:04:41.210
+to write the query as if we were doing it in the playground.
+
+111
+00:04:41.210 --> 00:04:43.004
+So we're gonna say we want the items
+
+112
+00:04:43.004 --> 00:04:47.490
+and for all of the items we want to pull the ID,
+
+113
+00:04:47.490 --> 00:04:51.780
+the title, the price, the description,
+
+114
+00:04:51.780 --> 00:04:54.520
+the image, and the large image.
+
+115
+00:04:54.520 --> 00:04:56.450
+So we have listed out all of the fields
+
+116
+00:04:56.450 --> 00:04:57.630
+that we want to return.
+
+117
+00:04:57.630 --> 00:04:59.670
+Remember with GraphQL you only pull in
+
+118
+00:04:59.670 --> 00:05:00.820
+exactly what you need.
+
+119
+00:05:00.820 --> 00:05:02.690
+If there's anything in that item
+
+120
+00:05:02.690 --> 00:05:04.130
+that you don't necessarily want,
+
+121
+00:05:04.130 --> 00:05:06.561
+you leave it off your actual query.
+
+122
+00:05:06.561 --> 00:05:09.140
+Now the way that we use this query
+
+123
+00:05:09.140 --> 00:05:11.550
+is via something called a Render Prop.
+
+124
+00:05:11.550 --> 00:05:13.410
+We previously had imported this query,
+
+125
+00:05:13.410 --> 00:05:16.020
+and that's actually a component in itself.
+
+126
+00:05:16.020 --> 00:05:18.660
+So previously in versions of React Apollo,
+
+127
+00:05:18.660 --> 00:05:21.580
+or you may have used other libraries,
+
+128
+00:05:21.580 --> 00:05:24.220
+they use what's called a high-order component
+
+129
+00:05:24.220 --> 00:05:26.610
+where when you export this item,
+
+130
+00:05:26.610 --> 00:05:28.560
+maybe you would take that off,
+
+131
+00:05:28.560 --> 00:05:32.380
+and you'd say export default Items.
+
+132
+00:05:32.380 --> 00:05:35.060
+Then what would happen is you would make a function
+
+133
+00:05:35.060 --> 00:05:36.847
+that was called like withItems,
+
+134
+00:05:37.950 --> 00:05:40.010
+and then you would wrap your component
+
+135
+00:05:40.010 --> 00:05:41.870
+with this high-order component,
+
+136
+00:05:41.870 --> 00:05:45.910
+and then that would expose a list of items via a prop.
+
+137
+00:05:45.910 --> 00:05:48.490
+And then if you had multiple you could compose multiple.
+
+138
+00:05:48.490 --> 00:05:49.540
+That's how redux works.
+
+139
+00:05:49.540 --> 00:05:52.065
+However, what's becoming more popular now
+
+140
+00:05:52.065 --> 00:05:55.510
+in the React world is something called a Render Prop
+
+141
+00:05:55.510 --> 00:05:58.420
+where you don't have to mess with high-order components,
+
+142
+00:05:58.420 --> 00:06:02.650
+you simply just put a component inside of here
+
+143
+00:06:02.650 --> 00:06:05.920
+that is a query and then the child of that component
+
+144
+00:06:05.920 --> 00:06:08.810
+is going to be a function that gives you
+
+145
+00:06:08.810 --> 00:06:11.200
+either loading state, an error,
+
+146
+00:06:11.200 --> 00:06:13.450
+or the actual list of items itself.
+
+147
+00:06:13.450 --> 00:06:15.570
+Now, this can get a little bit hairy
+
+148
+00:06:15.570 --> 00:06:18.340
+with all of the curly brackets and what not,
+
+149
+00:06:18.340 --> 00:06:20.581
+so stick with me and we'll show you one quick example.
+
+150
+00:06:20.581 --> 00:06:24.470
+I find that most people's initial reaction to Render Props
+
+151
+00:06:24.470 --> 00:06:26.340
+are that they don't like it.
+
+152
+00:06:26.340 --> 00:06:29.444
+But I do find that after a while I start to like it,
+
+153
+00:06:29.444 --> 00:06:32.010
+or maybe I'm just drinking the Kool-Aid.
+
+154
+00:06:32.010 --> 00:06:35.600
+So this is the recommended way to do it via Apollo.
+
+155
+00:06:35.600 --> 00:06:38.440
+Apollo does also have a high-order component.
+
+156
+00:06:38.440 --> 00:06:40.021
+But at the time of recording,
+
+157
+00:06:40.021 --> 00:06:42.480
+they are really pushing the Render Prop
+
+158
+00:06:42.480 --> 00:06:46.370
+as well as you don't get the error and loading states
+
+159
+00:06:46.370 --> 00:06:49.150
+with mutations on high-order components.
+
+160
+00:06:49.150 --> 00:06:51.640
+That's another reason to go Render Prop.
+
+161
+00:06:51.640 --> 00:06:52.940
+So we're gonna go down here,
+
+162
+00:06:52.940 --> 00:06:55.818
+and we are going to give ourselves a query component.
+
+163
+00:06:55.818 --> 00:06:59.950
+Then the query component takes a query prop itself,
+
+164
+00:06:59.950 --> 00:07:01.503
+and then you pass it the,
+
+165
+00:07:02.630 --> 00:07:04.240
+you pass it the name of your query.
+
+166
+00:07:04.240 --> 00:07:06.720
+So our's is called ALL_ITEMS_QUERY,
+
+167
+00:07:06.720 --> 00:07:09.510
+then inside of your actual query,
+
+168
+00:07:09.510 --> 00:07:11.650
+you don't just go ahead and start like giving yourself
+
+169
+00:07:11.650 --> 00:07:13.650
+a paragraph tag or something like that.
+
+170
+00:07:13.650 --> 00:07:16.860
+You must, the only child of a query component,
+
+171
+00:07:16.860 --> 00:07:19.120
+must be a function.
+
+172
+00:07:19.120 --> 00:07:21.350
+So the way that we do that in React,
+
+173
+00:07:21.350 --> 00:07:23.380
+and this is where it starts to get a little bit hairy,
+
+174
+00:07:23.380 --> 00:07:24.550
+is you give yourselves a set
+
+175
+00:07:24.550 --> 00:07:26.790
+of curly brackets to note to React that.
+
+176
+00:07:26.790 --> 00:07:29.810
+Okay, now I'm switching from JSX land
+
+177
+00:07:29.810 --> 00:07:32.350
+over to JavaScript land.
+
+178
+00:07:32.350 --> 00:07:34.750
+And then inside of that we write a function
+
+179
+00:07:34.750 --> 00:07:38.210
+where it gives us a number, like what's called a payload.
+
+180
+00:07:38.210 --> 00:07:41.150
+So we give it an arrow function.
+
+181
+00:07:41.150 --> 00:07:42.600
+Let's just do that right now.
+
+182
+00:07:43.530 --> 00:07:46.590
+And then that arrow function gives us a payload.
+
+183
+00:07:46.590 --> 00:07:49.540
+And then inside of here we can go ahead and
+
+184
+00:07:49.540 --> 00:07:52.240
+let's just console.log the payload,
+
+185
+00:07:52.240 --> 00:07:55.780
+and then from this we need to return some sort of JSX
+
+186
+00:07:55.780 --> 00:07:57.810
+that will be rendered as the child.
+
+187
+00:07:57.810 --> 00:08:00.100
+So return a paragraph that says,
+
+188
+00:08:00.100 --> 00:08:03.723
+hey, I'm the child of query.
+
+189
+00:08:04.660 --> 00:08:05.493
+Give that a save.
+
+190
+00:08:05.493 --> 00:08:06.690
+You see how my,
+
+191
+00:08:06.690 --> 00:08:08.090
+oh I got an error but,
+
+192
+00:08:08.090 --> 00:08:10.190
+you see how it took off the,
+
+193
+00:08:10.190 --> 00:08:12.790
+I had the parentheses here and then as I save it
+
+194
+00:08:12.790 --> 00:08:13.980
+that's just my prettier saying,
+
+195
+00:08:13.980 --> 00:08:17.040
+okay, if you only have one argument of an arrow function,
+
+196
+00:08:17.040 --> 00:08:17.873
+it's not necessary.
+
+197
+00:08:17.873 --> 00:08:20.513
+If there was two things, like another one,
+
+198
+00:08:21.990 --> 00:08:24.540
+it would not actually remove those,
+
+199
+00:08:24.540 --> 00:08:26.870
+but that's just a prettier setting that I have
+
+200
+00:08:26.870 --> 00:08:28.360
+that will automatically format them.
+
+201
+00:08:28.360 --> 00:08:29.760
+So we got a little bit of an error here,
+
+202
+00:08:29.760 --> 00:08:31.361
+what have we got here?
+
+203
+00:08:31.361 --> 00:08:32.900
+Check the render method of items.
+
+204
+00:08:32.900 --> 00:08:34.030
+Element type is invalid.
+
+205
+00:08:34.030 --> 00:08:36.010
+Expected a string for built-in components
+
+206
+00:08:36.010 --> 00:08:38.040
+or a class function for composite components
+
+207
+00:08:38.040 --> 00:08:40.640
+but got undefined.
+
+208
+00:08:40.640 --> 00:08:42.240
+Okay, so let's take a look here.
+
+209
+00:08:49.030 --> 00:08:51.320
+So I just stopped for a second to try
+
+210
+00:08:51.320 --> 00:08:53.550
+to debug what was going on and it turned out
+
+211
+00:08:53.550 --> 00:08:55.110
+that I just had to refresh the page.
+
+212
+00:08:55.110 --> 00:08:58.410
+Sometimes the hot reloading can get into a weird spot
+
+213
+00:08:58.410 --> 00:09:02.400
+where it catches an error and is not able to recover itself.
+
+214
+00:09:02.400 --> 00:09:05.467
+So if you ever do get into one of these errors
+
+215
+00:09:05.467 --> 00:09:06.300
+that you don't understand what it is,
+
+216
+00:09:06.300 --> 00:09:07.540
+just give your page a refresh
+
+217
+00:09:07.540 --> 00:09:09.240
+and see if that's what it is first.
+
+218
+00:09:09.240 --> 00:09:10.800
+So here we have query.
+
+219
+00:09:10.800 --> 00:09:13.520
+We're running it, we should now see in the console
+
+220
+00:09:13.520 --> 00:09:15.870
+a payload, ho ho, there we go.
+
+221
+00:09:15.870 --> 00:09:18.290
+This is our payload and what's inside of it?
+
+222
+00:09:18.290 --> 00:09:20.650
+Well there's tons of stuff inside of here.
+
+223
+00:09:20.650 --> 00:09:24.000
+There is some methods for refetching that query.
+
+224
+00:09:24.000 --> 00:09:25.580
+There's some methods for polling
+
+225
+00:09:25.580 --> 00:09:28.698
+where you could poll it every however many seconds
+
+226
+00:09:28.698 --> 00:09:31.380
+and kind of get like semi-real time data.
+
+227
+00:09:31.380 --> 00:09:34.440
+Apollo also has the ability to do real-time data as well.
+
+228
+00:09:34.440 --> 00:09:35.910
+You get access to the client.
+
+229
+00:09:35.910 --> 00:09:38.110
+This is the actual Apollo client itself.
+
+230
+00:09:38.110 --> 00:09:39.690
+That's where all the data is stored.
+
+231
+00:09:39.690 --> 00:09:42.650
+But the things that we are interested in here
+
+232
+00:09:42.650 --> 00:09:46.700
+is three things, data that contains an array
+
+233
+00:09:46.700 --> 00:09:49.300
+of the return data from our query.
+
+234
+00:09:49.300 --> 00:09:51.190
+In our case we just asked for items.
+
+235
+00:09:51.190 --> 00:09:53.270
+So it's returning just those items.
+
+236
+00:09:53.270 --> 00:09:55.530
+And you can see that the two of our items are in there.
+
+237
+00:09:55.530 --> 00:09:56.670
+That's good.
+
+238
+00:09:56.670 --> 00:09:59.930
+Error undefined, so if something went wrong here,
+
+239
+00:09:59.930 --> 00:10:02.420
+then it would actually return us an error,
+
+240
+00:10:02.420 --> 00:10:06.400
+and then the loading is going to be either true or false,
+
+241
+00:10:06.400 --> 00:10:08.360
+and what that will do is this little Boolean
+
+242
+00:10:08.360 --> 00:10:13.230
+will flip to true when it is doing some sort of work,
+
+243
+00:10:13.230 --> 00:10:15.870
+and in most cases this is always going to be false
+
+244
+00:10:15.870 --> 00:10:17.610
+because we are server side rendering,
+
+245
+00:10:17.610 --> 00:10:20.770
+so it's gonna wait until that is flipped over to true,
+
+246
+00:10:20.770 --> 00:10:23.490
+but we will be using that quite a bit on the client side.
+
+247
+00:10:23.490 --> 00:10:24.540
+So that's what we have here.
+
+248
+00:10:24.540 --> 00:10:27.846
+We have this payload and what is fairly common to do
+
+249
+00:10:27.846 --> 00:10:31.960
+is instead of saying like payload.error, payload.data,
+
+250
+00:10:31.960 --> 00:10:35.339
+payload.loading, what we do is you can destructure
+
+251
+00:10:35.339 --> 00:10:38.160
+the values that you want out of payload
+
+252
+00:10:38.160 --> 00:10:40.270
+into their own variables immediately.
+
+253
+00:10:40.270 --> 00:10:44.750
+So what we do is first put some parentheses around payload,
+
+254
+00:10:44.750 --> 00:10:47.210
+and then second we are going to destructure payload
+
+255
+00:10:47.210 --> 00:10:50.650
+into data, error, and loading.
+
+256
+00:10:50.650 --> 00:10:53.410
+And this is why people don't necessarily
+
+257
+00:10:53.410 --> 00:10:57.243
+like using Render Props because what this does
+
+258
+00:10:57.243 --> 00:11:01.403
+is it gives you a lot of curly brackets here and there.
+
+259
+00:11:01.403 --> 00:11:04.540
+I have this like rainbow curly bracket extension turn on
+
+260
+00:11:04.540 --> 00:11:08.620
+in VS code where I have them as different colors.
+
+261
+00:11:08.620 --> 00:11:09.630
+You might wanna turn that on.
+
+262
+00:11:09.630 --> 00:11:11.441
+I'm not sure if I totally love it just yet.
+
+263
+00:11:11.441 --> 00:11:15.790
+But if you have a problem with lots of curly brackets
+
+264
+00:11:15.790 --> 00:11:19.770
+it's worth stopping and just peeling back the layers
+
+265
+00:11:19.770 --> 00:11:21.930
+of what each of the curly brackets do.
+
+266
+00:11:21.930 --> 00:11:23.601
+So now what we can do is change this out.
+
+267
+00:11:23.601 --> 00:11:28.601
+Data, and here we could say return this,
+
+268
+00:11:28.640 --> 00:11:33.640
+I found data.items.length items.
+
+269
+00:11:34.340 --> 00:11:35.173
+There we go.
+
+270
+00:11:35.173 --> 00:11:36.560
+I found two items.
+
+271
+00:11:36.560 --> 00:11:37.840
+Looking good.
+
+272
+00:11:37.840 --> 00:11:39.790
+Now what we need to do here is,
+
+273
+00:11:39.790 --> 00:11:43.710
+generally what I'll do is I'll say if loading returned
+
+274
+00:11:43.710 --> 00:11:45.340
+paragraph loading...
+
+275
+00:11:46.440 --> 00:11:49.940
+If error returned error
+
+276
+00:11:52.760 --> 00:11:54.240
+otherwise we return the data.
+
+277
+00:11:54.240 --> 00:11:57.160
+And it's really important to first check for loading
+
+278
+00:11:57.160 --> 00:11:59.600
+or checking for error in your components
+
+279
+00:11:59.600 --> 00:12:01.760
+before you actually go ahead and assume
+
+280
+00:12:01.760 --> 00:12:02.970
+that the data is there,
+
+281
+00:12:02.970 --> 00:12:05.890
+because if you do this before,
+
+282
+00:12:05.890 --> 00:12:07.700
+you might not have items,
+
+283
+00:12:07.700 --> 00:12:09.760
+you might not have data and you might not have items
+
+284
+00:12:09.760 --> 00:12:12.150
+and then it's going to tell you cannot read property items
+
+285
+00:12:12.150 --> 00:12:15.860
+of undefined or cannot read property length of undefined,
+
+286
+00:12:15.860 --> 00:12:17.620
+and you're gonna get into some weird issues.
+
+287
+00:12:17.620 --> 00:12:20.490
+So always check if you're in the loading or the error state.
+
+288
+00:12:20.490 --> 00:12:22.220
+We're also gonna get into situations
+
+289
+00:12:22.220 --> 00:12:25.730
+where we do still want to render this out
+
+290
+00:12:25.730 --> 00:12:27.610
+as well as show the error message.
+
+291
+00:12:27.610 --> 00:12:29.540
+Let's scaffold this out and get some stuff
+
+292
+00:12:29.540 --> 00:12:31.000
+showing up on the page.
+
+293
+00:12:31.000 --> 00:12:33.160
+First thing we wanna do is center all this
+
+294
+00:12:33.160 --> 00:12:35.380
+and this made me laugh when I was working on it,
+
+295
+00:12:35.380 --> 00:12:37.020
+'cause we're gonna write some styled components.
+
+296
+00:12:37.020 --> 00:12:41.060
+So we'll say import styled from styled-components,
+
+297
+00:12:41.060 --> 00:12:44.320
+and I'm gonna make a center tag like it's 1991.
+
+298
+00:12:44.320 --> 00:12:48.937
+So const Center is equal to styled.div.
+
+299
+00:12:50.500 --> 00:12:55.050
+And I'm just going to put a text line center on there
+
+300
+00:12:55.050 --> 00:13:00.050
+and I'm gonna swap out this div here with a center tag.
+
+301
+00:13:00.160 --> 00:13:01.610
+And that should center it, good.
+
+302
+00:13:01.610 --> 00:13:03.530
+We're gonna make an items list component.
+
+303
+00:13:03.530 --> 00:13:08.333
+So const ItemsList is equal to styled.div.
+
+304
+00:13:10.510 --> 00:13:13.263
+And we'll display grid,
+
+305
+00:13:14.680 --> 00:13:19.370
+grid template columns, 1fr, 1fr,
+
+306
+00:13:19.370 --> 00:13:20.223
+grid-gap,
+
+307
+00:13:21.360 --> 00:13:22.603
+60px,
+
+308
+00:13:23.760 --> 00:13:25.030
+max-width.
+
+309
+00:13:25.030 --> 00:13:29.733
+And here, remember if we look at our page.js,
+
+310
+00:13:30.770 --> 00:13:33.630
+you remember that we had the max-width
+
+311
+00:13:33.630 --> 00:13:35.260
+in here from the theme.
+
+312
+00:13:35.260 --> 00:13:40.070
+So we're simply going to pull that via props.
+
+313
+00:13:40.070 --> 00:13:42.350
+So we interpolate a little function here,
+
+314
+00:13:42.350 --> 00:13:45.150
+and then we access props.theme.max.
+
+315
+00:13:45.150 --> 00:13:46.690
+What was it?
+
+316
+00:13:46.690 --> 00:13:47.740
+Max width
+
+317
+00:13:51.550 --> 00:13:54.740
+margin zero auto.
+
+318
+00:13:54.740 --> 00:13:56.123
+Then we take this items list here.
+
+319
+00:13:56.123 --> 00:13:58.360
+We're just gonna remove this here.
+
+320
+00:13:58.360 --> 00:14:00.403
+We're gonna return an items list
+
+321
+00:14:00.403 --> 00:14:02.220
+and then inside of that we're
+
+322
+00:14:02.220 --> 00:14:03.930
+going to have each of our items.
+
+323
+00:14:03.930 --> 00:14:06.963
+So we can take our data,
+
+324
+00:14:06.963 --> 00:14:10.387
+just data.items.map,
+
+325
+00:14:10.387 --> 00:14:13.510
+and for each item were just gonna map over it.
+
+326
+00:14:13.510 --> 00:14:15.569
+We're gonna loop over and remember this is how you
+
+327
+00:14:15.569 --> 00:14:17.640
+loop over items in React.
+
+328
+00:14:17.640 --> 00:14:20.950
+You take an array of things and you map over it,
+
+329
+00:14:20.950 --> 00:14:23.490
+and for each item in the array,
+
+330
+00:14:23.490 --> 00:14:24.900
+we're going to return something else.
+
+331
+00:14:24.900 --> 00:14:28.450
+So let's just say, let's just do a paragraph tag for now,
+
+332
+00:14:28.450 --> 00:14:32.280
+and we'll interpolate the item.title.
+
+333
+00:14:32.280 --> 00:14:33.730
+We've got our items showing up.
+
+334
+00:14:33.730 --> 00:14:35.830
+Doesn't look like they're beside each other.
+
+335
+00:14:35.830 --> 00:14:37.760
+Let's take a quicklook at our css.
+
+336
+00:14:37.760 --> 00:14:39.660
+Oh grid-template-columns,
+
+337
+00:14:39.660 --> 00:14:41.670
+not grid-auto-columns,
+
+338
+00:14:41.670 --> 00:14:43.810
+and there we go, that puts them side by side.
+
+339
+00:14:43.810 --> 00:14:46.560
+We can go ahead and remove this paragraph tag here.
+
+340
+00:14:46.560 --> 00:14:50.620
+And now's the point where we don't want to go any further
+
+341
+00:14:50.620 --> 00:14:52.900
+with rendering out the item in this
+
+342
+00:14:52.900 --> 00:14:55.230
+because this is a component for just fetching
+
+343
+00:14:55.230 --> 00:14:57.890
+and looping over the items.
+
+344
+00:14:57.890 --> 00:14:59.560
+Then we want to create a new component
+
+345
+00:14:59.560 --> 00:15:01.170
+called item, singular,
+
+346
+00:15:01.170 --> 00:15:04.230
+that is going to do the heavy lifting of rendering that out.
+
+347
+00:15:04.230 --> 00:15:08.007
+So go under component, so create a new file called item.js,
+
+348
+00:15:08.007 --> 00:15:10.980
+and we will say rccp.
+
+349
+00:15:10.980 --> 00:15:13.190
+What that does is it imports React
+
+350
+00:15:13.190 --> 00:15:15.580
+as well as a prop-types package,
+
+351
+00:15:15.580 --> 00:15:18.480
+and on that we are going to say the one prop type
+
+352
+00:15:18.480 --> 00:15:20.910
+that we are expecting is called item.
+
+353
+00:15:20.910 --> 00:15:24.987
+We are going to say PropTypes.object.isRequired.
+
+354
+00:15:28.720 --> 00:15:30.300
+You can go a little bit further with that
+
+355
+00:15:30.300 --> 00:15:32.860
+instead of using object because it could be any object.
+
+356
+00:15:32.860 --> 00:15:36.525
+You could shape that object by saying PropTypes.shape.
+
+357
+00:15:36.525 --> 00:15:39.780
+And inside of that you could say it needs a title,
+
+358
+00:15:39.780 --> 00:15:42.443
+which is a PropTypes.string.isRequired,
+
+359
+00:15:43.809 --> 00:15:46.707
+and you can duplicate that and change that to price,
+
+360
+00:15:46.707 --> 00:15:49.000
+and that could be a number.
+
+361
+00:15:49.000 --> 00:15:49.833
+And you get the point.
+
+362
+00:15:49.833 --> 00:15:52.790
+Or you could shape out the entire item.
+
+363
+00:15:52.790 --> 00:15:55.630
+I'm not going to spend a whole lot of time on PropTypes
+
+364
+00:15:55.630 --> 00:15:58.120
+paths just putting them in here in this course
+
+365
+00:15:58.120 --> 00:15:59.810
+just because this is an advanced course.
+
+366
+00:15:59.810 --> 00:16:02.870
+You should know all about PropTypes and how to use them.
+
+367
+00:16:02.870 --> 00:16:04.220
+You don't want to see me doing typing
+
+368
+00:16:04.220 --> 00:16:06.260
+for 20 hours worth of typing.
+
+369
+00:16:06.260 --> 00:16:10.600
+So I'm gonna bring that back to just a regular old object.
+
+370
+00:16:10.600 --> 00:16:13.320
+We need a couple more imports up here.
+
+371
+00:16:13.320 --> 00:16:14.447
+We need a title.
+
+372
+00:16:14.447 --> 00:16:15.970
+These are a couple styles
+
+373
+00:16:15.970 --> 00:16:18.513
+that we need to import the ItemStyles and the PriceTag.
+
+374
+00:16:20.598 --> 00:16:21.540
+And we're gonna import those all.
+
+375
+00:16:21.540 --> 00:16:26.540
+Say import from styles/ the name of the actual file.
+
+376
+00:16:29.970 --> 00:16:31.840
+Then we'll go down inside of our render here.
+
+377
+00:16:31.840 --> 00:16:36.840
+Before we return it we'll say const item = this.props.item.
+
+378
+00:16:37.660 --> 00:16:38.590
+Or we could just go ahead
+
+379
+00:16:38.590 --> 00:16:41.760
+and destructure this.props like that.
+
+380
+00:16:41.760 --> 00:16:44.440
+Good, and then we will, from this,
+
+381
+00:16:44.440 --> 00:16:46.360
+we will return itemStyles.
+
+382
+00:16:49.730 --> 00:16:54.113
+And inside of that we give ourselves a title tag.
+
+383
+00:16:56.860 --> 00:16:59.809
+And let's just say item.title.
+
+384
+00:16:59.809 --> 00:17:02.290
+Let's just see if that works for us now.
+
+385
+00:17:02.290 --> 00:17:04.460
+We'll go back to our items right here
+
+386
+00:17:04.460 --> 00:17:05.550
+where we're looping it over.
+
+387
+00:17:05.550 --> 00:17:07.710
+We'll import that newly created component.
+
+388
+00:17:07.710 --> 00:17:09.200
+Import item from
+
+389
+00:17:11.740 --> 00:17:13.360
+item.
+
+390
+00:17:13.360 --> 00:17:18.300
+And then we'll go down here and replace this loop right here
+
+391
+00:17:18.300 --> 00:17:19.840
+with an actual item tag,
+
+392
+00:17:19.840 --> 00:17:21.620
+so doo doo doo doo,
+
+393
+00:17:21.620 --> 00:17:22.773
+get rid of that.
+
+394
+00:17:24.580 --> 00:17:26.273
+Place it with an item tag,
+
+395
+00:17:27.520 --> 00:17:31.020
+and the item tag needs an item pass to it,
+
+396
+00:17:31.020 --> 00:17:33.410
+which is item, said the word item a lot,
+
+397
+00:17:33.410 --> 00:17:35.140
+and it probably also needs a key.
+
+398
+00:17:35.140 --> 00:17:38.264
+Let's just double check and see if it's complaining at us.
+
+399
+00:17:38.264 --> 00:17:39.130
+There we go.
+
+400
+00:17:39.130 --> 00:17:40.860
+Each child in an array or iterator
+
+401
+00:17:40.860 --> 00:17:42.960
+should have a unique key prop.
+
+402
+00:17:42.960 --> 00:17:45.050
+So any time that you are looping over
+
+403
+00:17:45.050 --> 00:17:47.880
+and spitting out multiple elements as siblings,
+
+404
+00:17:47.880 --> 00:17:49.593
+and they are the same component,
+
+405
+00:17:50.489 --> 00:17:51.850
+you must also give it a key prop.
+
+406
+00:17:51.850 --> 00:17:55.070
+So the key can be anything that is unique,
+
+407
+00:17:55.070 --> 00:17:57.320
+as long as it is unique.
+
+408
+00:17:57.320 --> 00:18:00.910
+And ideally you wouldn't also use the index of the item
+
+409
+00:18:00.910 --> 00:18:03.620
+because if one of the items is removed from the array
+
+410
+00:18:03.620 --> 00:18:05.930
+then all of them change and all of them re-render,
+
+411
+00:18:05.930 --> 00:18:08.680
+so what we want to do is use something else that's unique.
+
+412
+00:18:08.680 --> 00:18:10.860
+You could use the title of an item
+
+413
+00:18:10.860 --> 00:18:11.930
+if they're all gonna be unique,
+
+414
+00:18:11.930 --> 00:18:14.090
+but in this case we have the item.id.
+
+415
+00:18:14.090 --> 00:18:16.820
+And that is for sure going to be unique.
+
+416
+00:18:16.820 --> 00:18:19.810
+Now if you refresh this it's not yelling at us, good.
+
+417
+00:18:19.810 --> 00:18:21.840
+So we have each of our items showing up.
+
+418
+00:18:21.840 --> 00:18:23.848
+Let's double check, we'll go to React dev tools
+
+419
+00:18:23.848 --> 00:18:26.274
+and we'll search for item.
+
+420
+00:18:26.274 --> 00:18:27.130
+There we go.
+
+421
+00:18:27.130 --> 00:18:29.639
+We see inside of our items.
+
+422
+00:18:29.639 --> 00:18:31.110
+We have items_Center.
+
+423
+00:18:31.110 --> 00:18:33.340
+It's out of the query, you have your items list.
+
+424
+00:18:33.340 --> 00:18:35.730
+Inside of that you have your R2 items
+
+425
+00:18:35.730 --> 00:18:36.563
+that we're working with
+
+426
+00:18:36.563 --> 00:18:38.210
+and the props are being passed
+
+427
+00:18:38.210 --> 00:18:40.960
+into the actual item that we have here.
+
+428
+00:18:40.960 --> 00:18:42.900
+This is kind of interesting as well.
+
+429
+00:18:42.900 --> 00:18:45.510
+This __typename gets passed in.
+
+430
+00:18:45.510 --> 00:18:48.610
+You'll notice that we never queried that in items.js,
+
+431
+00:18:48.610 --> 00:18:51.476
+like see in here we never query call typename.
+
+432
+00:18:51.476 --> 00:18:53.570
+That is one thing that Apollo
+
+433
+00:18:53.570 --> 00:18:55.400
+will automatically add for you,
+
+434
+00:18:55.400 --> 00:18:57.650
+and the typename is obviously the name
+
+435
+00:18:57.650 --> 00:18:59.950
+of the type of the thing that we are querying.
+
+436
+00:18:59.950 --> 00:19:02.310
+In our case it's an item, but it might be an order
+
+437
+00:19:02.310 --> 00:19:03.720
+or it might be a user.
+
+438
+00:19:03.720 --> 00:19:08.040
+It could be any specific type that we have.
+
+439
+00:19:08.040 --> 00:19:10.020
+Good, let's go back to our item.js
+
+440
+00:19:10.020 --> 00:19:12.320
+and actually render out the rest of that.
+
+441
+00:19:12.320 --> 00:19:15.723
+So this is just going to be React for a little bit more.
+
+442
+00:19:16.630 --> 00:19:20.210
+I'm gonna wrap this item.title in a link tag,
+
+443
+00:19:20.210 --> 00:19:23.400
+and inside of that we'll put the item.title,
+
+444
+00:19:23.400 --> 00:19:26.820
+and we know that we have to also wrap that in an anchor link
+
+445
+00:19:28.140 --> 00:19:31.750
+that has, it's just an a tag that has nothing in it.
+
+446
+00:19:31.750 --> 00:19:35.280
+Now our link is, oh, we gotta obviously import link.
+
+447
+00:19:35.280 --> 00:19:39.330
+So import link from next link,
+
+448
+00:19:40.900 --> 00:19:44.660
+and then I always like to put my npm imports
+
+449
+00:19:44.660 --> 00:19:47.963
+above any of my relative path imports.
+
+450
+00:19:48.800 --> 00:19:49.910
+Now this link here,
+
+451
+00:19:49.910 --> 00:19:53.300
+normally we just do something like href equals
+
+452
+00:19:53.300 --> 00:19:55.950
+and we /item.
+
+453
+00:19:55.950 --> 00:19:58.580
+In our case we actually wanna put a query param on the end,
+
+454
+00:19:58.580 --> 00:19:59.610
+so the way that we can do that
+
+455
+00:19:59.610 --> 00:20:02.150
+is instead of passing a string to href,
+
+456
+00:20:02.150 --> 00:20:04.460
+we can pass an object.
+
+457
+00:20:04.460 --> 00:20:06.250
+So we use double here.
+
+458
+00:20:06.250 --> 00:20:10.460
+The reason being is that in JSX if you want to
+
+459
+00:20:10.460 --> 00:20:11.930
+pass reference to something,
+
+460
+00:20:11.930 --> 00:20:14.324
+like you had a variable, you'd just say item,
+
+461
+00:20:14.324 --> 00:20:17.630
+but if you actually just want to be an object literal,
+
+462
+00:20:17.630 --> 00:20:19.390
+the first set is telling it you
+
+463
+00:20:19.390 --> 00:20:20.630
+wanna pass reference to something
+
+464
+00:20:20.630 --> 00:20:22.530
+or you are using JavaScript.
+
+465
+00:20:22.530 --> 00:20:25.650
+And the second set is the actual object literal.
+
+466
+00:20:25.650 --> 00:20:29.830
+Inside of that we say pathname, all lowercase,
+
+467
+00:20:29.830 --> 00:20:31.310
+is going to be /item.
+
+468
+00:20:31.310 --> 00:20:33.590
+That's the URL that when someone clicks on that,
+
+469
+00:20:33.590 --> 00:20:34.960
+that's where they're gonna go,
+
+470
+00:20:34.960 --> 00:20:37.290
+and then the query that comes along with that,
+
+471
+00:20:37.290 --> 00:20:40.400
+like the URL, the question mark, whatever,
+
+472
+00:20:40.400 --> 00:20:42.063
+is going to be the ID.
+
+473
+00:20:42.063 --> 00:20:44.173
+It's item.id.
+
+474
+00:20:45.170 --> 00:20:46.430
+So I'll see if that works.
+
+475
+00:20:46.430 --> 00:20:50.110
+See, when I click on it now you see that the URL changes
+
+476
+00:20:50.110 --> 00:20:53.820
+to item and then we put the query param on top of that.
+
+477
+00:20:53.820 --> 00:20:55.600
+I'll talk about that real quick right now.
+
+478
+00:20:55.600 --> 00:20:57.550
+Next.js does not have the ability
+
+479
+00:20:57.550 --> 00:21:00.050
+to do what's called pretty URLs.
+
+480
+00:21:00.050 --> 00:21:02.990
+So we couldn't do item/shoes.
+
+481
+00:21:02.990 --> 00:21:04.910
+There are some external packages,
+
+482
+00:21:04.910 --> 00:21:08.030
+there's three or four of 'em that will do that for you,
+
+483
+00:21:08.030 --> 00:21:10.890
+but that requires you to get into custom servers,
+
+484
+00:21:10.890 --> 00:21:13.130
+and I do believe they will add that at some point,
+
+485
+00:21:13.130 --> 00:21:15.230
+so I'm not gonna get into custom packages.
+
+486
+00:21:15.230 --> 00:21:17.417
+I'm gonna keep it strict Next.js right now,
+
+487
+00:21:17.417 --> 00:21:20.830
+and you can always investigate those packages yourself.
+
+488
+00:21:20.830 --> 00:21:22.430
+So we have this anchor link here.
+
+489
+00:21:22.430 --> 00:21:24.100
+That's good for our title.
+
+490
+00:21:24.100 --> 00:21:27.200
+We also want a price tag underneath that.
+
+491
+00:21:27.200 --> 00:21:31.280
+So we will use a PriceTag component.
+
+492
+00:21:31.280 --> 00:21:34.903
+Inside of that we are going to put the item.price.
+
+493
+00:21:36.480 --> 00:21:37.970
+Let's go back to our shop page
+
+494
+00:21:37.970 --> 00:21:38.970
+and see what we're working with.
+
+495
+00:21:38.970 --> 00:21:40.402
+There we go.
+
+496
+00:21:40.402 --> 00:21:41.235
+We got 1000 in that.
+
+497
+00:21:41.235 --> 00:21:42.068
+That's not formatted nice.
+
+498
+00:21:42.068 --> 00:21:43.160
+So how do we format that?
+
+499
+00:21:43.160 --> 00:21:45.730
+Well, in the lib folder,
+
+500
+00:21:45.730 --> 00:21:46.870
+the lib folder is where I like
+
+501
+00:21:46.870 --> 00:21:48.960
+to put any of my like utility things.
+
+502
+00:21:48.960 --> 00:21:50.090
+They're not necessarily enough
+
+503
+00:21:50.090 --> 00:21:52.200
+to make a separate npm package,
+
+504
+00:21:52.200 --> 00:21:55.700
+but they are reasonable throughout our entire application.
+
+505
+00:21:55.700 --> 00:21:58.205
+I have this function called formatMoney,
+
+506
+00:21:58.205 --> 00:22:01.633
+and what this does is it takes in an amount
+
+507
+00:22:01.633 --> 00:22:06.000
+and is going to return to you a formatted as a US currency.
+
+508
+00:22:06.000 --> 00:22:09.010
+This is using the Intl.NumberFormat function,
+
+509
+00:22:09.010 --> 00:22:12.140
+and it's formatting it to US currency standards.
+
+510
+00:22:12.140 --> 00:22:14.230
+You can swap that out with your own currency
+
+511
+00:22:14.230 --> 00:22:16.480
+if you would like to do that.
+
+512
+00:22:16.480 --> 00:22:19.030
+Then we will go up here and we'll import that.
+
+513
+00:22:19.030 --> 00:22:23.467
+Import formatMoney from lib formatMoney.
+
+514
+00:22:26.300 --> 00:22:29.100
+Now go down here and just wrap that price
+
+515
+00:22:29.100 --> 00:22:32.123
+in a formatMoney function.
+
+516
+00:22:37.940 --> 00:22:41.720
+And oh, that is form, from.
+
+517
+00:22:41.720 --> 00:22:44.930
+Below that we're gonna give ourselves a paragraph tag.
+
+518
+00:22:44.930 --> 00:22:46.180
+Let me close this up.
+
+519
+00:22:46.180 --> 00:22:49.133
+And that is just going to have the item.description.
+
+520
+00:22:51.450 --> 00:22:53.130
+Pretty good.
+
+521
+00:22:53.130 --> 00:22:55.010
+And then below that we're going to have
+
+522
+00:22:55.010 --> 00:22:57.620
+a div with a class of buttonList,
+
+523
+00:22:57.620 --> 00:23:00.690
+which is going to have a link to three different things.
+
+524
+00:23:00.690 --> 00:23:02.420
+First is going to be the edit.
+
+525
+00:23:02.420 --> 00:23:04.910
+So we'll say, let's give ourselves
+
+526
+00:23:04.910 --> 00:23:06.787
+the anchor link inside of that.
+
+527
+00:23:06.787 --> 00:23:08.090
+We don't need the href on the actual link itself.
+
+528
+00:23:08.090 --> 00:23:11.050
+And we'll just say edit, pencil.
+
+529
+00:23:11.050 --> 00:23:13.220
+Don't email me about what this is.
+
+530
+00:23:13.220 --> 00:23:16.700
+Go to wesbos.com/uses and that will tell you
+
+531
+00:23:16.700 --> 00:23:18.240
+what little emoji thing I use.
+
+532
+00:23:18.240 --> 00:23:21.090
+I probably get about 700 emails a day
+
+533
+00:23:21.090 --> 00:23:23.988
+about what emoji picker I use.
+
+534
+00:23:23.988 --> 00:23:28.620
+Link is going to be href or href,
+
+535
+00:23:28.620 --> 00:23:31.973
+the pathname is going to be update,
+
+536
+00:23:32.920 --> 00:23:36.120
+and then the query is going to be the same as before.
+
+537
+00:23:36.120 --> 00:23:38.130
+The ID is the item ID.
+
+538
+00:23:38.130 --> 00:23:39.160
+Oh, I goofed up.
+
+539
+00:23:39.160 --> 00:23:44.160
+This is an object, not an equal sign.
+
+540
+00:23:44.280 --> 00:23:45.494
+There we go.
+
+541
+00:23:45.494 --> 00:23:47.950
+And if I click on that it should bring us to the update page
+
+542
+00:23:47.950 --> 00:23:49.360
+where the ID is passed along.
+
+543
+00:23:49.360 --> 00:23:51.340
+Obviously it's not gonna work yet, 404s,
+
+544
+00:23:51.340 --> 00:23:54.600
+because we don't have that page built just yet.
+
+545
+00:23:54.600 --> 00:23:56.050
+That's fine.
+
+546
+00:23:56.050 --> 00:23:58.960
+Underneath that we are going to,
+
+547
+00:23:58.960 --> 00:24:03.350
+we're just going to have a button that says Add To Cart.
+
+548
+00:24:03.350 --> 00:24:04.280
+We'll build that later and then
+
+549
+00:24:04.280 --> 00:24:06.430
+we'll have another button that says delete.
+
+550
+00:24:08.570 --> 00:24:11.510
+And we have those three items being shown up there.
+
+551
+00:24:11.510 --> 00:24:14.170
+The last thing that we need is the image.
+
+552
+00:24:14.170 --> 00:24:17.330
+And we don't have images for these two just yet.
+
+553
+00:24:17.330 --> 00:24:21.260
+So we can go up here and we'll give curly brackets.
+
+554
+00:24:21.260 --> 00:24:23.680
+We'll say if there is an item.image
+
+555
+00:24:24.560 --> 00:24:27.060
+then, and this is kind of a little nifty one,
+
+556
+00:24:27.060 --> 00:24:29.895
+we just do an image tag where the source
+
+557
+00:24:29.895 --> 00:24:33.980
+is equal to the item.image.
+
+558
+00:24:33.980 --> 00:24:36.620
+And then the alt of that image is going to be
+
+559
+00:24:36.620 --> 00:24:38.230
+equal to the item.title.
+
+560
+00:24:38.230 --> 00:24:41.804
+Now, what is this little nifty tree I just did here?
+
+561
+00:24:41.804 --> 00:24:45.890
+Well, what it's going to do is it's going to check
+
+562
+00:24:45.890 --> 00:24:48.890
+if there is an item image and if that is there
+
+563
+00:24:48.890 --> 00:24:50.823
+that will evaluate to true,
+
+564
+00:24:50.823 --> 00:24:54.000
+meaning that this will actually run in return.
+
+565
+00:24:54.000 --> 00:24:57.458
+If there is no item image that's gonna evaluate to false,
+
+566
+00:24:57.458 --> 00:25:00.240
+and this will never actually run.
+
+567
+00:25:00.240 --> 00:25:03.040
+So another way that you could do that in JSX
+
+568
+00:25:03.040 --> 00:25:08.040
+is with a turnerare, turnre, turnerey, turnerary,
+
+569
+00:25:08.460 --> 00:25:11.240
+I don't know how to say that and it drives people nuts,
+
+570
+00:25:11.240 --> 00:25:14.060
+but you can say item.image.
+
+571
+00:25:14.060 --> 00:25:14.893
+If that is there then you can
+
+572
+00:25:14.893 --> 00:25:16.990
+give yourselves your image tag.
+
+573
+00:25:16.990 --> 00:25:19.890
+Otherwise, you can just return null.
+
+574
+00:25:19.890 --> 00:25:23.740
+So one little kinda cool way of getting around that
+
+575
+00:25:23.740 --> 00:25:27.020
+not returning null is by simply just
+
+576
+00:25:27.020 --> 00:25:29.120
+using the double ampersand there.
+
+577
+00:25:29.120 --> 00:25:30.650
+So it's the two little ways to do
+
+578
+00:25:30.650 --> 00:25:32.630
+if statements inside of JSX.
+
+579
+00:25:32.630 --> 00:25:33.920
+So this is looking pretty good.
+
+580
+00:25:33.920 --> 00:25:35.650
+Obviously we don't have images just yet,
+
+581
+00:25:35.650 --> 00:25:38.680
+and these are broken 'cause we did say that we have dog.jpg,
+
+582
+00:25:38.680 --> 00:25:39.630
+but it's not there.
+
+583
+00:25:39.630 --> 00:25:40.630
+In the next video we're actually
+
+584
+00:25:40.630 --> 00:25:42.690
+going to build the sell page,
+
+585
+00:25:42.690 --> 00:25:45.020
+which allows us to have a form,
+
+586
+00:25:45.020 --> 00:25:48.350
+upload photos, submit our content,
+
+587
+00:25:48.350 --> 00:25:52.430
+and have that mutation push itself to the backend.
+
+588
+00:25:52.430 --> 00:25:53.930
+So I'll see you in that video.
+

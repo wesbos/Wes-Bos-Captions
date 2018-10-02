@@ -1,0 +1,1042 @@
+﻿WEBVTT
+
+1
+00:00:00.828 --> 00:00:01.661
+<v Narrator>Alright, in this one</v>
+
+2
+00:00:01.661 --> 00:00:03.948
+we're going to put a little red dot here
+
+3
+00:00:03.948 --> 00:00:06.144
+that shows how many items are in the user's cart
+
+4
+00:00:06.144 --> 00:00:07.944
+so that they don't have to click it open
+
+5
+00:00:07.944 --> 00:00:10.638
+to see if the item was successfully added to their cart.
+
+6
+00:00:10.638 --> 00:00:11.942
+They'll be able to see a little animation
+
+7
+00:00:11.942 --> 00:00:14.808
+that shows that that number was updated.
+
+8
+00:00:14.808 --> 00:00:17.544
+So, first thing I wanna do is make a new component.
+
+9
+00:00:17.544 --> 00:00:19.374
+Go to your component folder, and we're going
+
+10
+00:00:19.374 --> 00:00:21.918
+to call it CartCount.js.
+
+11
+00:00:21.918 --> 00:00:24.624
+Inside of there we'll import React from 'react'.
+
+12
+00:00:24.624 --> 00:00:26.457
+We'll import PropTypes
+
+13
+00:00:28.019 --> 00:00:29.519
+from 'prop-types'.
+
+14
+00:00:30.530 --> 00:00:32.099
+We'll make a Dot component.
+
+15
+00:00:32.099 --> 00:00:33.891
+So actually we need 'styled-components',
+
+16
+00:00:33.891 --> 00:00:35.361
+and we'll make a Dot component,
+
+17
+00:00:35.361 --> 00:00:37.194
+which is a styled.div.
+
+18
+00:00:38.099 --> 00:00:39.967
+Inside of there, we'll give our background
+
+19
+00:00:39.967 --> 00:00:42.217
+of the red, color is white,
+
+20
+00:00:44.222 --> 00:00:46.389
+border-radius is 50%,
+
+21
+00:00:48.994 --> 00:00:50.244
+padding 0.5rem,
+
+22
+00:00:51.976 --> 00:00:53.393
+line-height 2rem,
+
+23
+00:00:55.396 --> 00:00:56.646
+min-width 3rem,
+
+24
+00:01:00.076 --> 00:01:01.493
+margin-left 1rem,
+
+25
+00:01:06.856 --> 00:01:08.189
+font-weight 100,
+
+26
+00:01:09.349 --> 00:01:11.786
+and then these two little fancy properties,
+
+27
+00:01:11.786 --> 00:01:15.636
+which is font-feature-settings 'tnum',
+
+28
+00:01:15.636 --> 00:01:19.769
+and then font-variant-numberic, set it to tabular-nums.
+
+29
+00:01:19.769 --> 00:01:21.907
+And what that will do is, if you're changing
+
+30
+00:01:21.907 --> 00:01:25.293
+from a number of items in your cart,
+
+31
+00:01:25.293 --> 00:01:28.459
+like one, and you go to two, some of the fonts
+
+32
+00:01:28.459 --> 00:01:31.789
+will change the width of the div
+
+33
+00:01:31.789 --> 00:01:34.811
+because one is a lot skinnier than two,
+
+34
+00:01:34.811 --> 00:01:36.671
+so by setting these two lines here,
+
+35
+00:01:36.671 --> 00:01:39.498
+as you crank up the number of items that are in that,
+
+36
+00:01:39.498 --> 00:01:43.533
+it's always going to define the same width to each character
+
+37
+00:01:43.533 --> 00:01:46.901
+regardless of if it's a fat number like two
+
+38
+00:01:46.901 --> 00:01:49.121
+or a skinny number like one.
+
+39
+00:01:49.121 --> 00:01:52.249
+Then in here let's make our class.
+
+40
+00:01:52.249 --> 00:01:54.999
+Say, const CartCount is equal to,
+
+41
+00:01:56.033 --> 00:01:58.057
+and here we'll just take in the props,
+
+42
+00:01:58.057 --> 00:02:01.399
+actually we'll destructure the props into props.count,
+
+43
+00:02:01.399 --> 00:02:03.649
+so it will take in a count.
+
+44
+00:02:04.764 --> 00:02:09.436
+And from that let's just return the Dot component
+
+45
+00:02:09.436 --> 00:02:11.769
+with the count inside of it.
+
+46
+00:02:12.892 --> 00:02:16.642
+That's good for now, export default CartCount
+
+47
+00:02:18.182 --> 00:02:20.599
+and we'll open up our Nav.js.
+
+48
+00:02:22.532 --> 00:02:26.365
+We'll go down to that button where we have it.
+
+49
+00:02:30.232 --> 00:02:34.482
+And inside of here we will put our CartCount button
+
+50
+00:02:37.314 --> 00:02:39.555
+and let's just pass a manual count
+
+51
+00:02:39.555 --> 00:02:41.947
+of a hundred items right now.
+
+52
+00:02:41.947 --> 00:02:43.082
+And then we also need to import
+
+53
+00:02:43.082 --> 00:02:46.665
+this CartCount up at the top of our Nav.js.
+
+54
+00:02:50.866 --> 00:02:53.738
+Here we go, we got our hundred items here.
+
+55
+00:02:53.738 --> 00:02:55.856
+Change that to 10.
+
+56
+00:02:55.856 --> 00:02:58.772
+Now the question is, how do we manually count that number?
+
+57
+00:02:58.772 --> 00:03:01.502
+So, you'll know up here we have our User component,
+
+58
+00:03:01.502 --> 00:03:03.992
+and we are getting a variable called me.
+
+59
+00:03:03.992 --> 00:03:08.176
+We could just manually pass the me.cart.length
+
+60
+00:03:08.176 --> 00:03:10.306
+right there, and that would mainly show,
+
+61
+00:03:10.306 --> 00:03:12.496
+but that just shows us how many items are in the cart.
+
+62
+00:03:12.496 --> 00:03:16.538
+If I add a bunch of these backpacks to the cart,
+
+63
+00:03:16.538 --> 00:03:18.548
+you'll see that we have four of 'em, plus one,
+
+64
+00:03:18.548 --> 00:03:19.908
+it should show us five.
+
+65
+00:03:19.908 --> 00:03:22.622
+So we can take the cart and count the number
+
+66
+00:03:22.622 --> 00:03:24.632
+of items that are inside of it.
+
+67
+00:03:24.632 --> 00:03:27.138
+So, we'll just say me.cart.reduce.
+
+68
+00:03:27.138 --> 00:03:29.640
+Our reduce is going to start with a zero.
+
+69
+00:03:29.640 --> 00:03:32.040
+And we're gonna take a tally of the items
+
+70
+00:03:32.040 --> 00:03:34.906
+and the cart item itself, and from that
+
+71
+00:03:34.906 --> 00:03:37.216
+we're going to return the tally
+
+72
+00:03:37.216 --> 00:03:39.466
+plus the cartItem.quantity.
+
+73
+00:03:41.422 --> 00:03:44.505
+And, I goofed this up, this is tally.
+
+74
+00:03:45.924 --> 00:03:48.106
+There we go, now it shows that we have five items.
+
+75
+00:03:48.106 --> 00:03:50.730
+If I add another item to my cart,
+
+76
+00:03:50.730 --> 00:03:52.396
+you see that changes to six.
+
+77
+00:03:52.396 --> 00:03:55.875
+Add a coat, a couple more of these.
+
+78
+00:03:55.875 --> 00:03:57.750
+See, the items changed to eight.
+
+79
+00:03:57.750 --> 00:03:59.964
+And that is actually how many items we have in there.
+
+80
+00:03:59.964 --> 00:04:03.062
+Good, so that works, but let's add a little bit
+
+81
+00:04:03.062 --> 00:04:05.124
+of animation, because when someone adds something
+
+82
+00:04:05.124 --> 00:04:07.906
+to cart, we should have some sort of visual cue
+
+83
+00:04:07.906 --> 00:04:10.126
+other than the button flipping back,
+
+84
+00:04:10.126 --> 00:04:12.623
+that the items was actually added to your cart.
+
+85
+00:04:12.623 --> 00:04:15.714
+And what I like to do is just flip this little one
+
+86
+00:04:15.714 --> 00:04:18.881
+over from its past to its newer value.
+
+87
+00:04:20.342 --> 00:04:21.872
+Now, the easiest way to transition
+
+88
+00:04:21.872 --> 00:04:24.400
+from one component to another component,
+
+89
+00:04:24.400 --> 00:04:25.960
+because essentially what's going to be happening
+
+90
+00:04:25.960 --> 00:04:29.105
+is, in this CartCount, we have this Dot,
+
+91
+00:04:29.105 --> 00:04:31.578
+and that Dot is going to have a count inside of it,
+
+92
+00:04:31.578 --> 00:04:34.566
+and what happens when you actually move
+
+93
+00:04:34.566 --> 00:04:36.769
+from a dot with a two inside of it
+
+94
+00:04:36.769 --> 00:04:38.818
+to a dot with a three inside of it
+
+95
+00:04:38.818 --> 00:04:41.323
+is gonna unmount the initial one
+
+96
+00:04:41.323 --> 00:04:43.836
+and remount the new one.
+
+97
+00:04:43.836 --> 00:04:46.468
+And we can use something called react-transition-group
+
+98
+00:04:46.468 --> 00:04:49.078
+to do these types of animations.
+
+99
+00:04:49.078 --> 00:04:50.914
+So, we'll head up to the top here,
+
+100
+00:04:50.914 --> 00:04:53.592
+and we'll import two things.
+
+101
+00:04:53.592 --> 00:04:55.932
+These are named import, so you use curly brackets.
+
+102
+00:04:55.932 --> 00:04:58.349
+First one is TransitionGroup.
+
+103
+00:04:59.869 --> 00:05:04.452
+And the second one is CSSTransition, and that's going
+
+104
+00:05:04.452 --> 00:05:08.781
+to come from the react-transition-group package.
+
+105
+00:05:08.781 --> 00:05:11.481
+Then we can go down here,
+
+106
+00:05:11.481 --> 00:05:15.183
+and first we're just going to return a TransitionGroup,
+
+107
+00:05:15.183 --> 00:05:19.100
+inside of that we want to have a CSSTransition,
+
+108
+00:05:20.746 --> 00:05:24.663
+and then inside of that we want to put the Dot.
+
+109
+00:05:27.283 --> 00:05:29.880
+Now this CSSTransition is going to take a number
+
+110
+00:05:29.880 --> 00:05:33.150
+of different props that will define what happens
+
+111
+00:05:33.150 --> 00:05:35.670
+to this Dot, because as this Dot gets unmounted
+
+112
+00:05:35.670 --> 00:05:38.039
+and the new one gets mounted, it's going to define
+
+113
+00:05:38.039 --> 00:05:41.054
+how quickly it does it and when it does it and whatnot.
+
+114
+00:05:41.054 --> 00:05:45.304
+So, we want to first pass the className of "count",
+
+115
+00:05:50.122 --> 00:05:53.605
+then we also want to pass the classNames with an S
+
+116
+00:05:53.605 --> 00:05:55.891
+of "count" as well, and this is going to make sense
+
+117
+00:05:55.891 --> 00:05:59.116
+why we do this in just a second when we hit some CSS.
+
+118
+00:05:59.116 --> 00:06:01.048
+Then we wanna also pass a key,
+
+119
+00:06:01.048 --> 00:06:02.947
+because each one is going to be unique,
+
+120
+00:06:02.947 --> 00:06:06.989
+it's gonna unmount the old count and remount the new count.
+
+121
+00:06:06.989 --> 00:06:09.817
+We need to pass a key, and we can use anything
+
+122
+00:06:09.817 --> 00:06:11.789
+that is unique, so why not use the count,
+
+123
+00:06:11.789 --> 00:06:14.985
+'cause if it's one going to two, and two going to three,
+
+124
+00:06:14.985 --> 00:06:16.395
+it's always going to be unique.
+
+125
+00:06:16.395 --> 00:06:18.628
+Then finally we need to pass a timeout,
+
+126
+00:06:18.628 --> 00:06:21.020
+which is how quickly they are mounted and unmounted.
+
+127
+00:06:21.020 --> 00:06:23.603
+So, enter, let's just say 4000,
+
+128
+00:06:24.985 --> 00:06:28.655
+and exit 4000, so it takes four seconds to mount
+
+129
+00:06:28.655 --> 00:06:31.572
+and four seconds to unmount itself.
+
+130
+00:06:32.711 --> 00:06:35.689
+Cannot read property exit of undefined.
+
+131
+00:06:35.689 --> 00:06:39.772
+I think I forgot the unmountOnExit property here.
+
+132
+00:06:43.158 --> 00:06:44.357
+And that's what we need, is for it
+
+133
+00:06:44.357 --> 00:06:47.844
+to actually remove itself once it's finished up.
+
+134
+00:06:47.844 --> 00:06:50.260
+So, let's show you what that is.
+
+135
+00:06:50.260 --> 00:06:54.315
+If you open up your DevTools and inspect that little dot,
+
+136
+00:06:54.315 --> 00:06:56.413
+you see that we have this cart count here.
+
+137
+00:06:56.413 --> 00:06:58.723
+Now when I add an item, I'm gonna click it,
+
+138
+00:06:58.723 --> 00:07:00.890
+keep your eyes right here.
+
+139
+00:07:02.270 --> 00:07:03.801
+You see that there's two items here,
+
+140
+00:07:03.801 --> 00:07:05.735
+there's a 10, which is the old one,
+
+141
+00:07:05.735 --> 00:07:07.267
+and an 11, which is the new one.
+
+142
+00:07:07.267 --> 00:07:10.049
+So what it's going to do is it's going to immediately
+
+143
+00:07:10.049 --> 00:07:14.806
+add the new one, and then kick around the old one
+
+144
+00:07:14.806 --> 00:07:18.127
+for four seconds, so let's look at it up here.
+
+145
+00:07:18.127 --> 00:07:20.316
+If I quickly add something and go back up here,
+
+146
+00:07:20.316 --> 00:07:22.763
+you see we have 11, and now 12,
+
+147
+00:07:22.763 --> 00:07:25.926
+and then after four seconds, it's going to remove 11.
+
+148
+00:07:25.926 --> 00:07:28.867
+And the reason why it doubles them up and shows us two
+
+149
+00:07:28.867 --> 00:07:33.113
+is because we might want to animate out the old one,
+
+150
+00:07:33.113 --> 00:07:36.751
+and animate in the new one over those four seconds
+
+151
+00:07:36.751 --> 00:07:37.784
+that we're actually working with.
+
+152
+00:07:37.784 --> 00:07:39.045
+And that's exactly what we're going
+
+153
+00:07:39.045 --> 00:07:41.128
+to be doing with our CSS.
+
+154
+00:07:42.623 --> 00:07:44.610
+So what we're gonna do is we're gonna go up here
+
+155
+00:07:44.610 --> 00:07:46.583
+and make another style component
+
+156
+00:07:46.583 --> 00:07:49.163
+that has all of our animation styles in it.
+
+157
+00:07:49.163 --> 00:07:51.211
+We'll call it AnimationStyles.
+
+158
+00:07:51.211 --> 00:07:53.483
+That's going to be a styled.span.
+
+159
+00:07:53.483 --> 00:07:55.349
+And really important, you need to make this
+
+160
+00:07:55.349 --> 00:07:57.120
+position: relative.
+
+161
+00:07:57.120 --> 00:07:59.243
+Inside of that we wanna grab a .count.
+
+162
+00:07:59.243 --> 00:08:02.493
+So, display: block; position: relative;
+
+163
+00:08:04.342 --> 00:08:07.842
+transition: all 4s; so that we're gonna do
+
+164
+00:08:09.353 --> 00:08:12.134
+the transition of these elements over four seconds.
+
+165
+00:08:12.134 --> 00:08:14.801
+And then the backface-visibility
+
+166
+00:08:17.339 --> 00:08:18.655
+is going to be hidden.
+
+167
+00:08:18.655 --> 00:08:20.455
+The reason why we do that is because
+
+168
+00:08:20.455 --> 00:08:21.714
+we're gonna be flipping these.
+
+169
+00:08:21.714 --> 00:08:22.999
+We're gonna flip out the old one
+
+170
+00:08:22.999 --> 00:08:26.733
+and flip in the new one, and as it flips itself over,
+
+171
+00:08:26.733 --> 00:08:29.725
+it's going to hide itself, so this .count
+
+172
+00:08:29.725 --> 00:08:32.899
+is actually going to be applied to the dot itself.
+
+173
+00:08:32.899 --> 00:08:35.043
+Now let's take this AnimationStyles,
+
+174
+00:08:35.043 --> 00:08:39.876
+and let's wrap our TransitionGroup in the AnimationStyles.
+
+175
+00:08:44.089 --> 00:08:45.482
+And here you see we have our span
+
+176
+00:08:45.482 --> 00:08:48.655
+with the AnimationStyles that has that position relative
+
+177
+00:08:48.655 --> 00:08:50.981
+that will wrap each of the dots,
+
+178
+00:08:50.981 --> 00:08:54.805
+and then inside of that, you see we have our CartCount.
+
+179
+00:08:54.805 --> 00:08:57.513
+Now, one interesting thing, when I add something,
+
+180
+00:08:57.513 --> 00:09:00.385
+let's watch down here, is the react-transition-group
+
+181
+00:09:00.385 --> 00:09:03.565
+is going to give it a whole bunch of class names.
+
+182
+00:09:03.565 --> 00:09:06.199
+So you see that it's going to count-enter,
+
+183
+00:09:06.199 --> 00:09:10.031
+count-enter-active, and count-exit, count-exit-active.
+
+184
+00:09:10.031 --> 00:09:11.801
+So it give us these class names
+
+185
+00:09:11.801 --> 00:09:15.051
+which we then can add CSS transition to
+
+186
+00:09:15.993 --> 00:09:19.099
+to make them look like they're fading or flipping
+
+187
+00:09:19.099 --> 00:09:22.849
+or anything off the page, and the vice versa.
+
+188
+00:09:24.031 --> 00:09:27.013
+So, we'll grab the .count-enter
+
+189
+00:09:27.013 --> 00:09:30.596
+and we will flip it on its back immediately
+
+190
+00:09:31.507 --> 00:09:34.970
+and then we're going to use the .count-enter-active
+
+191
+00:09:34.970 --> 00:09:36.907
+to flip it back to visibility.
+
+192
+00:09:36.907 --> 00:09:41.074
+So, we need to think about the initial state here.
+
+193
+00:09:45.629 --> 00:09:47.849
+The initial state of the entered dot
+
+194
+00:09:47.849 --> 00:09:49.589
+is going to be flipped on its back.
+
+195
+00:09:49.589 --> 00:09:52.256
+So we'll say, transform: rotateX
+
+196
+00:09:55.446 --> 00:09:57.223
+and we're going to use turns here,
+
+197
+00:09:57.223 --> 00:09:58.933
+so 0.5 turn.
+
+198
+00:09:58.933 --> 00:10:00.373
+Normally we would probably use,
+
+199
+00:10:00.373 --> 00:10:02.577
+like, 180 degrees.
+
+200
+00:10:02.577 --> 00:10:04.747
+However, there's another unit in CSS
+
+201
+00:10:04.747 --> 00:10:06.141
+that not a lot of people know about,
+
+202
+00:10:06.141 --> 00:10:09.337
+but it's turns, and one turn is a 360 degree,
+
+203
+00:10:09.337 --> 00:10:11.241
+and it just makes doing math much easier
+
+204
+00:10:11.241 --> 00:10:13.147
+because you can think in terms of,
+
+205
+00:10:13.147 --> 00:10:14.789
+is it a quarter turn, is it a full turn,
+
+206
+00:10:14.789 --> 00:10:15.919
+is it half a turn.
+
+207
+00:10:15.919 --> 00:10:18.171
+In this case it makes a lot more sense.
+
+208
+00:10:18.171 --> 00:10:21.088
+Then we'll say .count-enter-active,
+
+209
+00:10:22.469 --> 00:10:25.219
+and we'll transform rotateX zero.
+
+210
+00:10:27.385 --> 00:10:28.923
+What's gonna happen is react gives it
+
+211
+00:10:28.923 --> 00:10:30.925
+a class of count-enter immediately,
+
+212
+00:10:30.925 --> 00:10:32.837
+and then a split second later it gives it
+
+213
+00:10:32.837 --> 00:10:35.027
+a class of count-enter-active,
+
+214
+00:10:35.027 --> 00:10:37.796
+just a split second later, and then it's going to rotate
+
+215
+00:10:37.796 --> 00:10:40.296
+from on its back to its front,
+
+216
+00:10:41.178 --> 00:10:45.845
+so let's take a look at that what does it look like now?
+
+217
+00:10:50.984 --> 00:10:53.264
+And you see that after four seconds
+
+218
+00:10:53.264 --> 00:10:56.084
+it will then rotate itself.
+
+219
+00:10:56.084 --> 00:11:01.040
+So what we need to do now is actually set up the opposite,
+
+220
+00:11:01.040 --> 00:11:02.728
+which is, when I add it again,
+
+221
+00:11:02.728 --> 00:11:06.524
+the 14 should immediately flip itself out,
+
+222
+00:11:06.524 --> 00:11:09.320
+and then the 15 will flip itself in at the same time.
+
+223
+00:11:09.320 --> 00:11:10.487
+So watch this.
+
+224
+00:11:15.043 --> 00:11:17.822
+15 flips itself on in, so we go down here
+
+225
+00:11:17.822 --> 00:11:21.905
+and say .count-exit, top zero, position absolute,
+
+226
+00:11:22.770 --> 00:11:25.080
+'cause I want these to be overlapping each other,
+
+227
+00:11:25.080 --> 00:11:27.913
+and we're going to transform zero,
+
+228
+00:11:29.324 --> 00:11:32.824
+and then we'll take the .count-exit-active
+
+229
+00:11:36.720 --> 00:11:39.220
+and we'll give it a half turn.
+
+230
+00:11:43.792 --> 00:11:45.709
+Now when I add an item,
+
+231
+00:11:49.244 --> 00:11:51.772
+you see as the 15 flipped itself out,
+
+232
+00:11:51.772 --> 00:11:54.434
+the 16 flipped itself in at the exact same time.
+
+233
+00:11:54.434 --> 00:11:55.517
+Try it again.
+
+234
+00:11:57.216 --> 00:11:59.039
+They flip each other over.
+
+235
+00:11:59.039 --> 00:12:00.562
+Then we can take this four seconds
+
+236
+00:12:00.562 --> 00:12:03.479
+and let's just make it 0.4 seconds.
+
+237
+00:12:05.370 --> 00:12:09.870
+And we'll go down here and make this 400 milliseconds.
+
+238
+00:12:13.834 --> 00:12:16.121
+And now we have a bit more of a snappy animation
+
+239
+00:12:16.121 --> 00:12:18.230
+to show us that something has worked.
+
+240
+00:12:18.230 --> 00:12:21.139
+Obviously you can do any CSS that you want.
+
+241
+00:12:21.139 --> 00:12:22.828
+Now that you have these four classes,
+
+242
+00:12:22.828 --> 00:12:26.092
+you could change the color, you could scale them up,
+
+243
+00:12:26.092 --> 00:12:27.446
+you could scale them down.
+
+244
+00:12:27.446 --> 00:12:29.456
+Here, let me show you how that would work,
+
+245
+00:12:29.456 --> 00:12:31.456
+where we can scale four,
+
+246
+00:12:37.759 --> 00:12:39.009
+and scale four.
+
+247
+00:12:43.399 --> 00:12:45.913
+Ooh, that's kinda fun, woo!
+
+248
+00:12:45.913 --> 00:12:50.353
+You see how that immediately scales itself up to four
+
+249
+00:12:50.353 --> 00:12:54.056
+but then when it's active, it scales itself down to zero,
+
+250
+00:12:54.056 --> 00:12:56.277
+because we haven't put a scale on this one.
+
+251
+00:12:56.277 --> 00:12:59.629
+And you get a bit of a fun little boof punch goin' on there
+
+252
+00:12:59.629 --> 00:13:02.232
+and because we have that transition on there,
+
+253
+00:13:02.232 --> 00:13:04.574
+it will animate itself between A and B.
+
+254
+00:13:04.574 --> 00:13:06.194
+So, hopefully that is helpful.
+
+255
+00:13:06.194 --> 00:13:10.200
+These tend to get a little bit long in writing the CSS,
+
+256
+00:13:10.200 --> 00:13:11.826
+but as long as you can break it down
+
+257
+00:13:11.826 --> 00:13:14.310
+into these four different classes that you have,
+
+258
+00:13:14.310 --> 00:13:16.500
+they start to makes sense, and then you can make
+
+259
+00:13:16.500 --> 00:13:18.580
+these nice reusable components and use them
+
+260
+00:13:18.580 --> 00:13:20.303
+throughout your application.
+

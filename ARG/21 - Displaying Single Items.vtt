@@ -1,0 +1,1118 @@
+﻿WEBVTT
+
+1
+00:00:01.055 --> 00:00:01.888
+<v Wes>All right, now when we actually</v>
+
+2
+00:00:01.888 --> 00:00:03.070
+click on one of the items,
+
+3
+00:00:03.070 --> 00:00:04.970
+you'll see that it goes to /item
+
+4
+00:00:04.970 --> 00:00:08.070
+and passes the ID of that item along for the ride,
+
+5
+00:00:08.070 --> 00:00:10.990
+but we get a 404 because we don't have an item page.
+
+6
+00:00:10.990 --> 00:00:13.360
+So let's go ahead and create that.
+
+7
+00:00:13.360 --> 00:00:15.840
+First thing we'll need to do is just double check
+
+8
+00:00:15.840 --> 00:00:18.020
+that we have the right back-end stuff for us.
+
+9
+00:00:18.020 --> 00:00:20.750
+So let's head over to our schema.graphql.
+
+10
+00:00:20.750 --> 00:00:22.380
+You'll see that we already have a query
+
+11
+00:00:22.380 --> 00:00:24.150
+for a specific item,
+
+12
+00:00:24.150 --> 00:00:26.960
+where the input is an ItemWhereUniqueInput.
+
+13
+00:00:26.960 --> 00:00:29.590
+Again, if you're not sure what that input looks like,
+
+14
+00:00:29.590 --> 00:00:34.357
+we can take a look at our generated prisma.graphql,
+
+15
+00:00:34.357 --> 00:00:36.557
+and we just take a quick look for, here we go,
+
+16
+00:00:36.557 --> 00:00:38.330
+the input ItemWhereIDInput
+
+17
+00:00:38.330 --> 00:00:41.410
+and it expects just an ID to be passed to it
+
+18
+00:00:41.410 --> 00:00:43.410
+which is exactly what we have.
+
+19
+00:00:43.410 --> 00:00:46.070
+Second, what we want to do is to double check
+
+20
+00:00:46.070 --> 00:00:47.180
+that we have our resolver.
+
+21
+00:00:47.180 --> 00:00:48.930
+So if we go to our query.js
+
+22
+00:00:48.930 --> 00:00:50.410
+which is in our resolver's folder,
+
+23
+00:00:50.410 --> 00:00:51.370
+you'll see that our Single Item
+
+24
+00:00:51.370 --> 00:00:52.990
+is just being forwarded to the database good.
+
+25
+00:00:52.990 --> 00:00:54.850
+So there's no extra back-end stuff
+
+26
+00:00:54.850 --> 00:00:55.730
+that we need to make here.
+
+27
+00:00:55.730 --> 00:00:58.810
+Let's jump over to the front end here, and create,
+
+28
+00:00:58.810 --> 00:01:00.560
+first, we'll create the item page.
+
+29
+00:01:00.560 --> 00:01:03.590
+Let's just open the index.js, and you see that
+
+30
+00:01:03.590 --> 00:01:05.060
+this is the item's page.
+
+31
+00:01:05.060 --> 00:01:08.760
+We'll just duplicate that into item.js.
+
+32
+00:01:08.760 --> 00:01:12.350
+Again, this is in the page's folder, we'll make an item.js,
+
+33
+00:01:12.350 --> 00:01:15.530
+and we'll rename this from home to item.
+
+34
+00:01:15.530 --> 00:01:17.640
+Remove that.
+
+35
+00:01:17.640 --> 00:01:19.900
+And let's just do a paragraph tag,
+
+36
+00:01:19.900 --> 00:01:22.083
+says Single Item.
+
+37
+00:01:23.290 --> 00:01:24.150
+Give it a save.
+
+38
+00:01:24.150 --> 00:01:27.730
+Now, if I refresh this page, we get Single Item showing up.
+
+39
+00:01:27.730 --> 00:01:30.350
+Good, we're going to need another component,
+
+40
+00:01:30.350 --> 00:01:32.320
+so go into your components folder and make a new one.
+
+41
+00:01:32.320 --> 00:01:34.613
+We're gonna call it singleitem.js,
+
+42
+00:01:35.660 --> 00:01:39.640
+and we'll create the component that we have here.
+
+43
+00:01:39.640 --> 00:01:40.910
+So, export default.
+
+44
+00:01:40.910 --> 00:01:42.480
+Again, I'm gonna move this down here.
+
+45
+00:01:42.480 --> 00:01:43.853
+Export default SingleItem.
+
+46
+00:01:45.540 --> 00:01:47.700
+And, let's just do a paragraph inside of here
+
+47
+00:01:47.700 --> 00:01:50.403
+that says: Single Item Component.
+
+48
+00:01:51.750 --> 00:01:53.550
+And we'll import that into our item,
+
+49
+00:01:55.270 --> 00:01:57.120
+and we'll try to go ahead and use it.
+
+50
+00:01:58.380 --> 00:02:01.810
+There we go, Single Item Component is now showing up.
+
+51
+00:02:01.810 --> 00:02:04.440
+All right, so, let's start off with the query,
+
+52
+00:02:04.440 --> 00:02:06.545
+and then, we'll get into actually templating it out.
+
+53
+00:02:06.545 --> 00:02:09.483
+So, we'll go up here and make a query.
+
+54
+00:02:10.782 --> 00:02:14.127
+const SINGLE_ITEM_QUERY is equal to gql,
+
+55
+00:02:15.560 --> 00:02:16.910
+and we need to import that.
+
+56
+00:02:21.650 --> 00:02:23.426
+Inside of here, we'll make the query,
+
+57
+00:02:23.426 --> 00:02:27.670
+SINGLE_ITEM_QUERY, takes in an ID, which has a type of ID
+
+58
+00:02:27.670 --> 00:02:29.363
+and that is a required.
+
+59
+00:02:30.695 --> 00:02:33.630
+And then, we will give ourselves the query of item,
+
+60
+00:02:33.630 --> 00:02:38.420
+where the ID is equal to the ID that we passed in.
+
+61
+00:02:38.420 --> 00:02:40.400
+And from that, we want to return the ID,
+
+62
+00:02:40.400 --> 00:02:43.763
+the title, the description,
+
+63
+00:02:44.630 --> 00:02:47.070
+and the large image.
+
+64
+00:02:47.070 --> 00:02:49.810
+Now, how do we get this query into our item?
+
+65
+00:02:49.810 --> 00:02:51.660
+Oh, this is actually wrong.
+
+66
+00:02:51.660 --> 00:02:53.560
+I don't wanna put the query on the page.
+
+67
+00:02:53.560 --> 00:02:55.950
+So, let's actually move that over real quick.
+
+68
+00:02:55.950 --> 00:02:59.420
+So, I'm gonna take that out and go into SingleItem,
+
+69
+00:02:59.420 --> 00:03:03.670
+paste it in here, and then, this looks fine.
+
+70
+00:03:03.670 --> 00:03:05.310
+Good.
+
+71
+00:03:05.310 --> 00:03:08.730
+Then we need to wrap this entire thing in a query component,
+
+72
+00:03:08.730 --> 00:03:11.663
+so, we'll import that from react-apollo.
+
+73
+00:03:13.580 --> 00:03:15.680
+Then, I'll go down here, and before I wrap it
+
+74
+00:03:15.680 --> 00:03:16.630
+in a query, I just want to make sure that we actually
+
+75
+00:03:16.630 --> 00:03:19.070
+can get access to this item ID here.
+
+76
+00:03:19.070 --> 00:03:21.560
+So, let's open up our dev tools and take a look
+
+77
+00:03:21.560 --> 00:03:24.820
+at the props that this Single Item has.
+
+78
+00:03:24.820 --> 00:03:26.900
+Search for Single Item, and you'll see
+
+79
+00:03:26.900 --> 00:03:28.660
+that the props are empty.
+
+80
+00:03:28.660 --> 00:03:31.300
+Now, if we search for the item component,
+
+81
+00:03:31.300 --> 00:03:33.930
+you'll see that the props does have access to the query.
+
+82
+00:03:33.930 --> 00:03:36.520
+So, that means we have it right here,
+
+83
+00:03:36.520 --> 00:03:37.730
+but we don't have it right here,
+
+84
+00:03:37.730 --> 00:03:40.820
+and the way we can pass it down, is just by props.
+
+85
+00:03:40.820 --> 00:03:45.820
+ID is equal to this, it's just props.query.id.
+
+86
+00:03:47.770 --> 00:03:49.230
+And then, if we go to our Single Item,
+
+87
+00:03:49.230 --> 00:03:50.970
+you'll now see that it's being available
+
+88
+00:03:50.970 --> 00:03:53.640
+and can we displayed that inside of here?
+
+89
+00:03:53.640 --> 00:03:54.990
+I bet we can!
+
+90
+00:03:54.990 --> 00:03:57.853
+Props.id.
+
+91
+00:03:59.510 --> 00:04:02.070
+And, oh they have an error, props is not defined,
+
+92
+00:04:02.070 --> 00:04:04.010
+oh it's 'cause it's a proper component
+
+93
+00:04:04.010 --> 00:04:06.340
+so we'll say this.props.id
+
+94
+00:04:07.320 --> 00:04:10.250
+and there we go, the ID is showing up.
+
+95
+00:04:10.250 --> 00:04:12.000
+Good, now we'll go over to our item.
+
+96
+00:04:12.000 --> 00:04:15.220
+Now let's take this div and replace it with a query.
+
+97
+00:04:15.220 --> 00:04:18.950
+Then the query itself is going to be the SINGLE_ITEM_QUERY,
+
+98
+00:04:18.950 --> 00:04:20.880
+and then the way we can pass the variables
+
+99
+00:04:20.880 --> 00:04:23.630
+is just by the variables prop on the query component.
+
+100
+00:04:23.630 --> 00:04:27.493
+So variables is equal to an object literal
+
+101
+00:04:27.493 --> 00:04:31.840
+and the ID is going to be this.props.id.
+
+102
+00:04:31.840 --> 00:04:34.320
+Then inside of here we can have the child
+
+103
+00:04:34.320 --> 00:04:36.120
+which is going to be our payload
+
+104
+00:04:36.120 --> 00:04:38.913
+that has error, loading and data.
+
+105
+00:04:39.950 --> 00:04:41.710
+That can be an arrow function.
+
+106
+00:04:41.710 --> 00:04:45.893
+We'll say, if error, return Error,
+
+107
+00:04:46.770 --> 00:04:48.443
+and we can do that for loading.
+
+108
+00:04:49.750 --> 00:04:51.950
+Otherwise, we are going to return
+
+109
+00:04:54.690 --> 00:04:56.203
+the Single Item component.
+
+110
+00:04:59.190 --> 00:05:00.830
+Let's just double-check this works
+
+111
+00:05:00.830 --> 00:05:02.260
+before we keep going.
+
+112
+00:05:02.260 --> 00:05:04.100
+Bit of an error here.
+
+113
+00:05:04.100 --> 00:05:08.793
+Oh this paragraph, properly spell return,
+
+114
+00:05:10.060 --> 00:05:12.460
+and looks like it's working.
+
+115
+00:05:12.460 --> 00:05:17.120
+We should be able to console.log the data.
+
+116
+00:05:17.120 --> 00:05:19.400
+And you see the actual item showing up here.
+
+117
+00:05:19.400 --> 00:05:21.380
+I don't wanna actually just display error here.
+
+118
+00:05:21.380 --> 00:05:23.670
+Let's just import that error component that we have.
+
+119
+00:05:23.670 --> 00:05:28.670
+So we'll say import Error from ./Error message.
+
+120
+00:05:29.410 --> 00:05:31.630
+And then we'll go down here and render out
+
+121
+00:05:31.630 --> 00:05:33.900
+an actual error component.
+
+122
+00:05:33.900 --> 00:05:35.793
+Error, Error equals error.
+
+123
+00:05:38.360 --> 00:05:41.095
+Now one things this will not do is actually
+
+124
+00:05:41.095 --> 00:05:44.980
+if I put like an X on the end of this URL here
+
+125
+00:05:44.980 --> 00:05:47.370
+and we don't get any sort of item
+
+126
+00:05:47.370 --> 00:05:49.350
+you'll see that it actually still renders out
+
+127
+00:05:49.350 --> 00:05:52.030
+the Single Item component, so we can handle that
+
+128
+00:05:52.030 --> 00:05:54.240
+in one of two ways.
+
+129
+00:05:54.240 --> 00:05:56.910
+We could on the server side,
+
+130
+00:05:56.910 --> 00:05:59.810
+we could do a custom resolver here
+
+131
+00:05:59.810 --> 00:06:01.890
+and if there is no item found
+
+132
+00:06:01.890 --> 00:06:04.600
+we can simply just throw an error on the server
+
+133
+00:06:04.600 --> 00:06:06.190
+and what that would do is it would resolve
+
+134
+00:06:06.190 --> 00:06:08.100
+to an error over here.
+
+135
+00:06:08.100 --> 00:06:09.705
+And then this error component would
+
+136
+00:06:09.705 --> 00:06:12.480
+display whatever message that we throw.
+
+137
+00:06:12.480 --> 00:06:14.630
+Or what you could do is if you wanted to handle
+
+138
+00:06:14.630 --> 00:06:17.030
+that client side, you could check it right here.
+
+139
+00:06:17.030 --> 00:06:20.460
+So we can say if there is no data.item,
+
+140
+00:06:20.460 --> 00:06:24.280
+we're going to return and paragraph
+
+141
+00:06:24.280 --> 00:06:29.163
+no item found for this.props.id.
+
+142
+00:06:32.010 --> 00:06:33.865
+So, I'll show you how to do it on the server
+
+143
+00:06:33.865 --> 00:06:36.300
+coming once we get into custom resolvers,
+
+144
+00:06:36.300 --> 00:06:38.010
+but for now let's just actually handle that
+
+145
+00:06:38.010 --> 00:06:39.280
+in the client side,
+
+146
+00:06:39.280 --> 00:06:41.720
+and you can see that it's showing up here.
+
+147
+00:06:41.720 --> 00:06:44.113
+I take the X off the end.
+
+148
+00:06:45.010 --> 00:06:48.390
+Item shows up and the Single Item component is now rendered.
+
+149
+00:06:48.390 --> 00:06:49.900
+Now it's just a templating exercise.
+
+150
+00:06:49.900 --> 00:06:51.920
+We're gonna get all the data from this item
+
+151
+00:06:51.920 --> 00:06:53.990
+showing up on this specific page.
+
+152
+00:06:53.990 --> 00:06:56.210
+So I am first gonna make a styled component up here.
+
+153
+00:06:56.210 --> 00:06:58.573
+So import styled from styled components,
+
+154
+00:07:00.300 --> 00:07:02.823
+and we'll make SingleItemsStyles,
+
+155
+00:07:04.090 --> 00:07:08.010
+that's a styled.div, give it a max width of 1200px,
+
+156
+00:07:08.010 --> 00:07:09.650
+a little wider than our usual.
+
+157
+00:07:09.650 --> 00:07:12.443
+Margin 2rem auto.
+
+158
+00:07:14.090 --> 00:07:17.930
+Box shadow is gonna, we're going to grab that
+
+159
+00:07:17.930 --> 00:07:21.633
+from our theme props, so we'll call it .bs.
+
+160
+00:07:24.320 --> 00:07:27.570
+Display grid, grid auto columns 1fr.
+
+161
+00:07:27.570 --> 00:07:32.570
+Grid-auto-flow column and min-height of 800px.
+
+162
+00:07:33.600 --> 00:07:36.950
+Let's just start with that and we'll come back to it.
+
+163
+00:07:36.950 --> 00:07:40.450
+So we'll go back here and replace this paragraph
+
+164
+00:07:41.600 --> 00:07:42.900
+with our SingleItemStyles.
+
+165
+00:07:48.230 --> 00:07:50.900
+And inside of there, let's give ourselves an image
+
+166
+00:07:50.900 --> 00:07:52.900
+where the source is going to be equal
+
+167
+00:07:52.900 --> 00:07:56.630
+to the data.item.largeImage,
+
+168
+00:07:59.068 --> 00:08:01.280
+and what we can also do there is instead of saying
+
+169
+00:08:01.280 --> 00:08:02.680
+data.item every single time,
+
+170
+00:08:02.680 --> 00:08:05.360
+you could either de-structure it right in here,
+
+171
+00:08:05.360 --> 00:08:06.870
+or you could just make a little variable,
+
+172
+00:08:06.870 --> 00:08:07.703
+that's what I'm gonna do right here,
+
+173
+00:08:07.703 --> 00:08:11.323
+so const item equals data.item.
+
+174
+00:08:12.755 --> 00:08:14.590
+And then here we can simply just say item.
+
+175
+00:08:14.590 --> 00:08:16.956
+Same with the alt to make sure to set your alt,
+
+176
+00:08:16.956 --> 00:08:19.403
+it's going to be item.title.
+
+177
+00:08:21.890 --> 00:08:23.190
+See if it starts showing up?
+
+178
+00:08:23.190 --> 00:08:24.760
+Looking good!
+
+179
+00:08:24.760 --> 00:08:26.617
+All right, all right.
+
+180
+00:08:26.617 --> 00:08:27.620
+I like that.
+
+181
+00:08:27.620 --> 00:08:30.010
+Now one kinda cool thing I want to show you is this head.
+
+182
+00:08:30.010 --> 00:08:34.390
+You see the tab of our Chrome here just says Sick Fits?
+
+183
+00:08:34.390 --> 00:08:37.610
+What we did in our meta component if you take a look,
+
+184
+00:08:37.610 --> 00:08:39.610
+you see that we have this title of Sick Fits,
+
+185
+00:08:39.610 --> 00:08:42.143
+but what if we want to sort of reach outside
+
+186
+00:08:42.143 --> 00:08:43.400
+and update that?
+
+187
+00:08:43.400 --> 00:08:45.020
+That's where it gets a little bit complicated.
+
+188
+00:08:45.020 --> 00:08:46.434
+Does that mean you have to pass
+
+189
+00:08:46.434 --> 00:08:50.150
+the item directly to the meta?
+
+190
+00:08:50.150 --> 00:08:52.480
+And sometimes you query something in a component,
+
+191
+00:08:52.480 --> 00:08:55.110
+but you need to update something else on the page
+
+192
+00:08:55.110 --> 00:08:56.130
+that's a little bit higher,
+
+193
+00:08:56.130 --> 00:08:58.140
+or in our case, is not even part of the document,
+
+194
+00:08:58.140 --> 00:09:00.610
+it's part of the head tag in the HTML document.
+
+195
+00:09:00.610 --> 00:09:02.727
+So that is what is called a side effect,
+
+196
+00:09:02.727 --> 00:09:05.390
+and a side effect in JavaScript is where you reach
+
+197
+00:09:05.390 --> 00:09:08.060
+outside of something to update it.
+
+198
+00:09:08.060 --> 00:09:09.780
+And generally side effects are a no-no,
+
+199
+00:09:09.780 --> 00:09:13.031
+but in some cases you absolutely have to use them.
+
+200
+00:09:13.031 --> 00:09:15.150
+And if you wanna update the title tag,
+
+201
+00:09:15.150 --> 00:09:16.900
+that's exactly what where we do it.
+
+202
+00:09:16.900 --> 00:09:19.690
+And we're not going to be doing it via just like
+
+203
+00:09:19.690 --> 00:09:21.570
+document.query selector,
+
+204
+00:09:21.570 --> 00:09:23.830
+we're gonna be using something that's built into Next.js
+
+205
+00:09:23.830 --> 00:09:26.760
+that will allow us to introduce side effects.
+
+206
+00:09:26.760 --> 00:09:28.840
+So the first thing we wanna do is go up here
+
+207
+00:09:28.840 --> 00:09:32.250
+and import the head tag from, what is it?
+
+208
+00:09:32.250 --> 00:09:33.980
+Next head.
+
+209
+00:09:33.980 --> 00:09:37.310
+And you'll notice that we actually did that up here.
+
+210
+00:09:37.310 --> 00:09:39.610
+Import the head tag and then we have a head tag
+
+211
+00:09:39.610 --> 00:09:41.800
+and inside of that we just stick whatever we want.
+
+212
+00:09:41.800 --> 00:09:43.870
+Well you're allowed to have multiple head tags
+
+213
+00:09:43.870 --> 00:09:46.260
+throughout your application and it will just collect them
+
+214
+00:09:46.260 --> 00:09:47.530
+all throughout your application,
+
+215
+00:09:47.530 --> 00:09:49.980
+and apply it to the actual head
+
+216
+00:09:49.980 --> 00:09:51.840
+of the rendered-out document.
+
+217
+00:09:51.840 --> 00:09:52.900
+So this is pretty neat,
+
+218
+00:09:52.900 --> 00:09:54.810
+because all you can, what you can do is
+
+219
+00:09:54.810 --> 00:09:57.640
+just simply go down here, give yourself a head tag,
+
+220
+00:09:57.640 --> 00:10:00.240
+and this might seem a bit weird because you're nowhere near
+
+221
+00:10:00.240 --> 00:10:02.500
+your actual head of the document,
+
+222
+00:10:02.500 --> 00:10:04.330
+but you can put it in here and it's going to
+
+223
+00:10:04.330 --> 00:10:06.980
+take it out and put it into the proper head tag.
+
+224
+00:10:06.980 --> 00:10:08.440
+So we can give ourselves a title.
+
+225
+00:10:08.440 --> 00:10:11.790
+We'll say it's Sick Fits, and give ourselves a pipe,
+
+226
+00:10:11.790 --> 00:10:15.650
+and we will just put the item.title inside of there,
+
+227
+00:10:15.650 --> 00:10:18.410
+and you'll see that the TNF Fanorak Pullover
+
+228
+00:10:18.410 --> 00:10:20.670
+is now being pulled into the head tag
+
+229
+00:10:20.670 --> 00:10:22.100
+just because we've done this.
+
+230
+00:10:22.100 --> 00:10:25.250
+And if we were to inspect that in our dev tools,
+
+231
+00:10:25.250 --> 00:10:28.320
+you wouldn't see any actual rendered-out HTML,
+
+232
+00:10:28.320 --> 00:10:30.970
+that will all be removed before the actual render.
+
+233
+00:10:30.970 --> 00:10:34.540
+So that's how you introduce side effects with Next.js
+
+234
+00:10:34.540 --> 00:10:36.810
+when you're trying to update your meta tag,
+
+235
+00:10:36.810 --> 00:10:39.170
+and same thing would go for any of the tags
+
+236
+00:10:39.170 --> 00:10:41.130
+that you would want to put on a specific,
+
+237
+00:10:41.130 --> 00:10:44.060
+like if you wanted to introduce a custom favicon
+
+238
+00:10:44.060 --> 00:10:48.110
+only in this Single Item, then you totally could
+
+239
+00:10:48.110 --> 00:10:51.220
+by introducing it with the head tag.
+
+240
+00:10:51.220 --> 00:10:52.210
+Good, we have our image,
+
+241
+00:10:52.210 --> 00:10:55.830
+let's go and do a few more of the things up,
+
+242
+00:10:55.830 --> 00:10:57.900
+so we'll give ourselves details div,
+
+243
+00:10:57.900 --> 00:10:59.170
+div with a class of details
+
+244
+00:10:59.170 --> 00:11:03.063
+and then we'll have an h2 Viewing item.title,
+
+245
+00:11:05.280 --> 00:11:07.160
+paragraph with the item.description,
+
+246
+00:11:07.160 --> 00:11:09.300
+and we'll have some items that will allow us
+
+247
+00:11:09.300 --> 00:11:11.470
+to add it to cart as well as update them,
+
+248
+00:11:11.470 --> 00:11:13.730
+but we'll come back and code those buttons in
+
+249
+00:11:13.730 --> 00:11:15.170
+in just a little bit.
+
+250
+00:11:15.170 --> 00:11:16.700
+Right now it's showing up
+
+251
+00:11:16.700 --> 00:11:18.400
+but it's looking a little bit goofy
+
+252
+00:11:18.400 --> 00:11:21.550
+so we'll go back to our CSS up here
+
+253
+00:11:21.550 --> 00:11:24.390
+and write a little more CSS.
+
+254
+00:11:24.390 --> 00:11:25.723
+So say the image.
+
+255
+00:11:27.516 --> 00:11:31.030
+A width of 100%, a height of 100%
+
+256
+00:11:31.030 --> 00:11:35.300
+and an object fit of contain,
+
+257
+00:11:35.300 --> 00:11:36.570
+and that's kind of a cool one.
+
+258
+00:11:36.570 --> 00:11:38.950
+I'll come back and show you exactly what that does.
+
+259
+00:11:38.950 --> 00:11:40.220
+Actually you can see it here.
+
+260
+00:11:40.220 --> 00:11:43.890
+So if this image is extremely wide and short,
+
+261
+00:11:43.890 --> 00:11:46.010
+or if it's extremely tall and wide,
+
+262
+00:11:46.010 --> 00:11:48.020
+it doesn't matter because it will always fit it in.
+
+263
+00:11:48.020 --> 00:11:49.590
+It's kinda like background size cover
+
+264
+00:11:49.590 --> 00:11:52.530
+or background size contained, but for actual image tags
+
+265
+00:11:52.530 --> 00:11:54.960
+and I love that because you can stretch an image
+
+266
+00:11:54.960 --> 00:11:56.940
+and not actually worry about it being stretched.
+
+267
+00:11:56.940 --> 00:12:00.040
+If I didn't have that, it would look much worse.
+
+268
+00:12:00.040 --> 00:12:01.320
+And you see, that doesn't look good,
+
+269
+00:12:01.320 --> 00:12:04.085
+but you put contain in there, you can also put in cover,
+
+270
+00:12:04.085 --> 00:12:06.540
+and that will actually cover it regardless
+
+271
+00:12:06.540 --> 00:12:08.180
+of the width and the height and it'll chop
+
+272
+00:12:08.180 --> 00:12:11.620
+either the sides or the top and bottom off.
+
+273
+00:12:11.620 --> 00:12:13.880
+Let's give ourselves a detail selector here,
+
+274
+00:12:13.880 --> 00:12:18.083
+Which say margin 3rem and a font size 2rem.
+
+275
+00:12:20.070 --> 00:12:21.340
+And things are looking good.
+
+276
+00:12:21.340 --> 00:12:22.690
+It's a little bit plain but we'll come back
+
+277
+00:12:22.690 --> 00:12:24.160
+and add some actual buttons to it.
+
+278
+00:12:24.160 --> 00:12:28.060
+So that is our Single Item that is now being rendered out.
+
+279
+00:12:28.060 --> 00:12:31.233
+Let's flip over to working on the pagination.
+

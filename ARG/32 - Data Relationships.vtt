@@ -1,0 +1,494 @@
+﻿WEBVTT
+
+1
+00:00:00.315 --> 00:00:02.550
+<v Instructor>Alright, we're gonna start getting into,</v>
+
+2
+00:00:02.550 --> 00:00:05.714
+like the permissions part of this course
+
+3
+00:00:05.714 --> 00:00:07.780
+where people are allowed to do specific things
+
+4
+00:00:07.780 --> 00:00:09.662
+depending on if they own the item
+
+5
+00:00:09.662 --> 00:00:11.792
+or if they have administrator privileges
+
+6
+00:00:11.792 --> 00:00:13.731
+or if they have custom permissions,
+
+7
+00:00:13.731 --> 00:00:15.468
+and before we do any of that,
+
+8
+00:00:15.468 --> 00:00:18.083
+we actually need to have a relationship
+
+9
+00:00:18.083 --> 00:00:20.781
+between our user and our actual item
+
+10
+00:00:20.781 --> 00:00:23.231
+because, when someone creates something, right,
+
+11
+00:00:23.231 --> 00:00:25.352
+now there's, we don't know who has created it, right?
+
+12
+00:00:25.352 --> 00:00:28.240
+We need to able to tie it to a specific user.
+
+13
+00:00:28.240 --> 00:00:29.882
+And the way that we're gonna do that
+
+14
+00:00:29.882 --> 00:00:32.394
+is first we're gonna open up our datamodel.graphql
+
+15
+00:00:32.394 --> 00:00:35.389
+and we'll go down to our type of item
+
+16
+00:00:35.389 --> 00:00:37.581
+and you'll see that we have this createAt: and
+
+17
+00:00:37.581 --> 00:00:39.186
+updateAt: and we actually don't need that, that's
+
+18
+00:00:39.186 --> 00:00:40.462
+there by default.
+
+19
+00:00:40.462 --> 00:00:42.579
+But we want to add the user
+
+20
+00:00:42.579 --> 00:00:47.579
+and this is a relationship between the user and the items.
+
+21
+00:00:48.010 --> 00:00:49.853
+So the user is just a type of user
+
+22
+00:00:49.853 --> 00:00:53.228
+and then when we create an item we're going to link up
+
+23
+00:00:53.228 --> 00:00:56.485
+a users id, in the item's user property
+
+24
+00:00:56.485 --> 00:00:59.307
+and that will allow us to populate the user and
+
+25
+00:00:59.307 --> 00:01:02.466
+any other information that's associated with that item.
+
+26
+00:01:02.466 --> 00:01:05.524
+So, it just changed my data model and you should know by now
+
+27
+00:01:05.524 --> 00:01:08.336
+what is the one thing we have to do anytime we change
+
+28
+00:01:08.336 --> 00:01:10.317
+our data model is to redeploy that to Prisma.
+
+29
+00:01:10.317 --> 00:01:13.867
+So lets go back to our terminal here, and I'm gonna quit it
+
+30
+00:01:13.867 --> 00:01:18.496
+and we're gonna run npm run deploy and bit of an error here.
+
+31
+00:01:18.496 --> 00:01:21.776
+You are creating a required relationship, but
+
+32
+00:01:21.776 --> 00:01:23.747
+there are already modes that would violate this constraint.
+
+33
+00:01:23.747 --> 00:01:26.445
+Oh, of course because right now these have no user and
+
+34
+00:01:26.445 --> 00:01:29.685
+we're telling it that there is going to be a user field
+
+35
+00:01:29.685 --> 00:01:31.656
+that is required, that's what the bang is right?
+
+36
+00:01:31.656 --> 00:01:34.197
+So, what we have to do here is you can either force it,
+
+37
+00:01:34.197 --> 00:01:36.736
+I don't recommend that cause you're then you're then gonna
+
+38
+00:01:36.736 --> 00:01:38.805
+get into errors that you are hard to solve.
+
+39
+00:01:38.805 --> 00:01:41.556
+Or, you can just go head and delete this or update
+
+40
+00:01:41.556 --> 00:01:43.047
+all of your existing ones.
+
+41
+00:01:43.047 --> 00:01:45.557
+So, I'm just gonna go ahead and delete everything
+
+42
+00:01:45.557 --> 00:01:46.840
+I suggest you do the same thing, and then we will
+
+43
+00:01:46.840 --> 00:01:49.090
+go ahead and redeploy that.
+
+44
+00:01:57.416 --> 00:01:58.980
+It's obviously not working cause I have to run
+
+45
+00:01:58.980 --> 00:02:01.338
+my server in order to do it.
+
+46
+00:02:01.338 --> 00:02:04.457
+It's probably, it's a good thing to notice here is like
+
+47
+00:02:04.457 --> 00:02:07.628
+what are some common things that you should think about.
+
+48
+00:02:07.628 --> 00:02:08.997
+Is your server running?
+
+49
+00:02:08.997 --> 00:02:11.196
+That's probably a good one to think about. Alright, does
+
+50
+00:02:11.196 --> 00:02:12.972
+the delete work now?
+
+51
+00:02:12.972 --> 00:02:15.722
+Beautiful delete, delete, delete.
+
+52
+00:02:18.008 --> 00:02:20.329
+This is where we get into that pagination issue
+
+53
+00:02:20.329 --> 00:02:23.991
+where if I refresh the page now, we see four more
+
+54
+00:02:23.991 --> 00:02:27.236
+fairly soon and I'll probably be able to
+
+55
+00:02:27.236 --> 00:02:29.239
+every time we delete one, like delete this one
+
+56
+00:02:29.239 --> 00:02:32.649
+it should re-fetch page one and then pop in that,
+
+57
+00:02:32.649 --> 00:02:34.769
+that newest one it should re-fetch page two
+
+58
+00:02:34.769 --> 00:02:36.620
+which should have been shifted down by one
+
+59
+00:02:36.620 --> 00:02:39.769
+and it will re-fetch page three which have now been
+
+60
+00:02:39.769 --> 00:02:40.969
+shifted down by one.
+
+61
+00:02:40.969 --> 00:02:42.369
+So, let's go ahead and delete them all
+
+62
+00:02:42.369 --> 00:02:43.969
+Up, up, up
+
+63
+00:02:43.969 --> 00:02:47.219
+delete and then refresh page one again.
+
+64
+00:02:48.563 --> 00:02:51.837
+Good. And I'm willing to bet now, if we cut it
+
+65
+00:02:51.837 --> 00:02:54.837
+and npm run deploy. It's gonna work.
+
+66
+00:03:00.640 --> 00:03:04.890
+Looks like it works! In good shapes so that's that.
+
+67
+00:03:06.043 --> 00:03:08.175
+Now we need to open up our mutation
+
+68
+00:03:08.175 --> 00:03:11.232
+resolver for when we create an item.
+
+69
+00:03:11.232 --> 00:03:13.095
+First thing we want to do, check if they're logged in.
+
+70
+00:03:13.095 --> 00:03:14.938
+That's why we have that to do here.
+
+71
+00:03:14.938 --> 00:03:16.735
+So, what we will do here is we'll say if
+
+72
+00:03:16.735 --> 00:03:20.568
+there is no context, dot request, dot user id,
+
+73
+00:03:24.885 --> 00:03:28.079
+then we're just gonna throw an error.
+
+74
+00:03:28.079 --> 00:03:30.829
+You must be logged in to do that.
+
+75
+00:03:34.991 --> 00:03:36.765
+Good. Now let's actually test that.
+
+76
+00:03:36.765 --> 00:03:38.015
+So npm run dev.
+
+77
+00:03:42.525 --> 00:03:43.825
+I'm gonna sign out.
+
+78
+00:03:43.825 --> 00:03:46.794
+I'm gonna manually go to the sale page.
+
+79
+00:03:46.794 --> 00:03:48.643
+And you can see I'm still able to see the sale
+
+80
+00:03:48.643 --> 00:03:50.095
+even though I'm not signed in.
+
+81
+00:03:50.095 --> 00:03:52.765
+We're gonna fix that with a rapper component
+
+82
+00:03:52.765 --> 00:03:54.485
+that checks if you're logged in.
+
+83
+00:03:54.485 --> 00:03:57.568
+But now if I try to upload something.
+
+84
+00:03:58.550 --> 00:04:00.355
+Go ahead and submit it.
+
+85
+00:04:00.355 --> 00:04:02.626
+It says, "Shoot, you must be logged in to do that"
+
+86
+00:04:02.626 --> 00:04:03.855
+so good.
+
+87
+00:04:03.855 --> 00:04:05.285
+You always wanna like kind of have
+
+88
+00:04:05.285 --> 00:04:06.954
+two levels of security here.
+
+89
+00:04:06.954 --> 00:04:08.506
+You wanna check on the backend,
+
+90
+00:04:08.506 --> 00:04:10.706
+which is the actual secure part.
+
+91
+00:04:10.706 --> 00:04:13.155
+And then we wanna provide interface on the front end
+
+92
+00:04:13.155 --> 00:04:15.805
+that stops people from maybe getting confused if
+
+93
+00:04:15.805 --> 00:04:17.765
+they were to accidentally stumble upon this
+
+94
+00:04:17.765 --> 00:04:19.135
+and realize they're not signed in.
+
+95
+00:04:19.135 --> 00:04:20.586
+That's what we will do in a coming episode,
+
+96
+00:04:20.586 --> 00:04:22.025
+So that's done there,
+
+97
+00:04:22.025 --> 00:04:24.075
+then we'll go done to this data and add the user.
+
+98
+00:04:24.075 --> 00:04:28.026
+So say we're spreading all of the fields so the image,
+
+99
+00:04:28.026 --> 00:04:31.386
+the title, the price, and the description into the data.
+
+100
+00:04:31.386 --> 00:04:33.255
+We also want to add a user.
+
+101
+00:04:33.255 --> 00:04:36.754
+And the way that you make relationships in Prisma
+
+102
+00:04:36.754 --> 00:04:40.226
+is that you give your user, which is a object.
+
+103
+00:04:40.226 --> 00:04:43.394
+And we give it a connect and we want to connect it
+
+104
+00:04:43.394 --> 00:04:46.386
+on another object where the id is equal to the context
+
+105
+00:04:46.386 --> 00:04:48.469
+dot request, dot user id.
+
+106
+00:04:49.557 --> 00:04:53.573
+So this is the way that we provide relationships.
+
+107
+00:04:53.573 --> 00:04:54.746
+Let's put a little comment on there.
+
+108
+00:04:54.746 --> 00:04:59.163
+This is how we create a relationship between the item
+
+109
+00:05:02.605 --> 00:05:03.688
+and the user.
+
+110
+00:05:04.875 --> 00:05:08.215
+Now if I were to go ahead and sign in,
+
+111
+00:05:08.215 --> 00:05:10.225
+and try to sell something,
+
+112
+00:05:10.225 --> 00:05:12.151
+submit it, it obviously works.
+
+113
+00:05:12.151 --> 00:05:15.946
+But if we were to go into our data explorer,
+
+114
+00:05:15.946 --> 00:05:17.196
+go to our item,
+
+115
+00:05:19.746 --> 00:05:24.746
+you'll see now we have a user id which ends in three eight.
+
+116
+00:05:25.015 --> 00:05:27.845
+And if we were to go to our users,
+
+117
+00:05:27.845 --> 00:05:31.015
+you'll see that this is the user that I use to sign in,
+
+118
+00:05:31.015 --> 00:05:32.215
+and that ends in three.
+
+119
+00:05:32.215 --> 00:05:34.397
+So that is a relationship between the two.
+
+120
+00:05:34.397 --> 00:05:37.474
+So, pretty simple to actually make these relationships.
+
+121
+00:05:37.474 --> 00:05:40.746
+In the next couple of videos we're to be diving a little
+
+122
+00:05:40.746 --> 00:05:43.275
+bit deeper into some advanced permission work,
+
+123
+00:05:43.275 --> 00:05:46.192
+other than you not being logged in.
+

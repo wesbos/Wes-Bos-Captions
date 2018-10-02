@@ -1,0 +1,1166 @@
+﻿WEBVTT
+
+1
+00:00:00.338 --> 00:00:02.220
+<v Instructor>So in this video we're gonna be talking</v>
+
+2
+00:00:02.220 --> 00:00:05.450
+about local state in your Apollo store.
+
+3
+00:00:05.450 --> 00:00:06.860
+Now what is local state?
+
+4
+00:00:06.860 --> 00:00:09.310
+Local state is data that might not necessarily
+
+5
+00:00:09.310 --> 00:00:10.630
+live in your database,
+
+6
+00:00:10.630 --> 00:00:12.460
+it's not gonna live in your GraphQL API
+
+7
+00:00:12.460 --> 00:00:14.740
+on the server, but it's data that needs to live
+
+8
+00:00:14.740 --> 00:00:18.950
+in the browser for whatever reason.
+
+9
+00:00:18.950 --> 00:00:21.420
+Generally for local data in the browser
+
+10
+00:00:21.420 --> 00:00:23.300
+you use something called state.
+
+11
+00:00:23.300 --> 00:00:24.900
+But it can be a little hard to move
+
+12
+00:00:24.900 --> 00:00:26.840
+state around and kind of ripple it
+
+13
+00:00:26.840 --> 00:00:29.325
+throughout your application, so some alternatives
+
+14
+00:00:29.325 --> 00:00:31.160
+to using just React state
+
+15
+00:00:31.160 --> 00:00:33.020
+is, you could use something like Redux
+
+16
+00:00:33.020 --> 00:00:35.280
+and have a store at the top level of your application,
+
+17
+00:00:35.280 --> 00:00:37.090
+and you can inject those wherever you want.
+
+18
+00:00:37.090 --> 00:00:38.700
+There's something new to React Context,
+
+19
+00:00:38.700 --> 00:00:41.820
+I have a video on YouTube on that as well.
+
+20
+00:00:41.820 --> 00:00:43.600
+However, when you're using Apollo
+
+21
+00:00:43.600 --> 00:00:45.700
+to store all of your GraphQL data,
+
+22
+00:00:45.700 --> 00:00:47.690
+it makes sense to also use Apollo
+
+23
+00:00:47.690 --> 00:00:49.510
+and GraphQL to store your local data.
+
+24
+00:00:49.510 --> 00:00:51.950
+That way you can write queries and mutations
+
+25
+00:00:51.950 --> 00:00:54.020
+the same way you would for your server-side
+
+26
+00:00:54.020 --> 00:00:56.350
+against your client-side data.
+
+27
+00:00:56.350 --> 00:00:58.470
+So that's exactly what we're gonna be doing.
+
+28
+00:00:58.470 --> 00:00:59.760
+First thing we need to do is open up
+
+29
+00:00:59.760 --> 00:01:02.700
+our withdata.js file, and remember
+
+30
+00:01:02.700 --> 00:01:05.140
+that this is where we created our Apollo Client,
+
+31
+00:01:05.140 --> 00:01:07.410
+this is where we create our Apollo store,
+
+32
+00:01:07.410 --> 00:01:09.725
+and inside of this Apollo Client,
+
+33
+00:01:09.725 --> 00:01:12.450
+what we're gonna do is we're gonna tell it to also store
+
+34
+00:01:12.450 --> 00:01:14.120
+some local data.
+
+35
+00:01:14.120 --> 00:01:17.213
+Go right below your request right here.
+
+36
+00:01:17.213 --> 00:01:18.660
+And we're gonna add a configuration property
+
+37
+00:01:18.660 --> 00:01:20.856
+here called clientstate.
+
+38
+00:01:20.856 --> 00:01:22.790
+And that's your local data, maybe we should put
+
+39
+00:01:22.790 --> 00:01:24.100
+a little comment above that.
+
+40
+00:01:24.100 --> 00:01:26.803
+Local data.
+
+41
+00:01:27.970 --> 00:01:30.370
+And clientstate takes a couple things:
+
+42
+00:01:30.370 --> 00:01:32.150
+resolvers for our mutations,
+
+43
+00:01:32.150 --> 00:01:33.640
+and that's gonna be empty for now.
+
+44
+00:01:33.640 --> 00:01:34.930
+And then it's also gonna take
+
+45
+00:01:34.930 --> 00:01:38.350
+a bunch of defaults for the data when it loads.
+
+46
+00:01:38.350 --> 00:01:39.950
+You do that with React state as well,
+
+47
+00:01:39.950 --> 00:01:41.350
+when the component loads you give it
+
+48
+00:01:41.350 --> 00:01:43.400
+an empty or a default state.
+
+49
+00:01:43.400 --> 00:01:45.590
+In our case we're gonna call it cartOpen,
+
+50
+00:01:45.590 --> 00:01:47.290
+and we're gonna make that true,
+
+51
+00:01:47.290 --> 00:01:49.870
+and that's just gonna be the default for the,
+
+52
+00:01:49.870 --> 00:01:51.850
+that's gonna be the boolean we're gonna be flipping
+
+53
+00:01:51.850 --> 00:01:53.000
+back and forth.
+
+54
+00:01:53.000 --> 00:01:55.250
+Now we're gonna open up our cart.js,
+
+55
+00:01:55.250 --> 00:01:57.580
+head up to the top, and we're gonna import
+
+56
+00:01:57.580 --> 00:02:01.073
+the query and mutation from React Apollo,
+
+57
+00:02:03.210 --> 00:02:07.113
+and we're also gonna import GQL from GraphQL tag.
+
+58
+00:02:08.812 --> 00:02:11.070
+Then we're going to actually write our query,
+
+59
+00:02:11.070 --> 00:02:12.120
+so we'll say const.
+
+60
+00:02:12.120 --> 00:02:14.270
+I'm gonna call it local state query,
+
+61
+00:02:14.270 --> 00:02:17.420
+'cause you could use the query for many pieces
+
+62
+00:02:17.420 --> 00:02:19.570
+of local state, just as like a handy little
+
+63
+00:02:19.570 --> 00:02:20.740
+grab local state,
+
+64
+00:02:20.740 --> 00:02:22.820
+however you could have many different queries
+
+65
+00:02:22.820 --> 00:02:25.010
+that just grab one specific piece of state,
+
+66
+00:02:25.010 --> 00:02:26.810
+depends on what you're trying to do here.
+
+67
+00:02:26.810 --> 00:02:28.570
+So we're gonna make it GQL, just like we do
+
+68
+00:02:28.570 --> 00:02:30.300
+for our server-side queries.
+
+69
+00:02:30.300 --> 00:02:32.290
+Inside of that we have a query,
+
+70
+00:02:32.290 --> 00:02:34.650
+and we're going to ask from local state,
+
+71
+00:02:34.650 --> 00:02:37.680
+we're just going to ask for the cartOpen property.
+
+72
+00:02:37.680 --> 00:02:39.320
+Now the only difference that we have here
+
+73
+00:02:39.320 --> 00:02:42.360
+is you tag it with a directive that's called client.
+
+74
+00:02:42.360 --> 00:02:44.900
+And what that does is it lets Apollo know,
+
+75
+00:02:44.900 --> 00:02:48.440
+don't try to go to the GraphQL API for this,
+
+76
+00:02:48.440 --> 00:02:51.260
+don't try go to the server for this piece of data,
+
+77
+00:02:51.260 --> 00:02:53.140
+because this is client-side data,
+
+78
+00:02:53.140 --> 00:02:55.880
+so just grab it directly from the Apollo store
+
+79
+00:02:55.880 --> 00:02:57.980
+and don't worry about anything
+
+80
+00:02:57.980 --> 00:03:00.180
+going off to the server for that.
+
+81
+00:03:00.180 --> 00:03:01.640
+Now it's simply just the same
+
+82
+00:03:01.640 --> 00:03:03.010
+as our regular query components.
+
+83
+00:03:03.010 --> 00:03:05.190
+We can grab a query right here,
+
+84
+00:03:05.190 --> 00:03:09.593
+and that has a query itself called local state query.
+
+85
+00:03:11.210 --> 00:03:13.563
+Then we do our regular arrow function, here.
+
+86
+00:03:16.220 --> 00:03:19.490
+And we're going to destructure the data
+
+87
+00:03:19.490 --> 00:03:21.233
+that that query gives us.
+
+88
+00:03:22.260 --> 00:03:26.090
+I'm gonna put this query at the bottom of our cart styles.
+
+89
+00:03:26.090 --> 00:03:28.440
+And we can do a little debugging here.
+
+90
+00:03:28.440 --> 00:03:31.723
+If we say console.log, the data or or.
+
+91
+00:03:33.830 --> 00:03:36.110
+And now if we give it a refresh,
+
+92
+00:03:36.110 --> 00:03:39.250
+you'll see that when the cart loads
+
+93
+00:03:39.250 --> 00:03:41.530
+the query triggers local state
+
+94
+00:03:41.530 --> 00:03:43.290
+and if we open this up, you'll see
+
+95
+00:03:43.290 --> 00:03:45.700
+that we have our data called cartOpen.
+
+96
+00:03:45.700 --> 00:03:47.250
+That's great, because that allows us
+
+97
+00:03:47.250 --> 00:03:50.803
+to do open equals data.cartOpen.
+
+98
+00:03:52.710 --> 00:03:54.560
+Can get rid of this console log here.
+
+99
+00:03:56.890 --> 00:04:00.590
+And now if this were to change to false as a default
+
+100
+00:04:02.430 --> 00:04:06.046
+and I refresh it, you'll see that it's now closed.
+
+101
+00:04:06.046 --> 00:04:07.370
+Set it to true.
+
+102
+00:04:07.370 --> 00:04:09.720
+I have to manually refresh 'cause these are the defaults
+
+103
+00:04:09.720 --> 00:04:11.867
+when the store is created,
+
+104
+00:04:11.867 --> 00:04:13.340
+but what we're actually gonna do now
+
+105
+00:04:13.340 --> 00:04:15.720
+is actually code up a mutation that will
+
+106
+00:04:15.720 --> 00:04:18.330
+toggle this thing back and forth.
+
+107
+00:04:18.330 --> 00:04:20.000
+So let's go back to cart right here,
+
+108
+00:04:20.000 --> 00:04:23.190
+and let's make a new mutation called
+
+109
+00:04:23.190 --> 00:04:25.573
+const TOGGLE_CART_MUTATION,
+
+110
+00:04:27.430 --> 00:04:28.580
+it's equal to GQL,
+
+111
+00:04:28.580 --> 00:04:33.580
+and we write a mutation called toggleCart.
+
+112
+00:04:34.270 --> 00:04:35.470
+There's no arguments or anything,
+
+113
+00:04:35.470 --> 00:04:38.270
+we just have to tag it again with client.
+
+114
+00:04:38.270 --> 00:04:40.210
+Then we can take that
+
+115
+00:04:40.210 --> 00:04:42.300
+and this is gonna get a little bit hairy,
+
+116
+00:04:42.300 --> 00:04:44.200
+because we're gonna be wrapping a mutation,
+
+117
+00:04:44.200 --> 00:04:45.820
+and then a query inside of that.
+
+118
+00:04:45.820 --> 00:04:47.620
+I'm gonna show you how we can refactor
+
+119
+00:04:47.620 --> 00:04:49.010
+this in just a little bit,
+
+120
+00:04:49.010 --> 00:04:51.330
+so hold on to your pants for a second.
+
+121
+00:04:51.330 --> 00:04:53.723
+Mutation, pass the mutation here,
+
+122
+00:04:55.260 --> 00:04:58.090
+toggleCart mutation, then we do an arrow function inside
+
+123
+00:04:58.090 --> 00:05:01.780
+of that where the one function that it
+
+124
+00:05:01.780 --> 00:05:04.200
+gives us is called toggleCart.
+
+125
+00:05:07.415 --> 00:05:10.250
+And bring this sucker right down to the bottom.
+
+126
+00:05:10.250 --> 00:05:12.820
+It doesn't matter that mutation comes first
+
+127
+00:05:12.820 --> 00:05:14.420
+and query comes second, you could
+
+128
+00:05:14.420 --> 00:05:16.610
+do it the other way around.
+
+129
+00:05:16.610 --> 00:05:19.900
+Then we take this toggleCart method,
+
+130
+00:05:19.900 --> 00:05:22.750
+we go to our close button, and we should be able
+
+131
+00:05:22.750 --> 00:05:26.830
+to say onClick equals toggleCart.
+
+132
+00:05:27.680 --> 00:05:29.380
+Now, we haven't written a resolver,
+
+133
+00:05:29.380 --> 00:05:31.050
+which, a resolver is what happens
+
+134
+00:05:31.050 --> 00:05:32.720
+when this function gets called,
+
+135
+00:05:32.720 --> 00:05:35.160
+but if we click it now, it should tell us
+
+136
+00:05:35.160 --> 00:05:37.890
+something about, like cannot find a resolver for it.
+
+137
+00:05:37.890 --> 00:05:39.470
+Let's check that now.
+
+138
+00:05:39.470 --> 00:05:41.090
+Click on this button.
+
+139
+00:05:41.090 --> 00:05:43.190
+There we go: missing field toggleCart
+
+140
+00:05:43.190 --> 00:05:46.020
+in curly brackets, so a bit of an error.
+
+141
+00:05:46.020 --> 00:05:48.330
+Now we'll go back to our withdata,
+
+142
+00:05:48.330 --> 00:05:51.180
+and we'll code up the resolver for that thing
+
+143
+00:05:51.180 --> 00:05:52.060
+that we just created.
+
+144
+00:05:52.060 --> 00:05:52.893
+What did we call it?
+
+145
+00:05:52.893 --> 00:05:54.220
+We called it toggleCart.
+
+146
+00:05:54.220 --> 00:05:57.910
+So in our resolvers you have mutation, our resolver.
+
+147
+00:05:57.910 --> 00:06:00.910
+And inside of that we have our toggleCart.
+
+148
+00:06:00.910 --> 00:06:03.220
+That toggleCart gives us three things:
+
+149
+00:06:03.220 --> 00:06:05.310
+first is just underscore.
+
+150
+00:06:05.310 --> 00:06:06.650
+I don't know what that is.
+
+151
+00:06:06.650 --> 00:06:07.960
+I looked at the documentation
+
+152
+00:06:07.960 --> 00:06:10.400
+and I couldn't figure it out, but why
+
+153
+00:06:10.400 --> 00:06:12.170
+the documentation is using an underscore
+
+154
+00:06:12.170 --> 00:06:14.239
+here is because they don't need it.
+
+155
+00:06:14.239 --> 00:06:16.271
+Sometimes people would just use an underscore.
+
+156
+00:06:16.271 --> 00:06:18.380
+You could put anything in there that you want,
+
+157
+00:06:18.380 --> 00:06:19.400
+actually, that wouldn't work.
+
+158
+00:06:19.400 --> 00:06:22.300
+You can put anything in there that's a valid variable name,
+
+159
+00:06:22.300 --> 00:06:24.950
+and that will just be garbage collected,
+
+160
+00:06:24.950 --> 00:06:25.783
+so you don't want it,
+
+161
+00:06:25.783 --> 00:06:27.120
+so it's kind of a little practice
+
+162
+00:06:27.120 --> 00:06:28.480
+that people just use an underscore.
+
+163
+00:06:28.480 --> 00:06:29.580
+Might not be a good thing if you
+
+164
+00:06:29.580 --> 00:06:31.410
+actually need the underscore variable
+
+165
+00:06:31.410 --> 00:06:32.843
+for something like Lodash.
+
+166
+00:06:33.800 --> 00:06:35.570
+Second, we have the variables
+
+167
+00:06:35.570 --> 00:06:37.840
+that come along with the request.
+
+168
+00:06:37.840 --> 00:06:39.390
+In our case, we don't have any variables
+
+169
+00:06:39.390 --> 00:06:41.410
+but if you were calling this mutation
+
+170
+00:06:41.410 --> 00:06:44.950
+with a bunch of variables, you would be able to access 'em.
+
+171
+00:06:44.950 --> 00:06:47.040
+And then third, you get the Apollo Client,
+
+172
+00:06:47.040 --> 00:06:48.380
+and inside of that client, we actually
+
+173
+00:06:48.380 --> 00:06:51.060
+don't want the entire client, we're gonna just destructure
+
+174
+00:06:51.060 --> 00:06:53.390
+the cache from the client.
+
+175
+00:06:53.390 --> 00:06:56.190
+And this is gonna be very similar to how,
+
+176
+00:06:56.190 --> 00:06:57.750
+when we deleted an item,
+
+177
+00:06:57.750 --> 00:07:00.400
+we mainly removed it from the cache.
+
+178
+00:07:00.400 --> 00:07:02.260
+In this case what we're gonna be doing is,
+
+179
+00:07:02.260 --> 00:07:04.411
+we're going to be pulling that value,
+
+180
+00:07:04.411 --> 00:07:07.060
+cartOpen value, out of the cache,
+
+181
+00:07:07.060 --> 00:07:08.930
+reading it, and then setting it
+
+182
+00:07:08.930 --> 00:07:12.658
+back into the cache with the opposite value.
+
+183
+00:07:12.658 --> 00:07:15.570
+That's what we're gonna do now is first,
+
+184
+00:07:15.570 --> 00:07:20.570
+read the cartOpen value from the cache.
+
+185
+00:07:22.240 --> 00:07:23.470
+Now, this is a little bit weird.
+
+186
+00:07:23.470 --> 00:07:25.400
+You can't just say, I would love
+
+187
+00:07:25.400 --> 00:07:26.973
+to do just cache.cartOpen,
+
+188
+00:07:28.400 --> 00:07:30.580
+and be able to get it, but you have to have
+
+189
+00:07:30.580 --> 00:07:32.970
+an entire GraphQL query in order
+
+190
+00:07:32.970 --> 00:07:34.620
+to just read from the cache.
+
+191
+00:07:34.620 --> 00:07:36.960
+But that's not a problem, because we already have written
+
+192
+00:07:36.960 --> 00:07:41.603
+that query in our cart.js, so we're going to import
+
+193
+00:07:41.603 --> 00:07:45.220
+that ourselves, so let's go over to cart.js.
+
+194
+00:07:45.220 --> 00:07:46.650
+This is the one that we have here,
+
+195
+00:07:46.650 --> 00:07:49.080
+local state query, so what we can do
+
+196
+00:07:49.080 --> 00:07:51.990
+is we can export the local state query.
+
+197
+00:07:51.990 --> 00:07:53.980
+And then while we're here, let's also export
+
+198
+00:07:53.980 --> 00:07:56.210
+that other one, toggleCart mutation,
+
+199
+00:07:56.210 --> 00:07:59.210
+because we will need it throughout the application.
+
+200
+00:07:59.210 --> 00:08:01.290
+Whenever you want to open your cart,
+
+201
+00:08:01.290 --> 00:08:03.300
+doesn't matter where you are, if somebody
+
+202
+00:08:03.300 --> 00:08:05.740
+adds something to their cart, like they click on this bag
+
+203
+00:08:05.740 --> 00:08:06.700
+and they click Add to Cart,
+
+204
+00:08:06.700 --> 00:08:08.060
+if you wanted to then trigger
+
+205
+00:08:08.060 --> 00:08:09.880
+the cart to open, to show them
+
+206
+00:08:09.880 --> 00:08:11.200
+that it's in your cart,
+
+207
+00:08:11.200 --> 00:08:12.970
+then you need access to this mutation.
+
+208
+00:08:12.970 --> 00:08:15.700
+So we're gonna export them from cart.js,
+
+209
+00:08:15.700 --> 00:08:19.873
+we're going to import them into our withdata,
+
+210
+00:08:31.607 --> 00:08:33.980
+and then we go back down to our toggleCart resolver
+
+211
+00:08:33.980 --> 00:08:35.140
+that we have here,
+
+212
+00:08:35.140 --> 00:08:39.163
+and we'll say const cartOpen is equal to cache.readQuery
+
+213
+00:08:44.609 --> 00:08:49.609
+and the query we want to read is called LOCAL_STAUTE_QUERY.
+
+214
+00:08:49.862 --> 00:08:53.362
+And here we can just console log cartOpen.
+
+215
+00:08:55.840 --> 00:09:00.840
+And now if I click this x, maybe I give it a refresh.
+
+216
+00:09:02.730 --> 00:09:05.080
+I think you have to refresh every single time
+
+217
+00:09:05.080 --> 00:09:07.810
+that you edit this, because we are editing
+
+218
+00:09:07.810 --> 00:09:09.280
+the Apollo Client, and it doesn't have
+
+219
+00:09:09.280 --> 00:09:11.940
+hot reloading enabled for you, so if you're having trouble
+
+220
+00:09:11.940 --> 00:09:13.560
+just do a hard refresh,
+
+221
+00:09:13.560 --> 00:09:14.660
+and there we go.
+
+222
+00:09:14.660 --> 00:09:17.460
+We get that true from popping up
+
+223
+00:09:17.460 --> 00:09:19.870
+on line 26, where I authored it.
+
+224
+00:09:19.870 --> 00:09:22.230
+And then here we want to write
+
+225
+00:09:22.230 --> 00:09:27.150
+the cart state to the opposite.
+
+226
+00:09:27.150 --> 00:09:29.730
+So we'll make a new variable called data
+
+227
+00:09:29.730 --> 00:09:34.000
+and that is equal to an object
+
+228
+00:09:34.000 --> 00:09:36.520
+which has a data property inside of that.
+
+229
+00:09:36.520 --> 00:09:39.520
+And this inside of that we have our cartOpen property.
+
+230
+00:09:39.520 --> 00:09:41.630
+Now, that could be either false or true.
+
+231
+00:09:41.630 --> 00:09:44.000
+What we're gonna do is we're gonna set it to the opposite
+
+232
+00:09:44.000 --> 00:09:46.510
+of our cartOpen variable that we just queried
+
+233
+00:09:46.510 --> 00:09:47.610
+out of the cache.
+
+234
+00:09:47.610 --> 00:09:49.280
+So you see how we're pulling it out
+
+235
+00:09:49.280 --> 00:09:51.460
+and then immediately going to set it back.
+
+236
+00:09:51.460 --> 00:09:53.823
+And then the way that we set it back
+
+237
+00:09:53.823 --> 00:09:56.640
+is we say cache.writeData passes that data variable
+
+238
+00:09:56.640 --> 00:09:57.900
+that we just created,
+
+239
+00:09:57.900 --> 00:10:01.820
+and finally you return data from this resolver,
+
+240
+00:10:01.820 --> 00:10:05.380
+which is why we're getting this warning right here.
+
+241
+00:10:05.380 --> 00:10:06.423
+That should fix it.
+
+242
+00:10:08.090 --> 00:10:12.090
+Now, when I click on this, it's always true,
+
+243
+00:10:12.090 --> 00:10:13.583
+'cause I forgot to refresh.
+
+244
+00:10:14.570 --> 00:10:17.350
+Now when I click on this, woo, look at that!
+
+245
+00:10:17.350 --> 00:10:19.000
+It just closed.
+
+246
+00:10:19.000 --> 00:10:20.600
+I have no way to open it again,
+
+247
+00:10:20.600 --> 00:10:24.000
+because the button is hidden,
+
+248
+00:10:24.000 --> 00:10:26.010
+so what we now need to do is to code
+
+249
+00:10:26.010 --> 00:10:29.450
+something in our navigation that shows our cart
+
+250
+00:10:29.450 --> 00:10:30.730
+and how many items are in it,
+
+251
+00:10:30.730 --> 00:10:32.360
+and when we click that it'll, whoop,
+
+252
+00:10:32.360 --> 00:10:34.787
+slide that sucker on out, so let's get into that now.
+
+253
+00:10:34.787 --> 00:10:38.490
+In our cart.js file, remember that we exported
+
+254
+00:10:38.490 --> 00:10:39.930
+this toggle cart mutation.
+
+255
+00:10:39.930 --> 00:10:41.390
+Then, we just really need to import
+
+256
+00:10:41.390 --> 00:10:43.630
+that wherever it is that we need to trigger that mutation.
+
+257
+00:10:43.630 --> 00:10:46.430
+In our case, that's in the nav.js.
+
+258
+00:10:46.430 --> 00:10:51.430
+Let's go down right below the signout button
+
+259
+00:10:51.490 --> 00:10:53.820
+and just give ourselves a button tag,
+
+260
+00:10:53.820 --> 00:10:56.763
+lowercase button that says My Cart.
+
+261
+00:10:59.066 --> 00:11:00.700
+There we go, so it says my cart,
+
+262
+00:11:00.700 --> 00:11:02.237
+and then what we wanna do is wrap
+
+263
+00:11:02.237 --> 00:11:04.540
+that in a mutation that, when clicked,
+
+264
+00:11:04.540 --> 00:11:07.910
+will actually trigger our toggleCart mutation.
+
+265
+00:11:07.910 --> 00:11:09.900
+Head up to the top of nav.js,
+
+266
+00:11:09.900 --> 00:11:13.093
+and we're going to import mutation from React Apollo,
+
+267
+00:11:14.080 --> 00:11:18.150
+and we're going to import the TOGGLE_CART_MUTATION
+
+268
+00:11:20.600 --> 00:11:24.253
+from our cart file, where we defined it.
+
+269
+00:11:25.870 --> 00:11:27.400
+Then we need to go down to that button
+
+270
+00:11:27.400 --> 00:11:29.670
+that we just newly created, grab ourselves
+
+271
+00:11:29.670 --> 00:11:30.873
+a mutation component.
+
+272
+00:11:31.890 --> 00:11:33.820
+That mutation has a mutation
+
+273
+00:11:34.660 --> 00:11:36.660
+that is our TOGGLE_CART_MUTATION.
+
+274
+00:11:36.660 --> 00:11:39.230
+And of course, the child of this
+
+275
+00:11:39.230 --> 00:11:40.893
+is going to be an arrow function.
+
+276
+00:11:43.210 --> 00:11:45.823
+There, we have our toggleCart function.
+
+277
+00:11:47.580 --> 00:11:49.053
+Bring these below the button,
+
+278
+00:11:51.250 --> 00:11:53.450
+and then the button can be hooked up
+
+279
+00:11:53.450 --> 00:11:55.720
+onClick equals toggleCart.
+
+280
+00:11:59.670 --> 00:12:02.320
+Now if I click this thing, it slides it on open.
+
+281
+00:12:02.320 --> 00:12:04.758
+Obviously we can close it with our other one
+
+282
+00:12:04.758 --> 00:12:06.930
+and that is really slick.
+
+283
+00:12:06.930 --> 00:12:09.750
+It's pretty cool that you're able to put a couple lines
+
+284
+00:12:09.750 --> 00:12:12.750
+of code around a component and expose that functionality
+
+285
+00:12:12.750 --> 00:12:15.220
+anywhere in our application, and there's no need
+
+286
+00:12:15.220 --> 00:12:16.540
+to pass down that function
+
+287
+00:12:16.540 --> 00:12:18.990
+from one level to another.
+
+288
+00:12:18.990 --> 00:12:21.900
+That is working pretty well, let's move
+
+289
+00:12:21.900 --> 00:12:23.760
+on to the server side where we set up
+
+290
+00:12:23.760 --> 00:12:27.501
+our schema to handle cart and cart items
+
+291
+00:12:27.501 --> 00:12:30.351
+and all that good stuff, so I'll see you in the next one.
+

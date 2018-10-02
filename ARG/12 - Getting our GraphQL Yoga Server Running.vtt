@@ -1,0 +1,1762 @@
+﻿WEBVTT
+
+1
+00:00:01.059 --> 00:00:03.291
+<v ->Now that we have our Prisma database set up</v>
+
+2
+00:00:03.291 --> 00:00:06.005
+we need to work on the GraphQL Yoga side of things.
+
+3
+00:00:06.005 --> 00:00:07.954
+And I know I've explained it a couple times,
+
+4
+00:00:07.954 --> 00:00:10.126
+but I found that it took me more than a few times
+
+5
+00:00:10.126 --> 00:00:12.380
+to understand sort of what's going on here.
+
+6
+00:00:12.380 --> 00:00:14.375
+So, Prisma, we give it our data model
+
+7
+00:00:14.375 --> 00:00:17.669
+and it's going to create a set of CRUD APIs
+
+8
+00:00:17.669 --> 00:00:21.244
+and if we go to the generated prisma.graph QL
+
+9
+00:00:21.244 --> 00:00:23.640
+you'll know that if we'd look at our mutations
+
+10
+00:00:23.640 --> 00:00:26.826
+we have all of these create user, update user, delete user,
+
+11
+00:00:26.826 --> 00:00:30.699
+upsert user, and if we look for the query
+
+12
+00:00:30.699 --> 00:00:31.532
+in here,
+
+13
+00:00:32.557 --> 00:00:33.837
+there we go,
+
+14
+00:00:33.837 --> 00:00:36.187
+we get users, user connection,
+
+15
+00:00:36.187 --> 00:00:38.242
+and all of the ones that we looked at, right?
+
+16
+00:00:38.242 --> 00:00:42.138
+However, we can't use that directly via JavaScript
+
+17
+00:00:42.138 --> 00:00:44.790
+because there is no sort of security layer,
+
+18
+00:00:44.790 --> 00:00:46.777
+there's no authentication layer,
+
+19
+00:00:46.777 --> 00:00:49.417
+and most importantly, there is no layer
+
+20
+00:00:49.417 --> 00:00:51.282
+that we can add on custom logic.
+
+21
+00:00:51.282 --> 00:00:53.613
+We're simply able to create, read, update, delete
+
+22
+00:00:53.613 --> 00:00:56.485
+and provide relationships between our data
+
+23
+00:00:56.485 --> 00:00:58.970
+and in order to add things, like,
+
+24
+00:00:58.970 --> 00:01:00.753 line:15% 
+well let's take a look at our thing here,
+
+25
+00:01:00.753 --> 00:01:02.930 line:15% 
+a customs server site logic, we want to
+
+26
+00:01:02.930 --> 00:01:05.805 line:15% 
+charge credit cards, if we want to send email,
+
+27
+00:01:05.805 --> 00:01:08.468 line:15% 
+if we want to hash any passwords
+
+28
+00:01:08.468 --> 00:01:10.871 line:15% 
+before we actually save them to that,
+
+29
+00:01:10.871 --> 00:01:13.832 line:15% 
+if we want to have permissions where different layers
+
+30
+00:01:13.832 --> 00:01:15.584 line:15% 
+of people can do different things.
+
+31
+00:01:15.584 --> 00:01:19.591 line:15% 
+There's a whole section of logic that needs to happen,
+
+32
+00:01:19.591 --> 00:01:21.907 line:15% 
+before that data is actually either pulled from
+
+33
+00:01:21.907 --> 00:01:24.910 line:15% 
+or put into the Prisma DB and that's exactly
+
+34
+00:01:24.910 --> 00:01:27.269
+what we're using GraphQL Yoga for.
+
+35
+00:01:27.269 --> 00:01:29.328
+So, we're going to go ahead and do that.
+
+36
+00:01:29.328 --> 00:01:31.972
+The first thing that we wanna do
+
+37
+00:01:31.972 --> 00:01:34.129
+is create a new file inside of our...
+
+38
+00:01:34.129 --> 00:01:37.348
+Here, let me open up my files right here.
+
+39
+00:01:37.348 --> 00:01:38.924
+Inside of our source directory,
+
+40
+00:01:38.924 --> 00:01:42.268
+I want you to create a DB.js file.
+
+41
+00:01:42.268 --> 00:01:45.758
+So inside of SRC create a DB.js.
+
+42
+00:01:45.758 --> 00:01:47.647
+And this is where we're actually going to do
+
+43
+00:01:47.647 --> 00:01:50.199
+the connecting to our Prisma DB, right?
+
+44
+00:01:50.199 --> 00:01:54.089
+Because in order to query this database inside
+
+45
+00:01:54.089 --> 00:01:58.468
+of our GraphQL Yoga layer, like we're going to query...
+
+46
+00:01:58.468 --> 00:01:59.542
+Let me back up here.
+
+47
+00:01:59.542 --> 00:02:03.128
+So our react JS is going to use Apollo Client
+
+48
+00:02:03.128 --> 00:02:06.778
+to query our GraphQL Yoga end point
+
+49
+00:02:06.778 --> 00:02:11.211
+and then on the server, GraphQL Yoga is gonna connect to
+
+50
+00:02:11.211 --> 00:02:14.503
+our Prisma database and pull the data back and forth.
+
+51
+00:02:14.503 --> 00:02:16.853
+Similar to how if we were building like
+
+52
+00:02:16.853 --> 00:02:18.881
+an express application you might have like
+
+53
+00:02:18.881 --> 00:02:21.896
+a Mongo DB here and your controller
+
+54
+00:02:21.896 --> 00:02:23.953
+is going to query your Mongo DB
+
+55
+00:02:23.953 --> 00:02:26.618
+and then return the data to the client.
+
+56
+00:02:26.618 --> 00:02:30.612
+So, the DB.js is what we're going to connect directly to it
+
+57
+00:02:30.612 --> 00:02:34.808
+and that's going to be using something called prisma-binding
+
+58
+00:02:34.808 --> 00:02:38.182 line:15% 
+And this is just JavaScript bindings for the Prisma database
+
+59
+00:02:38.182 --> 00:02:40.449
+And it's going to allow us to do things like this
+
+60
+00:02:40.449 --> 00:02:42.957
+where we can connect to a database
+
+61
+00:02:42.957 --> 00:02:46.271
+and then we can query things like a user,
+
+62
+00:02:46.271 --> 00:02:49.294
+we can run mutations like a create user,
+
+63
+00:02:49.294 --> 00:02:51.650
+all of the things that we're doing from the playground,
+
+64
+00:02:51.650 --> 00:02:55.350
+this is how we're gonna be able to do it in JavaScript.
+
+65
+00:02:55.350 --> 00:02:59.161
+So first thing we're going to do is open that up.
+
+66
+00:02:59.161 --> 00:03:02.816
+And we're going to import Prisma from the prisma-binding.
+
+67
+00:03:02.816 --> 00:03:06.649
+So const Prisma equals require Prisma-binding.
+
+68
+00:03:07.589 --> 00:03:11.705
+You may say, 'Hey Wes. Why are we using require
+
+69
+00:03:11.705 --> 00:03:15.656
+on the server whereas on the front end we're using import?'
+
+70
+00:03:15.656 --> 00:03:17.459
+And that's because at the time of recording
+
+71
+00:03:17.459 --> 00:03:21.727
+and probably at least for six to twelve more months yet
+
+72
+00:03:21.727 --> 00:03:23.862
+there is no import in Node.js,
+
+73
+00:03:23.862 --> 00:03:25.492
+it's kind of up in the air and
+
+74
+00:03:25.492 --> 00:03:27.697
+it's nowhere near production ready.
+
+75
+00:03:27.697 --> 00:03:29.769
+So, on the server we are using require.
+
+76
+00:03:29.769 --> 00:03:33.128
+I know you can use Babel to transpile it
+
+77
+00:03:33.128 --> 00:03:36.039
+or ESM to import it but all that stuff is
+
+78
+00:03:36.039 --> 00:03:38.373
+constantly moving, so we are using
+
+79
+00:03:38.373 --> 00:03:41.463
+the latest standard Node.js and the require.
+
+80
+00:03:41.463 --> 00:03:44.068
+So, const Prisma equals require,
+
+81
+00:03:44.068 --> 00:03:46.674
+and then we are going to make our database
+
+82
+00:03:46.674 --> 00:03:50.628
+and we just call a new Prisma from there
+
+83
+00:03:50.628 --> 00:03:52.639
+and that will take a couple of things.
+
+84
+00:03:52.639 --> 00:03:56.065
+TypeDefs is one of them, and the type definitions
+
+85
+00:03:56.065 --> 00:03:59.014
+is that generated prisma.graph QL, right?
+
+86
+00:03:59.014 --> 00:04:01.860
+It needs to know what all of the different types,
+
+87
+00:04:01.860 --> 00:04:05.005
+queries and mutations are in order to use it.
+
+88
+00:04:05.005 --> 00:04:07.542
+So we have to feed it this Prisma.graph QL file.
+
+89
+00:04:07.542 --> 00:04:10.574
+And that's exactly why we pull it down
+
+90
+00:04:10.574 --> 00:04:13.838
+from the Prisma in that post deploy hook
+
+91
+00:04:13.838 --> 00:04:16.119
+is so that we can feed it into this.
+
+92
+00:04:16.119 --> 00:04:17.580
+So, we're going to to say it's available
+
+93
+00:04:17.580 --> 00:04:20.663
+in source, generated, prisma.graphql.
+
+94
+00:04:21.849 --> 00:04:25.311
+Then we also need to give it access to our Prisma database.
+
+95
+00:04:25.311 --> 00:04:26.818
+Like, where does our Prisma database live?
+
+96
+00:04:26.818 --> 00:04:29.441
+And remember, that's in our variables.env file.
+
+97
+00:04:29.441 --> 00:04:33.322
+This is exactly why we put it in a variables.env file
+
+98
+00:04:33.322 --> 00:04:35.261
+so we can pull it into multiples.
+
+99
+00:04:35.261 --> 00:04:37.189
+So, rather than copy pasting this URL
+
+100
+00:04:37.189 --> 00:04:38.941
+all throughout our application,
+
+101
+00:04:38.941 --> 00:04:40.957
+we just refer back to this file.
+
+102
+00:04:40.957 --> 00:04:44.160
+So, the way that you can access your environmental variables
+
+103
+00:04:44.160 --> 00:04:47.996
+in Node.js is, we'll say, endpoint is equal to, you say,
+
+104
+00:04:47.996 --> 00:04:51.241
+process.env. and you can have access to
+
+105
+00:04:51.241 --> 00:04:53.360
+any of the environmental variables.
+
+106
+00:04:53.360 --> 00:04:56.496
+In our case it's Prisma_endpoint.
+
+107
+00:04:56.496 --> 00:04:58.244
+The secret, so access to it,
+
+108
+00:04:58.244 --> 00:05:02.244
+remember that we had temporarily left off the...
+
+109
+00:05:03.245 --> 00:05:05.424
+If we open up the Prisma.yml,
+
+110
+00:05:05.424 --> 00:05:08.776
+remember we temporarily left the secret off.
+
+111
+00:05:08.776 --> 00:05:11.223
+If you put it on in production
+
+112
+00:05:11.223 --> 00:05:14.238
+then that's kind of like the password for your database
+
+113
+00:05:14.238 --> 00:05:17.849
+so you need to be able to access that
+
+114
+00:05:17.849 --> 00:05:19.468
+and that's why we pass the secret
+
+115
+00:05:19.468 --> 00:05:22.071
+when we're connecting to the database right here.
+
+116
+00:05:22.071 --> 00:05:26.654
+And again, for that, we'll do process.env.PRISMA_SECRET
+
+117
+00:05:30.183 --> 00:05:33.636
+And then finally, there's a debug,
+
+118
+00:05:33.636 --> 00:05:36.973
+and you can turn that to true or false.
+
+119
+00:05:36.973 --> 00:05:38.824
+And if you have that as true, it's going to
+
+120
+00:05:38.824 --> 00:05:42.048
+consult that log, all of the queries and mutations.
+
+121
+00:05:42.048 --> 00:05:44.195
+So, I like to turn that on and off.
+
+122
+00:05:44.195 --> 00:05:46.400
+I'll leave it as off and then,
+
+123
+00:05:46.400 --> 00:05:49.762
+if I'm ever having specific trouble, I'll turn it on.
+
+124
+00:05:49.762 --> 00:05:52.508
+Some people also like to just have it on in development
+
+125
+00:05:52.508 --> 00:05:55.545
+and off in production, but I find that it's a bit noisy
+
+126
+00:05:55.545 --> 00:05:59.558
+in my console, so I only turn on if I specifically need it.
+
+127
+00:05:59.558 --> 00:06:01.603
+Finally, we need to export this database
+
+128
+00:06:01.603 --> 00:06:03.843
+so that we can pull it into some of our other files.
+
+129
+00:06:03.843 --> 00:06:07.926
+So, say, module.exports is equal to the database.
+
+130
+00:06:09.003 --> 00:06:10.255
+Good. So this is the file here.
+
+131
+00:06:10.255 --> 00:06:12.338
+Let's leave a little comment up here.
+
+132
+00:06:12.338 --> 00:06:15.838
+This file connects to the remote PRISMA DB
+
+133
+00:06:19.979 --> 00:06:24.396
+and gives us the ability to query it with JavaScript.
+
+134
+00:06:25.643 --> 00:06:27.075
+Alright, so that's the database.
+
+135
+00:06:27.075 --> 00:06:28.427
+Next thing that we need to do is
+
+136
+00:06:28.427 --> 00:06:30.709
+we actually need to create the Yoga server.
+
+137
+00:06:30.709 --> 00:06:33.337
+So, I'm gonna create a secondary file in the source.
+
+138
+00:06:33.337 --> 00:06:37.090
+We're gonna call it createServer.js.
+
+139
+00:06:37.090 --> 00:06:39.462
+Lower case C. Capital S.
+
+140
+00:06:39.462 --> 00:06:41.456
+And this is where we're gonna import
+
+141
+00:06:41.456 --> 00:06:44.821
+the GraphQL Yoga server, and if you're wondering
+
+142
+00:06:44.821 --> 00:06:47.271
+what GraphQL Yoga is, I know that we explained like
+
+143
+00:06:47.271 --> 00:06:51.688
+why we use it, but GraphQL Yoga is an express server.
+
+144
+00:06:52.661 --> 00:06:55.851
+So if you have any other Express middlewares,
+
+145
+00:06:55.851 --> 00:06:58.433
+and we are going to be building some middlewares ourself,
+
+146
+00:06:58.433 --> 00:07:02.151
+you can use all of those, this also sits on top of
+
+147
+00:07:02.151 --> 00:07:04.762
+something that's called Apollo server.
+
+148
+00:07:04.762 --> 00:07:08.095
+So, let's just do a quick Google for it.
+
+149
+00:07:10.592 --> 00:07:13.231 line:15% 
+It's a fully featured GraphQL server with a focus
+
+150
+00:07:13.231 --> 00:07:15.606 line:15% 
+on easy set-up, performance and great developer.
+
+151
+00:07:15.606 --> 00:07:17.180
+Even with this tutorial I feel like
+
+152
+00:07:17.180 --> 00:07:19.283
+there is a lot of set-up, and we're using a lot
+
+153
+00:07:19.283 --> 00:07:21.254
+of tools that expediate this set-up.
+
+154
+00:07:21.254 --> 00:07:23.609
+I think that there is a lot of stuff going on here.
+
+155
+00:07:23.609 --> 00:07:28.026
+And they have some good FAQs, which is Apollo server.
+
+156
+00:07:29.125 --> 00:07:32.591 line:15% 
+So it's built on top of Express and Apollo server.
+
+157
+00:07:32.591 --> 00:07:36.089 line:15% 
+So, it's not instead of using Express or Apollo server.
+
+158
+00:07:36.089 --> 00:07:38.670 line:15% 
+But all of these things would be required
+
+159
+00:07:38.670 --> 00:07:41.791 line:15% 
+in order to get a GraphQL server up and running
+
+160
+00:07:41.791 --> 00:07:45.136 line:15% 
+and GraphQL Yoga sort of packs them all into
+
+161
+00:07:45.136 --> 00:07:47.879
+one single package, which is fantastic.
+
+162
+00:07:47.879 --> 00:07:51.629
+So, we're going to import the GraphQL server.
+
+163
+00:07:53.639 --> 00:07:58.056
+And that's going to be from the GraphQL Yoga package.
+
+164
+00:08:01.442 --> 00:08:06.341
+Then we also need to import what are called our resolvers.
+
+165
+00:08:06.341 --> 00:08:08.719
+And resolvers answer the question,
+
+166
+00:08:08.719 --> 00:08:11.302
+Where does this data come from?
+
+167
+00:08:11.302 --> 00:08:12.998
+Or, where does this data or
+
+168
+00:08:12.998 --> 00:08:14.443
+what does this data do in the database?
+
+169
+00:08:14.443 --> 00:08:16.604
+And there's two different kinds of resolvers.
+
+170
+00:08:16.604 --> 00:08:19.849
+You have query resolvers, which is when you pull data.
+
+171
+00:08:19.849 --> 00:08:21.739
+And you have mutation resolvers,
+
+172
+00:08:21.739 --> 00:08:24.268
+which is when you push data and put it into it.
+
+173
+00:08:24.268 --> 00:08:26.060
+So, we have two separate files.
+
+174
+00:08:26.060 --> 00:08:28.633
+One is called mutation.js,
+
+175
+00:08:28.633 --> 00:08:31.181
+and another one is called query.js
+
+176
+00:08:31.181 --> 00:08:34.604
+and any time we want to expose an API,
+
+177
+00:08:34.604 --> 00:08:37.199
+and sort of like expose an end point
+
+178
+00:08:37.199 --> 00:08:39.365
+or make people be able to query users,
+
+179
+00:08:39.365 --> 00:08:42.150
+or query items, or add something to their cart,
+
+180
+00:08:42.150 --> 00:08:43.955
+or add an item, or delete an item,
+
+181
+00:08:43.955 --> 00:08:46.291
+we are going to write either a query resolver,
+
+182
+00:08:46.291 --> 00:08:48.071
+when someone wants to pull data,
+
+183
+00:08:48.071 --> 00:08:52.252
+or a mutation resolver when somebody wants to push data.
+
+184
+00:08:52.252 --> 00:08:55.630
+So, I just noticed this one's capital Q.
+
+185
+00:08:55.630 --> 00:08:58.605
+Let's make that a capital M. It doesn't actually matter,
+
+186
+00:08:58.605 --> 00:09:01.614
+but just for consistency's sake let's do that.
+
+187
+00:09:01.614 --> 00:09:03.102
+So, we're going to import both of those.
+
+188
+00:09:03.102 --> 00:09:04.631
+These are just objects, we obviously
+
+189
+00:09:04.631 --> 00:09:06.660
+haven't written anything in these files.
+
+190
+00:09:06.660 --> 00:09:08.482
+So we'll go back and fill them out
+
+191
+00:09:08.482 --> 00:09:10.020
+as we build out the application.
+
+192
+00:09:10.020 --> 00:09:14.050
+So, we want to grab the mutation and the query.
+
+193
+00:09:14.050 --> 00:09:17.749
+So, const mutation equals require,
+
+194
+00:09:17.749 --> 00:09:22.443
+and that's in the resolvers/mutation.js and query.js.
+
+195
+00:09:22.443 --> 00:09:23.762
+Make sure those have capitals,
+
+196
+00:09:23.762 --> 00:09:26.023
+cos the files have capitals on them.
+
+197
+00:09:26.023 --> 00:09:27.503
+And then we also want to pull in
+
+198
+00:09:27.503 --> 00:09:29.858
+that database file that we just created.
+
+199
+00:09:29.858 --> 00:09:32.358
+So const db equals require db.
+
+200
+00:09:33.818 --> 00:09:38.068
+Now we go ahead and create the GraphQL Yoga server.
+
+201
+00:09:40.408 --> 00:09:42.732
+And this is what we're gonna be interfacing with
+
+202
+00:09:42.732 --> 00:09:47.703
+our GraphQL, so let's make a function called createServer.
+
+203
+00:09:47.703 --> 00:09:50.840
+And let's just go ahead and export that immediately.
+
+204
+00:09:50.840 --> 00:09:54.507
+So, module exports is equal to createServer.
+
+205
+00:09:55.778 --> 00:09:57.108
+And then inside of here we are
+
+206
+00:09:57.108 --> 00:10:00.191
+going to return a new GraphQL server.
+
+207
+00:10:02.281 --> 00:10:03.983
+And that takes a couple options,
+
+208
+00:10:03.983 --> 00:10:07.730
+very similar to the database, it needs typeDefs again.
+
+209
+00:10:07.730 --> 00:10:10.953
+And then the typeDefs are gonna come from a
+
+210
+00:10:10.953 --> 00:10:13.034
+another file that we're creating.
+
+211
+00:10:13.034 --> 00:10:15.842
+And this may seem like a lot and that's because it is.
+
+212
+00:10:15.842 --> 00:10:17.848
+We have to have, we're essentially creating
+
+213
+00:10:17.848 --> 00:10:19.609
+two GraphQL servers here, right?
+
+214
+00:10:19.609 --> 00:10:22.687
+We have our Prisma server which requires
+
+215
+00:10:22.687 --> 00:10:25.534
+it's own type definitions and schema
+
+216
+00:10:25.534 --> 00:10:27.212
+and everything like that, and then
+
+217
+00:10:27.212 --> 00:10:30.295
+we also have our GraphQL server which
+
+218
+00:10:31.398 --> 00:10:35.774
+needs it's own schema and type definitions as well.
+
+219
+00:10:35.774 --> 00:10:40.342
+So, we're gonna create another file here in our source,
+
+220
+00:10:40.342 --> 00:10:44.009
+and we're going to call that schema.graphql.
+
+221
+00:10:46.159 --> 00:10:49.923
+And this is going to contain all of our
+
+222
+00:10:49.923 --> 00:10:52.065
+queries and resolves, and we are going to be able to
+
+223
+00:10:52.065 --> 00:10:54.013
+share some data between Prisma and Yoga,
+
+224
+00:10:54.013 --> 00:10:56.265
+so we're not duplicating ourselves too, too much.
+
+225
+00:10:56.265 --> 00:11:01.265
+So, that is in the source folder, /schema.graphql
+
+226
+00:11:03.861 --> 00:11:05.511
+And then there's a couple options
+
+227
+00:11:05.511 --> 00:11:07.619
+we really need to pass here.
+
+228
+00:11:07.619 --> 00:11:12.286
+First, the resolvers are going to be mutation and query.
+
+229
+00:11:14.065 --> 00:11:16.373
+So the property is mutation and the value
+
+230
+00:11:16.373 --> 00:11:19.268
+is the mutation that we imported but because of ES6,
+
+231
+00:11:19.268 --> 00:11:21.787
+if it's the same thing we can just simply
+
+232
+00:11:21.787 --> 00:11:25.291
+pass mutation and same goes for query.
+
+233
+00:11:25.291 --> 00:11:29.210
+That is resolvers; make sure you put an S on the end there.
+
+234
+00:11:29.210 --> 00:11:31.459
+A couple of other options that we need to have
+
+235
+00:11:31.459 --> 00:11:34.673
+is resolver validation options.
+
+236
+00:11:34.673 --> 00:11:36.673
+This is just a weird one; I was getting some errors.
+
+237
+00:11:36.673 --> 00:11:39.527
+In order to turn off those errors or warnings
+
+238
+00:11:39.527 --> 00:11:44.267
+we need to say require resolvers for resolve type.
+
+239
+00:11:44.267 --> 00:11:48.934
+Require resolvers for resolve type is going to be false.
+
+240
+00:11:50.708 --> 00:11:52.498
+And then finally, we need to give it
+
+241
+00:11:52.498 --> 00:11:54.212
+something called context.
+
+242
+00:11:54.212 --> 00:11:57.366
+And this will make sense why we're doing this
+
+243
+00:11:57.366 --> 00:12:01.393
+as we get into a lot of the user and authentication items.
+
+244
+00:12:01.393 --> 00:12:03.876
+We need to be able to access the database
+
+245
+00:12:03.876 --> 00:12:07.553
+from the resolvers, and the way that you can pass that
+
+246
+00:12:07.553 --> 00:12:10.600
+is via context, so you just have to type request
+
+247
+00:12:10.600 --> 00:12:14.576
+and we're going to return an object which has
+
+248
+00:12:14.576 --> 00:12:16.964
+the request in it and the database.
+
+249
+00:12:16.964 --> 00:12:21.686
+So we want to surface this database on every single request.
+
+250
+00:12:21.686 --> 00:12:25.123
+And that will all make sense once we get into it.
+
+251
+00:12:25.123 --> 00:12:28.284
+Now, so we've created our database, we've created a function
+
+252
+00:12:28.284 --> 00:12:31.468
+that will spin up a new GraphQL server.
+
+253
+00:12:31.468 --> 00:12:34.754
+We've created our empty schema.graphql.
+
+254
+00:12:34.754 --> 00:12:36.326
+A lot of our code is going to do in here
+
+255
+00:12:36.326 --> 00:12:39.335
+in terms of what our client facing types,
+
+256
+00:12:39.335 --> 00:12:41.764
+queries and mutations are going to be.
+
+257
+00:12:41.764 --> 00:12:45.055
+And now we actually need to kick start it in our index.js
+
+258
+00:12:45.055 --> 00:12:48.334
+So in the source folder there is an index.js file here.
+
+259
+00:12:48.334 --> 00:12:50.463
+It just says let's go.
+
+260
+00:12:50.463 --> 00:12:53.250
+We are going to write some code that as,
+
+261
+00:12:53.250 --> 00:12:55.804
+this is going to start up our Node server.
+
+262
+00:12:55.804 --> 00:12:58.678
+So say require. The first thing we want to do is
+
+263
+00:12:58.678 --> 00:13:02.928
+make sure that these variables that we put in variables.env,
+
+264
+00:13:02.928 --> 00:13:04.298
+we wanna make sure that these are
+
+265
+00:13:04.298 --> 00:13:06.256
+available to our application, and this is
+
+266
+00:13:06.256 --> 00:13:08.906
+since this is the entry point of our application,
+
+267
+00:13:08.906 --> 00:13:11.793
+this is where we require this variables.env.
+
+268
+00:13:11.793 --> 00:13:14.003
+So, let's close all these other files.
+
+269
+00:13:14.003 --> 00:13:15.503
+I feel like there's a lot going on here.
+
+270
+00:13:15.503 --> 00:13:18.979
+We're going to require the package called .env.
+
+271
+00:13:18.979 --> 00:13:21.479
+And you can configure it with,
+
+272
+00:13:22.528 --> 00:13:23.528
+saying path,
+
+273
+00:13:26.779 --> 00:13:29.529
+that's going to be variables.env.
+
+274
+00:13:30.490 --> 00:13:32.850
+Then we want to import that create server function
+
+275
+00:13:32.850 --> 00:13:36.850
+that we just made, equals require, createServer.
+
+276
+00:13:39.162 --> 00:13:41.485
+We want to import the database that we created.
+
+277
+00:13:41.485 --> 00:13:44.485
+So const db equals require database,
+
+278
+00:13:45.786 --> 00:13:48.176
+And there's a few other things that we need to do in here,
+
+279
+00:13:48.176 --> 00:13:50.202
+in terms of authentication, but we are
+
+280
+00:13:50.202 --> 00:13:54.682
+going to be coming back to them as we run into that.
+
+281
+00:13:54.682 --> 00:13:56.540
+So, first thing we wanna do is say
+
+282
+00:13:56.540 --> 00:13:59.991
+const server is equal to createServer.
+
+283
+00:13:59.991 --> 00:14:03.020
+So, we stored the function in a separate file.
+
+284
+00:14:03.020 --> 00:14:04.586
+We run that function and store it
+
+285
+00:14:04.586 --> 00:14:07.656
+in a variable called server, then this is where
+
+286
+00:14:07.656 --> 00:14:12.489
+it will say TODO use Express middleware to handle cookies.
+
+287
+00:14:13.456 --> 00:14:18.206
+And TODO use Express middleware to populate current user.
+
+288
+00:14:20.424 --> 00:14:22.711
+And we'll put JWT in there, in quotes there,
+
+289
+00:14:22.711 --> 00:14:24.735
+because we're gonna be using JSON web tokens
+
+290
+00:14:24.735 --> 00:14:27.356
+via cookies and that will all make sense
+
+291
+00:14:27.356 --> 00:14:30.957
+why we're doing that when we hit the server-side rendering
+
+292
+00:14:30.957 --> 00:14:34.327
+and authenticated routes section of this course.
+
+293
+00:14:34.327 --> 00:14:37.418
+So, we'll come back and fill those in,
+
+294
+00:14:37.418 --> 00:14:41.668
+but all we need to do here now is call server.start
+
+295
+00:14:43.100 --> 00:14:45.242
+and a couple options we need to pass here.
+
+296
+00:14:45.242 --> 00:14:49.191
+First one is cors, we only want this end point
+
+297
+00:14:49.191 --> 00:14:53.191
+to be able to be visited from our approved URLs.
+
+298
+00:14:54.146 --> 00:14:55.770
+So you don't want anybody willy-nilly
+
+299
+00:14:55.770 --> 00:14:57.900
+hitting your end point from any website,
+
+300
+00:14:57.900 --> 00:15:01.301
+you only want our specific website from hitting that.
+
+301
+00:15:01.301 --> 00:15:04.218
+So the cors say credentials is true
+
+302
+00:15:05.802 --> 00:15:08.939
+and the origin is going to be,
+
+303
+00:15:08.939 --> 00:15:10.922
+and again, this is our variables.env,
+
+304
+00:15:10.922 --> 00:15:15.415
+you see how I have put the front end URL in here,
+
+305
+00:15:15.415 --> 00:15:18.282
+and if we hop over to our front end real quick,
+
+306
+00:15:18.282 --> 00:15:20.335
+and open up our package.JSON,
+
+307
+00:15:20.335 --> 00:15:24.311
+you see our next server is running on port 7777
+
+308
+00:15:24.311 --> 00:15:25.705
+So what we're gonna do is we're gonna say,
+
+309
+00:15:25.705 --> 00:15:30.264
+Okay, only this front end can access it on our back end here
+
+310
+00:15:30.264 --> 00:15:34.074
+So we will grab that value from our environmental variables
+
+311
+00:15:34.074 --> 00:15:36.324
+So process.env.FRONTEND_URL
+
+312
+00:15:39.261 --> 00:15:41.469
+And then we get a call back function
+
+313
+00:15:41.469 --> 00:15:43.006
+for when it actually runs
+
+314
+00:15:43.006 --> 00:15:45.961
+And I just say like the deets of the server starting.
+
+315
+00:15:45.961 --> 00:15:49.118
+And I'll say console log, back tick,
+
+316
+00:15:49.118 --> 00:15:51.618
+Server is now running on port.
+
+317
+00:15:56.749 --> 00:15:59.855
+And I like to actually do http
+
+318
+00:15:59.855 --> 00:16:00.772
+local host,
+
+319
+00:16:02.584 --> 00:16:03.417
+colon,
+
+320
+00:16:06.331 --> 00:16:07.679
+deets.port.
+
+321
+00:16:07.679 --> 00:16:10.647
+And that will make a clickable link from the URL there.
+
+322
+00:16:10.647 --> 00:16:14.637
+Give it a save. Alright. So, let's do a quick review there.
+
+323
+00:16:14.637 --> 00:16:17.304
+We created our database in DB.js
+
+324
+00:16:19.162 --> 00:16:21.731
+We made a function called createServer,
+
+325
+00:16:21.731 --> 00:16:24.648
+which will ingest a schema.graphql.
+
+326
+00:16:25.742 --> 00:16:28.198
+And then it will match up everything in the schema
+
+327
+00:16:28.198 --> 00:16:31.781
+with either a mutation or a query resolver.
+
+328
+00:16:32.882 --> 00:16:36.064
+We exposed the data base to every single request.
+
+329
+00:16:36.064 --> 00:16:37.916
+Again, that will make more sense once we actually
+
+330
+00:16:37.916 --> 00:16:40.600
+hit writing some of these custom resolvers.
+
+331
+00:16:40.600 --> 00:16:43.267
+Then, in our index, we spin up a
+
+332
+00:16:44.338 --> 00:16:47.544
+actual version of this GraphQL Yoga server
+
+333
+00:16:47.544 --> 00:16:50.205
+We hold off on the authentication middleware,
+
+334
+00:16:50.205 --> 00:16:53.492
+in Express, just for a bit, and then we start it up.
+
+335
+00:16:53.492 --> 00:16:56.618
+So if everything went right, we should be able to,
+
+336
+00:16:56.618 --> 00:16:59.281
+Well, let's look at our package.JSON
+
+337
+00:16:59.281 --> 00:17:03.698
+We should be able to run npm run debug or npm run dev
+
+338
+00:17:04.732 --> 00:17:08.542
+And let's take a second to unpack all of these server-side,
+
+339
+00:17:08.542 --> 00:17:11.448
+the back end scripts that we have here.
+
+340
+00:17:11.448 --> 00:17:16.242
+So, first of all, debug is how we start the actual server.
+
+341
+00:17:16.242 --> 00:17:18.818
+Or start is how you actually start the server.
+
+342
+00:17:18.818 --> 00:17:20.254
+I like to use debug locally,
+
+343
+00:17:20.254 --> 00:17:22.393
+and I'll tell you why in just a second.
+
+344
+00:17:22.393 --> 00:17:24.277
+So we're using a package called Nodemon
+
+345
+00:17:24.277 --> 00:17:27.065
+and what Nodemon will do is it will monitor
+
+346
+00:17:27.065 --> 00:17:30.022
+your JavaScript files for changes
+
+347
+00:17:30.022 --> 00:17:32.461
+and if there ever is a change in that file
+
+348
+00:17:32.461 --> 00:17:34.892
+it will kill the server and restart it
+
+349
+00:17:34.892 --> 00:17:37.102
+so you don't have to manually kill it and restart it
+
+350
+00:17:37.102 --> 00:17:39.769
+yourself every single time that you make a change.
+
+351
+00:17:39.769 --> 00:17:42.686
+This dash e will make sure that we
+
+352
+00:17:43.992 --> 00:17:47.426
+monitor the extensions.js and .graphql.
+
+353
+00:17:47.426 --> 00:17:51.268
+Normally, with Nodemon, you don't actually need
+
+354
+00:17:51.268 --> 00:17:54.125
+to say what file extensions you want to watch,
+
+355
+00:17:54.125 --> 00:17:56.448
+but because we also want to kill the server any time
+
+356
+00:17:56.448 --> 00:18:00.631
+we change a graphql file, we specify that.
+
+357
+00:18:00.631 --> 00:18:03.283
+The x is what Nodemon should actually be running.
+
+358
+00:18:03.283 --> 00:18:07.170
+And we're gonna run the command node source.index.
+
+359
+00:18:07.170 --> 00:18:10.430
+So we're basically running Node index.js.
+
+360
+00:18:10.430 --> 00:18:12.621
+And then we also pass at this inspect flag
+
+361
+00:18:12.621 --> 00:18:15.287
+Which is going to allow us to use
+
+362
+00:18:15.287 --> 00:18:19.540
+Chrome dev tools to see our console results
+
+363
+00:18:19.540 --> 00:18:23.148
+rather than just seeing them dumped into our terminal.
+
+364
+00:18:23.148 --> 00:18:27.177
+And then, other, we have this thing called playground.
+
+365
+00:18:27.177 --> 00:18:30.710
+And what playground will do is it will open up
+
+366
+00:18:30.710 --> 00:18:33.208
+either, it will automatically open up that playground
+
+367
+00:18:33.208 --> 00:18:34.888
+that we were looking at before
+
+368
+00:18:34.888 --> 00:18:38.438
+or you can also download the desktop application
+
+369
+00:18:38.438 --> 00:18:41.798
+of GraphQL playground and it will open that up for you.
+
+370
+00:18:41.798 --> 00:18:44.548
+So let's go to our back end here.
+
+371
+00:18:45.845 --> 00:18:49.012
+And, where are we? I've got to go into my back end.
+
+372
+00:18:49.012 --> 00:18:51.118
+And the command that we actually want to run
+
+373
+00:18:51.118 --> 00:18:53.672
+is npm run dev and that is both going to run
+
+374
+00:18:53.672 --> 00:18:56.255
+in turn, debug, and playground.
+
+375
+00:18:57.092 --> 00:18:59.509
+So let's try it. Npm run dev.
+
+376
+00:19:03.621 --> 00:19:05.713
+(mimics buzzer noise) Didn't work.
+
+377
+00:19:05.713 --> 00:19:08.502
+You see my GraphQL playground is opening up here
+
+378
+00:19:08.502 --> 00:19:13.502
+It seems to work but it says cannot find module createServer
+
+379
+00:19:13.502 --> 00:19:15.919
+This error is happening in...
+
+380
+00:19:19.124 --> 00:19:21.621
+These errors are a little bit hard to actually find out
+
+381
+00:19:21.621 --> 00:19:24.982
+and I had to read for a minute or so to only figure out,
+
+382
+00:19:24.982 --> 00:19:27.781
+okay, this is actually where it's happening.
+
+383
+00:19:27.781 --> 00:19:30.692
+It's happening on index.js on line two.
+
+384
+00:19:30.692 --> 00:19:34.192
+So, let's go back to index.js on line two.
+
+385
+00:19:35.742 --> 00:19:38.981
+Oh, it's because we, I required createServer as a package,
+
+386
+00:19:38.981 --> 00:19:40.982
+this is a file that we made.
+
+387
+00:19:40.982 --> 00:19:43.524
+So what we want to do it make it relative
+
+388
+00:19:43.524 --> 00:19:45.494
+to where we are with a dot forward slash.
+
+389
+00:19:45.494 --> 00:19:48.603
+Give that a save, you see how Nodemon restarts itself.
+
+390
+00:19:48.603 --> 00:19:51.806
+Another error here. Cannot parse unexpected error.
+
+391
+00:19:51.806 --> 00:19:55.233
+Character forward slash, I think that has to do with us
+
+392
+00:19:55.233 --> 00:19:58.871
+not having something in our schema.graphql
+
+393
+00:19:58.871 --> 00:20:02.466
+So let's just go ahead and type user
+
+394
+00:20:02.466 --> 00:20:05.677
+and we'll say ID is equal to an ID
+
+395
+00:20:05.677 --> 00:20:08.061
+and the name is going to be a string
+
+396
+00:20:08.061 --> 00:20:11.172
+So let's just give it our starting type of user.
+
+397
+00:20:11.172 --> 00:20:12.589
+Give that a save.
+
+398
+00:20:13.566 --> 00:20:16.868
+And one more error that it's giving.
+
+399
+00:20:16.868 --> 00:20:20.804 line:15% 
+Error mutation defined in resolvers but not in schema
+
+400
+00:20:20.804 --> 00:20:24.614 line:15% 
+Ah, I see. So what's happening here is that
+
+401
+00:20:24.614 --> 00:20:28.644
+when we started up our actual server, we created it
+
+402
+00:20:28.644 --> 00:20:32.204
+we said that we have resolvers for mutation and query
+
+403
+00:20:32.204 --> 00:20:36.204
+but it can't find any mutations and any queries.
+
+404
+00:20:37.294 --> 00:20:41.213
+So what we're gonna do is, we'll just kinda
+
+405
+00:20:41.213 --> 00:20:43.963
+pad it for now. So type mutation,
+
+406
+00:20:44.959 --> 00:20:49.709
+and it might still yell at us for being empty. Let's see.
+
+407
+00:20:50.664 --> 00:20:53.498
+Yeah, unexpected name found. Curly brackets.
+
+408
+00:20:53.498 --> 00:20:58.379
+So type mutation, let's just say, hi returns a string
+
+409
+00:20:58.379 --> 00:21:00.087 line:15% 
+And it should tell us, yeah, now it tells us
+
+410
+00:21:00.087 --> 00:21:01.693
+the same thing happened for query.
+
+411
+00:21:01.693 --> 00:21:05.276
+So let's just copy, paste that, type query.
+
+412
+00:21:08.106 --> 00:21:10.597
+There we go. So, we had to...
+
+413
+00:21:10.597 --> 00:21:12.717
+We can get rid of this type user, right now.
+
+414
+00:21:12.717 --> 00:21:16.206
+We just have to give it something that it can resolve to
+
+415
+00:21:16.206 --> 00:21:19.226
+because what happens when you create the server,
+
+416
+00:21:19.226 --> 00:21:21.142
+Let's go back to the create server
+
+417
+00:21:21.142 --> 00:21:23.622
+Is that it says, okay, here's my type definitions
+
+418
+00:21:23.622 --> 00:21:26.516
+and here are the things I want you to resolve.
+
+419
+00:21:26.516 --> 00:21:28.817
+So first of all that file can't be empty,
+
+420
+00:21:28.817 --> 00:21:33.817
+and second of all it needs both a mutation and a query type
+
+421
+00:21:34.401 --> 00:21:37.277
+to resolve to, and that's exactly what we have here.
+
+422
+00:21:37.277 --> 00:21:39.518
+We'll come back and fill those out with
+
+423
+00:21:39.518 --> 00:21:41.191
+actual ones that we have, but for now
+
+424
+00:21:41.191 --> 00:21:45.232
+we know everything seems to be working pretty well.
+
+425
+00:21:45.232 --> 00:21:49.794 line:15% 
+It says server is now running on local host 4444.
+
+426
+00:21:49.794 --> 00:21:51.851
+If we visit that in our browser,
+
+427
+00:21:51.851 --> 00:21:54.584
+you should see the the GraphQL playground up and running
+
+428
+00:21:54.584 --> 00:21:58.824
+and there is not going to be anything in our schema
+
+429
+00:21:58.824 --> 00:22:01.814
+except for the fake ones that we
+
+430
+00:22:01.814 --> 00:22:04.719
+actually have put here, right?
+
+431
+00:22:04.719 --> 00:22:06.371
+And I think that's pretty interesting
+
+432
+00:22:06.371 --> 00:22:10.555
+because it's not going to expose everything from
+
+433
+00:22:10.555 --> 00:22:13.449
+the actual Prisma API just yet
+
+434
+00:22:13.449 --> 00:22:15.779
+because you might not necessarily want to expose
+
+435
+00:22:15.779 --> 00:22:18.729
+all of that, we're just going to selectively expose
+
+436
+00:22:18.729 --> 00:22:23.046
+the pieces that we want and write our own resolvers for this
+
+437
+00:22:23.046 --> 00:22:24.995
+So here we have our query and mutation
+
+438
+00:22:24.995 --> 00:22:26.859
+Nothing is going to be returned yet
+
+439
+00:22:26.859 --> 00:22:28.590
+But in the next video that's exactly
+
+440
+00:22:28.590 --> 00:22:31.090
+what we're going to be doing.
+

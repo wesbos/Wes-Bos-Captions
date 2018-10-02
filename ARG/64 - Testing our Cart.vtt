@@ -1,0 +1,1570 @@
+﻿WEBVTT
+
+1
+00:00:01.430 --> 00:00:02.263
+<v Wes>Alright, let's get</v>
+
+2
+00:00:02.263 --> 00:00:03.830
+into testing the items in the cart.
+
+3
+00:00:03.830 --> 00:00:05.750
+So we want to test the cart himself.
+
+4
+00:00:05.750 --> 00:00:06.950
+Cart himself.
+
+5
+00:00:06.950 --> 00:00:09.980
+We want to test the cart itself, as well as the add
+
+6
+00:00:09.980 --> 00:00:12.280
+to cart button as well as the remove
+
+7
+00:00:12.280 --> 00:00:14.700
+from cart button, so let's start with the cart.
+
+8
+00:00:14.700 --> 00:00:19.150
+We're gonna open up our files here, and we're gonna go
+
+9
+00:00:19.150 --> 00:00:20.980
+into our test folder and make a new file
+
+10
+00:00:20.980 --> 00:00:25.980
+called cart.test.js, and you probably guessed it.
+
+11
+00:00:26.020 --> 00:00:28.460
+We're gonna go ahead and take a top from one
+
+12
+00:00:28.460 --> 00:00:32.120
+of these old tests, paste it in, we're gonna need mount,
+
+13
+00:00:32.120 --> 00:00:37.120
+wait, toJSON, MockedProvider, as well as we need our cart,
+
+14
+00:00:38.200 --> 00:00:39.950
+and let's open our cart to JS.
+
+15
+00:00:39.950 --> 00:00:42.390
+Do we have any, what have we got in here?
+
+16
+00:00:42.390 --> 00:00:44.013
+We've got a local state query,
+
+17
+00:00:44.990 --> 00:00:48.560
+and we've got our current user query.
+
+18
+00:00:48.560 --> 00:00:50.720
+We need both of those things.
+
+19
+00:00:50.720 --> 00:00:53.793
+We need the local state query from the cart component.
+
+20
+00:00:55.110 --> 00:00:58.093
+Then we want the current user query.
+
+21
+00:01:01.700 --> 00:01:04.023
+That's gotta come from our user component.
+
+22
+00:01:06.540 --> 00:01:11.080
+Okay, and I think that is good.
+
+23
+00:01:11.080 --> 00:01:12.980
+Now, before we get into this, real quick,
+
+24
+00:01:12.980 --> 00:01:16.310
+I'm just gonna show you the three queries we have here.
+
+25
+00:01:16.310 --> 00:01:18.620
+So current user, then we have our local state query,
+
+26
+00:01:18.620 --> 00:01:21.470
+which is our cart open, and then we also have
+
+27
+00:01:21.470 --> 00:01:25.880
+our toggle cart mutation, which flips it from true to false.
+
+28
+00:01:25.880 --> 00:01:30.750
+I have not found a good way to test local state mutations,
+
+29
+00:01:30.750 --> 00:01:33.670
+even after talking to the Apollo devs.
+
+30
+00:01:33.670 --> 00:01:37.650
+It seems a little bit out of reach, a little bit,
+
+31
+00:01:37.650 --> 00:01:40.930
+way more involved than it's worth for doing
+
+32
+00:01:40.930 --> 00:01:42.800
+this kind of thing, so I do not have a way
+
+33
+00:01:42.800 --> 00:01:44.887
+to test clicking that button and mutating it,
+
+34
+00:01:44.887 --> 00:01:47.590
+and the reason why is that the resolver
+
+35
+00:01:47.590 --> 00:01:51.230
+for our local state is in our actual,
+
+36
+00:01:51.230 --> 00:01:53.250
+it's part of our our client creation,
+
+37
+00:01:53.250 --> 00:01:55.600
+and we're using a mocked client here,
+
+38
+00:01:55.600 --> 00:01:58.180
+which does not have those custom resolvers in it,
+
+39
+00:01:58.180 --> 00:02:00.940
+so we are not going to be testing that one,
+
+40
+00:02:00.940 --> 00:02:02.800
+but we we'll be testing the local state,
+
+41
+00:02:02.800 --> 00:02:04.210
+which we'll feed it some data
+
+42
+00:02:04.210 --> 00:02:06.960
+as well as our current user query.
+
+43
+00:02:06.960 --> 00:02:09.650
+So let's go ahead and jump into here.
+
+44
+00:02:09.650 --> 00:02:11.193
+First start making some mocks.
+
+45
+00:02:12.800 --> 00:02:13.633
+So an array.
+
+46
+00:02:15.010 --> 00:02:17.350
+First mark is going to be a request.
+
+47
+00:02:17.350 --> 00:02:21.663
+Query, and that is our current user query.
+
+48
+00:02:22.560 --> 00:02:27.560
+The result from that, I guess that is in here.
+
+49
+00:02:28.320 --> 00:02:30.833
+The data, me.
+
+50
+00:02:31.770 --> 00:02:36.290
+Me is going to be a fake user, dot dot dot.
+
+51
+00:02:36.290 --> 00:02:38.080
+Alright we gotta import that fake user.
+
+52
+00:02:38.080 --> 00:02:43.080
+Import fakeUser from our lib, testUtils,
+
+53
+00:02:45.500 --> 00:02:47.190
+and we're gonna spread it into there, and then,
+
+54
+00:02:47.190 --> 00:02:50.993
+we're also going to make a cart with one item in it.
+
+55
+00:02:51.900 --> 00:02:54.700
+We'll say fakeCartItem, and then we'll also need
+
+56
+00:02:54.700 --> 00:02:58.033
+to import that fakeCartItem from the same testUtils.
+
+57
+00:02:59.690 --> 00:03:02.010
+Looks good, comma there.
+
+58
+00:03:02.010 --> 00:03:05.250
+Then we also want to write one for the local state query,
+
+59
+00:03:05.250 --> 00:03:10.250
+so we'll say the request is the query, local state query,
+
+60
+00:03:11.950 --> 00:03:16.950
+and the result, some data, cart open is going to be true.
+
+61
+00:03:19.740 --> 00:03:21.490
+Now we'll go ahead and describe it.
+
+62
+00:03:25.530 --> 00:03:29.873
+We'll do our first it renders, and it matches snappy.
+
+63
+00:03:32.080 --> 00:03:33.283
+Make that async.
+
+64
+00:03:34.815 --> 00:03:36.867
+And here we'll const wrapper
+
+65
+00:03:39.130 --> 00:03:43.030
+is equal to mount, mocked provider.
+
+66
+00:03:43.030 --> 00:03:44.780
+Inside of that we'll have our cart.
+
+67
+00:03:46.920 --> 00:03:49.680
+Mocked provider needs some mocks.
+
+68
+00:03:49.680 --> 00:03:52.943
+we'll wait and wrapper.update.
+
+69
+00:03:54.220 --> 00:03:59.220
+Now it will expect the toJSON wrapper.find.
+
+70
+00:04:05.920 --> 00:04:09.470
+We're gonna find the header, and we're just gonna match
+
+71
+00:04:09.470 --> 00:04:14.470
+the snapshot of that to match snapshot, and give that a run.
+
+72
+00:04:16.720 --> 00:04:18.723
+We'll open up our cart.snap.
+
+73
+00:04:23.240 --> 00:04:24.240
+Oh that's cart count.
+
+74
+00:04:24.240 --> 00:04:25.463
+Cart.snap.
+
+75
+00:04:31.180 --> 00:04:34.060
+We're checking out our header, looks good,
+
+76
+00:04:34.060 --> 00:04:38.036
+h3, Miss Coleman's cart.
+
+77
+00:04:38.036 --> 00:04:40.170
+You have one item in your cart, that's good.
+
+78
+00:04:40.170 --> 00:04:41.840
+You can also check that the amount of cart items
+
+79
+00:04:41.840 --> 00:04:46.840
+are being displayed properly, so expect the wrapper.find,
+
+80
+00:04:50.020 --> 00:04:53.050
+we'll look for cart item, and then we'll say
+
+81
+00:04:53.050 --> 00:04:56.370
+toHaveLength of one.
+
+82
+00:04:56.370 --> 00:05:00.290
+Looks like that one is working as well, so that is our cart.
+
+83
+00:05:00.290 --> 00:05:01.760
+Not too much else to test there,
+
+84
+00:05:01.760 --> 00:05:04.990
+since this just takes in data and renders it out.
+
+85
+00:05:04.990 --> 00:05:07.880
+What we are gonna do now is the adding and the removing
+
+86
+00:05:07.880 --> 00:05:11.390
+of items from cart is where we're going to start
+
+87
+00:05:11.390 --> 00:05:14.143
+to get into some a little bit more advanced tests.
+
+88
+00:05:15.160 --> 00:05:16.610
+Let's make a new file, we'll do add
+
+89
+00:05:16.610 --> 00:05:18.913
+to cart first, so open up tests.
+
+90
+00:05:20.920 --> 00:05:25.293
+AddToCart.test.JS.
+
+91
+00:05:26.210 --> 00:05:28.550
+Go ahead and take everything you imported
+
+92
+00:05:28.550 --> 00:05:31.230
+from cart.JS and put into addToCart.
+
+93
+00:05:31.230 --> 00:05:32.580
+We're also going to need
+
+94
+00:05:32.580 --> 00:05:35.523
+the Apollo consumer from React Apollo.
+
+95
+00:05:36.586 --> 00:05:40.483
+We're going to need the add to cart button,
+
+96
+00:05:41.510 --> 00:05:44.370
+as well as the add to cart mutation
+
+97
+00:05:47.150 --> 00:05:49.620
+from our add to cart component,
+
+98
+00:05:49.620 --> 00:05:52.560
+and that looks like everything we need.
+
+99
+00:05:52.560 --> 00:05:54.223
+Let's cook up some mocks.
+
+100
+00:05:56.600 --> 00:05:58.023
+We'll make a fake user,
+
+101
+00:06:00.610 --> 00:06:03.053
+and we'll put an empty cart on there.
+
+102
+00:06:06.410 --> 00:06:07.730
+What did I goof up here?
+
+103
+00:06:07.730 --> 00:06:10.283
+Oh, data is an object.
+
+104
+00:06:13.160 --> 00:06:14.330
+Beautiful.
+
+105
+00:06:14.330 --> 00:06:16.470
+So, when you have a current user, you're going
+
+106
+00:06:16.470 --> 00:06:19.293
+to get me with a fake user and an empty cart.
+
+107
+00:06:20.660 --> 00:06:24.770
+We also have another request and response query
+
+108
+00:06:24.770 --> 00:06:29.770
+is the add to cart mutation, and the variables
+
+109
+00:06:33.800 --> 00:06:37.547
+for that one are going to be the ID of "abc123".
+
+110
+00:06:39.860 --> 00:06:43.810
+The result from that is going to have some data.
+
+111
+00:06:43.810 --> 00:06:48.810
+Add to cart, and we'll spread a fake cart item
+
+112
+00:06:53.140 --> 00:06:55.163
+and then just override the quantity,
+
+113
+00:06:57.090 --> 00:06:58.343
+which is going to be one.
+
+114
+00:07:03.870 --> 00:07:05.310
+I'll go ahead and write our test.
+
+115
+00:07:05.310 --> 00:07:09.163
+Describe the add to cart button.
+
+116
+00:07:10.610 --> 00:07:11.780
+First thing we wanna say:
+
+117
+00:07:11.780 --> 00:07:15.393
+it renders and matches the snapshot.
+
+118
+00:07:18.410 --> 00:07:20.560
+Inside of that we'll have our add to cart,
+
+119
+00:07:20.560 --> 00:07:24.247
+and the ID of that is going to be "abc123".
+
+120
+00:07:29.226 --> 00:07:32.599
+♪ Await, await ♪
+
+121
+00:07:32.599 --> 00:07:35.520
+♪ Wrapper.update ♪
+
+122
+00:07:35.520 --> 00:07:38.690
+Now, we can just go ahead and render that whole thing out
+
+123
+00:07:38.690 --> 00:07:40.470
+and just make sure that it matches our snapshot,
+
+124
+00:07:40.470 --> 00:07:45.470
+so expect, toJSON, wrapper.find, button, to match snapshot.
+
+125
+00:07:54.680 --> 00:07:56.050
+Looks like it wrote the snapshot.
+
+126
+00:07:56.050 --> 00:08:00.030
+Let's look at our add to cart dot snappy, and that's it.
+
+127
+00:08:00.030 --> 00:08:04.420
+Button disabled, false on click is a function,
+
+128
+00:08:04.420 --> 00:08:07.003
+and then it just renders out the words add to cart.
+
+129
+00:08:09.550 --> 00:08:11.500
+Next thing we wanna check is it adds
+
+130
+00:08:11.500 --> 00:08:14.293
+an item to cart when clicked.
+
+131
+00:08:24.870 --> 00:08:26.190
+So we can go ahead and take this
+
+132
+00:08:26.190 --> 00:08:31.140
+base wrapper here, paste it in.
+
+133
+00:08:31.140 --> 00:08:34.270
+We also need the Apollo store or the Apollo client
+
+134
+00:08:34.270 --> 00:08:36.670
+in order to check if the item was added to our cart,
+
+135
+00:08:36.670 --> 00:08:38.703
+so we'll say Apollo consumer.
+
+136
+00:08:41.480 --> 00:08:44.513
+Inside of that you want a arrow function.
+
+137
+00:08:47.480 --> 00:08:48.453
+Just a client.
+
+138
+00:08:50.365 --> 00:08:54.350
+Then we'll say Apollo client is equal to the client.
+
+139
+00:08:55.720 --> 00:08:59.183
+Then we return our add to cart button here.
+
+140
+00:09:01.610 --> 00:09:04.490
+Gotta make sure that we actually have that Apollo client,
+
+141
+00:09:04.490 --> 00:09:09.490
+so let Apollo client appear, just like we did the last one.
+
+142
+00:09:09.740 --> 00:09:12.720
+So we have our Apollo client, we mount it with the consumer,
+
+143
+00:09:12.720 --> 00:09:17.330
+we expose the client and bring it outside of the scope here
+
+144
+00:09:17.330 --> 00:09:19.550
+to a higher scope, which we put in the variable
+
+145
+00:09:19.550 --> 00:09:23.033
+and then we return our add to cart with the abc ID.
+
+146
+00:09:24.820 --> 00:09:29.103
+Then we'll do our standard waiting,
+
+147
+00:09:32.580 --> 00:09:36.733
+then update, then we'll grab the current person,
+
+148
+00:09:39.610 --> 00:09:43.847
+so const me is equal to apolloclient.query,
+
+149
+00:09:46.420 --> 00:09:49.140
+and then we will, actually that is returns a promise,
+
+150
+00:09:49.140 --> 00:09:50.950
+so we'll await that, and the query
+
+151
+00:09:50.950 --> 00:09:55.950
+that we are going to read is the current user query.
+
+152
+00:09:57.040 --> 00:10:00.040
+Then we're just console log me, see what we're working with.
+
+153
+00:10:03.565 --> 00:10:04.610
+We got undefine.
+
+154
+00:10:04.610 --> 00:10:06.150
+Let's just see what we've got here.
+
+155
+00:10:06.150 --> 00:10:10.130
+Let's just say response, console log the response.
+
+156
+00:10:10.130 --> 00:10:11.690
+We won't destructure it just yet.
+
+157
+00:10:11.690 --> 00:10:13.920
+There we go, there we go.
+
+158
+00:10:13.920 --> 00:10:17.470
+Response.data.me, this is the actual current user.
+
+159
+00:10:17.470 --> 00:10:19.410
+You see that their cart is empty,
+
+160
+00:10:19.410 --> 00:10:22.850
+so let's try to destructure that into me.
+
+161
+00:10:22.850 --> 00:10:27.033
+Data, me, and then we'll console log me.
+
+162
+00:10:28.416 --> 00:10:31.370
+There we go, now we see an actual user,
+
+163
+00:10:31.370 --> 00:10:34.630
+so at this point we expect the cart to be empty,
+
+164
+00:10:34.630 --> 00:10:39.630
+so expect me.cart to have length of zero.
+
+165
+00:10:43.630 --> 00:10:48.630
+Passing, good, then we will add an item to the cart,
+
+166
+00:10:51.010 --> 00:10:54.990
+so say wrapper.find, look for the button,
+
+167
+00:10:54.990 --> 00:10:59.990
+and we will simulate a click on that button, right?
+
+168
+00:11:00.300 --> 00:11:01.300
+This is the add to cart button,
+
+169
+00:11:01.300 --> 00:11:03.500
+so we're gonna simulate someone clicking it.
+
+170
+00:11:04.850 --> 00:11:08.800
+Then we will wait for a sec, then we're going
+
+171
+00:11:08.800 --> 00:11:10.720
+to check if the item is in the cart,
+
+172
+00:11:10.720 --> 00:11:15.720
+so check if the item is in the cart,
+
+173
+00:11:17.712 --> 00:11:20.390
+and we can just duplicate this query right here,
+
+174
+00:11:20.390 --> 00:11:24.670
+except we will call this me2, by the way,
+
+175
+00:11:24.670 --> 00:11:26.490
+if you don't feel like the destructuring like this,
+
+176
+00:11:26.490 --> 00:11:31.490
+another way you could do it is just like this, response,
+
+177
+00:11:31.570 --> 00:11:36.570
+and say const me2 is equal to response dot data dot me.
+
+178
+00:11:36.900 --> 00:11:39.010
+That's exactly the same way, but I'm gonna keep
+
+179
+00:11:39.010 --> 00:11:42.000
+that nifty structuring, and at this point,
+
+180
+00:11:42.000 --> 00:11:47.000
+if we console log me2, little error here,
+
+181
+00:11:47.820 --> 00:11:50.710
+no more mocked responses.
+
+182
+00:11:50.710 --> 00:11:53.770
+I think the clicking of this button is not working,
+
+183
+00:11:53.770 --> 00:11:57.040
+so let's just comment this out real quick.
+
+184
+00:11:57.040 --> 00:11:59.600
+It's still telling us that there's no more mocked responses,
+
+185
+00:11:59.600 --> 00:12:04.280
+so it's telling us that we don't have something
+
+186
+00:12:04.280 --> 00:12:09.280
+for add to cart with the variable "abc123",
+
+187
+00:12:10.580 --> 00:12:14.130
+and usually that is because we did not export it.
+
+188
+00:12:14.130 --> 00:12:17.580
+Let's open our addToCart.JS, and yeah, look at the bottom.
+
+189
+00:12:17.580 --> 00:12:20.120
+We didn't export that query, so we'll grab
+
+190
+00:12:20.120 --> 00:12:24.490
+this mutation, export, add to cart mutation.
+
+191
+00:12:24.490 --> 00:12:25.960
+Ideally it would throw better error.
+
+192
+00:12:25.960 --> 00:12:28.080
+Like this is not actually a query
+
+193
+00:12:28.080 --> 00:12:29.950
+other than instead of telling us
+
+194
+00:12:29.950 --> 00:12:31.610
+that we didn't have it, but that's our fault.
+
+195
+00:12:31.610 --> 00:12:33.460
+There we go, looks like it's working.
+
+196
+00:12:33.460 --> 00:12:34.930
+Let's jump back here.
+
+197
+00:12:34.930 --> 00:12:39.930
+Await, wait, grab the value and see what me2 is equal to.
+
+198
+00:12:41.290 --> 00:12:43.640
+Getting a bit of an error, no more mocked responses.
+
+199
+00:12:43.640 --> 00:12:47.750
+I believe, so here we are querying the current user.
+
+200
+00:12:47.750 --> 00:12:50.090
+The first time that it gets queried, it gets this,
+
+201
+00:12:50.090 --> 00:12:52.010
+and then the second time that it gets queried,
+
+202
+00:12:52.010 --> 00:12:54.660
+it doesn't have a mock query, so we actually have
+
+203
+00:12:54.660 --> 00:12:58.660
+to add in a secondary mock for the current user.
+
+204
+00:12:58.660 --> 00:13:01.880
+Go ahead and take that first query and just duplicate it,
+
+205
+00:13:01.880 --> 00:13:04.570
+and then what we're gonna do is in the cart,
+
+206
+00:13:04.570 --> 00:13:09.570
+we're just going to add a fake cart item, and then that way,
+
+207
+00:13:10.610 --> 00:13:12.610
+when it gets queried the second time,
+
+208
+00:13:12.610 --> 00:13:16.140
+you'll see that the cart has a fake cart item in it,
+
+209
+00:13:16.140 --> 00:13:20.780
+and we can go right here, and expect the me2.cart
+
+210
+00:13:22.510 --> 00:13:27.510
+to have length of one, and we can just check also,
+
+211
+00:13:29.010 --> 00:13:33.003
+me dot cart, the first item in the cart, dot ID,
+
+212
+00:13:33.860 --> 00:13:38.860
+to be, omg123, and we can also check
+
+213
+00:13:39.530 --> 00:13:44.530
+that the quantity is equal to three.
+
+214
+00:13:47.280 --> 00:13:50.010
+Looks like everything is passing.
+
+215
+00:13:50.010 --> 00:13:51.640
+One other thing I should note is
+
+216
+00:13:51.640 --> 00:13:56.640
+that here we are faking the reply, so apolloClient.query,
+
+217
+00:13:57.960 --> 00:14:00.100
+and we are running the current user query,
+
+218
+00:14:00.100 --> 00:14:02.790
+and the we're just mocking what gets returned.
+
+219
+00:14:02.790 --> 00:14:07.720
+If you wanted to only mock the current user the first time
+
+220
+00:14:07.720 --> 00:14:11.850
+and then actually check if it got added to the users cart,
+
+221
+00:14:11.850 --> 00:14:13.530
+that would be an update function
+
+222
+00:14:13.530 --> 00:14:16.400
+because the way that we are refreshing the users cart
+
+223
+00:14:16.400 --> 00:14:18.350
+in our add to cart is we're simply
+
+224
+00:14:18.350 --> 00:14:20.850
+just re-fetching the current user query.
+
+225
+00:14:20.850 --> 00:14:25.240
+Another way to do it would be to provide an update function,
+
+226
+00:14:25.240 --> 00:14:28.380
+something like this, where we say this.update,
+
+227
+00:14:28.380 --> 00:14:31.760
+and then you would add an update like we've done previously
+
+228
+00:14:31.760 --> 00:14:36.260
+inside of this component, which would manually modify
+
+229
+00:14:36.260 --> 00:14:38.660
+the Apollo store, and if that was the case,
+
+230
+00:14:38.660 --> 00:14:40.630
+then you wouldn't need to have two mocks.
+
+231
+00:14:40.630 --> 00:14:43.499
+You only one mock, and then you would be able
+
+232
+00:14:43.499 --> 00:14:46.080
+to query the client to check what is in it.
+
+233
+00:14:46.080 --> 00:14:47.530
+So let's get rid of that one.
+
+234
+00:14:47.530 --> 00:14:49.465
+We'll bring it back to the re-fetch query.
+
+235
+00:14:49.465 --> 00:14:52.683
+It's just a little bit simpler to have to deal with it.
+
+236
+00:14:54.650 --> 00:14:55.483
+Other things we want to do is we want
+
+237
+00:14:55.483 --> 00:14:58.670
+to check our loading state, so we say
+
+238
+00:14:58.670 --> 00:15:03.583
+it changes from add to adding when clicked.
+
+239
+00:15:05.830 --> 00:15:07.383
+Go ahead and mount our wrapper.
+
+240
+00:15:15.460 --> 00:15:20.257
+Add to cart, the ID is "abc123".
+
+241
+00:15:26.620 --> 00:15:30.323
+Await, wait, wrapper.update.
+
+242
+00:15:34.370 --> 00:15:39.370
+Then we'll expect the wrapper.txt to contain add to cart.
+
+243
+00:15:46.200 --> 00:15:51.200
+Good, passes, then we'll simulate a click, so wrapper.find,
+
+244
+00:15:51.550 --> 00:15:56.550
+button, dot simulate, click, click, and then we'll expect,
+
+245
+00:15:59.860 --> 00:16:01.810
+actually just duplicate this line here,
+
+246
+00:16:02.840 --> 00:16:05.423
+but now it's still going to say adding to cart.
+
+247
+00:16:08.907 --> 00:16:10.920
+It looks like I'm actually skipping, yeah,
+
+248
+00:16:10.920 --> 00:16:12.230
+it looks like I'm skipping that one
+
+249
+00:16:12.230 --> 00:16:15.120
+'cause this one is on it.only.
+
+250
+00:16:15.120 --> 00:16:16.820
+So let's actually run this one,
+
+251
+00:16:16.820 --> 00:16:20.400
+see if it passes, no more mocked responses,
+
+252
+00:16:20.400 --> 00:16:22.650
+and that's 'cause I forgot to pass the mocks.
+
+253
+00:16:22.650 --> 00:16:26.300
+Mocks, the errors on this are not great.
+
+254
+00:16:26.300 --> 00:16:27.530
+It would be nice to be like hey,
+
+255
+00:16:27.530 --> 00:16:30.500
+you didn't pass us any mocks instead of,
+
+256
+00:16:30.500 --> 00:16:32.500
+like an easy PropType on the mock provider
+
+257
+00:16:32.500 --> 00:16:35.520
+would tell us hey, you never passed any mocks.
+
+258
+00:16:35.520 --> 00:16:39.370
+Last one we want to do is the remove from cart button.
+
+259
+00:16:39.370 --> 00:16:41.983
+Let's go ahead and do the same song and dance.
+
+260
+00:16:43.230 --> 00:16:44.790
+Go into our test, make a new file.
+
+261
+00:16:44.790 --> 00:16:49.790
+RemoveFromCart.test.JS, and I'm gonna go ahead
+
+262
+00:16:52.010 --> 00:16:53.380
+and grab all the imports from our
+
+263
+00:16:53.380 --> 00:16:55.800
+add to cart test, paste them in.
+
+264
+00:17:08.120 --> 00:17:09.710
+Instead of importing add to cart,
+
+265
+00:17:09.710 --> 00:17:14.280
+we will import the RemoveFromCart component,
+
+266
+00:17:14.280 --> 00:17:17.410
+and let's triple check we also exported it.
+
+267
+00:17:17.410 --> 00:17:20.710
+No, we didn't export it, so let's export the remove
+
+268
+00:17:20.710 --> 00:17:25.710
+from cart mutation, and then go back to our tests
+
+269
+00:17:25.900 --> 00:17:29.270
+and import that from the component itself.
+
+270
+00:17:29.270 --> 00:17:30.838
+We'll go code up some mocks.
+
+271
+00:17:30.838 --> 00:17:34.650
+Const mocks is equal to an array, and in this case
+
+272
+00:17:34.650 --> 00:17:36.300
+we actually are only going to need
+
+273
+00:17:36.300 --> 00:17:39.210
+to code up one current user query because of,
+
+274
+00:17:39.210 --> 00:17:42.830
+how I talked about earlier, because the remove from cart
+
+275
+00:17:42.830 --> 00:17:46.300
+mainly will remove it via an update function,
+
+276
+00:17:46.300 --> 00:17:48.470
+we don't ask have to mock it because it's actually
+
+277
+00:17:48.470 --> 00:17:50.540
+going to do the heavy lifting for us,
+
+278
+00:17:50.540 --> 00:17:52.970
+so we're gonna go into remove from cart here.
+
+279
+00:17:52.970 --> 00:17:57.970
+The first mock is going to be a request of a query,
+
+280
+00:17:58.367 --> 00:18:03.200
+the current user query, and the result...
+
+281
+00:18:06.930 --> 00:18:11.930
+has some data where me is equal to a dot dot dot, fake user.
+
+282
+00:18:18.147 --> 00:18:22.420
+And the cart is going to have a fake cart item inside of it.
+
+283
+00:18:23.870 --> 00:18:28.277
+Let's actually pass a fake ID, so the ID is "abc123",
+
+284
+00:18:29.398 --> 00:18:30.970
+and then the orders, actually we don't need
+
+285
+00:18:30.970 --> 00:18:33.270
+to pass our orders because it's already blank.
+
+286
+00:18:35.600 --> 00:18:37.690
+The second mock is the response
+
+287
+00:18:37.690 --> 00:18:42.110
+from the remove from cart query, so request,
+
+288
+00:18:42.110 --> 00:18:47.070
+query, remove from cart mutation,
+
+289
+00:18:47.070 --> 00:18:52.070
+with the variables of ID "abc123", and the response
+
+290
+00:18:57.850 --> 00:19:02.647
+is going to be some data, where the remove from cart.
+
+291
+00:19:06.620 --> 00:19:11.620
+That is a typename, of cart item and ID of "abc123".
+
+292
+00:19:18.130 --> 00:19:21.100
+Alright, that's looking good, so what's going to happen
+
+293
+00:19:21.100 --> 00:19:24.900
+is that we are going to query the current user.
+
+294
+00:19:24.900 --> 00:19:27.070
+We're gonna check that there's an item in the cart,
+
+295
+00:19:27.070 --> 00:19:29.730
+then were going to run the remove from cart mutation
+
+296
+00:19:29.730 --> 00:19:32.690
+with "abc123", and then we're going
+
+297
+00:19:32.690 --> 00:19:35.360
+to query the current user again
+
+298
+00:19:35.360 --> 00:19:38.030
+and check that there cart is actually empty,
+
+299
+00:19:38.030 --> 00:19:39.940
+and the reason why we don't need a secondary mock
+
+300
+00:19:39.940 --> 00:19:42.100
+is because we are manually removing it
+
+301
+00:19:42.100 --> 00:19:44.950
+from the cache with an update function
+
+302
+00:19:44.950 --> 00:19:48.040
+instead of going back to the server and refreshing
+
+303
+00:19:48.040 --> 00:19:51.030
+the current user like we did in the add to cart.
+
+304
+00:19:51.030 --> 00:19:54.650
+So let's go and describe our test now.
+
+305
+00:19:54.650 --> 00:19:58.093
+First we'll do a check if it renders and matches snapshot.
+
+306
+00:20:03.880 --> 00:20:06.380
+And we'll simply just take a quick snapshot.
+
+307
+00:20:06.380 --> 00:20:11.030
+Expect, toJSON, wrapper.find, button,
+
+308
+00:20:12.900 --> 00:20:17.900
+to match snapshot, looks like it's working.
+
+309
+00:20:18.870 --> 00:20:21.763
+Let's check our remove from cart snapshot,
+
+310
+00:20:23.000 --> 00:20:25.180
+and there's our button with a little x
+
+311
+00:20:25.180 --> 00:20:27.090
+rendering out inside of it, good.
+
+312
+00:20:27.090 --> 00:20:28.913
+Just gonna close everything else.
+
+313
+00:20:31.530 --> 00:20:36.530
+Next we want to check that it removes the item from cart.
+
+314
+00:20:40.380 --> 00:20:42.691
+We're gonna do the same thing with the Apollo client,
+
+315
+00:20:42.691 --> 00:20:46.200
+where we're going to store it up here.
+
+316
+00:20:46.200 --> 00:20:47.880
+Then we'll mount it.
+
+317
+00:20:47.880 --> 00:20:50.990
+Actually we can go to our add to cart test,
+
+318
+00:20:50.990 --> 00:20:54.033
+and just grab that same code that we did right here,
+
+319
+00:20:57.600 --> 00:21:00.510
+paste it in here, instead of returning add to cart,
+
+320
+00:21:00.510 --> 00:21:05.440
+we'll return remove from cart, then we'll go ahead
+
+321
+00:21:05.440 --> 00:21:07.220
+and fire off that initial query,
+
+322
+00:21:07.220 --> 00:21:12.220
+so const response is equal to await, apolloClient.query,
+
+323
+00:21:20.280 --> 00:21:25.280
+and then the query is going to be the current user query.
+
+324
+00:21:26.220 --> 00:21:31.040
+And let's just console log the response, and you see,
+
+325
+00:21:31.040 --> 00:21:36.040
+here we have the current user,
+
+326
+00:21:36.620 --> 00:21:38.210
+and we should have an item in the cart.
+
+327
+00:21:38.210 --> 00:21:40.210
+We can write a little expect for that.
+
+328
+00:21:40.210 --> 00:21:44.130
+Expect, response dot data dot me dot cart
+
+329
+00:21:44.130 --> 00:21:46.267
+to have length of one.
+
+330
+00:21:52.330 --> 00:21:53.733
+Pass, very good.
+
+331
+00:21:58.520 --> 00:22:01.580
+We can expect me dot cart, we'll grab the first thing
+
+332
+00:22:01.580 --> 00:22:06.523
+from the car and check the price, to be 5,000.
+
+333
+00:22:09.950 --> 00:22:14.690
+Failed, oh it's the cart item dot item dot price
+
+334
+00:22:14.690 --> 00:22:17.940
+because there's an item inside of your cart.
+
+335
+00:22:17.940 --> 00:22:19.470
+Looks like it's working.
+
+336
+00:22:19.470 --> 00:22:23.400
+Okay, so we know that the initial query went fine.
+
+337
+00:22:23.400 --> 00:22:25.130
+Then we're going to simulate the clicking
+
+338
+00:22:25.130 --> 00:22:27.930
+of the remove button, so wrapper.find,
+
+339
+00:22:27.930 --> 00:22:32.210
+button, dot simulate, click.
+
+340
+00:22:32.210 --> 00:22:37.210
+We'll wait, and then we will read the current user again,
+
+341
+00:22:37.780 --> 00:22:42.300
+so const, response two is equal to,
+
+342
+00:22:42.300 --> 00:22:44.133
+just duplicate this again.
+
+343
+00:22:47.290 --> 00:22:49.433
+And then console log response two,
+
+344
+00:22:50.490 --> 00:22:51.890
+see what we're working with.
+
+345
+00:22:53.400 --> 00:22:55.760
+I see, looks like we're getting an error:
+
+346
+00:22:55.760 --> 00:22:58.840
+not implemented window.alert, and if we open up
+
+347
+00:22:58.840 --> 00:23:01.840
+our remove from cart, there's obviously an error happening
+
+348
+00:23:01.840 --> 00:23:05.450
+in remove from cart, and then we're catching the error
+
+349
+00:23:05.450 --> 00:23:07.080
+and trying to alert it, so I think we
+
+350
+00:23:07.080 --> 00:23:10.730
+can actually mock alert, just to make sure
+
+351
+00:23:10.730 --> 00:23:12.350
+that action never happens in our test.
+
+352
+00:23:12.350 --> 00:23:16.983
+I think just say global.alert is equal to jest.fn.
+
+353
+00:23:20.430 --> 00:23:23.710
+Yep, that, I think we can also,
+
+354
+00:23:23.710 --> 00:23:25.983
+global.alert equals console.log.
+
+355
+00:23:31.480 --> 00:23:33.260
+Ah that's kind of interesting,
+
+356
+00:23:33.260 --> 00:23:36.500
+so here we don't have alert, which is happening
+
+357
+00:23:36.500 --> 00:23:40.290
+on the server, so if we globally replace the name alert
+
+358
+00:23:40.290 --> 00:23:42.540
+to counsole.log, it'll just replace it
+
+359
+00:23:42.540 --> 00:23:44.960
+with a console log when we're running in tester
+
+360
+00:23:44.960 --> 00:23:47.020
+on the server side, so that's probably even better
+
+361
+00:23:47.020 --> 00:23:49.290
+than a mock function 'cause we can actually see
+
+362
+00:23:49.290 --> 00:23:53.000
+what's happening, and the error is no more mocked responses,
+
+363
+00:23:53.000 --> 00:23:56.590
+which there we always get from the mutation,
+
+364
+00:23:56.590 --> 00:23:59.947
+remove from cart the variables "abc123",
+
+365
+00:24:01.170 --> 00:24:04.270
+so let's just back this up quick,
+
+366
+00:24:04.270 --> 00:24:07.053
+and I think it has to do with this button clicking.
+
+367
+00:24:08.190 --> 00:24:09.690
+Yeah, so the error actually has nothing
+
+368
+00:24:09.690 --> 00:24:10.590
+to do with this query.
+
+369
+00:24:10.590 --> 00:24:12.220
+It's the clicking of the button
+
+370
+00:24:12.220 --> 00:24:15.703
+which is going to trigger the update.
+
+371
+00:24:16.590 --> 00:24:18.780
+No more mocked responses.
+
+372
+00:24:18.780 --> 00:24:20.450
+Let's clean this up first.
+
+373
+00:24:20.450 --> 00:24:24.990
+This, remove from cart on line 32 and 35
+
+374
+00:24:24.990 --> 00:24:26.703
+are console logging something.
+
+375
+00:24:28.150 --> 00:24:29.433
+32, 35.
+
+376
+00:24:32.560 --> 00:24:34.363
+Okay, now we got this error.
+
+377
+00:24:35.200 --> 00:24:37.820
+No more mocked responses for the query mutation
+
+378
+00:24:37.820 --> 00:24:39.233
+remove from cart.
+
+379
+00:24:44.270 --> 00:24:47.790
+I always call it, It's result, not response.
+
+380
+00:24:47.790 --> 00:24:49.180
+This is where something like typescript
+
+381
+00:24:49.180 --> 00:24:52.450
+would really help me out in those common errors.
+
+382
+00:24:52.450 --> 00:24:55.380
+I don't know if that would be the error though.
+
+383
+00:24:55.380 --> 00:24:58.230
+And it's just a little space, dummy.
+
+384
+00:24:58.230 --> 00:24:59.063
+I had a space there.
+
+385
+00:24:59.063 --> 00:25:00.430
+I gotta save that, good.
+
+386
+00:25:00.430 --> 00:25:03.810
+We should be able to go back here and expect a response
+
+387
+00:25:03.810 --> 00:25:08.810
+two dot data dot me dot cart to have length of zero,
+
+388
+00:25:09.890 --> 00:25:11.100
+'cause we deleted the item.
+
+389
+00:25:11.100 --> 00:25:12.713
+Give it a save, check our test.
+
+390
+00:25:14.480 --> 00:25:16.160
+And it's passing, good,
+
+391
+00:25:16.160 --> 00:25:18.260
+so that is all the tests related to our cart.
+
+392
+00:25:18.260 --> 00:25:21.683
+Let's flip over to some of the order processing tests.
+

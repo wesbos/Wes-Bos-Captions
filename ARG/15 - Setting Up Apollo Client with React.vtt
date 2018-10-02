@@ -1,0 +1,946 @@
+﻿WEBVTT
+
+1
+00:00:01.010 --> 00:00:02.290
+<v Wes>So we've got our Prisma set up,</v>
+
+2
+00:00:02.290 --> 00:00:04.220
+we have our GraphQL Yoga set up,
+
+3
+00:00:04.220 --> 00:00:07.390
+we've got our React in Next.JS set up,
+
+4
+00:00:07.390 --> 00:00:10.790
+The really the only missing piece in order for React to talk
+
+5
+00:00:10.790 --> 00:00:13.730
+to the Yoga and Prisma servers, is this thing in the middle
+
+6
+00:00:13.730 --> 00:00:15.470
+which is called Apollo Client.
+
+7
+00:00:15.470 --> 00:00:19.220
+Now anytime you're working with data in a React application
+
+8
+00:00:19.220 --> 00:00:21.400
+you're generally doing one of two things,
+
+9
+00:00:21.400 --> 00:00:25.200
+you either store all of your data in a component via state,
+
+10
+00:00:25.200 --> 00:00:27.420
+and then if you want that state to be accessible
+
+11
+00:00:27.420 --> 00:00:30.580
+to other components, you either use regular state,
+
+12
+00:00:30.580 --> 00:00:32.990
+and if you want that data state to be available
+
+13
+00:00:32.990 --> 00:00:35.290
+to other components, you either put it in a context
+
+14
+00:00:35.290 --> 00:00:38.170
+or pass it down via probs, or as that starts to get
+
+15
+00:00:38.170 --> 00:00:40.880
+a little bit unruly, you usually reach for something
+
+16
+00:00:40.880 --> 00:00:43.670
+called Redox and Redox is a data store
+
+17
+00:00:43.670 --> 00:00:45.510
+where you can define what your actions are
+
+18
+00:00:45.510 --> 00:00:47.190
+and how those actions are handled
+
+19
+00:00:47.190 --> 00:00:50.070
+and how the data goes in and out and whatnot,
+
+20
+00:00:50.070 --> 00:00:53.990
+and Apollo Client will replace the need for using something
+
+21
+00:00:53.990 --> 00:00:56.560
+like Redox in fact Redox was used under the hood
+
+22
+00:00:56.560 --> 00:00:58.560
+in Apollo for version one,
+
+23
+00:00:58.560 --> 00:01:01.170
+now it's in version two and almost version three.
+
+24
+00:01:01.170 --> 00:01:03.830
+So we don't need to use Redox in here
+
+25
+00:01:03.830 --> 00:01:06.430
+because Apollo does all of the data manager stuff
+
+26
+00:01:06.430 --> 00:01:07.790
+that a Redox store will do,
+
+27
+00:01:07.790 --> 00:01:09.450
+as well as a whole bunch of other stuff.
+
+28
+00:01:09.450 --> 00:01:13.590
+So it will do the fetching of the data from the serverside,
+
+29
+00:01:13.590 --> 00:01:17.840
+it will do the pushing of the data to your mutations
+
+30
+00:01:17.840 --> 00:01:20.670
+it will do all the caching so if I request a resource
+
+31
+00:01:20.670 --> 00:01:24.110
+twice in the same page, or request it once
+
+32
+00:01:24.110 --> 00:01:26.390
+and then 10 minutes later request the same resource
+
+33
+00:01:26.390 --> 00:01:28.420
+it's going to pull it from the cache first.
+
+34
+00:01:28.420 --> 00:01:30.980
+You don't have to worry about whether you should
+
+35
+00:01:30.980 --> 00:01:32.690
+pull that over the network or not,
+
+36
+00:01:32.690 --> 00:01:34.890
+it will help us manage our local states,
+
+37
+00:01:34.890 --> 00:01:36.520
+so if you have data that just stores
+
+38
+00:01:36.520 --> 00:01:38.180
+in the browser we can do that.
+
+39
+00:01:38.180 --> 00:01:41.000
+And it also gives you your error in loading UI states
+
+40
+00:01:41.000 --> 00:01:43.670
+which is fantastic, you never have to set a flag
+
+41
+00:01:43.670 --> 00:01:47.750
+of is loading true or you never have to manually catch
+
+42
+00:01:47.750 --> 00:01:49.810
+your errors because it will do all of that for you.
+
+43
+00:01:49.810 --> 00:01:54.110
+So Apollo does a whole bunch of stuff for you
+
+44
+00:01:54.110 --> 00:01:57.220
+and it's really awesome, it's sort of the gold standard
+
+45
+00:01:57.220 --> 00:02:00.340
+for working with GraphQL in React world.
+
+46
+00:02:00.340 --> 00:02:02.360
+There is another package from Facebook
+
+47
+00:02:02.360 --> 00:02:05.090
+that is called Relay and I'll let you
+
+48
+00:02:05.090 --> 00:02:06.290
+do your own research into that.
+
+49
+00:02:06.290 --> 00:02:08.680
+It's a little bit more low level,
+
+50
+00:02:08.680 --> 00:02:11.440
+whereas Apollo Client is up and running
+
+51
+00:02:11.440 --> 00:02:12.560
+really, really quickly
+
+52
+00:02:12.560 --> 00:02:15.350
+but that's not to say that Apollo Client is less powerful.
+
+53
+00:02:15.350 --> 00:02:19.790
+I have yet to run into any huge show-stopper issues
+
+54
+00:02:19.790 --> 00:02:23.200
+with Apollo Client so, really excited about it.
+
+55
+00:02:23.200 --> 00:02:26.820
+First thing we want to do is open up this with data.JS.
+
+56
+00:02:26.820 --> 00:02:28.280
+Again I'm in my front end here,
+
+57
+00:02:28.280 --> 00:02:31.110
+'cause it's yellow I'm not on the back end anymore.
+
+58
+00:02:31.110 --> 00:02:33.070
+And I've given you a little bit of boiler plate code
+
+59
+00:02:33.070 --> 00:02:34.850
+we're gonna actually come back
+
+60
+00:02:34.850 --> 00:02:37.350
+and modify this just a little bit
+
+61
+00:02:37.350 --> 00:02:40.390
+but let's go through what we got here first.
+
+62
+00:02:40.390 --> 00:02:43.920
+First thing we need to do is import the Apollo Client
+
+63
+00:02:43.920 --> 00:02:46.580
+from something called apollo-boost.
+
+64
+00:02:46.580 --> 00:02:48.640
+What apollo-boost is is a package
+
+65
+00:02:48.640 --> 00:02:50.780
+that is put out by Apollo,
+
+66
+00:02:50.780 --> 00:02:54.990
+it's an official package that has all of the standard things
+
+67
+00:02:54.990 --> 00:02:56.480
+that you would want to use with
+
+68
+00:02:56.480 --> 00:02:59.160
+an Apollo installation in the client included.
+
+69
+00:03:00.080 --> 00:03:03.420
+By default Apollo Client just comes as Apollo Client,
+
+70
+00:03:03.420 --> 00:03:05.580
+and then if you want to add anything
+
+71
+00:03:05.580 --> 00:03:09.250
+to maybe deal with caching or to deal with
+
+72
+00:03:09.250 --> 00:03:13.040
+Ajax calls to your serverside, or to handle errors
+
+73
+00:03:13.040 --> 00:03:15.840
+or to do local state management
+
+74
+00:03:15.840 --> 00:03:18.950
+then you have to use all of what are called links
+
+75
+00:03:18.950 --> 00:03:21.550
+and you can sort of like extend what Apollo Client does.
+
+76
+00:03:21.550 --> 00:03:23.590
+However in most cases most people
+
+77
+00:03:23.590 --> 00:03:25.150
+will want to use all of these things
+
+78
+00:03:25.150 --> 00:03:27.970
+so they put out this package called Apollo Boost
+
+79
+00:03:27.970 --> 00:03:30.450
+and it has these things pre-configured
+
+80
+00:03:30.450 --> 00:03:33.070
+for you which is fantastic.
+
+81
+00:03:33.070 --> 00:03:35.420
+Next thing we need is withApollo
+
+82
+00:03:35.420 --> 00:03:37.460
+from this package called next-with-apollo
+
+83
+00:03:37.460 --> 00:03:40.140
+what that does is it's going to give us
+
+84
+00:03:40.140 --> 00:03:44.430
+a high-order component that will expose our Apollo Client,
+
+85
+00:03:44.430 --> 00:03:48.200
+Apollo Client is the data base that is in the client,
+
+86
+00:03:48.200 --> 00:03:53.040
+and it will expose that client via a prop.
+
+87
+00:03:53.040 --> 00:03:55.910
+ReactApollo actually comes with some tools for doing this
+
+88
+00:03:55.910 --> 00:03:57.740
+however because we are using next.JS
+
+89
+00:03:57.740 --> 00:04:01.300
+and we want serverside rendering to work,
+
+90
+00:04:01.300 --> 00:04:03.910
+there's a little bit of extra work that we need to do
+
+91
+00:04:03.910 --> 00:04:07.070
+because of how serverside rendering works.
+
+92
+00:04:07.070 --> 00:04:09.940
+This package does all of that for us which is great,
+
+93
+00:04:09.940 --> 00:04:12.090
+and then I've just imported the end point
+
+94
+00:04:12.090 --> 00:04:15.960
+from our config.JS which just shows us
+
+95
+00:04:15.960 --> 00:04:18.190
+where our actual API is being,
+
+96
+00:04:18.190 --> 00:04:21.240
+this is our Yoga API right here, 4444.
+
+97
+00:04:21.240 --> 00:04:24.670
+Then what we do is we create a function that takes
+
+98
+00:04:24.670 --> 00:04:27.970
+in some headers and that's going to be very important
+
+99
+00:04:27.970 --> 00:04:30.910
+when we get into our authentication stop
+
+100
+00:04:30.910 --> 00:04:32.830
+and we return a new client from it
+
+101
+00:04:32.830 --> 00:04:36.060
+and then we give it the url of our end-point.
+
+102
+00:04:36.060 --> 00:04:40.250
+In this case I'm always just giving it that local host 4444
+
+103
+00:04:40.250 --> 00:04:43.720
+but we could change that out when we go to production
+
+104
+00:04:43.720 --> 00:04:47.300
+and then what we do here is on every single request that
+
+105
+00:04:47.300 --> 00:04:50.920
+happens this is sort of like an express middleware here.
+
+106
+00:04:50.920 --> 00:04:53.320
+We are including our credentials.
+
+107
+00:04:53.320 --> 00:04:56.230
+Again what that's going to do is that
+
+108
+00:04:56.230 --> 00:04:57.480
+when you make a request
+
+109
+00:04:57.480 --> 00:05:01.130
+if we have any logged in cookies in the browser
+
+110
+00:05:01.130 --> 00:05:03.560
+then those cookies are gonna come along for the ride
+
+111
+00:05:03.560 --> 00:05:06.530
+and that's important when we flip over to our back end.
+
+112
+00:05:06.530 --> 00:05:09.600
+Finally we export this with Apollo
+
+113
+00:05:09.600 --> 00:05:12.060
+we give it a function to create a client
+
+114
+00:05:12.060 --> 00:05:15.160
+and then we're gonna actually create a client
+
+115
+00:05:15.160 --> 00:05:18.160
+in our app.JS so let's jump over to there.
+
+116
+00:05:18.160 --> 00:05:20.010
+We're gonna do all of that ourselves.
+
+117
+00:05:21.180 --> 00:05:24.940
+We want to import the ApolloProvider
+
+118
+00:05:28.420 --> 00:05:31.380
+from the react-apollo package.
+
+119
+00:05:31.380 --> 00:05:34.940
+And then we also want to import the withData method
+
+120
+00:05:34.940 --> 00:05:37.750
+that we just made from go up a level,
+
+121
+00:05:37.750 --> 00:05:41.700
+into the lib folder and into the withData.
+
+122
+00:05:41.700 --> 00:05:46.700
+Then all you need to do in order to expose a Apollo Client
+
+123
+00:05:46.740 --> 00:05:51.740
+to a React application is just wrap the application
+
+124
+00:05:51.890 --> 00:05:53.880
+in what's called an Apollo Provider.
+
+125
+00:05:53.880 --> 00:05:56.900
+I'm gonna go in-between container and page.
+
+126
+00:05:56.900 --> 00:05:58.970
+Page is like the highest level that we have.
+
+127
+00:05:58.970 --> 00:06:00.670
+So what we're gonna do is we're gonna wrap
+
+128
+00:06:00.670 --> 00:06:02.140
+each and every page in that
+
+129
+00:06:02.140 --> 00:06:04.340
+and we'll say ApolloProivder.
+
+130
+00:06:06.150 --> 00:06:09.950
+Wrap that there and then the Apollo Provider needs a client
+
+131
+00:06:09.950 --> 00:06:12.200
+which is our Apollo Client accessible to it.
+
+132
+00:06:12.200 --> 00:06:15.850
+Let's say client is equal to and that is available
+
+133
+00:06:15.850 --> 00:06:20.850
+via this.props.apollo and why is that available to us?
+
+134
+00:06:21.360 --> 00:06:23.250
+Well because we're gonna go down here
+
+135
+00:06:23.250 --> 00:06:26.650
+to when we export it, remember I said that this with data
+
+136
+00:06:26.650 --> 00:06:28.700
+is gonna be a high-order component.
+
+137
+00:06:28.700 --> 00:06:31.580
+What we're gonna do is we're gonna export this app
+
+138
+00:06:31.580 --> 00:06:34.250
+and we're gonna wrap it in our withData function
+
+139
+00:06:34.250 --> 00:06:37.510
+and that's going to make the Apollo Client
+
+140
+00:06:37.510 --> 00:06:39.900
+accessible via this.props.
+
+141
+00:06:39.900 --> 00:06:42.770
+What I like to also do is not to type this.props
+
+142
+00:06:42.770 --> 00:06:45.160
+out of Apollo but we can destructure it up here.
+
+143
+00:06:45.160 --> 00:06:48.280
+So let's say, component, Apollo.
+
+144
+00:06:48.280 --> 00:06:50.410
+Then we also need to do a little bit of work
+
+145
+00:06:50.410 --> 00:06:52.570
+in order to expose page numbers.
+
+146
+00:06:52.570 --> 00:06:55.270
+When we go to different pages on our application
+
+147
+00:06:55.270 --> 00:06:58.650
+we are going to need to surface those page values
+
+148
+00:06:58.650 --> 00:07:03.650
+so anytime I go to like /item you see page two.
+
+149
+00:07:04.090 --> 00:07:08.550
+Or /itemsingular, id equals one, two, three.
+
+150
+00:07:08.550 --> 00:07:10.190
+We need to surface those values.
+
+151
+00:07:10.190 --> 00:07:11.670
+In previous versions of Next.js
+
+152
+00:07:11.670 --> 00:07:13.800
+they would automatically do this
+
+153
+00:07:13.800 --> 00:07:15.820
+but now we have to explicitly do that
+
+154
+00:07:15.820 --> 00:07:17.870
+so what we have to do is go up here
+
+155
+00:07:17.870 --> 00:07:22.020
+and write ourselves a static getInitialProps
+
+156
+00:07:22.020 --> 00:07:25.640
+which is going to pass us the component and the context
+
+157
+00:07:27.960 --> 00:07:31.210
+say let pageProps is equal to curly bracket
+
+158
+00:07:32.400 --> 00:07:35.330
+and then we'll say if the component
+
+159
+00:07:35.330 --> 00:07:40.140
+that we're trying to render has some props
+
+160
+00:07:42.460 --> 00:07:46.050
+then we are going to surface those via the page props.
+
+161
+00:07:46.050 --> 00:07:50.030
+So pageProps is equal to await,
+
+162
+00:07:51.710 --> 00:07:54.500
+Component.getInitialProps.
+
+163
+00:07:54.500 --> 00:07:55.970
+And you pass it the context
+
+164
+00:07:55.970 --> 00:07:58.550
+and what we need to do is mark this as a sync,
+
+165
+00:08:01.350 --> 00:08:04.710
+and finally what we'll do here is we'll say pageProps.query
+
+166
+00:08:05.670 --> 00:08:09.790
+is equal to ctx.query that is how we,
+
+167
+00:08:09.790 --> 00:08:11.270
+let's write a little comment there.
+
+168
+00:08:11.270 --> 00:08:16.270
+This exposes the query to the user.
+
+169
+00:08:18.200 --> 00:08:21.520
+Then we'll return pageProps.
+
+170
+00:08:22.390 --> 00:08:23.800
+Then down here what we'll do
+
+171
+00:08:23.800 --> 00:08:26.790
+is we'll destructure that, pageProps.
+
+172
+00:08:26.790 --> 00:08:28.300
+You may be thinking how did I just go
+
+173
+00:08:28.300 --> 00:08:30.450
+from pageProps here to here,
+
+174
+00:08:30.450 --> 00:08:32.170
+that's because this getInitialProps
+
+175
+00:08:32.170 --> 00:08:36.170
+that's a special next.JS lifecycle method.
+
+176
+00:08:36.170 --> 00:08:39.070
+This will run first before
+
+177
+00:08:39.070 --> 00:08:41.770
+the first render actually happens.
+
+178
+00:08:41.770 --> 00:08:45.980
+And by returning anything here you expose it via Props
+
+179
+00:08:45.980 --> 00:08:48.110
+down here and that's gonna be really important
+
+180
+00:08:48.110 --> 00:08:50.940
+because what this all does in here
+
+181
+00:08:50.940 --> 00:08:53.100
+where we say Component.getInitialProps
+
+182
+00:08:53.100 --> 00:08:56.910
+is every single page that we have it's going to crawl
+
+183
+00:08:56.910 --> 00:09:00.270
+the entire page for any queries or mutations
+
+184
+00:09:00.270 --> 00:09:03.700
+that we have inside of that page that need to be fetched.
+
+185
+00:09:03.700 --> 00:09:07.390
+We have a list of items and a shopping cart
+
+186
+00:09:07.390 --> 00:09:10.170
+and a couple other queries on the page.
+
+187
+00:09:10.170 --> 00:09:13.260
+All of those queries need to be fired off and resolved
+
+188
+00:09:13.260 --> 00:09:17.130
+before we can actually go ahead and render out the page.
+
+189
+00:09:17.130 --> 00:09:18.810
+By doing this right here,
+
+190
+00:09:18.810 --> 00:09:21.550
+it's going to crawl all of those pages for us,
+
+191
+00:09:21.550 --> 00:09:23.660
+fetch all that data and then return
+
+192
+00:09:23.660 --> 00:09:25.340
+all of that data to this.
+
+193
+00:09:25.340 --> 00:09:26.870
+It's a little bit confusing to me
+
+194
+00:09:26.870 --> 00:09:30.300
+but this isn't necessary if you're just doing
+
+195
+00:09:30.300 --> 00:09:33.010
+a client rendered app, it's just because of the way that
+
+196
+00:09:33.010 --> 00:09:35.530
+serverside rendered applications work.
+
+197
+00:09:35.530 --> 00:09:37.390
+Where does all of this code come from?
+
+198
+00:09:37.390 --> 00:09:40.290
+If you go to the next JS or the Apollo documentation
+
+199
+00:09:40.290 --> 00:09:42.220
+they all have examples of how to get
+
+200
+00:09:42.220 --> 00:09:43.860
+it working with server-side render
+
+201
+00:09:43.860 --> 00:09:46.650
+and there's lots of examples that look a lot like this.
+
+202
+00:09:46.650 --> 00:09:47.690
+So we have these page props,
+
+203
+00:09:47.690 --> 00:09:50.628
+we're going to go into the component down here
+
+204
+00:09:50.628 --> 00:09:52.700
+and we're just going to spread those
+
+205
+00:09:52.700 --> 00:09:56.130
+on down to the component for that specific page.
+
+206
+00:09:57.250 --> 00:10:00.650
+Now, if that works let's actually fire up our client,
+
+207
+00:10:00.650 --> 00:10:03.980
+so I'm gonna go over here, npm run dev.
+
+208
+00:10:05.530 --> 00:10:08.930
+And we'll go to our local host 7777,
+
+209
+00:10:08.930 --> 00:10:10.690
+and it seems like everything's working.
+
+210
+00:10:10.690 --> 00:10:11.710
+Open up here.
+
+211
+00:10:11.710 --> 00:10:13.520
+This seems to be working.
+
+212
+00:10:13.520 --> 00:10:17.700
+One thing I do recommend getting is the Apollo dev tools
+
+213
+00:10:17.700 --> 00:10:22.220
+for either Firefox or Chrome so just do a quick search
+
+214
+00:10:22.220 --> 00:10:24.990
+for Apollo dev tools and what that's going to do
+
+215
+00:10:24.990 --> 00:10:26.740
+is it's actually gonna give us access
+
+216
+00:10:26.740 --> 00:10:31.740
+to our entire store or the cache as we say it,
+
+217
+00:10:32.150 --> 00:10:33.420
+there's nothing in here yet
+
+218
+00:10:33.420 --> 00:10:35.340
+but if I were to go to this one,
+
+219
+00:10:37.040 --> 00:10:40.330
+and open up my Apollo cache here,
+
+220
+00:10:41.400 --> 00:10:42.233
+I can open that up,
+
+221
+00:10:42.233 --> 00:10:45.710
+you can see that I have got my cart items in here,
+
+222
+00:10:45.710 --> 00:10:47.210
+I've got all of the different items,
+
+223
+00:10:47.210 --> 00:10:49.520
+I have all the different orders that I have
+
+224
+00:10:49.520 --> 00:10:53.560
+and the specific user as to who I am right now.
+
+225
+00:10:53.560 --> 00:10:56.130
+You can see all of the different permissions and orders
+
+226
+00:10:56.130 --> 00:10:58.960
+and name and id and the e-mail that I have.
+
+227
+00:10:58.960 --> 00:11:01.270
+This is kind of like React dev tools
+
+228
+00:11:01.270 --> 00:11:03.760
+where it's going to allow us to peer into
+
+229
+00:11:03.760 --> 00:11:06.290
+what the cache actually looks like right now,
+
+230
+00:11:06.290 --> 00:11:08.720
+in case we're running into any caching issues.
+
+231
+00:11:08.720 --> 00:11:10.890
+So that is a little bit of boiler plate that we need
+
+232
+00:11:10.890 --> 00:11:13.010
+to get this Apollo up and running.
+
+233
+00:11:13.010 --> 00:11:15.080
+In the next videos we're actually gonna be writing some code
+
+234
+00:11:15.080 --> 00:11:17.200
+that we can fire off some queries
+
+235
+00:11:17.200 --> 00:11:20.070
+and start pulling data into our application
+
+236
+00:11:20.070 --> 00:11:22.010
+so we can template it out with React.
+

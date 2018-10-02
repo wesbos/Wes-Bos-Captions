@@ -1,0 +1,1034 @@
+﻿WEBVTT
+
+1
+00:00:01.360 --> 00:00:02.193
+<v Wes>Alright in this video,</v>
+
+2
+00:00:02.193 --> 00:00:04.710
+we're gonna write our first custom type, our first query,
+
+3
+00:00:04.710 --> 00:00:06.280
+and our first mutation.
+
+4
+00:00:06.280 --> 00:00:09.620
+And to do that we are gonna take Prisma out of the equation,
+
+5
+00:00:09.620 --> 00:00:11.570
+just so that we're not confused
+
+6
+00:00:11.570 --> 00:00:13.320
+as to like what is doing what.
+
+7
+00:00:13.320 --> 00:00:16.720
+In this case, we are going to be writing our schema,
+
+8
+00:00:16.720 --> 00:00:19.490
+our queries and mutation, just on the Yoga layer.
+
+9
+00:00:19.490 --> 00:00:20.700
+And we're not gonna be interfacing
+
+10
+00:00:20.700 --> 00:00:23.060
+with the actual database layer just yet,
+
+11
+00:00:23.060 --> 00:00:25.540
+and that's also gonna show you that you could possibly use
+
+12
+00:00:25.540 --> 00:00:28.190
+something like Yoga without Prisma.
+
+13
+00:00:28.190 --> 00:00:31.490
+So, what I wanna do is open up your backend here
+
+14
+00:00:31.490 --> 00:00:34.940
+and I want you to open up your schema.graphql.
+
+15
+00:00:34.940 --> 00:00:39.300
+You see that how we did these two mutations with hi here.
+
+16
+00:00:39.300 --> 00:00:42.370
+I also want to go ahead and start this thing up
+
+17
+00:00:42.370 --> 00:00:44.020
+if you're not already doing that.
+
+18
+00:00:46.030 --> 00:00:49.930
+It's gonna tell us it's running on local host port 4444.
+
+19
+00:00:49.930 --> 00:00:53.690
+I have the GraphQL Playground app installed
+
+20
+00:00:53.690 --> 00:00:55.100
+and you can just do a quick Google search
+
+21
+00:00:55.100 --> 00:00:56.450
+for GraphQL Playground
+
+22
+00:00:56.450 --> 00:00:58.920
+and you see that it automatically opened that up for me.
+
+23
+00:00:58.920 --> 00:00:59.970
+If you don't have that installed,
+
+24
+00:00:59.970 --> 00:01:03.640
+you can also just visit local host 4444, in the browser,
+
+25
+00:01:03.640 --> 00:01:04.930
+and that will show you
+
+26
+00:01:04.930 --> 00:01:08.010
+exactly what you've got going on here.
+
+27
+00:01:08.010 --> 00:01:12.830
+Now, what we wanna do now is go back to our schema
+
+28
+00:01:12.830 --> 00:01:15.090
+and we have hi, and you can tell that this
+
+29
+00:01:15.090 --> 00:01:17.490
+is like the shape of our API.
+
+30
+00:01:17.490 --> 00:01:20.710
+Anything that you want to be visible via your API
+
+31
+00:01:20.710 --> 00:01:23.020
+goes in your schema and you can see that
+
+32
+00:01:23.020 --> 00:01:26.160
+by going to your actual URL here,
+
+33
+00:01:26.160 --> 00:01:28.480
+clicking on your schema, and you can see that it tells us.
+
+34
+00:01:28.480 --> 00:01:29.860
+These are the queries we have
+
+35
+00:01:29.860 --> 00:01:31.260
+and these are the mutations that we have.
+
+36
+00:01:31.260 --> 00:01:34.330
+Well, what we could do is start
+
+37
+00:01:34.330 --> 00:01:36.620
+to write our own query and mutations.
+
+38
+00:01:36.620 --> 00:01:40.210
+So, if we go to our query here and let's remove hi,
+
+39
+00:01:40.210 --> 00:01:42.150
+and let's just say dogs.
+
+40
+00:01:42.150 --> 00:01:44.757
+Dogs is going to be a query that we have
+
+41
+00:01:44.757 --> 00:01:48.800
+and that needs to return, what is it we're gonna return?
+
+42
+00:01:48.800 --> 00:01:51.800
+It's going to return a list of dogs.
+
+43
+00:01:51.800 --> 00:01:55.350
+Now, normally in JavaScript you might say,
+
+44
+00:01:55.350 --> 00:01:57.040
+okay is this gonna return an array
+
+45
+00:01:57.040 --> 00:01:59.490
+or you just assume that it's gonna return an array
+
+46
+00:01:59.490 --> 00:02:02.840
+of objects and each objects is going to have a name of a dog
+
+47
+00:02:02.840 --> 00:02:04.510
+and maybe some other information about the dog.
+
+48
+00:02:04.510 --> 00:02:06.810
+But because GraphQL is typed,
+
+49
+00:02:06.810 --> 00:02:09.160
+if you want to return a shape of something,
+
+50
+00:02:09.160 --> 00:02:11.750
+you have to go and make that into its on type.
+
+51
+00:02:11.750 --> 00:02:14.030
+Let's go up here, we'll say type dog
+
+52
+00:02:14.030 --> 00:02:16.950
+and here's where we describe what a dog looks like,
+
+53
+00:02:16.950 --> 00:02:18.930
+let's actually put a capital D on there,
+
+54
+00:02:18.930 --> 00:02:21.700
+and a dog will have a name which is a String,
+
+55
+00:02:21.700 --> 00:02:25.190
+and that's always required, and that's it for now.
+
+56
+00:02:25.190 --> 00:02:27.810
+But we could also put like an age and a favorite toy
+
+57
+00:02:27.810 --> 00:02:29.950
+and a type of dog, you get the point, right?
+
+58
+00:02:29.950 --> 00:02:33.180
+Then we'll go down here and when somebody is querying dogs,
+
+59
+00:02:33.180 --> 00:02:36.940
+we are going to return an array of dogs.
+
+60
+00:02:36.940 --> 00:02:40.090
+So we're gonna say it will turn an array of dogs
+
+61
+00:02:40.090 --> 00:02:42.120
+and that is always going to be required.
+
+62
+00:02:42.120 --> 00:02:44.210
+If I put an exclamation mark on the end of Dog,
+
+63
+00:02:44.210 --> 00:02:47.090
+this means that I always have to return an array
+
+64
+00:02:47.090 --> 00:02:48.560
+and that array must always
+
+65
+00:02:48.560 --> 00:02:51.380
+have a Dog inside of it, at least one.
+
+66
+00:02:51.380 --> 00:02:55.483
+But in this case it's doable to return an array of just one.
+
+67
+00:03:01.390 --> 00:03:02.410
+Let's give that a save.
+
+68
+00:03:02.410 --> 00:03:04.090
+Now, well what you need to do
+
+69
+00:03:04.090 --> 00:03:06.260
+whenever you create a new query,
+
+70
+00:03:06.260 --> 00:03:08.422
+is you need to set up a resolver.
+
+71
+00:03:08.422 --> 00:03:10.470
+And a resolver answers the question,
+
+72
+00:03:10.470 --> 00:03:12.230
+where does this data come from
+
+73
+00:03:12.230 --> 00:03:14.630
+or how do we get it to the end user?
+
+74
+00:03:14.630 --> 00:03:17.910
+So and to do that we open up our Query.js.
+
+75
+00:03:17.910 --> 00:03:21.070
+Now remember that when we created our server here,
+
+76
+00:03:21.070 --> 00:03:22.990
+we line up the schema,
+
+77
+00:03:22.990 --> 00:03:26.870
+which is this with a bunch of mutations
+
+78
+00:03:26.870 --> 00:03:29.070
+and queries that resolve
+
+79
+00:03:29.070 --> 00:03:31.360
+to the queries and mutations that we have.
+
+80
+00:03:31.360 --> 00:03:35.160
+So, we're gonna open up our query and we're going to say.
+
+81
+00:03:35.160 --> 00:03:37.410
+In here you just have to have a method
+
+82
+00:03:37.410 --> 00:03:40.400
+on every single query that lines up exactly
+
+83
+00:03:40.400 --> 00:03:41.890
+with the different queries that we have.
+
+84
+00:03:41.890 --> 00:03:44.060
+So, we're gonna make a dogs one
+
+85
+00:03:44.060 --> 00:03:47.580
+and this is just a shorthand syntax for this,
+
+86
+00:03:47.580 --> 00:03:49.350
+so we can just do that.
+
+87
+00:03:49.350 --> 00:03:53.260
+Each time that you have a request coming in,
+
+88
+00:03:53.260 --> 00:03:54.160
+it's going to give you this
+
+89
+00:03:54.160 --> 00:03:56.470
+sort of signature of four different variables.
+
+90
+00:03:56.470 --> 00:04:00.270
+First one is the parent and we'll talk about what that is
+
+91
+00:04:00.270 --> 00:04:02.490
+in just a second but that's just the parent schema
+
+92
+00:04:02.490 --> 00:04:06.060
+that we have in GraphQL, then we also get arguments
+
+93
+00:04:06.060 --> 00:04:08.250
+that have been passed to the query.
+
+94
+00:04:08.250 --> 00:04:12.030
+We also get the context, which earlier,
+
+95
+00:04:12.030 --> 00:04:14.890
+if we can take a look at our createServer again,
+
+96
+00:04:14.890 --> 00:04:16.900
+you see that the context we've given ourself
+
+97
+00:04:16.900 --> 00:04:18.190
+access to the database.
+
+98
+00:04:18.190 --> 00:04:21.350
+That's just a way for us to surface the database.
+
+99
+00:04:21.350 --> 00:04:24.340
+Comebacks will also give us the rest of the request as well.
+
+100
+00:04:24.340 --> 00:04:25.860
+So, if we need any request information
+
+101
+00:04:25.860 --> 00:04:28.600
+about the incoming request whether that's headers,
+
+102
+00:04:28.600 --> 00:04:31.330
+or cookies, or anything that's coming in
+
+103
+00:04:31.330 --> 00:04:34.030
+that will be available on the context request.
+
+104
+00:04:34.030 --> 00:04:36.640
+And then finally we get this variable called info.
+
+105
+00:04:36.640 --> 00:04:40.530
+And on info we get a whole bunch of information
+
+106
+00:04:40.530 --> 00:04:43.750
+around the GraphQL query that's coming in.
+
+107
+00:04:43.750 --> 00:04:45.450
+All of these variables will make sense
+
+108
+00:04:45.450 --> 00:04:48.180
+as we start to us them, but for now,
+
+109
+00:04:48.180 --> 00:04:50.090
+we're actually just going to be returning.
+
+110
+00:04:50.090 --> 00:04:55.090
+Let's just return an array of dogs, we'll say name Snickers.
+
+111
+00:04:55.910 --> 00:05:00.403
+And we'll give ourselves a name, Sunny.
+
+112
+00:05:01.260 --> 00:05:03.006
+Okay, that looks good.
+
+113
+00:05:03.006 --> 00:05:04.810
+Now, if that works properly,
+
+114
+00:05:04.810 --> 00:05:06.390
+we should be able to go back here,
+
+115
+00:05:06.390 --> 00:05:09.010
+you can hit this little button here to refresh your schema
+
+116
+00:05:09.010 --> 00:05:10.510
+and then if we go to our schema here.
+
+117
+00:05:10.510 --> 00:05:13.770
+You'll see that our queries is dogs
+
+118
+00:05:13.770 --> 00:05:16.020
+and it will return an array of dogs.
+
+119
+00:05:16.020 --> 00:05:19.340
+And we also see that we have a type of dog
+
+120
+00:05:19.340 --> 00:05:20.490
+that has a name of strings.
+
+121
+00:05:20.490 --> 00:05:22.803
+So, we should be able to here and say query,
+
+122
+00:05:24.940 --> 00:05:28.060
+dogs, and from each dog we wanna return,
+
+123
+00:05:28.060 --> 00:05:29.950
+well we only have a name property in there.
+
+124
+00:05:29.950 --> 00:05:32.380
+So, go ahead and run it, there we go.
+
+125
+00:05:32.380 --> 00:05:33.710
+With the data that comes back
+
+126
+00:05:33.710 --> 00:05:36.930
+is an array of dogs, name Snickers, name Sunny.
+
+127
+00:05:36.930 --> 00:05:39.760
+And you see what's happening here is that,
+
+128
+00:05:39.760 --> 00:05:42.540
+we aren't actually interfacing with any database here.
+
+129
+00:05:42.540 --> 00:05:46.260
+I'm just sending back raw text to the user.
+
+130
+00:05:46.260 --> 00:05:48.050
+And this data could come from anywhere.
+
+131
+00:05:48.050 --> 00:05:49.820
+You could hit an external REST API
+
+132
+00:05:49.820 --> 00:05:51.500
+and then return the data here.
+
+133
+00:05:51.500 --> 00:05:53.770
+You could open up a CSV file
+
+134
+00:05:53.770 --> 00:05:55.340
+and parse it, return those values,
+
+135
+00:05:55.340 --> 00:05:57.760
+you could pull these values from memory.
+
+136
+00:05:57.760 --> 00:05:59.450
+In our case, and most likely,
+
+137
+00:05:59.450 --> 00:06:01.100
+you're gonna be pulling those from a database.
+
+138
+00:06:01.100 --> 00:06:05.540
+So, this is where your database calls are going to go,
+
+139
+00:06:05.540 --> 00:06:09.050
+regardless of what database your using on the backend,
+
+140
+00:06:09.050 --> 00:06:11.200
+in our case we're going to be using Prisma.
+
+141
+00:06:12.150 --> 00:06:14.420
+So that's good, let's write a mutation
+
+142
+00:06:14.420 --> 00:06:16.510
+and then come back and modify this query.
+
+143
+00:06:16.510 --> 00:06:17.750
+So first thing you want to do
+
+144
+00:06:17.750 --> 00:06:21.620
+is you go back to your mutation here,
+
+145
+00:06:21.620 --> 00:06:23.200
+we're gonna remove that hi one.
+
+146
+00:06:23.200 --> 00:06:25.350
+And we'll make a mutation called createDog,
+
+147
+00:06:26.190 --> 00:06:31.190
+and that is going to take in a argument which is a name,
+
+148
+00:06:31.350 --> 00:06:34.750
+and that is going to be a String, that is required.
+
+149
+00:06:34.750 --> 00:06:39.680
+And from that we are going to return colon, a Dog.
+
+150
+00:06:39.680 --> 00:06:41.810
+Right, so we're going to take in a name,
+
+151
+00:06:41.810 --> 00:06:43.830
+we're going to make a dog object,
+
+152
+00:06:43.830 --> 00:06:47.160
+or a dog type and return that dog.
+
+153
+00:06:47.160 --> 00:06:49.130
+So we got that up and running.
+
+154
+00:06:49.130 --> 00:06:50.520
+It actually used to yell at me
+
+155
+00:06:50.520 --> 00:06:53.950
+that any time you had something in you schema
+
+156
+00:06:53.950 --> 00:06:56.170
+that didn't line up with your resolvers,
+
+157
+00:06:56.170 --> 00:06:57.003
+it would yell at you.
+
+158
+00:06:57.003 --> 00:06:57.836
+Maybe it's the other way around,
+
+159
+00:06:57.836 --> 00:06:59.250
+let's take a quick look at that.
+
+160
+00:06:59.250 --> 00:07:04.250
+If I make a mutation here and I say doesn't belong,
+
+161
+00:07:05.360 --> 00:07:07.170
+there we go, it yells at you here.
+
+162
+00:07:07.170 --> 00:07:09.550
+Mutation.doesntbelong is defined in the resolver
+
+163
+00:07:09.550 --> 00:07:10.640
+but not in schema.
+
+164
+00:07:10.640 --> 00:07:12.650
+So anytime you put a mutation in here,
+
+165
+00:07:12.650 --> 00:07:14.870
+it has to mirror that in schema.
+
+166
+00:07:14.870 --> 00:07:18.003
+So ours is going to be called createDog
+
+167
+00:07:19.210 --> 00:07:21.880
+and again we're going to get all that same signature.
+
+168
+00:07:21.880 --> 00:07:25.160
+The parent, the args, the info,
+
+169
+00:07:25.160 --> 00:07:30.160
+oh no, the context, ctx, and the info.
+
+170
+00:07:30.890 --> 00:07:34.420
+And from here, this is where we create a dog.
+
+171
+00:07:34.420 --> 00:07:38.660
+Yeah, so let's just go ahead and console.log the args.
+
+172
+00:07:38.660 --> 00:07:41.800
+Just to see exactly what we're working with here.
+
+173
+00:07:41.800 --> 00:07:44.150
+So I'm gonna clear this out, I usually hit Command + K
+
+174
+00:07:44.150 --> 00:07:46.460
+just to get rid of all that noise.
+
+175
+00:07:46.460 --> 00:07:47.293
+Then we'll go down here.
+
+176
+00:07:47.293 --> 00:07:49.160
+Now, there's a couple of options that we have here.
+
+177
+00:07:49.160 --> 00:07:52.660
+If you want to write a mutation in the same panel here.
+
+178
+00:07:52.660 --> 00:07:54.600
+You're going to see, here, let's actually go ahead
+
+179
+00:07:54.600 --> 00:07:57.450
+and write the mutation down below here, we'll say create,
+
+180
+00:07:58.700 --> 00:08:00.860
+oh, it's not showing us the createDogs
+
+181
+00:08:00.860 --> 00:08:02.860
+because we have to refresh.
+
+182
+00:08:02.860 --> 00:08:05.510
+Now let's try it, there we go createDog.
+
+183
+00:08:05.510 --> 00:08:09.370
+That requires a name and we'll call it Snickers.
+
+184
+00:08:09.370 --> 00:08:13.553
+And from that we're going to return the name of the dog.
+
+185
+00:08:14.780 --> 00:08:16.540
+Now if we want to run this,
+
+186
+00:08:16.540 --> 00:08:18.410
+it just says Unnamed, Unnamed, right?
+
+187
+00:08:18.410 --> 00:08:19.910
+So if you have multiple queries
+
+188
+00:08:19.910 --> 00:08:21.760
+and you won't to be able to name them?
+
+189
+00:08:21.760 --> 00:08:24.180
+In GraphQL you can actually go ahead and name them
+
+190
+00:08:24.180 --> 00:08:27.410
+so that you can easily view or access
+
+191
+00:08:27.410 --> 00:08:29.030
+or in our case just run them from here.
+
+192
+00:08:29.030 --> 00:08:32.503
+So, we'll call this query, getAllDogs,
+
+193
+00:08:33.940 --> 00:08:36.710
+and we'll call this mutation createADog.
+
+194
+00:08:39.420 --> 00:08:42.770
+Now if we were to run createADog,
+
+195
+00:08:42.770 --> 00:08:44.810
+it's actually going to not, it's gonna error out
+
+196
+00:08:44.810 --> 00:08:48.410
+because we haven't actually created a dog on the backend.
+
+197
+00:08:48.410 --> 00:08:50.530
+But let's see what happens in our terminal here.
+
+198
+00:08:50.530 --> 00:08:52.600
+You see that we console.log args,
+
+199
+00:08:52.600 --> 00:08:54.100
+it gives us name of Snickers.
+
+200
+00:08:54.100 --> 00:08:56.950
+Now, let's actually kind of mimic using a database here,
+
+201
+00:08:56.950 --> 00:08:58.510
+so we can see it working.
+
+202
+00:08:58.510 --> 00:09:02.140
+If we go back to our VS Code here, the mutation,
+
+203
+00:09:02.140 --> 00:09:04.310
+let's actually just store those in memory
+
+204
+00:09:04.310 --> 00:09:05.630
+on the global scope.
+
+205
+00:09:05.630 --> 00:09:08.600
+This is something you should never actually do
+
+206
+00:09:08.600 --> 00:09:10.560
+because every time your server restarts,
+
+207
+00:09:10.560 --> 00:09:12.707
+you're going to lose everything in memory
+
+208
+00:09:12.707 --> 00:09:15.020
+and you should also not put things on the global scope.
+
+209
+00:09:15.020 --> 00:09:17.050
+But just for a simple example,
+
+210
+00:09:17.050 --> 00:09:18.510
+similar to how you would store something
+
+211
+00:09:18.510 --> 00:09:20.660
+in the window in the browser.
+
+212
+00:09:20.660 --> 00:09:23.280
+So what we'll do is we'll say, window, or no,
+
+213
+00:09:23.280 --> 00:09:28.280
+global.dogs is equal to global.dogs, or an empty array.
+
+214
+00:09:28.320 --> 00:09:31.260
+So the first time around it's gonna be an empty array.
+
+215
+00:09:31.260 --> 00:09:35.330
+Then what we need to do is just create a dog.
+
+216
+00:09:35.330 --> 00:09:39.640
+So, let's say, create a dog, say const newDogs
+
+217
+00:09:41.370 --> 00:09:45.760
+is equal to an object, or the name of the dog
+
+218
+00:09:45.760 --> 00:09:48.970
+is going to be equal to the args.name.
+
+219
+00:09:48.970 --> 00:09:53.410
+Then we can take the global.dogs and push the new dog,
+
+220
+00:09:53.410 --> 00:09:57.220
+don't actually push real dogs, just push variable dogs,
+
+221
+00:09:57.220 --> 00:10:01.150
+and then return the new dog from there.
+
+222
+00:10:01.150 --> 00:10:03.010
+So what that should do is it create a new dog,
+
+223
+00:10:03.010 --> 00:10:05.350
+it'll put it into the global namespace
+
+224
+00:10:05.350 --> 00:10:07.220
+and then it will return it.
+
+225
+00:10:07.220 --> 00:10:10.490
+And then we can go on to our query side of things,
+
+226
+00:10:10.490 --> 00:10:14.810
+and instead of returning a hard code it,
+
+227
+00:10:14.810 --> 00:10:18.240
+we should be able to just return global.dogs.
+
+228
+00:10:18.240 --> 00:10:23.240
+Actually, here we should say global.dogs is equal to itself
+
+229
+00:10:23.600 --> 00:10:27.600
+or an empty array and that was just if anyone ever runs that
+
+230
+00:10:27.600 --> 00:10:30.360
+before we push a dog into the global namespace,
+
+231
+00:10:30.360 --> 00:10:32.350
+it's going to return an empty array.
+
+232
+00:10:32.350 --> 00:10:34.960
+Because remember we specify here that even
+
+233
+00:10:34.960 --> 00:10:37.683
+if there are none return as an empty array.
+
+234
+00:10:38.860 --> 00:10:40.750
+So let's see if that works for us.
+
+235
+00:10:40.750 --> 00:10:43.832
+We're gonna go ahead and createADog.
+
+236
+00:10:43.832 --> 00:10:47.090
+I have to do call getAllDogs, there we go!
+
+237
+00:10:47.090 --> 00:10:47.923
+It gives us a new one!
+
+238
+00:10:47.923 --> 00:10:52.900
+Now, let's change this one to Sunny, run it again,
+
+239
+00:10:52.900 --> 00:10:55.543
+and dogo.
+
+240
+00:10:57.980 --> 00:10:58.813
+Now if I run it,
+
+241
+00:10:58.813 --> 00:11:01.890
+I should get all three coming back, beautiful!
+
+242
+00:11:01.890 --> 00:11:04.450
+So you see what's happening is like I'm using the memory
+
+243
+00:11:04.450 --> 00:11:07.840
+of my computer as like a temporary database.
+
+244
+00:11:07.840 --> 00:11:11.150
+And that is exactly how query and mutations work.
+
+245
+00:11:11.150 --> 00:11:13.830
+You take in the data, you put it somewhere,
+
+246
+00:11:13.830 --> 00:11:16.420
+and then you return whatever it is that you're expecting.
+
+247
+00:11:16.420 --> 00:11:18.103
+In our case, we are returning the dog
+
+248
+00:11:18.103 --> 00:11:20.470
+but that might just be an success message
+
+249
+00:11:20.470 --> 00:11:22.740
+telling the user that it had worked.
+
+250
+00:11:22.740 --> 00:11:25.870
+And then on the flip side, you can then access that data
+
+251
+00:11:25.870 --> 00:11:28.610
+whether it's in memory or it's in a database
+
+252
+00:11:28.610 --> 00:11:30.903
+and return those to the user.
+
+253
+00:11:32.010 --> 00:11:33.410
+So what we're gonna do next
+
+254
+00:11:33.410 --> 00:11:35.740
+is we're actually going to be interfacing with the database
+
+255
+00:11:35.740 --> 00:11:38.070
+so that when we kill our server
+
+256
+00:11:38.070 --> 00:11:41.340
+and obviously when people on other computers
+
+257
+00:11:41.340 --> 00:11:42.610
+are visiting our website,
+
+258
+00:11:42.610 --> 00:11:44.860
+they're going to be able to access that data.
+

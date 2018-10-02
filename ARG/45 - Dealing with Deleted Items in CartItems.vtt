@@ -1,0 +1,210 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.010
+(air whooshing)
+
+2
+00:00:02.010 --> 00:00:02.843
+<v Wes>Alright.</v>
+
+3
+00:00:02.843 --> 00:00:04.210
+We have a bit of a problem now where if you
+
+4
+00:00:04.210 --> 00:00:07.170
+put an item into your cart and you try to delete
+
+5
+00:00:07.170 --> 00:00:10.330
+that item, first, we get an error that says
+
+6
+00:00:10.330 --> 00:00:11.619
+the change you are trying to make would violate
+
+7
+00:00:11.619 --> 00:00:14.600
+the cart to item between cart and item,
+
+8
+00:00:14.600 --> 00:00:17.490
+and second, if we are actually able to delete it,
+
+9
+00:00:17.490 --> 00:00:20.040
+well then what do we do if it's in somebody's cart?
+
+10
+00:00:20.040 --> 00:00:22.230
+We need to somehow show that that item
+
+11
+00:00:22.230 --> 00:00:25.630
+has been removed or just remove it from the cart entirely.
+
+12
+00:00:25.630 --> 00:00:28.450
+Let's first fix this right here and I believe
+
+13
+00:00:28.450 --> 00:00:31.063
+that's in our...let's go to our backend here.
+
+14
+00:00:32.840 --> 00:00:36.830
+Open up our Data Model and find our cart item.
+
+15
+00:00:36.830 --> 00:00:40.030
+This is saying the item is absolutely required
+
+16
+00:00:40.030 --> 00:00:43.060
+with a bang on it and I think we are wrong
+
+17
+00:00:43.060 --> 00:00:45.180
+in that because it is possible to have a cart
+
+18
+00:00:45.180 --> 00:00:47.880
+item where the item has been deleted
+
+19
+00:00:47.880 --> 00:00:49.430
+and therefore, does not exist.
+
+20
+00:00:49.430 --> 00:00:52.560
+Lets take that requirement away and
+
+21
+00:00:52.560 --> 00:00:55.563
+give out a save and lets go redeploy it.
+
+22
+00:00:58.770 --> 00:01:02.200
+Gonna start it up again and now when I try
+
+23
+00:01:02.200 --> 00:01:07.200
+to delete an item, it actually deletes that item.
+
+24
+00:01:07.920 --> 00:01:10.200
+You still see it here 'cause we haven't refetched
+
+25
+00:01:10.200 --> 00:01:13.713
+the cart, but if I give the page a refresh,
+
+26
+00:01:14.990 --> 00:01:17.370
+now we get bit of an error here, cannot read property
+
+27
+00:01:17.370 --> 00:01:20.720
+image of null and it's because its trying to pull
+
+28
+00:01:20.720 --> 00:01:24.620
+the item's image when the item doesn't exist.
+
+29
+00:01:24.620 --> 00:01:28.213
+Lets go to our front end here, open up our cart dot JS,
+
+30
+00:01:30.930 --> 00:01:35.930
+and open up our cart item dot JS, and we'll simply just go
+
+31
+00:01:36.487 --> 00:01:41.487
+up here and we'll change this to a return
+
+32
+00:01:44.060 --> 00:01:48.210
+and we'll change this to a block with curly-brackets.
+
+33
+00:01:53.160 --> 00:01:55.280
+Then above here we will need to first
+
+34
+00:01:55.280 --> 00:01:58.096
+check if that item exists.
+
+35
+00:01:58.096 --> 00:02:01.411
+If there was no cart item dot item, we'll just return
+
+36
+00:02:01.411 --> 00:02:06.411
+null or you could return a paragraph tag that says
+
+37
+00:02:07.235 --> 00:02:12.235
+this item has been removed.
+
+38
+00:02:16.280 --> 00:02:17.654
+There ya go.
+
+39
+00:02:17.654 --> 00:02:19.710
+It just says this item has been removed, you could probably
+
+40
+00:02:19.710 --> 00:02:21.462
+also take the cart item styles instead
+
+41
+00:02:21.462 --> 00:02:26.462
+of the paragraph and just wrap it in a cart-item styles.
+
+42
+00:02:30.368 --> 00:02:33.020
+Then we get bit of a nice little one, actually,
+
+43
+00:02:33.020 --> 00:02:35.883
+you could probably even further have the remove from cart
+
+44
+00:02:35.883 --> 00:02:40.883
+button inside of here so that if somebody does want it...
+
+45
+00:02:40.930 --> 00:02:43.270
+there ya go...I can still remove the item from my cart
+
+46
+00:02:43.270 --> 00:02:45.730
+even if it is being removed.
+
+47
+00:02:45.730 --> 00:02:46.610
+Lookin' good.
+
+48
+00:02:46.610 --> 00:02:49.100
+Okay, that's the solving of that issue.
+
+49
+00:02:49.100 --> 00:02:51.700
+If you really wanted to you could also do a refetch
+
+50
+00:02:51.700 --> 00:02:55.000
+of the current user's cart, but I am gonna leave it at that.
+
+51
+00:02:55.000 --> 00:02:57.810
+The next video we're gonna look at the Render Prop
+
+52
+00:02:57.810 --> 00:03:00.053
+mess that we sort of have ourselves in.
+

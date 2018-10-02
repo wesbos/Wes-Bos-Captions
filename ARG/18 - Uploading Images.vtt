@@ -1,0 +1,1162 @@
+﻿WEBVTT
+
+1
+00:00:00.840 --> 00:00:03.770
+<v Wes>All right, let's get up and running with</v>
+
+2
+00:00:03.770 --> 00:00:05.210
+uploading some images.
+
+3
+00:00:05.210 --> 00:00:06.090
+In my Node course
+
+4
+00:00:06.090 --> 00:00:07.430
+I showed you how you can use something
+
+5
+00:00:07.430 --> 00:00:10.450
+called a Multer with Express in order to
+
+6
+00:00:10.450 --> 00:00:12.710
+actually upload the images to your own server.
+
+7
+00:00:12.710 --> 00:00:13.620
+So I thought I'd show you something
+
+8
+00:00:13.620 --> 00:00:14.930
+a little bit different in this course
+
+9
+00:00:14.930 --> 00:00:18.040
+and that is uploading to a external service.
+
+10
+00:00:18.040 --> 00:00:19.450
+This is called Cloudinary
+
+11
+00:00:19.450 --> 00:00:21.230
+and there's lots of other services out there.
+
+12
+00:00:21.230 --> 00:00:23.780
+I know Amazon allows you to upload images to them.
+
+13
+00:00:23.780 --> 00:00:25.538
+You could just use something like Imgur.
+
+14
+00:00:25.538 --> 00:00:27.150
+I really liked Cloudinary
+
+15
+00:00:27.150 --> 00:00:29.840
+just because I've used it myself,
+
+16
+00:00:29.840 --> 00:00:31.050
+this is not sponsored or anything,
+
+17
+00:00:31.050 --> 00:00:32.740
+but when I put out a tweet poll,
+
+18
+00:00:32.740 --> 00:00:35.010
+it was overwhelmingly that people wanted to see
+
+19
+00:00:35.010 --> 00:00:37.780
+how to use Cloudinary to host their images.
+
+20
+00:00:37.780 --> 00:00:40.050
+Cloudinary is awesome because you can upload images,
+
+21
+00:00:40.050 --> 00:00:43.560
+it will do transformations which includes everything,
+
+22
+00:00:43.560 --> 00:00:46.980
+like a image compression, resizing images,
+
+23
+00:00:46.980 --> 00:00:51.040
+cropping, applying filters, all kinds of stuff like that.
+
+24
+00:00:51.040 --> 00:00:52.402
+You get the point,
+
+25
+00:00:52.402 --> 00:00:53.235
+anything that's related to images,
+
+26
+00:00:53.235 --> 00:00:54.800
+you'll be able to do it on Cloudinary.
+
+27
+00:00:54.800 --> 00:00:56.570
+They give you 10 Gigs for free
+
+28
+00:00:56.570 --> 00:01:01.350
+and then you can also refer a friend and get an extra what,
+
+29
+00:01:01.350 --> 00:01:03.912
+two Gigs worth of bandwidth, which is pretty wicked.
+
+30
+00:01:03.912 --> 00:01:06.760
+So the free plan is pretty generous.
+
+31
+00:01:06.760 --> 00:01:07.940
+I've been pretty happy with it.
+
+32
+00:01:07.940 --> 00:01:10.680
+So here I've got a brand new account.
+
+33
+00:01:10.680 --> 00:01:11.730
+I just signed up for it,
+
+34
+00:01:11.730 --> 00:01:14.540
+like I haven't even verified my email just yet.
+
+35
+00:01:14.540 --> 00:01:16.800
+Maybe I'll have to do that before we upload one.
+
+36
+00:01:16.800 --> 00:01:17.950
+I've signed up for it and I just wanted to
+
+37
+00:01:17.950 --> 00:01:21.030
+make a couple settings changes that is going
+
+38
+00:01:21.030 --> 00:01:24.040
+to allow us to upload from the client without
+
+39
+00:01:24.040 --> 00:01:25.670
+having to have a server in the middle.
+
+40
+00:01:25.670 --> 00:01:27.090
+So click on settings here
+
+41
+00:01:27.090 --> 00:01:29.054
+and we're gonna click on upload.
+
+42
+00:01:29.054 --> 00:01:31.850
+Now there's all kinds of different settings in here.
+
+43
+00:01:31.850 --> 00:01:32.683
+You can play with them,
+
+44
+00:01:32.683 --> 00:01:34.230
+but we, what we really want to do is create
+
+45
+00:01:34.230 --> 00:01:35.160
+what's called a preset
+
+46
+00:01:35.160 --> 00:01:37.820
+and a preset set of settings that will apply
+
+47
+00:01:37.820 --> 00:01:40.000
+to any of our uploads.
+
+48
+00:01:40.000 --> 00:01:41.940
+So we'll click on add, upload presets.
+
+49
+00:01:41.940 --> 00:01:44.803
+We're gonna name this preset called sick fits.
+
+50
+00:01:44.803 --> 00:01:48.800
+It's gonna be unsigned which is what we've had.
+
+51
+00:01:48.800 --> 00:01:50.410
+Folder that it's gonna go into is
+
+52
+00:01:50.410 --> 00:01:52.500
+gonna be called sick fits.
+
+53
+00:01:52.500 --> 00:01:54.560
+You can apply tags and all kinds of stuff
+
+54
+00:01:54.560 --> 00:01:56.320
+that you could possibly want.
+
+55
+00:01:56.320 --> 00:01:58.517
+However the thing that we do care about is down here.
+
+56
+00:01:58.517 --> 00:01:59.810
+And we want to edit some
+
+57
+00:01:59.810 --> 00:02:02.500
+incoming transformations which is right here.
+
+58
+00:02:02.500 --> 00:02:05.330
+We're gonna set the width to be a thousand.
+
+59
+00:02:05.330 --> 00:02:08.690
+The mode is gonna be stuck on scale.
+
+60
+00:02:08.690 --> 00:02:11.794
+The format is gonna be auto and you can
+
+61
+00:02:11.794 --> 00:02:15.410
+see some of the, some cheesy corner radius rotation.
+
+62
+00:02:15.410 --> 00:02:16.680
+Look and feel.
+
+63
+00:02:16.680 --> 00:02:17.513
+You can, I don't know,
+
+64
+00:02:17.513 --> 00:02:19.430
+you can add a CPF filter like at the digital
+
+65
+00:02:19.430 --> 00:02:21.130
+camera from 12 years ago.
+
+66
+00:02:21.130 --> 00:02:22.380
+That's all we want.
+
+67
+00:02:22.380 --> 00:02:24.260
+And then you click on, okay,
+
+68
+00:02:24.260 --> 00:02:25.700
+that's gonna add those things here.
+
+69
+00:02:25.700 --> 00:02:27.899
+And then we're gonna add an eager transformation
+
+70
+00:02:27.899 --> 00:02:31.496
+which is gonna sort of in the background
+
+71
+00:02:31.496 --> 00:02:34.630
+transfer it to be a little bit bigger.
+
+72
+00:02:34.630 --> 00:02:36.300
+So we're gonna add an eager transformation.
+
+73
+00:02:36.300 --> 00:02:37.650
+Actually, sorry, real quick.
+
+74
+00:02:37.650 --> 00:02:39.300
+That shouldn't be not be a thousand.
+
+75
+00:02:39.300 --> 00:02:41.970
+The first one is gonna be 500.
+
+76
+00:02:41.970 --> 00:02:43.530
+And then in the background it's going
+
+77
+00:02:43.530 --> 00:02:45.920
+to do a larger transformation that might
+
+78
+00:02:46.918 --> 00:02:48.518
+take a little bit longer.
+
+79
+00:02:48.518 --> 00:02:49.351
+So, we're gonna.
+
+80
+00:02:49.351 --> 00:02:50.518
+Oops, I got to here, delete one.
+
+81
+00:02:50.518 --> 00:02:52.380
+We're gonna edit this one.
+
+82
+00:02:52.380 --> 00:02:54.198
+It's gonna be a thousand pixels,
+
+83
+00:02:54.198 --> 00:02:58.440
+so twice the size and the,
+
+84
+00:02:58.440 --> 00:03:00.123
+it's gonna be auto as well.
+
+85
+00:03:00.980 --> 00:03:01.813
+Good.
+
+86
+00:03:04.180 --> 00:03:06.790
+We are at the bottom and click on save
+
+87
+00:03:06.790 --> 00:03:09.270
+and we are up and running.
+
+88
+00:03:09.270 --> 00:03:11.510
+Now let's jump back to our component here.
+
+89
+00:03:11.510 --> 00:03:14.790
+We are gonna put a method on our create item
+
+90
+00:03:14.790 --> 00:03:17.090
+component that is gonna handle all of
+
+91
+00:03:17.090 --> 00:03:19.480
+the uploading of our images.
+
+92
+00:03:19.480 --> 00:03:21.460
+Gonna do that right below the handle change
+
+93
+00:03:21.460 --> 00:03:24.270
+and we're gonna call it upload file that I was
+
+94
+00:03:24.270 --> 00:03:26.580
+gonna take in the event.
+
+95
+00:03:26.580 --> 00:03:30.423
+And let's just console dot log uploading file.
+
+96
+00:03:31.340 --> 00:03:33.930
+Now what we want to do is whenever somebody selects
+
+97
+00:03:33.930 --> 00:03:35.670
+a file from an input box,
+
+98
+00:03:35.670 --> 00:03:39.250
+we're gonna actually trigger this upload file to do it.
+
+99
+00:03:39.250 --> 00:03:42.120
+So we'll go up in here and right above
+
+100
+00:03:42.120 --> 00:03:44.190
+everything else and I'm actually just going
+
+101
+00:03:44.190 --> 00:03:48.113
+to take one of the labels for title and pasted above.
+
+102
+00:03:49.000 --> 00:03:51.907
+We're gonna change that to file.
+
+103
+00:03:51.907 --> 00:03:56.907
+And change this to say image,
+
+104
+00:03:57.300 --> 00:03:59.613
+so input type equals file.
+
+105
+00:03:59.613 --> 00:04:01.995
+This file name is file, placeholder
+
+106
+00:04:01.995 --> 00:04:05.430
+is upload an image.
+
+107
+00:04:05.430 --> 00:04:07.740
+It is the value is going
+
+108
+00:04:07.740 --> 00:04:10.800
+to be this, that state dot image.
+
+109
+00:04:10.800 --> 00:04:12.810
+And then when somebody changes this input,
+
+110
+00:04:12.810 --> 00:04:16.760
+we're gonna call that upload file method.
+
+111
+00:04:16.760 --> 00:04:20.193
+So this stuck up load file.
+
+112
+00:04:21.454 --> 00:04:24.540
+Now let's go to our application here.
+
+113
+00:04:24.540 --> 00:04:26.790
+Go to cell and I get it.
+
+114
+00:04:26.790 --> 00:04:28.700
+But in an error failed to set the value
+
+115
+00:04:28.700 --> 00:04:32.140
+of property input, accepts a file name,
+
+116
+00:04:32.140 --> 00:04:36.110
+which may be both because there is no value
+
+117
+00:04:36.110 --> 00:04:40.011
+or move that and whoa, double what happened.
+
+118
+00:04:40.011 --> 00:04:41.480
+That was weird.
+
+119
+00:04:41.480 --> 00:04:42.900
+That was probably the fact that they went
+
+120
+00:04:42.900 --> 00:04:44.530
+from error back to where we had it.
+
+121
+00:04:44.530 --> 00:04:45.363
+Good.
+
+122
+00:04:45.363 --> 00:04:46.196
+So we've got this image.
+
+123
+00:04:46.196 --> 00:04:48.050
+Let's go ahead and choose a file.
+
+124
+00:04:48.050 --> 00:04:50.040
+I've got a whole bunch of kind of cool things.
+
+125
+00:04:50.040 --> 00:04:52.400
+Ooh, nice cooler.
+
+126
+00:04:52.400 --> 00:04:55.130
+Upload it and let's see what's in our thing says
+
+127
+00:04:55.130 --> 00:04:55.963
+uploading files.
+
+128
+00:04:55.963 --> 00:04:57.351
+So we.
+
+129
+00:04:57.351 --> 00:04:58.651
+Every time we change this,
+
+130
+00:04:59.520 --> 00:05:02.360
+it's gonna trigger that upload file.
+
+131
+00:05:02.360 --> 00:05:03.533
+Good.
+
+132
+00:05:03.533 --> 00:05:04.800
+And then we're gonna actually do
+
+133
+00:05:04.800 --> 00:05:07.210
+the heavy lifting inside of this.
+
+134
+00:05:07.210 --> 00:05:08.043
+First thing we're gonna do
+
+135
+00:05:08.043 --> 00:05:10.050
+is pull the files out of that selection.
+
+136
+00:05:10.050 --> 00:05:12.470
+So say const files as equal to
+
+137
+00:05:12.470 --> 00:05:15.230
+either target dot files fails.
+
+138
+00:05:15.230 --> 00:05:17.350
+That is a fail files.
+
+139
+00:05:17.350 --> 00:05:18.770
+There we go.
+
+140
+00:05:18.770 --> 00:05:20.287
+Then we're gonna use the form data API,
+
+141
+00:05:20.287 --> 00:05:23.750
+which is part of Java script in order
+
+142
+00:05:23.750 --> 00:05:25.840
+to sort of prep all of the data.
+
+143
+00:05:25.840 --> 00:05:28.568
+So say const data equals new form data
+
+144
+00:05:28.568 --> 00:05:33.290
+and we'll take the data and append the file
+
+145
+00:05:33.290 --> 00:05:35.530
+and that is gonna be the first item
+
+146
+00:05:35.530 --> 00:05:37.360
+that the user selected.
+
+147
+00:05:37.360 --> 00:05:41.050
+Then we are also gonna add the upload preset.
+
+148
+00:05:41.050 --> 00:05:43.040
+This is a little piece of data that needs to come along.
+
+149
+00:05:43.040 --> 00:05:46.310
+So it append upload preset.
+
+150
+00:05:46.310 --> 00:05:49.190
+And this is just an argument that is needed by Cloudinary
+
+151
+00:05:49.190 --> 00:05:51.150
+and it's going to be called sick fits.
+
+152
+00:05:51.150 --> 00:05:53.151
+So if you named your preset something different
+
+153
+00:05:53.151 --> 00:05:57.660
+than sick fits, which is what you've done here,
+
+154
+00:05:57.660 --> 00:05:59.920
+and make sure that you type that in there,
+
+155
+00:05:59.920 --> 00:06:01.611
+otherwise it's not gonna work.
+
+156
+00:06:01.611 --> 00:06:04.190
+Now we need to actually hit the Cloudinary API.
+
+157
+00:06:04.190 --> 00:06:06.520
+So say constant responses equal to await.
+
+158
+00:06:06.520 --> 00:06:07.380
+Oh, are awaiting.
+
+159
+00:06:07.380 --> 00:06:09.813
+So we're gonna make this an async function.
+
+160
+00:06:09.813 --> 00:06:12.971
+And we're gonna use the third API to hit the API,
+
+161
+00:06:12.971 --> 00:06:17.971
+so it's https, bomb bomb, api.cloudinary.com/v1_1/.
+
+162
+00:06:21.050 --> 00:06:23.190
+And then this is gonna be your actual end point
+
+163
+00:06:23.190 --> 00:06:26.490
+and if you don't know what your end point is, you can
+
+164
+00:06:26.490 --> 00:06:28.450
+see it right here on your upload page.
+
+165
+00:06:28.450 --> 00:06:31.620
+It will say the name of that you signed up with.
+
+166
+00:06:31.620 --> 00:06:32.980
+Mine is West Boss tutorial.
+
+167
+00:06:32.980 --> 00:06:35.291
+So forest West Boss tutorial for slash image
+
+168
+00:06:35.291 --> 00:06:38.540
+or slash upload, good.
+
+169
+00:06:38.540 --> 00:06:39.930
+Then factual tick.
+
+170
+00:06:39.930 --> 00:06:42.888
+Another number of arguments as a second argument here,
+
+171
+00:06:42.888 --> 00:06:46.280
+they say method is post because by default
+
+172
+00:06:46.280 --> 00:06:50.040
+fetch does get and the body is gonna be the data.
+
+173
+00:06:50.040 --> 00:06:51.050
+That's this.
+
+174
+00:06:51.050 --> 00:06:53.020
+It's just the actual file itself.
+
+175
+00:06:53.020 --> 00:06:55.870
+And then in another argument called upload preset,
+
+176
+00:06:55.870 --> 00:06:56.943
+that gets put along.
+
+177
+00:06:58.190 --> 00:07:01.120
+Then we want to do is it's gonna upload that
+
+178
+00:07:01.120 --> 00:07:03.140
+and we want to parse the data that comes back.
+
+179
+00:07:03.140 --> 00:07:03.973
+So say cons.
+
+180
+00:07:03.973 --> 00:07:07.600
+The file is equal to await response that JSON
+
+181
+00:07:07.600 --> 00:07:09.933
+Jews Sawn, JSON.
+
+182
+00:07:09.933 --> 00:07:13.050
+Here we go, and that's just gonna convert the response
+
+183
+00:07:13.050 --> 00:07:14.863
+that we get into JSON.
+
+184
+00:07:16.110 --> 00:07:17.710
+And then we, let's just console,
+
+185
+00:07:17.710 --> 00:07:19.210
+log the file that we have there,
+
+186
+00:07:19.210 --> 00:07:20.470
+see what we've got,
+
+187
+00:07:20.470 --> 00:07:23.833
+but we can actually put the data that comes back into these
+
+188
+00:07:23.833 --> 00:07:25.980
+two spots of our state.
+
+189
+00:07:25.980 --> 00:07:27.240
+Where did our state go here?
+
+190
+00:07:27.240 --> 00:07:29.150
+The image and the large image.
+
+191
+00:07:29.150 --> 00:07:31.310
+So let's do that.
+
+192
+00:07:31.310 --> 00:07:33.930
+This set state, the image is gonna be the file,
+
+193
+00:07:33.930 --> 00:07:37.380
+that secure URL, a large image is going
+
+194
+00:07:37.380 --> 00:07:41.850
+to be the file that eager first one dot secure year.
+
+195
+00:07:41.850 --> 00:07:43.540
+And again, the whoa,
+
+196
+00:07:43.540 --> 00:07:46.630
+again, the eager is a secondary transformed
+
+197
+00:07:46.630 --> 00:07:49.210
+that happens and it's gonna transform a larger version
+
+198
+00:07:49.210 --> 00:07:52.090
+of that and I just used that as the secondary
+
+199
+00:07:52.090 --> 00:07:53.360
+so we don't have to wait for both of them
+
+200
+00:07:53.360 --> 00:07:54.729
+to come back.
+
+201
+00:07:54.729 --> 00:07:56.932
+That might make the requests a little bit faster.
+
+202
+00:07:56.932 --> 00:07:58.510
+So let's take a look here.
+
+203
+00:07:58.510 --> 00:08:00.569
+Let's go back up here.
+
+204
+00:08:00.569 --> 00:08:04.180
+A bit of an error, sink upload file.
+
+205
+00:08:04.180 --> 00:08:06.073
+Oh, that's because it's not a sink there.
+
+206
+00:08:06.073 --> 00:08:09.693
+This is a sink.
+
+207
+00:08:11.160 --> 00:08:11.993
+Good.
+
+208
+00:08:11.993 --> 00:08:14.170
+What I want you to do is open up your DEV tools,
+
+209
+00:08:14.170 --> 00:08:16.006
+go to your reactive tools and
+
+210
+00:08:16.006 --> 00:08:17.833
+find your create item.
+
+211
+00:08:19.986 --> 00:08:22.510
+And we're gonna watch the image
+
+212
+00:08:22.510 --> 00:08:24.130
+and the large image of our state.
+
+213
+00:08:24.130 --> 00:08:28.840
+So upload an image up up and Bam,
+
+214
+00:08:29.830 --> 00:08:30.723
+they came back.
+
+215
+00:08:31.966 --> 00:08:33.242
+Let's take a look at our console.
+
+216
+00:08:33.242 --> 00:08:34.830
+This is the data that comes back from Cloudinary.
+
+217
+00:08:34.830 --> 00:08:37.860
+It has all kinds of information about everything
+
+218
+00:08:37.860 --> 00:08:38.693
+that's going in.
+
+219
+00:08:38.693 --> 00:08:40.630
+You can choose to save some more of this information
+
+220
+00:08:40.630 --> 00:08:42.230
+to your database if you need it.
+
+221
+00:08:42.230 --> 00:08:44.585
+I'm specifically just grabbing the secure URL
+
+222
+00:08:44.585 --> 00:08:48.130
+and the security Arielle from the eager one
+
+223
+00:08:48.130 --> 00:08:49.960
+that was created.
+
+224
+00:08:49.960 --> 00:08:51.350
+And that is awesome.
+
+225
+00:08:51.350 --> 00:08:54.350
+Which should allow me now to submit this.
+
+226
+00:08:54.350 --> 00:08:55.262
+What was that?
+
+227
+00:08:55.262 --> 00:08:57.073
+Camera sensor make to seventies.
+
+228
+00:08:58.426 --> 00:09:03.160
+Big Price and love these.
+
+229
+00:09:03.160 --> 00:09:06.390
+Go ahead and submit it brings me to it.
+
+230
+00:09:06.390 --> 00:09:08.563
+I should be able to now go to my homepage,
+
+231
+00:09:10.730 --> 00:09:11.590
+scroll to the bottom.
+
+232
+00:09:11.590 --> 00:09:14.230
+And there they are.
+
+233
+00:09:14.230 --> 00:09:15.680
+Looks like they're showing up
+
+234
+00:09:16.630 --> 00:09:18.530
+but a stretchy problem.
+
+235
+00:09:18.530 --> 00:09:21.370
+So, we'll hit that in just a second.
+
+236
+00:09:21.370 --> 00:09:23.387
+Also, I'd like to it to show at the top of this.
+
+237
+00:09:23.387 --> 00:09:24.850
+So we'll get into it.
+
+238
+00:09:24.850 --> 00:09:29.340
+But that item is now uploading it just fine.
+
+239
+00:09:29.340 --> 00:09:30.427
+So I'm happy about that.
+
+240
+00:09:30.427 --> 00:09:32.370
+One little thing you might want to add,
+
+241
+00:09:32.370 --> 00:09:34.070
+I'm not gonna add it first simplicity sake,
+
+242
+00:09:34.070 --> 00:09:38.770
+but you might want to when you submit this thing, this form,
+
+243
+00:09:38.770 --> 00:09:41.140
+you might want to first check that the
+
+244
+00:09:41.140 --> 00:09:43.590
+images done uploading because there
+
+245
+00:09:43.590 --> 00:09:45.350
+could be a little bit of time where someone
+
+246
+00:09:45.350 --> 00:09:47.650
+uploads a file and then immediately hits enter,
+
+247
+00:09:47.650 --> 00:09:51.360
+then it's gonna send the data your API will still come back
+
+248
+00:09:51.360 --> 00:09:52.720
+with a specific error
+
+249
+00:09:52.720 --> 00:09:56.107
+saying, hey, you didn't provide to me a image
+
+250
+00:09:56.107 --> 00:09:57.640
+or a large image but it's,
+
+251
+00:09:57.640 --> 00:10:00.450
+it might be a better experience to do that to the user.
+
+252
+00:10:00.450 --> 00:10:02.684
+So let's try it one more time and go to cell here.
+
+253
+00:10:02.684 --> 00:10:05.086
+A blood annuity belt.
+
+254
+00:10:05.086 --> 00:10:08.170
+One thing I would like to do is to display the image to
+
+255
+00:10:08.170 --> 00:10:09.850
+the user if there it is in there.
+
+256
+00:10:09.850 --> 00:10:11.607
+So let's go ahead and add that.
+
+257
+00:10:11.607 --> 00:10:14.160
+Oh, go down right below this input.
+
+258
+00:10:14.160 --> 00:10:16.780
+Curly brackets will say this,
+
+259
+00:10:16.780 --> 00:10:21.703
+that state, that image and end, we'll do an image tag,
+
+260
+00:10:23.010 --> 00:10:25.810
+this, that state dot image,
+
+261
+00:10:25.810 --> 00:10:27.120
+and the Alt.
+
+262
+00:10:27.120 --> 00:10:31.080
+We'll set it to upload preview.
+
+263
+00:10:33.323 --> 00:10:35.163
+Will that show us?
+
+264
+00:10:36.110 --> 00:10:37.630
+Beautiful.
+
+265
+00:10:37.630 --> 00:10:40.890
+Why are these images?
+
+266
+00:10:40.890 --> 00:10:43.080
+So funnily spaced,
+
+267
+00:10:43.080 --> 00:10:47.670
+oh, it looks like they're actually being sized like that.
+
+268
+00:10:47.670 --> 00:10:49.700
+So obviously a something wrong in my preset.
+
+269
+00:10:49.700 --> 00:10:51.380
+Let me go back and change my.
+
+270
+00:10:51.380 --> 00:10:53.630
+Oh, you see what I did is I set the height
+
+271
+00:10:53.630 --> 00:10:55.240
+and the width of this image.
+
+272
+00:10:55.240 --> 00:10:58.797
+So let's edit that preset right here
+
+273
+00:11:02.004 --> 00:11:03.903
+and the height.
+
+274
+00:11:05.260 --> 00:11:06.674
+Delete it.
+
+275
+00:11:06.674 --> 00:11:09.710
+That's just gonna auto scale itself.
+
+276
+00:11:09.710 --> 00:11:13.080
+That's why my images are being so funnily shown.
+
+277
+00:11:13.080 --> 00:11:14.650
+Another thing I can do here
+
+278
+00:11:14.650 --> 00:11:15.980
+is on this image tag,
+
+279
+00:11:15.980 --> 00:11:20.660
+you say width equals 200 and you see just a little
+
+280
+00:11:20.660 --> 00:11:22.850
+preview of your image that is showing up.
+
+281
+00:11:22.850 --> 00:11:24.410
+You can go ahead and submit it.
+
+282
+00:11:24.410 --> 00:11:27.060
+Go back to our homepage and we'll see it show up.
+
+283
+00:11:27.060 --> 00:11:27.900
+I didn't submit that one.
+
+284
+00:11:27.900 --> 00:11:29.535
+That's why it's not showing up there.
+
+285
+00:11:29.535 --> 00:11:30.440
+Awesome.
+
+286
+00:11:30.440 --> 00:11:34.270
+So we got the R part of CRED, Read.
+
+287
+00:11:34.270 --> 00:11:38.190
+We've got the C part of CRED, which is Create.
+
+288
+00:11:38.190 --> 00:11:41.910
+Now let's go ahead and code up the edit screen.
+
+289
+00:11:41.910 --> 00:11:43.120
+If I want to change the price,
+
+290
+00:11:43.120 --> 00:11:45.753
+the name or the description of one of our items.
+

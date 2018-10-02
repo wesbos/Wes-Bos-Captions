@@ -1,0 +1,602 @@
+﻿WEBVTT
+
+1
+00:00:00.120 --> 00:00:00.953
+(air swishing)
+
+2
+00:00:00.953 --> 00:00:02.010
+<v Wes>In this video, we're gonna take care</v>
+
+3
+00:00:02.010 --> 00:00:04.300
+of two problems; first, we need to delete something,
+
+4
+00:00:04.300 --> 00:00:06.880
+it doesn't actually get removed from the cart,
+
+5
+00:00:06.880 --> 00:00:08.700
+and second, we're actually gonna make that work,
+
+6
+00:00:08.700 --> 00:00:10.810
+but it's still gonna feel a little bit sluggish,
+
+7
+00:00:10.810 --> 00:00:13.710
+so we're gonna look at something called optimistic response,
+
+8
+00:00:13.710 --> 00:00:17.280
+which I really like, to have a really snappy interface,
+
+9
+00:00:17.280 --> 00:00:20.120
+and sort of do the database calls and stuff,
+
+10
+00:00:20.120 --> 00:00:20.953
+in the background.
+
+11
+00:00:20.953 --> 00:00:23.890
+So first, let's get this removing immediately,
+
+12
+00:00:23.890 --> 00:00:26.179
+now what we could do when we delete something,
+
+13
+00:00:26.179 --> 00:00:30.150
+we could do a re-fetch of the currently logged in users,
+
+14
+00:00:30.150 --> 00:00:33.050
+and that would then update this, however, we can also
+
+15
+00:00:33.050 --> 00:00:36.490
+just reach into the cache, and delete that item from
+
+16
+00:00:36.490 --> 00:00:40.320
+the cache, once the data comes back; we open up our remove
+
+17
+00:00:40.320 --> 00:00:42.960
+from cart.js file, and remember that we just ask
+
+18
+00:00:42.960 --> 00:00:46.050
+for the id of the item that was removed.
+
+19
+00:00:46.050 --> 00:00:48.500
+And the reason why we ask for the id of the item
+
+20
+00:00:48.500 --> 00:00:50.600
+that was removed, is so that we can actually remove it
+
+21
+00:00:50.600 --> 00:00:53.640
+from the cache, and this is done with an update method
+
+22
+00:00:53.640 --> 00:00:56.870
+on our mutation, so the way that that works,
+
+23
+00:00:56.870 --> 00:00:59.690
+is you go to your mutation, and we obviously,
+
+24
+00:00:59.690 --> 00:01:01.790
+are passing the mutation and the variables right now;
+
+25
+00:01:01.790 --> 00:01:03.770
+we're gonna pass another one called update,
+
+26
+00:01:03.770 --> 00:01:05.720
+and that's going to take a function,
+
+27
+00:01:05.720 --> 00:01:07.210
+and we're gonna say this.update.
+
+28
+00:01:07.210 --> 00:01:10.200
+I always like to call it update, if I have one, single
+
+29
+00:01:10.200 --> 00:01:12.560
+update function that lives in that component,
+
+30
+00:01:12.560 --> 00:01:14.760
+then we'll go here, and we'll say update is equal
+
+31
+00:01:14.760 --> 00:01:19.760
+to an arrow function; this update function will get called,
+
+32
+00:01:19.870 --> 00:01:21.700
+and maybe we should write a comment about this,
+
+33
+00:01:21.700 --> 00:01:26.620
+this gets called as soon as we get a response back
+
+34
+00:01:26.620 --> 00:01:30.623
+from the server, after a mutation has been performed;
+
+35
+00:01:31.970 --> 00:01:35.230
+that update function is going to take in two things,
+
+36
+00:01:35.230 --> 00:01:37.410
+first, we take in the cache, second, we take in
+
+37
+00:01:37.410 --> 00:01:41.810
+the payload, and the cache is the Apollo cache
+
+38
+00:01:41.810 --> 00:01:44.858
+that we have, so we can read into the Apollo cache
+
+39
+00:01:44.858 --> 00:01:46.110
+directly from there.
+
+40
+00:01:46.110 --> 00:01:49.040
+And secondly, we get a payload, which is the actual dump
+
+41
+00:01:49.040 --> 00:01:52.340
+of information as that is returned from the server,
+
+42
+00:01:52.340 --> 00:01:54.410
+once it's done, and in our case, we're just gonna get
+
+43
+00:01:54.410 --> 00:01:58.730
+the id of the mutation result, so what we're gonna do here,
+
+44
+00:01:58.730 --> 00:02:02.453
+is we're gonna first, read the cache;
+
+45
+00:02:03.540 --> 00:02:08.540
+second, we're going to remove that item from the cart,
+
+46
+00:02:09.618 --> 00:02:13.673
+and third, write it back to the cache;
+
+47
+00:02:17.070 --> 00:02:19.073
+first thing we need, is the Current User Query,
+
+48
+00:02:19.073 --> 00:02:21.580
+I don't believe we are import, oh, we are importing
+
+49
+00:02:21.580 --> 00:02:23.320
+on line six, import Current User Query,
+
+50
+00:02:23.320 --> 00:02:24.560
+we haven't used it, yet.
+
+51
+00:02:24.560 --> 00:02:26.200
+So, we're going to read the cache, here we go,
+
+52
+00:02:26.200 --> 00:02:29.483
+so I say const data is equal to cache.readquery;
+
+53
+00:02:32.240 --> 00:02:36.393
+we're going to read the query, the Current User Query,
+
+54
+00:02:39.210 --> 00:02:43.871
+then let's just console.log the data, and maybe right
+
+55
+00:02:43.871 --> 00:02:48.871
+above this with the console.log, Running remove from cart
+
+56
+00:02:49.360 --> 00:02:52.130
+update function, so we know what's going on here;
+
+57
+00:02:52.130 --> 00:02:53.763
+we'll go back here, open it up,
+
+58
+00:02:59.030 --> 00:03:02.060
+remove one of these items here, and a second later,
+
+59
+00:03:02.060 --> 00:03:04.690
+we get Running remove from cart function,
+
+60
+00:03:04.690 --> 00:03:07.290
+and then we get the data inside of that, you can see
+
+61
+00:03:07.290 --> 00:03:10.560
+there's me, and inside of that, you see we have our cart.
+
+62
+00:03:10.560 --> 00:03:12.930
+What we now need to do, is manually remove this
+
+63
+00:03:12.930 --> 00:03:15.570
+from the cache; that's what we'll do here;
+
+64
+00:03:15.570 --> 00:03:18.120
+first, let's take the id from the cart,
+
+65
+00:03:18.120 --> 00:03:21.270
+so we'll say const cartItemId is equal
+
+66
+00:03:21.270 --> 00:03:23.593
+to the payload.data, .removeFromCart.id;
+
+67
+00:03:28.840 --> 00:03:32.240
+the data is going to be what we get back from the server,
+
+68
+00:03:32.240 --> 00:03:35.470
+inside of that, we get a removeFromCart mutation,
+
+69
+00:03:35.470 --> 00:03:38.350
+and inside of that, we have an id, then we're going
+
+70
+00:03:38.350 --> 00:03:39.330
+to simply remove it.
+
+71
+00:03:39.330 --> 00:03:44.330
+So we'll say, data.me.cart is equal to data.me.cart.filter,
+
+72
+00:03:46.480 --> 00:03:49.910
+and we're just going to filter out if it has that id;
+
+73
+00:03:49.910 --> 00:03:52.900
+this is a cart item, and we'll filter it out if
+
+74
+00:03:52.900 --> 00:03:56.853
+the cartItem.id doesn't equal the cartItemId,
+
+75
+00:03:58.710 --> 00:04:00.760
+then finally, we'll write it back into the cache,
+
+76
+00:04:00.760 --> 00:04:03.990
+we'll say cache.writeQuery, and the query we're going
+
+77
+00:04:03.990 --> 00:04:07.410
+to write is Current User Query, and the data that we're
+
+78
+00:04:07.410 --> 00:04:11.080
+going to pass, is going to be the data that we pulled
+
+79
+00:04:11.080 --> 00:04:12.083
+from this query.
+
+80
+00:04:12.970 --> 00:04:15.000
+And you know that we don't need to type data data,
+
+81
+00:04:15.000 --> 00:04:18.272
+it's simply data; now, if I try to go and delete
+
+82
+00:04:18.272 --> 00:04:21.753
+one of the items that I have not yet deleted in my cart,
+
+83
+00:04:25.470 --> 00:04:27.915
+we get a error; (mumbling)
+
+84
+00:04:27.915 --> 00:04:31.120
+cache, is not defined, alright, one more time,
+
+85
+00:04:31.120 --> 00:04:35.210
+give it a hard refresh, remove this, and you'll see
+
+86
+00:04:35.210 --> 00:04:37.690
+that after a split second, it actually gets removed
+
+87
+00:04:37.690 --> 00:04:40.830
+from the cart, so that is how you manually update
+
+88
+00:04:40.830 --> 00:04:44.943
+your cache; however, there still is, let me delete this one,
+
+89
+00:04:46.320 --> 00:04:48.150
+you see there still is a split second,
+
+90
+00:04:48.150 --> 00:04:51.420
+and that's because the request has to go back to the server,
+
+91
+00:04:51.420 --> 00:04:53.270
+the server has to delete the item,
+
+92
+00:04:53.270 --> 00:04:56.100
+and then return to us, the id.
+
+93
+00:04:56.100 --> 00:04:58.580
+Now, we can make that a little bit faster,
+
+94
+00:04:58.580 --> 00:05:01.490
+and do something called an optimistic response,
+
+95
+00:05:01.490 --> 00:05:04.135
+meaning that we still want to run this update function,
+
+96
+00:05:04.135 --> 00:05:07.940
+but let's run it immediately, because we know it's probably
+
+97
+00:05:07.940 --> 00:05:10.830
+going to work, and we should be able to update the UI
+
+98
+00:05:10.830 --> 00:05:14.100
+to make it look like it worked, and then behind the scenes,
+
+99
+00:05:14.100 --> 00:05:15.930
+we'll actually do the deleting.
+
+100
+00:05:15.930 --> 00:05:17.920
+So, it's actually pretty simple, all you have to do
+
+101
+00:05:17.920 --> 00:05:21.859
+is go down to your mutation, and give it what you think
+
+102
+00:05:21.859 --> 00:05:25.060
+the server is going to respond with,
+
+103
+00:05:25.060 --> 00:05:28.342
+so that's called an optimistic response; it's going to be
+
+104
+00:05:28.342 --> 00:05:32.135
+an object, then inside of the object, you have to give
+
+105
+00:05:32.135 --> 00:05:35.260
+what are called type names of what type we have,
+
+106
+00:05:35.260 --> 00:05:39.343
+so we're gonna assume that it's going to return a mutation,
+
+107
+00:05:41.060 --> 00:05:44.640
+and inside of that mutation, we have the removeFromCart;
+
+108
+00:05:44.640 --> 00:05:46.820
+remember that's what we got, right here.
+
+109
+00:05:46.820 --> 00:05:49.120
+So we're gonna assume that it returns a removeFromCart
+
+110
+00:05:49.120 --> 00:05:51.540
+object, and inside of that, we're going to assume
+
+111
+00:05:51.540 --> 00:05:53.938
+that it's going to return an id with the item
+
+112
+00:05:53.938 --> 00:05:57.633
+that was removed id, and that's this.props.id,
+
+113
+00:05:59.150 --> 00:06:01.910
+and what will happen, is that when we actually delete
+
+114
+00:06:01.910 --> 00:06:05.530
+the item, it's gonna optimistically, immediately reply
+
+115
+00:06:05.530 --> 00:06:08.760
+with this piece of information, and then in the background,
+
+116
+00:06:08.760 --> 00:06:11.790
+it's going to go ahead and remove it, so I'm gonna add
+
+117
+00:06:11.790 --> 00:06:15.800
+this item to my cart, here, and now, when I remove it,
+
+118
+00:06:15.800 --> 00:06:17.500
+let's clear out our console, here.
+
+119
+00:06:19.670 --> 00:06:24.670
+You see that immediately, it ran running Remove From Cart,
+
+120
+00:06:24.890 --> 00:06:28.060
+and then it ran again, when it actually worked,
+
+121
+00:06:28.060 --> 00:06:30.860
+and that was really, really nice, because we immediately
+
+122
+00:06:30.860 --> 00:06:34.430
+saw it leave, and then it sort of cleaned up after itself,
+
+123
+00:06:34.430 --> 00:06:37.310
+after it worked properly, and if there's anything wrong
+
+124
+00:06:37.310 --> 00:06:39.610
+with that response, then we would get the error
+
+125
+00:06:39.610 --> 00:06:42.430
+and show it to the user; a little bit of a problem here,
+
+126
+00:06:42.430 --> 00:06:44.960
+missing field typename in, oh, and we also have
+
+127
+00:06:44.960 --> 00:06:46.830
+to give it a type name for here.
+
+128
+00:06:46.830 --> 00:06:50.380
+Prisma will automatically inject these typenames for us,
+
+129
+00:06:50.380 --> 00:06:52.420
+but because we're doing it on the client side here,
+
+130
+00:06:52.420 --> 00:06:55.750
+we need to do it ourselves, so the typename for this,
+
+131
+00:06:55.750 --> 00:06:58.399
+is going to be a CartItem, right?
+
+132
+00:06:58.399 --> 00:07:00.600
+Because that's the type that we're returning,
+
+133
+00:07:00.600 --> 00:07:02.560
+and really, the only field that we care to return
+
+134
+00:07:02.560 --> 00:07:06.720
+is the actual id; let me just add one more item to our cart,
+
+135
+00:07:06.720 --> 00:07:09.960
+got another one, now, if I remove 'em, you see that they
+
+136
+00:07:09.960 --> 00:07:12.360
+immediately get removed, then behind the scenes,
+
+137
+00:07:12.360 --> 00:07:14.630
+it's all cleaned up; you could do that for your adding
+
+138
+00:07:14.630 --> 00:07:17.930
+to cart as well, or you could manually or optimistically
+
+139
+00:07:17.930 --> 00:07:21.210
+return all of the data, so if we were to look at
+
+140
+00:07:21.210 --> 00:07:25.983
+our item.js, this AddToCart, if you were to pass
+
+141
+00:07:25.983 --> 00:07:30.983
+the image, the title, and the price to the AddToCart,
+
+142
+00:07:32.200 --> 00:07:35.810
+you could optimistically reply with an object that had
+
+143
+00:07:35.810 --> 00:07:37.540
+all that information, and then you could write
+
+144
+00:07:37.540 --> 00:07:39.440
+an update function that would manually add it.
+
+145
+00:07:39.440 --> 00:07:41.800
+I'm not gonna do that now, just because I don't mind
+
+146
+00:07:41.800 --> 00:07:44.220
+that we have this temporary adding to cart;
+
+147
+00:07:44.220 --> 00:07:46.750
+it's pretty quick behind the scenes, however, if you did
+
+148
+00:07:46.750 --> 00:07:49.500
+want an instant update of your UI while that stuff's
+
+149
+00:07:49.500 --> 00:07:51.760
+happening in the background, you could reach for both
+
+150
+00:07:51.760 --> 00:07:54.363
+the update function and the optimistic response.
+

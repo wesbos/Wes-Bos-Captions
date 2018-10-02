@@ -1,0 +1,2058 @@
+﻿WEBVTT
+
+1
+00:00:00.930 --> 00:00:01.763
+<v Instructor>All right, well,</v>
+
+2
+00:00:01.763 --> 00:00:02.640
+this is the part of the course
+
+3
+00:00:02.640 --> 00:00:04.480
+where we create users and this is gonna be
+
+4
+00:00:04.480 --> 00:00:05.780
+a fairly large part of the course
+
+5
+00:00:05.780 --> 00:00:06.970
+'cause we're going to be rolling
+
+6
+00:00:06.970 --> 00:00:08.650
+absolutely everything from scratch.
+
+7
+00:00:08.650 --> 00:00:12.390
+There's not gonna be no built-in helpers
+
+8
+00:00:12.390 --> 00:00:13.850
+that are coming along with this.
+
+9
+00:00:13.850 --> 00:00:15.150
+It's going to be absolutely from scratch.
+
+10
+00:00:15.150 --> 00:00:18.000
+So we're gonna be doing creating users.
+
+11
+00:00:18.000 --> 00:00:20.620
+We're gonna be doing hashing passwords, storing passwords.
+
+12
+00:00:20.620 --> 00:00:22.190
+we're going to be doing the front end part,
+
+13
+00:00:22.190 --> 00:00:24.030
+which is signing the user in,
+
+14
+00:00:24.030 --> 00:00:25.360
+signing the user up,
+
+15
+00:00:25.360 --> 00:00:27.530
+signing the user out.
+
+16
+00:00:27.530 --> 00:00:30.620
+All of that good stuff associated with a user
+
+17
+00:00:30.620 --> 00:00:32.250
+and a permissions system.
+
+18
+00:00:32.250 --> 00:00:33.680
+So let's get into it.
+
+19
+00:00:33.680 --> 00:00:36.390
+This video's gonna be just the back end portion of things
+
+20
+00:00:36.390 --> 00:00:38.040
+and then, we're gonna flip over in the next video
+
+21
+00:00:38.040 --> 00:00:41.020
+to the front end, which is actually allowing people
+
+22
+00:00:41.020 --> 00:00:41.853
+to sign up.
+
+23
+00:00:41.853 --> 00:00:44.690
+So the first thing we need to do is edit our data model
+
+24
+00:00:44.690 --> 00:00:46.910
+to allow for this new type of user.
+
+25
+00:00:46.910 --> 00:00:47.820
+We've created it here,
+
+26
+00:00:47.820 --> 00:00:49.530
+but we need to extend it a little bit more.
+
+27
+00:00:49.530 --> 00:00:52.970
+So, we have our ID which is a unique,
+
+28
+00:00:52.970 --> 00:00:54.890
+we have our name which is a string,
+
+29
+00:00:54.890 --> 00:00:57.090
+and we have our email which is a string.
+
+30
+00:00:57.090 --> 00:00:59.600
+We're also going to add the unique decorator
+
+31
+00:00:59.600 --> 00:01:00.590
+to the email address
+
+32
+00:01:00.590 --> 00:01:02.070
+'cause you don't want people signing up
+
+33
+00:01:02.070 --> 00:01:04.500
+for multiple accounts with the same email address.
+
+34
+00:01:04.500 --> 00:01:06.450
+Additionally on there, we need a password,
+
+35
+00:01:06.450 --> 00:01:08.060
+which is going to be a string,
+
+36
+00:01:08.060 --> 00:01:09.660
+it's going to be a hashed string,
+
+37
+00:01:09.660 --> 00:01:11.380
+so we're not actually going to store their password.
+
+38
+00:01:11.380 --> 00:01:13.760
+We'll talk a little bit more about that.
+
+39
+00:01:13.760 --> 00:01:18.350
+We will also think ahead and add a reset token,
+
+40
+00:01:18.350 --> 00:01:20.970
+which is a string not required, or anything.
+
+41
+00:01:20.970 --> 00:01:23.310
+We have a reset token expiry,
+
+42
+00:01:24.590 --> 00:01:25.910
+which is a string.
+
+43
+00:01:30.250 --> 00:01:32.800
+So someone's gonna ask to reset their password
+
+44
+00:01:32.800 --> 00:01:35.510
+and we're gonna set a token on there that's good for,
+
+45
+00:01:35.510 --> 00:01:37.040
+I don't know, an hour, two hours a day,
+
+46
+00:01:37.040 --> 00:01:38.690
+however long you want to do it.
+
+47
+00:01:38.690 --> 00:01:42.210
+And then finally, we're going to add permissions
+
+48
+00:01:42.210 --> 00:01:43.280
+to this user service site.
+
+49
+00:01:43.280 --> 00:01:46.790
+Permissions, and this is going to be an array of a new type
+
+50
+00:01:46.790 --> 00:01:49.310
+that we're going to make, called a permission.
+
+51
+00:01:49.310 --> 00:01:51.530
+And, let's talk about this real quick here.
+
+52
+00:01:51.530 --> 00:01:54.820
+So, permission is going to be its new type,
+
+53
+00:01:54.820 --> 00:01:59.360
+however, instead of just willy-nilly adding strings to it,
+
+54
+00:01:59.360 --> 00:02:02.060
+permission is going to be what is called an enum.
+
+55
+00:02:02.060 --> 00:02:03.310
+So if we go up to the top here,
+
+56
+00:02:03.310 --> 00:02:05.320
+let's go ahead and define this enum.
+
+57
+00:02:05.320 --> 00:02:07.120
+So, enum permission.
+
+58
+00:02:09.240 --> 00:02:11.490
+And in that enum, we're going to list all
+
+59
+00:02:11.490 --> 00:02:14.200
+of the possible options, so in GraphQL,
+
+60
+00:02:14.200 --> 00:02:18.280
+an enum is very helpful for when you want to have
+
+61
+00:02:18.280 --> 00:02:23.010
+a preset list of possible options for a type.
+
+62
+00:02:23.010 --> 00:02:26.600
+So, in our case, we're going to have a admin,
+
+63
+00:02:26.600 --> 00:02:28.900
+a user and then a number of other permissions
+
+64
+00:02:28.900 --> 00:02:30.880
+that you may have and it's great
+
+65
+00:02:30.880 --> 00:02:33.570
+because we're not going to elsewhere maintain
+
+66
+00:02:33.570 --> 00:02:35.320
+a list of the possible permissions,
+
+67
+00:02:35.320 --> 00:02:37.630
+we're going to do it directly in GraphQL.
+
+68
+00:02:37.630 --> 00:02:41.200
+So, one of the possible permissions is going to be an admin,
+
+69
+00:02:41.200 --> 00:02:42.810
+one else is going to be a user,
+
+70
+00:02:42.810 --> 00:02:44.520
+and I'm going to add a few more, here,
+
+71
+00:02:44.520 --> 00:02:49.520
+there's ITEMCREATE, ITEMUPDATE, ITEMDELETE
+
+72
+00:02:49.890 --> 00:02:53.740
+and PERMISSIONUPDATE which is going to be
+
+73
+00:02:53.740 --> 00:02:57.850
+sort of a circular one where if you only if you are an admin
+
+74
+00:02:57.850 --> 00:03:00.380
+or if you have the PERMISSIONUPDATE permission
+
+75
+00:03:00.380 --> 00:03:02.860
+will you be able to update that.
+
+76
+00:03:02.860 --> 00:03:06.090
+So, what we're doing here, is we're saying the permissions
+
+77
+00:03:06.090 --> 00:03:10.850
+of the user is going to be one or many of these.
+
+78
+00:03:10.850 --> 00:03:12.620
+And these are the only possible options.
+
+79
+00:03:12.620 --> 00:03:14.170
+You can't have somebody come in there,
+
+80
+00:03:14.170 --> 00:03:16.630
+making a super admin or a bomb,
+
+81
+00:03:16.630 --> 00:03:19.220
+or something like that where they just made them up.
+
+82
+00:03:19.220 --> 00:03:23.690
+It is only available as these possible options.
+
+83
+00:03:23.690 --> 00:03:24.840
+Good, so now what to we do?
+
+84
+00:03:24.840 --> 00:03:27.650
+After anytime you edit your data model,
+
+85
+00:03:27.650 --> 00:03:30.590
+we have to go back to our command line and re-deploy this
+
+86
+00:03:30.590 --> 00:03:33.590
+because we've made changes to what our data looks like
+
+87
+00:03:33.590 --> 00:03:36.680
+and we need our prisma database to know about that
+
+88
+00:03:36.680 --> 00:03:38.730
+and to pull down our latest schema.
+
+89
+00:03:38.730 --> 00:03:40.905
+So, let's go over to our hyperterm here
+
+90
+00:03:40.905 --> 00:03:43.890
+and I'm going to go into the back end
+
+91
+00:03:43.890 --> 00:03:45.910
+and we run npm run deploy.
+
+92
+00:03:51.770 --> 00:03:53.270
+So, I'm getting an error here that says,
+
+93
+00:03:53.270 --> 00:03:54.990
+you are creating a required field
+
+94
+00:03:54.990 --> 00:03:56.320
+but there are already note present
+
+95
+00:03:56.320 --> 00:03:58.080
+that would violate that constraint.
+
+96
+00:03:58.080 --> 00:04:00.610
+So, I'm willing to bet that's because we've added
+
+97
+00:04:00.610 --> 00:04:02.780
+a password field that is required
+
+98
+00:04:02.780 --> 00:04:04.360
+and there's already users in there.
+
+99
+00:04:04.360 --> 00:04:08.250
+So, what we can do is we can open up
+
+100
+00:04:08.250 --> 00:04:10.910
+our Prisma console and we can just clear out any
+
+101
+00:04:10.910 --> 00:04:13.310
+existing users that we may have created.
+
+102
+00:04:13.310 --> 00:04:16.930
+Another option is you can pass the dash dash force flag,
+
+103
+00:04:16.930 --> 00:04:18.740
+but I don't recommend doing that,
+
+104
+00:04:18.740 --> 00:04:21.720
+just because then you get into this weird issue
+
+105
+00:04:21.720 --> 00:04:25.530
+where sometimes your GraphQL query says it's required,
+
+106
+00:04:25.530 --> 00:04:28.170
+but the data being returned is not there
+
+107
+00:04:28.170 --> 00:04:30.250
+and then that will give you errors in your application.
+
+108
+00:04:30.250 --> 00:04:32.250
+It's best to just actually go back and fix
+
+109
+00:04:32.250 --> 00:04:33.140
+or delete the data.
+
+110
+00:04:33.140 --> 00:04:36.200
+So, I'm going to open up my Sick Fits here.
+
+111
+00:04:36.200 --> 00:04:38.130
+Going to find my users, there we go.
+
+112
+00:04:38.130 --> 00:04:40.670
+These are the two users that I created via the console.
+
+113
+00:04:40.670 --> 00:04:43.090
+Let's just go ahead and delete them real quick.
+
+114
+00:04:44.040 --> 00:04:47.390
+And now if I go ahead and deploy again,
+
+115
+00:04:47.390 --> 00:04:48.340
+I bet it will work.
+
+116
+00:04:50.200 --> 00:04:51.033
+There we go!
+
+117
+00:04:51.033 --> 00:04:52.140
+It tells us all of the different things
+
+118
+00:04:52.140 --> 00:04:53.540
+that have changed on there.
+
+119
+00:04:53.540 --> 00:04:56.340
+It said it updated a file, it became unique.
+
+120
+00:04:56.340 --> 00:04:58.750
+We also created a few and we created an enum
+
+121
+00:04:58.750 --> 00:04:59.880
+that was permissions.
+
+122
+00:04:59.880 --> 00:05:01.440
+It has deployed it there for us.
+
+123
+00:05:01.440 --> 00:05:02.273
+So, good.
+
+124
+00:05:02.273 --> 00:05:03.490
+That's our first step we need to do.
+
+125
+00:05:03.490 --> 00:05:06.300
+We need to modify our data model to get it up and running.
+
+126
+00:05:06.300 --> 00:05:08.410
+The next thing we need to do is creating a mew mutation
+
+127
+00:05:08.410 --> 00:05:09.243
+in our schema.
+
+128
+00:05:09.243 --> 00:05:12.670
+So open up your schema
+
+129
+00:05:12.670 --> 00:05:15.010
+and we will create a new one called signup
+
+130
+00:05:17.020 --> 00:05:18.980
+and that will take in an email,
+
+131
+00:05:18.980 --> 00:05:20.920
+which is a string that's required.
+
+132
+00:05:20.920 --> 00:05:23.100
+It will take in a password,
+
+133
+00:05:23.100 --> 00:05:25.060
+which is a string that is required.
+
+134
+00:05:25.060 --> 00:05:26.500
+And it will take in a name,
+
+135
+00:05:26.500 --> 00:05:28.180
+which is a string that is required.
+
+136
+00:05:28.180 --> 00:05:31.210
+And from that, it will return a user
+
+137
+00:05:31.210 --> 00:05:32.690
+that is going to be required.
+
+138
+00:05:32.690 --> 00:05:34.310
+So, every single time that you sign up,
+
+139
+00:05:34.310 --> 00:05:35.970
+we are going to take in those three things
+
+140
+00:05:35.970 --> 00:05:38.670
+and return a new type of user.
+
+141
+00:05:38.670 --> 00:05:40.710
+And where does that type of user come from?
+
+142
+00:05:40.710 --> 00:05:42.160
+It's nowhere in this file,
+
+143
+00:05:42.160 --> 00:05:44.700
+but because we have imported everything
+
+144
+00:05:44.700 --> 00:05:47.580
+from our prisma.graphql,
+
+145
+00:05:47.580 --> 00:05:51.250
+we will have our type user of this type
+
+146
+00:05:51.250 --> 00:05:55.080
+and it'll return this shape of data.
+
+147
+00:05:55.080 --> 00:05:58.450
+So that should be it for our signup mutation.
+
+148
+00:05:58.450 --> 00:06:01.560
+Now every time that you add something to your schema
+
+149
+00:06:01.560 --> 00:06:03.600
+that is a mutation or a query,
+
+150
+00:06:03.600 --> 00:06:05.680
+you need to go and code what?
+
+151
+00:06:05.680 --> 00:06:08.550
+You need to code the corresponding resolver.
+
+152
+00:06:08.550 --> 00:06:10.120
+So, open up our mutation.js
+
+153
+00:06:12.380 --> 00:06:13.930
+and we've got our created item,
+
+154
+00:06:13.930 --> 00:06:14.850
+we've got our updated item,
+
+155
+00:06:14.850 --> 00:06:16.350
+we have our delete item resolver.
+
+156
+00:06:16.350 --> 00:06:19.620
+Now we're going to create our signup resolver.
+
+157
+00:06:19.620 --> 00:06:22.780
+Before we actually even create our user,
+
+158
+00:06:22.780 --> 00:06:25.470
+we actually need to modify our yoga server to allow
+
+159
+00:06:25.470 --> 00:06:27.440
+for us to work with cookies.
+
+160
+00:06:27.440 --> 00:06:31.270
+Now, you might be saying, Wes, why are we using cookies?
+
+161
+00:06:31.270 --> 00:06:32.120
+What is that for?
+
+162
+00:06:32.120 --> 00:06:34.940
+Well, what's gonna happen with our,
+
+163
+00:06:34.940 --> 00:06:36.100
+when we created a user
+
+164
+00:06:36.100 --> 00:06:38.180
+is that we are going to set a cookie
+
+165
+00:06:38.180 --> 00:06:40.080
+with the currently logged-in user.
+
+166
+00:06:40.080 --> 00:06:43.040
+And then every single time that someone requests a page,
+
+167
+00:06:43.040 --> 00:06:45.570
+the cookie is going to send along something called
+
+168
+00:06:45.570 --> 00:06:48.050
+a JWT, the JSON web token,
+
+169
+00:06:48.050 --> 00:06:50.180
+and that JSON web token is kind of like
+
+170
+00:06:50.180 --> 00:06:52.070
+if you've ever worked with sessions before,
+
+171
+00:06:52.070 --> 00:06:53.660
+kinda similar to that.
+
+172
+00:06:53.660 --> 00:06:56.630
+It's gonna send along this token that's going to allow us
+
+173
+00:06:56.630 --> 00:06:59.900
+to validate that user is actually a user
+
+174
+00:06:59.900 --> 00:07:02.850
+and see who's logged in and all that good stuff.
+
+175
+00:07:02.850 --> 00:07:05.740
+And the reason why we're going to be using cookies in here,
+
+176
+00:07:05.740 --> 00:07:09.070
+with our JSON web tokens instead of one of the other ways
+
+177
+00:07:09.070 --> 00:07:12.480
+that you can use JSON web tokens is in local storage
+
+178
+00:07:12.480 --> 00:07:14.660
+and what you can do is every single time that you have
+
+179
+00:07:14.660 --> 00:07:18.030
+a request you can pull the local storage JWT out
+
+180
+00:07:18.030 --> 00:07:20.460
+of local storage and send it along for the ride
+
+181
+00:07:20.460 --> 00:07:22.370
+and that way your backend will be able
+
+182
+00:07:22.370 --> 00:07:24.870
+to authenticate the current user before they do anything
+
+183
+00:07:24.870 --> 00:07:26.570
+like deleting or creating items.
+
+184
+00:07:26.570 --> 00:07:28.610
+Now, the reason we don't do it in local storage,
+
+185
+00:07:28.610 --> 00:07:31.540
+and the reason we do do it in cookies in this tutorial
+
+186
+00:07:31.540 --> 00:07:35.580
+is because we want to be able to do server-side rendering
+
+187
+00:07:35.580 --> 00:07:37.460
+of the logged-in parts.
+
+188
+00:07:37.460 --> 00:07:40.520
+And the down side to local storage in this case,
+
+189
+00:07:40.520 --> 00:07:43.000
+is that local storage doesn't automatically
+
+190
+00:07:43.000 --> 00:07:44.760
+send that token along.
+
+191
+00:07:44.760 --> 00:07:46.840
+So, if I just go to this page here,
+
+192
+00:07:46.840 --> 00:07:49.320
+and I were to refresh it,
+
+193
+00:07:49.320 --> 00:07:53.540
+then it wouldn't server render any of the logged-in parts.
+
+194
+00:07:53.540 --> 00:07:55.770
+So maybe I have a cart that needs to be rendered
+
+195
+00:07:55.770 --> 00:07:58.660
+on the server, and then that leaves this little kind
+
+196
+00:07:58.660 --> 00:08:02.360
+of like one or two-second glitch
+
+197
+00:08:02.360 --> 00:08:04.510
+where it will render the logged-out view
+
+198
+00:08:04.510 --> 00:08:08.270
+'cause it has no concept of someone being logged in,
+
+199
+00:08:08.270 --> 00:08:10.070
+and then it will re-render it on the server
+
+200
+00:08:10.070 --> 00:08:14.070
+because it realizes that you have a local storage JWT.
+
+201
+00:08:14.070 --> 00:08:16.680
+So, by putting the JWT in our cookie,
+
+202
+00:08:16.680 --> 00:08:18.840
+what that's going to do is,
+
+203
+00:08:18.840 --> 00:08:22.640
+it's going to send along the JWT every single request
+
+204
+00:08:22.640 --> 00:08:24.430
+and we're gonna be able to server render
+
+205
+00:08:24.430 --> 00:08:26.470
+the authenticated user, which is great.
+
+206
+00:08:26.470 --> 00:08:30.160
+So, we will go into our index.js
+
+207
+00:08:30.160 --> 00:08:33.398
+and remember that we talked about this index.js
+
+208
+00:08:33.398 --> 00:08:37.410
+is express and we're simply going to use a middleware
+
+209
+00:08:37.410 --> 00:08:40.500
+that's going to expose some helper functions
+
+210
+00:08:40.500 --> 00:08:41.950
+for working with cookies.
+
+211
+00:08:41.950 --> 00:08:44.850
+So, we'll go up here, right at the top
+
+212
+00:08:44.850 --> 00:08:47.150
+and we'll say const cookieParser
+
+213
+00:08:48.580 --> 00:08:52.120
+is equal to require cookie-parser.
+
+214
+00:08:53.572 --> 00:08:56.340
+And then right below where we create our server,
+
+215
+00:08:56.340 --> 00:08:58.260
+so right here, TODO express middleware
+
+216
+00:08:58.260 --> 00:09:00.720
+to handle cookies and TODO use express middleware
+
+217
+00:09:00.720 --> 00:09:01.800
+to populate current user,
+
+218
+00:09:01.800 --> 00:09:04.252
+we're going to do the first one right now.
+
+219
+00:09:04.252 --> 00:09:08.500
+Server.express.use, and what this will do
+
+220
+00:09:08.500 --> 00:09:11.280
+is it allows us to use any existing express middleware.
+
+221
+00:09:11.280 --> 00:09:12.930
+So, if you have taken my Node course,
+
+222
+00:09:12.930 --> 00:09:15.980
+you'll know that we have used lots of middlewares in there.
+
+223
+00:09:15.980 --> 00:09:18.100
+If you haven't ever used Express before,
+
+224
+00:09:18.100 --> 00:09:19.780
+let me explain it real quick.
+
+225
+00:09:19.780 --> 00:09:24.250
+A middleware is a function that will run in the middle
+
+226
+00:09:24.250 --> 00:09:26.780
+between your request and your response.
+
+227
+00:09:26.780 --> 00:09:30.080
+The way that a server works is that you get a request,
+
+228
+00:09:30.080 --> 00:09:34.060
+and then you send out a response.
+
+229
+00:09:34.060 --> 00:09:38.870
+So you might get a request for like, /dogs.html
+
+230
+00:09:38.870 --> 00:09:43.870
+and then you response might return an array of dogs, right?
+
+231
+00:09:44.410 --> 00:09:48.950
+And in between, you might wanna do some sort of work.
+
+232
+00:09:48.950 --> 00:09:51.860
+You might want to authenticate the user,
+
+233
+00:09:51.860 --> 00:09:55.370
+you might want to transform the dogs,
+
+234
+00:09:55.370 --> 00:10:00.370
+You might want to local translate the dogs' names.
+
+235
+00:10:00.920 --> 00:10:02.884
+Anything that you wanna do in between the initial request
+
+236
+00:10:02.884 --> 00:10:06.580
+and the final response to the user in the browser,
+
+237
+00:10:06.580 --> 00:10:08.044
+that's what middleware does.
+
+238
+00:10:08.044 --> 00:10:09.690
+And what we're going to be doing
+
+239
+00:10:09.690 --> 00:10:12.120
+is we gonna be accepting the request,
+
+240
+00:10:12.120 --> 00:10:14.550
+and then parsing any cookies that came along
+
+241
+00:10:14.550 --> 00:10:19.280
+with the request so that we can parse that JWT
+
+242
+00:10:19.280 --> 00:10:22.270
+and be able to authenticate the current user.
+
+243
+00:10:22.270 --> 00:10:25.530
+So, let's get rid of all this dog nonsense here.
+
+244
+00:10:25.530 --> 00:10:27.990
+We have the server.express.use and we'll simply
+
+245
+00:10:27.990 --> 00:10:30.830
+just pass it an instance of cookieParser.
+
+246
+00:10:34.750 --> 00:10:36.780
+Make sure you put parentheses on that so you run it
+
+247
+00:10:36.780 --> 00:10:39.670
+and that's going to allow us to access all of the cookies
+
+248
+00:10:39.670 --> 00:10:43.240
+in a nice formatted object rather than just a cookie string
+
+249
+00:10:43.240 --> 00:10:44.970
+that it normally comes in as a header.
+
+250
+00:10:44.970 --> 00:10:47.960
+So, we're done with that one, and we'll leave this TODO
+
+251
+00:10:47.960 --> 00:10:50.510
+right here for the next one.
+
+252
+00:10:50.510 --> 00:10:52.910
+Then we'll flip back over to our mutatuion.js
+
+253
+00:10:52.910 --> 00:10:56.910
+and start writing the resolver for that specific mutation.
+
+254
+00:10:56.910 --> 00:10:58.990
+So, let's write our little signature first
+
+255
+00:10:58.990 --> 00:11:03.030
+and async function that is called signup
+
+256
+00:11:03.030 --> 00:11:04.270
+and the reason that it's called signup
+
+257
+00:11:04.270 --> 00:11:05.680
+is because that it has to match up
+
+258
+00:11:05.680 --> 00:11:08.990
+with the name of the mutation in our schema
+
+259
+00:11:08.990 --> 00:11:11.530
+and that signup will take a couple arguments.
+
+260
+00:11:11.530 --> 00:11:15.560
+The parent, the args, the context and the info.
+
+261
+00:11:17.280 --> 00:11:18.660
+Now there's a whole bunch of things
+
+262
+00:11:18.660 --> 00:11:19.493
+that we need to do in here.
+
+263
+00:11:19.493 --> 00:11:20.840
+So let's get into it.
+
+264
+00:11:20.840 --> 00:11:22.460
+First thing we need to do, and this is something
+
+265
+00:11:22.460 --> 00:11:24.500
+that bit me before is that sometimes people
+
+266
+00:11:24.500 --> 00:11:25.650
+will sign up with,
+
+267
+00:11:25.650 --> 00:11:28.510
+they will type their email address like this
+
+268
+00:11:28.510 --> 00:11:33.510
+and I ran into a big issue previously where people
+
+269
+00:11:33.670 --> 00:11:35.720
+were not able to sign in because they had signed up
+
+270
+00:11:35.720 --> 00:11:37.310
+with the capitals and they were trying
+
+271
+00:11:37.310 --> 00:11:38.470
+to sign in not with a capital,
+
+272
+00:11:38.470 --> 00:11:41.740
+so I will always lowercase the email address as it comes in.
+
+273
+00:11:41.740 --> 00:11:43.100
+So we'll say args.email
+
+274
+00:11:43.100 --> 00:11:45.210
+is equal to args.email.toLowerCase.
+
+275
+00:11:47.572 --> 00:11:50.350
+And we'll put a little comment lowercase their email,
+
+276
+00:11:50.350 --> 00:11:52.060
+I'm not sure if that really needs a comment,
+
+277
+00:11:52.060 --> 00:11:54.230
+but we did it, who cares.
+
+278
+00:11:54.230 --> 00:11:58.070
+Then what we need to do is hash their password
+
+279
+00:11:58.070 --> 00:11:59.840
+because for what they're going to be sending,
+
+280
+00:11:59.840 --> 00:12:02.650
+we're going to get, this args is gonna have a password
+
+281
+00:12:02.650 --> 00:12:05.600
+on it and it's going to be args.password
+
+282
+00:12:05.600 --> 00:12:07.790
+is equal to dogs123,
+
+283
+00:12:07.790 --> 00:12:09.150
+that's the user's password.
+
+284
+00:12:09.150 --> 00:12:12.820
+But you cannot put the user's password into the database
+
+285
+00:12:12.820 --> 00:12:17.260
+because if that database were to ever be breached
+
+286
+00:12:17.260 --> 00:12:20.570
+or accessed by someone who shouldn't have access to it
+
+287
+00:12:20.570 --> 00:12:23.270
+or even someone who is working on the database,
+
+288
+00:12:23.270 --> 00:12:25.620
+I would never want to know what your password is.
+
+289
+00:12:25.620 --> 00:12:29.420
+So you don't actually want to store your user's password
+
+290
+00:12:29.420 --> 00:12:31.670
+in the database, you want to store what's called a hash.
+
+291
+00:12:31.670 --> 00:12:34.550
+A one-way hash and the way that the one-way hash
+
+292
+00:12:34.550 --> 00:12:37.560
+is going to work is that you'll take in a string
+
+293
+00:12:37.560 --> 00:12:39.560
+like dogs123, allow me to use
+
+294
+00:12:39.560 --> 00:12:42.070
+just a stupid little example here,
+
+295
+00:12:42.070 --> 00:12:44.550
+and we're not gonna store dogs123 in the database,
+
+296
+00:12:44.550 --> 00:12:47.540
+we're going to hash it and what that's going to return
+
+297
+00:12:47.540 --> 00:12:49.560
+is something that looks like this.
+
+298
+00:12:49.560 --> 00:12:52.810
+Now the next time that you come along and try to sign in,
+
+299
+00:12:52.810 --> 00:12:56.110
+what we're going to do is you're going to type in
+
+300
+00:12:56.110 --> 00:12:57.920
+your password dogs123
+
+301
+00:12:57.920 --> 00:13:00.180
+and we're going to hash it again
+
+302
+00:13:00.180 --> 00:13:01.130
+and we're going to check
+
+303
+00:13:01.130 --> 00:13:04.870
+if that's equal to what we initially stored on the end.
+
+304
+00:13:04.870 --> 00:13:08.140
+And if the hash of your password is equal to what we have
+
+305
+00:13:08.140 --> 00:13:09.710
+stored on database, then we're going to say
+
+306
+00:13:09.710 --> 00:13:12.770
+okay, that must be correct, then let's go ahead
+
+307
+00:13:12.770 --> 00:13:15.960
+and log you in and give you access
+
+308
+00:13:15.960 --> 00:13:16.920
+to everything that you have.
+
+309
+00:13:16.920 --> 00:13:20.180
+However, if you were to type your password incorrectly,
+
+310
+00:13:20.180 --> 00:13:24.040
+like dogs12, that's going to give you a totally different
+
+311
+00:13:24.040 --> 00:13:26.430
+hash that looks something like this
+
+312
+00:13:27.362 --> 00:13:29.720
+and these two things look nothing alike
+
+313
+00:13:29.720 --> 00:13:31.670
+and they're not going to be access.
+
+314
+00:13:31.670 --> 00:13:34.130
+They're not going to be accessible
+
+315
+00:13:34.130 --> 00:13:36.860
+The important thing is that you cannot reverse these hashes
+
+316
+00:13:36.860 --> 00:13:39.220
+so if anyone were ever to get access
+
+317
+00:13:39.220 --> 00:13:42.930
+to these hashes, they would not be able to turn them back
+
+318
+00:13:42.930 --> 00:13:45.840
+into passwords, which is really, really nice.
+
+319
+00:13:45.840 --> 00:13:49.150
+So, let's get rid of all these examples here.
+
+320
+00:13:49.150 --> 00:13:52.570
+We're going to be using a package in Node called bcrypt
+
+321
+00:13:52.570 --> 00:13:55.440
+and it's sort of the standard for hashing passwords,
+
+322
+00:13:55.440 --> 00:13:59.500
+so we'll go up to the top here and we will import that.
+
+323
+00:13:59.500 --> 00:14:01.149
+So we'll say const bcrypt
+
+324
+00:14:01.149 --> 00:14:06.149
+equals required bcryptjs and then we'll go back down here
+
+325
+00:14:09.021 --> 00:14:12.550
+and we'll say const password is equal to await
+
+326
+00:14:12.550 --> 00:14:14.580
+because bcrypt is an asyncronus function
+
+327
+00:14:15.920 --> 00:14:19.810
+bcrypt.hash and then you pass it the password
+
+328
+00:14:19.810 --> 00:14:21.050
+that the user has brought in,
+
+329
+00:14:21.050 --> 00:14:24.010
+so args.password and then you go ahead
+
+330
+00:14:24.010 --> 00:14:26.380
+and you either give it something called a salt
+
+331
+00:14:26.380 --> 00:14:28.250
+or you give it the length of a salt
+
+332
+00:14:28.250 --> 00:14:29.740
+for it to generate to you.
+
+333
+00:14:29.740 --> 00:14:31.960
+So were going to pass a salt length of 10.
+
+334
+00:14:31.960 --> 00:14:36.520
+And what a salt does, (laughing) and what a salt does
+
+335
+00:14:36.520 --> 00:14:40.310
+is that it makes your generation unique
+
+336
+00:14:40.310 --> 00:14:44.010
+because there are other hashing algorithms
+
+337
+00:14:44.010 --> 00:14:47.470
+out there, specifically WordPress uses one called MD5.
+
+338
+00:14:47.470 --> 00:14:50.810
+And if you have dogs123, and you hash that thing,
+
+339
+00:14:50.810 --> 00:14:53.330
+it's always going to be something like this.
+
+340
+00:14:53.330 --> 00:14:57.530
+And if some other website also uses MD5 and your password
+
+341
+00:14:57.530 --> 00:15:00.170
+is dogs123, then it's also going to be that.
+
+342
+00:15:00.170 --> 00:15:03.290
+But, by salting your password, you're going to be able
+
+343
+00:15:03.290 --> 00:15:07.780
+to have a unique password generation algorithms
+
+344
+00:15:07.780 --> 00:15:10.610
+so that even if someone else were to use, decrypt that hash
+
+345
+00:15:10.610 --> 00:15:12.990
+with that same password, it's going to have
+
+346
+00:15:12.990 --> 00:15:15.443
+a totally different hash in their database
+
+347
+00:15:15.443 --> 00:15:16.790
+and that's really nice
+
+348
+00:15:16.790 --> 00:15:19.077
+because if someone were to ever figure out
+
+349
+00:15:19.077 --> 00:15:22.800
+what the equivalent of your hash to your password,
+
+350
+00:15:22.800 --> 00:15:25.440
+like it's well known that there's a list of millions
+
+351
+00:15:25.440 --> 00:15:29.220
+of well-known MD5 hashes out there and if your,
+
+352
+00:15:29.220 --> 00:15:30.620
+that hash gets out,
+
+353
+00:15:30.620 --> 00:15:32.620
+then people can look it up and say,
+
+354
+00:15:32.620 --> 00:15:36.010
+oh well, that hash was ASDF and it's clear
+
+355
+00:15:36.010 --> 00:15:38.190
+that their password is just dogs.
+
+356
+00:15:38.190 --> 00:15:41.090
+So we are going to give it a length of 10
+
+357
+00:15:41.090 --> 00:15:43.290
+and it will generate a salt for us.
+
+358
+00:15:43.290 --> 00:15:48.040
+Now, we actually need to create the user in the database,
+
+359
+00:15:48.040 --> 00:15:51.310
+so we will say const the user is equal to await,
+
+360
+00:15:51.310 --> 00:15:54.260
+then we take our context to access our database
+
+361
+00:15:54.260 --> 00:15:56.950
+and we access the mutation on that and the mutation
+
+362
+00:15:56.950 --> 00:15:59.760
+that we actually wanna access is called createUser
+
+363
+00:15:59.760 --> 00:16:01.590
+and why is it called createUser?
+
+364
+00:16:01.590 --> 00:16:06.590
+Well, if we go back to our generated prisma.graphql file,
+
+365
+00:16:06.910 --> 00:16:10.485
+you'll see that we have a createUser mutation
+
+366
+00:16:10.485 --> 00:16:13.420
+that takes in some data and returns a user.
+
+367
+00:16:13.420 --> 00:16:16.890
+So that's the API that we're going to be using.
+
+368
+00:16:16.890 --> 00:16:21.570
+So, it's .createUser and that takes in an object
+
+369
+00:16:21.570 --> 00:16:26.460
+where you pass in some data, and before we forget,
+
+370
+00:16:26.460 --> 00:16:28.920
+make sure that your createUser also passes info
+
+371
+00:16:28.920 --> 00:16:31.205
+as a second argument so it knows
+
+372
+00:16:31.205 --> 00:16:34.140
+what data to return to the client.
+
+373
+00:16:34.140 --> 00:16:37.320
+And inside of this data, we are going to take the args,
+
+374
+00:16:37.320 --> 00:16:39.580
+we're gonna spread it in, so that's going to give us
+
+375
+00:16:39.580 --> 00:16:43.340
+something like names: args.name and it's also gonna give us
+
+376
+00:16:43.340 --> 00:16:45.280
+the email which is args.email
+
+377
+00:16:45.280 --> 00:16:47.420
+and it's also going to give us the password
+
+378
+00:16:47.420 --> 00:16:49.410
+which is args.password.
+
+379
+00:16:49.410 --> 00:16:53.410
+But, by spreading it into the object here,
+
+380
+00:16:53.410 --> 00:16:55.450
+we're going to do that in one fell swoop,
+
+381
+00:16:55.450 --> 00:16:56.810
+then we're going to override it
+
+382
+00:16:56.810 --> 00:16:59.960
+with the password so don't worry that the initial password
+
+383
+00:16:59.960 --> 00:17:02.625
+is being passed here because we're going to overwrite that
+
+384
+00:17:02.625 --> 00:17:04.660
+in here by saying password
+
+385
+00:17:04.660 --> 00:17:07.050
+is equal to password, or you guessed it,
+
+386
+00:17:07.050 --> 00:17:09.700
+you can just simply pass password.
+
+387
+00:17:09.700 --> 00:17:12.290
+And then finally, we are going to set the permissions.
+
+388
+00:17:12.290 --> 00:17:15.810
+And the way that you set a permissions is, I first thought
+
+389
+00:17:15.810 --> 00:17:16.940
+you could just do something like this
+
+390
+00:17:16.940 --> 00:17:18.790
+permissions is equal to an array
+
+391
+00:17:20.150 --> 00:17:22.280
+where you set the user, right?
+
+392
+00:17:22.280 --> 00:17:26.010
+But because permissions is not just a string field,
+
+393
+00:17:26.010 --> 00:17:29.480
+but it is reaching out to an external enum,
+
+394
+00:17:29.480 --> 00:17:34.330
+we have to set it like this, you do curly bracket set
+
+395
+00:17:34.330 --> 00:17:37.430
+and then you pass it an array with the default permission
+
+396
+00:17:37.430 --> 00:17:38.640
+that we wanna pass in there.
+
+397
+00:17:38.640 --> 00:17:39.930
+We gonna set everyone who signs up
+
+398
+00:17:39.930 --> 00:17:41.950
+is going to be a user and then we can go back
+
+399
+00:17:41.950 --> 00:17:45.830
+and actually edit those people in just a bit.
+
+400
+00:17:45.830 --> 00:17:49.250
+Good, now that that user is actually in the database,
+
+401
+00:17:49.250 --> 00:17:52.350
+we actually need to create a JSON web token
+
+402
+00:17:52.350 --> 00:17:54.030
+for the user because we wanna make sure
+
+403
+00:17:54.030 --> 00:17:55.720
+that they, once you've signed up,
+
+404
+00:17:55.720 --> 00:17:57.230
+you are now signed in.
+
+405
+00:17:57.230 --> 00:17:59.930
+I kind of like that, when you sign up for an account,
+
+406
+00:17:59.930 --> 00:18:01.790
+it doesn't ask you to sign in right away
+
+407
+00:18:01.790 --> 00:18:03.560
+because you just gave it your password,
+
+408
+00:18:03.560 --> 00:18:05.580
+it should know and it will sign you in.
+
+409
+00:18:05.580 --> 00:18:10.580
+So, we will create the JWT token for them.
+
+410
+00:18:11.430 --> 00:18:13.520
+So, to do this, we need to go back up the top
+
+411
+00:18:13.520 --> 00:18:15.670
+and import another package that's going to allow us
+
+412
+00:18:15.670 --> 00:18:17.390
+to work with JWT.
+
+413
+00:18:18.700 --> 00:18:23.680
+So const jwt is equal to require jsonwebtoken
+
+414
+00:18:25.545 --> 00:18:26.695
+and we'll go back down.
+
+415
+00:18:28.080 --> 00:18:31.980
+We'll say const token is equal to jwt.sign
+
+416
+00:18:33.730 --> 00:18:36.090
+and we pass it a userId,
+
+417
+00:18:37.953 --> 00:18:39.600
+which is going to be the user.is.
+
+418
+00:18:39.600 --> 00:18:42.640
+So we just went ahead and created that user right here.
+
+419
+00:18:44.470 --> 00:18:48.460
+And then you also want to pass the second argument of sign
+
+420
+00:18:48.460 --> 00:18:50.200
+needs to be your app secret.
+
+421
+00:18:50.200 --> 00:18:52.809
+So, remember we have the variables.env
+
+422
+00:18:52.809 --> 00:18:55.190
+and we put an APP_SECRET here,
+
+423
+00:18:55.190 --> 00:18:58.060
+we need to pass that secret to our JSON web token
+
+424
+00:18:58.060 --> 00:19:00.470
+so it can sign it with something specific
+
+425
+00:19:00.470 --> 00:19:01.570
+to our application.
+
+426
+00:19:02.570 --> 00:19:04.790
+So say process.env.APP_SECRET.
+
+427
+00:19:07.230 --> 00:19:12.230
+Then we set the JWT as a cookie on the response,
+
+428
+00:19:13.460 --> 00:19:15.840
+because now that the user is signed in,
+
+429
+00:19:15.840 --> 00:19:17.670
+we need to set a cookie on the response
+
+430
+00:19:17.670 --> 00:19:20.690
+so that every single time that they click to another page,
+
+431
+00:19:20.690 --> 00:19:22.490
+that token comes along for the ride.
+
+432
+00:19:22.490 --> 00:19:27.410
+So, ctx.response.cookie, we're gonna set
+
+433
+00:19:27.410 --> 00:19:31.090
+the token cookie to be the actual token
+
+434
+00:19:31.090 --> 00:19:33.460
+that we just created one line earlier.
+
+435
+00:19:33.460 --> 00:19:36.250
+And then, the cookie always needs a couple options,
+
+436
+00:19:36.250 --> 00:19:38.820
+so first thing we want to set is httpOnly
+
+437
+00:19:39.920 --> 00:19:43.240
+and that will make sure that we cannot access this token
+
+438
+00:19:43.240 --> 00:19:45.950
+via JavaScript, because you could get
+
+439
+00:19:45.950 --> 00:19:48.110
+a third-party JavaScript on your website,
+
+440
+00:19:48.110 --> 00:19:52.020
+or you could get a rogue Chrome extension
+
+441
+00:19:52.020 --> 00:19:55.850
+or anything that has access to the JavaScript on your page.
+
+442
+00:19:55.850 --> 00:19:59.890
+You do not want your JavaScript being able to access
+
+443
+00:19:59.890 --> 00:20:01.930
+your cookies in this specific case.
+
+444
+00:20:01.930 --> 00:20:05.380
+Wwe'll say httpOnly is true and then the maxAge,
+
+445
+00:20:05.380 --> 00:20:07.330
+how long do we want this cookie to last
+
+446
+00:20:07.330 --> 00:20:10.100
+and we're going to set it to 1,000 milliseconds
+
+447
+00:20:10.100 --> 00:20:13.130
+times 60 seconds in a minute times 60 minutes
+
+448
+00:20:13.130 --> 00:20:15.500
+in an hour times 24 hours in a day
+
+449
+00:20:15.500 --> 00:20:19.040
+times 365 days in a year.
+
+450
+00:20:19.040 --> 00:20:21.140
+So that will be a one-year cookie
+
+451
+00:20:21.140 --> 00:20:22.600
+and you can set that to,
+
+452
+00:20:22.600 --> 00:20:24.530
+I think it's something like 22 years
+
+453
+00:20:24.530 --> 00:20:26.440
+or something like that, you can set it to max
+
+454
+00:20:26.440 --> 00:20:28.020
+which is pretty nifty.
+
+455
+00:20:28.020 --> 00:20:30.370
+I hate when things sign me out.
+
+456
+00:20:30.370 --> 00:20:34.620
+Finally, we return the user
+
+457
+00:20:34.620 --> 00:20:37.840
+to the browser.
+
+458
+00:20:37.840 --> 00:20:39.760
+We'll say return user, whoa.
+
+459
+00:20:41.100 --> 00:20:44.220
+Give it save and let's try it out.
+
+460
+00:20:44.220 --> 00:20:46.170
+That was a lot of code that we just wrote there.
+
+461
+00:20:46.170 --> 00:20:48.770
+There's probably something wrong with it,
+
+462
+00:20:48.770 --> 00:20:51.550
+but we'll try it out ourselves.
+
+463
+00:20:51.550 --> 00:20:52.790
+So the way that we can test this
+
+464
+00:20:52.790 --> 00:20:53.980
+is that you just double check
+
+465
+00:20:53.980 --> 00:20:55.310
+that your server's actually running,
+
+466
+00:20:55.310 --> 00:20:58.110
+so I'm on my backend here, npm run dev
+
+467
+00:20:58.110 --> 00:20:59.870
+and that's going to open up your playground
+
+468
+00:20:59.870 --> 00:21:04.350
+on port 4444, you can either visit it at localhost 4444,
+
+469
+00:21:05.590 --> 00:21:09.510
+or open it up in the playground that you have here.
+
+470
+00:21:09.510 --> 00:21:12.760
+And if you open up your schema, schema,
+
+471
+00:21:12.760 --> 00:21:15.000
+you'll see that our new mutation signup is here.
+
+472
+00:21:15.000 --> 00:21:18.330
+And it takes in those things and it's going to return
+
+473
+00:21:19.240 --> 00:21:20.073
+these things for us.
+
+474
+00:21:20.073 --> 00:21:21.470
+So, let's try it ourselves.
+
+475
+00:21:21.470 --> 00:21:24.490
+We're going to write a mutation called createUser.
+
+476
+00:21:24.490 --> 00:21:26.860
+And in that, we're going to create,
+
+477
+00:21:27.860 --> 00:21:30.260
+or we're going to run our signup.
+
+478
+00:21:30.260 --> 00:21:33.123
+And that takes an email, wesboss@gmail.com.
+
+479
+00:21:37.250 --> 00:21:40.620
+It takes a name, Wes Boss.
+
+480
+00:21:44.830 --> 00:21:47.480
+Put these on their own line for my own sanity's sake.
+
+481
+00:21:50.960 --> 00:21:55.520
+And it takes a password, which is going to be dogs123.
+
+482
+00:21:56.860 --> 00:21:59.350
+And from that, we are going to return,
+
+483
+00:21:59.350 --> 00:22:01.490
+let's return obviously the name,
+
+484
+00:22:01.490 --> 00:22:03.950
+the email, let's return the password
+
+485
+00:22:03.950 --> 00:22:06.680
+so we can actually see if it got hashed properly
+
+486
+00:22:06.680 --> 00:22:10.840
+and, let's see the permissions for that.
+
+487
+00:22:10.840 --> 00:22:13.840
+So, let's go ahead, here we go!
+
+488
+00:22:13.840 --> 00:22:15.840
+Let's keep this open, as well, clear it out,
+
+489
+00:22:15.840 --> 00:22:17.590
+because any errors will show up here.
+
+490
+00:22:17.590 --> 00:22:18.690
+I'm so excited!
+
+491
+00:22:20.690 --> 00:22:21.523
+It worked!
+
+492
+00:22:21.523 --> 00:22:22.380
+Wow!
+
+493
+00:22:22.380 --> 00:22:23.630
+It worked the first time!
+
+494
+00:22:23.630 --> 00:22:24.490
+Who knew?
+
+495
+00:22:24.490 --> 00:22:25.420
+Okay, let's look.
+
+496
+00:22:25.420 --> 00:22:28.240
+Good, we have the signup data that came back,
+
+497
+00:22:29.750 --> 00:22:30.720
+obviously the name, the email,
+
+498
+00:22:30.720 --> 00:22:32.710
+there's the password hash that we have,
+
+499
+00:22:32.710 --> 00:22:33.630
+and then the permissions.
+
+500
+00:22:33.630 --> 00:22:36.640
+So, if we were now to refresh this page here,
+
+501
+00:22:37.760 --> 00:22:40.540
+you see that the user is now in our database,
+
+502
+00:22:40.540 --> 00:22:41.850
+the ID, the name,
+
+503
+00:22:41.850 --> 00:22:43.180
+oh, I gotta refresh the page,
+
+504
+00:22:43.180 --> 00:22:46.610
+'cause since I've been on this page we've added new fields,
+
+505
+00:22:46.610 --> 00:22:48.420
+so I guess the UI needs to update.
+
+506
+00:22:48.420 --> 00:22:49.253
+There we go!
+
+507
+00:22:49.253 --> 00:22:52.220
+The password, the, and then the values that we don't have
+
+508
+00:22:52.220 --> 00:22:53.290
+are set to null.
+
+509
+00:22:53.290 --> 00:22:55.090
+Good, because we don't need those just yet.
+
+510
+00:22:55.090 --> 00:22:58.088
+So, wow, I'm surprised it worked the first run.
+
+511
+00:22:58.088 --> 00:23:01.550
+Really happy about that, so let's get into the next video,
+
+512
+00:23:01.550 --> 00:23:05.330
+which is actually coding up the front end
+
+513
+00:23:05.330 --> 00:23:07.720
+so we can do this not via here,
+
+514
+00:23:07.720 --> 00:23:09.550
+but via our React application.
+

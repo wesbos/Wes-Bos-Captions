@@ -1,0 +1,1934 @@
+﻿WEBVTT
+
+1
+00:00:00.940 --> 00:00:03.400
+<v Wes>Folks, let's get up and running</v>
+
+2
+00:00:03.400 --> 00:00:04.900
+with testing our mutations.
+
+3
+00:00:04.900 --> 00:00:07.300
+It's gonna work very similar to how we test queries,
+
+4
+00:00:07.300 --> 00:00:10.430
+except for we're gonna introduce
+
+5
+00:00:10.430 --> 00:00:13.550
+faking clicks, faking typing into inputs,
+
+6
+00:00:13.550 --> 00:00:15.690
+all that kind of stuff that you need to test
+
+7
+00:00:15.690 --> 00:00:17.540
+before you actually submit a mutation.
+
+8
+00:00:17.540 --> 00:00:22.350
+So I went ahead and imported mount, wait, toJson,
+
+9
+00:00:22.350 --> 00:00:26.111
+our MockProvider, as well as the reset, or requestReset,
+
+10
+00:00:26.111 --> 00:00:30.420
+and the Request_Reset_Mutation from our component.
+
+11
+00:00:30.420 --> 00:00:33.660
+I actually recorded this video once before this
+
+12
+00:00:33.660 --> 00:00:37.940
+and I totally was so stuck for 20 minutes until I,
+
+13
+00:00:37.940 --> 00:00:42.830
+I forgot that I did not export the
+
+14
+00:00:42.830 --> 00:00:46.860
+this mutation from this file, and I was getting a,
+
+15
+00:00:46.860 --> 00:00:49.707
+I was getting a, just a mutation error that says
+
+16
+00:00:49.707 --> 00:00:51.080
+"no more mocked request."
+
+17
+00:00:51.080 --> 00:00:54.110
+So, let's head into requestReset.JS.
+
+18
+00:00:54.110 --> 00:00:56.320
+And, for some reason I called it sign-in,
+
+19
+00:00:56.320 --> 00:00:58.380
+probably because I duped it from the other one.
+
+20
+00:00:58.380 --> 00:01:01.180
+We'll call that RequestReset,
+
+21
+00:01:01.180 --> 00:01:04.240
+and then we'll also name export this.
+
+22
+00:01:04.240 --> 00:01:08.743
+Export the reset, Request_Reset_Mutation.
+
+23
+00:01:09.580 --> 00:01:11.400
+Then what we'll do, is we're gonna make some mocks.
+
+24
+00:01:11.400 --> 00:01:15.493
+So, say, const mocks is equal to an array.
+
+25
+00:01:16.460 --> 00:01:19.020
+And I have a object here.
+
+26
+00:01:19.020 --> 00:01:21.100
+Inside of that, you have the request,
+
+27
+00:01:21.100 --> 00:01:26.100
+which is going to be a query of Request_Reset_Mutation
+
+28
+00:01:26.320 --> 00:01:28.570
+and it's gonna be called, with the variables,
+
+29
+00:01:29.600 --> 00:01:34.160
+I believe, email is set to wesbos@gmail.com.
+
+30
+00:01:34.160 --> 00:01:36.453
+You can set that to your own, if you'd like.
+
+31
+00:01:37.580 --> 00:01:40.730
+That is the actual mutation that it is going to be called,
+
+32
+00:01:40.730 --> 00:01:43.080
+and then we also need to provide it the information
+
+33
+00:01:43.080 --> 00:01:45.870
+that gets sent back from that mutation.
+
+34
+00:01:45.870 --> 00:01:50.450
+So the result, and I've previously also called this
+
+35
+00:01:50.450 --> 00:01:52.810
+response and wasted a whole bunch of time.
+
+36
+00:01:52.810 --> 00:01:57.799
+So it's result, the data is going to be requestReset
+
+37
+00:01:57.799 --> 00:02:01.500
+and back from that we get a message, which is success.
+
+38
+00:02:01.500 --> 00:02:03.440
+We don't actually use that anywhere on the thing,
+
+39
+00:02:03.440 --> 00:02:05.730
+but it does send back a message
+
+40
+00:02:05.730 --> 00:02:10.240
+and a typename of message.
+
+41
+00:02:10.240 --> 00:02:11.380
+Looks good.
+
+42
+00:02:11.380 --> 00:02:13.000
+Let's go ahead and describe
+
+43
+00:02:14.400 --> 00:02:17.493
+the RequestReset component.
+
+44
+00:02:19.590 --> 00:02:21.700
+First what we want to do is just check that it renders
+
+45
+00:02:21.700 --> 00:02:23.710
+and we can match the snapshot, so.
+
+46
+00:02:23.710 --> 00:02:28.710
+We'll say it renders and matches snapshot.
+
+47
+00:02:30.740 --> 00:02:31.863
+Make it async.
+
+48
+00:02:33.920 --> 00:02:37.600
+And we'll make a wrapper, or we will mount
+
+49
+00:02:40.416 --> 00:02:41.830
+MockedProvider.
+
+50
+00:02:41.830 --> 00:02:44.100
+Inside of that we want our reset
+
+51
+00:02:46.632 --> 00:02:48.740
+RequestReset component, and we don't need
+
+52
+00:02:48.740 --> 00:02:50.850
+to pass at any mocks here, because we're not actually
+
+53
+00:02:50.850 --> 00:02:52.070
+gonna be submitting it.
+
+54
+00:02:52.070 --> 00:02:54.540
+We just wanna make sure that the actual form itself
+
+55
+00:02:54.540 --> 00:02:57.210
+gets rendered to the page properly.
+
+56
+00:02:57.210 --> 00:02:58.850
+So what we'll do here is
+
+57
+00:02:58.850 --> 00:03:01.683
+let's just console.log the wrapper.debug,
+
+58
+00:03:02.540 --> 00:03:05.460
+and you see we're getting the form here,
+
+59
+00:03:05.460 --> 00:03:09.290
+a field set, a h2, no errors, label.
+
+60
+00:03:09.290 --> 00:03:10.160
+Everything looks good.
+
+61
+00:03:10.160 --> 00:03:12.060
+Let's pop a little debug on this,
+
+62
+00:03:12.060 --> 00:03:15.270
+or a data-test on this, so we can grab it.
+
+63
+00:03:15.270 --> 00:03:19.780
+So we'll go up to our form in the actual component itself,
+
+64
+00:03:19.780 --> 00:03:22.364
+and add data-test equals form.
+
+65
+00:03:22.364 --> 00:03:24.580
+Then we'll grab it here.
+
+66
+00:03:24.580 --> 00:03:27.063
+Const form equals wrapper.find,
+
+67
+00:03:29.940 --> 00:03:34.363
+a form with a data-test of form.
+
+68
+00:03:35.610 --> 00:03:37.523
+And let's console.log the form.
+
+69
+00:03:40.720 --> 00:03:44.250
+Looks good and we can now expect toJson
+
+70
+00:03:44.250 --> 00:03:47.700
+the form to match the snapshot.
+
+71
+00:03:47.700 --> 00:03:50.120
+I previously also forgot
+
+72
+00:03:50.120 --> 00:03:52.830
+to put the toJson on there, and I got a line
+
+73
+00:03:52.830 --> 00:03:57.350
+that was 223,000 long and it froze my entire editor.
+
+74
+00:03:57.350 --> 00:03:59.300
+So make sure you put that toJson on there.
+
+75
+00:03:59.300 --> 00:04:01.873
+That's gonna convert it to the actual html look.
+
+76
+00:04:02.750 --> 00:04:05.470
+And that should write a snapshot for us.
+
+77
+00:04:05.470 --> 00:04:06.351
+Let's check it out.
+
+78
+00:04:06.351 --> 00:04:08.093
+RequestReset.snap.
+
+79
+00:04:08.950 --> 00:04:11.290
+Here we got our form, we got our h2,
+
+80
+00:04:11.290 --> 00:04:14.430
+no errors, our email, and a submit button.
+
+81
+00:04:14.430 --> 00:04:15.430
+Looks good.
+
+82
+00:04:15.430 --> 00:04:16.960
+So that's our first test.
+
+83
+00:04:16.960 --> 00:04:20.130
+Next test we wanna do is actually to test the mutation.
+
+84
+00:04:20.130 --> 00:04:23.053
+So it calls the mutation.
+
+85
+00:04:26.490 --> 00:04:27.890
+We'll go ahead and mount it again,
+
+86
+00:04:27.890 --> 00:04:30.160
+so just take this little line here
+
+87
+00:04:30.160 --> 00:04:33.710
+except that we are going to pass the mocks
+
+88
+00:04:33.710 --> 00:04:35.263
+along for the ride.
+
+89
+00:04:36.490 --> 00:04:39.270
+Then we actually need to type into that box.
+
+90
+00:04:39.270 --> 00:04:42.430
+Now, if we take a look at our RequestReset,
+
+91
+00:04:42.430 --> 00:04:46.570
+you'll see that we use state to pass along actual
+
+92
+00:04:46.570 --> 00:04:48.740
+data in our variables.
+
+93
+00:04:48.740 --> 00:04:50.700
+Where is that mutation? Right here.
+
+94
+00:04:50.700 --> 00:04:51.890
+Variables is set to state.
+
+95
+00:04:51.890 --> 00:04:54.560
+So what we could do is you could reach right
+
+96
+00:04:54.560 --> 00:04:57.700
+into the component state and set the email,
+
+97
+00:04:57.700 --> 00:05:01.190
+however, it's always best to keep your tests as close
+
+98
+00:05:01.190 --> 00:05:04.640
+to how the actual user would interface with your components.
+
+99
+00:05:04.640 --> 00:05:07.000
+So instead of modifying state directly,
+
+100
+00:05:07.000 --> 00:05:09.340
+what we're going to do is we're going to just fake
+
+101
+00:05:09.340 --> 00:05:12.640
+type into this input and that's also, in turn,
+
+102
+00:05:12.640 --> 00:05:14.550
+going to test our onChange handler,
+
+103
+00:05:14.550 --> 00:05:17.380
+that it works properly, because if that works properly
+
+104
+00:05:17.380 --> 00:05:20.430
+and we submit the button, then it should send along
+
+105
+00:05:20.430 --> 00:05:21.830
+the variables for the ride.
+
+106
+00:05:21.830 --> 00:05:23.540
+So that's exactly what we'll do here.
+
+107
+00:05:23.540 --> 00:05:25.433
+We'll say simulate typing an email.
+
+108
+00:05:29.030 --> 00:05:31.590
+So we'll find the input wrapper.find.
+
+109
+00:05:31.590 --> 00:05:32.920
+We'll look for that input.
+
+110
+00:05:32.920 --> 00:05:35.130
+And then we'll call the .simulate method,
+
+111
+00:05:35.130 --> 00:05:37.020
+which is what enzyme provides to us,
+
+112
+00:05:37.020 --> 00:05:38.840
+will simulate a change event.
+
+113
+00:05:38.840 --> 00:05:40.950
+And then when you simulate an event,
+
+114
+00:05:40.950 --> 00:05:43.000
+you also have to pass along everything
+
+115
+00:05:43.000 --> 00:05:44.920
+that comes along with the event.
+
+116
+00:05:44.920 --> 00:05:47.453
+So if we take a look at our saveToState,
+
+117
+00:05:48.350 --> 00:05:52.870
+our event needs a target that has a name and a value in it.
+
+118
+00:05:52.870 --> 00:05:55.330
+So we're gonna pass that exact event on,
+
+119
+00:05:55.330 --> 00:05:58.180
+so we're gonna say the target
+
+120
+00:05:58.180 --> 00:06:00.580
+has a name of email
+
+121
+00:06:00.580 --> 00:06:05.580
+and a value of wesbos@gmail.com.
+
+122
+00:06:07.170 --> 00:06:08.110
+That looks good.
+
+123
+00:06:08.110 --> 00:06:10.260
+Wrapper find input simulate a change,
+
+124
+00:06:10.260 --> 00:06:12.290
+here's the event that you should pass along,
+
+125
+00:06:12.290 --> 00:06:17.175
+that should then, in turn, update the state of the input.
+
+126
+00:06:17.175 --> 00:06:19.440
+Then we'll go ahead and submit it.
+
+127
+00:06:19.440 --> 00:06:20.840
+Submit the form.
+
+128
+00:06:20.840 --> 00:06:24.520
+So, wrapper.find, we're gonna find the form,
+
+129
+00:06:24.520 --> 00:06:29.043
+and we're gonna simulate a submit event.
+
+130
+00:06:30.720 --> 00:06:33.060
+Then we're going to await wait,
+
+131
+00:06:33.060 --> 00:06:35.030
+to make sure everything clears.
+
+132
+00:06:35.030 --> 00:06:36.833
+We're going to wrapper.update,
+
+133
+00:06:38.580 --> 00:06:41.563
+then we're going to expect the wrapper.find,
+
+134
+00:06:42.400 --> 00:06:44.600
+we're gonna find the paragraph tag in there,
+
+135
+00:06:44.600 --> 00:06:46.030
+and we're gonna grab the text out of it.
+
+136
+00:06:46.030 --> 00:06:49.591
+We're going to expect it to contain
+
+137
+00:06:49.591 --> 00:06:52.780
+and let's just put something nonsense in there
+
+138
+00:06:52.780 --> 00:06:54.940
+so we can actually see what it does contain.
+
+139
+00:06:54.940 --> 00:06:56.350
+Go ahead and run it.
+
+140
+00:06:56.350 --> 00:06:58.280
+Couple errors here.
+
+141
+00:06:58.280 --> 00:06:59.870
+Expected the string, success,
+
+142
+00:06:59.870 --> 00:07:02.000
+check your email for reset link.
+
+143
+00:07:02.000 --> 00:07:04.410
+Otherwise it found what we typed, so we can just go ahead
+
+144
+00:07:04.410 --> 00:07:07.930
+and paste that sucker in there.
+
+145
+00:07:07.930 --> 00:07:11.703
+You could also just snapshot that paragraph tag directly.
+
+146
+00:07:14.210 --> 00:07:17.500
+And we got one more missing field,
+
+147
+00:07:17.500 --> 00:07:21.253
+resetRequest end, requestReset message.
+
+148
+00:07:22.470 --> 00:07:24.323
+Let's see what we're doing here.
+
+149
+00:07:25.220 --> 00:07:28.303
+Oh, it's requestReset, not requestRest.
+
+150
+00:07:29.950 --> 00:07:31.510
+There we go. That passed everything.
+
+151
+00:07:31.510 --> 00:07:32.660
+The reason why that didn't fail,
+
+152
+00:07:32.660 --> 00:07:34.270
+is because we actually don't check
+
+153
+00:07:34.270 --> 00:07:36.340
+for any of this information coming back.
+
+154
+00:07:36.340 --> 00:07:38.030
+We just checked that the form was submitted
+
+155
+00:07:38.030 --> 00:07:40.020
+and there were no errors.
+
+156
+00:07:40.020 --> 00:07:41.170
+That's why it still worked
+
+157
+00:07:41.170 --> 00:07:42.620
+but it threw a little warning there.
+
+158
+00:07:42.620 --> 00:07:43.890
+So we updated that.
+
+159
+00:07:43.890 --> 00:07:47.290
+So that is testing the submission of our reset request.
+
+160
+00:07:47.290 --> 00:07:50.220
+Let's take a look at a couple other mutations,
+
+161
+00:07:50.220 --> 00:07:52.070
+so we can find some other.
+
+162
+00:07:52.070 --> 00:07:53.160
+And I close this all down.
+
+163
+00:07:53.160 --> 00:07:55.780
+Let's look at our create_item.js.
+
+164
+00:07:55.780 --> 00:07:57.780
+This is a component where you pass it,
+
+165
+00:07:57.780 --> 00:08:00.270
+all of the information about your item,
+
+166
+00:08:00.270 --> 00:08:03.133
+and then it comes back with the ID of the item.
+
+167
+00:08:04.040 --> 00:08:05.900
+I got a little bit more going on here,
+
+168
+00:08:05.900 --> 00:08:08.730
+so let's go ahead and test that out.
+
+169
+00:08:08.730 --> 00:08:11.850
+Gonna go into our test folder,
+
+170
+00:08:11.850 --> 00:08:15.260
+make a new test called createitem.testsuchas.
+
+171
+00:08:15.260 --> 00:08:18.900
+And let's just jump into the requestReset.test
+
+172
+00:08:18.900 --> 00:08:21.700
+and copy all the imports, paste 'em into there.
+
+173
+00:08:21.700 --> 00:08:26.170
+So we have mount, we have wait, we have tojson.
+
+174
+00:08:26.170 --> 00:08:29.380
+We also need to import that router from next/router.
+
+175
+00:08:29.380 --> 00:08:30.500
+We have our MockedProvider.
+
+176
+00:08:30.500 --> 00:08:34.230
+We're also going to grab the CreateItem
+
+177
+00:08:35.340 --> 00:08:36.790
+and the Create_Item_Mutation,
+
+178
+00:08:41.010 --> 00:08:42.090
+from CreateItem.
+
+179
+00:08:42.090 --> 00:08:44.030
+Let's triple check we exported both
+
+180
+00:08:44.030 --> 00:08:47.120
+the component as well as the mutation.
+
+181
+00:08:47.120 --> 00:08:48.830
+We did. Good.
+
+182
+00:08:48.830 --> 00:08:51.560
+We also want to import a fakeItem
+
+183
+00:08:51.560 --> 00:08:55.300
+from our testUtils,
+
+184
+00:08:55.300 --> 00:08:57.650
+and I think we are in good shape.
+
+185
+00:08:57.650 --> 00:09:00.930
+Now's one interesting thing about this CreateItem,
+
+186
+00:09:00.930 --> 00:09:04.750
+and it's that when you handle a file upload,
+
+187
+00:09:04.750 --> 00:09:08.500
+it's going to use the fetch protocol
+
+188
+00:09:08.500 --> 00:09:11.190
+to actually ping an external api.
+
+189
+00:09:11.190 --> 00:09:12.870
+So what we need to do is, first of all,
+
+190
+00:09:12.870 --> 00:09:14.840
+we don't have fetch on the server.
+
+191
+00:09:14.840 --> 00:09:17.210
+And second of all, we don't actually want to hit this
+
+192
+00:09:17.210 --> 00:09:19.820
+api endpoint, we just want to mock it.
+
+193
+00:09:19.820 --> 00:09:21.610
+So that's what we're going to do right here.
+
+194
+00:09:21.610 --> 00:09:26.610
+We're going to mock the global fetch api.
+
+195
+00:09:27.510 --> 00:09:28.850
+And since this is not,
+
+196
+00:09:28.850 --> 00:09:31.360
+fetch is not like an imported component,
+
+197
+00:09:31.360 --> 00:09:35.220
+like if I were to import fetch from fetch,
+
+198
+00:09:35.220 --> 00:09:37.990
+then I could just import it and go ahead and mock it.
+
+199
+00:09:37.990 --> 00:09:41.210
+But because fetch is a global browser api,
+
+200
+00:09:41.210 --> 00:09:45.630
+we need to mimic it in the global scope of our test.
+
+201
+00:09:45.630 --> 00:09:47.190
+And that's exactly what we'll do here
+
+202
+00:09:47.190 --> 00:09:50.520
+with global.fetch is equal to, and we're going to mock it,
+
+203
+00:09:50.520 --> 00:09:53.980
+so jest.fn and we're just going
+
+204
+00:09:53.980 --> 00:09:58.930
+to mock the ResolvedValue to be an object.
+
+205
+00:09:58.930 --> 00:10:02.223
+And in that object, it's going to have json,
+
+206
+00:10:03.360 --> 00:10:07.010
+which is just a function that will immediately return
+
+207
+00:10:07.010 --> 00:10:09.763
+an object that has a secure_url,
+
+208
+00:10:11.350 --> 00:10:12.750
+which is we need some sort of dogImage,
+
+209
+00:10:12.750 --> 00:10:14.870
+so let's make a variable up here.
+
+210
+00:10:14.870 --> 00:10:19.870
+DogImage is equal to dog http,
+
+211
+00:10:19.920 --> 00:10:23.040
+dog.com/dog.jpg.
+
+212
+00:10:23.040 --> 00:10:25.673
+So the secure_url is going to be the dogImage,
+
+213
+00:10:26.820 --> 00:10:29.880
+and the eager is going to be an array
+
+214
+00:10:31.090 --> 00:10:35.053
+with an object in it, secure_url is the dogImage.
+
+215
+00:10:36.880 --> 00:10:38.790
+And if you're asking why is this?
+
+216
+00:10:38.790 --> 00:10:40.820
+Well, just look at your createItem.
+
+217
+00:10:40.820 --> 00:10:44.400
+And we'll say here, we are mocking fetch,
+
+218
+00:10:44.400 --> 00:10:47.890
+which will return a json method.
+
+219
+00:10:47.890 --> 00:10:50.980
+Then we call json, which will give us a file,
+
+220
+00:10:50.980 --> 00:10:53.920
+inside of that file, we have both the secure_url
+
+221
+00:10:53.920 --> 00:10:56.400
+and an array of eager, which we pull the first one,
+
+222
+00:10:56.400 --> 00:10:57.370
+and then this here.
+
+223
+00:10:57.370 --> 00:10:59.780
+So we are mocking this data,
+
+224
+00:10:59.780 --> 00:11:01.090
+that comes back from it,
+
+225
+00:11:01.090 --> 00:11:03.490
+that's exactly what we got right here.
+
+226
+00:11:03.490 --> 00:11:05.380
+That is good, then we'll go ahead
+
+227
+00:11:05.380 --> 00:11:08.043
+and write a describe for our CreateItem.
+
+228
+00:11:11.700 --> 00:11:14.600
+And first thing we'll say it renders and matches snapshot.
+
+229
+00:11:16.910 --> 00:11:18.510
+And we'll go ahead and mount it.
+
+230
+00:11:20.730 --> 00:11:22.630
+And we'll go into our createItem,
+
+231
+00:11:22.630 --> 00:11:24.220
+and grab that form.
+
+232
+00:11:24.220 --> 00:11:26.103
+Let's put a data-test on it.
+
+233
+00:11:29.130 --> 00:11:30.620
+And then grab it in here,
+
+234
+00:11:30.620 --> 00:11:35.470
+const form is equal to wrapper.find.
+
+235
+00:11:37.130 --> 00:11:41.333
+Data-test is equal to form,
+
+236
+00:11:43.190 --> 00:11:45.720
+and we'll expect the toJson
+
+237
+00:11:47.190 --> 00:11:51.133
+of that form to match our snapshot.
+
+238
+00:11:55.370 --> 00:12:00.250
+Go ahead and run, we'll open up our CreateItem.snap
+
+239
+00:12:00.250 --> 00:12:01.870
+and we'll see if we got our form here.
+
+240
+00:12:01.870 --> 00:12:02.811
+Good.
+
+241
+00:12:02.811 --> 00:12:06.270
+Actually, we don't want the double form that we have here.
+
+242
+00:12:06.270 --> 00:12:11.160
+So we can change that to a regular form tag,
+
+243
+00:12:11.160 --> 00:12:13.473
+then go ahead and update that snapshot.
+
+244
+00:12:15.020 --> 00:12:18.820
+Go, see our field set, we see our input.
+
+245
+00:12:18.820 --> 00:12:20.450
+Everything is looking good.
+
+246
+00:12:20.450 --> 00:12:23.310
+Another way we can test if that's all working properly
+
+247
+00:12:23.310 --> 00:12:26.670
+is if we were just to say title and put a smiley face on it,
+
+248
+00:12:26.670 --> 00:12:28.710
+then our snapshot will immediately fail
+
+249
+00:12:28.710 --> 00:12:31.290
+because it found that extra smiley.
+
+250
+00:12:31.290 --> 00:12:34.430
+Remove it, all of our tests pass. Good.
+
+251
+00:12:34.430 --> 00:12:37.750
+So that means it's rendering and not blowing up on us.
+
+252
+00:12:37.750 --> 00:12:39.770
+Now let's test the file uploading,
+
+253
+00:12:39.770 --> 00:12:43.623
+so it uploads a file when changed.
+
+254
+00:12:46.170 --> 00:12:48.793
+Go ahead and grab this wrapper here.
+
+255
+00:12:51.650 --> 00:12:53.860
+Then we're gonna find that file input,
+
+256
+00:12:53.860 --> 00:12:57.070
+so const input is equal to wrapper.find,
+
+257
+00:12:57.070 --> 00:13:01.193
+input type is equal to file.
+
+258
+00:13:04.480 --> 00:13:07.990
+And then we will simulate somebody uploading a file.
+
+259
+00:13:07.990 --> 00:13:12.763
+So input.simulate change,
+
+260
+00:13:15.170 --> 00:13:17.247
+and let's see, what did we--
+
+261
+00:13:18.200 --> 00:13:22.750
+what did that upload file, e.target.files,
+
+262
+00:13:22.750 --> 00:13:25.933
+so we, it should have a target with an array of files.
+
+263
+00:13:28.010 --> 00:13:33.003
+Target, files, an array,
+
+264
+00:13:34.150 --> 00:13:37.653
+and we'll just call it fakedog.jpg.
+
+265
+00:13:40.240 --> 00:13:43.173
+We'll await for that to finish. Await, wait.
+
+266
+00:13:45.850 --> 00:13:48.050
+Now, in order to test if this worked properly,
+
+267
+00:13:48.050 --> 00:13:51.210
+well, first we need to mark this as async.
+
+268
+00:13:51.210 --> 00:13:53.190
+The way that we test to make sure that this works properly
+
+269
+00:13:53.190 --> 00:13:55.700
+is we're gonna peer into the instance of this component
+
+270
+00:13:55.700 --> 00:13:58.810
+and check that the state matches what we want.
+
+271
+00:13:58.810 --> 00:14:01.830
+So the way that you can get an instance of a component,
+
+272
+00:14:01.830 --> 00:14:05.410
+is we can say const component
+
+273
+00:14:05.410 --> 00:14:07.680
+is equal to wrapper.find.
+
+274
+00:14:07.680 --> 00:14:09.570
+We're gonna look for the CreateItem component
+
+275
+00:14:09.570 --> 00:14:12.640
+and then we're gonna just grab the instance off of that.
+
+276
+00:14:12.640 --> 00:14:15.393
+And then if we were to console.log this component,
+
+277
+00:14:19.230 --> 00:14:21.750
+you see that this is our CreateItem component,
+
+278
+00:14:21.750 --> 00:14:24.350
+there's our props, there's our context, our refs,
+
+279
+00:14:24.350 --> 00:14:27.970
+and then here is the actual state of this,
+
+280
+00:14:27.970 --> 00:14:32.050
+and we're gonna be checking for the specific image
+
+281
+00:14:32.050 --> 00:14:33.130
+that's inside of it.
+
+282
+00:14:33.130 --> 00:14:34.610
+So, we'll go here.
+
+283
+00:14:34.610 --> 00:14:39.050
+We'll say expect the component.state.image.toEqual
+
+284
+00:14:41.670 --> 00:14:43.550
+the dog image, which is
+
+285
+00:14:45.990 --> 00:14:47.010
+this one right here.
+
+286
+00:14:47.010 --> 00:14:47.843
+Why?
+
+287
+00:14:47.843 --> 00:14:52.170
+Because by changing the file to any file name,
+
+288
+00:14:52.170 --> 00:14:55.530
+we're simulating the fetch from running,
+
+289
+00:14:55.530 --> 00:14:57.180
+and then it's going off and running.
+
+290
+00:14:57.180 --> 00:14:58.323
+So we expect that.
+
+291
+00:14:59.160 --> 00:15:00.220
+Looks like it passes.
+
+292
+00:15:00.220 --> 00:15:05.220
+We'll expect the largeImage to also equal the dog image,
+
+293
+00:15:05.600 --> 00:15:10.190
+and we could also expect that the global.fetch
+
+294
+00:15:13.659 --> 00:15:18.470
+toHaveBeenCalled, and that looks like that works.
+
+295
+00:15:18.470 --> 00:15:20.870
+Let's get this console.log out of here
+
+296
+00:15:20.870 --> 00:15:23.930
+because now it tells us that it was called.
+
+297
+00:15:23.930 --> 00:15:27.223
+We can also say expect(global.fetch) toHaveBeenCalledWith,
+
+298
+00:15:28.560 --> 00:15:29.920
+I don't know, avc.
+
+299
+00:15:29.920 --> 00:15:32.070
+We'll see what it was actually called with.
+
+300
+00:15:33.480 --> 00:15:36.040
+It was called with
+
+301
+00:15:36.040 --> 00:15:40.940
+the body, name fakedog, name upload_preset.
+
+302
+00:15:40.940 --> 00:15:42.380
+So you could also put that in there,
+
+303
+00:15:42.380 --> 00:15:44.910
+but I'm pretty happy with this.
+
+304
+00:15:44.910 --> 00:15:46.380
+One last thing we want to do is
+
+305
+00:15:46.380 --> 00:15:49.440
+we've now sort of mutated the global state of this fetch
+
+306
+00:15:49.440 --> 00:15:53.790
+by, we've globally set it as a mock,
+
+307
+00:15:53.790 --> 00:15:55.990
+and we've resolved the value,
+
+308
+00:15:55.990 --> 00:15:59.280
+and if there were other tasks that needed this global fetch
+
+309
+00:15:59.280 --> 00:16:04.190
+in order to work, then it would also be doing this.
+
+310
+00:16:04.190 --> 00:16:05.023
+So we can sort of,
+
+311
+00:16:05.023 --> 00:16:07.850
+we can reset it or set it back to what it was,
+
+312
+00:16:07.850 --> 00:16:11.343
+and let's just jump into the jest docs real quick.
+
+313
+00:16:16.160 --> 00:16:17.150
+And here you go.
+
+314
+00:16:17.150 --> 00:16:19.610
+You got mockClear resets information stored
+
+315
+00:16:19.610 --> 00:16:21.667
+in the Mock.call and instances and we have
+
+316
+00:16:21.667 --> 00:16:26.070
+MockReset, removes any mockReturn values implementation.
+
+317
+00:16:26.070 --> 00:16:28.757
+So say global.fetch.mockReset.
+
+318
+00:16:31.810 --> 00:16:34.300
+And looks like all of our tests are passing. Good.
+
+319
+00:16:34.300 --> 00:16:35.420
+Let's keep going with this one.
+
+320
+00:16:35.420 --> 00:16:37.910
+There's a whole bunch of tests in here.
+
+321
+00:16:37.910 --> 00:16:42.430
+We're going to say it handles state updating.
+
+322
+00:16:42.430 --> 00:16:43.660
+So we're going to check that,
+
+323
+00:16:43.660 --> 00:16:47.664
+when people type into the boxes, that it updates to state.
+
+324
+00:16:47.664 --> 00:16:51.010
+So async, const wrapper;
+
+325
+00:16:51.010 --> 00:16:53.560
+actually let's just take this wrapper from up here.
+
+326
+00:17:03.850 --> 00:17:06.970
+So wrapper.find, find the title.
+
+327
+00:17:06.970 --> 00:17:08.720
+Let's just check in our CreateItem.
+
+328
+00:17:12.460 --> 00:17:14.960
+We have input, type of file.
+
+329
+00:17:14.960 --> 00:17:18.150
+Input, here we go. We have an ID on all of them. Good.
+
+330
+00:17:18.150 --> 00:17:22.677
+Wrapper.find, #title.simulate change.
+
+331
+00:17:25.120 --> 00:17:26.103
+The target,
+
+332
+00:17:28.650 --> 00:17:31.603
+of value is testing,
+
+333
+00:17:32.750 --> 00:17:35.233
+and the name is title.
+
+334
+00:17:37.280 --> 00:17:40.193
+And we'll just duplicate that again for price.
+
+335
+00:17:41.360 --> 00:17:43.410
+We're going to trigger a change where the value
+
+336
+00:17:43.410 --> 00:17:45.693
+is going to be 50 thousand, as a number;
+
+337
+00:17:47.380 --> 00:17:49.940
+and the name is price.
+
+338
+00:17:49.940 --> 00:17:52.363
+Also, the type is a number.
+
+339
+00:17:57.680 --> 00:18:00.147
+I'll also do that for the description.
+
+340
+00:18:06.150 --> 00:18:08.363
+This is a really nice item.
+
+341
+00:18:09.770 --> 00:18:13.160
+The name, description, and there is no type
+
+342
+00:18:13.160 --> 00:18:14.910
+that needs to be passed along here.
+
+343
+00:18:18.010 --> 00:18:20.800
+Now, we need to just check that the state of this component
+
+344
+00:18:20.800 --> 00:18:22.930
+is equal to the things that we just typed in.
+
+345
+00:18:22.930 --> 00:18:24.340
+So we'll say expect
+
+346
+00:18:26.120 --> 00:18:28.840
+the wrapper.find
+
+347
+00:18:30.060 --> 00:18:33.310
+CreateItem.instance.state
+
+348
+00:18:37.530 --> 00:18:42.203
+to match object.
+
+349
+00:18:45.030 --> 00:18:46.510
+And we want the title
+
+350
+00:18:51.460 --> 00:18:52.583
+to be Testing,
+
+351
+00:18:53.949 --> 00:18:56.713
+and the price to be 50 thousand,
+
+352
+00:18:58.320 --> 00:19:02.540
+and a description to be this is a really nice item.
+
+353
+00:19:02.540 --> 00:19:05.160
+And of course, you could put these in a variables,
+
+354
+00:19:05.160 --> 00:19:06.840
+so that you can just reference it
+
+355
+00:19:06.840 --> 00:19:08.800
+directly off of one single object.
+
+356
+00:19:08.800 --> 00:19:10.710
+Here, I'm typing it twice.
+
+357
+00:19:10.710 --> 00:19:12.630
+Let's see if I typed it correctly.
+
+358
+00:19:12.630 --> 00:19:13.670
+Looks like it's working.
+
+359
+00:19:13.670 --> 00:19:15.240
+I am getting a console.log here,
+
+360
+00:19:15.240 --> 00:19:17.340
+I think I left something in my CreateItem.
+
+361
+00:19:18.470 --> 00:19:20.500
+Console, there we go. Uploading file.
+
+362
+00:19:20.500 --> 00:19:23.313
+And, the actual file itself.
+
+363
+00:19:25.530 --> 00:19:26.550
+Beautiful!
+
+364
+00:19:26.550 --> 00:19:28.283
+Let's keep going with our tests.
+
+365
+00:19:31.090 --> 00:19:31.930
+This is the next one.
+
+366
+00:19:31.930 --> 00:19:36.670
+It creates an item when the form is submitted. Right?
+
+367
+00:19:36.670 --> 00:19:38.040
+This is the actual mutation
+
+368
+00:19:38.040 --> 00:19:39.250
+that we're gonna be working with.
+
+369
+00:19:39.250 --> 00:19:40.900
+Make sure you mark that as async.
+
+370
+00:19:42.370 --> 00:19:46.433
+And we're gonna make an item, which is a fake item.
+
+371
+00:19:47.620 --> 00:19:49.840
+And we're gonna do the mocks right inside of here.
+
+372
+00:19:49.840 --> 00:19:53.163
+So const mocks is equal to an array.
+
+373
+00:19:54.490 --> 00:19:57.170
+The first one is going to be request
+
+374
+00:20:01.420 --> 00:20:05.210
+and the query is a Create_Item_Mutation
+
+375
+00:20:05.210 --> 00:20:06.490
+and the variables
+
+376
+00:20:09.210 --> 00:20:12.720
+is going to be title, item.title
+
+377
+00:20:16.730 --> 00:20:17.653
+description.
+
+378
+00:20:22.130 --> 00:20:25.573
+The image is just going to be a blank string,
+
+379
+00:20:26.900 --> 00:20:29.370
+and the large image is also going to be a blank string,
+
+380
+00:20:29.370 --> 00:20:31.090
+because we've already tested that in another one
+
+381
+00:20:31.090 --> 00:20:34.603
+and then the price is an item.price.
+
+382
+00:20:36.650 --> 00:20:39.740
+Then, the result from that
+
+383
+00:20:41.580 --> 00:20:43.433
+is going to be a,
+
+384
+00:20:44.710 --> 00:20:46.440
+is going to pass back some data
+
+385
+00:20:46.440 --> 00:20:49.060
+in that we have our Create_Item_Mutation
+
+386
+00:20:51.590 --> 00:20:52.690
+And then we'll just
+
+387
+00:20:52.690 --> 00:20:55.500
+pass back all of the fakeItem props
+
+388
+00:20:58.790 --> 00:21:02.163
+as well as a typeName of Item.
+
+389
+00:21:03.210 --> 00:21:05.550
+So, when someone calls Create_Item_Mutation
+
+390
+00:21:05.550 --> 00:21:07.940
+with the following variables,
+
+391
+00:21:07.940 --> 00:21:10.310
+the result will be a Create_Item_Mutation
+
+392
+00:21:10.310 --> 00:21:12.200
+with all of the same properties,
+
+393
+00:21:12.200 --> 00:21:14.520
+as well as a typeName, just because we have to manually
+
+394
+00:21:14.520 --> 00:21:16.180
+add those ourselves, so, woo, okay.
+
+395
+00:21:16.180 --> 00:21:18.443
+So that is our mocks.
+
+396
+00:21:20.078 --> 00:21:21.810
+Then we'll go ahead and start mounting it.
+
+397
+00:21:21.810 --> 00:21:25.523
+So, const wrapper is equal to mount MockedProvider.
+
+398
+00:21:30.540 --> 00:21:34.110
+Inside of that, we'll have our CreateItem,
+
+399
+00:21:34.110 --> 00:21:36.840
+and that our MockProvider also needs
+
+400
+00:21:36.840 --> 00:21:38.283
+the mocks passed to it.
+
+401
+00:21:44.750 --> 00:21:47.980
+Then we go ahead and simulate someone
+
+402
+00:21:47.980 --> 00:21:50.470
+filling out the form,
+
+403
+00:21:50.470 --> 00:21:53.610
+and for these we can just go ahead and grab
+
+404
+00:21:53.610 --> 00:21:57.440
+the title price description that we previously did.
+
+405
+00:21:57.440 --> 00:21:59.853
+So go ahead and grab those three,
+
+406
+00:22:01.960 --> 00:22:04.160
+and I'll fill it out here.
+
+407
+00:22:04.160 --> 00:22:07.060
+Except that the value is going to not be hardcoated,
+
+408
+00:22:07.060 --> 00:22:09.543
+it's going to be item.title,
+
+409
+00:22:12.870 --> 00:22:14.253
+item.price,
+
+410
+00:22:17.400 --> 00:22:18.863
+and item.description.
+
+411
+00:22:20.580 --> 00:22:22.640
+Next we need to mock the router,
+
+412
+00:22:22.640 --> 00:22:24.280
+because what happens when you create an item
+
+413
+00:22:24.280 --> 00:22:26.090
+is that it routs to the page of that.
+
+414
+00:22:26.090 --> 00:22:27.590
+So we need to mock it.
+
+415
+00:22:27.590 --> 00:22:29.767
+We'll grab the next router and the router,
+
+416
+00:22:29.767 --> 00:22:34.070
+and we'll set that to be an object with just the push.
+
+417
+00:22:34.070 --> 00:22:36.010
+It's gonna be a jest function.
+
+418
+00:22:36.010 --> 00:22:38.400
+We don't care about prefetch, because there is no prefetch
+
+419
+00:22:38.400 --> 00:22:40.010
+on the specific component,
+
+420
+00:22:40.010 --> 00:22:43.550
+so we are just mocking the jest function.
+
+421
+00:22:43.550 --> 00:22:48.040
+Then we're going to find the form and simulate a submit.
+
+422
+00:22:48.040 --> 00:22:52.160
+Then we will wait, await, wait, let's wait 50 mil seconds
+
+423
+00:22:52.160 --> 00:22:54.370
+this time, because we are going to be checking
+
+424
+00:22:54.370 --> 00:22:57.970
+that the router was pushed, and changes the page.
+
+425
+00:22:57.970 --> 00:22:58.870
+Because why?
+
+426
+00:22:58.870 --> 00:23:02.450
+When somebody submits the form, what happens is it goes
+
+427
+00:23:02.450 --> 00:23:04.980
+to the back end, creates the item, comes back
+
+428
+00:23:04.980 --> 00:23:09.980
+with that new item, which is part of our CreateItem here,
+
+429
+00:23:10.611 --> 00:23:11.890
+and then we're gonna check
+
+430
+00:23:11.890 --> 00:23:14.360
+that the page has successfully been routed.
+
+431
+00:23:14.360 --> 00:23:19.360
+So we'll expect the router.router.push,
+
+432
+00:23:19.920 --> 00:23:23.853
+which is a mock, to have been called.
+
+433
+00:23:24.820 --> 00:23:26.113
+Let's see if that works.
+
+434
+00:23:26.970 --> 00:23:28.740
+Well, one little error here.
+
+435
+00:23:28.740 --> 00:23:32.710
+No more mock responses for the mutation.
+
+436
+00:23:32.710 --> 00:23:34.993
+Create_Item_Mutation, where you pass a title,
+
+437
+00:23:34.993 --> 00:23:38.153
+a description, a price, an image and a large image.
+
+438
+00:23:39.190 --> 00:23:41.143
+Mokes, mocks.
+
+439
+00:23:43.520 --> 00:23:45.373
+One more error, still.
+
+440
+00:23:47.540 --> 00:23:49.480
+No more mock responses,
+
+441
+00:23:49.480 --> 00:23:51.870
+type, name, make sure you don't put a capital N on there,
+
+442
+00:23:51.870 --> 00:23:53.363
+but I have a lower case.
+
+443
+00:23:54.820 --> 00:23:57.610
+Alright, I just paused it and took a good look at this
+
+444
+00:23:57.610 --> 00:23:58.930
+and I figured out why.
+
+445
+00:23:58.930 --> 00:24:01.690
+So, it says no more mock responses for this.
+
+446
+00:24:01.690 --> 00:24:03.687
+You're being, it's being called with the title,
+
+447
+00:24:03.687 --> 00:24:06.880
+the description, an image, a large image, and a price.
+
+448
+00:24:06.880 --> 00:24:09.680
+However, when we are calling it, we are calling it
+
+449
+00:24:09.680 --> 00:24:11.640
+with no image and no large image.
+
+450
+00:24:11.640 --> 00:24:14.040
+However, when it's being called, it's being called with
+
+451
+00:24:14.040 --> 00:24:16.110
+dog.jpg and large-dog.
+
+452
+00:24:16.110 --> 00:24:17.790
+I'm like where are these coming from?
+
+453
+00:24:17.790 --> 00:24:22.790
+But silly me, we put some default state in here
+
+454
+00:24:23.330 --> 00:24:26.340
+to just check everything and I forgot to take it out
+
+455
+00:24:26.340 --> 00:24:28.770
+when I was actually running the application.
+
+456
+00:24:28.770 --> 00:24:30.653
+So if you set those back,
+
+457
+00:24:31.940 --> 00:24:34.950
+to just in their empty state
+
+458
+00:24:36.580 --> 00:24:38.630
+our test should pass.
+
+459
+00:24:38.630 --> 00:24:40.730
+It's obviously telling us that some of our
+
+460
+00:24:41.850 --> 00:24:43.130
+snapshots need to be updated,
+
+461
+00:24:43.130 --> 00:24:44.810
+which is true because we changed the defaults,
+
+462
+00:24:44.810 --> 00:24:46.250
+so go ahead and update those.
+
+463
+00:24:46.250 --> 00:24:49.100
+Everything's passing, let's jump back into our test here.
+
+464
+00:24:49.100 --> 00:24:54.010
+So, we expect the router.router.push to have been called
+
+465
+00:24:55.530 --> 00:24:57.140
+and that looks like it's passing.
+
+466
+00:24:57.140 --> 00:24:58.591
+We got little error here,
+
+467
+00:24:58.591 --> 00:25:02.340
+typename item is not being passed.
+
+468
+00:25:02.340 --> 00:25:04.660
+Missing field ID. Oh, in here.
+
+469
+00:25:04.660 --> 00:25:07.633
+Just, ID of abc123.
+
+470
+00:25:09.590 --> 00:25:10.423
+Good.
+
+471
+00:25:10.423 --> 00:25:11.480
+Now we can actually go down here
+
+472
+00:25:11.480 --> 00:25:14.760
+and expect it to have been called with,
+
+473
+00:25:14.760 --> 00:25:16.080
+let's just put an empty object
+
+474
+00:25:16.080 --> 00:25:18.520
+to see what it actually was called with.
+
+475
+00:25:18.520 --> 00:25:19.680
+It actually got called
+
+476
+00:25:19.680 --> 00:25:23.010
+with a pathname, item, query, ID, abc123.
+
+477
+00:25:23.010 --> 00:25:26.410
+So we wanna check that this successfully routed
+
+478
+00:25:26.410 --> 00:25:31.410
+to the pathname/item in the query pass along abc123.
+
+479
+00:25:31.680 --> 00:25:35.630
+So that is a successful test. Looking good.
+
+480
+00:25:35.630 --> 00:25:37.900
+Alright, that was a bit of a big one,
+
+481
+00:25:37.900 --> 00:25:40.600
+so go grab a coffee and we'll keep going
+
+482
+00:25:40.600 --> 00:25:42.510
+with these mutations once we have a little bit
+
+483
+00:25:42.510 --> 00:25:46.553
+of a more in-depth one coming up in the next video.
+

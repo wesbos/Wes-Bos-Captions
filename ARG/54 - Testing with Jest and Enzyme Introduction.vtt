@@ -1,0 +1,782 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.720
+(whooshing)
+
+2
+00:00:01.720 --> 00:00:02.760
+<v Instructor>All right, let's get</v>
+
+3
+00:00:02.760 --> 00:00:06.760
+jumping into testing our React application.
+
+4
+00:00:06.760 --> 00:00:09.440
+There's all kinds of stuff that's surrounding
+
+5
+00:00:09.440 --> 00:00:12.130
+testing an application when you have it.
+
+6
+00:00:12.130 --> 00:00:14.460
+What we're gonna be focusing on now is actually
+
+7
+00:00:14.460 --> 00:00:16.600
+testing all of the different components
+
+8
+00:00:16.600 --> 00:00:18.870
+that make up our React application.
+
+9
+00:00:18.870 --> 00:00:21.720
+So, we're gonna be looking at doing unit testing
+
+10
+00:00:21.720 --> 00:00:23.030
+against some of the functions,
+
+11
+00:00:23.030 --> 00:00:24.630
+that's gonna sorta get us up to speed.
+
+12
+00:00:24.630 --> 00:00:26.110
+If you're brand new at testing
+
+13
+00:00:26.110 --> 00:00:27.800
+that is going to just kinda give you
+
+14
+00:00:27.800 --> 00:00:29.950
+the 101 of how unit testing works
+
+15
+00:00:29.950 --> 00:00:32.090
+and kinda the ideas around it.
+
+16
+00:00:32.090 --> 00:00:33.760
+Feel free to skip that if you are
+
+17
+00:00:33.760 --> 00:00:36.500
+sort of seasoned as a unit tester already.
+
+18
+00:00:36.500 --> 00:00:37.730
+Then we're gonna jump into
+
+19
+00:00:37.730 --> 00:00:39.250
+some of the more specific stuff
+
+20
+00:00:39.250 --> 00:00:40.300
+that is to React,
+
+21
+00:00:40.300 --> 00:00:43.710
+so shall rendering components or mounting components,
+
+22
+00:00:43.710 --> 00:00:45.915
+those are sort of two ways you can test a component.
+
+23
+00:00:45.915 --> 00:00:48.070
+We'll look at the differences between the two,
+
+24
+00:00:48.070 --> 00:00:50.441
+when you might want to use one over the other.
+
+25
+00:00:50.441 --> 00:00:51.740
+We're gonna be looking at something
+
+26
+00:00:51.740 --> 00:00:53.834
+called snapshot testing,
+
+27
+00:00:53.834 --> 00:00:55.550
+which is specific to Jest.
+
+28
+00:00:55.550 --> 00:00:57.350
+I'm a big fan of that,
+
+29
+00:00:57.350 --> 00:00:58.610
+and then finally we're gonna be looking
+
+30
+00:00:58.610 --> 00:01:01.120
+at mocking our Apollo store.
+
+31
+00:01:01.120 --> 00:01:04.540
+So when it comes to running our queries
+
+32
+00:01:04.540 --> 00:01:07.140
+and our mutations inside of our components,
+
+33
+00:01:07.140 --> 00:01:09.510
+how are we going to deal with the data
+
+34
+00:01:09.510 --> 00:01:12.060
+that lives in the Apollo store?
+
+35
+00:01:12.060 --> 00:01:15.150
+So this assumes that you are brand new to testing.
+
+36
+00:01:15.150 --> 00:01:17.420
+Again, you might want to skip over the first couple bits
+
+37
+00:01:17.420 --> 00:01:20.500
+if you are a seasoned tester already.
+
+38
+00:01:20.500 --> 00:01:22.080
+Let's take a look at some of the tools
+
+39
+00:01:22.080 --> 00:01:23.210
+that we're going to be using.
+
+40
+00:01:23.210 --> 00:01:24.890
+First one is called Jest,
+
+41
+00:01:24.890 --> 00:01:28.020
+and the other tool that we're using is called Enzyme.
+
+42
+00:01:28.020 --> 00:01:30.400
+So let's talk about what Jest is first.
+
+43
+00:01:30.400 --> 00:01:34.630
+Jest is a testing framework they say,
+
+44
+00:01:34.630 --> 00:01:36.590
+and I think the reason why they call it a framework
+
+45
+00:01:36.590 --> 00:01:38.760
+is 'cause it does more than one thing,
+
+46
+00:01:38.760 --> 00:01:41.780
+especially if you've dealt with Mocha or Chai
+
+47
+00:01:41.780 --> 00:01:43.790
+or Tape or any of these things in the past.
+
+48
+00:01:43.790 --> 00:01:46.980
+So the first thing that Jest does it it's a test runner,
+
+49
+00:01:46.980 --> 00:01:51.980
+meaning that it is going to crawl our folder structure
+
+50
+00:01:53.160 --> 00:01:55.930
+and look for tests that we have written,
+
+51
+00:01:55.930 --> 00:01:57.640
+and then it's going to run those tests
+
+52
+00:01:57.640 --> 00:02:00.680
+and show us the output of if they've passed
+
+53
+00:02:00.680 --> 00:02:02.280
+or if they fail and what not.
+
+54
+00:02:02.280 --> 00:02:04.450
+So when you're in your front end folder,
+
+55
+00:02:04.450 --> 00:02:05.740
+you don't have to do this now,
+
+56
+00:02:05.740 --> 00:02:08.180
+but we are gonna run npm run test
+
+57
+00:02:08.180 --> 00:02:10.270
+and what that's gonna do behind the scenes
+
+58
+00:02:10.270 --> 00:02:13.990
+is gonna run Jest and it's gonna watch all of our files
+
+59
+00:02:13.990 --> 00:02:17.350
+for any changes in the code in the tests that we've written.
+
+60
+00:02:17.350 --> 00:02:19.120
+If I go ahead and run them all right now,
+
+61
+00:02:19.120 --> 00:02:21.380
+I just pressed a and it's telling us
+
+62
+00:02:21.380 --> 00:02:24.480
+that it's looking for a whole bunch of tests
+
+63
+00:02:24.480 --> 00:02:27.440
+that have some of these different naming structures.
+
+64
+00:02:27.440 --> 00:02:28.850
+We'll look at that in just a second.
+
+65
+00:02:28.850 --> 00:02:29.960
+It didn't find anything,
+
+66
+00:02:29.960 --> 00:02:32.680
+but it's going to continually watch those for us.
+
+67
+00:02:32.680 --> 00:02:34.410
+So that's the first thing that is does,
+
+68
+00:02:34.410 --> 00:02:36.730
+it's this tool that you run from your command line
+
+69
+00:02:36.730 --> 00:02:40.270
+that watches for tests and will run them any time
+
+70
+00:02:40.270 --> 00:02:42.214
+that your code changes.
+
+71
+00:02:42.214 --> 00:02:43.570
+The second thing that it does
+
+72
+00:02:43.570 --> 00:02:45.300
+is have an insertion library,
+
+73
+00:02:45.300 --> 00:02:47.090
+which is the expect part of it.
+
+74
+00:02:47.090 --> 00:02:49.347
+So if we go to the docs of Jest here
+
+75
+00:02:49.347 --> 00:02:52.140
+and I scroll down to where it says expect,
+
+76
+00:02:52.140 --> 00:02:55.490
+this is where the actual, the tests,
+
+77
+00:02:55.490 --> 00:02:57.740
+like once we're running the test we need
+
+78
+00:02:57.740 --> 00:03:01.940
+to tell it that I expect this variable to equal this.
+
+79
+00:03:01.940 --> 00:03:06.940
+So at the very basic you can expect a variable,
+
+80
+00:03:07.300 --> 00:03:10.600
+let's say you have a variable called age, to equal 10,
+
+81
+00:03:10.600 --> 00:03:13.230
+and if that variable equals 10 then it's gonna pass
+
+82
+00:03:13.230 --> 00:03:15.417
+and if that variable doesn't equal 10 it's gonna fail.
+
+83
+00:03:15.417 --> 00:03:19.750
+However, there's all kinds of other values that are in here,
+
+84
+00:03:19.750 --> 00:03:23.500
+so you can expect a function to have returned things.
+
+85
+00:03:23.500 --> 00:03:25.860
+You can expect something to be falsy,
+
+86
+00:03:25.860 --> 00:03:27.500
+to be truthy, to be greater than,
+
+87
+00:03:27.500 --> 00:03:29.230
+to be greater than to equal,
+
+88
+00:03:29.230 --> 00:03:31.060
+to match objects that could be an array
+
+89
+00:03:31.060 --> 00:03:32.800
+that contains a value.
+
+90
+00:03:32.800 --> 00:03:33.633
+You get the point.
+
+91
+00:03:33.633 --> 00:03:34.970
+There's all of these different values,
+
+92
+00:03:34.970 --> 00:03:36.740
+this is how we're going to be,
+
+93
+00:03:36.740 --> 00:03:38.280
+we're going to be using these mostly
+
+94
+00:03:38.280 --> 00:03:41.120
+to defined what all of our tests are.
+
+95
+00:03:41.120 --> 00:03:44.100
+The final third thing that Jest does is mocking,
+
+96
+00:03:44.100 --> 00:03:46.640
+and that is, we're gonna look
+
+97
+00:03:46.640 --> 00:03:48.260
+at what mocking is in jut a second.
+
+98
+00:03:48.260 --> 00:03:51.610
+But essentially, if you have a data fetching
+
+99
+00:03:51.610 --> 00:03:53.520
+or a function that runs that goes off
+
+100
+00:03:53.520 --> 00:03:55.890
+and fetches data and you just wanna fake
+
+101
+00:03:55.890 --> 00:03:57.640
+the actual running of that function,
+
+102
+00:03:57.640 --> 00:03:59.419
+as well as the data that it returns,
+
+103
+00:03:59.419 --> 00:04:03.720
+you can replace those functions with what are called mocks,
+
+104
+00:04:03.720 --> 00:04:06.460
+and we'll go into sort of two different types of mocks,
+
+105
+00:04:06.460 --> 00:04:07.730
+we're gonna use Jest to mock,
+
+106
+00:04:07.730 --> 00:04:10.360
+but we're also going to be using some tools
+
+107
+00:04:10.360 --> 00:04:13.963
+in React Apollo that allow us to mock the store.
+
+108
+00:04:14.940 --> 00:04:16.270
+So that is Jest.
+
+109
+00:04:16.270 --> 00:04:18.300
+And Jest can be used be used for any JavaScript,
+
+110
+00:04:18.300 --> 00:04:20.020
+'cause none of this is specific
+
+111
+00:04:20.020 --> 00:04:22.230
+to testing React applications,
+
+112
+00:04:22.230 --> 00:04:25.590
+so when it comes to testing React components
+
+113
+00:04:25.590 --> 00:04:29.070
+you need something else to actually interface with that,
+
+114
+00:04:29.070 --> 00:04:31.630
+and that's where Enzyme starts to come in.
+
+115
+00:04:31.630 --> 00:04:33.520
+There are a couple other libraries out there,
+
+116
+00:04:33.520 --> 00:04:36.400
+namely there's one called React Test Renderer,
+
+117
+00:04:36.400 --> 00:04:39.500
+and that's pretty good,
+
+118
+00:04:39.500 --> 00:04:42.960
+but it's not as advanced or as easy to use as Enzyme,
+
+119
+00:04:42.960 --> 00:04:44.980
+so what a lot of people are using
+
+120
+00:04:44.980 --> 00:04:46.610
+in the React world is Enzyme.
+
+121
+00:04:46.610 --> 00:04:48.380
+I personally use this myself.
+
+122
+00:04:48.380 --> 00:04:51.900
+It's from airbnb and what it will do is it will
+
+123
+00:04:51.900 --> 00:04:55.750
+actually allow you to render out your React component,
+
+124
+00:04:55.750 --> 00:04:58.910
+either via shallow render or by mounting it.
+
+125
+00:04:58.910 --> 00:05:01.153
+And then it allows us to actually
+
+126
+00:05:01.153 --> 00:05:02.070
+interface with that component.
+
+127
+00:05:02.070 --> 00:05:04.970
+You can do things like click buttons,
+
+128
+00:05:04.970 --> 00:05:07.010
+trigger events, all of those things,
+
+129
+00:05:07.010 --> 00:05:09.980
+and then once those events have happened
+
+130
+00:05:09.980 --> 00:05:12.960
+you can use sort of like a jQuery API
+
+131
+00:05:12.960 --> 00:05:15.020
+to dive into your component
+
+132
+00:05:15.020 --> 00:05:16.940
+and check that the pieces of your component
+
+133
+00:05:16.940 --> 00:05:18.410
+are what you expect them to be.
+
+134
+00:05:18.410 --> 00:05:22.200
+So for example, if you add a pair of shoes
+
+135
+00:05:22.200 --> 00:05:23.750
+to your cart twice
+
+136
+00:05:23.750 --> 00:05:26.500
+you're gonna double check that the pair of shoes
+
+137
+00:05:26.500 --> 00:05:27.333
+is in the cart,
+
+138
+00:05:27.333 --> 00:05:29.470
+you're gonna check that the quantity is set to two,
+
+139
+00:05:29.470 --> 00:05:32.320
+you're gonna check that if the shoes were $10 each
+
+140
+00:05:32.320 --> 00:05:34.930
+then the total would've been $20.
+
+141
+00:05:34.930 --> 00:05:37.770
+You're gonna check that there's a button that is clickable
+
+142
+00:05:37.770 --> 00:05:39.480
+that would allow you to remove it,
+
+143
+00:05:39.480 --> 00:05:42.910
+and using sort of like a jQuery traversal API
+
+144
+00:05:42.910 --> 00:05:44.730
+that makes it really, really, really easy
+
+145
+00:05:44.730 --> 00:05:46.260
+to do it in Enzyme.
+
+146
+00:05:46.260 --> 00:05:47.790
+So, again we'll get more into
+
+147
+00:05:47.790 --> 00:05:49.130
+what these different tools do,
+
+148
+00:05:49.130 --> 00:05:52.410
+but that's sort of a high level of the different pieces
+
+149
+00:05:52.410 --> 00:05:55.030
+of the testing that we're gonna be using.
+
+150
+00:05:55.030 --> 00:05:57.300
+So that's it, let's just take a quick look
+
+151
+00:05:57.300 --> 00:05:59.185
+at some of the setup that we have.
+
+152
+00:05:59.185 --> 00:06:02.010
+Sort of one of the claims to fame that Jest has
+
+153
+00:06:02.010 --> 00:06:03.640
+is that there's not a lot of setup
+
+154
+00:06:03.640 --> 00:06:05.330
+in order to get it running,
+
+155
+00:06:05.330 --> 00:06:07.980
+but there is a little bit of setup.
+
+156
+00:06:07.980 --> 00:06:10.740
+So let's open up our package .json
+
+157
+00:06:10.740 --> 00:06:14.000
+and scroll down to where you find the Jest config.
+
+158
+00:06:14.000 --> 00:06:16.847
+I always like to put my babel configs and Jest configs
+
+159
+00:06:16.847 --> 00:06:19.338
+in my package .json if I can,
+
+160
+00:06:19.338 --> 00:06:20.940
+and there's a couple little things here.
+
+161
+00:06:20.940 --> 00:06:25.130
+First, it tells us where our specific framework setup is,
+
+162
+00:06:25.130 --> 00:06:26.440
+where that file is,
+
+163
+00:06:26.440 --> 00:06:29.800
+so we can actually open that up right now, jest.setup.js.
+
+164
+00:06:29.800 --> 00:06:30.820
+There's just a little bit of stuff
+
+165
+00:06:30.820 --> 00:06:32.600
+for configuring Enzyme in there,
+
+166
+00:06:32.600 --> 00:06:34.120
+we'll come back to that in a second.
+
+167
+00:06:34.120 --> 00:06:37.520
+Second, ignore, what should you ignore?
+
+168
+00:06:37.520 --> 00:06:39.440
+Obviously we don't want to run any tests
+
+169
+00:06:39.440 --> 00:06:40.930
+in our node modules directory,
+
+170
+00:06:40.930 --> 00:06:43.720
+and then I'm also ignoring the next folder
+
+171
+00:06:43.720 --> 00:06:46.390
+that is generated by our Next.js,
+
+172
+00:06:46.390 --> 00:06:48.330
+and then finally we are telling it
+
+173
+00:06:48.330 --> 00:06:53.330
+to also watch GraphQL and gql files.
+
+174
+00:06:53.960 --> 00:06:55.100
+This is pretty standard setup.
+
+175
+00:06:55.100 --> 00:06:58.050
+We don't use any of these external gql files,
+
+176
+00:06:58.050 --> 00:06:58.970
+but should you do that,
+
+177
+00:06:58.970 --> 00:07:01.146
+it's already setup for you there.
+
+178
+00:07:01.146 --> 00:07:04.780
+Then if we open up our jest.setup.js,
+
+179
+00:07:04.780 --> 00:07:06.920
+this is just how we can configure Enzyme.
+
+180
+00:07:06.920 --> 00:07:09.040
+There is a different package
+
+181
+00:07:09.040 --> 00:07:12.100
+for every version of React that you have.
+
+182
+00:07:12.100 --> 00:07:13.840
+So if you take a look right here,
+
+183
+00:07:13.840 --> 00:07:16.994
+you're going to see that every version of React
+
+184
+00:07:16.994 --> 00:07:20.050
+has its own adapter.
+
+185
+00:07:20.050 --> 00:07:21.380
+So this may change.
+
+186
+00:07:21.380 --> 00:07:23.430
+That's the reason why I've provided it with you,
+
+187
+00:07:23.430 --> 00:07:25.690
+so as React updates itself
+
+188
+00:07:25.690 --> 00:07:27.280
+I'll be sure to update this as well,
+
+189
+00:07:27.280 --> 00:07:29.380
+and then you just configure it to work
+
+190
+00:07:29.380 --> 00:07:31.270
+with your specific version of React.
+
+191
+00:07:31.270 --> 00:07:34.530
+So those are the only two pieces of setup that we have.
+
+192
+00:07:34.530 --> 00:07:36.080
+In the next video what we're gonna be doing
+
+193
+00:07:36.080 --> 00:07:39.360
+is figuring out where we write our tests
+
+194
+00:07:39.360 --> 00:07:43.030
+and looking at some of the basics of unit testing.
+
+195
+00:07:43.030 --> 00:07:44.530
+So I'll see you in that video.
+

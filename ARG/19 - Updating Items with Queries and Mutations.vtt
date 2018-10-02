@@ -1,0 +1,2234 @@
+﻿WEBVTT
+
+1
+00:00:01.150 --> 00:00:03.810
+<v Instructor>Alright, we're gonna get into the U of CRUD</v>
+
+2
+00:00:03.810 --> 00:00:05.460
+and that is the update.
+
+3
+00:00:05.460 --> 00:00:07.490
+So, a couple things we need to do is
+
+4
+00:00:07.490 --> 00:00:09.470
+we need to first jump into our back end
+
+5
+00:00:09.470 --> 00:00:11.730
+and update the interface for that,
+
+6
+00:00:11.730 --> 00:00:13.290
+and then we'll come back into the front end
+
+7
+00:00:13.290 --> 00:00:14.910
+and actually write the interface for doing that.
+
+8
+00:00:14.910 --> 00:00:18.340
+So, flippin' over to pink, which is back end,
+
+9
+00:00:18.340 --> 00:00:21.781
+and we are going to first open up our schema at graphql.
+
+10
+00:00:21.781 --> 00:00:23.700
+There's gonna be kinda two things that we need here.
+
+11
+00:00:23.700 --> 00:00:26.610
+First, we're gonna need a query for a single item.
+
+12
+00:00:26.610 --> 00:00:29.420
+And that's gonna allow us to click on Edit
+
+13
+00:00:29.420 --> 00:00:32.980
+and pull the existing information about that item.
+
+14
+00:00:32.980 --> 00:00:34.880
+And then second we're gonna need a mutation
+
+15
+00:00:34.880 --> 00:00:36.483
+that will actually handle the updating of the item.
+
+16
+00:00:36.483 --> 00:00:40.650
+It's going to be very similar to how the createItem works,
+
+17
+00:00:40.650 --> 00:00:43.220
+but slightly different because we're just
+
+18
+00:00:43.220 --> 00:00:45.230
+folding in our updates.
+
+19
+00:00:45.230 --> 00:00:46.950
+So, let's do the mutation first.
+
+20
+00:00:46.950 --> 00:00:48.330
+We'll call it updateItem.
+
+21
+00:00:48.330 --> 00:00:51.973
+That is going to take in a ID, which is an ID.
+
+22
+00:00:54.510 --> 00:00:57.683
+It's going to take in a title, which is a string.
+
+23
+00:00:58.610 --> 00:01:00.850
+It's going to take in a description, which is a string.
+
+24
+00:01:00.850 --> 00:01:02.600
+You notice how I'm not requiring any of these,
+
+25
+00:01:02.600 --> 00:01:04.700
+and that's because we might not necessarily
+
+26
+00:01:04.700 --> 00:01:06.490
+pass the title if it's not updated.
+
+27
+00:01:06.490 --> 00:01:07.960
+We're only going to be passing the data
+
+28
+00:01:07.960 --> 00:01:09.400
+that does get updated.
+
+29
+00:01:09.400 --> 00:01:12.510
+And the price, which is going to be an integer.
+
+30
+00:01:12.510 --> 00:01:14.577
+That is going to return an Item,
+
+31
+00:01:14.577 --> 00:01:16.880
+and that is required regardless of what we have.
+
+32
+00:01:16.880 --> 00:01:19.650
+I'm gonna lay off the image and the largeImage on here,
+
+33
+00:01:19.650 --> 00:01:22.300
+but I do, if you are looking for a little bit
+
+34
+00:01:22.300 --> 00:01:24.260
+of extra practice once you're done with this course,
+
+35
+00:01:24.260 --> 00:01:26.250
+then I'd say go back and figure out,
+
+36
+00:01:26.250 --> 00:01:30.040
+how do I add that whole upload flow to my update,
+
+37
+00:01:30.040 --> 00:01:31.970
+that we did to the createItem?
+
+38
+00:01:31.970 --> 00:01:33.930
+Second, we're gonna go into Query,
+
+39
+00:01:33.930 --> 00:01:36.540
+and we're going to query a single Item.
+
+40
+00:01:36.540 --> 00:01:38.490
+It's going to be item, that is going to take
+
+41
+00:01:38.490 --> 00:01:40.130
+one argument, which is where,
+
+42
+00:01:40.130 --> 00:01:42.150
+and the type of that argument where
+
+43
+00:01:42.150 --> 00:01:44.733
+is going to be ItemWhereUniqueInput.
+
+44
+00:01:48.180 --> 00:01:49.510
+That is required.
+
+45
+00:01:49.510 --> 00:01:50.460
+Let me show you.
+
+46
+00:01:50.460 --> 00:01:51.293
+You might be saying, like, Wes,
+
+47
+00:01:51.293 --> 00:01:53.680
+where did ItemWhereUniqueInput come from?
+
+48
+00:01:53.680 --> 00:01:55.920
+Well, let's go to our prisma.graphql,
+
+49
+00:01:55.920 --> 00:01:57.850
+which again is generated for us,
+
+50
+00:01:57.850 --> 00:02:00.220
+and if you scroll down to where the query is,
+
+51
+00:02:00.220 --> 00:02:03.200
+you're gonna see that they already have an item query
+
+52
+00:02:03.200 --> 00:02:06.560
+that takes one argument called ItemWhereUniqueInput
+
+53
+00:02:06.560 --> 00:02:07.640
+and returns an Item.
+
+54
+00:02:07.640 --> 00:02:08.500
+You can actually just go ahead
+
+55
+00:02:08.500 --> 00:02:10.220
+and copy that and paste it.
+
+56
+00:02:10.220 --> 00:02:12.350
+You see that we're returning an Item.
+
+57
+00:02:12.350 --> 00:02:14.810
+There's no bang on the end because it's possible
+
+58
+00:02:14.810 --> 00:02:18.220
+that we pass it, like something where it doesn't exist,
+
+59
+00:02:18.220 --> 00:02:20.550
+and if that's the case, it's not gonna return an Item.
+
+60
+00:02:20.550 --> 00:02:23.660
+We don't want it to error out, that we have there.
+
+61
+00:02:23.660 --> 00:02:26.190
+So, that is good, and you might be saying,
+
+62
+00:02:26.190 --> 00:02:28.465
+okay, what is ItemWhereUniqueInput?
+
+63
+00:02:28.465 --> 00:02:30.530
+Well, it's just an input where you pass an ID.
+
+64
+00:02:30.530 --> 00:02:33.380
+We could also just say, okay, pass us an ID
+
+65
+00:02:33.380 --> 00:02:37.430
+which is an ID, but let's kinda keep it the same.
+
+66
+00:02:37.430 --> 00:02:40.860
+Where I can make it the same as prisma.graphql,
+
+67
+00:02:40.860 --> 00:02:42.990
+I would like to do that.
+
+68
+00:02:42.990 --> 00:02:44.590
+So, that looks good to us.
+
+69
+00:02:44.590 --> 00:02:46.680
+Now we need to write resolvers
+
+70
+00:02:46.680 --> 00:02:49.350
+for both our updateItem and for our item.
+
+71
+00:02:49.350 --> 00:02:51.890
+So let's do the item first, since it's the simplest.
+
+72
+00:02:51.890 --> 00:02:53.300
+We'll just go into Query,
+
+73
+00:02:53.300 --> 00:02:55.690
+and we just pretty much just duplicate this items
+
+74
+00:02:55.690 --> 00:02:58.440
+and forward it directly to the database.
+
+75
+00:02:58.440 --> 00:03:00.780
+Because there's no extra logic,
+
+76
+00:03:00.780 --> 00:03:02.590
+there's no permissions that need to happen,
+
+77
+00:03:02.590 --> 00:03:04.800
+there's no logic in-between,
+
+78
+00:03:04.800 --> 00:03:05.777
+you're actually querying the items,
+
+79
+00:03:05.777 --> 00:03:07.720
+so you can just forward that directly
+
+80
+00:03:07.720 --> 00:03:09.900
+over to the database, and give it a save.
+
+81
+00:03:09.900 --> 00:03:12.030
+Let's actually test that that works.
+
+82
+00:03:12.030 --> 00:03:13.800
+So, if we go to
+
+83
+00:03:17.310 --> 00:03:20.810
+our local host, what was that, 4444?
+
+84
+00:03:20.810 --> 00:03:22.480
+No, what was that?
+
+85
+00:03:22.480 --> 00:03:25.890
+The way you can tell is, oh, I got a bit of an error.
+
+86
+00:03:25.890 --> 00:03:27.220
+Maybe that's what it was.
+
+87
+00:03:27.220 --> 00:03:30.693
+Syntax error cannot parse unexpected character backtick.
+
+88
+00:03:31.570 --> 00:03:32.530
+What did I do?
+
+89
+00:03:32.530 --> 00:03:34.390
+Oh, what happened there?
+
+90
+00:03:34.390 --> 00:03:35.720
+There we go.
+
+91
+00:03:35.720 --> 00:03:39.060
+It's running, it is on local host 4444.
+
+92
+00:03:39.060 --> 00:03:40.509
+Open it up.
+
+93
+00:03:40.509 --> 00:03:44.323
+You're gonna create a new tab called query SINGLE_ITEM,
+
+94
+00:03:48.917 --> 00:03:52.290
+and that is going to grab an Item,
+
+95
+00:03:52.290 --> 00:03:55.130
+where the ID
+
+96
+00:03:55.130 --> 00:03:57.023
+is equal to, and in this case,
+
+97
+00:03:57.023 --> 00:03:59.180
+I actually don't know the name of any of them,
+
+98
+00:03:59.180 --> 00:04:02.293
+so can we query all of our items?
+
+99
+00:04:03.735 --> 00:04:05.873
+There we go, let's grab cool shoes ID,
+
+100
+00:04:07.780 --> 00:04:09.800
+where the ID is equal to this,
+
+101
+00:04:09.800 --> 00:04:12.520
+and then return from that, we want the title,
+
+102
+00:04:12.520 --> 00:04:15.063
+the description, and the ID.
+
+103
+00:04:16.120 --> 00:04:17.630
+Run it, beautiful.
+
+104
+00:04:17.630 --> 00:04:19.470
+You see that that query is actually working,
+
+105
+00:04:19.470 --> 00:04:23.270
+item, where ID is equal to that specific ID.
+
+106
+00:04:23.270 --> 00:04:25.600
+Good, now let's go ahead and write the resolver
+
+107
+00:04:25.600 --> 00:04:27.030
+for our updateItem.
+
+108
+00:04:27.030 --> 00:04:29.030
+So, we'll go into our Mutation,
+
+109
+00:04:29.030 --> 00:04:31.130
+and we already have this createItem.
+
+110
+00:04:31.130 --> 00:04:33.660
+Get rid of this dog stuff here.
+
+111
+00:04:33.660 --> 00:04:35.170
+Make an updateItem.
+
+112
+00:04:39.680 --> 00:04:44.680
+That takes in a parent, args, context, and info.
+
+113
+00:04:48.750 --> 00:04:51.640
+And what we're gonna do is first take a copy
+
+114
+00:04:53.070 --> 00:04:55.770
+of the updates.
+
+115
+00:04:55.770 --> 00:04:59.520
+const updates is equal to ...args
+
+116
+00:04:59.520 --> 00:05:00.840
+and this is just gonna take a copy
+
+117
+00:05:00.840 --> 00:05:03.710
+of everything that is in the updates.
+
+118
+00:05:03.710 --> 00:05:07.200
+Then we're going to remove the ID from the updates,
+
+119
+00:05:07.200 --> 00:05:10.600
+because this is actually going to give us the ID
+
+120
+00:05:10.600 --> 00:05:13.040
+that gets passed in, and we're not gonna update the ID.
+
+121
+00:05:13.040 --> 00:05:14.670
+The ID is not something you can update.
+
+122
+00:05:14.670 --> 00:05:16.310
+So we wanna remove it from the updates.
+
+123
+00:05:16.310 --> 00:05:18.880
+So we'll say, delete updates.id
+
+124
+00:05:21.650 --> 00:05:26.077
+and then finally, we'll run the update method.
+
+125
+00:05:27.290 --> 00:05:32.290
+So, return ctx.db.mutation.updateItem
+
+126
+00:05:33.800 --> 00:05:36.930
+So again, context is the context in the request,
+
+127
+00:05:36.930 --> 00:05:40.820
+db is how we expose the actual prisma database to ourselves.
+
+128
+00:05:40.820 --> 00:05:42.470
+Then on top of that, we either have a query
+
+129
+00:05:42.470 --> 00:05:44.750
+or a mutation, and then we have access
+
+130
+00:05:44.750 --> 00:05:47.800
+to all of the mutations that are generated.
+
+131
+00:05:47.800 --> 00:05:49.180
+So, let's take a look here.
+
+132
+00:05:49.180 --> 00:05:52.060
+See, this is our mutation, this is our API.
+
+133
+00:05:52.060 --> 00:05:55.730
+This is all the things that we have access to inside of it.
+
+134
+00:05:55.730 --> 00:05:58.423
+So we can simply go here, updateItem,
+
+135
+00:05:59.600 --> 00:06:01.720
+that takes in, well what does it take in?
+
+136
+00:06:01.720 --> 00:06:02.653
+We can look here.
+
+137
+00:06:03.653 --> 00:06:08.010
+updateItem takes in data, and a where.
+
+138
+00:06:08.010 --> 00:06:11.050
+So the where is how we tell it which Item to update.
+
+139
+00:06:11.050 --> 00:06:13.760
+And the data is what data we actually want it to update.
+
+140
+00:06:13.760 --> 00:06:15.520
+So, go here.
+
+141
+00:06:15.520 --> 00:06:18.520
+We'll say the data is going to be the updates,
+
+142
+00:06:18.520 --> 00:06:20.490
+and the where is going to be
+
+143
+00:06:20.490 --> 00:06:23.330
+where the id is equal to the args.id.
+
+144
+00:06:23.330 --> 00:06:25.740
+So that's why we didn't just delete the ID
+
+145
+00:06:25.740 --> 00:06:27.530
+directly on the argument object.
+
+146
+00:06:27.530 --> 00:06:29.140
+We took a copy of it because we actually
+
+147
+00:06:29.140 --> 00:06:32.050
+still need to reference the ID of the item
+
+148
+00:06:32.050 --> 00:06:34.490
+that is being pulled in.
+
+149
+00:06:34.490 --> 00:06:38.640
+Since we are returning this promise-based function,
+
+150
+00:06:38.640 --> 00:06:41.630
+it will wait for that update to pass.
+
+151
+00:06:41.630 --> 00:06:44.730
+Finally, we also need to pass in a second argument,
+
+152
+00:06:44.730 --> 00:06:47.590
+which is the info, and that's how
+
+153
+00:06:47.590 --> 00:06:51.060
+this updateItem function knows what to return.
+
+154
+00:06:51.060 --> 00:06:54.690
+And if we take a look here, the updateItem is expecting us
+
+155
+00:06:54.690 --> 00:06:58.840
+to return an item, so this will contain the query
+
+156
+00:06:58.840 --> 00:07:00.600
+that we send in from the client side
+
+157
+00:07:00.600 --> 00:07:02.240
+to return that item.
+
+158
+00:07:02.240 --> 00:07:04.070
+So I think that's enough for our back end.
+
+159
+00:07:04.070 --> 00:07:06.073
+Let's flip over to the front end now.
+
+160
+00:07:07.300 --> 00:07:10.400
+And let's open up the CreateItem.js.
+
+161
+00:07:10.400 --> 00:07:13.100
+And we're going to be reusing a lot of the markup.
+
+162
+00:07:13.100 --> 00:07:16.380
+It's almost close enough where you could probably
+
+163
+00:07:16.380 --> 00:07:18.670
+put the Update and Create in a single file,
+
+164
+00:07:18.670 --> 00:07:21.420
+but that starts to get a little hairy with a lot of logic.
+
+165
+00:07:21.420 --> 00:07:25.930
+I much prefer just to have two separate components
+
+166
+00:07:25.930 --> 00:07:28.550
+used for updating and creating,
+
+167
+00:07:28.550 --> 00:07:31.090
+but we'll sort of start at this as the base.
+
+168
+00:07:31.090 --> 00:07:33.190
+Go ahead and save a copy of CreateItem,
+
+169
+00:07:33.190 --> 00:07:34.720
+and name it UpdateItem.
+
+170
+00:07:36.300 --> 00:07:37.610
+And a couple things we wanna do.
+
+171
+00:07:37.610 --> 00:07:42.610
+First, I want to rename CreateItem to Update Item.
+
+172
+00:07:45.420 --> 00:07:48.570
+Second, we want to change CREATE_ITEM_MUTATION
+
+173
+00:07:48.570 --> 00:07:51.743
+anywhere it's accessible, so this is one, two,
+
+174
+00:07:54.310 --> 00:07:58.750
+three, four places in this thing.
+
+175
+00:07:58.750 --> 00:08:01.920
+We're gonna make it UPDATE_ITEM_MUTATION.
+
+176
+00:08:01.920 --> 00:08:04.080
+Next we actually want to rip out
+
+177
+00:08:04.080 --> 00:08:07.360
+the uploadFile handler that we have here.
+
+178
+00:08:07.360 --> 00:08:09.083
+So let's get rid of that.
+
+179
+00:08:10.630 --> 00:08:13.973
+We will also get rid of the Image.
+
+180
+00:08:16.050 --> 00:08:17.023
+Get rid of that.
+
+181
+00:08:19.130 --> 00:08:22.410
+And finally, this is, actually let's just get
+
+182
+00:08:22.410 --> 00:08:23.830
+this showing on the page first.
+
+183
+00:08:23.830 --> 00:08:25.570
+I think we did enough there.
+
+184
+00:08:25.570 --> 00:08:29.380
+We'll come back and actually work on this.
+
+185
+00:08:29.380 --> 00:08:32.650
+So, we're going to make a page,
+
+186
+00:08:32.650 --> 00:08:34.320
+so go to your pages directory.
+
+187
+00:08:34.320 --> 00:08:37.150
+Make a new file called Update.js.
+
+188
+00:08:37.150 --> 00:08:39.420
+And we can take a look at our Sell page
+
+189
+00:08:39.420 --> 00:08:40.670
+for the very similar one.
+
+190
+00:08:40.670 --> 00:08:42.150
+Just copy everything from Sell,
+
+191
+00:08:42.150 --> 00:08:43.630
+paste it into Update,
+
+192
+00:08:43.630 --> 00:08:46.580
+replace CreateItem with UpdateItem.
+
+193
+00:08:48.050 --> 00:08:50.530
+Now the one thing that does need to be passed
+
+194
+00:08:50.530 --> 00:08:52.750
+is the ID of the item, because if we go
+
+195
+00:08:52.750 --> 00:08:55.800
+to our application here, and I click on Edit
+
+196
+00:08:55.800 --> 00:09:00.670
+for the Nike 270s, it's gonna bring us
+
+197
+00:09:00.670 --> 00:09:03.330
+to this Update page, where the query param
+
+198
+00:09:03.330 --> 00:09:06.870
+is the actual ID of the item that we're trying to sell.
+
+199
+00:09:06.870 --> 00:09:10.760
+So, that ID is only available in that page,
+
+200
+00:09:10.760 --> 00:09:14.320
+and if you want it to be accessible at lower levels,
+
+201
+00:09:14.320 --> 00:09:16.250
+you can either export your component
+
+202
+00:09:16.250 --> 00:09:19.360
+with a thing called withRouter, and that will expose it,
+
+203
+00:09:19.360 --> 00:09:22.810
+or you can, you do have access to it on a page level
+
+204
+00:09:22.810 --> 00:09:25.030
+because if you take a look at our app.js,
+
+205
+00:09:25.030 --> 00:09:29.350
+remember we did this, pageProps.query equals ctx.query?
+
+206
+00:09:29.350 --> 00:09:32.810
+We're exposing the query to every single page
+
+207
+00:09:32.810 --> 00:09:35.030
+that we have, so that means it's available
+
+208
+00:09:35.030 --> 00:09:37.500
+inside of this UpdateItem that we have here.
+
+209
+00:09:37.500 --> 00:09:38.780
+So you can pass it down here.
+
+210
+00:09:38.780 --> 00:09:41.760
+We'll say, the id is equal to this, which is the component,
+
+211
+00:09:41.760 --> 00:09:44.623
+dot props dot query dot id.
+
+212
+00:09:46.920 --> 00:09:48.940
+And, oh, a little bit of an error here.
+
+213
+00:09:48.940 --> 00:09:51.940
+Cannot read property query of undefined.
+
+214
+00:09:51.940 --> 00:09:54.130
+So it's telling me that I don't have,
+
+215
+00:09:54.130 --> 00:09:56.310
+oh, you know why, it's because I made this
+
+216
+00:09:56.310 --> 00:09:59.620
+a stateless component, not a React component.
+
+217
+00:09:59.620 --> 00:10:03.100
+So what we need to do here is not use this.props,
+
+218
+00:10:03.100 --> 00:10:06.280
+we can simply just say props.query.id,
+
+219
+00:10:06.280 --> 00:10:07.210
+and pass it in.
+
+220
+00:10:07.210 --> 00:10:09.310
+What other people like to do is just use
+
+221
+00:10:09.310 --> 00:10:12.000
+structure props immediately, which is kinda nifty.
+
+222
+00:10:12.000 --> 00:10:14.350
+So instead of saying props, you can put it
+
+223
+00:10:14.350 --> 00:10:18.760
+in parentheses, destructure that into the query directly,
+
+224
+00:10:18.760 --> 00:10:22.177
+and then in here you can access the query just like that,
+
+225
+00:10:22.177 --> 00:10:23.620
+and it seems to work.
+
+226
+00:10:23.620 --> 00:10:24.730
+Let's just double check that,
+
+227
+00:10:24.730 --> 00:10:28.240
+where if we go to our React DevTools,
+
+228
+00:10:28.240 --> 00:10:30.600
+and you look for your Sell component,
+
+229
+00:10:30.600 --> 00:10:33.670
+you see that we have this.props.query.id
+
+230
+00:10:33.670 --> 00:10:35.730
+available to us, and if I were to put more things
+
+231
+00:10:35.730 --> 00:10:38.810
+in the URL, wes equals cool, you see
+
+232
+00:10:41.853 --> 00:10:45.210
+that the query now has ID and wes equals cool.
+
+233
+00:10:45.210 --> 00:10:48.900
+That should have been passed down to our UpdateItem.
+
+234
+00:10:48.900 --> 00:10:53.600
+And you see that the Props of this UpdateItem component
+
+235
+00:10:53.600 --> 00:10:54.960
+is now being visible to us.
+
+236
+00:10:54.960 --> 00:10:57.833
+So, good, we have access to it here.
+
+237
+00:10:58.730 --> 00:11:01.503
+Now, let's jump back to our UpdateItem.js.
+
+238
+00:11:03.010 --> 00:11:05.950
+And, a couple things we wanna do here.
+
+239
+00:11:05.950 --> 00:11:08.830
+First, we can get rid of everything in our initial state
+
+240
+00:11:08.830 --> 00:11:10.040
+because this is a little bit different
+
+241
+00:11:10.040 --> 00:11:12.420
+in that we're only going to be putting things
+
+242
+00:11:12.420 --> 00:11:14.960
+into state which have changed.
+
+243
+00:11:14.960 --> 00:11:18.440
+So, we'll make this state a blank object in this case.
+
+244
+00:11:18.440 --> 00:11:21.140
+Next we actually need to get access to the item itself,
+
+245
+00:11:21.140 --> 00:11:22.880
+because when I refresh this page,
+
+246
+00:11:22.880 --> 00:11:25.110
+we don't actually have access to the item.
+
+247
+00:11:25.110 --> 00:11:27.740
+All we know is the actual database ID,
+
+248
+00:11:27.740 --> 00:11:29.690
+and we need to pull that from the database
+
+249
+00:11:29.690 --> 00:11:31.630
+in order to populate the item so that
+
+250
+00:11:31.630 --> 00:11:34.210
+the user can see what they're editing, right?
+
+251
+00:11:34.210 --> 00:11:35.900
+So we're gonna do that with a query
+
+252
+00:11:35.900 --> 00:11:37.880
+for that specific item.
+
+253
+00:11:37.880 --> 00:11:39.710
+Let's go up here, and we'll make a new query
+
+254
+00:11:39.710 --> 00:11:41.663
+called SINGLE_ITEM_QUERY.
+
+255
+00:11:43.300 --> 00:11:44.723
+And we'll write our query.
+
+256
+00:11:46.770 --> 00:11:51.223
+That takes in one argument, which is an ID.
+
+257
+00:11:52.810 --> 00:11:55.270
+Has a type of ID, and it is required.
+
+258
+00:11:55.270 --> 00:11:56.590
+And that is actually gonna run it
+
+259
+00:11:56.590 --> 00:11:59.350
+against the database with our item query.
+
+260
+00:11:59.350 --> 00:12:00.593
+It takes a where.
+
+261
+00:12:01.850 --> 00:12:05.990
+The ID is equal to our ID that gets passed in.
+
+262
+00:12:05.990 --> 00:12:08.070
+And returned from that, we need to get
+
+263
+00:12:08.070 --> 00:12:10.153
+the ID, the title,
+
+264
+00:12:11.250 --> 00:12:13.120
+the description,
+
+265
+00:12:13.120 --> 00:12:14.080
+and the price.
+
+266
+00:12:14.080 --> 00:12:16.223
+And we import our query component.
+
+267
+00:12:17.880 --> 00:12:21.380
+We'll go over here, where it will write a query component
+
+268
+00:12:21.380 --> 00:12:23.030
+to wrap the entire thing.
+
+269
+00:12:23.030 --> 00:12:26.650
+And as we start to nest multiple queries and mutations
+
+270
+00:12:26.650 --> 00:12:28.760
+inside of each other, I'm gonna show you a little trick
+
+271
+00:12:28.760 --> 00:12:31.060
+that will allow us to compose them into one
+
+272
+00:12:31.060 --> 00:12:35.030
+because this does get a little indenty for my likings.
+
+273
+00:12:35.030 --> 00:12:39.150
+The query, where the query is going to be equal
+
+274
+00:12:39.150 --> 00:12:42.230
+to the one that we just wrote, which is SINGLE_ITEM_QUERY,
+
+275
+00:12:42.230 --> 00:12:44.680
+and then the variables that that query needs
+
+276
+00:12:44.680 --> 00:12:47.880
+is just the IDs, so say variables is equal to,
+
+277
+00:12:47.880 --> 00:12:50.000
+and you have to give it an object,
+
+278
+00:12:50.000 --> 00:12:54.310
+where the id is equal to this.props.id again,
+
+279
+00:12:54.310 --> 00:12:55.620
+because we're passing in,
+
+280
+00:12:55.620 --> 00:12:58.300
+if we go over to our React DevTools,
+
+281
+00:12:58.300 --> 00:12:59.850
+oh, it's obviously not going to work.
+
+282
+00:12:59.850 --> 00:13:01.930
+Here, let me must show you real quick.
+
+283
+00:13:01.930 --> 00:13:04.433
+Remove that out, we search for our UpdateItem,
+
+284
+00:13:07.100 --> 00:13:09.760
+you see that this .props id is available to us.
+
+285
+00:13:09.760 --> 00:13:13.970
+Good, then inside of the query we need to have a function,
+
+286
+00:13:13.970 --> 00:13:16.080
+so we'll give ourselves curly brackets.
+
+287
+00:13:16.080 --> 00:13:18.360
+That'll give us the data and the loading,
+
+288
+00:13:18.360 --> 00:13:20.210
+we'll just use that for now.
+
+289
+00:13:20.210 --> 00:13:23.733
+And from that we will just return,
+
+290
+00:13:25.530 --> 00:13:28.193
+let's just return curly brackets.
+
+291
+00:13:30.510 --> 00:13:33.640
+Now, this is where things get a little bit weird.
+
+292
+00:13:33.640 --> 00:13:37.500
+We need to take this parentheses,
+
+293
+00:13:37.500 --> 00:13:40.310
+this curly bracket, and this query,
+
+294
+00:13:40.310 --> 00:13:43.000
+and we actually need to return the mutation, right?
+
+295
+00:13:43.000 --> 00:13:45.730
+Because we're nesting the mutation inside of the query,
+
+296
+00:13:45.730 --> 00:13:49.090
+which in turn will have the form that expose
+
+297
+00:13:49.090 --> 00:13:51.160
+multiple queries and mutations to it.
+
+298
+00:13:51.160 --> 00:13:53.217
+So, let's go for a little bit of a ride.
+
+299
+00:13:53.217 --> 00:13:56.210
+♪ Doo doo doo doo doo doo doo doo doo ♪
+
+300
+00:13:56.210 --> 00:13:58.360
+All the way down, right there.
+
+301
+00:13:58.360 --> 00:14:01.290
+Thank goodness for Prettier, gonna give it a save.
+
+302
+00:14:01.290 --> 00:14:05.630
+And, hoooo, that is lookin' a little bit gnarly to me.
+
+303
+00:14:05.630 --> 00:14:08.700
+Again, we'll go into how you can get away from this
+
+304
+00:14:08.700 --> 00:14:10.350
+because it probably reminds you
+
+305
+00:14:10.350 --> 00:14:13.460
+of writing XML 14 years ago, not great.
+
+306
+00:14:13.460 --> 00:14:16.653
+Let's go back up, see what we're working with here.
+
+307
+00:14:18.713 --> 00:14:22.800
+Oh my, so the one thing that Prettier did is,
+
+308
+00:14:22.800 --> 00:14:25.260
+I actually want to run an if statement here,
+
+309
+00:14:25.260 --> 00:14:27.590
+and with the implicit return, you can't just go ahead
+
+310
+00:14:27.590 --> 00:14:29.340
+and start running if statements here
+
+311
+00:14:29.340 --> 00:14:31.550
+because you need a Javascript block in order
+
+312
+00:14:31.550 --> 00:14:33.470
+to do that, and not just an implicit return.
+
+313
+00:14:33.470 --> 00:14:35.320
+So, I'm gonna switch that back,
+
+314
+00:14:35.320 --> 00:14:37.930
+so put a curly bracket here, type return
+
+315
+00:14:37.930 --> 00:14:40.260
+in front of the thing that you want.
+
+316
+00:14:40.260 --> 00:14:43.290
+Up here we're gonna say if loading return
+
+317
+00:14:44.290 --> 00:14:46.570
+paragraph loading da da da dat.
+
+318
+00:14:46.570 --> 00:14:49.560
+And then we gotta match up that other curly bracket
+
+319
+00:14:49.560 --> 00:14:51.700
+and hopefully this doesn't ruin your afternoon
+
+320
+00:14:51.700 --> 00:14:54.130
+trying to find it, but I like to use
+
+321
+00:14:54.130 --> 00:14:56.380
+this match bracket highlighter here,
+
+322
+00:14:56.380 --> 00:15:00.170
+so go doo doo doo, actually we'll click on this one,
+
+323
+00:15:00.170 --> 00:15:02.110
+and find the closing parenthesis.
+
+324
+00:15:02.110 --> 00:15:05.253
+There we go, add another curly bracket to it.
+
+325
+00:15:06.620 --> 00:15:09.040
+And, it looks like nothing broke.
+
+326
+00:15:09.040 --> 00:15:10.620
+We're actually in pretty good shape.
+
+327
+00:15:10.620 --> 00:15:13.580
+So, if this seems like a lot, it's because it is.
+
+328
+00:15:13.580 --> 00:15:16.430
+We have our query here, then we have that
+
+329
+00:15:16.430 --> 00:15:18.803
+render prop function, then we do a check
+
+330
+00:15:18.803 --> 00:15:22.050
+if it's loading or not, then if it's not loading,
+
+331
+00:15:22.050 --> 00:15:25.040
+we are going to return our mutation,
+
+332
+00:15:25.040 --> 00:15:28.140
+which in turn will render out the form tag,
+
+333
+00:15:28.140 --> 00:15:31.630
+and that exposes both the data of the item
+
+334
+00:15:31.630 --> 00:15:34.160
+as well as the UpdateItem function,
+
+335
+00:15:34.160 --> 00:15:36.260
+which we're gonna rename in just a second.
+
+336
+00:15:37.630 --> 00:15:38.650
+Woo!
+
+337
+00:15:38.650 --> 00:15:40.360
+Alright, so next up we wanna take the data
+
+338
+00:15:40.360 --> 00:15:42.450
+that was returned from our SINGLE_ITEM_QUERY,
+
+339
+00:15:42.450 --> 00:15:44.400
+and put it into these input boxes.
+
+340
+00:15:44.400 --> 00:15:47.190
+However, I don't wanna tie it to state directly.
+
+341
+00:15:47.190 --> 00:15:48.900
+I wanna show the user what they have,
+
+342
+00:15:48.900 --> 00:15:50.870
+and then if they change anything,
+
+343
+00:15:50.870 --> 00:15:52.410
+I wanna then put it into state.
+
+344
+00:15:52.410 --> 00:15:55.920
+So the way we do that is, we go to each one.
+
+345
+00:15:55.920 --> 00:15:59.280
+We're gonna change value to defaultValue.
+
+346
+00:15:59.280 --> 00:16:03.520
+That is setting a one-time value into the,
+
+347
+00:16:03.520 --> 00:16:06.140
+and in React, the default value allows us
+
+348
+00:16:06.140 --> 00:16:09.970
+to set a input box to some text
+
+349
+00:16:09.970 --> 00:16:12.120
+without actually tying it to state
+
+350
+00:16:12.120 --> 00:16:15.990
+because we're going to be actually mirroring this thing
+
+351
+00:16:15.990 --> 00:16:18.560
+to state only when they change it.
+
+352
+00:16:18.560 --> 00:16:20.090
+And then we'll change the default value
+
+353
+00:16:20.090 --> 00:16:25.090
+not to this.state.title, but to data.item.title.
+
+354
+00:16:25.160 --> 00:16:25.993
+And we'll do that again.
+
+355
+00:16:25.993 --> 00:16:27.973
+Let's just actually see if that one will work.
+
+356
+00:16:29.837 --> 00:16:31.150
+Hit refresh, there we go.
+
+357
+00:16:31.150 --> 00:16:33.570
+So, Nike 270s show up.
+
+358
+00:16:33.570 --> 00:16:37.660
+And if I were to look for my UpdateItem,
+
+359
+00:16:37.660 --> 00:16:40.860
+state is empty, but as soon as I change this,
+
+360
+00:16:40.860 --> 00:16:44.140
+you see that the new state of the change
+
+361
+00:16:44.140 --> 00:16:46.460
+is now being mirrored to state.
+
+362
+00:16:46.460 --> 00:16:48.430
+Let's do that with the price as well.
+
+363
+00:16:48.430 --> 00:16:53.193
+It's gonna be defaultValue of data.item.price.
+
+364
+00:16:55.070 --> 00:16:57.293
+And then we'll do that for the description.
+
+365
+00:17:01.340 --> 00:17:03.457
+data.item.desciption
+
+366
+00:17:04.800 --> 00:17:06.660
+Give it a refresh, good.
+
+367
+00:17:06.660 --> 00:17:08.590
+Now you see, if we take a quick look
+
+368
+00:17:08.590 --> 00:17:10.350
+at our UpdateItem, state is empty,
+
+369
+00:17:10.350 --> 00:17:11.510
+but I've entered a change.
+
+370
+00:17:11.510 --> 00:17:14.620
+The changes are now being reflected into state.
+
+371
+00:17:14.620 --> 00:17:16.400
+Okay, good, good, good.
+
+372
+00:17:16.400 --> 00:17:19.030
+Maybe we'll change the Submit to Save Changes.
+
+373
+00:17:19.030 --> 00:17:22.950
+What we wanna do now is to actually modify
+
+374
+00:17:22.950 --> 00:17:26.030
+this query that we have here, UPDATE_ITEM_MUTATION,
+
+375
+00:17:26.030 --> 00:17:29.290
+where it's gonna take in a title, description, and a price.
+
+376
+00:17:29.290 --> 00:17:31.790
+We don't need to pass the image or the largeImage.
+
+377
+00:17:34.830 --> 00:17:37.990
+And it's going to return the id, the title,
+
+378
+00:17:37.990 --> 00:17:41.113
+the description, and the price.
+
+379
+00:17:42.750 --> 00:17:45.163
+Then we'll go down to our mutation component.
+
+380
+00:17:47.750 --> 00:17:49.750
+And remember how we called it createItem here?
+
+381
+00:17:49.750 --> 00:17:51.000
+Let's call it updateItem.
+
+382
+00:17:52.350 --> 00:17:55.550
+And instead of doing the onSubmit in line here,
+
+383
+00:17:55.550 --> 00:17:57.130
+'cause I showed you that in the last one,
+
+384
+00:17:57.130 --> 00:18:00.480
+let's actually shell it off to another function.
+
+385
+00:18:00.480 --> 00:18:01.920
+When I was initially doing this,
+
+386
+00:18:01.920 --> 00:18:05.320
+my question was, if everything is a render prop,
+
+387
+00:18:05.320 --> 00:18:07.490
+how do you access this updateItem function
+
+388
+00:18:07.490 --> 00:18:10.240
+outside of your render component, right?
+
+389
+00:18:10.240 --> 00:18:12.243
+Like, how do I even access that?
+
+390
+00:18:12.243 --> 00:18:13.920
+The answer to that is, you have to pass it
+
+391
+00:18:13.920 --> 00:18:15.810
+to a function when it's submitted.
+
+392
+00:18:15.810 --> 00:18:19.050
+So, let's take this onSubmit, and,
+
+393
+00:18:19.050 --> 00:18:20.950
+let's actually just get rid of it altogether.
+
+394
+00:18:20.950 --> 00:18:22.280
+Let's start fresh.
+
+395
+00:18:22.280 --> 00:18:23.790
+There's a lot going on here.
+
+396
+00:18:23.790 --> 00:18:26.323
+Form, we'll say onSubmit is equal to,
+
+397
+00:18:27.550 --> 00:18:29.090
+and we'll take the event because we need
+
+398
+00:18:29.090 --> 00:18:31.290
+the actual event that is happening,
+
+399
+00:18:31.290 --> 00:18:34.950
+and we'll make a new function called this.updateItem,
+
+400
+00:18:36.010 --> 00:18:38.960
+and we'll pass the event as well as
+
+401
+00:18:38.960 --> 00:18:42.290
+the updateItem mutation call.
+
+402
+00:18:42.290 --> 00:18:44.610
+So that's how you can pass methods
+
+403
+00:18:44.610 --> 00:18:47.250
+to a component method, so we're gonna go ahead
+
+404
+00:18:47.250 --> 00:18:49.070
+and write that ourselves.
+
+405
+00:18:49.070 --> 00:18:52.830
+We'll say, updateItem is equal to,
+
+406
+00:18:52.830 --> 00:18:55.650
+we get the update the event as well as
+
+407
+00:18:55.650 --> 00:18:58.340
+the updateItem mutation, let's just call that
+
+408
+00:18:58.340 --> 00:19:01.700
+mutation so we're different than the handler
+
+409
+00:19:01.700 --> 00:19:03.373
+and the actual mutation itself.
+
+410
+00:19:04.690 --> 00:19:08.380
+And then inside of that, let's just say
+
+411
+00:19:08.380 --> 00:19:09.943
+Updating Item,
+
+412
+00:19:12.390 --> 00:19:15.463
+console.log this.state.
+
+413
+00:19:19.530 --> 00:19:21.490
+Go to our console here.
+
+414
+00:19:21.490 --> 00:19:24.370
+Change all of these inputs a little bit.
+
+415
+00:19:24.370 --> 00:19:26.120
+Give it a save.
+
+416
+00:19:26.120 --> 00:19:27.500
+And, uhhh, it didn't work.
+
+417
+00:19:27.500 --> 00:19:28.890
+Why not?
+
+418
+00:19:28.890 --> 00:19:31.940
+The changes actually went to the title here.
+
+419
+00:19:31.940 --> 00:19:35.720
+That's because I forgot to call e.prevent default,
+
+420
+00:19:35.720 --> 00:19:37.560
+and actually this is, let's take
+
+421
+00:19:37.560 --> 00:19:39.690
+a quick pause from this a second.
+
+422
+00:19:39.690 --> 00:19:42.450
+If you go to the Update page, and don't pass it
+
+423
+00:19:42.450 --> 00:19:46.280
+an ID, or you pass an ID is not real,
+
+424
+00:19:46.280 --> 00:19:47.520
+it actually gives us an error,
+
+425
+00:19:47.520 --> 00:19:49.390
+cannot read property title of null.
+
+426
+00:19:49.390 --> 00:19:51.140
+And that's because our query here,
+
+427
+00:19:51.140 --> 00:19:53.170
+what you can actually do is, say,
+
+428
+00:19:53.170 --> 00:19:55.930
+if there is no data.item,
+
+429
+00:19:55.930 --> 00:19:59.550
+then return No Item Found
+
+430
+00:20:00.900 --> 00:20:03.973
+for ID this.props.id.
+
+431
+00:20:06.307 --> 00:20:07.140
+There you go.
+
+432
+00:20:07.140 --> 00:20:09.363
+No item found for ID, not real.
+
+433
+00:20:13.520 --> 00:20:15.950
+And edit the 270s, everything works.
+
+434
+00:20:15.950 --> 00:20:17.130
+Good, so we handled that.
+
+435
+00:20:17.130 --> 00:20:19.110
+It's always helpful to try to break it yourself
+
+436
+00:20:19.110 --> 00:20:21.210
+so you can find those little edge cases.
+
+437
+00:20:21.210 --> 00:20:25.070
+In that case, the error wouldn't give us anything.
+
+438
+00:20:25.070 --> 00:20:27.860
+But because it would return data of nothing,
+
+439
+00:20:27.860 --> 00:20:30.500
+in our case we have to check for that specific data.
+
+440
+00:20:30.500 --> 00:20:33.010
+Anyway, we were up here with this updateItem.
+
+441
+00:20:33.010 --> 00:20:34.620
+We were preventing default on that.
+
+442
+00:20:34.620 --> 00:20:38.070
+Does that work now, if I were to change this and save?
+
+443
+00:20:38.070 --> 00:20:39.927
+There we go, we're saying updateItem,
+
+444
+00:20:39.927 --> 00:20:42.840
+and then state is a copy of only the fields
+
+445
+00:20:42.840 --> 00:20:44.570
+that have then changed.
+
+446
+00:20:44.570 --> 00:20:46.206
+What we can do is we can call this
+
+447
+00:20:46.206 --> 00:20:49.250
+updateItem mutation ourselves, so say,
+
+448
+00:20:49.250 --> 00:20:54.250
+const response, r-e-s, is equal to await updateItemMutation,
+
+449
+00:20:54.970 --> 00:20:56.850
+and in the last one, we just called that,
+
+450
+00:20:56.850 --> 00:21:00.157
+because we passed the variables to the mutation.
+
+451
+00:21:00.157 --> 00:21:02.220
+I'm gonna show you how you can pass them
+
+452
+00:21:02.220 --> 00:21:04.120
+via an argument here, so you can pass
+
+453
+00:21:04.120 --> 00:21:07.440
+the updateItemMutation to something called variables.
+
+454
+00:21:07.440 --> 00:21:09.620
+Variables, so we can't say this.state,
+
+455
+00:21:09.620 --> 00:21:11.930
+because it doesn't have the ID of the item in there.
+
+456
+00:21:11.930 --> 00:21:13.190
+So, we're gonna have to make our own,
+
+457
+00:21:13.190 --> 00:21:16.400
+so we'll say the id is equal to this.props.id,
+
+458
+00:21:16.400 --> 00:21:19.240
+and then we'll also just spread in any
+
+459
+00:21:19.240 --> 00:21:21.440
+of the changes that need to come along for the ride.
+
+460
+00:21:21.440 --> 00:21:23.710
+So, this.state, that's gonna contain it.
+
+461
+00:21:23.710 --> 00:21:26.180
+If you would have other stuff in your state,
+
+462
+00:21:26.180 --> 00:21:28.160
+it might be worth it to make a sub-item,
+
+463
+00:21:28.160 --> 00:21:30.420
+called like, item inside of here,
+
+464
+00:21:30.420 --> 00:21:32.430
+and put all of your changes inside of that.
+
+465
+00:21:32.430 --> 00:21:34.820
+But because this is, anything that goes into state
+
+466
+00:21:34.820 --> 00:21:37.150
+is going to be a change, it's totally fine
+
+467
+00:21:37.150 --> 00:21:38.200
+to leave it that way.
+
+468
+00:21:39.870 --> 00:21:41.770
+So, we got that, we're awaiting it,
+
+469
+00:21:41.770 --> 00:21:42.920
+Since we're awaiting it, we need
+
+470
+00:21:42.920 --> 00:21:45.540
+to make this an async function,
+
+471
+00:21:45.540 --> 00:21:48.663
+and then, let's just give a quick console.log,
+
+472
+00:21:50.270 --> 00:21:51.350
+Updated.
+
+473
+00:21:51.350 --> 00:21:55.870
+So, we'll change Nike 270s to Nike 99,
+
+474
+00:21:55.870 --> 00:21:58.480
+save changes, and this is actually kinda neat.
+
+475
+00:21:58.480 --> 00:22:00.250
+We got some errors here happening,
+
+476
+00:22:00.250 --> 00:22:04.710
+and it handled them properly because our mutation
+
+477
+00:22:04.710 --> 00:22:07.300
+has this error here, and it came back
+
+478
+00:22:07.300 --> 00:22:09.360
+from the mutation and said, okay,
+
+479
+00:22:09.360 --> 00:22:13.100
+there's an actual error, so we can't happen.
+
+480
+00:22:13.100 --> 00:22:16.560
+So, it's telling us that the variable description
+
+481
+00:22:16.560 --> 00:22:18.750
+of required string was not provided,
+
+482
+00:22:18.750 --> 00:22:21.730
+and the price, 'cause I only changed the title.
+
+483
+00:22:21.730 --> 00:22:25.040
+I bet if I tried to save it with no changes,
+
+484
+00:22:25.040 --> 00:22:26.450
+it will tell me all three.
+
+485
+00:22:26.450 --> 00:22:27.360
+Yeah, see?
+
+486
+00:22:27.360 --> 00:22:29.510
+So, why is that required?
+
+487
+00:22:29.510 --> 00:22:34.460
+Let's take a look here at our query.
+
+488
+00:22:34.460 --> 00:22:38.020
+Oh, and that's because string isn't required.
+
+489
+00:22:38.020 --> 00:22:39.840
+Price isn't required.
+
+490
+00:22:39.840 --> 00:22:41.290
+And neither is title.
+
+491
+00:22:41.290 --> 00:22:42.820
+So, give that a save.
+
+492
+00:22:42.820 --> 00:22:44.960
+Now, if we refresh it, and change these
+
+493
+00:22:44.960 --> 00:22:49.743
+to Nike 99, save changes, oh, one more problem.
+
+494
+00:22:50.610 --> 00:22:53.410
+Shoot, variable data got invalid value,
+
+495
+00:22:53.410 --> 00:22:56.073
+title, field value.description of,
+
+496
+00:22:57.483 --> 00:22:58.970
+the description is required.
+
+497
+00:22:58.970 --> 00:23:01.540
+So now, maybe something on the back end
+
+498
+00:23:01.540 --> 00:23:03.670
+we accidentally had marked as required.
+
+499
+00:23:03.670 --> 00:23:05.120
+So let's take a look at that.
+
+500
+00:23:06.640 --> 00:23:08.430
+ID is required.
+
+501
+00:23:08.430 --> 00:23:09.263
+Title, no.
+
+502
+00:23:09.263 --> 00:23:10.340
+Description, no.
+
+503
+00:23:10.340 --> 00:23:11.173
+Price, no.
+
+504
+00:23:15.730 --> 00:23:17.270
+Oh, and I figured it out, this is the problem
+
+505
+00:23:17.270 --> 00:23:19.690
+with copy pasting from the CreateItem.
+
+506
+00:23:19.690 --> 00:23:21.540
+We forgot to change the name of the function
+
+507
+00:23:21.540 --> 00:23:24.140
+that gets run on the server from createItem
+
+508
+00:23:24.140 --> 00:23:25.633
+to updateItem.
+
+509
+00:23:29.210 --> 00:23:31.170
+And that should do it for us, so,
+
+510
+00:23:31.170 --> 00:23:35.750
+let's give it a fresh refresh, change this to Nike 99,
+
+511
+00:23:35.750 --> 00:23:38.640
+give it a save, and, oh my gosh!
+
+512
+00:23:38.640 --> 00:23:41.280
+Update argument ID, type of ID
+
+513
+00:23:41.280 --> 00:23:43.090
+was required, but not provided.
+
+514
+00:23:43.090 --> 00:23:44.483
+What is going on?
+
+515
+00:23:45.862 --> 00:23:48.670
+Oh, we forgot to actually pass the ID in the mutation.
+
+516
+00:23:48.670 --> 00:23:51.710
+This is where graphql, because it is so strictly typed,
+
+517
+00:23:51.710 --> 00:23:54.870
+even though we are passing the ID right here,
+
+518
+00:23:54.870 --> 00:23:59.200
+because the UPDATE_ITEM_MUTATION was not expecting it,
+
+519
+00:23:59.200 --> 00:24:01.600
+it just ignored it from us, so,
+
+520
+00:24:01.600 --> 00:24:03.490
+I'm gonna leave all these little errors in
+
+521
+00:24:03.490 --> 00:24:07.300
+because I think it's helpful to see the common stuff
+
+522
+00:24:07.300 --> 00:24:09.900
+that you trip up on, and what the debugging looks like.
+
+523
+00:24:09.900 --> 00:24:11.760
+So, we'll add that in real quick.
+
+524
+00:24:11.760 --> 00:24:13.410
+So there's going to be a variable pass
+
+525
+00:24:13.410 --> 00:24:15.570
+called id which has a type of id,
+
+526
+00:24:15.570 --> 00:24:17.790
+and that is the only thing that is required here.
+
+527
+00:24:17.790 --> 00:24:21.260
+And then, when we run it, we're also going to pass
+
+528
+00:24:21.260 --> 00:24:24.543
+the id, which is the variable id.
+
+529
+00:24:25.840 --> 00:24:27.180
+Okay, is it gonna work?
+
+530
+00:24:27.180 --> 00:24:30.720
+If not, I'm gonna quit my job and move to the forest
+
+531
+00:24:30.720 --> 00:24:33.000
+and become a lumberjack, which I probably
+
+532
+00:24:33.000 --> 00:24:34.680
+wouldn't be very good at either.
+
+533
+00:24:34.680 --> 00:24:36.350
+Save, hey hey!
+
+534
+00:24:36.350 --> 00:24:37.760
+Updated! It worked.
+
+535
+00:24:37.760 --> 00:24:38.593
+Actually, it's kinda cool.
+
+536
+00:24:38.593 --> 00:24:40.793
+You see that our loading kicked in real quick.
+
+537
+00:24:41.960 --> 00:24:43.430
+And now if I refresh the page,
+
+538
+00:24:43.430 --> 00:24:45.380
+you see that Nike 99 is there.
+
+539
+00:24:45.380 --> 00:24:47.870
+Let's change the price to 200,
+
+540
+00:24:47.870 --> 00:24:49.583
+and say real cool.
+
+541
+00:24:50.560 --> 00:24:52.960
+Save changes, and it looks like it worked out.
+
+542
+00:24:52.960 --> 00:24:55.670
+One kinda little fun thing that I like to do is,
+
+543
+00:24:55.670 --> 00:25:00.520
+if we go down here, we can take that loading variable
+
+544
+00:25:00.520 --> 00:25:01.730
+and have a little bit of fun.
+
+545
+00:25:01.730 --> 00:25:04.913
+So you can say Sav, and then if it's loading,
+
+546
+00:25:08.410 --> 00:25:11.053
+i-n-g, otherwise, e.
+
+547
+00:25:12.360 --> 00:25:15.560
+And that should say, and that should change the word
+
+548
+00:25:15.560 --> 00:25:19.360
+to Saving whenever I click on it, and flip it back.
+
+549
+00:25:19.360 --> 00:25:21.760
+That's why I love Apollo so much,
+
+550
+00:25:21.760 --> 00:25:23.550
+is that it just gives you this loading boolean,
+
+551
+00:25:23.550 --> 00:25:25.590
+and you can do really easy things
+
+552
+00:25:25.590 --> 00:25:28.690
+that make the user interface better for your user.
+
+553
+00:25:28.690 --> 00:25:30.760
+So, that is updating our items.
+
+554
+00:25:30.760 --> 00:25:33.620
+We've created, we've read, we've updated.
+
+555
+00:25:33.620 --> 00:25:35.000
+Next up, delete.
+
+556
+00:25:35.000 --> 00:25:36.881
+It's gonna be actually really really simple.
+
+557
+00:25:36.881 --> 00:25:38.740
+(laughing) It's gonna be one of the shorter videos,
+
+558
+00:25:38.740 --> 00:25:39.990
+so I'll see you in there.
+

@@ -1,0 +1,1122 @@
+﻿WEBVTT
+
+1
+00:00:01.160 --> 00:00:03.310
+<v Instructor>In this video we are going to write up</v>
+
+2
+00:00:03.310 --> 00:00:05.260
+the delete button of our,
+
+3
+00:00:05.260 --> 00:00:07.350
+so if we go ahead and click on Delete,
+
+4
+00:00:07.350 --> 00:00:09.200
+it's gonna ask us if we wanna delete it.
+
+5
+00:00:09.200 --> 00:00:11.660
+If we press OK, it's going to remove it
+
+6
+00:00:11.660 --> 00:00:14.400
+from that page and then ideally when we hit Pagination,
+
+7
+00:00:14.400 --> 00:00:16.560
+it's gonna refetch that query
+
+8
+00:00:16.560 --> 00:00:18.460
+and then also update our pagination
+
+9
+00:00:18.460 --> 00:00:20.240
+that we only have one page
+
+10
+00:00:20.240 --> 00:00:22.030
+and I'll remove that.
+
+11
+00:00:22.030 --> 00:00:27.030
+Good, so let's open up our item.js component
+
+12
+00:00:27.270 --> 00:00:30.300
+and we have this button right here called Delete.
+
+13
+00:00:30.300 --> 00:00:32.420
+We're gonna turn that into its own component
+
+14
+00:00:32.420 --> 00:00:33.890
+so we can abstract away the logic
+
+15
+00:00:33.890 --> 00:00:35.340
+and use that button wherever it is
+
+16
+00:00:35.340 --> 00:00:36.300
+we want on the page,
+
+17
+00:00:36.300 --> 00:00:40.893
+so I'll make a new component called Deleteitem.js.
+
+18
+00:00:41.940 --> 00:00:44.313
+Gotta scaffold out a React component.
+
+19
+00:00:46.480 --> 00:00:51.480
+And I'm going to remove that item.
+
+20
+00:00:52.780 --> 00:00:55.890
+And for now, let's just give ourselves a button,
+
+21
+00:00:55.890 --> 00:00:58.643
+so that's Delete Item.
+
+22
+00:00:59.760 --> 00:01:01.923
+We'll go into our item.js and import that.
+
+23
+00:01:12.870 --> 00:01:13.913
+We'll go down here.
+
+24
+00:01:16.590 --> 00:01:18.160
+Give ourselves the DeleteItem.
+
+25
+00:01:18.160 --> 00:01:19.320
+Actually, what we could do here
+
+26
+00:01:19.320 --> 00:01:21.960
+is so that you can, instead of hard coding
+
+27
+00:01:21.960 --> 00:01:23.180
+the text Delete Item
+
+28
+00:01:23.180 --> 00:01:25.160
+because you really could put anything that you want
+
+29
+00:01:25.160 --> 00:01:28.110
+inside of there, let's actually make it a component
+
+30
+00:01:28.110 --> 00:01:32.353
+like this and in here we'll say Delete This Item
+
+31
+00:01:35.310 --> 00:01:36.840
+and we'll go in here
+
+32
+00:01:36.840 --> 00:01:41.490
+and you can just replace that with this.props.children
+
+33
+00:01:43.780 --> 00:01:45.563
+and that should do it.
+
+34
+00:01:46.960 --> 00:01:49.170
+Let's go to our home page here
+
+35
+00:01:49.170 --> 00:01:52.270
+and we see that our Delete Item button is showing up.
+
+36
+00:01:52.270 --> 00:01:55.410
+Awesome, so we're gonna flip over to our backend
+
+37
+00:01:55.410 --> 00:01:58.290
+and start writing the process for that,
+
+38
+00:01:58.290 --> 00:02:01.570
+so go to Go To Pink and open up your schema.
+
+39
+00:02:01.570 --> 00:02:05.050
+We need a new mutation that's going to be called deleteItem.
+
+40
+00:02:05.970 --> 00:02:07.440
+That takes in an ID
+
+41
+00:02:07.440 --> 00:02:08.870
+which has the type of ID.
+
+42
+00:02:08.870 --> 00:02:10.250
+It's going to return an item.
+
+43
+00:02:10.250 --> 00:02:12.910
+You could also create a new type
+
+44
+00:02:12.910 --> 00:02:14.470
+called like success message
+
+45
+00:02:14.470 --> 00:02:17.080
+and return that with a strong with a message
+
+46
+00:02:17.080 --> 00:02:21.070
+but in our case, let's just keep it with returning an item.
+
+47
+00:02:21.070 --> 00:02:24.790
+Then we want to code up a resolver for that,
+
+48
+00:02:24.790 --> 00:02:27.450
+so we'll go into the mutation.js.
+
+49
+00:02:27.450 --> 00:02:29.223
+Make a new one down here.
+
+50
+00:02:38.640 --> 00:02:43.610
+Parent, args, ctx, info
+
+51
+00:02:43.610 --> 00:02:46.220
+and we want to make a where variable
+
+52
+00:02:46.220 --> 00:02:48.500
+because we're gonna be reusing this a couple times
+
+53
+00:02:48.500 --> 00:02:50.500
+and we're gonna actually set this up
+
+54
+00:02:50.500 --> 00:02:52.700
+assuming that we're gonna have authentication
+
+55
+00:02:52.700 --> 00:02:54.670
+in just a bit, so I'll say const where
+
+56
+00:02:54.670 --> 00:02:57.433
+is equal to the ID is equal to args.id.
+
+57
+00:02:58.600 --> 00:02:59.780
+Then first thing we need to do
+
+58
+00:02:59.780 --> 00:03:04.070
+is find the item, step one.
+
+59
+00:03:04.070 --> 00:03:07.930
+Two, check if they own that item
+
+60
+00:03:07.930 --> 00:03:09.843
+or have the permissions.
+
+61
+00:03:11.450 --> 00:03:13.750
+And three, delete it.
+
+62
+00:03:13.750 --> 00:03:16.060
+So, the reason why we find the item
+
+63
+00:03:16.060 --> 00:03:17.920
+before we go ahead and delete it
+
+64
+00:03:17.920 --> 00:03:21.170
+is because we are going to be querying the item first
+
+65
+00:03:21.170 --> 00:03:23.210
+to check if the person deleting it
+
+66
+00:03:23.210 --> 00:03:25.780
+either owns it or the person deleting it
+
+67
+00:03:25.780 --> 00:03:27.660
+has permissions to delete any item
+
+68
+00:03:27.660 --> 00:03:30.210
+like you're an administrator on the site.
+
+69
+00:03:30.210 --> 00:03:34.160
+So, we'll say const item is equal to await,
+
+70
+00:03:34.160 --> 00:03:37.733
+so we did await, let's change this over to async,
+
+71
+00:03:40.500 --> 00:03:43.417
+we can take the context.database.query.item
+
+72
+00:03:45.330 --> 00:03:47.600
+and we're gonna search for an item
+
+73
+00:03:47.600 --> 00:03:50.230
+and we're just gonna pass the where that we created.
+
+74
+00:03:50.230 --> 00:03:52.020
+Now, what's interesting about this
+
+75
+00:03:52.020 --> 00:03:53.350
+is that this query right here,
+
+76
+00:03:53.350 --> 00:03:55.600
+usually we just pass in info
+
+77
+00:03:55.600 --> 00:03:57.580
+and by passing in info,
+
+78
+00:03:57.580 --> 00:04:00.260
+it's going to take any of the query from the front end,
+
+79
+00:04:00.260 --> 00:04:04.470
+let me open up UPDATE_ITEM that we just did.
+
+80
+00:04:04.470 --> 00:04:05.770
+It's gonna take in the query
+
+81
+00:04:05.770 --> 00:04:07.400
+and request that these fields come back.
+
+82
+00:04:07.400 --> 00:04:10.020
+However, sometimes we have an intermediary,
+
+83
+00:04:10.020 --> 00:04:11.957
+we have to perform a second query
+
+84
+00:04:11.957 --> 00:04:14.320
+and in that case, the info doesn't get passed here
+
+85
+00:04:14.320 --> 00:04:17.670
+but we're just gonna manually pass a query ourselves,
+
+86
+00:04:17.670 --> 00:04:19.880
+a GraphQL query, so I'm gonna use back ticks here,
+
+87
+00:04:19.880 --> 00:04:22.100
+it doesn't matter which quotes you use
+
+88
+00:04:22.100 --> 00:04:25.510
+and we specifically want to ask it for the ID
+
+89
+00:04:25.510 --> 00:04:28.790
+and the title of that specific,
+
+90
+00:04:28.790 --> 00:04:31.720
+so this is just raw GraphQL that we're passing in here
+
+91
+00:04:31.720 --> 00:04:33.410
+and it will parse it for us.
+
+92
+00:04:33.410 --> 00:04:34.610
+In the future we're gonna come back
+
+93
+00:04:34.610 --> 00:04:38.540
+and ask for the user and the ID of the user
+
+94
+00:04:38.540 --> 00:04:40.310
+but in this case, we're not gonna have users just yet
+
+95
+00:04:40.310 --> 00:04:42.160
+so we can't have that.
+
+96
+00:04:42.160 --> 00:04:44.750
+Second, check if we own it, TODO
+
+97
+00:04:46.480 --> 00:04:47.570
+and then third, delete it,
+
+98
+00:04:47.570 --> 00:04:52.570
+we return ctx.db.mutation.deleteItem,
+
+99
+00:04:56.180 --> 00:04:58.300
+we pass our where
+
+100
+00:05:00.910 --> 00:05:02.253
+and our info.
+
+101
+00:05:03.930 --> 00:05:08.380
+Looks like we've got our schema and our resolver set up.
+
+102
+00:05:08.380 --> 00:05:10.253
+Let's flip over to the front end now.
+
+103
+00:05:11.980 --> 00:05:13.973
+Go back to Deleteitem.js.
+
+104
+00:05:15.240 --> 00:05:16.940
+And we're gonna import a couple things up here,
+
+105
+00:05:16.940 --> 00:05:19.873
+so import Mutation from react-apollo.
+
+106
+00:05:23.930 --> 00:05:27.883
+We're gonna import gql from graphql-tag.
+
+107
+00:05:29.490 --> 00:05:31.010
+Then we'll go here and write our query
+
+108
+00:05:31.010 --> 00:05:33.861
+or our mutation, DELETE_ITEM_MUTATION,
+
+109
+00:05:33.861 --> 00:05:36.777
+so mutation, and I'm going to delete the item,
+
+110
+00:05:39.140 --> 00:05:41.403
+the ID is equal to the ID.
+
+111
+00:05:43.890 --> 00:05:46.670
+And we're just gonna ask for the ID of the item back
+
+112
+00:05:46.670 --> 00:05:48.410
+just so we can have something returned
+
+113
+00:05:48.410 --> 00:05:50.110
+and know that is actually deleted.
+
+114
+00:05:51.120 --> 00:05:53.030
+Good, now we wanna take this button here
+
+115
+00:05:53.030 --> 00:05:54.980
+and wrap it in a mutation component,
+
+116
+00:05:54.980 --> 00:05:57.000
+so I'll take a mutation component,
+
+117
+00:05:57.000 --> 00:05:59.190
+put the button inside of that.
+
+118
+00:05:59.190 --> 00:06:01.090
+Mutation takes a couple things.
+
+119
+00:06:01.090 --> 00:06:03.823
+First, we need the extra mutation itself.
+
+120
+00:06:07.520 --> 00:06:09.220
+And then we also need to pass some variables,
+
+121
+00:06:09.220 --> 00:06:11.500
+so how do we know which item we're actually deleting?
+
+122
+00:06:11.500 --> 00:06:14.080
+Well, we don't right now,
+
+123
+00:06:14.080 --> 00:06:15.300
+so we have to pass it in,
+
+124
+00:06:15.300 --> 00:06:16.944
+so we'll go back to item.js
+
+125
+00:06:16.944 --> 00:06:18.510
+and we'll pass that in.
+
+126
+00:06:18.510 --> 00:06:21.270
+We'll say the ID of the item that this button
+
+127
+00:06:21.270 --> 00:06:25.460
+can remove is the item.id
+
+128
+00:06:25.460 --> 00:06:26.307
+and then we'll just go into here
+
+129
+00:06:26.307 --> 00:06:29.120
+and say this.props.id
+
+130
+00:06:29.120 --> 00:06:30.730
+is the name of the variable.
+
+131
+00:06:30.730 --> 00:06:33.740
+We also wanna do structure and error
+
+132
+00:06:33.740 --> 00:06:35.740
+because we wanna tell the user if there's an error.
+
+133
+00:06:35.740 --> 00:06:37.430
+Specifically you don't own this item,
+
+134
+00:06:37.430 --> 00:06:38.483
+you can't delete it.
+
+135
+00:06:41.960 --> 00:06:46.960
+And we will change those curlys to parentheses
+
+136
+00:06:48.750 --> 00:06:50.923
+and put the button inside here.
+
+137
+00:06:51.885 --> 00:06:54.069
+And this is button is gonna have an onClick handler
+
+138
+00:06:54.069 --> 00:06:56.920
+where we run a little function inside of here
+
+139
+00:06:57.870 --> 00:07:01.300
+and we'll just run a confirm, say are you sure you want
+
+140
+00:07:01.300 --> 00:07:02.550
+to delete this thing?
+
+141
+00:07:02.550 --> 00:07:07.533
+So, we'll say if confirm, sure you want to delete this?
+
+142
+00:07:10.880 --> 00:07:13.430
+Then we simply just run the deleteItem function
+
+143
+00:07:14.450 --> 00:07:16.740
+that was passed in via our mutation,
+
+144
+00:07:16.740 --> 00:07:17.900
+give it an all save,
+
+145
+00:07:17.900 --> 00:07:20.050
+little bit of an error here.
+
+146
+00:07:20.050 --> 00:07:20.883
+Oh, semicolon.
+
+147
+00:07:20.883 --> 00:07:22.040
+Let's go ahead and try delete it.
+
+148
+00:07:22.040 --> 00:07:23.010
+Delete this item.
+
+149
+00:07:23.010 --> 00:07:24.730
+Are you sure you wanna delete it?
+
+150
+00:07:24.730 --> 00:07:26.210
+OK.
+
+151
+00:07:26.210 --> 00:07:28.160
+And nothing happened but I think it worked
+
+152
+00:07:28.160 --> 00:07:29.590
+and the way you can tell if it worked
+
+153
+00:07:29.590 --> 00:07:31.440
+is if you give it a refresh
+
+154
+00:07:31.440 --> 00:07:33.090
+and you see that test is gone.
+
+155
+00:07:33.090 --> 00:07:36.520
+So, this is where we get into interface updates
+
+156
+00:07:36.520 --> 00:07:38.460
+in Apollo because that item
+
+157
+00:07:38.460 --> 00:07:40.860
+is going to be deleted on the backend
+
+158
+00:07:40.860 --> 00:07:43.280
+but it's not gonna be deleted in the cache,
+
+159
+00:07:43.280 --> 00:07:45.750
+so if you actually wanna update the cache
+
+160
+00:07:45.750 --> 00:07:47.870
+and you wanna remove it from the page,
+
+161
+00:07:47.870 --> 00:07:49.670
+you have to manually do that yourselves
+
+162
+00:07:49.670 --> 00:07:51.930
+or there's kind of like two options here.
+
+163
+00:07:51.930 --> 00:07:55.030
+The first option is that we could refetch this entire query
+
+164
+00:07:55.030 --> 00:07:56.250
+on the home page
+
+165
+00:07:56.250 --> 00:07:58.590
+and that will manually hit the backend
+
+166
+00:07:58.590 --> 00:08:01.330
+for a list of items and come back with an updated version.
+
+167
+00:08:01.330 --> 00:08:02.780
+That's a good option.
+
+168
+00:08:02.780 --> 00:08:05.480
+However, sometimes you just want to remove one
+
+169
+00:08:05.480 --> 00:08:06.740
+of those items from the page
+
+170
+00:08:06.740 --> 00:08:08.660
+and that's exactly what we wanna do here,
+
+171
+00:08:08.660 --> 00:08:10.603
+so that's done via an update function.
+
+172
+00:08:10.603 --> 00:08:13.680
+The way we would do that is we have our mutation,
+
+173
+00:08:13.680 --> 00:08:15.240
+argument for mutation,
+
+174
+00:08:15.240 --> 00:08:18.200
+we have our variables argument here
+
+175
+00:08:18.200 --> 00:08:19.590
+and then we have a third one
+
+176
+00:08:19.590 --> 00:08:20.690
+that's called update
+
+177
+00:08:21.560 --> 00:08:23.480
+and I'm just gonna say this.update
+
+178
+00:08:23.480 --> 00:08:25.810
+and we'll shell that off to a separate one
+
+179
+00:08:25.810 --> 00:08:28.860
+and go here and say update
+
+180
+00:08:28.860 --> 00:08:33.860
+is equal to a function and Apollo will give you two things
+
+181
+00:08:34.460 --> 00:08:36.060
+when the update happens.
+
+182
+00:08:36.060 --> 00:08:38.070
+It'll give you access to the cache
+
+183
+00:08:38.070 --> 00:08:40.640
+which is the, here, let's take a quick look
+
+184
+00:08:40.640 --> 00:08:43.113
+what is the cache, it's this, Apollo,
+
+185
+00:08:44.110 --> 00:08:46.230
+go into the cache and it's all of the items
+
+186
+00:08:46.230 --> 00:08:47.620
+that it actually has.
+
+187
+00:08:47.620 --> 00:08:49.620
+And then it will also give you the payload
+
+188
+00:08:49.620 --> 00:08:51.970
+or the data that has come back
+
+189
+00:08:51.970 --> 00:08:53.980
+from the item that got deleted
+
+190
+00:08:53.980 --> 00:08:57.140
+and here we can just like manually update
+
+191
+00:08:57.140 --> 00:09:01.713
+the cache on the client so it matches the server.
+
+192
+00:09:04.170 --> 00:09:05.830
+Now, there's a number of steps we need to do here,
+
+193
+00:09:05.830 --> 00:09:08.710
+so first, we are going to read the cache
+
+194
+00:09:08.710 --> 00:09:11.140
+for the items we want,
+
+195
+00:09:11.140 --> 00:09:13.510
+so what items do we need to read?
+
+196
+00:09:13.510 --> 00:09:15.260
+We need to read these four items here
+
+197
+00:09:15.260 --> 00:09:17.470
+and unfortunately you can't just reach directly
+
+198
+00:09:17.470 --> 00:09:19.250
+into the cache and delete one,
+
+199
+00:09:19.250 --> 00:09:21.400
+you actually have to use a GraphQL query
+
+200
+00:09:21.400 --> 00:09:23.140
+to read the items from the cache
+
+201
+00:09:23.140 --> 00:09:25.990
+and have the ability to write back into the cache,
+
+202
+00:09:25.990 --> 00:09:28.250
+so we need to ask ourselves,
+
+203
+00:09:28.250 --> 00:09:30.590
+what is the query that was used to get these items
+
+204
+00:09:30.590 --> 00:09:32.290
+onto the page in the first place
+
+205
+00:09:32.290 --> 00:09:35.370
+and if you open up our items.js,
+
+206
+00:09:35.370 --> 00:09:37.990
+you'll know that we use the ALL_ITEMS query
+
+207
+00:09:37.990 --> 00:09:41.190
+and route it here, so the reason why we exported it
+
+208
+00:09:41.190 --> 00:09:43.600
+and if you haven't done this, please make sure you have,
+
+209
+00:09:43.600 --> 00:09:46.680
+we exported this ALL_ITEMS query, that's right here
+
+210
+00:09:46.680 --> 00:09:49.253
+is so that we can import it
+
+211
+00:09:49.253 --> 00:09:51.440
+into here, so let's say import ITEMS_QUERY
+
+212
+00:09:53.491 --> 00:09:58.491
+from sibling Items.JavaScript.
+
+213
+00:09:58.680 --> 00:10:01.446
+Then we can go back to our update here
+
+214
+00:10:01.446 --> 00:10:03.300
+and we'll say const data is equal to the cache.readQuery
+
+215
+00:10:09.080 --> 00:10:11.460
+and you can specify the query that you want
+
+216
+00:10:11.460 --> 00:10:13.163
+which is ALL_ITEMS_QUERY
+
+217
+00:10:14.780 --> 00:10:16.140
+and let's actually just go ahead
+
+218
+00:10:16.140 --> 00:10:19.053
+and console.log that data to see what we're working with.
+
+219
+00:10:21.560 --> 00:10:23.880
+So, I'm gonna give it a quick refresh,
+
+220
+00:10:23.880 --> 00:10:25.550
+go to console here,
+
+221
+00:10:25.550 --> 00:10:28.480
+I'm gonna delete an item, click OK
+
+222
+00:10:28.480 --> 00:10:31.360
+and you see that that query gives us access
+
+223
+00:10:31.360 --> 00:10:35.850
+to all four items that are currently on the page
+
+224
+00:10:35.850 --> 00:10:37.000
+for that cache.
+
+225
+00:10:37.000 --> 00:10:39.840
+So, we got one, two, three, four,
+
+226
+00:10:39.840 --> 00:10:40.780
+so what we're gonna do
+
+227
+00:10:40.780 --> 00:10:43.080
+is we're going step two,
+
+228
+00:10:43.080 --> 00:10:48.080
+filter the deleted item out of the page.
+
+229
+00:10:51.710 --> 00:10:56.710
+Data.items is equal to data.items.filter
+
+230
+00:10:58.930 --> 00:11:01.330
+and we're just gonna loop over every single item
+
+231
+00:11:01.330 --> 00:11:05.000
+and only include it if it doesn't match the deleted one,
+
+232
+00:11:05.000 --> 00:11:10.000
+so item.id is not equal to the payload.data.
+
+233
+00:11:11.780 --> 00:11:14.340
+And actually I don't know what the name of it is,
+
+234
+00:11:14.340 --> 00:11:15.650
+so let's actually go back here
+
+235
+00:11:15.650 --> 00:11:17.270
+and console.log the payload
+
+236
+00:11:17.270 --> 00:11:18.880
+and let's just comment that out
+
+237
+00:11:18.880 --> 00:11:19.980
+and we'll try delete another one.
+
+238
+00:11:19.980 --> 00:11:21.900
+Now, you can't try delete this one again
+
+239
+00:11:21.900 --> 00:11:22.977
+'cause I just did that
+
+240
+00:11:22.977 --> 00:11:24.447
+and if you try to do it, it's gonna error out
+
+241
+00:11:24.447 --> 00:11:26.450
+because it's actually gone,
+
+242
+00:11:26.450 --> 00:11:28.100
+so I'm gonna refresh the page.
+
+243
+00:11:28.100 --> 00:11:29.030
+I'm running out of stuff,
+
+244
+00:11:29.030 --> 00:11:31.340
+I might have to make some new items pretty soon.
+
+245
+00:11:31.340 --> 00:11:32.683
+And delete this item.
+
+246
+00:11:33.820 --> 00:11:35.650
+There we go, so the payload
+
+247
+00:11:37.360 --> 00:11:38.970
+that we get is the second thing
+
+248
+00:11:38.970 --> 00:11:40.610
+and that's this right here
+
+249
+00:11:40.610 --> 00:11:41.610
+and then inside of that
+
+250
+00:11:41.610 --> 00:11:43.970
+you have the data and then we have the deleteItem.
+
+251
+00:11:43.970 --> 00:11:46.710
+That's how we know what is actually called.
+
+252
+00:11:46.710 --> 00:11:48.250
+So, we'll bring this back,
+
+253
+00:11:48.250 --> 00:11:49.950
+data.items equals itself,
+
+254
+00:11:49.950 --> 00:11:54.103
+filtered out for deleteItem.id.
+
+255
+00:11:56.540 --> 00:11:59.443
+Then we will put the items back.
+
+256
+00:12:03.000 --> 00:12:04.390
+We'll say cache.writeQuery
+
+257
+00:12:08.299 --> 00:12:11.120
+and the query is going to be the ALL_ITEMS_QUERY again
+
+258
+00:12:11.120 --> 00:12:12.340
+and then the second argument
+
+259
+00:12:12.340 --> 00:12:14.700
+is just going to be data is equal to data
+
+260
+00:12:14.700 --> 00:12:16.602
+but you can remove the second data there
+
+261
+00:12:16.602 --> 00:12:18.240
+and just say we're passing it,
+
+262
+00:12:18.240 --> 00:12:20.970
+so you see how we updated the data
+
+263
+00:12:20.970 --> 00:12:23.390
+that we have here and that should write itself
+
+264
+00:12:23.390 --> 00:12:25.503
+to the query, so give that a save.
+
+265
+00:12:25.503 --> 00:12:26.950
+Gonna refresh.
+
+266
+00:12:26.950 --> 00:12:29.743
+Only got one more item or two more items here.
+
+267
+00:12:29.743 --> 00:12:32.080
+I'm gonna delete it, click OK.
+
+268
+00:12:32.080 --> 00:12:33.750
+Once it comes back from the database,
+
+269
+00:12:33.750 --> 00:12:35.830
+it actually removes it from the page
+
+270
+00:12:35.830 --> 00:12:39.210
+and then let's, why not, let's go ahead
+
+271
+00:12:39.210 --> 00:12:40.560
+and delete all of them.
+
+272
+00:12:40.560 --> 00:12:41.427
+Now they're all gone.
+
+273
+00:12:41.427 --> 00:12:43.820
+And so, that is it, we have our delete items,
+
+274
+00:12:43.820 --> 00:12:45.210
+I just deleted all of mine,
+
+275
+00:12:45.210 --> 00:12:47.130
+so you might have to go ahead and add three
+
+276
+00:12:47.130 --> 00:12:48.770
+or four new items.
+
+277
+00:12:48.770 --> 00:12:49.730
+Don't had too, too many
+
+278
+00:12:49.730 --> 00:12:52.340
+because we are going to have to clear 'em out once more
+
+279
+00:12:52.340 --> 00:12:55.260
+before we create our users.
+
+280
+00:12:55.260 --> 00:12:56.993
+So, I'll see you in the next video.
+

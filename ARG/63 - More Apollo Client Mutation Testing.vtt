@@ -1,0 +1,1202 @@
+﻿WEBVTT
+
+1
+00:00:00.517 --> 00:00:01.501
+(whooshing)
+
+2
+00:00:01.501 --> 00:00:02.334
+<v Wes>All right, in this one we're gonna talk</v>
+
+3
+00:00:02.334 --> 00:00:03.730
+about our signup mutation.
+
+4
+00:00:03.730 --> 00:00:04.580
+This one's pretty interesting
+
+5
+00:00:04.580 --> 00:00:07.130
+because we both have a signup mutation
+
+6
+00:00:07.130 --> 00:00:08.700
+which allows someone to sign up,
+
+7
+00:00:08.700 --> 00:00:11.401
+as well as we have a query that will run
+
+8
+00:00:11.401 --> 00:00:14.260
+after the user has signed up,
+
+9
+00:00:14.260 --> 00:00:15.093
+and now we're gonna check
+
+10
+00:00:15.093 --> 00:00:16.930
+if they're in the logged state.
+
+11
+00:00:16.930 --> 00:00:20.150
+The sign in would work exactly the same way.
+
+12
+00:00:20.150 --> 00:00:23.030
+So let's go ahead and jump into that.
+
+13
+00:00:23.030 --> 00:00:25.690
+Go to our test folder, make a new file,
+
+14
+00:00:25.690 --> 00:00:28.713
+call it signup.test.js.
+
+15
+00:00:30.840 --> 00:00:34.853
+Gonna just go into our reset test,
+
+16
+00:00:35.750 --> 00:00:39.800
+grab everything from the top here, paste it in,
+
+17
+00:00:39.800 --> 00:00:42.890
+going to make sure that we import the signup component
+
+18
+00:00:42.890 --> 00:00:47.890
+in the mutation, which is the signup mutation.
+
+19
+00:00:48.070 --> 00:00:50.450
+I have not yet exported it from this file,
+
+20
+00:00:50.450 --> 00:00:52.850
+so make sure you go ahead and do that.
+
+21
+00:00:52.850 --> 00:00:56.923
+And then we're going to import it in here, from signup.
+
+22
+00:00:59.450 --> 00:01:01.360
+So we have our mount, wait, toJSON,
+
+23
+00:01:01.360 --> 00:01:02.510
+MockedProvider, Signup.
+
+24
+00:01:03.840 --> 00:01:07.030
+We also want to import the CURRENT_USER query
+
+25
+00:01:12.180 --> 00:01:13.763
+from our user component.
+
+26
+00:01:14.708 --> 00:01:18.380
+We also wanna import the fakeUser function
+
+27
+00:01:18.380 --> 00:01:20.043
+from our test utils.
+
+28
+00:01:23.140 --> 00:01:25.940
+And I believe that's all we need for now.
+
+29
+00:01:25.940 --> 00:01:29.690
+Now we're gonna go ahead and write some mocks,
+
+30
+00:01:29.690 --> 00:01:32.980
+so const mocks is equal to end array,
+
+31
+00:01:32.980 --> 00:01:33.890
+and we're also gonna actually,
+
+32
+00:01:33.890 --> 00:01:36.150
+before we even do that so let's make a fake user,
+
+33
+00:01:36.150 --> 00:01:40.043
+so const me is equal to fakeUser.
+
+34
+00:01:43.110 --> 00:01:46.650
+Inside of our mocks, we are going to have one request
+
+35
+00:01:48.870 --> 00:01:51.627
+that has a query of SIGNUP_MUTATION,
+
+36
+00:01:53.310 --> 00:01:55.260
+and the variables that it's going to pass
+
+37
+00:01:55.260 --> 00:01:57.810
+when it's being called is everything that is in me.
+
+38
+00:02:08.020 --> 00:02:11.010
+We also wanna pass along a password,
+
+39
+00:02:11.010 --> 00:02:14.477
+as that doesn't get passed along in the fakeUser.
+
+40
+00:02:18.800 --> 00:02:21.023
+The result of this mutation,
+
+41
+00:02:22.010 --> 00:02:22.993
+some data,
+
+42
+00:02:24.000 --> 00:02:25.107
+that has signup.
+
+43
+00:02:26.360 --> 00:02:29.870
+Inside of there you have a type name, so __typename,
+
+44
+00:02:29.870 --> 00:02:31.463
+that returns a user,
+
+45
+00:02:32.460 --> 00:02:36.240
+the id of the user that gets returned, abc123,
+
+46
+00:02:36.240 --> 00:02:38.653
+the email, me.email,
+
+47
+00:02:40.393 --> 00:02:42.700
+and the name me.name.
+
+48
+00:02:42.700 --> 00:02:44.670
+So, whenever someone calls a signup mutation
+
+49
+00:02:44.670 --> 00:02:46.130
+with these variables,
+
+50
+00:02:46.130 --> 00:02:48.278
+make sure that you return this result
+
+51
+00:02:48.278 --> 00:02:50.530
+with the typename of user,
+
+52
+00:02:50.530 --> 00:02:53.020
+their ID that was generated on the server side,
+
+53
+00:02:53.020 --> 00:02:55.007
+quote and quote, and then the email
+
+54
+00:02:55.007 --> 00:02:58.970
+and the name that's associated with that user.
+
+55
+00:02:58.970 --> 00:03:01.180
+Then we also wanna make a second mock.
+
+56
+00:03:01.180 --> 00:03:02.210
+So this is the first one.
+
+57
+00:03:02.210 --> 00:03:05.510
+Maybe we'll put a little comment above it,
+
+58
+00:03:05.510 --> 00:03:07.273
+signup mock mutation,
+
+59
+00:03:08.530 --> 00:03:09.770
+and then below it we want
+
+60
+00:03:09.770 --> 00:03:12.863
+to have a current user query mock.
+
+61
+00:03:14.780 --> 00:03:16.540
+So that's another one.
+
+62
+00:03:16.540 --> 00:03:19.223
+The request is a query,
+
+63
+00:03:22.157 --> 00:03:24.010
+so CURRENT_USER query,
+
+64
+00:03:24.010 --> 00:03:26.450
+and the response, or the result,
+
+65
+00:03:26.450 --> 00:03:28.450
+I always call it response,
+
+66
+00:03:28.450 --> 00:03:32.633
+is data, me, I'm gonna type,
+
+67
+00:03:34.160 --> 00:03:34.993
+pass a typename,
+
+68
+00:03:38.140 --> 00:03:38.973
+user.
+
+69
+00:03:43.100 --> 00:03:45.880
+You also wanna spread me
+
+70
+00:03:45.880 --> 00:03:47.990
+and let's just check that test utils
+
+71
+00:03:49.524 --> 00:03:53.110
+fakeUser has orders and has cart,
+
+72
+00:03:53.110 --> 00:03:55.260
+so I don't need to pass anything like that.
+
+73
+00:03:57.950 --> 00:03:59.159
+Looking good.
+
+74
+00:03:59.159 --> 00:04:01.240
+Actually do we pass a typename with our fakeUser as well?
+
+75
+00:04:01.240 --> 00:04:03.680
+We do, so it's unnecessary to even pass that,
+
+76
+00:04:03.680 --> 00:04:06.020
+so this can be greatly simplified.
+
+77
+00:04:06.020 --> 00:04:07.650
+Let's actually bring that all the way back.
+
+78
+00:04:07.650 --> 00:04:10.770
+Data is an object, where me is equal to me,
+
+79
+00:04:10.770 --> 00:04:12.800
+and you can just remove that and put me,
+
+80
+00:04:12.800 --> 00:04:16.360
+and I think that will be enough for what we're looking for.
+
+81
+00:04:16.360 --> 00:04:18.170
+Let's go ahead and start doing some testing.
+
+82
+00:04:18.170 --> 00:04:19.500
+So we will describe
+
+83
+00:04:21.890 --> 00:04:22.723
+sign up
+
+84
+00:04:25.690 --> 00:04:28.993
+it renders and matches snapshot,
+
+85
+00:04:45.230 --> 00:04:46.600
+and then we'll go ahead and look for
+
+86
+00:04:46.600 --> 00:04:48.400
+the form that's inside of that,
+
+87
+00:04:48.400 --> 00:04:53.180
+expect toJSON, wrapper.find the form tag,
+
+88
+00:04:53.180 --> 00:04:57.530
+or you can put a data-test on there to find it as well.
+
+89
+00:04:57.530 --> 00:05:02.433
+We expect it to match snapshot
+
+90
+00:05:02.433 --> 00:05:03.766
+toMatchSnapshot.
+
+91
+00:05:06.110 --> 00:05:09.453
+Getting an error, oh it should be a sync, there we go.
+
+92
+00:05:10.500 --> 00:05:13.203
+Sign up is not defined, lowercase u,
+
+93
+00:05:15.220 --> 00:05:18.140
+and now we've written a snapshot.
+
+94
+00:05:18.140 --> 00:05:20.623
+Let's look at our signup.snap.
+
+95
+00:05:22.150 --> 00:05:24.560
+We have our form, the field set,
+
+96
+00:05:24.560 --> 00:05:27.980
+sign up for an account and looks good.
+
+97
+00:05:27.980 --> 00:05:30.710
+So that means it's actually rendering out,
+
+98
+00:05:30.710 --> 00:05:32.810
+working fine for us.
+
+99
+00:05:32.810 --> 00:05:35.420
+Then we actually need to test the mutation,
+
+100
+00:05:35.420 --> 00:05:38.253
+so it calls the mutation properly.
+
+101
+00:05:48.850 --> 00:05:50.050
+Now, this one's a little bit weird
+
+102
+00:05:50.050 --> 00:05:54.070
+because we want to be able to call the mutation,
+
+103
+00:05:54.070 --> 00:05:57.060
+which is sign up, and then we also wanna query
+
+104
+00:05:57.060 --> 00:05:59.430
+the current apolloClient to see
+
+105
+00:05:59.430 --> 00:06:03.240
+if that user is in the Apollo store,
+
+106
+00:06:03.240 --> 00:06:07.270
+and there's not a great way to just directly query
+
+107
+00:06:07.270 --> 00:06:08.809
+the Apollo store because
+
+108
+00:06:08.809 --> 00:06:11.230
+it's not like we can just import it
+
+109
+00:06:11.230 --> 00:06:14.170
+from another file because it's only available
+
+110
+00:06:14.170 --> 00:06:16.300
+to us when we're inside of our provider.
+
+111
+00:06:16.300 --> 00:06:18.200
+We ran into that situation a couple of times
+
+112
+00:06:18.200 --> 00:06:19.580
+in some of our components.
+
+113
+00:06:19.580 --> 00:06:21.250
+So after talking with the Apollo devs,
+
+114
+00:06:21.250 --> 00:06:25.130
+this is the best way to pull the apolloClient out,
+
+115
+00:06:25.130 --> 00:06:27.000
+and that is with the ApolloConsumer,
+
+116
+00:06:27.000 --> 00:06:28.640
+much like we did in some of our components.
+
+117
+00:06:28.640 --> 00:06:30.670
+Let's actually just take a quick look.
+
+118
+00:06:30.670 --> 00:06:33.690
+ApolloConsumer, where did we...
+
+119
+00:06:33.690 --> 00:06:35.540
+We did that in the search.
+
+120
+00:06:35.540 --> 00:06:38.270
+Remember we did this, we imported ApolloConsumer,
+
+121
+00:06:38.270 --> 00:06:41.490
+and then what we did
+
+122
+00:06:43.100 --> 00:06:43.933
+is,
+
+123
+00:06:45.570 --> 00:06:47.960
+we exposed the ApolloConsumer
+
+124
+00:06:47.960 --> 00:06:49.550
+and then that gives us the client,
+
+125
+00:06:49.550 --> 00:06:52.530
+and then we're able to pass that client over
+
+126
+00:06:52.530 --> 00:06:54.370
+to the onChange event,
+
+127
+00:06:54.370 --> 00:06:57.480
+which will allow us to manually fire off these queries,
+
+128
+00:06:57.480 --> 00:06:59.200
+and that's exactly what we're gonna be doing except
+
+129
+00:06:59.200 --> 00:07:00.280
+for searching for items,
+
+130
+00:07:00.280 --> 00:07:02.110
+we're going to be searching
+
+131
+00:07:02.110 --> 00:07:04.970
+for if the user has been logged in or not.
+
+132
+00:07:04.970 --> 00:07:06.810
+So we're gonna make a temporary variable
+
+133
+00:07:06.810 --> 00:07:08.436
+called apolloClient,
+
+134
+00:07:08.436 --> 00:07:10.410
+and that's gonna be set to nothing.
+
+135
+00:07:10.410 --> 00:07:12.840
+Then when we mount our MockedProvider
+
+136
+00:07:12.840 --> 00:07:15.260
+we'll set that apolloClient to the actual client.
+
+137
+00:07:15.260 --> 00:07:18.943
+So const wrapper is equal to mount,
+
+138
+00:07:20.560 --> 00:07:22.583
+and inside of that MockedProvider.
+
+139
+00:07:23.910 --> 00:07:26.370
+The mocks that get passed are the mocks
+
+140
+00:07:26.370 --> 00:07:28.293
+that we created earlier.
+
+141
+00:07:29.370 --> 00:07:31.713
+Inside of that we need the ApolloConsumer,
+
+142
+00:07:36.250 --> 00:07:40.053
+and then inside of that you have a render function,
+
+143
+00:07:41.000 --> 00:07:42.383
+which gives us the client,
+
+144
+00:07:43.490 --> 00:07:46.170
+and then right here we can say apolloClient
+
+145
+00:07:46.170 --> 00:07:47.970
+is equal to the client that was passed.
+
+146
+00:07:47.970 --> 00:07:49.910
+See how we're sorta like grabbing it
+
+147
+00:07:49.910 --> 00:07:51.490
+and throwing it back up a level
+
+148
+00:07:51.490 --> 00:07:53.290
+to that variable that we created?
+
+149
+00:07:53.290 --> 00:07:57.020
+And then we're going to return the signup component.
+
+150
+00:07:59.480 --> 00:08:01.650
+Looks like we didn't import ApolloConsumer.
+
+151
+00:08:01.650 --> 00:08:02.983
+Let's do that real quick.
+
+152
+00:08:16.592 --> 00:08:17.425
+And looking good.
+
+153
+00:08:17.425 --> 00:08:20.310
+So what we should be able to do is,
+
+154
+00:08:20.310 --> 00:08:23.130
+if we await, wait, we should be able
+
+155
+00:08:23.130 --> 00:08:25.890
+to console log the apolloClient
+
+156
+00:08:25.890 --> 00:08:28.170
+and have actual access to the apolloClient.
+
+157
+00:08:28.170 --> 00:08:29.340
+Let's see if that works.
+
+158
+00:08:29.340 --> 00:08:31.610
+Yep, here is our apolloClient that we have here.
+
+159
+00:08:31.610 --> 00:08:33.610
+You see that we have the cache,
+
+160
+00:08:33.610 --> 00:08:35.210
+you have the store,
+
+161
+00:08:35.210 --> 00:08:36.340
+and everything else.
+
+162
+00:08:36.340 --> 00:08:37.810
+This is the query and the mutation.
+
+163
+00:08:37.810 --> 00:08:39.160
+These are the functions that will allow us
+
+164
+00:08:39.160 --> 00:08:40.653
+to manually call the queries and mutations.
+
+165
+00:08:40.653 --> 00:08:42.720
+That is exactly what we're going to do.
+
+166
+00:08:42.720 --> 00:08:45.290
+Good, so let's actually just call wrapper.update,
+
+167
+00:08:45.290 --> 00:08:48.460
+make sure everything is in it's state.
+
+168
+00:08:48.460 --> 00:08:50.267
+Now we wanna fill out the name, the email,
+
+169
+00:08:50.267 --> 00:08:51.690
+and the password fields,
+
+170
+00:08:51.690 --> 00:08:53.610
+and earlier we were doing something like this,
+
+171
+00:08:53.610 --> 00:08:55.693
+wrapper.find.
+
+172
+00:08:57.028 --> 00:08:58.270
+We were looking for the input,
+
+173
+00:08:58.270 --> 00:09:01.340
+and then we were simulating the change event,
+
+174
+00:09:01.340 --> 00:09:02.830
+and then passing this event,
+
+175
+00:09:02.830 --> 00:09:05.240
+and that got like a little bit verbose.
+
+176
+00:09:05.240 --> 00:09:06.450
+So what I'm gonna be doing is I'm gonna write
+
+177
+00:09:06.450 --> 00:09:09.100
+a little reasonable function called type,
+
+178
+00:09:09.100 --> 00:09:12.080
+which will allow us just to pass the wrapper,
+
+179
+00:09:12.080 --> 00:09:13.730
+the field that we wanna fill out,
+
+180
+00:09:13.730 --> 00:09:16.550
+as well as the text that we just wanna fill in to it,
+
+181
+00:09:16.550 --> 00:09:18.840
+so let's just go to the top of this file here,
+
+182
+00:09:18.840 --> 00:09:21.190
+and we're going to make a function called type.
+
+183
+00:09:23.320 --> 00:09:28.050
+That takes in a wrapper, a name, and a value,
+
+184
+00:09:28.050 --> 00:09:31.350
+and what that's going to do is gonna call wrapper.find.
+
+185
+00:09:31.350 --> 00:09:34.820
+We're going to search, use back text here, input,
+
+186
+00:09:34.820 --> 00:09:39.820
+with a name that is equal to the name that was passed.
+
+187
+00:09:39.950 --> 00:09:41.480
+Then we're going to simulate
+
+188
+00:09:42.860 --> 00:09:43.823
+the change event,
+
+189
+00:09:47.860 --> 00:09:50.210
+and then pass the target
+
+190
+00:09:50.210 --> 00:09:54.210
+with the name and the value that we have set.
+
+191
+00:09:54.210 --> 00:09:56.580
+Now we should be able to, oh that should not say type,
+
+192
+00:09:56.580 --> 00:09:57.780
+that should say wrapper.
+
+193
+00:09:58.860 --> 00:10:01.230
+Now we have this nice little handy, dandy type function.
+
+194
+00:10:01.230 --> 00:10:02.907
+We can go back down here,
+
+195
+00:10:02.907 --> 00:10:05.943
+and we should be able to just call type.
+
+196
+00:10:11.630 --> 00:10:16.630
+Wrapper, name, me.name.
+
+197
+00:10:18.970 --> 00:10:20.363
+Then same with the email,
+
+198
+00:10:21.940 --> 00:10:26.900
+and then the password it's going to be wes.
+
+199
+00:10:26.900 --> 00:10:30.710
+So it's a nice little clean implementation of how it works.
+
+200
+00:10:30.710 --> 00:10:32.020
+That is a string.
+
+201
+00:10:32.020 --> 00:10:35.070
+Nice little clean implementation of typing into it.
+
+202
+00:10:35.070 --> 00:10:36.990
+It's kind of a shame that Jester Enzyme
+
+203
+00:10:36.990 --> 00:10:38.790
+doesn't have something simple to that,
+
+204
+00:10:38.790 --> 00:10:41.580
+like type in input where you have to
+
+205
+00:10:41.580 --> 00:10:43.520
+write all of this simulating change
+
+206
+00:10:43.520 --> 00:10:44.630
+and pass an entire event,
+
+207
+00:10:44.630 --> 00:10:47.627
+but this is kind of a nice way to go about it.
+
+208
+00:10:47.627 --> 00:10:50.090
+Then we'll update the wrapper again,
+
+209
+00:10:50.090 --> 00:10:51.140
+because we wanna make sure that
+
+210
+00:10:51.140 --> 00:10:53.130
+the values are actually in there.
+
+211
+00:10:53.130 --> 00:10:55.023
+Wrapper.find.
+
+212
+00:10:56.730 --> 00:11:01.730
+We'll find the form and we will simulate a submit on that,
+
+213
+00:11:01.900 --> 00:11:03.800
+we'll await wait.
+
+214
+00:11:03.800 --> 00:11:06.120
+I find that you don't always have to do this,
+
+215
+00:11:06.120 --> 00:11:07.440
+but I was finding that like one
+
+216
+00:11:07.440 --> 00:11:09.820
+in every like 10 times the tests ran,
+
+217
+00:11:09.820 --> 00:11:12.760
+I got into like a weird little race condition,
+
+218
+00:11:12.760 --> 00:11:14.610
+so by putting this in here it ensures
+
+219
+00:11:14.610 --> 00:11:18.410
+that my events are always fired in the right order.
+
+220
+00:11:18.410 --> 00:11:20.560
+Then we are going to query the user
+
+221
+00:11:20.560 --> 00:11:21.900
+out of the apolloClient,
+
+222
+00:11:21.900 --> 00:11:26.900
+so query the user out of the apolloClient.
+
+223
+00:11:29.970 --> 00:11:33.587
+So const user = await apolloClient.query,
+
+224
+00:11:36.873 --> 00:11:39.680
+and the query is going to be the current user query.
+
+225
+00:11:39.680 --> 00:11:40.980
+You may be saying like, Wes,
+
+226
+00:11:40.980 --> 00:11:42.680
+why are we querying the current user?
+
+227
+00:11:42.680 --> 00:11:45.143
+Well, if we look at the signup.js,
+
+228
+00:11:47.080 --> 00:11:49.323
+and we look at our form submit,
+
+229
+00:11:50.160 --> 00:11:53.250
+we are running this signup function,
+
+230
+00:11:53.250 --> 00:11:55.170
+and then when that's done it's going
+
+231
+00:11:55.170 --> 00:11:57.210
+to re-fetch the queries of the current user.
+
+232
+00:11:57.210 --> 00:12:00.390
+So once this mutation is successfully finished,
+
+233
+00:12:00.390 --> 00:12:03.610
+it should have the current user in our state.
+
+234
+00:12:03.610 --> 00:12:06.460
+So we're gonna try that, expect the user...
+
+235
+00:12:06.460 --> 00:12:08.170
+Let's actually just console that log first,
+
+236
+00:12:08.170 --> 00:12:10.163
+just make sure we're working.
+
+237
+00:12:11.690 --> 00:12:12.523
+What is this?
+
+238
+00:12:12.523 --> 00:12:14.880
+Simulate, uh, buh, buh, buh.
+
+239
+00:12:14.880 --> 00:12:17.780
+Got a bit of an error here, let's figure that out.
+
+240
+00:12:17.780 --> 00:12:19.240
+No more mocked responses.
+
+241
+00:12:19.240 --> 00:12:21.455
+This is an error I get all the time.
+
+242
+00:12:21.455 --> 00:12:23.160
+It usually it has to do something
+
+243
+00:12:23.160 --> 00:12:25.770
+with the way that I've typed my mocks,
+
+244
+00:12:25.770 --> 00:12:28.990
+so it's telling us that we are passing the name,
+
+245
+00:12:28.990 --> 00:12:32.193
+the password, and the email,
+
+246
+00:12:34.120 --> 00:12:35.900
+and calling signup.
+
+247
+00:12:35.900 --> 00:12:37.913
+So let's look at our mocks real quick.
+
+248
+00:12:44.420 --> 00:12:47.830
+So I just spent probably an hour
+
+249
+00:12:47.830 --> 00:12:50.650
+on debugging why this wasn't working,
+
+250
+00:12:50.650 --> 00:12:52.050
+because this error tells me
+
+251
+00:12:52.050 --> 00:12:56.400
+that there's no more mocked responses for the mutation
+
+252
+00:12:56.400 --> 00:12:58.560
+with the following piece of detail,
+
+253
+00:12:58.560 --> 00:13:01.120
+and I console log everything and it all lined up,
+
+254
+00:13:01.120 --> 00:13:04.080
+and then I finally figured out that
+
+255
+00:13:05.110 --> 00:13:08.490 line:15% 
+the email in the original component,
+
+256
+00:13:08.490 --> 00:13:10.260 line:15% 
+the signup component has to be first,
+
+257
+00:13:10.260 --> 00:13:13.020 line:15% 
+so it has to be email, name, password,
+
+258
+00:13:13.020 --> 00:13:14.590 line:15% 
+that makes it pass,
+
+259
+00:13:14.590 --> 00:13:17.720 line:15% 
+but if I put it name, email, password,
+
+260
+00:13:17.720 --> 00:13:19.810 line:15% 
+it breaks, and I think that's because
+
+261
+00:13:19.810 --> 00:13:22.290 line:15% 
+that's what it's lined up to
+
+262
+00:13:23.290 --> 00:13:25.630 line:15% 
+with the variables that get passed here.
+
+263
+00:13:25.630 --> 00:13:29.540 line:15% 
+So now it's, what is it, name, email, password?
+
+264
+00:13:29.540 --> 00:13:33.320 line:15% 
+So if I change it to name, email, password, it passes.
+
+265
+00:13:33.320 --> 00:13:37.620 line:15% 
+So, why the order of the variables being passed
+
+266
+00:13:37.620 --> 00:13:40.850 line:15% 
+has to match the order of the state?
+
+267
+00:13:40.850 --> 00:13:45.133 line:15% 
+Or the order of the variables being sent here, I don't know.
+
+268
+00:13:47.261 --> 00:13:51.370 line:15% 
+I just can't figure out exactly what's going on.
+
+269
+00:13:51.370 --> 00:13:54.990 line:15% 
+I'm sure it's something simple that I'm totally missing,
+
+270
+00:13:54.990 --> 00:13:57.810 line:15% 
+but if you are also hitting that error,
+
+271
+00:13:57.810 --> 00:13:59.540 line:15% 
+make sure that your state
+
+272
+00:13:59.540 --> 00:14:03.782 line:15% 
+has name, email, password, and this is name, email...
+
+273
+00:14:03.782 --> 00:14:04.615 line:15% 
+That they're in the exact same order.
+
+274
+00:14:04.615 --> 00:14:06.510 line:15% 
+So that is up and running,
+
+275
+00:14:06.510 --> 00:14:08.063
+a bit of an odd one.
+
+276
+00:14:09.318 --> 00:14:11.880
+Let's keep rolling here
+
+277
+00:14:11.880 --> 00:14:12.770
+We got our query.
+
+278
+00:14:12.770 --> 00:14:15.140
+Now we are console logging the user.
+
+279
+00:14:15.140 --> 00:14:18.750
+So if we take a look at what we've got,
+
+280
+00:14:18.750 --> 00:14:19.770
+you see the data.
+
+281
+00:14:19.770 --> 00:14:22.440
+It says me, the ID, the email, the name,
+
+282
+00:14:22.440 --> 00:14:23.910
+and then a permissions and stuff.
+
+283
+00:14:23.910 --> 00:14:26.850
+So what we're gonna check is that this fake user
+
+284
+00:14:26.850 --> 00:14:29.810
+that signed up is now in the apolloClient,
+
+285
+00:14:29.810 --> 00:14:34.810
+so expect the user.data.me to match object me.
+
+286
+00:14:38.630 --> 00:14:40.960
+Bum, looks like a little error,
+
+287
+00:14:40.960 --> 00:14:43.880
+so it's expecting this object,
+
+288
+00:14:43.880 --> 00:14:46.590
+got this object, the difference is that
+
+289
+00:14:46.590 --> 00:14:50.720
+it is expecting the orders Array of empty,
+
+290
+00:14:50.720 --> 00:14:51.553
+and this one isn't,
+
+291
+00:14:51.553 --> 00:14:55.080
+so I wonder if we open up our user component,
+
+292
+00:14:55.080 --> 00:14:58.440
+we are not passing the orders,
+
+293
+00:14:58.440 --> 00:15:00.423
+for each order we'll grab the ID.
+
+294
+00:15:01.580 --> 00:15:03.680
+And everything passes because our query
+
+295
+00:15:03.680 --> 00:15:06.410
+didn't have a orders and it should.
+
+296
+00:15:06.410 --> 00:15:09.595
+So that is how we are testing the signin.
+
+297
+00:15:09.595 --> 00:15:12.860
+We want to expose the apolloClient
+
+298
+00:15:12.860 --> 00:15:14.640
+and then manually fire off these queries
+
+299
+00:15:14.640 --> 00:15:16.630
+against it to see that the data is
+
+300
+00:15:16.630 --> 00:15:19.763
+actually being set into our Apollo store.
+

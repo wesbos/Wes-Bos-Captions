@@ -1,0 +1,1154 @@
+﻿WEBVTT
+
+1
+00:00:01.010 --> 00:00:02.950
+<v Man>Alright, picking it up where we left off.</v>
+
+2
+00:00:02.950 --> 00:00:05.540
+We wanna convert these cart items that we have here
+
+3
+00:00:05.540 --> 00:00:08.440
+to legitimate order items.
+
+4
+00:00:08.440 --> 00:00:10.720
+So, we're going to actually make an array
+
+5
+00:00:10.720 --> 00:00:11.743
+of order items.
+
+6
+00:00:11.743 --> 00:00:12.620
+I'll do this.
+
+7
+00:00:12.620 --> 00:00:16.543
+So the const orderItems is equal to.
+
+8
+00:00:16.543 --> 00:00:18.700
+I wanna take the user's cart
+
+9
+00:00:18.700 --> 00:00:21.460
+and we're gonna map over each of the cart items
+
+10
+00:00:21.460 --> 00:00:22.980
+in the user's cart.
+
+11
+00:00:22.980 --> 00:00:24.690
+So, we'll say cartItem
+
+12
+00:00:24.690 --> 00:00:27.300
+and for each one, we're just gonna return
+
+13
+00:00:27.300 --> 00:00:28.640
+let's call an orderItem.
+
+14
+00:00:28.640 --> 00:00:30.750
+So, we'll give ourselves a block here.
+
+15
+00:00:30.750 --> 00:00:32.990
+And we need to do a little bit of work inside of here.
+
+16
+00:00:32.990 --> 00:00:35.670
+So, first we'll say const orderItem,
+
+17
+00:00:35.670 --> 00:00:37.160
+so this is a singular version,
+
+18
+00:00:37.160 --> 00:00:38.940
+is equal to an object.
+
+19
+00:00:38.940 --> 00:00:41.130
+And then inside of that object, we need.
+
+20
+00:00:41.130 --> 00:00:42.220
+Well, let's just take a quick look
+
+21
+00:00:42.220 --> 00:00:44.150
+at our data model real quick.
+
+22
+00:00:44.150 --> 00:00:47.340
+Our order item needs, we don't need to give it ID.
+
+23
+00:00:47.340 --> 00:00:48.173
+That will be created.
+
+24
+00:00:48.173 --> 00:00:52.100
+It needs a title, description, image, large image, price.
+
+25
+00:00:52.100 --> 00:00:54.260
+All of those things come from the item
+
+26
+00:00:54.260 --> 00:00:56.610
+but we also need a quantity and a user
+
+27
+00:00:56.610 --> 00:00:58.380
+which is not coming from the item
+
+28
+00:00:58.380 --> 00:01:00.420
+that it's being pulled off of.
+
+29
+00:01:00.420 --> 00:01:01.453
+So say quantity.
+
+30
+00:01:03.960 --> 00:01:07.460
+And that is coming from the cartItem.quantity.
+
+31
+00:01:07.460 --> 00:01:10.070
+And then the user, we'll just going to relate it
+
+32
+00:01:10.070 --> 00:01:12.223
+to the currently logged in user.
+
+33
+00:01:13.670 --> 00:01:17.910
+So say user, connect to where the ID
+
+34
+00:01:17.910 --> 00:01:19.423
+is equal to the user ID.
+
+35
+00:01:21.060 --> 00:01:24.197
+And that was queried right here.
+
+36
+00:01:24.197 --> 00:01:28.040
+You can either just use the user ID or use the users.ID
+
+37
+00:01:28.040 --> 00:01:29.900
+that we created from the database.
+
+38
+00:01:29.900 --> 00:01:31.700
+Then we just need to take all of the fields
+
+39
+00:01:31.700 --> 00:01:35.190
+that are on the item and take a sort o' copy, paste.
+
+40
+00:01:35.190 --> 00:01:38.430
+Not do a relationship, we talked about that earlier.
+
+41
+00:01:38.430 --> 00:01:40.370
+We don't wanna get into a relationship here.
+
+42
+00:01:40.370 --> 00:01:42.590
+We just wanna take a copy of every single field
+
+43
+00:01:42.590 --> 00:01:44.622
+and because it is a one level field,
+
+44
+00:01:44.622 --> 00:01:46.350
+we can just do ...cartItem
+
+45
+00:01:48.540 --> 00:01:49.600
+and what that will do,
+
+46
+00:01:49.600 --> 00:01:51.620
+is it will take a copy of every single field.
+
+47
+00:01:51.620 --> 00:01:55.210
+And let me show you real quick, a side example of how
+
+48
+00:01:55.210 --> 00:01:56.513
+this actually works.
+
+49
+00:01:58.380 --> 00:02:03.380
+So if I have a const wes name is equal to wes,
+
+50
+00:02:06.250 --> 00:02:08.310
+and if I were to make a new wes,
+
+51
+00:02:08.310 --> 00:02:11.520
+const wes2 is equal to wes.
+
+52
+00:02:11.520 --> 00:02:16.520
+If I were to change wes2's name to Wesley,
+
+53
+00:02:17.720 --> 00:02:21.640
+then wes is also updated and that's not what we want
+
+54
+00:02:21.640 --> 00:02:24.110
+because that's just a reference to the actual object.
+
+55
+00:02:24.110 --> 00:02:26.480
+We actually wanna take a copy of all the fields.
+
+56
+00:02:26.480 --> 00:02:27.313
+So what we can do is
+
+57
+00:02:27.313 --> 00:02:32.170
+we can say const wes3 is equal to ...wes.
+
+58
+00:02:33.090 --> 00:02:35.620
+Now, wes3 has the name of Wesley
+
+59
+00:02:35.620 --> 00:02:38.570
+but if were change the name to westerhoff,
+
+60
+00:02:41.110 --> 00:02:45.430
+then wes is still Wesley but wes3 is westerhoff.
+
+61
+00:02:46.330 --> 00:02:49.510
+So, by spreading using an object spread,
+
+62
+00:02:49.510 --> 00:02:52.240
+that's a cheap way to do a top level copy
+
+63
+00:02:52.240 --> 00:02:53.170
+of all of the fields
+
+64
+00:02:53.170 --> 00:02:55.640
+and that's exactly what we're doing right here.
+
+65
+00:02:55.640 --> 00:02:57.000
+A little bit of down side to that is
+
+66
+00:02:57.000 --> 00:02:59.650
+we're actually gonna be copying the ID of the cart item
+
+67
+00:02:59.650 --> 00:03:01.080
+which is not what we want.
+
+68
+00:03:01.080 --> 00:03:02.090
+So we'll delete that.
+
+69
+00:03:02.090 --> 00:03:05.110
+We'll delete the orderItem.Id
+
+70
+00:03:05.110 --> 00:03:10.110
+and then we'll just return the orderItem from this map
+
+71
+00:03:10.370 --> 00:03:12.920
+so that will take a copy of all of the fields,
+
+72
+00:03:12.920 --> 00:03:15.740
+add the quantity, connect the user, delete the ID
+
+73
+00:03:15.740 --> 00:03:16.760
+and return it.
+
+74
+00:03:16.760 --> 00:03:21.760
+And what we're gonna end up with is an array of order items
+
+75
+00:03:22.120 --> 00:03:25.420
+that have been disconnected from the actual item.
+
+76
+00:03:25.420 --> 00:03:28.063
+Step five is we actually wanna create the order.
+
+77
+00:03:30.320 --> 00:03:34.840
+So, we'll say const the order is equal to await
+
+78
+00:03:34.840 --> 00:03:37.793
+ctx.db.mutation.createorder.
+
+79
+00:03:40.740 --> 00:03:43.980
+And we wanna pass some data for the order
+
+80
+00:03:44.870 --> 00:03:47.170
+and that data's gonna have the total,
+
+81
+00:03:47.170 --> 00:03:49.740
+it's gonna have the charge.amount.
+
+82
+00:03:49.740 --> 00:03:53.400
+Remember that charge is coming back from stripe
+
+83
+00:03:53.400 --> 00:03:55.960
+and charge will have an amount on it.
+
+84
+00:03:55.960 --> 00:03:57.270
+So, charge.amount.
+
+85
+00:03:57.270 --> 00:03:59.700
+The charge field is gonna be the charge.id
+
+86
+00:03:59.700 --> 00:04:02.280
+and that's the actual kind o' transacted ID
+
+87
+00:04:02.280 --> 00:04:05.890
+if we ever need to pull back to stripe for any reason.
+
+88
+00:04:05.890 --> 00:04:08.927
+We can use that ID to reference the transaction.
+
+89
+00:04:08.927 --> 00:04:11.880
+The items that are inside of it,
+
+90
+00:04:11.880 --> 00:04:15.470
+so we are creating an order which is this,
+
+91
+00:04:15.470 --> 00:04:18.690
+has a relationship to an array of order items.
+
+92
+00:04:18.690 --> 00:04:22.340
+So we can simply here say the items
+
+93
+00:04:22.340 --> 00:04:25.520
+and then we use a create order items
+
+94
+00:04:25.520 --> 00:04:28.690
+and I love this about Prisma because, orderItems.
+
+95
+00:04:28.690 --> 00:04:30.490
+I love this about Prisma because
+
+96
+00:04:30.490 --> 00:04:33.480
+what we did here is we're creating one type here
+
+97
+00:04:33.480 --> 00:04:37.010
+which is an order, and then we are actually just passing it
+
+98
+00:04:37.010 --> 00:04:38.710
+an array of other items
+
+99
+00:04:38.710 --> 00:04:40.458
+and it's gonna create us.
+
+100
+00:04:40.458 --> 00:04:43.026
+If we have three cart items,
+
+101
+00:04:43.026 --> 00:04:45.440
+it's gonna convert all three of them
+
+102
+00:04:45.440 --> 00:04:47.510
+over to orderItems for us
+
+103
+00:04:47.510 --> 00:04:50.830
+and it does it all in one swoop
+
+104
+00:04:50.830 --> 00:04:53.350
+rather than us having to create them,
+
+105
+00:04:53.350 --> 00:04:55.740
+save them to the database, save the IDs,
+
+106
+00:04:55.740 --> 00:04:56.930
+and then pass them here,
+
+107
+00:04:56.930 --> 00:04:58.830
+it will just do it all in one go
+
+108
+00:04:58.830 --> 00:05:00.070
+and all in a single request.
+
+109
+00:05:00.070 --> 00:05:01.530
+So big fan of that.
+
+110
+00:05:01.530 --> 00:05:03.490
+Then we also wanna take the user
+
+111
+00:05:03.490 --> 00:05:08.073
+and connect the user where the ID is equal to the userId.
+
+112
+00:05:10.020 --> 00:05:12.120
+And I think that is in good shape.
+
+113
+00:05:12.120 --> 00:05:13.433
+We are awaiting it.
+
+114
+00:05:15.400 --> 00:05:18.460
+Number six, what we need to do is clean up the user's cart
+
+115
+00:05:18.460 --> 00:05:20.113
+and delete the cart items.
+
+116
+00:05:21.250 --> 00:05:26.250
+So say const cartItemIds is equal to user.cart.map
+
+117
+00:05:28.480 --> 00:05:31.690
+cartItem, cartItem.id
+
+118
+00:05:31.690 --> 00:05:35.260
+and then will give us an array of all of the IDs
+
+119
+00:05:35.260 --> 00:05:37.620
+that are currently in the user's cart
+
+120
+00:05:37.620 --> 00:05:41.050
+and then we can use that to delete all of them.
+
+121
+00:05:41.050 --> 00:05:46.050
+We'll say await ctx.db.mutation.deleteManyCartItems.
+
+122
+00:05:50.736 --> 00:05:51.569
+Ha ha!
+
+123
+00:05:51.569 --> 00:05:52.750
+And that's another beauty of Prisma.
+
+124
+00:05:52.750 --> 00:05:55.539
+It just gives you all of these really flexible queries
+
+125
+00:05:55.539 --> 00:05:58.780
+that come out of the box with it.
+
+126
+00:05:58.780 --> 00:06:03.780
+And we're gonna say where the ID is in the cart item IDs.
+
+127
+00:06:07.680 --> 00:06:09.710
+So what we did here is we got an array
+
+128
+00:06:09.710 --> 00:06:11.430
+of all of the cart items
+
+129
+00:06:11.430 --> 00:06:12.710
+that were in the user's cart
+
+130
+00:06:12.710 --> 00:06:16.370
+and then we ran this query that says delete it if
+
+131
+00:06:16.370 --> 00:06:20.310
+the ID is in the array of cart item IDs.
+
+132
+00:06:20.310 --> 00:06:24.280
+And then finally, we wanna to return the order to the client
+
+133
+00:06:24.280 --> 00:06:27.990
+so we say return order and that will fulfill,
+
+134
+00:06:27.990 --> 00:06:30.290
+this is the order that we create here,
+
+135
+00:06:30.290 --> 00:06:33.070
+and I believe that is it.
+
+136
+00:06:33.070 --> 00:06:35.760
+What we should then do on the client side is
+
+137
+00:06:35.760 --> 00:06:37.360
+be able to console log that order
+
+138
+00:06:37.360 --> 00:06:39.180
+and then we're actually gonna change the page.
+
+139
+00:06:39.180 --> 00:06:43.100
+So, in order to test that, let's go back to take my money
+
+140
+00:06:44.940 --> 00:06:48.130
+and this create order right here, we're just running it
+
+141
+00:06:48.130 --> 00:06:50.540
+but if we were to actually capture the result.
+
+142
+00:06:50.540 --> 00:06:55.540
+So say const order is equal to await,
+
+143
+00:06:55.640 --> 00:06:58.513
+then we'll change this onToken to async.
+
+144
+00:07:00.810 --> 00:07:02.640
+Then we can go down here
+
+145
+00:07:02.640 --> 00:07:07.250
+and just simply console.log the order
+
+146
+00:07:07.250 --> 00:07:08.590
+so we can get the information.
+
+147
+00:07:08.590 --> 00:07:10.870
+So, if everything went according to plan,
+
+148
+00:07:10.870 --> 00:07:12.990
+which it usually doesn't,
+
+149
+00:07:12.990 --> 00:07:14.720
+we should see the entire order
+
+150
+00:07:14.720 --> 00:07:16.650
+that has been created in our console.
+
+151
+00:07:16.650 --> 00:07:19.630
+We should also be able to go into Prisma and see.
+
+152
+00:07:19.630 --> 00:07:21.483
+So let's try this out ourselves.
+
+153
+00:07:22.550 --> 00:07:25.150
+I'm gonna give it a refresh so we don't have any issues.
+
+154
+00:07:25.150 --> 00:07:27.883
+We'll go into the cart, we'll check out.
+
+155
+00:07:29.460 --> 00:07:30.973
+Pay, da da da.
+
+156
+00:07:32.110 --> 00:07:33.230
+Cha ching.
+
+157
+00:07:33.230 --> 00:07:36.460
+Then it goes off to the backend and we get the token
+
+158
+00:07:36.460 --> 00:07:38.110
+and then what comes back up.
+
+159
+00:07:38.110 --> 00:07:39.443
+Bit of an error here.
+
+160
+00:07:42.610 --> 00:07:45.340
+V2 data got invalid value.
+
+161
+00:07:45.340 --> 00:07:48.340
+What did we do that was wrong?
+
+162
+00:07:48.340 --> 00:07:51.180
+Let's jump back to our database.
+
+163
+00:07:51.180 --> 00:07:53.420
+If you don't wanna show this ugly error to the user,
+
+164
+00:07:53.420 --> 00:07:57.150
+you could also go to the create order
+
+165
+00:07:57.150 --> 00:07:58.530
+and catch the error
+
+166
+00:07:58.530 --> 00:07:59.615
+and then when you catch it,
+
+167
+00:07:59.615 --> 00:08:02.740
+you can throw your own custom error
+
+168
+00:08:02.740 --> 00:08:04.280
+based on what happened there.
+
+169
+00:08:04.280 --> 00:08:06.520
+In this case, I'm just throwing it back to the user.
+
+170
+00:08:06.520 --> 00:08:08.061
+Keep it simple.
+
+171
+00:08:08.061 --> 00:08:10.210
+We got a bit of an error here though.
+
+172
+00:08:10.210 --> 00:08:12.410
+Let's take a look and see what it is.
+
+173
+00:08:12.410 --> 00:08:15.800
+Variable V data got invalid value.
+
+174
+00:08:15.800 --> 00:08:16.710
+Total.
+
+175
+00:08:16.710 --> 00:08:17.920
+Charge.
+
+176
+00:08:17.920 --> 00:08:18.753
+Items.
+
+177
+00:08:23.280 --> 00:08:26.910
+Field value.items.create.title was required
+
+178
+00:08:26.910 --> 00:08:30.040
+so it's saying that
+
+179
+00:08:30.040 --> 00:08:32.300
+when we created the cart item,
+
+180
+00:08:32.300 --> 00:08:34.850
+it's not getting the title of the item.
+
+181
+00:08:34.850 --> 00:08:35.683
+I see it.
+
+182
+00:08:35.683 --> 00:08:38.200
+It's 'cause I spread the cart item into here
+
+183
+00:08:38.200 --> 00:08:40.580
+and we need to spread the cart item.item, why?
+
+184
+00:08:40.580 --> 00:08:42.990
+Because if we look at our data model,
+
+185
+00:08:42.990 --> 00:08:46.070
+our cart item, or is it right here,
+
+186
+00:08:46.070 --> 00:08:48.130
+has a relationship to item
+
+187
+00:08:48.130 --> 00:08:50.480
+and the item is what actually has
+
+188
+00:08:50.480 --> 00:08:52.390
+the title, the description, the image, the large image,
+
+189
+00:08:52.390 --> 00:08:54.020
+the price, and the user on it.
+
+190
+00:08:54.020 --> 00:08:56.610
+So, if we spread not the cart item,
+
+191
+00:08:56.610 --> 00:08:59.480
+but the cart item's related item,
+
+192
+00:08:59.480 --> 00:09:01.130
+then that should work.
+
+193
+00:09:01.130 --> 00:09:02.930
+Wha wha, let's try it one more time.
+
+194
+00:09:21.830 --> 00:09:24.110
+Another error field.
+
+195
+00:09:24.110 --> 00:09:28.520
+Large image of required type string was not provided.
+
+196
+00:09:28.520 --> 00:09:30.330
+So, let's take a look at this error.
+
+197
+00:09:30.330 --> 00:09:32.000
+Make this a little bit bigger.
+
+198
+00:09:32.000 --> 00:09:34.623
+Now it's telling us that there's no large image.
+
+199
+00:09:36.100 --> 00:09:40.290
+Title, price, description, image.
+
+200
+00:09:40.290 --> 00:09:42.760
+Ah, I think I know what happened.
+
+201
+00:09:42.760 --> 00:09:46.350
+It's up here where we queried the user's cart
+
+202
+00:09:46.350 --> 00:09:48.140
+in for every item.
+
+203
+00:09:48.140 --> 00:09:50.360
+We queried the title, the price, the ID description,
+
+204
+00:09:50.360 --> 00:09:53.400
+the image but we did not query the large image
+
+205
+00:09:53.400 --> 00:09:56.120
+and therefore, it didn't have the data that it needs
+
+206
+00:09:56.120 --> 00:09:56.960
+in order to make it.
+
+207
+00:09:56.960 --> 00:10:01.008
+So, as great as GraphQL is, because is it so rigid,
+
+208
+00:10:01.008 --> 00:10:03.720
+this is the problem with it is if you forget a little thing,
+
+209
+00:10:03.720 --> 00:10:06.560
+it will error out on you which is a good thing
+
+210
+00:10:06.560 --> 00:10:07.870
+in the long run because
+
+211
+00:10:07.870 --> 00:10:09.610
+we don't wanna be making silly mistakes like that.
+
+212
+00:10:09.610 --> 00:10:11.270
+So, let's try that once more.
+
+213
+00:10:11.270 --> 00:10:13.450
+I bet it will work this time.
+
+214
+00:10:13.450 --> 00:10:15.030
+Check out.
+
+215
+00:10:15.030 --> 00:10:18.726
+Four two, do do do,
+
+216
+00:10:18.726 --> 00:10:20.133
+da da da.
+
+217
+00:10:24.060 --> 00:10:27.330
+Boom, it worked.
+
+218
+00:10:27.330 --> 00:10:29.400
+Let's take a look at the data we got here.
+
+219
+00:10:29.400 --> 00:10:32.360
+Gives us the charge, the ID, the total, no items
+
+220
+00:10:32.360 --> 00:10:35.033
+but if we check at our app.prisma.io.
+
+221
+00:10:37.220 --> 00:10:38.570
+Take a look at our SNPM fix
+
+222
+00:10:39.530 --> 00:10:41.583
+and look at our orders.
+
+223
+00:10:43.250 --> 00:10:44.243
+Open that up.
+
+224
+00:10:45.810 --> 00:10:47.310
+You'll see that our items haven't.
+
+225
+00:10:47.310 --> 00:10:49.180
+Only reason it's showing as null is 'cause we haven't
+
+226
+00:10:49.180 --> 00:10:52.670
+actually specifically queried any of the data in it
+
+227
+00:10:52.670 --> 00:10:54.160
+and then if we go take this one
+
+228
+00:10:54.160 --> 00:10:57.780
+and then end five, and go to your order item,
+
+229
+00:10:57.780 --> 00:11:00.080
+you'll see that these are the three order items
+
+230
+00:11:00.080 --> 00:11:01.730
+that I have then created.
+
+231
+00:11:01.730 --> 00:11:04.080
+That one I just said is a pair of shoes
+
+232
+00:11:04.080 --> 00:11:06.870
+and we have the image, the large image, the price,
+
+233
+00:11:06.870 --> 00:11:08.190
+the quantity, the title,
+
+234
+00:11:08.190 --> 00:11:11.320
+and the user that that order item was associated with.
+
+235
+00:11:11.320 --> 00:11:13.140
+However, got one more issue here.
+
+236
+00:11:13.140 --> 00:11:16.520
+Cannot read property item of undefined.
+
+237
+00:11:16.520 --> 00:11:18.640
+I bet it has to do with something,
+
+238
+00:11:18.640 --> 00:11:20.890
+if we open up our,
+
+239
+00:11:20.890 --> 00:11:21.930
+not our cart.
+
+240
+00:11:21.930 --> 00:11:24.140
+It's telling us it cannot read item of undefined.
+
+241
+00:11:24.140 --> 00:11:25.410
+So, we search for .item.
+
+242
+00:11:25.410 --> 00:11:27.110
+That's nowhere in our cart
+
+243
+00:11:27.110 --> 00:11:30.020
+but it's telling us it's in take my money.
+
+244
+00:11:30.020 --> 00:11:32.540
+So, we search for .item.
+
+245
+00:11:32.540 --> 00:11:33.650
+Ahh, you know what?
+
+246
+00:11:33.650 --> 00:11:35.530
+It's because our cart is now empty
+
+247
+00:11:35.530 --> 00:11:37.150
+and we're assuming there's a cart item.
+
+248
+00:11:37.150 --> 00:11:39.470
+So we can add another one here that says
+
+249
+00:11:39.470 --> 00:11:41.293
+me.cart.lenght
+
+250
+00:11:44.400 --> 00:11:46.190
+that checks if there's an actual length
+
+251
+00:11:46.190 --> 00:11:47.640
+and I will bet that'll fix it.
+
+252
+00:11:47.640 --> 00:11:49.640
+There we go 'cause our cart is now empty.
+
+253
+00:11:49.640 --> 00:11:51.460
+So just add that check to see
+
+254
+00:11:51.460 --> 00:11:53.532
+if there's even any items in the cart.
+
+255
+00:11:53.532 --> 00:11:55.650
+Then check if there's an item in the cart.
+
+256
+00:11:55.650 --> 00:11:58.120
+And then check if there's an image in the cart.
+
+257
+00:11:58.120 --> 00:12:00.080
+So, there's coming to JavaScript soon
+
+258
+00:12:00.080 --> 00:12:02.040
+that will allow us to do this deep check
+
+259
+00:12:02.040 --> 00:12:05.250
+so we don't have to do, keep checking every level deep.
+
+260
+00:12:05.250 --> 00:12:07.200
+But now our cart is empty.
+
+261
+00:12:07.200 --> 00:12:08.440
+Looks like all of the data
+
+262
+00:12:08.440 --> 00:12:11.220
+is properly being stored in our database.
+
+263
+00:12:11.220 --> 00:12:13.010
+There's one last issue that we're getting here
+
+264
+00:12:13.010 --> 00:12:15.040
+and that is when the cart is totally empty,
+
+265
+00:12:15.040 --> 00:12:16.530
+we still have this checkout button
+
+266
+00:12:16.530 --> 00:12:18.900
+and then it's gonna complain to us that
+
+267
+00:12:18.900 --> 00:12:20.900
+we failed prop types because there's no image,
+
+268
+00:12:20.900 --> 00:12:22.760
+there's no number, and all these things aren't being
+
+269
+00:12:22.760 --> 00:12:24.860
+passed to the prop type
+
+270
+00:12:24.860 --> 00:12:26.740
+and that's because we should not be rendering out
+
+271
+00:12:26.740 --> 00:12:29.220
+this checkout button unless there's actually something
+
+272
+00:12:29.220 --> 00:12:30.550
+in the user's cart.
+
+273
+00:12:30.550 --> 00:12:33.920
+So a quick solution to that is we can go to our cart.js,
+
+274
+00:12:33.920 --> 00:12:36.450
+and we can go above the take my money
+
+275
+00:12:36.450 --> 00:12:39.780
+and we can just simply say if me.cart.length,
+
+276
+00:12:39.780 --> 00:12:42.140
+if it is anything other than zero,
+
+277
+00:12:42.140 --> 00:12:44.800
+it will be truthy then we can just return
+
+278
+00:12:44.800 --> 00:12:49.300
+this take my money button and that should solve it for us.
+
+279
+00:12:49.300 --> 00:12:52.340
+Open it up, there's nothing in the cart showing up,
+
+280
+00:12:52.340 --> 00:12:55.170
+but if I were to add something to my cart,
+
+281
+00:12:55.170 --> 00:12:57.737
+you see that that cart button immediately starts showing up
+
+282
+00:12:57.737 --> 00:13:00.090
+and I can go ahead and use it.
+
+283
+00:13:00.090 --> 00:13:01.710
+In the next video, what we're gonna do is
+
+284
+00:13:01.710 --> 00:13:04.710
+actually get to displaying single orders
+
+285
+00:13:04.710 --> 00:13:07.980
+so as soon as somebody actually comes back with an order,
+
+286
+00:13:07.980 --> 00:13:10.050
+we should display that order on the page
+
+287
+00:13:10.050 --> 00:13:11.650
+and then we should also have another page
+
+288
+00:13:11.650 --> 00:13:13.803
+that shows us all of the user's orders.
+

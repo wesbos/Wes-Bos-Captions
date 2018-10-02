@@ -1,0 +1,1062 @@
+﻿WEBVTT
+
+1
+00:00:01.070 --> 00:00:03.560
+<v ->Alright, let's talk about sending emails.</v>
+
+2
+00:00:03.560 --> 00:00:06.170
+This is obviously gonna be done all on the server side.
+
+3
+00:00:06.170 --> 00:00:08.340
+And in order to send email, first you need
+
+4
+00:00:08.340 --> 00:00:10.730
+something that will actually do the sending of your email.
+
+5
+00:00:10.730 --> 00:00:13.290
+You need an SMTP account, that you can hook in
+
+6
+00:00:13.290 --> 00:00:14.460
+to actually send the email.
+
+7
+00:00:14.460 --> 00:00:16.130
+Now traditionally this is a little hard
+
+8
+00:00:16.130 --> 00:00:17.950
+because when you sign up for an email
+
+9
+00:00:17.950 --> 00:00:20.010
+sending service you need to verify
+
+10
+00:00:20.010 --> 00:00:22.340
+your domain name and,, do a bunch of stuff before
+
+11
+00:00:22.340 --> 00:00:24.180
+you can actually get sending email.
+
+12
+00:00:24.180 --> 00:00:27.320
+And actually, in the reality you, when you're just devving
+
+13
+00:00:27.320 --> 00:00:29.050
+you don't want to actually be sending emails.
+
+14
+00:00:29.050 --> 00:00:32.080
+So, I use the service called mailtrap and what it is
+
+15
+00:00:32.080 --> 00:00:35.770
+is a SMTP server that will sort of like not actually
+
+16
+00:00:35.770 --> 00:00:38.540
+send the emails to anybody, but it'll trap them and
+
+17
+00:00:38.540 --> 00:00:40.350
+it'll put them in this backend and you can see
+
+18
+00:00:40.350 --> 00:00:43.550
+what's got sent, who's sending it, what it looks like,
+
+19
+00:00:43.550 --> 00:00:45.510
+all kinds of awesome information.
+
+20
+00:00:45.510 --> 00:00:47.780
+When you're ready to push your production live,
+
+21
+00:00:47.780 --> 00:00:49.920
+all you have to do is sign up for something like,
+
+22
+00:00:49.920 --> 00:00:51.680
+I personally use something like Postmark.
+
+23
+00:00:51.680 --> 00:00:52.960
+It's not a sponsor or anything like that
+
+24
+00:00:52.960 --> 00:00:55.800
+I just really, like the service.
+
+25
+00:00:55.800 --> 00:00:56.633
+There's things like
+
+26
+00:00:56.633 --> 00:00:59.060
+send grid and there's a couple other ones out there,
+
+27
+00:00:59.060 --> 00:01:03.461
+and you just have to swap out your SMPT credentials
+
+28
+00:01:03.461 --> 00:01:05.010
+with the new ones.
+
+29
+00:01:05.010 --> 00:01:07.230
+So, what we wanna do is go ahead and
+
+30
+00:01:07.230 --> 00:01:08.690
+sign up for a Mailtrap account.
+
+31
+00:01:08.690 --> 00:01:10.810
+You likely maybe have taken
+
+32
+00:01:10.810 --> 00:01:12.330
+my node course.
+
+33
+00:01:12.330 --> 00:01:13.820
+And if you have used your node course
+
+34
+00:01:13.820 --> 00:01:17.770
+you can use the same credentials that we use in that one.
+
+35
+00:01:17.770 --> 00:01:19.417
+Then you wanna go to your account
+
+36
+00:01:19.417 --> 00:01:23.110
+and you'll get an inbox that you'll have here so go ahead
+
+37
+00:01:23.110 --> 00:01:26.530
+and click through to the demo inbox and you're going to see
+
+38
+00:01:26.530 --> 00:01:28.140
+your SMTP credentials.
+
+39
+00:01:28.140 --> 00:01:29.730
+Because these will change depending
+
+40
+00:01:29.730 --> 00:01:32.060
+on if you're in development or production, we're going to
+
+41
+00:01:32.060 --> 00:01:36.250
+stick this information, in our variables, that ENV file
+
+42
+00:01:36.250 --> 00:01:39.395
+that is in our backend along with all the other secret stuff
+
+43
+00:01:39.395 --> 00:01:42.850
+that should never be shared with anyone.
+
+44
+00:01:42.850 --> 00:01:46.247
+So, what we'll do here is we'll say, MAIL_HOST is
+
+45
+00:01:47.900 --> 00:01:51.150
+equal to, and that is, if we take a look here, it's
+
+46
+00:01:51.150 --> 00:01:53.373
+SMTP.mailtrap.io.
+
+47
+00:01:55.300 --> 00:01:58.770
+And we'll have MAIL_PORT is equal to,
+
+48
+00:01:58.770 --> 00:02:03.090
+and here is 25465 or 2525.
+
+49
+00:02:03.090 --> 00:02:05.783
+I always have used 2525.
+
+50
+00:02:07.420 --> 00:02:10.637
+We'll have a MAIL_USER, is equal to,
+
+51
+00:02:10.637 --> 00:02:13.123
+and we'll go ahead and take the username here.
+
+52
+00:02:14.820 --> 00:02:19.820
+And then you have a MAIL_PASSWORD and I'll call that PASS.
+
+53
+00:02:20.380 --> 00:02:21.793
+I'll paste this one in.
+
+54
+00:02:22.870 --> 00:02:24.280
+Good! Now we need to create a
+
+55
+00:02:24.280 --> 00:02:27.340
+new file that's called Mail.js.
+
+56
+00:02:27.340 --> 00:02:28.173
+So we'll go into our
+
+57
+00:02:28.173 --> 00:02:29.400
+source folder here.
+
+58
+00:02:29.400 --> 00:02:30.843
+And we'll create a new file.
+
+59
+00:02:32.030 --> 00:02:36.470
+Call it Mail.js. and inside of that we want to first,
+
+60
+00:02:36.470 --> 00:02:40.550
+import a package called node mailer and, node mailer,
+
+61
+00:02:40.550 --> 00:02:43.363
+I think they even have setup for it.
+
+62
+00:02:43.363 --> 00:02:44.320
+Here we go.
+
+63
+00:02:44.320 --> 00:02:47.610
+Node mailer's like the best way to actually send email
+
+64
+00:02:47.610 --> 00:02:50.034
+with node.js and we're actually going to configure
+
+65
+00:02:50.034 --> 00:02:52.300
+what's called a transport.
+
+66
+00:02:52.300 --> 00:02:53.660
+Now they do give you the,
+
+67
+00:02:53.660 --> 00:02:54.620
+the code right here.
+
+68
+00:02:54.620 --> 00:02:56.560
+But let's code it by hand ourselves.
+
+69
+00:02:56.560 --> 00:02:58.860
+So I'll say const nodemailer
+
+70
+00:02:58.860 --> 00:03:00.610
+is equal to require ("nodemailer").
+
+71
+00:03:03.070 --> 00:03:04.673
+And we'll make a transport.
+
+72
+00:03:05.560 --> 00:03:08.840
+So nodemailer.createTransport.
+
+73
+00:03:08.840 --> 00:03:12.090
+And transport is essentially, like a one way of
+
+74
+00:03:12.090 --> 00:03:13.020
+sending email.
+
+75
+00:03:13.020 --> 00:03:14.920
+Like you could have multiple transports.
+
+76
+00:03:14.920 --> 00:03:17.380
+You can even hook it up to your Gmail account if you want.
+
+77
+00:03:17.380 --> 00:03:21.910
+In this case we're hooking it up to an SMTP server.
+
+78
+00:03:21.910 --> 00:03:24.272
+And, in that config object we have the host and
+
+79
+00:03:24.272 --> 00:03:26.980
+normally you would just hard code it like this.
+
+80
+00:03:26.980 --> 00:03:31.980
+But, we are going to use the process.env.MAIL_HOST.
+
+81
+00:03:32.060 --> 00:03:34.983
+And that is because these variables are all gonna be
+
+82
+00:03:34.983 --> 00:03:38.563
+available to us on the process.env.MAIL_HOST.
+
+83
+00:03:39.810 --> 00:03:41.483
+We'll do the same with the port.
+
+84
+00:03:44.100 --> 00:03:47.240
+And, oh sorry this is lowercase and then we need to
+
+85
+00:03:47.240 --> 00:03:50.420
+pass the auth, which is an object that has a user,
+
+86
+00:03:50.420 --> 00:03:54.257
+that is process.env.MAIL_USER.
+
+87
+00:03:55.460 --> 00:03:56.963
+And then the pass.
+
+88
+00:03:59.320 --> 00:04:01.950
+And know that it's pass, and not password.
+
+89
+00:04:01.950 --> 00:04:03.610
+That could be a little gotcha.
+
+90
+00:04:03.610 --> 00:04:04.690
+That get's ya.
+
+91
+00:04:04.690 --> 00:04:06.440
+Now let's go ahead and export that.
+
+92
+00:04:06.440 --> 00:04:10.550
+So exports.transport is equal to transport
+
+93
+00:04:10.550 --> 00:04:13.020
+and then we also need another function that's actually gonna
+
+94
+00:04:13.020 --> 00:04:14.420
+template out our email.
+
+95
+00:04:14.420 --> 00:04:16.070
+Now there's all kinds of different ways
+
+96
+00:04:16.070 --> 00:04:17.060
+to template emails.
+
+97
+00:04:17.060 --> 00:04:20.310
+You can actually even do templating, in react.
+
+98
+00:04:20.310 --> 00:04:22.643
+There's this thing called MJML,
+
+99
+00:04:25.236 --> 00:04:28.550
+and it's pretty nifty because you can code your emails
+
+100
+00:04:28.550 --> 00:04:31.120
+in these things, these special tags.
+
+101
+00:04:31.120 --> 00:04:31.953
+And they allow you
+
+102
+00:04:31.953 --> 00:04:34.590
+to snap together emails pretty quickly and
+
+103
+00:04:34.590 --> 00:04:35.710
+it's pretty nifty.
+
+104
+00:04:35.710 --> 00:04:38.110
+So, in my node course we used pugged
+
+105
+00:04:38.110 --> 00:04:40.640
+to template, and something called juice to
+
+106
+00:04:40.640 --> 00:04:42.130
+inline the CSS.
+
+107
+00:04:42.130 --> 00:04:43.680
+In this case we're going to be sending
+
+108
+00:04:43.680 --> 00:04:46.183
+very very bare bones email. We're not going to get into
+
+109
+00:04:46.183 --> 00:04:47.940
+any templating just 'cause there's so many different
+
+110
+00:04:47.940 --> 00:04:48.780
+possible ways.
+
+111
+00:04:48.780 --> 00:04:50.510
+And it's a little bit outside this tutorial.
+
+112
+00:04:50.510 --> 00:04:53.620
+But, if this was the case where you wanted to integrate
+
+113
+00:04:53.620 --> 00:04:56.160
+some sort of templating, this is where you would do it.
+
+114
+00:04:56.160 --> 00:04:58.650
+So, the function that we are gonna make to template,
+
+115
+00:04:58.650 --> 00:05:01.690
+quote unquote, is gonna be called the make a nice email.
+
+116
+00:05:01.690 --> 00:05:03.863
+So. const makeANiceEmail
+
+117
+00:05:06.080 --> 00:05:08.210
+is equal to, and that is going to be a function
+
+118
+00:05:08.210 --> 00:05:10.630
+that takes in some text, and returns,
+
+119
+00:05:10.630 --> 00:05:12.767
+and we're gonna use back text here, and inside of that
+
+120
+00:05:12.767 --> 00:05:16.853
+you'll want a div that has a class name of email.
+
+121
+00:05:16.853 --> 00:05:21.853
+So I'm gonna say .email and that inside of it will have
+
+122
+00:05:22.730 --> 00:05:25.280
+just some bare bones styling inside of it so
+
+123
+00:05:25.280 --> 00:05:27.743
+border: 1px solid black,
+
+124
+00:05:28.753 --> 00:05:30.903
+padding: 20px,
+
+125
+00:05:32.240 --> 00:05:34.123
+font-family: sans-serif,
+
+126
+00:05:35.490 --> 00:05:37.540
+line-height" is 2.
+
+127
+00:05:37.540 --> 00:05:41.563
+And font-size is 20px.
+
+128
+00:05:42.540 --> 00:05:45.477
+Then, inside of this div, we just want an h2 tag that says,
+
+129
+00:05:45.477 --> 00:05:46.737
+"Hello there!"
+
+130
+00:05:47.890 --> 00:05:48.723
+And then we'll give ourselves a
+
+131
+00:05:48.723 --> 00:05:52.670
+paragraph tag that simply just puts in the text,
+
+132
+00:05:52.670 --> 00:05:55.166
+it interpellates the text with ESX backticks.
+
+133
+00:05:55.166 --> 00:05:57.460
+And then I'll have another paragraph tag
+
+134
+00:05:57.460 --> 00:06:01.330
+that gives us a kiss, says "Wes Bos."
+
+135
+00:06:01.330 --> 00:06:03.320
+So, that is our very simple templating,
+
+136
+00:06:03.320 --> 00:06:05.080
+this is obviously where you would replace it with
+
+137
+00:06:05.080 --> 00:06:07.300
+anything else that you would like to template.
+
+138
+00:06:07.300 --> 00:06:10.920
+And in line any CSS that you have, and then I'm going
+
+139
+00:06:10.920 --> 00:06:12.530
+to export.makeANiceEmail
+
+140
+00:06:14.400 --> 00:06:16.840
+is equal to makeANiceEmail;
+
+141
+00:06:16.840 --> 00:06:19.660
+And of course you could also, oops that's exports,
+
+142
+00:06:19.660 --> 00:06:21.357
+you could also just do this right here, say
+
+143
+00:06:21.357 --> 00:06:24.460
+exports.makeANiceEmail and you could do it all in
+
+144
+00:06:24.460 --> 00:06:27.390
+one go, I prefer to just define it as a variable
+
+145
+00:06:27.390 --> 00:06:30.369
+and then export it at the bottom, just for my own
+
+146
+00:06:30.369 --> 00:06:32.582
+my own preferences.
+
+147
+00:06:32.582 --> 00:06:35.210
+So that is our email
+
+148
+00:06:35.210 --> 00:06:38.400
+is up and running, and what we want to do now is
+
+149
+00:06:38.400 --> 00:06:42.710
+open up the mutation resolver for the resetting,
+
+150
+00:06:42.710 --> 00:06:45.169
+or the request reset of the password, 'cause the actual
+
+151
+00:06:45.169 --> 00:06:48.400
+reset of the password doesn't need to send an email.
+
+152
+00:06:48.400 --> 00:06:53.400
+But our request reset does need to send a password.
+
+153
+00:06:53.890 --> 00:06:56.610
+So, we want to actually import both of these things,
+
+154
+00:06:56.610 --> 00:07:01.080
+the transport and the makeANiceEmail from this mail.js.
+
+155
+00:07:01.080 --> 00:07:03.980
+So, let's go up to the top and we'll say
+
+156
+00:07:03.980 --> 00:07:04.813
+const
+
+157
+00:07:07.330 --> 00:07:08.470
+transport,
+
+158
+00:07:08.470 --> 00:07:10.330
+and makeANiceEmail
+
+159
+00:07:12.077 --> 00:07:13.540
+= require
+
+160
+00:07:16.550 --> 00:07:21.550
+and I think it's, just called Mail.
+
+161
+00:07:23.150 --> 00:07:25.660
+And go up a level, and we're just going to mail,
+
+162
+00:07:25.660 --> 00:07:27.723
+and we don't need the .js on the end.
+
+163
+00:07:29.300 --> 00:07:30.463
+Lookin' good.
+
+164
+00:07:31.560 --> 00:07:34.317
+Then we'll go back down to our request reset here,
+
+165
+00:07:34.317 --> 00:07:37.550
+and we'll go down to where we are returning
+
+166
+00:07:37.550 --> 00:07:40.821
+the message Thanks!, we can move that down to the bottom
+
+167
+00:07:40.821 --> 00:07:44.030
+and then, make sure, for sure, make sure that you put
+
+168
+00:07:44.030 --> 00:07:45.890
+that at the bottom, 'cause if you return and then try
+
+169
+00:07:45.890 --> 00:07:48.080
+to write all the email code below a return,
+
+170
+00:07:48.080 --> 00:07:50.050
+it will never run and you'll be really frustrated.
+
+171
+00:07:50.050 --> 00:07:51.928
+So, we'll move that to the bottom of the function
+
+172
+00:07:51.928 --> 00:07:55.530
+and, let's just put a little comment there for
+
+173
+00:07:55.530 --> 00:07:57.920
+Return the message.
+
+174
+00:07:57.920 --> 00:08:00.380
+Now, three, email them that
+
+175
+00:08:00.380 --> 00:08:04.430
+reset token, so were gonna say, const mailRes = await
+
+176
+00:08:06.770 --> 00:08:09.690
+and then we're going to take the transport
+
+177
+00:08:09.690 --> 00:08:12.080
+that we imported, and we're going to call it a
+
+178
+00:08:12.080 --> 00:08:15.370
+sendMail function, that sendMail method takes
+
+179
+00:08:15.370 --> 00:08:18.150
+a couple things, so from:, and in this case I'm going to
+
+180
+00:08:18.150 --> 00:08:19.663
+say it's from,
+
+181
+00:08:24.060 --> 00:08:26.620
+wes@wesbos.com, I'm going to
+
+182
+00:08:26.620 --> 00:08:31.000
+'to: user.email', because we already have this user
+
+183
+00:08:31.000 --> 00:08:34.030
+up here, remember we queried the database for the user.
+
+184
+00:08:34.030 --> 00:08:37.198
+Well, down here we can send it through their specific email.
+
+185
+00:08:37.198 --> 00:08:41.960
+The subject line, is going to be equal to
+
+186
+00:08:41.960 --> 00:08:45.640
+Your Password Reset Token, and then the HTML
+
+187
+00:08:45.640 --> 00:08:48.863
+of the email is going to be makeANiceEmail,
+
+188
+00:08:51.770 --> 00:08:53.227
+and we are simply going to say,
+
+189
+00:08:53.227 --> 00:08:57.073
+"Your Password Reset Token is Here!"
+
+190
+00:09:01.440 --> 00:09:06.390
+And \n\n and then we're going to put a link inside of there,
+
+191
+00:09:06.390 --> 00:09:09.760
+a href=, and now what does the URL go to?
+
+192
+00:09:09.760 --> 00:09:12.190
+We can't really hard code local hosts here,
+
+193
+00:09:12.190 --> 00:09:15.230
+but if, remember our variables, that ENV, we have access to
+
+194
+00:09:15.230 --> 00:09:17.820
+this frontend Url, that's why we've put it in there,
+
+195
+00:09:17.820 --> 00:09:18.990
+so that we can reference it.
+
+196
+00:09:18.990 --> 00:09:19.823
+And of course, when you
+
+197
+00:09:19.823 --> 00:09:22.540
+push it to production, that's gonna be a different URL.
+
+198
+00:09:22.540 --> 00:09:24.680
+It's a beauty of having environmental variables
+
+199
+00:09:24.680 --> 00:09:27.840
+that change depending on where you have it deployed.
+
+200
+00:09:27.840 --> 00:09:32.840
+So, we can simply take that URL process.env.FRONTEND_URL
+
+201
+00:09:36.110 --> 00:09:38.210
+it's not highlighting properly and that's because
+
+202
+00:09:38.210 --> 00:09:40.977
+this should not be single quotes, but backticks.
+
+203
+00:09:40.977 --> 00:09:43.550
+There we go, that's lookin' good.
+
+204
+00:09:43.550 --> 00:09:44.840
+Gonna put these on their own line,
+
+205
+00:09:44.840 --> 00:09:46.583
+just for my own sanity's sake.
+
+206
+00:09:47.490 --> 00:09:52.391
+a href = process.env.FRONTEND_URL and it will just say
+
+207
+00:09:52.391 --> 00:09:54.173
+Click Here to Reset.
+
+208
+00:09:55.040 --> 00:09:56.290
+Oh, and obviously we need
+
+209
+00:09:56.290 --> 00:10:01.080
+to tag the /reset?resetToken needs to come along
+
+210
+00:10:01.080 --> 00:10:04.530
+for the ride, which is going to be equal to the
+
+211
+00:10:04.530 --> 00:10:07.290
+variable reset token.
+
+212
+00:10:07.290 --> 00:10:08.580
+Again, that reset token,
+
+213
+00:10:08.580 --> 00:10:09.670
+where does that come from?
+
+214
+00:10:09.670 --> 00:10:12.316
+Well, up here, we generated the reset token
+
+215
+00:10:12.316 --> 00:10:14.310
+and then saved it to the user
+
+216
+00:10:14.310 --> 00:10:17.540
+so we can put it into the email.
+
+217
+00:10:17.540 --> 00:10:19.270
+That looks pretty good.
+
+218
+00:10:19.270 --> 00:10:22.290
+We have the mail response, we are awaiting it to send.
+
+219
+00:10:22.290 --> 00:10:25.970
+And then, finally we are turning the message to send.
+
+220
+00:10:25.970 --> 00:10:28.305
+If this goofs up, we're assuming this works here,
+
+221
+00:10:28.305 --> 00:10:30.360
+but what you could do is you could check for the
+
+222
+00:10:30.360 --> 00:10:32.650
+mail response or you could wrap this entire thing
+
+223
+00:10:32.650 --> 00:10:35.670
+in a try-catch, and send an error back.
+
+224
+00:10:35.670 --> 00:10:37.227
+Or throw an error and that would tell the user,
+
+225
+00:10:37.227 --> 00:10:39.420
+"Sorry, something wrong happened,"
+
+226
+00:10:39.420 --> 00:10:40.253
+But in this case,
+
+227
+00:10:40.253 --> 00:10:42.060
+I'm going to keep it simple and make sure that,
+
+228
+00:10:42.060 --> 00:10:44.120
+assume that it worked fine.
+
+229
+00:10:44.120 --> 00:10:46.546
+So, if that worked properly,
+
+230
+00:10:46.546 --> 00:10:48.643
+we're going to sign out,
+
+231
+00:10:52.500 --> 00:10:53.657
+got a little bit of an error here,
+
+232
+00:10:53.657 --> 00:10:55.410
+"Cannot read property 'me' of undefined".
+
+233
+00:10:55.410 --> 00:10:58.025
+I get this fairly often and usually what that means
+
+234
+00:10:58.025 --> 00:11:00.950
+is that my backend is not actually running.
+
+235
+00:11:00.950 --> 00:11:02.100
+It's kind of a weird issue,
+
+236
+00:11:02.100 --> 00:11:03.960
+that gave me some grief sometimes.
+
+237
+00:11:03.960 --> 00:11:05.956
+But I bet if I go to my backend here,
+
+238
+00:11:05.956 --> 00:11:09.260
+reference error reuqire is not defined.
+
+239
+00:11:09.260 --> 00:11:12.040
+Oh! I see what I did.
+
+240
+00:11:12.040 --> 00:11:14.100
+So let's open up the mutation,
+
+241
+00:11:14.100 --> 00:11:16.603
+go here, ah, it's, I spelt require wrong.
+
+242
+00:11:18.320 --> 00:11:20.170
+And probably get rid of, there we go.
+
+243
+00:11:23.680 --> 00:11:24.759
+There we go.
+
+244
+00:11:24.759 --> 00:11:27.540
+I'm going to sign out, now I'm going to sign in
+
+245
+00:11:28.380 --> 00:11:30.483
+and oh, I forgot my password.
+
+246
+00:11:31.860 --> 00:11:33.083
+Request a reset.
+
+247
+00:11:33.980 --> 00:11:35.100
+Boom. Success.
+
+248
+00:11:35.100 --> 00:11:37.600
+Check your email for a link,
+
+249
+00:11:37.600 --> 00:11:39.474
+so go back to our inbox here.
+
+250
+00:11:39.474 --> 00:11:40.307
+Ho ho!
+
+251
+00:11:40.307 --> 00:11:41.140
+Look what we got here.
+
+252
+00:11:41.140 --> 00:11:42.320
+"Your password reset token,"
+
+253
+00:11:42.320 --> 00:11:44.577
+this is our beautifully templated email.
+
+254
+00:11:44.577 --> 00:11:46.790
+"Your password reset token is here!"
+
+255
+00:11:46.790 --> 00:11:47.900
+And if I hover over that,
+
+256
+00:11:47.900 --> 00:11:49.920
+it looks like it's pointing to local hosts,
+
+257
+00:11:49.920 --> 00:11:52.780
+I can click through to that, and I change my password
+
+258
+00:11:52.780 --> 00:11:57.780
+to Dogs, Dogs, reset my password and I'm signed in.
+
+259
+00:11:58.040 --> 00:12:00.480
+Woo! Nice little flow there.
+
+260
+00:12:00.480 --> 00:12:03.230
+surprisingly easy to send email out,
+
+261
+00:12:03.230 --> 00:12:04.670
+just a what we got here,
+
+262
+00:12:04.670 --> 00:12:06.480
+about 30 lines of code and then a couple
+
+263
+00:12:06.480 --> 00:12:08.830
+more added to our mutation.
+
+264
+00:12:08.830 --> 00:12:10.920
+So, in a really good shape there.
+
+265
+00:12:10.920 --> 00:12:13.063
+Let's move on to the next video.
+

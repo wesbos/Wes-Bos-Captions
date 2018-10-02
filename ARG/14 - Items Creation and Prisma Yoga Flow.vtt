@@ -1,0 +1,2358 @@
+﻿WEBVTT
+
+1
+00:00:00.403 --> 00:00:02.530
+<v Wes>Alright, in this video we're going to</v>
+
+2
+00:00:02.530 --> 00:00:05.800
+get the items, both the query for polling items,
+
+3
+00:00:05.800 --> 00:00:08.450
+as well as the mutation for creating items.
+
+4
+00:00:08.450 --> 00:00:10.130
+We're gonna get that up and running.
+
+5
+00:00:10.130 --> 00:00:12.723
+I found that when I was doing this whole step,
+
+6
+00:00:12.723 --> 00:00:15.540
+you need to edit like three or four different files.
+
+7
+00:00:15.540 --> 00:00:17.060
+We need to edit our data model,
+
+8
+00:00:17.060 --> 00:00:18.758
+we need to deploy it to Prisma,
+
+9
+00:00:18.758 --> 00:00:21.580
+we need to edit our schema to GraphQL for Yoga,
+
+10
+00:00:21.580 --> 00:00:23.390
+and then we also need to write a resolver;
+
+11
+00:00:23.390 --> 00:00:26.460
+either in the mutation or the query or both.
+
+12
+00:00:26.460 --> 00:00:28.480
+So, my hope with this video is that,
+
+13
+00:00:28.480 --> 00:00:30.339
+if you ever get confused as to:
+
+14
+00:00:30.339 --> 00:00:33.930
+what are the steps for adding a new piece of data
+
+15
+00:00:33.930 --> 00:00:37.150
+to my backend, you can come back to this video
+
+16
+00:00:37.150 --> 00:00:39.820
+watch it quickly, and hopefully get some clarity
+
+17
+00:00:39.820 --> 00:00:41.490
+as to what the different steps are,
+
+18
+00:00:41.490 --> 00:00:43.619
+'cause I find myself getting a little bit confused
+
+19
+00:00:43.619 --> 00:00:45.790
+with all of the different files as well.
+
+20
+00:00:45.790 --> 00:00:46.990
+So, first thing we're gonna do,
+
+21
+00:00:46.990 --> 00:00:48.240
+and we're on our backend here,
+
+22
+00:00:48.240 --> 00:00:51.127
+we're going to open the data model .graphql.
+
+23
+00:00:51.127 --> 00:00:54.360
+And remember that this is our schema for Prisma
+
+24
+00:00:54.360 --> 00:00:57.350
+and then for the database that lives underneath Prisma.
+
+25
+00:00:57.350 --> 00:00:59.010
+And we have our user in here.
+
+26
+00:00:59.010 --> 00:01:00.940
+So we're gonna go down here and
+
+27
+00:01:00.940 --> 00:01:03.134
+we're gonna make a new type called Item.
+
+28
+00:01:03.134 --> 00:01:05.700
+And for each item it's going to have
+
+29
+00:01:05.700 --> 00:01:08.131
+a number of different fields; it's going to have
+
+30
+00:01:08.131 --> 00:01:09.790
+an ID which it has in a type of ID.
+
+31
+00:01:09.790 --> 00:01:11.760
+That is obviously required and
+
+32
+00:01:11.760 --> 00:01:14.553
+we're gonna use a directive here to make it unique.
+
+33
+00:01:14.553 --> 00:01:18.510
+Then it's going to have a title, a description,
+
+34
+00:01:18.510 --> 00:01:23.415
+and image, a large image, a price, a createdAt,
+
+35
+00:01:23.415 --> 00:01:28.415
+a updatedAt, and it's also going to have a user,
+
+36
+00:01:29.755 --> 00:01:31.392
+we'll come back to that in just a second.
+
+37
+00:01:31.392 --> 00:01:34.270
+Title, description, image and large image,
+
+38
+00:01:34.270 --> 00:01:36.810
+all of those are goin to be strings,
+
+39
+00:01:36.810 --> 00:01:40.717
+and the title is going to be required.
+
+40
+00:01:40.717 --> 00:01:43.610
+The description is required.
+
+41
+00:01:43.610 --> 00:01:44.457
+The image is not required,
+
+42
+00:01:44.457 --> 00:01:46.700
+and the large image is not required.
+
+43
+00:01:46.700 --> 00:01:49.155
+The price is going to be an integer,
+
+44
+00:01:49.155 --> 00:01:51.875
+and that obviously is required.
+
+45
+00:01:51.875 --> 00:01:55.810
+And then, createdAt is going to be a DateTime,
+
+46
+00:01:55.810 --> 00:01:58.799
+which is not a standard type in GraphQL,
+
+47
+00:01:58.799 --> 00:02:02.570
+but it is exposed to us via Prisma,
+
+48
+00:02:02.570 --> 00:02:04.140
+so we can go ahead and use it.
+
+49
+00:02:04.140 --> 00:02:06.620
+Just know that if you're ever not using Prsima,
+
+50
+00:02:06.620 --> 00:02:07.570
+it's likely that you'll have
+
+51
+00:02:07.570 --> 00:02:10.180
+to create your own type for DateTime.
+
+52
+00:02:10.180 --> 00:02:12.706
+Same thing for updatedAt.
+
+53
+00:02:12.706 --> 00:02:16.440
+And then user is going to, in the future,
+
+54
+00:02:16.440 --> 00:02:18.540
+we're going to just say it's a user,
+
+55
+00:02:18.540 --> 00:02:19.630
+and that's going to create
+
+56
+00:02:19.630 --> 00:02:22.514
+a relationship between item and user.
+
+57
+00:02:22.514 --> 00:02:26.510
+But in our case right now we don't even have users yet.
+
+58
+00:02:26.510 --> 00:02:27.830
+That's gonna come in the future.
+
+59
+00:02:27.830 --> 00:02:30.890
+So we're gonna just, like, comment that out for now.
+
+60
+00:02:30.890 --> 00:02:33.538
+Now any time that you make a change to
+
+61
+00:02:33.538 --> 00:02:35.479
+what your data model looks like,
+
+62
+00:02:35.479 --> 00:02:39.310
+you have to, have to, have to deploy it to Prisma,
+
+63
+00:02:39.310 --> 00:02:41.900
+because we need to update the database
+
+64
+00:02:41.900 --> 00:02:45.480
+to know and to expect both of these items.
+
+65
+00:02:45.480 --> 00:02:50.480
+As well, we also need to pull down our new Prisma schema.
+
+66
+00:02:50.540 --> 00:02:53.200
+So we'll go back to our terminal here,
+
+67
+00:02:53.200 --> 00:02:54.500
+and I'm just gonna kill this,
+
+68
+00:02:54.500 --> 00:02:56.688
+and we're going to run npm-run-deploy,
+
+69
+00:02:56.688 --> 00:03:00.459
+and that in turn is going to run Prisma deploy
+
+70
+00:03:00.459 --> 00:03:04.545
+with our custom and variable environment file.
+
+71
+00:03:04.545 --> 00:03:07.040
+And you can tell it created an item
+
+72
+00:03:07.040 --> 00:03:09.450
+with all of these new fields on here,
+
+73
+00:03:09.450 --> 00:03:11.279
+and then it deployed it up,
+
+74
+00:03:11.279 --> 00:03:14.900
+and it ran our post-deploy hook.
+
+75
+00:03:14.900 --> 00:03:17.250
+Again this is totally normal.
+
+76
+00:03:17.250 --> 00:03:18.083
+Don't worry about that.
+
+77
+00:03:18.083 --> 00:03:20.550
+Hopefully it won't even be there when you are running this.
+
+78
+00:03:20.550 --> 00:03:22.060
+Then if we go back to our editor here
+
+79
+00:03:22.060 --> 00:03:25.021
+and open up the prisma.graphql file,
+
+80
+00:03:25.021 --> 00:03:27.002
+remember that this prisma.graphql file,
+
+81
+00:03:27.002 --> 00:03:30.720
+this is a generated file based on the datamodel,
+
+82
+00:03:30.720 --> 00:03:32.320
+the schema that we give it,
+
+83
+00:03:32.320 --> 00:03:35.412
+it goes and it creates a huge GraphQl file
+
+84
+00:03:35.412 --> 00:03:38.470
+that has all of the relationships,
+
+85
+00:03:38.470 --> 00:03:40.510
+and all of the types, and all of the querys,
+
+86
+00:03:40.510 --> 00:03:42.440
+and all the mutations that are required
+
+87
+00:03:42.440 --> 00:03:45.537
+for our underlying crud api that sits on top of GraphQL.
+
+88
+00:03:45.537 --> 00:03:48.795
+And a couple videos ago I was saying how
+
+89
+00:03:48.795 --> 00:03:52.170
+the comment issue was commenting them all out.
+
+90
+00:03:52.170 --> 00:03:54.520
+That's fixed now, which is great.
+
+91
+00:03:54.520 --> 00:03:59.360
+And you can see that since we created a new type of item
+
+92
+00:03:59.360 --> 00:04:02.820
+we can just search in here for 'type item'.
+
+93
+00:04:02.820 --> 00:04:05.835
+There we go, type item implements node.
+
+94
+00:04:05.835 --> 00:04:07.990
+This is kinda interesting actually,
+
+95
+00:04:07.990 --> 00:04:09.570
+maybe we shouldt ake a quick look at this.
+
+96
+00:04:09.570 --> 00:04:12.920
+So what we did earleir, in our datamodel
+
+97
+00:04:12.920 --> 00:04:15.040
+we just had type item, but sometimes
+
+98
+00:04:15.040 --> 00:04:16.270
+you're gonna see this in GraphQL:
+
+99
+00:04:16.270 --> 00:04:19.740
+this implements node is very similar to how
+
+100
+00:04:19.740 --> 00:04:21.824
+in react we extend react.component.
+
+101
+00:04:21.824 --> 00:04:25.490
+So you can create a base node,
+
+102
+00:04:25.490 --> 00:04:27.563
+let's see if they even have it in here.
+
+103
+00:04:28.600 --> 00:04:31.150
+'Type node', oh they don't even have it in this file,
+
+104
+00:04:31.150 --> 00:04:33.610
+but it's comething that Prisma creates for you.
+
+105
+00:04:33.610 --> 00:04:36.569
+And it's just that base where is has an ID,
+
+106
+00:04:36.569 --> 00:04:38.851
+a createdAt, and an updatedAt value for us.
+
+107
+00:04:38.851 --> 00:04:41.800
+However, if we go down to these mutations here,
+
+108
+00:04:41.800 --> 00:04:45.160
+you'lls ee that we now have a new set of apis,
+
+109
+00:04:45.160 --> 00:04:49.223
+which is createItem, there we go.
+
+110
+00:04:50.063 --> 00:04:53.370
+CreateItem: they create their own input types.
+
+111
+00:04:53.370 --> 00:04:55.200
+Which is ItemCreateInput.
+
+112
+00:04:55.200 --> 00:04:57.860
+So if we were to take a look at what that looks like,
+
+113
+00:04:57.860 --> 00:05:00.167
+this is an input type called ItemCreatInput
+
+114
+00:05:00.167 --> 00:05:02.580
+thattake in all of the fields that we have.
+
+115
+00:05:02.580 --> 00:05:05.740
+And again, this files gonna get very, very large
+
+116
+00:05:05.740 --> 00:05:07.960
+because it also gives us things,
+
+117
+00:05:07.960 --> 00:05:09.680
+all of the different filters that we want.
+
+118
+00:05:09.680 --> 00:05:11.890
+The price is greater than, the createdAt is equal to,
+
+119
+00:05:11.890 --> 00:05:13.810
+the createdAt is not this time,
+
+120
+00:05:13.810 --> 00:05:16.450
+the createdAt is in an array of different times,
+
+121
+00:05:16.450 --> 00:05:19.230
+and remember how I said GraphQL is not really
+
+122
+00:05:19.230 --> 00:05:22.108
+a query language, it doesn't come with anything for
+
+123
+00:05:22.108 --> 00:05:25.047
+filtering or fuzzy matching, or any of that stuff.
+
+124
+00:05:25.047 --> 00:05:27.430
+That's what Prisma does under the hood.
+
+125
+00:05:27.430 --> 00:05:29.780
+Is it creates all of these different filters,
+
+126
+00:05:29.780 --> 00:05:33.170
+that you'll likely want to use as you build up your site.
+
+127
+00:05:33.170 --> 00:05:35.160
+So deploying will always push it
+
+128
+00:05:35.160 --> 00:05:37.550
+up to Prisma and update the database,
+
+129
+00:05:37.550 --> 00:05:39.560
+and that post-deploy hook will also
+
+130
+00:05:39.560 --> 00:05:42.128
+pull down a updated version of
+
+131
+00:05:42.128 --> 00:05:44.580
+that GraphQL shcema that we have.
+
+132
+00:05:44.580 --> 00:05:46.920
+So we have our data model, we have our type.
+
+133
+00:05:46.920 --> 00:05:49.790
+Let's go ahead and write our first mutation.
+
+134
+00:05:49.790 --> 00:05:52.040
+So what are the steps to creating a mutation?
+
+135
+00:05:52.040 --> 00:05:53.920
+Well first we open up the schema.graphql.
+
+136
+00:05:53.920 --> 00:05:57.670
+Okay, hold on, why are there so many .graphql files, Wes?
+
+137
+00:05:57.670 --> 00:06:00.243
+Well our datamodel.graphql, that's for Prisma,
+
+138
+00:06:00.243 --> 00:06:02.330
+that's for our backend.
+
+139
+00:06:02.330 --> 00:06:05.629
+The prisma.graphql is what gets generated
+
+140
+00:06:05.629 --> 00:06:09.393
+based off this datamodel.graphql.
+
+141
+00:06:11.018 --> 00:06:13.080
+Okay these two things are Prisma.
+
+142
+00:06:13.080 --> 00:06:16.596
+Now our schema is just our public facing api,
+
+143
+00:06:16.596 --> 00:06:19.870
+because Prisma has access to absolutely everything,
+
+144
+00:06:19.870 --> 00:06:23.173
+whereas our schema.graphql is our public facing api,
+
+145
+00:06:23.173 --> 00:06:26.110
+and that is what we're going to be interfacing with,
+
+146
+00:06:26.110 --> 00:06:27.780
+with our Java script.
+
+147
+00:06:27.780 --> 00:06:31.480
+Okay so, we can actually just get rid of type dog.
+
+148
+00:06:31.480 --> 00:06:36.150
+We can get rid of this create dog.
+
+149
+00:06:36.150 --> 00:06:38.086
+We can git rid of that here.
+
+150
+00:06:38.086 --> 00:06:42.240
+We're gonna go ahead and make a method called createItem,
+
+151
+00:06:42.240 --> 00:06:43.160
+and that's going to take a
+
+152
+00:06:43.160 --> 00:06:45.190
+whole bunch of different arguments in.
+
+153
+00:06:45.190 --> 00:06:47.840
+So the title, which is going to be a string,
+
+154
+00:06:47.840 --> 00:06:50.540
+the description, which is going to be a string,
+
+155
+00:06:50.540 --> 00:06:53.150
+the prices, which is going to be a Int,
+
+156
+00:06:53.150 --> 00:06:55.400
+the image, which is a string,
+
+157
+00:06:55.400 --> 00:06:59.505
+and the large image which is a string.
+
+158
+00:06:59.505 --> 00:07:02.240
+Now that might seem like a lot,
+
+159
+00:07:02.240 --> 00:07:04.280
+and it's actually kinda bordering on it,
+
+160
+00:07:04.280 --> 00:07:06.216
+and what tends to happen is,
+
+161
+00:07:06.216 --> 00:07:08.380
+as soon as you have more inputs
+
+162
+00:07:08.380 --> 00:07:10.552
+than starts to seem reasonable,
+
+163
+00:07:10.552 --> 00:07:13.270
+what you can do is you can take those out and just
+
+164
+00:07:13.270 --> 00:07:16.660
+make one input called data, and create custom inputs.
+
+165
+00:07:16.660 --> 00:07:19.290
+That's exactly what Prisma does on the backend here,
+
+166
+00:07:19.290 --> 00:07:23.080
+when you're creating and item it take one input called data,
+
+167
+00:07:23.080 --> 00:07:25.416
+and then they use this thing called ItemCreateInput,
+
+168
+00:07:25.416 --> 00:07:28.536
+which in itself is just a separate input.
+
+169
+00:07:28.536 --> 00:07:31.250
+That makes it reusable for multiple methods,
+
+170
+00:07:31.250 --> 00:07:33.620
+as well allows us just to take one input in,
+
+171
+00:07:33.620 --> 00:07:35.950
+which is sort of like a passing in an object
+
+172
+00:07:35.950 --> 00:07:38.020
+as an argument instead of passing in
+
+173
+00:07:38.020 --> 00:07:40.140
+multiple arguments in a function.
+
+174
+00:07:40.140 --> 00:07:41.920
+We'll leave it as that, so the question is:
+
+175
+00:07:41.920 --> 00:07:43.730
+what does createItem return?
+
+176
+00:07:43.730 --> 00:07:46.410
+That's actually going to return an item,
+
+177
+00:07:46.410 --> 00:07:49.215
+but we don't have an item type yet.
+
+178
+00:07:49.215 --> 00:07:52.560
+Let's just go ahead and type in the item,
+
+179
+00:07:52.560 --> 00:07:54.790
+and we're gonna make that required.
+
+180
+00:07:54.790 --> 00:07:57.050
+But like, where does this type of item come in?
+
+181
+00:07:57.050 --> 00:07:59.987
+Well what we could do here is we could say type item,
+
+182
+00:07:59.987 --> 00:08:02.750
+and we could go ahead and start to duplicate
+
+183
+00:08:02.750 --> 00:08:05.335
+all of the values what we started to put here,
+
+184
+00:08:05.335 --> 00:08:08.110
+but that doesn't seem great, because like,
+
+185
+00:08:08.110 --> 00:08:10.650
+we just want all of these fields.
+
+186
+00:08:10.650 --> 00:08:12.950
+So why do I have to retype it in this?
+
+187
+00:08:12.950 --> 00:08:15.975
+And what we can do in this schema.graphql is
+
+188
+00:08:15.975 --> 00:08:18.594
+if it's just the exact same as something
+
+189
+00:08:18.594 --> 00:08:21.575
+that we've generated in our prisma.graphql file,
+
+190
+00:08:21.575 --> 00:08:24.060
+we can import them from that.
+
+191
+00:08:24.060 --> 00:08:27.100
+So the way that you do imports in GraphQL currently,
+
+192
+00:08:27.100 --> 00:08:29.360
+it's actually not a standard
+
+193
+00:08:29.360 --> 00:08:31.070
+in GraphQL, there are no imports.
+
+194
+00:08:31.070 --> 00:08:34.754
+So Prisma actually uses this thing called GraphQL Import,
+
+195
+00:08:34.754 --> 00:08:37.930
+and it does it via a comment, so this is a little bit weird,
+
+196
+00:08:37.930 --> 00:08:41.430
+but you put a comment in there, which is the pound sign,
+
+197
+00:08:41.430 --> 00:08:43.415
+and we just say import-star-from,
+
+198
+00:08:43.415 --> 00:08:46.240
+and then we'll give it a relative path
+
+199
+00:08:46.240 --> 00:08:49.335
+to our generated folder, and our prisma.graphql.
+
+200
+00:08:49.335 --> 00:08:52.237
+And what that's gonna do is it's going to import
+
+201
+00:08:52.237 --> 00:08:55.210
+all of the types and all the inputs from our prisma.graphql,
+
+202
+00:08:55.210 --> 00:08:56.550
+and it's going to make them
+
+203
+00:08:56.550 --> 00:08:59.070
+available to us if we then need them.
+
+204
+00:08:59.070 --> 00:09:01.300
+And if we don't use them in our schema
+
+205
+00:09:01.300 --> 00:09:02.940
+it's not going to get imported.
+
+206
+00:09:02.940 --> 00:09:06.210
+It will simply just take if from here if we reference it.
+
+207
+00:09:06.210 --> 00:09:08.855
+So by doing that we're able to return a item
+
+208
+00:09:08.855 --> 00:09:11.890
+without actually having the type of item
+
+209
+00:09:11.890 --> 00:09:14.317
+to find in this public facing api.
+
+210
+00:09:14.317 --> 00:09:16.140
+However it will then say:
+
+211
+00:09:16.140 --> 00:09:18.317
+Oh, I don't have an item type,
+
+212
+00:09:18.317 --> 00:09:21.860
+I must have to import it from prisma.graphql,
+
+213
+00:09:21.860 --> 00:09:24.430
+and then it's gonna go ahead and pull in the value
+
+214
+00:09:24.430 --> 00:09:27.058
+from this generated prisma.graphql.
+
+215
+00:09:27.058 --> 00:09:29.020
+That's gonna be really helpful
+
+216
+00:09:29.020 --> 00:09:32.190
+in cutting down in duplicate writing of our code.
+
+217
+00:09:32.190 --> 00:09:33.420
+So, we've created this.
+
+218
+00:09:33.420 --> 00:09:34.940
+Let's just double check that it's working.
+
+219
+00:09:34.940 --> 00:09:37.862
+We'll go to here, our local host 4444.
+
+220
+00:09:37.862 --> 00:09:40.365
+Refresh the schema, open up the schema,
+
+221
+00:09:40.365 --> 00:09:43.065
+and you'll see that our queries,
+
+222
+00:09:43.065 --> 00:09:46.129
+it still says create dog...
+
+223
+00:09:46.129 --> 00:09:47.880
+Maybe I need to refresh the page.
+
+224
+00:09:47.880 --> 00:09:49.750
+Oh it's because I'm not actually running it,
+
+225
+00:09:49.750 --> 00:09:51.990
+'cause I deployed it, so npm-run-dev.
+
+226
+00:09:51.990 --> 00:09:54.530
+Again a bit of an error here.
+
+227
+00:09:54.530 --> 00:09:55.690
+GraphQL syntax error.
+
+228
+00:09:55.690 --> 00:09:57.270
+This is the same error we were getting earlier,
+
+229
+00:09:57.270 --> 00:09:59.627
+where we put those his in there,
+
+230
+00:09:59.627 --> 00:10:01.286
+but now we have to actually have a query.
+
+231
+00:10:01.286 --> 00:10:02.690
+Let's just say items is going to
+
+232
+00:10:02.690 --> 00:10:07.690
+return an array of items that, just like we had before.
+
+233
+00:10:07.730 --> 00:10:09.650
+We're going to go in here and write some,
+
+234
+00:10:09.650 --> 00:10:12.110
+pass some arguments to do filtering in just a second,
+
+235
+00:10:12.110 --> 00:10:14.870
+but for now let's just do that so it gets up and running.
+
+236
+00:10:14.870 --> 00:10:17.760
+One more mutation.createdog was defined
+
+237
+00:10:17.760 --> 00:10:19.850
+in resolvers but not in the schema.
+
+238
+00:10:19.850 --> 00:10:23.377
+There we go, so, we opened up our mutation,
+
+239
+00:10:23.377 --> 00:10:25.670
+see we have this createDog, obviously we don't
+
+240
+00:10:25.670 --> 00:10:29.066
+need that anymore, so let's just comment it out for now.
+
+241
+00:10:29.066 --> 00:10:30.240
+Any more errors?
+
+242
+00:10:30.240 --> 00:10:33.024
+Query.dogs is defined so we'll open up our query.
+
+243
+00:10:33.024 --> 00:10:34.944
+Comment that out.
+
+244
+00:10:34.944 --> 00:10:37.810
+Really keeps you honest, this GraphQL stuff,
+
+245
+00:10:37.810 --> 00:10:41.070
+because it is typed you definitely can't let anything slide,
+
+246
+00:10:41.070 --> 00:10:42.990
+which is great because it's going to catch
+
+247
+00:10:42.990 --> 00:10:44.400
+a lot of these bugs ahead of time.
+
+248
+00:10:44.400 --> 00:10:47.250
+So, there we go, it seems to be working just fine now.
+
+249
+00:10:47.250 --> 00:10:48.870
+And if we look at our queries,
+
+250
+00:10:48.870 --> 00:10:51.390
+we have our items query and our mutations
+
+251
+00:10:51.390 --> 00:10:53.306
+have our createItem mutation.
+
+252
+00:10:53.306 --> 00:10:57.170
+But now what we need to do is to jump into our mutation
+
+253
+00:10:57.170 --> 00:10:59.946
+and query.js and actually write the resolvers
+
+254
+00:10:59.946 --> 00:11:03.050
+in order for us to get this up and running.
+
+255
+00:11:03.050 --> 00:11:05.742
+So, first thing we'll do is open up our mutation.js,
+
+256
+00:11:05.742 --> 00:11:08.285
+and we will rate our createItem,
+
+257
+00:11:08.285 --> 00:11:11.170
+that's going to take in this signature
+
+258
+00:11:11.170 --> 00:11:13.663
+of parent, args, ctx, and info,
+
+259
+00:11:16.580 --> 00:11:18.680
+and we're gonna write a little to-do here,
+
+260
+00:11:18.680 --> 00:11:21.320
+check if they are logged in,
+
+261
+00:11:21.320 --> 00:11:22.320
+again I'll come back to that
+
+262
+00:11:22.320 --> 00:11:24.220
+once we actually do the authentication,
+
+263
+00:11:24.220 --> 00:11:27.083
+so we'll say const item is equal to,
+
+264
+00:11:27.083 --> 00:11:29.100
+and here is where we start to
+
+265
+00:11:29.100 --> 00:11:31.080
+interface with the Prisma database.
+
+266
+00:11:31.080 --> 00:11:33.196
+You Might be saying like, okay like,
+
+267
+00:11:33.196 --> 00:11:35.232
+what is the api for our Prisma database,
+
+268
+00:11:35.232 --> 00:11:37.823
+and our api for our Prisma database
+
+269
+00:11:37.823 --> 00:11:41.100
+is everything inside of this prisma.graphql.
+
+270
+00:11:41.100 --> 00:11:45.100
+So a quick way to see what all of the api methods
+
+271
+00:11:45.100 --> 00:11:48.050
+are available to us, is you just search for your mutations,
+
+272
+00:11:49.387 --> 00:11:52.091
+and you can see that we have createUser,
+
+273
+00:11:52.091 --> 00:11:55.770
+createItem, updateUser, updateItem, deleteUser, deleteItem,
+
+274
+00:11:55.770 --> 00:12:00.770
+all of these methods are now available to us on our backend
+
+275
+00:12:02.570 --> 00:12:04.700
+because that's exactly what we're interfacing with.
+
+276
+00:12:04.700 --> 00:12:09.177
+So we'll go here, and we will take the ctx.db,
+
+277
+00:12:11.562 --> 00:12:12.395
+so that is how we access our database.
+
+278
+00:12:12.395 --> 00:12:14.773
+Remember earlier when we did createServer
+
+279
+00:12:15.726 --> 00:12:18.497
+and we put the database on ctx,
+
+280
+00:12:18.497 --> 00:12:20.681
+but then how we access the database
+
+281
+00:12:20.681 --> 00:12:23.427
+is that we can access it via ctx.db.
+
+282
+00:12:23.427 --> 00:12:26.408
+Another way that we could have done that is that
+
+283
+00:12:26.408 --> 00:12:27.400
+is we could have exported the database
+
+284
+00:12:27.400 --> 00:12:29.210
+and then import it into this file,
+
+285
+00:12:29.210 --> 00:12:31.440
+both ways work just fine, but I kinda like
+
+286
+00:12:31.440 --> 00:12:34.720
+having access to the database inside of the ctx.
+
+287
+00:12:34.720 --> 00:12:38.048
+Then we call either .query or .mutation,
+
+288
+00:12:38.048 --> 00:12:41.168
+so in our case we are going to call .mutation,
+
+289
+00:12:41.168 --> 00:12:44.370
+and then we have access to all of the different
+
+290
+00:12:44.370 --> 00:12:46.405
+arguments that we have, so ours
+
+291
+00:12:46.405 --> 00:12:47.964
+is gonna be called createItem,
+
+292
+00:12:47.964 --> 00:12:51.670
+'cause again you can quickly reference your thing here,
+
+293
+00:12:51.670 --> 00:12:54.550
+it's called createItem, and then the
+
+294
+00:12:54.550 --> 00:12:57.320
+argument that it takes is data.
+
+295
+00:12:57.320 --> 00:13:00.740
+So, then we could sit here and say okay,
+
+296
+00:13:00.740 --> 00:13:04.680
+the title is going to be the args.title,
+
+297
+00:13:04.680 --> 00:13:09.680
+and the description is going to be the args.description,
+
+298
+00:13:09.730 --> 00:13:11.450
+but because all of the fields that
+
+299
+00:13:11.450 --> 00:13:13.610
+are being pulled in from the args
+
+300
+00:13:13.610 --> 00:13:15.436
+need to go directly into the item.
+
+301
+00:13:15.436 --> 00:13:18.750
+We can simply spread them, so dot-dot-dot args,
+
+302
+00:13:18.750 --> 00:13:21.690
+and that's the same thing as manually
+
+303
+00:13:21.690 --> 00:13:23.880
+putting each field and value in.
+
+304
+00:13:23.880 --> 00:13:28.050
+We can spread the argument object directly into our data.
+
+305
+00:13:28.050 --> 00:13:30.456
+And the reason why we're not just doing this
+
+306
+00:13:30.456 --> 00:13:33.770
+will become apparent because we're also going
+
+307
+00:13:33.770 --> 00:13:37.560
+to have to come back and assign a user to this as well.
+
+308
+00:13:37.560 --> 00:13:39.563
+So we'll spread the args in.
+
+309
+00:13:41.300 --> 00:13:44.380
+Then this createItem also needs access
+
+310
+00:13:44.380 --> 00:13:46.900
+to this info-variable that gets passed,
+
+311
+00:13:46.900 --> 00:13:50.061
+because among other things inside of this
+
+312
+00:13:50.061 --> 00:13:52.900
+info-variable is the actual query.
+
+313
+00:13:52.900 --> 00:13:55.421
+And this ctx.db.mutation, it needs to
+
+314
+00:13:55.421 --> 00:13:59.670
+take the query from our front end and pass it to our backend
+
+315
+00:13:59.670 --> 00:14:02.550
+and that's going to specify what data gets returned
+
+316
+00:14:02.550 --> 00:14:04.410
+from the database when we create it.
+
+317
+00:14:04.410 --> 00:14:08.040
+So what we'll have to do for almost all of these,
+
+318
+00:14:08.040 --> 00:14:11.070
+is just pass the info-variable as a second argument
+
+319
+00:14:11.070 --> 00:14:12.570
+to our createItem, updateItem,
+
+320
+00:14:13.437 --> 00:14:15.130
+createUser, updateUser, et cetera.
+
+321
+00:14:15.130 --> 00:14:17.220
+And that will make sure that the actual item
+
+322
+00:14:17.220 --> 00:14:20.220
+is returned to us from the database when we've created it.
+
+323
+00:14:20.220 --> 00:14:22.290
+Now one thing we haven't done just yet is that
+
+324
+00:14:22.290 --> 00:14:25.018
+this ctx.db.mutation.createItem,
+
+325
+00:14:25.018 --> 00:14:27.373
+that actually returns a promise,
+
+326
+00:14:27.373 --> 00:14:30.538
+and if we want the item to go into the item value
+
+327
+00:14:30.538 --> 00:14:34.637
+then what we need to do is make this an assync method,
+
+328
+00:14:34.637 --> 00:14:36.880
+and then we simply await the
+
+329
+00:14:36.880 --> 00:14:39.930
+creation of the item inside of there,
+
+330
+00:14:39.930 --> 00:14:43.770
+and then finally down here we can simply return the item.
+
+331
+00:14:43.770 --> 00:14:45.840
+Another option that we have instead
+
+332
+00:14:45.840 --> 00:14:49.660
+of awaiting the creation and then returning the item,
+
+333
+00:14:49.660 --> 00:14:51.550
+you can simply return a promise
+
+334
+00:14:51.550 --> 00:14:53.560
+and it will work just the same way.
+
+335
+00:14:53.560 --> 00:14:56.121
+I like to put it in a variable
+
+336
+00:14:56.121 --> 00:15:00.260
+and then return the item in most cases,
+
+337
+00:15:00.260 --> 00:15:03.160
+and that's because if I'm having trouble debugging it
+
+338
+00:15:03.160 --> 00:15:05.870
+I like to go down here and just console.log
+
+339
+00:15:05.870 --> 00:15:07.920
+that item as we create it, and that will
+
+340
+00:15:07.920 --> 00:15:11.220
+give me sort of a spot to be able to do that.
+
+341
+00:15:11.220 --> 00:15:14.130
+So give it a save, my prettier will clean it up for me.
+
+342
+00:15:14.130 --> 00:15:16.230
+We have this createItem, let's try it out
+
+343
+00:15:16.230 --> 00:15:19.009
+on our GraphQL api and give us a refresh.
+
+344
+00:15:19.009 --> 00:15:22.883
+Make a new thing here, we'll say mutation,
+
+345
+00:15:23.813 --> 00:15:28.813
+createItem, and we're gonna say the title-test,
+
+346
+00:15:29.050 --> 00:15:31.667
+I'll just fast forward through this 'cause you can see--
+
+347
+00:15:33.971 --> 00:15:34.960
+I put these each on their own line.
+
+348
+00:15:34.960 --> 00:15:37.331
+You do sometimes see me typing a comma after each one.
+
+349
+00:15:37.331 --> 00:15:39.790
+That is optional.
+
+350
+00:15:39.790 --> 00:15:43.602
+However it's not necessary, so I'm gonna leave them out.
+
+351
+00:15:43.602 --> 00:15:47.310
+Then the price of each one,
+
+352
+00:15:47.310 --> 00:15:50.540
+I just noticed that the price has a capital P on it,
+
+353
+00:15:50.540 --> 00:15:52.800
+and, oh, it's right here, I accidentally
+
+354
+00:15:52.800 --> 00:15:56.150
+put a capital P in on the public facing api.
+
+355
+00:15:56.150 --> 00:15:58.010
+We're gonna make that a lowercase.
+
+356
+00:15:58.010 --> 00:15:59.947
+And then just refresh that.
+
+357
+00:15:59.947 --> 00:16:02.370
+And then if I type it with a lowercase P,
+
+358
+00:16:02.370 --> 00:16:04.740
+it tells me what it is.
+
+359
+00:16:04.740 --> 00:16:06.680
+One thing about prices in this course,
+
+360
+00:16:06.680 --> 00:16:09.491
+I always store my prices in cents,
+
+361
+00:16:09.491 --> 00:16:11.840
+so I never have to deal with fractions,
+
+362
+00:16:11.840 --> 00:16:13.880
+or rounding, or decimals, or anything like that.
+
+363
+00:16:13.880 --> 00:16:17.480
+So if you want something to be one dollar,
+
+364
+00:16:17.480 --> 00:16:18.880
+you make it 100 cents.
+
+365
+00:16:18.880 --> 00:16:20.220
+If you want something to be 10 dollars,
+
+366
+00:16:20.220 --> 00:16:22.200
+you make it 1000 cents.
+
+367
+00:16:22.200 --> 00:16:23.860
+That way we're always dealing with whole numbers,
+
+368
+00:16:23.860 --> 00:16:25.900
+and we don't have to get into decimals.
+
+369
+00:16:25.900 --> 00:16:26.733
+I really like that.
+
+370
+00:16:26.733 --> 00:16:30.660
+Now from the createItem, we also need to return some stuff.
+
+371
+00:16:30.660 --> 00:16:32.380
+And what do you wanna return from the item?
+
+372
+00:16:32.380 --> 00:16:34.490
+Well you could return the ID of the item,
+
+373
+00:16:34.490 --> 00:16:37.388
+and the title of the item, let's just leave it at that.
+
+374
+00:16:37.388 --> 00:16:40.240
+So if this all went right it should work.
+
+375
+00:16:40.240 --> 00:16:42.350
+But if not we should see some errors here.
+
+376
+00:16:42.350 --> 00:16:43.943
+Cross your fingers, run it.
+
+377
+00:16:45.610 --> 00:16:48.550
+Variable got invalid value title,
+
+378
+00:16:48.550 --> 00:16:49.493
+blah-blah-blah-blah-blah.
+
+379
+00:16:51.290 --> 00:16:53.690
+Field value.createAt of required
+
+380
+00:16:53.690 --> 00:16:56.100
+type DateTime was not provided.
+
+381
+00:16:56.100 --> 00:16:58.620
+Ah, we did not pass the createdAt,
+
+382
+00:16:58.620 --> 00:17:01.540
+but that should be automatically created by Prisma.
+
+383
+00:17:01.540 --> 00:17:04.370
+So I'm wondering, if we look at our data model here,
+
+384
+00:17:04.370 --> 00:17:07.900
+I think we actually don't need to specify these two fields,
+
+385
+00:17:07.900 --> 00:17:10.150
+so let me just go ahead and comment them out.
+
+386
+00:17:15.120 --> 00:17:18.470
+Any time that you modify your data model,
+
+387
+00:17:18.470 --> 00:17:20.390
+we'll have to go ahead and deploy it,
+
+388
+00:17:20.390 --> 00:17:22.955
+so let's try that, npm-run-deploy.
+
+389
+00:17:22.955 --> 00:17:27.080
+Tells us that we modified these fields here, that's good.
+
+390
+00:17:27.080 --> 00:17:29.035
+We'll npm-run-dev again, and let's
+
+391
+00:17:29.035 --> 00:17:31.174
+go ahead and run it again.
+
+392
+00:17:31.174 --> 00:17:34.050
+There we go, it seems to have worked.
+
+393
+00:17:34.050 --> 00:17:37.150
+'Cause we ran the function, we passed in these fields,
+
+394
+00:17:37.150 --> 00:17:39.420
+we asked for the ID of the item,
+
+395
+00:17:39.420 --> 00:17:40.830
+and the title to come back.
+
+396
+00:17:40.830 --> 00:17:42.837
+Now, that ID is generated from us,
+
+397
+00:17:42.837 --> 00:17:45.330
+and the way that we can tell if it actually worked is:
+
+398
+00:17:45.330 --> 00:17:47.632
+go back here, you can type prisma console,
+
+399
+00:17:47.632 --> 00:17:50.410
+and that's gonna open up Prisma backend.
+
+400
+00:17:50.410 --> 00:17:51.620
+You can also just log into it,
+
+401
+00:17:51.620 --> 00:17:53.420
+or you might have it open already.
+
+402
+00:17:53.420 --> 00:17:56.352
+Now if we go to our thing that we have here,
+
+403
+00:17:56.352 --> 00:18:00.450
+on our side bar you see that we have two users,
+
+404
+00:18:00.450 --> 00:18:02.934
+which we went ahead and created, and one item,
+
+405
+00:18:02.934 --> 00:18:06.050
+that's the item we just went ahead and created,
+
+406
+00:18:06.050 --> 00:18:08.733
+we run it again with the second item.
+
+407
+00:18:11.450 --> 00:18:13.500
+It didn't work because I--
+
+408
+00:18:13.500 --> 00:18:15.846
+Npm-run-dev, you obviously have to have
+
+409
+00:18:15.846 --> 00:18:18.670
+this running before you do any of that.
+
+410
+00:18:18.670 --> 00:18:21.140
+Now if I run it, it worked.
+
+411
+00:18:21.140 --> 00:18:22.310
+Go back here.
+
+412
+00:18:22.310 --> 00:18:24.050
+Give us a refresh.
+
+413
+00:18:24.050 --> 00:18:26.060
+You'll see that the second item is now popping in.
+
+414
+00:18:26.060 --> 00:18:29.330
+So that is our mutation, we are push-push-pushing it.
+
+415
+00:18:29.330 --> 00:18:33.180
+Now let's flip over to the other side, which is our query
+
+416
+00:18:33.180 --> 00:18:35.260
+where we wanna pull-pull-pull these values.
+
+417
+00:18:35.260 --> 00:18:38.210
+So the whole process gets repeated again.
+
+418
+00:18:38.210 --> 00:18:41.290
+First, what we do is we go to our schema.graphql,
+
+419
+00:18:41.290 --> 00:18:43.460
+and we write the query that we have,
+
+420
+00:18:43.460 --> 00:18:45.926
+items is going to return an array of items,
+
+421
+00:18:45.926 --> 00:18:48.870
+then we go to our query.js and write that query,
+
+422
+00:18:48.870 --> 00:18:51.883
+so we can get rid of this dogs here,
+
+423
+00:18:53.310 --> 00:18:58.181
+the items is going to take in the parent, the args,
+
+424
+00:18:58.181 --> 00:19:03.181
+ctx, and the info, and from that
+
+425
+00:19:03.200 --> 00:19:08.200
+we are going to return ctx.db.query.--
+
+426
+00:19:08.992 --> 00:19:11.800
+And what is available to us?
+
+427
+00:19:11.800 --> 00:19:15.150
+Again you can either open up your prisma.graphql
+
+428
+00:19:15.150 --> 00:19:17.700
+and search for query, and it will see
+
+429
+00:19:17.700 --> 00:19:21.200
+that we have a users query and items query.
+
+430
+00:19:21.200 --> 00:19:24.500
+Or you can also just open up the Prisma playground
+
+431
+00:19:24.500 --> 00:19:26.260
+to see what all of your different queries are.
+
+432
+00:19:26.260 --> 00:19:28.720
+So from the backend you can open up your playground
+
+433
+00:19:28.720 --> 00:19:30.860
+and this might be a little bit confusing
+
+434
+00:19:30.860 --> 00:19:34.220
+but this is our Yoga, this is our public facing playground,
+
+435
+00:19:34.220 --> 00:19:36.150
+and then you have your Prisma playground
+
+436
+00:19:36.150 --> 00:19:38.420
+which has absolutely everything in it,
+
+437
+00:19:38.420 --> 00:19:39.760
+and you can see that we have,
+
+438
+00:19:39.760 --> 00:19:44.247
+this is our items query that we have here, so we can go--
+
+439
+00:19:45.930 --> 00:19:47.710
+and this should be return.
+
+440
+00:19:47.710 --> 00:19:51.360
+Now this was going to return a promise which I said earlier
+
+441
+00:19:51.360 --> 00:19:54.003
+it's fine to return a promise from a resolver.
+
+442
+00:19:54.003 --> 00:19:56.730
+It's smart enough to know that if it gets data,
+
+443
+00:19:56.730 --> 00:19:58.580
+to send immediately, if it gets a promise,
+
+444
+00:19:58.580 --> 00:20:00.980
+to wait for that promise to resolve.
+
+445
+00:20:00.980 --> 00:20:02.700
+But let's actually put it in a variable.
+
+446
+00:20:02.700 --> 00:20:05.750
+So const-items-equals-await and then
+
+447
+00:20:05.750 --> 00:20:07.917
+we will return the items here.
+
+448
+00:20:07.917 --> 00:20:11.363
+And then make sure you make that an assync operation.
+
+449
+00:20:12.500 --> 00:20:13.670
+And that should do it.
+
+450
+00:20:13.670 --> 00:20:17.663
+Let's go back here and write a query called all items.
+
+451
+00:20:18.570 --> 00:20:20.990
+And from that we need to grab our items.
+
+452
+00:20:20.990 --> 00:20:23.170
+If you don't see the items pop up right away
+
+453
+00:20:23.170 --> 00:20:26.030
+hit this little twirly birly and you can get going,
+
+454
+00:20:26.030 --> 00:20:28.690
+it'll refresh the schema for you.
+
+455
+00:20:28.690 --> 00:20:30.540
+So if there is no arguments you
+
+456
+00:20:30.540 --> 00:20:32.230
+don't need to do items like that;
+
+457
+00:20:32.230 --> 00:20:34.200
+you can just leave parenthesis off.
+
+458
+00:20:34.200 --> 00:20:36.480
+And for each item I want to return the ID,
+
+459
+00:20:36.480 --> 00:20:39.670
+and I also want to return the title.
+
+460
+00:20:39.670 --> 00:20:42.023
+Let's go ahead and run that.
+
+461
+00:20:42.966 --> 00:20:46.630
+Response not successful: received status code 400.
+
+462
+00:20:46.630 --> 00:20:47.950
+Okay, I don't know what happened.
+
+463
+00:20:47.950 --> 00:20:49.871
+Let's debug this ourselves.
+
+464
+00:20:49.871 --> 00:20:51.393
+Open this up.
+
+465
+00:20:53.200 --> 00:20:55.750
+There's no errors happening.
+
+466
+00:20:55.750 --> 00:20:57.690
+So the next thing I would do is--
+
+467
+00:20:57.690 --> 00:20:59.050
+Okay is this even running?
+
+468
+00:20:59.050 --> 00:21:00.750
+Is there something wrong here?
+
+469
+00:21:00.750 --> 00:21:04.673
+Console.log, getting items.
+
+470
+00:21:07.648 --> 00:21:08.613
+I have to clear this out.
+
+471
+00:21:09.890 --> 00:21:10.790
+Re-run it.
+
+472
+00:21:10.790 --> 00:21:11.930
+Same error.
+
+473
+00:21:11.930 --> 00:21:14.117
+Nothing in here, okay.
+
+474
+00:21:14.117 --> 00:21:16.840
+So one thing I do like to do is that,
+
+475
+00:21:16.840 --> 00:21:19.620
+this is not necessarily the greatest error ever,
+
+476
+00:21:19.620 --> 00:21:22.542
+so what I like to do is open up my dev tools here,
+
+477
+00:21:22.542 --> 00:21:27.542
+and clear it out, and then re-run all items,
+
+478
+00:21:27.722 --> 00:21:30.860
+and see if it-- See this is the 400 error
+
+479
+00:21:30.860 --> 00:21:33.760
+that it's telling us about, so we'll click on that,
+
+480
+00:21:33.760 --> 00:21:36.900
+and I'll see-- hey!
+
+481
+00:21:36.900 --> 00:21:38.380
+Much better errors.
+
+482
+00:21:38.380 --> 00:21:41.010
+This is very helpful in GraphQl,
+
+483
+00:21:41.010 --> 00:21:42.090
+we're gonna be looking at how
+
+484
+00:21:42.090 --> 00:21:44.470
+to catch these errors in our frontend,
+
+485
+00:21:44.470 --> 00:21:46.600
+and display them to the user,
+
+486
+00:21:46.600 --> 00:21:48.944
+but this looks like a better error.
+
+487
+00:21:48.944 --> 00:21:51.770
+So the error says: This anonymous operation
+
+488
+00:21:51.770 --> 00:21:53.280
+must be only defined--
+
+489
+00:21:53.280 --> 00:21:56.010
+Oh it's 'cause we're also sending this mutation
+
+490
+00:21:56.010 --> 00:21:59.538
+at the same time, so what we'd have to do is
+
+491
+00:21:59.538 --> 00:22:03.557
+we'll just name this mutation called createACoolItem.
+
+492
+00:22:04.840 --> 00:22:06.420
+And then I that...
+
+493
+00:22:07.510 --> 00:22:09.050
+Ah, one more error.
+
+494
+00:22:09.050 --> 00:22:10.920
+Field item argument where of
+
+495
+00:22:10.920 --> 00:22:14.203
+type is required but not provided.
+
+496
+00:22:15.930 --> 00:22:19.385
+And so it's telling us that we must provide where
+
+497
+00:22:19.385 --> 00:22:23.230
+which allows us to say, like where the name is like Wes,
+
+498
+00:22:23.230 --> 00:22:25.330
+or where the idea, or specific idea
+
+499
+00:22:25.330 --> 00:22:27.130
+where the prices is more than 500,
+
+500
+00:22:27.130 --> 00:22:29.110
+but that shouldn't matter when
+
+501
+00:22:29.110 --> 00:22:31.180
+I'm just grabbing a list of items.
+
+502
+00:22:31.180 --> 00:22:34.220
+You know what, it's cause I'm using the api
+
+503
+00:22:34.220 --> 00:22:36.550
+to grab a specific singular item
+
+504
+00:22:36.550 --> 00:22:39.240
+where you do have to say I want them where they
+
+505
+00:22:39.240 --> 00:22:41.630
+match this criteria.
+
+506
+00:22:41.630 --> 00:22:46.340
+We just say items, and that should give us an array of them.
+
+507
+00:22:46.340 --> 00:22:48.843
+So let's see if that fixes it for us.
+
+508
+00:22:49.750 --> 00:22:50.600
+There we go.
+
+509
+00:22:50.600 --> 00:22:54.027
+Then now our api of items is pulling itself back
+
+510
+00:22:54.027 --> 00:22:56.560
+and we get an array of everything.
+
+511
+00:22:56.560 --> 00:22:59.930
+Now one thing that you can do in this query
+
+512
+00:22:59.930 --> 00:23:02.807
+is if the query is exactly the same,
+
+513
+00:23:02.807 --> 00:23:05.905
+both on your Prisma, and on your query,
+
+514
+00:23:05.905 --> 00:23:08.640
+and this is a fairly common thing
+
+515
+00:23:08.640 --> 00:23:10.967
+that will happen when you're using Yoga,
+
+516
+00:23:10.967 --> 00:23:14.100
+you want to make a query, but the query is just
+
+517
+00:23:14.100 --> 00:23:16.290
+pulling a list of items, or pushing a list of items,
+
+518
+00:23:16.290 --> 00:23:18.700
+and there's no authentication that needs to happen,
+
+519
+00:23:18.700 --> 00:23:20.210
+there's no filtering that needs to happen,
+
+520
+00:23:20.210 --> 00:23:23.340
+there's no custom logic that needs to happen,
+
+521
+00:23:23.340 --> 00:23:26.250
+so what you can do is if the query is exactly the same
+
+522
+00:23:26.250 --> 00:23:28.230
+on your Yoga as it is on your Prisma,
+
+523
+00:23:28.230 --> 00:23:31.740
+you can just forward that query from Yoga to Prisma,
+
+524
+00:23:31.740 --> 00:23:33.167
+and then it will handle all of it,
+
+525
+00:23:33.167 --> 00:23:35.670
+and it is not necessary to write all of this code.
+
+526
+00:23:35.670 --> 00:23:37.750
+So what that looks like is this:
+
+527
+00:23:37.750 --> 00:23:41.760
+we first will import the forwardTo from our Prisma bindings.
+
+528
+00:23:41.760 --> 00:23:42.613
+So const,
+
+529
+00:23:43.760 --> 00:23:44.693
+forwardTo,
+
+530
+00:23:46.780 --> 00:23:51.070
+is equal to require Prisma binding.
+
+531
+00:23:51.070 --> 00:23:53.473
+So again remember Prisma binding provides us with,
+
+532
+00:23:53.473 --> 00:23:55.850
+this is what Prisma binding gives us,
+
+533
+00:23:55.850 --> 00:23:57.948
+the ability to query our database,
+
+534
+00:23:57.948 --> 00:24:01.540
+and then we can actually just get rid of all of this,
+
+535
+00:24:01.540 --> 00:24:03.040
+we'll just comment it out for now,
+
+536
+00:24:03.040 --> 00:24:05.600
+and we'll just say any time someone
+
+537
+00:24:05.600 --> 00:24:07.980
+specifically asks for items, we are going
+
+538
+00:24:07.980 --> 00:24:10.470
+to forward that to the database.
+
+539
+00:24:10.470 --> 00:24:14.636
+And that should just allow us to use the exact same api
+
+540
+00:24:14.636 --> 00:24:17.170
+on the server as well as on the client,
+
+541
+00:24:17.170 --> 00:24:19.980
+and this is particularly helpful if you just want
+
+542
+00:24:19.980 --> 00:24:21.980
+to quickly mock something up,
+
+543
+00:24:21.980 --> 00:24:25.574
+or if you don't necessarily care all that much about
+
+544
+00:24:25.574 --> 00:24:29.090
+adding authentication, and all the checks in place
+
+545
+00:24:29.090 --> 00:24:30.330
+while you're just trying to get something up,
+
+546
+00:24:30.330 --> 00:24:32.248
+you just wanna be able to
+
+547
+00:24:32.248 --> 00:24:33.704
+push and pull data to your database.
+
+548
+00:24:33.704 --> 00:24:35.550
+You can just forward all of your apis,
+
+549
+00:24:35.550 --> 00:24:37.050
+and then come back and start to write
+
+550
+00:24:37.050 --> 00:24:39.910
+custom resolvers as you need to implement custom logic.
+
+551
+00:24:39.910 --> 00:24:42.008
+So let's triple check that still works.
+
+552
+00:24:42.008 --> 00:24:43.790
+Query-- Oh!
+
+553
+00:24:43.790 --> 00:24:45.220
+Please check your connection.
+
+554
+00:24:45.220 --> 00:24:46.880
+I got a bit of an error here.
+
+555
+00:24:46.880 --> 00:24:49.053
+forwardTo is not a function.
+
+556
+00:24:50.180 --> 00:24:51.993
+Capital T I think.
+
+557
+00:24:54.030 --> 00:24:55.700
+There we go, it's working just fine.
+
+558
+00:24:55.700 --> 00:24:58.763
+So you can always forward it directly over to the database.
+
+559
+00:24:59.610 --> 00:25:01.620
+So that is our whole step.
+
+560
+00:25:01.620 --> 00:25:03.520
+Again let's go through that really quickly:
+
+561
+00:25:03.520 --> 00:25:05.030
+when you want to add a new type,
+
+562
+00:25:05.030 --> 00:25:06.480
+you add it to your data model,
+
+563
+00:25:06.480 --> 00:25:08.370
+then we run Prisma deploy to push
+
+564
+00:25:08.370 --> 00:25:10.712
+that up to the Prisma service,
+
+565
+00:25:10.712 --> 00:25:15.110
+that brings down a new copy of our prisma.graphql,
+
+566
+00:25:15.110 --> 00:25:17.987
+which contains all of our queries and our mutations,
+
+567
+00:25:17.987 --> 00:25:20.687
+and all of the possible, different,
+
+568
+00:25:20.687 --> 00:25:22.531
+filters that we could use,
+
+569
+00:25:22.531 --> 00:25:25.330
+then we go into our own schema.graphql,
+
+570
+00:25:25.330 --> 00:25:27.640
+which again is our public facing api,
+
+571
+00:25:27.640 --> 00:25:29.310
+this is what our react application
+
+572
+00:25:29.310 --> 00:25:30.660
+is going to interface with,
+
+573
+00:25:31.534 --> 00:25:34.450
+we can create the ability to create new functions,
+
+574
+00:25:34.450 --> 00:25:36.574
+like create items or query items,
+
+575
+00:25:36.574 --> 00:25:39.910
+then to match up with these mutations and queries,
+
+576
+00:25:39.910 --> 00:25:42.650
+we go into our mutations and our queries,
+
+577
+00:25:42.650 --> 00:25:45.315
+and we go ahead and write the resolvers
+
+578
+00:25:45.315 --> 00:25:48.710
+to actually complete all the logic that needs to happen,
+
+579
+00:25:48.710 --> 00:25:51.330
+and this is exactly where all of our advanced logic,
+
+580
+00:25:51.330 --> 00:25:53.000
+whether it's charging a credit card,
+
+581
+00:25:53.000 --> 00:25:55.230
+or sending an email, all of that is going
+
+582
+00:25:55.230 --> 00:25:57.635
+to be happening in our custom resolvers.
+
+583
+00:25:57.635 --> 00:26:00.220
+So hopefully that makes at least a little bit of sense.
+
+584
+00:26:00.220 --> 00:26:02.494
+We're gonna be doing it a couple
+
+585
+00:26:02.494 --> 00:26:03.570
+more times throughout this course,
+
+586
+00:26:03.570 --> 00:26:06.450
+so don't sweat it too much if it doesn't make total sense.
+
+587
+00:26:06.450 --> 00:26:07.970
+I found myself that I would need
+
+588
+00:26:07.970 --> 00:26:10.100
+to do it a couple times first.
+
+589
+00:26:10.100 --> 00:26:11.550
+I'll see you in the next one.
+

@@ -1,0 +1,1346 @@
+﻿WEBVTT
+
+1
+00:00:00.801 --> 00:00:03.053
+<v Wes>Alright, let's start with the Take My Money</v>
+
+2
+00:00:03.053 --> 00:00:04.049
+and if you remember,
+
+3
+00:00:04.049 --> 00:00:06.337
+Take My Money is just a button
+
+4
+00:00:06.337 --> 00:00:07.737
+that hits stripe for a token
+
+5
+00:00:07.737 --> 00:00:09.728
+and the token comes back
+
+6
+00:00:09.728 --> 00:00:12.372
+and then the on token is fired
+
+7
+00:00:12.372 --> 00:00:14.270
+and we take that response
+
+8
+00:00:14.270 --> 00:00:16.003
+start the progress indicator
+
+9
+00:00:16.003 --> 00:00:18.490
+and then call create order.
+
+10
+00:00:18.490 --> 00:00:19.606
+Let's actually get rid of these console logs
+
+11
+00:00:19.606 --> 00:00:23.534
+so they don't muddy up everything else that we have.
+
+12
+00:00:23.534 --> 00:00:26.705
+Let's also export the create order mutation before we
+
+13
+00:00:26.705 --> 00:00:29.581
+shoot ourself in the foot.
+
+14
+00:00:29.581 --> 00:00:32.273
+And we are actually going to be
+
+15
+00:00:32.273 --> 00:00:35.178
+mocking this create order function running here
+
+16
+00:00:35.178 --> 00:00:38.207
+and we are also going to be mocking this and manually
+
+17
+00:00:38.207 --> 00:00:40.340
+calling this on token.
+
+18
+00:00:40.340 --> 00:00:42.419
+I'll show you what I mean. So,
+
+19
+00:00:42.419 --> 00:00:45.280
+let's first open up tests and make a new file called
+
+20
+00:00:45.280 --> 00:00:46.863
+TakeMyMoney.test.js
+
+21
+00:00:49.597 --> 00:00:51.097
+and you guessed it
+
+22
+00:00:52.051 --> 00:00:54.019
+we are gonna import a whole bunch of stuff!
+
+23
+00:00:54.019 --> 00:00:56.771
+Let's go to the remove from cart test and import everything
+
+24
+00:00:56.771 --> 00:00:58.659
+that we imported in there,
+
+25
+00:00:58.659 --> 00:00:59.659
+paste it in.
+
+26
+00:01:00.888 --> 00:01:03.355
+We also want to, uh,
+
+27
+00:01:03.355 --> 00:01:04.688
+import nprogress
+
+28
+00:01:06.930 --> 00:01:08.097
+from nprogress
+
+29
+00:01:10.611 --> 00:01:12.861
+and we need the router from
+
+30
+00:01:13.911 --> 00:01:14.828
+next router
+
+31
+00:01:16.309 --> 00:01:17.976
+and we need the Take
+
+32
+00:01:20.767 --> 00:01:21.600
+My Money
+
+33
+00:01:21.600 --> 00:01:22.433
+component
+
+34
+00:01:23.291 --> 00:01:25.219
+from Take My Money
+
+35
+00:01:25.219 --> 00:01:26.918
+and what was that mutation called?
+
+36
+00:01:26.918 --> 00:01:28.918
+Create order mutation
+
+37
+00:01:28.918 --> 00:01:31.011
+So, create order mutation.
+
+38
+00:01:31.011 --> 00:01:33.379
+Believe that's everything that we need
+
+39
+00:01:33.379 --> 00:01:36.296
+Let's go ahead and write some mocks
+
+40
+00:01:37.280 --> 00:01:39.829
+First thing we want to do is swap out the router
+
+41
+00:01:39.829 --> 00:01:42.400
+So, router dot router is equal to
+
+42
+00:01:42.400 --> 00:01:43.829
+and we'll put push
+
+43
+00:01:43.829 --> 00:01:45.891
+we're actually going to swap this out with a mock function
+
+44
+00:01:45.891 --> 00:01:48.438
+in just a bit, but let's leave it at that for now.
+
+45
+00:01:48.438 --> 00:01:50.389
+Then we'll make some mocks
+
+46
+00:01:50.389 --> 00:01:54.549
+for the query is the current user query.
+
+47
+00:01:54.549 --> 00:01:55.716
+And the result
+
+48
+00:01:57.878 --> 00:02:00.389
+is going to have data
+
+49
+00:02:00.389 --> 00:02:01.222
+me
+
+50
+00:02:03.139 --> 00:02:05.139
+we'll spread a fake user
+
+51
+00:02:08.679 --> 00:02:09.762
+then our cart
+
+52
+00:02:11.091 --> 00:02:14.841
+is going to have fake cart item inside of it.
+
+53
+00:02:19.399 --> 00:02:23.638
+Then we'll go ahead and describe our test.
+
+54
+00:02:23.638 --> 00:02:26.805
+First it renders and matches snapshot.
+
+55
+00:02:33.280 --> 00:02:35.040
+Await await.
+
+56
+00:02:35.040 --> 00:02:36.207
+Wrapper update
+
+57
+00:02:37.606 --> 00:02:40.789
+(done-da-na-na-nah)
+
+58
+00:02:40.789 --> 00:02:42.371
+Now we are gonna find the button,
+
+59
+00:02:42.371 --> 00:02:45.121
+oop, we gotta mark this as a "s".
+
+60
+00:02:46.851 --> 00:02:49.719
+Oop, these things need to go in here.
+
+61
+00:02:49.719 --> 00:02:50.819
+That's why it is yelling at us.
+
+62
+00:02:50.819 --> 00:02:53.139
+Let's find the button and then just snap shot it.
+
+63
+00:02:53.139 --> 00:02:58.139
+So, const checkout button is equal to wrapper dot find.
+
+64
+00:02:58.160 --> 00:02:59.243
+React stripe.
+
+65
+00:03:01.699 --> 00:03:02.532
+Checkout.
+
+66
+00:03:03.958 --> 00:03:06.949
+We will expect checkout button
+
+67
+00:03:06.949 --> 00:03:09.699
+actually two Json checkout button
+
+68
+00:03:11.379 --> 00:03:12.212
+to match
+
+69
+00:03:12.212 --> 00:03:13.045
+snapshot.
+
+70
+00:03:15.459 --> 00:03:17.219
+Cannot read property cart
+
+71
+00:03:17.219 --> 00:03:18.219
+of undefined
+
+72
+00:03:19.210 --> 00:03:22.531
+oh, we have to pass our mocks.
+
+73
+00:03:22.531 --> 00:03:25.971
+Otherwise it doesn't have an empty cart to show.
+
+74
+00:03:25.971 --> 00:03:27.909
+Cannot read cart of undefinded,
+
+75
+00:03:27.909 --> 00:03:32.311
+Let's actually open up the Take My Money component
+
+76
+00:03:32.311 --> 00:03:34.838
+and I know what's happening here!
+
+77
+00:03:34.838 --> 00:03:37.638
+We're never, in our application, we're never rendering
+
+78
+00:03:37.638 --> 00:03:41.779
+Take My Money unless the user is actually signed in
+
+79
+00:03:41.779 --> 00:03:44.758
+and that never led to the situation where
+
+80
+00:03:44.758 --> 00:03:48.569
+me was undefined and then we just went ahead and started it.
+
+81
+00:03:48.569 --> 00:03:51.779
+However there is the possibility that the user
+
+82
+00:03:51.779 --> 00:03:53.760
+is going to be loading and that is exactly what it is doing
+
+83
+00:03:53.760 --> 00:03:54.760
+in the test.
+
+84
+00:03:57.275 --> 00:04:00.899
+So we go ahead and wait for this thing and then update it
+
+85
+00:04:00.899 --> 00:04:02.919
+to get past that loading state
+
+86
+00:04:02.919 --> 00:04:05.491
+but this component tries to render itself out
+
+87
+00:04:05.491 --> 00:04:06.899
+in the loading state
+
+88
+00:04:06.899 --> 00:04:08.851
+because we're not checking for loading state here.
+
+89
+00:04:08.851 --> 00:04:12.211
+So, I think that what tests are meant to do
+
+90
+00:04:12.211 --> 00:04:15.749
+is to actually surface those kinds of bugs
+
+91
+00:04:15.749 --> 00:04:18.309
+where you would never actually reach that situation
+
+92
+00:04:18.309 --> 00:04:21.731
+in your application or you might, but you haven't.
+
+93
+00:04:21.731 --> 00:04:23.171
+And we haven't done that in development.
+
+94
+00:04:23.171 --> 00:04:26.211
+So, let's actually modify this real quick
+
+95
+00:04:26.211 --> 00:04:27.044
+So, we are
+
+96
+00:04:28.080 --> 00:04:30.080
+having the loading state
+
+97
+00:04:31.280 --> 00:04:34.363
+and let's bring this down as a return
+
+98
+00:04:35.958 --> 00:04:38.979
+let's switch this to a explicit
+
+99
+00:04:38.979 --> 00:04:43.062
+we'll bring that curly bracket to the bottom here
+
+100
+00:04:45.478 --> 00:04:47.449
+and then we'll say:
+
+101
+00:04:47.449 --> 00:04:48.866
+If loading return
+
+102
+00:04:50.599 --> 00:04:51.432
+null.
+
+103
+00:04:54.659 --> 00:04:55.971
+And that fixed itself!
+
+104
+00:04:55.971 --> 00:04:56.899
+So we want to check if it's loading it.
+
+105
+00:04:56.899 --> 00:04:59.719
+If it is loading, we'll return nothing
+
+106
+00:04:59.719 --> 00:05:01.398
+and that makes everything pass.
+
+107
+00:05:01.398 --> 00:05:04.815
+But I better, so let's take a look at our
+
+108
+00:05:06.400 --> 00:05:08.169
+Take My Money snapshot and
+
+109
+00:05:08.169 --> 00:05:11.336
+that looks like it's working properly.
+
+110
+00:05:12.451 --> 00:05:13.600
+So, that's the first test.
+
+111
+00:05:13.600 --> 00:05:15.008
+Next test is that it
+
+112
+00:05:15.008 --> 00:05:15.841
+creates an
+
+113
+00:05:17.191 --> 00:05:18.441
+order on token.
+
+114
+00:05:21.718 --> 00:05:24.600
+Now here is where are gonna make a mock function
+
+115
+00:05:24.600 --> 00:05:26.291
+so we'll say const
+
+116
+00:05:26.291 --> 00:05:30.419
+create order mock is equal to jest dot fn
+
+117
+00:05:30.419 --> 00:05:33.651
+and then we are going to mock resolved value
+
+118
+00:05:33.651 --> 00:05:36.179
+of what its expecting
+
+119
+00:05:36.179 --> 00:05:38.739
+and its expecting to get some data back
+
+120
+00:05:38.739 --> 00:05:40.720
+and inside of that, it's expecting to have
+
+121
+00:05:40.720 --> 00:05:42.518
+create order
+
+122
+00:05:42.518 --> 00:05:46.601
+inside of that it's suppose to have and ID of XYZ
+
+123
+00:05:49.411 --> 00:05:50.244
+789
+
+124
+00:05:52.118 --> 00:05:55.859
+and this create order mock is going to run
+
+125
+00:05:55.859 --> 00:05:56.979
+inside of here
+
+126
+00:05:56.979 --> 00:05:59.158
+we are going to mock this thing right here.
+
+127
+00:05:59.158 --> 00:05:59.991
+So
+
+128
+00:06:03.731 --> 00:06:05.651
+next we're going to mount it
+
+129
+00:06:05.651 --> 00:06:07.189
+and you can just go ahead and take this right here
+
+130
+00:06:07.189 --> 00:06:10.419
+this wrapper from the previous test
+
+131
+00:06:10.419 --> 00:06:11.419
+paste it in.
+
+132
+00:06:14.080 --> 00:06:15.379
+We're going to find the component
+
+133
+00:06:15.379 --> 00:06:16.962
+so, const component
+
+134
+00:06:18.419 --> 00:06:20.752
+is equal to wrapper dot find
+
+135
+00:06:23.651 --> 00:06:24.818
+Take My Money.
+
+136
+00:06:27.499 --> 00:06:30.080
+Then we're going to call the instance on that, so we
+
+137
+00:06:30.080 --> 00:06:32.838
+can manually get access to all of that instance method.
+
+138
+00:06:32.838 --> 00:06:35.671
+So if we console log the component
+
+139
+00:06:37.399 --> 00:06:38.482
+we should see
+
+140
+00:06:39.749 --> 00:06:42.666
+Take My Money and it should have an
+
+141
+00:06:44.118 --> 00:06:46.701
+on token function inside of it.
+
+142
+00:06:47.559 --> 00:06:49.029
+That's exactly what we are looking for.
+
+143
+00:06:49.029 --> 00:06:51.971
+So, we're going to manually call
+
+144
+00:06:51.971 --> 00:06:53.054
+that on token
+
+145
+00:06:55.109 --> 00:06:55.942
+method.
+
+146
+00:06:59.589 --> 00:07:00.922
+So say component
+
+147
+00:07:02.678 --> 00:07:03.761
+dot on token.
+
+148
+00:07:05.680 --> 00:07:07.800
+We're going to call it with the token ID
+
+149
+00:07:07.800 --> 00:07:08.633
+ABC123
+
+150
+00:07:12.278 --> 00:07:15.829
+and we're going to manually provide it
+
+151
+00:07:15.829 --> 00:07:17.760
+the create order mock.
+
+152
+00:07:17.760 --> 00:07:20.010
+That we've done right here.
+
+153
+00:07:22.198 --> 00:07:23.299
+Then we're going to take
+
+154
+00:07:23.299 --> 00:07:24.400
+that create order mock
+
+155
+00:07:24.400 --> 00:07:26.518
+and we're going to expect the create order mock
+
+156
+00:07:26.518 --> 00:07:27.351
+to
+
+157
+00:07:27.351 --> 00:07:28.184
+have
+
+158
+00:07:28.184 --> 00:07:29.760
+been called
+
+159
+00:07:29.760 --> 00:07:31.158
+let's just make sure that works.
+
+160
+00:07:31.158 --> 00:07:32.118
+Good.
+
+161
+00:07:32.118 --> 00:07:33.078
+And then we're going to say:
+
+162
+00:07:33.078 --> 00:07:35.078
+to have been called with
+
+163
+00:07:36.278 --> 00:07:37.111
+variables.
+
+164
+00:07:37.111 --> 00:07:38.229
+Let's just see what's in there
+
+165
+00:07:38.229 --> 00:07:40.800
+and pass an empty object and see what it got called with.
+
+166
+00:07:40.800 --> 00:07:41.749
+I always like doing that.
+
+167
+00:07:41.749 --> 00:07:43.139
+Here we go. It got called with an
+
+168
+00:07:43.139 --> 00:07:46.069
+object variables on token ABC
+
+169
+00:07:46.069 --> 00:07:46.902
+123
+
+170
+00:07:50.118 --> 00:07:52.451
+Good. Everything is passing.
+
+171
+00:07:54.179 --> 00:07:55.478
+Next test we want to do is say:
+
+172
+00:07:55.478 --> 00:07:57.895
+It turns the progress bar on.
+
+173
+00:07:58.869 --> 00:08:01.786
+Go ahead and take the same wrapper.
+
+174
+00:08:04.019 --> 00:08:04.852
+Wait.
+
+175
+00:08:05.909 --> 00:08:06.742
+Update.
+
+176
+00:08:07.958 --> 00:08:10.791
+And we'll mock nprogress dot start
+
+177
+00:08:12.198 --> 00:08:14.560
+and we'll, we can go ahead and take the same
+
+178
+00:08:14.560 --> 00:08:16.979
+create order mock that we did earlier.
+
+179
+00:08:16.979 --> 00:08:18.146
+So, grab that.
+
+180
+00:08:19.360 --> 00:08:20.838
+Paste it in here.
+
+181
+00:08:20.838 --> 00:08:23.588
+And we'll manually call it again.
+
+182
+00:08:26.659 --> 00:08:28.358
+So grab the component
+
+183
+00:08:28.358 --> 00:08:29.379
+and manually call it.
+
+184
+00:08:29.379 --> 00:08:31.379
+We can take those lines as well.
+
+185
+00:08:31.379 --> 00:08:33.971
+And we can expect nprogress
+
+186
+00:08:33.971 --> 00:08:34.804
+dot start
+
+187
+00:08:35.878 --> 00:08:37.545
+to have been called.
+
+188
+00:08:40.279 --> 00:08:42.211
+Looks like it's working.
+
+189
+00:08:42.211 --> 00:08:43.044
+Good.
+
+190
+00:08:43.044 --> 00:08:47.349
+Next one, we want to make sure that the router has moved.
+
+191
+00:08:47.349 --> 00:08:50.932
+It routes to the order page when completed.
+
+192
+00:08:51.971 --> 00:08:55.304
+We can take the, from the previous test,
+
+193
+00:08:57.429 --> 00:08:59.929
+the mounting and the updating.
+
+194
+00:09:02.278 --> 00:09:04.789
+The create order mock
+
+195
+00:09:04.789 --> 00:09:06.206
+and the component
+
+196
+00:09:07.440 --> 00:09:09.273
+and the manually call.
+
+197
+00:09:15.331 --> 00:09:18.869
+And before we manually call it, we want to mock
+
+198
+00:09:18.869 --> 00:09:21.029
+the router as well.
+
+199
+00:09:21.029 --> 00:09:24.054
+We'll say router dot router dot push
+
+200
+00:09:24.054 --> 00:09:25.219
+is equal to jest dot fn.
+
+201
+00:09:25.219 --> 00:09:27.886
+Then we'll wait and we'll expect
+
+202
+00:09:29.954 --> 00:09:32.293
+router dot router dot push
+
+203
+00:09:32.293 --> 00:09:34.194
+to have been called.
+
+204
+00:09:34.194 --> 00:09:35.812
+Let's see if that passes first.
+
+205
+00:09:35.812 --> 00:09:37.922
+Good. Then to have been called with,
+
+206
+00:09:37.922 --> 00:09:40.960
+I don't think you necessarily need both of these expects
+
+207
+00:09:40.960 --> 00:09:44.623
+because if it was called with it obviously was, will have
+
+208
+00:09:44.623 --> 00:09:47.362
+been called already, so you maybe can remove one of those.
+
+209
+00:09:47.362 --> 00:09:48.354
+It doesn't really matter.
+
+210
+00:09:48.354 --> 00:09:52.063
+Let's just see what it was called with.
+
+211
+00:09:52.063 --> 00:09:54.703
+It received and object
+
+212
+00:09:54.703 --> 00:09:56.194
+that is a path name order
+
+213
+00:09:56.194 --> 00:09:57.714
+query
+
+214
+00:09:57.714 --> 00:10:00.052
+with an ID of XYZ789
+
+215
+00:10:00.052 --> 00:10:02.703
+which is exactly what we mocked it with, right there.
+
+216
+00:10:02.703 --> 00:10:05.592
+Good. So, we'll go here, we'll say
+
+217
+00:10:05.592 --> 00:10:08.009
+path name forward slash order
+
+218
+00:10:09.653 --> 00:10:10.986
+and the query ID
+
+219
+00:10:12.823 --> 00:10:13.656
+XYZ
+
+220
+00:10:15.234 --> 00:10:16.067
+789.
+
+221
+00:10:17.782 --> 00:10:19.301
+Everything passes.
+
+222
+00:10:19.301 --> 00:10:21.813
+Beautiful! So that's all of our Take My Money
+
+223
+00:10:21.813 --> 00:10:24.743
+up and running and notice that we never interfaced
+
+224
+00:10:24.743 --> 00:10:26.663
+with stripe there because we want to make these tests
+
+225
+00:10:26.663 --> 00:10:29.013
+as self contained as possible. That's exactly why
+
+226
+00:10:29.013 --> 00:10:32.181
+we used a mock there to manually called our
+
+227
+00:10:32.181 --> 00:10:34.293
+on token ourselves.
+
+228
+00:10:34.293 --> 00:10:36.883
+Next, we want to take a look at our order
+
+229
+00:10:36.883 --> 00:10:37.716
+component.
+
+230
+00:10:39.183 --> 00:10:41.192
+Which we just have a query
+
+231
+00:10:41.192 --> 00:10:44.962
+and display out all of the information about the order.
+
+232
+00:10:44.962 --> 00:10:46.773
+This is just a query. There is not mutations
+
+233
+00:10:46.773 --> 00:10:49.394
+or anything like that, so you should be able to do this
+
+234
+00:10:49.394 --> 00:10:50.812
+one on your own by now.
+
+235
+00:10:50.812 --> 00:10:54.373
+So go ahead and try that one, otherwise let's keep going.
+
+236
+00:10:54.373 --> 00:10:56.002
+So I'm going to make a new file
+
+237
+00:10:56.002 --> 00:10:58.153
+order dot test dot js.
+
+238
+00:10:58.153 --> 00:10:59.702
+I'm gonna import everything I need
+
+239
+00:10:59.702 --> 00:11:01.172
+mount to json
+
+240
+00:11:01.172 --> 00:11:03.474
+wait mock provider.
+
+241
+00:11:03.474 --> 00:11:05.394
+We're going to import our order component in the
+
+242
+00:11:05.394 --> 00:11:06.772
+single order query.
+
+243
+00:11:06.772 --> 00:11:09.352
+Let's triple check that we actually exported that.
+
+244
+00:11:09.352 --> 00:11:11.042
+Of course not.
+
+245
+00:11:11.042 --> 00:11:13.474
+Let's go ahead and grab that single order query
+
+246
+00:11:13.474 --> 00:11:16.383
+and export it from order dot js.
+
+247
+00:11:16.383 --> 00:11:18.074
+Jump back into the test here
+
+248
+00:11:18.074 --> 00:11:21.263
+then when we are grabbing our fake order.
+
+249
+00:11:21.263 --> 00:11:22.596
+Make some mocks.
+
+250
+00:11:27.593 --> 00:11:28.510
+The request
+
+251
+00:11:29.954 --> 00:11:30.802
+as a query
+
+252
+00:11:30.802 --> 00:11:32.473
+a single order query
+
+253
+00:11:32.473 --> 00:11:33.306
+variables
+
+254
+00:11:35.202 --> 00:11:36.035
+ID
+
+255
+00:11:36.994 --> 00:11:37.827
+ABC123.
+
+256
+00:11:44.834 --> 00:11:47.183
+And this should be in an object itself.
+
+257
+00:11:47.183 --> 00:11:48.433
+Then the result
+
+258
+00:11:50.223 --> 00:11:51.056
+data
+
+259
+00:11:52.661 --> 00:11:55.078
+and the order is a fake order
+
+260
+00:11:57.253 --> 00:11:58.383
+Let's actually triple check.
+
+261
+00:11:58.383 --> 00:12:01.154
+Let's look at that test utils.
+
+262
+00:12:01.154 --> 00:12:03.237
+And we make a fake order.
+
+263
+00:12:05.893 --> 00:12:07.310
+The ID is ORD123.
+
+264
+00:12:09.703 --> 00:12:12.114
+So, we want to use ORD123
+
+265
+00:12:12.114 --> 00:12:13.031
+not ABC123.
+
+266
+00:12:15.061 --> 00:12:17.061
+Okay, we'll describe it.
+
+267
+00:12:19.893 --> 00:12:22.060
+Order it renders the order
+
+268
+00:12:28.503 --> 00:12:30.783
+We'll make a wrapper.
+
+269
+00:12:30.783 --> 00:12:33.033
+Order with an ID of ORD123.
+
+270
+00:12:34.402 --> 00:12:35.823
+We'll wait.
+
+271
+00:12:35.823 --> 00:12:36.906
+We'll update.
+
+272
+00:12:39.653 --> 00:12:41.486
+You'll find the order.
+
+273
+00:12:43.794 --> 00:12:45.682
+And that is wrapper
+
+274
+00:12:45.682 --> 00:12:46.515
+dot find
+
+275
+00:12:49.314 --> 00:12:50.674
+You'll want to grab a div.
+
+276
+00:12:50.674 --> 00:12:53.303
+What is, what is on here?
+
+277
+00:12:53.303 --> 00:12:57.173
+That's our order styles. Let's put a data dash test
+
+278
+00:12:57.173 --> 00:12:59.301
+of order on the actual order itself.
+
+279
+00:12:59.301 --> 00:13:02.551
+That way we can easily grab it in here.
+
+280
+00:13:06.234 --> 00:13:07.067
+Expect
+
+281
+00:13:09.334 --> 00:13:10.434
+to json
+
+282
+00:13:10.434 --> 00:13:11.267
+order
+
+283
+00:13:12.452 --> 00:13:13.285
+to match
+
+284
+00:13:14.674 --> 00:13:15.507
+snapshot.
+
+285
+00:13:18.053 --> 00:13:21.970
+Getting an error here. That needs to be a sync.
+
+286
+00:13:27.037 --> 00:13:30.280
+Let's check out the order snapshot.
+
+287
+00:13:30.280 --> 00:13:32.197
+Null! That's not right!
+
+288
+00:13:33.326 --> 00:13:37.323
+So, that's again a downside to using snapshots
+
+289
+00:13:37.323 --> 00:13:38.792
+as everything looks like it worked
+
+290
+00:13:38.792 --> 00:13:40.392
+but if you don't check your snapshots you're going
+
+291
+00:13:40.392 --> 00:13:41.243
+to be in a bit of trouble.
+
+292
+00:13:41.243 --> 00:13:44.617
+But, hopefully no one would ever merge a snapshot of
+
+293
+00:13:44.617 --> 00:13:46.701
+null into into your things.
+
+294
+00:13:46.701 --> 00:13:48.253
+So let's
+
+295
+00:13:48.253 --> 00:13:50.586
+take a look here console log
+
+296
+00:13:51.792 --> 00:13:56.125
+wrapper dot debug. See what we're working with here.
+
+297
+00:13:57.501 --> 00:13:58.584
+Mock provider
+
+298
+00:14:03.053 --> 00:14:05.083
+There we go, there's an error
+
+299
+00:14:05.083 --> 00:14:06.733
+No more mock responses for the query.
+
+300
+00:14:06.733 --> 00:14:09.233
+Single order query, of course!
+
+301
+00:14:11.327 --> 00:14:14.910
+And we forgot to pass the mocks, of course!
+
+302
+00:14:18.362 --> 00:14:21.371
+And now the actual snapshot is getting rid of null and
+
+303
+00:14:21.371 --> 00:14:22.922
+actually putting the order in there.
+
+304
+00:14:22.922 --> 00:14:25.691
+So we'll go ahead and hit U to update that.
+
+305
+00:14:25.691 --> 00:14:27.962
+Get rid of this debug here.
+
+306
+00:14:27.962 --> 00:14:28.795
+Everything's fine.
+
+307
+00:14:28.795 --> 00:14:30.890
+Let's triple check our snapshot.
+
+308
+00:14:30.890 --> 00:14:32.871
+Here is our actual snapshot
+
+309
+00:14:32.871 --> 00:14:34.602
+of everything that we have in here.
+
+310
+00:14:34.602 --> 00:14:37.991
+And now at this point what we can do is check that the
+
+311
+00:14:37.991 --> 00:14:40.522
+order total is actually the same,
+
+312
+00:14:40.522 --> 00:14:42.682
+the number of items are on the page, everything is
+
+313
+00:14:42.682 --> 00:14:43.623
+rendering out properly.
+
+314
+00:14:43.623 --> 00:14:44.650
+I'm not going to go through that
+
+315
+00:14:44.650 --> 00:14:46.250
+just cause we've done that so much,
+
+316
+00:14:46.250 --> 00:14:48.170
+finding the items on the page, checking that there's
+
+317
+00:14:48.170 --> 00:14:50.471
+the same the right amount there, checking that the items
+
+318
+00:14:50.471 --> 00:14:53.082
+are adding up properly. All of that good stuff.
+
+319
+00:14:53.082 --> 00:14:55.143
+You can go ahead an right a whole bunch more expects in here
+
+320
+00:14:55.143 --> 00:14:55.976
+if you want.
+
+321
+00:14:55.976 --> 00:14:57.111
+Other than that, I'm pretty happy
+
+322
+00:14:57.111 --> 00:14:58.533
+just using match snapshot to
+
+323
+00:14:58.533 --> 00:15:02.391
+make sure everything stays exactly the same
+
+324
+00:15:02.391 --> 00:15:03.333
+that we want it.
+
+325
+00:15:03.333 --> 00:15:06.133
+That is our order and I believe that is the end
+
+326
+00:15:06.133 --> 00:15:08.791
+of our testings. There's a couple little components
+
+327
+00:15:08.791 --> 00:15:10.773
+here and there that we haven't test, but I think
+
+328
+00:15:10.773 --> 00:15:13.831
+we have covered all of the possible different ways
+
+329
+00:15:13.831 --> 00:15:15.002
+to test.
+
+330
+00:15:15.002 --> 00:15:17.549
+From doing our unit testing,
+
+331
+00:15:17.549 --> 00:15:19.079
+doing our mounting and shallow rendering
+
+332
+00:15:19.079 --> 00:15:20.939
+the difference between those two,
+
+333
+00:15:20.939 --> 00:15:23.539
+showing you how to do mocking of functions as well as
+
+334
+00:15:23.539 --> 00:15:27.471
+mocking of the returned results from Apollo.
+
+335
+00:15:27.471 --> 00:15:29.021
+Hopefully you enjoyed that and now let's get into
+
+336
+00:15:29.021 --> 00:15:30.021
+deployment.
+

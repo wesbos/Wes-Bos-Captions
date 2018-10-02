@@ -1,0 +1,346 @@
+﻿WEBVTT
+
+1
+00:00:00.580 --> 00:00:01.413
+(air swishing)
+
+2
+00:00:01.413 --> 00:00:02.850
+<v Wes>In the last video, I showed you this little</v>
+
+3
+00:00:02.850 --> 00:00:05.320
+problem that we have, is when you refresh it,
+
+4
+00:00:05.320 --> 00:00:08.130
+what's happening is that we're getting the un-styled
+
+5
+00:00:08.130 --> 00:00:10.330
+website for just a second, and I want to explain
+
+6
+00:00:10.330 --> 00:00:13.040
+why that's happening, so as you refresh,
+
+7
+00:00:13.040 --> 00:00:15.450
+what's happening is that the server is rendering
+
+8
+00:00:15.450 --> 00:00:18.340
+the first run of the react application,
+
+9
+00:00:18.340 --> 00:00:22.120
+and then our client side react is actually picking it up
+
+10
+00:00:22.120 --> 00:00:25.710
+from there, then seeing if there's any updates
+
+11
+00:00:25.710 --> 00:00:28.160
+that need to happen, and what's happening,
+
+12
+00:00:28.160 --> 00:00:32.080
+is that on the client, whenever you mount any component
+
+13
+00:00:32.080 --> 00:00:34.630
+that you want, so when you mount the header, when you mount
+
+14
+00:00:34.630 --> 00:00:37.490
+the nav, you mount the search bar, you mount the item,
+
+15
+00:00:37.490 --> 00:00:40.150
+all of those have their own, styled components,
+
+16
+00:00:40.150 --> 00:00:43.090
+and they all bring their own CSS with them,
+
+17
+00:00:43.090 --> 00:00:44.720
+when they need to be mounted.
+
+18
+00:00:44.720 --> 00:00:47.700
+However, with server-side rendering, everything needs to be
+
+19
+00:00:47.700 --> 00:00:51.020
+sort of prepped, and ready, and fetched, before we
+
+20
+00:00:51.020 --> 00:00:54.470
+can actually send the data to the browser, because we can't
+
+21
+00:00:54.470 --> 00:00:56.737
+just say, "Ah, whatever, the CSS will show up when
+
+22
+00:00:56.737 --> 00:01:01.260
+"it's mounted;" we need the CSS at the point of doing
+
+23
+00:01:01.260 --> 00:01:04.080
+that initial render, so this is a pretty common problem
+
+24
+00:01:04.080 --> 00:01:08.550
+that Next.js has solved with both this lifecycle method,
+
+25
+00:01:08.550 --> 00:01:11.770
+called getInitialProps, which we are going to be coming
+
+26
+00:01:11.770 --> 00:01:13.712
+back to that quite a bit, in this course,
+
+27
+00:01:13.712 --> 00:01:16.400
+as well as what's called a Custom Document.
+
+28
+00:01:16.400 --> 00:01:19.260
+So, if you go to the Next.js document, you can search
+
+29
+00:01:19.260 --> 00:01:22.407
+for document, _document; it says Custom Document,
+
+30
+00:01:22.407 --> 00:01:25.240
+it's rendered on the server side, so it's only rendered
+
+31
+00:01:25.240 --> 00:01:28.120
+on the server side, it is used to change the initial
+
+32
+00:01:28.120 --> 00:01:31.003
+server side rendered document markup, and it's commonly used
+
+33
+00:01:31.003 --> 00:01:32.930
+to implement server side rendering and for
+
+34
+00:01:32.930 --> 00:01:35.590
+CSS in JS libraries like styled components;
+
+35
+00:01:35.590 --> 00:01:36.570
+that's exactly what we have.
+
+36
+00:01:36.570 --> 00:01:39.843
+So, if you take a look at the styled components docs,
+
+37
+00:01:41.290 --> 00:01:45.160
+they say, for Next.js, you need to add a custom document,
+
+38
+00:01:45.160 --> 00:01:48.540
+which will go ahead and actually fetch the CSS,
+
+39
+00:01:48.540 --> 00:01:52.870
+before the HTML is sent from the server to the browsers,
+
+40
+00:01:52.870 --> 00:01:57.060
+so they maintain a little example here, in their pages,
+
+41
+00:01:57.060 --> 00:02:00.820
+they have an _document.js, which is gonna look
+
+42
+00:02:00.820 --> 00:02:05.120
+pretty much exactly how we have it on ours;
+
+43
+00:02:05.120 --> 00:02:08.210
+let me just explain the code that's going on here.
+
+44
+00:02:08.210 --> 00:02:11.970
+We import the document, a couple other things from Next.js,
+
+45
+00:02:11.970 --> 00:02:14.970
+then styled components has this thing called a server style
+
+46
+00:02:14.970 --> 00:02:17.510
+sheet, and what it's going to do, is essentially,
+
+47
+00:02:17.510 --> 00:02:21.580
+render out your app, and crawl every single component along
+
+48
+00:02:21.580 --> 00:02:24.600
+the tree, and see if there are any styles that need
+
+49
+00:02:24.600 --> 00:02:26.550
+to be collected; I like the name of this method,
+
+50
+00:02:26.550 --> 00:02:30.870
+collectStyles, then it's going to compile all of those
+
+51
+00:02:30.870 --> 00:02:33.680
+styles into one, and dump it onto the page,
+
+52
+00:02:33.680 --> 00:02:38.680
+and because getInitialProps will always run before
+
+53
+00:02:38.900 --> 00:02:42.220
+the render happens, getInitialProps will render
+
+54
+00:02:42.220 --> 00:02:44.840
+on the server, and if you need to do any data fetching,
+
+55
+00:02:44.840 --> 00:02:47.010
+or in our case, walk the component tree,
+
+56
+00:02:47.010 --> 00:02:50.480
+and collect all the styles, that will happen before
+
+57
+00:02:50.480 --> 00:02:53.103
+the render happens, which in turn, will get sent out
+
+58
+00:02:53.103 --> 00:02:54.380
+from the browser.
+
+59
+00:02:54.380 --> 00:02:57.320
+So, that's a pretty simple little fix that we need to do,
+
+60
+00:02:57.320 --> 00:03:00.060
+we'll go to our pages folder here, we'll create a new
+
+61
+00:03:00.060 --> 00:03:01.333
+file called _document.js,
+
+62
+00:03:05.710 --> 00:03:08.980
+and you can either grab this from the example,
+
+63
+00:03:08.980 --> 00:03:10.940
+with styled components, or you can grab it
+
+64
+00:03:10.940 --> 00:03:15.240
+from the finished files that I have in the
+
+65
+00:03:15.240 --> 00:03:17.360
+starter files directory; paste it in there,
+
+66
+00:03:17.360 --> 00:03:18.700
+the only thing we don't need
+
+67
+00:03:18.700 --> 00:03:21.760
+is this title, and the reason why we don't need that,
+
+68
+00:03:21.760 --> 00:03:25.050
+is because we are doing that separately on our page,
+
+69
+00:03:25.050 --> 00:03:27.750
+as well as, I'm going to show you how to set it
+
+70
+00:03:27.750 --> 00:03:29.550
+on any page, in the future.
+
+71
+00:03:29.550 --> 00:03:33.400
+So, we give that a save, we go back to our Sick Fits
+
+72
+00:03:33.400 --> 00:03:36.609
+application, and it's still happening, let's see if we kill
+
+73
+00:03:36.609 --> 00:03:40.520
+and restart; I think you need to restart after you do
+
+74
+00:03:40.520 --> 00:03:43.498
+any of these custom app and custom document ones,
+
+75
+00:03:43.498 --> 00:03:47.880
+now, if I give it a refresh; okay, see how it's not
+
+76
+00:03:47.880 --> 00:03:48.730
+doing that anymore?
+
+77
+00:03:48.730 --> 00:03:50.670
+Because it's collecting all of the styles,
+
+78
+00:03:50.670 --> 00:03:53.909
+and if we were to view the page source, you'll see that
+
+79
+00:03:53.909 --> 00:03:57.820
+we have a style tag, and this is all of the CSS
+
+80
+00:03:57.820 --> 00:04:00.830
+that we have written; that custom document has walked
+
+81
+00:04:00.830 --> 00:04:03.270
+the component tree, collected all the styles
+
+82
+00:04:03.270 --> 00:04:05.660
+that are needed, and put them into a style tag;
+
+83
+00:04:05.660 --> 00:04:08.770
+so, I'm not totally sure why that needs to happen,
+
+84
+00:04:08.770 --> 00:04:11.270
+but, it does need to happen, so we need a custom,
+
+85
+00:04:11.270 --> 00:04:15.840
+_document.js, and we are ready to roll;
+
+86
+00:04:15.840 --> 00:04:17.290
+I'll see you in the next one.
+

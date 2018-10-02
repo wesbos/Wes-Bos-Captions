@@ -1,0 +1,566 @@
+﻿WEBVTT
+
+1
+00:00:01.047 --> 00:00:02.915
+<v Wes>Real quick, we need to lock down</v>
+
+2
+00:00:02.915 --> 00:00:05.860
+the deleting of items to only people who are
+
+3
+00:00:05.860 --> 00:00:08.548
+the owners of that item, or someone that has
+
+4
+00:00:08.548 --> 00:00:12.965
+either an admin privilege or a item delete privilege.
+
+5
+00:00:13.944 --> 00:00:15.744
+So, we're gonna open up our back end
+
+6
+00:00:15.744 --> 00:00:17.381
+and go into mutation.js
+
+7
+00:00:17.381 --> 00:00:20.617
+and find the delete item method that we wrote.
+
+8
+00:00:20.617 --> 00:00:22.898
+You notice that right here, we have a number two,
+
+9
+00:00:22.898 --> 00:00:25.313
+check if they own that item, or have the permissions.
+
+10
+00:00:25.313 --> 00:00:26.647
+So, we've done a to do.
+
+11
+00:00:26.647 --> 00:00:29.035
+Before I even get into the logic of that,
+
+12
+00:00:29.035 --> 00:00:31.312
+we need to figure out how to handle errors
+
+13
+00:00:31.312 --> 00:00:32.865
+on this little delete button,
+
+14
+00:00:32.865 --> 00:00:35.789
+because if someone doesn't have permission to delete it
+
+15
+00:00:35.789 --> 00:00:37.939
+we need to alert them and let them know.
+
+16
+00:00:37.939 --> 00:00:40.203
+So, there a couple options you can use to do that,
+
+17
+00:00:40.203 --> 00:00:41.999
+but it's a little bit tricky
+
+18
+00:00:41.999 --> 00:00:44.206
+when you have a small UI like a button
+
+19
+00:00:44.206 --> 00:00:45.814
+because you can't really display the error
+
+20
+00:00:45.814 --> 00:00:47.278
+inside of that button.
+
+21
+00:00:47.278 --> 00:00:48.471
+So what I'm going to show you how to do
+
+22
+00:00:48.471 --> 00:00:50.785
+is how to catch that error in our frontend
+
+23
+00:00:50.785 --> 00:00:53.997
+and then display that via an alert dialogue,
+
+24
+00:00:53.997 --> 00:00:57.164
+or you could pop it up over top in an apollo box
+
+25
+00:00:57.164 --> 00:00:58.175
+or anything like that.
+
+26
+00:00:58.175 --> 00:01:01.058
+So, let's just kind of short circuit this deleteItem
+
+27
+00:01:01.058 --> 00:01:03.641
+to throw an error all the time,
+
+28
+00:01:04.522 --> 00:01:05.855
+throw new Error,
+
+29
+00:01:07.733 --> 00:01:09.316
+you aren't allowed.
+
+30
+00:01:11.330 --> 00:01:13.643
+Good, then we'll flip over to our front end here
+
+31
+00:01:13.643 --> 00:01:15.726
+and open up DeleteItem.js
+
+32
+00:01:17.626 --> 00:01:20.483
+And we're going to, let's just try it right now,
+
+33
+00:01:20.483 --> 00:01:22.206
+without any sort of error handling.
+
+34
+00:01:22.206 --> 00:01:24.349
+So I'm going to go ahead and delete it, press okay.
+
+35
+00:01:24.349 --> 00:01:27.226
+And nothing happens on the front end, but you can see
+
+36
+00:01:27.226 --> 00:01:31.091
+that the error is logged into the console here
+
+37
+00:01:31.091 --> 00:01:33.406
+that says GraphQL error, you're not allowed.
+
+38
+00:01:33.406 --> 00:01:35.555
+Well, the way that you can catch that error is,
+
+39
+00:01:35.555 --> 00:01:38.719
+you can go down to where you run this method,
+
+40
+00:01:38.719 --> 00:01:41.701
+which is deleteItem, and you could either do,
+
+41
+00:01:41.701 --> 00:01:45.456
+like, if this was an async function you could
+
+42
+00:01:45.456 --> 00:01:47.912
+wrap a tryCatch around it,
+
+43
+00:01:47.912 --> 00:01:50.807
+but that's no way to live your life, so.
+
+44
+00:01:50.807 --> 00:01:54.084
+The tryCatch is okay, but almost always I find the tryCatch
+
+45
+00:01:54.084 --> 00:01:55.952
+to be a little bit verbose.
+
+46
+00:01:55.952 --> 00:01:58.250
+The one kind of cool thing about this deleteItem
+
+47
+00:01:58.250 --> 00:01:59.387
+is that it's a promise,
+
+48
+00:01:59.387 --> 00:02:01.081
+and if you ever want to catch errors that promises have,
+
+49
+00:02:01.081 --> 00:02:03.485
+you simply just tag a .catch onto the end,
+
+50
+00:02:03.485 --> 00:02:06.148
+you can catch the error, and you can do what you want
+
+51
+00:02:06.148 --> 00:02:07.153
+with that error.
+
+52
+00:02:07.153 --> 00:02:10.876
+And in our case you can just alert err.message
+
+53
+00:02:10.876 --> 00:02:13.483
+and that should then, when you try to delete something,
+
+54
+00:02:13.483 --> 00:02:16.873
+press okay, it gives you the actual GraphQL error,
+
+55
+00:02:16.873 --> 00:02:18.044
+you are not allowed.
+
+56
+00:02:18.044 --> 00:02:20.088
+So any error that we throw on the server
+
+57
+00:02:20.088 --> 00:02:21.912
+will be caught right here,
+
+58
+00:02:21.912 --> 00:02:24.065
+and then it will be shown to the user,
+
+59
+00:02:24.065 --> 00:02:27.135
+and then they can go along their merry way.
+
+60
+00:02:27.135 --> 00:02:28.720
+So that's one thing we've done there,
+
+61
+00:02:28.720 --> 00:02:31.257
+let's flip back to our back end now
+
+62
+00:02:31.257 --> 00:02:35.056
+and delete that short circuit there.
+
+63
+00:02:35.056 --> 00:02:38.398
+Now, here is where we want to check that they have.
+
+64
+00:02:38.398 --> 00:02:41.274
+So, first thing is that we actually need to
+
+65
+00:02:41.274 --> 00:02:43.524
+check if the owner owns it.
+
+66
+00:02:44.640 --> 00:02:46.078
+Now, this gets a little bit hairy,
+
+67
+00:02:46.078 --> 00:02:48.440
+because we want to check either if they own it
+
+68
+00:02:48.440 --> 00:02:51.081
+or if they have the permissions.
+
+69
+00:02:51.081 --> 00:02:52.512
+And doing all of this logic
+
+70
+00:02:52.512 --> 00:02:55.255
+inside of an if statement makes me loopy.
+
+71
+00:02:55.255 --> 00:02:56.666
+So what I like to do is just to
+
+72
+00:02:56.666 --> 00:02:58.513
+create some separate variables first.
+
+73
+00:02:58.513 --> 00:03:03.013
+So, const ownsItem and we'll just say the item.user.id
+
+74
+00:03:03.908 --> 00:03:06.408
+is equal to ctx.request.userId
+
+75
+00:03:11.749 --> 00:03:13.780
+and then we'll have a boolean there
+
+76
+00:03:13.780 --> 00:03:15.409
+that's either true or false
+
+77
+00:03:15.409 --> 00:03:17.267
+and then we'll have another one,
+
+78
+00:03:17.267 --> 00:03:20.166
+we'll say const hasPermissions
+
+79
+00:03:20.166 --> 00:03:24.999
+and in that case, we take the ctx.request.user.permissions
+
+80
+00:03:27.933 --> 00:03:29.986
+and we're going to see if they have any of the ones
+
+81
+00:03:29.986 --> 00:03:30.903
+that we want.
+
+82
+00:03:30.903 --> 00:03:32.048
+In this case, we can't use our handy dandy
+
+83
+00:03:32.048 --> 00:03:33.817
+little util function, because that one
+
+84
+00:03:33.817 --> 00:03:35.801
+will throw the error for us,
+
+85
+00:03:35.801 --> 00:03:37.730
+and we want to check if it's either or
+
+86
+00:03:37.730 --> 00:03:39.806
+so we can do the logic right inside of here.
+
+87
+00:03:39.806 --> 00:03:42.448
+We'll use some, and we'll loop over
+
+88
+00:03:42.448 --> 00:03:44.531
+all of their permissions.
+
+89
+00:03:46.432 --> 00:03:49.166
+We'll take the permission, and we'll check if it's either
+
+90
+00:03:49.166 --> 00:03:53.666
+in an array of admin or itemdelete.includes permission
+
+91
+00:03:58.723 --> 00:04:01.723
+So you see how this is pretty funky as well,
+
+92
+00:04:01.723 --> 00:04:03.666
+this is why I don't like to do it in an if statement
+
+93
+00:04:03.666 --> 00:04:06.229
+because this alone took me a couple stabs
+
+94
+00:04:06.229 --> 00:04:07.708
+at actually trying to figure it out,
+
+95
+00:04:07.708 --> 00:04:09.760
+but essentially we're looping over every single one
+
+96
+00:04:09.760 --> 00:04:12.904
+and we're checking if at least one
+
+97
+00:04:12.904 --> 00:04:15.186
+so some will check if at least one is true,
+
+98
+00:04:15.186 --> 00:04:18.374
+so here let me do a little simple example outside of that.
+
+99
+00:04:18.374 --> 00:04:20.207
+We'll say, dog and cat
+
+100
+00:04:22.736 --> 00:04:24.319
+and we'll say some,
+
+101
+00:04:26.311 --> 00:04:28.692
+we'll call it a pet, and we'll say,
+
+102
+00:04:28.692 --> 00:04:30.609
+if the pet is in a bird
+
+103
+00:04:33.762 --> 00:04:34.595
+or a...
+
+104
+00:04:36.669 --> 00:04:37.502
+snake
+
+105
+00:04:38.345 --> 00:04:39.762
+.includes the pet
+
+106
+00:04:42.094 --> 00:04:43.545
+and that's going to return false, right,
+
+107
+00:04:43.545 --> 00:04:45.483
+because there's no overlap between those two things.
+
+108
+00:04:45.483 --> 00:04:50.483
+But, if there was also a cat in here, that will return true,
+
+109
+00:04:50.761 --> 00:04:53.276
+because there is at least one of these
+
+110
+00:04:53.276 --> 00:04:56.495
+in what we're looking for, right.
+
+111
+00:04:56.495 --> 00:04:58.201
+So that's what we're doing here.
+
+112
+00:04:58.201 --> 00:05:01.179
+And now we've got these two booleans
+
+113
+00:05:01.179 --> 00:05:03.679
+and we can say, if ownsItem...
+
+114
+00:05:05.287 --> 00:05:06.704
+or hasPermissions
+
+115
+00:05:08.606 --> 00:05:11.106
+then we'll continue on our day
+
+116
+00:05:12.402 --> 00:05:14.819
+else we can throw a new Error
+
+117
+00:05:18.270 --> 00:05:21.353
+You don't have permission to do that.
+
+118
+00:05:27.396 --> 00:05:28.780
+And that should work.
+
+119
+00:05:28.780 --> 00:05:30.379
+Obviously not, we're going to leave it at that
+
+120
+00:05:30.379 --> 00:05:31.625
+with that empty if statement,
+
+121
+00:05:31.625 --> 00:05:34.799
+that's a bit of a code smell, so let's get rid of this else
+
+122
+00:05:34.799 --> 00:05:37.167
+get rid of the nothing, and then change this if statement
+
+123
+00:05:37.167 --> 00:05:41.750
+to say if they don't own it, and don't has permissions,
+
+124
+00:05:43.669 --> 00:05:47.002
+then throw the error that we have there.
+
+125
+00:05:48.374 --> 00:05:52.145
+And that should be good, let's go back to this item here.
+
+126
+00:05:52.145 --> 00:05:53.478
+Delete it, okay.
+
+127
+00:05:54.846 --> 00:05:58.430
+Cannot read property id of undefined?
+
+128
+00:05:58.430 --> 00:06:01.274
+Where is that coming from?
+
+129
+00:06:01.274 --> 00:06:04.308
+So we've got this, cannot read id of undefined
+
+130
+00:06:04.308 --> 00:06:08.219
+a mutation JS on line 54, go to line 54,
+
+131
+00:06:08.219 --> 00:06:11.803
+so here we're trying to read the id of user,
+
+132
+00:06:11.803 --> 00:06:14.416
+and it looks like when we queried the item,
+
+133
+00:06:14.416 --> 00:06:17.057
+we didn't ask for the user, we only asked for the id
+
+134
+00:06:17.057 --> 00:06:18.517
+and the title of the user.
+
+135
+00:06:18.517 --> 00:06:21.938
+So we can just make that get the user,
+
+136
+00:06:21.938 --> 00:06:24.175
+and from each user we want to grab the id
+
+137
+00:06:24.175 --> 00:06:26.675
+and that should fix it for us.
+
+138
+00:06:27.586 --> 00:06:30.301
+Now, when I delete, it, okay.
+
+139
+00:06:30.301 --> 00:06:33.210
+Boom, gone. In good shape.
+
+140
+00:06:33.210 --> 00:06:35.701
+And that is the end of the permissions one.
+
+141
+00:06:35.701 --> 00:06:37.807
+I'll see you in the next videos.
+

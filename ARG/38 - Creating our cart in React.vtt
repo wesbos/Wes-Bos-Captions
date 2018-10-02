@@ -1,0 +1,406 @@
+﻿WEBVTT
+
+1
+00:00:01.125 --> 00:00:02.176
+<v Wes>Alright, we're flippin' over</v>
+
+2
+00:00:02.176 --> 00:00:04.288
+to working on the shopping cart.
+
+3
+00:00:04.288 --> 00:00:06.979
+First we're gonna start off with just the visual part of it,
+
+4
+00:00:06.979 --> 00:00:08.083
+building it out in React,
+
+5
+00:00:08.083 --> 00:00:09.279
+and then we're gonna circle back
+
+6
+00:00:09.279 --> 00:00:12.379
+and actually hook up the adding to cart,
+
+7
+00:00:12.379 --> 00:00:13.827
+pulling the items out of cart,
+
+8
+00:00:13.827 --> 00:00:14.944
+listing the items that are in cart,
+
+9
+00:00:14.944 --> 00:00:15.979
+removing them from cart.
+
+10
+00:00:15.979 --> 00:00:18.673
+There's a whole bunch that is gonna be going on here.
+
+11
+00:00:18.673 --> 00:00:21.374
+So, first, before we even get into that, let's go ahead
+
+12
+00:00:21.374 --> 00:00:24.045
+and just add yourself in, I dunno,
+
+13
+00:00:24.045 --> 00:00:28.545
+five or six different items, and then we'll get going.
+
+14
+00:00:43.374 --> 00:00:46.635
+Alright, so we need to open up our header.js
+
+15
+00:00:46.635 --> 00:00:48.700
+which is where our cart is gonna go into,
+
+16
+00:00:48.700 --> 00:00:51.309
+and then we also need to make a new component.
+
+17
+00:00:51.309 --> 00:00:52.369
+Let's go into the components folder
+
+18
+00:00:52.369 --> 00:00:55.901
+and create a new file called, cap LC cart.js*
+
+19
+00:00:55.901 --> 00:00:58.857
+and inside of there, we're gonna import
+
+20
+00:00:58.857 --> 00:01:00.818
+a couple styled components, so first of all
+
+21
+00:01:00.818 --> 00:01:03.947
+import React from react and we need
+
+22
+00:01:03.947 --> 00:01:06.081
+four different style components that we have.
+
+23
+00:01:06.081 --> 00:01:08.581
+We need one called CartStyles.
+
+24
+00:01:09.737 --> 00:01:12.654
+We need another one called Supreme.
+
+25
+00:01:13.743 --> 00:01:16.733
+We need another one called CloseButton.
+
+26
+00:01:16.733 --> 00:01:18.774
+We need another one called SickButton,
+
+27
+00:01:18.774 --> 00:01:20.690
+which we've used before.
+
+28
+00:01:20.690 --> 00:01:24.023
+Import all of those, import from styles.
+
+29
+00:01:28.783 --> 00:01:30.554
+Okay, so all I'm doing there is I just wrote them all,
+
+30
+00:01:30.554 --> 00:01:33.752
+I copied them and then I paste them in as I need them.
+
+31
+00:01:33.752 --> 00:01:35.775
+Then we'll make our cart.
+
+32
+00:01:35.775 --> 00:01:40.775
+Const Cart is equal to let's use a stateless component here.
+
+33
+00:01:41.037 --> 00:01:43.479
+Actually, it's gonna need a block
+
+34
+00:01:43.479 --> 00:01:48.479
+and then I'm just gonna return from that our CartStyles
+
+35
+00:01:48.762 --> 00:01:53.095
+inside of that just do a header, regular header tag,
+
+36
+00:01:53.989 --> 00:01:56.413
+inside of that give yourselves a CloseButton,
+
+37
+00:01:56.413 --> 00:02:00.746
+custom component, that needs a title called "close".
+
+38
+00:02:02.563 --> 00:02:04.801
+And inside of there I'm going to use my
+
+39
+00:02:04.801 --> 00:02:06.845
+ampersand times, that will give us that
+
+40
+00:02:06.845 --> 00:02:10.432
+nice little x to close the actual cart.
+
+41
+00:02:10.432 --> 00:02:12.494
+Then below, we're gonna use Supreme,
+
+42
+00:02:12.494 --> 00:02:15.661
+which is just an H3 if you open it up.
+
+43
+00:02:16.755 --> 00:02:20.755
+It's just a styled H3 with some fanciness in it.
+
+44
+00:02:23.150 --> 00:02:25.418
+That's going to say Your Cart,
+
+45
+00:02:25.418 --> 00:02:26.991
+and we're going to go back and swap out Your
+
+46
+00:02:26.991 --> 00:02:30.754
+with your actual name once we have the queries rolling.
+
+47
+00:02:30.754 --> 00:02:32.227
+Underneath that, we'll just have a paragraph tag
+
+48
+00:02:32.227 --> 00:02:35.455
+that says You Have, let's just say underscore underscore
+
+49
+00:02:35.455 --> 00:02:37.038
+Items in your cart.
+
+50
+00:02:40.636 --> 00:02:43.291
+Gonna fill that out with the actual number of items.
+
+51
+00:02:43.291 --> 00:02:47.328
+Below that we need a footer, we need a paragraph tag,
+
+52
+00:02:47.328 --> 00:02:52.328
+let's just put 11, let's just put ten dollars and ten cents.
+
+53
+00:02:54.113 --> 00:02:57.351
+Obviously, this is going to be swapped out
+
+54
+00:02:57.351 --> 00:02:59.262
+with the actual value of our cart.
+
+55
+00:02:59.262 --> 00:03:02.149
+And then we need a SickButton inside of that,
+
+56
+00:03:02.149 --> 00:03:03.816
+as just a check out.
+
+57
+00:03:04.699 --> 00:03:08.449
+I think that's good, then we can go ahead and
+
+58
+00:03:09.949 --> 00:03:14.769
+export default cart and, one other thing is that
+
+59
+00:03:14.769 --> 00:03:19.348
+this cart style needs an open prop pass to it,
+
+60
+00:03:19.348 --> 00:03:21.196
+and it's gonna either gonna be true or false,
+
+61
+00:03:21.196 --> 00:03:22.431
+and I'll show you what that is.
+
+62
+00:03:22.431 --> 00:03:26.887
+Let's open up the CartStyles and this is just
+
+63
+00:03:26.887 --> 00:03:29.219
+our CartStyles, it's a style div.
+
+64
+00:03:29.219 --> 00:03:32.469
+And inside of it, we will automatically
+
+65
+00:03:35.550 --> 00:03:37.708
+translate x 100 percent, and what that's gonna do is
+
+66
+00:03:37.708 --> 00:03:40.339
+that's gonna put it off screen.
+
+67
+00:03:40.339 --> 00:03:42.003
+However, if it has a prop of open,
+
+68
+00:03:42.003 --> 00:03:44.201
+it's going to transform it zero,
+
+69
+00:03:44.201 --> 00:03:45.783
+and that will bring it back on screen.
+
+70
+00:03:45.783 --> 00:03:47.715
+So let's just see how that looks.
+
+71
+00:03:47.715 --> 00:03:51.942
+We'll head back to our header and import the cart.
+
+72
+00:03:51.942 --> 00:03:54.525
+We'll go NProgress up, that up,
+
+73
+00:03:55.455 --> 00:03:59.236
+then we'll import the cart, we'll go down,
+
+74
+00:03:59.236 --> 00:04:03.114
+into our header, right where it says cart,
+
+75
+00:04:03.114 --> 00:04:06.577
+we can replace that with a cart tag.
+
+76
+00:04:06.577 --> 00:04:11.410
+And CartStyle is not defined, let's jump back to our cart.
+
+77
+00:04:14.575 --> 00:04:16.578
+There's an s on that.
+
+78
+00:04:16.578 --> 00:04:18.822
+Hey, there we go.
+
+79
+00:04:18.822 --> 00:04:19.748
+So this is what our cart looks like.
+
+80
+00:04:19.748 --> 00:04:22.415
+Obviously I've done the styles to put this button
+
+81
+00:04:22.415 --> 00:04:24.644
+in the top right hand corner.
+
+82
+00:04:24.644 --> 00:04:25.784
+You have this title that says your cart,
+
+83
+00:04:25.784 --> 00:04:28.075
+here it's gonna tell us how many items in our cart.
+
+84
+00:04:28.075 --> 00:04:30.389
+Then in between here, we're going to loop over
+
+85
+00:04:30.389 --> 00:04:32.628
+the items in our cart and display them.
+
+86
+00:04:32.628 --> 00:04:34.391
+And then finally we have a total,
+
+87
+00:04:34.391 --> 00:04:36.660
+as well as a button that will allow us to
+
+88
+00:04:36.660 --> 00:04:39.357
+consummate the transaction.
+
+89
+00:04:39.357 --> 00:04:42.735
+You see that we take this open and
+
+90
+00:04:42.735 --> 00:04:45.726
+either remove it or set it to false.
+
+91
+00:04:45.726 --> 00:04:48.567
+The cart will go offscreen, bring it back,
+
+92
+00:04:48.567 --> 00:04:51.516
+it will put it back on screen.
+
+93
+00:04:51.516 --> 00:04:52.816
+And that's the whole point, that we're gonna be
+
+94
+00:04:52.816 --> 00:04:56.101
+setting up booley in here that's gonna live in our
+
+95
+00:04:56.101 --> 00:04:59.608
+palostore, that can be toggled between true and false
+
+96
+00:04:59.608 --> 00:05:02.333
+and whenever that's changed anywhere on our page,
+
+97
+00:05:02.333 --> 00:05:04.966
+this thing will trigger a re-render and it will,
+
+98
+00:05:04.966 --> 00:05:08.466
+it will apply that CSS to put it off page.
+
+99
+00:05:20.056 --> 00:05:21.805
+So that's exactly what we're gonna do in the next video.
+
+100
+00:05:21.805 --> 00:05:25.169
+We're gonna jump into getting local state
+
+101
+00:05:25.169 --> 00:05:28.086
+to also live in our Apollo client.
+
