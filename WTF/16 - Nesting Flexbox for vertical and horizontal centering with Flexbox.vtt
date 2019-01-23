@@ -1,0 +1,1398 @@
+﻿WEBVTT
+
+1
+00:00:00.373 --> 00:00:05.373 line:15% 
+(slow, cheery music)
+(whistling)
+
+2
+00:00:11.580 --> 00:00:13.430
+<v Wes Bos>Welcome back, in this video we're gonna talk</v>
+
+3
+00:00:13.430 --> 00:00:16.330
+about nesting flexbox and how you can use that
+
+4
+00:00:16.330 --> 00:00:18.720
+to your advantage when doing a little bit more
+
+5
+00:00:18.720 --> 00:00:22.390
+of a complex layout than the stuff we've been doing so far.
+
+6
+00:00:22.390 --> 00:00:25.500
+And this is something that I stumbled upon fairly recently.
+
+7
+00:00:25.500 --> 00:00:27.610
+And it was something like this.
+
+8
+00:00:27.610 --> 00:00:29.120
+So we have like, a slider up here
+
+9
+00:00:29.120 --> 00:00:30.190
+and I just put an image there
+
+10
+00:00:30.190 --> 00:00:32.910
+to kinda give you a feel for it.
+
+11
+00:00:32.910 --> 00:00:36.520
+And then underneath the slider we had all of these items
+
+12
+00:00:36.520 --> 00:00:37.970
+that were for each slide.
+
+13
+00:00:37.970 --> 00:00:39.380
+So, maybe these four slides here,
+
+14
+00:00:39.380 --> 00:00:41.750
+then we had back and next buttons.
+
+15
+00:00:41.750 --> 00:00:45.370
+And I wanted to use flexbox because I wasn't sure how many
+
+16
+00:00:45.370 --> 00:00:47.600
+of these items were going to be added.
+
+17
+00:00:47.600 --> 00:00:49.180
+There might be four, there might be two,
+
+18
+00:00:49.180 --> 00:00:50.100
+there might be three.
+
+19
+00:00:50.100 --> 00:00:51.440
+And then I also wanted to make sure
+
+20
+00:00:51.440 --> 00:00:54.860
+that the arrows didn't take up as much space
+
+21
+00:00:54.860 --> 00:00:56.090
+as the rest of 'em.
+
+22
+00:00:56.090 --> 00:00:58.130
+So, perfect use case for flexbox.
+
+23
+00:00:58.130 --> 00:01:00.760
+Where I ran into some trouble was,
+
+24
+00:01:00.760 --> 00:01:04.060
+I have these, if you just look at the HTML here.
+
+25
+00:01:04.060 --> 00:01:07.720
+I've got this ul which is gonna be my flex container.
+
+26
+00:01:07.720 --> 00:01:10.980
+And then I've got li, and inside of that, I have a link.
+
+27
+00:01:10.980 --> 00:01:13.760
+A pretty standard nav that you're gonna find
+
+28
+00:01:13.760 --> 00:01:16.560
+in most web development scenarios.
+
+29
+00:01:16.560 --> 00:01:21.560
+And the problem was that, I wanted to center these things.
+
+30
+00:01:22.270 --> 00:01:25.940
+Both horizontally and vertically.
+
+31
+00:01:25.940 --> 00:01:28.700
+Which you might say like, oh, that's perfect in flexbox.
+
+32
+00:01:28.700 --> 00:01:31.990
+But the problem became where I actually wanted the,
+
+33
+00:01:31.990 --> 00:01:33.390
+see where I'm hovering?
+
+34
+00:01:33.390 --> 00:01:35.380
+This kinda darker purple.
+
+35
+00:01:35.380 --> 00:01:37.520
+That is the link part, 'cause you wanna be able
+
+36
+00:01:37.520 --> 00:01:39.550
+to click anywhere on that darker purple.
+
+37
+00:01:39.550 --> 00:01:41.630
+So I wanted that to be stretched.
+
+38
+00:01:41.630 --> 00:01:44.630
+I wanted that to stretch regardless of how high.
+
+39
+00:01:44.630 --> 00:01:48.060
+Like you'll see that this line, this is three lines high.
+
+40
+00:01:48.060 --> 00:01:49.350
+And this one is only one.
+
+41
+00:01:49.350 --> 00:01:51.280
+So sometimes it's only gonna be one line high,
+
+42
+00:01:51.280 --> 00:01:52.690
+sometimes it'll be three lines high.
+
+43
+00:01:52.690 --> 00:01:55.930
+And I wanted it to just stretch to the height
+
+44
+00:01:55.930 --> 00:01:56.800
+of the biggest one,
+
+45
+00:01:56.800 --> 00:01:59.140
+which is something flexbox does very well.
+
+46
+00:01:59.140 --> 00:02:02.130
+The problem with that is, if you want to center them
+
+47
+00:02:02.130 --> 00:02:06.390
+in that box, then all of a sudden that purple box went
+
+48
+00:02:06.390 --> 00:02:09.910
+from being this high, 'cause by default the align-item
+
+49
+00:02:09.910 --> 00:02:12.970
+is stretch, and the align-item went to center,
+
+50
+00:02:12.970 --> 00:02:14.370
+which it was just the height
+
+51
+00:02:14.370 --> 00:02:16.610
+of the actual content inside of it.
+
+52
+00:02:16.610 --> 00:02:21.170
+So, I asked around on Twitter and I finally figured it out.
+
+53
+00:02:21.170 --> 00:02:24.550
+Which is, the answer to it is nesting flexbox.
+
+54
+00:02:24.550 --> 00:02:26.860
+So what we're gonna do in this code along is,
+
+55
+00:02:26.860 --> 00:02:30.830
+I'm gonna start you off with the HTML and the CSS
+
+56
+00:02:30.830 --> 00:02:33.520
+which I thought we're gonna run into the problem.
+
+57
+00:02:33.520 --> 00:02:34.700
+And then I'm gonna show you how
+
+58
+00:02:34.700 --> 00:02:37.950
+we can both edit the CSS and the HTML.
+
+59
+00:02:37.950 --> 00:02:40.580
+We're gonna have to add one extra element in here,
+
+60
+00:02:40.580 --> 00:02:42.430
+and we're gonna show you how to fix it.
+
+61
+00:02:42.430 --> 00:02:44.820
+So, let's get rollin'.
+
+62
+00:02:44.820 --> 00:02:47.447
+Alright, so what I have open here is our style.css
+
+63
+00:02:47.447 --> 00:02:49.140
+and our index.html.
+
+64
+00:02:49.140 --> 00:02:51.010
+Those are just two kinda starter files.
+
+65
+00:02:51.010 --> 00:02:54.880
+And in our style.css, I've just got some base styles.
+
+66
+00:02:54.880 --> 00:02:56.560
+So it looks pretty good.
+
+67
+00:02:56.560 --> 00:02:58.310
+If you open up in your browser it looks like this.
+
+68
+00:02:58.310 --> 00:03:00.140
+You should see that these things are sort
+
+69
+00:03:00.140 --> 00:03:03.120
+of running together 'cause by default they're links.
+
+70
+00:03:03.120 --> 00:03:04.970
+And I added a whole bunch of padding to them
+
+71
+00:03:04.970 --> 00:03:07.780
+and because links are inline, their padding is going
+
+72
+00:03:07.780 --> 00:03:09.160
+to overlap and not push them down.
+
+73
+00:03:09.160 --> 00:03:10.100
+But, not to worry.
+
+74
+00:03:10.100 --> 00:03:12.050
+We're gonna fix all of that.
+
+75
+00:03:12.050 --> 00:03:15.567
+And what I also did here is I just took the style,
+
+76
+00:03:15.567 --> 00:03:17.860
+margin and padding off 'cause by default
+
+77
+00:03:17.860 --> 00:03:19.170
+that's what all this looks like.
+
+78
+00:03:19.170 --> 00:03:20.270
+So.
+
+79
+00:03:20.270 --> 00:03:21.780
+Let's get up and running.
+
+80
+00:03:21.780 --> 00:03:25.721
+The first thing we need to do is, since these li's,
+
+81
+00:03:25.721 --> 00:03:27.170
+if you see, we're working with the ul.
+
+82
+00:03:27.170 --> 00:03:29.877
+The ul is going to be our flex container.
+
+83
+00:03:29.877 --> 00:03:33.340
+And the list items are going to be our flex items.
+
+84
+00:03:33.340 --> 00:03:36.600
+Flex container, flex items.
+
+85
+00:03:36.600 --> 00:03:40.060
+And the way we do that is we say, display: flex.
+
+86
+00:03:40.060 --> 00:03:42.680
+And what that will do is, right away it starts
+
+87
+00:03:42.680 --> 00:03:44.160
+to look quite a bit better.
+
+88
+00:03:44.160 --> 00:03:46.310
+We've got all of our list items here.
+
+89
+00:03:46.310 --> 00:03:48.660
+And they're really just taking up
+
+90
+00:03:48.660 --> 00:03:51.410
+as much room as they need to.
+
+91
+00:03:51.410 --> 00:03:54.150
+We've got a little bit of extra space right here.
+
+92
+00:03:54.150 --> 00:03:57.110
+And you can see a little bit of unevenness at the bottom.
+
+93
+00:03:57.110 --> 00:03:58.890
+And the way we take care of that,
+
+94
+00:03:58.890 --> 00:04:01.590
+how do we kinda distribute the extra space evenly?
+
+95
+00:04:01.590 --> 00:04:06.590
+Well, we say .slider-nav li, which is our flex item.
+
+96
+00:04:07.371 --> 00:04:08.204
+(typing)
+Oh.
+
+97
+00:04:08.204 --> 00:04:10.660
+Let's go ahead and say our first flex item
+
+98
+00:04:10.660 --> 00:04:13.470
+and then maybe up here let's give ourselves a comment.
+
+99
+00:04:13.470 --> 00:04:16.510
+Our flex container.
+
+100
+00:04:16.510 --> 00:04:19.370
+And I say first because we're gonna actually be nesting them
+
+101
+00:04:19.370 --> 00:04:21.550
+in just a second, so.
+
+102
+00:04:21.550 --> 00:04:24.440
+And the way we do that is we'll just say flex:1.
+
+103
+00:04:24.440 --> 00:04:26.460
+And that will just make them all even.
+
+104
+00:04:26.460 --> 00:04:28.600
+So give it a refresh, and whoa!
+
+105
+00:04:28.600 --> 00:04:31.260
+What happened, it starts to look like crap again.
+
+106
+00:04:31.260 --> 00:04:35.320
+Well, when I don't know what's going on with my layout,
+
+107
+00:04:35.320 --> 00:04:38.550
+my number one thing to do, is I just put a tiny,
+
+108
+00:04:38.550 --> 00:04:41.940
+little red border around all of the elements, just
+
+109
+00:04:41.940 --> 00:04:44.310
+to sorta understand where they are.
+
+110
+00:04:44.310 --> 00:04:45.700
+And I'll give that a refresh.
+
+111
+00:04:45.700 --> 00:04:47.790
+Okay, this makes a little bit more sense
+
+112
+00:04:47.790 --> 00:04:52.050
+to us where we've got these list items.
+
+113
+00:04:52.050 --> 00:04:54.960
+And they're actually falling perfectly into place.
+
+114
+00:04:54.960 --> 00:04:58.683
+It's just the links that are giving us some grief.
+
+115
+00:04:59.540 --> 00:05:03.990
+We are going to make these nested flex in just a second.
+
+116
+00:05:03.990 --> 00:05:05.870
+But we're not gonna get there just yet,
+
+117
+00:05:05.870 --> 00:05:08.287
+so let's say,
+
+118
+00:05:08.287 --> 00:05:11.760
+.slider-nav a.
+
+119
+00:05:11.760 --> 00:05:14.167
+Just say display: block with 100%.
+
+120
+00:05:15.262 --> 00:05:16.910
+And what that will do is--
+
+121
+00:05:16.910 --> 00:05:17.860
+There we go,
+
+122
+00:05:17.860 --> 00:05:19.940
+that'll just make things look a little bit nicer
+
+123
+00:05:19.940 --> 00:05:22.393
+so we can kinda see what we're dealing with here.
+
+124
+00:05:24.150 --> 00:05:27.910
+Again, we've got our flex item, which is this.
+
+125
+00:05:27.910 --> 00:05:32.910
+And then we've got our individual links inside of that.
+
+126
+00:05:33.480 --> 00:05:36.550
+Now a couple things I want to happen here.
+
+127
+00:05:36.550 --> 00:05:40.670
+I want these links to stretch themselves entirely across.
+
+128
+00:05:40.670 --> 00:05:42.650
+And then I want the text
+
+129
+00:05:42.650 --> 00:05:45.800
+to be centered both horizontally and vertically.
+
+130
+00:05:45.800 --> 00:05:49.870
+And then finally, I want these arrows on either end,
+
+131
+00:05:49.870 --> 00:05:50.980
+to be a lot smaller.
+
+132
+00:05:50.980 --> 00:05:52.510
+So let's actually start with those arrows.
+
+133
+00:05:52.510 --> 00:05:55.077
+We will go ahead and select each of them.
+
+134
+00:05:55.077 --> 00:05:56.133
+.slider-nav li,
+
+135
+00:05:58.100 --> 00:06:00.480
+er, .arrow, I think that's it,
+
+136
+00:06:00.480 --> 00:06:01.830
+let's check our HTML, yup.
+
+137
+00:06:01.830 --> 00:06:04.640
+We got a class arrow, and a class arrow.
+
+138
+00:06:04.640 --> 00:06:07.393
+We coulda also said slider-nav li:
+
+139
+00:06:09.250 --> 00:06:10.610
+first-child,
+
+140
+00:06:10.610 --> 00:06:13.240
+and then also do a last one but we got a class on there.
+
+141
+00:06:13.240 --> 00:06:14.963
+So let's stick with that.
+
+142
+00:06:16.120 --> 00:06:20.720
+And I want these to be about half the size of the rest.
+
+143
+00:06:20.720 --> 00:06:24.000
+So I'm actually gonna put flex:1 on here and then go back
+
+144
+00:06:24.000 --> 00:06:28.090
+to our other one and make that a flex:2, so that these ones
+
+145
+00:06:28.090 --> 00:06:30.300
+will take up double the room of the arrows.
+
+146
+00:06:30.300 --> 00:06:31.600
+So let's see how we're doin' there.
+
+147
+00:06:31.600 --> 00:06:33.370
+Okay, that looks a lot better.
+
+148
+00:06:33.370 --> 00:06:37.190
+We've got these two arrows being a little bit smaller
+
+149
+00:06:37.190 --> 00:06:39.000
+than the rest of them.
+
+150
+00:06:39.000 --> 00:06:42.070
+Now I wanna go ahead and center the text.
+
+151
+00:06:42.070 --> 00:06:44.980
+So let's look at our flex items here and just centering
+
+152
+00:06:44.980 --> 00:06:47.040
+horizontal is just text-align: center, we can do
+
+153
+00:06:47.040 --> 00:06:49.370
+that pretty quickly, that looks good.
+
+154
+00:06:49.370 --> 00:06:52.170
+But now is where the hard part comes.
+
+155
+00:06:52.170 --> 00:06:54.120
+This is where I thought I was almost done,
+
+156
+00:06:54.120 --> 00:06:58.360
+and I could just say like, align-items: center
+
+157
+00:06:58.360 --> 00:06:59.890
+and we'd be off to the races.
+
+158
+00:06:59.890 --> 00:07:00.870
+So let's try that.
+
+159
+00:07:00.870 --> 00:07:03.260
+If you remember from the, one of the first videos,
+
+160
+00:07:03.260 --> 00:07:05.260
+the align-items
+
+161
+00:07:05.260 --> 00:07:08.030
+goes on the cross axis.
+
+162
+00:07:08.030 --> 00:07:10.730
+So if you remember it from left to right is the main axis
+
+163
+00:07:10.730 --> 00:07:13.770
+and the cross axis by default is top to bottom.
+
+164
+00:07:13.770 --> 00:07:14.750
+So, that's what we want.
+
+165
+00:07:14.750 --> 00:07:17.350
+We want aligned items 'cause we wanna center these suckers
+
+166
+00:07:17.350 --> 00:07:20.163
+vertically across this axis right here.
+
+167
+00:07:21.160 --> 00:07:22.460
+Where do we put align-items?
+
+168
+00:07:22.460 --> 00:07:24.160
+If you're not sure, you can always head back
+
+169
+00:07:24.160 --> 00:07:27.530
+to the CSS-Tricks article here.
+
+170
+00:07:27.530 --> 00:07:32.480
+And go and look for the align-items property.
+
+171
+00:07:32.480 --> 00:07:34.905
+Let's just take a look here.
+
+172
+00:07:34.905 --> 00:07:37.430
+(typing)
+Align-items, here we go.
+
+173
+00:07:37.430 --> 00:07:42.060
+The align-items, it looks like it goes on the parent.
+
+174
+00:07:42.060 --> 00:07:43.310
+The flex container.
+
+175
+00:07:43.310 --> 00:07:46.050
+So what's the flex container in our situation?
+
+176
+00:07:46.050 --> 00:07:47.590
+Well, it's the ul.
+
+177
+00:07:47.590 --> 00:07:49.700
+So we need to go back up to that.
+
+178
+00:07:49.700 --> 00:07:51.170
+And we'll say,
+
+179
+00:07:51.170 --> 00:07:53.830
+align-items:center.
+
+180
+00:07:53.830 --> 00:07:56.810
+And then this is where I thought I'd be good to go.
+
+181
+00:07:56.810 --> 00:07:58.713
+Refresh, and--oh!
+
+182
+00:07:59.920 --> 00:08:02.700
+Well, that's not exactly what I wanted.
+
+183
+00:08:02.700 --> 00:08:06.510
+Now it depends on how much content is in there.
+
+184
+00:08:06.510 --> 00:08:08.010
+Now they're just resizing them.
+
+185
+00:08:08.010 --> 00:08:10.683
+So the default is something called stretch.
+
+186
+00:08:11.700 --> 00:08:14.980
+Which is great, because you can see on the list items.
+
+187
+00:08:14.980 --> 00:08:17.130
+We're not talking about the links just yet.
+
+188
+00:08:17.130 --> 00:08:20.470
+The list items are stretching as high as the highest one is,
+
+189
+00:08:20.470 --> 00:08:22.660
+which is, this one is setting the height of it.
+
+190
+00:08:22.660 --> 00:08:24.500
+If we were to change that,
+
+191
+00:08:24.500 --> 00:08:27.360
+like if you added a whole bunch more content in there.
+
+192
+00:08:27.360 --> 00:08:31.090
+You'll see that the list items, all of 'em span the height
+
+193
+00:08:31.090 --> 00:08:33.170
+of the tallest one.
+
+194
+00:08:33.170 --> 00:08:36.550
+So, that align-items: center,
+
+195
+00:08:36.550 --> 00:08:38.080
+(typing)
+
+196
+00:08:38.080 --> 00:08:41.170
+doesn't really work for us, because we still want them--
+
+197
+00:08:41.170 --> 00:08:45.823
+We essentially want center, and we want align-items:stretch.
+
+198
+00:08:49.010 --> 00:08:51.330
+You can't just do both, unfortunately.
+
+199
+00:08:51.330 --> 00:08:55.040
+So what we actually need to do is do neither of these.
+
+200
+00:08:55.040 --> 00:08:57.800
+And what we kinda wanna say is,
+
+201
+00:08:57.800 --> 00:09:00.750
+the list items should stretch all the way,
+
+202
+00:09:00.750 --> 00:09:02.980
+the lengths should stretch all the way.
+
+203
+00:09:02.980 --> 00:09:05.040
+And then whatever's inside
+
+204
+00:09:05.040 --> 00:09:08.210
+of it will vertically align itself.
+
+205
+00:09:08.210 --> 00:09:12.510
+What we actually need to do now, is use nested flexbox.
+
+206
+00:09:12.510 --> 00:09:17.510
+So this slider-nav li, it is still going to be a flex item.
+
+207
+00:09:17.920 --> 00:09:19.767
+Same with the arrow, they are gonna be flex items
+
+208
+00:09:19.767 --> 00:09:24.270
+and you can still append a flex property to a flex item.
+
+209
+00:09:24.270 --> 00:09:28.000
+However, we can also make it a flex container as well.
+
+210
+00:09:28.000 --> 00:09:30.873
+So we'll say display:flex.
+
+211
+00:09:31.817 --> 00:09:34.040
+We'll say display:flex and still flex:2,
+
+212
+00:09:34.040 --> 00:09:36.900
+so maybe we'll put a little comment there that says,
+
+213
+00:09:36.900 --> 00:09:40.220
+this is flex
+
+214
+00:09:40.220 --> 00:09:42.263
+item -ish.
+
+215
+00:09:43.290 --> 00:09:45.510
+So that's like a property that would go on a flex item.
+
+216
+00:09:45.510 --> 00:09:49.030
+But then this, this is flex
+
+217
+00:09:49.030 --> 00:09:51.003
+container -ish.
+
+218
+00:09:53.540 --> 00:09:56.760
+And when we say display:flex on that list item there,
+
+219
+00:09:56.760 --> 00:09:57.960
+give it a refresh.
+
+220
+00:09:57.960 --> 00:09:59.370
+Ah-ha-hah!
+
+221
+00:09:59.370 --> 00:10:01.020
+Now we're starting to get places.
+
+222
+00:10:02.215 --> 00:10:06.380
+Because we made this list item display:flex,
+
+223
+00:10:07.470 --> 00:10:12.470
+it is now a flex container and now what is our flex item?
+
+224
+00:10:12.950 --> 00:10:17.470
+Well, if you make something a parent, a flex container,
+
+225
+00:10:17.470 --> 00:10:21.210
+then the immediate child, which in this case is our links,
+
+226
+00:10:21.210 --> 00:10:24.930
+they become flex items.
+
+227
+00:10:24.930 --> 00:10:27.940
+So that's great, we already got a selector down here.
+
+228
+00:10:27.940 --> 00:10:31.820
+And this is where we can take off all of that,
+
+229
+00:10:31.820 --> 00:10:36.820
+and don't worry about that, we can just say flex-basis:100%.
+
+230
+00:10:37.970 --> 00:10:38.803
+Okay, good.
+
+231
+00:10:38.803 --> 00:10:41.220
+So that got us a little bit further.
+
+232
+00:10:41.220 --> 00:10:44.020
+We just took off that temporary fix, and now
+
+233
+00:10:44.020 --> 00:10:47.360
+since this is a flex item we can use our flex-basis.
+
+234
+00:10:47.360 --> 00:10:51.770
+However we still have the problem of the vertical centering.
+
+235
+00:10:51.770 --> 00:10:54.390
+We still aren't able to vertically center them.
+
+236
+00:10:54.390 --> 00:10:59.390
+And I really wish we just had like a text-align:vertical
+
+237
+00:10:59.860 --> 00:11:02.850
+right now and just save it, and we'd be off to the races.
+
+238
+00:11:02.850 --> 00:11:05.500
+But it's just not something that we have in CSS.
+
+239
+00:11:05.500 --> 00:11:08.603
+So what we could try is, we could try,
+
+240
+00:11:10.670 --> 00:11:11.503
+on our list items,
+
+241
+00:11:13.970 --> 00:11:17.720
+say align-items:center
+
+242
+00:11:17.720 --> 00:11:19.520
+and maybe that will center it.
+
+243
+00:11:19.520 --> 00:11:20.970
+It does, but (laughs),
+
+244
+00:11:20.970 --> 00:11:23.000
+we still have the problem
+
+245
+00:11:23.000 --> 00:11:28.000
+of these items since they're not by default they're stretch,
+
+246
+00:11:30.210 --> 00:11:32.830
+by saying this, we're saying the links,
+
+247
+00:11:32.830 --> 00:11:35.230
+these guys right here need to stretch.
+
+248
+00:11:35.230 --> 00:11:36.560
+But,
+
+249
+00:11:36.560 --> 00:11:37.610
+that still doesn't work.
+
+250
+00:11:37.610 --> 00:11:39.900
+It's similar, and maybe you think, oh,
+
+251
+00:11:39.900 --> 00:11:43.550
+well we also have one called align-self.
+
+252
+00:11:43.550 --> 00:11:45.920
+And could we say align-self:center?
+
+253
+00:11:45.920 --> 00:11:46.980
+No, that does the same thing.
+
+254
+00:11:46.980 --> 00:11:49.450
+That just tells the list items to align itself
+
+255
+00:11:49.450 --> 00:11:51.870
+in the center of the parent.
+
+256
+00:11:51.870 --> 00:11:55.460
+Again, we're in the situation where we want,
+
+257
+00:11:55.460 --> 00:11:57.320
+maybe we'll put a little comment, we want
+
+258
+00:11:57.320 --> 00:11:59.590
+to stretch
+
+259
+00:11:59.590 --> 00:12:00.880
+as well
+
+260
+00:12:01.970 --> 00:12:03.870
+as center.
+
+261
+00:12:03.870 --> 00:12:06.400
+So, we need to go one step further
+
+262
+00:12:06.400 --> 00:12:09.200
+and do another display:flex.
+
+263
+00:12:09.200 --> 00:12:12.630
+Now, if we say display:flex on this one right here,
+
+264
+00:12:12.630 --> 00:12:13.920
+and give it a save.
+
+265
+00:12:13.920 --> 00:12:15.500
+You'll see that, okay good.
+
+266
+00:12:15.500 --> 00:12:17.930
+This is pretty much what we want.
+
+267
+00:12:17.930 --> 00:12:20.830
+Only now we've got a couple more issues.
+
+268
+00:12:20.830 --> 00:12:24.390
+And when we made that display:flex, let me bring that back.
+
+269
+00:12:24.390 --> 00:12:25.363
+What it did,
+
+270
+00:12:26.870 --> 00:12:30.880
+is it stretched them all the way across.
+
+271
+00:12:30.880 --> 00:12:31.970
+However, like,
+
+272
+00:12:31.970 --> 00:12:34.870
+look at the--our text line center
+
+273
+00:12:34.870 --> 00:12:38.150
+no longer goes all the way across, as well
+
+274
+00:12:38.150 --> 00:12:41.593
+as the vertically centering doesn't work out all just yet.
+
+275
+00:12:42.720 --> 00:12:47.230
+If we make the link flex, which is now a flex container,
+
+276
+00:12:47.230 --> 00:12:48.763
+as well as a flex item,
+
+277
+00:12:50.200 --> 00:12:53.810
+we don't have a flex item that's inside of the link.
+
+278
+00:12:53.810 --> 00:12:55.270
+'Cause if you look at a link,
+
+279
+00:12:55.270 --> 00:12:56.830
+this is just the content, right?
+
+280
+00:12:56.830 --> 00:13:00.630
+So we don't have any element inside of here
+
+281
+00:13:00.630 --> 00:13:05.210
+that we can then apply our align-items to.
+
+282
+00:13:05.210 --> 00:13:07.580
+This is unfortunately where we need to go ahead
+
+283
+00:13:07.580 --> 00:13:10.200
+and add another element inside of this link.
+
+284
+00:13:10.200 --> 00:13:15.200
+And the easiest way to sorta do that is to just wrap a span
+
+285
+00:13:15.580 --> 00:13:17.823
+around all of the elements that we have.
+
+286
+00:13:19.040 --> 00:13:23.943
+Just gonna wrap a span around each of those.
+
+287
+00:13:25.270 --> 00:13:28.960
+And we will give ourselves a selector for that.
+
+288
+00:13:28.960 --> 00:13:31.763
+So .slider-nav span,
+
+289
+00:13:32.870 --> 00:13:34.850
+and we can give ourselves a little comment that says,
+
+290
+00:13:34.850 --> 00:13:38.593
+this is the flex item.
+
+291
+00:13:40.570 --> 00:13:45.570
+And on our link here, we can now say align-items:center,
+
+292
+00:13:47.730 --> 00:13:50.020
+because when we say align-items, it's going
+
+293
+00:13:50.020 --> 00:13:54.530
+to take the child flex item and center it.
+
+294
+00:13:54.530 --> 00:13:56.970
+So let's see where that brings us.
+
+295
+00:13:56.970 --> 00:13:58.460
+Okay, good, good, good.
+
+296
+00:13:58.460 --> 00:14:00.410
+Now we're almost there.
+
+297
+00:14:00.410 --> 00:14:02.590
+I got a couple of issues here now.
+
+298
+00:14:02.590 --> 00:14:04.040
+We've got,
+
+299
+00:14:04.040 --> 00:14:05.680
+it looks like these links right here
+
+300
+00:14:05.680 --> 00:14:06.790
+aren't centering themselves.
+
+301
+00:14:06.790 --> 00:14:10.000
+Looks like none of our text is centering us.
+
+302
+00:14:10.000 --> 00:14:13.410
+We've got a little bit of a weirdness going on here.
+
+303
+00:14:13.410 --> 00:14:15.300
+So what we need to do is,
+
+304
+00:14:15.300 --> 00:14:19.010
+because by default spans are displayed inline, we need
+
+305
+00:14:19.010 --> 00:14:21.023
+to change those to display: block.
+
+306
+00:14:21.982 --> 00:14:23.160
+And refresh.
+
+307
+00:14:23.160 --> 00:14:24.530
+That does nothing for us, why?
+
+308
+00:14:24.530 --> 00:14:28.793
+'Cause we need to give it a width of 100%.
+
+309
+00:14:29.790 --> 00:14:31.480
+Okay, getting there, getting there.
+
+310
+00:14:31.480 --> 00:14:33.560
+Our one last little issue that we have here is like,
+
+311
+00:14:33.560 --> 00:14:35.060
+what's going on with this one.
+
+312
+00:14:35.910 --> 00:14:37.750
+Why is it kinda wrapping around here?
+
+313
+00:14:37.750 --> 00:14:40.510
+And I'm not actually sure what's going on here.
+
+314
+00:14:40.510 --> 00:14:43.030
+Probably a little bug on my end, you're probably yelling
+
+315
+00:14:43.030 --> 00:14:44.240
+at me right now.
+
+316
+00:14:44.240 --> 00:14:45.073
+It's super clear--Oh!
+
+317
+00:14:45.073 --> 00:14:46.020
+There we go.
+
+318
+00:14:46.020 --> 00:14:48.970
+So I, (laughs) when I wrapped the span around the text,
+
+319
+00:14:48.970 --> 00:14:50.290
+it looks like I didn't get it all.
+
+320
+00:14:50.290 --> 00:14:52.970
+So let me jump back to this one right here.
+
+321
+00:14:52.970 --> 00:14:56.240
+Oh and it's 'cause it was on a multiline.
+
+322
+00:14:56.240 --> 00:14:59.740
+Make sure you put all the text inside of the span.
+
+323
+00:14:59.740 --> 00:15:00.663
+And.
+
+324
+00:15:02.520 --> 00:15:03.400
+That should do it.
+
+325
+00:15:03.400 --> 00:15:05.900
+Let me take off that little, red, ugly border there
+
+326
+00:15:05.900 --> 00:15:07.450
+to make sure we're okay.
+
+327
+00:15:07.450 --> 00:15:09.193
+And we're hovering it, great.
+
+328
+00:15:10.160 --> 00:15:13.370
+Maybe I wanna add some font size
+
+329
+00:15:14.290 --> 00:15:15.160
+to the--Oops!
+
+330
+00:15:15.160 --> 00:15:16.260
+Not to those.
+
+331
+00:15:16.260 --> 00:15:18.010
+I wanna add it just to the arrows.
+
+332
+00:15:18.010 --> 00:15:19.447
+So,
+
+333
+00:15:19.447 --> 00:15:21.080
+.arrow a.
+
+334
+00:15:21.080 --> 00:15:23.310
+Font-size: 30px.
+
+335
+00:15:23.310 --> 00:15:25.700
+There we go, that's kinda the one nice thing about flexbox,
+
+336
+00:15:25.700 --> 00:15:28.090
+is you can just jack-up the font size,
+
+337
+00:15:28.090 --> 00:15:30.840
+and you're not gonna mess up your vertical centering
+
+338
+00:15:30.840 --> 00:15:33.040
+on the items that are different font sizes.
+
+339
+00:15:33.040 --> 00:15:36.370
+So, I know that's a little bit confusing to follow.
+
+340
+00:15:36.370 --> 00:15:38.750
+However, if you ever run into a situation
+
+341
+00:15:38.750 --> 00:15:40.950
+where you need items to both stretch
+
+342
+00:15:40.950 --> 00:15:44.130
+as well as be vertically centered, you have
+
+343
+00:15:44.130 --> 00:15:46.630
+to do the whole nesting flexbox thing.
+
+344
+00:15:46.630 --> 00:15:49.050
+And hopefully this will be a pretty decent,
+
+345
+00:15:49.050 --> 00:15:52.610
+little starter template that you can pull out of
+
+346
+00:15:52.610 --> 00:15:54.610
+and sorta customize to make your own.
+
+347
+00:15:54.610 --> 00:15:56.214
+See you in the next video.
+
+348
+00:15:56.214 --> 00:15:59.129 line:15% 
+(whistling)
+(slow, cheery music)
+
