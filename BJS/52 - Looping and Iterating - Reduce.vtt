@@ -1,0 +1,1318 @@
+﻿WEBVTT
+
+1
+00:00:00.708 --> 00:00:03.291
+(upbeat music)
+
+2
+00:00:04.593 --> 00:00:05.426
+<v Presenter>All right now we're going</v>
+
+3
+00:00:05.426 --> 00:00:06.730
+to get into reduce().
+
+4
+00:00:06.730 --> 00:00:09.360
+Let's just go ahead and console.clear.
+
+5
+00:00:09.360 --> 00:00:12.850
+Everything from hereon out or you can create a separate file
+
+6
+00:00:12.850 --> 00:00:14.590
+if you wanna keep these separate.
+
+7
+00:00:14.590 --> 00:00:18.550
+So we talked about map() where you take in items
+
+8
+00:00:18.550 --> 00:00:20.890
+and return a transformed item.
+
+9
+00:00:20.890 --> 00:00:23.240
+We talked about filter(), where you take in items
+
+10
+00:00:23.240 --> 00:00:25.850
+and return a subset of those items.
+
+11
+00:00:25.850 --> 00:00:28.700
+And reduce() is probably one of the trickier array methods
+
+12
+00:00:28.700 --> 00:00:31.440
+to understand because it does so much
+
+13
+00:00:31.440 --> 00:00:34.580
+and there are a handful of different use cases for it.
+
+14
+00:00:34.580 --> 00:00:35.640
+So, what does it do?
+
+15
+00:00:35.640 --> 00:00:39.070
+It takes in an array of data, just like map(), filter(),
+
+16
+00:00:39.070 --> 00:00:43.550
+and it will return to you a result or a single value.
+
+17
+00:00:43.550 --> 00:00:45.290
+What, what does that mean?
+
+18
+00:00:45.290 --> 00:00:49.230
+Okay so let's take a number for example.
+
+19
+00:00:49.230 --> 00:00:52.410
+So let's take one of the arrays that we have at the top here
+
+20
+00:00:52.410 --> 00:00:54.890
+with the orderTotals right?
+
+21
+00:00:54.890 --> 00:00:57.020
+How would I add all of these up?
+
+22
+00:00:57.020 --> 00:01:01.110
+You might think I go, okay orderTotals,
+
+23
+00:01:01.110 --> 00:01:03.023
+okay I've got this array here.
+
+24
+00:01:03.950 --> 00:01:08.950
+Maybe I could like let total is equal to zero
+
+25
+00:01:10.260 --> 00:01:13.043
+and then like orderTotals.forEach,
+
+26
+00:01:14.730 --> 00:01:19.730
+total and then maybe like, maybe for each one
+
+27
+00:01:20.000 --> 00:01:23.090
+say total equals total plus,
+
+28
+00:01:23.090 --> 00:01:24.470
+oh no that's the same variable name
+
+29
+00:01:24.470 --> 00:01:27.650
+so we'll call it a singleTotal,
+
+30
+00:01:27.650 --> 00:01:29.230
+plus singleTotal
+
+31
+00:01:30.579 --> 00:01:33.640
+and then on the next line we'll console.log total.
+
+32
+00:01:33.640 --> 00:01:34.473
+Does that work?
+
+33
+00:01:34.473 --> 00:01:35.306
+Let's see.
+
+34
+00:01:35.306 --> 00:01:36.510
+Open it up.
+
+35
+00:01:36.510 --> 00:01:37.953
+Open in a browser.
+
+36
+00:01:39.350 --> 00:01:41.160
+And yeah, there we go, that actually worked.
+
+37
+00:01:41.160 --> 00:01:44.180
+Okay so is that the best way to add up a bunch of things?
+
+38
+00:01:44.180 --> 00:01:46.020
+Well this is a little bit messy
+
+39
+00:01:46.020 --> 00:01:49.300
+because we have a callback method here
+
+40
+00:01:49.300 --> 00:01:52.210
+but that callback method here relies
+
+41
+00:01:52.210 --> 00:01:55.080
+on an external variable being made.
+
+42
+00:01:55.080 --> 00:01:57.980
+So we sorta have, we sort of have reached outside of it.
+
+43
+00:01:57.980 --> 00:02:01.150
+Often people will call that a side effect where you update
+
+44
+00:02:01.150 --> 00:02:04.290
+a variable that exists outside of the function.
+
+45
+00:02:04.290 --> 00:02:06.720
+So that's not the best way to go about it,
+
+46
+00:02:06.720 --> 00:02:08.500
+you may think like, okay let me just figure out
+
+47
+00:02:08.500 --> 00:02:10.480
+some sort of other way to loop over it.
+
+48
+00:02:10.480 --> 00:02:12.610
+Now reduce() what it'll do is it will allow us
+
+49
+00:02:12.610 --> 00:02:17.490
+to loop over every single item in that array
+
+50
+00:02:17.490 --> 00:02:20.160
+and in this case sorta keep a running total
+
+51
+00:02:20.160 --> 00:02:21.080
+of those numbers.
+
+52
+00:02:21.080 --> 00:02:24.810
+Now I am going to visualize this, there's tons of people
+
+53
+00:02:24.810 --> 00:02:28.180
+have made these really awesome little visualizations.
+
+54
+00:02:28.180 --> 00:02:30.460
+I just wanna go over them with you.
+
+55
+00:02:30.460 --> 00:02:34.280
+So I just Google imaged map filter reduce here.
+
+56
+00:02:34.280 --> 00:02:39.280
+Map() will take an array of cow, potato, chicken and corn
+
+57
+00:02:39.750 --> 00:02:42.170
+and if you map it through a cook function,
+
+58
+00:02:42.170 --> 00:02:45.730
+this is not JavaScript but these exist in every language
+
+59
+00:02:45.730 --> 00:02:47.560
+so the ideas are exactly the same.
+
+60
+00:02:47.560 --> 00:02:50.320
+So if you take in raw materials,
+
+61
+00:02:50.320 --> 00:02:54.440
+you kick out the cooked materials via the cook function.
+
+62
+00:02:54.440 --> 00:02:57.980
+Filter() will return to you a subset of the original array
+
+63
+00:02:57.980 --> 00:03:02.980
+of what is vegetarian and reduce() will take in
+
+64
+00:03:03.050 --> 00:03:07.940
+an array of food and then return to you
+
+65
+00:03:07.940 --> 00:03:11.740
+something that is compiled into a smaller version of it.
+
+66
+00:03:11.740 --> 00:03:15.000
+It's been reduced into it and if you think about making
+
+67
+00:03:15.000 --> 00:03:17.130
+a reduction or making a soup when you're cooking.
+
+68
+00:03:17.130 --> 00:03:19.810
+What you do is you add a whole bunch of stuff to it
+
+69
+00:03:19.810 --> 00:03:23.830
+and then you let it simmer and sort of become one
+
+70
+00:03:23.830 --> 00:03:28.320
+but also it's reduced into something that is usually smaller
+
+71
+00:03:28.320 --> 00:03:30.530
+than the original value that came in here.
+
+72
+00:03:30.530 --> 00:03:34.113
+Let's take a look at another example that we have here.
+
+73
+00:03:35.600 --> 00:03:39.460
+This would be an example of map() where you take an apple,
+
+74
+00:03:39.460 --> 00:03:41.600
+you cut it up, you take an orange, you cut it up.
+
+75
+00:03:41.600 --> 00:03:43.810
+So that's what we're going to do with reduce() here.
+
+76
+00:03:43.810 --> 00:03:45.630
+I'm gonna go through a bunch of different
+
+77
+00:03:45.630 --> 00:03:49.030
+kind of use cases for it so we'll get rid of this here.
+
+78
+00:03:49.030 --> 00:03:52.173
+So we'll make a new variable called allOrders
+
+79
+00:03:53.760 --> 00:03:55.880
+and then we'll take our orderTotals
+
+80
+00:03:58.030 --> 00:04:00.743
+and we'll run a reduce() against them.
+
+81
+00:04:03.140 --> 00:04:05.280
+Then we need a callback function
+
+82
+00:04:05.280 --> 00:04:08.710
+that will run once for every single item in it.
+
+83
+00:04:08.710 --> 00:04:11.110
+So I'll make a function here called tallyNumbers
+
+84
+00:04:15.290 --> 00:04:17.620
+and that will give us two things.
+
+85
+00:04:17.620 --> 00:04:20.517
+Let's go look at MDN reduce().
+
+86
+00:04:23.100 --> 00:04:24.990
+See what the arguments are.
+
+87
+00:04:24.990 --> 00:04:28.420
+So they call it the accumulator and the currentValue.
+
+88
+00:04:28.420 --> 00:04:31.897
+So the accumulator is going to be the thing
+
+89
+00:04:31.897 --> 00:04:36.897
+that has been handed to you from the last instance
+
+90
+00:04:38.580 --> 00:04:41.940
+of the loop and the currentValue is going to be
+
+91
+00:04:41.940 --> 00:04:43.620
+the current thing in it.
+
+92
+00:04:43.620 --> 00:04:47.660
+So what we can do here is let's just use tally
+
+93
+00:04:47.660 --> 00:04:50.110
+as a variable and currentTotal.
+
+94
+00:04:51.736 --> 00:04:54.903
+Now in here we're going to console.log
+
+95
+00:04:55.799 --> 00:04:57.882
+and let's say the current
+
+96
+00:04:59.482 --> 00:05:00.315
+tally is
+
+97
+00:05:01.890 --> 00:05:03.362
+tally
+
+98
+00:05:03.362 --> 00:05:05.779
+and then the current total is
+
+99
+00:05:07.128 --> 00:05:08.580
+currentTotal.
+
+100
+00:05:08.580 --> 00:05:09.560
+And then we'll console.log,
+
+101
+00:05:09.560 --> 00:05:12.820
+let's just concole.log like one of these
+
+102
+00:05:12.820 --> 00:05:15.410
+just so we know we can clearly see
+
+103
+00:05:15.410 --> 00:05:17.923
+what the iteration of each one is.
+
+104
+00:05:18.870 --> 00:05:22.140
+Now we take this tally numbers and pass it here
+
+105
+00:05:23.750 --> 00:05:26.100
+and we open that up in our browser.
+
+106
+00:05:26.100 --> 00:05:28.260
+We're gonna see some stuff that might not make
+
+107
+00:05:28.260 --> 00:05:29.093
+a whole lot of sense.
+
+108
+00:05:29.093 --> 00:05:31.130
+So let's go through this together.
+
+109
+00:05:31.130 --> 00:05:36.130
+So the current tally is 342 and the current total is
+
+110
+00:05:36.223 --> 00:05:38.370
+1,002.
+
+111
+00:05:38.370 --> 00:05:41.510
+And in the next one is the current tally is undefined
+
+112
+00:05:41.510 --> 00:05:45.225
+and the current total is 523, undefined 34.
+
+113
+00:05:45.225 --> 00:05:47.270
+Let's look at those numbers in relation
+
+114
+00:05:47.270 --> 00:05:50.060
+to our totals array that we have here.
+
+115
+00:05:50.060 --> 00:05:52.920
+So 342 and 1,002,
+
+116
+00:05:52.920 --> 00:05:54.600
+342 1,002, okay so
+
+117
+00:05:54.600 --> 00:05:56.820
+those are the first two numbers.
+
+118
+00:05:56.820 --> 00:05:58.463
+That's not really a total.
+
+119
+00:05:59.410 --> 00:06:02.643
+And then the current tally is undefined and 523,
+
+120
+00:06:02.643 --> 00:06:06.030
+okay so that's the next number, 34 and undefined,
+
+121
+00:06:06.030 --> 00:06:09.200
+that's the next number there, 634,
+
+122
+00:06:09.200 --> 00:06:10.070
+that's the next number there.
+
+123
+00:06:10.070 --> 00:06:11.960
+Okay so it's clearly looping over it
+
+124
+00:06:11.960 --> 00:06:13.870
+except for the first time for some reason
+
+125
+00:06:13.870 --> 00:06:16.850
+it gives us the first two values.
+
+126
+00:06:16.850 --> 00:06:20.340
+And that is because reduce() will take a second argument
+
+127
+00:06:20.340 --> 00:06:24.090
+which is, what do you want to start the accumulator at?
+
+128
+00:06:24.090 --> 00:06:26.510
+And in our case the accumulator is the tally so,
+
+129
+00:06:26.510 --> 00:06:28.290
+what do you wanna start counting at?
+
+130
+00:06:28.290 --> 00:06:31.780
+We'll start that at zero because we're gonna count a number.
+
+131
+00:06:31.780 --> 00:06:35.280
+Now if I refresh, now we see the current tally is zero,
+
+132
+00:06:35.280 --> 00:06:39.750
+it starts with this and then it grabs the first item
+
+133
+00:06:39.750 --> 00:06:43.510
+in the array, 342 then we get 1,002,
+
+134
+00:06:43.510 --> 00:06:46.330
+so we got that loop sort of working
+
+135
+00:06:46.330 --> 00:06:50.380
+but now we have this problem where everything
+
+136
+00:06:50.380 --> 00:06:55.200
+is undefined after the first loop and that's because
+
+137
+00:06:55.200 --> 00:06:58.600
+the accumulator or in our case we call it the tally
+
+138
+00:06:58.600 --> 00:07:02.710
+that is passed from the previous iteration of the loop.
+
+139
+00:07:02.710 --> 00:07:07.710
+So if I return, Wes is cool, from each of these iterations
+
+140
+00:07:07.830 --> 00:07:10.760
+of the loop, the accumulator is going to be equal
+
+141
+00:07:10.760 --> 00:07:12.820
+to that on the next iteration.
+
+142
+00:07:12.820 --> 00:07:16.320
+So the first time, it's zero because we started
+
+143
+00:07:16.320 --> 00:07:19.840
+with an accumulator of zero and then the next instance
+
+144
+00:07:19.840 --> 00:07:21.790
+is Wes is cool, Wes is cool right
+
+145
+00:07:21.790 --> 00:07:24.180
+because whatever you return from this function
+
+146
+00:07:24.180 --> 00:07:27.010
+is going to be what the accumulator is equal to.
+
+147
+00:07:27.010 --> 00:07:31.340
+So what we really wanna do is return the current tally,
+
+148
+00:07:31.340 --> 00:07:33.570
+maybe we'll put a comma here return
+
+149
+00:07:34.690 --> 00:07:37.050
+the current tally
+
+150
+00:07:37.050 --> 00:07:38.270
+plus
+
+151
+00:07:38.270 --> 00:07:40.220
+the amount of
+
+152
+00:07:40.220 --> 00:07:41.520
+this order.
+
+153
+00:07:41.520 --> 00:07:44.137
+So return the tally plus the currentTotal.
+
+154
+00:07:45.470 --> 00:07:47.683
+Now let's watch how it works.
+
+155
+00:07:48.790 --> 00:07:50.800
+Now we loop over it, we start with zero
+
+156
+00:07:50.800 --> 00:07:52.730
+because the accumulator starts at zero.
+
+157
+00:07:52.730 --> 00:07:54.990
+I should say if you don't provide
+
+158
+00:07:54.990 --> 00:07:57.750
+an initial accumulator value it will take
+
+159
+00:07:57.750 --> 00:08:01.770
+the first loop iteration will take the first two numbers,
+
+160
+00:08:01.770 --> 00:08:04.930
+which in our case would work but I always like to pass
+
+161
+00:08:04.930 --> 00:08:07.230
+a default value just so I know what we're starting with
+
+162
+00:08:07.230 --> 00:08:09.300
+and you can see what type you're starting with.
+
+163
+00:08:09.300 --> 00:08:14.300
+So start with zero then the currentTotal is 342
+
+164
+00:08:14.330 --> 00:08:15.740
+then the next iteration,
+
+165
+00:08:15.740 --> 00:08:18.930
+because we've returned 342 from here
+
+166
+00:08:18.930 --> 00:08:22.020
+we're going to start with that as the tally variable
+
+167
+00:08:22.020 --> 00:08:24.670
+in the next iteration and then add
+
+168
+00:08:24.670 --> 00:08:25.910
+whatever the next value is.
+
+169
+00:08:25.910 --> 00:08:30.910
+And then the current tally is that, the current total is 523
+
+170
+00:08:31.640 --> 00:08:34.180
+you see how it keeps on growing and keeps on growing.
+
+171
+00:08:34.180 --> 00:08:38.590
+So a reduce() will loop over items in an array
+
+172
+00:08:38.590 --> 00:08:42.850
+and every single time that you loop over an item
+
+173
+00:08:42.850 --> 00:08:46.940
+in an array, you have the option to return a value
+
+174
+00:08:46.940 --> 00:08:49.670
+and you can use that to accumulate values
+
+175
+00:08:49.670 --> 00:08:54.670
+or distill them down into one value.
+
+176
+00:08:55.150 --> 00:08:59.100
+So little bit confusing, we'll do a bunch more examples
+
+177
+00:08:59.100 --> 00:09:01.320
+but this our sort of our first example
+
+178
+00:09:01.320 --> 00:09:03.550
+that we've got going on here.
+
+179
+00:09:03.550 --> 00:09:05.660
+Now if we want to total those numbers
+
+180
+00:09:05.660 --> 00:09:08.660
+we already have them in this variable called allOrders
+
+181
+00:09:08.660 --> 00:09:12.660
+and we can console.log allOrders and we can see
+
+182
+00:09:12.660 --> 00:09:17.540
+that the total is 7,255 of all of those numbers.
+
+183
+00:09:17.540 --> 00:09:19.420
+Let's take a look at this inventory variable
+
+184
+00:09:19.420 --> 00:09:20.330
+that I have here for you,
+
+185
+00:09:20.330 --> 00:09:22.900
+it's got a type and a price on each one.
+
+186
+00:09:22.900 --> 00:09:24.510
+So it's an array of objects,
+
+187
+00:09:24.510 --> 00:09:27.190
+each object has a type and a price on it.
+
+188
+00:09:27.190 --> 00:09:29.130
+I'm curious about a couple of things.
+
+189
+00:09:29.130 --> 00:09:33.920
+First of all, how many of each of these instances are there,
+
+190
+00:09:33.920 --> 00:09:37.250
+how many shirts, how many pants and how many socks are there
+
+191
+00:09:37.250 --> 00:09:39.160
+and also, what is the total value
+
+192
+00:09:39.160 --> 00:09:41.340
+of all of the inventory that we have?
+
+193
+00:09:41.340 --> 00:09:43.310
+Well the total value you could probably
+
+194
+00:09:43.310 --> 00:09:44.860
+figure that out from the last one
+
+195
+00:09:44.860 --> 00:09:48.030
+but this next one, which is counting instances
+
+196
+00:09:48.030 --> 00:09:50.480
+of something happens all the time in JavaScript.
+
+197
+00:09:50.480 --> 00:09:52.320
+Let me show you how to do that right now.
+
+198
+00:09:52.320 --> 00:09:55.883
+So we'll say const allInventory.
+
+199
+00:09:55.883 --> 00:09:59.570
+All right let's, let's say const inventoryCounts
+
+200
+00:09:59.570 --> 00:10:02.370
+is equal to and we'll take our inventory
+
+201
+00:10:03.390 --> 00:10:06.860
+and we'll reduce() it and I'm going to make
+
+202
+00:10:06.860 --> 00:10:09.333
+a function called an inventoryReducer.
+
+203
+00:10:13.530 --> 00:10:16.503
+We'll pass that in here, inventoryReducer.
+
+204
+00:10:17.840 --> 00:10:19.470
+And then we also know, wanna know
+
+205
+00:10:19.470 --> 00:10:21.300
+what should we start with right?
+
+206
+00:10:21.300 --> 00:10:23.160
+In our case we wanna return an object
+
+207
+00:10:23.160 --> 00:10:28.160
+that has something like shirts three, pants two, socks 523
+
+208
+00:10:31.990 --> 00:10:36.210
+and in order for us to get that, we need to pass an object.
+
+209
+00:10:36.210 --> 00:10:39.690
+So to start with that, we could pass an object right here
+
+210
+00:10:39.690 --> 00:10:44.620
+and we could put shirts zero, pants zero
+
+211
+00:10:44.620 --> 00:10:47.280
+and socks zero.
+
+212
+00:10:47.280 --> 00:10:48.160
+And what that would do
+
+213
+00:10:48.160 --> 00:10:50.230
+is it would start everything off at zero.
+
+214
+00:10:50.230 --> 00:10:53.370
+However, more often than not, you are not aware
+
+215
+00:10:53.370 --> 00:10:56.300
+of all of the different types that will be coming in.
+
+216
+00:10:56.300 --> 00:10:58.440
+So there's no way for you to go ahead and make
+
+217
+00:10:58.440 --> 00:11:00.840
+a huge list of everything ahead of time
+
+218
+00:11:00.840 --> 00:11:01.737
+or you might be aware of it
+
+219
+00:11:01.737 --> 00:11:03.610
+but it might be 50 different things
+
+220
+00:11:03.610 --> 00:11:05.110
+and that doesn't make sense to do that.
+
+221
+00:11:05.110 --> 00:11:08.340
+So what we'll do here, is we'll simply just start off
+
+222
+00:11:08.340 --> 00:11:11.410
+with an empty object and add these keys
+
+223
+00:11:11.410 --> 00:11:13.880
+and set them to one as they appear.
+
+224
+00:11:13.880 --> 00:11:16.880
+Otherwise if they already exist we will increment it by one.
+
+225
+00:11:16.880 --> 00:11:19.500
+So what are we gonna start with as our accumulator?
+
+226
+00:11:19.500 --> 00:11:22.200
+Just an empty object, set of curly brackets.
+
+227
+00:11:22.200 --> 00:11:26.380
+Now our reducer takes two things, it takes our accumulator
+
+228
+00:11:26.380 --> 00:11:30.980
+and now our reducer function gives us two things.
+
+229
+00:11:30.980 --> 00:11:34.136
+It gives our accumulator and it gives us our item.
+
+230
+00:11:34.136 --> 00:11:37.960
+Let's call that totals and item.
+
+231
+00:11:37.960 --> 00:11:42.950
+Now let's go inside of here and console.log looping over
+
+232
+00:11:43.810 --> 00:11:48.040
+and I'll say item.type, switch these to back-ticks
+
+233
+00:11:49.830 --> 00:11:52.560
+and you can see it looping over shirt, pants, socks, shirt,
+
+234
+00:11:52.560 --> 00:11:53.690
+pants, socks, pants.
+
+235
+00:11:53.690 --> 00:11:54.570
+Okay good.
+
+236
+00:11:54.570 --> 00:11:57.870
+So what do we need to do inside of this reducer,
+
+237
+00:11:57.870 --> 00:12:02.870
+well we need to increment the type by one
+
+238
+00:12:03.870 --> 00:12:08.490
+and then return the accumulator or return the totals
+
+239
+00:12:08.490 --> 00:12:12.320
+so the next loop can use it.
+
+240
+00:12:12.320 --> 00:12:14.900
+So in our case what we could do here is we could say,
+
+241
+00:12:14.900 --> 00:12:19.900
+totals.shirt is equal to totals.shirt plus one.
+
+242
+00:12:22.950 --> 00:12:25.120
+Let's run that, actually and we also need to
+
+243
+00:12:25.120 --> 00:12:27.350
+return the totals here.
+
+244
+00:12:27.350 --> 00:12:29.143
+Let's run and see if that works.
+
+245
+00:12:31.135 --> 00:12:33.583
+Oh we gotta first console.log,
+
+246
+00:12:35.600 --> 00:12:37.572
+the inventoryCounts.
+
+247
+00:12:37.572 --> 00:12:39.290
+You can see what we're working with here,
+
+248
+00:12:39.290 --> 00:12:42.410
+we have shirt is equal to,
+
+249
+00:12:42.410 --> 00:12:43.980
+NaN.
+
+250
+00:12:43.980 --> 00:12:46.430
+Okay, why is that NaN?
+
+251
+00:12:46.430 --> 00:12:49.340
+And that's because if you're trying to add one
+
+252
+00:12:49.340 --> 00:12:50.860
+to something that doesn't exist
+
+253
+00:12:50.860 --> 00:12:52.780
+it will give you not a number.
+
+254
+00:12:52.780 --> 00:12:54.800
+So what we need to do is we need to check
+
+255
+00:12:54.800 --> 00:12:59.560
+if the shirt exists on our totals yet and if it does
+
+256
+00:12:59.560 --> 00:13:02.340
+we will increment it by one but if it doesn't
+
+257
+00:13:02.340 --> 00:13:04.070
+we will set it to zero.
+
+258
+00:13:04.070 --> 00:13:07.280
+So what we can do is we can say totals.shirt
+
+259
+00:13:07.280 --> 00:13:12.280
+is equal to totals.shirt plus one or one.
+
+260
+00:13:12.600 --> 00:13:15.960
+Just by adding that or one, is that gonna fix our problem?
+
+261
+00:13:15.960 --> 00:13:16.963
+Let's refresh.
+
+262
+00:13:18.020 --> 00:13:19.230
+Seven shirts.
+
+263
+00:13:19.230 --> 00:13:20.750
+So why did that work?
+
+264
+00:13:20.750 --> 00:13:25.310
+Well this is taking an advantage of conditionals as well.
+
+265
+00:13:25.310 --> 00:13:27.430
+Let's write that out as an if statement.
+
+266
+00:13:27.430 --> 00:13:30.830
+We would have to if totals.shirt
+
+267
+00:13:32.310 --> 00:13:34.800
+then if they already exists
+
+268
+00:13:34.800 --> 00:13:37.240
+then we will just say totals.shirt
+
+269
+00:13:38.080 --> 00:13:42.870
+is equal to totals.shirt plus one or we could just say
+
+270
+00:13:42.870 --> 00:13:47.340
+totals.shirt plus plus, that will work as well.
+
+271
+00:13:47.340 --> 00:13:50.170
+I'll command that one out just so we can see it
+
+272
+00:13:50.170 --> 00:13:55.170
+and then we would have an else totals.short is equal to one.
+
+273
+00:13:55.370 --> 00:13:59.030
+Because if it doesn't exist in the accumulator just yet,
+
+274
+00:13:59.030 --> 00:14:02.100
+we need to add the property of shirt first
+
+275
+00:14:02.100 --> 00:14:04.560
+before we set it to one and that will work
+
+276
+00:14:04.560 --> 00:14:05.750
+exactly the same way.
+
+277
+00:14:05.750 --> 00:14:08.310
+In this case what it will do is it will say
+
+278
+00:14:08.310 --> 00:14:12.410
+totals.shirt plus one so if that turns out to be NaN
+
+279
+00:14:13.560 --> 00:14:17.160
+then that is falsy and it will fall back to one.
+
+280
+00:14:17.160 --> 00:14:21.100
+So I really like that, I guess it's a little harder to read
+
+281
+00:14:21.100 --> 00:14:22.210
+which in a lot of cases,
+
+282
+00:14:22.210 --> 00:14:24.980
+especially if you're a new programmer is not ideal
+
+283
+00:14:24.980 --> 00:14:27.530
+but it is nice to do it in a one liner
+
+284
+00:14:27.530 --> 00:14:30.060
+so we can get rid of this, we could also do this
+
+285
+00:14:30.060 --> 00:14:32.563
+totals.shirt question mark,
+
+286
+00:14:34.350 --> 00:14:36.093
+totals.shirt plus one,
+
+287
+00:14:37.500 --> 00:14:42.150
+else totals.shirt is equal to one, right?
+
+288
+00:14:44.160 --> 00:14:47.318
+So in this case we have a little shorthand it's same as,
+
+289
+00:14:47.318 --> 00:14:48.930
+there's so many ways to do it.
+
+290
+00:14:48.930 --> 00:14:51.460
+The idea here is that we're checking
+
+291
+00:14:51.460 --> 00:14:54.690
+if the shirt property exists before we add one to it
+
+292
+00:14:54.690 --> 00:14:56.200
+and if it doesn't exist we will say
+
+293
+00:14:56.200 --> 00:14:59.310
+this is the first time I've seen it we will set it to one.
+
+294
+00:14:59.310 --> 00:15:01.410
+Now why am I hard-coding shirt here.
+
+295
+00:15:01.410 --> 00:15:04.070
+I shouldn't be doing that because there's lots of
+
+296
+00:15:04.070 --> 00:15:05.389
+different types, there's shirts there's pants
+
+297
+00:15:05.389 --> 00:15:06.450
+and there's socks.
+
+298
+00:15:06.450 --> 00:15:10.030
+So what we can do is we can take this and change it
+
+299
+00:15:10.030 --> 00:15:13.140
+to a variable lookup
+
+300
+00:15:13.140 --> 00:15:16.020
+item.type
+
+301
+00:15:16.020 --> 00:15:16.853
+and what this will do
+
+302
+00:15:16.853 --> 00:15:20.400
+is to say totals.shirt is equal to totals.shirt plus one
+
+303
+00:15:20.400 --> 00:15:24.070
+or one and then because I use square brackets here
+
+304
+00:15:24.070 --> 00:15:26.270
+to look up the property on the object,
+
+305
+00:15:26.270 --> 00:15:29.200
+then it will work for pants and socks as well.
+
+306
+00:15:29.200 --> 00:15:30.670
+And I give that a save.
+
+307
+00:15:30.670 --> 00:15:31.503
+Refresh.
+
+308
+00:15:31.503 --> 00:15:35.010
+Now see that our accumulator has two shirts,
+
+309
+00:15:35.010 --> 00:15:38.082
+three pants and two socks.
+
+310
+00:15:38.082 --> 00:15:39.330
+Okay good.
+
+311
+00:15:39.330 --> 00:15:42.630
+Now pretty often a reduce() can be done
+
+312
+00:15:42.630 --> 00:15:44.590
+in an arrow function, a really quick one.
+
+313
+00:15:44.590 --> 00:15:48.640
+In our case, we just wanna add up the inventory
+
+314
+00:15:48.640 --> 00:15:50.240
+price on each of them.
+
+315
+00:15:50.240 --> 00:15:54.673
+So go down here, we'll say const totalInventory.
+
+316
+00:15:57.254 --> 00:15:59.367
+We'll say const totalInventoryPrice
+
+317
+00:16:00.510 --> 00:16:03.890
+is equal to inventory.reduce
+
+318
+00:16:06.497 --> 00:16:09.050
+.reduce and that takes two things,
+
+319
+00:16:09.050 --> 00:16:11.660
+the accumulator and the starting value
+
+320
+00:16:11.660 --> 00:16:14.897
+so in our case we'll take, called the accumulator
+
+321
+00:16:14.897 --> 00:16:19.897
+and the item, return the accumulator plus the item.price
+
+322
+00:16:20.210 --> 00:16:22.714
+and then we can also start of with a zero
+
+323
+00:16:22.714 --> 00:16:25.560
+which is what we are starting with and then console.log
+
+324
+00:16:25.560 --> 00:16:30.560
+the totalInventoryPrice, 1,411,7.
+
+325
+00:16:30.570 --> 00:16:31.840
+So What are we doing there?
+
+326
+00:16:31.840 --> 00:16:34.760
+We start with zero, we loop over every single item
+
+327
+00:16:34.760 --> 00:16:36.300
+and return the previous amount
+
+328
+00:16:36.300 --> 00:16:39.107
+which is the accumulator plus the price of this one.
+
+329
+00:16:39.107 --> 00:16:40.703
+In our case.
+

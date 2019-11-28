@@ -1,0 +1,2614 @@
+﻿WEBVTT
+
+1
+00:00:00.845 --> 00:00:03.428
+(upbeat music)
+
+2
+00:00:04.750 --> 00:00:05.590
+<v Instructor>All right, now we're going</v>
+
+3
+00:00:05.590 --> 00:00:06.930
+to start building a gallery.
+
+4
+00:00:06.930 --> 00:00:08.370
+So this is gonna be kind of an interesting one
+
+5
+00:00:08.370 --> 00:00:11.170
+because we're gonna build it pretty standard
+
+6
+00:00:11.170 --> 00:00:14.130
+and then we're gonna come back and refactor it
+
+7
+00:00:14.130 --> 00:00:17.310
+for prototypes, once we understand what those are.
+
+8
+00:00:17.310 --> 00:00:19.090
+And then we're gonna come back a third time
+
+9
+00:00:19.090 --> 00:00:21.987
+and refactor that for classes.
+
+10
+00:00:21.987 --> 00:00:25.700
+And I think that should give you a good sort of idea
+
+11
+00:00:25.700 --> 00:00:29.020
+about why do we need prototypes and what are classes.
+
+12
+00:00:29.020 --> 00:00:31.670
+So this is an interesting one right off the bat
+
+13
+00:00:31.670 --> 00:00:33.730
+because I want the ability to use
+
+14
+00:00:33.730 --> 00:00:36.540
+this JavaScript many times over.
+
+15
+00:00:36.540 --> 00:00:38.860
+A lot of the JavaScript we've written so far
+
+16
+00:00:38.860 --> 00:00:41.150
+just assumes that things are on the page
+
+17
+00:00:41.150 --> 00:00:43.910
+and assumes that there's only ever one of them.
+
+18
+00:00:43.910 --> 00:00:45.920
+But what if we wanna build this gallery,
+
+19
+00:00:45.920 --> 00:00:47.350
+well let me show you it real quick,
+
+20
+00:00:47.350 --> 00:00:49.812
+is if you click on it, it'll open it up.
+
+21
+00:00:49.812 --> 00:00:50.645
+You can click next.
+
+22
+00:00:50.645 --> 00:00:52.820
+If I hit the escape key, it will go.
+
+23
+00:00:52.820 --> 00:00:54.990
+If you can tap through them,
+
+24
+00:00:54.990 --> 00:00:57.430
+hit your enter key, it will open them up for you.
+
+25
+00:00:57.430 --> 00:00:58.760
+I can use my arrow keys.
+
+26
+00:00:58.760 --> 00:01:03.760
+Like a full featured gallery and that's great and all
+
+27
+00:01:03.770 --> 00:01:06.910
+but if I have a secondary gallery like down here
+
+28
+00:01:06.910 --> 00:01:08.110
+it also should work.
+
+29
+00:01:08.110 --> 00:01:11.250
+I should be able to reuse the same code
+
+30
+00:01:11.250 --> 00:01:15.320
+for multiple galleries and keep those things separate.
+
+31
+00:01:15.320 --> 00:01:17.320
+So that's what we're gonna do in this video
+
+32
+00:01:17.320 --> 00:01:19.400
+is build this gallery from the ground up
+
+33
+00:01:19.400 --> 00:01:22.090
+with the ability to reuse it multiple times.
+
+34
+00:01:22.090 --> 00:01:23.660
+You've probably already seen me using
+
+35
+00:01:23.660 --> 00:01:25.910
+capital G gallery here, and I'm gonna explain
+
+36
+00:01:25.910 --> 00:01:29.020
+what that is and why that all is.
+
+37
+00:01:29.020 --> 00:01:33.160
+So let's get into it, I am in gallery.js.
+
+38
+00:01:33.160 --> 00:01:36.330
+There is a gallery demo, there will be a gallery-finish.
+
+39
+00:01:36.330 --> 00:01:41.120
+That will be the exact code that we write in this video.
+
+40
+00:01:41.120 --> 00:01:43.890
+So, the first thing that we need to do
+
+41
+00:01:43.890 --> 00:01:46.090
+is we need to create a closure.
+
+42
+00:01:46.090 --> 00:01:47.670
+Now we learn like, I don't know,
+
+43
+00:01:47.670 --> 00:01:51.020
+maybe 30 or 40 videos ago that a closure is
+
+44
+00:01:51.020 --> 00:01:53.720
+the ability to create a function,
+
+45
+00:01:53.720 --> 00:01:55.640
+and that function has scope.
+
+46
+00:01:55.640 --> 00:01:59.090
+So if we make a function here called gallery
+
+47
+00:01:59.090 --> 00:02:02.010
+and that takes in a gallery argument,
+
+48
+00:02:02.010 --> 00:02:04.760
+this function here will have scope.
+
+49
+00:02:04.760 --> 00:02:07.880
+Now if we make functions inside of here
+
+50
+00:02:07.880 --> 00:02:12.253
+like we make a function called show next image,
+
+51
+00:02:13.090 --> 00:02:15.890
+and we create variables inside of here
+
+52
+00:02:15.890 --> 00:02:18.850
+like const buttons is equal to,
+
+53
+00:02:18.850 --> 00:02:20.700
+I don't know why I'm commenting this,
+
+54
+00:02:20.700 --> 00:02:25.200
+gallery.querySelectorall button,
+
+55
+00:02:25.200 --> 00:02:28.240
+if we look for buttons inside of the gallery
+
+56
+00:02:28.240 --> 00:02:32.270
+that gets passed in, and inside of this function,
+
+57
+00:02:32.270 --> 00:02:37.010
+we reference these variables, we have created a closure.
+
+58
+00:02:37.010 --> 00:02:38.650
+Meaning that this function
+
+59
+00:02:38.650 --> 00:02:41.570
+will run gallery when we create it
+
+60
+00:02:41.570 --> 00:02:45.540
+and this function will exist for things like click handlers
+
+61
+00:02:45.540 --> 00:02:48.670
+and the variables that have been created in between
+
+62
+00:02:48.670 --> 00:02:51.580
+these two functions will still be accessible
+
+63
+00:02:51.580 --> 00:02:54.350
+even after this function is done running,
+
+64
+00:02:54.350 --> 00:02:57.140
+even after that function has closed over.
+
+65
+00:02:57.140 --> 00:02:59.400
+That's why they call it a closure.
+
+66
+00:02:59.400 --> 00:03:01.530
+So we are going to use that concept
+
+67
+00:03:01.530 --> 00:03:06.530
+to allow us to create scope for each of these galleries
+
+68
+00:03:06.570 --> 00:03:09.090
+so that they don't interfere with each other
+
+69
+00:03:09.090 --> 00:03:12.530
+but they can reuse the same code.
+
+70
+00:03:12.530 --> 00:03:15.030
+So I'm gonna back this up, I'm not actually gonna write
+
+71
+00:03:15.030 --> 00:03:18.640
+any of that but we're gonna start with this gallery here.
+
+72
+00:03:18.640 --> 00:03:21.330
+Now, the idea, my idea with this function here
+
+73
+00:03:21.330 --> 00:03:25.140
+in this gallery is that at the very end, we've created
+
+74
+00:03:25.140 --> 00:03:27.180
+almost like a plug in and we can go ahead
+
+75
+00:03:27.180 --> 00:03:29.600
+and use it on the page.
+
+76
+00:03:29.600 --> 00:03:32.020
+So we could do something like const gallery1
+
+77
+00:03:32.020 --> 00:03:34.710
+is equal to, and we can make a new gallery,
+
+78
+00:03:34.710 --> 00:03:38.920
+just capital G Gallery and this will soon be having a new
+
+79
+00:03:38.920 --> 00:03:42.180
+keyword in front of it, but or now, we don't need that,
+
+80
+00:03:42.180 --> 00:03:44.490
+we'll understand why it is.
+
+81
+00:03:44.490 --> 00:03:47.573
+And then if we go to the index.html,
+
+82
+00:03:49.730 --> 00:03:53.110
+and if we go to the index.html that is on this gallery,
+
+83
+00:03:53.110 --> 00:03:55.500
+you'll see we have gallery one and we have
+
+84
+00:03:55.500 --> 00:03:57.350
+a secondary gallery in there.
+
+85
+00:03:57.350 --> 00:04:00.710
+So we're going to pass it, reference to the gallery we want.
+
+86
+00:04:00.710 --> 00:04:03.950
+So we'll say document.queryselector.gallery1
+
+87
+00:04:06.000 --> 00:04:07.610
+and then just go ahead and duplicate
+
+88
+00:04:07.610 --> 00:04:09.890
+that thing over for gallery2.
+
+89
+00:04:09.890 --> 00:04:12.630
+We're gonna run this right from the start
+
+90
+00:04:12.630 --> 00:04:14.550
+with two different galleries so that we know
+
+91
+00:04:14.550 --> 00:04:16.361
+every line of code that we're writing
+
+92
+00:04:16.361 --> 00:04:20.943
+is safe for reuse over time.
+
+93
+00:04:22.010 --> 00:04:25.500
+Now, first thing we wanna do is, when this function runs,
+
+94
+00:04:25.500 --> 00:04:26.980
+let's just console log the gallery,
+
+95
+00:04:26.980 --> 00:04:29.470
+and I'm gonna open up my index HTML,
+
+96
+00:04:29.470 --> 00:04:32.150
+open that up in the browser and in our dev tools,
+
+97
+00:04:32.150 --> 00:04:35.270
+we should see and we go gallery1 and gallery2.
+
+98
+00:04:35.270 --> 00:04:38.560
+One kind of helpful thing for this is
+
+99
+00:04:38.560 --> 00:04:42.030
+very first line, we can say, if there is no gallery
+
+100
+00:04:42.030 --> 00:04:47.030
+passed in, we can throw a new error that says,
+
+101
+00:04:47.040 --> 00:04:49.320
+No Gallery Found.
+
+102
+00:04:49.320 --> 00:04:52.580
+And by throwing an error like this, what will happen
+
+103
+00:04:52.580 --> 00:04:55.400
+is if we pass in something that doesn't exist,
+
+104
+00:04:55.400 --> 00:04:58.810
+it would just show an error in our console
+
+105
+00:04:58.810 --> 00:05:01.790
+and stop that code from running,
+
+106
+00:05:01.790 --> 00:05:03.440
+it will break on the page.
+
+107
+00:05:03.440 --> 00:05:06.430
+If we wanted to gracefully degrade,
+
+108
+00:05:06.430 --> 00:05:10.432
+you can simply just return, it's removing the return,
+
+109
+00:05:10.432 --> 00:05:13.340
+(mumbles) but imagine you're returning there
+
+110
+00:05:13.340 --> 00:05:15.890
+and what that will do is it will just break without
+
+111
+00:05:16.920 --> 00:05:18.510
+throwing any errors in your console,
+
+112
+00:05:18.510 --> 00:05:20.260
+depends on what you wanted to do.
+
+113
+00:05:20.260 --> 00:05:23.752
+In our case, we're just going to use throw new error
+
+114
+00:05:23.752 --> 00:05:25.902
+and that will give an error in our console.
+
+115
+00:05:27.980 --> 00:05:30.830
+Then, what we need to do is select
+
+116
+00:05:30.830 --> 00:05:32.010
+the whole bunch of images.
+
+117
+00:05:32.010 --> 00:05:33.970
+So previously, I had been selecting everything
+
+118
+00:05:33.970 --> 00:05:35.550
+at the top of the file.
+
+119
+00:05:35.550 --> 00:05:38.430
+In our case, since we need to select these things
+
+120
+00:05:38.430 --> 00:05:41.590
+for each of our instances, we're gonna be selecting it
+
+121
+00:05:41.590 --> 00:05:44.250
+inside of this function because remember,
+
+122
+00:05:44.250 --> 00:05:47.720
+the function is scoped to only this function
+
+123
+00:05:47.720 --> 00:05:50.960
+and we are operating and making these variables are
+
+124
+00:05:50.960 --> 00:05:53.990
+that live only inside this function.
+
+125
+00:05:53.990 --> 00:05:56.730
+In that way, the gallery1 and gallery2
+
+126
+00:05:56.730 --> 00:05:59.800
+will never clash with each other.
+
+127
+00:05:59.800 --> 00:06:04.800
+So let's select the elements we need.
+
+128
+00:06:08.210 --> 00:06:11.470
+So, first thing we need is a list of all of the images.
+
+129
+00:06:11.470 --> 00:06:15.060
+So, make images and we'll say array.from,
+
+130
+00:06:15.060 --> 00:06:17.660
+because we're gonna need to loop over them in the feature.
+
+131
+00:06:17.660 --> 00:06:21.010
+And instead of saying document.querySelector here,
+
+132
+00:06:21.010 --> 00:06:23.230
+we need, again, remember, we always need to scope
+
+133
+00:06:23.230 --> 00:06:24.880
+everything to the actual gallery
+
+134
+00:06:24.880 --> 00:06:27.470
+that was passed in to the selector.
+
+135
+00:06:27.470 --> 00:06:31.550
+So we're going to use the gallery selector here
+
+136
+00:06:31.550 --> 00:06:35.480
+and say .querySelector and we're gonna look
+
+137
+00:06:35.480 --> 00:06:37.810
+for images that live inside of it.
+
+138
+00:06:37.810 --> 00:06:41.990
+If we console log images, you just see,
+
+139
+00:06:41.990 --> 00:06:45.410
+oh, it's empty, okay.
+
+140
+00:06:45.410 --> 00:06:48.803
+So, I don't know what the problem is, let's debug.
+
+141
+00:06:49.750 --> 00:06:51.263
+Console log our gallery.
+
+142
+00:06:52.780 --> 00:06:54.800
+The gallery is showing up.
+
+143
+00:06:54.800 --> 00:06:57.940
+And if we look inside of that, we have images,
+
+144
+00:06:57.940 --> 00:07:00.160
+maybe, oh, querySelectorAll.
+
+145
+00:07:00.160 --> 00:07:01.000
+That's why.
+
+146
+00:07:01.000 --> 00:07:02.930
+Not .querySelector because we want all of the images.
+
+147
+00:07:02.930 --> 00:07:03.763
+There we go.
+
+148
+00:07:03.763 --> 00:07:06.830
+So for each gallery, I am getting nine images back.
+
+149
+00:07:06.830 --> 00:07:08.113
+Okay now, good.
+
+150
+00:07:11.370 --> 00:07:14.497
+Next thing that we need is our modal, our previous
+
+151
+00:07:14.497 --> 00:07:19.040
+and our next buttons so if we look at this index.html,
+
+152
+00:07:19.040 --> 00:07:20.640
+another thing that I've already done and gone
+
+153
+00:07:20.640 --> 00:07:24.890
+is scaffold it out, the HTML for showing
+
+154
+00:07:25.800 --> 00:07:27.550
+a modal that pops up.
+
+155
+00:07:27.550 --> 00:07:29.750
+I've just put some test stuff in there just so that
+
+156
+00:07:29.750 --> 00:07:33.120
+when I was styling it, I could quickly style it
+
+157
+00:07:33.120 --> 00:07:34.440
+with some test stuff in here.
+
+158
+00:07:34.440 --> 00:07:36.425
+You could totally just leave this out,
+
+159
+00:07:36.425 --> 00:07:38.860
+I'll leave it in there just so that you can see
+
+160
+00:07:38.860 --> 00:07:42.460
+what the idea markup of creating this thing will be.
+
+161
+00:07:42.460 --> 00:07:44.680
+So we have a figure with an image,
+
+162
+00:07:44.680 --> 00:07:47.030
+a figcaption H2, a paragraph.
+
+163
+00:07:47.030 --> 00:07:50.330
+And what will happen is that we're going to show this thing
+
+164
+00:07:50.330 --> 00:07:53.630
+when somebody pops that open and swap out all of the,
+
+165
+00:07:53.630 --> 00:07:57.080
+with the text that is associated with each of our images.
+
+166
+00:07:57.080 --> 00:07:58.890
+So let's go ahead and select those.
+
+167
+00:07:58.890 --> 00:08:02.880
+We'll say const modal, we go to document.querySelector
+
+168
+00:08:04.050 --> 00:08:07.640
+and we are going to grab the thing with the class or modal.
+
+169
+00:08:07.640 --> 00:08:11.530
+In this case, I am using document because the markup
+
+170
+00:08:11.530 --> 00:08:14.640
+for this will be shared between the two
+
+171
+00:08:14.640 --> 00:08:17.510
+because it's only possible to have one modal open
+
+172
+00:08:17.510 --> 00:08:20.300
+at a time, so that's why we do that like that.
+
+173
+00:08:20.300 --> 00:08:22.843
+And then, we want the previous button.
+
+174
+00:08:25.690 --> 00:08:28.310
+And we can look inside the modal that we have.
+
+175
+00:08:28.310 --> 00:08:33.310
+querySelector look for .prev and it will swap that
+
+176
+00:08:35.320 --> 00:08:37.520
+second one out with the next.
+
+177
+00:08:37.520 --> 00:08:39.490
+So now, for the rest of this thing,
+
+178
+00:08:39.490 --> 00:08:42.410
+we're just gonna be chunking up all of the functionality
+
+179
+00:08:42.410 --> 00:08:44.600
+into a bunch of little functions.
+
+180
+00:08:44.600 --> 00:08:46.500
+We're gonna break into a function.
+
+181
+00:08:46.500 --> 00:08:49.910
+I'll show the image, open the modal, close the modal,
+
+182
+00:08:49.910 --> 00:08:53.670
+listen for all of the clicks in keyboard,
+
+183
+00:08:53.670 --> 00:08:56.129
+things that we're looking for, adding and removing event.
+
+184
+00:08:56.129 --> 00:08:58.800
+There's actually quite a lot going on here
+
+185
+00:08:58.800 --> 00:09:00.810
+and I think this is a really good example
+
+186
+00:09:00.810 --> 00:09:03.790
+of how you can take a complex JavaScript app
+
+187
+00:09:03.790 --> 00:09:05.750
+and make it somewhat simple by breaking it
+
+188
+00:09:05.750 --> 00:09:07.330
+into smaller, little functions.
+
+189
+00:09:07.330 --> 00:09:12.130
+So, let's probably start with the showing of the image.
+
+190
+00:09:12.130 --> 00:09:15.800
+So when somebody clicks on one of these images,
+
+191
+00:09:15.800 --> 00:09:20.800
+we need to update that modal with the associated images
+
+192
+00:09:21.280 --> 00:09:24.340
+as well as pop open that modal.
+
+193
+00:09:24.340 --> 00:09:26.830
+So let's start with the first function
+
+194
+00:09:26.830 --> 00:09:29.080
+and we'll call that showImage
+
+195
+00:09:29.080 --> 00:09:31.650
+and that's going to take in an image element
+
+196
+00:09:31.650 --> 00:09:32.860
+so I'm gonna call that el,
+
+197
+00:09:32.860 --> 00:09:36.730
+it's gonna get passed reference to just an image tag
+
+198
+00:09:36.730 --> 00:09:38.780
+that is somewhere on the page.
+
+199
+00:09:38.780 --> 00:09:43.780
+And here, we'll just say if there's no el, then,
+
+200
+00:09:43.850 --> 00:09:48.850
+console.info, no image to show.
+
+201
+00:09:49.020 --> 00:09:50.480
+And then it will return.
+
+202
+00:09:50.480 --> 00:09:52.100
+You'll notice that I'm starting to do this
+
+203
+00:09:52.100 --> 00:09:55.810
+in these ones right here and the reason why I'm doing that
+
+204
+00:09:55.810 --> 00:09:58.639
+is because sometimes, these functions can get run
+
+205
+00:09:58.639 --> 00:10:02.360
+for whatever reason, if something's broken, or whatever,
+
+206
+00:10:02.360 --> 00:10:05.020
+and having these little safety checks
+
+207
+00:10:05.020 --> 00:10:09.060
+can stop a broken application on your page.
+
+208
+00:10:09.060 --> 00:10:11.690
+Otherwise, what we need to do is update
+
+209
+00:10:11.690 --> 00:10:14.010
+the modal with this info.
+
+210
+00:10:14.010 --> 00:10:16.430
+So let's just console that log, the element
+
+211
+00:10:16.430 --> 00:10:19.280
+that got passed in and then start hooking up
+
+212
+00:10:19.280 --> 00:10:21.690
+some of our clicks and what not.
+
+213
+00:10:21.690 --> 00:10:24.740
+So, what I'm gonna do is I'm gonna take our images array
+
+214
+00:10:24.740 --> 00:10:26.613
+and we've selected that right here
+
+215
+00:10:26.613 --> 00:10:28.600
+when we've taken the gallery querySelector
+
+216
+00:10:28.600 --> 00:10:29.480
+for all the images.
+
+217
+00:10:29.480 --> 00:10:32.250
+And I'm going to loop over each of them.
+
+218
+00:10:32.250 --> 00:10:37.040
+And for each image that we have, I'm going to
+
+219
+00:10:37.040 --> 00:10:38.360
+add an event listener.
+
+220
+00:10:38.360 --> 00:10:42.400
+So image.addEventListener.
+
+221
+00:10:42.400 --> 00:10:44.533
+We're going to listen for the click event.
+
+222
+00:10:45.770 --> 00:10:50.770
+And when that happens, we will run a callback function.
+
+223
+00:10:51.290 --> 00:10:52.980
+Now, I'm nesting it inside of here,
+
+224
+00:10:52.980 --> 00:10:56.240
+we could certainly create a function here
+
+225
+00:10:56.240 --> 00:10:59.670
+called handleImageClick, we should do that,
+
+226
+00:10:59.670 --> 00:11:01.654
+let's do that and then we'll refactor it.
+
+227
+00:11:01.654 --> 00:11:03.104
+And that takes in then event.
+
+228
+00:11:04.330 --> 00:11:08.323
+And we'll go here and pass on the handleImageClick.
+
+229
+00:11:09.890 --> 00:11:11.740
+Now, inside of this handleImageClick,
+
+230
+00:11:12.800 --> 00:11:16.270
+we simply just need to pass the image tag
+
+231
+00:11:16.270 --> 00:11:19.950
+or whatever image you have to this show image.
+
+232
+00:11:19.950 --> 00:11:23.830
+So showImage and then how do we reference
+
+233
+00:11:23.830 --> 00:11:25.740
+the image that was clicked?
+
+234
+00:11:25.740 --> 00:11:27.933
+On the event .currentTarget.
+
+235
+00:11:31.580 --> 00:11:34.270
+All right, now, this is getting to be
+
+236
+00:11:34.270 --> 00:11:35.870
+a lot of different functions.
+
+237
+00:11:35.870 --> 00:11:38.770
+So, let's check if it works and then we refactor that out
+
+238
+00:11:38.770 --> 00:11:40.363
+just to another error function.
+
+239
+00:11:41.980 --> 00:11:43.160
+So you see what's happening
+
+240
+00:11:43.160 --> 00:11:46.030
+is when I now click on one of these images here,
+
+241
+00:11:46.030 --> 00:11:49.970
+we get the actual image that is on the page.
+
+242
+00:11:49.970 --> 00:11:53.290
+So what I'm gonna do is I'm gonna refactor this one here
+
+243
+00:11:53.290 --> 00:11:55.270
+instead of having handleImageClick,
+
+244
+00:11:55.270 --> 00:11:58.530
+I'm just going to get the event.
+
+245
+00:11:58.530 --> 00:12:01.650
+And I'm going to pass the event.current
+
+246
+00:12:01.650 --> 00:12:03.363
+target to show image.
+
+247
+00:12:08.420 --> 00:12:11.800
+And I name this one Event, this one e,
+
+248
+00:12:11.800 --> 00:12:14.650
+I change this to e, and now we can get rid of
+
+249
+00:12:14.650 --> 00:12:16.093
+this function right here.
+
+250
+00:12:18.050 --> 00:12:21.340
+And we will double check that it still works.
+
+251
+00:12:21.340 --> 00:12:22.173
+Okay, good.
+
+252
+00:12:22.173 --> 00:12:24.540
+So now, we're back into the showImage here
+
+253
+00:12:24.540 --> 00:12:26.900
+and when somebody clicks it,
+
+254
+00:12:26.900 --> 00:12:30.080
+there's a couple of things that need to happen.
+
+255
+00:12:30.080 --> 00:12:31.890
+We need to update the source of our modal,
+
+256
+00:12:31.890 --> 00:12:33.230
+if we take at a look of this thing here,
+
+257
+00:12:33.230 --> 00:12:35.340
+we've got this image, we need to update that,
+
+258
+00:12:35.340 --> 00:12:37.870
+we need to update this h2 and we need
+
+259
+00:12:37.870 --> 00:12:39.600
+to update the paragraphs text.
+
+260
+00:12:39.600 --> 00:12:41.310
+So let's go ahead and do that.
+
+261
+00:12:41.310 --> 00:12:42.910
+So we'll say modal.querySelector
+
+262
+00:12:44.880 --> 00:12:47.160
+we'll search for the image and we'll set the source
+
+263
+00:12:47.160 --> 00:12:50.487
+of the found image to be the l.src.
+
+264
+00:12:52.840 --> 00:12:56.783
+So, let's take a look at our elements panel here.
+
+265
+00:12:59.820 --> 00:13:02.250
+And we'll open up our modal inner,
+
+266
+00:13:02.250 --> 00:13:04.400
+open up the figure and it says get kith-hoodie,
+
+267
+00:13:04.400 --> 00:13:09.300
+but now if I click on the backpack, it updates it to,
+
+268
+00:13:09.300 --> 00:13:11.700
+I'm not using a server here so it updates it
+
+269
+00:13:11.700 --> 00:13:13.300
+to this file, really long.
+
+270
+00:13:13.300 --> 00:13:15.900
+If you're using parcel, those will be a little bit cleaner.
+
+271
+00:13:15.900 --> 00:13:18.250
+But it is updating the image source.
+
+272
+00:13:18.250 --> 00:13:21.640
+Now, we can go ahead and, let's just duplicate that lines,
+
+273
+00:13:21.640 --> 00:13:23.870
+switch out the selector to be the h2
+
+274
+00:13:23.870 --> 00:13:28.870
+and set the text content property to be
+
+275
+00:13:29.250 --> 00:13:32.070
+the element.title, why?
+
+276
+00:13:32.070 --> 00:13:35.620
+Because if you look at the images that I have here,
+
+277
+00:13:35.620 --> 00:13:38.530
+we have a couple of things on here
+
+278
+00:13:38.530 --> 00:13:41.210
+and one of them is a title.
+
+279
+00:13:41.210 --> 00:13:46.210
+So, we can go ahead and take the title from the image.
+
+280
+00:13:47.660 --> 00:13:50.920
+And then we'll duplicate that again and grab the paragraph.
+
+281
+00:13:50.920 --> 00:13:54.390
+We'll say figure space p, just in case there's any other
+
+282
+00:13:54.390 --> 00:13:56.533
+paragraphs in that modal.
+
+283
+00:13:57.530 --> 00:14:01.360
+And in this case, I've went with a data-description
+
+284
+00:14:01.360 --> 00:14:04.190
+property which is a custom property I've made up
+
+285
+00:14:04.190 --> 00:14:07.520
+under the data attribute and we need to pull that out.
+
+286
+00:14:07.520 --> 00:14:08.550
+So how do we get that?
+
+287
+00:14:08.550 --> 00:14:12.173
+Well it's el.dataset.description.
+
+288
+00:14:18.490 --> 00:14:21.620
+Finally, what we wanna do is we need to keep track
+
+289
+00:14:21.620 --> 00:14:24.340
+of want the currently open image is.
+
+290
+00:14:24.340 --> 00:14:27.760
+So I'm going to go to the top, right underneath
+
+291
+00:14:27.760 --> 00:14:30.360
+where we declared it, our next button.
+
+292
+00:14:30.360 --> 00:14:34.800
+And say let current image and that's it
+
+293
+00:14:34.800 --> 00:14:36.650
+and then we'll go down here and say
+
+294
+00:14:36.650 --> 00:14:39.880
+the current image is equal to the element.
+
+295
+00:14:39.880 --> 00:14:42.500
+And that will make sense as to why we need that
+
+296
+00:14:42.500 --> 00:14:45.800
+when we start getting into the buttons of previous and next.
+
+297
+00:14:45.800 --> 00:14:48.900
+So, I think we should be able to open up this figcaption now
+
+298
+00:14:50.500 --> 00:14:54.500
+and we click on these, you see that they are
+
+299
+00:14:54.500 --> 00:14:57.600
+being swapped out with the value that we have.
+
+300
+00:14:57.600 --> 00:15:00.800
+It looks like my demo text is the same for each of them
+
+301
+00:15:00.800 --> 00:15:04.040
+but the first time around, you'll see
+
+302
+00:15:04.950 --> 00:15:09.690
+that the h2 in the paragraph and the image are all updating.
+
+303
+00:15:09.690 --> 00:15:12.600
+Good, so next, what we need to do is write some code
+
+304
+00:15:12.600 --> 00:15:14.220
+that actually open up that modal
+
+305
+00:15:14.220 --> 00:15:17.380
+'cause you can only see it showing up here.
+
+306
+00:15:17.380 --> 00:15:19.810
+Let's actually open it up to the user,
+
+307
+00:15:19.810 --> 00:15:22.320
+and for that, we will write another function.
+
+308
+00:15:22.320 --> 00:15:24.490
+I'll do it above here.
+
+309
+00:15:24.490 --> 00:15:26.377
+Function called openModal.
+
+310
+00:15:29.760 --> 00:15:33.983
+And let's just console.info opening modal.
+
+311
+00:15:37.010 --> 00:15:38.913
+And we'll run that right here.
+
+312
+00:15:43.240 --> 00:15:44.520
+And there's a few things we need to do.
+
+313
+00:15:44.520 --> 00:15:49.520
+We need to first check if then modal is already open
+
+314
+00:15:50.720 --> 00:15:52.400
+and the reason why need to do that
+
+315
+00:15:52.400 --> 00:15:53.730
+'cause I've got some animations
+
+316
+00:15:53.730 --> 00:15:56.130
+that will animate it in and out.
+
+317
+00:15:56.130 --> 00:15:59.380
+And we don't want to be triggering those animations
+
+318
+00:15:59.380 --> 00:16:01.760
+if the modal is already open for whatever reason.
+
+319
+00:16:01.760 --> 00:16:06.760
+So if a modal.matches .open, what this will do
+
+320
+00:16:07.740 --> 00:16:11.270
+is it will take our modal and see if it matches
+
+321
+00:16:11.270 --> 00:16:14.120
+a CSS selector or not and the way that we're gonna tell
+
+322
+00:16:14.120 --> 00:16:19.120
+if the modal is open or not is by a CSS class that is open.
+
+323
+00:16:19.510 --> 00:16:24.510
+And then we'll console.info modal already open.
+
+324
+00:16:28.800 --> 00:16:31.140
+And then use return and that will stop
+
+325
+00:16:33.310 --> 00:16:36.270
+the function from running.
+
+326
+00:16:36.270 --> 00:16:39.280
+Otherwise, if it's not open, we take our modal
+
+327
+00:16:39.280 --> 00:16:43.683
+and we add a class of open.
+
+328
+00:16:44.660 --> 00:16:45.543
+Let's try it.
+
+329
+00:16:50.240 --> 00:16:52.340
+Whoo, I like it.
+
+330
+00:16:52.340 --> 00:16:54.340
+There's no closing, none of these buttons work,
+
+331
+00:16:54.340 --> 00:16:56.600
+escape doesn't work, click outside doesn't work
+
+332
+00:16:56.600 --> 00:17:01.600
+but if I refresh it, it now will slide down from the top
+
+333
+00:17:01.680 --> 00:17:04.060
+and change that value for us.
+
+334
+00:17:04.060 --> 00:17:05.290
+So why does that work?
+
+335
+00:17:05.290 --> 00:17:10.290
+Well, if you look at the gallery.css,
+
+336
+00:17:11.856 --> 00:17:13.643
+when we go down to our modal,
+
+337
+00:17:15.680 --> 00:17:20.060
+you'll see that our modal, when it has a class of open
+
+338
+00:17:20.060 --> 00:17:24.180
+has an opacity of one and a pointer-events of all
+
+339
+00:17:24.180 --> 00:17:29.180
+and a modal by default will have an opacity of zero
+
+340
+00:17:30.280 --> 00:17:32.850
+and a pointer-events of none and what that would do is,
+
+341
+00:17:32.850 --> 00:17:36.142
+opacity zero will hide it from the user.
+
+342
+00:17:36.142 --> 00:17:40.780
+I'm gonna make that a one, you'll see that it is there
+
+343
+00:17:40.780 --> 00:17:45.600
+on page load, but then, you can still click
+
+344
+00:17:45.600 --> 00:17:49.560
+through that modal and by putting a pointer-events none,
+
+345
+00:17:49.560 --> 00:17:52.870
+that essentially ignores all clicks to it.
+
+346
+00:17:52.870 --> 00:17:56.790
+And then we have our modal inner, which, by default,
+
+347
+00:17:56.790 --> 00:18:01.750
+will be negative 100 view port heights off the page.
+
+348
+00:18:01.750 --> 00:18:06.750
+So if I take that off and to put opacity one on this,
+
+349
+00:18:07.220 --> 00:18:10.160
+you see on page load, it will already be there.
+
+350
+00:18:10.160 --> 00:18:15.160
+But a negative 100 view port will put it off the screen
+
+351
+00:18:15.311 --> 00:18:20.311
+and then when there is a open property on the parent,
+
+352
+00:18:21.870 --> 00:18:24.630
+the inner gets a translate Y of zero
+
+353
+00:18:24.630 --> 00:18:28.910
+and that will animate itself on in.
+
+354
+00:18:28.910 --> 00:18:32.053
+So we'll bring this back to what we had, zero.
+
+355
+00:18:34.370 --> 00:18:35.203
+There we go.
+
+356
+00:18:35.203 --> 00:18:37.580
+It's working just fine for us.
+
+357
+00:18:37.580 --> 00:18:40.220
+Next, we'll make a function to close the modal
+
+358
+00:18:40.220 --> 00:18:42.370
+so function closeModal.
+
+359
+00:18:46.420 --> 00:18:48.460
+And what do you think we'll do there?
+
+360
+00:18:48.460 --> 00:18:53.460
+Is we'll just take the modal and remove the class of open.
+
+361
+00:18:55.310 --> 00:18:58.030
+And like before we even do that, let me just show you.
+
+362
+00:18:58.030 --> 00:19:01.233
+We have our modal rate here.
+
+363
+00:19:01.233 --> 00:19:04.060
+Part is to manually take off this class.
+
+364
+00:19:04.060 --> 00:19:05.570
+It just closes itself.
+
+365
+00:19:05.570 --> 00:19:08.440
+And I can go ahead and click on it again
+
+366
+00:19:08.440 --> 00:19:10.210
+and it will open it up for us.
+
+367
+00:19:10.210 --> 00:19:12.360
+So that's essentially what a closeModal
+
+368
+00:19:12.360 --> 00:19:13.799
+is going to be doing.
+
+369
+00:19:13.799 --> 00:19:18.799
+We also will open a little to do add event listeners
+
+370
+00:19:19.530 --> 00:19:24.530
+for clicks and keyboard.
+
+371
+00:19:24.860 --> 00:19:26.890
+We'll do that in just a little bit.
+
+372
+00:19:26.890 --> 00:19:28.600
+Now, let's look up.
+
+373
+00:19:28.600 --> 00:19:30.730
+First one, what I wanna do is I want, if I click
+
+374
+00:19:30.730 --> 00:19:35.020
+outside of this modal, I wanna be able to
+
+375
+00:19:35.020 --> 00:19:36.700
+run that closeModal function.
+
+376
+00:19:36.700 --> 00:19:38.223
+So, how would I do that?
+
+377
+00:19:39.840 --> 00:19:44.360
+Well, if you kinda look at it, if somebody clicks
+
+378
+00:19:44.360 --> 00:19:48.550
+on this div right here, but not the inner div.
+
+379
+00:19:48.550 --> 00:19:52.520
+So if anyone clicks on a div but not inside the modal inner,
+
+380
+00:19:52.520 --> 00:19:54.340
+like if you're clicking here, I don't want it to close
+
+381
+00:19:54.340 --> 00:19:56.460
+but if you click outside of that,
+
+382
+00:19:56.460 --> 00:19:58.663
+then I do want it to close.
+
+383
+00:20:00.020 --> 00:20:05.020
+So, what we'll do is we make a new function
+
+384
+00:20:05.230 --> 00:20:07.793
+and we'll call that a handle clickOutside
+
+385
+00:20:09.470 --> 00:20:12.410
+that takes in an event.
+
+386
+00:20:12.410 --> 00:20:15.150
+And then we can go to where we do our event listeners.
+
+387
+00:20:15.150 --> 00:20:17.110
+Maybe we can put a little comment here.
+
+388
+00:20:17.110 --> 00:20:20.333
+These are our event listeners.
+
+389
+00:20:24.404 --> 00:20:28.090
+We say modal.addEventListener listen for a click
+
+390
+00:20:32.860 --> 00:20:35.580
+and we'll give it the handClickOutside.
+
+391
+00:20:36.610 --> 00:20:39.320
+And what we'll say inside of here, so we'll say if
+
+392
+00:20:39.320 --> 00:20:43.230
+the e.target is equal to e.currentTarget,
+
+393
+00:20:44.410 --> 00:20:46.173
+then, closeModal.
+
+394
+00:20:47.770 --> 00:20:49.220
+So, why are we doing this?
+
+395
+00:20:49.220 --> 00:20:52.305
+Well, if the thing they actually clicked
+
+396
+00:20:52.305 --> 00:20:55.800
+and the thing that you're listening for the click on,
+
+397
+00:20:55.800 --> 00:20:59.080
+are the same thing, then it means that the user
+
+398
+00:20:59.080 --> 00:21:03.430
+has clicked on the actual modal div
+
+399
+00:21:03.430 --> 00:21:05.570
+and not the modal inner, not this button,
+
+400
+00:21:05.570 --> 00:21:07.100
+not this figure, not this other button,
+
+401
+00:21:07.100 --> 00:21:08.380
+not anything inside of it.
+
+402
+00:21:08.380 --> 00:21:10.380
+So that's when we're checking if the thing
+
+403
+00:21:10.380 --> 00:21:13.560
+that they actually clicked is the exact same thing
+
+404
+00:21:13.560 --> 00:21:17.260
+as what we are listening for, then,
+
+405
+00:21:17.260 --> 00:21:18.580
+we're going to go ahead and close it.
+
+406
+00:21:18.580 --> 00:21:19.543
+So let's try it.
+
+407
+00:21:20.838 --> 00:21:21.883
+It doesn't work.
+
+408
+00:21:23.960 --> 00:21:24.823
+Refresh it.
+
+409
+00:21:26.120 --> 00:21:27.950
+Oh, I forgot to refresh it, there you go.
+
+410
+00:21:27.950 --> 00:21:30.812
+So now the clicking outside works.
+
+411
+00:21:30.812 --> 00:21:34.400
+And let's go ahead and wire up the escape key
+
+412
+00:21:34.400 --> 00:21:37.690
+on our keyboard as well 'cause that's when also
+
+413
+00:21:37.690 --> 00:21:40.330
+what I reach for when a modal opens up.
+
+414
+00:21:40.330 --> 00:21:44.883
+So, we'll make another function here called handleKeyUp.
+
+415
+00:21:49.091 --> 00:21:51.990
+And we get the event and in here, we'll say
+
+416
+00:21:51.990 --> 00:21:56.877
+if the event.key is equal to escape, demo, closeModal.
+
+417
+00:22:00.680 --> 00:22:04.580
+Here's a use good case for a block list if statement
+
+418
+00:22:04.580 --> 00:22:07.820
+because it's a nice, clean one-liner.
+
+419
+00:22:07.820 --> 00:22:11.140
+Because of the way that keyUp works, it will fire
+
+420
+00:22:11.140 --> 00:22:13.240
+for any key, so we're actually going to be
+
+421
+00:22:13.240 --> 00:22:16.410
+throwing it a bunch of logic into here in the future.
+
+422
+00:22:16.410 --> 00:22:19.210
+So right now, we have this function called handle KeyUp
+
+423
+00:22:19.210 --> 00:22:21.760
+and we'll go down to where our event listeners are.
+
+424
+00:22:22.860 --> 00:22:24.660
+And we'll just listen on the window.
+
+425
+00:22:27.580 --> 00:22:30.030
+And we'll listen for a keyUp and we'll pass it,
+
+426
+00:22:30.030 --> 00:22:31.763
+our handle keyUp function.
+
+427
+00:22:34.460 --> 00:22:36.990
+Now when I open it, hit my escape key,
+
+428
+00:22:36.990 --> 00:22:38.650
+you see that it works just fine.
+
+429
+00:22:38.650 --> 00:22:39.980
+Let's try this second gallery here,
+
+430
+00:22:39.980 --> 00:22:41.900
+make sure that's still working.
+
+431
+00:22:41.900 --> 00:22:45.070
+Beautiful, working really nicely.
+
+432
+00:22:45.070 --> 00:22:47.490
+Next thing we need to do is to hook up these buttons here
+
+433
+00:22:47.490 --> 00:22:49.900
+where you show the next and the previous images
+
+434
+00:22:49.900 --> 00:22:54.060
+either by clicking on them or by using the arrow keys.
+
+435
+00:22:54.060 --> 00:22:56.280
+So let's do the clicking of the buttons first.
+
+436
+00:22:56.280 --> 00:22:58.396
+So go down to where our event listeners are
+
+437
+00:22:58.396 --> 00:23:02.620
+and we'll grab our, let's do the next button
+
+438
+00:23:02.620 --> 00:23:06.130
+and we'll add an event listener to that of click.
+
+439
+00:23:06.130 --> 00:23:08.990
+And we'll make a new function called showNextImage.
+
+440
+00:23:10.930 --> 00:23:12.330
+Go back up here.
+
+441
+00:23:12.330 --> 00:23:14.840
+See what I mean about tons of these little functions?
+
+442
+00:23:14.840 --> 00:23:16.920
+It doesn't necessarily matter in which order
+
+443
+00:23:16.920 --> 00:23:20.190
+you put them in, I kinda like to group them together.
+
+444
+00:23:20.190 --> 00:23:23.510
+We'll say function, showNextImage and now,
+
+445
+00:23:25.800 --> 00:23:29.573
+what we need to know is what is the next image?
+
+446
+00:23:30.770 --> 00:23:35.560
+If I click on the backpack and I click on next,
+
+447
+00:23:35.560 --> 00:23:37.950
+it just shows me the suitcase.
+
+448
+00:23:37.950 --> 00:23:42.950
+So, that's why I made this image called let currentImage
+
+449
+00:23:43.520 --> 00:23:47.090
+and when we open up an image,
+
+450
+00:23:47.090 --> 00:23:49.220
+we set the currentImage to be that one.
+
+451
+00:23:49.220 --> 00:23:50.053
+Why?
+
+452
+00:23:50.053 --> 00:23:52.340
+Because now, when we run, showNextImage,
+
+453
+00:23:52.340 --> 00:23:54.610
+we should be able to know what is at least
+
+454
+00:23:54.610 --> 00:23:59.020
+the current image, so let's refresh it.
+
+455
+00:23:59.020 --> 00:24:02.340
+And I'll clear this out, when I click on next,
+
+456
+00:24:02.340 --> 00:24:03.940
+it tells me the current image
+
+457
+00:24:03.940 --> 00:24:06.253
+is a patagonia black hole, okay.
+
+458
+00:24:07.240 --> 00:24:10.870
+And if I were to wonder what is the next image,
+
+459
+00:24:10.870 --> 00:24:13.830
+I should just be able to say .nextElementSibling,
+
+460
+00:24:15.960 --> 00:24:16.960
+let's try that.
+
+461
+00:24:20.360 --> 00:24:21.630
+It gives me the suitcase.
+
+462
+00:24:21.630 --> 00:24:23.813
+Okay, I like it, I like it.
+
+463
+00:24:27.914 --> 00:24:29.480
+It is giving us an error here.
+
+464
+00:24:29.480 --> 00:24:34.020
+Cannot read property nextElementSibling of undefined.
+
+465
+00:24:34.020 --> 00:24:36.930
+And this is actually a problem that we run into
+
+466
+00:24:36.930 --> 00:24:40.640
+fairly frequently when we are trying to
+
+467
+00:24:41.640 --> 00:24:44.510
+listen to clicks on things in multiple instance.
+
+468
+00:24:44.510 --> 00:24:49.060
+So, in our case, what happens is that we are listening
+
+469
+00:24:49.060 --> 00:24:52.910
+for a click on the next button
+
+470
+00:24:52.910 --> 00:24:56.180
+and we're listening for a keyUp here.
+
+471
+00:24:56.180 --> 00:25:00.400
+And what's happening is that this is running twice
+
+472
+00:25:00.400 --> 00:25:03.620
+because I have two galleries and I have two event listeners
+
+473
+00:25:03.620 --> 00:25:06.290
+tacked on to the window, into the next button.
+
+474
+00:25:06.290 --> 00:25:09.340
+So what happened is it worked fine for the first instance,
+
+475
+00:25:09.340 --> 00:25:11.190
+for the second instance, errored out.
+
+476
+00:25:11.190 --> 00:25:12.380
+And that shouldn't be happening.
+
+477
+00:25:12.380 --> 00:25:16.400
+So what we need to do with these two add event listeners
+
+478
+00:25:16.400 --> 00:25:21.123
+is we need to bring them up to our open modal.
+
+479
+00:25:24.150 --> 00:25:29.150
+Event listeners to be bound when we open the modal.
+
+480
+00:25:35.150 --> 00:25:37.690
+And then we need to do the exact opposite,
+
+481
+00:25:37.690 --> 00:25:40.530
+sort of clean up when we close it.
+
+482
+00:25:40.530 --> 00:25:45.250
+So I'm gonna go and put that in there.
+
+483
+00:25:45.250 --> 00:25:49.730
+And we will, instead of add, we use removeEventListener.
+
+484
+00:25:51.900 --> 00:25:53.890
+And what that does is it makes sure
+
+485
+00:25:53.890 --> 00:25:58.300
+that we only ever are listening for keyUp and click
+
+486
+00:25:58.300 --> 00:26:02.920
+on these things once and then when we close the modal down,
+
+487
+00:26:02.920 --> 00:26:05.250
+we remove those event list as we sort of clean up
+
+488
+00:26:05.250 --> 00:26:08.070
+after ourselves, so we don't have these unnecessary
+
+489
+00:26:08.070 --> 00:26:11.060
+event listeners running on things
+
+490
+00:26:11.060 --> 00:26:13.250
+that aren't showing on the page.
+
+491
+00:26:13.250 --> 00:26:14.763
+So let's try that again.
+
+492
+00:26:16.610 --> 00:26:20.120
+Click on Patagonia next black hole.
+
+493
+00:26:20.120 --> 00:26:23.273
+Click on the next button, now it shows it to me.
+
+494
+00:26:26.100 --> 00:26:31.050
+And when I click outside of it, open it up again,
+
+495
+00:26:31.050 --> 00:26:33.350
+click next, it's still working
+
+496
+00:26:33.350 --> 00:26:35.290
+and it's not duplicating or anything like that.
+
+497
+00:26:35.290 --> 00:26:37.660
+It does show me this little red errors here
+
+498
+00:26:37.660 --> 00:26:41.140
+says it was used before it was defined.
+
+499
+00:26:41.140 --> 00:26:43.250
+In my book, that's totally fine to do that.
+
+500
+00:26:43.250 --> 00:26:44.083
+Why?
+
+501
+00:26:44.083 --> 00:26:47.530
+Because this isn't running on page load.
+
+502
+00:26:47.530 --> 00:26:49.930
+It's only running once this function is called
+
+503
+00:26:49.930 --> 00:26:52.050
+and by the time that runs,
+
+504
+00:26:52.050 --> 00:26:53.350
+this thing will have been defined.
+
+505
+00:26:53.350 --> 00:26:54.820
+If you wanna get rid of them,
+
+506
+00:26:54.820 --> 00:26:56.250
+you can rearrange the order
+
+507
+00:26:56.250 --> 00:26:58.700
+at which your things are in there.
+
+508
+00:26:58.700 --> 00:27:03.080
+So we have the next one showing up
+
+509
+00:27:04.370 --> 00:27:08.130
+by clicking showNextImage.
+
+510
+00:27:08.130 --> 00:27:10.460
+And all we need to do is instead of logging it,
+
+511
+00:27:10.460 --> 00:27:13.563
+we just pass it to show image.
+
+512
+00:27:15.550 --> 00:27:18.940
+And now, when I click on one and click the next one,
+
+513
+00:27:18.940 --> 00:27:21.930
+it'll automatically just change everything out to us
+
+514
+00:27:21.930 --> 00:27:24.470
+because we're passing reference to that image
+
+515
+00:27:24.470 --> 00:27:26.140
+to our Show image function.
+
+516
+00:27:26.140 --> 00:27:29.360
+And now, you'll probably see why we checked for,
+
+517
+00:27:29.360 --> 00:27:31.840
+if there was no image being passed in.
+
+518
+00:27:31.840 --> 00:27:36.380
+Because when you hit the next one and you click on this,
+
+519
+00:27:36.380 --> 00:27:39.300
+it shouldn't work because you hit the last one.
+
+520
+00:27:39.300 --> 00:27:41.100
+You could write some logic here, to say
+
+521
+00:27:41.100 --> 00:27:44.490
+if it's the last image, then, show the first one.
+
+522
+00:27:44.490 --> 00:27:47.670
+And I'm a little bit tempted, let's do it.
+
+523
+00:27:47.670 --> 00:27:51.030
+So, we'll say showNextImage, nextSibling
+
+524
+00:27:52.880 --> 00:27:57.880
+or gallery.firstElementChild, is that it?
+
+525
+00:28:02.490 --> 00:28:03.323
+Let's try.
+
+526
+00:28:05.890 --> 00:28:07.050
+(laughs)
+
+527
+00:28:07.050 --> 00:28:07.990
+So it wraps.
+
+528
+00:28:07.990 --> 00:28:11.600
+With just a little bit of extra word, it wraps around
+
+529
+00:28:11.600 --> 00:28:13.250
+and that could be a little option
+
+530
+00:28:13.250 --> 00:28:15.340
+you can make in your gallery.
+
+531
+00:28:15.340 --> 00:28:17.510
+Now, we're gonna do the back button.
+
+532
+00:28:17.510 --> 00:28:20.410
+So let's go through that whole song and dance again.
+
+533
+00:28:20.410 --> 00:28:22.083
+We can just duplicate this here.
+
+534
+00:28:23.681 --> 00:28:27.443
+And we'll say show previous image.
+
+535
+00:28:28.450 --> 00:28:31.293
+And we just make this prevElementSibling
+
+536
+00:28:34.050 --> 00:28:38.843
+or first, I think there's a lastElementChild.
+
+537
+00:28:41.210 --> 00:28:43.863
+And then we'll go in to our openModal
+
+538
+00:28:45.300 --> 00:28:49.340
+and hook this up, duplicate it to say the prev button
+
+539
+00:28:49.340 --> 00:28:53.680
+addEvenListener show prevImage, duplicate that,
+
+540
+00:28:56.957 --> 00:29:00.940
+and our close and we'll simply clean up
+
+541
+00:29:00.940 --> 00:29:03.110
+with removeEventListener.
+
+542
+00:29:04.060 --> 00:29:04.960
+Does that work?
+
+543
+00:29:04.960 --> 00:29:07.390
+If I click on this and click back.
+
+544
+00:29:07.390 --> 00:29:08.773
+Oh, that didn't work.
+
+545
+00:29:11.050 --> 00:29:13.360
+You know what's happening here is that
+
+546
+00:29:13.360 --> 00:29:16.283
+it's always wrapping around no matter what.
+
+547
+00:29:17.230 --> 00:29:18.550
+It's wrapping around.
+
+548
+00:29:18.550 --> 00:29:21.843
+So let's go back to our logic.
+
+549
+00:29:26.010 --> 00:29:28.300
+With the show previous image.
+
+550
+00:29:28.300 --> 00:29:31.370
+And this because the currentImage.prevElementSibling
+
+551
+00:29:31.370 --> 00:29:34.163
+is not a property, it's previous.
+
+552
+00:29:37.590 --> 00:29:40.060
+And now, it should go back to the blond chair
+
+553
+00:29:40.060 --> 00:29:42.300
+now, it should wrap around.
+
+554
+00:29:42.300 --> 00:29:44.830
+Beautiful, working really good.
+
+555
+00:29:44.830 --> 00:29:49.483
+Next step is to hook up the keys.
+
+556
+00:29:52.560 --> 00:29:55.520
+And in here, we can just sort of piggyback
+
+557
+00:29:55.520 --> 00:29:58.150
+on this handle key up because we're already
+
+558
+00:29:58.150 --> 00:29:59.950
+adding and removing our event listeners,
+
+559
+00:29:59.950 --> 00:30:01.600
+we can piggy back on that.
+
+560
+00:30:01.600 --> 00:30:06.600
+We'll say if event.key is equal to ArrowRight,
+
+561
+00:30:08.564 --> 00:30:09.397
+showNextImage and then if the event.key
+
+562
+00:30:12.310 --> 00:30:15.013
+is equal to arrowLeft, showPrevImage.
+
+563
+00:30:22.928 --> 00:30:23.805
+I'll open it up.
+
+564
+00:30:23.805 --> 00:30:25.405
+I'm gonna use my arrow keys now.
+
+565
+00:30:27.600 --> 00:30:28.943
+Works beautifully.
+
+566
+00:30:31.760 --> 00:30:33.500
+And that beautiful, how I like it.
+
+567
+00:30:33.500 --> 00:30:37.090
+One thing you could do here is just type return
+
+568
+00:30:37.090 --> 00:30:41.890
+in front of these and it's not actually returning any values
+
+569
+00:30:41.890 --> 00:30:45.280
+from here, but by adding that return
+
+570
+00:30:45.280 --> 00:30:47.900
+makes this function from stop running.
+
+571
+00:30:47.900 --> 00:30:52.170
+Because if it was escape, then there's no sense
+
+572
+00:30:52.170 --> 00:30:54.870
+in checking if it was arrow right or arrow left
+
+573
+00:30:54.870 --> 00:30:56.240
+because it was escape.
+
+574
+00:30:56.240 --> 00:30:58.260
+So by typing every turn in front of that
+
+575
+00:30:58.260 --> 00:31:00.050
+will stop that function from running
+
+576
+00:31:00.050 --> 00:31:02.600
+and stop you from unnecessarily checking
+
+577
+00:31:02.600 --> 00:31:04.270
+if it was arrow right or arrow left.
+
+578
+00:31:04.270 --> 00:31:08.010
+So it's a little bit of a bonus tip for you there.
+
+579
+00:31:08.010 --> 00:31:09.960
+Last thing we need to do with this little gallery
+
+580
+00:31:09.960 --> 00:31:11.640
+is the enter key.
+
+581
+00:31:11.640 --> 00:31:16.394
+So images, by default, are not keyboard focusable.
+
+582
+00:31:16.394 --> 00:31:21.010
+And in order to make this gallery accessible
+
+583
+00:31:21.010 --> 00:31:24.490
+to keyboard users, we need to ensure that
+
+584
+00:31:24.490 --> 00:31:26.860
+when they tab through it and they highlight
+
+585
+00:31:26.860 --> 00:31:30.220
+and when you hit enter, it opens it up.
+
+586
+00:31:30.220 --> 00:31:33.290
+So, what we've done is, if you go to the HTML here,
+
+587
+00:31:33.290 --> 00:31:36.510
+I've given them all a tab index of zero.
+
+588
+00:31:36.510 --> 00:31:39.150
+And by giving it a tab index of zero, you're telling
+
+589
+00:31:39.150 --> 00:31:43.550
+the browser, hey, just like you do with your inputs
+
+590
+00:31:43.550 --> 00:31:45.750
+and everything else that you can tab through,
+
+591
+00:31:45.750 --> 00:31:49.480
+links, things like that, also, when somebody's tabbing,
+
+592
+00:31:49.480 --> 00:31:50.670
+give me a shot.
+
+593
+00:31:50.670 --> 00:31:53.110
+And we don't give it a tab index value of anything,
+
+594
+00:31:53.110 --> 00:31:55.690
+we just give it a zero and that will allow it
+
+595
+00:31:55.690 --> 00:32:00.330
+to just naturally go in the flow of the document.
+
+596
+00:32:00.330 --> 00:32:02.143
+And if I were to go in between here,
+
+597
+00:32:03.227 --> 00:32:04.833
+I just have like a rogue input.
+
+598
+00:32:07.180 --> 00:32:10.390
+You see that it tabs through then we go to the input
+
+599
+00:32:10.390 --> 00:32:12.010
+and then we keep tabbing on through.
+
+600
+00:32:12.010 --> 00:32:13.960
+So that's the beauty of that.
+
+601
+00:32:13.960 --> 00:32:18.510
+So there's that and on some elements,
+
+602
+00:32:18.510 --> 00:32:22.260
+when you hit enter on them, they will trigger a click
+
+603
+00:32:22.260 --> 00:32:26.270
+like a button, but that is not the case for an image
+
+604
+00:32:26.270 --> 00:32:28.340
+that has a tab index added to it.
+
+605
+00:32:28.340 --> 00:32:31.160
+So, what we need to do, is we need to listen
+
+606
+00:32:31.160 --> 00:32:35.390
+for a keyUp or a keyDown event on the image
+
+607
+00:32:35.390 --> 00:32:39.520
+and check if the user had hit enter when it's focused.
+
+608
+00:32:39.520 --> 00:32:42.743
+So we'll go down to where our event listeners are.
+
+609
+00:32:44.580 --> 00:32:46.230
+And we'll take each of our images
+
+610
+00:32:46.230 --> 00:32:49.540
+and we'll loop over them again for each image.
+
+611
+00:32:49.540 --> 00:32:52.060
+You can do this in the same loop as the above one
+
+612
+00:32:52.060 --> 00:32:53.847
+but from my own standard, I say come in
+
+613
+00:32:53.847 --> 00:32:55.263
+and keep them separate.
+
+614
+00:32:56.612 --> 00:33:01.612
+Image.addEventListener will listen for a keyUp event.
+
+615
+00:33:04.510 --> 00:33:07.100
+And when that happens, we'll take the event
+
+616
+00:33:07.100 --> 00:33:11.370
+and check if it was an enter.
+
+617
+00:33:11.370 --> 00:33:16.313
+So we'll say if e.key is equal to enter,
+
+618
+00:33:17.350 --> 00:33:21.140
+then, we will showImage e.currentTarget.
+
+619
+00:33:27.730 --> 00:33:28.563
+Whoo.
+
+620
+00:33:28.563 --> 00:33:29.780
+So loop over each image.
+
+621
+00:33:29.780 --> 00:33:31.040
+Maybe we should comment that out.
+
+622
+00:33:31.040 --> 00:33:35.823
+Loop over each image.
+
+623
+00:33:37.270 --> 00:33:40.763
+Attach an event listener for each image.
+
+624
+00:33:42.486 --> 00:33:46.500
+And then when that is keyUped, check if it was enter
+
+625
+00:33:52.762 --> 00:33:56.253
+and if it was, show that image.
+
+626
+00:34:01.318 --> 00:34:03.270
+Hit enter, there it shows it to me.
+
+627
+00:34:03.270 --> 00:34:06.430
+I can still use my keyboards, hit escape, keep going,
+
+628
+00:34:06.430 --> 00:34:09.950
+hit enter, open it up, it's a very nice gallery.
+
+629
+00:34:09.950 --> 00:34:12.150
+And like, I know there's a lot going on here
+
+630
+00:34:12.150 --> 00:34:15.060
+but what we're at 91 lines for
+
+631
+00:34:15.060 --> 00:34:20.060
+a pretty full featured gallery, I think that is pretty cool.
+
+632
+00:34:20.160 --> 00:34:22.230
+Really, the only thing we're sort of missing is a bit
+
+633
+00:34:22.230 --> 00:34:24.990
+of an animation between a one and two
+
+634
+00:34:24.990 --> 00:34:26.850
+and that would probably add another
+
+635
+00:34:26.850 --> 00:34:29.170
+50 or 60 lines to the code.
+
+636
+00:34:29.170 --> 00:34:32.267
+So that is the base gallery, now we're gonna come back
+
+637
+00:34:32.267 --> 00:34:37.267
+and revisit this whole idea in coming videos
+
+638
+00:34:37.610 --> 00:34:39.560
+when we learn about prototypes.
+
+639
+00:34:39.560 --> 00:34:44.560
+Because one downside to this where we have openModal,
+
+640
+00:34:44.779 --> 00:34:47.630
+closeModal, having functions inside of this function
+
+641
+00:34:47.630 --> 00:34:50.770
+is that these functions are not actually shared
+
+642
+00:34:50.770 --> 00:34:53.830
+between the two galleries, they're just duplicated.
+
+643
+00:34:53.830 --> 00:34:56.170
+We're basically copy pasting these functions
+
+644
+00:34:56.170 --> 00:34:57.810
+and now we have double functions
+
+645
+00:34:57.810 --> 00:34:59.100
+that do the exact same thing.
+
+646
+00:34:59.100 --> 00:35:01.880
+So, when we learn about prototypes in classes,
+
+647
+00:35:01.880 --> 00:35:05.220
+we're gonna learn about how do we share this functionality
+
+648
+00:35:05.220 --> 00:35:10.180
+between galleries as well as open up this functionality
+
+649
+00:35:10.180 --> 00:35:14.990
+so we could call these functions manually ourselves,
+
+650
+00:35:14.990 --> 00:35:16.870
+or open them up to other developers
+
+651
+00:35:16.870 --> 00:35:20.660
+who want to maybe switch the image to the next one.
+
+652
+00:35:20.660 --> 00:35:22.500
+That's it for today.
+
+653
+00:35:22.500 --> 00:35:23.800
+Catch you in the next one.
+

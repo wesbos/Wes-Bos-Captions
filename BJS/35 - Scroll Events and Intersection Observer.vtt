@@ -1,0 +1,1682 @@
+﻿WEBVTT
+
+1
+00:00:00.623 --> 00:00:03.206
+(upbeat music)
+
+2
+00:00:05.710 --> 00:00:06.543
+<v Wes>All right, we're gonna learn</v>
+
+3
+00:00:06.543 --> 00:00:08.810
+about scroll events right now.
+
+4
+00:00:08.810 --> 00:00:11.250
+A scroll event, obviously is when somebody goes ahead
+
+5
+00:00:11.250 --> 00:00:14.160
+and scrolls on the page, or scrolls inside of an element.
+
+6
+00:00:14.160 --> 00:00:16.400
+And a pretty common thing that I've had
+
+7
+00:00:16.400 --> 00:00:18.100
+to code a couple times in my life,
+
+8
+00:00:18.100 --> 00:00:19.930
+and I'm sure you'll have to code,
+
+9
+00:00:19.930 --> 00:00:22.380
+is terms and conditions, scroll to accept.
+
+10
+00:00:22.380 --> 00:00:25.420
+And, it's kind of an annoying one to do as a user,
+
+11
+00:00:25.420 --> 00:00:26.950
+but it's something you, as a developer,
+
+12
+00:00:26.950 --> 00:00:28.700
+will probably have to do and that is this.
+
+13
+00:00:28.700 --> 00:00:30.170
+The accept button doesn't work
+
+14
+00:00:30.170 --> 00:00:32.200
+until you scroll all the way to the bottom.
+
+15
+00:00:32.200 --> 00:00:33.960
+And then, the accept button will work.
+
+16
+00:00:33.960 --> 00:00:37.873
+Let me open up my working version right here real quick.
+
+17
+00:00:39.430 --> 00:00:40.930
+Bonk, and then as soon as I hit it,
+
+18
+00:00:40.930 --> 00:00:42.850
+you can go ahead and click on the button
+
+19
+00:00:42.850 --> 00:00:44.830
+and you scroll up and it does scroll.
+
+20
+00:00:44.830 --> 00:00:47.890
+So, first I wanna just dive into scroll events.
+
+21
+00:00:47.890 --> 00:00:50.660
+And then, show you why maybe a scroll event
+
+22
+00:00:50.660 --> 00:00:53.110
+isn't what you want and something that's new,
+
+23
+00:00:53.110 --> 00:00:56.620
+a newer thing in the browser called IntersectionObserver,
+
+24
+00:00:56.620 --> 00:00:58.230
+is actually probably what we want.
+
+25
+00:00:58.230 --> 00:01:00.950
+So, let open up scroll-to-accept.html,
+
+26
+00:01:00.950 --> 00:01:04.610
+it's in folder 35, and go to your JS.
+
+27
+00:01:04.610 --> 00:01:07.100
+And, what are we gonna do? IT WORKS.
+
+28
+00:01:07.100 --> 00:01:09.440
+And, it works, good.
+
+29
+00:01:09.440 --> 00:01:10.273
+Now, we'll go in here.
+
+30
+00:01:10.273 --> 00:01:12.500
+So, you're taking a look at this, you're like,
+
+31
+00:01:12.500 --> 00:01:16.590
+okay, it's not the window or the document scroll.
+
+32
+00:01:16.590 --> 00:01:18.960
+So, if you wanna listen for a window scroll event,
+
+33
+00:01:18.960 --> 00:01:21.493
+you just listened for window dot addEventListener.
+
+34
+00:01:21.493 --> 00:01:23.350
+But if it's the case of another element
+
+35
+00:01:23.350 --> 00:01:26.100
+that has an overflow scroll set on it,
+
+36
+00:01:26.100 --> 00:01:28.140
+like I have done with CSS right here,
+
+37
+00:01:28.140 --> 00:01:31.170
+we have to select that element and listen for scroll on it.
+
+38
+00:01:31.170 --> 00:01:33.640
+Let's go ahead and say const terms is equal to.
+
+39
+00:01:33.640 --> 00:01:36.590
+And, we'll select that thing, so document dot querySelector
+
+40
+00:01:37.930 --> 00:01:42.193
+and we'll grab the terms-and-conditions class.
+
+41
+00:01:43.360 --> 00:01:45.570
+Now, if we take the terms and we add and event listener
+
+42
+00:01:45.570 --> 00:01:47.180
+and listen for a scroll
+
+43
+00:01:48.650 --> 00:01:50.030
+and when that happens, let's just
+
+44
+00:01:50.030 --> 00:01:54.163
+take the event, console log event.
+
+45
+00:01:55.860 --> 00:01:58.940
+Gonna refresh this, addEventListener of null?
+
+46
+00:01:58.940 --> 00:02:02.163
+Oh, so this is a problem that you're gonna get often.
+
+47
+00:02:03.050 --> 00:02:06.960
+It cannot read property, or it cannot run method,
+
+48
+00:02:06.960 --> 00:02:10.620
+blah, blah, blah, of undefined or blah, blah, blah of null.
+
+49
+00:02:10.620 --> 00:02:12.320
+And, what's happening here is that
+
+50
+00:02:13.400 --> 00:02:16.500
+that means our selector here is empty.
+
+51
+00:02:16.500 --> 00:02:17.503
+It should be null, see?
+
+52
+00:02:17.503 --> 00:02:20.110
+And, it didn't find anything.
+
+53
+00:02:20.110 --> 00:02:23.410
+And, if that's the case, your selector is probably wrong.
+
+54
+00:02:23.410 --> 00:02:25.790
+Sort of another thing while we're in this head space
+
+55
+00:02:25.790 --> 00:02:29.660
+of querySelector and something doesn't work,
+
+56
+00:02:29.660 --> 00:02:32.710
+it's actually pretty common to have some JavaScript
+
+57
+00:02:32.710 --> 00:02:35.210
+that only runs on specific pages.
+
+58
+00:02:35.210 --> 00:02:38.780
+And, if you were to run this right here on,
+
+59
+00:02:38.780 --> 00:02:40.590
+let's say your terms-and-conditions doesn't exist
+
+60
+00:02:40.590 --> 00:02:42.340
+on your home page and you run this JavaScript
+
+61
+00:02:42.340 --> 00:02:45.720
+on your home page, then it will break.
+
+62
+00:02:45.720 --> 00:02:46.960
+What do you do about that?
+
+63
+00:02:46.960 --> 00:02:49.450
+Well, I'll show you what I would do in that case.
+
+64
+00:02:49.450 --> 00:02:54.150
+What I do is I have a function called scrollToAccept.
+
+65
+00:02:54.150 --> 00:02:57.780
+And then, you put all of your code inside of that function.
+
+66
+00:02:57.780 --> 00:03:01.410
+And then, what we can do is we will say
+
+67
+00:03:01.410 --> 00:03:05.300
+if there are terms, then, or no.
+
+68
+00:03:05.300 --> 00:03:07.440
+If there are no terms, bang,
+
+69
+00:03:07.440 --> 00:03:08.990
+and we'll talk about that bang in just a second.
+
+70
+00:03:08.990 --> 00:03:12.100
+If there are no terms, then return.
+
+71
+00:03:12.100 --> 00:03:14.750
+And then, we're gonna say quit this
+
+72
+00:03:14.750 --> 00:03:18.580
+there isn't that item on the page.
+
+73
+00:03:18.580 --> 00:03:21.830
+And, what this does is it checks if there is something found
+
+74
+00:03:21.830 --> 00:03:25.290
+by the querySelectory so that if they did find something,
+
+75
+00:03:25.290 --> 00:03:27.240
+then we go ahead and do all of our dom stuff,
+
+76
+00:03:27.240 --> 00:03:29.467
+listening for scrolls and working with it
+
+77
+00:03:29.467 --> 00:03:30.650
+and all of the code.
+
+78
+00:03:30.650 --> 00:03:32.930
+But if they did find nothing,
+
+79
+00:03:32.930 --> 00:03:34.970
+then we return from this function.
+
+80
+00:03:34.970 --> 00:03:36.960
+That will stop this function from running
+
+81
+00:03:36.960 --> 00:03:37.910
+and then it will never run.
+
+82
+00:03:37.910 --> 00:03:40.470
+So, here, let's try it, oh, it doesn't work
+
+83
+00:03:40.470 --> 00:03:41.303
+'cause I have to, then you have
+
+84
+00:03:41.303 --> 00:03:44.710
+to make sure you actually run that function on page load.
+
+85
+00:03:44.710 --> 00:03:45.830
+And, now, when I refresh, you see
+
+86
+00:03:45.830 --> 00:03:47.640
+that this is actually logging.
+
+87
+00:03:47.640 --> 00:03:49.210
+If I screwed up my selector
+
+88
+00:03:49.210 --> 00:03:50.590
+or that thing wasn't on the page,
+
+89
+00:03:50.590 --> 00:03:53.560
+then no errors happen and no code is actually run.
+
+90
+00:03:53.560 --> 00:03:54.840
+So, it's just a bit on the side,
+
+91
+00:03:54.840 --> 00:03:55.850
+but I thought I would let you know.
+
+92
+00:03:55.850 --> 00:03:57.110
+And, let's keep going with the rest.
+
+93
+00:03:57.110 --> 00:03:58.800
+We select the thing, we listen for the scroll event,
+
+94
+00:03:58.800 --> 00:04:02.210
+and when that happens, we console log the scroll event.
+
+95
+00:04:02.210 --> 00:04:06.180
+If we open up that scroll event, you'll see type is scroll,
+
+96
+00:04:06.180 --> 00:04:09.070
+the target, we've got the current target.
+
+97
+00:04:09.070 --> 00:04:12.100
+It's null at this point, but if you were to console log it,
+
+98
+00:04:12.100 --> 00:04:13.163
+you would see it.
+
+99
+00:04:14.600 --> 00:04:16.860
+What other things are on here?
+
+100
+00:04:16.860 --> 00:04:19.540
+Source element, I've never used that personally myself.
+
+101
+00:04:19.540 --> 00:04:21.050
+Maybe that's something you could take a look into,
+
+102
+00:04:21.050 --> 00:04:23.980
+but I've always just used target and event target.
+
+103
+00:04:23.980 --> 00:04:26.450
+Now, to figure out if this element
+
+104
+00:04:26.450 --> 00:04:28.770
+has been scrolled all the way to the bottom,
+
+105
+00:04:28.770 --> 00:04:30.640
+previously, what we've had to do is we would have
+
+106
+00:04:30.640 --> 00:04:34.010
+to take the e dot currentTarget, or e dot target.
+
+107
+00:04:34.010 --> 00:04:35.540
+Both of those would work in this case
+
+108
+00:04:35.540 --> 00:04:38.030
+because a scroll event doesn't bubble
+
+109
+00:04:38.030 --> 00:04:40.220
+like your regular clicks would.
+
+110
+00:04:40.220 --> 00:04:43.060
+So, if I scroll on this right here,
+
+111
+00:04:43.060 --> 00:04:45.840
+we're not unintentionally scrolling anything else
+
+112
+00:04:45.840 --> 00:04:48.270
+on the page, so you don't really have to worry about that.
+
+113
+00:04:48.270 --> 00:04:50.410
+But I'm gonna keep it as currentTarget.
+
+114
+00:04:50.410 --> 00:04:52.893
+Let's see if we're still working well there.
+
+115
+00:04:53.985 --> 00:04:54.880
+There we go.
+
+116
+00:04:54.880 --> 00:04:59.760
+And then, you can take the dot scrollTop value,
+
+117
+00:04:59.760 --> 00:05:02.630
+which is a property on elements
+
+118
+00:05:02.630 --> 00:05:06.100
+and it will tell you how far it is scrolled from the top.
+
+119
+00:05:06.100 --> 00:05:08.350
+Now, the way that we figure it out is
+
+120
+00:05:08.350 --> 00:05:10.250
+if you scroll to the bottom, how do you know
+
+121
+00:05:10.250 --> 00:05:13.930
+that 1,828 pixels is the bottom?
+
+122
+00:05:13.930 --> 00:05:14.763
+Well, then you also have
+
+123
+00:05:14.763 --> 00:05:16.620
+to figure out the height of the element.
+
+124
+00:05:16.620 --> 00:05:20.470
+So, if we console log e dot currentTarget dot height...
+
+125
+00:05:23.190 --> 00:05:24.590
+No, not height.
+
+126
+00:05:24.590 --> 00:05:26.510
+Is it outerHeight?
+
+127
+00:05:26.510 --> 00:05:28.507
+You can see I don't use this method anymore,
+
+128
+00:05:28.507 --> 00:05:29.340
+but I just wanted to show you.
+
+129
+00:05:29.340 --> 00:05:30.173
+No.
+
+130
+00:05:33.030 --> 00:05:34.253
+Dot scrollHeight.
+
+131
+00:05:35.900 --> 00:05:37.390
+Now, watch this, so the first one is
+
+132
+00:05:37.390 --> 00:05:39.320
+how far we're scrolled from the top.
+
+133
+00:05:39.320 --> 00:05:41.690
+And, the second value is going to be
+
+134
+00:05:41.690 --> 00:05:44.560
+how high the actual scrolling thing is.
+
+135
+00:05:44.560 --> 00:05:48.070
+And, now when I log this, you'll see that we're seeing
+
+136
+00:05:48.070 --> 00:05:49.870
+how far from the top are we scrolled?
+
+137
+00:05:49.870 --> 00:05:51.140
+That's our first number.
+
+138
+00:05:51.140 --> 00:05:52.420
+And then, the second number is
+
+139
+00:05:52.420 --> 00:05:56.480
+how high is the actual scrollable div here?
+
+140
+00:05:56.480 --> 00:05:57.680
+So, what's the height?
+
+141
+00:05:57.680 --> 00:05:59.960
+And then, when you reach the very end,
+
+142
+00:05:59.960 --> 00:06:03.800
+you should see that the values, at some point, are close.
+
+143
+00:06:03.800 --> 00:06:05.570
+Now, they're not perfectly close
+
+144
+00:06:05.570 --> 00:06:09.940
+and that is because this element has, let's go to it.
+
+145
+00:06:09.940 --> 00:06:12.540
+This element has some margin and some padding around it
+
+146
+00:06:12.540 --> 00:06:14.930
+and it's just a pain to actually have to work with this.
+
+147
+00:06:14.930 --> 00:06:17.340
+So, you'd have to work with offset heights
+
+148
+00:06:17.340 --> 00:06:19.150
+and that's a bit of a thing of the past,
+
+149
+00:06:19.150 --> 00:06:20.820
+so I'm not gonna really teach you any of that
+
+150
+00:06:20.820 --> 00:06:22.710
+because it's not something you need to use anymore.
+
+151
+00:06:22.710 --> 00:06:24.920
+And, the way that we do it now
+
+152
+00:06:24.920 --> 00:06:26.640
+is called IntersectionObserver.
+
+153
+00:06:26.640 --> 00:06:28.490
+So, rather than figuring out
+
+154
+00:06:28.490 --> 00:06:32.360
+how far along the page the user has scrolled,
+
+155
+00:06:32.360 --> 00:06:33.193
+we can actually use
+
+156
+00:06:33.193 --> 00:06:34.610
+this thing called IntersectionObserver
+
+157
+00:06:34.610 --> 00:06:37.760
+to figure out if something is currently viewable
+
+158
+00:06:37.760 --> 00:06:39.020
+on the page.
+
+159
+00:06:39.020 --> 00:06:41.450
+And, we can do that with this div here.
+
+160
+00:06:41.450 --> 00:06:43.970
+So, let me show you a simple example first
+
+161
+00:06:43.970 --> 00:06:47.730
+just to get the idea of how it works.
+
+162
+00:06:47.730 --> 00:06:50.610
+So, let's go in,
+
+163
+00:06:50.610 --> 00:06:53.370
+let's just go somewhere in right here.
+
+164
+00:06:53.370 --> 00:06:57.300
+I'm gonna give myself a strong tag that says watch for me.
+
+165
+00:06:57.300 --> 00:06:58.310
+Give it a class
+
+166
+00:07:00.780 --> 00:07:01.743
+of watch.
+
+167
+00:07:02.600 --> 00:07:04.650
+Now, we want to know when is
+
+168
+00:07:04.650 --> 00:07:08.620
+that strong tag visible on the page?
+
+169
+00:07:08.620 --> 00:07:10.830
+Well, what we can do is we'll go here to this
+
+170
+00:07:10.830 --> 00:07:14.863
+and we'll select that thing, so const watch is equal to.
+
+171
+00:07:21.110 --> 00:07:23.750
+Then, what we'll do is we'll create this thing
+
+172
+00:07:23.750 --> 00:07:25.533
+called an IntersectionObserver.
+
+173
+00:07:26.611 --> 00:07:29.330
+So, IntersectionObserver is something
+
+174
+00:07:29.330 --> 00:07:32.220
+that will watch if an element is on or off
+
+175
+00:07:32.220 --> 00:07:34.950
+or partway on or off of the page.
+
+176
+00:07:34.950 --> 00:07:37.550
+So, what we can do is we can say const ob,
+
+177
+00:07:37.550 --> 00:07:41.790
+so the Observer is equal to a new IntersectionOberserver.
+
+178
+00:07:41.790 --> 00:07:44.600
+So, that new keyword, we'll talk about what that is
+
+179
+00:07:44.600 --> 00:07:46.510
+in coming videos and in coming lessons.
+
+180
+00:07:46.510 --> 00:07:47.690
+Don't worry about that for now.
+
+181
+00:07:47.690 --> 00:07:49.930
+Just take a look at it.
+
+182
+00:07:49.930 --> 00:07:54.040
+And, the IntersectionObserver is going to take a callback,
+
+183
+00:07:54.040 --> 00:07:56.210
+which is, again, a callback is the function
+
+184
+00:07:56.210 --> 00:07:58.630
+that gets called at a certain point.
+
+185
+00:07:58.630 --> 00:08:02.170
+And, it's different than a click callback
+
+186
+00:08:02.170 --> 00:08:03.540
+or a scroll callback.
+
+187
+00:08:03.540 --> 00:08:07.480
+But this is a callback that will be fired every single time
+
+188
+00:08:07.480 --> 00:08:10.100
+that it needs to check if something is currently
+
+189
+00:08:10.100 --> 00:08:11.240
+on the page.
+
+190
+00:08:11.240 --> 00:08:12.370
+So, what we'll do is we'll
+
+191
+00:08:12.370 --> 00:08:15.280
+make a function called obCallback.
+
+192
+00:08:20.620 --> 00:08:23.283
+And, that will give us a payload.
+
+193
+00:08:26.120 --> 00:08:28.493
+And, in here, we can just console log payload.
+
+194
+00:08:29.340 --> 00:08:31.200
+We'll just see what we've got going on there.
+
+195
+00:08:31.200 --> 00:08:33.660
+Then, we can go up to this IntersectionObserver
+
+196
+00:08:33.660 --> 00:08:35.200
+and give it obCallback.
+
+197
+00:08:37.200 --> 00:08:38.580
+And, I'm gonna move this function
+
+198
+00:08:38.580 --> 00:08:40.393
+above the IntersectionObserver,
+
+199
+00:08:41.670 --> 00:08:43.313
+so it will stop yelling at me.
+
+200
+00:08:44.320 --> 00:08:47.220
+And then, now that still is not gonna do anything.
+
+201
+00:08:47.220 --> 00:08:49.453
+We can get rid of this scroll here as well.
+
+202
+00:08:50.390 --> 00:08:51.810
+We take a look at our console
+
+203
+00:08:51.810 --> 00:08:53.520
+That does nothing and that's
+
+204
+00:08:53.520 --> 00:08:56.860
+because this IntersectionObserver is just a watcher
+
+205
+00:08:56.860 --> 00:08:59.680
+and we haven't told it to watch any elements yet.
+
+206
+00:08:59.680 --> 00:09:01.060
+It's a little bit different than
+
+207
+00:09:01.060 --> 00:09:03.500
+how we do with click handlers.
+
+208
+00:09:03.500 --> 00:09:05.910
+So, what we do is we take our Observer
+
+209
+00:09:05.910 --> 00:09:08.330
+and we call the observe method on it
+
+210
+00:09:08.330 --> 00:09:11.310
+and then you pass it something to watch for.
+
+211
+00:09:11.310 --> 00:09:14.620
+So, we'll just say, can you watch for this strong tag?
+
+212
+00:09:14.620 --> 00:09:16.113
+Which we already selected.
+
+213
+00:09:17.070 --> 00:09:20.627
+Now, every time we go ahead and scroll,
+
+214
+00:09:23.430 --> 00:09:26.150
+you'll notice that we get this IntersectionObserver entry,
+
+215
+00:09:26.150 --> 00:09:30.580
+which is our payload, and it's full of information
+
+216
+00:09:30.580 --> 00:09:33.950
+about all of the items that have come our way.
+
+217
+00:09:33.950 --> 00:09:35.360
+So, you'll notice that now,
+
+218
+00:09:35.360 --> 00:09:37.930
+it doesn't just fire every time we scroll.
+
+219
+00:09:37.930 --> 00:09:41.570
+It only fires when there is new information
+
+220
+00:09:41.570 --> 00:09:43.460
+that has to be given to us.
+
+221
+00:09:43.460 --> 00:09:46.610
+So, it fires right away on page load
+
+222
+00:09:46.610 --> 00:09:48.460
+because it wants to tell us, hey,
+
+223
+00:09:48.460 --> 00:09:52.210
+that watch strong tag is off the page.
+
+224
+00:09:52.210 --> 00:09:53.620
+We can't currently see it.
+
+225
+00:09:53.620 --> 00:09:56.780
+But then, as soon as you start to see it,
+
+226
+00:09:56.780 --> 00:09:57.723
+where did it go?
+
+227
+00:09:59.030 --> 00:10:00.333
+There we go, on and off.
+
+228
+00:10:01.290 --> 00:10:03.250
+As soon as I even go partway on,
+
+229
+00:10:03.250 --> 00:10:04.780
+see it just peeking out right there?
+
+230
+00:10:04.780 --> 00:10:08.420
+And then, this IntersectionObserver entry has logged.
+
+231
+00:10:08.420 --> 00:10:11.850
+Now, if we take a lot at what's in there, open it up,
+
+232
+00:10:11.850 --> 00:10:14.460
+you'll see a couple interesting things.
+
+233
+00:10:14.460 --> 00:10:16.400
+It will tell you at what time
+
+234
+00:10:16.400 --> 00:10:19.070
+from when you started observing it,
+
+235
+00:10:19.070 --> 00:10:21.880
+so that could be really handy for games.
+
+236
+00:10:21.880 --> 00:10:25.040
+How long has this item been on the page?
+
+237
+00:10:25.040 --> 00:10:28.540
+If you have rocket bombs, is a rocket bomb something?
+
+238
+00:10:28.540 --> 00:10:31.560
+Probably, if you have a rocket bomb falling from the sky
+
+239
+00:10:31.560 --> 00:10:33.960
+and you wanna know how long has that been on the page
+
+240
+00:10:33.960 --> 00:10:35.880
+while the person's trying to shoot it?
+
+241
+00:10:35.880 --> 00:10:37.810
+And then, you can calculate score or something like that.
+
+242
+00:10:37.810 --> 00:10:38.710
+That'd be kinda interesting.
+
+243
+00:10:38.710 --> 00:10:39.960
+But what's in there?
+
+244
+00:10:39.960 --> 00:10:43.023
+You got your target, that's the strong tag.
+
+245
+00:10:43.870 --> 00:10:46.600
+You have this Boolean, isIntersecting.
+
+246
+00:10:46.600 --> 00:10:49.780
+That will tell you if it's on the page or off of the page.
+
+247
+00:10:49.780 --> 00:10:53.970
+And then, there's other information about the
+
+248
+00:10:56.070 --> 00:10:58.270
+size of the actual element
+
+249
+00:10:58.270 --> 00:11:00.870
+and what size it is actually on the page.
+
+250
+00:11:00.870 --> 00:11:03.400
+You see these are pretty much the same thing.
+
+251
+00:11:03.400 --> 00:11:05.500
+So, that is really helpful information
+
+252
+00:11:05.500 --> 00:11:07.360
+'cause that will tell us if
+
+253
+00:11:07.360 --> 00:11:09.200
+that thing is on the page or not.
+
+254
+00:11:09.200 --> 00:11:13.570
+And, you can do things like take that strong tag,
+
+255
+00:11:13.570 --> 00:11:17.270
+which is the first thing in the payload.
+
+256
+00:11:17.270 --> 00:11:20.150
+You can watch for multiple items.
+
+257
+00:11:20.150 --> 00:11:24.790
+So, now if I take the first thing,
+
+258
+00:11:24.790 --> 00:11:27.970
+you see we get this IntersectionObserver entry.
+
+259
+00:11:27.970 --> 00:11:29.880
+We get this isIntersecting Boolean,
+
+260
+00:11:29.880 --> 00:11:31.365
+so we're gonna put that on the end.
+
+261
+00:11:31.365 --> 00:11:35.120
+IsIntersecting now.
+
+262
+00:11:35.120 --> 00:11:36.980
+False, false, false, false, false, true,
+
+263
+00:11:36.980 --> 00:11:38.540
+false, true, false, true, false.
+
+264
+00:11:38.540 --> 00:11:41.270
+You see, it'll tell us when it goes on and off.
+
+265
+00:11:41.270 --> 00:11:43.940
+Now, what's also cool about that is that it will tell us
+
+266
+00:11:43.940 --> 00:11:46.830
+how much on the page it currently is.
+
+267
+00:11:46.830 --> 00:11:49.303
+So, we can take a look at this intersectionRatio.
+
+268
+00:11:52.700 --> 00:11:55.263
+And, zero, zero, zero, one,
+
+269
+00:11:56.580 --> 00:11:59.980
+zero, and I think if I just put it on just a little bit.
+
+270
+00:11:59.980 --> 00:12:00.813
+There we go.
+
+271
+00:12:01.922 --> 00:12:03.650
+It's 6% on.
+
+272
+00:12:03.650 --> 00:12:05.743
+Just scroll a little bit more.
+
+273
+00:12:06.820 --> 00:12:08.633
+And then, that's all the way on.
+
+274
+00:12:10.410 --> 00:12:11.440
+All the way off.
+
+275
+00:12:11.440 --> 00:12:13.560
+So, it tells you when it's on and off, on and off.
+
+276
+00:12:13.560 --> 00:12:14.530
+That's kinda cool.
+
+277
+00:12:14.530 --> 00:12:16.450
+Now, that would probably be a little bit more impressive
+
+278
+00:12:16.450 --> 00:12:18.560
+if it was a larger element, like an image.
+
+279
+00:12:18.560 --> 00:12:22.420
+However, we are going to make use of that ratio
+
+280
+00:12:22.420 --> 00:12:26.140
+to tell us if we have scrolled all the way
+
+281
+00:12:26.140 --> 00:12:27.450
+to the bottom of it.
+
+282
+00:12:27.450 --> 00:12:32.240
+So, we're going to take our Observer here.
+
+283
+00:12:32.240 --> 00:12:35.773
+We can stop watching for that strong tag here.
+
+284
+00:12:37.400 --> 00:12:39.143
+And, we can take it,
+
+285
+00:12:40.380 --> 00:12:43.500
+replace it with ob dot observe.
+
+286
+00:12:43.500 --> 00:12:46.030
+You wanted to take the terms.
+
+287
+00:12:46.030 --> 00:12:48.410
+And, how do we know if they scrolled to the bottom?
+
+288
+00:12:48.410 --> 00:12:50.710
+Well, you take the terms and conditions
+
+289
+00:12:50.710 --> 00:12:51.980
+and then you just wanna find
+
+290
+00:12:51.980 --> 00:12:55.240
+what's the last thing inside of that?
+
+291
+00:12:55.240 --> 00:12:57.440
+And, if that's the case, we wanna wait
+
+292
+00:12:57.440 --> 00:13:01.180
+for this last paragraph tag to be 100% on the screen.
+
+293
+00:13:01.180 --> 00:13:03.140
+That's how we know they've scrolled to the bottom.
+
+294
+00:13:03.140 --> 00:13:06.760
+So, we can just say terms dot lastElementChild.
+
+295
+00:13:09.679 --> 00:13:12.020
+And, that's the way to get the last element
+
+296
+00:13:12.020 --> 00:13:14.540
+in our terms and conditions div.
+
+297
+00:13:14.540 --> 00:13:17.073
+So, now we're observing the paragraph.
+
+298
+00:13:19.240 --> 00:13:21.040
+And, it's not on the page at all.
+
+299
+00:13:21.040 --> 00:13:22.730
+Not on the page and then, as you see,
+
+300
+00:13:22.730 --> 00:13:25.280
+as soon as I get to the bottom there,
+
+301
+00:13:25.280 --> 00:13:28.940
+it will trigger itself on out.
+
+302
+00:13:28.940 --> 00:13:32.620
+Now, you notice that it's only firing
+
+303
+00:13:32.620 --> 00:13:35.300
+as soon as it is on the page, 19% on the page.
+
+304
+00:13:35.300 --> 00:13:38.010
+If I go really quick, 35% on the page.
+
+305
+00:13:38.010 --> 00:13:41.930
+If I go really slow, like half a percent on the page.
+
+306
+00:13:41.930 --> 00:13:46.930
+So, how do we tell it to tell us when it's 100% on the page?
+
+307
+00:13:47.770 --> 00:13:50.090
+Well, we can take this IntersectionObserver
+
+308
+00:13:50.090 --> 00:13:53.580
+and the second argument can be an options object
+
+309
+00:13:53.580 --> 00:13:55.000
+and we tell it two things.
+
+310
+00:13:55.000 --> 00:13:57.750
+First, the root of what we are scrolling with
+
+311
+00:13:57.750 --> 00:13:59.600
+is our terms and conditions.
+
+312
+00:13:59.600 --> 00:14:01.670
+By default, that's gonna be the body.
+
+313
+00:14:01.670 --> 00:14:04.250
+And, with the threshold, we can tell if it's,
+
+314
+00:14:04.250 --> 00:14:05.910
+we can either give it an array.
+
+315
+00:14:05.910 --> 00:14:08.690
+So, tell me when it's off and when it's halfway on
+
+316
+00:14:08.690 --> 00:14:09.910
+and when it's totally on.
+
+317
+00:14:09.910 --> 00:14:12.020
+Or, we can just say give it to me only
+
+318
+00:14:12.020 --> 00:14:15.290
+when it is totally on the page.
+
+319
+00:14:15.290 --> 00:14:18.390
+Now, when I scroll this, it gives us zero immediately
+
+320
+00:14:18.390 --> 00:14:20.600
+to tell us it's off the page.
+
+321
+00:14:20.600 --> 00:14:22.490
+And then, oh, you know what's happening?
+
+322
+00:14:22.490 --> 00:14:24.620
+I think we got a bit of a issue here.
+
+323
+00:14:24.620 --> 00:14:27.340
+It's never actually firing.
+
+324
+00:14:27.340 --> 00:14:30.380
+If I change that threshold to something like 0.1,
+
+325
+00:14:30.380 --> 00:14:31.623
+I bet it will fire.
+
+326
+00:14:32.810 --> 00:14:34.430
+Yeah, so now we're telling it,
+
+327
+00:14:34.430 --> 00:14:36.580
+tell me when it's 10% on the page.
+
+328
+00:14:36.580 --> 00:14:38.740
+And then, it will fire as close as possible to that.
+
+329
+00:14:38.740 --> 00:14:40.320
+13%.
+
+330
+00:14:40.320 --> 00:14:42.270
+11%.
+
+331
+00:14:42.270 --> 00:14:44.720
+10%, yeah, so what's happening here is
+
+332
+00:14:44.720 --> 00:14:48.640
+if I tell it the threshold of just one,
+
+333
+00:14:48.640 --> 00:14:51.540
+I'm so cramped on this screen right now
+
+334
+00:14:51.540 --> 00:14:55.100
+because I wanna get everything on in
+
+335
+00:14:55.100 --> 00:14:59.940
+and what's happening is that this paragraph here is so tall
+
+336
+00:14:59.940 --> 00:15:02.180
+that it's never 100% on the page
+
+337
+00:15:02.180 --> 00:15:04.030
+because by the time I get to the bottom,
+
+338
+00:15:04.030 --> 00:15:05.790
+part of it is already being hidden.
+
+339
+00:15:05.790 --> 00:15:10.420
+So, a little way that we can solve that is
+
+340
+00:15:10.420 --> 00:15:13.150
+you could just put another element at the end of the page,
+
+341
+00:15:13.150 --> 00:15:17.743
+like maybe an hr or an image or something like that.
+
+342
+00:15:17.743 --> 00:15:19.453
+And, I bet now,
+
+343
+00:15:21.410 --> 00:15:23.360
+yeah, there we go, you see this little hr?
+
+344
+00:15:23.360 --> 00:15:24.960
+That could be any element.
+
+345
+00:15:24.960 --> 00:15:25.793
+That could be an image.
+
+346
+00:15:25.793 --> 00:15:28.350
+It could be just a paragraph that says thank you.
+
+347
+00:15:28.350 --> 00:15:31.350
+As long as it's just small enough to fit,
+
+348
+00:15:31.350 --> 00:15:34.250
+even on the smallest scrolling of view ports,
+
+349
+00:15:34.250 --> 00:15:35.540
+it will tell you one.
+
+350
+00:15:35.540 --> 00:15:37.920
+So, if we go back to this now and we tell it,
+
+351
+00:15:37.920 --> 00:15:40.820
+tell us when you are 100% on the page.
+
+352
+00:15:40.820 --> 00:15:43.300
+And then, we can then go in this callback
+
+353
+00:15:43.300 --> 00:15:46.120
+and take the first item of our payload
+
+354
+00:15:46.120 --> 00:15:47.907
+and check the intersectionRatio.
+
+355
+00:15:47.907 --> 00:15:50.400
+So, we can change this to an if.
+
+356
+00:15:50.400 --> 00:15:51.893
+It is equal to one.
+
+357
+00:15:53.120 --> 00:15:55.330
+Then, what we'll do is we'll take that button.
+
+358
+00:15:55.330 --> 00:15:58.060
+So, we'll go up here and grab our button.
+
+359
+00:15:58.060 --> 00:16:00.040
+And, what is on?
+
+360
+00:16:00.040 --> 00:16:01.793
+It's got a class of accept.
+
+361
+00:16:04.390 --> 00:16:07.790
+And, we'll say button dot.
+
+362
+00:16:07.790 --> 00:16:09.000
+And, the thing that we're gonna
+
+363
+00:16:09.000 --> 00:16:11.330
+be taking off of it is disabled
+
+364
+00:16:11.330 --> 00:16:14.680
+'cause there's this disabled attribute on there.
+
+365
+00:16:14.680 --> 00:16:18.363
+So, we'll say button dot disabled is equal to false.
+
+366
+00:16:22.930 --> 00:16:24.530
+And, now when I hit the very bottom,
+
+367
+00:16:24.530 --> 00:16:27.230
+you see that button, the disabled property
+
+368
+00:16:27.230 --> 00:16:28.630
+is turned to false.
+
+369
+00:16:28.630 --> 00:16:31.130
+And then, our CSS kicks in.
+
+370
+00:16:31.130 --> 00:16:34.720
+So, right here, we say when the button is disabled,
+
+371
+00:16:34.720 --> 00:16:36.590
+give it a opacity of 0.1.
+
+372
+00:16:36.590 --> 00:16:38.230
+We don't have to do anything with pointer events here
+
+373
+00:16:38.230 --> 00:16:40.730
+because HTML will automatically stop the button
+
+374
+00:16:40.730 --> 00:16:43.640
+from being clickable in that case.
+
+375
+00:16:43.640 --> 00:16:45.930
+So, you can just change it to opacity 0.1.
+
+376
+00:16:45.930 --> 00:16:49.070
+I've put a transition on there of 0.2 seconds,
+
+377
+00:16:49.070 --> 00:16:51.320
+so it'll fade in once we hit it.
+
+378
+00:16:51.320 --> 00:16:53.720
+Now, the other thing that we need to do here is
+
+379
+00:16:53.720 --> 00:16:58.683
+that if we were to console log REMOVING DISABLED.
+
+380
+00:17:01.020 --> 00:17:02.900
+You see, it runs there, but if I scroll back up
+
+381
+00:17:02.900 --> 00:17:05.530
+and down a couple times, it keeps on triggering that
+
+382
+00:17:05.530 --> 00:17:09.210
+and that might be good for some use cases.
+
+383
+00:17:09.210 --> 00:17:10.520
+Let's do something funny right here.
+
+384
+00:17:10.520 --> 00:17:15.520
+Let's say transform translateX negative 100%.
+
+385
+00:17:21.380 --> 00:17:23.080
+You see, what happens here is that
+
+386
+00:17:24.220 --> 00:17:27.530
+when I scroll to the bottom, wooh, it brings it on in.
+
+387
+00:17:27.530 --> 00:17:30.510
+Maybe minus 200%.
+
+388
+00:17:30.510 --> 00:17:32.653
+Scale 0.5?
+
+389
+00:17:35.900 --> 00:17:37.470
+Wooh, I like that.
+
+390
+00:17:37.470 --> 00:17:41.410
+And, what you can do here is just say else,
+
+391
+00:17:41.410 --> 00:17:43.683
+button dot disabled is equal to true.
+
+392
+00:17:47.491 --> 00:17:49.600
+Wooh, see how you can kinda go back and forth?
+
+393
+00:17:49.600 --> 00:17:53.120
+And, that might be what you want for images
+
+394
+00:17:53.120 --> 00:17:56.430
+or for autoplaying audio or video or something like that.
+
+395
+00:17:56.430 --> 00:17:58.680
+But, in our case, once it's accepted,
+
+396
+00:17:58.680 --> 00:17:59.990
+we don't care about it anymore.
+
+397
+00:17:59.990 --> 00:18:03.853
+So, what we'll do is we will remove.
+
+398
+00:18:04.890 --> 00:18:09.610
+Or, maybe just we'll stop observing the button.
+
+399
+00:18:09.610 --> 00:18:11.850
+So, what we can do is we take our Observer,
+
+400
+00:18:11.850 --> 00:18:16.850
+which is ob, and we can call unobserve and then pass it our,
+
+401
+00:18:18.790 --> 00:18:21.290
+what are we observing here?
+
+402
+00:18:21.290 --> 00:18:24.650
+Terms dot lastElementChild.
+
+403
+00:18:28.341 --> 00:18:32.280
+And, that should stop it from doing any unnecessary work.
+
+404
+00:18:32.280 --> 00:18:34.730
+And, it's fine that it keeps going,
+
+405
+00:18:34.730 --> 00:18:37.180
+but now you know that that's not actually
+
+406
+00:18:37.180 --> 00:18:38.880
+doing any work in the background
+
+407
+00:18:38.880 --> 00:18:42.640
+and you've freed up computer CPU cycles
+
+408
+00:18:42.640 --> 00:18:45.379
+to work on something else on the website, so wooh.
+
+409
+00:18:45.379 --> 00:18:47.360
+And then, once I scroll up now, that's it.
+
+410
+00:18:47.360 --> 00:18:49.910
+You have to refresh the page to actually make it work again.
+
+411
+00:18:49.910 --> 00:18:51.923
+So, that's is scroll to accept.
+
+412
+00:18:53.170 --> 00:18:55.520
+That is scroll to accept.
+
+413
+00:18:55.520 --> 00:18:59.270
+You don't see this Observer pattern all that much.
+
+414
+00:18:59.270 --> 00:19:01.350
+The only two ways currently in the browser
+
+415
+00:19:01.350 --> 00:19:03.710
+are IntersectionObserver, which will tell us
+
+416
+00:19:03.710 --> 00:19:05.870
+when something is currently scrolled into view,
+
+417
+00:19:05.870 --> 00:19:08.480
+and there's another one called a ResizeObserver,
+
+418
+00:19:08.480 --> 00:19:11.190
+which will tell you when an element is resized,
+
+419
+00:19:11.190 --> 00:19:12.730
+which is pretty nifty.
+
+420
+00:19:12.730 --> 00:19:15.103
+Hopefully, you enjoyed that, I see you in the next one.
+

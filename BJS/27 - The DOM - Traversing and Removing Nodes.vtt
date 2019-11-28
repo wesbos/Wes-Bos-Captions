@@ -1,0 +1,946 @@
+﻿WEBVTT
+
+1
+00:00:00.768 --> 00:00:03.351
+(upbeat music)
+
+2
+00:00:05.340 --> 00:00:06.470
+<v Instructor>Last thing we need to know about</v>
+
+3
+00:00:06.470 --> 00:00:09.080
+is traversing through our DOM elements
+
+4
+00:00:09.080 --> 00:00:10.970
+as well as, I guess, one more thing,
+
+5
+00:00:10.970 --> 00:00:14.660
+is removing elements from the DOM.
+
+6
+00:00:14.660 --> 00:00:16.260
+It's kind of the opposite of adding them.
+
+7
+00:00:16.260 --> 00:00:20.220
+So let's go ahead and make one more file.
+
+8
+00:00:20.220 --> 00:00:24.670
+We'll call it traversing.js,
+
+9
+00:00:24.670 --> 00:00:26.160
+and we'll go in to our index
+
+10
+00:00:26.160 --> 00:00:29.940
+and we'll change that over to traversing
+
+11
+00:00:29.940 --> 00:00:31.323
+try catch.
+
+12
+00:00:32.220 --> 00:00:35.820
+Sometimes the auto complete is not the best.
+
+13
+00:00:35.820 --> 00:00:36.940
+So there we go.
+
+14
+00:00:36.940 --> 00:00:39.143
+We're gonna console log, it works.
+
+15
+00:00:41.680 --> 00:00:43.240
+And it does.
+
+16
+00:00:43.240 --> 00:00:46.423
+All right, so let's talk about sort of moving.
+
+17
+00:00:53.800 --> 00:00:57.280
+So, traversing means going up, down, over.
+
+18
+00:00:57.280 --> 00:00:58.590
+When you have an element,
+
+19
+00:00:58.590 --> 00:01:00.850
+you'll often need to select an element
+
+20
+00:01:00.850 --> 00:01:02.040
+based on their position.
+
+21
+00:01:02.040 --> 00:01:04.350
+So maybe you are working with a button
+
+22
+00:01:04.350 --> 00:01:06.810
+and you need to grab its parent div.
+
+23
+00:01:06.810 --> 00:01:09.590
+Or maybe you need to look inside of that element
+
+24
+00:01:09.590 --> 00:01:12.960
+for all elements that are inside of it.
+
+25
+00:01:12.960 --> 00:01:15.710
+So there are lots of different properties for that
+
+26
+00:01:15.710 --> 00:01:18.410
+and they all revolve around node and element.
+
+27
+00:01:18.410 --> 00:01:20.630
+And I've kind of touched on this so far,
+
+28
+00:01:20.630 --> 00:01:22.300
+been like, it's a node or an element
+
+29
+00:01:22.300 --> 00:01:25.420
+but let's dig into, like, what the actual difference is
+
+30
+00:01:25.420 --> 00:01:28.203
+between a node and an element.
+
+31
+00:01:28.203 --> 00:01:29.910
+Let's go into our index, that HTML.
+
+32
+00:01:29.910 --> 00:01:31.160
+Let's go to the top
+
+33
+00:01:31.160 --> 00:01:34.000
+and just give a paragraph with the class of wes,
+
+34
+00:01:34.000 --> 00:01:36.070
+and say, I am Wes.
+
+35
+00:01:36.070 --> 00:01:38.520
+And inside of that we wanna actually put a couple
+
+36
+00:01:40.070 --> 00:01:43.800
+nested elements, I, and we'll use the em tag, emphasis,
+
+37
+00:01:43.800 --> 00:01:46.853
+love to BBQ.
+
+38
+00:01:48.190 --> 00:01:51.450
+Now let's go ahead and select it I guess, first.
+
+39
+00:01:51.450 --> 00:01:55.230
+Const wes is equal to document.queryselector.wes
+
+40
+00:01:58.910 --> 00:02:00.393
+and console log wes.
+
+41
+00:02:02.680 --> 00:02:03.513
+Here we go.
+
+42
+00:02:04.880 --> 00:02:06.990
+That is it.
+
+43
+00:02:06.990 --> 00:02:11.760
+Now, what is the difference between a node and an element?
+
+44
+00:02:11.760 --> 00:02:14.790
+Well, if we go into here and take a look
+
+45
+00:02:14.790 --> 00:02:19.790
+at what the children are, let's take wes.children,
+
+46
+00:02:21.890 --> 00:02:26.310
+you'll see that we get a collection of one thing
+
+47
+00:02:26.310 --> 00:02:28.780
+and that's the em tag.
+
+48
+00:02:28.780 --> 00:02:31.170
+But if we were to console log wes.childnodes
+
+49
+00:02:35.770 --> 00:02:38.410
+you see that we get three things.
+
+50
+00:02:38.410 --> 00:02:41.690
+We get the, if I could hover over top of it,
+
+51
+00:02:41.690 --> 00:02:45.000
+we get the I am Wes, then we get the emphasis tag,
+
+52
+00:02:45.000 --> 00:02:46.690
+and then we get the text again.
+
+53
+00:02:46.690 --> 00:02:50.480
+So, everything here is actually a node
+
+54
+00:02:50.480 --> 00:02:55.300
+and if it is wrapped in a tag, it also is an element
+
+55
+00:02:55.300 --> 00:02:57.420
+but it doesn't work the other way around.
+
+56
+00:02:57.420 --> 00:02:59.220
+So if you select just elements,
+
+57
+00:02:59.220 --> 00:03:00.680
+you'll only get the emphasis tag.
+
+58
+00:03:00.680 --> 00:03:02.530
+If you select nodes, you get all
+
+59
+00:03:02.530 --> 00:03:04.150
+of the three different pieces.
+
+60
+00:03:04.150 --> 00:03:07.450
+So if we open that up, first node, second node,
+
+61
+00:03:07.450 --> 00:03:10.870
+which also is an element, and third node.
+
+62
+00:03:10.870 --> 00:03:12.810
+So there's a bunch of different properties
+
+63
+00:03:12.810 --> 00:03:16.240
+for working with these nodes and with these elements
+
+64
+00:03:16.240 --> 00:03:17.570
+and let's kinda go through them.
+
+65
+00:03:17.570 --> 00:03:18.920
+We already looked at children,
+
+66
+00:03:18.920 --> 00:03:21.790
+that's gonna give you all of the child elements.
+
+67
+00:03:21.790 --> 00:03:24.460
+We have a couple other, let me just kinda,
+
+68
+00:03:24.460 --> 00:03:26.050
+I'm just gonna paste them in here just so we can
+
+69
+00:03:26.050 --> 00:03:27.483
+kinda go through them all.
+
+70
+00:03:28.370 --> 00:03:30.173
+L, dit dit duh,
+
+71
+00:03:31.830 --> 00:03:35.800
+say wes and we'll console.log.
+
+72
+00:03:35.800 --> 00:03:38.490
+By the way that is me using multiple cursors
+
+73
+00:03:38.490 --> 00:03:40.820
+in VS code, so the way that you use that
+
+74
+00:03:40.820 --> 00:03:43.410
+is you on command or control and click
+
+75
+00:03:43.410 --> 00:03:45.410
+wherever you want them to go.
+
+76
+00:03:45.410 --> 00:03:48.360
+Or in my case I just selected one thing
+
+77
+00:03:48.360 --> 00:03:52.270
+and I found subsequent ones by hitting, I think command + D,
+
+78
+00:03:52.270 --> 00:03:54.450
+yeah, that gives you multiple cursors.
+
+79
+00:03:55.690 --> 00:03:57.893
+So, let's take a look at what we got here.
+
+80
+00:03:58.960 --> 00:04:01.310
+Children will obviously it'll give you the children.
+
+81
+00:04:01.310 --> 00:04:04.094
+First child element, last child element will give you,
+
+82
+00:04:04.094 --> 00:04:06.180
+I don't know, let's put a couple more elements in here.
+
+83
+00:04:06.180 --> 00:04:08.320
+I love to barbecue
+
+84
+00:04:08.320 --> 00:04:13.320
+and let's give a strong tag, Make websites.
+
+85
+00:04:18.750 --> 00:04:19.583
+There we go.
+
+86
+00:04:19.583 --> 00:04:23.060
+Last child element gives you the strong tag.
+
+87
+00:04:23.060 --> 00:04:24.880
+The next one is null.
+
+88
+00:04:24.880 --> 00:04:27.060
+Previous element sibling.
+
+89
+00:04:27.060 --> 00:04:28.940
+So that is kinda interesting.
+
+90
+00:04:28.940 --> 00:04:31.960
+If we were to have like these items right here,
+
+91
+00:04:31.960 --> 00:04:34.510
+we have one item, two items,
+
+92
+00:04:34.510 --> 00:04:37.520
+if we were to grab onto one of those items
+
+93
+00:04:37.520 --> 00:04:41.240
+let's open up div and see we've got these three items here.
+
+94
+00:04:41.240 --> 00:04:42.300
+If I click on this one,
+
+95
+00:04:42.300 --> 00:04:44.690
+you see this little $0?
+
+96
+00:04:44.690 --> 00:04:48.430
+That's a little shortcut that you can use in the dev tools
+
+97
+00:04:48.430 --> 00:04:50.950
+to refer to the currently selected elements.
+
+98
+00:04:50.950 --> 00:04:54.150
+So, if I click on this element here, item two,
+
+99
+00:04:54.150 --> 00:04:56.093
+and then just type in $0,
+
+100
+00:04:58.280 --> 00:05:01.260
+it's gonna give us the currently selected element
+
+101
+00:05:01.260 --> 00:05:03.610
+in the dev tools which is cool.
+
+102
+00:05:03.610 --> 00:05:07.440
+So, we can take that and we can see what the children
+
+103
+00:05:08.785 --> 00:05:10.840
+or child element count, it'll tell you how many
+
+104
+00:05:10.840 --> 00:05:12.140
+but we just want children.
+
+105
+00:05:13.190 --> 00:05:16.020
+It gives us the image, the H2 in the paragraph,
+
+106
+00:05:16.020 --> 00:05:17.470
+but what we really care about here
+
+107
+00:05:17.470 --> 00:05:20.750
+is the previous element sibling
+
+108
+00:05:20.750 --> 00:05:22.870
+and that will give you the item that is before it.
+
+109
+00:05:22.870 --> 00:05:25.630
+So, right there, I was on item two,
+
+110
+00:05:25.630 --> 00:05:27.810
+let's hover over top of it, this one,
+
+111
+00:05:27.810 --> 00:05:29.750
+and if you select the previous element sibling
+
+112
+00:05:29.750 --> 00:05:32.070
+that will give you the one before it.
+
+113
+00:05:32.070 --> 00:05:35.340
+Jquery, many years ago, jquery did this really easy for us
+
+114
+00:05:35.340 --> 00:05:38.120
+where you'd do .prev.next.
+
+115
+00:05:38.120 --> 00:05:41.100
+All of that is totally doable with just these properties.
+
+116
+00:05:41.100 --> 00:05:44.300
+Here, they're not named the nicest things but it works,
+
+117
+00:05:44.300 --> 00:05:45.810
+you can figure it out.
+
+118
+00:05:45.810 --> 00:05:46.820
+So we've got that item.
+
+119
+00:05:46.820 --> 00:05:50.410
+Obviously we have next element sibling as well
+
+120
+00:05:50.410 --> 00:05:51.650
+and then parent element.
+
+121
+00:05:51.650 --> 00:05:53.090
+So that will go up.
+
+122
+00:05:53.090 --> 00:05:55.133
+And what's kinda cool about that is,
+
+123
+00:05:56.120 --> 00:05:58.090
+if you take something that's really low,
+
+124
+00:05:58.090 --> 00:06:03.090
+like let's take this, let's take this image right here,
+
+125
+00:06:05.127 --> 00:06:06.810
+$0 gives you the image,
+
+126
+00:06:06.810 --> 00:06:08.320
+and then if you want the parent element,
+
+127
+00:06:08.320 --> 00:06:10.340
+that gives you the div of the class of item.
+
+128
+00:06:10.340 --> 00:06:12.130
+But you can chain that, as long as you want
+
+129
+00:06:12.130 --> 00:06:14.580
+'cause that will return a new element.
+
+130
+00:06:14.580 --> 00:06:17.040
+So you can call .parentelement again
+
+131
+00:06:17.040 --> 00:06:19.860
+and .parentelement again.
+
+132
+00:06:19.860 --> 00:06:21.900
+That gives us the body tag.
+
+133
+00:06:21.900 --> 00:06:23.560
+How high can we go?
+
+134
+00:06:23.560 --> 00:06:24.393
+I think
+
+135
+00:06:25.430 --> 00:06:26.733
+we can go one more?
+
+136
+00:06:28.000 --> 00:06:29.343
+Gives us HTML.
+
+137
+00:06:30.320 --> 00:06:33.973
+Not, oh, oh, oh, no, nothing.
+
+138
+00:06:34.934 --> 00:06:37.990
+The property is there still but that's as high as we can go.
+
+139
+00:06:37.990 --> 00:06:40.700
+So, what's kinda cool about that is
+
+140
+00:06:40.700 --> 00:06:45.700
+let's say I were to select something inside of item two.
+
+141
+00:06:46.770 --> 00:06:51.770
+Let's take this H2, let's take the span inside of item two.
+
+142
+00:06:52.660 --> 00:06:55.680
+If I were to do $0 dot, well, let's just check.
+
+143
+00:06:55.680 --> 00:06:57.246
+That's the span,
+
+144
+00:06:57.246 --> 00:06:58.883
+.parentelement,
+
+145
+00:06:58.883 --> 00:06:59.716
+that's the H2,
+
+146
+00:06:59.716 --> 00:07:02.167
+.parentelement, that's the item.
+
+147
+00:07:02.167 --> 00:07:06.510
+.nextelementsibling, that's the next item beside it.
+
+148
+00:07:06.510 --> 00:07:09.014
+So now we went up, up, over
+
+149
+00:07:09.014 --> 00:07:11.440
+and then you can go down again, .children
+
+150
+00:07:14.610 --> 00:07:17.100
+and then we could grab the paragraph
+
+151
+00:07:17.100 --> 00:07:18.600
+with the class of pizza.
+
+152
+00:07:18.600 --> 00:07:21.350
+We'll talk about this little square bracket notation
+
+153
+00:07:21.350 --> 00:07:23.910
+but essentially that's how you reference items
+
+154
+00:07:23.910 --> 00:07:25.730
+that are indexed.
+
+155
+00:07:25.730 --> 00:07:28.540
+And this is kinda like an array, we'll go into that.
+
+156
+00:07:28.540 --> 00:07:29.740
+And there we go.
+
+157
+00:07:29.740 --> 00:07:33.900
+By starting with the span in item two,
+
+158
+00:07:33.900 --> 00:07:38.120
+we went up, up, over, down, and selected the second element
+
+159
+00:07:38.120 --> 00:07:39.430
+in there and got the pizza.
+
+160
+00:07:39.430 --> 00:07:43.440
+Now that's probably not something that you would do
+
+161
+00:07:43.440 --> 00:07:48.440
+because, assuming that the structure of your HTML
+
+162
+00:07:50.640 --> 00:07:53.140
+is the best way to move around in your elements,
+
+163
+00:07:53.140 --> 00:07:54.370
+it's probably not a good idea.
+
+164
+00:07:54.370 --> 00:07:57.930
+Because if somebody comes in there and adds an extra div,
+
+165
+00:07:57.930 --> 00:07:59.110
+then your day is ruined.
+
+166
+00:07:59.110 --> 00:08:03.460
+So, what we'd rather do is just use query selector
+
+167
+00:08:03.460 --> 00:08:05.780
+and that will allow us to just kinda search
+
+168
+00:08:05.780 --> 00:08:06.630
+for what we want.
+
+169
+00:08:06.630 --> 00:08:09.090
+Or there's another method.closest
+
+170
+00:08:09.090 --> 00:08:10.990
+that will allow us to search
+
+171
+00:08:10.990 --> 00:08:12.980
+kinda the opposite and up way.
+
+172
+00:08:12.980 --> 00:08:15.510
+I'm sure we'll use that in some of our examples.
+
+173
+00:08:15.510 --> 00:08:19.100
+But those properties are all available to us.
+
+174
+00:08:19.100 --> 00:08:21.080
+We also have a bunch of different properties
+
+175
+00:08:21.080 --> 00:08:22.730
+for nodes as well.
+
+176
+00:08:22.730 --> 00:08:24.620
+So these are all for elements.
+
+177
+00:08:24.620 --> 00:08:28.020
+And these are all for nodes.
+
+178
+00:08:28.020 --> 00:08:31.530
+These ones will ignore just plain text nodes.
+
+179
+00:08:31.530 --> 00:08:35.960
+Whereas these ones will not ignore text nodes
+
+180
+00:08:35.960 --> 00:08:37.420
+and it will give you the text node.
+
+181
+00:08:37.420 --> 00:08:40.660
+So, it's important to know the difference
+
+182
+00:08:40.660 --> 00:08:41.880
+between each of those.
+
+183
+00:08:41.880 --> 00:08:44.060
+'Cause I think, in most cases, you'll probably want
+
+184
+00:08:44.060 --> 00:08:47.810
+the element selectors, but I have been in many situations
+
+185
+00:08:47.810 --> 00:08:51.763
+where I do also want to reach for the different nodes.
+
+186
+00:08:52.830 --> 00:08:54.580
+So, that's what we have there.
+
+187
+00:08:54.580 --> 00:08:56.040
+The other thing I want to talk to you about
+
+188
+00:08:56.040 --> 00:08:58.250
+is the removing elements.
+
+189
+00:08:58.250 --> 00:08:59.580
+And it's pretty simple.
+
+190
+00:08:59.580 --> 00:09:01.910
+There's a method on every single element
+
+191
+00:09:01.910 --> 00:09:05.350
+in every single node that is just the ability
+
+192
+00:09:05.350 --> 00:09:06.420
+to remove something.
+
+193
+00:09:06.420 --> 00:09:09.240
+So let's say we can go to,
+
+194
+00:09:09.240 --> 00:09:12.080
+let's do it from the dev tools here.
+
+195
+00:09:12.080 --> 00:09:14.603
+Let's grab this H2 tag.
+
+196
+00:09:16.027 --> 00:09:18.560
+$0, that's our H2 and we just call it .remove
+
+197
+00:09:19.940 --> 00:09:21.605
+and that will remove it.
+
+198
+00:09:21.605 --> 00:09:22.438
+(chuckles)
+
+199
+00:09:22.438 --> 00:09:23.700
+Pretty simple.
+
+200
+00:09:23.700 --> 00:09:27.710
+That's how you can remove something entirely
+
+201
+00:09:27.710 --> 00:09:29.550
+from the DOM.
+
+202
+00:09:29.550 --> 00:09:32.170
+The only kinda gotcha is like,
+
+203
+00:09:32.170 --> 00:09:35.330
+what happens if you were to create an element,
+
+204
+00:09:35.330 --> 00:09:37.820
+add it to the DOM, and then call remove?
+
+205
+00:09:37.820 --> 00:09:39.570
+Does it still exist?
+
+206
+00:09:39.570 --> 00:09:42.290
+So let's do that and check that out real quick
+
+207
+00:09:42.290 --> 00:09:43.500
+'cause it's good to know that.
+
+208
+00:09:43.500 --> 00:09:48.107
+So, say const p is equal to document.createlement,
+
+209
+00:09:51.660 --> 00:09:55.150
+let's create a paragraph tag, p.textcontent
+
+210
+00:09:55.150 --> 00:09:58.303
+is equal to I will be removed.
+
+211
+00:10:00.560 --> 00:10:05.503
+Document.body.appendchild p,
+
+212
+00:10:06.550 --> 00:10:08.300
+let's see if it's working.
+
+213
+00:10:08.300 --> 00:10:10.210
+I will be removed, good.
+
+214
+00:10:10.210 --> 00:10:13.023
+And then we can just say p.remove.
+
+215
+00:10:16.990 --> 00:10:17.823
+Now it's gone, right?
+
+216
+00:10:17.823 --> 00:10:20.350
+Like you never would have actually seen it
+
+217
+00:10:20.350 --> 00:10:21.560
+but you know that it's gone.
+
+218
+00:10:21.560 --> 00:10:25.610
+Now, the question is, if I console log paragraph
+
+219
+00:10:25.610 --> 00:10:28.850
+underneath it, is it gonna be there?
+
+220
+00:10:28.850 --> 00:10:29.720
+Is it gonna be null?
+
+221
+00:10:29.720 --> 00:10:31.100
+Is it gonna be undefined?
+
+222
+00:10:31.100 --> 00:10:32.520
+Let's check.
+
+223
+00:10:32.520 --> 00:10:34.140
+Boom, still there.
+
+224
+00:10:34.140 --> 00:10:37.040
+So the fact that we had created that element
+
+225
+00:10:37.040 --> 00:10:39.570
+and it exists in our javascript memory,
+
+226
+00:10:39.570 --> 00:10:43.510
+means that we do still have access to that paragraph element
+
+227
+00:10:43.510 --> 00:10:48.510
+and we could, again, put it back in if we wanted to.
+
+228
+00:10:48.888 --> 00:10:49.721
+There we go.
+
+229
+00:10:49.721 --> 00:10:51.998
+See, it's added once again.
+
+230
+00:10:51.998 --> 00:10:54.780
+So, not all is lost if you do remove it from the DOM
+
+231
+00:10:54.780 --> 00:10:57.330
+if you do have reference to that element
+
+232
+00:10:57.330 --> 00:10:58.950
+and you've created it in your javascript
+
+233
+00:10:58.950 --> 00:11:02.030
+you can also just add it up again.
+
+234
+00:11:02.030 --> 00:11:05.260
+So that is traversing and creating.
+
+235
+00:11:05.260 --> 00:11:08.420
+Let's jump into what I like to call DOM Cardio
+
+236
+00:11:08.420 --> 00:11:09.713
+for some practice.
+

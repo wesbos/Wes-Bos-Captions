@@ -1,0 +1,4846 @@
+﻿WEBVTT
+
+1
+00:00:00.292 --> 00:00:02.875
+(upbeat music)
+
+2
+00:00:06.050 --> 00:00:07.470
+<v Wes>Alright, we are going to build</v>
+
+3
+00:00:07.470 --> 00:00:09.529
+a shopping list where you can go
+
+4
+00:00:09.529 --> 00:00:13.690
+and add things to it like juice,
+
+5
+00:00:13.690 --> 00:00:15.530
+and when you hit Enter, it will add that item.
+
+6
+00:00:15.530 --> 00:00:17.620
+When you have it, you could check it off.
+
+7
+00:00:17.620 --> 00:00:19.060
+If you wanna delete it, you can.
+
+8
+00:00:19.060 --> 00:00:21.742
+Now you may have written something like this before.
+
+9
+00:00:21.742 --> 00:00:23.960
+It's not all that outlandish,
+
+10
+00:00:23.960 --> 00:00:26.300
+however I faked a whole bunch of things
+
+11
+00:00:26.300 --> 00:00:27.973
+that we need to learn about JavaScript
+
+12
+00:00:27.973 --> 00:00:30.300
+into this fairly simple example.
+
+13
+00:00:30.300 --> 00:00:33.980
+So we're gonna be learning about emitting custom events.
+
+14
+00:00:33.980 --> 00:00:34.980
+Let me see if I can show you.
+
+15
+00:00:34.980 --> 00:00:35.813
+Look at this,
+
+16
+00:00:35.813 --> 00:00:38.040
+list.dispatchEvent new CustomEvent itemsUpdated.
+
+17
+00:00:39.560 --> 00:00:41.040
+So like what are custom events?
+
+18
+00:00:41.040 --> 00:00:42.800
+We're gonna be learning about that.
+
+19
+00:00:42.800 --> 00:00:43.930
+Event delegation.
+
+20
+00:00:43.930 --> 00:00:45.320
+How do you listen for clicks
+
+21
+00:00:45.320 --> 00:00:48.080
+on things that happen in the future?
+
+22
+00:00:48.080 --> 00:00:49.010
+Different DOM events.
+
+23
+00:00:49.010 --> 00:00:51.640
+We're gonna be looking at the local storage.
+
+24
+00:00:51.640 --> 00:00:54.650
+If you go to your Application tab and open it up,
+
+25
+00:00:54.650 --> 00:00:56.860
+you'll see that like look at this,
+
+26
+00:00:56.860 --> 00:00:59.330
+I've got a whole bunch of,
+
+27
+00:00:59.330 --> 00:01:00.902
+this is everything right here.
+
+28
+00:01:00.902 --> 00:01:02.730
+And when I refresh the page,
+
+29
+00:01:02.730 --> 00:01:06.510
+you see that it just immediately re-renders it back.
+
+30
+00:01:06.510 --> 00:01:08.140
+If I were to remove one,
+
+31
+00:01:08.140 --> 00:01:09.960
+you see that it's removed from local storage.
+
+32
+00:01:09.960 --> 00:01:11.730
+And I refresh the page, it's gone.
+
+33
+00:01:11.730 --> 00:01:15.020
+So there's a whole lot here that we're going to learn about.
+
+34
+00:01:15.020 --> 00:01:16.960
+So let's get going.
+
+35
+00:01:16.960 --> 00:01:19.360
+This one, if you go to your index.html,
+
+36
+00:01:19.360 --> 00:01:20.290
+you'll see a couple things.
+
+37
+00:01:20.290 --> 00:01:22.140
+I've given you a shopping list
+
+38
+00:01:22.140 --> 00:01:24.980
+where we have a form element and an empty ul.
+
+39
+00:01:24.980 --> 00:01:27.010
+That's where we're gonna dump everything in.
+
+40
+00:01:27.010 --> 00:01:28.860
+And then we also have a form
+
+41
+00:01:28.860 --> 00:01:31.250
+which has our input and our submit button.
+
+42
+00:01:31.250 --> 00:01:33.270
+Now you can just go ahead
+
+43
+00:01:33.270 --> 00:01:36.100
+and open this sucker up in the browser
+
+44
+00:01:36.100 --> 00:01:38.870
+just like I have right here and it will work just fine.
+
+45
+00:01:38.870 --> 00:01:41.450
+However if you do want the live reloading
+
+46
+00:01:41.450 --> 00:01:43.340
+and the instant CSS changes,
+
+47
+00:01:43.340 --> 00:01:48.340
+like if we go into shopping.css and change something,
+
+48
+00:01:49.350 --> 00:01:52.290
+like change the padding to five rem and hit Save,
+
+49
+00:01:52.290 --> 00:01:53.560
+it will immediately update
+
+50
+00:01:53.560 --> 00:01:55.477
+instead of us having to refresh the page,
+
+51
+00:01:55.477 --> 00:01:57.300
+and I find that to be very helpful
+
+52
+00:01:57.300 --> 00:01:58.680
+when you're working on stuff like this.
+
+53
+00:01:58.680 --> 00:01:59.880
+So I'm gonna show you how to do it.
+
+54
+00:01:59.880 --> 00:02:02.637
+Now the tool that we use is called Parcel
+
+55
+00:02:02.637 --> 00:02:04.380
+and it will give us a server,
+
+56
+00:02:04.380 --> 00:02:05.580
+it will give us library load,
+
+57
+00:02:05.580 --> 00:02:07.170
+and it also will do module bundling
+
+58
+00:02:07.170 --> 00:02:08.167
+which we haven't learned yet,
+
+59
+00:02:08.167 --> 00:02:10.970
+and we're not gonna do that in this one just yet.
+
+60
+00:02:10.970 --> 00:02:14.870
+Now in order to install it on your machine,
+
+61
+00:02:14.870 --> 00:02:16.210
+you have two options.
+
+62
+00:02:16.210 --> 00:02:19.000
+You can install it once to each project
+
+63
+00:02:19.000 --> 00:02:21.060
+which we did in the last one,
+
+64
+00:02:21.060 --> 00:02:23.550
+or you can install it globally.
+
+65
+00:02:23.550 --> 00:02:25.350
+Or I should say and,
+
+66
+00:02:25.350 --> 00:02:27.150
+you can install it globally on your machine.
+
+67
+00:02:27.150 --> 00:02:30.450
+So anytime you have an HTML file with some JavaScript,
+
+68
+00:02:30.450 --> 00:02:31.947
+you can get a little server up and running,
+
+69
+00:02:31.947 --> 00:02:34.170
+and that is super handy.
+
+70
+00:02:34.170 --> 00:02:35.390
+So the way that you do that
+
+71
+00:02:35.390 --> 00:02:38.543
+is you need to type npm install -g,
+
+72
+00:02:41.320 --> 00:02:45.860
+and we are going to install parcel-bundler,
+
+73
+00:02:45.860 --> 00:02:47.830
+and what that will do is it will install
+
+74
+00:02:47.830 --> 00:02:49.270
+Parcel globally on your machine,
+
+75
+00:02:49.270 --> 00:02:51.100
+so anytime you're in a terminal,
+
+76
+00:02:51.100 --> 00:02:54.120
+whether it's a VS Code terminal or any other terminal,
+
+77
+00:02:54.120 --> 00:02:57.810
+it will be available as a command called parcel.
+
+78
+00:02:57.810 --> 00:03:00.070
+That installed just fine for me.
+
+79
+00:03:00.070 --> 00:03:01.830
+A lot of times you'll have a problem
+
+80
+00:03:01.830 --> 00:03:05.060
+installing global modules on your command line.
+
+81
+00:03:05.060 --> 00:03:06.420
+So if that's the case,
+
+82
+00:03:06.420 --> 00:03:10.360
+just type a sudo space in front of that,
+
+83
+00:03:10.360 --> 00:03:12.630
+and that's for Mac people only,
+
+84
+00:03:12.630 --> 00:03:16.460
+and that will ask you for your password first.
+
+85
+00:03:16.460 --> 00:03:17.353
+Type it in and then it will install,
+
+86
+00:03:17.353 --> 00:03:21.650
+and that will almost always fix the issues that you have.
+
+87
+00:03:21.650 --> 00:03:25.490
+You can tell if it works by just typing parcel --version,
+
+88
+00:03:25.490 --> 00:03:27.370
+and it will tell you what version you have.
+
+89
+00:03:27.370 --> 00:03:29.100
+More likely than not,
+
+90
+00:03:29.100 --> 00:03:30.360
+by the time you're watching this,
+
+91
+00:03:30.360 --> 00:03:32.000
+Parcel 2 will be out,
+
+92
+00:03:32.000 --> 00:03:36.449
+however none of the commands that I say will change.
+
+93
+00:03:36.449 --> 00:03:39.710
+If you see 2.0, that's good, it's even better,
+
+94
+00:03:39.710 --> 00:03:42.350
+but we haven't seen it released just yet,
+
+95
+00:03:42.350 --> 00:03:43.920
+so don't sweat that just yet.
+
+96
+00:03:43.920 --> 00:03:46.650
+Okay, now in order to run this thing,
+
+97
+00:03:46.650 --> 00:03:49.990
+we type parcel and then index.html.
+
+98
+00:03:49.990 --> 00:03:52.543
+Make sure you're in the Shopping List directory.
+
+99
+00:03:54.420 --> 00:03:57.090
+And this will start up a little server
+
+100
+00:03:57.090 --> 00:03:59.890
+usually on localhost:1234.
+
+101
+00:03:59.890 --> 00:04:02.510
+And you can see it up and running.
+
+102
+00:04:02.510 --> 00:04:05.680
+Again you can also do this via VS Code.
+
+103
+00:04:05.680 --> 00:04:09.763
+Right-click Shopping List, Open in Terminal,
+
+104
+00:04:10.700 --> 00:04:13.003
+and you can type parcel index.html,
+
+105
+00:04:14.640 --> 00:04:16.210
+and you see now it's running
+
+106
+00:04:16.210 --> 00:04:17.460
+on two different servers for me
+
+107
+00:04:17.460 --> 00:04:21.753
+'cause now I'm opening it on 1234 and 466, whatever.
+
+108
+00:04:24.180 --> 00:04:27.093
+You see that it's working on different domain names.
+
+109
+00:04:28.060 --> 00:04:29.720
+Alright, I'm gonna close that down.
+
+110
+00:04:29.720 --> 00:04:32.490
+So I'm just gonna hit Control + C to kill that one.
+
+111
+00:04:32.490 --> 00:04:34.750
+You'll see that it no longer works.
+
+112
+00:04:34.750 --> 00:04:38.513
+And I'm going to be using my external terminal here.
+
+113
+00:04:39.500 --> 00:04:41.820
+So let's get going in shopping.js.
+
+114
+00:04:41.820 --> 00:04:42.900
+I'm just gonna clear that out.
+
+115
+00:04:42.900 --> 00:04:45.730
+You should have nothing in your shopping.js file.
+
+116
+00:04:45.730 --> 00:04:46.590
+If you don't see it there,
+
+117
+00:04:46.590 --> 00:04:48.340
+make sure you create a shopping.js.
+
+118
+00:04:49.310 --> 00:04:51.820
+And there is kind of like a couple things
+
+119
+00:04:51.820 --> 00:04:52.830
+that need to happen here.
+
+120
+00:04:52.830 --> 00:04:54.800
+First we need to listen for
+
+121
+00:04:54.800 --> 00:04:57.960
+when somebody types into this input
+
+122
+00:04:57.960 --> 00:05:00.530
+and hits the Submit button,
+
+123
+00:05:00.530 --> 00:05:01.970
+then we need to keep track
+
+124
+00:05:01.970 --> 00:05:04.590
+of all of the shopping list items
+
+125
+00:05:04.590 --> 00:05:07.470
+and whether or not they are complete,
+
+126
+00:05:07.470 --> 00:05:10.470
+and then third we need to listen
+
+127
+00:05:10.470 --> 00:05:12.870
+or we need to render out a list of all of those items.
+
+128
+00:05:12.870 --> 00:05:14.090
+So let's get into that.
+
+129
+00:05:14.090 --> 00:05:16.210
+By the way if this is kind of annoying,
+
+130
+00:05:16.210 --> 00:05:18.230
+you see like everything I've ever
+
+131
+00:05:18.230 --> 00:05:20.321
+typed into here now pops up.
+
+132
+00:05:20.321 --> 00:05:23.990
+What you can do is you can go to your index.html
+
+133
+00:05:23.990 --> 00:05:27.370
+and you can either on an input or form-wide,
+
+134
+00:05:27.370 --> 00:05:30.895
+you can set autocomplete, oh, autocapitalize,
+
+135
+00:05:30.895 --> 00:05:35.623
+autocomplete to false.
+
+136
+00:05:37.907 --> 00:05:39.090
+No, maybe that's not it.
+
+137
+00:05:39.090 --> 00:05:40.113
+Is it off?
+
+138
+00:05:43.085 --> 00:05:43.918
+There we go.
+
+139
+00:05:43.918 --> 00:05:45.277
+You can set autocomplete to be off
+
+140
+00:05:45.277 --> 00:05:47.168
+and that will stop that from popping up.
+
+141
+00:05:47.168 --> 00:05:49.510
+There's also autocapitalize as well.
+
+142
+00:05:49.510 --> 00:05:51.100
+And if you don't want like on your phone,
+
+143
+00:05:51.100 --> 00:05:52.940
+it will automatically capitalize,
+
+144
+00:05:52.940 --> 00:05:55.160
+that's annoying when you have like
+
+145
+00:05:55.160 --> 00:05:57.833
+a user login form that may be case sensitive.
+
+146
+00:05:59.790 --> 00:06:02.420
+So let's go here and let's go ahead and select
+
+147
+00:06:02.420 --> 00:06:04.580
+all of the items that we need here,
+
+148
+00:06:04.580 --> 00:06:06.000
+and the items that we need
+
+149
+00:06:06.000 --> 00:06:09.340
+are this shopping form here and this list.
+
+150
+00:06:09.340 --> 00:06:12.510
+So I'll go back to our JavaScript and I'll say const
+
+151
+00:06:12.510 --> 00:06:16.140
+shoppingForm is equal to, get rid of the sidebar,
+
+152
+00:06:16.140 --> 00:06:20.833
+document.querySelector .shopping,
+
+153
+00:06:21.800 --> 00:06:22.940
+and then we'll duplicate that
+
+154
+00:06:22.940 --> 00:06:26.586
+and change this out to list
+
+155
+00:06:26.586 --> 00:06:29.250
+and something with a class of list.
+
+156
+00:06:29.250 --> 00:06:33.300
+Next we need an array to hold all of our items.
+
+157
+00:06:33.300 --> 00:06:35.557
+So we need an array to hold our,
+
+158
+00:06:35.557 --> 00:06:38.460
+I can use a word here that is a buzzword
+
+159
+00:06:38.460 --> 00:06:40.600
+and that is called state.
+
+160
+00:06:40.600 --> 00:06:42.370
+We need an array to hold our state.
+
+161
+00:06:42.370 --> 00:06:43.928
+What does state mean?
+
+162
+00:06:43.928 --> 00:06:46.590
+That's a word that gets thrown around a lot.
+
+163
+00:06:46.590 --> 00:06:49.610
+From framework to framework it sorta means different things.
+
+164
+00:06:49.610 --> 00:06:52.500
+But generally what people are saying is that
+
+165
+00:06:52.500 --> 00:06:57.110
+when you have state, state is a bunch of data
+
+166
+00:06:57.110 --> 00:07:02.051
+that reflects the state of your application.
+
+167
+00:07:02.051 --> 00:07:03.160
+So what does that mean?
+
+168
+00:07:03.160 --> 00:07:06.770
+If I take a look at in this answer that I have here,
+
+169
+00:07:06.770 --> 00:07:10.410
+state is going to contain a list of all of my items
+
+170
+00:07:10.410 --> 00:07:13.570
+and a list of all the IDs of each of those items,
+
+171
+00:07:13.570 --> 00:07:16.490
+and whether or not they have been completed or not.
+
+172
+00:07:16.490 --> 00:07:17.970
+If it was a shopping cart,
+
+173
+00:07:17.970 --> 00:07:20.340
+state might be a list of all the items
+
+174
+00:07:20.340 --> 00:07:21.400
+in your shopping cart,
+
+175
+00:07:21.400 --> 00:07:24.000
+how many of each item was in the shopping cart,
+
+176
+00:07:24.000 --> 00:07:26.253
+how expensive each item is,
+
+177
+00:07:27.280 --> 00:07:29.840
+whether or not there's coupons applied or sales.
+
+178
+00:07:29.840 --> 00:07:33.590
+Like basically you should be able to always recreate
+
+179
+00:07:33.590 --> 00:07:38.590
+the visual part of your application just given the data,
+
+180
+00:07:39.130 --> 00:07:42.260
+meaning that all of the current state of your application
+
+181
+00:07:42.260 --> 00:07:45.080
+how it currently is should always be reflected
+
+182
+00:07:45.080 --> 00:07:47.650
+in some sort of object or array of data,
+
+183
+00:07:47.650 --> 00:07:50.663
+and that is what we refer to as state.
+
+184
+00:07:51.760 --> 00:07:53.680
+Okay, so next up, what we need to do
+
+185
+00:07:54.910 --> 00:07:58.330
+is listen for a submit event on this form,
+
+186
+00:07:58.330 --> 00:07:59.450
+because if I type in here
+
+187
+00:07:59.450 --> 00:08:03.290
+and I type in eggs and add the item,
+
+188
+00:08:03.290 --> 00:08:04.430
+what happens?
+
+189
+00:08:04.430 --> 00:08:05.880
+Well, the form submits
+
+190
+00:08:05.880 --> 00:08:09.010
+and then it puts item equals eggs in the URL
+
+191
+00:08:09.010 --> 00:08:11.550
+but it's not what we want here.
+
+192
+00:08:11.550 --> 00:08:15.670
+So we will go ahead and make a submit handler for that.
+
+193
+00:08:15.670 --> 00:08:17.993
+So I'll make a function handleSubmit
+
+194
+00:08:19.680 --> 00:08:21.450
+that gives us our event,
+
+195
+00:08:21.450 --> 00:08:23.450
+and then we will first at least
+
+196
+00:08:23.450 --> 00:08:25.090
+stop that thing from submitting.
+
+197
+00:08:25.090 --> 00:08:27.183
+So we just say e.preventDefault.
+
+198
+00:08:29.770 --> 00:08:32.247
+And we'll grab our shoppingForm,
+
+199
+00:08:33.090 --> 00:08:36.330
+and we'll add an event listener for the submit event.
+
+200
+00:08:36.330 --> 00:08:39.900
+Remember that we don't use like click or Enter
+
+201
+00:08:39.900 --> 00:08:41.620
+or anything like that on forms
+
+202
+00:08:41.620 --> 00:08:43.450
+because it's much easier
+
+203
+00:08:43.450 --> 00:08:45.480
+to just listen for the submit event,
+
+204
+00:08:45.480 --> 00:08:48.400
+and that way if you submit it by clicking,
+
+205
+00:08:48.400 --> 00:08:49.980
+you submit it by hitting Enter,
+
+206
+00:08:49.980 --> 00:08:52.543
+something else submits that event,
+
+207
+00:08:53.750 --> 00:08:55.700
+something else triggers the submit of that
+
+208
+00:08:55.700 --> 00:08:57.090
+like you can use other JavaScript
+
+209
+00:08:57.090 --> 00:08:59.200
+to trigger a submit on a form,
+
+210
+00:08:59.200 --> 00:09:01.637
+all of those use cases are covered by a single event,
+
+211
+00:09:01.637 --> 00:09:03.610
+and that is called submit,
+
+212
+00:09:03.610 --> 00:09:04.530
+and when that happens,
+
+213
+00:09:04.530 --> 00:09:08.003
+we are going to pass it the handleSubmit callback.
+
+214
+00:09:08.870 --> 00:09:12.710
+Now let me get this item eggs off here, visit the URL,
+
+215
+00:09:12.710 --> 00:09:17.100
+and type in eggs and hit Enter and nothing happens.
+
+216
+00:09:17.100 --> 00:09:18.079
+So that's good.
+
+217
+00:09:18.079 --> 00:09:22.800
+Maybe we should console.log Submitted.
+
+218
+00:09:22.800 --> 00:09:25.650
+Now we need to do is pull the data out of here.
+
+219
+00:09:25.650 --> 00:09:27.960
+So if I type in eggs and hit add item,
+
+220
+00:09:27.960 --> 00:09:30.380
+we need to pull the data out of that.
+
+221
+00:09:30.380 --> 00:09:32.920
+So how can we get that?
+
+222
+00:09:32.920 --> 00:09:36.263
+So I'll say const name is equal to e.currentTarget.value.
+
+223
+00:09:39.920 --> 00:09:44.720
+And we should console.log, the name of what they added in.
+
+224
+00:09:44.720 --> 00:09:47.220
+And you see I just like refreshed it myself there.
+
+225
+00:09:50.160 --> 00:09:52.690
+It's not needed because it will do it for you.
+
+226
+00:09:52.690 --> 00:09:55.820
+Eggs submitted undefined.
+
+227
+00:09:55.820 --> 00:09:58.560
+E.currentTarget.value.
+
+228
+00:09:58.560 --> 00:09:59.720
+That gives me undefined.
+
+229
+00:09:59.720 --> 00:10:00.553
+Okay, why is that?
+
+230
+00:10:00.553 --> 00:10:03.090
+Oh, let's do a little bit of debugging.
+
+231
+00:10:03.090 --> 00:10:04.490
+console.log e.currentTarget.
+
+232
+00:10:08.270 --> 00:10:09.103
+Oh, that's why.
+
+233
+00:10:09.103 --> 00:10:12.310
+Because the current target is the form,
+
+234
+00:10:12.310 --> 00:10:16.980
+and we want to get the text out of the input.
+
+235
+00:10:16.980 --> 00:10:19.060
+So there's a couple of ways we could go about this.
+
+236
+00:10:19.060 --> 00:10:22.170
+You could write another query selector to grab it.
+
+237
+00:10:22.170 --> 00:10:26.560
+But because this input has a name,
+
+238
+00:10:26.560 --> 00:10:28.720
+it's actually accessible
+
+239
+00:10:28.720 --> 00:10:31.770
+via the form dot the name of the input,
+
+240
+00:10:31.770 --> 00:10:32.640
+and I'll show you why.
+
+241
+00:10:32.640 --> 00:10:34.650
+If I take this form
+
+242
+00:10:34.650 --> 00:10:37.710
+and make it a global variable called temp1,
+
+243
+00:10:37.710 --> 00:10:41.340
+I can say temp1 and you can,
+
+244
+00:10:41.340 --> 00:10:44.730
+actually console.dir temp1,
+
+245
+00:10:44.730 --> 00:10:48.160
+and that will show you all of the properties inside of it,
+
+246
+00:10:48.160 --> 00:10:51.380
+and you can see that, what do we call this item?
+
+247
+00:10:51.380 --> 00:10:53.243
+We go down to,
+
+248
+00:10:56.050 --> 00:10:58.910
+somewhere in here is item.
+
+249
+00:10:58.910 --> 00:11:00.640
+I can't find it but I'll show you.
+
+250
+00:11:00.640 --> 00:11:02.653
+So e.currentTarget.item.
+
+251
+00:11:05.216 --> 00:11:07.557
+You see now we get the actual input,
+
+252
+00:11:07.557 --> 00:11:08.830
+not the form itself.
+
+253
+00:11:08.830 --> 00:11:13.460
+So if we say e.currentTarget.item.value,
+
+254
+00:11:13.460 --> 00:11:17.170
+we should be able to get eggs, there we go.
+
+255
+00:11:17.170 --> 00:11:18.110
+Eggs, good.
+
+256
+00:11:18.110 --> 00:11:22.480
+So next step is that we need to store
+
+257
+00:11:22.480 --> 00:11:26.960
+the data about this item, the shopping item,
+
+258
+00:11:26.960 --> 00:11:29.530
+in this items array,
+
+259
+00:11:29.530 --> 00:11:32.570
+but we can't just store straight up string
+
+260
+00:11:32.570 --> 00:11:35.540
+because we need to be able to store
+
+261
+00:11:35.540 --> 00:11:37.660
+a little bit more information about that item.
+
+262
+00:11:37.660 --> 00:11:39.300
+The other two things that we need to know
+
+263
+00:11:39.300 --> 00:11:40.654
+are is it completed?
+
+264
+00:11:40.654 --> 00:11:43.070
+Have you bought it already or not?
+
+265
+00:11:43.070 --> 00:11:45.380
+And what is the ID of that item?
+
+266
+00:11:45.380 --> 00:11:47.700
+Anytime you have a list of a bunch of items,
+
+267
+00:11:47.700 --> 00:11:51.060
+it's best to give every single one a unique identifier
+
+268
+00:11:51.060 --> 00:11:53.290
+so that you can go ahead and easily find it
+
+269
+00:11:53.290 --> 00:11:55.130
+when you wanna do things like remove it
+
+270
+00:11:55.130 --> 00:11:56.750
+or mark it as complete.
+
+271
+00:11:56.750 --> 00:11:58.007
+So that's what we're gonna do right now
+
+272
+00:11:58.007 --> 00:12:01.480
+is we'll just say const item is equal to.
+
+273
+00:12:01.480 --> 00:12:05.360
+Now the name of the item is going to be our name variable.
+
+274
+00:12:05.360 --> 00:12:10.360
+The ID of the item is it just needs to be something unique,
+
+275
+00:12:11.030 --> 00:12:13.020
+and one little trick I like to use
+
+276
+00:12:13.020 --> 00:12:18.020
+is just to use Date.now as an ID.
+
+277
+00:12:18.080 --> 00:12:19.670
+And as long as you aren't creating
+
+278
+00:12:19.670 --> 00:12:22.850
+more than one item per millisecond,
+
+279
+00:12:22.850 --> 00:12:23.800
+then you're fine.
+
+280
+00:12:23.800 --> 00:12:26.100
+In some cases that actually might be a problem
+
+281
+00:12:26.100 --> 00:12:27.860
+like for a database.
+
+282
+00:12:27.860 --> 00:12:31.280
+You could save 100 records in a couple milliseconds
+
+283
+00:12:31.280 --> 00:12:32.530
+and then they would override each other.
+
+284
+00:12:32.530 --> 00:12:34.490
+But in our case you're not adding
+
+285
+00:12:34.490 --> 00:12:36.450
+more than one item within a millisecond.
+
+286
+00:12:36.450 --> 00:12:40.130
+So Date.now is totally fine for the ID there.
+
+287
+00:12:40.130 --> 00:12:42.830
+And then complete is going to be false
+
+288
+00:12:42.830 --> 00:12:45.300
+'cause by default they are not completed.
+
+289
+00:12:45.300 --> 00:12:48.320
+You can see when I saved there,
+
+290
+00:12:48.320 --> 00:12:50.810
+my Prettier did a couple things.
+
+291
+00:12:50.810 --> 00:12:53.720
+It refactored name name just to name
+
+292
+00:12:53.720 --> 00:12:56.203
+and that put a semicolon on the end there.
+
+293
+00:12:57.680 --> 00:13:02.680
+Now we need to do is push the items into our state.
+
+294
+00:13:02.690 --> 00:13:05.663
+So we'll say items.push item.
+
+295
+00:13:07.160 --> 00:13:08.820
+And we can do something like this.
+
+296
+00:13:08.820 --> 00:13:13.820
+There are now items.length in your state.
+
+297
+00:13:18.720 --> 00:13:21.410
+Let's try it, eggs.
+
+298
+00:13:21.410 --> 00:13:24.490
+There are now one in your state.
+
+299
+00:13:24.490 --> 00:13:25.323
+Bread.
+
+300
+00:13:26.480 --> 00:13:27.810
+There are now two in your state, good.
+
+301
+00:13:27.810 --> 00:13:29.670
+And if we just take a look at items,
+
+302
+00:13:29.670 --> 00:13:31.853
+you would see both of them are in there.
+
+303
+00:13:33.070 --> 00:13:38.040
+Now we need to do is to clear the form.
+
+304
+00:13:38.040 --> 00:13:40.020
+So there are a couple ways you could do this.
+
+305
+00:13:40.020 --> 00:13:44.393
+We could just take the event.currentTarget.value
+
+306
+00:13:44.393 --> 00:13:47.713
+and set it to nothing, and that should work.
+
+307
+00:13:49.120 --> 00:13:50.170
+Good.
+
+308
+00:13:50.170 --> 00:13:52.340
+The other way which you can do it
+
+309
+00:13:52.340 --> 00:13:53.860
+if you have multiple inputs
+
+310
+00:13:53.860 --> 00:13:57.399
+is called e.target.reset,
+
+311
+00:13:57.399 --> 00:14:02.310
+and that will clear all of the inputs
+
+312
+00:14:02.310 --> 00:14:05.250
+in a particular form which is really easy.
+
+313
+00:14:05.250 --> 00:14:07.830
+You notice I used target and not currentTarget.
+
+314
+00:14:07.830 --> 00:14:09.800
+What's the difference in this case?
+
+315
+00:14:09.800 --> 00:14:11.060
+Does that work too?
+
+316
+00:14:11.060 --> 00:14:12.910
+That works exactly the same way.
+
+317
+00:14:12.910 --> 00:14:14.830
+When you have a form event,
+
+318
+00:14:14.830 --> 00:14:18.030
+it will only actually ever fire on the form,
+
+319
+00:14:18.030 --> 00:14:23.030
+and it doesn't bubble like our clicks and hovers do
+
+320
+00:14:23.260 --> 00:14:24.160
+like we looked at.
+
+321
+00:14:24.160 --> 00:14:27.010
+Remember, go back and watch the bubbling video
+
+322
+00:14:27.010 --> 00:14:29.430
+if you're unfamiliar with that.
+
+323
+00:14:29.430 --> 00:14:31.930
+In this case e.Target worked just fine.
+
+324
+00:14:31.930 --> 00:14:33.960
+There's literally no upside or downside
+
+325
+00:14:33.960 --> 00:14:35.433
+to using either one of those.
+
+326
+00:14:36.540 --> 00:14:41.540
+Alright, so now we have this function
+
+327
+00:14:41.770 --> 00:14:43.860
+that will handle submit and will create an item
+
+328
+00:14:43.860 --> 00:14:46.670
+and push it into our item state.
+
+329
+00:14:46.670 --> 00:14:50.970
+Next up we need to do is to display the items in there.
+
+330
+00:14:50.970 --> 00:14:55.277
+So let's make a function here called displayItems.
+
+331
+00:14:56.540 --> 00:14:59.520
+And we will say const HTML is equal to.
+
+332
+00:14:59.520 --> 00:15:04.520
+We'll take our items and we'll loop over each of them
+
+333
+00:15:04.740 --> 00:15:06.940
+and return a list item for each.
+
+334
+00:15:06.940 --> 00:15:09.570
+So what's the best array method
+
+335
+00:15:09.570 --> 00:15:13.793
+to loop over an array and return some HTML for each one?
+
+336
+00:15:14.630 --> 00:15:17.900
+Well, map is a really good use case for this, why?
+
+337
+00:15:17.900 --> 00:15:22.840
+Because if I have a simple little array here,
+
+338
+00:15:22.840 --> 00:15:27.840
+maybe names is equal to Wes and Kate,
+
+339
+00:15:27.870 --> 00:15:31.260
+if I take my names and I map over each one,
+
+340
+00:15:31.260 --> 00:15:32.790
+I can get a name,
+
+341
+00:15:32.790 --> 00:15:34.500
+and for each one I can simply
+
+342
+00:15:34.500 --> 00:15:37.063
+just return like a list item,
+
+343
+00:15:42.730 --> 00:15:43.800
+and then inside of it,
+
+344
+00:15:43.800 --> 00:15:45.357
+I can interpolate the name.
+
+345
+00:15:45.357 --> 00:15:46.740
+And you see what happened there
+
+346
+00:15:46.740 --> 00:15:49.430
+is that I looped over an array of names,
+
+347
+00:15:49.430 --> 00:15:52.120
+and for each one, I returned a list item
+
+348
+00:15:52.120 --> 00:15:53.830
+with the name inside of it.
+
+349
+00:15:53.830 --> 00:15:56.380
+And then we can simply call join on the end,
+
+350
+00:15:56.380 --> 00:16:00.120
+and that will give us one HTML string.
+
+351
+00:16:00.120 --> 00:16:01.260
+So that's what we're gonna be doing
+
+352
+00:16:01.260 --> 00:16:02.913
+with each of our items here.
+
+353
+00:16:04.100 --> 00:16:04.933
+Before I even go,
+
+354
+00:16:04.933 --> 00:16:07.150
+I'll just console.log the items.
+
+355
+00:16:07.150 --> 00:16:09.950
+And we'll say items.map item.
+
+356
+00:16:09.950 --> 00:16:12.380
+And we can return back ticks.
+
+357
+00:16:12.380 --> 00:16:14.150
+We'll put a list item inside,
+
+358
+00:16:14.150 --> 00:16:17.063
+and let's just say item.name.
+
+359
+00:16:18.110 --> 00:16:20.713
+Now let's console.log the HTML,
+
+360
+00:16:21.920 --> 00:16:23.930
+and you see it refactored that for me
+
+361
+00:16:23.930 --> 00:16:28.170
+because it turned it from an explicit return with a block
+
+362
+00:16:28.170 --> 00:16:31.650
+to a simple implicit return 'cause it was very small.
+
+363
+00:16:31.650 --> 00:16:34.110
+I'll show you how to bring that back if we need to.
+
+364
+00:16:34.110 --> 00:16:37.150
+Now how do I run this display item?
+
+365
+00:16:37.150 --> 00:16:39.800
+You might be thinking, okay we'll let's,
+
+366
+00:16:39.800 --> 00:16:42.700
+we need to display them after you submit it, right?
+
+367
+00:16:42.700 --> 00:16:44.960
+So let's just go ahead and do that.
+
+368
+00:16:44.960 --> 00:16:48.320
+And that's okay.
+
+369
+00:16:48.320 --> 00:16:50.010
+But I'm gonna show you a better way to do it
+
+370
+00:16:50.010 --> 00:16:52.240
+and why in just a second with custom events.
+
+371
+00:16:52.240 --> 00:16:53.990
+For now it's fine to keep that in there
+
+372
+00:16:53.990 --> 00:16:55.470
+and we'll come back and refactor it.
+
+373
+00:16:55.470 --> 00:16:58.600
+So if I type eggs, add an item,
+
+374
+00:16:58.600 --> 00:17:00.970
+you see I got an li with eggs.
+
+375
+00:17:00.970 --> 00:17:01.803
+Milk.
+
+376
+00:17:07.298 --> 00:17:09.660
+Here you see what's happening.
+
+377
+00:17:09.660 --> 00:17:12.150
+Each time that we submit it,
+
+378
+00:17:12.150 --> 00:17:13.770
+we push that item into state,
+
+379
+00:17:13.770 --> 00:17:15.090
+and then when that's all done,
+
+380
+00:17:15.090 --> 00:17:18.210
+we call displayItems and that will loop over
+
+381
+00:17:18.210 --> 00:17:20.360
+and return a list item with each of them.
+
+382
+00:17:20.360 --> 00:17:22.190
+So a couple problems here.
+
+383
+00:17:22.190 --> 00:17:24.123
+First, we need to,
+
+384
+00:17:25.170 --> 00:17:27.140
+this is not HTML, this is an array.
+
+385
+00:17:27.140 --> 00:17:28.470
+So if on the end of that,
+
+386
+00:17:28.470 --> 00:17:32.840
+if we tack a dot join and join it on nothing,
+
+387
+00:17:32.840 --> 00:17:37.840
+that should give us one milk, eggs, bread.
+
+388
+00:17:38.159 --> 00:17:40.173
+Good, now we've got one string.
+
+389
+00:17:41.040 --> 00:17:44.170
+Then what we can do is we can take our list
+
+390
+00:17:44.170 --> 00:17:45.860
+and set the inner HTML.
+
+391
+00:17:45.860 --> 00:17:50.860
+So we'll say list.innerHTML is equal to the HTML.
+
+392
+00:17:53.850 --> 00:17:57.023
+Milk, eggs, bread.
+
+393
+00:17:57.900 --> 00:18:00.200
+Okay, that's working so far,
+
+394
+00:18:00.200 --> 00:18:02.250
+but we need to make it a little bit further
+
+395
+00:18:02.250 --> 00:18:05.540
+because we need a delete button and a check button.
+
+396
+00:18:05.540 --> 00:18:09.170
+So let's scaffold this out a little bit further.
+
+397
+00:18:09.170 --> 00:18:12.000
+I'm gonna leave the open li on that line.
+
+398
+00:18:12.000 --> 00:18:14.220
+I'm gonna put the closing li on that line,
+
+399
+00:18:14.220 --> 00:18:15.790
+and that's why we use back ticks here
+
+400
+00:18:15.790 --> 00:18:17.293
+so we can do multi-line.
+
+401
+00:18:18.340 --> 00:18:22.770
+Now this item here needs a class of shopping item.
+
+402
+00:18:22.770 --> 00:18:25.103
+That's just so that our CSS will pick it up.
+
+403
+00:18:26.080 --> 00:18:27.970
+Now when I give it a save,
+
+404
+00:18:27.970 --> 00:18:29.050
+I love prettier.
+
+405
+00:18:29.050 --> 00:18:30.400
+That's why it's so good,
+
+406
+00:18:30.400 --> 00:18:31.860
+it will put it on its own line for you
+
+407
+00:18:31.860 --> 00:18:33.040
+and take care of it.
+
+408
+00:18:33.040 --> 00:18:35.093
+So milk, eggs, bread.
+
+409
+00:18:35.093 --> 00:18:38.120
+So you see that the styling is now being picked up.
+
+410
+00:18:38.120 --> 00:18:40.170
+Now for each one we need a checkbox
+
+411
+00:18:40.170 --> 00:18:42.340
+and that is an input with the type of checkbox.
+
+412
+00:18:42.340 --> 00:18:46.803
+So let's say input type equals checkbox.
+
+413
+00:18:48.440 --> 00:18:53.230
+Then we have our item name so we'll give ourselves a span,
+
+414
+00:18:53.230 --> 00:18:57.393
+and that will have a class of itemName.
+
+415
+00:18:58.670 --> 00:18:59.713
+we'll put the item.name in there.
+
+416
+00:19:04.320 --> 00:19:09.320
+And then we need a button with a &amp;times in there,
+
+417
+00:19:13.080 --> 00:19:14.763
+and that will give us a little x.
+
+418
+00:19:16.230 --> 00:19:17.690
+Let's see.
+
+419
+00:19:17.690 --> 00:19:20.303
+Milk, eggs.
+
+420
+00:19:21.570 --> 00:19:22.403
+Why is it?
+
+421
+00:19:22.403 --> 00:19:24.113
+Oh, I forgot to delete this.
+
+422
+00:19:27.570 --> 00:19:29.700
+Okay, seems to be looking okay.
+
+423
+00:19:29.700 --> 00:19:31.610
+Couple things we need to do here
+
+424
+00:19:31.610 --> 00:19:34.300
+is that first of all this is inaccessible
+
+425
+00:19:34.300 --> 00:19:36.560
+to people here who are using screen readers
+
+426
+00:19:36.560 --> 00:19:40.540
+because if they were to read these items
+
+427
+00:19:40.540 --> 00:19:42.540
+over to them via screen reader,
+
+428
+00:19:42.540 --> 00:19:45.390
+it would just say multiplication sign,
+
+429
+00:19:45.390 --> 00:19:47.680
+and they'll be like uh, what?
+
+430
+00:19:47.680 --> 00:19:50.170
+I don't wanna multiply my bananas.
+
+431
+00:19:50.170 --> 00:19:51.420
+I wanna remove it.
+
+432
+00:19:51.420 --> 00:19:53.030
+So what we can do here
+
+433
+00:19:53.030 --> 00:19:58.030
+is we put an aria-label on it that says Remove
+
+434
+00:19:58.520 --> 00:20:01.740
+and will interpolate the item.name inside of there.
+
+435
+00:20:01.740 --> 00:20:05.200
+And then when they, for sighted users,
+
+436
+00:20:05.200 --> 00:20:06.490
+you'd just see an x,
+
+437
+00:20:06.490 --> 00:20:08.420
+but for anyone using a screen reader,
+
+438
+00:20:08.420 --> 00:20:09.900
+when they tab over to it,
+
+439
+00:20:09.900 --> 00:20:11.420
+see how it's highlighted right there?
+
+440
+00:20:11.420 --> 00:20:14.570
+It will tell them remove asdf
+
+441
+00:20:14.570 --> 00:20:18.410
+or remove bananas from the item.
+
+442
+00:20:18.410 --> 00:20:21.110
+Couple other things we need is when you check one of these,
+
+443
+00:20:21.110 --> 00:20:23.110
+we need to save that data to our state
+
+444
+00:20:23.110 --> 00:20:26.160
+and then update the checked property of the input.
+
+445
+00:20:26.160 --> 00:20:30.540
+And then there's a couple other name attributes
+
+446
+00:20:30.540 --> 00:20:31.470
+that need to be added to this,
+
+447
+00:20:31.470 --> 00:20:33.979
+but we'll cross that bridge when we get to it.
+
+448
+00:20:33.979 --> 00:20:37.350
+One more thing I saw right here is that
+
+449
+00:20:37.350 --> 00:20:38.203
+if I just hit Enter on it,
+
+450
+00:20:38.203 --> 00:20:41.280
+you see I'm getting a lot of blank inputs.
+
+451
+00:20:41.280 --> 00:20:42.940
+A couple of ways we could fix that
+
+452
+00:20:42.940 --> 00:20:47.940
+would be to type a required on this input here.
+
+453
+00:20:50.940 --> 00:20:53.720
+And you see now it doesn't do that anymore.
+
+454
+00:20:53.720 --> 00:20:56.930
+That's sort of just like client side validation.
+
+455
+00:20:56.930 --> 00:20:59.270
+And another thing we could do
+
+456
+00:20:59.270 --> 00:21:03.290
+is we could say if there's no name, return.
+
+457
+00:21:07.210 --> 00:21:09.970
+And I didn't put curly brackets there.
+
+458
+00:21:09.970 --> 00:21:13.040
+Go back to the video about conditionals,
+
+459
+00:21:13.040 --> 00:21:14.440
+you'll learn that if it's on one line,
+
+460
+00:21:14.440 --> 00:21:16.400
+you don't necessarily need it.
+
+461
+00:21:16.400 --> 00:21:18.170
+In this case it puts it on one line.
+
+462
+00:21:18.170 --> 00:21:19.430
+I'm gonna do it all on one line
+
+463
+00:21:19.430 --> 00:21:22.272
+just 'cause it's nice and short.
+
+464
+00:21:22.272 --> 00:21:25.273
+And then if I take this required off,
+
+465
+00:21:28.930 --> 00:21:30.700
+you'll see it's running the submit,
+
+466
+00:21:30.700 --> 00:21:34.120
+but it's stopping the function from running
+
+467
+00:21:34.120 --> 00:21:35.180
+if there's nothing there.
+
+468
+00:21:35.180 --> 00:21:38.623
+So maybe you'll say if it's empty,
+
+469
+00:21:39.520 --> 00:21:44.520
+then don't submit it.
+
+470
+00:21:44.990 --> 00:21:46.300
+Let's just double check that with
+
+471
+00:21:46.300 --> 00:21:49.190
+if I have a zero, it still works, right,
+
+472
+00:21:49.190 --> 00:21:51.160
+because it's a string of zero.
+
+473
+00:21:51.160 --> 00:21:56.160
+If I have a null, undefined, false,
+
+474
+00:21:56.240 --> 00:21:57.480
+why are these all working?
+
+475
+00:21:57.480 --> 00:21:58.530
+I thought they were falsey?
+
+476
+00:21:58.530 --> 00:22:01.520
+It's 'cause these are all strings and not types
+
+477
+00:22:01.520 --> 00:22:05.420
+of a number, null, undefined, or boolean.
+
+478
+00:22:05.420 --> 00:22:08.193
+Alright, let's talk about this displayItems function
+
+479
+00:22:08.193 --> 00:22:10.530
+and this handleSubmit function
+
+480
+00:22:10.530 --> 00:22:13.250
+where the handleSubmit function will do its work
+
+481
+00:22:13.250 --> 00:22:18.250
+and then it will just call the displayItems function for us.
+
+482
+00:22:18.850 --> 00:22:21.290
+The reason why I don't love that
+
+483
+00:22:21.290 --> 00:22:24.460
+is because that too tightly couples
+
+484
+00:22:24.460 --> 00:22:28.830
+the handleSubmit with the displaying of the items.
+
+485
+00:22:28.830 --> 00:22:30.670
+And what's gonna happen is that
+
+486
+00:22:30.670 --> 00:22:33.490
+we are also gonna need to display the items
+
+487
+00:22:33.490 --> 00:22:37.060
+when the items are restored from local storage,
+
+488
+00:22:37.060 --> 00:22:38.640
+because like when I refresh the page,
+
+489
+00:22:38.640 --> 00:22:39.970
+I want the items to still be there,
+
+490
+00:22:39.970 --> 00:22:42.449
+so I'm gonna have to call that again.
+
+491
+00:22:42.449 --> 00:22:45.360
+Then we're also going to need to display the items
+
+492
+00:22:45.360 --> 00:22:47.440
+when we mark them as complete,
+
+493
+00:22:47.440 --> 00:22:48.750
+like if I check one off,
+
+494
+00:22:48.750 --> 00:22:52.010
+it should re-render that entire list.
+
+495
+00:22:52.010 --> 00:22:53.300
+When you delete an item,
+
+496
+00:22:53.300 --> 00:22:55.700
+it's going to need to rerun displayItems
+
+497
+00:22:55.700 --> 00:22:57.170
+'cause there's now one less item
+
+498
+00:22:57.170 --> 00:22:59.800
+we need to regenerate this HTML.
+
+499
+00:22:59.800 --> 00:23:01.460
+And a couple other spots
+
+500
+00:23:01.460 --> 00:23:04.350
+we need to rerun this displayItems function.
+
+501
+00:23:04.350 --> 00:23:08.240
+Now having this so tightly coupled with it
+
+502
+00:23:08.240 --> 00:23:10.570
+is not really that big of a deal right now,
+
+503
+00:23:10.570 --> 00:23:13.660
+but what happens in larger JavaScript applications
+
+504
+00:23:13.660 --> 00:23:18.660
+is that you may need to do three or four things right here,
+
+505
+00:23:18.810 --> 00:23:22.420
+like do four more things here,
+
+506
+00:23:22.420 --> 00:23:25.920
+and what tends to happen is that you run into these cases
+
+507
+00:23:25.920 --> 00:23:28.420
+where you're like, okay, that's great,
+
+508
+00:23:28.420 --> 00:23:31.480
+but now I have a situation where I wanna handleSubmit,
+
+509
+00:23:31.480 --> 00:23:36.350
+but I don't wanna do two of those four things.
+
+510
+00:23:36.350 --> 00:23:38.920
+And then you're like, well, how do I run this function
+
+511
+00:23:38.920 --> 00:23:42.650
+but not run the two of the four things?
+
+512
+00:23:42.650 --> 00:23:44.590
+And then what happens is people just
+
+513
+00:23:44.590 --> 00:23:46.680
+copy paste the entire function
+
+514
+00:23:46.680 --> 00:23:50.140
+and now they have like duplicated logic in two spots.
+
+515
+00:23:50.140 --> 00:23:54.530
+So what we're doing now is we are going to use
+
+516
+00:23:54.530 --> 00:23:58.700
+the event system in JavaScript to fire off our own events,
+
+517
+00:23:58.700 --> 00:24:01.720
+and then we are going to listen for those events,
+
+518
+00:24:01.720 --> 00:24:05.870
+we're going to listen for an items updated event,
+
+519
+00:24:05.870 --> 00:24:09.980
+and then anybody who cares about items updating,
+
+520
+00:24:09.980 --> 00:24:13.230
+like let's say like we wanted to have analytics,
+
+521
+00:24:13.230 --> 00:24:18.230
+like send data to server about updated items,
+
+522
+00:24:21.500 --> 00:24:24.370
+anyone who cares about updated items,
+
+523
+00:24:24.370 --> 00:24:25.810
+whether it's the displayer
+
+524
+00:24:25.810 --> 00:24:27.270
+or whether it's the analytics
+
+525
+00:24:27.270 --> 00:24:28.690
+or whether it's the server,
+
+526
+00:24:28.690 --> 00:24:31.490
+they can all listen for this new event
+
+527
+00:24:31.490 --> 00:24:33.820
+just like if it were a click or a hover
+
+528
+00:24:33.820 --> 00:24:36.850
+except now we've sort of decoupled that,
+
+529
+00:24:36.850 --> 00:24:39.110
+and that makes things a lot nicer,
+
+530
+00:24:39.110 --> 00:24:42.880
+and you'll see that pattern actually quite frequently
+
+531
+00:24:42.880 --> 00:24:45.090
+in a lot of this JavaScript application.
+
+532
+00:24:45.090 --> 00:24:47.550
+So that's what we're going to do right now
+
+533
+00:24:47.550 --> 00:24:50.170
+is instead of displaying our items,
+
+534
+00:24:50.170 --> 00:24:54.480
+we are going to fire off a custom event
+
+535
+00:24:56.320 --> 00:25:01.320
+that will tell anyone else who cares
+
+536
+00:25:01.820 --> 00:25:06.193
+that the items have been updated.
+
+537
+00:25:10.030 --> 00:25:13.630
+So first of all, to do custom events in the browser,
+
+538
+00:25:13.630 --> 00:25:15.940
+you need to fire them from or you need to,
+
+539
+00:25:15.940 --> 00:25:18.230
+I'm gonna use the word dispatch,
+
+540
+00:25:18.230 --> 00:25:20.770
+and dispatch means an event happens.
+
+541
+00:25:20.770 --> 00:25:22.200
+When I click on something,
+
+542
+00:25:22.200 --> 00:25:24.650
+the browser dispatches a click event.
+
+543
+00:25:24.650 --> 00:25:25.930
+When I focus this,
+
+544
+00:25:25.930 --> 00:25:28.580
+the browser dispatches a focus event.
+
+545
+00:25:28.580 --> 00:25:31.740
+So what we care about is that we need something
+
+546
+00:25:31.740 --> 00:25:35.214
+to fire off an event about that data,
+
+547
+00:25:35.214 --> 00:25:36.770
+and you need to attach it.
+
+548
+00:25:36.770 --> 00:25:38.563
+So if I look at my HTML here,
+
+549
+00:25:39.560 --> 00:25:44.380
+I'm probably going to fire off that event from this list.
+
+550
+00:25:44.380 --> 00:25:46.980
+You could also fire it off in the form or even the body.
+
+551
+00:25:46.980 --> 00:25:48.730
+It doesn't really matter all that match.
+
+552
+00:25:48.730 --> 00:25:50.700
+We'll tick the list.
+
+553
+00:25:50.700 --> 00:25:52.680
+So go down here, we'll say list,
+
+554
+00:25:52.680 --> 00:25:56.020
+and then we will run the dispatchEvent method.
+
+555
+00:25:56.020 --> 00:25:57.770
+So a dispatchEvent is a method
+
+556
+00:25:57.770 --> 00:26:00.750
+that lives on all DOM elements,
+
+557
+00:26:00.750 --> 00:26:03.560
+and then you have to give it a custom event,
+
+558
+00:26:03.560 --> 00:26:08.443
+and custom event is a constructor in the browser.
+
+559
+00:26:09.779 --> 00:26:13.760
+CustomEvent, you see that it's just a function,
+
+560
+00:26:13.760 --> 00:26:16.620
+and if you were to run it by passing it
+
+561
+00:26:16.620 --> 00:26:20.903
+the name of your event like pizzas here,
+
+562
+00:26:22.040 --> 00:26:24.140
+oh, please use the new operator.
+
+563
+00:26:24.140 --> 00:26:25.090
+Sorry about that.
+
+564
+00:26:25.090 --> 00:26:26.179
+Here we go.
+
+565
+00:26:26.179 --> 00:26:27.189
+(laughs)
+
+566
+00:26:27.189 --> 00:26:28.850
+(coughs)
+
+567
+00:26:28.850 --> 00:26:30.300
+You see what happened is
+
+568
+00:26:30.300 --> 00:26:33.980
+just like we deal with the event inside of here,
+
+569
+00:26:33.980 --> 00:26:36.820
+you can fire off your own custom events,
+
+570
+00:26:36.820 --> 00:26:38.340
+and inside of that event,
+
+571
+00:26:38.340 --> 00:26:40.030
+you'll see that this is a custom event,
+
+572
+00:26:40.030 --> 00:26:41.620
+just like events we've seen before,
+
+573
+00:26:41.620 --> 00:26:43.540
+it gives us the type of the event
+
+574
+00:26:43.540 --> 00:26:47.270
+as well as it will give us any detail when it is fired.
+
+575
+00:26:47.270 --> 00:26:49.810
+Here we are dispatching an event,
+
+576
+00:26:49.810 --> 00:26:51.910
+and when we want to dispatch an event,
+
+577
+00:26:51.910 --> 00:26:55.236
+we create a new CustomEvent,
+
+578
+00:26:55.236 --> 00:26:56.340
+and we pass it the name of the event, itemsUpdated.
+
+579
+00:26:59.275 --> 00:27:02.390
+Notice how I put a capital U on updated there,
+
+580
+00:27:02.390 --> 00:27:04.160
+so I camel cased it.
+
+581
+00:27:04.160 --> 00:27:06.793
+Then when you go ahead and add in eggs,
+
+582
+00:27:08.480 --> 00:27:11.240
+nothing happens, it just dispatched that event.
+
+583
+00:27:11.240 --> 00:27:14.920
+Nobody's listening for itemsUpdated so nobody cares.
+
+584
+00:27:14.920 --> 00:27:18.070
+But if we were to go down to where we add
+
+585
+00:27:18.070 --> 00:27:21.850
+our event listeners and say something like
+
+586
+00:27:21.850 --> 00:27:24.520
+list.addEventListener,
+
+587
+00:27:24.520 --> 00:27:27.373
+we're going to listen for the itemsUpdated event,
+
+588
+00:27:28.550 --> 00:27:33.423
+and when that happens, we can run the displayItems callback.
+
+589
+00:27:35.580 --> 00:27:37.993
+You see, oh, look what's happening.
+
+590
+00:27:39.700 --> 00:27:42.250
+We listened for the itemsUpdated and ran it.
+
+591
+00:27:42.250 --> 00:27:43.330
+So that's no different,
+
+592
+00:27:43.330 --> 00:27:44.810
+we can add as many event listeners
+
+593
+00:27:44.810 --> 00:27:46.780
+to the same event as we want.
+
+594
+00:27:46.780 --> 00:27:47.830
+So if this was the case,
+
+595
+00:27:47.830 --> 00:27:49.640
+I could just take the event
+
+596
+00:27:51.330 --> 00:27:53.383
+and console.log the event.
+
+597
+00:27:56.400 --> 00:27:57.600
+So I type get.
+
+598
+00:27:57.600 --> 00:27:59.960
+You see this is the CustomEvent.
+
+599
+00:27:59.960 --> 00:28:01.840
+The type is itemsUpdated.
+
+600
+00:28:01.840 --> 00:28:05.210
+The target is ul.list.
+
+601
+00:28:05.210 --> 00:28:06.620
+And there's some timestamps,
+
+602
+00:28:06.620 --> 00:28:08.680
+some other information about what happened,
+
+603
+00:28:08.680 --> 00:28:11.550
+even the path, that's actually kind of cool.
+
+604
+00:28:11.550 --> 00:28:16.140
+This is the path at which the events have bubbled through.
+
+605
+00:28:16.140 --> 00:28:19.730
+So it first triggered on the ul,
+
+606
+00:28:19.730 --> 00:28:21.770
+then it bubbled up to the shopping list,
+
+607
+00:28:21.770 --> 00:28:23.930
+bubbled up to the body, bubbled up to HTML,
+
+608
+00:28:23.930 --> 00:28:25.070
+bubbled up to the document,
+
+609
+00:28:25.070 --> 00:28:28.410
+and finally bubbled up to the window.
+
+610
+00:28:28.410 --> 00:28:29.960
+So that is our CustomEvent.
+
+611
+00:28:29.960 --> 00:28:32.280
+I use those quite frequently
+
+612
+00:28:32.280 --> 00:28:34.200
+when I'm doing Vanilla JavaScript
+
+613
+00:28:34.200 --> 00:28:37.600
+to keep my concerns separate
+
+614
+00:28:37.600 --> 00:28:41.370
+and not to tightly tie these functions together.
+
+615
+00:28:41.370 --> 00:28:43.150
+So I'm gonna get rid of this other one right here.
+
+616
+00:28:43.150 --> 00:28:45.410
+We just care about the displaying items.
+
+617
+00:28:45.410 --> 00:28:48.560
+Next thing we wanna do is mirror these data
+
+618
+00:28:48.560 --> 00:28:49.960
+to the local storage.
+
+619
+00:28:49.960 --> 00:28:54.690
+So local storage is sort of like a mini database
+
+620
+00:28:54.690 --> 00:28:56.960
+that lives inside of your browser,
+
+621
+00:28:56.960 --> 00:28:59.210
+and it allows users who are using your website
+
+622
+00:28:59.210 --> 00:29:01.820
+to come back with the same browser
+
+623
+00:29:01.820 --> 00:29:05.500
+and sort of pick up from where they last left.
+
+624
+00:29:05.500 --> 00:29:07.970
+So this is not sending data to a server.
+
+625
+00:29:07.970 --> 00:29:09.780
+It's just the ability to save some data
+
+626
+00:29:09.780 --> 00:29:13.360
+in the user's browser for the featured time.
+
+627
+00:29:13.360 --> 00:29:15.890
+And if you go to the Application tab
+
+628
+00:29:15.890 --> 00:29:18.060
+and look at Local Storage
+
+629
+00:29:18.060 --> 00:29:20.030
+and then click on your domain name,
+
+630
+00:29:20.030 --> 00:29:22.380
+you will see or you won't see anything.
+
+631
+00:29:22.380 --> 00:29:24.210
+This is just 'cause I did it previously,
+
+632
+00:29:24.210 --> 00:29:26.560
+but we're storing information
+
+633
+00:29:26.560 --> 00:29:30.540
+about all of these items here in our local storage.
+
+634
+00:29:30.540 --> 00:29:31.880
+If you go to any website,
+
+635
+00:29:31.880 --> 00:29:34.292
+you'll be able to see what kind of information are there.
+
+636
+00:29:34.292 --> 00:29:36.470
+So let's make a function that will actually
+
+637
+00:29:36.470 --> 00:29:39.190
+mirror our data to local storage.
+
+638
+00:29:39.190 --> 00:29:42.150
+So we'll say function here,
+
+639
+00:29:42.150 --> 00:29:44.463
+we'll call it mirrorToLocalStorage.
+
+640
+00:29:47.360 --> 00:29:49.770
+Let's just console.info
+
+641
+00:29:51.030 --> 00:29:54.220
+Saving items to local storage.
+
+642
+00:29:54.220 --> 00:29:56.550
+Now when I add something,
+
+643
+00:29:56.550 --> 00:29:58.730
+we need to listen for that event
+
+644
+00:29:58.730 --> 00:30:02.810
+and then mirror all of these items to local storage.
+
+645
+00:30:02.810 --> 00:30:03.730
+So what we can do is we can just
+
+646
+00:30:03.730 --> 00:30:05.803
+duplicate this line 47 I have here,
+
+647
+00:30:05.803 --> 00:30:08.530
+we'll add a new one listening for itemsUpdated,
+
+648
+00:30:08.530 --> 00:30:11.480
+and when that happens, we will mirrorToLocalStorage.
+
+649
+00:30:11.480 --> 00:30:14.040
+You see how nice this is is anybody who cares
+
+650
+00:30:14.040 --> 00:30:17.310
+about items updating can listen in on that.
+
+651
+00:30:17.310 --> 00:30:22.310
+And I'll type hey, this says Saving items to localstorage.
+
+652
+00:30:22.410 --> 00:30:24.700
+Now how do you save items to local storage?
+
+653
+00:30:24.700 --> 00:30:27.330
+Well, local storage is pretty simple.
+
+654
+00:30:27.330 --> 00:30:28.422
+The API looks like this.
+
+655
+00:30:28.422 --> 00:30:30.741
+You type in localStorage,
+
+656
+00:30:30.741 --> 00:30:32.213
+and if you type that, it will give you the items,
+
+657
+00:30:34.873 --> 00:30:36.674
+and everything that is in local storage.
+
+658
+00:30:36.674 --> 00:30:39.780
+You can use a local storage that set item,
+
+659
+00:30:39.780 --> 00:30:42.470
+and setItem will take two things, a key and a value.
+
+660
+00:30:42.470 --> 00:30:47.090
+So if I wanna set my name is equal to wes,
+
+661
+00:30:47.090 --> 00:30:50.412
+and the opposite of that is localStorage.getItem
+
+662
+00:30:50.412 --> 00:30:53.107
+where you just give it the key that you are looking for
+
+663
+00:30:53.107 --> 00:30:54.620
+and it will pull it back.
+
+664
+00:30:54.620 --> 00:30:57.980
+I could bet I can look into the application, Local Storage,
+
+665
+00:30:57.980 --> 00:31:00.280
+you see now my name is equal to wes.
+
+666
+00:31:00.280 --> 00:31:01.980
+If you have a bunch of data in there
+
+667
+00:31:01.980 --> 00:31:04.150
+or something's going goofy with local storage,
+
+668
+00:31:04.150 --> 00:31:08.050
+it's best just to clear it all out and start fresh.
+
+669
+00:31:08.050 --> 00:31:09.610
+There's never really an issue
+
+670
+00:31:09.610 --> 00:31:11.130
+with clearing out local storage,
+
+671
+00:31:11.130 --> 00:31:12.840
+pass all of your items that you saved
+
+672
+00:31:12.840 --> 00:31:15.003
+in there will now be gone forever.
+
+673
+00:31:15.840 --> 00:31:18.760
+So how do we store our items?
+
+674
+00:31:18.760 --> 00:31:19.856
+Let's try this.
+
+675
+00:31:19.856 --> 00:31:22.440
+localStorage.setItem,
+
+676
+00:31:22.440 --> 00:31:25.540
+we're gonna set the item's key
+
+677
+00:31:25.540 --> 00:31:27.490
+and we'll just pass it items
+
+678
+00:31:27.490 --> 00:31:28.850
+like our array of items.
+
+679
+00:31:28.850 --> 00:31:30.370
+Let's try it.
+
+680
+00:31:30.370 --> 00:31:33.690
+Milk, eggs, bread.
+
+681
+00:31:33.690 --> 00:31:38.690
+Go to our Application tab, Local Storage,
+
+682
+00:31:39.040 --> 00:31:42.830
+Items, object object object.
+
+683
+00:31:42.830 --> 00:31:44.500
+What?
+
+684
+00:31:44.500 --> 00:31:46.620
+Object object object object object object.
+
+685
+00:31:46.620 --> 00:31:48.050
+What is going on here?
+
+686
+00:31:48.050 --> 00:31:49.983
+And if you open it up,
+
+687
+00:31:50.960 --> 00:31:52.330
+it's just the word object.
+
+688
+00:31:52.330 --> 00:31:54.170
+There's no actual objects in here.
+
+689
+00:31:54.170 --> 00:31:55.440
+And why is that?
+
+690
+00:31:55.440 --> 00:31:58.800
+Well, local storage is text only.
+
+691
+00:31:58.800 --> 00:32:01.170
+So meaning that if you have
+
+692
+00:32:02.350 --> 00:32:05.250
+an array or an object or a boolean
+
+693
+00:32:05.250 --> 00:32:06.570
+or anything like that,
+
+694
+00:32:06.570 --> 00:32:09.870
+what will happen is that it will try to convert
+
+695
+00:32:09.870 --> 00:32:14.140
+that item to text first before it puts it in.
+
+696
+00:32:14.140 --> 00:32:18.010
+And every single type has a dot to string method.
+
+697
+00:32:18.010 --> 00:32:23.010
+So if you have like a number, const age equal to 100,
+
+698
+00:32:24.500 --> 00:32:28.120
+that age will have a dot to string method on it,
+
+699
+00:32:28.120 --> 00:32:30.150
+which it will convert it to a string.
+
+700
+00:32:30.150 --> 00:32:31.300
+If you have an array,
+
+701
+00:32:31.300 --> 00:32:36.063
+so const names is equal to wes and kate, names.toString,
+
+702
+00:32:37.250 --> 00:32:40.740
+it will convert it by just joining them with a comma.
+
+703
+00:32:40.740 --> 00:32:45.740
+Now if you have an object const person is equal to wes,
+
+704
+00:32:45.750 --> 00:32:49.073
+and you call person.toString,
+
+705
+00:32:52.980 --> 00:32:54.870
+it just gives you object, Object
+
+706
+00:32:54.870 --> 00:32:56.520
+which is not helpful at all.
+
+707
+00:32:56.520 --> 00:32:58.000
+And that's exactly what's happening
+
+708
+00:32:58.000 --> 00:33:00.350
+is that local storage is going, whoa,
+
+709
+00:33:00.350 --> 00:33:02.340
+wasn't expecting an object,
+
+710
+00:33:02.340 --> 00:33:04.420
+better convert it to a string first,
+
+711
+00:33:04.420 --> 00:33:05.700
+and then that's all it can do,
+
+712
+00:33:05.700 --> 00:33:08.140
+and that's not very helpful 'cause there's no data in that.
+
+713
+00:33:08.140 --> 00:33:12.620
+So how do you convert objects to strings?
+
+714
+00:33:12.620 --> 00:33:14.480
+Well, we talked about it in an earlier lesson,
+
+715
+00:33:14.480 --> 00:33:16.050
+and that is with JSON.
+
+716
+00:33:16.050 --> 00:33:20.413
+If you call capital JSON.stringify,
+
+717
+00:33:21.440 --> 00:33:24.040
+and you pass it the person,
+
+718
+00:33:24.040 --> 00:33:26.160
+what it will do is it will convert that object
+
+719
+00:33:26.160 --> 00:33:31.100
+to a string representation of that object,
+
+720
+00:33:31.100 --> 00:33:32.900
+and then at a later point in time,
+
+721
+00:33:32.900 --> 00:33:36.880
+we can do the opposite which is JSON.parse,
+
+722
+00:33:36.880 --> 00:33:39.243
+and if you pass it a string,
+
+723
+00:33:40.100 --> 00:33:42.290
+it will convert it back into an object,
+
+724
+00:33:42.290 --> 00:33:44.170
+and that's exactly what we're gonna do here
+
+725
+00:33:44.170 --> 00:33:47.160
+is that before we put it into local storage,
+
+726
+00:33:47.160 --> 00:33:48.700
+we'll convert it to a string,
+
+727
+00:33:48.700 --> 00:33:50.800
+and when we pull it out of local storage,
+
+728
+00:33:50.800 --> 00:33:54.210
+we'll convert it back into an array of objects.
+
+729
+00:33:54.210 --> 00:33:58.123
+So just wrap this into JSON.stringify,
+
+730
+00:34:03.520 --> 00:34:07.590
+and try to add eggs, go to your Application,
+
+731
+00:34:07.590 --> 00:34:09.270
+you see there's our item.
+
+732
+00:34:09.270 --> 00:34:12.950
+Name, eggs, ID is equal to that timestamp,
+
+733
+00:34:12.950 --> 00:34:15.624
+and complete is set to false.
+
+734
+00:34:15.624 --> 00:34:17.860
+Add bread, beer,
+
+735
+00:34:17.860 --> 00:34:20.750
+you see that these items are being added onto it.
+
+736
+00:34:20.750 --> 00:34:22.950
+It will attempt to detect what you have in here
+
+737
+00:34:22.950 --> 00:34:26.300
+and convert it so you can nice and easily see it,
+
+738
+00:34:26.300 --> 00:34:28.400
+but it's just doing stringify for you
+
+739
+00:34:28.400 --> 00:34:30.750
+in this little visual Application tab.
+
+740
+00:34:30.750 --> 00:34:34.644
+So now that we mirror everything to local storage,
+
+741
+00:34:34.644 --> 00:34:38.650
+we need another function that when you load the page,
+
+742
+00:34:38.650 --> 00:34:43.460
+we want to restore from local storage.
+
+743
+00:34:43.460 --> 00:34:45.724
+Let's go ahead and do that.
+
+744
+00:34:45.724 --> 00:34:49.943
+We'll make a function here called restoreFromLocalStorage,
+
+745
+00:34:53.400 --> 00:34:56.500
+and this is simply just gonna run on page load.
+
+746
+00:34:56.500 --> 00:34:58.960
+So you can just run that right there.
+
+747
+00:34:58.960 --> 00:35:03.960
+And we'll console.info Restoring from local storage.
+
+748
+00:35:04.810 --> 00:35:06.610
+Let's just check that that actually works.
+
+749
+00:35:06.610 --> 00:35:08.300
+There we go.
+
+750
+00:35:08.300 --> 00:35:13.300
+Now we'll pull the items from local storage,
+
+751
+00:35:13.730 --> 00:35:15.315
+so we'll say const lsItems.
+
+752
+00:35:15.315 --> 00:35:17.750
+I'm gonna make sort of a temporary variable here
+
+753
+00:35:17.750 --> 00:35:20.800
+just to put them, so it stands for local storage,
+
+754
+00:35:20.800 --> 00:35:23.670
+and we'll say JSON.parse,
+
+755
+00:35:23.670 --> 00:35:25.580
+and we need to pull it out of local storage,
+
+756
+00:35:25.580 --> 00:35:27.230
+so we'll say localStorage.getItem
+
+757
+00:35:29.360 --> 00:35:31.400
+and we'll look for the items, right,
+
+758
+00:35:31.400 --> 00:35:33.580
+because this localStorage.getItem
+
+759
+00:35:36.630 --> 00:35:39.570
+will bring us back a big string of text.
+
+760
+00:35:39.570 --> 00:35:42.383
+And if we wrap that in a JSON.parse,
+
+761
+00:35:45.411 --> 00:35:48.040
+that will give us an array.
+
+762
+00:35:48.040 --> 00:35:48.993
+So lsItems.
+
+763
+00:35:49.940 --> 00:35:54.940
+And then here we'll say if lsItems.length,
+
+764
+00:35:55.160 --> 00:35:57.140
+then we check if there are some items
+
+765
+00:35:57.140 --> 00:35:59.840
+'cause it's likely that this is the first time
+
+766
+00:35:59.840 --> 00:36:01.180
+the user has loaded the application
+
+767
+00:36:01.180 --> 00:36:02.780
+and there'll be nothing in local storage,
+
+768
+00:36:02.780 --> 00:36:04.290
+not even an empty array.
+
+769
+00:36:04.290 --> 00:36:06.000
+So we check if there's a length,
+
+770
+00:36:06.000 --> 00:36:09.010
+and what we'll do is we'll dump the list items
+
+771
+00:36:09.010 --> 00:36:12.140
+into our items variable up here.
+
+772
+00:36:12.140 --> 00:36:15.683
+So do this, items, there.
+
+773
+00:36:18.860 --> 00:36:22.840
+And then we will dispatch the itemsUpdated event.
+
+774
+00:36:22.840 --> 00:36:24.997
+So we'll say list.dispatchEvent
+
+775
+00:36:26.830 --> 00:36:29.760
+new CustomEvent, itemsUpdated.
+
+776
+00:36:33.390 --> 00:36:36.744
+I believe that this will cause an error,
+
+777
+00:36:36.744 --> 00:36:40.920
+an uncaught error, items is read-only, and why?
+
+778
+00:36:40.920 --> 00:36:44.487
+Well, we have our binding here which is our items,
+
+779
+00:36:44.487 --> 00:36:47.260
+and we don't wanna really overwrite it, right?
+
+780
+00:36:47.260 --> 00:36:50.210
+So a couple options that we have here is
+
+781
+00:36:50.210 --> 00:36:51.883
+you could change this to a let,
+
+782
+00:36:53.030 --> 00:36:53.920
+and look, that works.
+
+783
+00:36:53.920 --> 00:36:55.520
+It just restores the items.
+
+784
+00:36:55.520 --> 00:37:00.520
+Another option is to push them all into the items.
+
+785
+00:37:01.570 --> 00:37:03.430
+So if we say items.push,
+
+786
+00:37:03.430 --> 00:37:05.480
+and we push each individual item in there,
+
+787
+00:37:05.480 --> 00:37:10.480
+so lsItems, zero, let's try that.
+
+788
+00:37:11.660 --> 00:37:13.920
+See if I push the first one in,
+
+789
+00:37:13.920 --> 00:37:16.040
+it restores just the first one.
+
+790
+00:37:16.040 --> 00:37:17.040
+So you might think like,
+
+791
+00:37:17.040 --> 00:37:19.010
+okay, we could say lsItems.forEach,
+
+792
+00:37:21.351 --> 00:37:24.193
+and then we'll just say items.push,
+
+793
+00:37:25.520 --> 00:37:30.220
+and then item, and push the item.
+
+794
+00:37:30.220 --> 00:37:35.220
+That only does the first one if I have another one.
+
+795
+00:37:37.300 --> 00:37:39.730
+Refresh, that actually works just fine.
+
+796
+00:37:39.730 --> 00:37:41.930
+And then I'll show you another way
+
+797
+00:37:41.930 --> 00:37:43.630
+'cause there's always a hundred different ways
+
+798
+00:37:43.630 --> 00:37:47.240
+to do things in JavaScript is we could just say
+
+799
+00:37:47.240 --> 00:37:52.240
+items.push and spread the lsItems into it,
+
+800
+00:37:52.491 --> 00:37:54.700
+and why does that work?
+
+801
+00:37:54.700 --> 00:37:57.080
+Well, the reason why that works
+
+802
+00:37:57.080 --> 00:38:00.070
+is because push takes unlimited arguments.
+
+803
+00:38:00.070 --> 00:38:03.230
+I could do this, lsItems is the first one,
+
+804
+00:38:03.230 --> 00:38:04.690
+and then the second one,
+
+805
+00:38:04.690 --> 00:38:07.740
+and that should restore the first two items for us.
+
+806
+00:38:07.740 --> 00:38:09.082
+There we go, first two.
+
+807
+00:38:09.082 --> 00:38:13.760
+So by spreading into a function,
+
+808
+00:38:13.760 --> 00:38:16.810
+you'd take each item and pass it as the first,
+
+809
+00:38:16.810 --> 00:38:21.810
+the second, the third, the fourth argument of the function.
+
+810
+00:38:22.200 --> 00:38:25.510
+So spreading into them, that's called spreading arguments
+
+811
+00:38:25.510 --> 00:38:27.210
+where you take each item of an array
+
+812
+00:38:27.210 --> 00:38:31.230
+and spread it into the method as an argument.
+
+813
+00:38:31.230 --> 00:38:33.050
+So there's tons of different ways,
+
+814
+00:38:33.050 --> 00:38:35.123
+use whichever way you prefer.
+
+815
+00:38:36.470 --> 00:38:39.800
+And it looks like it is up and running.
+
+816
+00:38:39.800 --> 00:38:40.633
+Two more things we need to do,
+
+817
+00:38:40.633 --> 00:38:44.010
+we need to handle the clicking of the check boxes.
+
+818
+00:38:44.010 --> 00:38:45.600
+And you might say like, oh, it works fine,
+
+819
+00:38:45.600 --> 00:38:47.090
+but when you refresh,
+
+820
+00:38:47.090 --> 00:38:49.640
+the fact that you bought that thing is no longer there,
+
+821
+00:38:49.640 --> 00:38:51.930
+so we need to mirror that data to state.
+
+822
+00:38:51.930 --> 00:38:55.098
+And then we also need to handle the deleting of these.
+
+823
+00:38:55.098 --> 00:38:56.820
+Let's do that now.
+
+824
+00:38:56.820 --> 00:38:58.780
+So you might think like, okay,
+
+825
+00:38:58.780 --> 00:39:01.090
+let me select the buttons on the page,
+
+826
+00:39:01.090 --> 00:39:02.880
+loop over them, listen for a click,
+
+827
+00:39:02.880 --> 00:39:05.550
+and when that happens, remove it from our array.
+
+828
+00:39:05.550 --> 00:39:07.330
+And you're kinda right,
+
+829
+00:39:07.330 --> 00:39:09.970
+but I'll show you why that doesn't exist.
+
+830
+00:39:09.970 --> 00:39:11.577
+If I were to select all those buttons,
+
+831
+00:39:11.577 --> 00:39:16.577
+the const buttons is equal to list.querySelectorAll,
+
+832
+00:39:18.545 --> 00:39:20.580
+and we'll just look for a button.
+
+833
+00:39:20.580 --> 00:39:24.960
+If I console.log buttons,
+
+834
+00:39:24.960 --> 00:39:26.090
+how many should we get?
+
+835
+00:39:26.090 --> 00:39:27.100
+We get five.
+
+836
+00:39:27.100 --> 00:39:32.010
+Now watch, if I move that up above this, we get none.
+
+837
+00:39:34.440 --> 00:39:35.583
+Move it below,
+
+838
+00:39:37.835 --> 00:39:39.980
+we get five.
+
+839
+00:39:39.980 --> 00:39:41.253
+Move it above,
+
+840
+00:39:42.690 --> 00:39:43.930
+we get none.
+
+841
+00:39:43.930 --> 00:39:45.400
+Okay, why is that?
+
+842
+00:39:45.400 --> 00:39:48.140
+Well, that's because when you run it here,
+
+843
+00:39:48.140 --> 00:39:50.780
+all of this has not yet been created,
+
+844
+00:39:50.780 --> 00:39:53.730
+meaning that we haven't actually created these items here.
+
+845
+00:39:53.730 --> 00:39:56.193
+If I run a debugger command right here,
+
+846
+00:39:57.760 --> 00:40:01.410
+if I run a debugger command right here,
+
+847
+00:40:01.410 --> 00:40:05.740
+watch, the selector has run already
+
+848
+00:40:05.740 --> 00:40:08.920
+but there's no items in it.
+
+849
+00:40:08.920 --> 00:40:11.080
+It only happens a little bit later
+
+850
+00:40:11.080 --> 00:40:13.500
+once I sort of keep jumping through that
+
+851
+00:40:13.500 --> 00:40:15.590
+and then they will be created.
+
+852
+00:40:15.590 --> 00:40:17.479
+So you might say, okay, Wes, well, like,
+
+853
+00:40:17.479 --> 00:40:20.370
+oh, let me put it lower.
+
+854
+00:40:20.370 --> 00:40:22.570
+And you think you're a hotshot
+
+855
+00:40:22.570 --> 00:40:24.150
+by putting them lower on the page.
+
+856
+00:40:24.150 --> 00:40:25.850
+Well, let's go ahead and try that.
+
+857
+00:40:28.580 --> 00:40:29.650
+Okay, so they're all there.
+
+858
+00:40:29.650 --> 00:40:31.520
+Maybe we'll listen for a click on each.
+
+859
+00:40:31.520 --> 00:40:32.997
+So buttons.forEach
+
+860
+00:40:36.280 --> 00:40:40.850
+button button.addEventListener click,
+
+861
+00:40:42.100 --> 00:40:46.240
+and we will run a deleteItem function.
+
+862
+00:40:47.713 --> 00:40:49.490
+I'll go ahead and make that function.
+
+863
+00:40:49.490 --> 00:40:50.563
+Let's put it up here.
+
+864
+00:40:52.680 --> 00:40:54.950
+That item will take in an ID.
+
+865
+00:40:54.950 --> 00:40:58.453
+And we'll just say console.log deleting item.
+
+866
+00:41:00.829 --> 00:41:02.370
+You see it says deleting item.
+
+867
+00:41:02.370 --> 00:41:04.810
+So that works on all of them,
+
+868
+00:41:04.810 --> 00:41:09.503
+but if I were to add a new one, let's say, food.
+
+869
+00:41:11.660 --> 00:41:14.470
+Now we have another item at the end,
+
+870
+00:41:14.470 --> 00:41:17.970
+and if I click on it, it doesn't say deleting item.
+
+871
+00:41:17.970 --> 00:41:20.330
+Well, this one should still work, right?
+
+872
+00:41:20.330 --> 00:41:22.320
+Oh, actually no.
+
+873
+00:41:22.320 --> 00:41:23.910
+Why did that happen?
+
+874
+00:41:23.910 --> 00:41:26.470
+And there's sort of two things going on here.
+
+875
+00:41:26.470 --> 00:41:31.330
+First of all if you try to listen for clicks
+
+876
+00:41:31.330 --> 00:41:34.730
+on things that do not exist on the page,
+
+877
+00:41:34.730 --> 00:41:38.560
+it will not attach an event listener to that element.
+
+878
+00:41:38.560 --> 00:41:41.900
+So that's why when we moved it up here,
+
+879
+00:41:41.900 --> 00:41:44.170
+it was listening for clicks on none.
+
+880
+00:41:44.170 --> 00:41:46.600
+But when we moved it down here,
+
+881
+00:41:46.600 --> 00:41:48.600
+the things did exist on the page,
+
+882
+00:41:48.600 --> 00:41:51.310
+and that's why it's listening for a click.
+
+883
+00:41:51.310 --> 00:41:54.530
+But we have the second problem where,
+
+884
+00:41:54.530 --> 00:41:56.380
+let me show you this,
+
+885
+00:41:56.380 --> 00:41:57.370
+I'm gonna add something,
+
+886
+00:41:57.370 --> 00:41:59.910
+but keep your eyes on my ul right here.
+
+887
+00:41:59.910 --> 00:42:04.060
+When I add in oj and hit Enter,
+
+888
+00:42:04.060 --> 00:42:07.520
+you see how that re-rendered the entire list?
+
+889
+00:42:07.520 --> 00:42:10.940
+Turning that purple like that,
+
+890
+00:42:10.940 --> 00:42:14.850
+what that means is that we have rerun
+
+891
+00:42:14.850 --> 00:42:18.537
+our displayItems function here,
+
+892
+00:42:18.537 --> 00:42:23.070
+and it's actually creating brand new list items each time.
+
+893
+00:42:23.070 --> 00:42:26.130
+And when you remove an item from the DOM
+
+894
+00:42:26.130 --> 00:42:28.930
+and replace it with a new item,
+
+895
+00:42:28.930 --> 00:42:31.590
+all of those event listeners are lost,
+
+896
+00:42:31.590 --> 00:42:33.680
+and we would have to manually add them back
+
+897
+00:42:33.680 --> 00:42:35.230
+every single time that we create it,
+
+898
+00:42:35.230 --> 00:42:38.483
+and that is a bit of a pain to do.
+
+899
+00:42:39.750 --> 00:42:42.090
+So what are we supposed to do?
+
+900
+00:42:42.090 --> 00:42:43.520
+Well, we can use this concept
+
+901
+00:42:43.520 --> 00:42:45.430
+that is called event delegation,
+
+902
+00:42:45.430 --> 00:42:48.450
+and what that means is instead of listening for clicks
+
+903
+00:42:48.450 --> 00:42:51.010
+on things that might not exist yet
+
+904
+00:42:51.010 --> 00:42:53.910
+or things that will come in the future,
+
+905
+00:42:53.910 --> 00:42:55.780
+what we do is we listen for clicks
+
+906
+00:42:55.780 --> 00:42:59.230
+on things that we do know will be there,
+
+907
+00:42:59.230 --> 00:43:01.360
+and then we check if the thing
+
+908
+00:43:01.360 --> 00:43:05.510
+that they actually clicked on is a lower item.
+
+909
+00:43:05.510 --> 00:43:06.780
+So let me show you how that works.
+
+910
+00:43:06.780 --> 00:43:08.390
+Let's get rid of this button.forEach,
+
+911
+00:43:08.390 --> 00:43:09.980
+let's get rid of this console.log,
+
+912
+00:43:09.980 --> 00:43:12.100
+get rid of this querySelector,
+
+913
+00:43:12.100 --> 00:43:15.883
+and we'll keep our deleteItem function up and running.
+
+914
+00:43:17.110 --> 00:43:20.200
+What we'll do is we will listen for a click
+
+915
+00:43:20.200 --> 00:43:24.253
+on our list.addEventListener click.
+
+916
+00:43:25.370 --> 00:43:27.993
+And when that happens, we'll get the event.
+
+917
+00:43:32.900 --> 00:43:35.320
+By the way I'm using event and e interchangeably here
+
+918
+00:43:35.320 --> 00:43:37.890
+just to show you that you can use either.
+
+919
+00:43:37.890 --> 00:43:42.660
+And if we were to console.log e.target and e.currentTarget,
+
+920
+00:43:43.960 --> 00:43:45.480
+watch what happens.
+
+921
+00:43:45.480 --> 00:43:49.723
+Go to the Console and click on, anywhere on it.
+
+922
+00:43:50.920 --> 00:43:52.536
+e is not defined (laughs).
+
+923
+00:43:52.536 --> 00:43:54.003
+Okay, change that back to e.
+
+924
+00:43:55.450 --> 00:43:56.283
+There we go.
+
+925
+00:43:56.283 --> 00:43:58.960
+You see that it thinks I'm clicking on the span
+
+926
+00:43:58.960 --> 00:44:01.000
+but we listened on the list.
+
+927
+00:44:01.000 --> 00:44:03.493
+And now if I click on the x here,
+
+928
+00:44:05.010 --> 00:44:06.330
+we listened on the list,
+
+929
+00:44:06.330 --> 00:44:08.530
+but we actually clicked on the button.
+
+930
+00:44:08.530 --> 00:44:10.820
+So what we can do here is we can say
+
+931
+00:44:10.820 --> 00:44:15.370
+if the e.target,
+
+932
+00:44:15.370 --> 00:44:17.630
+remember the target is the thing
+
+933
+00:44:17.630 --> 00:44:18.830
+that they actually clicked on,
+
+934
+00:44:18.830 --> 00:44:20.070
+the currentTarget is the thing
+
+935
+00:44:20.070 --> 00:44:22.460
+that you listened for the event on,
+
+936
+00:44:22.460 --> 00:44:26.437
+if the e.target.matches button,
+
+937
+00:44:30.260 --> 00:44:32.550
+so matches will do is it will check
+
+938
+00:44:32.550 --> 00:44:35.710
+if an element matches a CSS selector,
+
+939
+00:44:35.710 --> 00:44:37.690
+and so if it matches button,
+
+940
+00:44:37.690 --> 00:44:40.750
+then we will delete the item
+
+941
+00:44:40.750 --> 00:44:43.060
+and pass it the ID of that item.
+
+942
+00:44:43.060 --> 00:44:44.900
+We'll look at that in just a second.
+
+943
+00:44:44.900 --> 00:44:46.450
+So now when I click on the x's,
+
+944
+00:44:46.450 --> 00:44:48.930
+it says deleting item, deleting item,
+
+945
+00:44:48.930 --> 00:44:50.580
+I'm sorry I spelled that wrong,
+
+946
+00:44:50.580 --> 00:44:52.140
+deleting item, deleting item.
+
+947
+00:44:52.140 --> 00:44:53.863
+And if I add a new one,
+
+948
+00:44:54.800 --> 00:44:56.590
+we don't have to add a new event listener
+
+949
+00:44:56.590 --> 00:44:58.427
+'cause there's only one event listener here
+
+950
+00:44:58.427 --> 00:45:00.210
+and that is on the ul.
+
+951
+00:45:00.210 --> 00:45:03.280
+I'm simply just listening on the ul
+
+952
+00:45:03.280 --> 00:45:08.280
+and delegating the event to the delete button
+
+953
+00:45:08.453 --> 00:45:09.500
+that we have here.
+
+954
+00:45:09.500 --> 00:45:11.573
+So let's write a little comment here.
+
+955
+00:45:12.610 --> 00:45:17.610
+Event Delegation we listen for the click on the list ul,
+
+956
+00:45:24.410 --> 00:45:29.410
+but then delegate the click over to the button
+
+957
+00:45:31.610 --> 00:45:35.053
+if that is what was clicked.
+
+958
+00:45:36.650 --> 00:45:37.523
+Beautiful.
+
+959
+00:45:38.500 --> 00:45:40.900
+One more thing I should say while we're talking about this,
+
+960
+00:45:40.900 --> 00:45:44.600
+whenever we add an item to this list,
+
+961
+00:45:44.600 --> 00:45:47.560
+we re-render the entire list.
+
+962
+00:45:47.560 --> 00:45:49.100
+We were basically deleting the list
+
+963
+00:45:49.100 --> 00:45:51.440
+and creating a brand new one and sticking it in.
+
+964
+00:45:51.440 --> 00:45:53.020
+And you can't even see that happening
+
+965
+00:45:53.020 --> 00:45:54.660
+'cause it happens so quickly,
+
+966
+00:45:54.660 --> 00:45:57.193
+but on large, large, large applications,
+
+967
+00:45:58.060 --> 00:46:02.400
+that can possibly slow down how your application works.
+
+968
+00:46:02.400 --> 00:46:06.950
+And that's where frameworks like Angular, React, Ember, Vue,
+
+969
+00:46:06.950 --> 00:46:10.730
+that's where they come in very handy because they'll know
+
+970
+00:46:10.730 --> 00:46:13.300
+instead of just re-rendering the entire list,
+
+971
+00:46:13.300 --> 00:46:15.914
+they'll know, oh, we should only update this li,
+
+972
+00:46:15.914 --> 00:46:18.870
+and just changing part of the DOM
+
+973
+00:46:18.870 --> 00:46:20.730
+rather than just wiping it out
+
+974
+00:46:20.730 --> 00:46:23.300
+will lead to better performing application.
+
+975
+00:46:23.300 --> 00:46:25.554
+That's kinda hard to do in just Vanilla JavaScript
+
+976
+00:46:25.554 --> 00:46:28.320
+and it's totally fine in this application,
+
+977
+00:46:28.320 --> 00:46:30.810
+but just know that in larger applications,
+
+978
+00:46:30.810 --> 00:46:34.150
+that is one of the major benefits to using a framework
+
+979
+00:46:34.150 --> 00:46:36.923
+over just JavaScript like we're doing here.
+
+980
+00:46:37.930 --> 00:46:39.780
+Now next up we need to figure out
+
+981
+00:46:39.780 --> 00:46:42.980
+when somebody clicks on this x,
+
+982
+00:46:42.980 --> 00:46:47.227
+what ID of item is it related to?
+
+983
+00:46:47.227 --> 00:46:48.810
+And the way that we can do that
+
+984
+00:46:48.810 --> 00:46:51.230
+is we can give our button a value.
+
+985
+00:46:51.230 --> 00:46:54.090
+So when we go and create this button,
+
+986
+00:46:54.090 --> 00:46:57.330
+you see we have our aria-label Remove.
+
+987
+00:46:57.330 --> 00:46:59.580
+We can even put these on their own line here.
+
+988
+00:47:01.980 --> 00:47:06.593
+We can also give this button a value of item.id.
+
+989
+00:47:08.610 --> 00:47:10.327
+Now when I inspect element on one of these,
+
+990
+00:47:10.327 --> 00:47:15.327
+you see that the ID of the item is now in the button,
+
+991
+00:47:15.410 --> 00:47:20.410
+and we can pass that ID, e.target.value, to the deleteItem.
+
+992
+00:47:24.180 --> 00:47:27.143
+And in here we can just log the ID.
+
+993
+00:47:28.350 --> 00:47:31.570
+So let's see if it works and we'll explain it one more time.
+
+994
+00:47:31.570 --> 00:47:33.413
+Deleting item, there we go.
+
+995
+00:47:33.413 --> 00:47:34.960
+So why does that work?
+
+996
+00:47:34.960 --> 00:47:37.823
+Well, when you click on the button,
+
+997
+00:47:38.670 --> 00:47:41.510
+we will then take the value of that button
+
+998
+00:47:41.510 --> 00:47:44.900
+and pass it as an argument to our deleteItem function
+
+999
+00:47:44.900 --> 00:47:47.140
+which then comes in here.
+
+1000
+00:47:47.140 --> 00:47:50.063
+And now we have a variable called id.
+
+1001
+00:47:51.240 --> 00:47:56.240
+Now how do we update our items array without this one?
+
+1002
+00:47:58.010 --> 00:47:59.510
+Well, it's actually pretty simple
+
+1003
+00:47:59.510 --> 00:48:01.899
+because we can just filter for every single item
+
+1004
+00:48:01.899 --> 00:48:05.400
+that is not the one with the ID.
+
+1005
+00:48:05.400 --> 00:48:07.072
+So we'll just say const newItems
+
+1006
+00:48:07.072 --> 00:48:11.780
+is equal to items.filter item,
+
+1007
+00:48:11.780 --> 00:48:13.035
+and then we'll say,
+
+1008
+00:48:13.035 --> 00:48:15.040
+remember filter is yes or no,
+
+1009
+00:48:15.040 --> 00:48:16.290
+does it equal it?
+
+1010
+00:48:16.290 --> 00:48:20.320
+So we'll say item.id is equal to the ID that got passed in.
+
+1011
+00:48:20.320 --> 00:48:22.770
+So if the ID of the item
+
+1012
+00:48:22.770 --> 00:48:25.130
+is equal to the one that got passed in,
+
+1013
+00:48:25.130 --> 00:48:26.850
+then we want to keep it,
+
+1014
+00:48:26.850 --> 00:48:28.510
+and we'll put that into newItems.
+
+1015
+00:48:28.510 --> 00:48:29.343
+It's backwards I know.
+
+1016
+00:48:29.343 --> 00:48:31.830
+We'll flip it in just a second.
+
+1017
+00:48:31.830 --> 00:48:33.785
+Now when I delete it,
+
+1018
+00:48:33.785 --> 00:48:37.060
+newItems is equal to nothing,
+
+1019
+00:48:37.060 --> 00:48:40.050
+item.id is equal to the id.
+
+1020
+00:48:40.050 --> 00:48:41.730
+Okay, so something's wrong here.
+
+1021
+00:48:41.730 --> 00:48:44.080
+If I make that a double equals, does it fix it?
+
+1022
+00:48:46.010 --> 00:48:47.180
+Yes.
+
+1023
+00:48:47.180 --> 00:48:48.500
+Okay, so why does it work
+
+1024
+00:48:48.500 --> 00:48:50.940
+with one equals and not three equals?
+
+1025
+00:48:50.940 --> 00:48:53.330
+And I believe that is because
+
+1026
+00:48:53.330 --> 00:48:57.250
+the ID is being stored as a number,
+
+1027
+00:48:57.250 --> 00:48:59.300
+and when you pull the value out of here,
+
+1028
+00:48:59.300 --> 00:49:01.190
+it's being stored as a string.
+
+1029
+00:49:01.190 --> 00:49:03.360
+So we can wrap that in a parseInt
+
+1030
+00:49:04.937 --> 00:49:07.180
+which will then convert it to a number
+
+1031
+00:49:07.180 --> 00:49:08.493
+and fix that for us.
+
+1032
+00:49:09.540 --> 00:49:11.920
+Good, now it gives us an array of the item
+
+1033
+00:49:11.920 --> 00:49:13.120
+that needs to be removed.
+
+1034
+00:49:13.120 --> 00:49:15.000
+We actually want the opposite,
+
+1035
+00:49:15.000 --> 00:49:17.170
+so we'll change that to bang equals
+
+1036
+00:49:20.910 --> 00:49:23.240
+and then we get an array of 11 items,
+
+1037
+00:49:23.240 --> 00:49:26.510
+the one that we deleted is now off.
+
+1038
+00:49:26.510 --> 00:49:28.360
+Okay, so now the question is how do we get
+
+1039
+00:49:28.360 --> 00:49:30.893
+these new items into our items array?
+
+1040
+00:49:30.893 --> 00:49:35.400
+And in our case we just wanna overwrite the entire list.
+
+1041
+00:49:35.400 --> 00:49:37.270
+I showed you earlier that we can push them in,
+
+1042
+00:49:37.270 --> 00:49:40.670
+but I rather just overwrite it after I filtered it.
+
+1043
+00:49:40.670 --> 00:49:43.283
+So we do need to change this const to a let.
+
+1044
+00:49:44.605 --> 00:49:47.420
+I just make it a let and give it a save,
+
+1045
+00:49:47.420 --> 00:49:49.300
+and it makes it back to const,
+
+1046
+00:49:49.300 --> 00:49:50.505
+that's kind of annoying.
+
+1047
+00:49:50.505 --> 00:49:53.430
+So don't save it just yet.
+
+1048
+00:49:53.430 --> 00:49:56.910
+And then in our deleteItem,
+
+1049
+00:49:56.910 --> 00:49:58.750
+we'll just say instead of newItems,
+
+1050
+00:49:58.750 --> 00:50:02.203
+we'll just say items is equal to items.filter.
+
+1051
+00:50:03.160 --> 00:50:06.160
+And if I delete them, they should be deleting.
+
+1052
+00:50:06.160 --> 00:50:08.563
+The way we can tell is if we console.log items,
+
+1053
+00:50:10.630 --> 00:50:12.160
+and they should go down by one.
+
+1054
+00:50:12.160 --> 00:50:17.160
+There you go, 10, 11, nine, eight, seven, here we go.
+
+1055
+00:50:17.630 --> 00:50:20.960
+But if I refresh the page, they're still all there.
+
+1056
+00:50:20.960 --> 00:50:22.130
+So two things need to happen.
+
+1057
+00:50:22.130 --> 00:50:25.240
+First, we need to re-render everything,
+
+1058
+00:50:25.240 --> 00:50:29.120
+and second, we also need to update our local storage.
+
+1059
+00:50:29.120 --> 00:50:31.440
+And you'll notice that both of those things
+
+1060
+00:50:31.440 --> 00:50:34.121
+re-rendering the list and mirroring to local storage
+
+1061
+00:50:34.121 --> 00:50:36.581
+are bound to our itemsUpdated.
+
+1062
+00:50:36.581 --> 00:50:40.450
+So we can simply just fire another itemsUpdated
+
+1063
+00:50:40.450 --> 00:50:43.913
+and just copy this one and paste it in here.
+
+1064
+00:50:46.440 --> 00:50:47.840
+And now it should just work.
+
+1065
+00:50:48.801 --> 00:50:49.763
+Look at that.
+
+1066
+00:50:51.150 --> 00:50:53.650
+Items are being removed as you do it, why?
+
+1067
+00:50:53.650 --> 00:50:55.250
+Because your event listener
+
+1068
+00:50:55.250 --> 00:50:57.560
+is listening for the items to be updated
+
+1069
+00:50:57.560 --> 00:50:59.890
+and then will do its respective work
+
+1070
+00:50:59.890 --> 00:51:01.893
+displaying and mirroring them to local storage.
+
+1071
+00:51:01.893 --> 00:51:04.803
+So I refresh the page and they are working.
+
+1072
+00:51:05.880 --> 00:51:10.880
+Last item we need to do is to work with this,
+
+1073
+00:51:11.210 --> 00:51:13.500
+the checking and unchecking of the data.
+
+1074
+00:51:13.500 --> 00:51:17.390
+So if I put milk, eggs, bread,
+
+1075
+00:51:17.390 --> 00:51:19.800
+and I check all three of those,
+
+1076
+00:51:19.800 --> 00:51:21.090
+refresh the page,
+
+1077
+00:51:21.090 --> 00:51:22.973
+that data is not saved.
+
+1078
+00:51:26.090 --> 00:51:28.040
+So we can make another little function here,
+
+1079
+00:51:28.040 --> 00:51:33.040
+say function markAsComplete taking the ID of that item
+
+1080
+00:51:36.120 --> 00:51:41.120
+and just console.log Marking as complete the id.
+
+1081
+00:51:42.250 --> 00:51:43.810
+Let's get this wired up first.
+
+1082
+00:51:43.810 --> 00:51:48.460
+So like what do we listen for in our case?
+
+1083
+00:51:48.460 --> 00:51:53.460
+We wanna listen for a check of this inbox.
+
+1084
+00:51:53.630 --> 00:51:57.030
+So we can use our event delegation as well.
+
+1085
+00:51:57.030 --> 00:51:58.780
+I can do it right inside of this
+
+1086
+00:51:58.780 --> 00:52:00.110
+or have another event listener.
+
+1087
+00:52:00.110 --> 00:52:02.390
+I'm gonna do it right here and say
+
+1088
+00:52:02.390 --> 00:52:05.763
+if e.target.matches,
+
+1089
+00:52:08.420 --> 00:52:12.663
+we'll look for an input with the type checkbox,
+
+1090
+00:52:15.180 --> 00:52:17.313
+then we'll markAsComplete,
+
+1091
+00:52:18.610 --> 00:52:20.003
+and in this case,
+
+1092
+00:52:23.620 --> 00:52:27.020
+and we need to pass it the ID again as well.
+
+1093
+00:52:27.020 --> 00:52:28.523
+So let's look at our,
+
+1094
+00:52:29.430 --> 00:52:34.430
+is there an input doesn't have an ID on it?
+
+1095
+00:52:35.210 --> 00:52:36.610
+Well, we can fix that.
+
+1096
+00:52:36.610 --> 00:52:38.533
+Let's go to where we make our HTML.
+
+1097
+00:52:41.921 --> 00:52:45.570
+And we'll simply just say the value is equal to item.id.
+
+1098
+00:52:51.610 --> 00:52:55.210
+Now you see the value is on that input.
+
+1099
+00:52:55.210 --> 00:52:59.740
+So we can go back to our event delegation
+
+1100
+00:52:59.740 --> 00:53:02.663
+and just pass it the same thing we did there,
+
+1101
+00:53:03.994 --> 00:53:06.293
+this e.target.value.
+
+1102
+00:53:07.730 --> 00:53:09.333
+And now when you check one,
+
+1103
+00:53:11.080 --> 00:53:12.610
+it says Marking as complete.
+
+1104
+00:53:12.610 --> 00:53:15.810
+This seems a little bit extra to me.
+
+1105
+00:53:15.810 --> 00:53:17.483
+So why don't we do this,
+
+1106
+00:53:20.465 --> 00:53:24.090
+const id is equal to parseInt,
+
+1107
+00:53:24.090 --> 00:53:25.820
+and then we'll replace both of these
+
+1108
+00:53:25.820 --> 00:53:28.200
+with the id variable that we just created.
+
+1109
+00:53:28.200 --> 00:53:29.973
+It still worked.
+
+1110
+00:53:33.000 --> 00:53:36.000
+Good, it seems to still work.
+
+1111
+00:53:36.000 --> 00:53:38.253
+Now let's go back up to our mark complete.
+
+1112
+00:53:44.610 --> 00:53:48.150
+And we need to find the actual item that we want.
+
+1113
+00:53:48.150 --> 00:53:49.120
+So we'll say const itemRef,
+
+1114
+00:53:49.120 --> 00:53:52.110
+we need to find reference to the item
+
+1115
+00:53:52.110 --> 00:53:54.070
+that is being marked as complete,
+
+1116
+00:53:54.070 --> 00:53:56.460
+so we'll take the items and we'll look for it.
+
+1117
+00:53:56.460 --> 00:53:58.030
+How should we look for it?
+
+1118
+00:53:58.030 --> 00:53:59.050
+Well, find.
+
+1119
+00:53:59.050 --> 00:54:01.770
+Find is a great array method.
+
+1120
+00:54:01.770 --> 00:54:04.250
+And then we'll look for the item
+
+1121
+00:54:04.250 --> 00:54:06.590
+or the item.id is equal to the id
+
+1122
+00:54:06.590 --> 00:54:08.100
+that just got passed in, right?
+
+1123
+00:54:08.100 --> 00:54:11.580
+So where the item's ID is equal to this one,
+
+1124
+00:54:11.580 --> 00:54:14.440
+then console.log the itemRef.
+
+1125
+00:54:14.440 --> 00:54:15.273
+Let's see.
+
+1126
+00:54:18.320 --> 00:54:21.720
+Bread, eggs, milk.
+
+1127
+00:54:21.720 --> 00:54:23.540
+And the reason why I called this a ref
+
+1128
+00:54:23.540 --> 00:54:27.270
+is because if I change a value on this object,
+
+1129
+00:54:27.270 --> 00:54:31.810
+it will be reflected in the array of items.
+
+1130
+00:54:31.810 --> 00:54:36.810
+So we can say itemRef.complete is equal to,
+
+1131
+00:54:38.370 --> 00:54:42.533
+now this works for both, like on and off, right?
+
+1132
+00:54:43.430 --> 00:54:44.263
+We could have an if statement here,
+
+1133
+00:54:44.263 --> 00:54:46.820
+we can say if it's true, then set it to false,
+
+1134
+00:54:46.820 --> 00:54:48.310
+and if it's false, set it to true,
+
+1135
+00:54:48.310 --> 00:54:53.060
+or we can just set it to itself but the opposite.
+
+1136
+00:54:53.060 --> 00:54:55.600
+And that will toggle from true to false, why?
+
+1137
+00:54:55.600 --> 00:55:00.570
+Because !true and !false are just the opposites.
+
+1138
+00:55:00.570 --> 00:55:04.230
+So setting it to the bang version of itself,
+
+1139
+00:55:04.230 --> 00:55:06.020
+you're in good hands.
+
+1140
+00:55:06.020 --> 00:55:06.870
+Then what do we do?
+
+1141
+00:55:06.870 --> 00:55:09.840
+Well, let's dispatch itemsUpdated event, why?
+
+1142
+00:55:09.840 --> 00:55:12.060
+Because we updated the items
+
+1143
+00:55:12.060 --> 00:55:14.440
+and we just have to dispatch it,
+
+1144
+00:55:14.440 --> 00:55:16.230
+and it should,
+
+1145
+00:55:16.230 --> 00:55:17.833
+oh look what's happening here.
+
+1146
+00:55:20.940 --> 00:55:25.720
+You check it and it almost seems like it is kinda working.
+
+1147
+00:55:25.720 --> 00:55:29.120
+And if I were to go to my Application
+
+1148
+00:55:30.380 --> 00:55:32.623
+and take a look at this data,
+
+1149
+00:55:34.619 --> 00:55:36.463
+look at that, look at the first one,
+
+1150
+00:55:38.446 --> 00:55:40.410
+you see how it's toggling true to false
+
+1151
+00:55:40.410 --> 00:55:44.960
+but the checkbox is never working, and why is that?
+
+1152
+00:55:44.960 --> 00:55:46.830
+It's because we have not yet supplied
+
+1153
+00:55:46.830 --> 00:55:48.860
+the checked attribute to it
+
+1154
+00:55:48.860 --> 00:55:50.600
+when we rendered out that HTML.
+
+1155
+00:55:50.600 --> 00:55:52.200
+So let's go up here,
+
+1156
+00:55:52.200 --> 00:55:56.973
+find our input with the value of item.id,
+
+1157
+00:55:59.020 --> 00:56:01.430
+a type of checkbox,
+
+1158
+00:56:01.430 --> 00:56:05.113
+and a checked attribute of checked.
+
+1159
+00:56:07.279 --> 00:56:09.390
+And you see by default they're all checked.
+
+1160
+00:56:09.390 --> 00:56:11.200
+Now the thing about a checked attribute is
+
+1161
+00:56:11.200 --> 00:56:13.363
+also if you pass checked is false,
+
+1162
+00:56:14.390 --> 00:56:16.200
+they'll maintain checked.
+
+1163
+00:56:16.200 --> 00:56:21.200
+You pass a checked of hey or ellen or absolutely anything,
+
+1164
+00:56:25.450 --> 00:56:29.840
+even if you just say checked, it will make it checked.
+
+1165
+00:56:29.840 --> 00:56:31.840
+So what makes something unchecked?
+
+1166
+00:56:31.840 --> 00:56:35.060
+The absence of the checked attribute.
+
+1167
+00:56:35.060 --> 00:56:37.420
+So what we need to do here is check
+
+1168
+00:56:37.420 --> 00:56:41.150
+if the checked attribute is true,
+
+1169
+00:56:41.150 --> 00:56:44.800
+and if it is, then put the checked attribute there,
+
+1170
+00:56:44.800 --> 00:56:45.710
+and the way we can do that
+
+1171
+00:56:45.710 --> 00:56:47.700
+is with dollar sign curly brackets.
+
+1172
+00:56:47.700 --> 00:56:49.733
+We'll just say item.checked,
+
+1173
+00:56:51.000 --> 00:56:52.320
+if that is true,
+
+1174
+00:56:52.320 --> 00:56:55.660
+then we'll give it the checked attribute,
+
+1175
+00:56:55.660 --> 00:56:57.383
+otherwise we'll give it nothing.
+
+1176
+00:57:01.300 --> 00:57:06.283
+And, oh, it's not checked, it's completed.
+
+1177
+00:57:09.230 --> 00:57:13.600
+No, it's not completed, it's complete. (laughs)
+
+1178
+00:57:13.600 --> 00:57:14.740
+There we go.
+
+1179
+00:57:14.740 --> 00:57:17.030
+And now when you check them and uncheck them,
+
+1180
+00:57:17.030 --> 00:57:18.520
+they will be showing.
+
+1181
+00:57:18.520 --> 00:57:22.600
+Similarly we could also use the &amp;&amp; operator
+
+1182
+00:57:22.600 --> 00:57:24.600
+and that will work exactly the same way.
+
+1183
+00:57:26.840 --> 00:57:29.580
+And I refresh and they stay there.
+
+1184
+00:57:29.580 --> 00:57:30.413
+Whoo!
+
+1185
+00:57:30.413 --> 00:57:32.410
+So I know this is a lot,
+
+1186
+00:57:32.410 --> 00:57:35.760
+but this is how all of those frameworks work
+
+1187
+00:57:35.760 --> 00:57:40.130
+where you are basically have some state,
+
+1188
+00:57:40.130 --> 00:57:43.120
+you write a bunch of handlers to update state
+
+1189
+00:57:43.120 --> 00:57:46.610
+and to modify state and to change it, filter it,
+
+1190
+00:57:46.610 --> 00:57:48.350
+change properties, things like that,
+
+1191
+00:57:48.350 --> 00:57:50.410
+and when that state changes,
+
+1192
+00:57:50.410 --> 00:57:55.410
+then you re-render out the HTML that is on the page.
+
+1193
+00:57:56.480 --> 00:57:57.970
+One last thing I should say here,
+
+1194
+00:57:57.970 --> 00:58:00.870
+and we're gonna go into this in our security issue as well,
+
+1195
+00:58:00.870 --> 00:58:04.730
+but if you have, you could do an image source
+
+1196
+00:58:04.730 --> 00:58:07.950
+equal to anything you want,
+
+1197
+00:58:07.950 --> 00:58:10.053
+so I could say lorem,
+
+1198
+00:58:12.737 --> 00:58:15.237
+lorempixel.com/200,
+
+1199
+00:58:19.490 --> 00:58:23.360
+and you see it tried to create an image on here,
+
+1200
+00:58:23.360 --> 00:58:24.710
+and that's a bit of a security issue
+
+1201
+00:58:24.710 --> 00:58:27.030
+especially with the onload attribute.
+
+1202
+00:58:27.030 --> 00:58:30.220
+So this is a little bit of a security issue
+
+1203
+00:58:30.220 --> 00:58:32.640
+where you take input from a user
+
+1204
+00:58:32.640 --> 00:58:34.920
+and then display it as HTML.
+
+1205
+00:58:34.920 --> 00:58:36.620
+And in the security video we're gonna look at
+
+1206
+00:58:36.620 --> 00:58:40.470
+how we can clean all of the data that the user types in
+
+1207
+00:58:40.470 --> 00:58:42.010
+so that this type of thing doesn't,
+
+1208
+00:58:42.010 --> 00:58:44.410
+look at this, it's like broken right now,
+
+1209
+00:58:44.410 --> 00:58:45.640
+so we'll fix all of that,
+
+1210
+00:58:45.640 --> 00:58:48.980
+we'll come back to that in the security episode.
+
+1211
+00:58:48.980 --> 00:58:49.830
+Talk to you then.
+

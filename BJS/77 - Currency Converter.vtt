@@ -1,0 +1,2150 @@
+﻿WEBVTT
+
+1
+00:00:00.639 --> 00:00:04.794
+(upbeat music)
+
+2
+00:00:04.794 --> 00:00:08.030
+<v Wes>Alright we're gonna build a currency conversion app</v>
+
+3
+00:00:08.030 --> 00:00:09.270
+I'll show you here what we got here
+
+4
+00:00:09.270 --> 00:00:11.690
+so you have something like 500 dollars
+
+5
+00:00:11.690 --> 00:00:14.170
+in Australian Dollar
+
+6
+00:00:14.170 --> 00:00:16.640
+and you want to know what that is in Swiss Francs
+
+7
+00:00:16.640 --> 00:00:17.510
+it will convert it.
+
+8
+00:00:17.510 --> 00:00:19.730
+So this one includes fetching data.
+
+9
+00:00:19.730 --> 00:00:21.720
+This one includes caching data
+
+10
+00:00:21.720 --> 00:00:24.400
+because when we hit this API,
+
+11
+00:00:24.400 --> 00:00:26.780
+we need to provide it our base rate.
+
+12
+00:00:26.780 --> 00:00:29.820
+If we're starting from Euro, then we want to know
+
+13
+00:00:29.820 --> 00:00:31.940
+what the conversion rates are.
+
+14
+00:00:31.940 --> 00:00:36.920
+But if we are starting from Croatian Kuna
+
+15
+00:00:36.920 --> 00:00:40.771
+and we want to convert it into British Pounds,
+
+16
+00:00:40.771 --> 00:00:44.470
+then we need to set our base as the HRK
+
+17
+00:00:44.470 --> 00:00:46.640
+and then find how to convert it to that.
+
+18
+00:00:46.640 --> 00:00:49.500
+So we're learning about how to cache with that.
+
+19
+00:00:49.500 --> 00:00:53.440
+So we are using this API, called the exchangeratesapi.io.
+
+20
+00:00:53.440 --> 00:00:54.870
+It is totally free.
+
+21
+00:00:54.870 --> 00:00:58.050
+There was another one like this that went paid
+
+22
+00:00:58.050 --> 00:00:59.500
+and the nice thing about this
+
+23
+00:00:59.500 --> 00:01:01.760
+it that they are just scraping the data
+
+24
+00:01:01.760 --> 00:01:03.880
+from the European Central Bank.
+
+25
+00:01:03.880 --> 00:01:08.220
+So when that one went paid I just swapped out all of,
+
+26
+00:01:08.220 --> 00:01:11.200
+I used this API on my own website,
+
+27
+00:01:11.200 --> 00:01:13.530
+I just swapped it out with the new API.
+
+28
+00:01:13.530 --> 00:01:15.150
+And there's lots of different websites
+
+29
+00:01:15.150 --> 00:01:16.180
+that provide like something this
+
+30
+00:01:16.180 --> 00:01:19.140
+and they even provide the source to the code on Github
+
+31
+00:01:19.140 --> 00:01:21.730
+if you'd like to host it yourself.
+
+32
+00:01:21.730 --> 00:01:26.550
+Because if you're using this for actual checkout processes,
+
+33
+00:01:26.550 --> 00:01:28.750
+you probably want to make sure that the data coming in
+
+34
+00:01:28.750 --> 00:01:33.380
+is yours and not somebody who's gonna change on you.
+
+35
+00:01:33.380 --> 00:01:36.440
+So let's get going with this.
+
+36
+00:01:36.440 --> 00:01:38.300
+Real quick we've got a form here
+
+37
+00:01:38.300 --> 00:01:40.501
+with the input with the from amount.
+
+38
+00:01:40.501 --> 00:01:44.270
+Then we have a select box that is the from currency.
+
+39
+00:01:44.270 --> 00:01:47.470
+You'll notice that there is no option for the from
+
+40
+00:01:47.470 --> 00:01:50.460
+or the to currency because that is going to be populated
+
+41
+00:01:50.460 --> 00:01:51.900
+on page load.
+
+42
+00:01:51.900 --> 00:01:54.640
+And then we finally have a to amount.
+
+43
+00:01:54.640 --> 00:01:57.420
+If you open up money.js,
+
+44
+00:01:57.420 --> 00:02:00.550
+you'll see I've already given you just a list of currencies
+
+45
+00:02:00.550 --> 00:02:05.490
+and this is just the currency code translated to,
+
+46
+00:02:05.490 --> 00:02:06.999
+I don't know what you call this,
+
+47
+00:02:06.999 --> 00:02:11.590
+the English version of what that currency code stands for
+
+48
+00:02:11.590 --> 00:02:13.940
+and we're going to be using these currencies
+
+49
+00:02:13.940 --> 00:02:18.400
+to go ahead and populate the drop downs in here.
+
+50
+00:02:18.400 --> 00:02:20.080
+Cause right now if you click on these drop downs there's
+
+51
+00:02:20.080 --> 00:02:21.040
+nothing in there.
+
+52
+00:02:21.040 --> 00:02:24.380
+So let's start with the converting these currencies here
+
+53
+00:02:24.380 --> 00:02:27.200
+into drop downs so we can populate those.
+
+54
+00:02:27.200 --> 00:02:30.950
+So let's go and make a function here
+
+55
+00:02:30.950 --> 00:02:35.950
+called generateOptions that takes in some options,
+
+56
+00:02:37.300 --> 00:02:40.620
+and that's going to take in an options object
+
+57
+00:02:40.620 --> 00:02:44.640
+so we need to pass in the currencies.
+
+58
+00:02:44.640 --> 00:02:49.050
+And when the page loads we'll say const optionsHTML
+
+59
+00:02:49.050 --> 00:02:51.060
+is equal to generate options,
+
+60
+00:02:51.060 --> 00:02:55.563
+and we'll pass it the currencies object that we have here.
+
+61
+00:02:57.540 --> 00:02:58.590
+And I'll just go ahead
+
+62
+00:02:58.590 --> 00:03:01.670
+and console log the optionsHTML on page load.
+
+63
+00:03:01.670 --> 00:03:03.660
+Cause we want that to load as fast as possible.
+
+64
+00:03:03.660 --> 00:03:08.030
+Soon as the page loads, generate those options that we have.
+
+65
+00:03:08.030 --> 00:03:10.960
+So let's just console log in here the options
+
+66
+00:03:10.960 --> 00:03:13.910
+and open that up in our browser.
+
+67
+00:03:13.910 --> 00:03:16.173
+We don't need any tooling for this one.
+
+68
+00:03:17.423 --> 00:03:19.560
+Let's see if we've got an object here
+
+69
+00:03:19.560 --> 00:03:21.060
+with everything that we want.
+
+70
+00:03:21.060 --> 00:03:24.790
+All right so let's go back to looping.
+
+71
+00:03:24.790 --> 00:03:26.930
+How do you loop over an object, right?
+
+72
+00:03:26.930 --> 00:03:30.352
+Well there's the for of loop you could use.
+
+73
+00:03:30.352 --> 00:03:34.730
+Yeah but we could also use the object.entries
+
+74
+00:03:34.730 --> 00:03:37.340
+or object.values or object.keys.
+
+75
+00:03:37.340 --> 00:03:42.340
+We'll use objects.entries to turn this object into an array.
+
+76
+00:03:43.790 --> 00:03:47.510
+So we'll go into here and we'll say const optionsHTML
+
+77
+00:03:49.060 --> 00:03:51.570
+is equal to, actually we can just go ahead
+
+78
+00:03:51.570 --> 00:03:53.750
+and return this directly, we don't need a variable.
+
+79
+00:03:53.750 --> 00:03:58.750
+Return object.entries, we'll pass it, whoa.
+
+80
+00:04:00.530 --> 00:04:01.833
+Pass it our options.
+
+81
+00:04:03.510 --> 00:04:05.710
+And let's just see what that gives us so far.
+
+82
+00:04:05.710 --> 00:04:08.980
+Okay, that gives us array and each item in the array
+
+83
+00:04:08.980 --> 00:04:10.660
+is another array.
+
+84
+00:04:10.660 --> 00:04:12.687
+The first thing being the currency code
+
+85
+00:04:12.687 --> 00:04:16.280
+and the second thing being the, let's call it a label.
+
+86
+00:04:16.280 --> 00:04:18.100
+The label for that code.
+
+87
+00:04:18.100 --> 00:04:21.263
+Okay, so we can take that array and map over it.
+
+88
+00:04:22.290 --> 00:04:24.523
+And we're gonna get a subarray.
+
+89
+00:04:27.100 --> 00:04:28.500
+And we'll just console log that
+
+90
+00:04:28.500 --> 00:04:30.100
+and see what we're dealing with.
+
+91
+00:04:31.120 --> 00:04:34.240
+So for each one we're console logging the subarray.
+
+92
+00:04:34.240 --> 00:04:38.562
+You might know by now that we can destructure that into,
+
+93
+00:04:38.562 --> 00:04:43.562
+we'll call that the currency code and the currency name.
+
+94
+00:04:47.020 --> 00:04:49.700
+And then let's just console log currency code
+
+95
+00:04:49.700 --> 00:04:51.223
+and currency name.
+
+96
+00:04:56.400 --> 00:04:57.350
+Okay there we go.
+
+97
+00:04:57.350 --> 00:04:58.283
+It's looking good.
+
+98
+00:04:59.250 --> 00:05:00.470
+You see these are undefined
+
+99
+00:05:00.470 --> 00:05:02.080
+cause we're not actually returning anything
+
+100
+00:05:02.080 --> 00:05:03.770
+from this map right now
+
+101
+00:05:03.770 --> 00:05:05.000
+So that's what we need to do now,
+
+102
+00:05:05.000 --> 00:05:08.590
+is we will return some backticks
+
+103
+00:05:08.590 --> 00:05:11.320
+and that will have an option tag.
+
+104
+00:05:11.320 --> 00:05:15.893
+The value is going to be the currency code.
+
+105
+00:05:19.960 --> 00:05:24.460
+And the name in here will be the currency name.
+
+106
+00:05:24.460 --> 00:05:26.920
+Let's double check the one that I built here.
+
+107
+00:05:26.920 --> 00:05:29.120
+Looks like I do the code and the name,
+
+108
+00:05:29.120 --> 00:05:31.130
+so if we wanted to put the code and the name,
+
+109
+00:05:31.130 --> 00:05:32.530
+we could just take the code,
+
+110
+00:05:34.410 --> 00:05:36.693
+put it in front and use a dash.
+
+111
+00:05:38.880 --> 00:05:41.410
+Okay so we'll refresh that.
+
+112
+00:05:41.410 --> 00:05:44.390
+You see that our array now optionsHTML
+
+113
+00:05:44.390 --> 00:05:48.240
+is just a whole bunch of options
+
+114
+00:05:48.240 --> 00:05:50.670
+and then finally at the end of this map,
+
+115
+00:05:50.670 --> 00:05:53.390
+we can do a .join on nothing,
+
+116
+00:05:53.390 --> 00:05:57.030
+that should just turn it into a dump of HTML.
+
+117
+00:05:57.030 --> 00:05:58.970
+Yeah that looks good.
+
+118
+00:05:58.970 --> 00:06:03.757
+Now on page load we can populate the options elements
+
+119
+00:06:06.020 --> 00:06:09.190
+so we should go to the top of our files and select those.
+
+120
+00:06:09.190 --> 00:06:14.190
+So const fromSelect is equal to document.querySelector
+
+121
+00:06:17.520 --> 00:06:19.060
+and we'll grab the input
+
+122
+00:06:19.060 --> 00:06:22.093
+where the name is equal to from currency.
+
+123
+00:06:26.340 --> 00:06:31.340
+And then the toSelect will be the to currency,
+
+124
+00:06:34.800 --> 00:06:36.260
+and then we'll go down to the bottom here
+
+125
+00:06:36.260 --> 00:06:39.040
+and say the fromSelect dot
+
+126
+00:06:44.235 --> 00:06:47.770
+innerHTML is equal to the optionsHTML
+
+127
+00:06:47.770 --> 00:06:50.380
+and then the toSelect we'll get the exact same.
+
+128
+00:06:50.380 --> 00:06:52.960
+And that's why I've stored it in a variable here.
+
+129
+00:06:52.960 --> 00:06:54.913
+Cause if I were to do this,
+
+130
+00:06:57.180 --> 00:06:59.350
+then I'd be running that function twice
+
+131
+00:06:59.350 --> 00:07:00.700
+which is unnecessary.
+
+132
+00:07:00.700 --> 00:07:03.270
+So just run it once, store it in a variable
+
+133
+00:07:03.270 --> 00:07:04.863
+and then pop it in.
+
+134
+00:07:07.140 --> 00:07:09.320
+Now when I refresh, look at that!
+
+135
+00:07:09.320 --> 00:07:10.153
+Boop!
+
+136
+00:07:10.153 --> 00:07:13.530
+Each one immediately has the dropdown
+
+137
+00:07:13.530 --> 00:07:14.690
+of everything that we need.
+
+138
+00:07:14.690 --> 00:07:16.140
+Okay that's looking good.
+
+139
+00:07:16.140 --> 00:07:19.887
+All right, next let's work on some data for a bit.
+
+140
+00:07:19.887 --> 00:07:24.400
+I don't like going too far into the UI
+
+141
+00:07:24.400 --> 00:07:28.060
+without coding up the actual functionality.
+
+142
+00:07:28.060 --> 00:07:30.230
+Because I find if I start with UI
+
+143
+00:07:30.230 --> 00:07:31.890
+and then go into functionality,
+
+144
+00:07:31.890 --> 00:07:35.180
+I find that I tie my functionality too tightly
+
+145
+00:07:35.180 --> 00:07:37.370
+to the actual UI.
+
+146
+00:07:37.370 --> 00:07:39.960
+So let's code the function that gonna go off
+
+147
+00:07:39.960 --> 00:07:43.763
+and fetch the data from the exchange rates API.
+
+148
+00:07:48.090 --> 00:07:50.940
+So we'll make a function here called fetch rates
+
+149
+00:07:51.970 --> 00:07:53.840
+and that is going to take a base
+
+150
+00:07:53.840 --> 00:07:55.717
+and we'll default it to USD.
+
+151
+00:07:55.717 --> 00:07:58.320
+I'm not American or anything but,
+
+152
+00:07:58.320 --> 00:07:59.850
+let's just default it to USD.
+
+153
+00:07:59.850 --> 00:08:01.410
+Make that an async function
+
+154
+00:08:02.640 --> 00:08:05.170
+and then we will go ahead and fetch the rates.
+
+155
+00:08:05.170 --> 00:08:07.850
+So the response is the fetch
+
+156
+00:08:07.850 --> 00:08:10.910
+and we need to fetch from the endpoint
+
+157
+00:08:10.910 --> 00:08:15.410
+which is API.exchangeratesapi.io/latest.
+
+158
+00:08:15.410 --> 00:08:18.570
+Let's stick that in a variable at the top of our file here.
+
+159
+00:08:18.570 --> 00:08:22.253
+So say const Endpoint is equal to that.
+
+160
+00:08:24.151 --> 00:08:27.140
+Then we'll go back to our fetch rates function
+
+161
+00:08:27.140 --> 00:08:29.210
+and we'll fetch the endpoint.
+
+162
+00:08:29.210 --> 00:08:30.970
+Now the way that the endpoint works
+
+163
+00:08:30.970 --> 00:08:32.740
+is that you put a question mark on the end
+
+164
+00:08:32.740 --> 00:08:34.903
+and you set the base is equal to USD
+
+165
+00:08:36.400 --> 00:08:38.860
+and that's going to see the base is there.
+
+166
+00:08:38.860 --> 00:08:40.823
+If I were to change that to CAD,
+
+167
+00:08:42.010 --> 00:08:44.330
+now the base would be in Canadian.
+
+168
+00:08:44.330 --> 00:08:46.260
+So we want to fetch the endpoint,
+
+169
+00:08:46.260 --> 00:08:49.510
+but we want to tack on the base value
+
+170
+00:08:49.510 --> 00:08:50.690
+that has been passed in.
+
+171
+00:08:50.690 --> 00:08:54.040
+So wrap that sucker in some backticks,
+
+172
+00:08:54.040 --> 00:08:56.253
+then interpolate it with you dollar curly,
+
+173
+00:08:57.790 --> 00:09:00.980
+and then we will put the query param on the end
+
+174
+00:09:00.980 --> 00:09:03.550
+and we'll say the base is equal to
+
+175
+00:09:03.550 --> 00:09:06.000
+and then we'll interpolate the base variable
+
+176
+00:09:06.000 --> 00:09:09.620
+that was passed in to this fetch rates function.
+
+177
+00:09:09.620 --> 00:09:12.300
+Okay, and now we know that we can say
+
+178
+00:09:12.300 --> 00:09:16.600
+rates is equal to await response.json
+
+179
+00:09:17.830 --> 00:09:20.693
+and then let's just go ahead console log rates.
+
+180
+00:09:22.320 --> 00:09:25.140
+Now I should be able to run that myself
+
+181
+00:09:25.140 --> 00:09:27.390
+from the terminal here.
+
+182
+00:09:27.390 --> 00:09:32.390
+So we'll say fetch rates and we'll just do the base of USD.
+
+183
+00:09:34.732 --> 00:09:38.310
+Res.json is not a function!
+
+184
+00:09:38.310 --> 00:09:39.560
+Okay.
+
+185
+00:09:39.560 --> 00:09:41.340
+Oh what did I forget?
+
+186
+00:09:41.340 --> 00:09:44.550
+Take a look, I forgot the await right there.
+
+187
+00:09:44.550 --> 00:09:46.459
+Let's run it now.
+
+188
+00:09:46.459 --> 00:09:47.310
+There we go.
+
+189
+00:09:47.310 --> 00:09:49.700
+So we immediately get a promise back,
+
+190
+00:09:49.700 --> 00:09:53.010
+cause this is an async function which returns a promise.
+
+191
+00:09:53.010 --> 00:09:56.330
+And then in there you get our rates, that based on it.
+
+192
+00:09:56.330 --> 00:10:00.363
+Now if I pass CAD to it, does that work?
+
+193
+00:10:02.090 --> 00:10:02.923
+There we go.
+
+194
+00:10:02.923 --> 00:10:03.756
+Yep.
+
+195
+00:10:03.756 --> 00:10:06.263
+Base of CAD and we get all of our rates in here.
+
+196
+00:10:08.810 --> 00:10:10.350
+So this function has done enough.
+
+197
+00:10:10.350 --> 00:10:13.210
+We'll simply just return the rates from that
+
+198
+00:10:13.210 --> 00:10:15.480
+and we'll call that a day.
+
+199
+00:10:15.480 --> 00:10:18.200
+Now the next thing that I want to do
+
+200
+00:10:18.200 --> 00:10:20.370
+is to make a convert function
+
+201
+00:10:20.370 --> 00:10:24.517
+and this convert function is gonna take in an amount
+
+202
+00:10:24.517 --> 00:10:27.470
+that we want to convert, a raw number.
+
+203
+00:10:27.470 --> 00:10:31.380
+And then we also want to take in the from currency
+
+204
+00:10:31.380 --> 00:10:33.240
+as well as the to currency.
+
+205
+00:10:33.240 --> 00:10:38.240
+Now if we don't have the rates for that specific currency,
+
+206
+00:10:39.250 --> 00:10:42.200
+we're gonna have to use this fetch rates function
+
+207
+00:10:42.200 --> 00:10:43.380
+to go ahead and do it.
+
+208
+00:10:43.380 --> 00:10:46.023
+So we'll make a convert function,
+
+209
+00:10:48.290 --> 00:10:53.053
+that takes in an amount if from and a to.
+
+210
+00:10:54.660 --> 00:10:57.060
+And now here's where it gets a little bit tricky.
+
+211
+00:10:57.060 --> 00:11:01.940
+We could fetch the rates each time,
+
+212
+00:11:01.940 --> 00:11:04.220
+but that could be a little bit slow.
+
+213
+00:11:04.220 --> 00:11:08.370
+Especially, if we look at the example that I have here,
+
+214
+00:11:08.370 --> 00:11:10.820
+every time I type in,
+
+215
+00:11:10.820 --> 00:11:13.070
+I'm calling the convert function.
+
+216
+00:11:13.070 --> 00:11:15.300
+And you see how nice and fast that is?
+
+217
+00:11:15.300 --> 00:11:19.680
+What would happen if I had to fetch
+
+218
+00:11:19.680 --> 00:11:23.920
+the rates every single time someone typed into this box?
+
+219
+00:11:23.920 --> 00:11:28.030
+For this number alone, I'd be fetching the rates five times.
+
+220
+00:11:28.030 --> 00:11:29.460
+And that's unnecessary
+
+221
+00:11:29.460 --> 00:11:33.030
+and often API's will rate limit you.
+
+222
+00:11:33.030 --> 00:11:36.730
+They say okay, "You can only have sixty requests per hour."
+
+223
+00:11:36.730 --> 00:11:38.880
+So what you need to do in that case,
+
+224
+00:11:38.880 --> 00:11:40.610
+is you need to cache the rates.
+
+225
+00:11:40.610 --> 00:11:42.720
+Meaning you need to hold on to them
+
+226
+00:11:42.720 --> 00:11:44.770
+if you already have them.
+
+227
+00:11:44.770 --> 00:11:46.540
+And there's different techniques you can do.
+
+228
+00:11:46.540 --> 00:11:48.360
+You can delete rates after a couple of minutes,
+
+229
+00:11:48.360 --> 00:11:49.340
+something like that.
+
+230
+00:11:49.340 --> 00:11:50.440
+So what we're gonna do,
+
+231
+00:11:50.440 --> 00:11:53.460
+is we're gonna make an object up here.
+
+232
+00:11:53.460 --> 00:11:56.223
+Let's do it right below the endpoint.
+
+233
+00:11:58.220 --> 00:12:02.620
+And we will make the object called ratesByBase
+
+234
+00:12:03.690 --> 00:12:05.883
+and we'll set that to an empty object.
+
+235
+00:12:15.260 --> 00:12:19.310
+And this is going to store all of the rates in it.
+
+236
+00:12:19.310 --> 00:12:21.823
+So we'll go back to our convert function here.
+
+237
+00:12:23.200 --> 00:12:24.780
+And we will
+
+238
+00:12:26.350 --> 00:12:31.350
+first check if we even have the rates to convert
+
+239
+00:12:33.620 --> 00:12:35.573
+from that currency.
+
+240
+00:12:37.030 --> 00:12:39.070
+So the way it's gonna work is that,
+
+241
+00:12:39.070 --> 00:12:40.924
+it's gonna be something like this,
+
+242
+00:12:40.924 --> 00:12:44.780
+it's gonna say CAD is equal to an object
+
+243
+00:12:44.780 --> 00:12:49.780
+and CAD will be one, HKD will be five point 8,
+
+244
+00:12:50.300 --> 00:12:51.380
+whatever, you get the point.
+
+245
+00:12:51.380 --> 00:12:54.436
+And then as soon as somebody changes their from,
+
+246
+00:12:54.436 --> 00:12:55.890
+which is this one,
+
+247
+00:12:55.890 --> 00:12:58.380
+to maybe Australian dollars, we'll do AUD
+
+248
+00:12:58.380 --> 00:12:59.919
+and we'll have another one.
+
+249
+00:12:59.919 --> 00:13:01.820
+So eventually if you cycle through all of these,
+
+250
+00:13:01.820 --> 00:13:03.931
+we'll have a massive rates by base object
+
+251
+00:13:03.931 --> 00:13:08.250
+that will contain all of the rates by their from value.
+
+252
+00:13:08.250 --> 00:13:09.720
+So by default we start with nothing
+
+253
+00:13:09.720 --> 00:13:11.843
+cause we don't have any of those.
+
+254
+00:13:14.103 --> 00:13:15.340
+And we'll go into our convert.
+
+255
+00:13:15.340 --> 00:13:20.340
+We'll say if, there is no rates by base,
+
+256
+00:13:20.370 --> 00:13:24.100
+square bracket from, so this would be,
+
+257
+00:13:24.100 --> 00:13:27.440
+if there's no CAD property,
+
+258
+00:13:27.440 --> 00:13:29.610
+then we need to go ahead and fetch it.
+
+259
+00:13:29.610 --> 00:13:31.450
+But we don't know it's always gonna be CAD,
+
+260
+00:13:31.450 --> 00:13:35.480
+so we are going to use square brackets to look up
+
+261
+00:13:35.480 --> 00:13:38.860
+what they've passed in from the from function.
+
+262
+00:13:38.860 --> 00:13:42.870
+So if there's no rates from, then console log, oh no,
+
+263
+00:13:42.870 --> 00:13:46.743
+we don't have, let's turn this to backticks actually.
+
+264
+00:13:49.660 --> 00:13:53.623
+From to convert to, to.
+
+265
+00:13:54.650 --> 00:13:57.413
+So let's go get it!
+
+266
+00:14:00.170 --> 00:14:02.160
+So I think I should be able to just run this now
+
+267
+00:14:02.160 --> 00:14:03.780
+if I run convert
+
+268
+00:14:03.780 --> 00:14:08.093
+and I wanna convert $100 from Canadian to USD.
+
+269
+00:14:09.220 --> 00:14:12.317
+It says, "Oh no, we don't have CAD to convert to USD.
+
+270
+00:14:12.317 --> 00:14:13.310
+"Let's go get it."
+
+271
+00:14:13.310 --> 00:14:14.810
+Okay, it makes sense.
+
+272
+00:14:14.810 --> 00:14:18.080
+So we're gonna have to use our fetch rates function here.
+
+273
+00:14:18.080 --> 00:14:20.873
+So first thing you wanna do here is mark this as async.
+
+274
+00:14:22.540 --> 00:14:25.770
+And, inside of here we'll say
+
+275
+00:14:28.231 --> 00:14:29.680
+const rates
+
+276
+00:14:32.970 --> 00:14:35.812
+is equal to, what was the function called?
+
+277
+00:14:35.812 --> 00:14:36.729
+FetchRates.
+
+278
+00:14:37.800 --> 00:14:40.680
+And we wanna fetch the rates from the base
+
+279
+00:14:40.680 --> 00:14:42.690
+of what they are requesting,
+
+280
+00:14:42.690 --> 00:14:44.183
+which is our from variable.
+
+281
+00:14:45.020 --> 00:14:47.010
+And then when that comes back we will,
+
+282
+00:14:47.010 --> 00:14:48.563
+oh we forgot to await that.
+
+283
+00:14:49.500 --> 00:14:50.720
+And we'll console log the rates
+
+284
+00:14:50.720 --> 00:14:51.800
+just to see that we have them
+
+285
+00:14:51.800 --> 00:14:56.800
+and then we'll go ahead and store them for next time.
+
+286
+00:14:57.520 --> 00:14:59.010
+And then that's what we'll is we'll say
+
+287
+00:14:59.010 --> 00:15:03.940
+ratesByBase, square bracket from is equal to
+
+288
+00:15:03.940 --> 00:15:05.563
+the rates that just came back.
+
+289
+00:15:07.300 --> 00:15:09.390
+So let me show you how that works.
+
+290
+00:15:09.390 --> 00:15:10.890
+If we take our ratesByBase,
+
+291
+00:15:10.890 --> 00:15:12.490
+you see there's nothing in there.
+
+292
+00:15:12.490 --> 00:15:14.583
+And if we run convert,
+
+293
+00:15:16.509 --> 00:15:20.150
+it says, "Oh no, we don't have CAD, going to convert it."
+
+294
+00:15:20.150 --> 00:15:21.720
+Then it comes back with the rates
+
+295
+00:15:21.720 --> 00:15:26.720
+and now our ratesByBase has those values in it.
+
+296
+00:15:27.420 --> 00:15:31.640
+And if I were to rerun rates convert,
+
+297
+00:15:31.640 --> 00:15:35.360
+you'll notice that it doesn't say that, "Oh no" anymore,
+
+298
+00:15:35.360 --> 00:15:37.720
+because we know have those values.
+
+299
+00:15:37.720 --> 00:15:39.690
+Soon as you refresh the page, they're gone.
+
+300
+00:15:39.690 --> 00:15:41.360
+You could, of course used local storage
+
+301
+00:15:41.360 --> 00:15:42.860
+to hold on to those
+
+302
+00:15:42.860 --> 00:15:46.000
+but I feel like just the page load is good enough
+
+303
+00:15:46.000 --> 00:15:47.307
+for the amount of time that we need to do
+
+304
+00:15:47.307 --> 00:15:49.530
+and there really isn't any API limit
+
+305
+00:15:49.530 --> 00:15:51.063
+on this API that we're using.
+
+306
+00:15:52.410 --> 00:15:56.070
+So that's what we wanna do and then next what we need to do
+
+307
+00:15:56.070 --> 00:16:00.253
+is convert the amount that they passed in.
+
+308
+00:16:01.280 --> 00:16:06.153
+So, const convertedAmount is equal to,
+
+309
+00:16:07.520 --> 00:16:10.050
+we'll take the rate that they're converting,
+
+310
+00:16:10.050 --> 00:16:15.050
+so ratesByBase from dot rates square bracket to,
+
+311
+00:16:18.160 --> 00:16:20.320
+what?! (laughing)
+
+312
+00:16:20.320 --> 00:16:23.560
+So let me show you what's going on here.
+
+313
+00:16:23.560 --> 00:16:25.460
+If we take our ratesByBase
+
+314
+00:16:25.460 --> 00:16:29.450
+and we go to CAD, that is going to be the from
+
+315
+00:16:29.450 --> 00:16:34.040
+and then inside of that we also need to grab the rates.
+
+316
+00:16:34.040 --> 00:16:35.220
+And then we need to find out
+
+317
+00:16:35.220 --> 00:16:37.370
+what is the rate that they're converting to.
+
+318
+00:16:37.370 --> 00:16:39.830
+So let's say they're converting to USD,
+
+319
+00:16:39.830 --> 00:16:43.690
+so we would look that up with dot USD.
+
+320
+00:16:43.690 --> 00:16:46.820
+And that will give us 0.7517, okay?
+
+321
+00:16:46.820 --> 00:16:50.970
+So that's why, instead of using hard-coding CAD and USD,
+
+322
+00:16:50.970 --> 00:16:53.460
+we're using variables from and to
+
+323
+00:16:53.460 --> 00:16:57.610
+and you have to use square bracket notation, in that case.
+
+324
+00:16:57.610 --> 00:17:00.477
+So that will simply just get the rate,
+
+325
+00:17:00.477 --> 00:17:03.610
+maybe we just we'll name that rate.
+
+326
+00:17:03.610 --> 00:17:06.550
+Because let's not do too much in one go.
+
+327
+00:17:06.550 --> 00:17:11.143
+And then we'll make it, our convertedAmount variable again.
+
+328
+00:17:12.900 --> 00:17:15.810
+And we'll take the rate and we'll multiply it
+
+329
+00:17:15.810 --> 00:17:19.623
+by the amount they passed in, and let's just console log,
+
+330
+00:17:20.590 --> 00:17:23.190
+just for our own sanity,
+
+331
+00:17:23.190 --> 00:17:24.230
+amount
+
+332
+00:17:28.010 --> 00:17:29.850
+from is
+
+333
+00:17:33.528 --> 00:17:34.778
+convertedAmount
+
+334
+00:17:37.289 --> 00:17:38.653
+in to.
+
+335
+00:17:40.330 --> 00:17:43.047
+And finally return convertedAmount.
+
+336
+00:17:43.990 --> 00:17:46.750
+So let's see if this works just in the terminal here.
+
+337
+00:17:46.750 --> 00:17:51.517
+If I run my convert 100 CAD to USD it should say,
+
+338
+00:17:51.517 --> 00:17:54.280
+"Oh, don't have CAD rates, let me go get them."
+
+339
+00:17:54.280 --> 00:17:56.330
+When that is back it should go ahead
+
+340
+00:17:56.330 --> 00:17:59.773
+and pull them up for us and return the converted amount.
+
+341
+00:18:01.496 --> 00:18:02.780
+Here we go, oh no!
+
+342
+00:18:02.780 --> 00:18:03.613
+We don't have CAD.
+
+343
+00:18:03.613 --> 00:18:04.880
+Convert it, good.
+
+344
+00:18:04.880 --> 00:18:07.040
+And then a couple seconds later it goes ahead
+
+345
+00:18:07.040 --> 00:18:08.380
+and brings the rates back
+
+346
+00:18:08.380 --> 00:18:11.610
+and then converts that amount for us.
+
+347
+00:18:11.610 --> 00:18:12.763
+Good, good, good.
+
+348
+00:18:14.630 --> 00:18:19.630
+Last thing is this convert function doesn't return,
+
+349
+00:18:20.230 --> 00:18:21.520
+it returned a promise to us
+
+350
+00:18:21.520 --> 00:18:24.093
+and I guess if we typed await in front of that,
+
+351
+00:18:25.500 --> 00:18:28.797
+yeah, it actually gives us the value that we're looking for.
+
+352
+00:18:28.797 --> 00:18:30.500
+$75.
+
+353
+00:18:30.500 --> 00:18:31.600
+Let's try it the other way around.
+
+354
+00:18:31.600 --> 00:18:35.780
+So 100 USD to CAD.
+
+355
+00:18:35.780 --> 00:18:37.153
+Clear this out, run it.
+
+356
+00:18:38.400 --> 00:18:39.310
+133
+
+357
+00:18:39.310 --> 00:18:41.900
+Dollar is high right now! (laughs)
+
+358
+00:18:41.900 --> 00:18:42.820
+Alright good.
+
+359
+00:18:42.820 --> 00:18:44.680
+So that convert function is working.
+
+360
+00:18:44.680 --> 00:18:46.700
+You see what I mean about making these functions?
+
+361
+00:18:46.700 --> 00:18:49.500
+Just let 'em run nice and cleanly
+
+362
+00:18:49.500 --> 00:18:51.560
+and now that, I think we've built
+
+363
+00:18:51.560 --> 00:18:53.940
+the main functionality of this app,
+
+364
+00:18:53.940 --> 00:18:58.773
+let's go ahead and start hooking it up to our UI here.
+
+365
+00:19:02.620 --> 00:19:06.580
+So what are the different things that we need to listen to?
+
+366
+00:19:06.580 --> 00:19:09.170
+We need to listen for, when someone types in here,
+
+367
+00:19:09.170 --> 00:19:12.240
+we need to listen when someone changes something in here,
+
+368
+00:19:12.240 --> 00:19:13.720
+and when we need to listen for
+
+369
+00:19:13.720 --> 00:19:15.070
+when someone changes something in here.
+
+370
+00:19:15.070 --> 00:19:16.760
+So three inputs.
+
+371
+00:19:16.760 --> 00:19:20.330
+Now let me show you a little trick, what we can do,
+
+372
+00:19:20.330 --> 00:19:24.750
+is we can actually listen for an input event on the form.
+
+373
+00:19:24.750 --> 00:19:26.860
+And that will cover all of them.
+
+374
+00:19:26.860 --> 00:19:28.630
+Which is really cool.
+
+375
+00:19:28.630 --> 00:19:31.773
+So we'll go up here and select the form.
+
+376
+00:19:32.652 --> 00:19:36.640
+When const form is equal to document querySelector
+
+377
+00:19:37.670 --> 00:19:39.843
+and what do we have on that form here?
+
+378
+00:19:41.030 --> 00:19:45.143
+It's app space form, so .app space form.
+
+379
+00:19:47.948 --> 00:19:51.100
+And we'll go down here and say form.addEventListener.
+
+380
+00:19:51.100 --> 00:19:52.620
+We'll listen for input,
+
+381
+00:19:52.620 --> 00:19:56.783
+and when that happens we'll run a handle input function.
+
+382
+00:20:00.660 --> 00:20:04.373
+So let's go up here and define that function.
+
+383
+00:20:08.790 --> 00:20:09.650
+E.
+
+384
+00:20:09.650 --> 00:20:12.400
+And let's just go ahead and console e.target
+
+385
+00:20:13.670 --> 00:20:17.250
+and e.currentTarget just to show you that one
+
+386
+00:20:17.250 --> 00:20:20.000
+for the 100th time in this course.
+
+387
+00:20:20.000 --> 00:20:20.833
+Watch this now.
+
+388
+00:20:20.833 --> 00:20:22.253
+As soon as I type in here,
+
+389
+00:20:26.086 --> 00:20:30.723
+you see that the e.target is changing every single time
+
+390
+00:20:32.200 --> 00:20:35.200
+and the e.currentTarget is always gonna be the form.
+
+391
+00:20:35.200 --> 00:20:36.033
+Why?
+
+392
+00:20:36.033 --> 00:20:39.880
+Because we're listening for the event on the form,
+
+393
+00:20:39.880 --> 00:20:41.370
+which is our current target
+
+394
+00:20:41.370 --> 00:20:46.370
+but the actual event happens on input or select box
+
+395
+00:20:47.000 --> 00:20:50.340
+and those events bubble up to the form,
+
+396
+00:20:50.340 --> 00:20:53.630
+where we handle them in our handleInput.
+
+397
+00:20:53.630 --> 00:20:55.030
+So that's one little trick there,
+
+398
+00:20:55.030 --> 00:20:58.210
+is you can listen for input on a form
+
+399
+00:20:58.210 --> 00:21:00.220
+and that will cover all of your inputs
+
+400
+00:21:00.220 --> 00:21:01.883
+that are inside of that form.
+
+401
+00:21:05.330 --> 00:21:07.130
+Now when that happens,
+
+402
+00:21:07.130 --> 00:21:10.940
+we just need to start wiring up all of our functions now.
+
+403
+00:21:10.940 --> 00:21:13.690
+So, we'll say const rawAmount
+
+404
+00:21:16.240 --> 00:21:17.150
+is equal to.
+
+405
+00:21:17.150 --> 00:21:19.450
+We're gonna await and then we're gonna convert.
+
+406
+00:21:19.450 --> 00:21:23.060
+And the convert will take three arguments,
+
+407
+00:21:23.060 --> 00:21:25.490
+takes the amount, the from and the to.
+
+408
+00:21:25.490 --> 00:21:27.680
+And that's pretty easy to do because we can just take
+
+409
+00:21:27.680 --> 00:21:32.680
+the from input and we'll take the value out of that.
+
+410
+00:21:32.730 --> 00:21:36.840
+We'll take the fromSelect, we'll take the value out of that.
+
+411
+00:21:36.840 --> 00:21:40.483
+And we'll grab the toSelect and take the value out of that.
+
+412
+00:21:42.240 --> 00:21:45.763
+This is not an async function so make sure you mark that.
+
+413
+00:21:46.890 --> 00:21:49.390
+And looks like it's giving me raw,
+
+414
+00:21:49.390 --> 00:21:51.623
+from input is not defined,
+
+415
+00:21:53.330 --> 00:21:54.950
+oh I called it fromSelect,
+
+416
+00:21:56.990 --> 00:22:00.727
+that makes more sense than fromInput so we'll say fromSelect
+
+417
+00:22:07.190 --> 00:22:08.710
+looks like it's giving me grief,
+
+418
+00:22:08.710 --> 00:22:11.060
+that fromInput is not a thing
+
+419
+00:22:11.060 --> 00:22:14.360
+and yeah looks like I didn't select this input yet.
+
+420
+00:22:14.360 --> 00:22:18.479
+So duplicate that and we'll rename one to fromInput
+
+421
+00:22:18.479 --> 00:22:22.797
+and that is the input with the from amount.
+
+422
+00:22:28.910 --> 00:22:33.400
+Let's go back to our handler, looks good.
+
+423
+00:22:33.400 --> 00:22:35.387
+Let's console log rawAmount.
+
+424
+00:22:39.030 --> 00:22:43.200
+So now if I put 500, you see that first time?
+
+425
+00:22:43.200 --> 00:22:47.610
+It's US to US by default and when I type that in,
+
+426
+00:22:47.610 --> 00:22:49.150
+it says, "Oh no, we don't have US."
+
+427
+00:22:49.150 --> 00:22:51.420
+Goes and fetches it, and then runs it.
+
+428
+00:22:51.420 --> 00:22:56.420
+Five US is five US then 50 US is 50 US and 500 US is 500 US.
+
+429
+00:22:56.920 --> 00:22:57.753
+Good!
+
+430
+00:22:57.753 --> 00:23:01.808
+So we can just go ahead and select this sucker right here,
+
+431
+00:23:01.808 --> 00:23:03.999
+the to amount
+
+432
+00:23:03.999 --> 00:23:05.700
+do we have that yet?
+
+433
+00:23:05.700 --> 00:23:06.813
+Nope.
+
+434
+00:23:06.813 --> 00:23:09.820
+So we'll say, toEl is equal to
+
+435
+00:23:11.240 --> 00:23:13.387
+a paragraph of the class of to_amount.
+
+436
+00:23:18.550 --> 00:23:20.040
+By the way, why did I switch
+
+437
+00:23:20.040 --> 00:23:23.146
+to using underscores in this example?
+
+438
+00:23:23.146 --> 00:23:24.204
+(laughing) I don't know!
+
+439
+00:23:24.204 --> 00:23:25.230
+I don't know.
+
+440
+00:23:25.230 --> 00:23:28.120
+Don't email me, (laughing) I don't know why.
+
+441
+00:23:28.120 --> 00:23:31.030
+But the important thing is that I was consistent
+
+442
+00:23:31.030 --> 00:23:35.480
+and I didn't use camel case anywhere in my HTML.
+
+443
+00:23:35.480 --> 00:23:36.640
+So that's totally fine.
+
+444
+00:23:36.640 --> 00:23:37.740
+So we have this toEl
+
+445
+00:23:39.210 --> 00:23:42.260
+and we'll go back down to handleInput
+
+446
+00:23:42.260 --> 00:23:44.450
+and we'll say toEl.textContent
+
+447
+00:23:44.450 --> 00:23:46.367
+is equal to the rawAmount.
+
+448
+00:23:51.200 --> 00:23:52.740
+So let's try it.
+
+449
+00:23:52.740 --> 00:23:54.610
+Canadian dollars to US.
+
+450
+00:23:54.610 --> 00:23:59.610
+100 Canadian dollars equal to 75.17503 blah blah blah blah.
+
+451
+00:24:01.240 --> 00:24:02.073
+All right.
+
+452
+00:24:04.930 --> 00:24:05.970
+So it's working.
+
+453
+00:24:05.970 --> 00:24:07.960
+And if I switch these
+
+454
+00:24:10.180 --> 00:24:11.890
+it's working just fine.
+
+455
+00:24:11.890 --> 00:24:14.550
+The only problem is that it's not formatting it
+
+456
+00:24:14.550 --> 00:24:18.400
+and it's also not formatting it accordingly
+
+457
+00:24:18.400 --> 00:24:21.063
+to what the locale is.
+
+458
+00:24:22.020 --> 00:24:25.410
+So money in New Zealand dollars
+
+459
+00:24:25.410 --> 00:24:28.560
+or money in Indian rupee may be formatted
+
+460
+00:24:28.560 --> 00:24:29.393
+a little bit different
+
+461
+00:24:29.393 --> 00:24:31.270
+than just a dollar sign in front of it
+
+462
+00:24:31.270 --> 00:24:33.640
+and some of them have cents and some of them don't.
+
+463
+00:24:33.640 --> 00:24:37.060
+So we can use this really cool API that's called,
+
+464
+00:24:37.060 --> 00:24:40.220
+Number Format and it actually knows
+
+465
+00:24:40.220 --> 00:24:43.030
+how to handle currency formatting,
+
+466
+00:24:43.030 --> 00:24:44.780
+which is really, really cool.
+
+467
+00:24:44.780 --> 00:24:49.780
+So we can go here and say const formattedAmount.
+
+468
+00:24:51.460 --> 00:24:52.293
+Actually.
+
+469
+00:24:59.090 --> 00:25:01.230
+So let's actually make another function above this
+
+470
+00:25:01.230 --> 00:25:05.923
+and we'll just make it a function called formatCurrency.
+
+471
+00:25:07.808 --> 00:25:09.750
+And that will take in an amount
+
+472
+00:25:11.890 --> 00:25:14.900
+and a currency to format it on
+
+473
+00:25:14.900 --> 00:25:16.470
+and then inside of there
+
+474
+00:25:16.470 --> 00:25:19.520
+we will just return
+
+475
+00:25:19.520 --> 00:25:23.040
+and we'll make a Intl.NumberFormat
+
+476
+00:25:26.630 --> 00:25:31.430
+and you pass it the language of the reader
+
+477
+00:25:31.430 --> 00:25:36.430
+so you can either pass it en-US or you can leave it blank
+
+478
+00:25:36.810 --> 00:25:40.320
+and it will detect the language of the browser.
+
+479
+00:25:40.320 --> 00:25:42.040
+Which is almost always what you want.
+
+480
+00:25:42.040 --> 00:25:43.280
+So we'll leave that blank there
+
+481
+00:25:43.280 --> 00:25:46.630
+and then you pass it an options argument here.
+
+482
+00:25:46.630 --> 00:25:49.310
+We'll say style is equal to currency
+
+483
+00:25:51.070 --> 00:25:54.620
+and the currency that you want to format
+
+484
+00:25:54.620 --> 00:25:57.890
+is going to be the currency that got passed in here
+
+485
+00:25:58.960 --> 00:26:01.820
+and then we can simply just pass currency.
+
+486
+00:26:01.820 --> 00:26:04.450
+And then finally you call this format function
+
+487
+00:26:04.450 --> 00:26:08.660
+so this part here, this is called a formatter
+
+488
+00:26:08.660 --> 00:26:11.580
+and then the method is just a format function
+
+489
+00:26:11.580 --> 00:26:15.053
+on the formatter and then you pass it your amount.
+
+490
+00:26:17.000 --> 00:26:20.980
+So I believe now, instead of just saying rawAmount,
+
+491
+00:26:20.980 --> 00:26:22.783
+we can say formatCurrency,
+
+492
+00:26:25.240 --> 00:26:26.860
+pass the amount,
+
+493
+00:26:26.860 --> 00:26:31.443
+pass the to value,
+
+494
+00:26:32.700 --> 00:26:36.463
+and that is the toSelect.value.
+
+495
+00:26:38.720 --> 00:26:39.920
+Let's see if that works.
+
+496
+00:26:41.070 --> 00:26:41.903
+So, 500.
+
+497
+00:26:46.200 --> 00:26:47.060
+Not working.
+
+498
+00:26:47.060 --> 00:26:50.060
+Let's see if there's anything going in, in the console here.
+
+499
+00:26:50.910 --> 00:26:53.290
+So it's not working for me.
+
+500
+00:26:53.290 --> 00:26:56.390
+Let's break this down a little bit further.
+
+501
+00:26:56.390 --> 00:26:58.300
+If I run into a problem like this
+
+502
+00:26:58.300 --> 00:27:00.150
+and there's many things calling each other,
+
+503
+00:27:00.150 --> 00:27:03.080
+I'm just going to work on one by one.
+
+504
+00:27:03.080 --> 00:27:06.100
+So here I'm just gonna say formatCurrency.
+
+505
+00:27:06.100 --> 00:27:09.663
+Gonna pass it $100 and I'm gonna pass it USD.
+
+506
+00:27:11.732 --> 00:27:13.040
+It gives me back 100.
+
+507
+00:27:13.040 --> 00:27:15.370
+I wonder if this one does need.
+
+508
+00:27:15.370 --> 00:27:18.280
+Most of these Intl methods will detect it,
+
+509
+00:27:18.280 --> 00:27:21.363
+but if I pass en-US, will that fix it?
+
+510
+00:27:22.540 --> 00:27:23.373
+Yeah, there we go.
+
+511
+00:27:23.373 --> 00:27:25.760
+Okay so, that's a bit of an unfortunate thing
+
+512
+00:27:25.760 --> 00:27:27.970
+about this API here,
+
+513
+00:27:27.970 --> 00:27:32.680
+is that it will require you to pass it a locale.
+
+514
+00:27:32.680 --> 00:27:34.810
+So there's ways to detect that from the user,
+
+515
+00:27:34.810 --> 00:27:36.500
+it's a little bit outside of this tutorial.
+
+516
+00:27:36.500 --> 00:27:38.600
+So in our case, just put the locale
+
+517
+00:27:38.600 --> 00:27:41.470
+of what you will reading it in.
+
+518
+00:27:41.470 --> 00:27:44.686
+And then if I pass it 500
+
+519
+00:27:44.686 --> 00:27:45.519
+USD.
+
+520
+00:27:47.640 --> 00:27:49.640
+Swiss Francs.
+
+521
+00:27:49.640 --> 00:27:50.473
+Ooh!
+
+522
+00:27:52.400 --> 00:27:53.290
+PHP.
+
+523
+00:27:53.290 --> 00:27:54.553
+Favorite language.
+
+524
+00:27:56.140 --> 00:27:59.090
+Looks like it is formatting it just right.
+
+525
+00:27:59.090 --> 00:27:59.970
+Which is good.
+
+526
+00:27:59.970 --> 00:28:01.390
+One kinda other interesting thing
+
+527
+00:28:01.390 --> 00:28:04.700
+is you could also use this to format this part as well.
+
+528
+00:28:04.700 --> 00:28:07.530
+Based on the input which would be kinda interesting.
+
+529
+00:28:07.530 --> 00:28:09.980
+Maybe that's a little bit of a exercise
+
+530
+00:28:09.980 --> 00:28:11.130
+you could have there.
+
+531
+00:28:11.130 --> 00:28:12.930
+But just taking a look at it,
+
+532
+00:28:12.930 --> 00:28:15.940
+I think everything is working really smoothly.
+
+533
+00:28:15.940 --> 00:28:17.530
+We covered a lot of things there,
+
+534
+00:28:17.530 --> 00:28:20.960
+including caching it, not even a lot of code.
+
+535
+00:28:20.960 --> 00:28:23.600
+Especially if you take this out and put it in a module.
+
+536
+00:28:23.600 --> 00:28:27.110
+And we're gonna learn about that in a couple videos as well.
+
+537
+00:28:27.110 --> 00:28:29.533
+Hopefully you enjoyed that one, see you in the next one.
+

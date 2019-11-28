@@ -1,0 +1,4238 @@
+﻿WEBVTT
+
+1
+00:00:00.668 --> 00:00:03.251
+(upbeat music)
+
+2
+00:00:05.650 --> 00:00:08.270
+<v ->All right, we are gonna do a bit of a fun one.</v>
+
+3
+00:00:08.270 --> 00:00:10.080
+I feel like we've done a lot of hard work
+
+4
+00:00:10.080 --> 00:00:12.560
+in mapping and looping and things like that,
+
+5
+00:00:12.560 --> 00:00:15.090
+and it's time to build something
+
+6
+00:00:15.090 --> 00:00:17.040
+a little bit more fun than that.
+
+7
+00:00:17.040 --> 00:00:20.680
+And what we're building here is a face detection
+
+8
+00:00:20.680 --> 00:00:24.970
+that will detect and blur your face
+
+9
+00:00:26.430 --> 00:00:29.090
+from a video element into a canvas element.
+
+10
+00:00:29.090 --> 00:00:30.350
+So we're gonna learn a lot here.
+
+11
+00:00:30.350 --> 00:00:32.610
+This one is stepping a little bit ahead
+
+12
+00:00:32.610 --> 00:00:35.060
+because there's a couple of things we need to do.
+
+13
+00:00:35.060 --> 00:00:37.240
+We need to learn a little bit more about
+
+14
+00:00:38.120 --> 00:00:40.910
+async/await just yet which is promises.
+
+15
+00:00:40.910 --> 00:00:44.370
+And we also need to learn about bundling tools
+
+16
+00:00:44.370 --> 00:00:46.380
+specifically one called Parcel.
+
+17
+00:00:46.380 --> 00:00:49.540
+And that's fine.
+
+18
+00:00:49.540 --> 00:00:50.840
+I'm gonna show you how to use them.
+
+19
+00:00:50.840 --> 00:00:52.910
+And in the future videos where we're gonna
+
+20
+00:00:52.910 --> 00:00:54.970
+circle back and learn a whole lot about them,
+
+21
+00:00:54.970 --> 00:00:56.380
+so don't worry about that at all.
+
+22
+00:00:56.380 --> 00:01:00.380
+So, first thing we need to do is to know that
+
+23
+00:01:00.380 --> 00:01:03.950
+we are on a browser that supports face detection.
+
+24
+00:01:03.950 --> 00:01:06.100
+This, at the time we're recording this,
+
+25
+00:01:06.100 --> 00:01:08.770
+is a proposal for an API,
+
+26
+00:01:08.770 --> 00:01:12.064
+meaning it's not finished yet and it might change.
+
+27
+00:01:12.064 --> 00:01:15.830
+Ideally it will get into all of the browsers.
+
+28
+00:01:15.830 --> 00:01:19.253
+But currently it is only in Chrome and Android.
+
+29
+00:01:20.090 --> 00:01:22.430
+So if you wanna use this you need to be in a browser
+
+30
+00:01:22.430 --> 00:01:23.263
+that detects it.
+
+31
+00:01:23.263 --> 00:01:26.950
+Now instead of me telling you what browser to use,
+
+32
+00:01:26.950 --> 00:01:30.140
+the way you can tell is if your browser supports it,
+
+33
+00:01:30.140 --> 00:01:33.440
+you can go into your console of any page,
+
+34
+00:01:33.440 --> 00:01:37.180
+doesn't have to be this page, and just type face detector.
+
+35
+00:01:37.180 --> 00:01:40.910
+Or you can type type of face of detector,
+
+36
+00:01:40.910 --> 00:01:43.520
+and it should tell you that it is is a function.
+
+37
+00:01:43.520 --> 00:01:46.680
+If you get something like this, undefined,
+
+38
+00:01:46.680 --> 00:01:49.430
+or you get an error like
+
+39
+00:01:49.430 --> 00:01:52.930
+cannot read faceDetectorx is not defined,
+
+40
+00:01:52.930 --> 00:01:55.490
+then that means your browser does not support it.
+
+41
+00:01:55.490 --> 00:01:58.480
+Now if you are on Chrome, you likely have to
+
+42
+00:01:58.480 --> 00:02:02.650
+go to the flags page in Chrome and turn it on.
+
+43
+00:02:02.650 --> 00:02:05.600
+Meaning that often new features in the browser
+
+44
+00:02:05.600 --> 00:02:09.400
+are not given the masses 'cause they're not ready yet.
+
+45
+00:02:09.400 --> 00:02:11.780
+So in order for us to play with them and test them out,
+
+46
+00:02:11.780 --> 00:02:13.940
+we need to go and turn them on.
+
+47
+00:02:13.940 --> 00:02:15.890
+So the way you turn on flags
+
+48
+00:02:16.920 --> 00:02:19.813
+is you to to about:flags.
+
+49
+00:02:22.100 --> 00:02:25.010
+And you will see this is a page where you can just
+
+50
+00:02:25.010 --> 00:02:28.860
+turn on all kinds of experimental features.
+
+51
+00:02:28.860 --> 00:02:32.210
+I don't even know what most of this stuff does.
+
+52
+00:02:32.210 --> 00:02:34.120
+But the ones that you do want to turn on
+
+53
+00:02:34.120 --> 00:02:36.800
+is take a search for experimental
+
+54
+00:02:36.800 --> 00:02:40.440
+web platform features and turn that one to enabled.
+
+55
+00:02:40.440 --> 00:02:43.660
+You'll probably have to restart your browser,
+
+56
+00:02:43.660 --> 00:02:45.840
+so go ahead and quit it and restart it.
+
+57
+00:02:45.840 --> 00:02:47.920
+And then when you put it back up again,
+
+58
+00:02:47.920 --> 00:02:51.100
+you should see type of face detector turn on.
+
+59
+00:02:51.100 --> 00:02:53.290
+If you still do not see that,
+
+60
+00:02:53.290 --> 00:02:56.610
+unfortunately maybe your computer does not support it.
+
+61
+00:02:56.610 --> 00:03:01.100
+But from everyone I've tested, it does work very well.
+
+62
+00:03:01.100 --> 00:03:02.900
+Okay, so that's the first thing.
+
+63
+00:03:02.900 --> 00:03:07.340
+Second thing is that we need to use a server
+
+64
+00:03:07.340 --> 00:03:08.580
+in order to run this.
+
+65
+00:03:08.580 --> 00:03:12.620
+Because accessing a user's webcam is
+
+66
+00:03:13.470 --> 00:03:14.760
+kind of a security issue, right?
+
+67
+00:03:14.760 --> 00:03:17.793
+You don't wanna just give everybody access to your webcam,
+
+68
+00:03:19.550 --> 00:03:23.860
+you have to ask the user first for access to their webcam.
+
+69
+00:03:23.860 --> 00:03:26.940
+And you've probably been to a million websites
+
+70
+00:03:26.940 --> 00:03:29.730
+where they ask for notifications
+
+71
+00:03:29.730 --> 00:03:32.580
+or to know your location, things like that.
+
+72
+00:03:32.580 --> 00:03:35.640
+Those are permission-based APIs in the browser.
+
+73
+00:03:35.640 --> 00:03:39.280
+And accessing someone's webcam is no different than that.
+
+74
+00:03:39.280 --> 00:03:42.870
+And that sort of preference of is it allowed or not
+
+75
+00:03:42.870 --> 00:03:46.460
+is often tied to the, or it is tied to the origin.
+
+76
+00:03:46.460 --> 00:03:49.560
+And an origin in JavaScript is a fancy way of saying
+
+77
+00:03:49.560 --> 00:03:50.630
+a domain name.
+
+78
+00:03:50.630 --> 00:03:54.550
+So in our case I'm allowing the camera on local host.
+
+79
+00:03:54.550 --> 00:03:57.610
+But you might allow the camera on New York Times
+
+80
+00:03:57.610 --> 00:04:00.620
+or Facebook or all this different websites.
+
+81
+00:04:00.620 --> 00:04:03.820
+So every time you visit a new origin, a new domain name,
+
+82
+00:04:03.820 --> 00:04:06.170
+you're going to have to ask the user for access
+
+83
+00:04:06.170 --> 00:04:08.570
+to their webcam and it will pop up.
+
+84
+00:04:08.570 --> 00:04:11.760
+So in order for us to do that, we can't just open up.
+
+85
+00:04:11.760 --> 00:04:13.760
+I'm in 53 face detection.
+
+86
+00:04:13.760 --> 00:04:15.953
+We have this face.html.
+
+87
+00:04:17.150 --> 00:04:20.500
+And you can't just open that up straight away
+
+88
+00:04:20.500 --> 00:04:22.000
+in the browser like we've been doing
+
+89
+00:04:22.000 --> 00:04:24.770
+for absolutely everything up until now because
+
+90
+00:04:24.770 --> 00:04:26.670
+this is not an origin.
+
+91
+00:04:26.670 --> 00:04:29.700
+And if security stuff is tied to an origin,
+
+92
+00:04:29.700 --> 00:04:31.040
+it won't be able to do it.
+
+93
+00:04:31.040 --> 00:04:34.120
+You can see a little X with a camera here.
+
+94
+00:04:34.120 --> 00:04:36.180
+And it says the camera is blocked.
+
+95
+00:04:36.180 --> 00:04:40.470
+First I thought, okay, I could just click allow and done.
+
+96
+00:04:40.470 --> 00:04:42.610
+And then usually I have to refresh the page.
+
+97
+00:04:42.610 --> 00:04:44.580
+But, no, that didn't work.
+
+98
+00:04:44.580 --> 00:04:46.570
+See, it just goes back every single time.
+
+99
+00:04:46.570 --> 00:04:49.700
+So I repeat you cannot just open this
+
+100
+00:04:49.700 --> 00:04:51.800
+HTML file directly in your browser.
+
+101
+00:04:51.800 --> 00:04:53.720
+It must run through a server.
+
+102
+00:04:53.720 --> 00:04:55.570
+So how do we run a server?
+
+103
+00:04:55.570 --> 00:04:59.510
+Well, one server I like also is a bundler.
+
+104
+00:04:59.510 --> 00:05:01.040
+And we're gonna learn about that when we hit
+
+105
+00:05:01.040 --> 00:05:03.900
+our module section, and it's called Parcel.
+
+106
+00:05:03.900 --> 00:05:07.160
+And Parcel will give us this little development server
+
+107
+00:05:07.160 --> 00:05:09.730
+where when we change something on the page
+
+108
+00:05:09.730 --> 00:05:12.303
+it will automatically refresh the page for us.
+
+109
+00:05:13.210 --> 00:05:15.000
+Or if we change any of our CSS,
+
+110
+00:05:15.000 --> 00:05:18.450
+it'll automatically reload the CSS on the page
+
+111
+00:05:18.450 --> 00:05:19.510
+without actually having to do
+
+112
+00:05:19.510 --> 00:05:22.530
+a full page refresh which is pretty cool.
+
+113
+00:05:22.530 --> 00:05:24.600
+So how do we get that up and running?
+
+114
+00:05:24.600 --> 00:05:28.510
+Well the first thing we need to do is to open up a terminal.
+
+115
+00:05:28.510 --> 00:05:32.060
+And I go back to video number two where I talked about
+
+116
+00:05:32.060 --> 00:05:34.830
+what kinds of terminals are useful.
+
+117
+00:05:34.830 --> 00:05:38.700
+And then you need to get into this folder
+
+118
+00:05:38.700 --> 00:05:41.140
+that has face detection censorship in it.
+
+119
+00:05:41.140 --> 00:05:43.070
+So how can you do that?
+
+120
+00:05:43.070 --> 00:05:44.640
+I usually type cd.
+
+121
+00:05:44.640 --> 00:05:48.050
+And I used to be able to drag and drop
+
+122
+00:05:48.050 --> 00:05:50.400
+the folder name into here.
+
+123
+00:05:50.400 --> 00:05:53.120
+But that no longer seems to work for me.
+
+124
+00:05:53.120 --> 00:05:56.640
+So I just have to type the beginner JavaScript.
+
+125
+00:05:56.640 --> 00:05:59.350
+You can always type PWD if you don't know where you are
+
+126
+00:05:59.350 --> 00:06:01.770
+and it will tell you where you are on your computer.
+
+127
+00:06:01.770 --> 00:06:04.070
+And then you have to slowly find your way
+
+128
+00:06:04.070 --> 00:06:09.070
+into the exercises folder, and then into the 53.
+
+129
+00:06:09.480 --> 00:06:11.570
+I'm just hitting tab here to complete
+
+130
+00:06:11.570 --> 00:06:14.480
+the pathname of the directory.
+
+131
+00:06:14.480 --> 00:06:17.970
+Probably easier than that is if you're using VSCode.
+
+132
+00:06:17.970 --> 00:06:22.860
+You can just right click the folder and open in terminal.
+
+133
+00:06:22.860 --> 00:06:24.740
+And what this will do is it will open it up
+
+134
+00:06:24.740 --> 00:06:27.000
+in the built-in terminal in VS Code.
+
+135
+00:06:27.000 --> 00:06:28.770
+Yours might not look a little bit different than this.
+
+136
+00:06:28.770 --> 00:06:30.720
+I have a whole set up here.
+
+137
+00:06:30.720 --> 00:06:34.020
+Watch the second video if you're curious more about that.
+
+138
+00:06:34.020 --> 00:06:36.810
+But you will see that you are in here.
+
+139
+00:06:36.810 --> 00:06:41.240
+Now in the second video I had you install node and NPM.
+
+140
+00:06:41.240 --> 00:06:44.600
+And you can check if you have that by typing node-v
+
+141
+00:06:44.600 --> 00:06:46.520
+and npm-v.
+
+142
+00:06:46.520 --> 00:06:50.210
+And that will tell you which versions you have installed.
+
+143
+00:06:50.210 --> 00:06:53.240
+If you're not sure what version, 'cause these things change
+
+144
+00:06:53.240 --> 00:06:54.630
+very, very quickly.
+
+145
+00:06:54.630 --> 00:06:57.440
+You might be on version 20 by the time you're watching this.
+
+146
+00:06:57.440 --> 00:07:00.710
+Just go to nodejs.org and you'll be able to see
+
+147
+00:07:00.710 --> 00:07:04.160
+what the latest LTS, that's long-term support,
+
+148
+00:07:04.160 --> 00:07:05.960
+that's the most stable version.
+
+149
+00:07:05.960 --> 00:07:08.010
+And then they also have the current version
+
+150
+00:07:08.010 --> 00:07:10.130
+which has the latest features in it.
+
+151
+00:07:10.130 --> 00:07:13.010
+So, you can probably get away with current version here,
+
+152
+00:07:13.010 --> 00:07:15.400
+more like corporate developers will use this
+
+153
+00:07:15.400 --> 00:07:18.460
+'cause they know it will be supported for a long time.
+
+154
+00:07:18.460 --> 00:07:20.430
+So, that's what we've got there.
+
+155
+00:07:20.430 --> 00:07:21.580
+Make sure you have those.
+
+156
+00:07:21.580 --> 00:07:24.700
+Then go ahead and type npm install
+
+157
+00:07:24.700 --> 00:07:26.260
+when you're in that directory.
+
+158
+00:07:26.260 --> 00:07:28.130
+Npm install.
+
+159
+00:07:28.130 --> 00:07:30.790
+And what that's going to do is it will go into
+
+160
+00:07:30.790 --> 00:07:31.950
+our packaged JSON.
+
+161
+00:07:31.950 --> 00:07:34.710
+Again I'll talk about this more in the future.
+
+162
+00:07:34.710 --> 00:07:36.930
+But it will take all of our dependencies
+
+163
+00:07:36.930 --> 00:07:38.100
+and install them for us.
+
+164
+00:07:38.100 --> 00:07:40.320
+In our case it's just installing Parcel.
+
+165
+00:07:40.320 --> 00:07:42.910
+Pay no attention to the version here.
+
+166
+00:07:42.910 --> 00:07:45.370
+This will likely and for sure change.
+
+167
+00:07:45.370 --> 00:07:47.210
+And I will keep these files up to date
+
+168
+00:07:47.210 --> 00:07:49.450
+with the latest version, so pay not attention
+
+169
+00:07:49.450 --> 00:07:52.140
+to if this is different than what you see in there.
+
+170
+00:07:52.140 --> 00:07:53.930
+While that installs, let's go take a quick look
+
+171
+00:07:53.930 --> 00:07:55.660
+at this face.html.
+
+172
+00:07:55.660 --> 00:07:58.313
+Take a little look at what we've got going on here.
+
+173
+00:07:59.290 --> 00:08:03.000
+We've got our base CSS, that's just that blue background
+
+174
+00:08:03.000 --> 00:08:03.840
+and things like that.
+
+175
+00:08:03.840 --> 00:08:08.073
+Then we have our wrapper which has a video element,
+
+176
+00:08:08.930 --> 00:08:11.840
+a canvas element, and another canvas element,
+
+177
+00:08:11.840 --> 00:08:14.120
+one for the video and one for our face.
+
+178
+00:08:14.120 --> 00:08:18.230
+Then I am linking up the pixilated face JavaScript.
+
+179
+00:08:18.230 --> 00:08:20.220
+Now you are gonna be changing this
+
+180
+00:08:20.220 --> 00:08:21.920
+based on what you're working on.
+
+181
+00:08:21.920 --> 00:08:24.010
+So I just have a demo in there
+
+182
+00:08:24.010 --> 00:08:26.280
+so I can show you how it works.
+
+183
+00:08:26.280 --> 00:08:29.500
+But you will be working on just pixilatedface.js
+
+184
+00:08:29.500 --> 00:08:30.600
+which we'll create in a second,
+
+185
+00:08:30.600 --> 00:08:34.500
+and there will also be a pixilatedface-finished
+
+186
+00:08:34.500 --> 00:08:37.130
+which is the exact code that we write
+
+187
+00:08:37.130 --> 00:08:38.663
+in this video together.
+
+188
+00:08:40.160 --> 00:08:41.520
+Then I just got a little, I don't know,
+
+189
+00:08:41.520 --> 00:08:45.179
+little style tag just to center it on the page.
+
+190
+00:08:45.179 --> 00:08:49.463
+Nothing all that interesting there.
+
+191
+00:08:50.970 --> 00:08:54.330
+Now it looks like this has installed properly.
+
+192
+00:08:54.330 --> 00:08:56.330
+You might see something like this.
+
+193
+00:08:56.330 --> 00:08:59.110
+39 high severity warnings.
+
+194
+00:08:59.110 --> 00:09:00.870
+Woo, Holy smokes.
+
+195
+00:09:00.870 --> 00:09:03.823
+So that will pop up when you npm install things.
+
+196
+00:09:06.382 --> 00:09:08.230
+I don't wanna say it's nothing to be concerned about
+
+197
+00:09:08.230 --> 00:09:11.130
+but what happens is that dependencies
+
+198
+00:09:11.130 --> 00:09:13.010
+of dependencies that are not even used
+
+199
+00:09:13.010 --> 00:09:16.300
+in a certain way have security vulnerabilities
+
+200
+00:09:16.300 --> 00:09:17.350
+and they have to be fixed.
+
+201
+00:09:17.350 --> 00:09:20.400
+And what happens is that people who create Parcel
+
+202
+00:09:20.400 --> 00:09:22.240
+will fix that eventually.
+
+203
+00:09:22.240 --> 00:09:25.490
+But I've talked to the person who runs Parcel
+
+204
+00:09:25.490 --> 00:09:27.650
+and they say it's actually no,
+
+205
+00:09:27.650 --> 00:09:29.270
+there's no security warning there.
+
+206
+00:09:29.270 --> 00:09:31.370
+So if you see that, don't freak out.
+
+207
+00:09:31.370 --> 00:09:35.330
+Don't toss this whole thing in the garbage right now.
+
+208
+00:09:35.330 --> 00:09:37.590
+It's weird to say that but it's totally fine.
+
+209
+00:09:37.590 --> 00:09:41.100
+Hopefully NPM will roll out a better way
+
+210
+00:09:41.100 --> 00:09:43.960
+to deal with these security warnings right here
+
+211
+00:09:43.960 --> 00:09:47.680
+where we can mark them as not an issue or will fix.
+
+212
+00:09:47.680 --> 00:09:51.250
+So, once that has got up and running,
+
+213
+00:09:51.250 --> 00:09:53.990
+what I need you to do here is we're gonna create
+
+214
+00:09:53.990 --> 00:09:58.990
+a new file in our folder called pixelated-face.js.
+
+215
+00:10:00.860 --> 00:10:05.430
+So pixelated.face.js.
+
+216
+00:10:05.430 --> 00:10:07.010
+And we'll go back.
+
+217
+00:10:07.010 --> 00:10:08.283
+Let's just console.log.
+
+218
+00:10:10.520 --> 00:10:11.423
+It works.
+
+219
+00:10:12.650 --> 00:10:14.960
+And let's go here and change that out.
+
+220
+00:10:14.960 --> 00:10:16.470
+Triple check you spelled it right.
+
+221
+00:10:16.470 --> 00:10:18.040
+That's such a common problem.
+
+222
+00:10:18.040 --> 00:10:20.330
+Seems silly but happens all the time.
+
+223
+00:10:20.330 --> 00:10:22.640
+And then we can go to our terminal.
+
+224
+00:10:22.640 --> 00:10:24.670
+So whether you're using the built in one
+
+225
+00:10:24.670 --> 00:10:27.520
+or I'm gonna be using this one right here.
+
+226
+00:10:27.520 --> 00:10:30.790
+And I don't have to re-npm install anything
+
+227
+00:10:30.790 --> 00:10:33.350
+because it's the same path, so don't worry about that.
+
+228
+00:10:33.350 --> 00:10:35.563
+You should be able to just type npm start.
+
+229
+00:10:36.410 --> 00:10:38.980
+And what that will do is it will run Parcel
+
+230
+00:10:38.980 --> 00:10:42.080
+against our face.html file
+
+231
+00:10:42.080 --> 00:10:45.840
+and it will run a server at some URL,
+
+232
+00:10:45.840 --> 00:10:50.120
+most likely 1234, but that sometimes just change
+
+233
+00:10:50.120 --> 00:10:52.870
+if you have multiple things running on different ports.
+
+234
+00:10:53.770 --> 00:10:55.643
+Now we've got that up and running.
+
+235
+00:10:56.840 --> 00:10:58.420
+You'll see it works.
+
+236
+00:10:58.420 --> 00:11:00.010
+Sometimes you're gonna see these like
+
+237
+00:11:00.010 --> 00:11:02.160
+weird warnings in your thing,
+
+238
+00:11:02.160 --> 00:11:05.260
+and they're related to like a Chrome extension
+
+239
+00:11:05.260 --> 00:11:06.230
+that you have installed.
+
+240
+00:11:06.230 --> 00:11:09.510
+And that's annoying because it gets in the way
+
+241
+00:11:09.510 --> 00:11:11.440
+of writing our actual code.
+
+242
+00:11:11.440 --> 00:11:14.440
+And there's not a great way to get rid of them.
+
+243
+00:11:14.440 --> 00:11:17.310
+But one little thing that I have
+
+244
+00:11:17.310 --> 00:11:19.910
+is you can type in your filter -DevTools
+
+245
+00:11:20.820 --> 00:11:22.970
+and that will get rid of any of the dev tools
+
+246
+00:11:22.970 --> 00:11:24.050
+warnings that pop up.
+
+247
+00:11:24.050 --> 00:11:26.680
+So if you see that, go ahead and type that in.
+
+248
+00:11:26.680 --> 00:11:29.210
+That happens from time to time where
+
+249
+00:11:29.210 --> 00:11:31.370
+a Chrome extension ships like a weird version of it
+
+250
+00:11:31.370 --> 00:11:33.180
+and you can filter them out there.
+
+251
+00:11:33.180 --> 00:11:35.830
+All right, so we've got our server up and running.
+
+252
+00:11:35.830 --> 00:11:37.173
+We've got it works.
+
+253
+00:11:38.060 --> 00:11:41.713
+Now let's dig into writing some code.
+
+254
+00:11:43.210 --> 00:11:46.220
+So first thing we wanna do is we wanna select
+
+255
+00:11:47.803 --> 00:11:49.370
+all the elements that are on the page.
+
+256
+00:11:49.370 --> 00:11:50.620
+So if we take a look here,
+
+257
+00:11:50.620 --> 00:11:52.890
+we have our video, we have our canvas,
+
+258
+00:11:52.890 --> 00:11:53.990
+and then we have another canvas.
+
+259
+00:11:53.990 --> 00:11:55.830
+So essentially what's gonna happen here
+
+260
+00:11:55.830 --> 00:11:58.220
+is we're gonna access the user's webcam.
+
+261
+00:11:58.220 --> 00:12:00.800
+We're gonna dump it into this video element.
+
+262
+00:12:00.800 --> 00:12:05.800
+And then we're going to take frames of that video
+
+263
+00:12:06.570 --> 00:12:10.630
+and dump into the, we're gonna put a square around
+
+264
+00:12:10.630 --> 00:12:13.230
+the person's face on this one.
+
+265
+00:12:13.230 --> 00:12:16.420
+And we're going to pixelate the person's face on that one.
+
+266
+00:12:16.420 --> 00:12:18.020
+It could be done on the same canvas,
+
+267
+00:12:18.020 --> 00:12:20.440
+but I like to keep them as separate canvas
+
+268
+00:12:20.440 --> 00:12:24.170
+in case I ever wanna just pull one of those images out.
+
+269
+00:12:24.170 --> 00:12:25.260
+So that's why we have those.
+
+270
+00:12:25.260 --> 00:12:28.270
+So maybe just go ahead and grab those free classes.
+
+271
+00:12:28.270 --> 00:12:30.090
+Wait no, paste them all in.
+
+272
+00:12:30.090 --> 00:12:31.350
+I'm gonna get multiple.
+
+273
+00:12:31.350 --> 00:12:35.610
+What I did there is I CMD + A and then CMD + Shift + L,
+
+274
+00:12:35.610 --> 00:12:38.293
+and that gave me a cursor on every single line.
+
+275
+00:12:39.350 --> 00:12:42.993
+And I'm going to document.query selector.
+
+276
+00:12:44.943 --> 00:12:46.493
+.webcam.
+
+277
+00:12:47.437 --> 00:12:49.820
+And we'll say const video is equal to.
+
+278
+00:12:49.820 --> 00:12:54.820
+And I'll say const canvas.
+
+279
+00:12:56.780 --> 00:13:01.290
+And const faceCanvas.
+
+280
+00:13:01.290 --> 00:13:03.990
+So this is the main canvas and this is the one
+
+281
+00:13:03.990 --> 00:13:07.600
+we're going to be showing our face on.
+
+282
+00:13:07.600 --> 00:13:11.460
+Then we also need to pull the contacts out of each of these.
+
+283
+00:13:11.460 --> 00:13:14.520
+So under each one I'm gonna say const ctx is equal
+
+284
+00:13:14.520 --> 00:13:19.270
+to canvas.getContext and ask for 2d.
+
+285
+00:13:19.270 --> 00:13:21.480
+So we talked about that when we did the actual sketch,
+
+286
+00:13:21.480 --> 00:13:24.010
+but that's where you do the drawing.
+
+287
+00:13:24.010 --> 00:13:28.940
+And then we also need our face context as well.
+
+288
+00:13:28.940 --> 00:13:31.280
+It's not necessary to put those lines in between,
+
+289
+00:13:31.280 --> 00:13:32.830
+but it can be a little bit easier
+
+290
+00:13:32.830 --> 00:13:34.773
+to visualize what's going on.
+
+291
+00:13:35.950 --> 00:13:40.020
+Then we need to make a new face detector.
+
+292
+00:13:40.020 --> 00:13:43.077
+So we'll say const face detector
+
+293
+00:13:47.010 --> 00:13:52.010
+is equal to new, capital F, face detector.
+
+294
+00:13:52.630 --> 00:13:55.100
+And that changed it to lower case for me.
+
+295
+00:13:55.100 --> 00:13:57.860
+Make sure you've got capital F on that.
+
+296
+00:13:57.860 --> 00:14:02.410
+And just go ahead and console.log the video, the canvas,
+
+297
+00:14:02.410 --> 00:14:06.433
+the face canvas and the face detector.
+
+298
+00:14:10.130 --> 00:14:12.740
+All right, this looks good.
+
+299
+00:14:12.740 --> 00:14:15.100
+Looks like I've got all four of my variables here.
+
+300
+00:14:15.100 --> 00:14:19.050
+I do have this right here, FaceDetector is not defined.
+
+301
+00:14:19.050 --> 00:14:21.840
+That's because it's looking for a function
+
+302
+00:14:21.840 --> 00:14:22.673
+called FaceDetector.
+
+303
+00:14:22.673 --> 00:14:24.967
+And the way we can solve that is say window.,
+
+304
+00:14:26.000 --> 00:14:27.670
+and that's fine to do.
+
+305
+00:14:27.670 --> 00:14:29.450
+I told you not to do that in looping,
+
+306
+00:14:29.450 --> 00:14:31.350
+but it's fine to do here because
+
+307
+00:14:31.350 --> 00:14:35.520
+this FaceDetector API does not exist in NodeJS land.
+
+308
+00:14:35.520 --> 00:14:39.660
+Now next thing we need to do is we'll write a function
+
+309
+00:14:39.660 --> 00:14:43.363
+that will populate the user's video.
+
+310
+00:14:44.250 --> 00:14:47.853
+And to do that we'll make a function called populateVideo.
+
+311
+00:14:50.540 --> 00:14:53.730
+And we need to grab the stream from the user's webcam,
+
+312
+00:14:53.730 --> 00:14:56.010
+so const stream is equal to
+
+313
+00:14:56.010 --> 00:14:58.150
+we're gonna say navigator.mediaDevices
+
+314
+00:15:01.503 --> 00:15:02.670
+.getUserMedia.
+
+315
+00:15:04.980 --> 00:15:07.850
+And then you need to pass getUserMedia some options
+
+316
+00:15:07.850 --> 00:15:09.630
+saying if you want video or audio.
+
+317
+00:15:09.630 --> 00:15:11.560
+In our case we just want video.
+
+318
+00:15:11.560 --> 00:15:13.720
+And you can just say video true,
+
+319
+00:15:13.720 --> 00:15:17.220
+or you can ask for a specific size from it.
+
+320
+00:15:17.220 --> 00:15:19.640
+In my case I'm gonna say width 1280
+
+321
+00:15:21.930 --> 00:15:23.497
+and height 720.
+
+322
+00:15:28.780 --> 00:15:32.310
+And then let's go ahead and console.log the stream
+
+323
+00:15:32.310 --> 00:15:35.320
+so I can show you what we're working with here.
+
+324
+00:15:35.320 --> 00:15:37.720
+I'm gonna get rid of this console.log here.
+
+325
+00:15:37.720 --> 00:15:40.807
+And now if we run populateVideo, we don't.
+
+326
+00:15:44.860 --> 00:15:49.483
+Oh, this is a nice little, a lesson learned.
+
+327
+00:15:51.340 --> 00:15:54.570
+Now that we're running things through a bundler,
+
+328
+00:15:54.570 --> 00:15:58.260
+we no longer have the ability to access
+
+329
+00:15:58.260 --> 00:16:01.130
+our functions globally via the console.
+
+330
+00:16:01.130 --> 00:16:02.820
+If you do ever want to do that,
+
+331
+00:16:02.820 --> 00:16:05.670
+a little cheat you could do is say window.populateVideo
+
+332
+00:16:05.670 --> 00:16:09.763
+is equal to populateVideo, and that will surface it for you.
+
+333
+00:16:11.080 --> 00:16:13.220
+But that's not a great way to do it.
+
+334
+00:16:13.220 --> 00:16:16.400
+So if that's the case, you just console.log
+
+335
+00:16:16.400 --> 00:16:19.990
+the populate video and you can see access to it.
+
+336
+00:16:19.990 --> 00:16:22.540
+And if you ever do wanna access it
+
+337
+00:16:22.540 --> 00:16:25.020
+from the Chrome DevTools, you can right click,
+
+338
+00:16:25.020 --> 00:16:26.760
+store as global variable.
+
+339
+00:16:26.760 --> 00:16:30.220
+And it will say, okay, I stored that as a temp one.
+
+340
+00:16:30.220 --> 00:16:33.120
+And now I can add this variable called temp one
+
+341
+00:16:33.120 --> 00:16:35.190
+and I could run it if I want.
+
+342
+00:16:35.190 --> 00:16:36.700
+Now it's telling me it cannot read property
+
+343
+00:16:36.700 --> 00:16:38.600
+getUserMedia of undefined.
+
+344
+00:16:38.600 --> 00:16:42.733
+So, media, I spelled it wrong.
+
+345
+00:16:46.330 --> 00:16:47.610
+And I'll store that
+
+346
+00:16:52.660 --> 00:16:53.573
+and call it.
+
+347
+00:16:54.930 --> 00:16:57.700
+And it returns to us a promise.
+
+348
+00:16:57.700 --> 00:17:00.410
+You see a couple of things are going on here.
+
+349
+00:17:00.410 --> 00:17:05.410
+First it might show you this little recording tab here,
+
+350
+00:17:05.500 --> 00:17:08.630
+it might not, and we'll go over that in just a second.
+
+351
+00:17:08.630 --> 00:17:10.920
+But this returns us to us something called a promise
+
+352
+00:17:10.920 --> 00:17:14.800
+meaning that it's not actually the stream of video
+
+353
+00:17:14.800 --> 00:17:16.750
+coming off the user's webcam.
+
+354
+00:17:16.750 --> 00:17:18.460
+But it's just something called a promise
+
+355
+00:17:18.460 --> 00:17:22.110
+that it will get the stream of the webcam eventually.
+
+356
+00:17:22.110 --> 00:17:25.890
+And we'll go much more into promises in the promise video.
+
+357
+00:17:25.890 --> 00:17:29.040
+But just know that this is a special kind
+
+358
+00:17:29.040 --> 00:17:31.780
+of function that returns this thing called a promise.
+
+359
+00:17:31.780 --> 00:17:35.390
+And in order for us to wait for the stream
+
+360
+00:17:35.390 --> 00:17:38.350
+to come back from the webcam, 'cause that takes some time,
+
+361
+00:17:38.350 --> 00:17:41.430
+we need to first mark this function as a sync
+
+362
+00:17:41.430 --> 00:17:43.640
+by typing the word sync in front of it.
+
+363
+00:17:43.640 --> 00:17:45.800
+Again, we got a whole video on this coming up.
+
+364
+00:17:45.800 --> 00:17:47.361
+And then in front of navigator,
+
+365
+00:17:47.361 --> 00:17:50.373
+the mediaDevices.getUser.Media, we type a wait.
+
+366
+00:17:52.700 --> 00:17:54.690
+And now if we can,
+
+367
+00:17:54.690 --> 00:17:56.370
+we can actually just go ahead on page load,
+
+368
+00:17:56.370 --> 00:17:58.380
+call this populateVideo.
+
+369
+00:18:00.850 --> 00:18:04.280
+You see that now when I, even when I save it,
+
+370
+00:18:04.280 --> 00:18:06.290
+you see how it immediately reloads?
+
+371
+00:18:06.290 --> 00:18:10.230
+I get this media stream showing up in my dev tools.
+
+372
+00:18:10.230 --> 00:18:11.530
+Now you might not see this yet,
+
+373
+00:18:11.530 --> 00:18:12.970
+you might see nothing,
+
+374
+00:18:12.970 --> 00:18:16.670
+and that's probably because this has a little red x on it.
+
+375
+00:18:16.670 --> 00:18:19.060
+So what you need to do is click on that
+
+376
+00:18:19.060 --> 00:18:23.860
+and click continue or always allow access.
+
+377
+00:18:23.860 --> 00:18:26.480
+You can choose your camera via the manage button
+
+378
+00:18:26.480 --> 00:18:28.620
+or sometimes you can click on this drop down
+
+379
+00:18:28.620 --> 00:18:31.680
+and then click Done and then reload the page.
+
+380
+00:18:31.680 --> 00:18:34.710
+And then you should see a media stream
+
+381
+00:18:34.710 --> 00:18:37.420
+being dumped into your console here.
+
+382
+00:18:37.420 --> 00:18:38.340
+What is this?
+
+383
+00:18:38.340 --> 00:18:39.660
+Like, how is that useful?
+
+384
+00:18:39.660 --> 00:18:42.830
+Well, this media stream can then be put
+
+385
+00:18:42.830 --> 00:18:46.282
+into our video which we've selected right here.
+
+386
+00:18:46.282 --> 00:18:48.810
+I'm gonna take these spaces out up here.
+
+387
+00:18:48.810 --> 00:18:51.003
+So we'll say video.sourceObject
+
+388
+00:18:54.700 --> 00:18:56.660
+is equal to, normally with a video you just set
+
+389
+00:18:56.660 --> 00:19:00.400
+the source to be like a dog.mp4.
+
+390
+00:19:00.400 --> 00:19:03.120
+But in our case since it's a stream we set
+
+391
+00:19:03.120 --> 00:19:06.130
+the source object to be a stream.
+
+392
+00:19:06.130 --> 00:19:10.257
+And then we call video.play on that.
+
+393
+00:19:10.257 --> 00:19:12.470
+And we'll also put an await in front of that
+
+394
+00:19:12.470 --> 00:19:15.010
+because sometimes playing takes a second or two
+
+395
+00:19:15.010 --> 00:19:17.163
+and that will wait for it to start playing.
+
+396
+00:19:18.760 --> 00:19:20.960
+It worked, wow, it worked.
+
+397
+00:19:20.960 --> 00:19:21.793
+Good, good, good.
+
+398
+00:19:21.793 --> 00:19:22.880
+So what did we do there?
+
+399
+00:19:22.880 --> 00:19:24.740
+We made a function called populateVideo.
+
+400
+00:19:24.740 --> 00:19:28.370
+We grabbed the feed off the user's webcam.
+
+401
+00:19:28.370 --> 00:19:30.580
+My hands are purple 'cause I made Play-Doh
+
+402
+00:19:30.580 --> 00:19:32.690
+for my kids last night.
+
+403
+00:19:32.690 --> 00:19:36.090
+And then we set the object to be the stream,
+
+404
+00:19:36.090 --> 00:19:37.980
+and we went ahead and played it.
+
+405
+00:19:37.980 --> 00:19:39.430
+Okay, okay, okay.
+
+406
+00:19:39.430 --> 00:19:41.500
+Then another thing we need to do is we need
+
+407
+00:19:41.500 --> 00:19:46.500
+to size the canvases to be the same size as the video.
+
+408
+00:19:49.330 --> 00:19:51.940
+If I were to console.log video.videoWidth
+
+409
+00:19:53.567 --> 00:19:55.400
+and video.videoHeight,
+
+410
+00:19:59.270 --> 00:20:01.720
+you see we get 1280, 720.
+
+411
+00:20:01.720 --> 00:20:04.373
+Let me see what happens, if I make that to true.
+
+412
+00:20:07.218 --> 00:20:08.388
+Look at that.
+
+413
+00:20:08.388 --> 00:20:10.240
+It goes to 640 by 480.
+
+414
+00:20:10.240 --> 00:20:12.450
+I wonder if I can go full.
+
+415
+00:20:12.450 --> 00:20:14.290
+I think this is a 1080p.
+
+416
+00:20:14.290 --> 00:20:16.430
+Yeah, it is a 1080p webcam.
+
+417
+00:20:16.430 --> 00:20:20.253
+So 1920 by 1080.
+
+418
+00:20:24.270 --> 00:20:25.930
+Look at how high quality that is.
+
+419
+00:20:25.930 --> 00:20:28.020
+I gotta bring it back 'cause you don't need to see
+
+420
+00:20:28.020 --> 00:20:29.053
+that much of me.
+
+421
+00:20:30.240 --> 00:20:31.170
+All right, there we go.
+
+422
+00:20:31.170 --> 00:20:35.473
+We've got this up and running, okay.
+
+423
+00:20:36.700 --> 00:20:38.970
+So we need the size of the canvases.
+
+424
+00:20:38.970 --> 00:20:39.850
+So what do we do?
+
+425
+00:20:39.850 --> 00:20:41.870
+We say canvas.width is equal to
+
+426
+00:20:43.380 --> 00:20:45.400
+video.videoWidth.
+
+427
+00:20:45.400 --> 00:20:49.217
+And then we change that to be height, videoHeight.
+
+428
+00:20:51.114 --> 00:20:55.740
+And then we also need to do it for the face canvas as well.
+
+429
+00:20:55.740 --> 00:20:58.190
+So you might be saying, like, okay, what is that doing?
+
+430
+00:20:58.190 --> 00:21:00.280
+Well, if we go down here and inspect
+
+431
+00:21:00.280 --> 00:21:03.730
+this blue area, you'll now see that you have
+
+432
+00:21:03.730 --> 00:21:07.930
+two canvases that are the same size as the video feed.
+
+433
+00:21:07.930 --> 00:21:10.130
+And that's the best way to do it
+
+434
+00:21:10.130 --> 00:21:14.040
+because we don't know how big
+
+435
+00:21:14.040 --> 00:21:16.330
+the video might be coming off your webcam.
+
+436
+00:21:16.330 --> 00:21:18.000
+It might 4K.
+
+437
+00:21:18.000 --> 00:21:22.230
+So it's nice to be able to just dynamically set them
+
+438
+00:21:22.230 --> 00:21:23.660
+once you've loaded the video in
+
+439
+00:21:23.660 --> 00:21:26.480
+and started playing it from the user.
+
+440
+00:21:26.480 --> 00:21:28.080
+And that's exactly why we wait
+
+441
+00:21:28.080 --> 00:21:30.500
+for the video to start playing is if we didn't have
+
+442
+00:21:30.500 --> 00:21:32.930
+that await there then it would just be
+
+443
+00:21:32.930 --> 00:21:34.270
+sometimes you run into this problem
+
+444
+00:21:34.270 --> 00:21:35.980
+where it's just zeros 'cause it doesn't know
+
+445
+00:21:35.980 --> 00:21:37.513
+how big it is just yet.
+
+446
+00:21:38.530 --> 00:21:42.320
+All right, next thing we need to do is to work
+
+447
+00:21:42.320 --> 00:21:44.200
+with the face detection API.
+
+448
+00:21:44.200 --> 00:21:49.040
+So we're gonna make another function here.
+
+449
+00:21:49.040 --> 00:21:51.233
+We're gonna call that detect.
+
+450
+00:21:54.740 --> 00:21:59.390
+And that will need a async keyword in front of it.
+
+451
+00:21:59.390 --> 00:22:01.440
+Again we'll talk about what that is and why
+
+452
+00:22:01.440 --> 00:22:02.850
+in the future video.
+
+453
+00:22:02.850 --> 00:22:05.150
+And now we wanna go ahead and detect faces
+
+454
+00:22:05.150 --> 00:22:06.490
+that are in the shot.
+
+455
+00:22:06.490 --> 00:22:11.490
+So we'll say const faces equals await faceDetector.
+
+456
+00:22:11.510 --> 00:22:14.263
+Remember we created this FaceDetector right here?
+
+457
+00:22:15.380 --> 00:22:17.550
+And we'll run .detect.
+
+458
+00:22:17.550 --> 00:22:21.930
+And then you pass it referenced to three things,
+
+459
+00:22:21.930 --> 00:22:25.910
+either an image, a video, or a canvas.
+
+460
+00:22:25.910 --> 00:22:30.140
+In our case we're gonna pass it access to the video, right?
+
+461
+00:22:30.140 --> 00:22:32.450
+So let's pass it the video.
+
+462
+00:22:32.450 --> 00:22:35.460
+And then the next time we just console.log the faces.
+
+463
+00:22:35.460 --> 00:22:36.320
+I really like this.
+
+464
+00:22:36.320 --> 00:22:37.817
+Once we learn async/await you're gonna be like,
+
+465
+00:22:37.817 --> 00:22:38.650
+"Oh that makes a lot of sense.
+
+466
+00:22:38.650 --> 00:22:41.180
+"That's a perfect example, Wes."
+
+467
+00:22:41.180 --> 00:22:44.510
+Now open up your dev tools and you'll see nothing
+
+468
+00:22:44.510 --> 00:22:45.860
+'cause we forgot to run it.
+
+469
+00:22:47.480 --> 00:22:52.170
+So, what we need to do is to run it ourselves once.
+
+470
+00:22:52.170 --> 00:22:55.990
+And we need to run it after the video
+
+471
+00:22:55.990 --> 00:22:57.200
+has been populated, right?
+
+472
+00:22:57.200 --> 00:22:59.090
+'Cause if you run detect when there's no video
+
+473
+00:22:59.090 --> 00:23:01.210
+it's gonna be like I didn't find any faces.
+
+474
+00:23:01.210 --> 00:23:05.980
+So the way we can do that is by tagging a .then
+
+475
+00:23:05.980 --> 00:23:08.940
+onto the end of this and then passing it detect.
+
+476
+00:23:08.940 --> 00:23:11.730
+This is a promise base, again we'll go into it
+
+477
+00:23:11.730 --> 00:23:13.060
+I'm gonna stop saying we'll go into it.
+
+478
+00:23:13.060 --> 00:23:14.570
+You understand.
+
+479
+00:23:14.570 --> 00:23:15.470
+And look at that.
+
+480
+00:23:15.470 --> 00:23:16.633
+Detected face.
+
+481
+00:23:17.510 --> 00:23:19.520
+It found one face.
+
+482
+00:23:19.520 --> 00:23:23.700
+And inside of it, it will tell you
+
+483
+00:23:23.700 --> 00:23:27.040
+where the eyes, the mouth and the nose are.
+
+484
+00:23:27.040 --> 00:23:28.870
+Super cool.
+
+485
+00:23:28.870 --> 00:23:30.250
+Also the bounding box.
+
+486
+00:23:30.250 --> 00:23:34.980
+So that is the square around the user's head.
+
+487
+00:23:34.980 --> 00:23:37.390
+And you see that it just went once, right?
+
+488
+00:23:37.390 --> 00:23:42.390
+Because it ran once when the video was populated
+
+489
+00:23:42.700 --> 00:23:44.350
+and then it was never called again.
+
+490
+00:23:44.350 --> 00:23:48.010
+So what we need to do here is to call it
+
+491
+00:23:48.010 --> 00:23:49.390
+over and over and over again.
+
+492
+00:23:49.390 --> 00:23:54.390
+So you might be thinking, okay, set interval.
+
+493
+00:23:54.720 --> 00:23:57.650
+Set interval, yeah, like just run it every
+
+494
+00:23:57.650 --> 00:24:00.100
+100 milliseconds or something like that.
+
+495
+00:24:00.100 --> 00:24:02.600
+And that's how we actually used to do a lot of this stuff
+
+496
+00:24:02.600 --> 00:24:03.870
+including animations.
+
+497
+00:24:03.870 --> 00:24:08.370
+But the better way to do stuff as fast as possible
+
+498
+00:24:08.370 --> 00:24:11.510
+is to use something called request animation frame.
+
+499
+00:24:11.510 --> 00:24:14.060
+And request animation frame allows the browser
+
+500
+00:24:14.060 --> 00:24:18.830
+to tell us when we should repaint or redo something
+
+501
+00:24:18.830 --> 00:24:21.750
+to the browser instead of us trying to do it
+
+502
+00:24:21.750 --> 00:24:25.720
+every 60 milliseconds because I have a very fast computer.
+
+503
+00:24:25.720 --> 00:24:27.390
+But some people have very slow computers,
+
+504
+00:24:27.390 --> 00:24:32.390
+and those will repaint or rerun the stuff on the screen
+
+505
+00:24:33.360 --> 00:24:36.590
+a lot less frequently than on a very expensive
+
+506
+00:24:36.590 --> 00:24:38.140
+or very fast computer.
+
+507
+00:24:38.140 --> 00:24:42.540
+So request animation frame will basically say, hey, browser.
+
+508
+00:24:42.540 --> 00:24:44.080
+I wanna do some stuff.
+
+509
+00:24:44.080 --> 00:24:48.100
+Next time you're painting to the page,
+
+510
+00:24:48.100 --> 00:24:50.360
+let me know when you're painting to the page
+
+511
+00:24:50.360 --> 00:24:51.193
+'cause I gotta do stuff.
+
+512
+00:24:51.193 --> 00:24:53.070
+It's kind of like, hey, browser.
+
+513
+00:24:53.070 --> 00:24:54.770
+If you're going to the store later let me know
+
+514
+00:24:54.770 --> 00:24:57.090
+'cause I need to pick up a couple of things.
+
+515
+00:24:57.090 --> 00:25:00.660
+So what we'll say is we'll go inside of this detect
+
+516
+00:25:00.660 --> 00:25:05.380
+and we'll say ask the browser when the next
+
+517
+00:25:05.380 --> 00:25:08.880
+animation frame is
+
+518
+00:25:08.880 --> 00:25:13.880
+and tell it to run detect for us.
+
+519
+00:25:13.940 --> 00:25:18.030
+And so we'll say request animation frame,
+
+520
+00:25:18.030 --> 00:25:19.330
+and we'll pass a detect.
+
+521
+00:25:19.330 --> 00:25:21.910
+Whoa, this is a new talk.
+
+522
+00:25:21.910 --> 00:25:24.600
+Okay, first of all it's working great.
+
+523
+00:25:24.600 --> 00:25:29.290
+But second of all I wanna talk about this right here.
+
+524
+00:25:29.290 --> 00:25:34.110
+So what I just did there is I am essentially running,
+
+525
+00:25:34.110 --> 00:25:35.290
+like we could do this as well.
+
+526
+00:25:35.290 --> 00:25:38.700
+We could just run it ourselves at the end, detect, right?
+
+527
+00:25:38.700 --> 00:25:40.660
+And that will work.
+
+528
+00:25:40.660 --> 00:25:41.950
+That works pretty well.
+
+529
+00:25:41.950 --> 00:25:44.180
+Request animation frame is the better way to do it
+
+530
+00:25:44.180 --> 00:25:46.290
+because of performance reasons.
+
+531
+00:25:46.290 --> 00:25:47.570
+But what we've just done there
+
+532
+00:25:47.570 --> 00:25:50.060
+is this concept called recursion.
+
+533
+00:25:50.060 --> 00:25:54.640
+And recursion is when a function calls itself.
+
+534
+00:25:54.640 --> 00:25:58.450
+And it will run forever and ever and ever until
+
+535
+00:25:58.450 --> 00:26:00.710
+something stops, until there's an exit condition,
+
+536
+00:26:00.710 --> 00:26:02.350
+sort of like our loops, right?
+
+537
+00:26:02.350 --> 00:26:04.520
+So recursion is when a function calls
+
+538
+00:26:04.520 --> 00:26:06.710
+itself inside of itself.
+
+539
+00:26:06.710 --> 00:26:08.820
+It's kind of like the snake eating its own tail.
+
+540
+00:26:08.820 --> 00:26:11.230
+Detect is being called from within detect,
+
+541
+00:26:11.230 --> 00:26:16.143
+and that allows us to just be running it infinitely, okay?
+
+542
+00:26:17.380 --> 00:26:21.160
+So, what's interesting about this is that
+
+543
+00:26:21.160 --> 00:26:24.130
+it will give us the detected face.
+
+544
+00:26:24.130 --> 00:26:27.670
+And you see that it's an array with one item.
+
+545
+00:26:27.670 --> 00:26:32.473
+So, I don't know, let's just console.log faces.length.
+
+546
+00:26:38.700 --> 00:26:41.190
+And it just tells us 1, 1, 1, 1, 1, 1, 1, 1.
+
+547
+00:26:41.190 --> 00:26:42.663
+I've got the queen here.
+
+548
+00:26:45.900 --> 00:26:47.763
+It got two for a quick second.
+
+549
+00:26:52.620 --> 00:26:54.563
+What else do I have in here?
+
+550
+00:27:08.710 --> 00:27:09.543
+Nothing.
+
+551
+00:27:11.976 --> 00:27:15.150
+It only does me, so it doesn't do dogs unfortunately.
+
+552
+00:27:15.150 --> 00:27:17.100
+Thanks, bud, go back and sleep.
+
+553
+00:27:17.100 --> 00:27:18.733
+I don't have anything else.
+
+554
+00:27:22.520 --> 00:27:23.590
+I don't have anything else.
+
+555
+00:27:23.590 --> 00:27:25.253
+Oh wait, I've got pictures.
+
+556
+00:27:28.270 --> 00:27:30.563
+Not sure if this will work but let's try it.
+
+557
+00:27:34.290 --> 00:27:36.660
+Oh see, giving us all four.
+
+558
+00:27:36.660 --> 00:27:40.250
+So it is detecting all of the faces that we see.
+
+559
+00:27:40.250 --> 00:27:42.420
+So we know we're in good shape, okay.
+
+560
+00:27:42.420 --> 00:27:43.873
+Cool, cool, cool.
+
+561
+00:27:45.685 --> 00:27:48.120
+So next up we're gonna be doing two things.
+
+562
+00:27:48.120 --> 00:27:50.020
+First we're gonna just draw a rectangle
+
+563
+00:27:50.020 --> 00:27:51.840
+around the faces that are found.
+
+564
+00:27:51.840 --> 00:27:55.270
+And then we're also going to censor the face
+
+565
+00:27:55.270 --> 00:27:58.120
+by pixelating the area that is around their face.
+
+566
+00:27:58.120 --> 00:28:01.543
+So we'll make another function here called drawFace.
+
+567
+00:28:06.990 --> 00:28:09.453
+And that will take in the user's face.
+
+568
+00:28:10.660 --> 00:28:14.540
+And we need a couple pieces of information.
+
+569
+00:28:14.540 --> 00:28:18.590
+How wide and high is the user's face?
+
+570
+00:28:18.590 --> 00:28:22.873
+Because it's much smaller pixels when I'm back here,
+
+571
+00:28:24.219 --> 00:28:26.680
+but much bigger pixels when I'm up here in high.
+
+572
+00:28:26.680 --> 00:28:31.350
+And then also what's the X and Y coordinate from the top.
+
+573
+00:28:31.350 --> 00:28:36.350
+So it's like over 400 pixels down 300 pixels,
+
+574
+00:28:36.510 --> 00:28:37.950
+and that's where my head starts.
+
+575
+00:28:37.950 --> 00:28:39.510
+And then we have the width and the height.
+
+576
+00:28:39.510 --> 00:28:42.380
+This is backwards from what I'm used to.
+
+577
+00:28:42.380 --> 00:28:43.810
+So how do we do that?
+
+578
+00:28:43.810 --> 00:28:45.730
+Well, maybe just console.log the face
+
+579
+00:28:45.730 --> 00:28:47.463
+and see what we're working with here.
+
+580
+00:28:51.430 --> 00:28:55.460
+I'm not getting anything because I forgot to run it.
+
+581
+00:28:55.460 --> 00:28:58.060
+So we can do is loop over each of those faces.
+
+582
+00:28:58.060 --> 00:29:00.740
+So we'll say faces.forEach.
+
+583
+00:29:03.110 --> 00:29:04.633
+And we'll just say drawFace.
+
+584
+00:29:06.218 --> 00:29:08.380
+And that will pass it the drawFace callback function
+
+585
+00:29:08.380 --> 00:29:09.950
+which is this one right here.
+
+586
+00:29:09.950 --> 00:29:14.810
+And then it will, for each face found it will log the face.
+
+587
+00:29:14.810 --> 00:29:17.990
+Then we want to go into the bounding box
+
+588
+00:29:17.990 --> 00:29:21.970
+and we get the X and the Y, the width and the height.
+
+589
+00:29:21.970 --> 00:29:22.970
+Okay, that's good.
+
+590
+00:29:22.970 --> 00:29:24.940
+So we'll pull those variables out of there.
+
+591
+00:29:24.940 --> 00:29:29.163
+We'll say const curly bracket, width, height,
+
+592
+00:29:30.880 --> 00:29:32.670
+top and left.
+
+593
+00:29:32.670 --> 00:29:37.250
+I'm using top and left here which is different
+
+594
+00:29:37.250 --> 00:29:40.360
+from X and Y.
+
+595
+00:29:40.360 --> 00:29:42.920
+I think X and Y is on the browser,
+
+596
+00:29:42.920 --> 00:29:46.260
+and top and left is from the video element itself.
+
+597
+00:29:46.260 --> 00:29:47.950
+So we want top and left.
+
+598
+00:29:47.950 --> 00:29:50.763
+And we'll de-structure that out of the face.boundingBox.
+
+599
+00:29:56.410 --> 00:29:58.260
+And let's just go ahead and console.log
+
+600
+00:29:58.260 --> 00:30:00.053
+all of those variables as well.
+
+601
+00:30:05.170 --> 00:30:06.150
+Looks good.
+
+602
+00:30:06.150 --> 00:30:09.520
+One little trick you can do here is instead
+
+603
+00:30:09.520 --> 00:30:11.030
+of just console.logging the values,
+
+604
+00:30:11.030 --> 00:30:14.223
+it you wrap them in a curly bracket object,
+
+605
+00:30:15.950 --> 00:30:18.290
+it will actually show you the property names
+
+606
+00:30:18.290 --> 00:30:20.310
+along with them which is pretty cool.
+
+607
+00:30:20.310 --> 00:30:22.820
+The reason that works is because you're essentially making
+
+608
+00:30:22.820 --> 00:30:26.880
+an object that says width width, height height,
+
+609
+00:30:26.880 --> 00:30:28.530
+top top, left left.
+
+610
+00:30:28.530 --> 00:30:30.610
+But because the properties and the names are the same,
+
+611
+00:30:30.610 --> 00:30:31.443
+you can leave them out.
+
+612
+00:30:31.443 --> 00:30:32.840
+So that's a little trick, I love using
+
+613
+00:30:32.840 --> 00:30:36.210
+if I need to know the names of them as well.
+
+614
+00:30:36.210 --> 00:30:38.100
+Okay, that's looking good.
+
+615
+00:30:38.100 --> 00:30:41.960
+Now we want to just draw a box to our canvas element
+
+616
+00:30:41.960 --> 00:30:43.390
+that is on there.
+
+617
+00:30:43.390 --> 00:30:47.890
+And you'll see that the canvas element is still down here
+
+618
+00:30:49.070 --> 00:30:52.810
+and we're gonna overlay it on top of the video to do that.
+
+619
+00:30:52.810 --> 00:30:54.410
+So we're gonna set a couple defaults.
+
+620
+00:30:54.410 --> 00:30:55.660
+Let's go up to the top here.
+
+621
+00:30:55.660 --> 00:31:00.140
+We can say ctx.strokeStyle, and lower case S,
+
+622
+00:31:00.140 --> 00:31:04.683
+is equal to, and I have a specific yellow I like to use.
+
+623
+00:31:06.960 --> 00:31:11.960
+And we want to set the line width to be something like two.
+
+624
+00:31:13.250 --> 00:31:15.750
+That's how thick the line will be drawn.
+
+625
+00:31:15.750 --> 00:31:20.750
+And then we'll go back down here and say ctx.strokeRect.
+
+626
+00:31:23.030 --> 00:31:26.730
+And this is the API for drawing a rectangle.
+
+627
+00:31:26.730 --> 00:31:31.730
+You can say the left, top, width and height.
+
+628
+00:31:34.040 --> 00:31:35.610
+And I don't know, is that enough?
+
+629
+00:31:35.610 --> 00:31:36.443
+Let's see.
+
+630
+00:31:38.400 --> 00:31:39.243
+Oh yeah.
+
+631
+00:31:42.960 --> 00:31:45.963
+This is some computer animation stuff here, okay.
+
+632
+00:31:47.260 --> 00:31:49.403
+That's looking pretty cool.
+
+633
+00:31:51.650 --> 00:31:53.990
+A couple of things, first it's not overlaid on top.
+
+634
+00:31:53.990 --> 00:31:54.970
+So let's fix that first.
+
+635
+00:31:54.970 --> 00:31:58.030
+We'll go back into our face here.
+
+636
+00:31:58.030 --> 00:32:00.080
+And let's look at our div.
+
+637
+00:32:00.080 --> 00:32:01.063
+We have a wrap.
+
+638
+00:32:03.250 --> 00:32:05.960
+Position relative, wrap each of our column.
+
+639
+00:32:05.960 --> 00:32:08.340
+So why is this CSS not applying?
+
+640
+00:32:08.340 --> 00:32:10.113
+It should be, let's take a look.
+
+641
+00:32:19.120 --> 00:32:21.760
+It's like it's ignoring the style tag.
+
+642
+00:32:21.760 --> 00:32:23.923
+Let's try to put it in the head here.
+
+643
+00:32:26.771 --> 00:32:27.604
+There we go.
+
+644
+00:32:27.604 --> 00:32:29.080
+Well, it looks like Parcel.
+
+645
+00:32:29.080 --> 00:32:33.130
+I'm using a beta of Parcel right now, it's probably why.
+
+646
+00:32:33.130 --> 00:32:34.510
+You probably won't have to do that
+
+647
+00:32:34.510 --> 00:32:36.250
+but that's the fix for it right now.
+
+648
+00:32:36.250 --> 00:32:38.463
+Okay, so it's working.
+
+649
+00:32:49.624 --> 00:32:50.770
+All right, it works.
+
+650
+00:32:50.770 --> 00:32:51.890
+Try to write your name in that.
+
+651
+00:32:51.890 --> 00:32:54.590
+A couple of things, it's not yellow, why not?
+
+652
+00:32:54.590 --> 00:32:57.033
+Let's go to our, and debug that.
+
+653
+00:32:58.090 --> 00:33:00.960
+Maybe this stroke style and the line width
+
+654
+00:33:00.960 --> 00:33:04.133
+need to be put in here right before we draw on it.
+
+655
+00:33:05.090 --> 00:33:06.700
+Yeah, that fixes it.
+
+656
+00:33:06.700 --> 00:33:09.223
+You can of course see, like if you made that 200,
+
+657
+00:33:12.096 --> 00:33:13.346
+it just blocks your face.
+
+658
+00:33:14.290 --> 00:33:15.713
+I'm gonna leave it at two.
+
+659
+00:33:17.280 --> 00:33:19.920
+The other thing is that it's, they're not clearing
+
+660
+00:33:19.920 --> 00:33:20.753
+after we want.
+
+661
+00:33:20.753 --> 00:33:23.140
+So we can do that pretty easily by saying
+
+662
+00:33:23.140 --> 00:33:25.063
+ctx.clearRect.
+
+663
+00:33:26.060 --> 00:33:31.060
+We'll say 0,0 canvas.width, canvas.height.
+
+664
+00:33:32.580 --> 00:33:37.210
+And what that will do is it will clear the amount,
+
+665
+00:33:37.210 --> 00:33:39.290
+the width and the height, based on starting
+
+666
+00:33:39.290 --> 00:33:41.100
+at the top left hand corner.
+
+667
+00:33:41.100 --> 00:33:42.440
+Every single time that this runs,
+
+668
+00:33:42.440 --> 00:33:45.730
+it just clears out the canvas for us.
+
+669
+00:33:45.730 --> 00:33:48.210
+All right, that seems to be working pretty well.
+
+670
+00:33:48.210 --> 00:33:49.570
+It's a little bit jumpy right now.
+
+671
+00:33:49.570 --> 00:33:51.750
+It used to be a lot better.
+
+672
+00:33:51.750 --> 00:33:53.140
+I think they're still working on it.
+
+673
+00:33:53.140 --> 00:33:54.610
+It might be a little bit smoother.
+
+674
+00:33:54.610 --> 00:33:57.640
+Same things with the eyes and nose and the mouth values.
+
+675
+00:33:57.640 --> 00:33:59.640
+They were very good for a while for me,
+
+676
+00:33:59.640 --> 00:34:03.270
+and currently they're like really weird.
+
+677
+00:34:03.270 --> 00:34:04.190
+I bet that will get better.
+
+678
+00:34:04.190 --> 00:34:06.600
+You're welcome to try and do this.
+
+679
+00:34:06.600 --> 00:34:09.230
+But also for the eyes and the mouth and the nose.
+
+680
+00:34:09.230 --> 00:34:11.750
+So that's the sort of the first thing.
+
+681
+00:34:11.750 --> 00:34:14.100
+Now the second thing we wanna do is to pixelate
+
+682
+00:34:15.200 --> 00:34:18.090
+the user's face on top of it.
+
+683
+00:34:18.090 --> 00:34:20.680
+So we'll go ahead and do that.
+
+684
+00:34:20.680 --> 00:34:23.373
+So we'll make a function here called censor.
+
+685
+00:34:28.230 --> 00:34:33.080
+And that will take in the face.
+
+686
+00:34:33.080 --> 00:34:36.100
+In our case we don't care about anything
+
+687
+00:34:36.100 --> 00:34:37.420
+but the bounding box.
+
+688
+00:34:37.420 --> 00:34:39.700
+So what I'm gonna do is instead of saying
+
+689
+00:34:39.700 --> 00:34:43.133
+something like face details is equal to,
+
+690
+00:34:43.133 --> 00:34:45.051
+if we pass it like this,
+
+691
+00:34:45.051 --> 00:34:47.280
+face.boundingBox.
+
+692
+00:34:47.280 --> 00:34:49.840
+Instead of doing that, I'm going to de-structure
+
+693
+00:34:49.840 --> 00:34:52.550
+the boundingBox property directly.
+
+694
+00:34:52.550 --> 00:34:54.120
+So we can replace that face with
+
+695
+00:34:54.120 --> 00:34:57.713
+a curly bracket bounding box.
+
+696
+00:34:58.700 --> 00:35:00.620
+And now we just have a variable called
+
+697
+00:35:00.620 --> 00:35:02.970
+straight up boundingBox.
+
+698
+00:35:02.970 --> 00:35:04.570
+And then I can go a little bit further
+
+699
+00:35:04.570 --> 00:35:07.083
+and rename it to a variable called face.
+
+700
+00:35:08.500 --> 00:35:11.547
+And now I should have a face.
+
+701
+00:35:11.547 --> 00:35:14.020
+And then we'll go back up here.
+
+702
+00:35:14.020 --> 00:35:17.390
+And we will rerun this.
+
+703
+00:35:17.390 --> 00:35:19.663
+faces.forEach and we'll call censor.
+
+704
+00:35:25.750 --> 00:35:28.000
+And you see we're getting that boundingBox
+
+705
+00:35:28.920 --> 00:35:30.930
+detail just like we were before.
+
+706
+00:35:30.930 --> 00:35:33.360
+Good, so now the question is like,
+
+707
+00:35:33.360 --> 00:35:36.550
+how do you censor something, right?
+
+708
+00:35:36.550 --> 00:35:38.770
+And there's a couple different ways to do it,
+
+709
+00:35:38.770 --> 00:35:41.300
+and the way that I've found to do it
+
+710
+00:35:41.300 --> 00:35:45.340
+is to take a snapshot of the user's face,
+
+711
+00:35:45.340 --> 00:35:48.660
+scale it down very, very small.
+
+712
+00:35:48.660 --> 00:35:51.290
+And then paint it to the canvas.
+
+713
+00:35:51.290 --> 00:35:52.630
+And then immediately after that,
+
+714
+00:35:52.630 --> 00:35:55.500
+pull it off the canvas, stretch it back up
+
+715
+00:35:55.500 --> 00:35:56.540
+and put it back in.
+
+716
+00:35:56.540 --> 00:35:59.610
+So essentially what you're doing is you're making it small,
+
+717
+00:35:59.610 --> 00:36:02.630
+saving it, you lose all the pixel quality.
+
+718
+00:36:02.630 --> 00:36:04.540
+And they take it out, stretch it back up again
+
+719
+00:36:04.540 --> 00:36:06.970
+and then that's how you get the pixelation look.
+
+720
+00:36:06.970 --> 00:36:09.680
+So let's write some comments here.
+
+721
+00:36:09.680 --> 00:36:14.680
+First what we wanna do is draw the small face.
+
+722
+00:36:16.450 --> 00:36:21.450
+And then second we want to do is take that face back out
+
+723
+00:36:22.930 --> 00:36:27.853
+and draw it back at normal size.
+
+724
+00:36:31.200 --> 00:36:32.033
+Okay, cool.
+
+725
+00:36:33.350 --> 00:36:36.060
+Now, the way that we do that is we are gonna take
+
+726
+00:36:36.060 --> 00:36:38.940
+our second canvas element which is our faceCtx.
+
+727
+00:36:39.895 --> 00:36:43.213
+And we'll say faceCtx.draw image.
+
+728
+00:36:44.700 --> 00:36:48.040
+And this takes like a billion arguments.
+
+729
+00:36:48.040 --> 00:36:49.710
+Let's look it up.
+
+730
+00:36:49.710 --> 00:36:51.193
+MDN, draw image.
+
+731
+00:36:54.330 --> 00:36:58.490
+So it takes either the image, the X and the Y.
+
+732
+00:36:58.490 --> 00:37:00.270
+It takes the image, the X and the Y,
+
+733
+00:37:00.270 --> 00:37:05.200
+and then the D within D height.
+
+734
+00:37:05.200 --> 00:37:06.033
+We'll talk about that.
+
+735
+00:37:06.033 --> 00:37:07.780
+Or it takes all of these arguments
+
+736
+00:37:07.780 --> 00:37:09.050
+in which we are going to be using
+
+737
+00:37:09.050 --> 00:37:11.820
+and I'll try to break them all down to you.
+
+738
+00:37:11.820 --> 00:37:14.020
+So let's start here.
+
+739
+00:37:14.020 --> 00:37:15.650
+Face context that draw image.
+
+740
+00:37:15.650 --> 00:37:19.500
+First it takes the image that you wanna draw to it,
+
+741
+00:37:19.500 --> 00:37:23.190
+and we are going to pass it our video.
+
+742
+00:37:23.190 --> 00:37:25.770
+And then it also wants the X and the Y
+
+743
+00:37:25.770 --> 00:37:27.280
+of where you should start for it.
+
+744
+00:37:27.280 --> 00:37:28.653
+So we'll just say 0,0.
+
+745
+00:37:29.910 --> 00:37:32.790
+You see it doesn't look like much is different,
+
+746
+00:37:32.790 --> 00:37:34.440
+but if I were to inspect that,
+
+747
+00:37:34.440 --> 00:37:37.120
+you'll see that it is a canvas element
+
+748
+00:37:37.120 --> 00:37:38.500
+and not the video element.
+
+749
+00:37:38.500 --> 00:37:41.680
+If you go ahead and hide that video element,
+
+750
+00:37:41.680 --> 00:37:43.480
+you'll see I'm still here because
+
+751
+00:37:44.330 --> 00:37:47.530
+the video is being painted onto the canvas.
+
+752
+00:37:47.530 --> 00:37:49.560
+Now that's not really what we want to do.
+
+753
+00:37:49.560 --> 00:37:51.500
+We want to do a little bit more than that.
+
+754
+00:37:51.500 --> 00:37:56.500
+We want to take the square that is painting on my face
+
+755
+00:37:57.350 --> 00:37:58.880
+and then throw it on there.
+
+756
+00:37:58.880 --> 00:38:00.550
+So let me comment that out, make sure
+
+757
+00:38:00.550 --> 00:38:03.290
+we still have the square painting, good.
+
+758
+00:38:03.290 --> 00:38:05.650
+Now let's go back here and let's go
+
+759
+00:38:05.650 --> 00:38:07.890
+through every single argument one by one
+
+760
+00:38:07.890 --> 00:38:09.810
+'cause there are, what?
+
+761
+00:38:09.810 --> 00:38:12.260
+Nine arguments to this function.
+
+762
+00:38:12.260 --> 00:38:15.240
+So there are five source args,
+
+763
+00:38:15.240 --> 00:38:19.350
+and then there are four I call draw args,
+
+764
+00:38:19.350 --> 00:38:22.150
+meaning like five pieces of data
+
+765
+00:38:22.150 --> 00:38:25.270
+about how we pull data out of this video.
+
+766
+00:38:25.270 --> 00:38:28.060
+And then four arguments about how we painted into
+
+767
+00:38:28.060 --> 00:38:31.120
+because we really only want this square right here
+
+768
+00:38:32.070 --> 00:38:33.330
+to be painted on to it.
+
+769
+00:38:33.330 --> 00:38:35.880
+So first thing is where do I get it.
+
+770
+00:38:35.880 --> 00:38:38.100
+And we wanna grab that from the video tag.
+
+771
+00:38:38.100 --> 00:38:41.690
+So where does the soruce come from?
+
+772
+00:38:41.690 --> 00:38:45.930
+The next two are face.x and face.y
+
+773
+00:38:45.930 --> 00:38:50.320
+which are going to be where do we start
+
+774
+00:38:50.320 --> 00:38:53.550
+the source pull from.
+
+775
+00:38:53.550 --> 00:38:55.760
+Like I'm trying to pull the square out of.
+
+776
+00:38:55.760 --> 00:38:57.350
+So where do we start?
+
+777
+00:38:57.350 --> 00:38:59.453
+Right here.
+
+778
+00:39:00.370 --> 00:39:02.580
+Next we want to know like,
+
+779
+00:39:02.580 --> 00:39:07.420
+if we start right here, how wide and how high
+
+780
+00:39:07.420 --> 00:39:08.780
+does it need to go?
+
+781
+00:39:08.780 --> 00:39:12.113
+That is the face.width and the face.height.
+
+782
+00:39:17.130 --> 00:39:18.530
+So that is pulling out.
+
+783
+00:39:18.530 --> 00:39:22.870
+Now the next four args are drawing it into
+
+784
+00:39:22.870 --> 00:39:24.920
+the face canvas that we have.
+
+785
+00:39:24.920 --> 00:39:29.920
+And now we wanna ask where should I start drawing it at.
+
+786
+00:39:30.270 --> 00:39:33.465
+So that's these two ones, face.x and face.y.
+
+787
+00:39:33.465 --> 00:39:34.750
+Let me go ahead and paste those.
+
+788
+00:39:34.750 --> 00:39:36.600
+And then change this comment to say
+
+789
+00:39:36.600 --> 00:39:41.600
+where should we start drawing the x and y?
+
+790
+00:39:42.180 --> 00:39:46.240
+And then the next args are how wide and how high
+
+791
+00:39:46.240 --> 00:39:47.280
+should I paint it to?
+
+792
+00:39:47.280 --> 00:39:48.770
+So you may think like, okay,
+
+793
+00:39:48.770 --> 00:39:51.923
+use face.width and face.height here.
+
+794
+00:39:57.550 --> 00:40:00.130
+What's actually happening here is that
+
+795
+00:40:00.130 --> 00:40:02.570
+it's just painting my face to the square.
+
+796
+00:40:02.570 --> 00:40:04.070
+And then everything else you see outside
+
+797
+00:40:04.070 --> 00:40:05.960
+of the square is the video element.
+
+798
+00:40:05.960 --> 00:40:08.190
+And then everything inside the square is the canvas.
+
+799
+00:40:08.190 --> 00:40:10.370
+And there's a little bit of a delay there.
+
+800
+00:40:10.370 --> 00:40:13.720
+So it's trying to follow my face around.
+
+801
+00:40:13.720 --> 00:40:15.720
+So the way that it's going to work is that
+
+802
+00:40:15.720 --> 00:40:18.250
+we're going to take like 10 pixels by 10 pixels,
+
+803
+00:40:18.250 --> 00:40:21.000
+and then peel it back up once we've done it.
+
+804
+00:40:21.000 --> 00:40:25.963
+So let's replace that with 10 and 10.
+
+805
+00:40:28.165 --> 00:40:30.840
+And you should see, yeah, right there, little Wes
+
+806
+00:40:30.840 --> 00:40:31.770
+right in the corner.
+
+807
+00:40:31.770 --> 00:40:33.970
+If it's you, it's little you.
+
+808
+00:40:33.970 --> 00:40:35.490
+But we don't wanna, I don't know,
+
+809
+00:40:35.490 --> 00:40:36.920
+let's not hard code that.
+
+810
+00:40:36.920 --> 00:40:38.690
+Let's make a variable called size
+
+811
+00:40:38.690 --> 00:40:41.440
+so that we can quickly reference that whenever we need it.
+
+812
+00:40:41.440 --> 00:40:43.030
+So I'm gonna go to the top here
+
+813
+00:40:43.030 --> 00:40:46.170
+and do just const size is equal to 10.
+
+814
+00:40:46.170 --> 00:40:48.860
+And that will allow us to reference it.
+
+815
+00:40:48.860 --> 00:40:50.610
+And why did I do it all caps?
+
+816
+00:40:50.610 --> 00:40:53.780
+It's kind of a common thing in the graphics canvas world.
+
+817
+00:40:53.780 --> 00:40:56.770
+Any variables that are constant throughout the application.
+
+818
+00:40:56.770 --> 00:40:58.363
+They do them in all caps.
+
+819
+00:40:59.680 --> 00:41:02.080
+So now I have little Wes being painted.
+
+820
+00:41:02.080 --> 00:41:04.700
+The next thing that we need to do here
+
+821
+00:41:04.700 --> 00:41:06.900
+is draw the small face,
+
+822
+00:41:06.900 --> 00:41:10.830
+and now we need to draw the small face
+
+823
+00:41:10.830 --> 00:41:14.150
+back on but scaled up.
+
+824
+00:41:14.150 --> 00:41:16.310
+So the whole reason we draw it small
+
+825
+00:41:16.310 --> 00:41:19.450
+is so that we can pull it back out, stretch it back up,
+
+826
+00:41:19.450 --> 00:41:21.500
+and then paint it over top of it again.
+
+827
+00:41:21.500 --> 00:41:24.630
+So we're like bam bam, painting small, painting big.
+
+828
+00:41:24.630 --> 00:41:27.270
+But by making it small will allow us to stretch it up
+
+829
+00:41:27.270 --> 00:41:29.690
+and get that pixelated look that we're going for.
+
+830
+00:41:29.690 --> 00:41:32.817
+So we'll just grab that faceCtx again
+
+831
+00:41:32.817 --> 00:41:36.220
+and we'll draw another image on it.
+
+832
+00:41:36.220 --> 00:41:40.170
+And next one is where do we wanna grab the source?
+
+833
+00:41:40.170 --> 00:41:42.370
+Well, from itself.
+
+834
+00:41:42.370 --> 00:41:44.460
+So faceCanvas.
+
+835
+00:41:44.460 --> 00:41:48.723
+So let's say source.
+
+836
+00:41:50.060 --> 00:41:51.390
+Then where do we wanna start it?
+
+837
+00:41:51.390 --> 00:41:54.060
+Well, we wanna start it right there, X and Y.
+
+838
+00:41:54.060 --> 00:41:56.293
+So we can grab these.
+
+839
+00:41:57.740 --> 00:42:00.007
+For how wide and how high does it need to go,
+
+840
+00:42:00.007 --> 00:42:02.970
+and now it's no longer the width and the height of the face,
+
+841
+00:42:02.970 --> 00:42:04.170
+it's now the width and the height
+
+842
+00:42:04.170 --> 00:42:05.837
+of the little one that we did.
+
+843
+00:42:05.837 --> 00:42:08.350
+And that is going to be our size variable.
+
+844
+00:42:08.350 --> 00:42:11.500
+See why we put that in its own variable.
+
+845
+00:42:11.500 --> 00:42:14.060
+And then we have our drawing args here
+
+846
+00:42:14.060 --> 00:42:17.410
+which is going to be, if we look back here,
+
+847
+00:42:17.410 --> 00:42:20.370
+where should we start drawing the X and the Y?
+
+848
+00:42:20.370 --> 00:42:24.880
+So in our case it's going to be face.x, face.y.
+
+849
+00:42:24.880 --> 00:42:28.340
+And then for how wide and how high should we do it?
+
+850
+00:42:28.340 --> 00:42:32.720
+So we're gonna say face.width and face.height.
+
+851
+00:42:32.720 --> 00:42:34.540
+And now it should be painting over the top.
+
+852
+00:42:34.540 --> 00:42:38.703
+It doesn't look like that's working.
+
+853
+00:42:39.610 --> 00:42:42.213
+Let's do a little bit of debugging here.
+
+854
+00:42:49.659 --> 00:42:51.043
+Woo, Okay.
+
+855
+00:42:51.043 --> 00:42:53.360
+That was about 20 minutes of debugging for me
+
+856
+00:42:53.360 --> 00:42:54.850
+figuring out one slight thing.
+
+857
+00:42:54.850 --> 00:42:58.470
+So my question was is like why is it not
+
+858
+00:42:58.470 --> 00:43:01.100
+painting my face once it's scale up?
+
+859
+00:43:01.100 --> 00:43:03.570
+And sort of my debugging mindset went through.
+
+860
+00:43:03.570 --> 00:43:06.320
+I said like it looks like it's not actually
+
+861
+00:43:06.320 --> 00:43:08.130
+drawing anything right here
+
+862
+00:43:08.130 --> 00:43:10.900
+because if I comment this out,
+
+863
+00:43:10.900 --> 00:43:13.150
+it works exactly the same way.
+
+864
+00:43:13.150 --> 00:43:16.160
+And if I give it a separate source like the video
+
+865
+00:43:16.160 --> 00:43:18.320
+instead of a canvas to pull from,
+
+866
+00:43:18.320 --> 00:43:20.880
+then it is working.
+
+867
+00:43:20.880 --> 00:43:23.223
+And even if I give it my,
+
+868
+00:43:24.226 --> 00:43:25.920
+you just see it's kind of working here.
+
+869
+00:43:25.920 --> 00:43:27.900
+It's not really that great because it's just playing
+
+870
+00:43:27.900 --> 00:43:31.663
+the first 10 pixels of my hand right here.
+
+871
+00:43:31.663 --> 00:43:34.040
+I just put my phone right there you'll see
+
+872
+00:43:34.040 --> 00:43:35.700
+it's pulling that up.
+
+873
+00:43:35.700 --> 00:43:38.230
+So I looked at it forever and ever and ever
+
+874
+00:43:38.230 --> 00:43:41.710
+and I said, like, why is it not painting to the faceCanvas?
+
+875
+00:43:42.760 --> 00:43:46.750
+My hint was I went to the faceCanvas
+
+876
+00:43:46.750 --> 00:43:50.510
+and said display none and nothing changed
+
+877
+00:43:50.510 --> 00:43:55.500
+which means I was drawing this to the wrong canvas.
+
+878
+00:43:55.500 --> 00:43:56.670
+But as I was looking, I was like, no,
+
+879
+00:43:56.670 --> 00:43:58.490
+there's two canvases.
+
+880
+00:43:58.490 --> 00:44:03.360
+The first canvas is the regular canvas with the context.
+
+881
+00:44:03.360 --> 00:44:05.150
+And the second canvas is the face canvas
+
+882
+00:44:05.150 --> 00:44:06.590
+with the face context.
+
+883
+00:44:06.590 --> 00:44:08.850
+So like what is wrong with my variables?
+
+884
+00:44:08.850 --> 00:44:10.180
+And it's right here.
+
+885
+00:44:10.180 --> 00:44:12.760
+So the face canvas I selected properly,
+
+886
+00:44:12.760 --> 00:44:15.820
+but the face context I used the wrong canvas
+
+887
+00:44:15.820 --> 00:44:17.270
+to pull the context.
+
+888
+00:44:17.270 --> 00:44:18.957
+So that was there.
+
+889
+00:44:23.350 --> 00:44:24.860
+There we go.
+
+890
+00:44:24.860 --> 00:44:27.160
+Now it is working.
+
+891
+00:44:27.160 --> 00:44:28.900
+It's taking my...
+
+892
+00:44:32.500 --> 00:44:35.380
+Taking my face and spreading it all over.
+
+893
+00:44:35.380 --> 00:44:38.660
+A couple of things we can do to fix some of that stuff
+
+894
+00:44:38.660 --> 00:44:41.940
+is we'll go into our censor.
+
+895
+00:44:41.940 --> 00:44:44.300
+One thing I did add here is this face context,
+
+896
+00:44:44.300 --> 00:44:46.003
+that image smoothing enabled.
+
+897
+00:44:48.408 --> 00:44:50.130
+You see that if you don't put that,
+
+898
+00:44:50.130 --> 00:44:52.460
+it's kind of just blurry because
+
+899
+00:44:52.460 --> 00:44:55.000
+what it tries to do is it says, oh, this is pixelated.
+
+900
+00:44:55.000 --> 00:44:56.800
+Let me try and smooth it out.
+
+901
+00:44:56.800 --> 00:44:59.670
+And then you get his kind of weird thing.
+
+902
+00:44:59.670 --> 00:45:02.100
+But if you turn that off,
+
+903
+00:45:02.100 --> 00:45:05.480
+then you get the real pixelated values there.
+
+904
+00:45:05.480 --> 00:45:07.710
+And then we also wanna like clear the canvas
+
+905
+00:45:07.710 --> 00:45:08.860
+before we do any of this.
+
+906
+00:45:08.860 --> 00:45:12.873
+So we'll say faceCtx.clearRect.
+
+907
+00:45:14.820 --> 00:45:19.333
+0,0 faceCanvas.width.
+
+908
+00:45:21.570 --> 00:45:23.880
+And, right.
+
+909
+00:45:23.880 --> 00:45:26.787
+Let's clear the whole canvas every time we move over.
+
+910
+00:45:26.787 --> 00:45:27.890
+There we go.
+
+911
+00:45:27.890 --> 00:45:29.523
+Now it seems to be working.
+
+912
+00:45:31.530 --> 00:45:33.190
+One other thing is it doesn't actually
+
+913
+00:45:33.190 --> 00:45:36.720
+do a great job at getting my whole face.
+
+914
+00:45:36.720 --> 00:45:40.310
+So what I do is I'm gonna go to the top here in const,
+
+915
+00:45:40.310 --> 00:45:44.013
+make a scale variable and I scale it up to 1.5.
+
+916
+00:45:45.440 --> 00:45:49.970
+And then we can go down here to our second draw
+
+917
+00:45:49.970 --> 00:45:53.630
+and we can make a couple of variables that are scaled up.
+
+918
+00:45:53.630 --> 00:45:55.230
+So firs thing we're gonna do is make
+
+919
+00:45:55.230 --> 00:45:56.300
+a width and a height.
+
+920
+00:45:56.300 --> 00:46:00.980
+So we'll just say const width is equal to
+
+921
+00:46:00.980 --> 00:46:04.403
+face.width times scale.
+
+922
+00:46:06.447 --> 00:46:08.180
+And I'll do that for height as well.
+
+923
+00:46:08.180 --> 00:46:12.260
+Now we'll go down here and replace these two values
+
+924
+00:46:12.260 --> 00:46:14.383
+with just our variables within height.
+
+925
+00:46:15.410 --> 00:46:17.710
+So there we go, so that makes a bit
+
+926
+00:46:17.710 --> 00:46:19.520
+of a bigger scaled up face.
+
+927
+00:46:19.520 --> 00:46:22.283
+And you can see like if you make that a two,
+
+928
+00:46:23.230 --> 00:46:24.800
+it is very scaled up, right?
+
+929
+00:46:24.800 --> 00:46:27.840
+And now we need to back it up and over
+
+930
+00:46:27.840 --> 00:46:30.060
+based on how much we had.
+
+931
+00:46:30.060 --> 00:46:32.870
+And for hat we need a little bit of math.
+
+932
+00:46:32.870 --> 00:46:35.850
+We'll take this face.x and face.y
+
+933
+00:46:35.850 --> 00:46:39.860
+and we will subtract from each the width
+
+934
+00:46:39.860 --> 00:46:44.280
+minus the face.height divided by two.
+
+935
+00:46:44.280 --> 00:46:46.303
+And this will of course be the width.
+
+936
+00:46:47.330 --> 00:46:50.170
+This will be the height.
+
+937
+00:46:50.170 --> 00:46:52.260
+Actually it doesn't really matter since it's a square.
+
+938
+00:46:52.260 --> 00:46:54.300
+But in case for some reason it changed
+
+939
+00:46:54.300 --> 00:46:55.820
+to not being a square.
+
+940
+00:46:55.820 --> 00:46:57.563
+Hey, there we go.
+
+941
+00:47:00.040 --> 00:47:01.530
+This is pretty cool.
+
+942
+00:47:01.530 --> 00:47:04.810
+We can go up here and change these variables now
+
+943
+00:47:04.810 --> 00:47:06.823
+if I could make it like a two pixel.
+
+944
+00:47:08.140 --> 00:47:10.110
+You see I'd be just like very blocked.
+
+945
+00:47:10.110 --> 00:47:15.110
+Or if I make it 100 pixels, it's actually just,
+
+946
+00:47:15.660 --> 00:47:18.423
+like it's a 200 pixel by 200 pixel usually.
+
+947
+00:47:23.470 --> 00:47:27.733
+You see I'm pretty big, I don't know, four for three.
+
+948
+00:47:28.900 --> 00:47:31.810
+Make that a nine by nine grid of the pixels.
+
+949
+00:47:31.810 --> 00:47:33.970
+I find that like 10.
+
+950
+00:47:33.970 --> 00:47:35.150
+It's just enough.
+
+951
+00:47:35.150 --> 00:47:39.750
+20 starts to give away my identity, being scaled up.
+
+952
+00:47:39.750 --> 00:47:44.220
+And then the scale like a 1.35 usually looks the best.
+
+953
+00:47:44.220 --> 00:47:45.810
+See, even 20 is too much.
+
+954
+00:47:45.810 --> 00:47:46.643
+10.
+
+955
+00:47:47.640 --> 00:47:50.030
+10 is the most anonymous that I have.
+
+956
+00:47:50.030 --> 00:47:50.863
+Cool.
+
+957
+00:47:50.863 --> 00:47:52.300
+Actually what would be really cool,
+
+958
+00:47:52.300 --> 00:47:54.340
+and feel free to shut this down.
+
+959
+00:47:54.340 --> 00:47:55.930
+We've done it.
+
+960
+00:47:55.930 --> 00:47:58.770
+Congratulations, we've done our job here.
+
+961
+00:47:58.770 --> 00:48:01.110
+But if you're still with me, why don't we try
+
+962
+00:48:01.110 --> 00:48:04.020
+and create some sliders that will change
+
+963
+00:48:04.020 --> 00:48:08.900
+these size and scale values here?
+
+964
+00:48:08.900 --> 00:48:13.900
+So maybe what I'm gonna do here is make an options variable
+
+965
+00:48:15.100 --> 00:48:19.763
+and make a size property and a scale property.
+
+966
+00:48:22.710 --> 00:48:25.250
+And let's change those out.
+
+967
+00:48:25.250 --> 00:48:26.833
+So look for size.
+
+968
+00:48:30.520 --> 00:48:33.453
+One, two, three, four.
+
+969
+00:48:34.900 --> 00:48:38.693
+Change that to options.size.
+
+970
+00:48:40.450 --> 00:48:45.450
+And now scale should be changed to
+
+971
+00:48:47.920 --> 00:48:50.573
+options.scale.
+
+972
+00:48:56.480 --> 00:48:57.313
+Broke it.
+
+973
+00:49:08.610 --> 00:49:10.923
+Oh, that's a syntax error, that's why.
+
+974
+00:49:14.100 --> 00:49:15.910
+Okay, now that's working.
+
+975
+00:49:15.910 --> 00:49:18.700
+Now I'm gonna go back to my face here
+
+976
+00:49:18.700 --> 00:49:22.763
+and make some like controls.
+
+977
+00:49:23.980 --> 00:49:26.550
+Make ourselves input type of range.
+
+978
+00:49:26.550 --> 00:49:29.743
+The name is going to be scale.
+
+979
+00:49:31.360 --> 00:49:34.530
+The min will be 0.3.
+
+980
+00:49:36.550 --> 00:49:40.210
+The max will be three.
+
+981
+00:49:40.210 --> 00:49:44.550
+And the step will be 0.1.
+
+982
+00:49:44.550 --> 00:49:49.253
+And that will do a label for scale.
+
+983
+00:49:50.844 --> 00:49:51.744
+Put that in there.
+
+984
+00:49:53.796 --> 00:49:54.796
+And we'll say scale.
+
+985
+00:49:57.000 --> 00:49:58.713
+Okay, so we got this here.
+
+986
+00:50:01.242 --> 00:50:03.970
+Let's se the default value as well to line up
+
+987
+00:50:03.970 --> 00:50:06.000
+with what we did in here.
+
+988
+00:50:06.000 --> 00:50:07.673
+Scale 1.35.
+
+989
+00:50:08.630 --> 00:50:13.103
+So I'll say value is equal to 1.35.
+
+990
+00:50:15.506 --> 00:50:18.173
+We see it starts at kind of where we want it.
+
+991
+00:50:20.120 --> 00:50:24.530
+Now when somebody changes this range value
+
+992
+00:50:24.530 --> 00:50:28.510
+we wanna update the variable that is scale.
+
+993
+00:50:28.510 --> 00:50:31.000
+So let's actually just duplicate this
+
+994
+00:50:31.000 --> 00:50:34.033
+and do it for the size as well.
+
+995
+00:50:40.810 --> 00:50:42.270
+Size.
+
+996
+00:50:42.270 --> 00:50:45.373
+So the size will start at 10.
+
+997
+00:50:47.070 --> 00:50:52.070
+And it will go from 1 all the way up to 100.
+
+998
+00:50:55.660 --> 00:50:58.103
+And the step will go up by one.
+
+999
+00:50:59.660 --> 00:51:03.100
+Okay, so now we need some event listeners on these suckers.
+
+1000
+00:51:03.100 --> 00:51:07.140
+So we need to select those inputs.
+
+1001
+00:51:07.140 --> 00:51:10.720
+So over here, we say const range inputs.
+
+1002
+00:51:10.720 --> 00:51:13.490
+Or maybe we'll call it options inputs
+
+1003
+00:51:13.490 --> 00:51:18.490
+is equal to document.querySelector.
+
+1004
+00:51:19.095 --> 00:51:20.830
+I'm gonna select everything in the controls,
+
+1005
+00:51:20.830 --> 00:51:24.183
+that is input with the type of range.
+
+1006
+00:51:26.240 --> 00:51:30.150
+We'll console.log the options inputs
+
+1007
+00:51:30.150 --> 00:51:31.950
+to see what we're working with here.
+
+1008
+00:51:39.686 --> 00:51:41.420
+We've got null.
+
+1009
+00:51:41.420 --> 00:51:42.860
+Query selector all.
+
+1010
+00:51:42.860 --> 00:51:45.313
+That's probably not our problem though.
+
+1011
+00:51:45.313 --> 00:51:46.663
+We got our empty node list.
+
+1012
+00:51:47.567 --> 00:51:49.950
+Controls, input, there we go.
+
+1013
+00:51:49.950 --> 00:51:51.700
+There we go, now we got our node list
+
+1014
+00:51:51.700 --> 00:51:53.260
+with our two inputs on it.
+
+1015
+00:51:53.260 --> 00:51:55.230
+Then what we'll do is we'll make
+
+1016
+00:51:55.230 --> 00:51:58.520
+an event listener for each of those.
+
+1017
+00:51:58.520 --> 00:52:01.403
+So we'll say options inputs.
+
+1018
+00:52:03.230 --> 00:52:05.305
+Let's keep this altogether.
+
+1019
+00:52:05.305 --> 00:52:06.972
+optionsInput.forEach
+
+1020
+00:52:08.440 --> 00:52:11.780
+input, we'll say input.addEventListener.
+
+1021
+00:52:13.240 --> 00:52:17.863
+The input event is what we'll fire when it is changed.
+
+1022
+00:52:18.720 --> 00:52:23.570
+And we will then have a handle range input.
+
+1023
+00:52:23.570 --> 00:52:25.643
+Or maybe handleOption we'll call it.
+
+1024
+00:52:26.830 --> 00:52:29.163
+Then we'll make a function, let's do it above it.
+
+1025
+00:52:30.502 --> 00:52:33.873
+So handleOption, it gives our event.
+
+1026
+00:52:34.720 --> 00:52:39.223
+And let's just console.log event.currentTarget.value.
+
+1027
+00:52:44.810 --> 00:52:46.723
+Change that to correct spelling.
+
+1028
+00:52:50.175 --> 00:52:51.008
+There we go.
+
+1029
+00:52:51.008 --> 00:52:53.830
+So now every time we change either one of these values,
+
+1030
+00:52:53.830 --> 00:52:56.840
+they are updating or they're console.logging.
+
+1031
+00:52:56.840 --> 00:52:59.940
+And now what we need to do is,
+
+1032
+00:52:59.940 --> 00:53:02.620
+so now what we need to do is pull out the value
+
+1033
+00:53:02.620 --> 00:53:04.603
+and the name of the input.
+
+1034
+00:53:05.870 --> 00:53:09.520
+And see it says size, size, size, scale, scale, scale.
+
+1035
+00:53:09.520 --> 00:53:11.660
+So using the value and the name,
+
+1036
+00:53:11.660 --> 00:53:14.280
+let's bring those into just proper variables.
+
+1037
+00:53:14.280 --> 00:53:16.480
+So const, we'll de-structure them.
+
+1038
+00:53:16.480 --> 00:53:21.293
+Value and name is equal to event.currentTarget.
+
+1039
+00:53:23.530 --> 00:53:27.450
+And then we'll say options, square bracket,
+
+1040
+00:53:27.450 --> 00:53:32.100
+name is equal to value, I think.
+
+1041
+00:53:32.100 --> 00:53:34.974
+We might need to change these to numbers
+
+1042
+00:53:34.974 --> 00:53:38.370
+'cause inputs always come in as strings.
+
+1043
+00:53:38.370 --> 00:53:40.640
+So we want a parseFloat.
+
+1044
+00:53:49.060 --> 00:53:49.893
+Hey.
+
+1045
+00:53:51.500 --> 00:53:54.170
+There we go, and you can scale it up.
+
+1046
+00:53:54.170 --> 00:53:57.670
+You see the beauty of keeping these variables as options?
+
+1047
+00:53:57.670 --> 00:53:59.560
+That way you can just change it.
+
+1048
+00:53:59.560 --> 00:54:02.620
+And then whenever you change the value
+
+1049
+00:54:02.620 --> 00:54:06.590
+of whatever is going on here, it will just update itself.
+
+1050
+00:54:06.590 --> 00:54:07.683
+Oh, I like that.
+
+1051
+00:54:10.220 --> 00:54:11.843
+Cool, so, I know that was a long one.
+
+1052
+00:54:11.843 --> 00:54:13.430
+I think that's super fun.
+
+1053
+00:54:13.430 --> 00:54:15.610
+Hopefully you can, like, that's just the beginning.
+
+1054
+00:54:15.610 --> 00:54:17.000
+Hopefully you've got some ideas of things
+
+1055
+00:54:17.000 --> 00:54:18.550
+you like to add to this sort of thing,
+
+1056
+00:54:18.550 --> 00:54:22.470
+maybe look into how you can make these images downloadable.
+
+1057
+00:54:22.470 --> 00:54:25.940
+In my JavaScript 30 course we do a photo booth
+
+1058
+00:54:25.940 --> 00:54:28.320
+that's similar to that, so check it out
+
+1059
+00:54:28.320 --> 00:54:30.070
+and I'll catch you in the next one.
+

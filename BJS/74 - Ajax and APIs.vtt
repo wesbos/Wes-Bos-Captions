@@ -1,0 +1,1430 @@
+﻿WEBVTT
+
+1
+00:00:01.246 --> 00:00:03.829
+(upbeat music)
+
+2
+00:00:05.480 --> 00:00:06.610
+<v Instructor>The other huge use case</v>
+
+3
+00:00:06.610 --> 00:00:08.690
+for working with async, await and promises
+
+4
+00:00:08.690 --> 00:00:12.610
+is fetching data from what's called an API.
+
+5
+00:00:12.610 --> 00:00:16.660
+Now an API is kind of a generic term that's thrown around.
+
+6
+00:00:16.660 --> 00:00:18.910
+It stands for application programming interface,
+
+7
+00:00:18.910 --> 00:00:21.780
+but essentially, what that is is some way
+
+8
+00:00:21.780 --> 00:00:24.850
+that you can talk to a machine
+
+9
+00:00:24.850 --> 00:00:27.810
+in a somewhat of a standardized procedure.
+
+10
+00:00:27.810 --> 00:00:29.730
+So if you're building an app,
+
+11
+00:00:29.730 --> 00:00:31.970
+and it doesn't have to be a web app,
+
+12
+00:00:31.970 --> 00:00:34.010
+could be in JavaScript, could be an iPhone app,
+
+13
+00:00:34.010 --> 00:00:35.430
+could be an Android app.
+
+14
+00:00:35.430 --> 00:00:40.140
+if you're building any type of app, that app, the client,
+
+15
+00:00:40.140 --> 00:00:42.260
+in our case the client will be the browser,
+
+16
+00:00:42.260 --> 00:00:44.180
+it might be an iPhone app, might be something,
+
+17
+00:00:44.180 --> 00:00:48.060
+that needs to talk with the server that exists somewhere.
+
+18
+00:00:48.060 --> 00:00:52.510
+So if you have a Twitter app, you need to be able
+
+19
+00:00:52.510 --> 00:00:54.240
+to pull down your most recent tweets,
+
+20
+00:00:54.240 --> 00:00:55.790
+you need to be able to send tweets,
+
+21
+00:00:55.790 --> 00:00:57.330
+you need to be able to like tweets,
+
+22
+00:00:57.330 --> 00:01:00.300
+you need be able to delete tweets and to reply to them,
+
+23
+00:01:00.300 --> 00:01:03.961
+and all of that, all of that functionality,
+
+24
+00:01:03.961 --> 00:01:06.800
+is based upon what is called an API.
+
+25
+00:01:06.800 --> 00:01:11.800
+And most services that have a public-facing website
+
+26
+00:01:12.730 --> 00:01:14.760
+will try to surface their data
+
+27
+00:01:14.760 --> 00:01:18.380
+and surface their functionality via an API.
+
+28
+00:01:18.380 --> 00:01:22.400
+Now, I'm gonna show you some real simple ones off the bat.
+
+29
+00:01:22.400 --> 00:01:25.950
+Probably as a web developer, a lot of what you're going
+
+30
+00:01:25.950 --> 00:01:29.410
+to be doing is just pulling down data.
+
+31
+00:01:29.410 --> 00:01:33.220
+There's the ability to push data to a server with APIs,
+
+32
+00:01:33.220 --> 00:01:35.380
+but we're gonna start by just looking at
+
+33
+00:01:35.380 --> 00:01:39.200
+how can I go to some other service,
+
+34
+00:01:39.200 --> 00:01:40.780
+like I'm gonna show you an example here
+
+35
+00:01:40.780 --> 00:01:43.280
+with a pizza as well as GitHub.
+
+36
+00:01:43.280 --> 00:01:45.880
+How do I pull that data into my application
+
+37
+00:01:45.880 --> 00:01:48.020
+and then go ahead and display it?
+
+38
+00:01:48.020 --> 00:01:50.930
+Now, probably the most popular way
+
+39
+00:01:50.930 --> 00:01:55.060
+to pull data from an existing website is that,
+
+40
+00:01:55.060 --> 00:01:57.130
+first of all, they have to offer an API,
+
+41
+00:01:57.130 --> 00:02:01.780
+because the other solution to something is just a website,
+
+42
+00:02:01.780 --> 00:02:05.010
+and if you wanna be able to pull data from a website,
+
+43
+00:02:05.010 --> 00:02:08.990
+like a list of pizza recipes, or here I'm going to have
+
+44
+00:02:08.990 --> 00:02:11.260
+some information about my GitHub profile,
+
+45
+00:02:11.260 --> 00:02:14.520
+if you wanna be able to pull that data from GitHub,
+
+46
+00:02:14.520 --> 00:02:17.827
+then they have to offer up what is called an API.
+
+47
+00:02:17.827 --> 00:02:21.000
+And the API is just a URL that you can hit
+
+48
+00:02:21.000 --> 00:02:23.310
+with some associated data, like in this case,
+
+49
+00:02:23.310 --> 00:02:26.387
+I'm passing "pizza," in this case, I'm passing "wesbos,"
+
+50
+00:02:27.310 --> 00:02:29.640
+and then that API will respond
+
+51
+00:02:29.640 --> 00:02:31.020
+with what is called JSON.
+
+52
+00:02:31.020 --> 00:02:33.100
+Now, we've talked about JSON a few times.
+
+53
+00:02:33.100 --> 00:02:34.620
+We'll go over it real quick.
+
+54
+00:02:34.620 --> 00:02:39.620
+JSON stands for JavaScript object notation,
+
+55
+00:02:39.780 --> 00:02:44.780
+and it's just a good way to transport JavaScript objects
+
+56
+00:02:44.790 --> 00:02:48.250
+from server to server or server to client.
+
+57
+00:02:48.250 --> 00:02:51.640
+Because the way that it works is, if you go to an API,
+
+58
+00:02:51.640 --> 00:02:56.490
+go with me to API.github.com/users/wesbos,
+
+59
+00:02:56.490 --> 00:02:58.250
+and this is the GitHub API.
+
+60
+00:02:58.250 --> 00:03:00.250
+Now, you probably see something
+
+61
+00:03:00.250 --> 00:03:01.730
+a little bit something like this.
+
+62
+00:03:01.730 --> 00:03:03.220
+When I refresh it, I get this
+
+63
+00:03:03.220 --> 00:03:05.830
+nicely formatted thing right here.
+
+64
+00:03:05.830 --> 00:03:07.100
+That's because I'm using
+
+65
+00:03:07.100 --> 00:03:09.770
+a Chrome extension called JSON Viewer.
+
+66
+00:03:09.770 --> 00:03:11.910
+I would probably recommend that you install that
+
+67
+00:03:11.910 --> 00:03:14.400
+if you're gonna be working with an API.
+
+68
+00:03:14.400 --> 00:03:17.740
+Now, what comes back from that is not a JavaScript object.
+
+69
+00:03:17.740 --> 00:03:21.760
+If we click on this raw here, it's actually just a string,
+
+70
+00:03:21.760 --> 00:03:25.840
+and if I take that string and put it into a variable,
+
+71
+00:03:25.840 --> 00:03:28.020
+let me open up my dev tools here, and I say
+
+72
+00:03:28.020 --> 00:03:30.490
+const data is equal to, and give me some back-ticks
+
+73
+00:03:30.490 --> 00:03:34.200
+and paste it in, now I've got data.
+
+74
+00:03:34.200 --> 00:03:35.033
+And what is it?
+
+75
+00:03:35.033 --> 00:03:37.440
+It's just a huge string.
+
+76
+00:03:37.440 --> 00:03:39.000
+Never mind this formatting here.
+
+77
+00:03:39.000 --> 00:03:41.800
+It looks like it's an object, but it is just a string.
+
+78
+00:03:41.800 --> 00:03:45.200
+We can do typeof data is equal to a string
+
+79
+00:03:45.200 --> 00:03:49.720
+and if I wanted to grab one of these properties on here
+
+80
+00:03:49.720 --> 00:03:54.410
+like company, .company, this is undefined,
+
+81
+00:03:54.410 --> 00:03:56.380
+because that is just a string.
+
+82
+00:03:56.380 --> 00:03:58.450
+So a server will just give you a string
+
+83
+00:03:58.450 --> 00:04:00.240
+and then it's up to you, the developer,
+
+84
+00:04:00.240 --> 00:04:02.850
+to turn it back into JavaScript object,
+
+85
+00:04:02.850 --> 00:04:04.030
+so you can access that thing.
+
+86
+00:04:04.030 --> 00:04:07.140
+So what we do is we wrap it in JSON.parse
+
+87
+00:04:08.230 --> 00:04:11.620
+and that will return to us a proper object,
+
+88
+00:04:11.620 --> 00:04:15.310
+so we could store that in a variable.
+
+89
+00:04:15.310 --> 00:04:18.703
+So const data object, Obj.
+
+90
+00:04:19.940 --> 00:04:21.540
+Then I have data object.
+
+91
+00:04:21.540 --> 00:04:24.560
+Now that I can go ahead and access the company,
+
+92
+00:04:24.560 --> 00:04:28.303
+no problem, and the login.
+
+93
+00:04:29.590 --> 00:04:33.300
+It's all the information about that user.
+
+94
+00:04:33.300 --> 00:04:35.200
+Now, what's great about that there's lots of APIs
+
+95
+00:04:35.200 --> 00:04:36.650
+will allow you to pull the data
+
+96
+00:04:36.650 --> 00:04:38.950
+from their server into your own.
+
+97
+00:04:38.950 --> 00:04:40.587
+There are many that do not allow it
+
+98
+00:04:40.587 --> 00:04:44.060
+and there are many that require API keys.
+
+99
+00:04:44.060 --> 00:04:46.670
+We'll go into that, but for now we're just gonna work
+
+100
+00:04:46.670 --> 00:04:48.760
+with what's called wide-open APIs
+
+101
+00:04:48.760 --> 00:04:51.600
+that don't require any authentication.
+
+102
+00:04:51.600 --> 00:04:55.120
+So let's go over here and
+
+103
+00:04:55.120 --> 00:04:57.450
+let's go into our playground folder
+
+104
+00:04:58.800 --> 00:05:03.800
+and make a new file called apis.html.
+
+105
+00:05:04.260 --> 00:05:07.610
+You'll often hear this what we're doing here
+
+106
+00:05:07.610 --> 00:05:09.960
+referred to as AJAX.
+
+107
+00:05:09.960 --> 00:05:11.030
+And you might be thinking like,
+
+108
+00:05:11.030 --> 00:05:13.840
+what the heck is AJAX?
+
+109
+00:05:13.840 --> 00:05:18.840
+Well AJAX stands for a Asynchronous JavaScript And XML.
+
+110
+00:05:22.140 --> 00:05:23.607
+And so like let's go through that.
+
+111
+00:05:23.607 --> 00:05:25.670
+Async, we know what async is, good.
+
+112
+00:05:25.670 --> 00:05:27.020
+We know what JavaScript is.
+
+113
+00:05:28.370 --> 00:05:31.260
+And, well we know what And is
+
+114
+00:05:31.260 --> 00:05:33.513
+and XML, okay.
+
+115
+00:05:35.000 --> 00:05:35.833
+What's that?
+
+116
+00:05:35.833 --> 00:05:40.160
+Well, XML is another way that you can receive data
+
+117
+00:05:40.160 --> 00:05:42.070
+and it looks a lot like HTML,
+
+118
+00:05:42.070 --> 00:05:44.650
+but it's this other thing called XML.
+
+119
+00:05:44.650 --> 00:05:48.630
+I have not seen XML in many, many years.
+
+120
+00:05:48.630 --> 00:05:51.670
+And it's very, very unlikely you will run into it
+
+121
+00:05:51.670 --> 00:05:54.140
+unless you go work at a large bank
+
+122
+00:05:54.140 --> 00:05:56.970
+that has not updated anything in the past,
+
+123
+00:05:56.970 --> 00:05:59.240
+like I've been doing this like what, 12 years
+
+124
+00:05:59.240 --> 00:06:01.530
+and I've almost never had it to do it.
+
+125
+00:06:01.530 --> 00:06:04.040
+Only once have I had to work with an XML API.
+
+126
+00:06:04.040 --> 00:06:05.800
+So that's why it's called AJAX,
+
+127
+00:06:05.800 --> 00:06:08.560
+but essentially when people say AJAX
+
+128
+00:06:08.560 --> 00:06:10.860
+they mean fetching data from an API
+
+129
+00:06:10.860 --> 00:06:12.510
+and displaying it on the page.
+
+130
+00:06:12.510 --> 00:06:13.650
+So let's go into this.
+
+131
+00:06:13.650 --> 00:06:15.600
+Let's give ourselves our html base
+
+132
+00:06:16.460 --> 00:06:18.400
+and we'll call that APIs
+
+133
+00:06:19.634 --> 00:06:21.234
+and give ourselves a script tag.
+
+134
+00:06:22.340 --> 00:06:24.120
+And first thing that we need to do
+
+135
+00:06:24.120 --> 00:06:28.440
+is I like to store the URL in a variable.
+
+136
+00:06:28.440 --> 00:06:30.560
+This is not necessary, but it's just much easier.
+
+137
+00:06:30.560 --> 00:06:32.270
+So let's say const and we'll call that,
+
+138
+00:06:32.270 --> 00:06:34.500
+that's called an endpoint.
+
+139
+00:06:34.500 --> 00:06:37.960
+An endpoint is a nice, fancy word for the URL
+
+140
+00:06:37.960 --> 00:06:41.040
+that you need to visit in order to get the data.
+
+141
+00:06:41.040 --> 00:06:44.190
+So say endpoint is equal to, put that in some strings.
+
+142
+00:06:44.190 --> 00:06:48.560
+It doesn't matter if it's in back-ticks or double strings.
+
+143
+00:06:48.560 --> 00:06:50.730
+It would matter if we were doing like
+
+144
+00:06:50.730 --> 00:06:53.340
+const user is equal to wesbos
+
+145
+00:06:54.300 --> 00:06:55.950
+and then if that was the case we would need to use
+
+146
+00:06:55.950 --> 00:06:57.400
+back-ticks to interpolate in there.
+
+147
+00:06:57.400 --> 00:06:59.470
+I'm gonna keep it simple here though.
+
+148
+00:06:59.470 --> 00:07:03.910
+Then, in order to get that data, we use a library
+
+149
+00:07:03.910 --> 00:07:04.830
+that was actually in...
+
+150
+00:07:04.830 --> 00:07:06.920
+It's not even a library, it's part of JavaScript
+
+151
+00:07:06.920 --> 00:07:08.550
+in the browser and it's called fetch.
+
+152
+00:07:08.550 --> 00:07:10.990
+There're some other libraries that are used
+
+153
+00:07:10.990 --> 00:07:13.130
+specifically Axios is good,
+
+154
+00:07:13.130 --> 00:07:16.470
+but the fetch library is very, very good
+
+155
+00:07:16.470 --> 00:07:20.420
+and it comes built in to all browsers which is great.
+
+156
+00:07:20.420 --> 00:07:22.600
+So the way that it works is
+
+157
+00:07:24.303 --> 00:07:27.620
+let's say fetch and then we give it the endpoint
+
+158
+00:07:27.620 --> 00:07:30.920
+that you want and then what that will return
+
+159
+00:07:30.920 --> 00:07:32.384
+to you is a promise.
+
+160
+00:07:32.384 --> 00:07:35.380
+WesPromise is equal to fetch the endpoint
+
+161
+00:07:35.380 --> 00:07:37.220
+and let's console.log wesPromise
+
+162
+00:07:37.220 --> 00:07:38.833
+and open that up in the browser.
+
+163
+00:07:43.326 --> 00:07:44.159
+Let's take a look.
+
+164
+00:07:44.159 --> 00:07:46.300
+You see, we've got our promise here
+
+165
+00:07:46.300 --> 00:07:49.710
+and you can see that this has worked
+
+166
+00:07:49.710 --> 00:07:52.470
+cause if you go to your network tab,
+
+167
+00:07:52.470 --> 00:07:56.840
+and give it a refresh, you'll see that this network tab
+
+168
+00:07:56.840 --> 00:07:59.460
+will show you all of the requests
+
+169
+00:07:59.460 --> 00:08:00.830
+that have happened on the page.
+
+170
+00:08:00.830 --> 00:08:03.140
+So, we request APIs, html.
+
+171
+00:08:03.140 --> 00:08:04.943
+I requested some CSS.
+
+172
+00:08:06.400 --> 00:08:09.960
+I requested this data, this is the wavy background pattern
+
+173
+00:08:09.960 --> 00:08:13.520
+and then also I requested api.github.com
+
+174
+00:08:13.520 --> 00:08:16.920
+and you can see that it actually got sent out.
+
+175
+00:08:16.920 --> 00:08:18.890
+And then you can see when it comes back,
+
+176
+00:08:18.890 --> 00:08:20.600
+it comes back with all of the data.
+
+177
+00:08:20.600 --> 00:08:24.640
+So if we wanna get that data back into JavaScript,
+
+178
+00:08:24.640 --> 00:08:25.640
+how do we do it?
+
+179
+00:08:25.640 --> 00:08:30.420
+Well, we can say wesPromise dot then data
+
+180
+00:08:31.920 --> 00:08:35.610
+and we'll just console.log the data.
+
+181
+00:08:35.610 --> 00:08:38.650
+We'll also should put a catch on here.
+
+182
+00:08:38.650 --> 00:08:41.150
+Let's make a quick a little handle error function.
+
+183
+00:08:45.100 --> 00:08:49.260
+Because debugging APIs is hard, and if you don't have
+
+184
+00:08:49.260 --> 00:08:52.400
+proper error handling set up, it's even harder.
+
+185
+00:08:52.400 --> 00:08:54.813
+Oh, no, best error handler ever.
+
+186
+00:08:56.280 --> 00:08:58.033
+And we log the error there.
+
+187
+00:08:58.980 --> 00:09:01.600
+Catch handle error, okay.
+
+188
+00:09:01.600 --> 00:09:06.600
+Now when I refresh this, we don't get the promise anymore,
+
+189
+00:09:07.070 --> 00:09:08.017
+because I'm not logging that.
+
+190
+00:09:08.017 --> 00:09:12.540
+We get this data, which is a response.
+
+191
+00:09:12.540 --> 00:09:14.440
+Okay, open that up.
+
+192
+00:09:14.440 --> 00:09:15.870
+It tells me the type cors.
+
+193
+00:09:15.870 --> 00:09:17.760
+We'll talk about what cors is in just a second.
+
+194
+00:09:17.760 --> 00:09:19.653
+It's not the terrible beer.
+
+195
+00:09:20.502 --> 00:09:23.960
+URL, redirected, header, where's my data?
+
+196
+00:09:23.960 --> 00:09:27.393
+Body, locked, is it in here?
+
+197
+00:09:28.620 --> 00:09:30.460
+PipeThrough, headers?
+
+198
+00:09:30.460 --> 00:09:32.810
+No it's nowhere to be found, huh.
+
+199
+00:09:32.810 --> 00:09:33.800
+Where's my data?
+
+200
+00:09:33.800 --> 00:09:37.440
+Well this is sort of a two-part thing that needs to happen.
+
+201
+00:09:37.440 --> 00:09:39.980
+We get the response, you can name this whatever you want.
+
+202
+00:09:39.980 --> 00:09:41.800
+I've named it response.
+
+203
+00:09:41.800 --> 00:09:45.340
+And that comes streaming in to the browser,
+
+204
+00:09:45.340 --> 00:09:48.630
+meaning it's not fully downloaded and also
+
+205
+00:09:48.630 --> 00:09:50.670
+what has to happen at this point is that
+
+206
+00:09:50.670 --> 00:09:54.790
+it's not assumed that the data that is coming back
+
+207
+00:09:54.790 --> 00:09:59.110
+is going to be JSON because you can use fetch to fetch
+
+208
+00:09:59.110 --> 00:10:00.130
+any type of data.
+
+209
+00:10:00.130 --> 00:10:04.920
+It might just be raw text that's coming from a page.
+
+210
+00:10:04.920 --> 00:10:07.420
+It could be an image that you're trying to download
+
+211
+00:10:07.420 --> 00:10:08.880
+from another page.
+
+212
+00:10:08.880 --> 00:10:10.380
+There's all kinds of different use cases
+
+213
+00:10:10.380 --> 00:10:13.320
+for the type of data that would be downloaded
+
+214
+00:10:13.320 --> 00:10:16.220
+so in our case, we need to tell the browser
+
+215
+00:10:16.220 --> 00:10:18.920
+when this thing is done downloading,
+
+216
+00:10:18.920 --> 00:10:22.510
+go ahead and convert in from JSON to
+
+217
+00:10:22.510 --> 00:10:24.260
+a JavaScript object.
+
+218
+00:10:24.260 --> 00:10:27.500
+What we do is we take this response
+
+219
+00:10:27.500 --> 00:10:30.060
+and if you look at the prototype, you'll see
+
+220
+00:10:30.060 --> 00:10:35.060
+there is a number of methods on this response.
+
+221
+00:10:35.100 --> 00:10:39.080
+ArrayBuffer, clone, blob, formData, text,
+
+222
+00:10:39.080 --> 00:10:41.060
+see these are different types of responses.
+
+223
+00:10:41.060 --> 00:10:43.490
+In our case, we're looking for JSON.
+
+224
+00:10:43.490 --> 00:10:46.440
+So what we'll do is we'll simply return
+
+225
+00:10:46.440 --> 00:10:51.327
+the response dot JSON and what response that JSON will do
+
+226
+00:10:52.890 --> 00:10:55.640
+is it returns another promise.
+
+227
+00:10:55.640 --> 00:10:59.240
+So we can go here and get ourselves another dot then
+
+228
+00:11:00.150 --> 00:11:03.023
+and in that case we'll have the actual data.
+
+229
+00:11:04.090 --> 00:11:06.023
+And I'll console.log the data.
+
+230
+00:11:08.693 --> 00:11:10.840
+And there we go, after a split second you see
+
+231
+00:11:10.840 --> 00:11:12.330
+that we have the full object.
+
+232
+00:11:12.330 --> 00:11:15.020
+There's no need to JSON dot parse it here
+
+233
+00:11:15.020 --> 00:11:18.330
+because this will do that for you.
+
+234
+00:11:18.330 --> 00:11:19.740
+So it's a double promise.
+
+235
+00:11:19.740 --> 00:11:23.500
+The first one gets the response and the second one
+
+236
+00:11:23.500 --> 00:11:27.840
+gets the response and turns it into JSON for us,
+
+237
+00:11:27.840 --> 00:11:28.930
+which is great.
+
+238
+00:11:28.930 --> 00:11:31.900
+So you see the data that is in there ane we can go ahead
+
+239
+00:11:31.900 --> 00:11:36.900
+and console.log data dot blog, data dot name,
+
+240
+00:11:36.980 --> 00:11:40.490
+data dot location and you'll see
+
+241
+00:11:40.490 --> 00:11:42.780
+we have all of that data that is in there.
+
+242
+00:11:42.780 --> 00:11:43.613
+Okay.
+
+243
+00:11:44.800 --> 00:11:49.600
+Let's go and display some information about the user.
+
+244
+00:11:49.600 --> 00:11:54.083
+So if I have a paragraph tag here that says class of user,
+
+245
+00:11:55.190 --> 00:11:58.110
+we'll select the user on page load.
+
+246
+00:11:58.110 --> 00:12:02.960
+User P, the paragraph, or user L, that's better.
+
+247
+00:12:02.960 --> 00:12:05.080
+Don't assume it's a paragraph cause if that changes,
+
+248
+00:12:05.080 --> 00:12:06.760
+then your variables are out of data.
+
+249
+00:12:06.760 --> 00:12:11.523
+Document dot query selector dot user.
+
+250
+00:12:11.523 --> 00:12:16.523
+Then we'll go down here and say user L dot text content
+
+251
+00:12:16.830 --> 00:12:21.830
+is equal to, we'll use back-ticks, say data dot name, and
+
+252
+00:12:28.000 --> 00:12:29.363
+data dot blog.
+
+253
+00:12:31.550 --> 00:12:34.410
+Now when I fresh it, you see that it pops up.
+
+254
+00:12:34.410 --> 00:12:39.250
+One thing you could do is when it first starts
+
+255
+00:12:39.250 --> 00:12:40.960
+you could set it to loading.
+
+256
+00:12:40.960 --> 00:12:45.960
+So say user L dot text content is equal to loading,
+
+257
+00:12:46.560 --> 00:12:48.460
+that's how you would set a loading state
+
+258
+00:12:48.460 --> 00:12:51.560
+you could show a spinner there, you could fade it out.
+
+259
+00:12:51.560 --> 00:12:53.420
+And you will see on page on page load,
+
+260
+00:12:53.420 --> 00:12:55.023
+it shows me loading real quick.
+
+261
+00:12:55.960 --> 00:12:58.320
+And then when the data finally does come back
+
+262
+00:12:58.320 --> 00:13:01.743
+from the browser, it displays it directly on the page.
+
+263
+00:13:03.130 --> 00:13:06.530
+Now, let's refactor this to async await
+
+264
+00:13:06.530 --> 00:13:09.510
+because I quite honestly think that'll be much nicer.
+
+265
+00:13:09.510 --> 00:13:14.223
+So first let's bring these variables to the top here.
+
+266
+00:13:15.410 --> 00:13:19.640
+Then let's make an async function
+
+267
+00:13:21.670 --> 00:13:24.100
+called display user.
+
+268
+00:13:24.100 --> 00:13:27.363
+Let's actually take in a user name.
+
+269
+00:13:31.150 --> 00:13:35.253
+Then we will bring all of this code up in here.
+
+270
+00:13:37.870 --> 00:13:39.100
+And let's go line by line.
+
+271
+00:13:39.100 --> 00:13:40.053
+So that's fine.
+
+272
+00:13:41.260 --> 00:13:45.720
+The promise a fetch of endpoint can now be switched to
+
+273
+00:13:47.590 --> 00:13:50.370
+await, and that no longer is a promise,
+
+274
+00:13:50.370 --> 00:13:52.633
+but it is the response.
+
+275
+00:13:54.140 --> 00:13:59.140
+Then we say const data is equal to await response dot JSON.
+
+276
+00:14:01.964 --> 00:14:03.263
+And get rid of all that.
+
+277
+00:14:04.810 --> 00:14:06.363
+Get rid of this last one.
+
+278
+00:14:07.440 --> 00:14:10.550
+And I believe that should be it.
+
+279
+00:14:10.550 --> 00:14:12.360
+The only thing left is that we need to call
+
+280
+00:14:12.360 --> 00:14:15.473
+this display user on page load.
+
+281
+00:14:16.500 --> 00:14:18.860
+So let's go ahead and display the user.
+
+282
+00:14:18.860 --> 00:14:20.600
+We said we would pass it wesbos.
+
+283
+00:14:20.600 --> 00:14:23.100
+It's not hooked up for that yet, but let's try it.
+
+284
+00:14:24.502 --> 00:14:26.110
+There it still works exactly the same.
+
+285
+00:14:26.110 --> 00:14:29.630
+Now what we could do is we could modify this a little bit
+
+286
+00:14:29.630 --> 00:14:31.410
+where what I would do in this case is
+
+287
+00:14:31.410 --> 00:14:34.910
+I would change my endpoint to base endpoint
+
+288
+00:14:36.650 --> 00:14:41.320
+and that is just api.github.com/
+
+289
+00:14:42.580 --> 00:14:46.250
+and then I might make a sub endpoint for users.
+
+290
+00:14:46.250 --> 00:14:49.200
+Users endpoint is equal to
+
+291
+00:14:51.640 --> 00:14:52.893
+the base endpoint.
+
+292
+00:14:53.810 --> 00:14:57.763
+And this needs to be back-ticks forward slash users.
+
+293
+00:14:59.620 --> 00:15:02.650
+Actually I'm gonna take the forward slash off.
+
+294
+00:15:02.650 --> 00:15:05.200
+It just added on when you need it.
+
+295
+00:15:05.200 --> 00:15:10.200
+And then what we can do in here is we'll fetch
+
+296
+00:15:10.430 --> 00:15:15.430
+the users endpoint forward slash,
+
+297
+00:15:16.660 --> 00:15:18.310
+the user name that was passed in.
+
+298
+00:15:22.130 --> 00:15:24.420
+And what that will do is it'll allow us
+
+299
+00:15:24.420 --> 00:15:25.780
+to generate the endpoint
+
+300
+00:15:25.780 --> 00:15:28.573
+on the fly based on what we we've passed in here.
+
+301
+00:15:30.070 --> 00:15:31.810
+Still works just great.
+
+302
+00:15:31.810 --> 00:15:33.213
+Let's try it with Scott.
+
+303
+00:15:37.980 --> 00:15:39.180
+Woohoo, look at that.
+
+304
+00:15:39.180 --> 00:15:42.890
+So you see how we can just go ahead and fetch the data
+
+305
+00:15:42.890 --> 00:15:43.940
+and put it in there.
+
+306
+00:15:43.940 --> 00:15:47.190
+One thing we're not doing here is we're not catching
+
+307
+00:15:47.190 --> 00:15:48.290
+the error.
+
+308
+00:15:48.290 --> 00:15:49.930
+So catch with the handle error,
+
+309
+00:15:49.930 --> 00:15:52.490
+and that's important because if something
+
+310
+00:15:52.490 --> 00:15:57.240
+were to go wrong, let's botch this.
+
+311
+00:15:57.240 --> 00:15:58.923
+API dot grubhub.
+
+312
+00:15:59.880 --> 00:16:01.030
+That's taking forever to load.
+
+313
+00:16:01.030 --> 00:16:02.730
+If we go to the network you'll see
+
+314
+00:16:04.410 --> 00:16:05.850
+we're waiting for that response.
+
+315
+00:16:05.850 --> 00:16:07.940
+You can filter for just AJAX requests
+
+316
+00:16:07.940 --> 00:16:09.473
+by clicking on XHR.
+
+317
+00:16:20.077 --> 00:16:21.760
+And see in our dev tools here, it says
+
+318
+00:16:21.760 --> 00:16:23.670
+Oh No, failed to fetch.
+
+319
+00:16:23.670 --> 00:16:26.540
+So if that was the case, what we could do
+
+320
+00:16:26.540 --> 00:16:29.500
+in our handle error is simply take
+
+321
+00:16:29.500 --> 00:16:34.230
+user L and we'll update the text content to
+
+322
+00:16:34.230 --> 00:16:36.810
+something when wrong
+
+323
+00:16:37.960 --> 00:16:39.080
+and we could even show the user
+
+324
+00:16:39.080 --> 00:16:39.913
+what went wrong.
+
+325
+00:16:39.913 --> 00:16:41.790
+Sometimes you do wanna show them what went wrong.
+
+326
+00:16:41.790 --> 00:16:44.930
+Sometimes you don't, depends on how helpful it is.
+
+327
+00:16:44.930 --> 00:16:47.733
+But in our case, we say error.
+
+328
+00:16:51.360 --> 00:16:52.963
+It takes a second to fail.
+
+329
+00:16:53.880 --> 00:16:55.500
+There we go, it worked.
+
+330
+00:16:55.500 --> 00:16:58.000
+Something went wrong, type error, failed to fetch.
+
+331
+00:16:59.570 --> 00:17:00.403
+Good, good, good.
+
+332
+00:17:00.403 --> 00:17:03.103
+I'll bring that back to github.com.
+
+333
+00:17:05.700 --> 00:17:09.390
+Let's do one more example with this recipe puppy.
+
+334
+00:17:09.390 --> 00:17:13.170
+So finding APIs is a bit of a tricky thing
+
+335
+00:17:13.170 --> 00:17:15.690
+because a lot of them require API keys
+
+336
+00:17:15.690 --> 00:17:17.410
+or they don't work cross-domain.
+
+337
+00:17:17.410 --> 00:17:18.730
+We'll talk about both of those,
+
+338
+00:17:18.730 --> 00:17:21.550
+but there's this really good list
+
+339
+00:17:21.550 --> 00:17:22.810
+called Public APIs.
+
+340
+00:17:22.810 --> 00:17:26.750
+It's github.com/publicAPIs/publicAPIs.
+
+341
+00:17:26.750 --> 00:17:29.600
+I've actually contributed to this quite a bit
+
+342
+00:17:29.600 --> 00:17:31.210
+with my list of favorite ones
+
+343
+00:17:31.210 --> 00:17:33.570
+and you can sort of just scroll through
+
+344
+00:17:33.570 --> 00:17:37.530
+and find different APIs,
+
+345
+00:17:37.530 --> 00:17:38.440
+stuff for everything.
+
+346
+00:17:38.440 --> 00:17:42.560
+Currency, data validation, web development,
+
+347
+00:17:42.560 --> 00:17:46.890
+finance, events, news, you get the point.
+
+348
+00:17:46.890 --> 00:17:48.340
+There's APIs for everything,
+
+349
+00:17:48.340 --> 00:17:51.290
+so you could just build a little application
+
+350
+00:17:51.290 --> 00:17:54.290
+that displays data based on your interest.
+
+351
+00:17:54.290 --> 00:17:55.390
+In the next video, we're gonna build
+
+352
+00:17:55.390 --> 00:17:59.240
+a little recipe fetcher just to show you
+
+353
+00:17:59.240 --> 00:18:01.660
+how cors works and how we can
+
+354
+00:18:01.660 --> 00:18:04.060
+get around cors issues sometimes
+
+355
+00:18:04.060 --> 00:18:06.550
+and I think we'll learn a lot in that.
+
+356
+00:18:06.550 --> 00:18:09.020
+And then we'll build a bunch more examples
+
+357
+00:18:09.020 --> 00:18:11.883
+working with this APIs.
+

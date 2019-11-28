@@ -1,0 +1,1514 @@
+﻿WEBVTT
+
+1
+00:00:00.832 --> 00:00:03.415
+(upbeat music)
+
+2
+00:00:05.690 --> 00:00:06.900
+<v Wes>All right, now we're gonna learn about</v>
+
+3
+00:00:06.900 --> 00:00:09.750
+creating HTML with strings and actually
+
+4
+00:00:09.750 --> 00:00:12.650
+the backtick strings that I've shown you earlier.
+
+5
+00:00:12.650 --> 00:00:14.840
+I really like this approach.
+
+6
+00:00:14.840 --> 00:00:18.250
+There's only one caveat is make sure you watch
+
+7
+00:00:18.250 --> 00:00:20.120
+this entire video all the way through,
+
+8
+00:00:20.120 --> 00:00:21.434
+'cause at the end I'm gonna show you
+
+9
+00:00:21.434 --> 00:00:25.520
+a potential security hole with using this method.
+
+10
+00:00:25.520 --> 00:00:27.550
+So, this method is actually what I use
+
+11
+00:00:27.550 --> 00:00:30.960
+in most of my Vanilla JavaScript applications.
+
+12
+00:00:30.960 --> 00:00:32.780
+This method is awesome, however,
+
+13
+00:00:32.780 --> 00:00:34.570
+there are some things you need to know about
+
+14
+00:00:34.570 --> 00:00:37.740
+specifically around the scary thing called XSS.
+
+15
+00:00:37.740 --> 00:00:38.900
+Cross-site scripting.
+
+16
+00:00:38.900 --> 00:00:43.900
+So, with that known don't just do 80% of this video
+
+17
+00:00:44.000 --> 00:00:45.780
+and then go build the next Facebook
+
+18
+00:00:45.780 --> 00:00:48.370
+and accidentally come back and say,
+
+19
+00:00:48.370 --> 00:00:49.740
+hey Wes, you didn't tell me about this.
+
+20
+00:00:49.740 --> 00:00:51.430
+'Cause you must listen to the
+
+21
+00:00:51.430 --> 00:00:54.863
+entire video so we know about XSS.
+
+22
+00:00:55.980 --> 00:00:57.219
+Okay so, let's get into it.
+
+23
+00:00:57.219 --> 00:00:59.360
+This is with innerHTML.
+
+24
+00:00:59.360 --> 00:01:03.620
+Let's create a new JavaScript file.
+
+25
+00:01:03.620 --> 00:01:08.620
+So, we'll call it creating with strings.js.
+
+26
+00:01:12.790 --> 00:01:17.653
+And let's just go into this and change it up.
+
+27
+00:01:22.230 --> 00:01:24.143
+Console.log it works.
+
+28
+00:01:26.150 --> 00:01:29.433
+And open that sucker up in your browser.
+
+29
+00:01:31.210 --> 00:01:32.083
+Does it work?
+
+30
+00:01:33.223 --> 00:01:35.420
+(laughs) Look at these little guys!
+
+31
+00:01:35.420 --> 00:01:36.253
+Cute!
+
+32
+00:01:36.253 --> 00:01:37.600
+It does work, good.
+
+33
+00:01:37.600 --> 00:01:42.600
+So, you can actually grab this property called innerHTML.
+
+34
+00:01:42.950 --> 00:01:44.419
+It's similar to innerText.
+
+35
+00:01:44.419 --> 00:01:46.800
+So, if I go ahead and grab one of these headings
+
+36
+00:01:46.800 --> 00:01:48.710
+that we have here, let's see here.
+
+37
+00:01:48.710 --> 00:01:51.370
+Let's grab anything with a class of item.
+
+38
+00:01:51.370 --> 00:01:54.543
+So, const item = document.querySelectorAll.
+
+39
+00:01:58.908 --> 00:01:59.741
+.querySelector not .querySelectorAll.
+
+40
+00:02:00.700 --> 00:02:03.837
+And we'll say anything with a class of item,
+
+41
+00:02:03.837 --> 00:02:05.233
+consol.log(item);.
+
+42
+00:02:05.233 --> 00:02:06.066
+What are we doing?
+
+43
+00:02:06.066 --> 00:02:07.380
+Good, we've got our item.
+
+44
+00:02:07.380 --> 00:02:09.690
+Now, if you take a look at the innerHTML
+
+45
+00:02:11.429 --> 00:02:14.220
+you see that that is a string of all the HTML
+
+46
+00:02:14.220 --> 00:02:16.160
+that makes up what's inside of it, right?
+
+47
+00:02:16.160 --> 00:02:18.180
+Okay, that makes sense.
+
+48
+00:02:18.180 --> 00:02:19.580
+That is a getter.
+
+49
+00:02:19.580 --> 00:02:21.800
+What if we use it as a setter?
+
+50
+00:02:21.800 --> 00:02:23.510
+I'm gonna say equals.
+
+51
+00:02:23.510 --> 00:02:25.450
+Let's use, in this case it doesn't matter if we use
+
+52
+00:02:25.450 --> 00:02:27.790
+single or backticks but I'm gonna set us up
+
+53
+00:02:27.790 --> 00:02:29.270
+for something in just a second.
+
+54
+00:02:29.270 --> 00:02:31.730
+Let's just replace it with an H1 tag
+
+55
+00:02:31.730 --> 00:02:34.913
+that says hey how are ya?
+
+56
+00:02:38.267 --> 00:02:39.200
+And now we see hey how are ya?
+
+57
+00:02:39.200 --> 00:02:44.150
+The inside of that div has been updated with some HTML.
+
+58
+00:02:44.150 --> 00:02:45.470
+Now, why does that work?
+
+59
+00:02:45.470 --> 00:02:48.490
+Well, if you set the innerHTML of an element
+
+60
+00:02:48.490 --> 00:02:53.260
+with just a string instead of a regular document.,
+
+61
+00:02:53.260 --> 00:02:55.275
+what were we doing here?
+
+62
+00:02:55.275 --> 00:02:57.650
+createElement, we're cloning them.
+
+63
+00:02:57.650 --> 00:03:01.679
+You see how this is kind of a long way to go about it?
+
+64
+00:03:01.679 --> 00:03:04.893
+The other way is you can actually just create the HTML
+
+65
+00:03:04.893 --> 00:03:09.670
+with text and then dump that HTML into the item.
+
+66
+00:03:09.670 --> 00:03:13.720
+And if it is valid HTML the browser will take it
+
+67
+00:03:13.720 --> 00:03:16.960
+and parse it and turn it into all of the items.
+
+68
+00:03:16.960 --> 00:03:19.300
+So, we can go multiple lines.
+
+69
+00:03:19.300 --> 00:03:22.940
+So, one benefit of using backticks over single or double
+
+70
+00:03:22.940 --> 00:03:25.207
+is that you can actually have multiple lines here.
+
+71
+00:03:25.207 --> 00:03:28.253
+And we could wrap that in maybe like a div.
+
+72
+00:03:29.730 --> 00:03:33.050
+By the way, this little expansion that I'm doing,
+
+73
+00:03:33.050 --> 00:03:36.940
+I have a thing called Emmet installed.
+
+74
+00:03:36.940 --> 00:03:38.760
+And then I have this.
+
+75
+00:03:38.760 --> 00:03:41.820
+There's a command called Expand Abbreviation.
+
+76
+00:03:41.820 --> 00:03:43.490
+So, when you're writing HTML you can do
+
+77
+00:03:43.490 --> 00:03:46.063
+things like div.item.item2.
+
+78
+00:03:48.650 --> 00:03:52.470
+And then you can expand the abbreviation.
+
+79
+00:03:52.470 --> 00:03:56.421
+And that will expand it out to the equivalent HTML.
+
+80
+00:03:56.421 --> 00:03:58.170
+It's pretty cool.
+
+81
+00:03:58.170 --> 00:04:01.680
+I will not be going over that all that much.
+
+82
+00:04:01.680 --> 00:04:04.350
+But that's what you're seeing when I do something like div.
+
+83
+00:04:04.350 --> 00:04:06.780
+I'm hitting my Control+E key.
+
+84
+00:04:06.780 --> 00:04:09.988
+That is not part of VS Code by default.
+
+85
+00:04:09.988 --> 00:04:12.273
+I had to go ahead and add that.
+
+86
+00:04:13.430 --> 00:04:14.980
+That keyboard shortcut myself
+
+87
+00:04:14.980 --> 00:04:17.320
+so you could expand the abbreviation, it's pretty handy.
+
+88
+00:04:17.320 --> 00:04:21.530
+So, we have a div here and so I did put an H1 tag.
+
+89
+00:04:21.530 --> 00:04:23.100
+And it actually doesn't matter if you
+
+90
+00:04:23.100 --> 00:04:24.670
+put all on one line or indent it.
+
+91
+00:04:24.670 --> 00:04:27.780
+But I find that writing it as if you're writing
+
+92
+00:04:27.780 --> 00:04:30.230
+just plain HTML makes it much more readable.
+
+93
+00:04:30.230 --> 00:04:32.360
+So, give that a save, open it up.
+
+94
+00:04:32.360 --> 00:04:34.430
+You see hey how are ya?
+
+95
+00:04:34.430 --> 00:04:36.270
+There's our div that we just created.
+
+96
+00:04:36.270 --> 00:04:40.240
+So, setting innerHTML into your element
+
+97
+00:04:40.240 --> 00:04:42.170
+is one way to just dump a string in
+
+98
+00:04:42.170 --> 00:04:45.410
+and have the browser create all of the elements for you.
+
+99
+00:04:45.410 --> 00:04:48.000
+Now, why would that be a little bit more useful
+
+100
+00:04:48.000 --> 00:04:49.460
+other than the fact that we don't have to do
+
+101
+00:04:49.460 --> 00:04:51.020
+all these document.createElement
+
+102
+00:04:51.020 --> 00:04:54.072
+and do all these appending and everything like that?
+
+103
+00:04:54.072 --> 00:04:57.230
+Because when you use backticks you can actually
+
+104
+00:04:57.230 --> 00:04:59.780
+interpolate values very easily.
+
+105
+00:04:59.780 --> 00:05:04.653
+So, if we had maybe a const src = `dog.jpg`.
+
+106
+00:05:05.940 --> 00:05:10.940
+Actually let's use this picsum URL ourselves.
+
+107
+00:05:16.960 --> 00:05:20.370
+And then we can go in here and say item.innerHTML.
+
+108
+00:05:20.370 --> 00:05:22.700
+Or maybe you can even put this in its own variable.
+
+109
+00:05:22.700 --> 00:05:23.533
+I like to do that.
+
+110
+00:05:23.533 --> 00:05:28.420
+So, maybe we'll say const myHTML is equal to backticks.
+
+111
+00:05:28.420 --> 00:05:32.190
+Inside of that we'll give ourselves a wrapper.
+
+112
+00:05:32.190 --> 00:05:37.150
+Inside of that we'll give ourselves an H2, says cute pup.
+
+113
+00:05:37.150 --> 00:05:39.370
+And then inside of here you want an image tag.
+
+114
+00:05:39.370 --> 00:05:41.479
+Now, what is cool about this is
+
+115
+00:05:41.479 --> 00:05:44.610
+if you use dollar sign curly brackets it allows us to
+
+116
+00:05:44.610 --> 00:05:47.990
+pop variables right into the template that we have.
+
+117
+00:05:47.990 --> 00:05:50.840
+So, we can say source is equal to the source variable.
+
+118
+00:05:50.840 --> 00:05:55.570
+And then maybe const desc = `Cute Pup`.
+
+119
+00:06:03.060 --> 00:06:05.860
+Then we can go in here and replace
+
+120
+00:06:05.860 --> 00:06:08.640
+that with the variable description.
+
+121
+00:06:08.640 --> 00:06:12.970
+And then in here we can also pop in that description.
+
+122
+00:06:12.970 --> 00:06:14.690
+You see how this is just templating?
+
+123
+00:06:14.690 --> 00:06:17.120
+This is how templating works in every
+
+124
+00:06:17.120 --> 00:06:19.080
+single framework that you're gonna use.
+
+125
+00:06:19.080 --> 00:06:20.430
+It looks a little bit different
+
+126
+00:06:20.430 --> 00:06:23.210
+in React or Angular or Ember or Vue
+
+127
+00:06:23.210 --> 00:06:25.180
+or Svelte or whatever you're using.
+
+128
+00:06:25.180 --> 00:06:26.480
+It looks a little bit different.
+
+129
+00:06:26.480 --> 00:06:28.710
+But it also sort of works the same way.
+
+130
+00:06:28.710 --> 00:06:31.910
+You template out your HTML, you put your variables where
+
+131
+00:06:31.910 --> 00:06:34.820
+you want them to go and then when we go ahead
+
+132
+00:06:34.820 --> 00:06:37.860
+and set the innerHTML of an element.
+
+133
+00:06:37.860 --> 00:06:40.183
+So, we can just set it to myHTML.
+
+134
+00:06:41.225 --> 00:06:44.000
+Go ahead and refresh it.
+
+135
+00:06:44.000 --> 00:06:48.590
+You'll see that we've got our element here 200.
+
+136
+00:06:48.590 --> 00:06:51.720
+We've got our H2 and we could even go a little bit further.
+
+137
+00:06:51.720 --> 00:06:55.227
+We could say that const width = 500;.
+
+138
+00:06:56.327 --> 00:06:59.063
+And we can interpolate the width into that.
+
+139
+00:07:00.300 --> 00:07:02.543
+And then in turn we put the source here.
+
+140
+00:07:04.040 --> 00:07:08.363
+And we get a much larger photo of 500, ah, it's right here.
+
+141
+00:07:09.880 --> 00:07:11.860
+So, I really like this approach.
+
+142
+00:07:11.860 --> 00:07:13.360
+There are a couple of downsides.
+
+143
+00:07:13.360 --> 00:07:15.050
+I'm gonna go into security in just a second
+
+144
+00:07:15.050 --> 00:07:17.910
+and another downside is that Ps are not elements.
+
+145
+00:07:17.910 --> 00:07:21.080
+Meaning that if I take this myHTML,
+
+146
+00:07:21.080 --> 00:07:25.880
+console.log(myHTML); and give it a console.log
+
+147
+00:07:25.880 --> 00:07:28.570
+you'll see that it is just a string.
+
+148
+00:07:28.570 --> 00:07:31.769
+We can confirm that by putting the type of in front of it.
+
+149
+00:07:31.769 --> 00:07:33.530
+And it tells us string.
+
+150
+00:07:33.530 --> 00:07:35.623
+Actually let's get this outta here.
+
+151
+00:07:37.481 --> 00:07:39.180
+Here we go, see it's just a string.
+
+152
+00:07:39.180 --> 00:07:41.610
+Now, that means that we can't do things
+
+153
+00:07:41.610 --> 00:07:44.547
+like myHTML.classList.add('special');.
+
+154
+00:07:48.840 --> 00:07:50.410
+It's gonna give us an error that says
+
+155
+00:07:50.410 --> 00:07:53.280
+cannot read property add of undefined.
+
+156
+00:07:53.280 --> 00:07:55.700
+And if we were just to console.log
+
+157
+00:07:56.570 --> 00:08:00.510
+the classList of that you see it's undefined.
+
+158
+00:08:00.510 --> 00:08:01.343
+Why?
+
+159
+00:08:01.343 --> 00:08:04.470
+Because myHTML is not an element.
+
+160
+00:08:04.470 --> 00:08:08.830
+It is only a string, it only becomes an element once we
+
+161
+00:08:08.830 --> 00:08:12.220
+dump it into the DOM by setting the innerHTML.
+
+162
+00:08:12.220 --> 00:08:14.370
+So, if you want to add event listeners,
+
+163
+00:08:14.370 --> 00:08:15.203
+which we're gonna learn.
+
+164
+00:08:15.203 --> 00:08:17.210
+If you wanna work with the classList.
+
+165
+00:08:17.210 --> 00:08:20.790
+If you wanna dynamically change any of the attributes,
+
+166
+00:08:20.790 --> 00:08:24.470
+like titles or alt or source to any of these elements,
+
+167
+00:08:24.470 --> 00:08:29.470
+it's not doable until you first dump it into the DOM.
+
+168
+00:08:29.720 --> 00:08:30.850
+And then you'd have to go ahead
+
+169
+00:08:30.850 --> 00:08:32.970
+and pull it out after the fact.
+
+170
+00:08:32.970 --> 00:08:35.470
+So, let's say this image right here,
+
+171
+00:08:35.470 --> 00:08:37.150
+I wanted to add a class to that.
+
+172
+00:08:37.150 --> 00:08:39.200
+Well, I'd have to go ahead and then select it,
+
+173
+00:08:39.200 --> 00:08:43.380
+itemImage = document.querySelector
+
+174
+00:08:44.280 --> 00:08:49.173
+we'll say ('.wrapper img'); console.log the image.
+
+175
+00:08:53.840 --> 00:08:55.693
+And null, what did I do?
+
+176
+00:08:56.720 --> 00:08:57.553
+Ta-ta-taa!
+
+177
+00:08:59.960 --> 00:09:02.913
+Let's try bring it back, can I grab just the wrapper?
+
+178
+00:09:04.640 --> 00:09:06.290
+No, it's not finding anything.
+
+179
+00:09:06.290 --> 00:09:09.440
+So, what happens if I run this just in the terminal?
+
+180
+00:09:09.440 --> 00:09:10.273
+Does it work?
+
+181
+00:09:11.220 --> 00:09:12.053
+Null.
+
+182
+00:09:13.196 --> 00:09:15.350
+Oh, you know what I did here?
+
+183
+00:09:15.350 --> 00:09:18.733
+So, this expansion it thinks that I'm writing React.
+
+184
+00:09:18.733 --> 00:09:20.570
+And when we're in React it actually
+
+185
+00:09:20.570 --> 00:09:22.140
+makes us use a className.
+
+186
+00:09:22.140 --> 00:09:23.980
+Hopefully that will change in the future in React.
+
+187
+00:09:23.980 --> 00:09:25.870
+That's a bit of an aside so that's a bit of
+
+188
+00:09:25.870 --> 00:09:29.250
+a goof up of mine, it should be just a pure class.
+
+189
+00:09:29.250 --> 00:09:32.220
+And then I bet if we bring this back to image it will work.
+
+190
+00:09:32.220 --> 00:09:34.743
+There we go, so there's our actual image.
+
+191
+00:09:34.743 --> 00:09:37.090
+You see that it's rendering on out.
+
+192
+00:09:37.090 --> 00:09:40.250
+Now, if I wanna go ahead and toggle classes on it
+
+193
+00:09:40.250 --> 00:09:44.980
+I could say, what were some of the fun images that we did?
+
+194
+00:09:44.980 --> 00:09:46.370
+Round?
+
+195
+00:09:46.370 --> 00:09:50.423
+Say, itemImage.classList.add('round');.
+
+196
+00:09:58.430 --> 00:10:01.590
+And there we go, you see it's giving a class of round to it.
+
+197
+00:10:01.590 --> 00:10:04.010
+So, that is one downside to it.
+
+198
+00:10:04.010 --> 00:10:07.970
+There is a couple of ways you can kinda get around that
+
+199
+00:10:07.970 --> 00:10:09.921
+and do the best of both worlds.
+
+200
+00:10:09.921 --> 00:10:11.460
+And that is with something called
+
+201
+00:10:11.460 --> 00:10:13.697
+document.createRange() and .createContextualFragment().
+
+202
+00:10:16.830 --> 00:10:18.303
+Ugh, I can't even say it all!
+
+203
+00:10:18.303 --> 00:10:21.450
+So, let's dive into how to do that real quick.
+
+204
+00:10:21.450 --> 00:10:25.020
+So, I'm gonna go ahead and remove this.
+
+205
+00:10:25.020 --> 00:10:27.330
+Remove the classList, remove the console.log.
+
+206
+00:10:27.330 --> 00:10:29.497
+And remove the item.innerHTML.
+
+207
+00:10:30.500 --> 00:10:32.273
+And we get rid of all of that!
+
+208
+00:10:33.250 --> 00:10:34.870
+So, let's see what we're working with.
+
+209
+00:10:34.870 --> 00:10:37.190
+Good, it just has a, we can get that it works off.
+
+210
+00:10:37.190 --> 00:10:38.023
+Of course it works!
+
+211
+00:10:38.023 --> 00:10:39.450
+Get that out of there too.
+
+212
+00:10:39.450 --> 00:10:43.060
+So, we have this myHTML, let's turn it into DOM element.
+
+213
+00:10:43.060 --> 00:10:47.492
+So, let's say turn a string into a DOM element.
+
+214
+00:10:47.492 --> 00:10:50.220
+And what we can do with that is we can say
+
+215
+00:10:50.220 --> 00:10:55.050
+const myFragment = document.createRange();.
+
+216
+00:10:57.610 --> 00:10:59.030
+And let's just see what we're working with.
+
+217
+00:10:59.030 --> 00:11:02.850
+What is myFragment equal to at this point?
+
+218
+00:11:02.850 --> 00:11:05.450
+And this creates something called a range.
+
+219
+00:11:05.450 --> 00:11:08.600
+A range is essentially just a collection of
+
+220
+00:11:08.600 --> 00:11:11.660
+elements or part of HTML that we can then work with.
+
+221
+00:11:11.660 --> 00:11:12.910
+So, that's exactly what we want.
+
+222
+00:11:12.910 --> 00:11:15.763
+We wanna take this HTML and we wanna make
+
+223
+00:11:15.763 --> 00:11:18.820
+a couple of what we call fragments.
+
+224
+00:11:18.820 --> 00:11:20.866
+So, what we do is we can append
+
+225
+00:11:20.866 --> 00:11:22.630
+from that range we can actually
+
+226
+00:11:22.630 --> 00:11:25.338
+just immediately call another method on that.
+
+227
+00:11:25.338 --> 00:11:29.863
+And we'll use the .createContextualFragment() method
+
+228
+00:11:31.470 --> 00:11:35.380
+that lives on the range and then you pass it a string.
+
+229
+00:11:35.380 --> 00:11:39.540
+So, we'll call myHTML.
+
+230
+00:11:39.540 --> 00:11:42.140
+So, now when we call that, it's getting a little long.
+
+231
+00:11:42.140 --> 00:11:44.120
+Let's see what we got working with here.
+
+232
+00:11:44.120 --> 00:11:47.020
+We get this thing that's called a #document-fragment.
+
+233
+00:11:47.020 --> 00:11:51.750
+And that's just a fancy way of saying some HTML, right?
+
+234
+00:11:51.750 --> 00:11:53.580
+We haven't done anything with it
+
+235
+00:11:53.580 --> 00:11:56.050
+but from this fragment we are then
+
+236
+00:11:56.050 --> 00:11:59.600
+able to access all of the elements that live inside of it.
+
+237
+00:11:59.600 --> 00:12:03.210
+So, we turned our HTML into true elements.
+
+238
+00:12:03.210 --> 00:12:05.170
+They still aren't on the page anywhere.
+
+239
+00:12:05.170 --> 00:12:08.210
+But now we have them as DOM elements.
+
+240
+00:12:08.210 --> 00:12:13.210
+And we can do things like myFragment.querySelector()
+
+241
+00:12:15.346 --> 00:12:16.900
+and we can look for an image inside of it.
+
+242
+00:12:16.900 --> 00:12:19.193
+Let's just console.log what that returns.
+
+243
+00:12:21.420 --> 00:12:22.500
+And you see that it's going to
+
+244
+00:12:22.500 --> 00:12:25.190
+return the image that lives inside of it.
+
+245
+00:12:25.190 --> 00:12:28.750
+Still not on the page but we're able to select the elements
+
+246
+00:12:28.750 --> 00:12:31.080
+that were previously just strings
+
+247
+00:12:31.080 --> 00:12:35.740
+and now have been magically turned into true DOM elements
+
+248
+00:12:35.740 --> 00:12:39.300
+or true DOM nodes that are on the page.
+
+249
+00:12:39.300 --> 00:12:43.770
+Then what we can do, is we can simply just use our existing
+
+250
+00:12:43.770 --> 00:12:47.750
+appends or insert a JSON HTML.
+
+251
+00:12:47.750 --> 00:12:49.750
+Things like that, we can use that to append them
+
+252
+00:12:49.750 --> 00:12:51.750
+to whatever it is that we want.
+
+253
+00:12:51.750 --> 00:12:55.603
+So, let's go ahead and document.body.append.
+
+254
+00:12:59.430 --> 00:13:01.070
+Let's try .appendChild() first,
+
+255
+00:13:01.070 --> 00:13:03.300
+make sure that works, myHTML.
+
+256
+00:13:03.300 --> 00:13:06.210
+This is fairly new, appendChild() is the existing one.
+
+257
+00:13:06.210 --> 00:13:07.170
+Does that work?
+
+258
+00:13:07.170 --> 00:13:08.400
+No, it doesn't.
+
+259
+00:13:08.400 --> 00:13:10.953
+I think it will work with .append.
+
+260
+00:13:13.410 --> 00:13:14.243
+Oh.
+
+261
+00:13:14.243 --> 00:13:15.350
+Oh (laughs)!
+
+262
+00:13:15.350 --> 00:13:18.380
+I just appended the raw string!
+
+263
+00:13:18.380 --> 00:13:20.540
+I wanna append the fragment, not that.
+
+264
+00:13:20.540 --> 00:13:22.590
+There we go, now it's being dumped in.
+
+265
+00:13:22.590 --> 00:13:25.793
+Does that mean that .appendChild will work as well?
+
+266
+00:13:26.970 --> 00:13:28.760
+Yes, so .appendChild will work.
+
+267
+00:13:28.760 --> 00:13:30.135
+Apologies for that!
+
+268
+00:13:30.135 --> 00:13:31.990
+So, you can use that as well as
+
+269
+00:13:31.990 --> 00:13:35.270
+any of the .insertAdjacent ones that we looked at earlier.
+
+270
+00:13:35.270 --> 00:13:40.270
+So, real quick, if you want to create HTML from a string you
+
+271
+00:13:42.700 --> 00:13:46.320
+can either dump it straight into an element with .innerHTML,
+
+272
+00:13:46.320 --> 00:13:48.820
+which we'll do in almost all cases.
+
+273
+00:13:48.820 --> 00:13:52.300
+Or if you do need to do things like
+
+274
+00:13:52.300 --> 00:13:55.820
+add event listeners, change classes, change attributes,
+
+275
+00:13:55.820 --> 00:13:59.190
+you can turn it into DOM nodes before it's dumped in.
+
+276
+00:13:59.190 --> 00:14:02.360
+With .createContextualFragment() where you pass it
+
+277
+00:14:02.360 --> 00:14:05.760
+a actual string, then go ahead and dump that into the body
+
+278
+00:14:05.760 --> 00:14:07.460
+or wherever it is that you want.
+
+279
+00:14:07.460 --> 00:14:12.060
+Now, so that is creating HTML with strings.
+
+280
+00:14:12.060 --> 00:14:14.300
+What we need to talk about real quick
+
+281
+00:14:14.300 --> 00:14:16.860
+is security and sanitization.
+
+282
+00:14:16.860 --> 00:14:20.720
+So, we will have an entire video on security later
+
+283
+00:14:20.720 --> 00:14:22.270
+in this course and I recommend that you
+
+284
+00:14:22.270 --> 00:14:24.860
+go check that out when it comes time.
+
+285
+00:14:24.860 --> 00:14:27.350
+But I wanted to show you what
+
+286
+00:14:27.350 --> 00:14:30.620
+the potential pitfalls are of this.
+
+287
+00:14:30.620 --> 00:14:32.870
+So, one potential pitfall is that
+
+288
+00:14:32.870 --> 00:14:36.520
+you could ask somebody what their name is from,
+
+289
+00:14:36.520 --> 00:14:37.660
+a pretty standard thing to do is
+
+290
+00:14:37.660 --> 00:14:39.350
+you'd have a profile and people
+
+291
+00:14:39.350 --> 00:14:41.520
+can edit their profile, they can change their name,
+
+292
+00:14:41.520 --> 00:14:44.158
+they can change their description.
+
+293
+00:14:44.158 --> 00:14:48.730
+And if somebody puts HTML into that
+
+294
+00:14:48.730 --> 00:14:51.210
+what can happen is that the HTML
+
+295
+00:14:51.210 --> 00:14:53.100
+will then be rendered onto the page.
+
+296
+00:14:53.100 --> 00:14:56.550
+So, let me show you a little example with this right here.
+
+297
+00:14:56.550 --> 00:14:59.959
+So, this description, let's say we're taking
+
+298
+00:14:59.959 --> 00:15:02.290
+this description from somebody.
+
+299
+00:15:02.290 --> 00:15:04.750
+Somebody could say it's a cute pup
+
+300
+00:15:04.750 --> 00:15:09.423
+and then they could put an H1 tag in and say love this guy.
+
+301
+00:15:11.210 --> 00:15:14.820
+Now when I refresh it you see that there is
+
+302
+00:15:14.820 --> 00:15:19.820
+actually an H1 tag that wasn't created from us.
+
+303
+00:15:20.080 --> 00:15:22.830
+Remember that this is probably coming from a database.
+
+304
+00:15:22.830 --> 00:15:24.780
+This is probably coming from somebody's
+
+305
+00:15:25.870 --> 00:15:28.310
+editor where they've typed it in.
+
+306
+00:15:28.310 --> 00:15:31.330
+And they went ahead and just started to put some HTML.
+
+307
+00:15:31.330 --> 00:15:33.110
+Well, that's cool.
+
+308
+00:15:33.110 --> 00:15:34.940
+Maybe what you could also do is
+
+309
+00:15:34.940 --> 00:15:37.133
+then they start doing a style tag.
+
+310
+00:15:37.990 --> 00:15:42.990
+And they could say * {display: none; }.
+
+311
+00:15:45.920 --> 00:15:48.190
+And now they've just hidden the entire page.
+
+312
+00:15:48.190 --> 00:15:50.340
+This is what Myspace was.
+
+313
+00:15:50.340 --> 00:15:52.880
+Myspace allowed you to put in your own style tags,
+
+314
+00:15:52.880 --> 00:15:57.160
+which was great but you could do anything that you want.
+
+315
+00:15:57.160 --> 00:15:59.420
+Now, I'm just assuming that I'm just
+
+316
+00:15:59.420 --> 00:16:01.250
+taking in a description from the user.
+
+317
+00:16:01.250 --> 00:16:05.380
+But they've jacked it and allowed them
+
+318
+00:16:05.380 --> 00:16:07.780
+to put any HTML on the page.
+
+319
+00:16:07.780 --> 00:16:10.750
+Which you may or may not want the user to do.
+
+320
+00:16:10.750 --> 00:16:14.320
+Now that's all fun and games until
+
+321
+00:16:14.320 --> 00:16:18.150
+you get into what is called XSS,
+
+322
+00:16:18.150 --> 00:16:20.530
+which is cross-site scripting.
+
+323
+00:16:20.530 --> 00:16:22.887
+Now, cross-site scripting is where people take this
+
+324
+00:16:22.887 --> 00:16:25.210
+a little further and they start to
+
+325
+00:16:25.210 --> 00:16:28.350
+introduce script tags into this part.
+
+326
+00:16:28.350 --> 00:16:31.160
+And then the browser will then run that script tag
+
+327
+00:16:31.160 --> 00:16:32.840
+and you can do anything you want.
+
+328
+00:16:32.840 --> 00:16:34.400
+Like drain somebody's bank account.
+
+329
+00:16:34.400 --> 00:16:38.914
+So, imagine if you were signing into your online banking.
+
+330
+00:16:38.914 --> 00:16:40.760
+And they had a little input.
+
+331
+00:16:40.760 --> 00:16:42.190
+And they say, hey, what's your name?
+
+332
+00:16:42.190 --> 00:16:43.320
+My name is Wes.
+
+333
+00:16:43.320 --> 00:16:47.030
+And then put you also said my last name is script tag.
+
+334
+00:16:47.030 --> 00:16:49.470
+And you could do anything you want inside of that.
+
+335
+00:16:49.470 --> 00:16:52.692
+Including draining someone's bank account.
+
+336
+00:16:52.692 --> 00:16:57.230
+Or deleting things, sending money, doing malicious acting.
+
+337
+00:16:57.230 --> 00:17:01.060
+So, a very simple example of that
+
+338
+00:17:01.060 --> 00:17:03.200
+is you have a description here
+
+339
+00:17:03.200 --> 00:17:05.160
+and you want to allow people to
+
+340
+00:17:05.160 --> 00:17:07.780
+put whatever they want inside of their description.
+
+341
+00:17:07.780 --> 00:17:08.970
+Including putting images.
+
+342
+00:17:08.970 --> 00:17:12.043
+So, maybe you have an image and you have a src=.
+
+343
+00:17:14.292 --> 00:17:16.483
+Let's do this picsum again.
+
+344
+00:17:19.440 --> 00:17:21.140
+And let's just do it really small.
+
+345
+00:17:25.190 --> 00:17:26.340
+Right here, cute pup.
+
+346
+00:17:26.340 --> 00:17:28.050
+You allow them to put a little image in.
+
+347
+00:17:28.050 --> 00:17:30.340
+So, that's okay, however,
+
+348
+00:17:30.340 --> 00:17:35.340
+if you hijack this onload event which is JavaScript.
+
+349
+00:17:35.710 --> 00:17:40.000
+And when the onload runs, you can run anything you want.
+
+350
+00:17:40.000 --> 00:17:41.677
+So, we could say alert('HACKED').
+
+351
+00:17:45.880 --> 00:17:47.720
+So, now what just happened is
+
+352
+00:17:47.720 --> 00:17:52.280
+you took data from the user and they have then,
+
+353
+00:17:52.280 --> 00:17:54.630
+you've allowed them to run any JavaScript
+
+354
+00:17:54.630 --> 00:17:57.040
+that they want on your website.
+
+355
+00:17:57.040 --> 00:17:59.800
+And that is a potential security hole
+
+356
+00:17:59.800 --> 00:18:02.944
+because imagine that on Facebook
+
+357
+00:18:02.944 --> 00:18:07.057
+you allowed somebody to run any JavaScript
+
+358
+00:18:07.057 --> 00:18:11.380
+that you could run a loop, you could have your friends
+
+359
+00:18:11.380 --> 00:18:15.090
+unfriend everybody, you could send malicious messages.
+
+360
+00:18:15.090 --> 00:18:17.780
+Any time you allow a third party
+
+361
+00:18:17.780 --> 00:18:20.065
+to run JavaScript on your page
+
+362
+00:18:20.065 --> 00:18:22.330
+that is a huge security hole.
+
+363
+00:18:22.330 --> 00:18:24.790
+The only JavaScript that should be running on your page
+
+364
+00:18:24.790 --> 00:18:28.780
+is JavaScript that is authored by you, the developer,
+
+365
+00:18:28.780 --> 00:18:32.180
+and from approved parties like Google Analytics.
+
+366
+00:18:32.180 --> 00:18:33.330
+Or something like that.
+
+367
+00:18:33.330 --> 00:18:35.140
+So, there's a potential, this is called
+
+368
+00:18:35.140 --> 00:18:39.100
+a cross-site scripting where they've injected it in.
+
+369
+00:18:39.100 --> 00:18:42.070
+And in the security video, what we're going to do is
+
+370
+00:18:42.070 --> 00:18:47.070
+to show you how you can scrub your HTML of any potential
+
+371
+00:18:47.410 --> 00:18:50.930
+security vulnerabilities like this before you then dump it.
+
+372
+00:18:50.930 --> 00:18:52.760
+Because this is a great, I like this a lot.
+
+373
+00:18:52.760 --> 00:18:55.890
+I love this approach to writing HTML.
+
+374
+00:18:55.890 --> 00:18:57.680
+It's really easy, it looks like HTML,
+
+375
+00:18:57.680 --> 00:18:59.810
+I can pop my variables in wherever I want.
+
+376
+00:18:59.810 --> 00:19:01.730
+You just have to be aware that this is
+
+377
+00:19:01.730 --> 00:19:06.311
+a potential vulnerability and we want to negate that.
+
+378
+00:19:06.311 --> 00:19:09.061
+And I'll show you how to do that in the security video.
+

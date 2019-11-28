@@ -1,0 +1,2766 @@
+﻿WEBVTT
+
+1
+00:00:00.675 --> 00:00:03.258
+(upbeat music)
+
+2
+00:00:05.360 --> 00:00:07.300
+<v Wes>Let's talk about what I call</v>
+
+3
+00:00:07.300 --> 00:00:12.120
+these callback methods and I just made that up.
+
+4
+00:00:12.120 --> 00:00:16.860
+But why I'm grouping these all into their own section
+
+5
+00:00:16.860 --> 00:00:19.400
+that I call callback methods is
+
+6
+00:00:19.400 --> 00:00:21.590
+because before we even hit looping,
+
+7
+00:00:21.590 --> 00:00:24.890
+a lot of these methods take a function as an argument
+
+8
+00:00:24.890 --> 00:00:26.960
+and it's often called a callback.
+
+9
+00:00:26.960 --> 00:00:30.180
+So, let's dig into how these all work.
+
+10
+00:00:30.180 --> 00:00:32.410
+The one that we've used so far is find
+
+11
+00:00:32.410 --> 00:00:35.230
+and we're gonna really dig into how these work
+
+12
+00:00:35.230 --> 00:00:36.260
+with find right now.
+
+13
+00:00:36.260 --> 00:00:39.870
+So, find the first rating that talks about a burger.
+
+14
+00:00:39.870 --> 00:00:44.800
+Okay, so, we've got this data up here
+
+15
+00:00:44.800 --> 00:00:48.560
+and we've got feedback, there we go.
+
+16
+00:00:48.560 --> 00:00:49.980
+And, we wanna find the first one
+
+17
+00:00:49.980 --> 00:00:53.930
+that has either the word burg or burger in it,
+
+18
+00:00:53.930 --> 00:00:55.900
+so we're gonna go down here.
+
+19
+00:00:55.900 --> 00:00:59.923
+And, we'll say const rating, we'll call it burgRating,
+
+20
+00:01:01.980 --> 00:01:05.400
+is equal to ratings dot find.
+
+21
+00:01:05.400 --> 00:01:07.640
+Now, the argument to find,
+
+22
+00:01:07.640 --> 00:01:09.403
+let's go find find.
+
+23
+00:01:10.591 --> 00:01:11.424
+There we go.
+
+24
+00:01:13.030 --> 00:01:15.250
+Open it up, find returns the value
+
+25
+00:01:15.250 --> 00:01:16.780
+of the first element provided the array
+
+26
+00:01:16.780 --> 00:01:20.670
+that satisfies the provided testing function.
+
+27
+00:01:20.670 --> 00:01:23.720
+And, if we go down here, you see that one paramater
+
+28
+00:01:23.720 --> 00:01:26.470
+that it takes is a callback.
+
+29
+00:01:26.470 --> 00:01:29.120
+I guess it also takes a secondary argument called a thisArg.
+
+30
+00:01:29.120 --> 00:01:32.450
+We'll go into what this means in future videos.
+
+31
+00:01:32.450 --> 00:01:35.070
+Quite honestly, I've never used that one myself.
+
+32
+00:01:35.070 --> 00:01:38.400
+So, the callback and then you've got this nested one.
+
+33
+00:01:38.400 --> 00:01:40.960
+Element and index and array optional.
+
+34
+00:01:40.960 --> 00:01:42.290
+So, what does this all mean?
+
+35
+00:01:42.290 --> 00:01:46.100
+Well, it means that the argument of find is going
+
+36
+00:01:46.100 --> 00:01:50.750
+to be a function that either returns true or false
+
+37
+00:01:50.750 --> 00:01:53.070
+when it has found the item that it wants.
+
+38
+00:01:53.070 --> 00:01:55.830
+And, we've been doing it a little bit something like this.
+
+39
+00:01:55.830 --> 00:01:56.720
+And, we'll call it rating.
+
+40
+00:01:56.720 --> 00:02:00.283
+Then, we do an arrow and we say rating dot includes.
+
+41
+00:02:01.570 --> 00:02:03.270
+Or, no, it's not just rating.
+
+42
+00:02:03.270 --> 00:02:06.800
+It's the rating dot comment dot includes.
+
+43
+00:02:06.800 --> 00:02:11.420
+We say rating dot comment dot includes burg.
+
+44
+00:02:11.420 --> 00:02:14.100
+And then, we'll console log burgRating.
+
+45
+00:02:15.470 --> 00:02:17.510
+So, let's see how this works.
+
+46
+00:02:17.510 --> 00:02:21.080
+And then, we'll sorta peel it back here.
+
+47
+00:02:21.080 --> 00:02:23.403
+ReferenceError ratings is not defined.
+
+48
+00:02:24.860 --> 00:02:26.790
+What is it called, what did I call it?
+
+49
+00:02:26.790 --> 00:02:29.130
+Feedback, okay.
+
+50
+00:02:29.130 --> 00:02:31.513
+Ratings, it's not ratings, it's feedback.
+
+51
+00:02:33.120 --> 00:02:35.110
+There we go, there's our comment, love the burg.
+
+52
+00:02:35.110 --> 00:02:36.620
+Rating of four.
+
+53
+00:02:36.620 --> 00:02:39.560
+Okay, so, what is this?
+
+54
+00:02:39.560 --> 00:02:42.923
+Well, this is a function, let's see, right here.
+
+55
+00:02:44.710 --> 00:02:48.330
+And, we're going to name that function called findBurgRating
+
+56
+00:02:50.135 --> 00:02:52.957
+and that function will receive three arguments
+
+57
+00:02:52.957 --> 00:02:54.930
+and we can tell what those arguments are.
+
+58
+00:02:54.930 --> 00:02:59.190
+First, the element and the element is just a nice way
+
+59
+00:02:59.190 --> 00:03:02.440
+of saying each individual item.
+
+60
+00:03:02.440 --> 00:03:04.350
+So, rather than calling it element
+
+61
+00:03:04.350 --> 00:03:06.090
+'cause what does that mean to me?
+
+62
+00:03:06.090 --> 00:03:07.540
+I'm gonna call it what it is.
+
+63
+00:03:07.540 --> 00:03:09.620
+What is each individual thing in the array?
+
+64
+00:03:09.620 --> 00:03:11.690
+Well, I'm gonna call it a rating,
+
+65
+00:03:11.690 --> 00:03:15.290
+or a feedback because rating is actually a property.
+
+66
+00:03:15.290 --> 00:03:17.280
+Then, the second one is the index.
+
+67
+00:03:17.280 --> 00:03:20.160
+Often, we'll just short form that to i.
+
+68
+00:03:20.160 --> 00:03:21.870
+That is gonna be zero, one, two, three.
+
+69
+00:03:21.870 --> 00:03:26.630
+So, if you ever need to know what index something is
+
+70
+00:03:26.630 --> 00:03:29.140
+when you're in the loop, you have access to it.
+
+71
+00:03:29.140 --> 00:03:31.970
+And then, the third argument is the array,
+
+72
+00:03:31.970 --> 00:03:36.590
+which is if you ever need to reference the entire array
+
+73
+00:03:36.590 --> 00:03:40.020
+while you are inside of it, then you can use that as well.
+
+74
+00:03:40.020 --> 00:03:42.670
+So, usually, I don't have to pass both of these,
+
+75
+00:03:42.670 --> 00:03:45.580
+but if you even do need access to where it is in the array
+
+76
+00:03:45.580 --> 00:03:47.930
+as well as the original array,
+
+77
+00:03:47.930 --> 00:03:48.930
+you might be asking,
+
+78
+00:03:50.489 --> 00:03:53.823
+why can't I just reference it by the feedback array?
+
+79
+00:03:53.823 --> 00:03:57.130
+And, that's because this function could be reused
+
+80
+00:03:57.130 --> 00:04:01.800
+on multiple arrays and in order at making this a function
+
+81
+00:04:01.800 --> 00:04:04.800
+that can be reused on many arrays,
+
+82
+00:04:04.800 --> 00:04:06.810
+we can pass in what that one is.
+
+83
+00:04:06.810 --> 00:04:09.410
+So, we're not gonna pass those in just right now.
+
+84
+00:04:09.410 --> 00:04:11.270
+Right now, we only care about the feedback
+
+85
+00:04:11.270 --> 00:04:13.750
+and let's just console log feedback.
+
+86
+00:04:13.750 --> 00:04:15.780
+Now, what we can do is instead of doing
+
+87
+00:04:15.780 --> 00:04:17.350
+this inline function right here,
+
+88
+00:04:17.350 --> 00:04:21.003
+we can just simply pass the function findBurgRating.
+
+89
+00:04:21.003 --> 00:04:22.930
+And, you notice I don't put parentheses on the end
+
+90
+00:04:22.930 --> 00:04:24.740
+because I'm not calling it.
+
+91
+00:04:24.740 --> 00:04:27.420
+I'm actually just passing it referenced to the function
+
+92
+00:04:27.420 --> 00:04:31.780
+and JavaScript itself is going to run this function once
+
+93
+00:04:31.780 --> 00:04:35.293
+for each of the feedbacks in our feedback array.
+
+94
+00:04:36.630 --> 00:04:40.120
+Oh, that's not a good name because the plural,
+
+95
+00:04:40.120 --> 00:04:41.563
+so we'll call it singleFeedback.
+
+96
+00:04:44.090 --> 00:04:47.410
+And, you see here, now when I run this,
+
+97
+00:04:47.410 --> 00:04:51.060
+every single comment is commented out,
+
+98
+00:04:51.060 --> 00:04:52.950
+is console logged in our console.
+
+99
+00:04:52.950 --> 00:04:57.910
+Now, what I could do here is I could just say return true
+
+100
+00:04:57.910 --> 00:05:00.550
+and what will happen is
+
+101
+00:05:00.550 --> 00:05:03.183
+it will only ever console log the first one,
+
+102
+00:05:03.183 --> 00:05:06.520
+it's the on line 136, and then it stops
+
+103
+00:05:06.520 --> 00:05:09.020
+because as soon as you return true
+
+104
+00:05:09.020 --> 00:05:11.460
+from this find callback function,
+
+105
+00:05:11.460 --> 00:05:14.380
+it thinks that you have found the thing you're looking for
+
+106
+00:05:14.380 --> 00:05:17.930
+and it's going to then return the item in the array.
+
+107
+00:05:17.930 --> 00:05:19.860
+So, what we can do in here is we can say
+
+108
+00:05:19.860 --> 00:05:24.860
+if singleFeedback dot comment dot includes burg,
+
+109
+00:05:27.450 --> 00:05:30.243
+return true.
+
+110
+00:05:31.180 --> 00:05:35.203
+Else, return false.
+
+111
+00:05:39.230 --> 00:05:42.760
+Now, we see it will loop over and find the exact one
+
+112
+00:05:42.760 --> 00:05:44.160
+that includes burg.
+
+113
+00:05:44.160 --> 00:05:46.573
+Okay, so, that makes sense.
+
+114
+00:05:48.220 --> 00:05:51.960
+We can do this a little bit smaller though.
+
+115
+00:05:51.960 --> 00:05:54.890
+So, because this condition, remember,
+
+116
+00:05:54.890 --> 00:05:57.000
+a condition is something that tests
+
+117
+00:05:57.000 --> 00:05:58.940
+if something is true or false
+
+118
+00:05:58.940 --> 00:06:00.570
+and includes is a method
+
+119
+00:06:00.570 --> 00:06:02.930
+that will only ever return true or false,
+
+120
+00:06:02.930 --> 00:06:05.580
+so because that returns true or false,
+
+121
+00:06:05.580 --> 00:06:06.710
+we don't have to actually
+
+122
+00:06:06.710 --> 00:06:09.570
+have this if-statement and return true or false ourself.
+
+123
+00:06:09.570 --> 00:06:12.160
+We can actually just get rid of it all
+
+124
+00:06:12.160 --> 00:06:17.100
+and simply return whether it includes that value or not.
+
+125
+00:06:17.100 --> 00:06:20.380
+So, return singleFeedback dot comment dot includes a burg
+
+126
+00:06:20.380 --> 00:06:22.550
+and it works exactly the same way.
+
+127
+00:06:22.550 --> 00:06:25.200
+So, that is simply one way to do it.
+
+128
+00:06:25.200 --> 00:06:29.730
+You will often see me doing it just inline here
+
+129
+00:06:29.730 --> 00:06:31.680
+because I'm running it,
+
+130
+00:06:31.680 --> 00:06:34.800
+but anytime you find yourself writing the same code
+
+131
+00:06:34.800 --> 00:06:36.380
+more than once, you're like, huh,
+
+132
+00:06:36.380 --> 00:06:39.490
+this seems like a lot of the same code I've written
+
+133
+00:06:39.490 --> 00:06:43.120
+more than once, then you can refactor it out
+
+134
+00:06:43.120 --> 00:06:45.200
+into its own function.
+
+135
+00:06:45.200 --> 00:06:47.670
+Now, this function, again, just like everything else
+
+136
+00:06:47.670 --> 00:06:49.440
+can be any type of function.
+
+137
+00:06:49.440 --> 00:06:51.170
+So, it can be that type of a function
+
+138
+00:06:51.170 --> 00:06:53.380
+or it could be a const findBurgRating
+
+139
+00:06:54.890 --> 00:06:56.280
+is equal to a function.
+
+140
+00:06:56.280 --> 00:06:58.760
+So, that's another way to go ahead.
+
+141
+00:06:58.760 --> 00:06:59.720
+I'll comment that out.
+
+142
+00:06:59.720 --> 00:07:01.880
+That works exactly the same.
+
+143
+00:07:01.880 --> 00:07:04.110
+We can make it an arrow function.
+
+144
+00:07:04.110 --> 00:07:06.210
+So, we could say const findBurgRating
+
+145
+00:07:06.210 --> 00:07:09.943
+is equal to an arrow function.
+
+146
+00:07:12.638 --> 00:07:15.210
+FindBurgRating, oh, I gotta comment out the old one
+
+147
+00:07:15.210 --> 00:07:17.300
+'cause it can't duplicate the name of that function.
+
+148
+00:07:17.300 --> 00:07:19.000
+There we go, that works.
+
+149
+00:07:19.000 --> 00:07:21.840
+And then, we can even go one step further
+
+150
+00:07:21.840 --> 00:07:23.970
+and make this an implicit return.
+
+151
+00:07:23.970 --> 00:07:25.690
+This is a explicit return,
+
+152
+00:07:25.690 --> 00:07:29.140
+so I'll just take out the curly brackets
+
+153
+00:07:29.140 --> 00:07:31.600
+and let me make this a little bit wider so I can show you.
+
+154
+00:07:31.600 --> 00:07:36.420
+This is just a one-liner that we have right here.
+
+155
+00:07:36.420 --> 00:07:38.533
+So, that's another way to do it.
+
+156
+00:07:41.440 --> 00:07:42.650
+This is Wes from the future.
+
+157
+00:07:42.650 --> 00:07:44.970
+I forgot to tell you one more pretty common way
+
+158
+00:07:44.970 --> 00:07:46.550
+that I do it, so I'm just cutting in here
+
+159
+00:07:46.550 --> 00:07:47.660
+just to show you that last one
+
+160
+00:07:47.660 --> 00:07:52.040
+and that is grouping all of these burger-finding functions
+
+161
+00:07:52.040 --> 00:07:55.120
+into an object.
+
+162
+00:07:55.120 --> 00:07:56.550
+So, pretty often, what I'll do is
+
+163
+00:07:56.550 --> 00:07:58.533
+I'll create an object called util.
+
+164
+00:07:59.420 --> 00:08:02.840
+And then, inside of that util, I'll put all
+
+165
+00:08:02.840 --> 00:08:05.840
+of my little helper functions, utility functions
+
+166
+00:08:05.840 --> 00:08:09.130
+for finding things that I'm looking for.
+
+167
+00:08:09.130 --> 00:08:10.670
+And, all you need to do is I'll just
+
+168
+00:08:10.670 --> 00:08:13.020
+take this one right here.
+
+169
+00:08:13.020 --> 00:08:14.100
+Paste it in.
+
+170
+00:08:14.100 --> 00:08:15.773
+Get rid of these comments.
+
+171
+00:08:16.790 --> 00:08:20.435
+And then, you can use it as, what did we call this?
+
+172
+00:08:20.435 --> 00:08:22.113
+FindBurgRating.
+
+173
+00:08:22.970 --> 00:08:24.850
+Yeah, let's say it's a findBurgRating
+
+174
+00:08:24.850 --> 00:08:25.860
+is equal to a function.
+
+175
+00:08:25.860 --> 00:08:29.090
+So, what this is is we put the function inside of an object,
+
+176
+00:08:29.090 --> 00:08:30.710
+that makes it a method.
+
+177
+00:08:30.710 --> 00:08:34.440
+And then, that's beautiful because then what we can do is
+
+178
+00:08:34.440 --> 00:08:36.440
+when we are looking for something,
+
+179
+00:08:36.440 --> 00:08:39.900
+we simply just pass util dot findBurgRating.
+
+180
+00:08:39.900 --> 00:08:42.780
+So, that is one more way to do it.
+
+181
+00:08:42.780 --> 00:08:44.800
+And then, there's actually even one more way,
+
+182
+00:08:44.800 --> 00:08:46.310
+which is putting them in modules
+
+183
+00:08:46.310 --> 00:08:47.900
+and importing and exporting them,
+
+184
+00:08:47.900 --> 00:08:50.010
+but we will look at that once we hit modules.
+
+185
+00:08:50.010 --> 00:08:52.200
+Back to regular scheduled programming.
+
+186
+00:08:52.200 --> 00:08:53.490
+So, one other concept that,
+
+187
+00:08:53.490 --> 00:08:54.870
+we've kinda covered this already,
+
+188
+00:08:54.870 --> 00:08:56.480
+but remember when we talked about functions
+
+189
+00:08:56.480 --> 00:08:58.020
+that return other functions?
+
+190
+00:08:58.020 --> 00:09:00.230
+We referred to those as high-order functions.
+
+191
+00:09:00.230 --> 00:09:02.130
+Now, I'm gonna show you how that works.
+
+192
+00:09:02.130 --> 00:09:07.130
+Now, this function here is very tied to the word burg
+
+193
+00:09:07.360 --> 00:09:09.670
+and if I wanted to make another function
+
+194
+00:09:09.670 --> 00:09:13.073
+that looked for another word, like let's take a look at,
+
+195
+00:09:14.090 --> 00:09:19.053
+let's look for smoothie.
+
+196
+00:09:23.730 --> 00:09:26.290
+Then, I would have to duplicate this
+
+197
+00:09:27.130 --> 00:09:30.227
+and make a findSmoothieRating.
+
+198
+00:09:33.080 --> 00:09:36.033
+And then, just change this out with Smoothie.
+
+199
+00:09:39.270 --> 00:09:40.383
+Let's try this.
+
+200
+00:09:41.993 --> 00:09:44.110
+There we go, Smoothies are great.
+
+201
+00:09:44.110 --> 00:09:46.420
+So, that seems a little bit weird.
+
+202
+00:09:46.420 --> 00:09:49.240
+Do I have to create a new function for every single word?
+
+203
+00:09:49.240 --> 00:09:52.050
+No, what we can do is we can create a function
+
+204
+00:09:52.050 --> 00:09:55.120
+that will create these functions for us.
+
+205
+00:09:55.120 --> 00:09:59.000
+So, what that looks like is, we'll comment this out,
+
+206
+00:09:59.000 --> 00:10:02.267
+we'll make a function called findByWord
+
+207
+00:10:04.780 --> 00:10:07.740
+and we'll pass in the word.
+
+208
+00:10:07.740 --> 00:10:12.740
+And then, in that, we're going to return another function
+
+209
+00:10:13.930 --> 00:10:17.703
+that then takes in the singleFeedback.
+
+210
+00:10:18.649 --> 00:10:22.170
+And, we can just say in here,
+
+211
+00:10:22.170 --> 00:10:27.170
+return singleFeedback dot comment dot includes.
+
+212
+00:10:30.160 --> 00:10:34.240
+And, now, we don't have to hard code burg or Smoothie.
+
+213
+00:10:34.240 --> 00:10:37.110
+We can just pass it the word that got passed in.
+
+214
+00:10:37.110 --> 00:10:39.960
+So, this is a function
+
+215
+00:10:39.960 --> 00:10:41.960
+that makes another function.
+
+216
+00:10:41.960 --> 00:10:45.020
+It's sort of a momma function that returns another function
+
+217
+00:10:45.020 --> 00:10:47.640
+and we've sort of made this function machine
+
+218
+00:10:47.640 --> 00:10:50.560
+that will just turn out more functions.
+
+219
+00:10:50.560 --> 00:10:53.690
+And then, what we can do here is we can go back here
+
+220
+00:10:53.690 --> 00:10:56.177
+and now we can say findByWord
+
+221
+00:10:58.580 --> 00:11:00.223
+and pass it burg.
+
+222
+00:11:02.344 --> 00:11:03.870
+Let me make it a little bit simpler.
+
+223
+00:11:03.870 --> 00:11:08.870
+And, we'll say const burgFinder is equal to findByWord burg.
+
+224
+00:11:09.740 --> 00:11:12.280
+Now, burgFinder is just going to be a function
+
+225
+00:11:12.280 --> 00:11:14.650
+that is set up for finding the word burg
+
+226
+00:11:14.650 --> 00:11:15.653
+and we can pass it here.
+
+227
+00:11:15.653 --> 00:11:19.230
+And, I could do this, similarly, I could do this as well.
+
+228
+00:11:19.230 --> 00:11:21.290
+Make it a smoothieFinder,
+
+229
+00:11:22.900 --> 00:11:24.340
+got lowercase s.
+
+230
+00:11:24.340 --> 00:11:25.773
+We'll look for a Smoothie.
+
+231
+00:11:26.850 --> 00:11:30.240
+And then, we'll give ourselves our smoothieFinder in there.
+
+232
+00:11:30.240 --> 00:11:33.540
+So, we've just made a function that makes a function
+
+233
+00:11:33.540 --> 00:11:35.310
+and you see how flexible that is
+
+234
+00:11:35.310 --> 00:11:37.960
+that we can just pass it the word we're looking for
+
+235
+00:11:37.960 --> 00:11:41.970
+and then it will find the specific word that we want?
+
+236
+00:11:41.970 --> 00:11:44.880
+Then, we don't even need these variables right here.
+
+237
+00:11:44.880 --> 00:11:46.530
+These are just temporary variables
+
+238
+00:11:46.530 --> 00:11:48.890
+because we create it and then we pass it in here.
+
+239
+00:11:48.890 --> 00:11:52.483
+We can just pass this directly in there.
+
+240
+00:11:53.330 --> 00:11:57.680
+And, we can pass this directly in there.
+
+241
+00:11:57.680 --> 00:11:59.220
+Now, you might be saying, hold on, Wes.
+
+242
+00:11:59.220 --> 00:12:01.130
+I thought you said you shouldn't call the function
+
+243
+00:12:01.130 --> 00:12:02.210
+when you pass it to find.
+
+244
+00:12:02.210 --> 00:12:03.043
+I thought you were supposed
+
+245
+00:12:03.043 --> 00:12:04.940
+to just pass it referenced to the function.
+
+246
+00:12:04.940 --> 00:12:07.780
+And, the key here is that the findByWord burg
+
+247
+00:12:07.780 --> 00:12:09.730
+doesn't find the burger itself.
+
+248
+00:12:09.730 --> 00:12:13.170
+It just returns a function, which then, in turn,
+
+249
+00:12:13.170 --> 00:12:15.030
+will find the burg for you.
+
+250
+00:12:15.030 --> 00:12:16.080
+Let me show you here.
+
+251
+00:12:16.957 --> 00:12:19.583
+BurgRating has already been declared.
+
+252
+00:12:21.496 --> 00:12:22.630
+What did I do?
+
+253
+00:12:22.630 --> 00:12:25.670
+Line 153.
+
+254
+00:12:25.670 --> 00:12:29.473
+Oh, yeah, because this should be called smoothieRating.
+
+255
+00:12:32.952 --> 00:12:33.960
+All right, let me just clear this out.
+
+256
+00:12:33.960 --> 00:12:37.680
+See, if I run findByWord burg,
+
+257
+00:12:37.680 --> 00:12:40.280
+what it does is it returns to me another function
+
+258
+00:12:40.280 --> 00:12:43.030
+that is then set up for hard coded
+
+259
+00:12:43.030 --> 00:12:45.110
+with the word burg inside of it
+
+260
+00:12:45.110 --> 00:12:46.830
+and that's why we can pass it in there.
+
+261
+00:12:46.830 --> 00:12:48.860
+So, that's a little bit of an advanced one,
+
+262
+00:12:48.860 --> 00:12:50.810
+but if you do find yourself
+
+263
+00:12:51.910 --> 00:12:53.490
+in a situation where you're like, ah, I seem
+
+264
+00:12:53.490 --> 00:12:55.340
+to be writing the same code over and over again,
+
+265
+00:12:55.340 --> 00:12:57.630
+just this one thing is changing,
+
+266
+00:12:57.630 --> 00:12:59.850
+then maybe come back to this video and take a look
+
+267
+00:12:59.850 --> 00:13:03.523
+at how we made a function that returns another function.
+
+268
+00:13:04.673 --> 00:13:07.300
+All right, so that's the first one.
+
+269
+00:13:07.300 --> 00:13:10.470
+All that work to find a burg rating, good.
+
+270
+00:13:10.470 --> 00:13:12.350
+Now, we wanna find all the ratings
+
+271
+00:13:12.350 --> 00:13:15.260
+that are above two with filter.
+
+272
+00:13:15.260 --> 00:13:19.380
+So, filter works very much the same as find,
+
+273
+00:13:21.630 --> 00:13:23.630
+but it will return to you a new array
+
+274
+00:13:23.630 --> 00:13:25.260
+instead of just one item.
+
+275
+00:13:25.260 --> 00:13:28.570
+So, we can say const goodReviews
+
+276
+00:13:29.790 --> 00:13:34.640
+is equal to feedback dot filter.
+
+277
+00:13:34.640 --> 00:13:37.260
+And, again, the filter method
+
+278
+00:13:37.260 --> 00:13:39.840
+will loop over every single one
+
+279
+00:13:39.840 --> 00:13:43.650
+and it will either return true, I wanna keep it,
+
+280
+00:13:43.650 --> 00:13:45.730
+or false, I don't wanna keep it.
+
+281
+00:13:45.730 --> 00:13:48.190
+So, in this case, we can get each individual,
+
+282
+00:13:48.190 --> 00:13:50.150
+so we'll call it a singleFeedback.
+
+283
+00:13:50.150 --> 00:13:54.623
+And then, I'll say if the singleFeedback dot rating
+
+284
+00:13:57.370 --> 00:14:01.283
+is greater or equal to two, return true.
+
+285
+00:14:02.600 --> 00:14:05.878
+Else, return false.
+
+286
+00:14:05.878 --> 00:14:09.440
+Then, we go here and we'll console log our goodReviews.
+
+287
+00:14:09.440 --> 00:14:11.780
+Actually, let's use console dot table.
+
+288
+00:14:11.780 --> 00:14:13.800
+Get ready for this, boom.
+
+289
+00:14:13.800 --> 00:14:15.920
+You get a table in here.
+
+290
+00:14:15.920 --> 00:14:16.820
+It'll show you the index
+
+291
+00:14:16.820 --> 00:14:18.780
+and any of the properties that are on that.
+
+292
+00:14:18.780 --> 00:14:20.820
+So, here we go, we've got all of our ratings
+
+293
+00:14:20.820 --> 00:14:23.453
+that are equal to or above two.
+
+294
+00:14:24.760 --> 00:14:26.220
+Maybe we'll take that.
+
+295
+00:14:26.220 --> 00:14:29.060
+Equals out and then it just gives us three comments.
+
+296
+00:14:29.060 --> 00:14:31.930
+Good, now how can we make this better?
+
+297
+00:14:31.930 --> 00:14:33.890
+The same thing, we've done this a few times.
+
+298
+00:14:33.890 --> 00:14:36.350
+You probably can tell what we're gonna do.
+
+299
+00:14:36.350 --> 00:14:39.840
+This is a condition, meaning a condition is something
+
+300
+00:14:39.840 --> 00:14:41.800
+that will evaluate to true or false,
+
+301
+00:14:41.800 --> 00:14:45.990
+so we can simply just return it instead.
+
+302
+00:14:45.990 --> 00:14:49.640
+And then, we can also just put it on a single line
+
+303
+00:14:50.520 --> 00:14:52.430
+and get rid of the return keyword
+
+304
+00:14:52.430 --> 00:14:55.820
+and get rid of the curly brackets as an implicit return.
+
+305
+00:14:55.820 --> 00:14:59.000
+So, that's perfectly fine in there.
+
+306
+00:14:59.000 --> 00:15:02.640
+Could we do another one of these, findByWord?
+
+307
+00:15:02.640 --> 00:15:06.663
+Absolutely, so we could say a function findByValue.
+
+308
+00:15:07.860 --> 00:15:10.173
+Or, no, not find, filterByValue.
+
+309
+00:15:12.340 --> 00:15:13.913
+And, we'll take in the value.
+
+310
+00:15:14.940 --> 00:15:17.813
+Or, maybe we'll call that filterByMinRating.
+
+311
+00:15:19.860 --> 00:15:22.460
+These functions that are like filter and find,
+
+312
+00:15:22.460 --> 00:15:26.580
+it's really helpful to name them extremely explicit
+
+313
+00:15:26.580 --> 00:15:27.980
+because, often, you will have them
+
+314
+00:15:27.980 --> 00:15:30.490
+in another file or something like that
+
+315
+00:15:30.490 --> 00:15:33.270
+and you wanna be able to know what they do
+
+316
+00:15:33.270 --> 00:15:35.415
+without having to go back and look.
+
+317
+00:15:35.415 --> 00:15:38.350
+FilterByMinRating will take in a minRating.
+
+318
+00:15:38.350 --> 00:15:40.770
+And then, we will return another function.
+
+319
+00:15:40.770 --> 00:15:42.880
+You don't have to name this function in here.
+
+320
+00:15:42.880 --> 00:15:46.760
+You could, so we could call it filterByMinRatingPassedIn,
+
+321
+00:15:48.820 --> 00:15:52.420
+but you don't need to, it's not necessary.
+
+322
+00:15:52.420 --> 00:15:57.420
+And then, from that, we will take in the singleFeedback.
+
+323
+00:16:01.720 --> 00:16:06.720
+And, we will return singleFeedback dot rating is greater
+
+324
+00:16:07.010 --> 00:16:10.320
+than the minRating that's passed in.
+
+325
+00:16:10.320 --> 00:16:12.510
+Now, we made a little function that returns a function.
+
+326
+00:16:12.510 --> 00:16:14.270
+We can go into this filter
+
+327
+00:16:14.270 --> 00:16:16.310
+and just generate that function now.
+
+328
+00:16:16.310 --> 00:16:18.423
+So, filterByMinRating of two.
+
+329
+00:16:22.170 --> 00:16:23.620
+And, you see that we've got it.
+
+330
+00:16:23.620 --> 00:16:26.100
+If I then change that to four,
+
+331
+00:16:26.100 --> 00:16:29.470
+you see it's just changed to five.
+
+332
+00:16:29.470 --> 00:16:33.750
+That's a pretty handy, nice and flexible way to go about it.
+
+333
+00:16:33.750 --> 00:16:36.310
+Next up, we've gotta find all the ratings
+
+334
+00:16:36.310 --> 00:16:38.360
+that talk about a burger with filter.
+
+335
+00:16:38.360 --> 00:16:39.640
+Okay, let's do it.
+
+336
+00:16:39.640 --> 00:16:42.730
+So, we'll say const burgRatings is equal
+
+337
+00:16:42.730 --> 00:16:46.563
+to feedback dot filter.
+
+338
+00:16:48.120 --> 00:16:50.953
+Each one, we'll call it a singleFeedback.
+
+339
+00:16:52.281 --> 00:16:54.800
+And, will simply return true
+
+340
+00:16:54.800 --> 00:16:59.800
+if the singleFeedback dot comment dot includes burg.
+
+341
+00:17:00.880 --> 00:17:02.660
+We've pretty much already done that,
+
+342
+00:17:02.660 --> 00:17:07.060
+but, in our case, we are simply just filtering for it.
+
+343
+00:17:07.060 --> 00:17:09.363
+Now, if we console table,
+
+344
+00:17:10.420 --> 00:17:11.943
+timeEnd, table,
+
+345
+00:17:14.017 --> 00:17:15.750
+burgRatings.
+
+346
+00:17:15.750 --> 00:17:17.760
+Love the burgs, Smoothies are great.
+
+347
+00:17:17.760 --> 00:17:20.000
+Now, you might be saying hold on, Wes.
+
+348
+00:17:20.000 --> 00:17:23.210
+Didn't you already do that?
+
+349
+00:17:23.210 --> 00:17:27.130
+Oh, you did, so what we can do is we can actually
+
+350
+00:17:27.130 --> 00:17:29.600
+just reuse this function here.
+
+351
+00:17:29.600 --> 00:17:30.523
+Let's do it.
+
+352
+00:17:31.560 --> 00:17:34.690
+We'll just filter for findByWord burg.
+
+353
+00:17:34.690 --> 00:17:37.380
+And, look, boom, same results.
+
+354
+00:17:37.380 --> 00:17:41.270
+Now, we've just created some beautiful JavaScript
+
+355
+00:17:41.270 --> 00:17:44.510
+where this nice little findByWord function
+
+356
+00:17:44.510 --> 00:17:46.580
+can be used in find
+
+357
+00:17:46.580 --> 00:17:49.000
+or it can be used in filter
+
+358
+00:17:49.000 --> 00:17:50.520
+because they both do the same thing
+
+359
+00:17:50.520 --> 00:17:52.830
+and they're checking if it includes a word.
+
+360
+00:17:52.830 --> 00:17:54.640
+See the beauty of this?
+
+361
+00:17:54.640 --> 00:17:59.230
+And, it's fine if you don't do this all the time.
+
+362
+00:17:59.230 --> 00:18:00.790
+I honestly don't do it all the time
+
+363
+00:18:00.790 --> 00:18:04.030
+because a little arrow function is good.
+
+364
+00:18:04.030 --> 00:18:06.550
+But it's good to know about it because eventually
+
+365
+00:18:06.550 --> 00:18:07.990
+you will get to a point where you do
+
+366
+00:18:07.990 --> 00:18:10.920
+find yourself repeating yourself over and over,
+
+367
+00:18:10.920 --> 00:18:14.780
+much like I'm repeating this over and over in this video.
+
+368
+00:18:14.780 --> 00:18:18.130
+Next one, remove the one start rating however you like.
+
+369
+00:18:18.130 --> 00:18:21.793
+Okay, so let's look at the one star rating.
+
+370
+00:18:24.770 --> 00:18:26.640
+This one, I do not like burgers.
+
+371
+00:18:26.640 --> 00:18:31.640
+So, you could filter comments that are done in all caps.
+
+372
+00:18:31.930 --> 00:18:35.943
+You could filter ratings that are equal to one.
+
+373
+00:18:36.890 --> 00:18:38.640
+I think we'll do that, ratings that are equal to one.
+
+374
+00:18:38.640 --> 00:18:39.663
+So, let's go down.
+
+375
+00:18:43.310 --> 00:18:46.030
+We'll say const legitRatings is equal
+
+376
+00:18:46.030 --> 00:18:50.650
+to feedback dot filter.
+
+377
+00:18:50.650 --> 00:18:52.593
+Grab our singleFeedback.
+
+378
+00:18:53.960 --> 00:18:55.040
+And, let's call it something else
+
+379
+00:18:55.040 --> 00:18:56.920
+just so I can show you it's called anything.
+
+380
+00:18:56.920 --> 00:18:58.350
+We'll call it a single.
+
+381
+00:18:58.350 --> 00:19:03.350
+And, we'll say if the single dot rating is equal to one.
+
+382
+00:19:05.670 --> 00:19:09.610
+And, that should give us the bad, actually, one.
+
+383
+00:19:09.610 --> 00:19:10.443
+There we go.
+
+384
+00:19:10.443 --> 00:19:11.470
+So, we want the opposite.
+
+385
+00:19:11.470 --> 00:19:13.250
+How do you get the opposite of that?
+
+386
+00:19:13.250 --> 00:19:17.270
+Well, you can simply just put a bang in front of it.
+
+387
+00:19:17.270 --> 00:19:19.370
+So, if the single rating does not,
+
+388
+00:19:19.370 --> 00:19:20.600
+oh, actually, no, not there.
+
+389
+00:19:20.600 --> 00:19:25.600
+Well, just here, if it does not equal one.
+
+390
+00:19:25.950 --> 00:19:28.760
+And, there, we get everything else that we want.
+
+391
+00:19:28.760 --> 00:19:30.380
+So, you see how that,
+
+392
+00:19:30.380 --> 00:19:31.820
+I'm not gonna make a function for that.
+
+393
+00:19:31.820 --> 00:19:32.940
+That's just a one-liner.
+
+394
+00:19:32.940 --> 00:19:35.070
+That's the beauty of these type of things.
+
+395
+00:19:35.070 --> 00:19:37.973
+I can just do it in a one-liner, so why not?
+
+396
+00:19:39.000 --> 00:19:41.520
+Next, check if there are at least five
+
+397
+00:19:41.520 --> 00:19:43.500
+of one type of meat with some.
+
+398
+00:19:43.500 --> 00:19:45.840
+So, what does some do?
+
+399
+00:19:45.840 --> 00:19:46.913
+Let's take a look.
+
+400
+00:19:48.967 --> 00:19:49.800
+Here we go.
+
+401
+00:19:49.800 --> 00:19:51.790
+The some method tests whether at least one
+
+402
+00:19:51.790 --> 00:19:54.150
+of the element in the array passes the test provided
+
+403
+00:19:54.150 --> 00:19:56.070
+by it and it returns a Boolean.
+
+404
+00:19:56.070 --> 00:19:59.873
+Okay, so const isThereEnoughOfAtLeastOneMeat.
+
+405
+00:20:07.050 --> 00:20:11.980
+And, we'll say meats dot, no, okay.
+
+406
+00:20:11.980 --> 00:20:13.143
+Meats is what?
+
+407
+00:20:14.118 --> 00:20:15.285
+What is meats?
+
+408
+00:20:18.300 --> 00:20:19.630
+It's an object.
+
+409
+00:20:19.630 --> 00:20:21.660
+So, how would we check it?
+
+410
+00:20:21.660 --> 00:20:23.560
+All the stuff we're learning about is arrays.
+
+411
+00:20:23.560 --> 00:20:25.260
+How do you convert an object into an array
+
+412
+00:20:25.260 --> 00:20:27.400
+so you can use these methods on it?
+
+413
+00:20:27.400 --> 00:20:31.700
+Well, object dot entries dot keys, or dot values.
+
+414
+00:20:31.700 --> 00:20:33.490
+In our case, we want dot values.
+
+415
+00:20:33.490 --> 00:20:36.853
+So, okay, we'll go meats dot,
+
+416
+00:20:38.220 --> 00:20:42.930
+so we'll turn that into object dot values meats
+
+417
+00:20:42.930 --> 00:20:45.690
+dot some
+
+418
+00:20:46.550 --> 00:20:49.310
+and then we'll just call it a meatValue.
+
+419
+00:20:49.310 --> 00:20:51.550
+And, will return true or false,
+
+420
+00:20:51.550 --> 00:20:54.890
+whether the meatValue is greater or equal to five.
+
+421
+00:20:54.890 --> 00:20:59.100
+So, we'll say meatValue is greater or equal to five.
+
+422
+00:20:59.100 --> 00:21:01.720
+So, what we do here is we loop over every single one
+
+423
+00:21:01.720 --> 00:21:03.690
+of the things that is returned.
+
+424
+00:21:03.690 --> 00:21:05.680
+So, if you're asking, what is that?
+
+425
+00:21:05.680 --> 00:21:08.040
+That's 10, five, and seven.
+
+426
+00:21:08.040 --> 00:21:10.260
+So, we're going to check if at least one
+
+427
+00:21:10.260 --> 00:21:13.180
+of the values is greater or equal to five.
+
+428
+00:21:13.180 --> 00:21:16.410
+And then, we can console log is there at least one meat?
+
+429
+00:21:16.410 --> 00:21:17.660
+True.
+
+430
+00:21:17.660 --> 00:21:19.750
+Next one, make sure we have at least three
+
+431
+00:21:19.750 --> 00:21:21.960
+of every meat, with every.
+
+432
+00:21:21.960 --> 00:21:23.830
+So, some will just check for one.
+
+433
+00:21:23.830 --> 00:21:26.700
+So, another example I've done in one
+
+434
+00:21:26.700 --> 00:21:31.490
+of my courses is if you have five people in a family
+
+435
+00:21:31.490 --> 00:21:34.160
+and you wanna make sure there's at least one adult
+
+436
+00:21:34.160 --> 00:21:36.590
+who is greater than 19 years old,
+
+437
+00:21:36.590 --> 00:21:39.110
+what you could do is you could loop over all of the people
+
+438
+00:21:39.110 --> 00:21:43.630
+in the family and check for their ages and say dot sum.
+
+439
+00:21:43.630 --> 00:21:46.270
+Dot sum means at least one of,
+
+440
+00:21:46.270 --> 00:21:48.210
+one person that is greater than 19.
+
+441
+00:21:48.210 --> 00:21:52.590
+And, every means make sure every single thing
+
+442
+00:21:52.590 --> 00:21:54.440
+in that array meets our criteria.
+
+443
+00:21:54.440 --> 00:21:56.890
+So, let's just duplicate this.
+
+444
+00:21:56.890 --> 00:22:00.577
+Rename the variable to isThereEnoughOfEveryMeat.
+
+445
+00:22:08.445 --> 00:22:12.180
+And then, we'll say every meatValue is greater
+
+446
+00:22:12.180 --> 00:22:13.823
+or equal to three.
+
+447
+00:22:15.000 --> 00:22:17.660
+We'll console dot log isThereEnoughOfEveryMeat?
+
+448
+00:22:17.660 --> 00:22:19.143
+True, is that true?
+
+449
+00:22:20.200 --> 00:22:22.370
+Yes it is 'cause I wrote the code.
+
+450
+00:22:22.370 --> 00:22:24.770
+And, we'll see, yeah, 10, five, and seven, good.
+
+451
+00:22:26.590 --> 00:22:29.060
+Sort the toppings alphabetically with sort.
+
+452
+00:22:29.060 --> 00:22:32.940
+Oh, so this is a different kind of callback function here.
+
+453
+00:22:32.940 --> 00:22:36.050
+So, if I have an array of numbers,
+
+454
+00:22:36.050 --> 00:22:39.580
+so one, two, 100,
+
+455
+00:22:39.580 --> 00:22:41.920
+and we call dot sort on it,
+
+456
+00:22:41.920 --> 00:22:42.753
+we get
+
+457
+00:22:43.670 --> 00:22:47.252
+one, 100, two, what?
+
+458
+00:22:47.252 --> 00:22:49.962
+What is going on here, what?
+
+459
+00:22:49.962 --> 00:22:50.795
+200, okay.
+
+460
+00:22:53.414 --> 00:22:54.247
+So, 155.
+
+461
+00:22:56.667 --> 00:22:57.500
+Hmm.
+
+462
+00:22:58.721 --> 00:23:00.540
+What's going on here?
+
+463
+00:23:00.540 --> 00:23:03.133
+So, sort, let's look up the docs for it.
+
+464
+00:23:06.490 --> 00:23:10.120
+Sort method sorts elements of an array in place
+
+465
+00:23:10.120 --> 00:23:11.500
+and returns the sorted array.
+
+466
+00:23:11.500 --> 00:23:14.650
+The default sort order is built upon converting the elements
+
+467
+00:23:14.650 --> 00:23:17.160
+into strings and then comparing their sequences
+
+468
+00:23:17.160 --> 00:23:20.250
+in a UTF-16 code unit value.
+
+469
+00:23:20.250 --> 00:23:22.040
+So, that's a fancy way of saying
+
+470
+00:23:22.040 --> 00:23:24.470
+it does it alphabetically as strings.
+
+471
+00:23:24.470 --> 00:23:28.150
+So, if you have one as a string
+
+472
+00:23:28.150 --> 00:23:30.483
+and then you have 100 as a string,
+
+473
+00:23:31.550 --> 00:23:33.883
+it just takes the one and goes, oh,
+
+474
+00:23:34.750 --> 00:23:35.840
+you get the point, right?
+
+475
+00:23:35.840 --> 00:23:37.190
+It's not using them as numbers.
+
+476
+00:23:37.190 --> 00:23:38.550
+It's using them as strings.
+
+477
+00:23:38.550 --> 00:23:42.530
+So, if you want to sort numbers, let's do a little example
+
+478
+00:23:42.530 --> 00:23:44.830
+before we get into our exercise here.
+
+479
+00:23:44.830 --> 00:23:46.340
+So, we'll say const numbers is equal
+
+480
+00:23:46.340 --> 00:23:49.733
+to one, two, 100,
+
+481
+00:23:51.010 --> 00:23:56.010
+three, 200, 400, 155.
+
+482
+00:23:56.630 --> 00:23:58.243
+And, console log.
+
+483
+00:23:59.630 --> 00:24:01.750
+We'll make a new variable.
+
+484
+00:24:01.750 --> 00:24:02.833
+NumbersSorted
+
+485
+00:24:05.490 --> 00:24:08.210
+is equal to numbers dot sort.
+
+486
+00:24:08.210 --> 00:24:09.810
+Let's just call it like that
+
+487
+00:24:09.810 --> 00:24:13.360
+and see the disappointment that comes with that.
+
+488
+00:24:13.360 --> 00:24:16.650
+There we go, one, 100, 155, two,
+
+489
+00:24:16.650 --> 00:24:17.790
+you get the point, right?
+
+490
+00:24:17.790 --> 00:24:18.870
+That's not what we want.
+
+491
+00:24:18.870 --> 00:24:20.560
+So, the way that sort works is
+
+492
+00:24:20.560 --> 00:24:23.650
+that it takes a callback function, right here,
+
+493
+00:24:23.650 --> 00:24:25.730
+a compare callback function,
+
+494
+00:24:25.730 --> 00:24:28.600
+and it gives you the first and the second thing.
+
+495
+00:24:28.600 --> 00:24:31.090
+So, basically, you're going to loop over it
+
+496
+00:24:31.090 --> 00:24:33.720
+and it's going to give you the first thing
+
+497
+00:24:33.720 --> 00:24:36.070
+and the second thing and it's up to us
+
+498
+00:24:36.070 --> 00:24:39.830
+to decide whether that thing should go in front of it
+
+499
+00:24:39.830 --> 00:24:43.470
+or behind it or stay in place.
+
+500
+00:24:43.470 --> 00:24:45.150
+So, what do you return?
+
+501
+00:24:45.150 --> 00:24:49.800
+Well, if you return less than zero, it will go before it.
+
+502
+00:24:49.800 --> 00:24:54.350
+If you return zero, it will be unchanged.
+
+503
+00:24:54.350 --> 00:24:56.980
+And, if you return greater than zero,
+
+504
+00:24:56.980 --> 00:24:58.490
+it will go ahead of it.
+
+505
+00:24:58.490 --> 00:25:00.590
+So, we need a little callback function.
+
+506
+00:25:00.590 --> 00:25:02.203
+I'll do a regular function here.
+
+507
+00:25:03.730 --> 00:25:07.566
+And, we'll call it it firstThing, maybe not thing.
+
+508
+00:25:07.566 --> 00:25:09.649
+FirstItem and secondItem.
+
+509
+00:25:11.012 --> 00:25:14.160
+And, we can go ahead and console log firstItem
+
+510
+00:25:15.870 --> 00:25:18.450
+and secondItem just to show you
+
+511
+00:25:18.450 --> 00:25:21.570
+how it's sorting through these things.
+
+512
+00:25:21.570 --> 00:25:23.950
+And, you see, we're gonna get two and one,
+
+513
+00:25:23.950 --> 00:25:25.810
+so it might be a little bit confusing
+
+514
+00:25:25.810 --> 00:25:28.190
+that we call it firstItem and secondItem
+
+515
+00:25:28.190 --> 00:25:29.600
+and we're seeing second and first,
+
+516
+00:25:29.600 --> 00:25:31.720
+but that's how it works.
+
+517
+00:25:31.720 --> 00:25:33.220
+And, essentially, what happens is
+
+518
+00:25:33.220 --> 00:25:35.230
+every function gets two things.
+
+519
+00:25:35.230 --> 00:25:37.830
+One in the left hand and one in the right hand.
+
+520
+00:25:37.830 --> 00:25:39.940
+And, it's up to you as the developer
+
+521
+00:25:39.940 --> 00:25:42.990
+to tell JavaScript whether you should switch places
+
+522
+00:25:42.990 --> 00:25:44.180
+with those two things.
+
+523
+00:25:44.180 --> 00:25:47.010
+And, as JavaScript loops over those things,
+
+524
+00:25:47.010 --> 00:25:49.810
+you keep switching them and, eventually,
+
+525
+00:25:49.810 --> 00:25:51.430
+it will run through it enough times
+
+526
+00:25:51.430 --> 00:25:53.430
+that there will be no more switches
+
+527
+00:25:53.430 --> 00:25:55.870
+and that's how it knows it's done.
+
+528
+00:25:55.870 --> 00:25:57.900
+So, what we can do is we
+
+529
+00:25:57.900 --> 00:26:02.900
+can return zero, negative one, or positive one.
+
+530
+00:26:03.740 --> 00:26:07.330
+Or, you can return any value, up or down,
+
+531
+00:26:07.330 --> 00:26:08.760
+and that's what we're gonna do here.
+
+532
+00:26:08.760 --> 00:26:09.593
+So, we'll say
+
+533
+00:26:10.610 --> 00:26:13.300
+if the firstItem
+
+534
+00:26:13.300 --> 00:26:17.817
+is greater than the secondItem, return one.
+
+535
+00:26:19.870 --> 00:26:22.667
+Else if, the secondItem
+
+536
+00:26:24.240 --> 00:26:26.810
+is greater than the firstItem,
+
+537
+00:26:26.810 --> 00:26:30.220
+then we will return negative one.
+
+538
+00:26:30.220 --> 00:26:33.470
+And then, finally, else, they are exactly the same,
+
+539
+00:26:33.470 --> 00:26:35.310
+we will return zero.
+
+540
+00:26:35.310 --> 00:26:37.600
+Let's see how that works.
+
+541
+00:26:37.600 --> 00:26:40.410
+So, now we have one, two, three, four, all the way up.
+
+542
+00:26:40.410 --> 00:26:44.230
+Good, but that's pretty verbose and you don't have
+
+543
+00:26:44.230 --> 00:26:46.600
+to just return one, minus one, and zero.
+
+544
+00:26:46.600 --> 00:26:49.710
+You can return any zero,
+
+545
+00:26:49.710 --> 00:26:51.370
+negative number, or positive number.
+
+546
+00:26:51.370 --> 00:26:52.920
+And, since these are already numbers,
+
+547
+00:26:52.920 --> 00:26:57.920
+we can simply get away with just return the secondItem
+
+548
+00:26:58.500 --> 00:27:00.367
+minus the firstItem.
+
+549
+00:27:02.132 --> 00:27:04.493
+And, we'll get rid of all that.
+
+550
+00:27:06.940 --> 00:27:09.410
+Oh, I did that backwards, it's the firstItem.
+
+551
+00:27:09.410 --> 00:27:10.750
+I always do it backwards.
+
+552
+00:27:10.750 --> 00:27:12.630
+So, how do you know?
+
+553
+00:27:12.630 --> 00:27:13.480
+Just do it one way
+
+554
+00:27:13.480 --> 00:27:15.890
+and if your array is backwards, switch them.
+
+555
+00:27:15.890 --> 00:27:18.450
+There we go, one all the way up to 400.
+
+556
+00:27:18.450 --> 00:27:21.260
+So, it's gonna return one minus two, that's negative one.
+
+557
+00:27:21.260 --> 00:27:24.740
+That will move it to the beginning of the array
+
+558
+00:27:24.740 --> 00:27:25.880
+where it already is.
+
+559
+00:27:25.880 --> 00:27:28.830
+Then, we get 100 minus two.
+
+560
+00:27:28.830 --> 00:27:30.120
+And then, those numbers will
+
+561
+00:27:30.120 --> 00:27:33.320
+just help it learn how to sort itself.
+
+562
+00:27:33.320 --> 00:27:35.090
+And then, the numbers are beautifully sorted.
+
+563
+00:27:35.090 --> 00:27:39.750
+So, by default, it will sort itself based on strings,
+
+564
+00:27:39.750 --> 00:27:44.390
+so if you did have a string, like a, z,
+
+565
+00:27:44.390 --> 00:27:46.280
+zed for my Canadians out there,
+
+566
+00:27:46.280 --> 00:27:50.610
+e, r, and b.
+
+567
+00:27:50.610 --> 00:27:52.100
+If you just call sort on it,
+
+568
+00:27:52.100 --> 00:27:54.730
+it'll automatically do that for you.
+
+569
+00:27:54.730 --> 00:27:56.400
+But when you are dealing with numbers
+
+570
+00:27:56.400 --> 00:28:00.170
+or you are dealing with nested elements,
+
+571
+00:28:00.170 --> 00:28:03.890
+then you have to use a callback function here.
+
+572
+00:28:03.890 --> 00:28:05.480
+Similarly, we can convert this
+
+573
+00:28:05.480 --> 00:28:07.710
+to an arrow function if we like.
+
+574
+00:28:07.710 --> 00:28:09.580
+So, we'll take that off.
+
+575
+00:28:09.580 --> 00:28:10.773
+Put an arrow here.
+
+576
+00:28:11.700 --> 00:28:13.860
+Get rid of the curly brackets.
+
+577
+00:28:13.860 --> 00:28:16.060
+Get rid of that semicolon.
+
+578
+00:28:16.060 --> 00:28:19.713
+And, we'll put it all on one line.
+
+579
+00:28:20.890 --> 00:28:22.560
+Does it still work?
+
+580
+00:28:22.560 --> 00:28:25.853
+No, oh, I forgot to remove the return.
+
+581
+00:28:27.170 --> 00:28:30.150
+Beautiful, so what was even our question here?
+
+582
+00:28:30.150 --> 00:28:34.450
+Sort all the order totals from most expensive, oh, no.
+
+583
+00:28:34.450 --> 00:28:36.520
+Sort all the toppings alphabetically with sort.
+
+584
+00:28:36.520 --> 00:28:37.970
+Oh, that's easy.
+
+585
+00:28:37.970 --> 00:28:41.363
+So, we'll just console log toppings dot sort.
+
+586
+00:28:43.410 --> 00:28:44.560
+Done, that was a easy one.
+
+587
+00:28:44.560 --> 00:28:46.230
+Next one, sort the order totals
+
+588
+00:28:46.230 --> 00:28:50.290
+from most expensive to least expensive with dot sort.
+
+589
+00:28:50.290 --> 00:28:54.240
+So, let's look at our order totals, they're just numbers.
+
+590
+00:28:54.240 --> 00:28:58.040
+Okay, so, we can do the same thing we did before
+
+591
+00:28:58.040 --> 00:29:01.547
+or we can make a function called numberSort
+
+592
+00:29:03.080 --> 00:29:04.910
+that takes in a and b
+
+593
+00:29:04.910 --> 00:29:08.260
+and returns a minus b.
+
+594
+00:29:08.260 --> 00:29:11.720
+Then, we console log the orderTotals dot sort
+
+595
+00:29:11.720 --> 00:29:14.370
+and you pass it your nice little numberSort function.
+
+596
+00:29:16.960 --> 00:29:21.960
+And, it goes three, all the way up to 2222, beautiful.
+
+597
+00:29:22.240 --> 00:29:24.920
+Sort the prices with sort.
+
+598
+00:29:24.920 --> 00:29:27.850
+So, oh, this is getting a little bit harder.
+
+599
+00:29:27.850 --> 00:29:29.550
+Where are the prices?
+
+600
+00:29:29.550 --> 00:29:30.690
+Here we go.
+
+601
+00:29:30.690 --> 00:29:33.930
+This is an object.
+
+602
+00:29:33.930 --> 00:29:38.430
+So, how would I sort the prices?
+
+603
+00:29:38.430 --> 00:29:42.280
+Well, probably object dot entries.
+
+604
+00:29:42.280 --> 00:29:45.280
+But we somehow need to keep the thing
+
+605
+00:29:45.280 --> 00:29:47.620
+that we're sorting along with it.
+
+606
+00:29:47.620 --> 00:29:49.240
+So, how would we do that?
+
+607
+00:29:49.240 --> 00:29:51.490
+Well, let's do it step by step.
+
+608
+00:29:51.490 --> 00:29:52.463
+So, const
+
+609
+00:29:54.986 --> 00:29:59.620
+productsSortedByPrice is equal to.
+
+610
+00:29:59.620 --> 00:30:02.560
+We will use our object dot entries,
+
+611
+00:30:02.560 --> 00:30:05.000
+object dot entries.
+
+612
+00:30:05.000 --> 00:30:06.880
+We'll pass it the prices.
+
+613
+00:30:06.880 --> 00:30:07.713
+What does that do?
+
+614
+00:30:07.713 --> 00:30:08.940
+Well, let's take a look here.
+
+615
+00:30:08.940 --> 00:30:11.370
+Clear everything out and if I paste that in here,
+
+616
+00:30:11.370 --> 00:30:13.620
+that gives us an array
+
+617
+00:30:13.620 --> 00:30:15.340
+where each item is an array
+
+618
+00:30:15.340 --> 00:30:17.540
+and then the first item is a hotdog.
+
+619
+00:30:17.540 --> 00:30:19.690
+Second item is the actual price.
+
+620
+00:30:19.690 --> 00:30:21.320
+Okay, so that's good.
+
+621
+00:30:21.320 --> 00:30:24.540
+Then, what we can do is we can sort over each of them.
+
+622
+00:30:24.540 --> 00:30:27.240
+Let's use a regular function here
+
+623
+00:30:27.240 --> 00:30:32.213
+and that will give us the first and the second.
+
+624
+00:30:33.240 --> 00:30:34.720
+I often will do A and B.
+
+625
+00:30:34.720 --> 00:30:39.720
+I'm not a big fan of doing short variables,
+
+626
+00:30:39.720 --> 00:30:42.660
+like foo, bar, baz, A, B, X, Y.
+
+627
+00:30:42.660 --> 00:30:45.390
+But in this case, I'm fine with it. (laughs)
+
+628
+00:30:45.390 --> 00:30:46.610
+So, you can name it whatever you want.
+
+629
+00:30:46.610 --> 00:30:48.240
+I think a and b is totally fine.
+
+630
+00:30:48.240 --> 00:30:51.490
+And, let's just throw a debugger in there right now
+
+631
+00:30:51.490 --> 00:30:53.770
+to see what we are working with.
+
+632
+00:30:53.770 --> 00:30:55.630
+So, when I refresh now, you'll see
+
+633
+00:30:55.630 --> 00:30:57.690
+that this debugger pops up
+
+634
+00:30:57.690 --> 00:31:00.540
+and the important part is this local scope,
+
+635
+00:31:00.540 --> 00:31:03.920
+meaning that what are these variables equal to?
+
+636
+00:31:03.920 --> 00:31:07.160
+Well, it tells us that a is equal to burger
+
+637
+00:31:07.160 --> 00:31:09.420
+and b is equal to hotdog.
+
+638
+00:31:09.420 --> 00:31:12.110
+And, it says they're both arrays,
+
+639
+00:31:12.110 --> 00:31:14.960
+so the first thing in the array the name of it
+
+640
+00:31:14.960 --> 00:31:16.920
+and the second thing is the price.
+
+641
+00:31:16.920 --> 00:31:18.270
+So, what we could do there is
+
+642
+00:31:18.270 --> 00:31:21.260
+we could make quick little variables.
+
+643
+00:31:21.260 --> 00:31:22.133
+So, const
+
+644
+00:31:24.729 --> 00:31:29.113
+aPrice is equal to a square bracket one.
+
+645
+00:31:30.800 --> 00:31:31.633
+And,
+
+646
+00:31:32.802 --> 00:31:35.810
+bPrice is equal to square bracket two.
+
+647
+00:31:35.810 --> 00:31:37.710
+Now, watch, when we refresh that,
+
+648
+00:31:37.710 --> 00:31:40.720
+we see that we have access to our two arguments,
+
+649
+00:31:40.720 --> 00:31:43.050
+but also the variables that we have just made.
+
+650
+00:31:43.050 --> 00:31:43.940
+Oh, what did I do?
+
+651
+00:31:43.940 --> 00:31:46.717
+This is one, sorry, not two.
+
+652
+00:31:46.717 --> 00:31:47.550
+There we go.
+
+653
+00:31:49.378 --> 00:31:50.530
+BPrice, oh, and this is b.
+
+654
+00:31:50.530 --> 00:31:52.280
+Ah, man, can't code.
+
+655
+00:31:52.280 --> 00:31:55.253
+There we go, 765 and 453.
+
+656
+00:31:58.040 --> 00:32:00.310
+So, now that we have those two values,
+
+657
+00:32:00.310 --> 00:32:03.843
+we can simply just return the bPrice
+
+658
+00:32:05.490 --> 00:32:07.660
+minus the aPrice.
+
+659
+00:32:07.660 --> 00:32:09.210
+Or, maybe the other way around?
+
+660
+00:32:09.210 --> 00:32:11.000
+Get rid of this debugger.
+
+661
+00:32:11.000 --> 00:32:15.233
+And, console dot table productsSortedByPrice.
+
+662
+00:32:18.211 --> 00:32:20.160
+And, they are descending,
+
+663
+00:32:20.160 --> 00:32:22.423
+so if you wanted it the other way around,
+
+664
+00:32:23.520 --> 00:32:25.740
+you could do that.
+
+665
+00:32:26.834 --> 00:32:29.880
+And, now they go from cheapest to most expensive.
+
+666
+00:32:29.880 --> 00:32:31.860
+Now, if I wanted to turn that back into an object,
+
+667
+00:32:31.860 --> 00:32:35.773
+I could simply just wrap it in an object dot fromEntries.
+
+668
+00:32:37.030 --> 00:32:39.310
+And, what that will do is it takes nested arrays,
+
+669
+00:32:39.310 --> 00:32:43.670
+like we have here, and turns it back into a regular object.
+
+670
+00:32:43.670 --> 00:32:46.420
+Open it up, you see our actual values.
+
+671
+00:32:46.420 --> 00:32:48.253
+I had told you earlier,
+
+672
+00:32:50.420 --> 00:32:51.980
+when we were learning about objects,
+
+673
+00:32:51.980 --> 00:32:55.850
+that they are not order-sensitive,
+
+674
+00:32:55.850 --> 00:32:58.990
+but I've since found out that they added it
+
+675
+00:32:58.990 --> 00:33:01.760
+to the language where they are maintained
+
+676
+00:33:01.760 --> 00:33:03.700
+in the order at which you put them in,
+
+677
+00:33:03.700 --> 00:33:08.150
+except if they have numbers, in they start with a number.
+
+678
+00:33:08.150 --> 00:33:10.940
+That's why we did 777, it went to the top.
+
+679
+00:33:10.940 --> 00:33:12.160
+So, those always go first
+
+680
+00:33:12.160 --> 00:33:15.282
+and then the other ones come after it.
+
+681
+00:33:15.282 --> 00:33:16.663
+Beautiful.
+
+682
+00:33:18.830 --> 00:33:21.520
+And, that is the end of our sorting video.
+
+683
+00:33:21.520 --> 00:33:23.030
+I know that was a really big one,
+
+684
+00:33:23.030 --> 00:33:28.030
+but, quite honestly, this is most of what I do with my days,
+
+685
+00:33:28.040 --> 00:33:31.850
+is writing filter, find, object dot values.
+
+686
+00:33:31.850 --> 00:33:33.860
+I'm doing lots of this data massaging
+
+687
+00:33:33.860 --> 00:33:36.260
+'cause you're often just getting a whole dump of stuff
+
+688
+00:33:36.260 --> 00:33:39.010
+from a database and it's not exactly the data
+
+689
+00:33:39.010 --> 00:33:42.120
+that you want before you go and put it on the page.
+
+690
+00:33:42.120 --> 00:33:45.070
+And, this, as well as map, filter, reduce,
+
+691
+00:33:45.070 --> 00:33:48.053
+which is the next video, is a lot of my time spent.
+

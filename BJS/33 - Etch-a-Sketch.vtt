@@ -1,0 +1,3535 @@
+﻿WEBVTT
+
+1
+00:00:00.519 --> 00:00:03.102
+(upbeat music)
+
+2
+00:00:06.490 --> 00:00:08.860
+<v Wes>All right, folks, let's build an Etch-a-Sketch.</v>
+
+3
+00:00:08.860 --> 00:00:10.250
+These are sort of fun.
+
+4
+00:00:10.250 --> 00:00:12.810
+I really like building these demos
+
+5
+00:00:12.810 --> 00:00:15.260
+because now that I think we know enough
+
+6
+00:00:15.260 --> 00:00:17.430
+about the fundamentals of JavaScript,
+
+7
+00:00:17.430 --> 00:00:20.060
+we certainly have still got a lot to learn,
+
+8
+00:00:20.060 --> 00:00:21.700
+but I think that we should get practicing
+
+9
+00:00:21.700 --> 00:00:23.090
+in building some sort of fun stuff
+
+10
+00:00:23.090 --> 00:00:27.420
+so you can actually put your skills into gear.
+
+11
+00:00:27.420 --> 00:00:29.740
+What we're gonna be building here is an Etch-a-Sketch,
+
+12
+00:00:29.740 --> 00:00:32.220
+where you can just use your arrow keys
+
+13
+00:00:32.220 --> 00:00:33.640
+to move the thing around.
+
+14
+00:00:33.640 --> 00:00:36.040
+I'm sure you all had a Etch-a-Sketch when you were a kid.
+
+15
+00:00:36.040 --> 00:00:37.920
+You can move this thing around.
+
+16
+00:00:37.920 --> 00:00:39.950
+I've added a couple little fun things to it
+
+17
+00:00:39.950 --> 00:00:43.970
+where the color of it is just this rainbow,
+
+18
+00:00:43.970 --> 00:00:45.970
+and then we can shake it and refresh.
+
+19
+00:00:45.970 --> 00:00:47.230
+A couple of other things about it,
+
+20
+00:00:47.230 --> 00:00:50.310
+whenever you reload the page, it picks a random spot
+
+21
+00:00:50.310 --> 00:00:51.253
+to put it on.
+
+22
+00:00:52.370 --> 00:00:53.543
+Topics we're gonna be covering here.
+
+23
+00:00:53.543 --> 00:00:56.760
+I would say DOM elements and keyboard events
+
+24
+00:00:56.760 --> 00:00:58.690
+are things that we've learned.
+
+25
+00:00:58.690 --> 00:01:00.540
+We're going to be learning a little bit about this thing
+
+26
+00:01:00.540 --> 00:01:04.040
+called canvas, which is part of HTML and JavaScript.
+
+27
+00:01:04.040 --> 00:01:05.690
+And then we're also gonna be touching
+
+28
+00:01:05.690 --> 00:01:08.280
+upon a switch statement which we have not learned yet,
+
+29
+00:01:08.280 --> 00:01:11.660
+but I think is a perfect opportunity to introduce it.
+
+30
+00:01:11.660 --> 00:01:15.430
+We've got this, 33 Etch-a-Sketch folder here,
+
+31
+00:01:15.430 --> 00:01:17.070
+and you should open up the index.
+
+32
+00:01:17.070 --> 00:01:18.790
+The HTML provided this for you.
+
+33
+00:01:18.790 --> 00:01:20.840
+Let's go through it real quick.
+
+34
+00:01:20.840 --> 00:01:24.373
+We've got a, this body class doesn't need to be there.
+
+35
+00:01:25.300 --> 00:01:27.000
+We've got a canvasWrap.
+
+36
+00:01:27.000 --> 00:01:28.530
+Then we have our canvas element.
+
+37
+00:01:28.530 --> 00:01:31.700
+This is an HTML element that's used for drawing on.
+
+38
+00:01:31.700 --> 00:01:35.010
+I've explicitly given it a width and a height
+
+39
+00:01:35.010 --> 00:01:37.840
+of 1,600 by 1,000.
+
+40
+00:01:37.840 --> 00:01:39.650
+And then if you take a look here,
+
+41
+00:01:39.650 --> 00:01:42.777
+you'll see that I've have that in CSS.
+
+42
+00:01:42.777 --> 00:01:46.340
+And the reason behind doing that is because
+
+43
+00:01:46.340 --> 00:01:48.430
+this is the actual width.
+
+44
+00:01:48.430 --> 00:01:52.240
+You can think about this as the actual width of an image.
+
+45
+00:01:52.240 --> 00:01:54.500
+This is the actual width of the canvas,
+
+46
+00:01:54.500 --> 00:01:57.670
+and then the CSS, it just displays how big
+
+47
+00:01:57.670 --> 00:01:58.920
+it should be on the screen.
+
+48
+00:01:58.920 --> 00:02:01.890
+And the reason why I have that is
+
+49
+00:02:01.890 --> 00:02:03.470
+so that it won't look pixelated
+
+50
+00:02:03.470 --> 00:02:07.372
+because on most screens, I'm on a high 4K screen here.
+
+51
+00:02:07.372 --> 00:02:09.560
+If you're on our iPhone or something like that,
+
+52
+00:02:09.560 --> 00:02:14.530
+these things are going to be high resolution
+
+53
+00:02:14.530 --> 00:02:17.580
+and when we're dealing with pixel-based stuff,
+
+54
+00:02:17.580 --> 00:02:19.860
+you wanna be at least double
+
+55
+00:02:19.860 --> 00:02:22.920
+so you get nice and crisp stuff on the page.
+
+56
+00:02:22.920 --> 00:02:23.753
+We've got that.
+
+57
+00:02:23.753 --> 00:02:26.760
+I've also got a button at the bottom here.
+
+58
+00:02:26.760 --> 00:02:28.390
+That will be Shake.
+
+59
+00:02:28.390 --> 00:02:31.610
+I've put them in a div 'cause maybe you could also
+
+60
+00:02:31.610 --> 00:02:33.680
+give yourself buttons where you could,
+
+61
+00:02:33.680 --> 00:02:34.920
+maybe you can make knobs.
+
+62
+00:02:34.920 --> 00:02:38.630
+Maybe you just put Up, Down, Left, Right buttons for mobile.
+
+63
+00:02:38.630 --> 00:02:40.573
+Sky is the limit!
+
+64
+00:02:42.070 --> 00:02:44.650
+Past that, that's pretty much it.
+
+65
+00:02:44.650 --> 00:02:46.420
+We've got this little animation here.
+
+66
+00:02:46.420 --> 00:02:48.010
+I'll dive into that when it's time,
+
+67
+00:02:48.010 --> 00:02:51.610
+but let's crack open up our JavaScript file
+
+68
+00:02:51.610 --> 00:02:54.050
+which is Etch-a-Sketch.js.
+
+69
+00:02:54.050 --> 00:02:58.430
+And then let's also open up this index.html
+
+70
+00:02:58.430 --> 00:03:00.170
+in the browser so it looks the same,
+
+71
+00:03:00.170 --> 00:03:02.100
+but it doesn't do anything.
+
+72
+00:03:02.100 --> 00:03:05.160
+Open up our dev tools, no errors in there.
+
+73
+00:03:05.160 --> 00:03:06.750
+We're doing good.
+
+74
+00:03:06.750 --> 00:03:07.620
+What do think we do here?
+
+75
+00:03:07.620 --> 00:03:09.960
+We console.log, it works.
+
+76
+00:03:09.960 --> 00:03:12.730
+I know this is silly, but the amount of times
+
+77
+00:03:12.730 --> 00:03:14.670
+I get email from people being like,
+
+78
+00:03:14.670 --> 00:03:16.200
+Can't make it work, frustrated.
+
+79
+00:03:16.200 --> 00:03:18.086
+I've spent five hours on it.
+
+80
+00:03:18.086 --> 00:03:20.700
+And then the question is, well did you link
+
+81
+00:03:20.700 --> 00:03:21.930
+up the right JavaScript file?
+
+82
+00:03:21.930 --> 00:03:24.450
+And then the answer is, oh, no.
+
+83
+00:03:24.450 --> 00:03:25.970
+I'm sorry. (laughs)
+
+84
+00:03:25.970 --> 00:03:26.870
+Always make sure it works.
+
+85
+00:03:26.870 --> 00:03:28.023
+I do it all the time.
+
+86
+00:03:29.145 --> 00:03:30.720
+A couple thoughts here, I'm gonna write
+
+87
+00:03:30.720 --> 00:03:33.250
+some pseudocode as to what we wanna do here.
+
+88
+00:03:33.250 --> 00:03:37.560
+We need to select the elements on the page.
+
+89
+00:03:37.560 --> 00:03:39.840
+That's probably going to be the canvas,
+
+90
+00:03:39.840 --> 00:03:43.940
+the shake button, then we want to set up
+
+91
+00:03:43.940 --> 00:03:46.560
+our canvas for drawing.
+
+92
+00:03:46.560 --> 00:03:49.240
+I'll explain that in just a second
+
+93
+00:03:49.240 --> 00:03:51.400
+like we need to do, if I can spell drawing.
+
+94
+00:03:51.400 --> 00:03:52.540
+There we go.
+
+95
+00:03:52.540 --> 00:03:55.373
+Drawing, what is wrong with that&gt;
+
+96
+00:03:55.373 --> 00:03:56.763
+That's the right word, yeah.
+
+97
+00:03:58.340 --> 00:04:02.660
+Then we want to maybe write a draw function,
+
+98
+00:04:02.660 --> 00:04:06.913
+and we wanna write a handler for the keys.
+
+99
+00:04:07.880 --> 00:04:12.880
+We probably want a clear or shake function.
+
+100
+00:04:12.930 --> 00:04:17.860
+I think, finally, we should just listen for arrow keys.
+
+101
+00:04:17.860 --> 00:04:18.693
+Okay, cool.
+
+102
+00:04:20.130 --> 00:04:22.020
+If you've never seen canvas before,
+
+103
+00:04:22.020 --> 00:04:24.170
+and I sort of expect you haven't,
+
+104
+00:04:24.170 --> 00:04:26.450
+the way that it works is that you go ahead
+
+105
+00:04:26.450 --> 00:04:28.130
+and grab onto the canvas.
+
+106
+00:04:28.130 --> 00:04:31.370
+Then you grab onto this thing called a context,
+
+107
+00:04:31.370 --> 00:04:33.410
+which is either 2D or 3D.
+
+108
+00:04:33.410 --> 00:04:35.930
+We're gonna be working with 2D canvas today.
+
+109
+00:04:35.930 --> 00:04:39.300
+And then you've got a set of APIs,
+
+110
+00:04:39.300 --> 00:04:43.850
+a set of methods that are used for drawing
+
+111
+00:04:43.850 --> 00:04:44.810
+to the canvas.
+
+112
+00:04:44.810 --> 00:04:46.590
+Think about like Microsoft Paint.
+
+113
+00:04:46.590 --> 00:04:49.550
+All of the things that you've known from Microsoft Paint,
+
+114
+00:04:49.550 --> 00:04:54.550
+rectangles, circles, drawing, lines, borders,
+
+115
+00:04:54.650 --> 00:04:57.580
+different fill colors, all of those things that you know,
+
+116
+00:04:57.580 --> 00:04:59.870
+all of those are available to us in canvas,
+
+117
+00:04:59.870 --> 00:05:03.390
+and they're used for when you wanna programmatically
+
+118
+00:05:03.390 --> 00:05:05.700
+draw something to the browser
+
+119
+00:05:05.700 --> 00:05:08.660
+and in like divs and stuff aren't gonna cut it.
+
+120
+00:05:08.660 --> 00:05:10.870
+And you inspect the sucker right here,
+
+121
+00:05:10.870 --> 00:05:14.410
+you'll see that it is just a regular old canvas element.
+
+122
+00:05:14.410 --> 00:05:18.163
+So at const canvas = document.querySelector.
+
+123
+00:05:19.350 --> 00:05:24.350
+And we'll grab the, it has an ID of etch-a-sketch.
+
+124
+00:05:25.451 --> 00:05:27.880
+(sings notes) There we go, in this case,
+
+125
+00:05:27.880 --> 00:05:31.550
+I've given it an ID, so #etch-a-sketch.
+
+126
+00:05:31.550 --> 00:05:35.600
+Then we will also right away get the context.
+
+127
+00:05:35.600 --> 00:05:38.130
+The canvas is the element, and the place
+
+128
+00:05:38.130 --> 00:05:42.110
+where we do our drawing is called the context,
+
+129
+00:05:42.110 --> 00:05:45.840
+where we will be drawing our circles and everything, too.
+
+130
+00:05:45.840 --> 00:05:47.647
+We can const ctx.
+
+131
+00:05:47.647 --> 00:05:51.580
+That's a pretty common naming convention for the context,
+
+132
+00:05:51.580 --> 00:05:53.733
+and we just grab our canvas.
+
+133
+00:05:53.733 --> 00:05:57.683
+Then we call the getContext method on it.
+
+134
+00:05:59.550 --> 00:06:01.460
+And you ask it for the 2d context.
+
+135
+00:06:01.460 --> 00:06:03.870
+You can also do 3D context.
+
+136
+00:06:03.870 --> 00:06:05.603
+If you look for three js.
+
+137
+00:06:06.630 --> 00:06:08.340
+Look at this.
+
+138
+00:06:08.340 --> 00:06:11.280
+This stuff is canvas but in 3D.
+
+139
+00:06:11.280 --> 00:06:13.830
+I don't know what this demo is gonna look like, but
+
+140
+00:06:16.630 --> 00:06:21.630
+Headphones Recommended, woo!
+
+141
+00:06:21.760 --> 00:06:23.460
+I don't know if you can hear the music here or not,
+
+142
+00:06:23.460 --> 00:06:25.360
+but this is pretty nifty.
+
+143
+00:06:25.360 --> 00:06:27.460
+This 3D stuff is pretty cool.
+
+144
+00:06:27.460 --> 00:06:29.483
+Is that like a little panic?
+
+145
+00:06:31.982 --> 00:06:33.890
+Doot-doot, aw, look at this thing turning
+
+146
+00:06:33.890 --> 00:06:34.723
+around and around.
+
+147
+00:06:34.723 --> 00:06:35.556
+So that's 3D canvas.
+
+148
+00:06:35.556 --> 00:06:37.610
+If you were to inspect this,
+
+149
+00:06:37.610 --> 00:06:39.760
+you see there's a canvas element right there.
+
+150
+00:06:39.760 --> 00:06:41.640
+What we're doing is not that cool.
+
+151
+00:06:41.640 --> 00:06:42.473
+Well, it is.
+
+152
+00:06:42.473 --> 00:06:45.950
+Etch-a-Sketch is cool, but it's not 3D. (laughs)
+
+153
+00:06:45.950 --> 00:06:48.163
+Then we need that Shake button.
+
+154
+00:06:49.490 --> 00:06:52.290
+That Shake button has a class of shake.
+
+155
+00:06:52.290 --> 00:06:54.510
+I just to duplicate that
+
+156
+00:06:55.382 --> 00:06:58.882
+shakebutton = document.querySelector,
+
+157
+00:07:01.089 --> 00:07:01.922
+.shake.
+
+158
+00:07:05.430 --> 00:07:08.830
+We've got all of the different elements that we want.
+
+159
+00:07:08.830 --> 00:07:11.250
+Now, what we need to do is set up
+
+160
+00:07:11.250 --> 00:07:14.193
+our canvas for drawing.
+
+161
+00:07:15.400 --> 00:07:19.100
+We will just set a couple of defaults on the canvas.
+
+162
+00:07:19.100 --> 00:07:23.257
+So it's ctx.lineJoin = 'round'.
+
+163
+00:07:24.359 --> 00:07:28.030
+And ctx.lineCap
+
+164
+00:07:29.090 --> 00:07:31.030
+is also equal to 'round'.
+
+165
+00:07:31.030 --> 00:07:33.670
+This just ensures that we get a smooth drawing
+
+166
+00:07:33.670 --> 00:07:37.740
+because by default you're gonna get a squared off edge.
+
+167
+00:07:37.740 --> 00:07:39.510
+And that doesn't look as good.
+
+168
+00:07:39.510 --> 00:07:42.280
+If you set it to round, you can also set the width
+
+169
+00:07:42.280 --> 00:07:44.520
+of the line to be as wide as you want.
+
+170
+00:07:44.520 --> 00:07:46.420
+By default, it's one pixel.
+
+171
+00:07:46.420 --> 00:07:48.100
+We want it to be a little bit thicker than that,
+
+172
+00:07:48.100 --> 00:07:53.100
+so we'll set the line width to be just 10.
+
+173
+00:07:54.050 --> 00:07:56.420
+You don't have to specify pixels there, just 10.
+
+174
+00:07:56.420 --> 00:08:00.260
+If we were to refresh this here, and take a look at our ctx,
+
+175
+00:08:00.260 --> 00:08:03.193
+you see we get this canvas rendering context 2D.
+
+176
+00:08:04.118 --> 00:08:07.080
+And inside of there are all these different properties
+
+177
+00:08:07.080 --> 00:08:09.900
+that you can set or get from them,
+
+178
+00:08:09.900 --> 00:08:13.106
+including what color the fill will be,
+
+179
+00:08:13.106 --> 00:08:14.893
+what color our stroke will be.
+
+180
+00:08:16.610 --> 00:08:19.130
+You see the lineWidth is already been set to 10.
+
+181
+00:08:19.130 --> 00:08:21.480
+That's 'cause what we just did right there.
+
+182
+00:08:21.480 --> 00:08:25.400
+Now, what we need to do is we have to put our drawer,
+
+183
+00:08:25.400 --> 00:08:27.810
+so if you think about, let me open up
+
+184
+00:08:27.810 --> 00:08:31.053
+the example that we have, the finished version here,
+
+185
+00:08:32.340 --> 00:08:34.600
+you see that we have to put a dot somewhere
+
+186
+00:08:34.600 --> 00:08:35.600
+'cause that's where we need to start.
+
+187
+00:08:35.600 --> 00:08:38.197
+That's how an Etch-a-Sketch works.
+
+188
+00:08:38.197 --> 00:08:40.720
+And you see it's randomized on page load.
+
+189
+00:08:40.720 --> 00:08:42.940
+Let's just get it showing up somewhere right now,
+
+190
+00:08:42.940 --> 00:08:45.503
+and then we'll work on randomizing that.
+
+191
+00:08:46.910 --> 00:08:51.440
+We will take the ctx, and we will run this thing
+
+192
+00:08:51.440 --> 00:08:52.647
+called beginPath.
+
+193
+00:08:54.357 --> 00:08:57.513
+And that will start the drawing.
+
+194
+00:08:58.570 --> 00:09:00.590
+You can think about if I have a marker,
+
+195
+00:09:00.590 --> 00:09:02.790
+and I'm gonna draw on a page, what do you have to do?
+
+196
+00:09:02.790 --> 00:09:05.100
+Well, you gotta put the marker on the page first.
+
+197
+00:09:05.100 --> 00:09:06.700
+That's what beginPath does.
+
+198
+00:09:06.700 --> 00:09:10.847
+And then you need to move the context, so ctx.moveTo.
+
+199
+00:09:13.840 --> 00:09:15.280
+And where do we wanna start at?
+
+200
+00:09:15.280 --> 00:09:18.970
+Let's start 200 and 200.
+
+201
+00:09:18.970 --> 00:09:20.490
+I'll show you what that means in just a second.
+
+202
+00:09:20.490 --> 00:09:23.750
+200 pixels in, 200 pixels from the top,
+
+203
+00:09:23.750 --> 00:09:26.557
+and then we run ctx.lineTo.
+
+204
+00:09:27.678 --> 00:09:30.300
+And we also wanna give that exact same values,
+
+205
+00:09:30.300 --> 00:09:33.793
+and then you run ctx.stroke.
+
+206
+00:09:35.070 --> 00:09:38.170
+And that will draw a line between where you started
+
+207
+00:09:39.140 --> 00:09:41.390
+and where you drew your line to.
+
+208
+00:09:41.390 --> 00:09:43.360
+That will make an invisible line.
+
+209
+00:09:43.360 --> 00:09:45.900
+And then you can stroke it.
+
+210
+00:09:45.900 --> 00:09:48.550
+If I refresh that, you see we've got a dot
+
+211
+00:09:48.550 --> 00:09:51.610
+200 pixels over and 200 pixels down.
+
+212
+00:09:51.610 --> 00:09:55.070
+Now, what I think is really cool about a Etch-a-Sketch
+
+213
+00:09:55.070 --> 00:09:58.570
+is that it could start at a random spot.
+
+214
+00:09:58.570 --> 00:10:03.570
+How could we find a random spot in this Etch-a-Sketch?
+
+215
+00:10:04.410 --> 00:10:07.070
+Well, you could take the width.
+
+216
+00:10:07.070 --> 00:10:08.860
+You could take the height,
+
+217
+00:10:08.860 --> 00:10:11.210
+and then you could just generate a random number
+
+218
+00:10:11.210 --> 00:10:14.050
+between zero and the width and the zero and the height.
+
+219
+00:10:14.050 --> 00:10:15.230
+That's actually what we're gonna do.
+
+220
+00:10:15.230 --> 00:10:20.230
+Let's go up here, and we'll say const width = canvas.width,
+
+221
+00:10:21.410 --> 00:10:26.020
+and const height = canvas.height.
+
+222
+00:10:26.020 --> 00:10:28.700
+Now if we console.log the width and the height,
+
+223
+00:10:28.700 --> 00:10:30.160
+we should get, what are we gonna get?
+
+224
+00:10:30.160 --> 00:10:35.050
+Are we gonna get, oh, you see what happened right there?
+
+225
+00:10:35.050 --> 00:10:37.070
+I'm just gonna bring it back there.
+
+226
+00:10:37.070 --> 00:10:39.020
+I'm gonna save it.
+
+227
+00:10:39.020 --> 00:10:41.100
+It's doing destructuring for me,
+
+228
+00:10:41.100 --> 00:10:43.190
+and I'll explain this in just one second.
+
+229
+00:10:43.190 --> 00:10:46.140
+Let me just save it and show you that it works.
+
+230
+00:10:46.140 --> 00:10:49.310
+We get 16 and 100 because that is the actual width
+
+231
+00:10:49.310 --> 00:10:52.320
+and height of the canvas, not the display width,
+
+232
+00:10:52.320 --> 00:10:56.220
+which if I hover over top of this, you see it's 800 by 500,
+
+233
+00:10:56.220 --> 00:10:58.120
+so totally fine there.
+
+234
+00:10:58.120 --> 00:11:01.130
+Now, one little sort of gotcha, or not gotcha,
+
+235
+00:11:01.130 --> 00:11:04.040
+but neat thing is if I bring this back,
+
+236
+00:11:04.040 --> 00:11:06.611
+I said, the width = canvas.width
+
+237
+00:11:06.611 --> 00:11:09.190
+and the height is equal to the canvas.height,
+
+238
+00:11:09.190 --> 00:11:13.730
+if you are simply taking, making variables
+
+239
+00:11:13.730 --> 00:11:18.570
+from a property on an object,
+
+240
+00:11:18.570 --> 00:11:22.470
+you can short form this by, instead of saying
+
+241
+00:11:22.470 --> 00:11:24.070
+console.width = canvas.width
+
+242
+00:11:24.070 --> 00:11:25.980
+and console.height = canvas.height,
+
+243
+00:11:25.980 --> 00:11:29.790
+we can say const { width, height } = canvas.
+
+244
+00:11:33.978 --> 00:11:36.920
+And what that will do is this is called destructuring,
+
+245
+00:11:36.920 --> 00:11:40.210
+meaning that we're gonna take the width property
+
+246
+00:11:40.210 --> 00:11:42.690
+and put it into a variable called width.
+
+247
+00:11:42.690 --> 00:11:44.710
+We're going to take the height property
+
+248
+00:11:44.710 --> 00:11:46.600
+and put it into a variable called height.
+
+249
+00:11:46.600 --> 00:11:49.850
+And this is just a nice short way to do it.
+
+250
+00:11:49.850 --> 00:11:51.510
+This is especially helpful when you have,
+
+251
+00:11:51.510 --> 00:11:53.640
+I don't know, five or six different variables
+
+252
+00:11:53.640 --> 00:11:56.500
+that are coming off of properties
+
+253
+00:11:56.500 --> 00:11:58.410
+named the exact same thing.
+
+254
+00:11:58.410 --> 00:12:00.340
+We'll do a lot more destructuring in there,
+
+255
+00:12:00.340 --> 00:12:01.920
+but that's the first time that we're using
+
+256
+00:12:01.920 --> 00:12:03.380
+it in the wild here.
+
+257
+00:12:03.380 --> 00:12:05.970
+We're gonna remove that, and maybe we should put
+
+258
+00:12:05.970 --> 00:12:07.403
+a little comment here.
+
+259
+00:12:08.880 --> 00:12:13.850
+Make a variable called height and width
+
+260
+00:12:13.850 --> 00:12:18.830
+from the same properties on our canvas.
+
+261
+00:12:18.830 --> 00:12:19.990
+And why are we doing that?
+
+262
+00:12:19.990 --> 00:12:22.130
+Just 'cause I like to have like top level variables.
+
+263
+00:12:22.130 --> 00:12:24.700
+It's easier to use when we're doing math.
+
+264
+00:12:24.700 --> 00:12:26.900
+It's much easier than writing canvas.width,
+
+265
+00:12:26.900 --> 00:12:28.203
+and we just say .width.
+
+266
+00:12:29.670 --> 00:12:34.670
+Now, what we wanna do is create random x and y
+
+267
+00:12:37.110 --> 00:12:41.000
+starting points on the canvas.
+
+268
+00:12:41.000 --> 00:12:45.640
+How do you create random values in JavaScript?
+
+269
+00:12:45.640 --> 00:12:47.290
+Well, we can take a look here.
+
+270
+00:12:47.290 --> 00:12:51.393
+You probably have seen that we have Math.random,
+
+271
+00:12:52.986 --> 00:12:55.360
+and that gives us just a random number
+
+272
+00:12:58.760 --> 00:13:01.510
+that seems to always be underneath one.
+
+273
+00:13:01.510 --> 00:13:03.210
+Well, let's take a little quick look at the docs
+
+274
+00:13:03.210 --> 00:13:04.330
+and read about that.
+
+275
+00:13:04.330 --> 00:13:07.750
+Can we just pass a random number?
+
+276
+00:13:07.750 --> 00:13:09.340
+Can we pass 100?
+
+277
+00:13:09.340 --> 00:13:11.820
+No, that doesn't do anything.
+
+278
+00:13:11.820 --> 00:13:13.620
+Math.random doesn't take any arguments.
+
+279
+00:13:13.620 --> 00:13:15.120
+Let's take a look at the docs.
+
+280
+00:13:19.850 --> 00:13:22.590
+Math.random returns a floating point,
+
+281
+00:13:22.590 --> 00:13:24.880
+floating point means it has decimals,
+
+282
+00:13:24.880 --> 00:13:27.740
+pseudo-random number in the range of zero to one,
+
+283
+00:13:27.740 --> 00:13:29.630
+inclusive of zero but not one.
+
+284
+00:13:29.630 --> 00:13:31.680
+And that means there's a possibility
+
+285
+00:13:31.680 --> 00:13:35.480
+that you will get zero, but you will never get one,
+
+286
+00:13:35.480 --> 00:13:37.260
+which approximately uniform distribution
+
+287
+00:13:37.260 --> 00:13:39.830
+over that range, blah, blah, blah, blah, blah.
+
+288
+00:13:39.830 --> 00:13:43.340
+The way that it works is that that's all it does.
+
+289
+00:13:43.340 --> 00:13:48.340
+It doesn't take any arguments or anything like that.
+
+290
+00:13:48.500 --> 00:13:52.850
+What you can do is you can take that Math.random value
+
+291
+00:13:52.850 --> 00:13:55.393
+that it gives you and multiply it by,
+
+292
+00:13:56.293 --> 00:14:00.100
+if we multiply it by 100, we're gonna get a random number
+
+293
+00:14:00.100 --> 00:14:03.640
+between zero and 99.9999999.
+
+294
+00:14:07.030 --> 00:14:08.577
+You see, it keeps, every time I run it,
+
+295
+00:14:08.577 --> 00:14:10.820
+you get a random number.
+
+296
+00:14:10.820 --> 00:14:15.607
+Then what we can do is we can run Math.floor against that.
+
+297
+00:14:17.170 --> 00:14:20.090
+And that's going to give us the lower level value
+
+298
+00:14:20.090 --> 00:14:21.920
+that we want, so it'll give us a number
+
+299
+00:14:21.920 --> 00:14:24.470
+between zero and 99.
+
+300
+00:14:24.470 --> 00:14:26.720
+You could use Math.ceil if you wanted one
+
+301
+00:14:26.720 --> 00:14:28.910
+between one and 100.
+(deep electronic chiming)
+
+302
+00:14:28.910 --> 00:14:31.130
+But since we're dealing with pixels here,
+
+303
+00:14:31.130 --> 00:14:32.270
+we start at that zero.
+
+304
+00:14:32.270 --> 00:14:33.453
+That works just fine.
+
+305
+00:14:34.400 --> 00:14:36.300
+That's exactly what we're gonna do right here.
+
+306
+00:14:36.300 --> 00:14:39.130
+We'll say, let x, that's where we're gonna start,
+
+307
+00:14:39.130 --> 00:14:42.380
+and I'll show you why we use let in just a second.
+
+308
+00:14:42.380 --> 00:14:45.050
+We will take Math.random
+
+309
+00:14:47.810 --> 00:14:51.900
+times the width that we have,
+
+310
+00:14:51.900 --> 00:14:56.273
+and then we can wrap that sucker in Math.floor.
+
+311
+00:14:59.296 --> 00:15:04.296
+Now, let's just go ahead and swap out our x-values here.
+
+312
+00:15:05.170 --> 00:15:06.483
+That is the first one.
+
+313
+00:15:07.930 --> 00:15:12.913
+Whoa, now, I believe when we refresh the page,
+
+314
+00:15:13.830 --> 00:15:16.400
+we are randomly getting an x-value here, see?
+
+315
+00:15:16.400 --> 00:15:18.580
+See on the horizontal plane,
+
+316
+00:15:18.580 --> 00:15:20.580
+we're getting a random x-value.
+
+317
+00:15:20.580 --> 00:15:23.513
+And then we'll do that for the y-value as well.
+
+318
+00:15:26.850 --> 00:15:27.983
+That is the height.
+
+319
+00:15:28.951 --> 00:15:31.351
+And then we can swap out these with the y-value.
+
+320
+00:15:33.740 --> 00:15:38.190
+Beautiful, now we might need to come back and modify that
+
+321
+00:15:38.190 --> 00:15:40.600
+just so that it moves a little bit quicker,
+
+322
+00:15:40.600 --> 00:15:43.050
+but I'm gonna leave it at that for now.
+
+323
+00:15:43.050 --> 00:15:46.240
+We'll circle back and see what problems that we have.
+
+324
+00:15:46.240 --> 00:15:48.150
+Right now, whenever you refresh the page,
+
+325
+00:15:48.150 --> 00:15:52.203
+you get a random x and y-value, a little dot pointing, too.
+
+326
+00:15:52.203 --> 00:15:53.036
+I think it's cool.
+
+327
+00:15:53.036 --> 00:15:55.800
+It's like when everything is a variable
+
+328
+00:15:55.800 --> 00:15:57.350
+you can, (laughs) look at that.
+
+329
+00:15:57.350 --> 00:16:02.170
+You just get a random dot showing up at a random point.
+
+330
+00:16:02.170 --> 00:16:03.453
+That's so random!
+
+331
+00:16:04.760 --> 00:16:06.140
+20 is kind of cool as well.
+
+332
+00:16:06.140 --> 00:16:07.210
+We'll keep that at 10.
+
+333
+00:16:07.210 --> 00:16:09.380
+And actually, I can show you this right now.
+
+334
+00:16:09.380 --> 00:16:12.933
+Let's set it to 40 and take off the lineCap and lineJoin.
+
+335
+00:16:14.270 --> 00:16:16.563
+And it doesn't give us anything, does it?
+
+336
+00:16:21.810 --> 00:16:23.690
+Change that to square.
+
+337
+00:16:23.690 --> 00:16:26.350
+You see that we get an actual square value there.
+
+338
+00:16:26.350 --> 00:16:28.093
+Keep those all at round.
+
+339
+00:16:29.050 --> 00:16:33.290
+That's what we want, and I'm gonna take the lineWidth to 10.
+
+340
+00:16:33.290 --> 00:16:37.680
+Now that we have the basis of our canvas working,
+
+341
+00:16:37.680 --> 00:16:42.680
+I want to, let's write the handler for working with the keys
+
+342
+00:16:43.600 --> 00:16:45.000
+'cause we need to know if we need to move
+
+343
+00:16:45.000 --> 00:16:47.373
+this little guy up or down or left or right.
+
+344
+00:16:48.440 --> 00:16:50.003
+We will write our handler,
+
+345
+00:16:51.630 --> 00:16:54.537
+and we'll make it a function called handleKey,
+
+346
+00:16:57.060 --> 00:17:00.493
+and console.log HANDLING KEY.
+
+347
+00:17:01.480 --> 00:17:02.850
+And then we can listen for the arrow keys,
+
+348
+00:17:02.850 --> 00:17:03.710
+which is down here.
+
+349
+00:17:03.710 --> 00:17:05.870
+We'll take our window and a addEvent,
+
+350
+00:17:05.870 --> 00:17:10.870
+so you can listen for the keydown event on anything,
+
+351
+00:17:11.010 --> 00:17:13.510
+like we already did it on text inputs.
+
+352
+00:17:13.510 --> 00:17:15.660
+But if you wanna listen to it site wide,
+
+353
+00:17:15.660 --> 00:17:17.283
+you just listen on the window.
+
+354
+00:17:18.280 --> 00:17:20.460
+We listen for a keydown, and when that happens,
+
+355
+00:17:20.460 --> 00:17:23.533
+we wanna run the handleKey function.
+
+356
+00:17:26.420 --> 00:17:28.573
+And now if we go to our console here,
+
+357
+00:17:29.820 --> 00:17:31.900
+and I'm gonna press my arrow keys now,
+
+358
+00:17:31.900 --> 00:17:35.830
+Up, Up, over, Right, Left, Down, Down, Down.
+
+359
+00:17:35.830 --> 00:17:36.950
+You see what's happening here.
+
+360
+00:17:36.950 --> 00:17:38.543
+Actually, this is interesting.
+
+361
+00:17:39.400 --> 00:17:41.163
+When I hit my arrow keys,
+
+362
+00:17:45.030 --> 00:17:48.500
+and I go Down, Down, Down, the page is also scrolling.
+
+363
+00:17:48.500 --> 00:17:51.720
+That seems to be a default.
+
+364
+00:17:51.720 --> 00:17:54.210
+Not sure if you wanna turn that off
+
+365
+00:17:55.580 --> 00:17:58.410
+unless you are specifically accounting
+
+366
+00:17:58.410 --> 00:18:01.460
+for it being on a really small window.
+
+367
+00:18:01.460 --> 00:18:02.980
+But if you did wanna turn that off,
+
+368
+00:18:02.980 --> 00:18:04.890
+you could just pass the event here.
+
+369
+00:18:04.890 --> 00:18:08.480
+Let's use e and just run e.preventDefault.
+
+370
+00:18:10.800 --> 00:18:14.810
+The default of an arrow key is to scroll the page.
+
+371
+00:18:14.810 --> 00:18:17.100
+You see now it's not doing anything.
+
+372
+00:18:17.100 --> 00:18:20.620
+If you did want to do that, you can go ahead and do that.
+
+373
+00:18:20.620 --> 00:18:22.450
+I think you probably would wanna do that,
+
+374
+00:18:22.450 --> 00:18:26.610
+just making sure that this UI still shows
+
+375
+00:18:26.610 --> 00:18:28.803
+regardless of the browser size.
+
+376
+00:18:30.960 --> 00:18:32.410
+Then what we can do here is
+
+377
+00:18:32.410 --> 00:18:36.153
+let's just console.log the e.key.
+
+378
+00:18:41.680 --> 00:18:44.533
+Now, when (laughs), you know what's happening here?
+
+379
+00:18:45.440 --> 00:18:50.440
+I just screwed myself because I'm trying to hit Command + R
+
+380
+00:18:50.660 --> 00:18:54.440
+to refresh the page, and it doesn't work
+
+381
+00:18:54.440 --> 00:18:59.430
+because I have listened for every keydown event.
+
+382
+00:18:59.430 --> 00:19:03.810
+And my switching tab keyboard shortcut still works,
+
+383
+00:19:03.810 --> 00:19:06.660
+but my refresh shortcut is no longer working.
+
+384
+00:19:06.660 --> 00:19:10.430
+It's because I have just nuked all of the key defaults.
+
+385
+00:19:10.430 --> 00:19:12.850
+So that's probably not something we wanna do,
+
+386
+00:19:12.850 --> 00:19:14.920
+so let me take that off temporarily.
+
+387
+00:19:14.920 --> 00:19:18.080
+And I gotta hit the Refresh button manually like a sucker.
+
+388
+00:19:18.080 --> 00:19:22.480
+There we go, now, if I refresh with Command, it works.
+
+389
+00:19:22.480 --> 00:19:24.520
+If I were to now hit my arrow keys,
+
+390
+00:19:24.520 --> 00:19:28.340
+Up, Down, Left, Right, or really any key
+
+391
+00:19:28.340 --> 00:19:33.340
+that is on my key, you see that it's all happening.
+
+392
+00:19:33.840 --> 00:19:37.840
+We really only care about the arrow keys.
+
+393
+00:19:37.840 --> 00:19:42.840
+What we can do is we'll check if that key value
+
+394
+00:19:42.900 --> 00:19:45.250
+has the word Arrow in it.
+
+395
+00:19:45.250 --> 00:19:50.130
+We'll say, if e.key.includes
+
+396
+00:19:50.130 --> 00:19:53.970
+the word Arrow, then, and no we haven't
+
+397
+00:19:53.970 --> 00:19:55.100
+done this flow control yet,
+
+398
+00:19:55.100 --> 00:19:57.510
+but this is what is referred to as an IF statement,
+
+399
+00:19:57.510 --> 00:20:00.197
+we check if the e.key that includes the Arrow,
+
+400
+00:20:00.197 --> 00:20:02.470
+and that will return true or false.
+
+401
+00:20:02.470 --> 00:20:05.010
+And if that's the case, then let's move our logic
+
+402
+00:20:05.010 --> 00:20:08.360
+inside of here, and we can also move our preventDefault
+
+403
+00:20:08.360 --> 00:20:10.510
+inside of that IF statement.
+
+404
+00:20:10.510 --> 00:20:14.660
+Now, I use all my arrow keys, but I'm still able
+
+405
+00:20:14.660 --> 00:20:18.023
+to refresh the page with my other shortcuts that I have.
+
+406
+00:20:20.650 --> 00:20:24.150
+Next, what we wanna do is that's just the handler.
+
+407
+00:20:24.150 --> 00:20:28.803
+And I think we'll hand off the key to the draw function.
+
+408
+00:20:29.990 --> 00:20:34.440
+We'll make a function here called draw.
+
+409
+00:20:34.440 --> 00:20:36.170
+And that should take in an argument
+
+410
+00:20:36.170 --> 00:20:40.000
+now instead of just having a key passed
+
+411
+00:20:40.000 --> 00:20:43.180
+as the first argument, what I'm gonna do is
+
+412
+00:20:43.180 --> 00:20:46.140
+I'm going to take in an options object,
+
+413
+00:20:46.140 --> 00:20:49.320
+which will contain everything that I wish to pass
+
+414
+00:20:49.320 --> 00:20:50.850
+to this draw object.
+
+415
+00:20:50.850 --> 00:20:54.010
+And the reason we do that is sometimes your functions
+
+416
+00:20:54.010 --> 00:20:56.330
+will have six or seven things
+
+417
+00:20:56.330 --> 00:20:57.930
+that need to get passed into it,
+
+418
+00:20:57.930 --> 00:21:00.560
+and it's too long to pass in one, two,
+
+419
+00:21:00.560 --> 00:21:02.910
+three, four, five, right?
+
+420
+00:21:02.910 --> 00:21:05.610
+It's too much to pass in to a function
+
+421
+00:21:05.610 --> 00:21:07.280
+in that specific order,
+
+422
+00:21:07.280 --> 00:21:09.460
+especially if some of them are optional,
+
+423
+00:21:09.460 --> 00:21:12.230
+like you don't have to pass in the third argument.
+
+424
+00:21:12.230 --> 00:21:14.110
+That starts to get a little bit hairy.
+
+425
+00:21:14.110 --> 00:21:17.360
+So what most of us will do is we will just pass in
+
+426
+00:21:17.360 --> 00:21:20.570
+an options object, and then inside of that,
+
+427
+00:21:20.570 --> 00:21:25.070
+we'll pass different properties of that object that we need.
+
+428
+00:21:25.070 --> 00:21:30.070
+So options, and then we will inside of here,
+
+429
+00:21:30.670 --> 00:21:33.420
+we will call that draw function.
+
+430
+00:21:33.420 --> 00:21:36.270
+And I know we haven't learned objects just yet,
+
+431
+00:21:36.270 --> 00:21:41.270
+but we can pass in a object where it has a key object,
+
+432
+00:21:41.450 --> 00:21:44.420
+and I wanna say e.key.
+
+433
+00:21:44.420 --> 00:21:46.560
+We could pass the entire event there if we want,
+
+434
+00:21:46.560 --> 00:21:47.940
+but I'm just showing you how to pass
+
+435
+00:21:47.940 --> 00:21:50.193
+just what we need into it.
+
+436
+00:21:51.400 --> 00:21:54.953
+Then if we go inside of here and console.log the options,
+
+437
+00:21:56.240 --> 00:21:58.500
+let's see, so we've got our listener.
+
+438
+00:21:58.500 --> 00:22:01.750
+Listens for keydown, runs handleKey,
+
+439
+00:22:01.750 --> 00:22:03.430
+and we check if it's an arrow
+
+440
+00:22:03.430 --> 00:22:06.053
+and then pass that along to our draw function.
+
+441
+00:22:08.660 --> 00:22:12.930
+You see now, our draw function has an object
+
+442
+00:22:12.930 --> 00:22:14.940
+and inside of that there's just one property
+
+443
+00:22:14.940 --> 00:22:17.800
+called a key, and it tells us if it's ArrowUp.
+
+444
+00:22:18.920 --> 00:22:20.880
+Another little thing that I like to use
+
+445
+00:22:20.880 --> 00:22:24.043
+is similar to how we use destructuring,
+
+446
+00:22:25.290 --> 00:22:26.550
+up, where was it?
+
+447
+00:22:26.550 --> 00:22:28.770
+Right here, where we took the property
+
+448
+00:22:28.770 --> 00:22:32.030
+and made it into a true variable of that property name.
+
+449
+00:22:32.030 --> 00:22:36.590
+We can also use destructuring in our function declarations.
+
+450
+00:22:36.590 --> 00:22:39.727
+This options, instead of console.logging option.key,
+
+451
+00:22:43.810 --> 00:22:45.100
+you see what I'm doing there?
+
+452
+00:22:45.100 --> 00:22:48.110
+We can destructure this options object
+
+453
+00:22:48.110 --> 00:22:51.610
+directly into a key variable.
+
+454
+00:22:51.610 --> 00:22:53.170
+And then that will allow us just to have
+
+455
+00:22:53.170 --> 00:22:56.350
+a top level variable called key.
+
+456
+00:22:56.350 --> 00:22:58.540
+This little curly brackets here is called
+
+457
+00:22:58.540 --> 00:23:02.090
+object destructuring where we can take properties
+
+458
+00:23:02.090 --> 00:23:04.960
+and rename them into proper variables
+
+459
+00:23:04.960 --> 00:23:08.640
+and then that just allows us to have shorter variable names
+
+460
+00:23:08.640 --> 00:23:09.870
+inside of our object.
+
+461
+00:23:09.870 --> 00:23:11.580
+That's what we'll be using in here.
+
+462
+00:23:11.580 --> 00:23:14.450
+Now, I'm gonna get rid of the console.logs inside
+
+463
+00:23:14.450 --> 00:23:17.150
+of the handler and just console.log
+
+464
+00:23:17.150 --> 00:23:18.853
+the key in our draw function.
+
+465
+00:23:20.610 --> 00:23:24.583
+And you see we get ArrowDown, Right, Left, et cetera.
+
+466
+00:23:27.080 --> 00:23:29.240
+Now, when somebody uses their keys,
+
+467
+00:23:29.240 --> 00:23:34.240
+we can go ahead and start to draw directly on the canvas.
+
+468
+00:23:37.790 --> 00:23:40.090
+Just like we've created our beginPath here,
+
+469
+00:23:40.090 --> 00:23:40.930
+we can do that.
+
+470
+00:23:40.930 --> 00:23:45.210
+So we can take our context and call .beginPath.
+
+471
+00:23:45.210 --> 00:23:46.543
+So start the path,
+
+472
+00:23:48.910 --> 00:23:52.060
+then we can move to, similar to how we had to do this,
+
+473
+00:23:52.060 --> 00:23:54.450
+move to where we wanted to go,
+
+474
+00:23:54.450 --> 00:23:55.890
+that's what we need to do again.
+
+475
+00:23:55.890 --> 00:24:00.047
+We need to move the context to where it was, so ctx.moveTo.
+
+476
+00:24:00.956 --> 00:24:04.500
+And we'll just move it to where the x and the y-values were.
+
+477
+00:24:04.500 --> 00:24:09.500
+And then, here is where we need to move our x and y-values,
+
+478
+00:24:11.920 --> 00:24:15.320
+depending on what the user did.
+
+479
+00:24:15.320 --> 00:24:20.147
+If we were to say x = x - 10
+
+480
+00:24:21.173 --> 00:24:24.453
+and y = y - 10,
+
+481
+00:24:25.360 --> 00:24:28.753
+and then we can call our ctx.lineto
+
+482
+00:24:30.810 --> 00:24:33.290
+x and y again, so did you see what we did here?
+
+483
+00:24:33.290 --> 00:24:35.350
+We moved to where it used to be.
+
+484
+00:24:35.350 --> 00:24:37.800
+We changed the x and y-values,
+
+485
+00:24:37.800 --> 00:24:42.800
+and then we created a line to the new x and y-values
+
+486
+00:24:42.820 --> 00:24:47.723
+and then did our ctx.stroke.
+
+487
+00:24:49.410 --> 00:24:51.130
+Now there's a bit of problem here.
+
+488
+00:24:51.130 --> 00:24:53.590
+It says x is a constant.
+
+489
+00:24:53.590 --> 00:24:58.590
+My Prettier, or my ESLint, it took these let x and y-values
+
+490
+00:24:58.930 --> 00:25:01.100
+and says, hey, you're never actually changing these.
+
+491
+00:25:01.100 --> 00:25:02.820
+I'll make them consts for you,
+
+492
+00:25:02.820 --> 00:25:05.560
+but now since they are changing,
+
+493
+00:25:05.560 --> 00:25:07.810
+I need to make sure that these values
+
+494
+00:25:07.810 --> 00:25:11.030
+are changed to let because they do get reassigned.
+
+495
+00:25:11.030 --> 00:25:13.100
+This is a perfect use case of when you would
+
+496
+00:25:13.100 --> 00:25:15.930
+wanna use let over something like const.
+
+497
+00:25:15.930 --> 00:25:18.110
+Also, it did a little short form here
+
+498
+00:25:18.110 --> 00:25:21.720
+where I set x as equal to
+
+499
+00:25:24.160 --> 00:25:26.260
+x minus 10.
+
+500
+00:25:26.260 --> 00:25:31.260
+When I save that, it just short-forms it into x -= 10.
+
+501
+00:25:31.340 --> 00:25:34.590
+That's the same thing as saying x = x - 10.
+
+502
+00:25:37.170 --> 00:25:40.623
+Now when I refresh, I'm gonna hit a key.
+
+503
+00:25:42.222 --> 00:25:44.156
+(makes buzzer noise) Okay, I've got a bit of an error here.
+
+504
+00:25:44.156 --> 00:25:45.080
+What does it say?
+
+505
+00:25:45.080 --> 00:25:47.920
+Ctx.lineto is not a function.
+
+506
+00:25:47.920 --> 00:25:49.483
+Capital T on To.
+
+507
+00:25:51.780 --> 00:25:52.613
+Ready?
+
+508
+00:25:56.245 --> 00:26:00.780
+(laughs) Nothing's happening 'cause I'm focused in
+
+509
+00:26:00.780 --> 00:26:02.260
+on my dev tools here.
+
+510
+00:26:02.260 --> 00:26:07.260
+Here, focus the actual thing, oh, ope, ope, whoa!
+
+511
+00:26:07.410 --> 00:26:10.690
+See what's happening is every single time I do any key,
+
+512
+00:26:10.690 --> 00:26:14.853
+we remove 10 from the x and 10 from the y,
+
+513
+00:26:15.750 --> 00:26:17.240
+and then we paint.
+
+514
+00:26:17.240 --> 00:26:19.050
+And obviously that's not what we want,
+
+515
+00:26:19.050 --> 00:26:23.190
+but (laughs) it's, you can see how it's responding
+
+516
+00:26:23.190 --> 00:26:26.070
+to our key presses and even as I hold it,
+
+517
+00:26:26.070 --> 00:26:27.763
+which is really cool.
+
+518
+00:26:28.618 --> 00:26:31.880
+The one little thing is I don't like hard coding
+
+519
+00:26:31.880 --> 00:26:33.920
+these values like this.
+
+520
+00:26:33.920 --> 00:26:38.550
+What we'll do is up here we'll make one variable amount,
+
+521
+00:26:38.550 --> 00:26:42.180
+and we'll set that up here and then just reference it.
+
+522
+00:26:42.180 --> 00:26:44.690
+And that way we can change the value whenever we want.
+
+523
+00:26:44.690 --> 00:26:47.030
+We'll go up here and we'll say,
+
+524
+00:26:47.030 --> 00:26:48.830
+let's do it right at the top, const,
+
+525
+00:26:50.950 --> 00:26:54.130
+we'll call it MOVE_AMOUNT = 10.
+
+526
+00:26:54.130 --> 00:26:56.980
+And you see, oh, Wes, why are doing this?
+
+527
+00:26:56.980 --> 00:26:59.570
+Why is it all capitals, and why did you use underscore?
+
+528
+00:26:59.570 --> 00:27:03.160
+You just broke from all of the tradition.
+
+529
+00:27:03.160 --> 00:27:07.210
+And that has nothing to do with, I don't know,
+
+530
+00:27:07.210 --> 00:27:09.810
+best practice or whatever, but it's something
+
+531
+00:27:09.810 --> 00:27:14.140
+just some developers do, and I have picked it up myself is
+
+532
+00:27:14.140 --> 00:27:16.060
+when it is a true constant,
+
+533
+00:27:16.060 --> 00:27:19.220
+meaning that that value will never change,
+
+534
+00:27:19.220 --> 00:27:23.780
+we tend to make it in all uppercase and use underscores.
+
+535
+00:27:23.780 --> 00:27:26.470
+Somewhere along that got into the way
+
+536
+00:27:26.470 --> 00:27:27.960
+that I like to think about things.
+
+537
+00:27:27.960 --> 00:27:32.500
+And now whenever I see this, all caps and underscores,
+
+538
+00:27:32.500 --> 00:27:34.190
+I know that is a true constant
+
+539
+00:27:34.190 --> 00:27:36.510
+because we talked about how consts
+
+540
+00:27:36.510 --> 00:27:39.580
+aren't really all constant.
+
+541
+00:27:39.580 --> 00:27:41.370
+They can be changed. (laughs)
+
+542
+00:27:41.370 --> 00:27:44.320
+And then what we can do is we can go anywhere
+
+543
+00:27:44.320 --> 00:27:46.593
+we've used 10, like right here,
+
+544
+00:27:47.430 --> 00:27:49.623
+and right here,
+
+545
+00:27:51.230 --> 00:27:53.000
+and right here.
+
+546
+00:27:53.000 --> 00:27:55.860
+Now we have used just one variable
+
+547
+00:27:55.860 --> 00:27:58.890
+to reference the width everywhere we go,
+
+548
+00:27:58.890 --> 00:28:00.950
+and you can see now is if I just change
+
+549
+00:28:00.950 --> 00:28:04.273
+that one variable in our application to 60,
+
+550
+00:28:07.470 --> 00:28:09.120
+you'll see that it's much bigger.
+
+551
+00:28:12.860 --> 00:28:17.020
+Obviously, we don't just wanna go up and to the left.
+
+552
+00:28:17.020 --> 00:28:18.977
+We need to go back into our draw function
+
+553
+00:28:18.977 --> 00:28:20.760
+and write a little bit more code
+
+554
+00:28:20.760 --> 00:28:23.380
+that will, depending on which arrow key
+
+555
+00:28:23.380 --> 00:28:25.910
+that the person has done, then we can do it.
+
+556
+00:28:25.910 --> 00:28:28.820
+Now, we haven't really learned about flow control,
+
+557
+00:28:28.820 --> 00:28:31.430
+and that is using IF statements and whatnot.
+
+558
+00:28:31.430 --> 00:28:33.210
+But this is a perfect use case to learn
+
+559
+00:28:33.210 --> 00:28:35.400
+for something else called a switch statement.
+
+560
+00:28:35.400 --> 00:28:37.890
+I don't use switch statements all that often,
+
+561
+00:28:37.890 --> 00:28:40.610
+but this is a perfect use case for it.
+
+562
+00:28:40.610 --> 00:28:43.973
+Now, a switch statement is essentially saying,
+
+563
+00:28:44.960 --> 00:28:47.840
+take in a variable, like the key,
+
+564
+00:28:47.840 --> 00:28:51.710
+and depending on all of these different cases,
+
+565
+00:28:51.710 --> 00:28:53.730
+they might go up, they might go down,
+
+566
+00:28:53.730 --> 00:28:55.440
+they might go left, and they might go right.
+
+567
+00:28:55.440 --> 00:28:57.640
+We have four possible cases here,
+
+568
+00:28:57.640 --> 00:29:00.780
+and each of those cases has a different outcome.
+
+569
+00:29:00.780 --> 00:29:03.150
+So a switch statement will allow us to say
+
+570
+00:29:03.150 --> 00:29:07.520
+based on these four different outcomes, do the following.
+
+571
+00:29:07.520 --> 00:29:12.110
+What we can do is we will also remove these right here
+
+572
+00:29:12.110 --> 00:29:14.460
+'cause this is not actually what we want to do.
+
+573
+00:29:15.400 --> 00:29:17.083
+And we will run switch.
+
+574
+00:29:19.030 --> 00:29:20.700
+And you pass it the key,
+
+575
+00:29:20.700 --> 00:29:23.320
+so you, basically, the thing that you want to run
+
+576
+00:29:23.320 --> 00:29:25.500
+the switch against, which is the key.
+
+577
+00:29:25.500 --> 00:29:28.690
+And then we can, well, we gotta spell switch right,
+
+578
+00:29:28.690 --> 00:29:30.870
+then these are all of our cases.
+
+579
+00:29:30.870 --> 00:29:34.730
+We say case key is equal to ArrowUp.
+
+580
+00:29:37.270 --> 00:29:40.490
+And this is the same thing as if we were to have
+
+581
+00:29:40.490 --> 00:29:41.700
+an IF statement here,
+
+582
+00:29:41.700 --> 00:29:45.840
+we'll say if the key is equal to ArrowUp.
+
+583
+00:29:45.840 --> 00:29:46.673
+And then we could have
+
+584
+00:29:46.673 --> 00:29:49.390
+an else if the key is equal to ArrowDown.
+
+585
+00:29:49.390 --> 00:29:51.890
+But a switch statement makes it a lot more readable
+
+586
+00:29:51.890 --> 00:29:54.130
+in this case, and I really like that.
+
+587
+00:29:54.130 --> 00:29:59.100
+So case ArrowUp, and then you say,
+
+588
+00:29:59.100 --> 00:30:02.750
+if they go up, then we wanna change our y-value
+
+589
+00:30:02.750 --> 00:30:06.193
+to equal to y minus MOVE_AMOUNT.
+
+590
+00:30:08.930 --> 00:30:11.043
+And I'm gonna go ahead and save that.
+
+591
+00:30:12.160 --> 00:30:14.470
+And you'll see, I'm gonna save it again,
+
+592
+00:30:14.470 --> 00:30:16.130
+it's yelling at us for some reason.
+
+593
+00:30:16.130 --> 00:30:18.370
+Let's see, what is it saying?
+
+594
+00:30:18.370 --> 00:30:20.850
+Expected default case, oh, yeah, I haven't done that yet.
+
+595
+00:30:20.850 --> 00:30:22.500
+So a switch statement should always have
+
+596
+00:30:22.500 --> 00:30:26.090
+a default case of where if it's not ArrowUp,
+
+597
+00:30:26.090 --> 00:30:28.510
+ArrowDown, ArrowLeft, or ArrowRight,
+
+598
+00:30:28.510 --> 00:30:29.440
+then what should happen?
+
+599
+00:30:29.440 --> 00:30:31.790
+And that hopefully should never happen,
+
+600
+00:30:31.790 --> 00:30:35.200
+but it's best practice to always give your cases a default.
+
+601
+00:30:35.200 --> 00:30:38.580
+So we'll say default, and the default is just going to be
+
+602
+00:30:38.580 --> 00:30:42.343
+a keyword called break, BroadcastChannel, break.
+
+603
+00:30:44.460 --> 00:30:48.060
+And actually, at after every single case,
+
+604
+00:30:48.060 --> 00:30:50.030
+you have to right the break keyword,
+
+605
+00:30:50.030 --> 00:30:51.890
+and what that will do is it will stop the switch
+
+606
+00:30:51.890 --> 00:30:54.380
+from running, skip over the rest of it
+
+607
+00:30:54.380 --> 00:30:56.490
+'cause we've done what we need to do,
+
+608
+00:30:56.490 --> 00:30:58.380
+and then move over to the next line.
+
+609
+00:30:58.380 --> 00:31:01.130
+What we've just done there is we've only implemented
+
+610
+00:31:01.130 --> 00:31:02.600
+the case for ArrowUp.
+
+611
+00:31:03.710 --> 00:31:05.110
+Will it work?
+
+612
+00:31:05.110 --> 00:31:05.943
+Woo!
+
+613
+00:31:08.140 --> 00:31:10.780
+Left, right, and down do not work,
+
+614
+00:31:10.780 --> 00:31:12.030
+so let's go ahead and do that.
+
+615
+00:31:12.030 --> 00:31:14.770
+We can just basically duplicate that one
+
+616
+00:31:14.770 --> 00:31:19.770
+to three more times, and I'm going to ArrowRight.
+
+617
+00:31:19.790 --> 00:31:24.053
+And if that's the case the x amount is incremented.
+
+618
+00:31:25.460 --> 00:31:28.220
+We have ArrowDown, and if that's the case,
+
+619
+00:31:28.220 --> 00:31:32.350
+the y amount is incremented.
+
+620
+00:31:32.350 --> 00:31:34.690
+And then our final one is ArrowLeft,
+
+621
+00:31:34.690 --> 00:31:39.690
+and if that's the case, the x amount is decremented.
+
+622
+00:31:42.500 --> 00:31:45.120
+Now it's giving me grief about this x here.
+
+623
+00:31:45.120 --> 00:31:46.800
+X is a const, oh, you know what?
+
+624
+00:31:46.800 --> 00:31:48.890
+That's Prettier, or ESLint.
+
+625
+00:31:48.890 --> 00:31:50.340
+It always changes it.
+
+626
+00:31:50.340 --> 00:31:52.680
+If you have a let value and it doesn't see you
+
+627
+00:31:52.680 --> 00:31:54.410
+changing it anywhere in your code,
+
+628
+00:31:54.410 --> 00:31:56.917
+it will just change it back to a const for you.
+
+629
+00:31:56.917 --> 00:31:59.630
+You have to change that back to a let again.
+
+630
+00:31:59.630 --> 00:32:01.540
+And we'll go back to the switch case,
+
+631
+00:32:01.540 --> 00:32:02.523
+and we'll try it.
+
+632
+00:32:03.700 --> 00:32:06.040
+Up, up, over, over, over, down, down, down,
+
+633
+00:32:06.040 --> 00:32:08.100
+over, over, oh-ho! (laughing)
+
+634
+00:32:08.100 --> 00:32:09.863
+Looking cool!
+
+635
+00:32:11.020 --> 00:32:14.653
+That is the very first way that we have it.
+
+636
+00:32:18.490 --> 00:32:19.630
+I like that!
+
+637
+00:32:19.630 --> 00:32:20.580
+This is kind of fun.
+
+638
+00:32:20.580 --> 00:32:21.640
+Give yourself a break.
+
+639
+00:32:21.640 --> 00:32:23.520
+Play with this for a couple minutes.
+
+640
+00:32:23.520 --> 00:32:28.003
+But now what we wanna do is do this where the color
+
+641
+00:32:29.180 --> 00:32:32.760
+of the snake changes its color as we go along.
+
+642
+00:32:32.760 --> 00:32:36.150
+And that is actually a very simple thing to do,
+
+643
+00:32:36.150 --> 00:32:39.470
+and it's just changing the HSL values.
+
+644
+00:32:39.470 --> 00:32:43.063
+If you've never seen the Mother-effing HSL,
+
+645
+00:32:45.433 --> 00:32:48.020
+HSL is a way to declare color in a browser,
+
+646
+00:32:48.020 --> 00:32:51.440
+similar to we've got hex codes, and we've got RGB,
+
+647
+00:32:51.440 --> 00:32:54.260
+but HSL is a really cool way to do it.
+
+648
+00:32:54.260 --> 00:32:56.270
+And if you just hover over it,
+
+649
+00:32:56.270 --> 00:33:01.270
+you can see that the H value goes from zero
+
+650
+00:33:01.760 --> 00:33:05.330
+to, I think 360, 359.
+
+651
+00:33:07.950 --> 00:33:10.870
+And then once you pass that it'll just wrap around
+
+652
+00:33:10.870 --> 00:33:13.090
+and keep going through the rainbow.
+
+653
+00:33:13.090 --> 00:33:18.090
+We can use that value by every time we move the,
+
+654
+00:33:22.210 --> 00:33:24.070
+every time we move this little cursor,
+
+655
+00:33:24.070 --> 00:33:29.070
+we just increment the H value, hue, by one.
+
+656
+00:33:29.170 --> 00:33:31.370
+And that will just give us a little rainbow.
+
+657
+00:33:32.436 --> 00:33:35.820
+We can go up here,
+
+658
+00:33:35.820 --> 00:33:39.600
+and we will make a new value
+
+659
+00:33:40.510 --> 00:33:42.280
+called hue, let hue
+
+660
+00:33:44.357 --> 00:33:45.463
+= 0.
+
+661
+00:33:47.980 --> 00:33:50.830
+And then we'll change the color of the stroke,
+
+662
+00:33:50.830 --> 00:33:53.147
+so ctx.strokeStyle =,
+
+663
+00:33:54.669 --> 00:33:56.240
+and I'm gonna use backticks here.
+
+664
+00:33:56.240 --> 00:34:00.780
+It's gonna be hsl, and we could say hsl 100,
+
+665
+00:34:02.342 --> 00:34:04.470
+100%, and 50%.
+
+666
+00:34:04.470 --> 00:34:07.410
+And that will give us a green color
+
+667
+00:34:07.410 --> 00:34:12.203
+because 100, 100% saturation
+
+668
+00:34:13.650 --> 00:34:15.580
+gives us nice bright colors
+
+669
+00:34:15.580 --> 00:34:19.150
+and then 50% lightness all over.
+
+670
+00:34:19.150 --> 00:34:19.983
+So you see that.
+
+671
+00:34:19.983 --> 00:34:21.520
+Now if I were to just refresh this,
+
+672
+00:34:21.520 --> 00:34:23.510
+you see it's always green.
+
+673
+00:34:23.510 --> 00:34:27.710
+But if we were to interpolate this hue value, hue.
+
+674
+00:34:32.720 --> 00:34:34.550
+Now you see it's always red,
+
+675
+00:34:34.550 --> 00:34:39.550
+but every single time that we use our draw function,
+
+676
+00:34:39.630 --> 00:34:42.310
+let's increment that hue by one,
+
+677
+00:34:42.310 --> 00:34:45.380
+and then update the strokeStyle.
+
+678
+00:34:45.380 --> 00:34:48.833
+We'll do here say increment the hue.
+
+679
+00:34:50.170 --> 00:34:54.060
+So will say hue = hue + 1,
+
+680
+00:34:54.060 --> 00:34:55.540
+and I'm gonna give that a save.
+
+681
+00:34:55.540 --> 00:34:58.930
+And it will change it back to hue += 1.
+
+682
+00:34:58.930 --> 00:35:00.930
+It's gonna yell at me because hue probably
+
+683
+00:35:00.930 --> 00:35:02.681
+got changed back to a const.
+
+684
+00:35:02.681 --> 00:35:04.060
+We'll change that back to a let
+
+685
+00:35:04.060 --> 00:35:06.380
+'cause we are updating that value.
+
+686
+00:35:06.380 --> 00:35:08.660
+And then we can just take this whole thing
+
+687
+00:35:08.660 --> 00:35:11.120
+and paste it again down here
+
+688
+00:35:11.120 --> 00:35:13.660
+'cause you do have to, even though we've set it
+
+689
+00:35:13.660 --> 00:35:16.780
+on page load to be a variable, that's done.
+
+690
+00:35:16.780 --> 00:35:18.160
+It's not like a live variable
+
+691
+00:35:18.160 --> 00:35:19.410
+or anything where we'll notice
+
+692
+00:35:19.410 --> 00:35:21.430
+that the variable changed and update itself.
+
+693
+00:35:21.430 --> 00:35:25.593
+We do have to explicitly update the strokeStyle by one.
+
+694
+00:35:27.880 --> 00:35:31.060
+And it works!
+
+695
+00:35:31.060 --> 00:35:31.893
+You know why?
+
+696
+00:35:31.893 --> 00:35:34.840
+It's 'cause I have this line value way too high.
+
+697
+00:35:34.840 --> 00:35:36.083
+Let's change that to 10.
+
+698
+00:35:40.504 --> 00:35:41.510
+Woo!
+
+699
+00:35:41.510 --> 00:35:44.223
+And if you want it to go maybe a little quicker,
+
+700
+00:35:45.570 --> 00:35:47.403
+we can do plus 10.
+
+701
+00:35:50.610 --> 00:35:51.840
+Ooh, that's actually cool!
+
+702
+00:35:51.840 --> 00:35:53.500
+I like that!
+
+703
+00:35:53.500 --> 00:35:55.760
+Let's make this bigger, 50.
+
+704
+00:35:55.760 --> 00:35:57.640
+This is where I start to lose it
+
+705
+00:35:57.640 --> 00:35:59.890
+'cause it's too much fun not to play with it.
+
+706
+00:36:04.420 --> 00:36:06.570
+Oh, I like that a lot.
+
+707
+00:36:06.570 --> 00:36:10.870
+And of course, you could replace this
+
+708
+00:36:10.870 --> 00:36:14.263
+with Math.random * 360.
+
+709
+00:36:17.910 --> 00:36:18.743
+Does that work?
+
+710
+00:36:21.160 --> 00:36:22.270
+Rainbow!
+
+711
+00:36:22.270 --> 00:36:25.130
+Oh, that's even, that actually looks great!
+
+712
+00:36:25.130 --> 00:36:26.447
+I like that a lot.
+
+713
+00:36:26.447 --> 00:36:28.360
+(makes fluttering sound)
+
+714
+00:36:28.360 --> 00:36:33.360
+You can have a lot of fun with HSL because the hue value,
+
+715
+00:36:33.360 --> 00:36:35.280
+as long as it's between, actually, it doesn't
+
+716
+00:36:35.280 --> 00:36:37.250
+even have to be between zero and 360
+
+717
+00:36:37.250 --> 00:36:41.820
+because a hue value of 361 will just wrap around
+
+718
+00:36:41.820 --> 00:36:44.263
+back to the start of the HSL grid.
+
+719
+00:36:45.360 --> 00:36:49.363
+And you can tell that by just console.logging the hue here.
+
+720
+00:36:51.440 --> 00:36:55.260
+And you'll see once we go over 360,
+
+721
+00:36:55.260 --> 00:36:57.450
+we're just counting up forever.
+
+722
+00:36:57.450 --> 00:37:01.300
+And the browser is smart enough to say, oh, he's 1,730?
+
+723
+00:37:01.300 --> 00:37:03.460
+Let me wrap around HSL a couple times
+
+724
+00:37:03.460 --> 00:37:07.420
+and then just figure out what it is on this specific thing.
+
+725
+00:37:07.420 --> 00:37:10.220
+I used to do it where I would, once it hit 360,
+
+726
+00:37:10.220 --> 00:37:12.090
+I would reset the hue value back to zero,
+
+727
+00:37:12.090 --> 00:37:15.823
+but I've since learned that's totally not necessary.
+
+728
+00:37:17.080 --> 00:37:18.160
+What else do we have to do here?
+
+729
+00:37:18.160 --> 00:37:19.153
+The shake.
+
+730
+00:37:20.350 --> 00:37:24.330
+We'll make a clearCanvas function,
+
+731
+00:37:24.330 --> 00:37:26.613
+so function, clearCanvas.
+
+732
+00:37:29.148 --> 00:37:29.981
+And to do that we canvas.classList.add 'shake',
+
+733
+00:37:38.720 --> 00:37:40.250
+and if we try to run that sucker
+
+734
+00:37:40.250 --> 00:37:42.187
+from the terminal, clearCanvas,
+
+735
+00:37:46.680 --> 00:37:50.830
+what it will do is it will add this class of shake to it
+
+736
+00:37:50.830 --> 00:37:54.620
+and because it has a class of shake,
+
+737
+00:37:54.620 --> 00:37:57.130
+you'll see that I wrote the CSS here.
+
+738
+00:37:57.130 --> 00:37:59.870
+I say, when it has a class of shake,
+
+739
+00:37:59.870 --> 00:38:02.430
+run the shake over half a second,
+
+740
+00:38:02.430 --> 00:38:05.040
+make it linear and only run it once.
+
+741
+00:38:05.040 --> 00:38:07.490
+You could run it 10 times if you wanted.
+
+742
+00:38:07.490 --> 00:38:08.493
+Watch this.
+
+743
+00:38:13.363 --> 00:38:16.020
+It will run 10 times and then stop.
+
+744
+00:38:16.020 --> 00:38:17.460
+We only want it once,
+
+745
+00:38:17.460 --> 00:38:19.530
+and then the shake thing that I gave you
+
+746
+00:38:19.530 --> 00:38:24.530
+is basically taking it at different values of the animation
+
+747
+00:38:25.070 --> 00:38:27.810
+and moving it left and right a couple pixels.
+
+748
+00:38:27.810 --> 00:38:30.943
+That's really all there is to that, which is cool.
+
+749
+00:38:33.530 --> 00:38:36.970
+But we've got a couple problems there.
+
+750
+00:38:36.970 --> 00:38:38.783
+If I were to run that again,
+
+751
+00:38:41.560 --> 00:38:42.930
+it doesn't do anything.
+
+752
+00:38:42.930 --> 00:38:45.780
+And if we inspect it, it says because it already
+
+753
+00:38:45.780 --> 00:38:47.380
+has a class of shake.
+
+754
+00:38:47.380 --> 00:38:52.380
+If I remove that class of shake and then run it again,
+
+755
+00:38:53.380 --> 00:38:57.390
+you see that it does indeed reapply that animation.
+
+756
+00:38:57.390 --> 00:38:59.810
+We want that to happen every single time.
+
+757
+00:38:59.810 --> 00:39:01.780
+You might be thinking, okay, what are my options here?
+
+758
+00:39:01.780 --> 00:39:06.630
+Well, I could say, that shake takes half a second,
+
+759
+00:39:06.630 --> 00:39:09.710
+so after half of a second,
+
+760
+00:39:09.710 --> 00:39:11.783
+should I take the class off of it?
+
+761
+00:39:12.660 --> 00:39:17.660
+But trying to line up timers that are set in your CSS
+
+762
+00:39:19.290 --> 00:39:23.460
+in your JavaScript, it's okay but it gets you
+
+763
+00:39:23.460 --> 00:39:27.750
+into a world of hurt because what happens
+
+764
+00:39:27.750 --> 00:39:29.490
+is if you change a timer in your CSS,
+
+765
+00:39:29.490 --> 00:39:32.300
+then you also have to update the timer in your JavaScript.
+
+766
+00:39:32.300 --> 00:39:35.570
+What we can do is we actually listen for this animation
+
+767
+00:39:35.570 --> 00:39:38.350
+to finish, and then programmatically remove
+
+768
+00:39:38.350 --> 00:39:39.800
+that class from it.
+
+769
+00:39:39.800 --> 00:39:42.720
+And that, just like we can listen to a click,
+
+770
+00:39:42.720 --> 00:39:47.060
+we can also listen to this event called an animationend.
+
+771
+00:39:47.060 --> 00:39:48.150
+We'll take our canvas,
+
+772
+00:39:48.150 --> 00:39:50.503
+and we'll add an EventListener to it.
+
+773
+00:39:51.660 --> 00:39:55.047
+And we will listen for the animationend event.
+
+774
+00:39:58.070 --> 00:40:01.350
+And when that happens will we run a function
+
+775
+00:40:05.060 --> 00:40:06.720
+and in that we'll take the canvas,
+
+776
+00:40:06.720 --> 00:40:08.030
+and we'll take the classList,
+
+777
+00:40:08.030 --> 00:40:10.623
+and we will remove a class of shake.
+
+778
+00:40:12.790 --> 00:40:15.760
+Now, oh, I did something wrong!
+
+779
+00:40:15.760 --> 00:40:16.593
+Function,
+
+780
+00:40:19.210 --> 00:40:20.713
+what did I break?
+
+781
+00:40:22.260 --> 00:40:25.963
+Function, how do you spell?
+
+782
+00:40:26.860 --> 00:40:28.430
+There we go.
+
+783
+00:40:28.430 --> 00:40:30.810
+Now when I run it, actually, let's do
+
+784
+00:40:30.810 --> 00:40:33.210
+a quick little console.log in here,
+
+785
+00:40:33.210 --> 00:40:35.367
+console.log 'Done the shake'.
+
+786
+00:40:37.900 --> 00:40:40.810
+So clearCanvas, and this says Done the shake
+
+787
+00:40:40.810 --> 00:40:42.600
+just a second later.
+
+788
+00:40:42.600 --> 00:40:45.573
+And then when we run it again, and it should shake again,
+
+789
+00:40:47.210 --> 00:40:51.020
+oh, but we got Done the shake console.log twice.
+
+790
+00:40:51.020 --> 00:40:51.933
+Run it again.
+
+791
+00:40:53.470 --> 00:40:56.120
+Now we've got Done the shake console.log three times.
+
+792
+00:40:57.210 --> 00:40:59.900
+Done the shake, console.log four times.
+
+793
+00:40:59.900 --> 00:41:01.000
+What's going on here?
+
+794
+00:41:01.000 --> 00:41:03.520
+Well, this is a pretty common problem
+
+795
+00:41:03.520 --> 00:41:05.710
+that's happening is what we're doing
+
+796
+00:41:05.710 --> 00:41:09.960
+is when we run clearCanvas, we add the class
+
+797
+00:41:09.960 --> 00:41:13.270
+and then we listen for that animation to be over,
+
+798
+00:41:13.270 --> 00:41:14.670
+and then we remove it.
+
+799
+00:41:14.670 --> 00:41:19.070
+But what's happening is that this canvas still has
+
+800
+00:41:19.070 --> 00:41:21.820
+the EventListener of animationend added to it,
+
+801
+00:41:21.820 --> 00:41:23.600
+and every time we clear the canvas,
+
+802
+00:41:23.600 --> 00:41:26.020
+we're adding a new EventListener to it
+
+803
+00:41:26.020 --> 00:41:27.350
+over and over and over again.
+
+804
+00:41:27.350 --> 00:41:29.760
+And so by the time I run it now,
+
+805
+00:41:29.760 --> 00:41:31.790
+there's now five EventListeners,
+
+806
+00:41:31.790 --> 00:41:33.770
+listening for animationend on this canvas.
+
+807
+00:41:33.770 --> 00:41:37.710
+And I think if we inspect this canvas here
+
+808
+00:41:37.710 --> 00:41:40.470
+and click on Event Listeners, you'll see
+
+809
+00:41:40.470 --> 00:41:43.510
+that we're listening for the animationend event,
+
+810
+00:41:43.510 --> 00:41:46.330
+and every time we run it, they are,
+
+811
+00:41:46.330 --> 00:41:47.740
+there's a new one added.
+
+812
+00:41:47.740 --> 00:41:50.263
+Watch, I think if I were to run it again,
+
+813
+00:41:52.390 --> 00:41:53.500
+there's another one, right?
+
+814
+00:41:53.500 --> 00:41:57.020
+They just keep going, and I can manually remove them here.
+
+815
+00:41:57.020 --> 00:41:59.800
+And I think now if I run it, it should just do it twice
+
+816
+00:41:59.800 --> 00:42:01.083
+or three times I guess.
+
+817
+00:42:02.070 --> 00:42:04.240
+Maybe you have to click the Refresh button.
+
+818
+00:42:04.240 --> 00:42:06.960
+Yes, you have to click the Refresh button to see them.
+
+819
+00:42:06.960 --> 00:42:08.610
+That obviously not what we want,
+
+820
+00:42:08.610 --> 00:42:12.020
+and I told you earlier that there's another argument
+
+821
+00:42:12.020 --> 00:42:13.160
+to add eventListener.
+
+822
+00:42:13.160 --> 00:42:15.000
+There's, go get something,
+
+823
+00:42:15.000 --> 00:42:17.970
+listen for something, and do something.
+
+824
+00:42:17.970 --> 00:42:22.730
+Now there's a third arguments object for addEventListener,
+
+825
+00:42:22.730 --> 00:42:25.600
+and we've only, so far, used the capture here.
+
+826
+00:42:25.600 --> 00:42:27.810
+Now, we're gonna introduce a second option
+
+827
+00:42:27.810 --> 00:42:31.350
+which is called a once, and we set that to true.
+
+828
+00:42:31.350 --> 00:42:35.500
+And if you set once to be true, what will happen is
+
+829
+00:42:35.500 --> 00:42:38.290
+that addEventListener will unbind itself.
+
+830
+00:42:39.505 --> 00:42:42.880
+It will call removeEventListener for you
+
+831
+00:42:42.880 --> 00:42:44.400
+without having to write any code.
+
+832
+00:42:44.400 --> 00:42:46.456
+'Cause if we didn't have that,
+
+833
+00:42:46.456 --> 00:42:48.440
+what we'd have to do is we'd have to say
+
+834
+00:42:48.440 --> 00:42:50.760
+canvas.removeEventListener,
+
+835
+00:42:53.760 --> 00:42:55.940
+and then we'd have to reference the function
+
+836
+00:42:55.940 --> 00:42:57.287
+that it's inside of to remove it.
+
+837
+00:42:57.287 --> 00:42:58.620
+That's a bit of a pain.
+
+838
+00:42:58.620 --> 00:43:02.650
+So what we can do is simply just pass a third argument
+
+839
+00:43:02.650 --> 00:43:05.040
+to addEventListener, which is an object
+
+840
+00:43:05.040 --> 00:43:07.100
+that has once set to true.
+
+841
+00:43:07.100 --> 00:43:09.930
+And what that will do is it will automatically remove
+
+842
+00:43:09.930 --> 00:43:13.050
+its listener when the animation is done.
+
+843
+00:43:13.050 --> 00:43:17.910
+If I run the canvas, you see now it's only,
+
+844
+00:43:17.910 --> 00:43:19.770
+only listening, we're adding and removing
+
+845
+00:43:19.770 --> 00:43:22.593
+that EventListener as we need to, which is great.
+
+846
+00:43:25.920 --> 00:43:27.610
+Next, what we can do is can simply just hook
+
+847
+00:43:27.610 --> 00:43:28.570
+that up to the button.
+
+848
+00:43:28.570 --> 00:43:29.500
+We have our shake button.
+
+849
+00:43:29.500 --> 00:43:32.879
+So we say shakebutton.addEventListener,
+
+850
+00:43:32.879 --> 00:43:33.930
+and listen for a click.
+
+851
+00:43:33.930 --> 00:43:38.143
+And when that click happens, we will clear the canvas.
+
+852
+00:43:40.610 --> 00:43:42.923
+Let me go and draw some stuff on here.
+
+853
+00:43:46.022 --> 00:43:47.172
+And then I click Shake.
+
+854
+00:43:48.480 --> 00:43:53.410
+(laughs) It shakes it, but we forget to do the entire part
+
+855
+00:43:53.410 --> 00:43:55.490
+which is clearing the canvas.
+
+856
+00:43:55.490 --> 00:43:57.850
+And that is actually very simple.
+
+857
+00:43:57.850 --> 00:44:01.590
+We will do that, we add the shake,
+
+858
+00:44:01.590 --> 00:44:04.040
+then we clear it, and then we listen for the end.
+
+859
+00:44:04.040 --> 00:44:08.530
+So we say ctx.clearRect, and what that will do is
+
+860
+00:44:08.530 --> 00:44:11.610
+it will clear part of or all of it.
+
+861
+00:44:11.610 --> 00:44:13.830
+So we say start at zero, zero,
+
+862
+00:44:13.830 --> 00:44:16.610
+start in the top left-hand corner right here
+
+863
+00:44:16.610 --> 00:44:19.620
+and go for, I don't know, we can go for 500,
+
+864
+00:44:19.620 --> 00:44:21.440
+and go for 500 pixels.
+
+865
+00:44:21.440 --> 00:44:23.430
+Let's watch this.
+
+866
+00:44:23.430 --> 00:44:25.923
+Let's draw something in the top right-hand corner.
+
+867
+00:44:27.830 --> 00:44:30.620
+Now when I shake it, you see it cleared
+
+868
+00:44:30.620 --> 00:44:33.210
+the top 500-by-500 pixels.
+
+869
+00:44:33.210 --> 00:44:37.240
+Obviously we'll replace that with our variables
+
+870
+00:44:37.240 --> 00:44:40.090
+that we nicely created at the very top of this file,
+
+871
+00:44:40.090 --> 00:44:41.173
+width and height.
+
+872
+00:44:42.462 --> 00:44:46.717
+We got our width, and we got our height.
+
+873
+00:44:53.300 --> 00:44:54.133
+Beautiful!
+
+874
+00:44:55.010 --> 00:44:58.480
+So that's it, that is our first exercise here.
+
+875
+00:44:58.480 --> 00:45:01.790
+It's probably a little bit beyond what we've learned,
+
+876
+00:45:01.790 --> 00:45:03.830
+but that's my hope with a lot of these exercises
+
+877
+00:45:03.830 --> 00:45:05.480
+is that we're gonna push you.
+
+878
+00:45:05.480 --> 00:45:07.700
+We're gonna introduce some new concepts,
+
+879
+00:45:07.700 --> 00:45:10.310
+destructuring, canvas, right in the exercise,
+
+880
+00:45:10.310 --> 00:45:13.430
+you can get an idea of how it works
+
+881
+00:45:13.430 --> 00:45:15.410
+when you are in the head space
+
+882
+00:45:15.410 --> 00:45:17.670
+and building real-world things.
+
+883
+00:45:17.670 --> 00:45:18.870
+See you in the next one!
+

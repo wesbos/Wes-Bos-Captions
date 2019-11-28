@@ -1,0 +1,2510 @@
+﻿WEBVTT
+
+1
+00:00:00.788 --> 00:00:03.371
+(upbeat music)
+
+2
+00:00:06.210 --> 00:00:08.360
+<v Instructor>All right, let's talk about modules.</v>
+
+3
+00:00:08.360 --> 00:00:11.830
+Being able to share code across multiple JavaScript files
+
+4
+00:00:11.830 --> 00:00:15.320
+and even sharing code across multiple projects
+
+5
+00:00:15.320 --> 00:00:18.090
+is an easy thing to do when you start
+
+6
+00:00:18.090 --> 00:00:19.880
+using modules in JavaScript.
+
+7
+00:00:19.880 --> 00:00:21.000
+So, what are they?
+
+8
+00:00:21.000 --> 00:00:23.610
+Well, modules are a way to structure and organize
+
+9
+00:00:23.610 --> 00:00:27.100
+your JavaScript and it makes us have the ability
+
+10
+00:00:27.100 --> 00:00:31.420
+to share functionality and data across multiple files
+
+11
+00:00:31.420 --> 00:00:33.510
+and like I said before, multiple projects.
+
+12
+00:00:33.510 --> 00:00:35.840
+So, what are some things that you might
+
+13
+00:00:35.840 --> 00:00:37.530
+wanna use modules for?
+
+14
+00:00:37.530 --> 00:00:39.730
+Now, before we even get started, let's talk about
+
+15
+00:00:39.730 --> 00:00:41.520
+a couple of things you need to know about modules.
+
+16
+00:00:41.520 --> 00:00:44.210
+First, modules have their own scope.
+
+17
+00:00:44.210 --> 00:00:47.530
+So much like a function has its own scope,
+
+18
+00:00:47.530 --> 00:00:50.830
+a module which is going to be its own file
+
+19
+00:00:50.830 --> 00:00:52.190
+has its own scope.
+
+20
+00:00:52.190 --> 00:00:54.800
+Meaning that we don't really have to worry about
+
+21
+00:00:54.800 --> 00:00:58.003
+global variables any longer with that type of thing.
+
+22
+00:00:58.850 --> 00:01:00.590
+Modules can hold anything.
+
+23
+00:01:00.590 --> 00:01:02.210
+So they can hold functionality,
+
+24
+00:01:02.210 --> 00:01:04.510
+they can hold data, they can hold config,
+
+25
+00:01:04.510 --> 00:01:08.620
+we just go look at the currency conversion one that we have
+
+26
+00:01:08.620 --> 00:01:10.180
+like look at this sucker!
+
+27
+00:01:10.180 --> 00:01:13.490
+Wouldn't it be nice to put that somewhere else
+
+28
+00:01:13.490 --> 00:01:17.680
+and just import it into this file when we need it?
+
+29
+00:01:17.680 --> 00:01:19.913
+That's what modules are going to allow us to do.
+
+30
+00:01:19.913 --> 00:01:22.620
+Same thing with utility functions,
+
+31
+00:01:22.620 --> 00:01:25.700
+we take a look at the dad jokes one
+
+32
+00:01:25.700 --> 00:01:28.110
+that we just had finished where we have this
+
+33
+00:01:28.110 --> 00:01:31.110
+random item from an array, that's just a handy
+
+34
+00:01:31.110 --> 00:01:35.600
+array utility and it has nothing to do with dad jokes at all
+
+35
+00:01:35.600 --> 00:01:38.920
+so we could throw that off into a separate file
+
+36
+00:01:38.920 --> 00:01:41.110
+that is used for utilities.
+
+37
+00:01:41.110 --> 00:01:42.870
+So let's start off real basic,
+
+38
+00:01:42.870 --> 00:01:45.910
+we're gonna look at how modules work in the browser.
+
+39
+00:01:45.910 --> 00:01:48.300
+And then we're going to look into some tooling
+
+40
+00:01:48.300 --> 00:01:49.950
+that will help us work with them.
+
+41
+00:01:50.860 --> 00:01:53.470
+So modules, you might often hear them
+
+42
+00:01:53.470 --> 00:01:56.870
+called ESM, ECMAScript modules,
+
+43
+00:01:56.870 --> 00:01:59.371
+you might hear them called ES6 modules,
+
+44
+00:01:59.371 --> 00:02:04.370
+that's sort of the verbiage that people use around them,
+
+45
+00:02:04.370 --> 00:02:08.240
+they are baked into JavaScript a couple of years ago
+
+46
+00:02:08.240 --> 00:02:11.240
+and they are slowly gaining, or not even slowly,
+
+47
+00:02:11.240 --> 00:02:14.060
+they are the way to organize your JavaScript
+
+48
+00:02:14.060 --> 00:02:16.270
+when you have multiple files.
+
+49
+00:02:16.270 --> 00:02:19.640
+So let's go into our playground and let's make
+
+50
+00:02:19.640 --> 00:02:22.460
+a new folder in your playground called modules,
+
+51
+00:02:22.460 --> 00:02:24.895
+it might already be there for you.
+
+52
+00:02:24.895 --> 00:02:29.020
+And then inside of that, you need the index.html
+
+53
+00:02:29.020 --> 00:02:34.020
+and let's make a utils.js
+
+54
+00:02:34.560 --> 00:02:38.130
+and let's make a handlers.js
+
+55
+00:02:41.920 --> 00:02:45.380
+and let's make a scripts.js.
+
+56
+00:02:45.380 --> 00:02:48.800
+So we've got three different files in here.
+
+57
+00:02:48.800 --> 00:02:52.360
+And I wanna share code between all of them.
+
+58
+00:02:52.360 --> 00:02:56.580
+So let's say I've got some code in scripts js
+
+59
+00:02:56.580 --> 00:03:01.120
+and I would, it's like const name is equal to wes.
+
+60
+00:03:01.120 --> 00:03:06.120
+And then I am in utils.js and I have a function
+
+61
+00:03:06.460 --> 00:03:09.370
+that, let's do something super silly
+
+62
+00:03:09.370 --> 00:03:11.423
+and just say returnHi.
+
+63
+00:03:15.063 --> 00:03:16.963
+We can simply just return hi.
+
+64
+00:03:19.080 --> 00:03:20.870
+Maybe we should take their name
+
+65
+00:03:20.870 --> 00:03:23.573
+and we'll return hi plus their name.
+
+66
+00:03:25.550 --> 00:03:29.900
+So if I'm in the scripts.js and I wanna use
+
+67
+00:03:29.900 --> 00:03:33.770
+this returnHi function, can I just go ahead and use it?
+
+68
+00:03:33.770 --> 00:03:36.443
+returnHi pass it our name.
+
+69
+00:03:38.610 --> 00:03:41.283
+And let's go into our index.html.
+
+70
+00:03:42.570 --> 00:03:43.870
+This might already be there for you,
+
+71
+00:03:43.870 --> 00:03:45.253
+so feel free to skip that.
+
+72
+00:03:47.220 --> 00:03:50.180
+And let's get our script source,
+
+73
+00:03:50.180 --> 00:03:52.600
+let's link it up to our scripts js.
+
+74
+00:03:52.600 --> 00:03:55.620
+And I'll open that up in the browser.
+
+75
+00:03:55.620 --> 00:03:57.540
+And I'm gonna open up my dev tools here
+
+76
+00:03:57.540 --> 00:03:58.890
+and we're getting an error.
+
+77
+00:04:00.335 --> 00:04:02.850
+ReturnHi is not defined.
+
+78
+00:04:02.850 --> 00:04:07.570
+Okay, it makes sense because we have not yet
+
+79
+00:04:08.780 --> 00:04:10.628
+put our utils on the page.
+
+80
+00:04:10.628 --> 00:04:13.510
+So you might think okay, let's grab utils
+
+81
+00:04:13.510 --> 00:04:15.083
+and put that on the page first.
+
+82
+00:04:16.380 --> 00:04:17.480
+Okay.
+
+83
+00:04:17.480 --> 00:04:21.763
+And, we'd have to console.log.
+
+84
+00:04:25.724 --> 00:04:26.720
+Here, it works!
+
+85
+00:04:26.720 --> 00:04:27.553
+It works, right?
+
+86
+00:04:27.553 --> 00:04:30.030
+So, all you have to do is just make sure that you put
+
+87
+00:04:30.030 --> 00:04:32.210
+your script in front of the one that you need in.
+
+88
+00:04:32.210 --> 00:04:34.160
+This is actually the way that we used to do it.
+
+89
+00:04:34.160 --> 00:04:36.793
+It used to be the way that you would load,
+
+90
+00:04:37.650 --> 00:04:40.080
+jQuery was a big one, and then you'd load
+
+91
+00:04:40.080 --> 00:04:43.210
+all of your jQuery libraries, and then you'd load
+
+92
+00:04:43.210 --> 00:04:47.900
+all your utilfunctions and then you load your scripts
+
+93
+00:04:47.900 --> 00:04:50.639
+and maybe you have like a couple different scripts,
+
+94
+00:04:50.639 --> 00:04:52.810
+scripts1, two, three and four.
+
+95
+00:04:52.810 --> 00:04:56.020
+And that got out of hand really quickly
+
+96
+00:04:56.020 --> 00:04:59.740
+because if the jquerylib needed jquery,
+
+97
+00:04:59.740 --> 00:05:01.680
+then you need to load jquery first
+
+98
+00:05:01.680 --> 00:05:05.130
+and then if the utilfunctions needed the jQuery library,
+
+99
+00:05:05.130 --> 00:05:06.777
+then that need to be after that.
+
+100
+00:05:06.777 --> 00:05:09.040
+And then code it in three, maybe it relied
+
+101
+00:05:09.040 --> 00:05:12.490
+on a function that was in one, so that needed to be in order
+
+102
+00:05:12.490 --> 00:05:16.270
+and there's many many horror stories of people having
+
+103
+00:05:16.270 --> 00:05:18.840
+I don't know, 30 or 40 script tags
+
+104
+00:05:18.840 --> 00:05:22.730
+and all of them have to load in what's called the Waterfall.
+
+105
+00:05:22.730 --> 00:05:25.240
+They all have to load one after another
+
+106
+00:05:25.240 --> 00:05:28.260
+because they're all assuming that the previous one
+
+107
+00:05:28.260 --> 00:05:32.730
+has access to it, like if we go and look at scripts.js,
+
+108
+00:05:32.730 --> 00:05:34.510
+my ES learner saying it's not defined.
+
+109
+00:05:34.510 --> 00:05:36.850
+Like, where did this function come from?
+
+110
+00:05:36.850 --> 00:05:37.683
+returnHi.
+
+111
+00:05:37.683 --> 00:05:39.560
+I don't see it defined in here,
+
+112
+00:05:39.560 --> 00:05:42.260
+I don't see it imported in here.
+
+113
+00:05:42.260 --> 00:05:44.630
+And the only reason that it works is because
+
+114
+00:05:44.630 --> 00:05:48.190
+we have globally scoped this function in another file
+
+115
+00:05:48.190 --> 00:05:50.030
+and we're just assuming that it will be
+
+116
+00:05:50.030 --> 00:05:51.820
+available to us on this page.
+
+117
+00:05:51.820 --> 00:05:54.440
+And that's a very brutal way
+
+118
+00:05:54.440 --> 00:05:57.360
+to have to code your JavaScript.
+
+119
+00:05:57.360 --> 00:05:59.700
+So the solution to that is to use this thing
+
+120
+00:05:59.700 --> 00:06:04.010
+called modules where when you need a function
+
+121
+00:06:04.010 --> 00:06:07.560
+like returnHi, we can simply just import it
+
+122
+00:06:07.560 --> 00:06:11.620
+from the function from the module from the file
+
+123
+00:06:11.620 --> 00:06:14.260
+that actually has that function in it.
+
+124
+00:06:14.260 --> 00:06:17.430
+And then you don't really have to worry about things
+
+125
+00:06:17.430 --> 00:06:20.250
+loading before another thing because we're simply
+
+126
+00:06:20.250 --> 00:06:23.320
+going to import that value beforehand.
+
+127
+00:06:23.320 --> 00:06:28.320
+So, let's change this example to a really simple module
+
+128
+00:06:29.607 --> 00:06:34.607
+and the way that it works is that in your index.html,
+
+129
+00:06:36.830 --> 00:06:38.250
+instead of loading all of it,
+
+130
+00:06:38.250 --> 00:06:40.720
+you generally have just one script tag.
+
+131
+00:06:40.720 --> 00:06:45.562
+And that one script tag is going to be your entry point
+
+132
+00:06:45.562 --> 00:06:48.280
+into your JavaScript.
+
+133
+00:06:48.280 --> 00:06:50.770
+And then what we do is we add a new attribute
+
+134
+00:06:50.770 --> 00:06:54.443
+on to our script tag called type and we set it to module.
+
+135
+00:06:56.440 --> 00:06:59.310
+Now, if we were to
+
+136
+00:07:01.580 --> 00:07:04.100
+just console log, it's working.
+
+137
+00:07:04.100 --> 00:07:06.550
+Let's just make sure that this is working so far.
+
+138
+00:07:07.600 --> 00:07:10.130
+All right, origin (mumbles) null's been blocked
+
+139
+00:07:10.130 --> 00:07:13.680
+by a CORS policy, they're only supported protocol schemed
+
+140
+00:07:13.680 --> 00:07:16.170
+http, data, chrome extension, https.
+
+141
+00:07:16.170 --> 00:07:18.310
+Okay, so this is the CORS issue again.
+
+142
+00:07:18.310 --> 00:07:21.670
+So than there is our first sort of trouble
+
+143
+00:07:21.670 --> 00:07:24.020
+that we've run into, is that you can't use modules
+
+144
+00:07:24.020 --> 00:07:25.710
+unless you're running it on a server.
+
+145
+00:07:25.710 --> 00:07:28.850
+Now, we can't actually use our Parcel server here
+
+146
+00:07:28.850 --> 00:07:32.030
+because Parcel also handles modules for us.
+
+147
+00:07:32.030 --> 00:07:34.510
+And I'm trying to show you how modules work
+
+148
+00:07:34.510 --> 00:07:37.280
+without using any type of bundler
+
+149
+00:07:37.280 --> 00:07:39.020
+or anything that are smart about modules.
+
+150
+00:07:39.020 --> 00:07:41.360
+So, we actually just need a very simple
+
+151
+00:07:41.360 --> 00:07:42.330
+server up and running.
+
+152
+00:07:42.330 --> 00:07:45.000
+If you know how to run a quick server
+
+153
+00:07:45.000 --> 00:07:48.610
+that serves us index.html and the rest of these scripts,
+
+154
+00:07:48.610 --> 00:07:51.070
+feel free to skip ahead a couple of videos
+
+155
+00:07:51.070 --> 00:07:53.720
+and just start up with server that will serve this up.
+
+156
+00:07:53.720 --> 00:07:55.030
+For everybody else, I'm gonna show you
+
+157
+00:07:55.030 --> 00:07:57.060
+a couple of different ways do it.
+
+158
+00:07:57.060 --> 00:07:59.770
+There is a VS code plug in, so if we go
+
+159
+00:07:59.770 --> 00:08:04.770
+to our extensions here, and we search for live server.
+
+160
+00:08:13.420 --> 00:08:14.690
+Open it up.
+
+161
+00:08:14.690 --> 00:08:17.340
+You see there's a quick little server we can install.
+
+162
+00:08:22.080 --> 00:08:24.250
+Gonna go back to my modules, right-click on that
+
+163
+00:08:24.250 --> 00:08:27.423
+index.html and say open with live server.
+
+164
+00:08:29.630 --> 00:08:31.290
+And that will just start up a quick
+
+165
+00:08:31.290 --> 00:08:32.690
+little local host server.
+
+166
+00:08:32.690 --> 00:08:36.760
+This is one 127.0.0.1.
+
+167
+00:08:36.760 --> 00:08:39.392
+That's the same thing as local host.
+
+168
+00:08:39.392 --> 00:08:42.720
+That's just the IP address for your local host
+
+169
+00:08:42.720 --> 00:08:44.210
+and you could use both of those.
+
+170
+00:08:44.210 --> 00:08:46.110
+Whereas if I change this to local host,
+
+171
+00:08:46.110 --> 00:08:47.340
+it works exactly the same.
+
+172
+00:08:47.340 --> 00:08:48.920
+So don't sweat that.
+
+173
+00:08:48.920 --> 00:08:52.350
+Now, I'll open up my dev tools it says it's working.
+
+174
+00:08:52.350 --> 00:08:55.600
+There's another way to do a quick little server as well.
+
+175
+00:08:55.600 --> 00:08:57.960
+And that is with browser sync, that's the one
+
+176
+00:08:57.960 --> 00:08:59.650
+I use in my JavaScript 30 course,
+
+177
+00:08:59.650 --> 00:09:04.050
+and the way that you can do that is you can npm install -g
+
+178
+00:09:04.050 --> 00:09:07.363
+and it's browser-sync.
+
+179
+00:09:15.240 --> 00:09:18.940
+Then we need to go into our modules folder
+
+180
+00:09:18.940 --> 00:09:20.150
+that we have here.
+
+181
+00:09:20.150 --> 00:09:24.650
+So you can open in terminal or go to it via desk.
+
+182
+00:09:24.650 --> 00:09:27.593
+I'm just going to the playground.
+
+183
+00:09:30.430 --> 00:09:32.070
+And that's a little extension I have,
+
+184
+00:09:32.070 --> 00:09:34.350
+you can check out my command line parities course
+
+185
+00:09:34.350 --> 00:09:36.150
+if you wanna learn how to use that.
+
+186
+00:09:36.150 --> 00:09:38.100
+And then into modules.
+
+187
+00:09:38.100 --> 00:09:42.943
+And then we just type browser-sync and that is it.
+
+188
+00:09:44.610 --> 00:09:46.100
+And if we open up our dev tools here,
+
+189
+00:09:46.100 --> 00:09:48.280
+you see it is working but it's giving us
+
+190
+00:09:48.280 --> 00:09:51.800
+some grief about this base.css.
+
+191
+00:09:51.800 --> 00:09:55.650
+And that is because I am running the server
+
+192
+00:09:55.650 --> 00:10:00.180
+in my modules folder but the base CSS file
+
+193
+00:10:00.180 --> 00:10:03.760
+is actually in a higher level and it can't go up a level.
+
+194
+00:10:03.760 --> 00:10:05.373
+It can't go higher than the root.
+
+195
+00:10:05.373 --> 00:10:08.140
+So a quick little solution to that is we open up
+
+196
+00:10:08.140 --> 00:10:13.140
+our base CSS, copy everything, make a new file here,
+
+197
+00:10:13.800 --> 00:10:17.650
+base.css, paste it in, then I'll go back here
+
+198
+00:10:17.650 --> 00:10:22.050
+and change this path to be a relative one
+
+199
+00:10:22.050 --> 00:10:24.700
+to where we're working.
+
+200
+00:10:24.700 --> 00:10:25.533
+There we go.
+
+201
+00:10:25.533 --> 00:10:26.990
+So, two different ways you can make a module.
+
+202
+00:10:26.990 --> 00:10:30.520
+It looks like both of them have a live reload on them.
+
+203
+00:10:30.520 --> 00:10:33.280
+So if I were to put a paragraph and say hey and save it,
+
+204
+00:10:33.280 --> 00:10:36.110
+both of them reload, oh, looks like that one
+
+205
+00:10:36.110 --> 00:10:37.390
+doesn't reload itself.
+
+206
+00:10:37.390 --> 00:10:38.850
+But I just think it's supposed to reload.
+
+207
+00:10:38.850 --> 00:10:41.660
+Maybe you have to pass it some additional parameters.
+
+208
+00:10:41.660 --> 00:10:44.190
+I would probably stick to VS code one,
+
+209
+00:10:44.190 --> 00:10:47.060
+just 'cause that is simplest, and I'll keep going with that.
+
+210
+00:10:47.060 --> 00:10:48.680
+All right, you can jump back in here
+
+211
+00:10:48.680 --> 00:10:51.130
+if you know how to run a server.
+
+212
+00:10:51.130 --> 00:10:52.930
+So let's go back to our scripts js and we know
+
+213
+00:10:52.930 --> 00:10:54.260
+that it's working.
+
+214
+00:10:54.260 --> 00:10:59.260
+Now, the question is, how do I take a function that exists
+
+215
+00:10:59.360 --> 00:11:04.360
+in another file and get access to it when it is over here?
+
+216
+00:11:06.070 --> 00:11:07.580
+Well, the way that you can do that
+
+217
+00:11:07.580 --> 00:11:11.560
+is you can import it from that file.
+
+218
+00:11:11.560 --> 00:11:14.170
+So what we can do, there's two types of import,
+
+219
+00:11:14.170 --> 00:11:17.763
+there is named imports and default imports.
+
+220
+00:11:18.600 --> 00:11:20.700
+And before we can even import something,
+
+221
+00:11:20.700 --> 00:11:23.520
+we have to export it from this file.
+
+222
+00:11:23.520 --> 00:11:27.751
+So this idea of sharing code between multiple files,
+
+223
+00:11:27.751 --> 00:11:31.030
+the word that we use for each file is called a module.
+
+224
+00:11:31.030 --> 00:11:32.890
+So a file is a module.
+
+225
+00:11:32.890 --> 00:11:37.180
+And then if you want to surface functionality
+
+226
+00:11:37.180 --> 00:11:41.930
+from one file to another file, you then first,
+
+227
+00:11:41.930 --> 00:11:45.240
+must export it from here and the easiest way
+
+228
+00:11:45.240 --> 00:11:47.750
+to do that is you can simply just type export
+
+229
+00:11:47.750 --> 00:11:49.160
+in front of your function.
+
+230
+00:11:49.160 --> 00:11:51.160
+I'll show you a couple more ways
+
+231
+00:11:51.160 --> 00:11:53.570
+we can export things in just a second.
+
+232
+00:11:53.570 --> 00:11:56.100
+And then you go into your scripts js,
+
+233
+00:11:56.100 --> 00:11:58.940
+and we will import, curly brackets,
+
+234
+00:11:58.940 --> 00:12:01.650
+the name of the function that has been exported,
+
+235
+00:12:01.650 --> 00:12:06.310
+returnHi, from and then you give it a relative path.
+
+236
+00:12:06.310 --> 00:12:09.420
+So dot forward slash means the current directory,
+
+237
+00:12:09.420 --> 00:12:11.550
+and we're not going up a level.
+
+238
+00:12:11.550 --> 00:12:14.300
+If you want to go up a level, you do dot dot.
+
+239
+00:12:14.300 --> 00:12:16.700
+But in our case, we're in the scripts folder already
+
+240
+00:12:16.700 --> 00:12:20.523
+so we can simply just grab utils.js.
+
+241
+00:12:21.440 --> 00:12:25.580
+And now, I should be able to console log returnHi
+
+242
+00:12:27.116 --> 00:12:28.116
+and pass it my name.
+
+243
+00:12:29.120 --> 00:12:30.670
+And see, it says hi wes.
+
+244
+00:12:30.670 --> 00:12:34.010
+So what I've done there is I've defined some functionality
+
+245
+00:12:34.010 --> 00:12:38.060
+in a separate file and in order for me to access that thing,
+
+246
+00:12:38.060 --> 00:12:41.220
+I must first export it from the file it's in
+
+247
+00:12:41.220 --> 00:12:43.510
+and exporting essentially says,
+
+248
+00:12:43.510 --> 00:12:48.510
+this thing can be used by other JavaScript modules.
+
+249
+00:12:49.620 --> 00:12:52.820
+And then in our scripts js, we simply import it
+
+250
+00:12:52.820 --> 00:12:55.070
+from the file that it is in.
+
+251
+00:12:55.070 --> 00:12:57.050
+You always do your imports at the very top
+
+252
+00:12:57.050 --> 00:12:58.650
+of the file that you are in.
+
+253
+00:12:58.650 --> 00:13:01.670
+And you can have multiple imports as well.
+
+254
+00:13:01.670 --> 00:13:04.290
+Then you simply have access to that functionality
+
+255
+00:13:05.450 --> 00:13:07.780
+in order to go ahead and use it.
+
+256
+00:13:07.780 --> 00:13:09.180
+So, you could see, no problem,
+
+257
+00:13:09.180 --> 00:13:11.540
+we could start breaking things up into multiple files
+
+258
+00:13:11.540 --> 00:13:13.970
+and simply just importing and exporting them.
+
+259
+00:13:13.970 --> 00:13:16.670
+Now, a couple more things we need to know about modules.
+
+260
+00:13:16.670 --> 00:13:18.510
+Modules have their own scope.
+
+261
+00:13:18.510 --> 00:13:19.700
+I said that earlier in the video.
+
+262
+00:13:19.700 --> 00:13:21.510
+What does that mean?
+
+263
+00:13:21.510 --> 00:13:25.650
+Well, if I here, have last name variable
+
+264
+00:13:25.650 --> 00:13:27.510
+and that's equal to boss.
+
+265
+00:13:27.510 --> 00:13:32.160
+And if I want to access that in my scripts right here,
+
+266
+00:13:32.160 --> 00:13:37.160
+console log last, it says last is not defined,
+
+267
+00:13:37.400 --> 00:13:39.940
+because that's in a different module.
+
+268
+00:13:39.940 --> 00:13:43.343
+But now, the question is, if I use that variable in here,
+
+269
+00:13:45.550 --> 00:13:46.720
+first of all, is that allowed?
+
+270
+00:13:46.720 --> 00:13:48.640
+And second of all, is that going to work?
+
+271
+00:13:48.640 --> 00:13:49.890
+Well, let's go back here.
+
+272
+00:13:49.890 --> 00:13:50.723
+Get rid of that.
+
+273
+00:13:51.690 --> 00:13:53.410
+It says hi wes bos.
+
+274
+00:13:53.410 --> 00:13:58.410
+Okay, so, that means that you can use variables
+
+275
+00:13:59.192 --> 00:14:01.810
+that are defined inside of a module
+
+276
+00:14:01.810 --> 00:14:04.720
+and they will not leak out, they will not be available
+
+277
+00:14:04.720 --> 00:14:08.340
+in any other file, however, you can use them
+
+278
+00:14:08.340 --> 00:14:11.240
+inside of that module no problem.
+
+279
+00:14:11.240 --> 00:14:14.900
+So that is what is referred to as a scope to the module.
+
+280
+00:14:14.900 --> 00:14:17.240
+Meaning that, this is not available in my console,
+
+281
+00:14:17.240 --> 00:14:19.780
+I can't type in last, right here.
+
+282
+00:14:19.780 --> 00:14:22.040
+It's not globally scoped, it's not available
+
+283
+00:14:22.040 --> 00:14:25.120
+in my scripts module, it's not like scoped
+
+284
+00:14:25.120 --> 00:14:28.600
+from one to another, it's simply scoped to this file
+
+285
+00:14:28.600 --> 00:14:32.930
+and it can only be used inside of this file.
+
+286
+00:14:32.930 --> 00:14:34.410
+Now, is that okay?
+
+287
+00:14:34.410 --> 00:14:35.460
+Is that a good practice?
+
+288
+00:14:35.460 --> 00:14:36.293
+Absolutely.
+
+289
+00:14:36.293 --> 00:14:38.160
+That's the beauty of modules is that you don't have
+
+290
+00:14:38.160 --> 00:14:40.570
+to worry about scoping or anything like that,
+
+291
+00:14:40.570 --> 00:14:42.620
+you can just create variables inside of that file
+
+292
+00:14:42.620 --> 00:14:44.210
+and they're only available
+
+293
+00:14:44.210 --> 00:14:46.820
+inside of that file, nowhere else.
+
+294
+00:14:46.820 --> 00:14:49.830
+Now, what I did want to be able to
+
+295
+00:14:49.830 --> 00:14:52.920
+access this last name in this file?
+
+296
+00:14:52.920 --> 00:14:55.420
+So, one thing we can do is we can just put in an export
+
+297
+00:14:55.420 --> 00:14:58.180
+in front of the variable declaration,
+
+298
+00:14:58.180 --> 00:15:01.140
+and then we go in here and we can import another variable,
+
+299
+00:15:01.140 --> 00:15:05.800
+so last, and then that should be available to us, last.
+
+300
+00:15:05.800 --> 00:15:07.800
+You see it's available as bos.
+
+301
+00:15:07.800 --> 00:15:11.440
+Another way to export a value is instead of
+
+302
+00:15:11.440 --> 00:15:14.700
+exporting it when you create it, at the very bottom
+
+303
+00:15:14.700 --> 00:15:19.700
+of the file, you can export curly brackets, last.
+
+304
+00:15:19.740 --> 00:15:24.330
+And these little exports, these are called named exports
+
+305
+00:15:24.330 --> 00:15:27.330
+because they have a name on them.
+
+306
+00:15:27.330 --> 00:15:30.350
+Now, if I had multiple variables here, const middle
+
+307
+00:15:32.950 --> 00:15:35.993
+is equal to slam dunk.
+
+308
+00:15:37.630 --> 00:15:39.540
+And I wanted to export that as well,
+
+309
+00:15:39.540 --> 00:15:42.923
+I could either pop an export on the front or,
+
+310
+00:15:44.940 --> 00:15:48.330
+or I can export middle like this.
+
+311
+00:15:48.330 --> 00:15:50.060
+What should you do?
+
+312
+00:15:50.060 --> 00:15:54.720
+That's just a personal preference of what you prefer.
+
+313
+00:15:54.720 --> 00:15:58.423
+I sort of use a mix between one and another.
+
+314
+00:15:59.290 --> 00:16:01.580
+You often will have things that look like this.
+
+315
+00:16:01.580 --> 00:16:05.460
+Export async function, returnHi, no problem
+
+316
+00:16:05.460 --> 00:16:06.293
+to do something like that.
+
+317
+00:16:06.293 --> 00:16:09.133
+And I can go into my scripts here, import.
+
+318
+00:16:10.470 --> 00:16:12.787
+Because I'm already using that one.
+
+319
+00:16:12.787 --> 00:16:15.680
+I will say middle, I'll go down here and try to use that,
+
+320
+00:16:15.680 --> 00:16:18.010
+see if it worked, there we go.
+
+321
+00:16:18.010 --> 00:16:19.680
+Importing and exporting the files
+
+322
+00:16:19.680 --> 00:16:22.983
+from one module to another.
+
+323
+00:16:25.700 --> 00:16:29.390
+Now, that is what is referred to as named exports
+
+324
+00:16:29.390 --> 00:16:31.440
+and named imports.
+
+325
+00:16:31.440 --> 00:16:34.440
+The way that you can tell if something is a named import
+
+326
+00:16:34.440 --> 00:16:39.440
+or a named export is it will simply have the export value
+
+327
+00:16:40.020 --> 00:16:42.060
+in front of the function definition
+
+328
+00:16:42.060 --> 00:16:44.520
+or in front of the variable declaration,
+
+329
+00:16:44.520 --> 00:16:47.130
+or when they're exported, there will be curly brackets.
+
+330
+00:16:47.130 --> 00:16:50.380
+So curly brackets means it is a named export.
+
+331
+00:16:50.380 --> 00:16:52.850
+The opposite of that or the other way to do it
+
+332
+00:16:52.850 --> 00:16:54.780
+is called a default export.
+
+333
+00:16:54.780 --> 00:16:59.780
+So every module can have as many named exports as they want.
+
+334
+00:16:59.840 --> 00:17:03.610
+We can have as many as we want.
+
+335
+00:17:03.610 --> 00:17:08.610
+However, also, a module can have one default export.
+
+336
+00:17:09.100 --> 00:17:10.830
+Meaning, that is the default thing
+
+337
+00:17:10.830 --> 00:17:13.940
+that thing exports from it.
+
+338
+00:17:13.940 --> 00:17:16.053
+So if we make another module,
+
+339
+00:17:18.040 --> 00:17:20.173
+let's just call it wes.js.
+
+340
+00:17:21.500 --> 00:17:26.500
+And I would say const wes is equal to curly brackets.
+
+341
+00:17:26.990 --> 00:17:28.260
+And let's call it person.
+
+342
+00:17:28.260 --> 00:17:31.350
+So I'll show you that you can name it whatever you want.
+
+343
+00:17:31.350 --> 00:17:35.820
+And we say name is equal to wes, last is equal to bos,
+
+344
+00:17:35.820 --> 00:17:37.430
+and we just do this.
+
+345
+00:17:37.430 --> 00:17:40.283
+Export default person.
+
+346
+00:17:42.030 --> 00:17:44.930
+Then if I wanna access this person object,
+
+347
+00:17:44.930 --> 00:17:46.653
+I go into my scripts right here.
+
+348
+00:17:48.400 --> 00:17:52.873
+And I would simply import wes from wes.js.
+
+349
+00:17:55.869 --> 00:17:57.710
+Then we console log wes, does that work?
+
+350
+00:17:57.710 --> 00:17:59.300
+It does.
+
+351
+00:17:59.300 --> 00:18:04.300
+Now, I could call that anything I wanted.
+
+352
+00:18:04.333 --> 00:18:05.250
+Westerhoff.
+
+353
+00:18:06.981 --> 00:18:08.470
+It still works.
+
+354
+00:18:08.470 --> 00:18:09.493
+Let's call it ellen.
+
+355
+00:18:10.410 --> 00:18:11.500
+It still works.
+
+356
+00:18:11.500 --> 00:18:16.500
+So, how come here, I can name it anything I possibly want.
+
+357
+00:18:17.210 --> 00:18:20.610
+But here, with named exports, I must know
+
+358
+00:18:20.610 --> 00:18:23.810
+what the name of the thing that was exported from it?
+
+359
+00:18:23.810 --> 00:18:25.630
+And that there is the difference between
+
+360
+00:18:25.630 --> 00:18:29.280
+named exports and default exports.
+
+361
+00:18:29.280 --> 00:18:33.913
+Named exports, you must know what they've been exported as,
+
+362
+00:18:35.770 --> 00:18:40.340
+but default exports, since there is only one per file,
+
+363
+00:18:40.340 --> 00:18:42.771
+you can import them as anything,
+
+364
+00:18:42.771 --> 00:18:44.600
+you can name it whatever you want.
+
+365
+00:18:44.600 --> 00:18:48.860
+So whatever was exported as a default from wes js,
+
+366
+00:18:48.860 --> 00:18:51.690
+just throw it into a westerhoff variable.
+
+367
+00:18:51.690 --> 00:18:53.360
+So, which one should you use?
+
+368
+00:18:53.360 --> 00:18:55.610
+There's certainly arguments on both sides.
+
+369
+00:18:55.610 --> 00:18:59.160
+Generally, the way that I go is if that module
+
+370
+00:18:59.160 --> 00:19:04.160
+does one thing, and it's sort of the base thing
+
+371
+00:19:04.660 --> 00:19:06.620
+that that module does, I'll put that
+
+372
+00:19:06.620 --> 00:19:08.420
+as the default export from it.
+
+373
+00:19:08.420 --> 00:19:10.420
+But if your module does multiple things,
+
+374
+00:19:10.420 --> 00:19:13.460
+maybe it's like a utility library, something like that,
+
+375
+00:19:13.460 --> 00:19:17.440
+then I'll have just multiple named exports from it.
+
+376
+00:19:17.440 --> 00:19:20.320
+So if I go into my react world, I generally have
+
+377
+00:19:20.320 --> 00:19:22.350
+one component per file.
+
+378
+00:19:22.350 --> 00:19:26.360
+So I will default export, that component from that file.
+
+379
+00:19:26.360 --> 00:19:28.640
+You can do both in a file.
+
+380
+00:19:28.640 --> 00:19:33.640
+So, I could also export default, a variable called first.
+
+381
+00:19:35.030 --> 00:19:36.503
+And if I were to make that,
+
+382
+00:19:40.840 --> 00:19:43.570
+then I could go back into my scripts js
+
+383
+00:19:43.570 --> 00:19:45.460
+and if I wanted to import that,
+
+384
+00:19:45.460 --> 00:19:48.230
+it doesn't go in curly brackets, curly brackets
+
+385
+00:19:48.230 --> 00:19:50.750
+are for named, this one is just for default.
+
+386
+00:19:50.750 --> 00:19:53.560
+So we say first and I can just go ahead
+
+387
+00:19:53.560 --> 00:19:55.830
+and console log the first variable.
+
+388
+00:19:55.830 --> 00:19:58.370
+And you see it works just fine there.
+
+389
+00:19:58.370 --> 00:20:01.660
+So named are in curly brackets.
+
+390
+00:20:01.660 --> 00:20:06.350
+Default only one and always outside of the curly brackets.
+
+391
+00:20:06.350 --> 00:20:09.600
+Another thing about modules is you can rename them
+
+392
+00:20:09.600 --> 00:20:11.210
+as you import them.
+
+393
+00:20:11.210 --> 00:20:14.730
+So, this returnHi function, if I wanted to rename it
+
+394
+00:20:14.730 --> 00:20:17.500
+to something else, I can take returnHi
+
+395
+00:20:17.500 --> 00:20:19.263
+and we say as sayHi.
+
+396
+00:20:20.340 --> 00:20:22.370
+And what that will do is it will rename it,
+
+397
+00:20:22.370 --> 00:20:24.640
+it will import returnHi and rename it,
+
+398
+00:20:24.640 --> 00:20:26.460
+kind of like destructuring.
+
+399
+00:20:26.460 --> 00:20:29.160
+The syntax is different though, we use the as keyword
+
+400
+00:20:29.160 --> 00:20:33.580
+into sayHi, let's try and console log that as well.
+
+401
+00:20:33.580 --> 00:20:37.320
+And you see I've got this function there as a returnHi.
+
+402
+00:20:37.320 --> 00:20:39.730
+Now, if I wanna go ahead and use it,
+
+403
+00:20:39.730 --> 00:20:41.590
+I have to rename the function.
+
+404
+00:20:41.590 --> 00:20:43.480
+Let's take a quick look at the docks.
+
+405
+00:20:43.480 --> 00:20:45.183
+So just mdn import.
+
+406
+00:20:46.280 --> 00:20:47.830
+And we'll go in here.
+
+407
+00:20:47.830 --> 00:20:50.450
+And you see that this is all the syntaxes.
+
+408
+00:20:50.450 --> 00:20:53.130
+Import at something as default from the module name.
+
+409
+00:20:53.130 --> 00:20:56.910
+Sometimes, you'll see people see leaving the .js off,
+
+410
+00:20:56.910 --> 00:20:58.123
+let's see if that works.
+
+411
+00:21:01.570 --> 00:21:03.170
+You see, utils not found.
+
+412
+00:21:03.170 --> 00:21:06.729
+So, in a lot of bundlers, Parcel included,
+
+413
+00:21:06.729 --> 00:21:10.180
+you can leave the and off.
+
+414
+00:21:10.180 --> 00:21:11.560
+But that is not part of the specs.
+
+415
+00:21:11.560 --> 00:21:14.840
+So you have to put the .js on there if you are using,
+
+416
+00:21:14.840 --> 00:21:19.270
+this is just pure HTML browser-based loading.
+
+417
+00:21:19.270 --> 00:21:20.103
+What else?
+
+418
+00:21:20.103 --> 00:21:24.570
+You can import everything that comes in as name.
+
+419
+00:21:24.570 --> 00:21:27.340
+So, let me do another one.
+
+420
+00:21:27.340 --> 00:21:32.340
+Let's go into wes js.
+
+421
+00:21:34.070 --> 00:21:37.680
+And let's export
+
+422
+00:21:39.438 --> 00:21:43.170
+const dog is equals Snickers
+
+423
+00:21:45.060 --> 00:21:50.060
+and export const food is equal to pizza
+
+424
+00:21:50.730 --> 00:21:54.787
+and export function eat.
+
+425
+00:21:59.005 --> 00:22:02.563
+And we'll console log chomp chomp, comp comp, chomp!
+
+426
+00:22:04.400 --> 00:22:07.890
+Now, all three of these, dog, food and eat
+
+427
+00:22:07.890 --> 00:22:12.430
+are named exports and if I wanted them to import them
+
+428
+00:22:12.430 --> 00:22:14.480
+to any file, by the way, you can import
+
+429
+00:22:14.480 --> 00:22:16.310
+into any module from any module.
+
+430
+00:22:16.310 --> 00:22:18.900
+Doesn't always have to be your entry point
+
+431
+00:22:18.900 --> 00:22:20.580
+which is scripts js here.
+
+432
+00:22:20.580 --> 00:22:25.263
+So you could import star as everything from,
+
+433
+00:22:26.290 --> 00:22:29.950
+and we'll get that from wes.js.
+
+434
+00:22:29.950 --> 00:22:31.490
+Let us see if this works.
+
+435
+00:22:31.490 --> 00:22:34.240
+If you import from twice, I don't think that will work.
+
+436
+00:22:35.350 --> 00:22:37.180
+All right, it does work.
+
+437
+00:22:37.180 --> 00:22:39.720
+But it's yellin' at me because like,
+
+438
+00:22:39.720 --> 00:22:42.133
+you're doing a named import.
+
+439
+00:22:44.281 --> 00:22:47.330
+You're doing a default import and a default export
+
+440
+00:22:47.330 --> 00:22:48.896
+so that's not what you want.
+
+441
+00:22:48.896 --> 00:22:52.283
+So I'm just gonna comment our westerhoff here real quick.
+
+442
+00:22:54.170 --> 00:22:56.320
+And now, we've got this variable called everything.
+
+443
+00:22:56.320 --> 00:22:58.173
+And if we console log everything,
+
+444
+00:23:03.650 --> 00:23:06.290
+inside of this we get, it's kinda like an object.
+
+445
+00:23:06.290 --> 00:23:08.460
+It's called a module here.
+
+446
+00:23:08.460 --> 00:23:13.200
+And you can see inside of it, we have a default,
+
+447
+00:23:13.200 --> 00:23:14.680
+which is wes bos.
+
+448
+00:23:14.680 --> 00:23:17.490
+Remember the default export?
+
+449
+00:23:17.490 --> 00:23:21.710
+And then you also have dog, eat and food.
+
+450
+00:23:21.710 --> 00:23:24.040
+So that's a function, these two are strings
+
+451
+00:23:24.040 --> 00:23:25.680
+and the default is in object.
+
+452
+00:23:25.680 --> 00:23:27.650
+So, kinda cool, if you ever wanna import
+
+453
+00:23:27.650 --> 00:23:29.940
+absolutely everything from a module.
+
+454
+00:23:29.940 --> 00:23:32.730
+You can use this star and that will give you
+
+455
+00:23:32.730 --> 00:23:37.120
+this object-looking thing, which has both your default
+
+456
+00:23:37.120 --> 00:23:39.510
+in the default name space as well as
+
+457
+00:23:39.510 --> 00:23:42.013
+all of your named exports as well.
+
+458
+00:23:44.070 --> 00:23:45.010
+Let's take a look here.
+
+459
+00:23:45.010 --> 00:23:47.500
+You can import as alias.
+
+460
+00:23:47.500 --> 00:23:49.700
+This is, I go back to this all the time.
+
+461
+00:23:49.700 --> 00:23:53.160
+I say 99% of the time, I just simply use
+
+462
+00:23:53.160 --> 00:23:57.120
+this syntax right here and being able to rename it,
+
+463
+00:23:57.120 --> 00:23:59.240
+that will cover you almost all of the time.
+
+464
+00:23:59.240 --> 00:24:01.010
+But there are some situations where you will need
+
+465
+00:24:01.010 --> 00:24:02.910
+to look up the syntax of this.
+
+466
+00:24:02.910 --> 00:24:05.360
+Quite honestly, I'd forget it from time to time as well.
+
+467
+00:24:05.360 --> 00:24:09.783
+They have a page for this as well with the export.
+
+468
+00:24:13.120 --> 00:24:17.800
+And you can see how to export different types of expressions
+
+469
+00:24:17.800 --> 00:24:21.850
+and objects and things like that.
+
+470
+00:24:21.850 --> 00:24:24.060
+We'll do a whole bunch of examples ourselves.
+
+471
+00:24:24.060 --> 00:24:27.940
+The last thing I wanna do is called an on-demand import.
+
+472
+00:24:27.940 --> 00:24:29.470
+You see this last one right here.
+
+473
+00:24:29.470 --> 00:24:32.380
+Our promise is equal to import module name.
+
+474
+00:24:32.380 --> 00:24:37.070
+So this is handy for when you want to import things
+
+475
+00:24:37.070 --> 00:24:41.450
+only when you need them, because let's say we've got,
+
+476
+00:24:41.450 --> 00:24:44.280
+let's go back to one of our examples right here.
+
+477
+00:24:44.280 --> 00:24:49.280
+Let's go into our exercises here
+
+478
+00:24:49.720 --> 00:24:53.540
+and go into the currency and take that huge object
+
+479
+00:24:54.610 --> 00:24:56.253
+right here of currencies.
+
+480
+00:24:57.280 --> 00:25:00.340
+And I'll go back to our folder which we're playing around in
+
+481
+00:25:00.340 --> 00:25:04.813
+in modules and let's just call it currencies.js.
+
+482
+00:25:05.660 --> 00:25:07.060
+I'm gonna paste it in there.
+
+483
+00:25:10.100 --> 00:25:12.700
+And I wanna export this thing as a default.
+
+484
+00:25:12.700 --> 00:25:17.700
+So just put an export default in front of it.
+
+485
+00:25:18.200 --> 00:25:21.330
+Actually, no, that's one situation where you can't do it.
+
+486
+00:25:21.330 --> 00:25:25.600
+You can export a variable declaration
+
+487
+00:25:25.600 --> 00:25:29.160
+but if you want to export default a variable declaration,
+
+488
+00:25:29.160 --> 00:25:30.250
+it doesn't work.
+
+489
+00:25:30.250 --> 00:25:32.660
+So, if this is a case, where I want the default thing
+
+490
+00:25:32.660 --> 00:25:36.170
+exported from currencies js, I must go to the bottom
+
+491
+00:25:36.170 --> 00:25:39.730
+of the file and exported default currencies.
+
+492
+00:25:39.730 --> 00:25:41.550
+And let's say I wanna click a button
+
+493
+00:25:41.550 --> 00:25:43.410
+and then display all the currencies.
+
+494
+00:25:43.410 --> 00:25:45.630
+One problem we might have with currencies
+
+495
+00:25:45.630 --> 00:25:48.440
+is that this is too big of a file to load
+
+496
+00:25:48.440 --> 00:25:51.310
+on like a homepage or when your scripts load.
+
+497
+00:25:51.310 --> 00:25:54.490
+Because it might not be necessary to actually load this.
+
+498
+00:25:54.490 --> 00:25:58.450
+So, what's a popular thing is people will on-demand
+
+499
+00:25:58.450 --> 00:26:01.100
+load JavaScript, maybe like shopping card JavaScript
+
+500
+00:26:01.100 --> 00:26:03.560
+will only be loaded when somebody hovers over
+
+501
+00:26:03.560 --> 00:26:05.450
+top of a buy now button.
+
+502
+00:26:05.450 --> 00:26:09.370
+Or a list of countries might only be loaded
+
+503
+00:26:09.370 --> 00:26:11.540
+when somebody opens the checkout
+
+504
+00:26:11.540 --> 00:26:16.040
+because that data is not needed until it's actually needed.
+
+505
+00:26:16.040 --> 00:26:18.080
+And doing that on-demand will make sure
+
+506
+00:26:18.080 --> 00:26:20.420
+that your website loads nice and fast.
+
+507
+00:26:20.420 --> 00:26:23.560
+So, if we wanna put a button on our page that clicks it
+
+508
+00:26:23.560 --> 00:26:25.780
+and loads the currencies to log it,
+
+509
+00:26:25.780 --> 00:26:26.982
+it'll work like this.
+
+510
+00:26:26.982 --> 00:26:28.720
+We're going to our index.html,
+
+511
+00:26:28.720 --> 00:26:30.683
+let's just give ourselves a button.
+
+512
+00:26:32.280 --> 00:26:34.913
+And say load currencies.
+
+513
+00:26:37.500 --> 00:26:39.790
+And let's go into our scripts.
+
+514
+00:26:39.790 --> 00:26:42.410
+And I'm gonna get rid of all of these console logs
+
+515
+00:26:42.410 --> 00:26:45.050
+just so we can keep it nice and clean.
+
+516
+00:26:45.050 --> 00:26:47.100
+I'm gonna get rid of this import as well.
+
+517
+00:26:49.620 --> 00:26:52.210
+And I'm going to first, select the button.
+
+518
+00:26:52.210 --> 00:26:57.210
+So const button is equal to document.querySelector
+
+519
+00:26:59.540 --> 00:27:03.143
+and we wanna grab our button.
+
+520
+00:27:06.470 --> 00:27:08.872
+Then we say button.addEventListener
+
+521
+00:27:08.872 --> 00:27:10.630
+and we'll listen for a click and when that happens,
+
+522
+00:27:10.630 --> 00:27:14.010
+now, this is a great used case for putting the code
+
+523
+00:27:14.010 --> 00:27:15.500
+in another file.
+
+524
+00:27:15.500 --> 00:27:17.320
+So normally, we will just go up here
+
+525
+00:27:17.320 --> 00:27:20.810
+and make a little function called handleButtonClick.
+
+526
+00:27:20.810 --> 00:27:23.650
+But what we can do is we can go into our handlers.js
+
+527
+00:27:24.510 --> 00:27:26.760
+and make a function called handleButtonClick,
+
+528
+00:27:27.900 --> 00:27:29.810
+that takes in the event.
+
+529
+00:27:29.810 --> 00:27:32.300
+And let's just console log the event.
+
+530
+00:27:32.300 --> 00:27:35.490
+Now, if we wanna make that accessible to our scripts js,
+
+531
+00:27:35.490 --> 00:27:38.920
+we export that, and we'll go back
+
+532
+00:27:38.920 --> 00:27:41.720
+into our scripts js and import it.
+
+533
+00:27:41.720 --> 00:27:45.370
+Import handleButtonClick from handlers.js.
+
+534
+00:27:53.035 --> 00:27:56.980
+And then we simply just pass it to our event listener.
+
+535
+00:27:56.980 --> 00:27:58.423
+So this is usually what I'll do.
+
+536
+00:27:58.423 --> 00:28:03.140
+I'll have scripts.js file that will select my elements
+
+537
+00:28:03.140 --> 00:28:04.950
+and hook up my event listeners.
+
+538
+00:28:04.950 --> 00:28:09.400
+And then almost all of my other utilities, data,
+
+539
+00:28:09.400 --> 00:28:13.877
+functionality, handlers, all of those go in separate files
+
+540
+00:28:13.877 --> 00:28:16.430
+and then I can import them in as I need it.
+
+541
+00:28:16.430 --> 00:28:21.430
+And that keeps my scripts.js or that keeps my entry point
+
+542
+00:28:22.920 --> 00:28:26.750
+nice and lean, and I'm able to quickly scan it and see
+
+543
+00:28:26.750 --> 00:28:28.600
+what does it do?
+
+544
+00:28:28.600 --> 00:28:30.180
+I can click to see, what does it do?
+
+545
+00:28:30.180 --> 00:28:31.870
+It selects a button, listens for a click
+
+546
+00:28:31.870 --> 00:28:33.400
+and then handles it.
+
+547
+00:28:33.400 --> 00:28:36.340
+And then, if I wanna know how does it do it,
+
+548
+00:28:36.340 --> 00:28:38.190
+then I wanna go a little bit further
+
+549
+00:28:38.190 --> 00:28:41.330
+into one of these modules and read that.
+
+550
+00:28:41.330 --> 00:28:45.730
+So, if we've got this up and running, let's go in here.
+
+551
+00:28:45.730 --> 00:28:47.720
+Click on it and when you click on it,
+
+552
+00:28:47.720 --> 00:28:49.600
+we are console logging the event.
+
+553
+00:28:49.600 --> 00:28:53.110
+Great, now, I can just nicely go to this nice, clean file
+
+554
+00:28:53.110 --> 00:28:55.913
+and work on my function here.
+
+555
+00:28:57.320 --> 00:28:59.390
+And I'll say handleButtonClick.
+
+556
+00:28:59.390 --> 00:29:02.270
+So, we're gonna console log, we wanna get
+
+557
+00:29:02.270 --> 00:29:04.830
+all of the currencies, so we could do this.
+
+558
+00:29:04.830 --> 00:29:09.697
+Import currencies from currencies.
+
+559
+00:29:12.890 --> 00:29:15.000
+Oh, we gotta put` a .js on the end.
+
+560
+00:29:15.000 --> 00:29:18.033
+And then here, console log currencies.
+
+561
+00:29:21.640 --> 00:29:24.773
+And if we go to our network tab and refresh this page here,
+
+562
+00:29:26.020 --> 00:29:29.570
+you'll see all of the script modules
+
+563
+00:29:29.570 --> 00:29:32.150
+that are being loaded here.
+
+564
+00:29:32.150 --> 00:29:33.990
+We've got our utilities, our wes,
+
+565
+00:29:33.990 --> 00:29:35.610
+our handles and our currencies.
+
+566
+00:29:35.610 --> 00:29:39.780
+And if I comment that out, you see currencies isn't here.
+
+567
+00:29:39.780 --> 00:29:43.290
+So how do I on-demand load some data
+
+568
+00:29:43.290 --> 00:29:45.000
+or some functionality from module?
+
+569
+00:29:45.000 --> 00:29:47.333
+Well, and so they make this async.
+
+570
+00:29:51.097 --> 00:29:54.130
+And then we'll say const currencies is equal to
+
+571
+00:29:58.307 --> 00:30:03.307
+await import currencies.js.
+
+572
+00:30:04.250 --> 00:30:08.490
+We're gonna get rid of this and let's also
+
+573
+00:30:08.490 --> 00:30:10.193
+just console log the currencies.
+
+574
+00:30:12.830 --> 00:30:15.440
+And now, you see, currencies.js is not loading
+
+575
+00:30:15.440 --> 00:30:17.680
+but when I click it, whoa!
+
+576
+00:30:17.680 --> 00:30:20.720
+You see how that request was made?
+
+577
+00:30:20.720 --> 00:30:23.731
+Only after I clicked it.
+
+578
+00:30:23.731 --> 00:30:26.590
+And then we go into our console and we get our module here.
+
+579
+00:30:26.590 --> 00:30:30.150
+And you can access the things like we did before.
+
+580
+00:30:30.150 --> 00:30:34.570
+So, in our case, if you wanna access the actual currencies,
+
+581
+00:30:34.570 --> 00:30:36.530
+we need to get the default.
+
+582
+00:30:36.530 --> 00:30:41.530
+So maybe we should name that module our currenciesModule.
+
+583
+00:30:44.000 --> 00:30:45.770
+And then if we want the actual currencies,
+
+584
+00:30:45.770 --> 00:30:49.283
+we access the default property on that.
+
+585
+00:30:51.530 --> 00:30:52.640
+Boom, and there we go.
+
+586
+00:30:52.640 --> 00:30:54.660
+Obviously, that's very fast 'cause I'm local
+
+587
+00:30:54.660 --> 00:30:56.350
+but if that was up on a server,
+
+588
+00:30:56.350 --> 00:30:58.370
+it definitely would take a little bit more time.
+
+589
+00:30:58.370 --> 00:31:01.270
+It does cache it, meaning that if someone
+
+590
+00:31:01.270 --> 00:31:03.450
+already clicked that again, it would have
+
+591
+00:31:03.450 --> 00:31:05.030
+already been imported, so then
+
+592
+00:31:05.030 --> 00:31:07.670
+it would be instant at that point.
+
+593
+00:31:07.670 --> 00:31:10.531
+One other little trick that you can do
+
+594
+00:31:10.531 --> 00:31:15.531
+is if these currencies had a couple other exports on it,
+
+595
+00:31:15.660 --> 00:31:20.660
+so maybe like export const localCurrency is equal to CAD,
+
+596
+00:31:23.160 --> 00:31:26.700
+I wanted to import that as well on demand.
+
+597
+00:31:26.700 --> 00:31:30.490
+I go back to my handlers here and we could obviously
+
+598
+00:31:30.490 --> 00:31:32.170
+just console log the currencies module
+
+599
+00:31:32.170 --> 00:31:34.750
+and on that, you would see that we have our local currency
+
+600
+00:31:34.750 --> 00:31:36.990
+as well as the default object.
+
+601
+00:31:36.990 --> 00:31:39.970
+But you can destructure those into their own variables
+
+602
+00:31:39.970 --> 00:31:42.880
+with the curly brackets, so we say,
+
+603
+00:31:42.880 --> 00:31:45.573
+localCurrency and default.
+
+604
+00:31:47.490 --> 00:31:52.300
+And let's just console log, local currency and default.
+
+605
+00:31:52.300 --> 00:31:55.750
+Now, you see, it's given me grief here about this currency.
+
+606
+00:31:55.750 --> 00:31:58.530
+It's kinda cool, it shows you what the currencies are, nice.
+
+607
+00:31:58.530 --> 00:32:01.180
+And then it says, unexpected keyword default
+
+608
+00:32:01.180 --> 00:32:04.200
+'cause default is a reserved word in JavaScript
+
+609
+00:32:04.200 --> 00:32:06.300
+like function and async and export,
+
+610
+00:32:06.300 --> 00:32:07.700
+those are all reserved words.
+
+611
+00:32:07.700 --> 00:32:10.303
+You cannot use those as variable names.
+
+612
+00:32:11.150 --> 00:32:13.490
+So here, it's telling me something's broken.
+
+613
+00:32:13.490 --> 00:32:16.870
+So what we have to do there is rename it default
+
+614
+00:32:16.870 --> 00:32:18.470
+and we'll just call it currency.
+
+615
+00:32:19.800 --> 00:32:21.900
+Now, it's just a variable called currency.
+
+616
+00:32:24.010 --> 00:32:26.280
+And now we've got is we've got our local currency
+
+617
+00:32:26.280 --> 00:32:28.490
+and the currency object.
+
+618
+00:32:28.490 --> 00:32:32.510
+So if you are destructuring a property,
+
+619
+00:32:32.510 --> 00:32:34.640
+the properties called default is not allowed
+
+620
+00:32:34.640 --> 00:32:36.473
+to have a variable called default.
+
+621
+00:32:37.700 --> 00:32:40.550
+So, if that's the case, then you need to use
+
+622
+00:32:40.550 --> 00:32:44.230
+desctructuring renaming to rename it to something else
+
+623
+00:32:44.230 --> 00:32:46.620
+which is called currency in this case.
+
+624
+00:32:46.620 --> 00:32:48.120
+I think that's enough in this video.
+
+625
+00:32:48.120 --> 00:32:49.520
+In the next one, we'll jump into
+
+626
+00:32:49.520 --> 00:32:52.230
+some more real world examples and then also
+
+627
+00:32:52.230 --> 00:32:55.563
+get into using external bundled modules.
+

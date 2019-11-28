@@ -1,0 +1,2058 @@
+﻿WEBVTT
+
+1
+00:00:00.694 --> 00:00:03.277
+(lively music)
+
+2
+00:00:04.660 --> 00:00:07.683
+<v Instructor>Red, tan, black.</v>
+
+3
+00:00:09.730 --> 00:00:11.160
+Black.
+
+4
+00:00:11.160 --> 00:00:12.600
+White.
+
+5
+00:00:12.600 --> 00:00:16.633
+Brown, cadet blue, slate blue.
+
+6
+00:00:17.570 --> 00:00:18.903
+Deep sky blue.
+
+7
+00:00:19.750 --> 00:00:20.793
+Papaya whip.
+
+8
+00:00:22.610 --> 00:00:23.913
+Medium turquoise.
+
+9
+00:00:24.920 --> 00:00:26.683
+Light golden rod yellow.
+
+10
+00:00:27.740 --> 00:00:29.300
+Boom.
+
+11
+00:00:29.300 --> 00:00:33.600
+I got it, okay, so this is one of my favorite exercises,
+
+12
+00:00:33.600 --> 00:00:35.290
+and if you've taken my JavaScript 30,
+
+13
+00:00:35.290 --> 00:00:38.460
+you know that we use this speech recognition API
+
+14
+00:00:39.340 --> 00:00:42.490
+which is currently only available in Chrome,
+
+15
+00:00:42.490 --> 00:00:44.830
+but it's kind of a fun one to use
+
+16
+00:00:44.830 --> 00:00:47.310
+because we can make a little bit of a game with it
+
+17
+00:00:47.310 --> 00:00:49.010
+all while learning and getting better
+
+18
+00:00:49.010 --> 00:00:50.750
+with your JavaScript skills.
+
+19
+00:00:50.750 --> 00:00:52.370
+So, the first thing I want you to do is
+
+20
+00:00:52.370 --> 00:00:55.220
+you have to be in chrome for this one, unfortunately,
+
+21
+00:00:55.220 --> 00:00:59.630
+and you have to about column flags in your browser
+
+22
+00:00:59.630 --> 00:01:02.380
+and that will redirect you to chrome
+
+23
+00:01:02.380 --> 00:01:04.380
+forward slash, forward slash flags
+
+24
+00:01:04.380 --> 00:01:07.910
+and make sure you have experimental web platform features
+
+25
+00:01:07.910 --> 00:01:12.870
+turned on, we did that one with the existing example.
+
+26
+00:01:12.870 --> 00:01:15.163
+So you should already have that turned on.
+
+27
+00:01:16.520 --> 00:01:18.340
+Next, we need to get a little bit of a server
+
+28
+00:01:18.340 --> 00:01:23.250
+up and running, so I have this folder, 82 Web Speech colors
+
+29
+00:01:23.250 --> 00:01:25.170
+and if we take a look at what we've got here,
+
+30
+00:01:25.170 --> 00:01:28.220
+I've given you colors, yes, which gives us
+
+31
+00:01:28.220 --> 00:01:30.807
+every color that's available in CSS
+
+32
+00:01:30.807 --> 00:01:34.053
+and the corresponding hex code for that one.
+
+33
+00:01:35.460 --> 00:01:39.070
+And then I've also given you this function called is dark.
+
+34
+00:01:39.070 --> 00:01:41.190
+And this is just a function that takes in a color name
+
+35
+00:01:41.190 --> 00:01:46.190
+and figures out if it's a dark or light color.
+
+36
+00:01:46.340 --> 00:01:48.380
+I don't know, somebody online figured out
+
+37
+00:01:48.380 --> 00:01:53.007
+that the R G B values, if they're all multiplied
+
+38
+00:01:53.980 --> 00:01:56.330
+and added together if they're less than 120,
+
+39
+00:01:56.330 --> 00:02:00.680
+that's a dark color and then anything else is a light color
+
+40
+00:02:00.680 --> 00:02:04.150
+and that is what allows me to do things like a white text
+
+41
+00:02:04.150 --> 00:02:07.410
+on here and then a dark text on there.
+
+42
+00:02:07.410 --> 00:02:10.330
+So, I've given that to you already just because like,
+
+43
+00:02:10.330 --> 00:02:12.750
+I don't know, I stole that off of Stack Overflow.
+
+44
+00:02:12.750 --> 00:02:15.860
+And (chuckles) it's all I know how that works.
+
+45
+00:02:15.860 --> 00:02:20.570
+And then we've got styles, which is little bit styles
+
+46
+00:02:20.570 --> 00:02:23.850
+here for you, one night, we'll do a little bit
+
+47
+00:02:23.850 --> 00:02:27.540
+of animation, when you say things like corn silk, boom!
+
+48
+00:02:27.540 --> 00:02:31.270
+You see how that just animated itself up, dark green,
+
+49
+00:02:31.270 --> 00:02:34.500
+lime green, oh, that was a good one.
+
+50
+00:02:34.500 --> 00:02:36.863
+'Cause it got lime green and lime green.
+
+51
+00:02:38.350 --> 00:02:39.420
+Black.
+
+52
+00:02:39.420 --> 00:02:41.110
+You see that we're turning the background the color
+
+53
+00:02:41.110 --> 00:02:42.290
+that we see as well?
+
+54
+00:02:42.290 --> 00:02:45.320
+So, that's what I've got so far, I've got a little
+
+55
+00:02:45.320 --> 00:02:46.800
+packaged JSON here.
+
+56
+00:02:46.800 --> 00:02:49.380
+Nothing we haven't seen before, parcel-bundler,
+
+57
+00:02:49.380 --> 00:02:51.360
+last one Chrome version.
+
+58
+00:02:51.360 --> 00:02:53.010
+And let's get going.
+
+59
+00:02:53.010 --> 00:02:54.810
+So, open up your terminal to this
+
+60
+00:02:54.810 --> 00:02:56.890
+and you need to type npm install
+
+61
+00:02:56.890 --> 00:02:59.830
+and that will go ahead and install parcel for you.
+
+62
+00:02:59.830 --> 00:03:00.810
+Make sure you run that.
+
+63
+00:03:00.810 --> 00:03:02.620
+I've already run it and then when you've done that
+
+64
+00:03:02.620 --> 00:03:05.980
+you can type nmp start and I forgot
+
+65
+00:03:05.980 --> 00:03:09.490
+to put the script in here, so I'm gonna go start,
+
+66
+00:03:09.490 --> 00:03:11.700
+it probably will be in here for you,
+
+67
+00:03:11.700 --> 00:03:15.720
+which will be partial index.html.
+
+68
+00:03:15.720 --> 00:03:16.863
+And let's start it up.
+
+69
+00:03:20.420 --> 00:03:21.253
+There we so.
+
+70
+00:03:21.253 --> 00:03:23.280
+So this is the base that we have so far.
+
+71
+00:03:23.280 --> 00:03:28.280
+So, let's start up with getting the web speech going.
+
+72
+00:03:28.870 --> 00:03:31.000
+That's pretty fun, and then we'll also go back
+
+73
+00:03:31.000 --> 00:03:33.670
+on how do we wire that up to colors.
+
+74
+00:03:33.670 --> 00:03:35.680
+'Cause there's really two things going on here.
+
+75
+00:03:35.680 --> 00:03:37.030
+So let's open up speech.js.
+
+76
+00:03:39.020 --> 00:03:41.243
+And let's make a function called start.
+
+77
+00:03:42.380 --> 00:03:46.610
+And in that function, we are going to see
+
+78
+00:03:46.610 --> 00:03:50.570
+if their browser supports this.
+
+79
+00:03:50.570 --> 00:03:52.450
+And we'll run that on page load.
+
+80
+00:03:52.450 --> 00:03:56.230
+So, we need to check if there is
+
+81
+00:03:56.230 --> 00:03:58.333
+something called window.speechrecognition.
+
+82
+00:03:59.790 --> 00:04:01.510
+And if you see, I have just run it there,
+
+83
+00:04:01.510 --> 00:04:04.462
+this is undefined and that's because it's actually,
+
+84
+00:04:04.462 --> 00:04:08.077
+it's window.webkitSpeechRecorgnition.
+
+85
+00:04:10.640 --> 00:04:12.670
+And that will give you the actual function for it.
+
+86
+00:04:12.670 --> 00:04:16.890
+So this is what is referred to as the vendor prefix.
+
+87
+00:04:16.890 --> 00:04:19.660
+Meaning that the API is not totally done
+
+88
+00:04:19.660 --> 00:04:21.560
+so they would just vendor prefix it
+
+89
+00:04:21.560 --> 00:04:24.600
+by putting their prefix in front of it.
+
+90
+00:04:24.600 --> 00:04:26.710
+Chromes engine used to be called WebKit,
+
+91
+00:04:26.710 --> 00:04:29.840
+it's now called blink, but there's still a lot of stuff
+
+92
+00:04:29.840 --> 00:04:33.400
+that says WebKit in there that's why it says WebKit.
+
+93
+00:04:33.400 --> 00:04:37.460
+And what we need to do is just to sort of normalize that.
+
+94
+00:04:37.460 --> 00:04:40.103
+So what I'll do is on the very first right here,
+
+95
+00:04:40.103 --> 00:04:45.103
+I'll say window.speechRecognition is equal to
+
+96
+00:04:46.090 --> 00:04:50.000
+window.SpeechRecognition or
+
+97
+00:04:50.000 --> 00:04:51.500
+window.webkitSpeakRecognition.
+
+98
+00:04:55.810 --> 00:04:57.810
+And now, if we take a look at our code,
+
+99
+00:04:57.810 --> 00:05:00.260
+we should now just have speech recognition.
+
+100
+00:05:00.260 --> 00:05:01.093
+There we go.
+
+101
+00:05:01.093 --> 00:05:02.310
+Now we have that in there.
+
+102
+00:05:02.310 --> 00:05:05.120
+So now in here, we can see, see if their browser supports it
+
+103
+00:05:05.120 --> 00:05:08.393
+so we'll say if speechRecognition is in,
+
+104
+00:05:12.060 --> 00:05:16.620
+actually this needs to be in quotes, is in window,
+
+105
+00:05:16.620 --> 00:05:19.350
+that will check if there is a property
+
+106
+00:05:19.350 --> 00:05:23.610
+called speech recognition, that will give us true or false
+
+107
+00:05:23.610 --> 00:05:25.200
+and then we'll check for the opposites.
+
+108
+00:05:25.200 --> 00:05:27.360
+So wrap that in another set of parenthesis
+
+109
+00:05:27.360 --> 00:05:28.771
+and put a bang in front of it.
+
+110
+00:05:28.771 --> 00:05:31.910
+If there is no speech recognition comes along,
+
+111
+00:05:31.910 --> 00:05:36.910
+sorry, your browser does not support speech reco.
+
+112
+00:05:40.880 --> 00:05:44.370
+And then we will just return.
+
+113
+00:05:44.370 --> 00:05:46.410
+And that will stop the function from running.
+
+114
+00:05:46.410 --> 00:05:48.253
+Otherwise, it does work.
+
+115
+00:05:49.540 --> 00:05:53.323
+And then we will go ahead and start running our code.
+
+116
+00:05:54.630 --> 00:05:57.140
+You see when I return here, keeps getting turned off
+
+117
+00:05:57.140 --> 00:06:01.347
+by my parcel, I'm just gonna console log starting
+
+118
+00:06:01.347 --> 00:06:03.710
+(mumbles) will stop deleting that.
+
+119
+00:06:03.710 --> 00:06:06.020
+All right, so we refresh the window, it says starting
+
+120
+00:06:06.020 --> 00:06:08.580
+because it does exist.
+
+121
+00:06:08.580 --> 00:06:12.070
+Now, what we need to do down here is to make
+
+122
+00:06:12.070 --> 00:06:17.010
+a new speech reco, so I say const recognition
+
+123
+00:06:17.870 --> 00:06:19.520
+is equal to new speechRecognition
+
+124
+00:06:24.590 --> 00:06:27.270
+and then we need a couple settings for that.
+
+125
+00:06:27.270 --> 00:06:31.960
+So say recognition.continuous is equal to true.
+
+126
+00:06:31.960 --> 00:06:36.140
+And you can even see the tooltip will tell me
+
+127
+00:06:37.430 --> 00:06:39.140
+it takes a Boolean or not.
+
+128
+00:06:39.140 --> 00:06:40.470
+So we'll set that to true.
+
+129
+00:06:40.470 --> 00:06:43.660
+And that's whether or not it should continually
+
+130
+00:06:43.660 --> 00:06:46.800
+look for speech recognition or stop itself
+
+131
+00:06:46.800 --> 00:06:48.110
+after it has recognized.
+
+132
+00:06:48.110 --> 00:06:51.160
+So, if you think about SIRI or something on your phone,
+
+133
+00:06:51.160 --> 00:06:54.030
+it'll stop listening after it thinks you're done.
+
+134
+00:06:54.030 --> 00:06:57.403
+In our case, we just wanna run this sucker forever.
+
+135
+00:06:57.403 --> 00:06:59.720
+Then we also want recognition.intermResults
+
+136
+00:07:03.170 --> 00:07:05.740
+and that will just the results as you're speaking
+
+137
+00:07:05.740 --> 00:07:08.100
+rather than waiting until you are done speaking
+
+138
+00:07:08.100 --> 00:07:09.770
+to give you the results.
+
+139
+00:07:09.770 --> 00:07:14.770
+And then we also need to hook up a event listener.
+
+140
+00:07:15.040 --> 00:07:16.550
+Now, this is a little bit different
+
+141
+00:07:16.550 --> 00:07:18.760
+than most event listeners 'cause normally,
+
+142
+00:07:18.760 --> 00:07:22.690
+you do something like, let's just come to log recognition
+
+143
+00:07:22.690 --> 00:07:23.690
+and see what we got.
+
+144
+00:07:27.300 --> 00:07:29.730
+Here we go, we got speech recognition right here
+
+145
+00:07:29.730 --> 00:07:34.730
+and if you look at the prototype, there is no
+
+146
+00:07:34.967 --> 00:07:39.880
+.atevent listener, so how do you listen for a result?
+
+147
+00:07:39.880 --> 00:07:43.770
+Well, what you can do is, you can listen
+
+148
+00:07:43.770 --> 00:07:47.003
+for an event like this where it's recognition.onresult,
+
+149
+00:07:48.050 --> 00:07:52.070
+all lowercase and then you feed it a function
+
+150
+00:07:52.070 --> 00:07:53.820
+and we're gonna call that handleResult
+
+151
+00:07:56.920 --> 00:07:58.120
+and then we're gonna start it.
+
+152
+00:07:58.120 --> 00:08:01.623
+So, recognition.start.
+
+153
+00:08:03.380 --> 00:08:06.470
+Now we need to go ahead and code these results.
+
+154
+00:08:06.470 --> 00:08:09.520
+So let's make a new file called handler.
+
+155
+00:08:09.520 --> 00:08:11.463
+Or handlers.js.
+
+156
+00:08:12.820 --> 00:08:15.180
+And like the function, we'll export it
+
+157
+00:08:16.196 --> 00:08:19.160
+of handleResult, it goes to see event.
+
+158
+00:08:19.160 --> 00:08:21.090
+And let's just to log the event
+
+159
+00:08:23.340 --> 00:08:25.210
+to see what we're working with
+
+160
+00:08:25.210 --> 00:08:27.430
+then we'll go on to the top here and import that.
+
+161
+00:08:27.430 --> 00:08:32.400
+Import handleResult from handlers.
+
+162
+00:08:32.400 --> 00:08:34.770
+So in this case, we don't need .js on the end.
+
+163
+00:08:34.770 --> 00:08:36.143
+Because I'm using parcel.
+
+164
+00:08:38.640 --> 00:08:43.300
+And you may see a little, if I was on a different port
+
+165
+00:08:43.300 --> 00:08:48.170
+right now, it would probably ask me to have access to it.
+
+166
+00:08:48.170 --> 00:08:49.500
+Just like the webcam.
+
+167
+00:08:49.500 --> 00:08:54.230
+And if you click on this, you can change whether you should
+
+168
+00:08:54.230 --> 00:08:56.550
+allow access or block microphone access.
+
+169
+00:08:56.550 --> 00:09:00.063
+In our case, you wanna allow it and then give it a refresh.
+
+170
+00:09:01.230 --> 00:09:05.390
+And now, it should be listening to our voice
+
+171
+00:09:05.390 --> 00:09:09.933
+and I'm not getting any results typing in.
+
+172
+00:09:13.400 --> 00:09:16.270
+Oh, looks like I forgot an I there.
+
+173
+00:09:16.270 --> 00:09:20.140
+That's why I have spell check turned on in my editor.
+
+174
+00:09:20.140 --> 00:09:22.073
+So I can put I in there, there we go.
+
+175
+00:09:22.980 --> 00:09:23.813
+There we go.
+
+176
+00:09:23.813 --> 00:09:26.370
+Now, as I say things, we are getting these events
+
+177
+00:09:26.370 --> 00:09:29.600
+streaming in and inside of, let's open up
+
+178
+00:09:29.600 --> 00:09:31.610
+one of my events here.
+
+179
+00:09:31.610 --> 00:09:34.340
+And the inside of this is very much like a click event
+
+180
+00:09:34.340 --> 00:09:37.520
+but it's just a speech recognition event.
+
+181
+00:09:37.520 --> 00:09:40.300
+Inside of that, we have results.
+
+182
+00:09:40.300 --> 00:09:43.530
+And then inside of that, you've got a couple things
+
+183
+00:09:43.530 --> 00:09:44.540
+that it thinks it is.
+
+184
+00:09:44.540 --> 00:09:49.540
+So, it thinks that I said, I say things we are getting
+
+185
+00:09:50.330 --> 00:09:53.170
+and then it also looks at another one, these events.
+
+186
+00:09:53.170 --> 00:09:55.220
+So we're gonna be just taking both of those
+
+187
+00:09:55.220 --> 00:10:00.220
+and it will keep giving you words as it tries to figure out
+
+188
+00:10:00.540 --> 00:10:03.700
+what you had said, even after you stop talking,
+
+189
+00:10:03.700 --> 00:10:04.810
+it keeps streaming them in
+
+190
+00:10:04.810 --> 00:10:07.810
+until it's confident on its result.
+
+191
+00:10:07.810 --> 00:10:09.370
+So let's go back in our handlers here
+
+192
+00:10:09.370 --> 00:10:11.400
+and make another function here
+
+193
+00:10:12.400 --> 00:10:16.563
+called logEvent or maybe logWords we'll call it,
+
+194
+00:10:18.310 --> 00:10:22.790
+that takes in the results, and let's just simply
+
+195
+00:10:25.101 --> 00:10:28.000
+logWords event.results.
+
+196
+00:10:28.000 --> 00:10:30.750
+And let's just console log the results.
+
+197
+00:10:30.750 --> 00:10:32.003
+See what we get here?
+
+198
+00:10:35.780 --> 00:10:36.663
+I love pizza.
+
+199
+00:10:38.680 --> 00:10:42.400
+All right, so sometimes, we get this speech recognition
+
+200
+00:10:42.400 --> 00:10:45.690
+with a couple things in it, we wanna grab the last one.
+
+201
+00:10:45.690 --> 00:10:48.000
+And then inside of that, as far as I can see,
+
+202
+00:10:48.000 --> 00:10:51.590
+it only ever get one speech recognition alternative
+
+203
+00:10:51.590 --> 00:10:55.284
+which has a transcript in it.
+
+204
+00:10:55.284 --> 00:11:00.284
+So, if we console log results, the last one,
+
+205
+00:11:00.770 --> 00:11:05.770
+so, results.length minus one, and we grab
+
+206
+00:11:06.470 --> 00:11:08.420
+the first thing inside of that
+
+207
+00:11:08.420 --> 00:11:13.370
+and then the transcript of that, I love pizza.
+
+208
+00:11:16.310 --> 00:11:17.143
+Beautiful.
+
+209
+00:11:19.090 --> 00:11:19.923
+Beautiful.
+
+210
+00:11:21.040 --> 00:11:22.010
+There we go.
+
+211
+00:11:22.010 --> 00:11:23.600
+All right, so, (chuckles).
+
+212
+00:11:23.600 --> 00:11:25.580
+That took me a little bit to go through it
+
+213
+00:11:25.580 --> 00:11:27.950
+but essentially, if you wondered how did I get to this,
+
+214
+00:11:27.950 --> 00:11:29.860
+use log the first thing, then you look at
+
+215
+00:11:29.860 --> 00:11:32.310
+what the result is, you log the next thing,
+
+216
+00:11:32.310 --> 00:11:33.620
+you look at what the result is
+
+217
+00:11:33.620 --> 00:11:35.060
+and you just kinda keep chipping away
+
+218
+00:11:35.060 --> 00:11:38.070
+until you finally get to the very very
+
+219
+00:11:38.070 --> 00:11:40.683
+deeply nested thing that you want.
+
+220
+00:11:45.710 --> 00:11:50.610
+All right, so now that we've got the speech being chimed in,
+
+221
+00:11:50.610 --> 00:11:55.030
+let's go and get the color layout working.
+
+222
+00:11:55.030 --> 00:11:58.300
+So if we look colors.js here,
+
+223
+00:11:58.300 --> 00:12:01.560
+we want to loop over each of these colors
+
+224
+00:12:01.560 --> 00:12:05.963
+and then display it as a span on there.
+
+225
+00:12:07.680 --> 00:12:09.160
+So, the other thing I did, I'm not sure
+
+226
+00:12:09.160 --> 00:12:10.330
+if you noticed it before or not,
+
+227
+00:12:10.330 --> 00:12:15.240
+is I sorted the colors by the length of the name,
+
+228
+00:12:15.240 --> 00:12:18.063
+so the last one was pale gold and rod yellow.
+
+229
+00:12:20.078 --> 00:12:24.873
+So let's make a function right here that is called,
+
+230
+00:12:25.770 --> 00:12:27.820
+actually no, not a function, a variable,
+
+231
+00:12:27.820 --> 00:12:32.820
+say, export const colorsByLength is equal to
+
+232
+00:12:32.970 --> 00:12:37.970
+object.keys colors and that is colors, good.
+
+233
+00:12:39.340 --> 00:12:43.653
+And that should give us an array of all the colors.
+
+234
+00:12:45.538 --> 00:12:47.130
+And then we can sort.
+
+235
+00:12:54.490 --> 00:12:55.570
+Let's see what we got there.
+
+236
+00:12:55.570 --> 00:12:57.847
+Console log, colorsByLength.
+
+237
+00:13:05.400 --> 00:13:06.233
+Check.
+
+238
+00:13:08.059 --> 00:13:11.040
+Oh, it's not going to log since we're not pulling
+
+239
+00:13:11.040 --> 00:13:13.640
+anything in from this file yet.
+
+240
+00:13:13.640 --> 00:13:18.010
+So what we'll need to do is to pull it in on speech js.
+
+241
+00:13:18.010 --> 00:13:20.117
+So input colorsByLength, put that
+
+242
+00:13:22.630 --> 00:13:26.263
+in the curly brackets, from colors.
+
+243
+00:13:30.940 --> 00:13:32.743
+Console log, colors by length.
+
+244
+00:13:35.350 --> 00:13:38.410
+Okay, so that is an array of all the colors.
+
+245
+00:13:38.410 --> 00:13:41.200
+Now we simply just need to run a sort command
+
+246
+00:13:41.200 --> 00:13:42.563
+based on their length.
+
+247
+00:13:43.530 --> 00:13:45.003
+So, we'll do .sort.
+
+248
+00:13:49.756 --> 00:13:53.720
+And you know from the sort one, we get a and b.
+
+249
+00:13:53.720 --> 00:13:58.153
+And we simply return a.length minus b.length.
+
+250
+00:13:59.150 --> 00:14:01.510
+And again, if you return a positive number,
+
+251
+00:14:01.510 --> 00:14:03.600
+it'll put it in front, if you return a negative number,
+
+252
+00:14:03.600 --> 00:14:06.240
+it'll put it behind, and if you return zero,
+
+253
+00:14:06.240 --> 00:14:07.913
+it will not move that item.
+
+254
+00:14:09.590 --> 00:14:11.100
+So there we go, starts at red.
+
+255
+00:14:11.100 --> 00:14:14.080
+Goes all the way down to the last one
+
+256
+00:14:14.080 --> 00:14:16.113
+should be pale gold and rod yellow.
+
+257
+00:14:17.540 --> 00:14:19.640
+There we go, or light gold and rod yellow.
+
+258
+00:14:20.630 --> 00:14:24.730
+Okay, so let's go into speech.js
+
+259
+00:14:24.730 --> 00:14:29.730
+and go ahead and create some, let's create a new function.
+
+260
+00:14:30.910 --> 00:14:32.133
+Let's put it above this.
+
+261
+00:14:33.790 --> 00:14:38.210
+Function display colors, I gotta use a regular old spelling,
+
+262
+00:14:38.210 --> 00:14:43.140
+not Canadian spelling, and what that will do
+
+263
+00:14:43.140 --> 00:14:46.423
+is it should take in an array of colors.
+
+264
+00:14:48.510 --> 00:14:50.450
+And let's just call that right away
+
+265
+00:14:50.450 --> 00:14:51.740
+at the bottom of the page.
+
+266
+00:14:51.740 --> 00:14:54.093
+So display colors.
+
+267
+00:14:56.070 --> 00:14:59.987
+We'll say colors.map, color.
+
+268
+00:15:03.537 --> 00:15:08.537
+And return backtext, we need the span,
+
+269
+00:15:09.020 --> 00:15:12.563
+that should have a class of color on it.
+
+270
+00:15:15.270 --> 00:15:18.160
+And let's just put the color name in there
+
+271
+00:15:18.160 --> 00:15:20.653
+just to see where we're working right there.
+
+272
+00:15:24.130 --> 00:15:27.890
+Then, if we look at our index.html,
+
+273
+00:15:27.890 --> 00:15:29.740
+we've got this with the class of colors
+
+274
+00:15:29.740 --> 00:15:33.670
+so we'll select that on page load.
+
+275
+00:15:33.670 --> 00:15:38.670
+Const colorsEl is equal to document.querySelector, .colors.
+
+276
+00:15:42.330 --> 00:15:47.010
+And then when the page loads, we'll say colorsEL
+
+277
+00:15:47.950 --> 00:15:51.340
+is equal to or colorsEl.innerhtml
+
+278
+00:15:52.540 --> 00:15:55.233
+is equal to display colors.
+
+279
+00:15:57.220 --> 00:16:00.003
+Cannot read property map of undefined, okay.
+
+280
+00:16:01.450 --> 00:16:05.900
+I'm gonna turn off this annoying thing.
+
+281
+00:16:05.900 --> 00:16:08.630
+So it stops streaming in to my console.
+
+282
+00:16:08.630 --> 00:16:11.142
+Cannot read property map of undefined.
+
+283
+00:16:11.142 --> 00:16:15.023
+Oh, it says I didn't pass it in the colors.
+
+284
+00:16:19.590 --> 00:16:21.450
+Undefined, okay.
+
+285
+00:16:21.450 --> 00:16:25.130
+So we'll work in here but we forgot to return
+
+286
+00:16:25.130 --> 00:16:26.630
+the colors map from there.
+
+287
+00:16:26.630 --> 00:16:28.510
+There we go, okay, so that gives us a list
+
+288
+00:16:28.510 --> 00:16:29.513
+of all the colors.
+
+289
+00:16:30.410 --> 00:16:34.100
+We should be able to return.join and now,
+
+290
+00:16:34.100 --> 00:16:36.914
+we'll get rid of those commas, there we go.
+
+291
+00:16:36.914 --> 00:16:40.780
+Then we should be able to add an in line style property
+
+292
+00:16:40.780 --> 00:16:41.613
+to each of these.
+
+293
+00:16:41.613 --> 00:16:46.053
+So style background black.
+
+294
+00:16:47.580 --> 00:16:48.690
+Okay, it makes them all black.
+
+295
+00:16:48.690 --> 00:16:50.230
+But obviously, we're not gonna do black,
+
+296
+00:16:50.230 --> 00:16:53.143
+we're gonna say background, this is a name of the color.
+
+297
+00:16:54.290 --> 00:16:57.040
+Hey, there we go, looking good.
+
+298
+00:16:57.040 --> 00:17:02.040
+And then, we want to know if that color is dark or not.
+
+299
+00:17:02.810 --> 00:17:07.640
+Because we want to pass a class of dark
+
+300
+00:17:07.640 --> 00:17:11.050
+to the ones that are dark and not to the ones that are light
+
+301
+00:17:11.050 --> 00:17:13.150
+and that will change the color of a text according
+
+302
+00:17:13.150 --> 00:17:15.260
+to the CSS that I wrote ahead of time.
+
+303
+00:17:15.260 --> 00:17:18.950
+So what we can do is do dollar curly bracket
+
+304
+00:17:18.950 --> 00:17:23.940
+and then we can import that isDark function from our colors
+
+305
+00:17:26.090 --> 00:17:27.510
+that will return true or false.
+
+306
+00:17:27.510 --> 00:17:32.510
+So we can say isDark color, and if that is true,
+
+307
+00:17:34.860 --> 00:17:38.710
+or we can use &amp;&amp; here, &amp;&amp;, we'll just say dark.
+
+308
+00:17:38.710 --> 00:17:40.530
+And that should give it, there we go.
+
+309
+00:17:40.530 --> 00:17:44.720
+It will give it a class of dark to the ones that are dark
+
+310
+00:17:44.720 --> 00:17:47.820
+and nothing, oh, in this case, it gives a class of false.
+
+311
+00:17:47.820 --> 00:17:50.040
+(laughs) we don't want that, okay,
+
+312
+00:17:50.040 --> 00:17:52.310
+we can't use &amp;&amp; here, we gotta go back
+
+313
+00:17:52.310 --> 00:17:56.853
+to regular (mumbles) and just use the empty string.
+
+314
+00:17:57.690 --> 00:17:58.523
+There we go.
+
+315
+00:17:58.523 --> 00:18:00.000
+Color, and then we're good.
+
+316
+00:18:00.000 --> 00:18:01.270
+Class of dark.
+
+317
+00:18:01.270 --> 00:18:03.730
+All right, next up, we'll go into our handlers here
+
+318
+00:18:03.730 --> 00:18:08.380
+and we need to do a couple of thing with the actual,
+
+319
+00:18:08.380 --> 00:18:10.780
+the color or the word that user has said.
+
+320
+00:18:10.780 --> 00:18:14.680
+So let's actually take this on the thing here.
+
+321
+00:18:14.680 --> 00:18:18.680
+I'll say const word or words
+
+322
+00:18:19.750 --> 00:18:24.750
+is equal to that and that's just calls a log of words
+
+323
+00:18:24.950 --> 00:18:28.250
+and I believe we have to start it again.
+
+324
+00:18:28.250 --> 00:18:29.083
+Red.
+
+325
+00:18:30.150 --> 00:18:31.330
+Results is not defined.
+
+326
+00:18:31.330 --> 00:18:32.720
+Oh, let's do this.
+
+327
+00:18:32.720 --> 00:18:37.720
+So say, const results is equal to event.results.
+
+328
+00:18:39.150 --> 00:18:41.500
+Or even better, we can
+
+329
+00:18:45.892 --> 00:18:50.892
+destructure the results property in the function definition.
+
+330
+00:18:51.220 --> 00:18:54.803
+And then, pass results there and then we don't need that.
+
+331
+00:18:56.440 --> 00:18:57.860
+Red.
+
+332
+00:18:57.860 --> 00:18:59.190
+Green.
+
+333
+00:18:59.190 --> 00:19:00.023
+Here we go.
+
+334
+00:19:00.023 --> 00:19:02.090
+It's going twice 'cause I'm logging it twice now,
+
+335
+00:19:02.090 --> 00:19:03.230
+but that's okay.
+
+336
+00:19:03.230 --> 00:19:06.540
+And basically, we need to check if that the words
+
+337
+00:19:06.540 --> 00:19:09.660
+that are streaming in are a valid color.
+
+338
+00:19:09.660 --> 00:19:11.970
+So we'll do a little thing here, so it says
+
+339
+00:19:11.970 --> 00:19:16.580
+check if it is a valid color.
+
+340
+00:19:16.580 --> 00:19:21.550
+We have to lowercase everything so we don't have to deal
+
+341
+00:19:21.550 --> 00:19:25.110
+with upper and lowercase of however it likes
+
+342
+00:19:25.110 --> 00:19:27.060
+the case, our colors that we're saying.
+
+343
+00:19:30.730 --> 00:19:35.730
+We probably also need to strip any spaces out
+
+344
+00:19:37.480 --> 00:19:41.653
+because sometimes, if you say red,
+
+345
+00:19:43.550 --> 00:19:44.943
+it will put like a, here we go,
+
+346
+00:19:44.943 --> 00:19:47.950
+like a space in front of them sometimes for some reason.
+
+347
+00:19:47.950 --> 00:19:49.453
+So strip spaces out.
+
+348
+00:19:52.370 --> 00:19:54.700
+And then we'll check if it is a valid color
+
+349
+00:19:54.700 --> 00:19:59.700
+and if it is, then show the UI for that.
+
+350
+00:20:00.380 --> 00:20:02.010
+So, first, lowercase everything.
+
+351
+00:20:02.010 --> 00:20:07.010
+So we'll say let color is equal to words.toLowerCase.
+
+352
+00:20:12.110 --> 00:20:13.230
+That's a console, I have to go back
+
+353
+00:20:13.230 --> 00:20:14.880
+and change that in just a second.
+
+354
+00:20:16.160 --> 00:20:17.440
+Strip any spaces out.
+
+355
+00:20:17.440 --> 00:20:20.980
+So we'll say color is equal to color.replace.
+
+356
+00:20:20.980 --> 00:20:22.800
+Now I need to make this a let
+
+357
+00:20:23.730 --> 00:20:28.730
+and we're going to replace all spaces with nothing.
+
+358
+00:20:29.370 --> 00:20:33.743
+And if you want to use replace, you could just do this
+
+359
+00:20:33.743 --> 00:20:35.480
+and that should do it for you
+
+360
+00:20:35.480 --> 00:20:37.870
+but if there's more than one space,
+
+361
+00:20:37.870 --> 00:20:39.550
+then you have to use a RegEx.
+
+362
+00:20:39.550 --> 00:20:42.880
+There is a new replace all method coming,
+
+363
+00:20:42.880 --> 00:20:44.670
+which will do this for you but it's not
+
+364
+00:20:44.670 --> 00:20:46.240
+in the browsers just yet.
+
+365
+00:20:46.240 --> 00:20:50.241
+So we have just replaced and we have to use a RegEx.
+
+366
+00:20:50.241 --> 00:20:52.730
+And a RegEx will match all spaces,
+
+367
+00:20:52.730 --> 00:20:54.720
+that's how you match a space in RegEx
+
+368
+00:20:54.720 --> 00:20:57.850
+and then if you pass a g flag, that means global.
+
+369
+00:20:57.850 --> 00:21:01.063
+Find them all and replace them with nothing.
+
+370
+00:21:03.332 --> 00:21:04.165
+Okay.
+
+371
+00:21:05.260 --> 00:21:06.093
+Red.
+
+372
+00:21:08.000 --> 00:21:10.163
+There's no space in front of those now.
+
+373
+00:21:12.090 --> 00:21:15.830
+And then, we wanna check if it's a valid color.
+
+374
+00:21:15.830 --> 00:21:19.834
+So let's go in here, say the export function
+
+375
+00:21:19.834 --> 00:21:24.834
+isValidColor takes in a word
+
+376
+00:21:25.330 --> 00:21:30.330
+and we can simply just return colors, square bracket word
+
+377
+00:21:32.200 --> 00:21:36.274
+and that will simple return the actual hacks
+
+378
+00:21:36.274 --> 00:21:39.770
+if there is something matching and it will return
+
+379
+00:21:39.770 --> 00:21:42.270
+undefined if there is nothing there.
+
+380
+00:21:42.270 --> 00:21:44.620
+And in our case, we don't care about a hacks,
+
+381
+00:21:44.620 --> 00:21:45.930
+we care about a Boolean.
+
+382
+00:21:45.930 --> 00:21:47.830
+So if we put double bang in front of it,
+
+383
+00:21:47.830 --> 00:21:51.390
+that will coerce it into true or false.
+
+384
+00:21:51.390 --> 00:21:55.070
+So if we do, let me show you a quick example here.
+
+385
+00:21:55.070 --> 00:21:58.743
+We just say window.colors is equal to colors.
+
+386
+00:22:02.080 --> 00:22:05.313
+And I'm gonna turn off these log words for a second.
+
+387
+00:22:07.310 --> 00:22:11.007
+Say colors and if we do colors.red,
+
+388
+00:22:13.490 --> 00:22:16.250
+if you wanna make that a Boolean, if it exists,
+
+389
+00:22:16.250 --> 00:22:18.290
+it will do bang bang.
+
+390
+00:22:18.290 --> 00:22:21.140
+And then if it was like a color that didn't exist
+
+391
+00:22:21.140 --> 00:22:24.330
+like mouse, it will give us false.
+
+392
+00:22:24.330 --> 00:22:29.330
+We could also do mouse is in colors.
+
+393
+00:22:29.900 --> 00:22:34.650
+And a red is in colors, that will give us
+
+394
+00:22:34.650 --> 00:22:36.410
+the same thing in this case.
+
+395
+00:22:36.410 --> 00:22:38.980
+So either one will work.
+
+396
+00:22:38.980 --> 00:22:43.860
+So we have this (mumbles) colors word,
+
+397
+00:22:43.860 --> 00:22:48.193
+we can then import that into our handler.
+
+398
+00:22:59.940 --> 00:23:01.410
+So check if it's a valid color.
+
+399
+00:23:01.410 --> 00:23:05.723
+So if it is not a valid color,
+
+400
+00:23:07.200 --> 00:23:12.200
+then, we'll simply just return and that's all folks.
+
+401
+00:23:14.690 --> 00:23:18.160
+So if it's not a valid color, then go ahead and return.
+
+402
+00:23:18.160 --> 00:23:20.050
+Not gonna say if that, 'cause my pretty here
+
+403
+00:23:20.050 --> 00:23:24.090
+is gonna remove my return and if it is, we'll console log,
+
+404
+00:23:24.090 --> 00:23:27.000
+this is a valid color.
+
+405
+00:23:27.000 --> 00:23:29.450
+And I'll just go ahead and console log the color.
+
+406
+00:23:31.220 --> 00:23:35.540
+So now, when I start talking, it's telling me everything
+
+407
+00:23:35.540 --> 00:23:37.503
+is a valid color, okay, that's broken.
+
+408
+00:23:42.570 --> 00:23:45.140
+Obviously I forgot to pass the function,
+
+409
+00:23:45.140 --> 00:23:46.633
+the name of our color.
+
+410
+00:23:47.670 --> 00:23:51.110
+Now, when I start talking pops up
+
+411
+00:23:51.110 --> 00:23:53.393
+but when I say something like red.
+
+412
+00:23:54.710 --> 00:23:59.710
+Blue, green, indigo, pale golden rod yellow.
+
+413
+00:24:02.200 --> 00:24:04.710
+So you see pale golden rod and yellow.
+
+414
+00:24:04.710 --> 00:24:06.183
+Pale golden rod yellow.
+
+415
+00:24:09.210 --> 00:24:10.563
+Light golden rod yellow.
+
+416
+00:24:11.730 --> 00:24:14.160
+Hey, pale golden rod yellow is not actually one
+
+417
+00:24:14.160 --> 00:24:16.280
+that's why it's not showing up.
+
+418
+00:24:16.280 --> 00:24:18.760
+It must be smart about these being actual words.
+
+419
+00:24:18.760 --> 00:24:19.593
+Okay, good.
+
+420
+00:24:19.593 --> 00:24:21.720
+So, if that is, then we can go ahead
+
+421
+00:24:21.720 --> 00:24:24.170
+and start working on it.
+
+422
+00:24:24.170 --> 00:24:27.060
+First, let's cross out the one,
+
+423
+00:24:27.060 --> 00:24:32.060
+so we wanna select a span with a class of color.
+
+424
+00:24:32.720 --> 00:24:36.130
+And we need like another way to select each of those.
+
+425
+00:24:36.130 --> 00:24:39.310
+So let's put a color name as a class as well.
+
+426
+00:24:39.310 --> 00:24:43.193
+Go back to our speech in here.
+
+427
+00:24:44.500 --> 00:24:48.513
+And as a class, let's put the color as a class as well.
+
+428
+00:24:51.860 --> 00:24:54.800
+And we will const colorSpan
+
+429
+00:24:56.820 --> 00:24:58.923
+is equal to document.querySelector.
+
+430
+00:25:03.900 --> 00:25:07.817
+And in our case, we need to say .red or .green.
+
+431
+00:25:08.870 --> 00:25:11.900
+So, what we need to do is to generate the selector,
+
+432
+00:25:11.900 --> 00:25:15.300
+we'll say dot and the name of the color
+
+433
+00:25:16.580 --> 00:25:18.457
+and it calls a log colorSpan.
+
+434
+00:25:21.570 --> 00:25:23.160
+Red.
+
+435
+00:25:23.160 --> 00:25:24.530
+So there we get it.
+
+436
+00:25:24.530 --> 00:25:27.200
+It probably, even a better use case for this,
+
+437
+00:25:27.200 --> 00:25:29.210
+we could say colorSpan is equal to
+
+438
+00:25:29.210 --> 00:25:31.777
+document.getElementByClassName.
+
+439
+00:25:36.830 --> 00:25:40.630
+Or maybe we should use an ID, 'cause an ID is only one.
+
+440
+00:25:40.630 --> 00:25:42.180
+Whatever, it's the same.
+
+441
+00:25:42.180 --> 00:25:44.970
+You can say getElementsByClass, saying pass it the color,
+
+442
+00:25:44.970 --> 00:25:46.480
+you don't need to put a dot in front of it
+
+443
+00:25:46.480 --> 00:25:50.010
+and then grab the first thing that it returns.
+
+444
+00:25:50.010 --> 00:25:50.890
+Both work.
+
+445
+00:25:50.890 --> 00:25:52.370
+Since I use querySelector for everything,
+
+446
+00:25:52.370 --> 00:25:54.380
+I'm gonna keep it that way.
+
+447
+00:25:54.380 --> 00:25:55.580
+Red.
+
+448
+00:25:55.580 --> 00:25:56.620
+Green.
+
+449
+00:25:56.620 --> 00:25:57.453
+Blue.
+
+450
+00:25:58.840 --> 00:26:02.100
+So what we wanna do is if we open up the CSS
+
+451
+00:26:04.150 --> 00:26:07.920
+of this, you see that when it has a class of got,
+
+452
+00:26:07.920 --> 00:26:10.590
+it will have a text decoration of line-through
+
+453
+00:26:10.590 --> 00:26:12.610
+and an animation of jump.
+
+454
+00:26:12.610 --> 00:26:14.310
+In jump, we'll basically scale it up
+
+455
+00:26:14.310 --> 00:26:16.460
+and then scale it back down.
+
+456
+00:26:16.460 --> 00:26:19.410
+So we can go right here,
+
+457
+00:26:19.410 --> 00:26:23.830
+we'll say colorSpan.classList.add got.
+
+458
+00:26:30.550 --> 00:26:31.680
+Red.
+
+459
+00:26:31.680 --> 00:26:32.860
+Tan.
+
+460
+00:26:32.860 --> 00:26:34.390
+Gray.
+
+461
+00:26:34.390 --> 00:26:37.700
+So it's funny, sometimes, it gives me that gray
+
+462
+00:26:37.700 --> 00:26:39.350
+and sometimes, it gives me that grey.
+
+463
+00:26:39.350 --> 00:26:40.400
+Blue.
+
+464
+00:26:40.400 --> 00:26:41.233
+Teal.
+
+465
+00:26:41.233 --> 00:26:43.313
+Oh, just got both of the grays, good.
+
+466
+00:26:44.850 --> 00:26:45.683
+Snow.
+
+467
+00:26:47.830 --> 00:26:48.663
+Gold.
+
+468
+00:26:49.650 --> 00:26:50.483
+There we go.
+
+469
+00:26:50.483 --> 00:26:52.890
+So you see it's giving it a class of got
+
+470
+00:26:52.890 --> 00:26:56.450
+and then it's animating it in and out.
+
+471
+00:26:56.450 --> 00:26:57.990
+You can even play with the animation,
+
+472
+00:26:57.990 --> 00:26:59.273
+make it pretty wonky.
+
+473
+00:27:00.140 --> 00:27:00.973
+Linen.
+
+474
+00:27:03.120 --> 00:27:03.953
+Wheat.
+
+475
+00:27:05.680 --> 00:27:06.663
+Corn silk.
+
+476
+00:27:08.270 --> 00:27:09.133
+Seashell.
+
+477
+00:27:10.376 --> 00:27:11.730
+(laughs)
+
+478
+00:27:11.730 --> 00:27:12.563
+That's good.
+
+479
+00:27:12.563 --> 00:27:15.590
+So, that's why we needed to take the spaces out as well
+
+480
+00:27:15.590 --> 00:27:19.283
+because for multiple words, for something like mint cream.
+
+481
+00:27:20.920 --> 00:27:22.660
+Mint cream.
+
+482
+00:27:22.660 --> 00:27:26.220
+You that it needs to put those words together
+
+483
+00:27:26.220 --> 00:27:27.820
+in order to match it.
+
+484
+00:27:27.820 --> 00:27:32.733
+And then we also want to change the background color.
+
+485
+00:27:37.600 --> 00:27:39.310
+And there's a couple of things we could do here,
+
+486
+00:27:39.310 --> 00:27:44.310
+we'll just say document.body.style.backgroundColor
+
+487
+00:27:50.070 --> 00:27:51.423
+is equal to color.
+
+488
+00:27:54.540 --> 00:27:55.373
+Red.
+
+489
+00:27:57.940 --> 00:27:58.773
+Blue.
+
+490
+00:27:59.670 --> 00:28:00.503
+Teal.
+
+491
+00:28:02.120 --> 00:28:02.963
+Dark gray.
+
+492
+00:28:04.730 --> 00:28:07.260
+Oh, it got both of the dark grays there, that was good.
+
+493
+00:28:07.260 --> 00:28:09.760
+So you see how it's changing the color of it
+
+494
+00:28:09.760 --> 00:28:14.540
+and we're simply just doing an in line style on there.
+
+495
+00:28:14.540 --> 00:28:18.940
+So that is the basics of doing speech recognition
+
+496
+00:28:18.940 --> 00:28:21.390
+and doing colors, there's a whole more you could add,
+
+497
+00:28:21.390 --> 00:28:23.720
+you could do like a high score, keep the score,
+
+498
+00:28:23.720 --> 00:28:26.863
+high score in local storage which will be pretty cool.
+
+499
+00:28:28.010 --> 00:28:30.370
+One thing we're doing right now is they have to say
+
+500
+00:28:30.370 --> 00:28:33.100
+the exact word, that's why I pause.
+
+501
+00:28:33.100 --> 00:28:36.930
+Honeydew, before I keep going and keep talking
+
+502
+00:28:36.930 --> 00:28:39.480
+'cause I need to tell the browser that I'm done talking.
+
+503
+00:28:39.480 --> 00:28:41.283
+It will be cool is if you just,
+
+504
+00:28:42.180 --> 00:28:46.590
+as I was talking, it would just look in all the words
+
+505
+00:28:46.590 --> 00:28:50.320
+that I'm saying, split each word and then loop over
+
+506
+00:28:50.320 --> 00:28:53.490
+each of those words and see if any of those are valid color.
+
+507
+00:28:53.490 --> 00:28:56.300
+So I could say I went and got my green car
+
+508
+00:28:56.300 --> 00:28:57.250
+and it would actually work.
+
+509
+00:28:57.250 --> 00:28:59.000
+Oh, it worked right there.
+
+510
+00:28:59.000 --> 00:29:01.750
+Maybe because it does stream in word by word as well.
+
+511
+00:29:01.750 --> 00:29:04.550
+So, kinda interesting, hopefully you enjoyed that one.
+
+512
+00:29:04.550 --> 00:29:06.640
+I'd love to see, make sure you Tweet me,
+
+513
+00:29:06.640 --> 00:29:10.870
+send me email with whatever you've built on top of this one.
+
+514
+00:29:10.870 --> 00:29:13.293
+I think it'd be really cool to see what that is.
+

@@ -1,0 +1,1274 @@
+﻿WEBVTT
+
+1
+00:00:00.776 --> 00:00:03.359
+(upbeat music)
+
+2
+00:00:05.308 --> 00:00:06.141
+<v Instructor>All right, we're gonna talk</v>
+
+3
+00:00:06.141 --> 00:00:07.330
+about switch statements now.
+
+4
+00:00:07.330 --> 00:00:09.073
+And we already used a switch statement
+
+5
+00:00:09.073 --> 00:00:11.150
+when we did the Etch-A-Sketch.
+
+6
+00:00:11.150 --> 00:00:13.260
+But I'm gonna go over them just real quickly again,
+
+7
+00:00:13.260 --> 00:00:14.620
+so you have this video for reference,
+
+8
+00:00:14.620 --> 00:00:17.710
+and we'll do another silly example with a turtle.
+
+9
+00:00:17.710 --> 00:00:20.440
+So, what I want you to do is open up switchstatements.html.
+
+10
+00:00:20.440 --> 00:00:23.350
+This is in your playground folder.
+
+11
+00:00:23.350 --> 00:00:25.960
+And we're just gonna give ourselves an image tag
+
+12
+00:00:25.960 --> 00:00:30.030
+with a source to turtle.png,
+
+13
+00:00:30.030 --> 00:00:31.800
+we'll call it turt,
+
+14
+00:00:31.800 --> 00:00:36.030
+and give it class of turt.
+
+15
+00:00:36.030 --> 00:00:38.230
+And then we will, let's just do it right
+
+16
+00:00:38.230 --> 00:00:39.800
+in a script tag right here.
+
+17
+00:00:39.800 --> 00:00:41.130
+We'll go ahead and grab that turtle,
+
+18
+00:00:41.130 --> 00:00:45.320
+so const turtle is equal to document.queryselector
+
+19
+00:00:48.788 --> 00:00:51.621
+and we are going to grab the turt.
+
+20
+00:00:52.682 --> 00:00:55.506
+And looks like I accidentally put a capital on that,
+
+21
+00:00:55.506 --> 00:00:57.168
+take that off
+
+22
+00:00:57.168 --> 00:01:00.070
+and let's console log turtle.
+
+23
+00:01:00.070 --> 00:01:01.213
+And we've got it.
+
+24
+00:01:01.213 --> 00:01:02.620
+He's a little bit big,
+
+25
+00:01:02.620 --> 00:01:07.620
+let's put a width of 200 on that turtle,
+
+26
+00:01:08.500 --> 00:01:09.710
+much better.
+
+27
+00:01:09.710 --> 00:01:12.560
+All right, so we wanna make this turtle walk, right?
+
+28
+00:01:12.560 --> 00:01:16.810
+And we wanna make it flip around when we hit our arrow keys,
+
+29
+00:01:16.810 --> 00:01:21.150
+so first thing we'll do is we will listen for the key down.
+
+30
+00:01:21.150 --> 00:01:25.040
+So, window add event listener.
+
+31
+00:01:25.040 --> 00:01:26.420
+And this is just like we did before,
+
+32
+00:01:26.420 --> 00:01:29.310
+we'll listen for the key down and when that happens
+
+33
+00:01:29.310 --> 00:01:32.152
+we'll say, handle key down.
+
+34
+00:01:32.152 --> 00:01:34.152
+We'll go up here and make that function.
+
+35
+00:01:37.270 --> 00:01:39.140
+We'll grab the event
+
+36
+00:01:39.140 --> 00:01:42.913
+and we'll say, console log, event.key.
+
+37
+00:01:46.130 --> 00:01:49.220
+Down, left, right and then if I hit any key on there.
+
+38
+00:01:49.220 --> 00:01:50.520
+First thing I wanna do is,
+
+39
+00:01:51.360 --> 00:01:56.360
+if it's not an arrow key, we don't care.
+
+40
+00:01:56.440 --> 00:02:01.390
+We'll say, if the event.key.includes arrow
+
+41
+00:02:03.000 --> 00:02:06.260
+and if it does not include arrow, bang,
+
+42
+00:02:06.260 --> 00:02:08.840
+then we will simply just say, return.
+
+43
+00:02:08.840 --> 00:02:11.410
+So, here's a good use case where you can either
+
+44
+00:02:11.410 --> 00:02:14.390
+just return on one line, and that would be totally fine,
+
+45
+00:02:14.390 --> 00:02:17.880
+or we can put some curly brackets around it
+
+46
+00:02:17.880 --> 00:02:19.050
+whichever way you prefer.
+
+47
+00:02:19.050 --> 00:02:20.270
+I'll put the curly brackets there
+
+48
+00:02:20.270 --> 00:02:21.700
+just 'cause we're just learning.
+
+49
+00:02:21.700 --> 00:02:26.630
+So now, if we were to console log the event.key
+
+50
+00:02:26.630 --> 00:02:28.480
+we should only see keys that we care about,
+
+51
+00:02:28.480 --> 00:02:30.130
+down, right, left.
+
+52
+00:02:30.130 --> 00:02:31.920
+And I'm hitting all the other keys on my keyboard,
+
+53
+00:02:31.920 --> 00:02:33.623
+nothing is happening, good.
+
+54
+00:02:35.410 --> 00:02:38.230
+Now I wanna get this little guy moving.
+
+55
+00:02:38.230 --> 00:02:43.230
+So we will make some, let's say let x equal zero
+
+56
+00:02:43.510 --> 00:02:48.223
+and let y is equal to zero.
+
+57
+00:02:49.350 --> 00:02:50.993
+And then we'll say,
+
+58
+00:02:53.220 --> 00:02:58.220
+if somebody moves left, then we increase the x.
+
+59
+00:02:58.480 --> 00:03:01.590
+If they move right, then we decrease the x and vice versa.
+
+60
+00:03:01.590 --> 00:03:04.220
+So this is a use case for a switch statement.
+
+61
+00:03:04.220 --> 00:03:07.310
+So the way a switch will work is you type switch
+
+62
+00:03:07.310 --> 00:03:09.580
+and then you pass it, the thing that you're testing,
+
+63
+00:03:09.580 --> 00:03:13.660
+so we're gonna switch on the event.key, right?
+
+64
+00:03:13.660 --> 00:03:16.760
+And then what we have is a block which will contain
+
+65
+00:03:16.760 --> 00:03:18.830
+a whole bunch of different cases,
+
+66
+00:03:18.830 --> 00:03:21.150
+so each individual case.
+
+67
+00:03:21.150 --> 00:03:25.780
+So this is a little bit easier to look at
+
+68
+00:03:25.780 --> 00:03:27.890
+than an if statement in some use cases.
+
+69
+00:03:27.890 --> 00:03:29.750
+The only downside is that they have to
+
+70
+00:03:29.750 --> 00:03:31.920
+be clearly defined cases.
+
+71
+00:03:31.920 --> 00:03:34.620
+There's no like a case where it's greater than 20.
+
+72
+00:03:34.620 --> 00:03:35.600
+That's an if statement.
+
+73
+00:03:35.600 --> 00:03:39.070
+The case is always gonna be up, down, left, or right.
+
+74
+00:03:39.070 --> 00:03:44.070
+Case of arrow up, if that's the case.
+
+75
+00:03:46.080 --> 00:03:49.530
+Oh, there is no colon there, the colon goes here.
+
+76
+00:03:49.530 --> 00:03:52.590
+If that's the case then we say
+
+77
+00:03:52.590 --> 00:03:55.450
+the y is equal to y minus one.
+
+78
+00:03:55.450 --> 00:03:57.833
+And then we'll do arrow down.
+
+79
+00:03:59.611 --> 00:04:01.473
+Y is equal to y plus one.
+
+80
+00:04:03.990 --> 00:04:06.760
+Of course you could do y plus plus or y plus equals one,
+
+81
+00:04:06.760 --> 00:04:08.030
+those will both work.
+
+82
+00:04:08.030 --> 00:04:11.620
+I'll do case arrow up, down, left,
+
+83
+00:04:11.620 --> 00:04:14.560
+you notice that my prettier is not fixing it
+
+84
+00:04:14.560 --> 00:04:17.810
+for me in this case and that's because I am running it
+
+85
+00:04:17.810 --> 00:04:20.050
+in an HTML document and a script tag
+
+86
+00:04:20.050 --> 00:04:21.890
+and not separate javascript file.
+
+87
+00:04:21.890 --> 00:04:25.413
+So for the left we say x is equal to x plus one.
+
+88
+00:04:26.440 --> 00:04:31.440
+And then we arrow right, x is equal to x minus one.
+
+89
+00:04:32.670 --> 00:04:34.710
+The other thing we need is a break
+
+90
+00:04:34.710 --> 00:04:37.680
+because if you do not break then it will keep going down
+
+91
+00:04:37.680 --> 00:04:40.360
+each of them and we'll run into some trouble there.
+
+92
+00:04:40.360 --> 00:04:42.620
+So always break after each of your cases.
+
+93
+00:04:42.620 --> 00:04:45.700
+And then finally, your case should always have a default
+
+94
+00:04:45.700 --> 00:04:47.520
+where we can console log
+
+95
+00:04:50.760 --> 00:04:53.750
+that is not a valid move.
+
+96
+00:04:53.750 --> 00:04:55.040
+And we'll break from that.
+
+97
+00:04:55.040 --> 00:04:57.730
+So if you don't have that default for some reason,
+
+98
+00:04:57.730 --> 00:05:01.060
+I don't know, maybe something will get thrown in here,
+
+99
+00:05:01.060 --> 00:05:04.420
+like a arrow in, I don't know what could possibly happen,
+
+100
+00:05:04.420 --> 00:05:08.020
+but always have a default case that, if something goes awry
+
+101
+00:05:08.020 --> 00:05:10.423
+you have a default case to sorta handle that.
+
+102
+00:05:11.700 --> 00:05:14.150
+Then what we'll do is, we have these variables here
+
+103
+00:05:14.150 --> 00:05:17.450
+so we will take the turtle and move 'em over.
+
+104
+00:05:17.450 --> 00:05:20.193
+Let's just console log x and y.
+
+105
+00:05:22.950 --> 00:05:25.630
+Up, up, down, down, right, right, right,
+
+106
+00:05:25.630 --> 00:05:27.650
+down, down, down, right,
+
+107
+00:05:27.650 --> 00:05:31.930
+oh, I think I'm goin' the arrow right is equal to x plus one
+
+108
+00:05:31.930 --> 00:05:33.870
+and left is minus one.
+
+109
+00:05:33.870 --> 00:05:38.870
+I think that was, if I go up, down, right, left.
+
+110
+00:05:40.510 --> 00:05:44.240
+Okay, so those seem to be working just fine.
+
+111
+00:05:44.240 --> 00:05:48.710
+Then we need to convey these x and y values
+
+112
+00:05:48.710 --> 00:05:50.000
+to the turtle somehow.
+
+113
+00:05:50.000 --> 00:05:51.710
+So what I'm actually going to do
+
+114
+00:05:51.710 --> 00:05:55.280
+is I'm going to do it via CSS variables.
+
+115
+00:05:55.280 --> 00:05:59.330
+So we can take the style tag and this style tag can go
+
+116
+00:05:59.330 --> 00:06:04.330
+not in, oh, man, I put the image not in the body.
+
+117
+00:06:05.090 --> 00:06:07.890
+And then the style tag, I'll put the style tag above it.
+
+118
+00:06:08.840 --> 00:06:10.140
+Then we'll grab the turtle
+
+119
+00:06:12.130 --> 00:06:14.640
+and we'll say position relative
+
+120
+00:06:15.520 --> 00:06:20.340
+transform translate x
+
+121
+00:06:20.340 --> 00:06:24.823
+we'll just say 10px and translate y 10px.
+
+122
+00:06:27.490 --> 00:06:28.373
+Did he move?
+
+123
+00:06:29.500 --> 00:06:30.673
+Let's see.
+
+124
+00:06:34.100 --> 00:06:35.893
+No, it didn't grab the turtle.
+
+125
+00:06:37.870 --> 00:06:40.560
+Oh, it's 'cuz I used turt, that's a stupid class name.
+
+126
+00:06:40.560 --> 00:06:41.900
+Okay, here we go.
+
+127
+00:06:41.900 --> 00:06:46.900
+Now he moves and if I were to change this very slowly
+
+128
+00:06:48.090 --> 00:06:49.160
+moves over.
+
+129
+00:06:49.160 --> 00:06:51.320
+Now, what I'm gonna do is I'm gonna take these values
+
+130
+00:06:51.320 --> 00:06:53.340
+and put them into their own variables.
+
+131
+00:06:53.340 --> 00:06:57.280
+So, we say --x is 10px
+
+132
+00:06:58.460 --> 00:07:01.050
+and --y is 10px
+
+133
+00:07:02.555 --> 00:07:05.993
+and then we can swap these values out with var.
+
+134
+00:07:07.058 --> 00:07:10.300
+This is not javascript, this is regular CSS variables,
+
+135
+00:07:10.300 --> 00:07:12.970
+or they're called custom properties in CSS.
+
+136
+00:07:12.970 --> 00:07:15.673
+And we wanna use the x and y values.
+
+137
+00:07:18.450 --> 00:07:21.190
+Okay, now, if we change one of these x values,
+
+138
+00:07:21.190 --> 00:07:24.700
+you'll see that turtle moves along just fine.
+
+139
+00:07:24.700 --> 00:07:28.600
+Now, what I'm gonna do is, I'm going to update
+
+140
+00:07:28.600 --> 00:07:31.470
+these variables with javascript
+
+141
+00:07:31.470 --> 00:07:33.440
+so that the turtle will then move.
+
+142
+00:07:33.440 --> 00:07:38.440
+So we can take our x and our y and we can grab our turtle,
+
+143
+00:07:39.010 --> 00:07:40.010
+which is right here,
+
+144
+00:07:41.050 --> 00:07:44.203
+say turtle.style.
+
+145
+00:07:45.330 --> 00:07:49.470
+And here' is where you can apply styles directly to it.
+
+146
+00:07:49.470 --> 00:07:52.610
+So maybe we'll just say background is equal to red,
+
+147
+00:07:52.610 --> 00:07:54.520
+let's just show you how that works.
+
+148
+00:07:54.520 --> 00:07:57.320
+So watch when I push any key, what happens
+
+149
+00:07:57.320 --> 00:08:01.350
+is that we apply an inline style to this turtle.
+
+150
+00:08:01.350 --> 00:08:04.393
+So if we wanna apply a variable,
+
+151
+00:08:05.430 --> 00:08:09.350
+you can't just say like --x.
+
+152
+00:08:09.350 --> 00:08:11.370
+So if that's the case, we have to use what's called
+
+153
+00:08:11.370 --> 00:08:15.490
+square bracket notation and we haven't done this just yet.
+
+154
+00:08:15.490 --> 00:08:18.370
+We're gonna get into it when we look at arrays and objects.
+
+155
+00:08:18.370 --> 00:08:21.410
+But for now, know that you can also access
+
+156
+00:08:21.410 --> 00:08:23.290
+a property in two ways:
+
+157
+00:08:23.290 --> 00:08:27.250
+like that and with a square bracket string
+
+158
+00:08:27.250 --> 00:08:29.870
+to reference the object.
+
+159
+00:08:29.870 --> 00:08:32.730
+These two things are exactly the same.
+
+160
+00:08:32.730 --> 00:08:36.150
+Watch, if I take this one out, it will still turn red
+
+161
+00:08:36.150 --> 00:08:37.683
+whenever I push my keys.
+
+162
+00:08:38.600 --> 00:08:39.490
+Here we go.
+
+163
+00:08:39.490 --> 00:08:44.490
+So, I believe we can do --x is equal to
+
+164
+00:08:48.051 --> 00:08:50.140
+and we'll take our x value and say px,
+
+165
+00:08:51.210 --> 00:08:56.200
+and our y value and y px.
+
+166
+00:08:56.200 --> 00:08:57.460
+So, does that work?
+
+167
+00:08:57.460 --> 00:08:58.293
+Let's see.
+
+168
+00:08:59.680 --> 00:09:00.750
+Does not work.
+
+169
+00:09:00.750 --> 00:09:01.793
+Let's see here.
+
+170
+00:09:02.840 --> 00:09:07.840
+I believe because this is not a standard CSS attribute.
+
+171
+00:09:08.800 --> 00:09:11.910
+If we were to add in something we made up,
+
+172
+00:09:11.910 --> 00:09:15.600
+like, let's make up a CSS property called, madeup,
+
+173
+00:09:15.600 --> 00:09:18.593
+and we'll set that to green.
+
+174
+00:09:21.050 --> 00:09:24.200
+You'll notice how only the actual properties
+
+175
+00:09:24.200 --> 00:09:29.200
+that are real, a border 10px solid red,
+
+176
+00:09:32.980 --> 00:09:35.930
+you'll notice that only the CSS properties that are real
+
+177
+00:09:35.930 --> 00:09:37.290
+are going to be added to it.
+
+178
+00:09:37.290 --> 00:09:41.300
+So how do we apply custom CSS properties if it's not?
+
+179
+00:09:41.300 --> 00:09:43.580
+Well, we can reach for that set attribute
+
+180
+00:09:43.580 --> 00:09:44.840
+that we were looking at before.
+
+181
+00:09:44.840 --> 00:09:48.053
+So what we'll do here is we'll say the turtle.setattribute
+
+182
+00:09:50.020 --> 00:09:55.020
+and we'll set the style attribute to be a --x is equal to
+
+183
+00:09:59.440 --> 00:10:00.373
+and grab this.
+
+184
+00:10:03.040 --> 00:10:05.190
+Let's just make sure the x works.
+
+185
+00:10:05.190 --> 00:10:07.193
+We'll get rid of all of that.
+
+186
+00:10:10.570 --> 00:10:12.420
+Not sure why it's putting spaces there.
+
+187
+00:10:12.420 --> 00:10:14.900
+Why is it yelling at me about, oh, it's 'cuz I don't need
+
+188
+00:10:14.900 --> 00:10:17.210
+this opening tick here
+
+189
+00:10:17.210 --> 00:10:20.183
+and I don't need the double closing.
+
+190
+00:10:21.830 --> 00:10:22.730
+That should do it.
+
+191
+00:10:23.966 --> 00:10:24.799
+There we go.
+
+192
+00:10:24.799 --> 00:10:27.630
+Now when I use my x keys, you can see that that value
+
+193
+00:10:27.630 --> 00:10:31.410
+is now being updated in the style attribute.
+
+194
+00:10:31.410 --> 00:10:36.173
+So we can also do the same with the y attribute.
+
+195
+00:10:44.290 --> 00:10:46.850
+There we go, he's movin' along.
+
+196
+00:10:46.850 --> 00:10:51.320
+And let's set 'em back to a default of zero
+
+197
+00:10:53.624 --> 00:10:55.240
+so that he doesn't have that little jump at the start.
+
+198
+00:10:55.240 --> 00:10:56.640
+Oh, good.
+
+199
+00:10:56.640 --> 00:11:01.463
+And maybe we could also have like a speed operator.
+
+200
+00:11:02.370 --> 00:11:05.850
+So const speed is equal to five
+
+201
+00:11:05.850 --> 00:11:10.850
+and then we'll take the x and the y
+
+202
+00:11:11.120 --> 00:11:12.853
+and multiply that by speed.
+
+203
+00:11:15.230 --> 00:11:17.480
+Oh, there he goes, goes a little bit quicker.
+
+204
+00:11:19.260 --> 00:11:24.160
+And I believe we can also go on the turtle here
+
+205
+00:11:24.160 --> 00:11:29.160
+and say transition, transform over 0.2 seconds.
+
+206
+00:11:35.230 --> 00:11:37.500
+Yeah, I get a bit of a, like, I don't know,
+
+207
+00:11:37.500 --> 00:11:39.260
+see, he slows down there.
+
+208
+00:11:39.260 --> 00:11:41.560
+And then, let's crank up the speed.
+
+209
+00:11:41.560 --> 00:11:43.410
+This is gonna be a fast turtle.
+
+210
+00:11:43.410 --> 00:11:45.143
+50 times, woo!
+
+211
+00:11:46.174 --> 00:11:50.340
+Woo, weee, turtle's movin' all over the place.
+
+212
+00:11:50.340 --> 00:11:53.130
+Last thing I wanted to do is to flip 'em
+
+213
+00:11:53.130 --> 00:11:56.150
+like when you press the left arrow key,
+
+214
+00:11:56.150 --> 00:11:57.550
+he should be facing the other way.
+
+215
+00:11:57.550 --> 00:12:01.620
+'Cuz I don't think turtles walk backwards, do they?
+
+216
+00:12:01.620 --> 00:12:06.620
+Do turtles walk, do turtles have teeth?
+
+217
+00:12:06.620 --> 00:12:08.430
+Hold on, do turtles have teeth?
+
+218
+00:12:08.430 --> 00:12:10.320
+They do not have teeth, okay.
+
+219
+00:12:10.320 --> 00:12:12.863
+Now, do they walk backwards?
+
+220
+00:12:14.420 --> 00:12:16.698
+They physically can't go backwards.
+
+221
+00:12:16.698 --> 00:12:17.605
+(laughing)
+
+222
+00:12:17.605 --> 00:12:18.879
+Oh, poor guys.
+
+223
+00:12:18.879 --> 00:12:20.200
+(laughing)
+
+224
+00:12:20.200 --> 00:12:23.173
+Oh, that's hold on, there's a video here.
+
+225
+00:12:24.120 --> 00:12:28.390
+This little, is he goin' backwards?
+
+226
+00:12:28.390 --> 00:12:31.360
+All right, well, no, you know what?
+
+227
+00:12:31.360 --> 00:12:34.163
+The audio is fake.
+
+228
+00:12:36.120 --> 00:12:36.953
+Fake.
+
+229
+00:12:38.120 --> 00:12:40.420
+Okay, let's get this turtle walkin' backwards.
+
+230
+00:12:40.420 --> 00:12:44.343
+So, what we also need is a direction.
+
+231
+00:12:47.040 --> 00:12:49.003
+Let direction equals,
+
+232
+00:12:52.760 --> 00:12:57.070
+let's just have like normal and flipped, right?
+
+233
+00:12:57.070 --> 00:13:01.130
+So, when I press my arrow left,
+
+234
+00:13:01.130 --> 00:13:05.070
+we'll say the direction, ah, no, this is not a good idea.
+
+235
+00:13:05.070 --> 00:13:09.940
+We'll say let flipped is equal to false.
+
+236
+00:13:09.940 --> 00:13:11.360
+And then when we hit the left,
+
+237
+00:13:11.360 --> 00:13:14.430
+we'll say flipped is equal to true.
+
+238
+00:13:14.430 --> 00:13:19.430
+When we hit right, flipped is equal to false.
+
+239
+00:13:24.250 --> 00:13:29.250
+So, to flip him, I think we go into this transform.
+
+240
+00:13:29.720 --> 00:13:34.373
+And we say rotate 180 degrees?
+
+241
+00:13:35.833 --> 00:13:36.666
+(laughing)
+
+242
+00:13:36.666 --> 00:13:37.503
+He's upside down.
+
+243
+00:13:38.560 --> 00:13:40.723
+Ah, so just rotate x?
+
+244
+00:13:42.970 --> 00:13:45.180
+Oh, no, he's upside down still.
+
+245
+00:13:45.180 --> 00:13:46.050
+There we go.
+
+246
+00:13:46.050 --> 00:13:48.700
+Rotate y 180 degrees
+
+247
+00:13:48.700 --> 00:13:53.700
+or a 0.5 turn will also do the same thing.
+
+248
+00:13:55.900 --> 00:13:57.180
+Let's do 180 degrees,
+
+249
+00:13:57.180 --> 00:13:59.840
+I think that might be easier to understand.
+
+250
+00:13:59.840 --> 00:14:03.750
+So, we are going to make another variable called rotate
+
+251
+00:14:03.750 --> 00:14:05.930
+and we'll set that at zero
+
+252
+00:14:05.930 --> 00:14:09.020
+and we'll change the rotate y value
+
+253
+00:14:09.020 --> 00:14:11.950
+to be a variable of rotate
+
+254
+00:14:12.850 --> 00:14:14.840
+then we can go down here
+
+255
+00:14:16.270 --> 00:14:19.840
+and we can do a little shorthand here.
+
+256
+00:14:19.840 --> 00:14:22.000
+Since this is back ticks, we can actually put these
+
+257
+00:14:22.000 --> 00:14:24.863
+on their own lines, just like this.
+
+258
+00:14:26.170 --> 00:14:31.170
+And we'll say, the --rotate value is going to be,
+
+259
+00:14:35.240 --> 00:14:38.430
+we can do a little turnary here,
+
+260
+00:14:38.430 --> 00:14:40.840
+we'll say, if it is flipped
+
+261
+00:14:40.840 --> 00:14:45.730
+then it is going to be 180 degrees.
+
+262
+00:14:45.730 --> 00:14:48.283
+Otherwise it will be zero.
+
+263
+00:14:49.740 --> 00:14:50.840
+Is that gonna to work?
+
+264
+00:14:55.776 --> 00:14:57.203
+There, hey!
+
+265
+00:14:59.170 --> 00:15:01.083
+Oh, that doesn't work very well.
+
+266
+00:15:03.500 --> 00:15:04.333
+Oh, you know why?
+
+267
+00:15:04.333 --> 00:15:07.110
+It's because we are rotating it
+
+268
+00:15:09.200 --> 00:15:11.340
+before we move it.
+
+269
+00:15:11.340 --> 00:15:16.340
+So I wonder if I, take this sucker and put it at the end?
+
+270
+00:15:16.500 --> 00:15:17.350
+Will that fix it?
+
+271
+00:15:19.945 --> 00:15:21.360
+There we go.
+
+272
+00:15:21.360 --> 00:15:23.280
+That's because, if you rotate something
+
+273
+00:15:23.280 --> 00:15:25.920
+before you translate it, it's different than...
+
+274
+00:15:25.920 --> 00:15:27.650
+So the order here matters.
+
+275
+00:15:27.650 --> 00:15:29.935
+Look at this little turtle, whew!
+
+276
+00:15:29.935 --> 00:15:31.360
+Whew!
+
+277
+00:15:31.360 --> 00:15:33.300
+So we could also rotate him,
+
+278
+00:15:33.300 --> 00:15:35.450
+so I think just a regular rotate
+
+279
+00:15:37.680 --> 00:15:41.100
+of 90 degrees will put him, yeah, okay.
+
+280
+00:15:41.100 --> 00:15:42.633
+So let's make another,
+
+281
+00:15:43.760 --> 00:15:46.760
+this is a bad variable called rotate.
+
+282
+00:15:46.760 --> 00:15:50.010
+We'll make that called rotate x
+
+283
+00:15:50.010 --> 00:15:52.400
+and update that to rotate x
+
+284
+00:15:52.400 --> 00:15:55.890
+and then this to be rotate x.
+
+285
+00:15:55.890 --> 00:15:57.223
+So does it still work?
+
+286
+00:15:58.810 --> 00:16:01.250
+Good, okay.
+
+287
+00:16:01.250 --> 00:16:04.800
+And then we'll just make a regular rotate variable
+
+288
+00:16:05.700 --> 00:16:07.330
+called zero.
+
+289
+00:16:07.330 --> 00:16:09.320
+And we'll make that variable go in here.
+
+290
+00:16:09.320 --> 00:16:14.063
+So var --rotate.
+
+291
+00:16:17.720 --> 00:16:18.610
+Okay.
+
+292
+00:16:18.610 --> 00:16:22.230
+And then we need like another variable here.
+
+293
+00:16:22.230 --> 00:16:27.230
+So if this little guy is rotated, how many degrees?
+
+294
+00:16:34.530 --> 00:16:37.940
+So 90 degrees is going down
+
+295
+00:16:37.940 --> 00:16:40.513
+and then negative 90 is going up.
+
+296
+00:16:41.382 --> 00:16:46.049
+So, what we can just say is, let rotate is equal to zero
+
+297
+00:16:47.777 --> 00:16:52.360
+and when you go up, say rotate is equal to negative 90.
+
+298
+00:16:56.091 --> 00:16:56.924
+Down is 90
+
+299
+00:16:58.900 --> 00:17:02.053
+and then left and right will just be zero.
+
+300
+00:17:06.360 --> 00:17:07.193
+Is it?
+
+301
+00:17:07.193 --> 00:17:08.487
+Let's try it.
+
+302
+00:17:08.487 --> 00:17:12.300
+All right, then we can just simply take that rotate variable
+
+303
+00:17:15.750 --> 00:17:20.750
+and pass in the rotate degrees.
+
+304
+00:17:30.790 --> 00:17:32.133
+Yeah.
+
+305
+00:17:32.133 --> 00:17:33.320
+(laughing)
+
+306
+00:17:33.320 --> 00:17:35.800
+This is the stupidest thing I've ever built.
+
+307
+00:17:35.800 --> 00:17:36.753
+I love it, though.
+
+308
+00:17:37.751 --> 00:17:40.170
+Look at him go, little guy, little turtle.
+
+309
+00:17:40.170 --> 00:17:41.510
+So, beautiful.
+
+310
+00:17:41.510 --> 00:17:45.860
+Hopefully you learned a little bit about case switch
+
+311
+00:17:45.860 --> 00:17:47.350
+which is kinda boring
+
+312
+00:17:47.350 --> 00:17:51.230
+but also setting attributes and custom variables
+
+313
+00:17:51.230 --> 00:17:54.300
+and sort of flipping those over to CSS.
+
+314
+00:17:54.300 --> 00:17:56.360
+And this little cute guy is pretty fun.
+
+315
+00:17:56.360 --> 00:17:59.200
+If you have kids let them play with this for a little bit.
+
+316
+00:17:59.200 --> 00:18:00.690
+Maybe you could make him eat like a fly
+
+317
+00:18:00.690 --> 00:18:02.340
+or something like that.
+
+318
+00:18:02.340 --> 00:18:03.540
+See you on the next one.
+

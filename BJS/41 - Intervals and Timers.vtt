@@ -1,0 +1,970 @@
+﻿WEBVTT
+
+1
+00:00:00.522 --> 00:00:04.105
+(electronic music playing)
+
+2
+00:00:05.840 --> 00:00:08.710
+<v ->Now we are going to talk about timeouts and intervals.</v>
+
+3
+00:00:08.710 --> 00:00:11.282
+So if you wanna run something after five seconds
+
+4
+00:00:11.282 --> 00:00:13.320
+we're going to use a timeout.
+
+5
+00:00:13.320 --> 00:00:15.660
+If you wanna run something every five seconds
+
+6
+00:00:15.660 --> 00:00:17.270
+you use an interval.
+
+7
+00:00:17.270 --> 00:00:19.230
+They both work exactly the same way.
+
+8
+00:00:19.230 --> 00:00:20.860
+Let's dive into them now.
+
+9
+00:00:20.860 --> 00:00:22.727
+So we've got this intervals that html,
+
+10
+00:00:22.727 --> 00:00:24.520
+I'm just in my playground folder
+
+11
+00:00:24.520 --> 00:00:26.670
+and we get to ourselves a script tag.
+
+12
+00:00:26.670 --> 00:00:28.850
+Now, when you want to run something, you simply
+
+13
+00:00:28.850 --> 00:00:32.810
+just type setTimeout and that takes a couple of arguments.
+
+14
+00:00:32.810 --> 00:00:35.270
+Now, this setTimeout, where did that come from?
+
+15
+00:00:35.270 --> 00:00:37.420
+Is that just a function that's available to us?
+
+16
+00:00:37.420 --> 00:00:38.670
+And the answer is yes.
+
+17
+00:00:38.670 --> 00:00:42.410
+It is a globally scoped, it's actually a method,
+
+18
+00:00:42.410 --> 00:00:43.940
+because if you take a look at it,
+
+19
+00:00:43.940 --> 00:00:48.500
+it's actually window.setTimeout,
+
+20
+00:00:48.500 --> 00:00:51.600
+but you will learn you don't need to type the window.
+
+21
+00:00:51.600 --> 00:00:55.093
+when you are just accessing globally available API's.
+
+22
+00:00:57.630 --> 00:01:00.240
+I recommend not using window.setTimeout
+
+23
+00:01:00.240 --> 00:01:02.070
+and you may see that out there.
+
+24
+00:01:02.070 --> 00:01:05.840
+The reason why is that often you do need run the same code
+
+25
+00:01:05.840 --> 00:01:08.340
+that you're running in the browser in Node.js.
+
+26
+00:01:08.340 --> 00:01:11.470
+And Node.js doesn't have a concept of a window.
+
+27
+00:01:11.470 --> 00:01:13.190
+So, it does have a timeout and interval,
+
+28
+00:01:13.190 --> 00:01:17.300
+so you just simply say setTimeout, not window.setTimeout.
+
+29
+00:01:17.300 --> 00:01:19.170
+Now, setTimeout takes two things.
+
+30
+00:01:19.170 --> 00:01:22.890
+The first thing is a callback and the second thing
+
+31
+00:01:22.890 --> 00:01:26.590
+is a number of milliseconds to run it after.
+
+32
+00:01:26.590 --> 00:01:29.550
+So often what you will see is you'll have somebody
+
+33
+00:01:29.550 --> 00:01:32.080
+just give an anonymous function right here,
+
+34
+00:01:32.080 --> 00:01:35.710
+and we'll just say console.log done.
+
+35
+00:01:35.710 --> 00:01:38.020
+And then the second argument of timeout would be
+
+36
+00:01:38.020 --> 00:01:40.640
+how many milliseconds should I run this after?
+
+37
+00:01:40.640 --> 00:01:43.060
+So, if I give myself 500 milliseconds,
+
+38
+00:01:43.060 --> 00:01:44.930
+this will run half a second
+
+39
+00:01:44.930 --> 00:01:47.860
+after the JavaScript has started.
+
+40
+00:01:47.860 --> 00:01:50.450
+So, pretty simple, just like AdEvent Listener
+
+41
+00:01:50.450 --> 00:01:52.680
+you can either pass in a anonymous function
+
+42
+00:01:52.680 --> 00:01:55.030
+or you can write a function outside of it.
+
+43
+00:01:55.030 --> 00:01:59.830
+So, let's say function buzzer and inside that,
+
+44
+00:01:59.830 --> 00:02:04.830
+we will console.log (mimicking buzzer) as a buzzer sound.
+
+45
+00:02:05.160 --> 00:02:06.945
+And then right here instead of passing
+
+46
+00:02:06.945 --> 00:02:11.610
+an anonymous function, we pass a reference to a function.
+
+47
+00:02:11.610 --> 00:02:13.810
+Just like that, and there we go.
+
+48
+00:02:13.810 --> 00:02:18.163
+After 500 milliseconds, this thing is going to set off.
+
+49
+00:02:20.570 --> 00:02:22.920
+One kind of interesting thing about timers
+
+50
+00:02:22.920 --> 00:02:26.100
+is if I will work to console.log starting
+
+51
+00:02:27.220 --> 00:02:29.193
+and then console.log finishing.
+
+52
+00:02:32.550 --> 00:02:35.770
+Underneath, what's gonna happen here?
+
+53
+00:02:35.770 --> 00:02:37.150
+We're gonna console.log starting.
+
+54
+00:02:37.150 --> 00:02:39.800
+Are we gonna wait for half second and then do finishing?
+
+55
+00:02:39.800 --> 00:02:40.633
+Let's see.
+
+56
+00:02:42.710 --> 00:02:45.910
+Ah, so, what's happening here,
+
+57
+00:02:45.910 --> 00:02:50.770
+is that JavaScript will run here, in console.log starting,
+
+58
+00:02:50.770 --> 00:02:54.340
+it will set off the timer and then it will cue it up.
+
+59
+00:02:54.340 --> 00:02:56.927
+And it'll say, "Okay, I have this function called buzzer
+
+60
+00:02:56.927 --> 00:02:59.297
+"and I will call it after 500 milliseconds
+
+61
+00:02:59.297 --> 00:03:00.717
+"but I've got stuff to do.
+
+62
+00:03:00.717 --> 00:03:02.170
+"I'm gonna keeping going."
+
+63
+00:03:02.170 --> 00:03:03.820
+And that is what is referred to
+
+64
+00:03:03.820 --> 00:03:06.110
+as a asynchronous nature of JavaScript.
+
+65
+00:03:06.110 --> 00:03:09.360
+As soon as it lines up this code to be run,
+
+66
+00:03:09.360 --> 00:03:12.180
+it will go off on to the next line of code,
+
+67
+00:03:12.180 --> 00:03:15.740
+and only come back to this, when it is done.
+
+68
+00:03:15.740 --> 00:03:17.470
+That's why we call a callback.
+
+69
+00:03:17.470 --> 00:03:22.470
+'Cause we come back and call it at a latter point in time.
+
+70
+00:03:22.640 --> 00:03:24.240
+So, that's good to know that,
+
+71
+00:03:24.240 --> 00:03:28.440
+even if you trying to wait for 500 milliseconds,
+
+72
+00:03:28.440 --> 00:03:30.860
+the rest of JavaScript will keep on running.
+
+73
+00:03:30.860 --> 00:03:33.500
+Now, when we're gonna get into promises and a async await,
+
+74
+00:03:33.500 --> 00:03:35.730
+I'll show you how to actually do that,
+
+75
+00:03:35.730 --> 00:03:38.270
+because it's a pretty common thing where you do want await
+
+76
+00:03:38.270 --> 00:03:41.783
+for a number of milliseconds before you go ahead and do it.
+
+77
+00:03:42.850 --> 00:03:45.010
+Now, let's talk about intervals.
+
+78
+00:03:45.010 --> 00:03:47.080
+Intervals work exactly the same.
+
+79
+00:03:47.080 --> 00:03:51.410
+We say, setInterval and you can pass it a reference
+
+80
+00:03:51.410 --> 00:03:52.880
+to a function like buzzer
+
+81
+00:03:52.880 --> 00:03:55.160
+and how often you would like to run it.
+
+82
+00:03:55.160 --> 00:03:59.423
+So, if I say, every 100 milliseconds I wish to run this.
+
+83
+00:04:00.420 --> 00:04:03.500
+You'll see that it then runs over and over
+
+84
+00:04:03.500 --> 00:04:05.403
+every 100 milliseconds.
+
+85
+00:04:07.500 --> 00:04:10.223
+Now, there is one sorta got you with this intervals,
+
+86
+00:04:11.110 --> 00:04:14.650
+is that if you were using this to animate something
+
+87
+00:04:14.650 --> 00:04:19.060
+on a page, or you are using it to check something every,
+
+88
+00:04:19.060 --> 00:04:21.020
+let's say, every two seconds
+
+89
+00:04:21.020 --> 00:04:23.020
+you wanted to checking something.
+
+90
+00:04:23.020 --> 00:04:28.020
+What happens is that, it actually doesn't run immediately.
+
+91
+00:04:28.078 --> 00:04:32.840
+It only runs after the first two seconds have elapsed.
+
+92
+00:04:32.840 --> 00:04:37.780
+There is no option to tell the interval to run right away,
+
+93
+00:04:37.780 --> 00:04:42.440
+but then, also run after two seconds.
+
+94
+00:04:42.440 --> 00:04:44.760
+So, if you do want that sort of functionality,
+
+95
+00:04:44.760 --> 00:04:47.360
+we can code our own interval.
+
+96
+00:04:47.360 --> 00:04:50.113
+Where we can make a function called setImmediateInterval.
+
+97
+00:04:54.010 --> 00:04:56.570
+And it will take two arguments.
+
+98
+00:04:56.570 --> 00:04:59.100
+The funcToRun, that's the function to run
+
+99
+00:04:59.100 --> 00:05:00.700
+and the number of milliseconds.
+
+100
+00:05:00.700 --> 00:05:04.800
+So, we're just making our own third little interval here,
+
+101
+00:05:04.800 --> 00:05:09.560
+and what we do is right away call that function.
+
+102
+00:05:09.560 --> 00:05:13.130
+So what we'll do is we will just take the function
+
+103
+00:05:13.130 --> 00:05:16.120
+that is passed in, so, funcToRun.
+
+104
+00:05:18.070 --> 00:05:20.630
+You might be like "Where this funcToRun coming from?"
+
+105
+00:05:20.630 --> 00:05:22.419
+I'll explain that in just a second.
+
+106
+00:05:22.419 --> 00:05:26.913
+Then we go ahead and run a regular interval,
+
+107
+00:05:28.740 --> 00:05:30.603
+which is setInterval.
+
+108
+00:05:34.532 --> 00:05:38.880
+And we pass it the funcToRun and we pass it the number
+
+109
+00:05:38.880 --> 00:05:43.290
+of milliseconds that have then interned in passing here.
+
+110
+00:05:43.290 --> 00:05:45.210
+Finally, we are going to return this
+
+111
+00:05:45.210 --> 00:05:47.000
+and I will tell you why we return
+
+112
+00:05:47.000 --> 00:05:49.490
+that has to do with stopping intervals
+
+113
+00:05:49.490 --> 00:05:51.010
+from actually running.
+
+114
+00:05:51.010 --> 00:05:54.610
+Then, what we can do is we can go to the setInterval
+
+115
+00:05:54.610 --> 00:05:57.730
+and swap it out with the setImmediateInterval function
+
+116
+00:05:57.730 --> 00:05:59.240
+that we just made.
+
+117
+00:05:59.240 --> 00:06:02.240
+And you'll see that it runs immediately
+
+118
+00:06:02.240 --> 00:06:04.230
+and then once every two seconds
+
+119
+00:06:04.230 --> 00:06:08.170
+it will additionally be logged into it.
+
+120
+00:06:08.170 --> 00:06:12.150
+Now, what is going on with this funcToRun?
+
+121
+00:06:12.150 --> 00:06:13.830
+I know we've cover this a whole bunch,
+
+122
+00:06:13.830 --> 00:06:15.660
+but I know that's a huge tripping point
+
+123
+00:06:15.660 --> 00:06:17.758
+for those who need JavaScript.
+
+124
+00:06:17.758 --> 00:06:21.110
+So, this is kind of a cool one because we made a function
+
+125
+00:06:21.110 --> 00:06:23.360
+that has an argument,
+
+126
+00:06:23.360 --> 00:06:27.320
+or sorry, it takes a parameter of another function,
+
+127
+00:06:27.320 --> 00:06:29.150
+so if you have a function,
+
+128
+00:06:29.150 --> 00:06:33.810
+that one of the arguments say you pass is a function,
+
+129
+00:06:33.810 --> 00:06:37.160
+it works exactly like you are passing a number or a string
+
+130
+00:06:37.160 --> 00:06:38.630
+or anything like that.
+
+131
+00:06:38.630 --> 00:06:42.350
+But in this case, we just take the argument funcToRun
+
+132
+00:06:42.350 --> 00:06:43.340
+and we call it.
+
+133
+00:06:43.340 --> 00:06:44.850
+So, in the case of here,
+
+134
+00:06:44.850 --> 00:06:47.240
+the function that gets passed in is buzzer
+
+135
+00:06:47.240 --> 00:06:50.460
+but if we could totally call another time
+
+136
+00:06:50.460 --> 00:06:52.300
+for every 200 milliseconds
+
+137
+00:06:52.300 --> 00:06:55.123
+and pass it another function call sayHi.
+
+138
+00:06:58.110 --> 00:07:02.813
+Console.log, hey and then simply just pass it sayHi.
+
+139
+00:07:04.920 --> 00:07:08.810
+So, in both of these cases, I'm passing functions.
+
+140
+00:07:08.810 --> 00:07:11.250
+And whenever it's called, it just get transformed
+
+141
+00:07:11.250 --> 00:07:13.860
+into this parameter called funcToRun
+
+142
+00:07:13.860 --> 00:07:16.450
+where we then access to either run it
+
+143
+00:07:16.450 --> 00:07:21.450
+or to pass it even one level further into our setInterval.
+
+144
+00:07:21.970 --> 00:07:25.210
+So, timeouts and intervals are fairly straightforward.
+
+145
+00:07:25.210 --> 00:07:28.080
+The only sort of gotcha is that it will not run immediately,
+
+146
+00:07:28.080 --> 00:07:31.090
+so you can code your own little immediate one,
+
+147
+00:07:31.090 --> 00:07:33.280
+which is pretty handy to do.
+
+148
+00:07:33.280 --> 00:07:35.440
+The only other thing you need to know is that
+
+149
+00:07:35.440 --> 00:07:39.280
+if you want to clear a timer or clear an interval,
+
+150
+00:07:39.280 --> 00:07:42.970
+you must save the reference to that timer
+
+151
+00:07:42.970 --> 00:07:44.503
+or to that interval.
+
+152
+00:07:45.660 --> 00:07:50.660
+If I were to, let me rid of all that stuff that is running.
+
+153
+00:07:52.800 --> 00:07:53.983
+Get rid of that.
+
+154
+00:07:58.760 --> 00:08:02.560
+So, here let's make a function called...
+
+155
+00:08:03.900 --> 00:08:05.270
+destroy.
+
+156
+00:08:05.270 --> 00:08:07.820
+Maybe after, if someone doesn't click
+
+157
+00:08:07.820 --> 00:08:10.910
+for five seconds we'll destroy the webpage.
+
+158
+00:08:10.910 --> 00:08:15.910
+So that will be document.body.innerHTML is equal to,
+
+159
+00:08:16.140 --> 00:08:19.343
+let's just do like a paragraph tag, destroyed.
+
+160
+00:08:21.470 --> 00:08:25.653
+Then what we'll do, is we'll say setTimeout destroy.
+
+161
+00:08:27.360 --> 00:08:30.203
+Let's say, after two seconds, we'll run destroy.
+
+162
+00:08:36.160 --> 00:08:40.210
+Destroyed, that is obviously not all that interesting,
+
+163
+00:08:40.210 --> 00:08:44.020
+but you can imagine some sort of thing,
+
+164
+00:08:44.020 --> 00:08:46.720
+you have to hit the save button within two seconds
+
+165
+00:08:46.720 --> 00:08:49.050
+or something is going to happen.
+
+166
+00:08:49.050 --> 00:08:53.156
+Now, what if we were to make this five seconds
+
+167
+00:08:53.156 --> 00:08:57.957
+and then we'll say, "Okay, if somebody doesn't click
+
+168
+00:08:57.957 --> 00:09:00.847
+"in five seconds then we are going to run this.
+
+169
+00:09:00.847 --> 00:09:03.610
+"But if someone does click, then we want to clear it."
+
+170
+00:09:03.610 --> 00:09:05.083
+So, what we can do here,
+
+171
+00:09:06.660 --> 00:09:11.660
+is we'll say window. add an event listener.
+
+172
+00:09:12.140 --> 00:09:13.640
+We're gonna listen for a click
+
+173
+00:09:14.520 --> 00:09:15.860
+and we are going to run the function,
+
+174
+00:09:15.860 --> 00:09:20.860
+let's say, console.log you clicked you saved the world.
+
+175
+00:09:21.180 --> 00:09:22.620
+This is such a silly example,
+
+176
+00:09:22.620 --> 00:09:26.710
+but I hope you get the point where I want to wait
+
+177
+00:09:26.710 --> 00:09:29.030
+for five seconds and if somebody clicks I want
+
+178
+00:09:29.030 --> 00:09:30.440
+to stop this timer.
+
+179
+00:09:30.440 --> 00:09:35.440
+So, how do I stop the timer from running?
+
+180
+00:09:35.470 --> 00:09:37.690
+Well, what you can do is you can save reference
+
+181
+00:09:37.690 --> 00:09:38.640
+to this timer.
+
+182
+00:09:38.640 --> 00:09:43.640
+So const bombTimer and if we were to console.log
+
+183
+00:09:44.110 --> 00:09:46.103
+that bombTimer, what are we gonna get?
+
+184
+00:09:47.460 --> 00:09:48.293
+Two.
+
+185
+00:09:49.300 --> 00:09:50.430
+What does two mean?
+
+186
+00:09:50.430 --> 00:09:52.950
+Well, two is just a reference to all
+
+187
+00:09:52.950 --> 00:09:56.510
+of the current timers that are on the page.
+
+188
+00:09:56.510 --> 00:09:58.920
+To you it doesn't really meaning anything,
+
+189
+00:09:58.920 --> 00:10:02.920
+but to the browser it does mean quite a bit.
+
+190
+00:10:02.920 --> 00:10:07.650
+And if just take a look at the type of that,
+
+191
+00:10:07.650 --> 00:10:09.900
+it's just a regular number.
+
+192
+00:10:09.900 --> 00:10:13.060
+But if we save reference to that timer number
+
+193
+00:10:13.060 --> 00:10:15.140
+in a variable what we can do,
+
+194
+00:10:15.140 --> 00:10:19.020
+we'll take the clearTimeout and pass it reference
+
+195
+00:10:19.020 --> 00:10:22.270
+to the bombTimer and what that will do
+
+196
+00:10:22.270 --> 00:10:26.533
+is it will stop the timer from running.
+
+197
+00:10:28.770 --> 00:10:32.920
+I clicked, you will see the destroy never shows up.
+
+198
+00:10:32.920 --> 00:10:36.260
+If I just refresh the page, wait for five seconds...
+
+199
+00:10:38.470 --> 00:10:39.720
+it goes destroyed.
+
+200
+00:10:39.720 --> 00:10:42.730
+But if I click we go ahead and clear a timer.
+
+201
+00:10:42.730 --> 00:10:46.500
+So always, it's not always, but if you for some reason,
+
+202
+00:10:46.500 --> 00:10:50.440
+need to stop your timer, save reference to it in a variable,
+
+203
+00:10:50.440 --> 00:10:52.590
+so that you can go ahead and stop it.
+
+204
+00:10:52.590 --> 00:10:57.190
+There is no other way of clearing the timer
+
+205
+00:10:57.190 --> 00:11:00.754
+without having saved reference to it in a variable,
+
+206
+00:11:00.754 --> 00:11:02.410
+which is a number.
+
+207
+00:11:02.410 --> 00:11:05.020
+The intervals working exactly the same way.
+
+208
+00:11:05.020 --> 00:11:05.920
+So, setInterval...
+
+209
+00:11:09.170 --> 00:11:10.260
+Function...
+
+210
+00:11:12.590 --> 00:11:13.743
+Console.log.
+
+211
+00:11:16.130 --> 00:11:18.880
+Let's just do a poop emoji...
+
+212
+00:11:21.690 --> 00:11:23.673
+and console.log, hehe.
+
+213
+00:11:25.290 --> 00:11:28.770
+We want to run that every ten milliseconds.
+
+214
+00:11:28.770 --> 00:11:30.273
+This is gonna be bonkers.
+
+215
+00:11:32.660 --> 00:11:34.523
+It's just going forever and forever.
+
+216
+00:11:35.520 --> 00:11:38.393
+Now, if I wanted to clear that,
+
+217
+00:11:39.251 --> 00:11:41.788
+then I could just save a reference to it.
+
+218
+00:11:41.788 --> 00:11:44.621
+So const poopInterval is equal to.
+
+219
+00:11:48.313 --> 00:11:51.095
+Let's see, do we have it, access to it here?
+
+220
+00:11:51.095 --> 00:11:53.380
+poopInterval, there it is.
+
+221
+00:11:53.380 --> 00:11:55.537
+So if I run clearInterval...
+
+222
+00:11:59.370 --> 00:12:03.090
+that will stop that poopInterval from actually running.
+
+223
+00:12:03.090 --> 00:12:06.290
+Now, one thing I like to do often is,
+
+224
+00:12:06.290 --> 00:12:09.320
+I run and run this every 100 milliseconds,
+
+225
+00:12:09.320 --> 00:12:13.500
+but after three seconds I want to stop it entirely.
+
+226
+00:12:13.500 --> 00:12:15.660
+Now, if I want to clear that after five seconds,
+
+227
+00:12:15.660 --> 00:12:18.073
+I simply make a setTimeout.
+
+228
+00:12:19.753 --> 00:12:20.930
+We have a function...
+
+229
+00:12:22.450 --> 00:12:25.160
+and that will run after five seconds.
+
+230
+00:12:25.160 --> 00:12:30.160
+And we simply clearInverval and pass it the poopInterval.
+
+231
+00:12:33.010 --> 00:12:35.100
+So now, I don't want five seconds,
+
+232
+00:12:35.100 --> 00:12:38.000
+let's make it three seconds, now it just going like crazy.
+
+233
+00:12:43.120 --> 00:12:44.930
+And you see that after three seconds
+
+234
+00:12:44.930 --> 00:12:46.700
+it has totally stopped.
+
+235
+00:12:46.700 --> 00:12:50.000
+So, those are intervals and timers and clearing them.
+
+236
+00:12:50.000 --> 00:12:54.030
+Their pretty simple, very helpful in JavaScript.
+
+237
+00:12:54.030 --> 00:12:57.150
+Coming up we are going to be learning about promises
+
+238
+00:12:57.150 --> 00:12:58.040
+and async await.
+
+239
+00:12:58.040 --> 00:13:01.760
+Not just yet, but that's sort of last piece of logic
+
+240
+00:13:01.760 --> 00:13:04.230
+and flow control that we haven't learned just yet.
+
+241
+00:13:04.230 --> 00:13:06.260
+But we're gonna wait till to get to Ajax
+
+242
+00:13:06.260 --> 00:13:08.193
+and request to be able to do that.
+

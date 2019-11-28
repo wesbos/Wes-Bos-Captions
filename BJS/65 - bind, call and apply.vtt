@@ -1,0 +1,1786 @@
+﻿WEBVTT
+
+1
+00:00:00.628 --> 00:00:03.500
+(upbeat music)
+
+2
+00:00:03.500 --> 00:00:05.629
+<v ->All right lets talk about, "bind, call and apply."</v>
+
+3
+00:00:05.629 --> 00:00:09.299
+These are three functions that are used to change
+
+4
+00:00:09.299 --> 00:00:12.440
+the scope of what this is equal to,
+
+5
+00:00:12.440 --> 00:00:14.640
+inside of a function or inside of a method.
+
+6
+00:00:14.640 --> 00:00:18.140
+Now, I honestly don't even use these all that often.
+
+7
+00:00:18.140 --> 00:00:21.430
+However, the ratio of actually using it,
+
+8
+00:00:21.430 --> 00:00:25.538
+and interview questions is high, I would say.
+
+9
+00:00:25.538 --> 00:00:28.660
+Meaning that almost always if you have some sort
+
+10
+00:00:28.660 --> 00:00:31.020
+of like tricky interview questions they are going
+
+11
+00:00:31.020 --> 00:00:33.330
+to ask you a question about these.
+
+12
+00:00:33.330 --> 00:00:35.691
+So it's helpful to understand how they work.
+
+13
+00:00:35.691 --> 00:00:38.410
+And you sort of put them in your back pocket,
+
+14
+00:00:38.410 --> 00:00:41.400
+knowing that all three of these "Bind, call and apply,"
+
+15
+00:00:41.400 --> 00:00:45.430
+will change the scope of what the "this" keyword
+
+16
+00:00:45.430 --> 00:00:48.010
+is equal to, inside of a function
+
+17
+00:00:48.010 --> 00:00:49.240
+or inside of a method.
+
+18
+00:00:49.240 --> 00:00:52.850
+Now, lets get into it.
+
+19
+00:00:52.850 --> 00:00:54.418
+We're gonna go into our playground,
+
+20
+00:00:54.418 --> 00:00:57.827
+and create a new file, and we'll call that
+
+21
+00:00:57.827 --> 00:01:01.410
+"Bind, call, apply.HTML"
+
+22
+00:01:01.410 --> 00:01:03.083
+We get our HTML base going.
+
+23
+00:01:05.189 --> 00:01:07.523
+Bind call and apply.
+
+24
+00:01:08.811 --> 00:01:12.283
+And give ourselves a script tag.
+
+25
+00:01:13.430 --> 00:01:16.100
+All right, so lets start off something real easy,
+
+26
+00:01:16.100 --> 00:01:18.560
+we'll just create and object that has a method on it.
+
+27
+00:01:18.560 --> 00:01:21.680
+So say const:person is equal to an object.
+
+28
+00:01:21.680 --> 00:01:23.570
+Now inside of that object we'll have a name,
+
+29
+00:01:23.570 --> 00:01:25.300
+and that name will be "Wes Boss,"
+
+30
+00:01:25.300 --> 00:01:27.480
+ya have a little bit of fun put your own name in there.
+
+31
+00:01:27.480 --> 00:01:32.480
+And we'll say, "SayHi" as a method that is a function.
+
+32
+00:01:32.978 --> 00:01:37.289
+And in that we'll just console:log (Hey)
+
+33
+00:01:37.289 --> 00:01:40.970
+and if I wanna access the persons name,
+
+34
+00:01:40.970 --> 00:01:43.538
+then we simply use the (this) keyword,
+
+35
+00:01:43.538 --> 00:01:45.871
+(this.name)
+
+36
+00:01:46.740 --> 00:01:48.320
+Now I am going to save that,
+
+37
+00:01:48.320 --> 00:01:50.870
+and I'm gonna change this over to shorthand.
+
+38
+00:01:50.870 --> 00:01:53.330
+So I gotta delete the function keyword,
+
+39
+00:01:53.330 --> 00:01:55.210
+and delete the colon.
+
+40
+00:01:55.210 --> 00:01:57.150
+And that is the exact same thing.
+
+41
+00:01:57.150 --> 00:02:00.233
+Now lets just open that up right in our browser,
+
+42
+00:02:03.210 --> 00:02:05.823
+and we'll take a look at how that works.
+
+43
+00:02:07.200 --> 00:02:08.400
+Say person.sayHi
+
+44
+00:02:09.560 --> 00:02:12.390
+it will say hey Wes Boss.
+
+45
+00:02:12.390 --> 00:02:13.530
+Why?
+
+46
+00:02:13.530 --> 00:02:15.500
+Because it's probably even better
+
+47
+00:02:15.500 --> 00:02:19.280
+just to return from that (this) string.
+
+48
+00:02:19.280 --> 00:02:20.530
+that does the same thing.
+
+49
+00:02:25.970 --> 00:02:27.520
+All right, so why does that work?
+
+50
+00:02:27.520 --> 00:02:31.230
+Well sayHi is a method, and when methods are called,
+
+51
+00:02:31.230 --> 00:02:33.250
+the way that they get there (this) value,
+
+52
+00:02:33.250 --> 00:02:35.440
+is they look to the left of the dot,
+
+53
+00:02:35.440 --> 00:02:37.440
+and see what they are bound against.
+
+54
+00:02:37.440 --> 00:02:39.778
+And the sayHi method will give us,
+
+55
+00:02:39.778 --> 00:02:42.380
+the object that it was run against.
+
+56
+00:02:42.380 --> 00:02:43.498
+This is no different than,
+
+57
+00:02:43.498 --> 00:02:47.730
+if we were to have a class or a prototype,
+
+58
+00:02:47.730 --> 00:02:48.920
+or anything like this.
+
+59
+00:02:48.920 --> 00:02:50.550
+The (this) is always going to be equal,
+
+60
+00:02:50.550 --> 00:02:52.600
+to what is to the left of the dot.
+
+61
+00:02:52.600 --> 00:02:55.240
+Now if we were to take that sayHi method,
+
+62
+00:02:55.240 --> 00:02:56.860
+and put it in its own variable,
+
+63
+00:02:56.860 --> 00:03:01.058
+so const sayHi is equal to person.sayHi
+
+64
+00:03:01.058 --> 00:03:04.710
+so now we're just pointing the sayHi into
+
+65
+00:03:04.710 --> 00:03:07.100
+it own variable called, sayHi.
+
+66
+00:03:07.100 --> 00:03:08.658
+And if I were to run that again,
+
+67
+00:03:08.658 --> 00:03:10.053
+What are we gonna get?
+
+68
+00:03:11.640 --> 00:03:13.127
+Hey hey,
+
+69
+00:03:13.127 --> 00:03:14.176
+right.
+
+70
+00:03:14.176 --> 00:03:19.176
+Okay that's weird, so if I were to console.log
+
+71
+00:03:20.610 --> 00:03:22.260
+Cryptokey, get outta here.
+
+72
+00:03:22.260 --> 00:03:26.464
+If I were to console.log (this)
+
+73
+00:03:26.464 --> 00:03:29.803
+and run it this way,
+
+74
+00:03:30.777 --> 00:03:32.405
+we see this is equal to the person object.
+
+75
+00:03:32.405 --> 00:03:35.655
+But if I run just the SayHi function,
+
+76
+00:03:35.655 --> 00:03:37.800
+(this) is equal to the window.
+
+77
+00:03:37.800 --> 00:03:38.633
+Why?
+
+78
+00:03:38.633 --> 00:03:42.081
+Because nothing that the method was bound to
+
+79
+00:03:42.081 --> 00:03:44.270
+on the left hand side.
+
+80
+00:03:44.270 --> 00:03:45.230
+And that's really important,
+
+81
+00:03:45.230 --> 00:03:49.346
+Because JavaScripts' this keyword always is defined
+
+82
+00:03:49.346 --> 00:03:52.510
+by where the function is being called,
+
+83
+00:03:52.510 --> 00:03:56.230
+and not where the function is being defined.
+
+84
+00:03:56.230 --> 00:03:58.505
+So even though we defined the sayhi function,
+
+85
+00:03:58.505 --> 00:04:00.019
+inside of an object,
+
+86
+00:04:00.019 --> 00:04:04.219
+it's not bound to it unless we call it as a method
+
+87
+00:04:04.219 --> 00:04:06.059
+of an object.
+
+88
+00:04:06.059 --> 00:04:09.260
+So what happens is that we can use
+
+89
+00:04:09.260 --> 00:04:14.260
+the "bind" keyword to change where the (this) keyword
+
+90
+00:04:14.329 --> 00:04:15.449
+is defined.
+
+91
+00:04:15.449 --> 00:04:18.580
+So we can use the dot ".bind" keyword
+
+92
+00:04:18.580 --> 00:04:21.300
+to actually change what the "this" keyword
+
+93
+00:04:21.300 --> 00:04:24.400
+is equal to or what it's bound too.
+
+94
+00:04:24.400 --> 00:04:25.520
+So what we'll do is,
+
+95
+00:04:25.520 --> 00:04:27.569
+we'll go here and we'll say ".bind"
+
+96
+00:04:27.569 --> 00:04:30.249
+and lets just bind it back to the original person.
+
+97
+00:04:30.249 --> 00:04:32.617
+And what this says is,
+
+98
+00:04:32.617 --> 00:04:36.966
+create a function called "sayHi" that when called
+
+99
+00:04:36.966 --> 00:04:40.769
+its (this) keyword will be equal to,
+
+100
+00:04:40.769 --> 00:04:42.650
+whatever I pass in right here.
+
+101
+00:04:42.650 --> 00:04:45.840
+It'll be equal to, this object here.
+
+102
+00:04:45.840 --> 00:04:47.787
+Now when I go ahead and re-run "sayHi"
+
+103
+00:04:47.787 --> 00:04:50.300
+It now works as Wes Boss.
+
+104
+00:04:50.300 --> 00:04:51.133
+Why?
+
+105
+00:04:51.133 --> 00:04:53.558
+Because I've changed what (this) will be equal to,
+
+106
+00:04:53.558 --> 00:04:56.099
+by binding it to another object.
+
+107
+00:04:56.099 --> 00:04:58.110
+Now why would that be useful?
+
+108
+00:04:58.110 --> 00:05:02.099
+Well, sometimes you might want to use a method of an object,
+
+109
+00:05:02.099 --> 00:05:04.850
+with some other information.
+
+110
+00:05:04.850 --> 00:05:07.779
+So lets say I have a Jenna object here,
+
+111
+00:05:07.779 --> 00:05:10.130
+and I set that to curly brackets.
+
+112
+00:05:10.130 --> 00:05:12.027
+And we say name is equal to Jenna,
+
+113
+00:05:12.027 --> 00:05:17.027
+now how would I use this method for another object?
+
+114
+00:05:21.090 --> 00:05:23.089
+It's not like (this.name) is passed in
+
+115
+00:05:23.089 --> 00:05:24.006
+as an argument.
+
+116
+00:05:24.006 --> 00:05:24.903
+It's not passed in as an argument,
+
+117
+00:05:26.038 --> 00:05:28.260
+it's passed in as a (this)
+
+118
+00:05:28.260 --> 00:05:30.156
+that by the way is the difference between,
+
+119
+00:05:30.156 --> 00:05:30.989
+object oriented and functional programming.
+
+120
+00:05:30.989 --> 00:05:35.890
+This is object oriented.
+
+121
+00:05:35.890 --> 00:05:39.009
+if it were to take a argument,
+
+122
+00:05:39.009 --> 00:05:42.420
+that would be much more of a functional approach to it.
+
+123
+00:05:42.420 --> 00:05:45.169
+So if we're in this sort of use case here,
+
+124
+00:05:45.169 --> 00:05:47.078
+what we can do, is we can bind it,
+
+125
+00:05:47.078 --> 00:05:48.569
+to Jenna.
+
+126
+00:05:48.569 --> 00:05:50.373
+And then when I run it,
+
+127
+00:05:51.453 --> 00:05:53.020
+it says "Hey Jenna"
+
+128
+00:05:53.020 --> 00:05:53.853
+why?
+
+129
+00:05:53.853 --> 00:05:56.619
+Because when we bind a function,
+
+130
+00:05:56.619 --> 00:05:59.320
+so this is a function, bind is a method that lives on
+
+131
+00:05:59.320 --> 00:06:00.580
+all functions.
+
+132
+00:06:00.580 --> 00:06:04.087
+And it says change the (this) keyword to be equal to,
+
+133
+00:06:04.087 --> 00:06:06.909
+in this case just a different object.
+
+134
+00:06:06.909 --> 00:06:11.183
+Again I could just manually pass it a name of Harry.
+
+135
+00:06:12.772 --> 00:06:14.993
+It says, "Hey Harry"
+
+136
+00:06:17.980 --> 00:06:19.737
+okay lets look at another example,
+
+137
+00:06:19.737 --> 00:06:23.440
+Document.querySelector,
+Document.querySelectorAll,
+
+138
+00:06:23.440 --> 00:06:24.768
+those are hard to type.
+
+139
+00:06:24.768 --> 00:06:28.683
+So lets show a querySelector example,
+
+140
+00:06:30.350 --> 00:06:33.270
+And if I wanted to make a short form selector,
+
+141
+00:06:33.270 --> 00:06:36.570
+like dollar, dollar, dollar for querySelectorAll
+
+142
+00:06:36.570 --> 00:06:37.620
+you might think you could do this.
+
+143
+00:06:37.620 --> 00:06:42.457
+Const $ is equal to document.querySelector and that's it.
+
+144
+00:06:43.877 --> 00:06:46.859
+All right, and if I were to type in Dollar here,
+
+145
+00:06:46.859 --> 00:06:48.640
+gives me querySelector,
+
+146
+00:06:48.640 --> 00:06:51.130
+if I type in document.querySelector,
+
+147
+00:06:52.977 --> 00:06:54.560
+it gives me the exact same thing.
+
+148
+00:06:54.560 --> 00:06:58.580
+In fact, is document.querySelector the same thing
+
+149
+00:06:58.580 --> 00:06:59.630
+as dollar sign?
+
+150
+00:06:59.630 --> 00:07:01.928
+It is.
+It is the exact same function,
+
+151
+00:07:01.928 --> 00:07:03.200
+that runs.
+
+152
+00:07:03.200 --> 00:07:05.860
+By the way, sometimes you see this (native code),
+
+153
+00:07:05.860 --> 00:07:06.693
+what does that mean?
+
+154
+00:07:06.693 --> 00:07:08.930
+Well, this is a function that has been implemented,
+
+155
+00:07:08.930 --> 00:07:09.829
+by the browser.
+
+156
+00:07:09.829 --> 00:07:12.100
+So we're not able to see how it works
+
+157
+00:07:12.100 --> 00:07:13.020
+under the hood,
+
+158
+00:07:13.020 --> 00:07:15.320
+because it's implemented in whatever language
+
+159
+00:07:15.320 --> 00:07:16.739
+the browser is written in.
+
+160
+00:07:16.739 --> 00:07:20.410
+So, if I were to try and run this,
+
+161
+00:07:20.410 --> 00:07:23.290
+like select, let me put something on the page.
+
+162
+00:07:23.290 --> 00:07:25.437
+Let's go here, lets skip a paragraph,
+
+163
+00:07:25.437 --> 00:07:28.340
+"Hey" and a button, says, "click me."
+
+164
+00:07:28.340 --> 00:07:30.597
+If I wanted to select the first paragraph on the page,
+
+165
+00:07:30.597 --> 00:07:33.140
+you'd think I could just do $(p)...
+
+166
+00:07:34.448 --> 00:07:36.237
+(whoop you have to be able to type)
+
+167
+00:07:36.237 --> 00:07:39.223
+you'd think I'd be able to just say $(p),
+
+168
+00:07:41.538 --> 00:07:46.538
+now it says "Uncaught TypeError: Illegal Invocation.
+
+169
+00:07:46.740 --> 00:07:47.900
+Cops are on their way!
+
+170
+00:07:47.900 --> 00:07:49.628
+We're doing some illegally here.
+
+171
+00:07:49.628 --> 00:07:51.500
+Now what's happening?
+
+172
+00:07:51.500 --> 00:07:56.288
+Well somewhere under the hood in "Document.querySelector,"
+
+173
+00:07:56.288 --> 00:08:00.440
+it needs to know where to look,
+
+174
+00:08:00.440 --> 00:08:02.640
+for the thing that your selecting.
+
+175
+00:08:02.640 --> 00:08:04.340
+And the reason behind that is because
+
+176
+00:08:04.340 --> 00:08:05.628
+you can also do things like,
+
+177
+00:08:05.628 --> 00:08:07.568
+if I had like a "wrapper"
+
+178
+00:08:07.568 --> 00:08:10.137
+and inside of that I have a paragraph that says,
+
+179
+00:08:10.137 --> 00:08:14.090
+"Hey I'm in a wrapper."
+
+180
+00:08:14.090 --> 00:08:15.490
+and sometimes what you wanna do is,
+
+181
+00:08:15.490 --> 00:08:17.480
+you wanna say, const wrapper is equal to
+
+182
+00:08:17.480 --> 00:08:22.480
+document.querySelector then you wanna grab the "wrapper"
+
+183
+00:08:22.950 --> 00:08:24.960
+and then inside of the "wrapper" you wanna say,
+
+184
+00:08:24.960 --> 00:08:28.236
+const p is equal to "wrapper.querySelector"
+
+185
+00:08:28.236 --> 00:08:29.930
+you wanna look for paragraphs inside of that,
+
+186
+00:08:29.930 --> 00:08:31.000
+and console.log(p)
+
+187
+00:08:31.000 --> 00:08:32.230
+Lets see if that works.
+
+188
+00:08:32.230 --> 00:08:33.063
+Good.
+So we got it.
+
+189
+00:08:33.063 --> 00:08:36.413
+Now so query.selector is a function,
+
+190
+00:08:36.413 --> 00:08:40.950
+and it needs to know what should I look inside of,
+
+191
+00:08:40.950 --> 00:08:42.120
+for the selector.
+
+192
+00:08:42.120 --> 00:08:44.450
+And the reason it knows where to scope it to,
+
+193
+00:08:44.450 --> 00:08:46.650
+either globally which is the document,
+
+194
+00:08:46.650 --> 00:08:48.610
+or in a subset of the dom,
+
+195
+00:08:48.610 --> 00:08:50.760
+which in our case is the "wrapper,"
+
+196
+00:08:50.760 --> 00:08:52.232
+then it knows to look inside the "wrapper,"
+
+197
+00:08:52.232 --> 00:08:54.350
+because it will say this,
+
+198
+00:08:54.350 --> 00:08:56.550
+and this will be equal to either the document,
+
+199
+00:08:56.550 --> 00:08:57.383
+or the "wrapper."
+
+200
+00:08:57.383 --> 00:09:00.842
+Now if we go ahead and just like take this $
+
+201
+00:09:00.842 --> 00:09:03.300
+out of the equation,
+
+202
+00:09:03.300 --> 00:09:04.283
+it doesn't work.
+
+203
+00:09:04.283 --> 00:09:08.203
+Because I can't just do something like this (p)
+
+204
+00:09:08.203 --> 00:09:09.660
+why?
+
+205
+00:09:09.660 --> 00:09:12.950
+Because there's nothing to the left of the dot.
+
+206
+00:09:12.950 --> 00:09:14.993
+I've takin away the object which the method
+
+207
+00:09:14.993 --> 00:09:16.327
+was called against.
+
+208
+00:09:16.327 --> 00:09:18.980
+And it is not bound to anything.
+
+209
+00:09:18.980 --> 00:09:20.983
+So the way that we fix that,
+
+210
+00:09:20.983 --> 00:09:24.585
+Is we say, "Document.querySelector.bind"
+
+211
+00:09:24.585 --> 00:09:26.735
+and then you have to manually pass it,
+
+212
+00:09:26.735 --> 00:09:30.105
+reference to the thing you want this to be equal to.
+
+213
+00:09:30.105 --> 00:09:32.460
+So we'll call it "document."
+
+214
+00:09:32.460 --> 00:09:34.873
+Now lets put a little comment there,
+
+215
+00:09:34.873 --> 00:09:39.873
+by calling bind against querySelector,
+
+216
+00:09:42.540 --> 00:09:47.060
+we say when the $ function
+
+217
+00:09:47.060 --> 00:09:48.193
+is run,
+
+218
+00:09:53.130 --> 00:09:58.130
+use 'document' as the 'this' value.
+
+219
+00:10:01.550 --> 00:10:02.803
+Lets see if it works.
+
+220
+00:10:03.770 --> 00:10:05.260
+Now it works just great.
+
+221
+00:10:05.260 --> 00:10:07.690
+Because it's been bound to the document.
+
+222
+00:10:07.690 --> 00:10:09.501
+You notice that this doesn't call the function,
+
+223
+00:10:09.501 --> 00:10:12.013
+this just returns a new function,
+
+224
+00:10:12.013 --> 00:10:15.090
+which you can then store in a variable.
+
+225
+00:10:15.090 --> 00:10:16.940
+Same thing as I could say,
+
+226
+00:10:16.940 --> 00:10:21.341
+'const lookFor' and we'll make that 'querySelectorAll'
+
+227
+00:10:21.341 --> 00:10:24.083
+and I could go here and just say,
+
+228
+00:10:24.083 --> 00:10:26.780
+'LookFor(paragraph)
+
+229
+00:10:26.780 --> 00:10:28.550
+and now I got a NodeList as return.
+
+230
+00:10:28.550 --> 00:10:31.152
+So by calling bind I tell,
+
+231
+00:10:31.152 --> 00:10:33.780
+I'm sure your sick of me saying it by now but,
+
+232
+00:10:33.780 --> 00:10:37.019
+using bind will change the context of what 'this'
+
+233
+00:10:37.019 --> 00:10:38.352
+is equal to,
+
+234
+00:10:38.352 --> 00:10:41.860
+inside of a function or inside of a method.
+
+235
+00:10:41.860 --> 00:10:43.990
+Another thing that "bind" is useful for,
+
+236
+00:10:43.990 --> 00:10:46.140
+is that you can use it to prep a function,
+
+237
+00:10:46.140 --> 00:10:47.280
+that has arguments,
+
+238
+00:10:47.280 --> 00:10:49.912
+sort of pre-loaded or batteries included.
+
+239
+00:10:49.912 --> 00:10:51.432
+So what you can do here is,
+
+240
+00:10:51.432 --> 00:10:54.810
+lets say, "const bill" is equal to an object,
+
+241
+00:10:54.810 --> 00:10:56.541
+and we'll say the total is equal to 1000.
+
+242
+00:10:56.541 --> 00:11:00.303
+And calculate is equal to a function,
+
+243
+00:11:03.230 --> 00:11:05.943
+that takes in the (taxRate)
+
+244
+00:11:07.660 --> 00:11:09.117
+and we are gonna return,
+
+245
+00:11:09.117 --> 00:11:11.319
+"this.total" plus,
+
+246
+00:11:11.319 --> 00:11:14.990
+"this.total" times (taxRate)
+
+247
+00:11:14.990 --> 00:11:16.111
+that got passed in.
+
+248
+00:11:16.111 --> 00:11:17.439
+Okay.
+
+249
+00:11:17.439 --> 00:11:19.240
+Good, good, good.
+
+250
+00:11:19.240 --> 00:11:20.817
+Now we go here and just say,
+
+251
+00:11:20.817 --> 00:11:25.817
+"const total" is equal to Bill.calculate,
+
+252
+00:11:25.959 --> 00:11:30.231
+and we'll calculate a 13% total.
+
+253
+00:11:30.231 --> 00:11:31.990
+Console.log(total)
+
+254
+00:11:31.990 --> 00:11:32.940
+Lets see if this works,
+
+255
+00:11:32.940 --> 00:11:33.818
+before we get going.
+
+256
+00:11:33.818 --> 00:11:36.039
+Good.
+1130.
+
+257
+00:11:36.039 --> 00:11:38.570
+Now if I wanted to use this calculate function,
+
+258
+00:11:38.570 --> 00:11:40.930
+and store it in an external variable.
+
+259
+00:11:40.930 --> 00:11:43.857
+I could say "const.calc" is equal to
+
+260
+00:11:43.857 --> 00:11:45.939
+"bill.calculate"
+
+261
+00:11:45.939 --> 00:11:49.591
+and if I were to try to console.log (calc)
+
+262
+00:11:49.591 --> 00:11:51.541
+and pass it 0.13,
+
+263
+00:11:51.541 --> 00:11:53.950
+you'll see we get NaN.
+
+264
+00:11:53.950 --> 00:11:54.783
+Why?
+
+265
+00:11:54.783 --> 00:11:57.310
+Because if we console.log (this)
+
+266
+00:11:57.310 --> 00:11:58.158
+inside of this method,
+
+267
+00:11:58.158 --> 00:12:01.730
+(this) Is going to be equal to the window.
+
+268
+00:12:01.730 --> 00:12:03.580
+You see the first time around it's equal to
+
+269
+00:12:03.580 --> 00:12:04.760
+our "bill" object.
+
+270
+00:12:04.760 --> 00:12:07.050
+And the second time around it's equal to our Window.
+
+271
+00:12:07.050 --> 00:12:09.510
+That's because this calc,
+
+272
+00:12:09.510 --> 00:12:11.340
+is not bound to anything.
+
+273
+00:12:11.340 --> 00:12:13.040
+So we could just bind it
+
+274
+00:12:13.040 --> 00:12:14.549
+to the original bill.
+
+275
+00:12:14.549 --> 00:12:16.379
+And that would work.
+
+276
+00:12:16.379 --> 00:12:20.850
+Or you could pass it your own bill.
+
+277
+00:12:20.850 --> 00:12:22.853
+So we say total 500,
+
+278
+00:12:24.291 --> 00:12:26.831
+and that works as well.
+
+279
+00:12:26.831 --> 00:12:30.850
+One kinda neat thing about "Bind,"
+
+280
+00:12:30.850 --> 00:12:32.960
+is that you can also preload it
+
+281
+00:12:32.960 --> 00:12:34.957
+with some arguments that need to be called.
+
+282
+00:12:34.957 --> 00:12:37.070
+I like to think of this as
+
+283
+00:12:37.070 --> 00:12:40.450
+the check-in online of functions.
+
+284
+00:12:40.450 --> 00:12:42.519
+Meaning that when you bind something,
+
+285
+00:12:42.519 --> 00:12:44.460
+you can pass it additional arguments,
+
+286
+00:12:44.460 --> 00:12:48.210
+that line up with the arguments of the function or method.
+
+287
+00:12:48.210 --> 00:12:51.640
+So in our case, if I wanna pass the TaxRate,
+
+288
+00:12:51.640 --> 00:12:55.400
+I can pass it right here 0.06.
+
+289
+00:12:55.400 --> 00:12:58.690
+We live in oil heavy province of Canada,
+
+290
+00:12:58.690 --> 00:13:00.997
+and we have very low taxRate here.
+
+291
+00:13:00.997 --> 00:13:04.580
+And then I can go ahead and not pass it here.
+
+292
+00:13:04.580 --> 00:13:06.183
+And watch what happens.
+
+293
+00:13:07.630 --> 00:13:08.580
+It still works!
+
+294
+00:13:08.580 --> 00:13:10.270
+Why?
+
+295
+00:13:10.270 --> 00:13:13.819
+Well the additional arguments to "bind"
+
+296
+00:13:13.819 --> 00:13:16.888
+the first one will always be the "this" object.
+
+297
+00:13:16.888 --> 00:13:18.600
+And then the additional ones,
+
+298
+00:13:18.600 --> 00:13:22.340
+will line up with the arguments that get passed.
+
+299
+00:13:22.340 --> 00:13:23.900
+It's only off by one.
+
+300
+00:13:23.900 --> 00:13:25.745
+So the taxRate would be the second argument.
+
+301
+00:13:25.745 --> 00:13:27.966
+And if this had multiple more arguments,
+
+302
+00:13:27.966 --> 00:13:31.556
+maybe like a tipRate.
+
+303
+00:13:31.556 --> 00:13:34.370
+And then that would be 0.15,
+
+304
+00:13:34.370 --> 00:13:35.470
+you could pass it like that.
+
+305
+00:13:35.470 --> 00:13:36.780
+So it's always off by one,
+
+306
+00:13:36.780 --> 00:13:38.210
+because the first argument is going to
+
+307
+00:13:38.210 --> 00:13:39.694
+be equal to this.
+
+308
+00:13:39.694 --> 00:13:41.720
+Now why is that helpful,
+
+309
+00:13:41.720 --> 00:13:44.585
+well sometimes when you are generating functions,
+
+310
+00:13:44.585 --> 00:13:46.366
+lets say maybe your looping over,
+
+311
+00:13:46.366 --> 00:13:47.374
+a list of data.
+
+312
+00:13:47.374 --> 00:13:49.610
+You have access to that data,
+
+313
+00:13:49.610 --> 00:13:52.660
+at the time of the function creation.
+
+314
+00:13:52.660 --> 00:13:54.870
+And then maybe later you wanna call it.
+
+315
+00:13:54.870 --> 00:13:56.310
+And sometimes it's easier,
+
+316
+00:13:56.310 --> 00:13:59.750
+to go batteries included on this function.
+
+317
+00:13:59.750 --> 00:14:02.486
+Pass it what the arguments will be at call time.
+
+318
+00:14:02.486 --> 00:14:04.800
+When you are binding it,
+
+319
+00:14:04.800 --> 00:14:06.150
+and then you can kinda like,
+
+320
+00:14:06.150 --> 00:14:08.810
+just go ahead and take "this" function wherever you want.
+
+321
+00:14:08.810 --> 00:14:10.545
+Knowing that the batteries,
+
+322
+00:14:10.545 --> 00:14:13.490
+the arguments are pre-installed on it.
+
+323
+00:14:13.490 --> 00:14:16.356
+And you can go ahead and call it whenever you want.
+
+324
+00:14:16.356 --> 00:14:19.326
+Lets move on to call and apply here.
+
+325
+00:14:19.326 --> 00:14:22.950
+Call and apply work exactly the same thing,
+
+326
+00:14:22.950 --> 00:14:25.038
+as "bind" does
+
+327
+00:14:25.038 --> 00:14:26.260
+except
+
+328
+00:14:26.260 --> 00:14:27.440
+that they will,
+
+329
+00:14:27.440 --> 00:14:28.940
+call the functions for you.
+
+330
+00:14:28.940 --> 00:14:33.090
+So instead of returning a function,
+
+331
+00:14:33.090 --> 00:14:35.942
+like if we take a look at what's in 'calc'
+
+332
+00:14:35.942 --> 00:14:38.120
+you see that it's a function.
+
+333
+00:14:38.120 --> 00:14:39.220
+If I just duplicate this,
+
+334
+00:14:39.220 --> 00:14:40.211
+and bring it down here.
+
+335
+00:14:40.211 --> 00:14:42.830
+And we'll call that "Totoal2"
+
+336
+00:14:42.830 --> 00:14:44.400
+and change this to .call
+
+337
+00:14:47.420 --> 00:14:48.433
+and refresh.
+
+338
+00:14:49.594 --> 00:14:51.683
+Oh got to log it now.
+
+339
+00:14:53.885 --> 00:14:56.510
+You'll see I got 530.
+
+340
+00:14:56.510 --> 00:14:58.536
+Now what happened here?
+
+341
+00:14:58.536 --> 00:15:01.780
+That bind returns a function,
+
+342
+00:15:01.780 --> 00:15:04.375
+that then needs to be called by itself.
+
+343
+00:15:04.375 --> 00:15:07.024
+.call will do the same thing as "bind"
+
+344
+00:15:07.024 --> 00:15:10.750
+but it will additionally run the function for you.
+
+345
+00:15:10.750 --> 00:15:12.900
+So if you need to,
+
+346
+00:15:12.900 --> 00:15:14.900
+bind a function and call it later,
+
+347
+00:15:14.900 --> 00:15:15.940
+Use "bind"
+
+348
+00:15:15.940 --> 00:15:17.300
+if you need to bind a function,
+
+349
+00:15:17.300 --> 00:15:18.900
+and call it immediately,
+
+350
+00:15:18.900 --> 00:15:20.090
+use "call"
+
+351
+00:15:20.090 --> 00:15:22.863
+and then the third one that we have is "apply"
+
+352
+00:15:23.810 --> 00:15:27.290
+and lets call that "total3"
+
+353
+00:15:27.290 --> 00:15:30.493
+and change this to "apply"
+
+354
+00:15:30.493 --> 00:15:33.373
+and the only difference that we have there is,
+
+355
+00:15:33.373 --> 00:15:36.020
+lets say function apply,
+
+356
+00:15:36.020 --> 00:15:37.892
+lets go to the docs. For this.
+
+357
+00:15:37.892 --> 00:15:39.750
+Well the syntax of this function,
+
+358
+00:15:39.750 --> 00:15:40.973
+is almost identical to .call
+
+359
+00:15:40.973 --> 00:15:43.480
+the fundamental difference is that 'call',
+
+360
+00:15:43.480 --> 00:15:44.620
+accepts an argument list.
+
+361
+00:15:44.620 --> 00:15:47.362
+While 'apply' accepts a single array,
+
+362
+00:15:47.362 --> 00:15:49.260
+of arguments.
+
+363
+00:15:49.260 --> 00:15:50.703
+So we take a look here,
+
+364
+00:15:50.703 --> 00:15:53.020
+you see that they're passing null.
+
+365
+00:15:53.020 --> 00:15:55.590
+If you wanna use one of these functions,
+
+366
+00:15:55.590 --> 00:15:57.080
+and you don't care about what 'this'
+
+367
+00:15:57.080 --> 00:15:58.046
+is equal too.
+
+368
+00:15:58.046 --> 00:15:59.514
+You could just pass null,
+
+369
+00:15:59.514 --> 00:16:01.893
+and then you pass the additional arguments,
+
+370
+00:16:01.893 --> 00:16:03.330
+as an array.
+
+371
+00:16:03.330 --> 00:16:06.362
+So in our case it's only one argument.
+
+372
+00:16:06.362 --> 00:16:10.019
+So we would pass it as an array,
+
+373
+00:16:10.019 --> 00:16:11.623
+of one item.
+
+374
+00:16:12.750 --> 00:16:16.230
+So not all that useful now that we have spread.
+
+375
+00:16:16.230 --> 00:16:17.703
+Cause you could just spread into call.
+
+376
+00:16:17.703 --> 00:16:19.920
+But it's available for you,
+
+377
+00:16:19.920 --> 00:16:21.470
+if you need it.
+
+378
+00:16:21.470 --> 00:16:23.890
+And lets console.log total3,
+
+379
+00:16:23.890 --> 00:16:25.423
+lets change these values here.
+
+380
+00:16:27.320 --> 00:16:30.000
+Lets be a big tipper, 60% tipper,
+
+381
+00:16:30.000 --> 00:16:31.310
+there we go.
+
+382
+00:16:31.310 --> 00:16:32.898
+Looking good.
+
+383
+00:16:32.898 --> 00:16:35.430
+So that's the only difference between "call and apply"
+
+384
+00:16:35.430 --> 00:16:37.780
+is that multiple arguments,
+
+385
+00:16:37.780 --> 00:16:38.993
+here lets add one more,
+
+386
+00:16:40.854 --> 00:16:42.143
+describe.
+
+387
+00:16:45.240 --> 00:16:48.150
+And that will take in a
+
+388
+00:16:48.150 --> 00:16:48.983
+mealType,
+
+389
+00:16:51.110 --> 00:16:52.353
+and a drinkType
+
+390
+00:16:54.673 --> 00:16:59.070
+then just console.log Your meal of (mealType) with,
+
+391
+00:17:04.840 --> 00:17:08.160
+a drink of (drinkType)
+
+392
+00:17:10.230 --> 00:17:11.420
+was
+
+393
+00:17:15.329 --> 00:17:18.320
+(this.calculate)
+
+394
+00:17:18.320 --> 00:17:21.710
+and lets also pass in a taxRate.
+
+395
+00:17:26.930 --> 00:17:27.843
+We'll say Taxrate.
+
+396
+00:17:30.430 --> 00:17:31.263
+Okay.
+
+397
+00:17:31.263 --> 00:17:33.260
+So now if I wanna run this function,
+
+398
+00:17:33.260 --> 00:17:38.023
+I could just say, "Bill.describe" I add 'pizza'
+
+399
+00:17:39.370 --> 00:17:44.370
+with a 'beer' and the taxRate was 0.13.
+
+400
+00:17:47.230 --> 00:17:50.250
+Says your meal of pizza with a drink of beer,
+
+401
+00:17:50.250 --> 00:17:51.130
+was 1130.
+
+402
+00:17:51.130 --> 00:17:51.963
+Right.
+
+403
+00:17:51.963 --> 00:17:53.487
+Now if I wanted to run that,
+
+404
+00:17:53.487 --> 00:17:55.463
+with "call and apply"
+
+405
+00:17:57.200 --> 00:17:58.033
+I could say,
+
+406
+00:17:59.572 --> 00:18:02.890
+'const mymeal' is equal to
+
+407
+00:18:02.890 --> 00:18:06.290
+bill.describe.call
+
+408
+00:18:07.830 --> 00:18:10.010
+and we can pass it,
+
+409
+00:18:10.010 --> 00:18:13.720
+a total of 342.
+
+410
+00:18:13.720 --> 00:18:15.280
+Like why do we pass it an object here?
+
+411
+00:18:15.280 --> 00:18:17.110
+Because that is what 'this' will be equal to.
+
+412
+00:18:17.110 --> 00:18:19.610
+And its looking for 'this.total'
+
+413
+00:18:19.610 --> 00:18:20.760
+inside of calculate.
+
+414
+00:18:20.760 --> 00:18:23.190
+And then the additional arguments are,
+
+415
+00:18:23.190 --> 00:18:25.470
+mealType, drinkType, and taxRate.
+
+416
+00:18:25.470 --> 00:18:26.940
+So we pass the first one,
+
+417
+00:18:26.940 --> 00:18:28.360
+which is pizza.
+
+418
+00:18:28.360 --> 00:18:30.040
+Second one which is beer,
+
+419
+00:18:30.040 --> 00:18:35.040
+and the third one which is a 13% taxRate.
+
+420
+00:18:37.140 --> 00:18:38.617
+Console.log mymeal.
+
+421
+00:18:40.700 --> 00:18:42.853
+This .calculate is not a function.
+
+422
+00:18:44.113 --> 00:18:44.946
+Dadadadah.
+
+423
+00:18:47.070 --> 00:18:48.810
+Oh haha.
+
+424
+00:18:48.810 --> 00:18:49.900
+What happened?
+
+425
+00:18:49.900 --> 00:18:52.763
+Well, obviously if you don't pass it,
+
+426
+00:18:55.770 --> 00:18:58.553
+its going to look for this.calc on the
+
+427
+00:18:58.553 --> 00:19:00.120
+'this' that you passed in.
+
+428
+00:19:00.120 --> 00:19:01.544
+And we didn't pass that in so,
+
+429
+00:19:01.544 --> 00:19:03.933
+lets actually just pass the bill in,
+
+430
+00:19:05.040 --> 00:19:07.533
+so that it has access to that calculate function.
+
+431
+00:19:09.003 --> 00:19:09.836
+Here we go,
+
+432
+00:19:09.836 --> 00:19:11.660
+here meal pizza, drank a beer was 1130.
+
+433
+00:19:11.660 --> 00:19:15.603
+Good, and now if I were to apply that instead.
+
+434
+00:19:20.770 --> 00:19:23.070
+We simply pass these arguments as,
+
+435
+00:19:23.070 --> 00:19:26.620
+one argument and its array.
+
+436
+00:19:26.620 --> 00:19:29.140
+In an array of values.
+
+437
+00:19:29.140 --> 00:19:30.920
+Looks exactly the same.
+
+438
+00:19:30.920 --> 00:19:34.115
+So that is "call, apply and bind,"
+
+439
+00:19:34.115 --> 00:19:36.000
+when should you use it?
+
+440
+00:19:36.000 --> 00:19:37.810
+When the 'this' value is different,
+
+441
+00:19:37.810 --> 00:19:39.224
+from what you had hoped.
+
+442
+00:19:39.224 --> 00:19:40.960
+Just keep it in your back pocket,
+
+443
+00:19:40.960 --> 00:19:42.270
+cause you definitely will need it.
+
+444
+00:19:42.270 --> 00:19:43.574
+Although not that often.
+
+445
+00:19:43.574 --> 00:19:45.093
+It's helpful to know.
+

@@ -1,0 +1,750 @@
+﻿WEBVTT
+
+1
+00:00:01.026 --> 00:00:05.540
+(upbeat music)
+
+2
+00:00:05.540 --> 00:00:07.540
+<v Instructor>Let's head back to this event loop example</v>
+
+3
+00:00:07.540 --> 00:00:09.830
+we did where we added the classes of circle, red,
+
+4
+00:00:09.830 --> 00:00:11.360
+purple, and fade out.
+
+5
+00:00:11.360 --> 00:00:13.089
+And let's convert this callback hell
+
+6
+00:00:13.089 --> 00:00:15.025
+into the promise land.
+
+7
+00:00:15.025 --> 00:00:17.390
+And we're actually gonna come back one more time
+
+8
+00:00:17.390 --> 00:00:20.620
+when we learn async await and refactor it one more time.
+
+9
+00:00:20.620 --> 00:00:23.450
+So let's go to event loop HTML
+
+10
+00:00:23.450 --> 00:00:26.451
+and we'll just copy that over into a file
+
+11
+00:00:26.451 --> 00:00:31.451
+called promise-chain.html.
+
+12
+00:00:32.770 --> 00:00:34.060
+And the first thing I wanna do
+
+13
+00:00:34.060 --> 00:00:35.940
+is I wanna make a function that will simply
+
+14
+00:00:35.940 --> 00:00:38.203
+just wait for a certain amount of time.
+
+15
+00:00:38.203 --> 00:00:41.290
+And this is something I do in almost every project
+
+16
+00:00:41.290 --> 00:00:43.690
+that I have because it's such a common thing.
+
+17
+00:00:43.690 --> 00:00:45.770
+So make a function here, we'll call wait.
+
+18
+00:00:45.770 --> 00:00:47.480
+And it takes in the number of milliseconds
+
+19
+00:00:47.480 --> 00:00:48.730
+that you wanna wait.
+
+20
+00:00:48.730 --> 00:00:51.165
+And we'll just return a new promise
+
+21
+00:00:51.165 --> 00:00:53.390
+and then that promise is going to
+
+22
+00:00:53.390 --> 00:00:56.560
+just resolve after the number of milliseconds
+
+23
+00:00:56.560 --> 00:00:57.393
+that got sent in.
+
+24
+00:00:57.393 --> 00:01:00.860
+Let's actually default that to zero seconds,
+
+25
+00:01:00.860 --> 00:01:04.540
+and then here, we'll just take the resolve function.
+
+26
+00:01:04.540 --> 00:01:07.060
+This will say function like this.
+
+27
+00:01:07.060 --> 00:01:09.180
+The first argument is resolve,
+
+28
+00:01:09.180 --> 00:01:11.429
+and then we will set timeout
+
+29
+00:01:11.429 --> 00:01:15.910
+and after a certain amount of time,
+
+30
+00:01:15.910 --> 00:01:18.200
+we will run the resolve function.
+
+31
+00:01:18.200 --> 00:01:20.470
+Actually, we can just pass the resolve function directly
+
+32
+00:01:20.470 --> 00:01:23.720
+to set time out, and after the number of milliseconds
+
+33
+00:01:23.720 --> 00:01:24.833
+that were passed in.
+
+34
+00:01:26.060 --> 00:01:27.610
+Now, let's test that.
+
+35
+00:01:27.610 --> 00:01:30.730
+So, I'll say wait 200 milliseconds,
+
+36
+00:01:30.730 --> 00:01:35.393
+then we'll just console.log, done.
+
+37
+00:01:37.630 --> 00:01:39.394
+And we'll open that up.
+
+38
+00:01:39.394 --> 00:01:41.477
+(clicks)
+
+39
+00:01:44.890 --> 00:01:46.210
+There we go, that seems to be working.
+
+40
+00:01:46.210 --> 00:01:49.183
+Let's wait for two seconds just to make sure.
+
+41
+00:01:50.960 --> 00:01:54.890
+And two seconds later, all of that works.
+
+42
+00:01:54.890 --> 00:01:57.320
+Now, that's actually such a common thing
+
+43
+00:01:57.320 --> 00:02:00.980
+that I have a package called "waait,"
+
+44
+00:02:00.980 --> 00:02:02.750
+W-A-A-I-T.
+
+45
+00:02:02.750 --> 00:02:05.220
+We'll look at this when we hit packages,
+
+46
+00:02:05.220 --> 00:02:09.056
+but this is what gets 75,000 downloads
+
+47
+00:02:09.056 --> 00:02:14.056
+per week, and all it does is this.
+
+48
+00:02:14.510 --> 00:02:15.610
+It returns a promise
+
+49
+00:02:15.610 --> 00:02:17.720
+that resolves after the number of milliseconds
+
+50
+00:02:17.720 --> 00:02:18.830
+that are passed in.
+
+51
+00:02:18.830 --> 00:02:21.943
+And, if you take a look at the code on GitHub,
+
+52
+00:02:23.050 --> 00:02:25.470
+open up index.js,
+
+53
+00:02:25.470 --> 00:02:26.800
+that this is it.
+
+54
+00:02:26.800 --> 00:02:28.300
+We make a function called wait
+
+55
+00:02:28.300 --> 00:02:29.640
+that sets the amount to zero
+
+56
+00:02:29.640 --> 00:02:31.280
+and returns a new promise
+
+57
+00:02:31.280 --> 00:02:34.160
+that resolves after the amount of time that we have.
+
+58
+00:02:34.160 --> 00:02:35.480
+This is on multiple lines
+
+59
+00:02:35.480 --> 00:02:39.570
+that we could see how we could make that into one line.
+
+60
+00:02:39.570 --> 00:02:42.270
+We'd say const wait
+
+61
+00:02:43.900 --> 00:02:45.633
+is equal to a function.
+
+62
+00:02:46.810 --> 00:02:48.310
+Let's see if that still works.
+
+63
+00:02:52.430 --> 00:02:53.900
+Still works.
+
+64
+00:02:53.900 --> 00:02:55.650
+We can make this an arrow function.
+
+65
+00:03:00.010 --> 00:03:01.210
+Still works.
+
+66
+00:03:01.210 --> 00:03:02.620
+Gonna make this 200 milliseconds,
+
+67
+00:03:02.620 --> 00:03:04.280
+so it goes faster.
+
+68
+00:03:04.280 --> 00:03:08.660
+Then we could use the implicit return right here.
+
+69
+00:03:08.660 --> 00:03:11.773
+So we could get rid of the return keyword,
+
+70
+00:03:12.790 --> 00:03:17.110
+and get rid of these curly brackets,
+
+71
+00:03:17.110 --> 00:03:19.123
+and put it all on one line here.
+
+72
+00:03:21.850 --> 00:03:23.530
+Still works.
+
+73
+00:03:23.530 --> 00:03:26.700
+Then, this resolve function can be turned into
+
+74
+00:03:26.700 --> 00:03:27.653
+an arrow function.
+
+75
+00:03:30.460 --> 00:03:32.453
+Still works.
+
+76
+00:03:33.410 --> 00:03:36.150
+We could put this on one line
+
+77
+00:03:38.210 --> 00:03:40.956
+and get rid of the semicolon and the curly brackets
+
+78
+00:03:40.956 --> 00:03:42.313
+that are needed here.
+
+79
+00:03:44.300 --> 00:03:46.120
+Still works.
+
+80
+00:03:46.120 --> 00:03:50.593
+And then, we could also get rid of the parentheses here,
+
+81
+00:03:52.160 --> 00:03:53.210
+if we like.
+
+82
+00:03:53.210 --> 00:03:54.410
+That's all on one line.
+
+83
+00:03:54.410 --> 00:03:56.270
+This is only my code over and over.
+
+84
+00:03:56.270 --> 00:03:58.530
+I sillily made it into a package
+
+85
+00:03:58.530 --> 00:03:59.363
+because I like to just,
+
+86
+00:03:59.363 --> 00:04:01.790
+rather than have to type it out every single time.
+
+87
+00:04:02.970 --> 00:04:03.930
+But, obviously,
+
+88
+00:04:03.930 --> 00:04:05.970
+it's something a lot of other people need as well.
+
+89
+00:04:05.970 --> 00:04:08.685
+So, now that we have this wait function,
+
+90
+00:04:08.685 --> 00:04:13.000
+we can start to tackle all of this
+
+91
+00:04:13.860 --> 00:04:15.573
+that goes on right here.
+
+92
+00:04:15.573 --> 00:04:20.040
+And let's just rewrite it.
+
+93
+00:04:20.040 --> 00:04:24.230
+All right, let's start chunkin' through all of this
+
+94
+00:04:24.230 --> 00:04:26.460
+set timeout garbage that we have,
+
+95
+00:04:26.460 --> 00:04:28.920
+and making it into promise-based function.
+
+96
+00:04:28.920 --> 00:04:31.210
+So, first thing I'm gonna do
+
+97
+00:04:31.210 --> 00:04:35.700
+is let's just make an external function here
+
+98
+00:04:35.700 --> 00:04:37.313
+that says handle click.
+
+99
+00:04:38.195 --> 00:04:39.613
+Let's name it animate.
+
+100
+00:04:42.460 --> 00:04:47.080
+And when somebody clicks the go button,
+
+101
+00:04:47.080 --> 00:04:48.243
+we will run animate.
+
+102
+00:04:50.700 --> 00:04:52.550
+Go addEventListener,
+
+103
+00:04:52.550 --> 00:04:55.913
+listen for a click and we will run the animate function.
+
+104
+00:04:57.294 --> 00:04:59.930
+That animate will take in the event
+
+105
+00:04:59.930 --> 00:05:04.560
+and now I'm just going to start moving things up to it.
+
+106
+00:05:04.560 --> 00:05:07.540
+So let's just put like a X's beside that.
+
+107
+00:05:07.540 --> 00:05:08.940
+So this doesn't actually trigger,
+
+108
+00:05:08.940 --> 00:05:10.450
+but we can sort of do it piece by piece.
+
+109
+00:05:10.450 --> 00:05:13.910
+So, first thing is we wanna grab the element.
+
+110
+00:05:13.910 --> 00:05:15.680
+So, we can copy, paste that up.
+
+111
+00:05:15.680 --> 00:05:18.620
+Then we want to change the text to go when clicked.
+
+112
+00:05:18.620 --> 00:05:20.820
+That's immediately, so we put that there.
+
+113
+00:05:20.820 --> 00:05:22.720
+Let's just make sure it works.
+
+114
+00:05:22.720 --> 00:05:23.990
+Okay, good.
+
+115
+00:05:23.990 --> 00:05:28.033
+Then we wanna make it a circle after two seconds.
+
+116
+00:05:29.180 --> 00:05:31.100
+So how do we wait for two seconds?
+
+117
+00:05:31.100 --> 00:05:33.400
+Well, we can say wait two seconds.
+
+118
+00:05:33.400 --> 00:05:35.610
+I'll just make it 200 milliseconds
+
+119
+00:05:35.610 --> 00:05:37.073
+so we're not waiting here forever.
+
+120
+00:05:37.073 --> 00:05:41.330
+Then we will chain a .then
+
+121
+00:05:41.330 --> 00:05:42.613
+onto the end of that.
+
+122
+00:05:43.660 --> 00:05:47.240
+And there's no piece of data
+
+123
+00:05:47.240 --> 00:05:49.500
+that comes, that is resolved from the wait.
+
+124
+00:05:49.500 --> 00:05:50.570
+It simply just is done.
+
+125
+00:05:50.570 --> 00:05:54.040
+So we're not gonna be passing any, like, response here.
+
+126
+00:05:54.040 --> 00:05:55.913
+So we'll just have an empty function.
+
+127
+00:05:57.020 --> 00:05:57.960
+And after two seconds,
+
+128
+00:05:57.960 --> 00:06:01.520
+we will add class of circle.
+
+129
+00:06:01.520 --> 00:06:03.310
+Let's see if that works.
+
+130
+00:06:03.310 --> 00:06:04.143
+Good.
+
+131
+00:06:06.580 --> 00:06:08.130
+Now, here's the hard part.
+
+132
+00:06:08.130 --> 00:06:12.300
+How do we make it red after 0.5 seconds?
+
+133
+00:06:12.300 --> 00:06:14.640
+Well, we can't go down here
+
+134
+00:06:14.640 --> 00:06:16.490
+and simply do that again
+
+135
+00:06:16.490 --> 00:06:19.100
+because watch it will go red immediately
+
+136
+00:06:19.100 --> 00:06:21.860
+before it goes to circle.
+
+137
+00:06:21.860 --> 00:06:24.380
+So, just like our callback,
+
+138
+00:06:24.380 --> 00:06:26.070
+it has to go inside of here.
+
+139
+00:06:26.070 --> 00:06:27.873
+But, what we can do is from this,
+
+140
+00:06:27.873 --> 00:06:31.851
+then we can return another wait of 500 milliseconds
+
+141
+00:06:31.851 --> 00:06:35.390
+and then we can chain another .then onto it
+
+142
+00:06:36.691 --> 00:06:40.543
+where we can put our third item in.
+
+143
+00:06:42.110 --> 00:06:44.970
+Now, this makes sense to start formatting it
+
+144
+00:06:44.970 --> 00:06:46.483
+each on their own line.
+
+145
+00:06:47.400 --> 00:06:49.700
+Then, .then.
+
+146
+00:06:49.700 --> 00:06:50.610
+Good.
+
+147
+00:06:50.610 --> 00:06:52.630
+Now, the fourth thing is make it a square
+
+148
+00:06:52.630 --> 00:06:54.190
+after 0.25 seconds.
+
+149
+00:06:54.190 --> 00:06:55.240
+Okay, from here.
+
+150
+00:06:55.240 --> 00:07:00.240
+Return wait 250 milliseconds,
+
+151
+00:07:01.467 --> 00:07:03.653
+.then, have another one.
+
+152
+00:07:05.341 --> 00:07:08.627
+And we'll have el.classList.add square.
+
+153
+00:07:15.060 --> 00:07:16.470
+It's not adding square.
+
+154
+00:07:16.470 --> 00:07:19.060
+It was removing circle.
+
+155
+00:07:19.060 --> 00:07:21.260
+Let's just stick with what we had down here.
+
+156
+00:07:22.640 --> 00:07:26.440
+Now the next one was make it purple after.
+
+157
+00:07:26.440 --> 00:07:27.273
+I'm gonna see,
+
+158
+00:07:27.273 --> 00:07:29.000
+if we wanna see how long this was.
+
+159
+00:07:29.000 --> 00:07:30.980
+500 milliseconds, okay.
+
+160
+00:07:30.980 --> 00:07:33.423
+So, go up here.
+
+161
+00:07:34.710 --> 00:07:37.260
+Return wait 500 milliseconds
+
+162
+00:07:37.260 --> 00:07:39.770
+or however long we initially said.
+
+163
+00:07:39.770 --> 00:07:41.830
+Chain another .then onto the end
+
+164
+00:07:42.740 --> 00:07:47.740
+and we'll say el.classList.remove
+
+165
+00:07:48.210 --> 00:07:51.373
+red and add purple.
+
+166
+00:07:55.236 --> 00:07:58.540
+(imitates beeps)
+
+167
+00:07:58.540 --> 00:07:59.373
+Workin' good.
+
+168
+00:08:00.870 --> 00:08:03.410
+And then, finally, after five half a second,
+
+169
+00:08:03.410 --> 00:08:04.942
+make it invisible.
+
+170
+00:08:04.942 --> 00:08:06.643
+We'll do the return.
+
+171
+00:08:07.720 --> 00:08:08.913
+Do another .then.
+
+172
+00:08:10.010 --> 00:08:11.173
+Have a function.
+
+173
+00:08:14.440 --> 00:08:18.380
+And we will say el.classList.add fadeOut.
+
+174
+00:08:24.060 --> 00:08:24.893
+Boom!
+
+175
+00:08:24.893 --> 00:08:27.480
+All right, so, you see what we've got here
+
+176
+00:08:27.480 --> 00:08:32.410
+is that we've taken this nested callback functions
+
+177
+00:08:32.410 --> 00:08:34.303
+and made it one level deep.
+
+178
+00:08:35.190 --> 00:08:37.560
+Which is waiting, returning, waiting, returning,
+
+179
+00:08:37.560 --> 00:08:38.393
+waiting, returning,
+
+180
+00:08:38.393 --> 00:08:42.340
+and that's chaining multiple .then's onto each other.
+
+181
+00:08:42.340 --> 00:08:44.900
+That gets much better when we hit async await,
+
+182
+00:08:44.900 --> 00:08:46.260
+but, as for now,
+
+183
+00:08:46.260 --> 00:08:48.548
+this is the best way that we can do to refactor
+
+184
+00:08:48.548 --> 00:08:52.593
+these promise and into a promise chain.
+
+185
+00:08:53.490 --> 00:08:54.323
+In the next video,
+
+186
+00:08:54.323 --> 00:08:56.240
+we will start to introduce async await
+
+187
+00:08:56.240 --> 00:08:58.753
+and see how we can make this look even better.
+

@@ -1,0 +1,3138 @@
+﻿WEBVTT
+
+1
+00:00:00.819 --> 00:00:03.402
+(upbeat music)
+
+2
+00:00:05.208 --> 00:00:06.041
+<v Instructor>Alright, we're gonna work some more</v>
+
+3
+00:00:06.041 --> 00:00:07.910
+with promises in async/await and build
+
+4
+00:00:07.910 --> 00:00:09.610
+a sort of a prompt interface.
+
+5
+00:00:09.610 --> 00:00:11.730
+This is pretty common thing that you wanna do,
+
+6
+00:00:11.730 --> 00:00:13.400
+is when somebody clicks a button,
+
+7
+00:00:13.400 --> 00:00:14.750
+or something happens on the page,
+
+8
+00:00:14.750 --> 00:00:18.100
+you wanna popup a little box, ask them for something,
+
+9
+00:00:18.100 --> 00:00:20.860
+and then go ahead and submit it and get that data back,
+
+10
+00:00:20.860 --> 00:00:23.630
+and then display it on the page somehow.
+
+11
+00:00:23.630 --> 00:00:25.930
+So we are going to build our own prompt box,
+
+12
+00:00:25.930 --> 00:00:30.180
+there is a prompt that's built into the browser,
+
+13
+00:00:32.260 --> 00:00:34.260
+but the problem with that prompt
+
+14
+00:00:34.260 --> 00:00:37.620
+is that you can only have one input box.
+
+15
+00:00:37.620 --> 00:00:39.140
+Let's say you wanted multiple input box,
+
+16
+00:00:39.140 --> 00:00:41.810
+or you wanted an image upload or something like that,
+
+17
+00:00:41.810 --> 00:00:43.060
+you wouldn't be able to do that,
+
+18
+00:00:43.060 --> 00:00:45.480
+as well as this interface is blocking,
+
+19
+00:00:45.480 --> 00:00:48.000
+meaning that when this is popped up,
+
+20
+00:00:48.000 --> 00:00:50.510
+you can't do anything else on the page,
+
+21
+00:00:50.510 --> 00:00:54.460
+so we're going to see how can we re-implement this
+
+22
+00:00:54.460 --> 00:00:57.070
+with promises and async/await?
+
+23
+00:00:57.070 --> 00:01:00.070
+So let's get going, I've got this
+
+24
+00:01:00.070 --> 00:01:04.743
+in the 70 dash async prompts folder,
+
+25
+00:01:05.586 --> 00:01:07.720
+and we've got some very basic HTML here,
+
+26
+00:01:07.720 --> 00:01:11.040
+we got our base.css, a little bit of custom CSS here,
+
+27
+00:01:11.040 --> 00:01:14.140
+which I'm going to explain to you once we hit that,
+
+28
+00:01:14.140 --> 00:01:17.360
+specifically we're using CSS variables
+
+29
+00:01:17.360 --> 00:01:20.010
+for animation here which is pretty nifty,
+
+30
+00:01:20.010 --> 00:01:22.000
+and then I've just got some buttons on the page
+
+31
+00:01:22.000 --> 00:01:24.480
+that you can go ahead and click,
+
+32
+00:01:24.480 --> 00:01:27.750
+in order to invoke the thing.
+
+33
+00:01:27.750 --> 00:01:29.550
+One more thing actually that we're gonna look at
+
+34
+00:01:29.550 --> 00:01:31.560
+is if I refresh the page here,
+
+35
+00:01:31.560 --> 00:01:33.860
+it says what is your name, Wes,
+
+36
+00:01:33.860 --> 00:01:38.120
+what is your age, 15, what is your dog's name, Snickers,
+
+37
+00:01:38.120 --> 00:01:39.840
+and then submit, and you get all three
+
+38
+00:01:39.840 --> 00:01:41.880
+of those pieces of data back.
+
+39
+00:01:41.880 --> 00:01:44.190
+That's going to be in a synchronous map,
+
+40
+00:01:44.190 --> 00:01:45.460
+which is kinda tricky to do,
+
+41
+00:01:45.460 --> 00:01:46.950
+so I'm gonna show you how to do that,
+
+42
+00:01:46.950 --> 00:01:49.020
+how to run something in series
+
+43
+00:01:49.020 --> 00:01:52.300
+when you have promises in async/await.
+
+44
+00:01:52.300 --> 00:01:54.560
+So, open up your scripts.js
+
+45
+00:01:54.560 --> 00:01:57.543
+and open up that index.html in the browser,
+
+46
+00:02:00.520 --> 00:02:04.040
+and let's get going on our scripts.js here.
+
+47
+00:02:04.040 --> 00:02:07.190
+So first thing we wanna do is to make our prompt function,
+
+48
+00:02:07.190 --> 00:02:11.233
+and we are going to just make that called ask.
+
+49
+00:02:12.070 --> 00:02:15.727
+And that is going to take in some options,
+
+50
+00:02:15.727 --> 00:02:18.400
+and that options will have two things,
+
+51
+00:02:18.400 --> 00:02:21.180
+what will the text of the prompt be,
+
+52
+00:02:21.180 --> 00:02:23.990
+and should they be allowed to cancel it
+
+53
+00:02:23.990 --> 00:02:26.350
+with a cancel button?
+
+54
+00:02:26.350 --> 00:02:28.500
+Now inside of here, first thing we wanna do,
+
+55
+00:02:28.500 --> 00:02:31.980
+is return a new promise, like we always do,
+
+56
+00:02:31.980 --> 00:02:36.890
+and then we're going to get a function in here,
+
+57
+00:02:36.890 --> 00:02:39.630
+and that function will pass as resolve,
+
+58
+00:02:39.630 --> 00:02:41.260
+it will also give us reject,
+
+59
+00:02:41.260 --> 00:02:43.470
+but we're only gonna be using resolve here,
+
+60
+00:02:43.470 --> 00:02:46.730
+when somebody hits cancel, we won't be rejecting it
+
+61
+00:02:46.730 --> 00:02:49.010
+like an error, it will just resolve it with nothing
+
+62
+00:02:49.010 --> 00:02:52.100
+because that's how the one built into the browser
+
+63
+00:02:52.100 --> 00:02:54.000
+works as well.
+
+64
+00:02:54.000 --> 00:02:55.830
+Now there's a couple things that need to happen,
+
+65
+00:02:55.830 --> 00:02:58.750
+first we need to create a popup
+
+66
+00:03:00.350 --> 00:03:03.633
+with all the fields in it.
+
+67
+00:03:04.550 --> 00:03:09.550
+Second, we need to check if they want a cancel button.
+
+68
+00:03:12.600 --> 00:03:16.320
+Next, we need to listen for the submit event
+
+69
+00:03:16.320 --> 00:03:19.913
+on the inputs.
+
+70
+00:03:21.220 --> 00:03:26.220
+And then finally, when someone does submit it,
+
+71
+00:03:26.400 --> 00:03:31.400
+we want to resolve the data that was in the input box.
+
+72
+00:03:35.930 --> 00:03:37.480
+Alright, so first thing here,
+
+73
+00:03:37.480 --> 00:03:39.030
+first we need to create a popup
+
+74
+00:03:39.030 --> 00:03:40.680
+with all of the fields in it,
+
+75
+00:03:40.680 --> 00:03:43.500
+so I'm going to use a form tag for this
+
+76
+00:03:43.500 --> 00:03:45.440
+so that we can get the submit,
+
+77
+00:03:45.440 --> 00:03:49.240
+so we'll say const popup is equal to document.createElement
+
+78
+00:03:50.920 --> 00:03:52.370
+and we're gonna pass it form.
+
+79
+00:03:52.370 --> 00:03:54.380
+So you're gonna see why I'm using
+
+80
+00:03:54.380 --> 00:03:56.350
+document.createElement here,
+
+81
+00:03:56.350 --> 00:03:58.740
+in just a second we'll, spoiler,
+
+82
+00:03:58.740 --> 00:04:02.180
+because when we use document.createElement,
+
+83
+00:04:02.180 --> 00:04:05.850
+this will immediately return to us the DOM node,
+
+84
+00:04:05.850 --> 00:04:08.180
+and that allows us to add event listeners
+
+85
+00:04:08.180 --> 00:04:09.970
+for things like submit on it.
+
+86
+00:04:09.970 --> 00:04:14.630
+If I were to simply just use back ticks and a form,
+
+87
+00:04:14.630 --> 00:04:16.470
+I wouldn't be able to add event listeners
+
+88
+00:04:16.470 --> 00:04:18.700
+inside of this function, I would have to wait
+
+89
+00:04:18.700 --> 00:04:21.110
+until that thing was put into the page
+
+90
+00:04:21.110 --> 00:04:23.160
+before I could add event listeners to it.
+
+91
+00:04:24.650 --> 00:04:29.650
+So we create the popup, and then we
+
+92
+00:04:29.700 --> 00:04:33.430
+can add a class of popup to it,
+
+93
+00:04:33.430 --> 00:04:38.430
+so we'll say popup.classList.add popup,
+
+94
+00:04:38.580 --> 00:04:41.650
+and this will just make sure that our popup
+
+95
+00:04:41.650 --> 00:04:43.720
+has a background position fixed,
+
+96
+00:04:43.720 --> 00:04:47.380
+its width and height is 100 of the viewport height,
+
+97
+00:04:47.380 --> 00:04:49.650
+and 100 of the viewport width,
+
+98
+00:04:49.650 --> 00:04:52.630
+as well as we use some CSS grid here
+
+99
+00:04:52.630 --> 00:04:55.910
+in order to align the content inside of it,
+
+100
+00:04:55.910 --> 00:04:59.540
+and then finally, I am setting the opacity to zero,
+
+101
+00:04:59.540 --> 00:05:01.470
+because we want to fade it in,
+
+102
+00:05:01.470 --> 00:05:04.020
+and by doing that we're gonna add a class of open,
+
+103
+00:05:04.020 --> 00:05:07.010
+and then fade in the opacity a little higher,
+
+104
+00:05:07.010 --> 00:05:09.610
+I'll explain these variables in just a second as well.
+
+105
+00:05:09.610 --> 00:05:11.870
+So we have our popup, we add a class here,
+
+106
+00:05:11.870 --> 00:05:16.870
+and then we need to put some HTML inside of that popup,
+
+107
+00:05:18.120 --> 00:05:20.497
+so we'll say popup.insertAdjacentHTML,
+
+108
+00:05:23.680 --> 00:05:26.740
+and we'll do that afterbegin,
+
+109
+00:05:26.740 --> 00:05:30.210
+and that's right at the beginning of the HTML form,
+
+110
+00:05:30.210 --> 00:05:32.350
+and then in here, we can use back ticks,
+
+111
+00:05:32.350 --> 00:05:36.440
+because there's nothing in these back ticks
+
+112
+00:05:36.440 --> 00:05:38.210
+that need to have events listening to it,
+
+113
+00:05:38.210 --> 00:05:40.300
+we only have the event that needs to be listened to
+
+114
+00:05:40.300 --> 00:05:42.760
+on the form which is the submit.
+
+115
+00:05:42.760 --> 00:05:44.913
+So in there, I'm gonna give a fieldset,
+
+116
+00:05:46.399 --> 00:05:48.540
+and a fieldset is kinda like a div,
+
+117
+00:05:48.540 --> 00:05:51.900
+but they group together form inputs,
+
+118
+00:05:51.900 --> 00:05:53.040
+they can have some handy stuff,
+
+119
+00:05:53.040 --> 00:05:55.690
+like you can disable a fieldset,
+
+120
+00:05:55.690 --> 00:05:57.840
+and that will disable all the inputs inside of it,
+
+121
+00:05:57.840 --> 00:06:01.520
+so that's a much more semantic element to use
+
+122
+00:06:01.520 --> 00:06:02.940
+instead of just a regular div.
+
+123
+00:06:02.940 --> 00:06:07.500
+Then we need a label, and in there,
+
+124
+00:06:07.500 --> 00:06:12.483
+we will just say options.title.
+
+125
+00:06:15.542 --> 00:06:17.600
+Let's pause there and just make sure
+
+126
+00:06:17.600 --> 00:06:19.360
+that this is actually working,
+
+127
+00:06:19.360 --> 00:06:20.760
+'cause I don't wanna write too much code
+
+128
+00:06:20.760 --> 00:06:24.770
+without it even working, so let's just console.log the popup
+
+129
+00:06:26.150 --> 00:06:28.660
+just to see what we're working with here.
+
+130
+00:06:28.660 --> 00:06:33.060
+So we need to run it, we can just run it ourselves from here
+
+131
+00:06:33.060 --> 00:06:36.100
+without having to get into the DOM just yet,
+
+132
+00:06:36.100 --> 00:06:39.880
+and we should be able to say ask and the options,
+
+133
+00:06:39.880 --> 00:06:42.890
+so here we're passing in an options object,
+
+134
+00:06:42.890 --> 00:06:46.600
+instead of passing in a title and a cancel,
+
+135
+00:06:46.600 --> 00:06:49.220
+option as argument one and argument two,
+
+136
+00:06:49.220 --> 00:06:53.230
+I'm just passing in an options object,
+
+137
+00:06:53.230 --> 00:06:56.670
+and then we grab the title and the cancel off of that,
+
+138
+00:06:56.670 --> 00:06:59.080
+and that's a much better way to do it
+
+139
+00:06:59.080 --> 00:07:00.440
+when you have multiple options,
+
+140
+00:07:00.440 --> 00:07:02.060
+in which some are not required,
+
+141
+00:07:02.060 --> 00:07:05.190
+just pass in one argument which is an object
+
+142
+00:07:05.190 --> 00:07:07.250
+full of properties that you're looking for,
+
+143
+00:07:07.250 --> 00:07:12.250
+so we're gonna ask for a title of, does this work.
+
+144
+00:07:14.070 --> 00:07:16.150
+And what that does is it returns to us,
+
+145
+00:07:16.150 --> 00:07:18.513
+well what do we got here?
+
+146
+00:07:19.620 --> 00:07:20.763
+Starbucks.
+
+147
+00:07:22.510 --> 00:07:26.139
+OK, back to it, we got form, and a fieldset,
+
+148
+00:07:26.139 --> 00:07:27.680
+and we have a label, OK, so we know
+
+149
+00:07:27.680 --> 00:07:30.750
+that this is working so far, obviously nothing is showing
+
+150
+00:07:30.750 --> 00:07:34.980
+'cause we have not put that on the page, so that's good.
+
+151
+00:07:34.980 --> 00:07:39.220
+Now let's check if they wanna cancel button,
+
+152
+00:07:39.220 --> 00:07:42.670
+so we'll say if options.cancel,
+
+153
+00:07:42.670 --> 00:07:46.020
+then we'll have to create the button,
+
+154
+00:07:46.020 --> 00:07:48.608
+so we'll say const skipButton,
+
+155
+00:07:48.608 --> 00:07:49.441
+we'll call it skipButton document.createElement button,
+
+156
+00:07:55.307 --> 00:07:58.270
+and say skipButton.type is equal to a button,
+
+157
+00:07:58.270 --> 00:07:59.780
+and that's important because if you don't
+
+158
+00:07:59.780 --> 00:08:02.620
+give it a type of button, it will assume it's a submit,
+
+159
+00:08:02.620 --> 00:08:05.060
+and it will submit the form for us.
+
+160
+00:08:05.060 --> 00:08:09.613
+We'll say skipButton.textContent is equal to cancel,
+
+161
+00:08:10.947 --> 00:08:12.203
+put a capital C on that.
+
+162
+00:08:15.770 --> 00:08:20.573
+Then we need to listen for a click on that cancel button.
+
+163
+00:08:25.370 --> 00:08:29.980
+Let's put a, then we need to listen for a click
+
+164
+00:08:29.980 --> 00:08:34.210
+on that cancel button.
+
+165
+00:08:34.210 --> 00:08:36.260
+Let's put a little TODO in front of that,
+
+166
+00:08:37.230 --> 00:08:38.880
+just so we know, we'll come back to that,
+
+167
+00:08:38.880 --> 00:08:41.563
+I don't wanna complicate this too much just yet.
+
+168
+00:08:43.150 --> 00:08:45.390
+And listen for a submit on the input,
+
+169
+00:08:45.390 --> 00:08:49.070
+and then when someone does submit it resolve the data.
+
+170
+00:08:49.070 --> 00:08:53.100
+OK, so, I guess the one thing we haven't done
+
+171
+00:08:53.100 --> 00:08:57.260
+is insert that popup into the DOM,
+
+172
+00:08:57.260 --> 00:08:58.890
+because we haven't done that yet, right?
+
+173
+00:08:58.890 --> 00:09:00.000
+So let's go ahead and do that,
+
+174
+00:09:00.000 --> 00:09:02.273
+we'll just say document.body.appendChild,
+
+175
+00:09:05.208 --> 00:09:06.943
+and we'll put append the popup.
+
+176
+00:09:08.840 --> 00:09:11.993
+So now I'm gonna go ahead and run this,
+
+177
+00:09:13.780 --> 00:09:18.780
+we get popup here, with the fieldset,
+
+178
+00:09:19.498 --> 00:09:22.517
+and a label that says, does this work.
+
+179
+00:09:22.517 --> 00:09:25.780
+OK, so let's get that showing so we can visually
+
+180
+00:09:25.780 --> 00:09:27.970
+see if it's working or not, and if we head over
+
+181
+00:09:27.970 --> 00:09:30.510
+to our CSS, you'll see that by default,
+
+182
+00:09:30.510 --> 00:09:33.570
+our popup has an opacity of zero,
+
+183
+00:09:33.570 --> 00:09:35.830
+and the reason why I've created a,
+
+184
+00:09:35.830 --> 00:09:37.830
+this is called a CSS custom property,
+
+185
+00:09:37.830 --> 00:09:40.330
+or it's called a variable NCSS,
+
+186
+00:09:40.330 --> 00:09:41.880
+and then you can reference the variable.
+
+187
+00:09:41.880 --> 00:09:43.770
+The reason why I did it like this,
+
+188
+00:09:43.770 --> 00:09:48.080
+is so that when we go down to the popup with the open,
+
+189
+00:09:48.080 --> 00:09:50.400
+we can simply just update the variable
+
+190
+00:09:50.400 --> 00:09:52.220
+and that is smart enough to know,
+
+191
+00:09:52.220 --> 00:09:54.880
+oh, this was used over here,
+
+192
+00:09:54.880 --> 00:09:57.360
+so update the variable to be one.
+
+193
+00:09:57.360 --> 00:10:01.060
+So what we need to do in here is to,
+
+194
+00:10:01.060 --> 00:10:04.070
+right after we've appended the child,
+
+195
+00:10:04.070 --> 00:10:07.930
+we need to take our popup and take the classList
+
+196
+00:10:07.930 --> 00:10:10.433
+and add a class of open.
+
+197
+00:10:12.930 --> 00:10:14.330
+Now when we run that,
+
+198
+00:10:16.910 --> 00:10:19.630
+we see that that pops up right away.
+
+199
+00:10:19.630 --> 00:10:24.530
+It's not fading itself in, which is a bit of a problem,
+
+200
+00:10:24.530 --> 00:10:26.360
+and this is actually comes back
+
+201
+00:10:26.360 --> 00:10:29.090
+to the whole event lifecycle that we talked about
+
+202
+00:10:29.090 --> 00:10:31.600
+a couple videos ago.
+
+203
+00:10:31.600 --> 00:10:36.380
+The reason why this is not animating itself in
+
+204
+00:10:36.380 --> 00:10:40.390
+is because it queues up the add a class of popup
+
+205
+00:10:40.390 --> 00:10:44.430
+and adding a class of open, sorta at the same time,
+
+206
+00:10:44.430 --> 00:10:49.140
+and there's no time for it to transition
+
+207
+00:10:49.140 --> 00:10:51.970
+from regular popup opacity zero,
+
+208
+00:10:51.970 --> 00:10:55.760
+to popup open opacity one, because they're essentially
+
+209
+00:10:55.760 --> 00:10:57.310
+just added at the exact same time,
+
+210
+00:10:57.310 --> 00:11:00.390
+so there's no A to B to transition itself
+
+211
+00:11:00.390 --> 00:11:01.680
+from one to another.
+
+212
+00:11:01.680 --> 00:11:06.680
+So the solution there is to put a very small timeout
+
+213
+00:11:07.850 --> 00:11:11.240
+before we add the open class,
+
+214
+00:11:11.240 --> 00:11:15.250
+and what that will do is it will stick
+
+215
+00:11:15.250 --> 00:11:19.760
+the code that is beyond it at the end of the event loop,
+
+216
+00:11:19.760 --> 00:11:22.150
+and that is enough to just trip it into
+
+217
+00:11:22.150 --> 00:11:25.090
+having a little bit of time between A and B,
+
+218
+00:11:25.090 --> 00:11:28.770
+so what we can do is we could just do a set timeout,
+
+219
+00:11:28.770 --> 00:11:31.180
+where we have a function here,
+
+220
+00:11:31.180 --> 00:11:32.350
+we'll put that inside of there,
+
+221
+00:11:32.350 --> 00:11:35.573
+and we'll run that timeout after, around 10 milliseconds.
+
+222
+00:11:36.580 --> 00:11:39.280
+And let's see when we run it now,
+
+223
+00:11:39.280 --> 00:11:42.963
+you see that, woo, it brings itself on it.
+
+224
+00:11:44.590 --> 00:11:45.860
+Sometimes you can even get away
+
+225
+00:11:45.860 --> 00:11:48.610
+with doing a zero millisecond timeout,
+
+226
+00:11:48.610 --> 00:11:50.520
+watch, I think this might work.
+
+227
+00:11:50.520 --> 00:11:52.520
+Yeah, look it, why does that work?
+
+228
+00:11:52.520 --> 00:11:56.610
+Well, we learned earlier that, how the event loop works,
+
+229
+00:11:56.610 --> 00:11:58.730
+is that when you have a timeout, it runs it,
+
+230
+00:11:58.730 --> 00:12:00.480
+and then it sticks the callback
+
+231
+00:12:00.480 --> 00:12:04.250
+at the end of the event loop or it sticks it in the web APIs
+
+232
+00:12:04.250 --> 00:12:06.160
+which puts it in the queue, and then the event loop
+
+233
+00:12:06.160 --> 00:12:08.660
+will pull it back, so sometimes you're gonna see this
+
+234
+00:12:08.660 --> 00:12:12.220
+where somebody puts something in a timeout of zero,
+
+235
+00:12:12.220 --> 00:12:14.250
+and all that is doing, is it puts that at the end
+
+236
+00:12:14.250 --> 00:12:18.540
+of the event loop, so that this code
+
+237
+00:12:18.540 --> 00:12:21.210
+will have finished running by the time
+
+238
+00:12:21.210 --> 00:12:23.560
+that this one goes forward.
+
+239
+00:12:23.560 --> 00:12:25.780
+I have tested that in a few browsers,
+
+240
+00:12:25.780 --> 00:12:29.750
+and it doesn't work totally great,
+
+241
+00:12:29.750 --> 00:12:31.520
+so what we're gonna do, is we're gonna change that
+
+242
+00:12:31.520 --> 00:12:35.510
+to just do 50 milliseconds before we pop it up.
+
+243
+00:12:35.510 --> 00:12:38.890
+Now, one little sort of thing we could do here,
+
+244
+00:12:38.890 --> 00:12:40.750
+is instead of having a set timeout,
+
+245
+00:12:40.750 --> 00:12:42.340
+let's use async/await.
+
+246
+00:12:42.340 --> 00:12:45.210
+So I'm gonna make you code that wait function again,
+
+247
+00:12:45.210 --> 00:12:50.210
+so function wait, milliseconds is set to zero,
+
+248
+00:12:50.400 --> 00:12:54.577
+return a new promise, and we get the resolve from that,
+
+249
+00:12:54.577 --> 00:12:57.760
+and we'll say setTimeout resolve
+
+250
+00:12:57.760 --> 00:13:00.500
+after the amount of milliseconds passed in.
+
+251
+00:13:00.500 --> 00:13:03.050
+We could go down here, and get rid of this timeout,
+
+252
+00:13:04.090 --> 00:13:07.780
+we'll say await wait 50 milliseconds,
+
+253
+00:13:07.780 --> 00:13:10.240
+and then it's yelling at me here,
+
+254
+00:13:10.240 --> 00:13:12.720
+cannot use await outside of an async function,
+
+255
+00:13:12.720 --> 00:13:14.793
+so we have to go up to our function here,
+
+256
+00:13:15.730 --> 00:13:17.330
+and mark that as async.
+
+257
+00:13:17.330 --> 00:13:19.780
+You notice I didn't mark this one as async,
+
+258
+00:13:19.780 --> 00:13:21.370
+and the reason is because you have to mark
+
+259
+00:13:21.370 --> 00:13:25.170
+the parent function which is the promise callback.
+
+260
+00:13:25.170 --> 00:13:28.140
+Now that should work exactly the same way, totally does,
+
+261
+00:13:28.140 --> 00:13:29.773
+let's open it up in Firefox.
+
+262
+00:13:35.150 --> 00:13:36.300
+Beautiful.
+
+263
+00:13:36.300 --> 00:13:38.050
+So let's go back to our fieldset
+
+264
+00:13:38.050 --> 00:13:40.890
+and put all of the rest of them in there.
+
+265
+00:13:40.890 --> 00:13:45.100
+So we need an input with the type of text
+
+266
+00:13:45.100 --> 00:13:50.100
+and the name of, we're gonna put name of input,
+
+267
+00:13:50.970 --> 00:13:53.770
+I'm not very imaginative when it comes to naming things.
+
+268
+00:13:55.240 --> 00:13:59.433
+And then we need a button with the type of submit on it.
+
+269
+00:14:02.855 --> 00:14:03.955
+We'll just say submit.
+
+270
+00:14:05.490 --> 00:14:06.440
+How does that look?
+
+271
+00:14:07.650 --> 00:14:08.740
+Does this work?
+
+272
+00:14:08.740 --> 00:14:13.200
+Good, so now if I type in there Wes and hit submit,
+
+273
+00:14:13.200 --> 00:14:15.000
+it actually just refreshed the page,
+
+274
+00:14:15.000 --> 00:14:17.300
+and you'll see that it's put it into there.
+
+275
+00:14:17.300 --> 00:14:19.490
+So what do we need to do with forms?
+
+276
+00:14:19.490 --> 00:14:20.810
+Prevent default.
+
+277
+00:14:20.810 --> 00:14:23.690
+Let's go ahead and write that code.
+
+278
+00:14:23.690 --> 00:14:27.373
+So, we build our HTML here,
+
+279
+00:14:28.260 --> 00:14:32.730
+we check if there needs to be a cancel button or not,
+
+280
+00:14:32.730 --> 00:14:35.570
+oh we didn't add this cancel button just yet,
+
+281
+00:14:35.570 --> 00:14:38.093
+so we'll say popup, and we could either do,
+
+282
+00:14:41.510 --> 00:14:44.970
+insertAdjacentElement, is it insert?
+
+283
+00:14:44.970 --> 00:14:46.719
+Yeah, insertAdjacentElement,
+
+284
+00:14:46.719 --> 00:14:49.600
+or we could say popup.firstChild,
+
+285
+00:14:49.600 --> 00:14:51.480
+and that's gonna give us the fieldset,
+
+286
+00:14:51.480 --> 00:14:54.010
+and then we'll just append that onto the end,
+
+287
+00:14:54.010 --> 00:14:55.610
+and we'll append the skipButton.
+
+288
+00:14:59.530 --> 00:15:02.700
+Now let's try it, so regularly it works good,
+
+289
+00:15:02.700 --> 00:15:07.343
+OK, and now if I pass cancel of true,
+
+290
+00:15:11.280 --> 00:15:14.350
+popup.firstChild.append is not a function,
+
+291
+00:15:14.350 --> 00:15:15.743
+is it appendChild?
+
+292
+00:15:26.570 --> 00:15:29.210
+Failed to execute appendChild on node,
+
+293
+00:15:29.210 --> 00:15:31.880
+this node does not support this method?
+
+294
+00:15:31.880 --> 00:15:35.050
+Alright, so debug time, let's do it.
+
+295
+00:15:35.050 --> 00:15:36.150
+Console.log the popup.
+
+296
+00:15:40.760 --> 00:15:44.950
+Line 25, there's our popup, console.log popup.firstChild.
+
+297
+00:15:50.940 --> 00:15:52.773
+Text node, oh.
+
+298
+00:15:55.100 --> 00:15:57.243
+Oh, big bug here.
+
+299
+00:15:58.200 --> 00:15:59.883
+I bet, watch this.
+
+300
+00:16:07.028 --> 00:16:09.820
+(laughs) what happened there?
+
+301
+00:16:09.820 --> 00:16:13.803
+I had put in this here, and it broke it,
+
+302
+00:16:15.000 --> 00:16:18.530
+and the reason behind that is because if we look,
+
+303
+00:16:18.530 --> 00:16:22.343
+let me run it again without the cancel here,
+
+304
+00:16:23.290 --> 00:16:27.430
+let's look at it in the DOM, open our fieldset,
+
+305
+00:16:27.430 --> 00:16:29.610
+it doesn't even show it to me here,
+
+306
+00:16:29.610 --> 00:16:32.711
+but what happened is this new line right here,
+
+307
+00:16:32.711 --> 00:16:35.250
+it's not an element but what is it?
+
+308
+00:16:35.250 --> 00:16:38.463
+It's a node, and by saying .firstChild,
+
+309
+00:16:39.520 --> 00:16:41.630
+I think I even told you, don't use firstChild,
+
+310
+00:16:41.630 --> 00:16:45.490
+use firstElementChild instead,
+
+311
+00:16:45.490 --> 00:16:48.220
+because that was grabbing this blank space
+
+312
+00:16:48.220 --> 00:16:50.040
+and trying to append a DOM node to it,
+
+313
+00:16:50.040 --> 00:16:52.860
+and you can't append a DOM node to just blank text,
+
+314
+00:16:52.860 --> 00:16:55.010
+you can only append it to actual elements.
+
+315
+00:16:55.010 --> 00:16:57.580
+So solution is, either fix it like that,
+
+316
+00:16:57.580 --> 00:17:00.400
+or let's leave it broken for a second,
+
+317
+00:17:00.400 --> 00:17:04.493
+and we'll say firstElementChild.appendChild,
+
+318
+00:17:05.920 --> 00:17:07.373
+I bet that will fix it.
+
+319
+00:17:08.810 --> 00:17:10.920
+Yeah, OK, so that fixed it,
+
+320
+00:17:10.920 --> 00:17:14.430
+I'm also just going to get that not so sloppy
+
+321
+00:17:14.430 --> 00:17:15.280
+on its own line.
+
+322
+00:17:15.280 --> 00:17:18.160
+So perfect example of the difference between
+
+323
+00:17:19.380 --> 00:17:21.030
+firstChild and firstElementChild.
+
+324
+00:17:23.499 --> 00:17:25.060
+OK, so the cancel button is there,
+
+325
+00:17:25.060 --> 00:17:27.480
+the submit button is there, now we need to add
+
+326
+00:17:27.480 --> 00:17:28.840
+our event listeners for those,
+
+327
+00:17:28.840 --> 00:17:31.190
+so listen for a submit on the input events,
+
+328
+00:17:31.190 --> 00:17:34.480
+we'll say popup.addEventListener,
+
+329
+00:17:34.480 --> 00:17:35.923
+listen for the submit event,
+
+330
+00:17:37.070 --> 00:17:40.740
+and when that happens, we'll run another function here,
+
+331
+00:17:40.740 --> 00:17:42.730
+and you could define this function elsewhere,
+
+332
+00:17:42.730 --> 00:17:45.650
+but it's totally fine to keep it all inside
+
+333
+00:17:45.650 --> 00:17:47.170
+of this ask function.
+
+334
+00:17:47.170 --> 00:17:48.820
+I'll show you one example in just a second
+
+335
+00:17:48.820 --> 00:17:50.810
+where we take it outside.
+
+336
+00:17:50.810 --> 00:17:53.380
+That passes us the event, and the first thing we wanna do
+
+337
+00:17:53.380 --> 00:17:57.863
+is say e.preventDefault and we'll console.log submitted.
+
+338
+00:18:03.270 --> 00:18:05.490
+Da, da, da.
+
+339
+00:18:05.490 --> 00:18:08.563
+Wes, submit, there we go, submitted, OK good.
+
+340
+00:18:09.460 --> 00:18:13.440
+Then what we wanna do is simply take the value out of here
+
+341
+00:18:13.440 --> 00:18:17.480
+and resolve it, so we'll say resolve,
+
+342
+00:18:17.480 --> 00:18:20.790
+and the reason we have access to this resolve function
+
+343
+00:18:20.790 --> 00:18:22.130
+is because it's passed in here,
+
+344
+00:18:22.130 --> 00:18:24.663
+and that's one benefit to doing it all inside of here,
+
+345
+00:18:24.663 --> 00:18:27.000
+is that we don't need to pass the resolve function
+
+346
+00:18:27.000 --> 00:18:30.360
+to another function, because of the scope of this function,
+
+347
+00:18:30.360 --> 00:18:33.420
+it's available to us in the higher function.
+
+348
+00:18:33.420 --> 00:18:37.577
+So we'll simply resolve it with the e.target,
+
+349
+00:18:38.550 --> 00:18:40.670
+that gives us the popup, or we could even just say,
+
+350
+00:18:40.670 --> 00:18:43.690
+popup, but let's use the event,
+
+351
+00:18:43.690 --> 00:18:48.690
+e.target.input.value, so input is going to give us,
+
+352
+00:18:50.620 --> 00:18:53.790
+let me show you here, let me not resolve it just yet.
+
+353
+00:18:53.790 --> 00:18:58.790
+Console.log e.target is gonna give us the form,
+
+354
+00:19:03.450 --> 00:19:08.450
+and e.target.input is gonna give us the input box,
+
+355
+00:19:11.120 --> 00:19:13.570
+see, input, and the reason why it's .input
+
+356
+00:19:13.570 --> 00:19:15.530
+is 'cause there's a name on it,
+
+357
+00:19:15.530 --> 00:19:18.140
+so anytime an input has a name attribute,
+
+358
+00:19:18.140 --> 00:19:22.370
+it will be available via a property on the form,
+
+359
+00:19:22.370 --> 00:19:24.150
+and then just to get the text out of that,
+
+360
+00:19:24.150 --> 00:19:27.803
+we say .value, and then we'll resolve that data.
+
+361
+00:19:29.130 --> 00:19:30.823
+So go ahead and run it now.
+
+362
+00:19:31.940 --> 00:19:34.560
+Ask, does this work?
+
+363
+00:19:34.560 --> 00:19:37.850
+Submit, and it's resolved, I think you can,
+
+364
+00:19:37.850 --> 00:19:40.120
+yeah, you can look inside of the promise and see it,
+
+365
+00:19:40.120 --> 00:19:44.530
+but if I want to get the actual data out of that,
+
+366
+00:19:44.530 --> 00:19:48.373
+I could rerun that with await in front of it,
+
+367
+00:19:49.470 --> 00:19:52.840
+and now you can use the top-level await in dev tools.
+
+368
+00:19:52.840 --> 00:19:54.930
+Type in Wes, hit submit, and you see,
+
+369
+00:19:54.930 --> 00:19:57.933
+then it returns Wes to me once I've submitted it.
+
+370
+00:19:58.950 --> 00:20:03.200
+Other things about this, is if I now submit this again,
+
+371
+00:20:03.200 --> 00:20:04.610
+it doesn't really do anything,
+
+372
+00:20:04.610 --> 00:20:06.210
+but that event listener is still there
+
+373
+00:20:06.210 --> 00:20:08.430
+because if you console.log
+
+374
+00:20:10.160 --> 00:20:11.223
+submitted,
+
+375
+00:20:15.630 --> 00:20:18.130
+Wes, submitted, I got Wes,
+
+376
+00:20:18.130 --> 00:20:20.790
+but now whenever I click it, the event listener
+
+377
+00:20:20.790 --> 00:20:23.150
+is still there, but it can't resolve itself twice,
+
+378
+00:20:23.150 --> 00:20:24.870
+so it doesn't really do anything.
+
+379
+00:20:24.870 --> 00:20:27.500
+So one kind of cool thing about add event listener
+
+380
+00:20:27.500 --> 00:20:29.610
+is you could, right here is,
+
+381
+00:20:29.610 --> 00:20:32.810
+remove the event listener for submitted,
+
+382
+00:20:32.810 --> 00:20:34.650
+because as soon as someone resolves it,
+
+383
+00:20:34.650 --> 00:20:36.980
+then just remove the event listener entirely,
+
+384
+00:20:36.980 --> 00:20:40.310
+but there's a little shortcut with add event listener,
+
+385
+00:20:40.310 --> 00:20:43.890
+where the third argument to add event listener
+
+386
+00:20:43.890 --> 00:20:48.890
+is an options object, and we can pass it once true,
+
+387
+00:20:49.430 --> 00:20:52.490
+and what that will do is it will say,
+
+388
+00:20:52.490 --> 00:20:55.370
+only listen for this event, submit once,
+
+389
+00:20:55.370 --> 00:20:57.740
+and then remove yourself, remove the event listener,
+
+390
+00:20:57.740 --> 00:20:59.647
+and that is super handy for things
+
+391
+00:20:59.647 --> 00:21:02.020
+you only ever wanna happen once.
+
+392
+00:21:02.020 --> 00:21:05.330
+So watch it now, we'll run it,
+
+393
+00:21:05.330 --> 00:21:08.170
+we'll type it in, submit, submitted Wes,
+
+394
+00:21:08.170 --> 00:21:11.200
+and now when I go ahead and hammer on it over and over again
+
+395
+00:21:12.170 --> 00:21:17.170
+it doesn't, in fact it goes back to the regular,
+
+396
+00:21:17.480 --> 00:21:19.050
+and it will submit itself like that.
+
+397
+00:21:19.050 --> 00:21:21.890
+So the next thing we need to do here,
+
+398
+00:21:21.890 --> 00:21:26.403
+is remove it from the DOM entirely.
+
+399
+00:21:28.370 --> 00:21:32.370
+So what we'll do is, we'll make a separate function
+
+400
+00:21:32.370 --> 00:21:35.920
+called destroyPopup because we need to run this on submit
+
+401
+00:21:35.920 --> 00:21:38.727
+and on cancel, so we'll destroyPopup,
+
+402
+00:21:41.560 --> 00:21:42.960
+and we'll pass it our popup.
+
+403
+00:21:45.200 --> 00:21:47.223
+Let's go up here, make a function,
+
+404
+00:21:52.370 --> 00:21:55.040
+that will take in the popup as an argument,
+
+405
+00:21:55.040 --> 00:21:58.440
+so notice how, since the popup is scoped
+
+406
+00:21:58.440 --> 00:22:00.430
+to this function right here,
+
+407
+00:22:00.430 --> 00:22:02.650
+if I wanna access it in another function,
+
+408
+00:22:02.650 --> 00:22:05.140
+it must be passed via an argument,
+
+409
+00:22:05.140 --> 00:22:06.800
+there's no way I could reach,
+
+410
+00:22:06.800 --> 00:22:09.660
+if I didn't pass it here, there's no way I could reach
+
+411
+00:22:09.660 --> 00:22:12.310
+into this ask function and grab access to it,
+
+412
+00:22:12.310 --> 00:22:16.040
+because it is scoped to our ask function,
+
+413
+00:22:16.040 --> 00:22:17.640
+it's actually even scoped a little bit further,
+
+414
+00:22:17.640 --> 00:22:19.270
+it's scoped to this promise.
+
+415
+00:22:19.270 --> 00:22:20.910
+So if we wanna be able to access it,
+
+416
+00:22:20.910 --> 00:22:23.763
+you must pass it via an argument.
+
+417
+00:22:25.230 --> 00:22:26.890
+Then inside of the destroyPopup,
+
+418
+00:22:26.890 --> 00:22:30.710
+we will take popup.classList.remove,
+
+419
+00:22:32.750 --> 00:22:37.750
+remove the class of open, then we will
+
+420
+00:22:38.100 --> 00:22:41.280
+wait for one second
+
+421
+00:22:41.280 --> 00:22:44.470
+because we actually wanna wait for the thing to fade out
+
+422
+00:22:44.470 --> 00:22:46.780
+before we remove it from the DOM.
+
+423
+00:22:46.780 --> 00:22:48.860
+Now it's yelling at me for the await here,
+
+424
+00:22:48.860 --> 00:22:51.720
+that's 'cause this has to be marked an async function,
+
+425
+00:22:51.720 --> 00:22:55.450
+because you can't only await inside of an async function,
+
+426
+00:22:55.450 --> 00:22:59.870
+then we want to remove the popup entirely,
+
+427
+00:22:59.870 --> 00:23:03.910
+so we can call, I think we can call popup.remove.
+
+428
+00:23:03.910 --> 00:23:07.210
+One other way before we had remove,
+
+429
+00:23:07.210 --> 00:23:09.150
+the way that we did it, is we said,
+
+430
+00:23:09.150 --> 00:23:14.040
+popup.parentElement, so we took the popup,
+
+431
+00:23:14.040 --> 00:23:18.743
+we want one level up, and then we called removeChild popup,
+
+432
+00:23:20.200 --> 00:23:21.430
+and what that did is essentially,
+
+433
+00:23:21.430 --> 00:23:23.810
+is found the popup, went to its parent,
+
+434
+00:23:23.810 --> 00:23:27.930
+then we called the method on the parent to remove itself,
+
+435
+00:23:27.930 --> 00:23:32.500
+but now there is just a remove method that we can use.
+
+436
+00:23:32.500 --> 00:23:34.453
+So that has removed it.
+
+437
+00:23:36.210 --> 00:23:39.633
+Let's go ahead and try that now.
+
+438
+00:23:44.250 --> 00:23:47.400
+There we go, you see it's gone, it faded itself out.
+
+439
+00:23:47.400 --> 00:23:51.070
+One thing I wanna check is if I console.log the popup,
+
+440
+00:23:51.070 --> 00:23:54.643
+even after I've removed it, is it still there?
+
+441
+00:24:00.289 --> 00:24:02.310
+Yeah, you see, we still have access to the popup,
+
+442
+00:24:02.310 --> 00:24:04.370
+even though it's been removed from the DOM,
+
+443
+00:24:04.370 --> 00:24:07.580
+and that is a potential memory leak,
+
+444
+00:24:07.580 --> 00:24:10.580
+because every single time you pop something up,
+
+445
+00:24:10.580 --> 00:24:12.620
+you create a brand new popup,
+
+446
+00:24:12.620 --> 00:24:14.800
+and you add all these things to it,
+
+447
+00:24:14.800 --> 00:24:16.500
+and you add all these event listeners to it,
+
+448
+00:24:16.500 --> 00:24:18.760
+and simply removing it from the DOM
+
+449
+00:24:18.760 --> 00:24:22.600
+does not remove it from JavaScript's memory entirely,
+
+450
+00:24:22.600 --> 00:24:24.850
+because it's possible that you might wanna add it back,
+
+451
+00:24:24.850 --> 00:24:27.480
+but in our case, we wanna get rid of it entirely,
+
+452
+00:24:27.480 --> 00:24:29.967
+just destroy any evidence of that,
+
+453
+00:24:29.967 --> 00:24:31.690
+and the way that we do that is we say,
+
+454
+00:24:31.690 --> 00:24:36.670
+popup is equal to null, and that will make sure
+
+455
+00:24:36.670 --> 00:24:37.620
+that there is nothing.
+
+456
+00:24:37.620 --> 00:24:39.050
+My eslint is gonna yell at me,
+
+457
+00:24:39.050 --> 00:24:40.350
+because you're not supposed to,
+
+458
+00:24:40.350 --> 00:24:43.200
+or I have a rule where you're not supposed
+
+459
+00:24:43.200 --> 00:24:46.790
+to overwrite parameters,
+
+460
+00:24:46.790 --> 00:24:48.610
+and if you wanna get around that rule,
+
+461
+00:24:48.610 --> 00:24:51.603
+you could const myPopup is equal to popup,
+
+462
+00:24:54.090 --> 00:24:56.127
+and you just change this to myPopup,
+
+463
+00:24:56.127 --> 00:24:57.830
+and the reason why that works,
+
+464
+00:24:57.830 --> 00:25:00.123
+is because this is all references.
+
+465
+00:25:01.520 --> 00:25:05.170
+Oh, you have to say let there in order for that to work.
+
+466
+00:25:05.170 --> 00:25:08.913
+But I don't care, if it's really bugging you,
+
+467
+00:25:10.690 --> 00:25:13.150
+you can turn that rule off just for one little line.
+
+468
+00:25:13.150 --> 00:25:14.940
+Let's see, what's the rule,
+
+469
+00:25:14.940 --> 00:25:17.693
+the rule is no param reassign,
+
+470
+00:25:18.790 --> 00:25:22.283
+so we could say eslint disable,
+
+471
+00:25:24.410 --> 00:25:25.973
+no param reassign,
+
+472
+00:25:27.430 --> 00:25:29.340
+and then just turn it right back on
+
+473
+00:25:32.680 --> 00:25:35.230
+the line after it, that's what sometimes people will do,
+
+474
+00:25:35.230 --> 00:25:38.830
+I know, I know, I know, but I know what I'm doing,
+
+475
+00:25:38.830 --> 00:25:40.453
+and that makes it work.
+
+476
+00:25:41.468 --> 00:25:44.280
+OK, so that is our destroying of the popup,
+
+477
+00:25:44.280 --> 00:25:46.070
+the next thing that we need to do
+
+478
+00:25:46.070 --> 00:25:48.690
+is to handle the cancel button.
+
+479
+00:25:48.690 --> 00:25:50.970
+So let's hookup these buttons here,
+
+480
+00:25:50.970 --> 00:25:53.140
+'cause I'm sick of running the code here.
+
+481
+00:25:53.140 --> 00:25:55.010
+So we'll go to just the bottom here,
+
+482
+00:25:55.010 --> 00:25:57.650
+this has nothing to do with our ask function.
+
+483
+00:25:57.650 --> 00:26:02.650
+We'll select all buttons that have a question,
+
+484
+00:26:02.684 --> 00:26:06.293
+const buttons is equal to document.querySelectorAll,
+
+485
+00:26:08.848 --> 00:26:11.170
+and we'll grab anything, in our case,
+
+486
+00:26:12.080 --> 00:26:15.560
+anything that has a data dash question on it,
+
+487
+00:26:15.560 --> 00:26:17.580
+so we can go here, and we'll say,
+
+488
+00:26:17.580 --> 00:26:22.055
+anything that has a data dash question attribute, select it.
+
+489
+00:26:22.055 --> 00:26:24.320
+And let's console.log buttons,
+
+490
+00:26:24.320 --> 00:26:26.240
+so now when we load the page we get a node list
+
+491
+00:26:26.240 --> 00:26:27.860
+of these two buttons.
+
+492
+00:26:27.860 --> 00:26:30.310
+Then we will loop over each of those,
+
+493
+00:26:30.310 --> 00:26:31.570
+buttons.forEach,
+
+494
+00:26:34.198 --> 00:26:35.720
+and we'll have our button,
+
+495
+00:26:35.720 --> 00:26:38.320
+and the button will have an eventListener,
+
+496
+00:26:38.320 --> 00:26:41.070
+listen for a click, and when that happens,
+
+497
+00:26:41.070 --> 00:26:45.240
+we'll have a ask question function, we'll make that now,
+
+498
+00:26:45.240 --> 00:26:46.283
+let's go up here.
+
+499
+00:26:47.340 --> 00:26:49.093
+Function askQuestion,
+
+500
+00:26:55.300 --> 00:26:58.010
+that takes in the event, I'm gonna use e,
+
+501
+00:26:58.010 --> 00:27:00.903
+let's just console.log the e, make sure we're good.
+
+502
+00:27:03.740 --> 00:27:05.593
+Good, that's my event.
+
+503
+00:27:07.050 --> 00:27:07.993
+We'll say,
+
+504
+00:27:11.128 --> 00:27:13.230
+const the el that was clicked,
+
+505
+00:27:13.230 --> 00:27:17.790
+or maybe we can say button, say 'cause e.currentTarget,
+
+506
+00:27:22.040 --> 00:27:24.803
+and then we'll say const the answer,
+
+507
+00:27:26.610 --> 00:27:30.073
+is equal to await, OK we gotta mark this is async then.
+
+508
+00:27:32.640 --> 00:27:36.950
+We'll use our ask function where we pass it,
+
+509
+00:27:36.950 --> 00:27:39.860
+the title of the question will be,
+
+510
+00:27:39.860 --> 00:27:44.430
+whatever the user has typed into the data dash question,
+
+511
+00:27:44.430 --> 00:27:46.220
+so the way that we access that is,
+
+512
+00:27:46.220 --> 00:27:51.220
+the button.dataset.question, and if that's the case,
+
+513
+00:27:52.950 --> 00:27:54.650
+we'll just console.log the answer,
+
+514
+00:27:56.400 --> 00:28:01.400
+enter your name, Wes, submit, we get Wes back, OK,
+
+515
+00:28:01.690 --> 00:28:06.660
+and then we need to have the cancel button.
+
+516
+00:28:06.660 --> 00:28:11.223
+If somebody has passed the data dash cancel attribute,
+
+517
+00:28:12.060 --> 00:28:17.060
+we need to pass cancel of true,
+
+518
+00:28:17.600 --> 00:28:20.660
+see watch, if I run this now, all of them will have it,
+
+519
+00:28:20.660 --> 00:28:23.030
+but I only wanna give it as an option,
+
+520
+00:28:23.030 --> 00:28:24.070
+not for every single one.
+
+521
+00:28:24.070 --> 00:28:28.633
+So how do we tell if the user has passed
+
+522
+00:28:32.358 --> 00:28:34.260
+a data dash cancel attribute?
+
+523
+00:28:34.260 --> 00:28:37.163
+Well we can console.log button.dataset.
+
+524
+00:28:40.900 --> 00:28:43.770
+So the dataset is just a question there,
+
+525
+00:28:43.770 --> 00:28:47.440
+and in this case it says, what is your age,
+
+526
+00:28:47.440 --> 00:28:49.770
+and cancel is equal to an empty string,
+
+527
+00:28:49.770 --> 00:28:51.600
+why is it an empty string?
+
+528
+00:28:51.600 --> 00:28:56.600
+Because I didn't pass it as data dash cancel equals true,
+
+529
+00:28:58.020 --> 00:28:59.980
+because the way the HTML attributes work
+
+530
+00:28:59.980 --> 00:29:03.480
+is simply by existing, that means they're true,
+
+531
+00:29:03.480 --> 00:29:05.250
+and by not existing, they are false,
+
+532
+00:29:05.250 --> 00:29:07.700
+so it's not like I would say true or false,
+
+533
+00:29:07.700 --> 00:29:11.060
+plus, trying to convert a string of true and false
+
+534
+00:29:11.060 --> 00:29:13.090
+into a Boolean is a bit of a nightmare,
+
+535
+00:29:13.090 --> 00:29:16.480
+so I'd rather just pass the attribute with nothing in it,
+
+536
+00:29:16.480 --> 00:29:18.970
+and that means we should have a cancel button.
+
+537
+00:29:18.970 --> 00:29:22.920
+So how do we detect if it's there?
+
+538
+00:29:22.920 --> 00:29:26.783
+Well, we'll say const shouldCancel
+
+539
+00:29:29.168 --> 00:29:31.657
+is equal to button.dataset.cancel,
+
+540
+00:29:36.710 --> 00:29:39.053
+and then we'll just go here and we'll say,
+
+541
+00:29:40.090 --> 00:29:42.957
+cancel is equal to shouldCancel.
+
+542
+00:29:43.860 --> 00:29:44.913
+So does that work?
+
+543
+00:29:46.040 --> 00:29:49.450
+No, why not?
+
+544
+00:29:49.450 --> 00:29:52.280
+And the reason why it's not working is,
+
+545
+00:29:52.280 --> 00:29:56.323
+shouldCancel is going to give us an empty string,
+
+546
+00:29:57.420 --> 00:30:02.290
+right there, and an empty string is what, true or false?
+
+547
+00:30:02.290 --> 00:30:05.410
+Well it's falsey, so if we're simply passing
+
+548
+00:30:08.078 --> 00:30:10.270
+a empty string, then that's gonna be falsey,
+
+549
+00:30:10.270 --> 00:30:13.040
+so you might think, OK, well I can put
+
+550
+00:30:13.040 --> 00:30:14.520
+some bangs in front of that,
+
+551
+00:30:14.520 --> 00:30:16.400
+but we still have the problem
+
+552
+00:30:16.400 --> 00:30:18.230
+with an empty string being falsey,
+
+553
+00:30:18.230 --> 00:30:21.860
+so the question is, how do we detect
+
+554
+00:30:21.860 --> 00:30:25.230
+if there is a cancel property in the dataset?
+
+555
+00:30:25.230 --> 00:30:27.297
+Because if it's not there it won't be,
+
+556
+00:30:27.297 --> 00:30:29.613
+and the way that you look is you say,
+
+557
+00:30:31.120 --> 00:30:35.840
+cancel is in button.dataset,
+
+558
+00:30:35.840 --> 00:30:37.240
+and that will give us true or false,
+
+559
+00:30:37.240 --> 00:30:39.800
+so hold on, what is that?
+
+560
+00:30:39.800 --> 00:30:44.560
+Const Wes is equal to name is Wes,
+
+561
+00:30:44.560 --> 00:30:47.460
+so I have an object called Wes here, right?
+
+562
+00:30:47.460 --> 00:30:52.070
+Wes, and I want to check if Wes has a name property,
+
+563
+00:30:52.070 --> 00:30:55.150
+and not that it is there, but simply
+
+564
+00:30:55.150 --> 00:30:57.790
+if it has a name property, and I can say,
+
+565
+00:30:57.790 --> 00:31:02.790
+name is in Wes, and something else is in Wes,
+
+566
+00:31:03.790 --> 00:31:05.430
+is it gives me false.
+
+567
+00:31:05.430 --> 00:31:08.870
+So that is how you check if a property is there,
+
+568
+00:31:08.870 --> 00:31:10.480
+we cannot use the other method
+
+569
+00:31:10.480 --> 00:31:14.390
+because sometimes a property will be set to a false value
+
+570
+00:31:14.390 --> 00:31:17.510
+like an empty string or zero, or something like that,
+
+571
+00:31:17.510 --> 00:31:18.840
+and that will sorta bite us,
+
+572
+00:31:18.840 --> 00:31:22.160
+so we're using cancel in button.dataset,
+
+573
+00:31:22.160 --> 00:31:24.240
+and we pass it here, let's actually just name this
+
+574
+00:31:24.240 --> 00:31:28.410
+cancel altogether, and that will allow us to just pass
+
+575
+00:31:28.410 --> 00:31:29.260
+cancel like that.
+
+576
+00:31:40.390 --> 00:31:42.115
+So does that work?
+
+577
+00:31:42.115 --> 00:31:45.373
+There it goes, cancel, submit, enter, just submit.
+
+578
+00:31:46.650 --> 00:31:47.987
+Let's hookup this cancel button now,
+
+579
+00:31:47.987 --> 00:31:52.987
+and go back to our, up here where we create it,
+
+580
+00:31:53.017 --> 00:31:55.857
+and we'll say TODO listen for a click on the cancel button,
+
+581
+00:31:55.857 --> 00:31:58.073
+so we'll say skipButton.addEventListener,
+
+582
+00:32:00.770 --> 00:32:03.510
+listen for a click, when that happens,
+
+583
+00:32:03.510 --> 00:32:08.510
+we'll run a callback here that will resolve with nothing,
+
+584
+00:32:08.760 --> 00:32:10.810
+or maybe resolve, what does prompt give you
+
+585
+00:32:10.810 --> 00:32:12.033
+when you do nothing?
+
+586
+00:32:15.110 --> 00:32:17.653
+Prompt, how old are you?
+
+587
+00:32:19.760 --> 00:32:21.910
+Say cancel, it returns you null,
+
+588
+00:32:21.910 --> 00:32:26.423
+so we wanna resolve with null, which is explicitly nothing,
+
+589
+00:32:28.100 --> 00:32:32.433
+and then we also wanna pass that once true option,
+
+590
+00:32:33.430 --> 00:32:36.923
+because we only want it to be listened to once.
+
+591
+00:32:37.810 --> 00:32:39.760
+Additionally, after resolving,
+
+592
+00:32:39.760 --> 00:32:42.583
+we want to destroy the popup as well,
+
+593
+00:32:44.020 --> 00:32:46.053
+so we'll just run that once more here.
+
+594
+00:32:47.400 --> 00:32:50.200
+Enter age, cancel, resolves to null,
+
+595
+00:32:50.200 --> 00:32:52.580
+enter your name, Wes, submit, good,
+
+596
+00:32:52.580 --> 00:32:55.773
+enter age, submit, 123.
+
+597
+00:32:56.930 --> 00:32:58.730
+Good, good, good, OK so,
+
+598
+00:32:58.730 --> 00:33:01.780
+that is the very basics of our popup,
+
+599
+00:33:01.780 --> 00:33:05.410
+the last thing that I wanted to show you is,
+
+600
+00:33:05.410 --> 00:33:09.900
+how do we use this popup to ask questions in series,
+
+601
+00:33:09.900 --> 00:33:14.220
+meaning that someone's going through a form
+
+602
+00:33:14.220 --> 00:33:17.640
+and you wanna popup something and ask three pieces of data
+
+603
+00:33:17.640 --> 00:33:19.070
+before they can continue.
+
+604
+00:33:19.070 --> 00:33:22.360
+So I've got an example, let's go to the very bottom here,
+
+605
+00:33:22.360 --> 00:33:24.220
+I've got these questions right here,
+
+606
+00:33:24.220 --> 00:33:26.510
+which has a title, a title, and a title,
+
+607
+00:33:26.510 --> 00:33:28.310
+and one of them has a cancel.
+
+608
+00:33:28.310 --> 00:33:30.300
+How would I ask somebody in series?
+
+609
+00:33:30.300 --> 00:33:33.480
+Well you might think, well I could use
+
+610
+00:33:33.480 --> 00:33:34.950
+promise.all, right Wes?
+
+611
+00:33:34.950 --> 00:33:36.640
+And let's try that, right?
+
+612
+00:33:36.640 --> 00:33:39.220
+So when the page loads, we'll take these questions
+
+613
+00:33:39.220 --> 00:33:40.890
+and we'll ask each of them,
+
+614
+00:33:40.890 --> 00:33:45.890
+so we'll say const answers is equal to promise.all,
+
+615
+00:33:47.620 --> 00:33:52.080
+and for each one, I want to say, ask
+
+616
+00:33:54.270 --> 00:33:56.713
+questions zero,
+
+617
+00:33:58.172 --> 00:34:01.750
+and we'll do one, and two.
+
+618
+00:34:01.750 --> 00:34:03.890
+So this is not an uncommon thing,
+
+619
+00:34:03.890 --> 00:34:06.143
+that what you wanna do is, when the page loads,
+
+620
+00:34:06.143 --> 00:34:10.520
+you ask all of your things, you wrap that in a promise.all
+
+621
+00:34:10.520 --> 00:34:13.140
+and when all three of them has been resolved,
+
+622
+00:34:13.140 --> 00:34:15.260
+then we'll have our answers.
+
+623
+00:34:15.260 --> 00:34:18.883
+So in this case we could say .then answers,
+
+624
+00:34:21.020 --> 00:34:22.440
+and the reason I have to use then here
+
+625
+00:34:22.440 --> 00:34:24.000
+is 'cause I can't do this,
+
+626
+00:34:24.000 --> 00:34:25.760
+'cause we're not inside of an async function,
+
+627
+00:34:25.760 --> 00:34:28.110
+so I need to use the promise syntax here,
+
+628
+00:34:28.110 --> 00:34:29.573
+console.log answers.
+
+629
+00:34:30.840 --> 00:34:32.490
+Alright, let's try this, ready?
+
+630
+00:34:32.490 --> 00:34:34.330
+What's your dog's name?
+
+631
+00:34:34.330 --> 00:34:35.690
+Wes.
+
+632
+00:34:35.690 --> 00:34:36.793
+What's your age?
+
+633
+00:34:38.290 --> 00:34:39.140
+What's your name?
+
+634
+00:34:42.370 --> 00:34:44.170
+Did you notice something about that?
+
+635
+00:34:45.590 --> 00:34:48.460
+It asked this one first, and then this one,
+
+636
+00:34:48.460 --> 00:34:50.330
+and then this one.
+
+637
+00:34:50.330 --> 00:34:54.510
+So what actually happened here is it works,
+
+638
+00:34:54.510 --> 00:34:56.780
+but what's actually happening here is that there's,
+
+639
+00:34:56.780 --> 00:34:59.060
+look it, there's three of them,
+
+640
+00:34:59.060 --> 00:35:02.070
+and they're all popped up at the exact same time,
+
+641
+00:35:02.070 --> 00:35:07.070
+and we don't get the cool UI that we're used to,
+
+642
+00:35:08.010 --> 00:35:10.090
+so that's actually not a good solution,
+
+643
+00:35:10.090 --> 00:35:12.930
+'cause we don't wanna pop all three of them up at once,
+
+644
+00:35:12.930 --> 00:35:15.870
+I posted this on Twitter and got 400 people telling me,
+
+645
+00:35:15.870 --> 00:35:19.730
+use promise.all, that is how promise.all works,
+
+646
+00:35:19.730 --> 00:35:24.730
+is it will fire them all off concurrently at the same time,
+
+647
+00:35:25.000 --> 00:35:27.250
+which in many cases is what you want,
+
+648
+00:35:27.250 --> 00:35:30.420
+but in our case, when you wanna do it sequentially,
+
+649
+00:35:30.420 --> 00:35:33.890
+we can't use promise.all because it will fire all off,
+
+650
+00:35:33.890 --> 00:35:36.620
+all of them off at once.
+
+651
+00:35:36.620 --> 00:35:39.500
+Just while we're sorta in this idea here,
+
+652
+00:35:39.500 --> 00:35:42.530
+a better way to do this promise.all
+
+653
+00:35:42.530 --> 00:35:45.890
+ask zero, ask one, ask two would be,
+
+654
+00:35:45.890 --> 00:35:48.563
+to do something like this, you take your questions,
+
+655
+00:35:49.910 --> 00:35:51.683
+and you map over each one,
+
+656
+00:35:53.130 --> 00:35:56.923
+and you simply pass in the ask function,
+
+657
+00:35:58.630 --> 00:36:00.943
+and what this will do is it'll say qPromises,
+
+658
+00:36:02.870 --> 00:36:04.470
+watch what we get here.
+
+659
+00:36:04.470 --> 00:36:06.147
+Console.log qPromises,
+
+660
+00:36:10.530 --> 00:36:13.460
+we get an array of our three promises,
+
+661
+00:36:13.460 --> 00:36:15.240
+which have not been answered yet,
+
+662
+00:36:15.240 --> 00:36:18.400
+so what you can do is you can loop over an array,
+
+663
+00:36:18.400 --> 00:36:21.280
+and for each one, return a promise,
+
+664
+00:36:21.280 --> 00:36:24.210
+and that's how you get an array of promises,
+
+665
+00:36:24.210 --> 00:36:28.313
+and then you can just wrap that in a promise.all,
+
+666
+00:36:34.440 --> 00:36:37.140
+and then give yourself a then data
+
+667
+00:36:39.120 --> 00:36:41.840
+console.log the data.
+
+668
+00:36:41.840 --> 00:36:43.960
+So what this will do is it will loop over
+
+669
+00:36:43.960 --> 00:36:47.140
+each of the questions, pipe it into an ask function,
+
+670
+00:36:47.140 --> 00:36:50.930
+which returns a promise, that will return to us an array,
+
+671
+00:36:50.930 --> 00:36:53.130
+remember the whole map makes is a machine,
+
+672
+00:36:53.130 --> 00:36:54.810
+takes something in, a question,
+
+673
+00:36:54.810 --> 00:36:57.140
+returns something else, a promise,
+
+674
+00:36:57.140 --> 00:36:59.310
+wraps it in a promise.all and then allows us
+
+675
+00:36:59.310 --> 00:37:02.393
+to listen with a then, and this will actually work.
+
+676
+00:37:04.523 --> 00:37:07.040
+And you see how it works, but we still have the problem
+
+677
+00:37:07.040 --> 00:37:09.640
+of the UI popping up all at the exact same time,
+
+678
+00:37:09.640 --> 00:37:11.350
+so that's not what we want.
+
+679
+00:37:11.350 --> 00:37:16.350
+What we do want is to map over it,
+
+680
+00:37:16.870 --> 00:37:19.760
+but asynchronously, you might also think, OK Wes,
+
+681
+00:37:19.760 --> 00:37:22.507
+I'm a hotshot, because I questions.forEach
+
+682
+00:37:26.360 --> 00:37:31.083
+function, and it marked that thing as async,
+
+683
+00:37:33.760 --> 00:37:37.653
+and in here we'll say, const answer is equal to await,
+
+684
+00:37:39.250 --> 00:37:43.833
+locate each question, await, ask question.
+
+685
+00:37:45.230 --> 00:37:47.670
+Console.log answer, right?
+
+686
+00:37:47.670 --> 00:37:49.900
+So you think you loop over each one,
+
+687
+00:37:49.900 --> 00:37:51.270
+and then you have an asynchronous function
+
+688
+00:37:51.270 --> 00:37:54.090
+that waits for the question to be resolved,
+
+689
+00:37:54.090 --> 00:37:56.100
+and then you log it, right?
+
+690
+00:37:56.100 --> 00:38:00.650
+So maybe we'll say console.log asking a question,
+
+691
+00:38:00.650 --> 00:38:05.223
+console.log the question, now refresh,
+
+692
+00:38:06.880 --> 00:38:10.410
+oh, asking a question, asking a question,
+
+693
+00:38:10.410 --> 00:38:15.410
+asking a question, so that didn't wait for anything, right?
+
+694
+00:38:16.820 --> 00:38:19.333
+It will work, see as I answer them,
+
+695
+00:38:20.320 --> 00:38:24.650
+they will resolve, but they all ran all three
+
+696
+00:38:24.650 --> 00:38:25.900
+at the exact same time.
+
+697
+00:38:25.900 --> 00:38:28.900
+So how do we make an async for each
+
+698
+00:38:28.900 --> 00:38:33.900
+or an async map function when this doesn't work like that?
+
+699
+00:38:34.410 --> 00:38:38.193
+And the answer to that is, we can use a for of loop.
+
+700
+00:38:39.170 --> 00:38:43.340
+So we'll make a function here called askMany,
+
+701
+00:38:45.330 --> 00:38:47.093
+we'll mark that as async.
+
+702
+00:38:48.870 --> 00:38:52.640
+And what you can do is just say for question
+
+703
+00:38:56.160 --> 00:38:58.143
+of questions,
+
+704
+00:38:59.920 --> 00:39:04.920
+and we'll say const answer is equal to await ask question.
+
+705
+00:39:08.363 --> 00:39:12.550
+Then console.log answer, and then when the page loads,
+
+706
+00:39:12.550 --> 00:39:13.610
+we'll askMany.
+
+707
+00:39:17.370 --> 00:39:19.610
+Oh I forgot a const in front of that.
+
+708
+00:39:21.390 --> 00:39:22.670
+Now look at that, what is your name?
+
+709
+00:39:22.670 --> 00:39:23.870
+Wes, submit.
+
+710
+00:39:23.870 --> 00:39:24.733
+What is your age?
+
+711
+00:39:25.611 --> 00:39:27.810
+And what is your dog's name?
+
+712
+00:39:27.810 --> 00:39:31.000
+And you see they did one after another,
+
+713
+00:39:31.000 --> 00:39:33.920
+because, unlike map and for each,
+
+714
+00:39:33.920 --> 00:39:37.350
+for of allows you to pause a loop
+
+715
+00:39:37.350 --> 00:39:41.100
+by awaiting something inside of it, and that is awesome.
+
+716
+00:39:41.100 --> 00:39:44.020
+So one thing I like to do is to make
+
+717
+00:39:44.020 --> 00:39:46.733
+a little utility function called asyncMap,
+
+718
+00:39:47.592 --> 00:39:51.090
+and it will do exactly this but return to us an array,
+
+719
+00:39:51.090 --> 00:39:52.970
+very much like a map does.
+
+720
+00:39:52.970 --> 00:39:57.010
+So let's do that here, we'll make a function
+
+721
+00:39:57.010 --> 00:40:01.180
+called asyncMap, that takes in an array of data,
+
+722
+00:40:01.180 --> 00:40:03.900
+and a callback of something to call,
+
+723
+00:40:03.900 --> 00:40:07.330
+and the reason why I call this array and not questions,
+
+724
+00:40:07.330 --> 00:40:10.300
+and the reason why I call this callback and not ask,
+
+725
+00:40:10.300 --> 00:40:12.260
+is that this is a utility function,
+
+726
+00:40:12.260 --> 00:40:14.320
+that can be used multiple times,
+
+727
+00:40:14.320 --> 00:40:17.390
+regardless of the array of questions,
+
+728
+00:40:17.390 --> 00:40:20.340
+or the actual ask function.
+
+729
+00:40:20.340 --> 00:40:25.340
+We'll mark that as async, and first we will make an array
+
+730
+00:40:25.850 --> 00:40:30.800
+to store our results, so const results
+
+731
+00:40:30.800 --> 00:40:32.150
+is equal to an empty array.
+
+732
+00:40:36.400 --> 00:40:40.370
+Then we will loop over our array,
+
+733
+00:40:40.370 --> 00:40:45.170
+so we'll say for const data of array,
+
+734
+00:40:45.170 --> 00:40:47.050
+and again, I'm not using question here
+
+735
+00:40:47.050 --> 00:40:52.050
+because I'm trying to keep it as flexible as possible
+
+736
+00:40:52.360 --> 00:40:54.880
+for any type of array that comes in.
+
+737
+00:40:54.880 --> 00:40:57.513
+Or let's call it item, not data.
+
+738
+00:40:58.420 --> 00:41:02.240
+Then we'll say const result is equal to await,
+
+739
+00:41:02.240 --> 00:41:06.220
+callback item, so this is exactly the same
+
+740
+00:41:06.220 --> 00:41:09.830
+as saying await ask question, but we've made it generic
+
+741
+00:41:09.830 --> 00:41:12.160
+and we're saying await callback item,
+
+742
+00:41:12.160 --> 00:41:13.990
+and we're gonna pass in what the array
+
+743
+00:41:13.990 --> 00:41:17.260
+and what the callback actually is,
+
+744
+00:41:17.260 --> 00:41:18.990
+and then when we have that result,
+
+745
+00:41:18.990 --> 00:41:22.963
+we'll take the results and we'll push it into that.
+
+746
+00:41:25.632 --> 00:41:29.010
+And then finally, when we are done the loop,
+
+747
+00:41:30.700 --> 00:41:33.090
+return it, so return
+
+748
+00:41:34.780 --> 00:41:36.023
+the results.
+
+749
+00:41:40.140 --> 00:41:41.580
+Then what we should be able to do,
+
+750
+00:41:41.580 --> 00:41:43.863
+is let's get rid of this askMany here,
+
+751
+00:41:45.790 --> 00:41:48.773
+we'll make a new function, we'll just call that go,
+
+752
+00:41:50.240 --> 00:41:53.760
+and mark it as async and run it on page load,
+
+753
+00:41:53.760 --> 00:41:56.380
+the only reason I'm doing this is 'cause you can't await
+
+754
+00:41:56.380 --> 00:41:59.490
+out in the open, you must await inside of async,
+
+755
+00:41:59.490 --> 00:42:04.490
+and we'll say const answers is equal to await
+
+756
+00:42:08.864 --> 00:42:12.430
+asyncMap, and our asyncMap takes an array,
+
+757
+00:42:12.430 --> 00:42:15.470
+which is our questions, gets turned into the array variable
+
+758
+00:42:15.470 --> 00:42:17.780
+when it gets passed in, and our callback,
+
+759
+00:42:17.780 --> 00:42:19.423
+which is our ask function,
+
+760
+00:42:21.500 --> 00:42:25.010
+and we should be able to console.log the answers,
+
+761
+00:42:25.010 --> 00:42:25.843
+click that.
+
+762
+00:42:26.930 --> 00:42:31.433
+Couple red, this is results, and this is questions.
+
+763
+00:42:34.170 --> 00:42:35.003
+Wes,
+
+764
+00:42:38.910 --> 00:42:41.710
+and now we get our array back.
+
+765
+00:42:41.710 --> 00:42:43.730
+That's beautiful, I love that a lot,
+
+766
+00:42:43.730 --> 00:42:46.260
+and it's a little bit different
+
+767
+00:42:46.260 --> 00:42:51.260
+than questions.map, but it's the exact same idea,
+
+768
+00:42:51.980 --> 00:42:53.490
+the only difference is that this is just
+
+769
+00:42:53.490 --> 00:42:57.080
+a top-level function instead of being a method
+
+770
+00:42:57.080 --> 00:43:00.770
+that lives on the array, which is pretty cool.
+
+771
+00:43:00.770 --> 00:43:03.140
+You can even go a little bit further in this thing,
+
+772
+00:43:03.140 --> 00:43:08.140
+and we can simply take the await callback item,
+
+773
+00:43:09.390 --> 00:43:13.650
+and push directly in there, and because of bedmas,
+
+774
+00:43:13.650 --> 00:43:15.320
+remember we learned about bedmas?
+
+775
+00:43:15.320 --> 00:43:19.010
+You can await inside of here, and when that is resolved,
+
+776
+00:43:19.010 --> 00:43:21.863
+it will push it into the results for us.
+
+777
+00:43:23.330 --> 00:43:26.300
+So I know that's a lot, but this little function
+
+778
+00:43:26.300 --> 00:43:28.470
+will probably come in handy in the future,
+
+779
+00:43:28.470 --> 00:43:30.360
+hopefully you learned a couple things there
+
+780
+00:43:30.360 --> 00:43:33.510
+about promises and resolving, and this is totally something
+
+781
+00:43:33.510 --> 00:43:35.220
+that you could take a little bit further
+
+782
+00:43:35.220 --> 00:43:38.870
+and make the UI a little bit more flexible,
+
+783
+00:43:38.870 --> 00:43:41.610
+maybe have different types of inputs, things like that.
+
+784
+00:43:41.610 --> 00:43:42.810
+See you in the next one.
+

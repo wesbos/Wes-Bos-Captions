@@ -1,0 +1,978 @@
+﻿WEBVTT
+
+1
+00:00:00.867 --> 00:00:03.450
+(upbeat music)
+
+2
+00:00:05.852 --> 00:00:06.685
+<v ->All right, I wanna encourage you</v>
+
+3
+00:00:06.685 --> 00:00:09.480
+to try do this one yourself, take the currency conversion
+
+4
+00:00:09.480 --> 00:00:12.620
+project that we did and duplicate it
+
+5
+00:00:12.620 --> 00:00:14.373
+and try to convert it to modules.
+
+6
+00:00:15.340 --> 00:00:16.410
+Welcome back!
+
+7
+00:00:16.410 --> 00:00:20.870
+Let's (chuckle) duplicate the currency conversion once.
+
+8
+00:00:20.870 --> 00:00:22.163
+So, duplicate.
+
+9
+00:00:23.030 --> 00:00:28.030
+We'll call that 78 - Currency Converter Modules Refactor.
+
+10
+00:00:31.920 --> 00:00:35.460
+Open that up and I'm gonna get rid of the finished version
+
+11
+00:00:35.460 --> 00:00:37.423
+just put it into money js.
+
+12
+00:00:38.660 --> 00:00:39.773
+Delete that.
+
+13
+00:00:41.610 --> 00:00:43.670
+And we'll open up our index.js
+
+14
+00:00:43.670 --> 00:00:48.250
+and we wanna convert this to a module to type equals module.
+
+15
+00:00:48.250 --> 00:00:53.250
+So now, money.js is going to be our entry point.
+
+16
+00:00:54.640 --> 00:00:55.840
+And let's take a look here.
+
+17
+00:00:55.840 --> 00:00:58.010
+So we got a bunch of selecting.
+
+18
+00:00:58.010 --> 00:01:01.080
+We've got an end point, we have ratesByBase,
+
+19
+00:01:01.080 --> 00:01:03.473
+which is needed to store the data.
+
+20
+00:01:05.760 --> 00:01:07.713
+Then we've got our currencies.
+
+21
+00:01:10.220 --> 00:01:13.700
+Then we've got our generateOptions function,
+
+22
+00:01:13.700 --> 00:01:17.540
+we've got our fetchRates, which needs the endpoint,
+
+23
+00:01:17.540 --> 00:01:20.223
+we got a convert formatCurrency.
+
+24
+00:01:21.388 --> 00:01:25.140
+So we've got one handler here.
+
+25
+00:01:25.140 --> 00:01:28.160
+We've got format currency, which is library function,
+
+26
+00:01:28.160 --> 00:01:30.519
+we've got convert, that's a library function.
+
+27
+00:01:30.519 --> 00:01:32.123
+fetchRates, that's a library.
+
+28
+00:01:32.123 --> 00:01:34.170
+A library is like, this is core functionality
+
+29
+00:01:34.170 --> 00:01:36.100
+to our application.
+
+30
+00:01:36.100 --> 00:01:39.130
+And then we've got generateOptions.
+
+31
+00:01:39.130 --> 00:01:42.480
+That could either be library or maybe called a helper
+
+32
+00:01:42.480 --> 00:01:46.610
+or a util, and then we've got some data of the currencies.
+
+33
+00:01:46.610 --> 00:01:49.560
+So let's goin', I'm not gonna do any folders for this one.
+
+34
+00:01:49.560 --> 00:01:51.520
+I'll show you how I would approach this
+
+35
+00:01:51.520 --> 00:01:53.440
+which is just flat files.
+
+36
+00:01:53.440 --> 00:01:56.443
+So, let's make a currencies.js.
+
+37
+00:01:59.680 --> 00:02:03.317
+And let's take all this and paste it in there.
+
+38
+00:02:06.000 --> 00:02:08.260
+This is big enough that I would give it its own file.
+
+39
+00:02:08.260 --> 00:02:10.893
+Export default, currencies.
+
+40
+00:02:13.760 --> 00:02:15.210
+Now, we need generateOptions.
+
+41
+00:02:16.258 --> 00:02:17.120
+I think that's util.
+
+42
+00:02:17.120 --> 00:02:18.260
+I'm gonna put that on util,
+
+43
+00:02:18.260 --> 00:02:22.003
+so make a new file called utils.js.
+
+44
+00:02:22.920 --> 00:02:25.260
+Take that out, paste it in here
+
+45
+00:02:25.260 --> 00:02:27.603
+and we'll do that as a named export.
+
+46
+00:02:28.896 --> 00:02:33.896
+Then, I'm gonna make a lib.js file
+
+47
+00:02:35.060 --> 00:02:39.100
+that's going to contain fetch rates, convert, format.
+
+48
+00:02:40.370 --> 00:02:42.290
+Ah, format is more of a util, I think.
+
+49
+00:02:42.290 --> 00:02:46.268
+So just wanna move over convert and fetchRates for now.
+
+50
+00:02:46.268 --> 00:02:48.483
+We'll put that in our lib.
+
+51
+00:02:51.350 --> 00:02:56.190
+And we will export async function fetchRates,
+
+52
+00:02:56.190 --> 00:02:59.003
+export convert, good.
+
+53
+00:02:59.990 --> 00:03:03.133
+FormatCurrency, that's a util, let's put that in utils.
+
+54
+00:03:10.150 --> 00:03:12.310
+We've got handle input, that's a handler,
+
+55
+00:03:12.310 --> 00:03:14.463
+so let's make a new file here.
+
+56
+00:03:16.414 --> 00:03:17.564
+We'll call it handlers.
+
+57
+00:03:21.560 --> 00:03:25.083
+It's an event handler, so put it in there, export that.
+
+58
+00:03:27.540 --> 00:03:32.540
+And then we got our generation, which we do on page load.
+
+59
+00:03:35.290 --> 00:03:38.440
+So initialization, and then we listen for everything.
+
+60
+00:03:38.440 --> 00:03:40.153
+Okay, okay.
+
+61
+00:03:42.990 --> 00:03:46.720
+Let's just start going one by one and see
+
+62
+00:03:46.720 --> 00:03:48.690
+if we wanna move this out or not.
+
+63
+00:03:48.690 --> 00:03:52.150
+I'm actually kind of curious how we will solve this one,
+
+64
+00:03:52.150 --> 00:03:56.483
+which is, because it caches and it gets updated each time.
+
+65
+00:03:58.010 --> 00:04:03.010
+So, I'm gonna open up my index.html in my live server.
+
+66
+00:04:06.140 --> 00:04:07.800
+Let's go error by error.
+
+67
+00:04:07.800 --> 00:04:09.400
+generateOptions is not defined.
+
+68
+00:04:09.400 --> 00:04:12.330
+Okay, we'll put that in utils.
+
+69
+00:04:12.330 --> 00:04:13.993
+So we'll simply just import it.
+
+70
+00:04:24.830 --> 00:04:26.870
+Currencies is not defined.
+
+71
+00:04:26.870 --> 00:04:30.260
+That needs to be passed to generateOptions, okay.
+
+72
+00:04:30.260 --> 00:04:35.260
+So, import currencies from currencies.js.
+
+73
+00:04:43.590 --> 00:04:46.210
+The requested modules currencies is not provided
+
+74
+00:04:46.210 --> 00:04:47.983
+export named currencies.
+
+75
+00:04:49.000 --> 00:04:53.690
+Let's go into, oh, because it's a default export,
+
+76
+00:04:53.690 --> 00:04:56.640
+so it doesn't need the curly brackets.
+
+77
+00:04:56.640 --> 00:04:58.573
+HandleInput is not defined.
+
+78
+00:04:59.480 --> 00:05:04.287
+I'll import handleInput from, you notice
+
+79
+00:05:05.550 --> 00:05:06.720
+I don't put spaces there.
+
+80
+00:05:06.720 --> 00:05:09.820
+That's just because I'm using Prettier
+
+81
+00:05:09.820 --> 00:05:11.590
+and it just puts it in there for me.
+
+82
+00:05:11.590 --> 00:05:13.540
+That's nothing to do with how it works.
+
+83
+00:05:14.949 --> 00:05:18.313
+I'll work from handlers.js.
+
+84
+00:05:20.720 --> 00:05:22.220
+What else have you got for me?
+
+85
+00:05:23.990 --> 00:05:25.030
+Here we come.
+
+86
+00:05:25.030 --> 00:05:27.120
+Reference error convert is not defined,
+
+87
+00:05:27.120 --> 00:05:30.460
+that's happening in handlers.js line two.
+
+88
+00:05:30.460 --> 00:05:31.873
+We're going to handlers js.
+
+89
+00:05:33.140 --> 00:05:34.463
+So, import.
+
+90
+00:05:36.990 --> 00:05:40.707
+Convert from lib.
+
+91
+00:05:47.013 --> 00:05:49.520
+Refactor lib, oh lib.js.
+
+92
+00:05:49.520 --> 00:05:51.260
+I keep forgetting to put js on the end.
+
+93
+00:05:51.260 --> 00:05:52.760
+That's because the bundler which I do
+
+94
+00:05:52.760 --> 00:05:54.653
+all of my coding in doesn't need it.
+
+95
+00:05:55.940 --> 00:05:56.773
+What's next?
+
+96
+00:05:56.773 --> 00:06:01.530
+FromInput, okay, so fromInput toSelsect, toSelect, toEl,
+
+97
+00:06:01.530 --> 00:06:03.880
+formatCurrency, let's get that out of the way.
+
+98
+00:06:03.880 --> 00:06:07.843
+Import, format currency from utils.js.
+
+99
+00:06:12.570 --> 00:06:17.100
+All right, all of these elements now need to be selected
+
+100
+00:06:17.100 --> 00:06:19.670
+and rather than pass them in, I'll put them
+
+101
+00:06:19.670 --> 00:06:21.520
+in their own module, I think.
+
+102
+00:06:21.520 --> 00:06:24.413
+So let's make a new file called elements.js.
+
+103
+00:06:33.000 --> 00:06:35.890
+And I believe we just need these ones.
+
+104
+00:06:35.890 --> 00:06:37.640
+We'll cut and paste them in here.
+
+105
+00:06:37.640 --> 00:06:40.160
+And one other thing people might often do
+
+106
+00:06:40.160 --> 00:06:42.320
+is instead of just using document.querySelector
+
+107
+00:06:42.320 --> 00:06:47.320
+for all of these, they will pass in an app instance,
+
+108
+00:06:48.010 --> 00:06:50.890
+much like we did with the gallery, like this,
+
+109
+00:06:50.890 --> 00:06:53.420
+and then look inside that for all of these things.
+
+110
+00:06:53.420 --> 00:06:55.887
+So you would have app.querySelector,
+
+111
+00:06:55.887 --> 00:06:58.210
+app.querySelector for each of this.
+
+112
+00:06:58.210 --> 00:07:00.760
+And that allows you to have multiple on the same page
+
+113
+00:07:00.760 --> 00:07:04.060
+just like we did with our slider and our gallery.
+
+114
+00:07:04.060 --> 00:07:05.460
+For this, I think it's fine.
+
+115
+00:07:06.450 --> 00:07:08.513
+So export those.
+
+116
+00:07:10.160 --> 00:07:13.113
+And fromSelect not defined.
+
+117
+00:07:14.410 --> 00:07:19.410
+So we import fromInput, fromSelect, toSelect and toEl.
+
+118
+00:07:22.920 --> 00:07:25.203
+Import those.
+
+119
+00:07:29.870 --> 00:07:33.383
+That comes from elements.js.
+
+120
+00:07:36.619 --> 00:07:39.113
+FromSelect is not defined in money.js.
+
+121
+00:07:42.950 --> 00:07:44.797
+Okay, oh, so we also need fromSelect
+
+122
+00:07:44.797 --> 00:07:47.470
+and toSelect on page load.
+
+123
+00:07:47.470 --> 00:07:51.320
+So we import them again, that's the beauty of modules.
+
+124
+00:07:51.320 --> 00:07:52.810
+If you need them in multiple files,
+
+125
+00:07:52.810 --> 00:07:54.883
+you can import them into multiple files.
+
+126
+00:07:58.410 --> 00:08:00.013
+Elements.js.
+
+127
+00:08:03.976 --> 00:08:05.000
+There we go, ratesByBase.
+
+128
+00:08:05.000 --> 00:08:07.840
+I think this is gonna be the tough one.
+
+129
+00:08:07.840 --> 00:08:12.793
+So endpoint and ratesByBase, they need to go into our,
+
+130
+00:08:14.620 --> 00:08:18.270
+they need to go into our lib.js.
+
+131
+00:08:18.270 --> 00:08:23.270
+So we just take this out and go into our lib js
+
+132
+00:08:23.400 --> 00:08:25.913
+and I'll paste them at the top.
+
+133
+00:08:27.430 --> 00:08:29.770
+And oh, this is actually not a hard
+
+134
+00:08:29.770 --> 00:08:31.240
+as I thought it would be.
+
+135
+00:08:31.240 --> 00:08:32.460
+I think it just works.
+
+136
+00:08:32.460 --> 00:08:33.623
+Shall we try it?
+
+137
+00:08:37.210 --> 00:08:38.283
+So CAD.
+
+138
+00:08:39.360 --> 00:08:41.248
+It just works, okay. (laughs)
+
+139
+00:08:41.248 --> 00:08:44.260
+I thought that was gonna be harder because we're updating
+
+140
+00:08:44.260 --> 00:08:47.940
+a variable but this, the beauty of module scope
+
+141
+00:08:47.940 --> 00:08:50.500
+is that inside of this module,
+
+142
+00:08:50.500 --> 00:08:53.050
+I can create this ratesByBase object,
+
+143
+00:08:53.050 --> 00:08:56.450
+and then we update it from within one of these functions.
+
+144
+00:08:56.450 --> 00:09:01.030
+And even though we're calling the convert from another file,
+
+145
+00:09:01.030 --> 00:09:04.080
+it still knows about the scope of this file
+
+146
+00:09:04.080 --> 00:09:06.590
+much like a scope of a closure would be.
+
+147
+00:09:06.590 --> 00:09:08.550
+And we can access it, no problem.
+
+148
+00:09:08.550 --> 00:09:11.180
+That's the beauty of, you don't have to pass it in
+
+149
+00:09:11.180 --> 00:09:14.260
+or anything like that, you just reach for it on there.
+
+150
+00:09:14.260 --> 00:09:16.580
+The only gotcha about these modules
+
+151
+00:09:16.580 --> 00:09:20.570
+is if you're on the server, this will be shared
+
+152
+00:09:20.570 --> 00:09:23.210
+by every request that comes in which may
+
+153
+00:09:23.210 --> 00:09:25.630
+or may not be what you want.
+
+154
+00:09:25.630 --> 00:09:29.240
+I certainly have oopsies on the server before
+
+155
+00:09:29.240 --> 00:09:32.860
+where I was storing data in here and it was being
+
+156
+00:09:32.860 --> 00:09:35.750
+overwritten by multiple users and if that's the case,
+
+157
+00:09:35.750 --> 00:09:37.800
+you have to get into assign call sessions
+
+158
+00:09:38.670 --> 00:09:41.730
+or scope that to each function but in our case,
+
+159
+00:09:41.730 --> 00:09:45.080
+and in most cases, I'd say this is absolutely fine.
+
+160
+00:09:45.080 --> 00:09:48.000
+So, that is how I converted it without a whole bunch
+
+161
+00:09:48.000 --> 00:09:51.033
+of different files, all of them seem pretty manageable.
+
+162
+00:09:52.950 --> 00:09:54.590
+And that's it.
+
+163
+00:09:54.590 --> 00:09:59.263
+Well actually, one more thing is, you might even take this
+
+164
+00:10:02.420 --> 00:10:05.570
+and you might put this into like a bootstrap
+
+165
+00:10:05.570 --> 00:10:07.840
+or an app init function.
+
+166
+00:10:07.840 --> 00:10:09.250
+And what do I mean by that?
+
+167
+00:10:09.250 --> 00:10:13.310
+Well, you might go and take all of this,
+
+168
+00:10:13.310 --> 00:10:18.310
+all of this happens when the page loads, this code runs.
+
+169
+00:10:20.080 --> 00:10:23.430
+And that is fine, but sometimes, you wanna delay
+
+170
+00:10:23.430 --> 00:10:26.010
+running of what happens on page load.
+
+171
+00:10:26.010 --> 00:10:29.430
+And if that's the case, then, what I would do
+
+172
+00:10:29.430 --> 00:10:34.123
+is I would just tick all of it and go into my lib.
+
+173
+00:10:35.910 --> 00:10:40.910
+And I make another function called init or bootstrap
+
+174
+00:10:44.120 --> 00:10:47.000
+or start, or something like that or go,
+
+175
+00:10:47.000 --> 00:10:49.713
+and then paste all that code in there.
+
+176
+00:10:51.410 --> 00:10:55.240
+And then we have to import the select and toSelect.
+
+177
+00:10:55.240 --> 00:10:59.883
+So, we'll go to the top here, import,
+
+178
+00:11:02.326 --> 00:11:05.403
+fromSelect, toSelect, from elements.js.
+
+179
+00:11:13.210 --> 00:11:16.170
+And then we go now, nothing works.
+
+180
+00:11:16.170 --> 00:11:17.080
+There's nothing here.
+
+181
+00:11:17.080 --> 00:11:18.790
+The app has not started.
+
+182
+00:11:18.790 --> 00:11:23.120
+And then what you could do is just like start the app.
+
+183
+00:11:23.120 --> 00:11:28.120
+And we just import init from the lib folder file.
+
+184
+00:11:33.140 --> 00:11:34.613
+And then just start it, init.
+
+185
+00:11:41.070 --> 00:11:42.310
+Now, we got one more error here,
+
+186
+00:11:42.310 --> 00:11:44.353
+generateOptions is not defined.
+
+187
+00:11:45.310 --> 00:11:48.253
+That is in lib js, so we go here.
+
+188
+00:11:53.660 --> 00:11:58.660
+Okay, and to do that, we just import it.
+
+189
+00:11:58.870 --> 00:12:00.400
+You see how you always had to import it
+
+190
+00:12:00.400 --> 00:12:02.202
+in the file that you needed?
+
+191
+00:12:02.202 --> 00:12:05.313
+So generateOptions from, that is from utils.
+
+192
+00:12:12.580 --> 00:12:14.680
+Currencies, we also need currencies.
+
+193
+00:12:14.680 --> 00:12:19.513
+So, actually, we can probably just take this.
+
+194
+00:12:22.850 --> 00:12:24.720
+Yeah, all three of these need
+
+195
+00:12:24.720 --> 00:12:29.230
+to just move over to our lib js.
+
+196
+00:12:34.160 --> 00:12:36.023
+And now, it's giving me grief.
+
+197
+00:12:37.000 --> 00:12:41.063
+But this one, dependency cycle detected.
+
+198
+00:12:42.720 --> 00:12:47.210
+Oh, I think it's whining at me because our handlers
+
+199
+00:12:47.210 --> 00:12:51.370
+includes, requires convert from there
+
+200
+00:12:51.370 --> 00:12:55.880
+and then our handleInput requires lib.
+
+201
+00:12:55.880 --> 00:13:00.278
+So they require each other and I guess you could end up,
+
+202
+00:13:00.278 --> 00:13:02.490
+the app works fine but I guess you could end up
+
+203
+00:13:02.490 --> 00:13:04.990
+in this situation where they require each other
+
+204
+00:13:05.892 --> 00:13:08.080
+forever, and then that thing spins out of control.
+
+205
+00:13:08.080 --> 00:13:10.220
+So, if that's the case, maybe here,
+
+206
+00:13:10.220 --> 00:13:12.610
+let's do one more file.
+
+207
+00:13:12.610 --> 00:13:14.623
+Let's call it an init.js.
+
+208
+00:13:16.620 --> 00:13:18.980
+And then just stick all of that
+
+209
+00:13:22.010 --> 00:13:23.150
+in the init js.
+
+210
+00:13:23.150 --> 00:13:26.540
+So, take that out, pop it in here
+
+211
+00:13:27.530 --> 00:13:32.530
+and we'll grab all of these and paste that at the top.
+
+212
+00:13:36.220 --> 00:13:38.050
+And then we'll go back to our money js
+
+213
+00:13:38.050 --> 00:13:41.133
+and we'll import init from init js.
+
+214
+00:13:43.899 --> 00:13:44.732
+There we go.
+
+215
+00:13:44.732 --> 00:13:47.260
+Everything is working just fine.
+
+216
+00:13:47.260 --> 00:13:51.130
+You could even go one step further and not run this code
+
+217
+00:13:51.130 --> 00:13:54.700
+and tell somebody clicks a button or even hovers over it.
+
+218
+00:13:54.700 --> 00:13:57.450
+So, we could just select the app.
+
+219
+00:13:57.450 --> 00:13:59.810
+So what does this thing have on it?
+
+220
+00:13:59.810 --> 00:14:00.870
+Div with a class of app.
+
+221
+00:14:00.870 --> 00:14:05.013
+So, document.querySelector app
+
+222
+00:14:08.176 --> 00:14:10.180
+and we'll say app.addEventListener.
+
+223
+00:14:11.627 --> 00:14:16.627
+Mouseenter and when that happens, we will run init.
+
+224
+00:14:17.880 --> 00:14:22.180
+And we will tell that once is true
+
+225
+00:14:22.180 --> 00:14:26.090
+so we don't initialize it once every time someone mouses in.
+
+226
+00:14:26.090 --> 00:14:26.923
+There we go.
+
+227
+00:14:26.923 --> 00:14:28.370
+See it looks select currency?
+
+228
+00:14:28.370 --> 00:14:32.660
+As soon as I mouse in, boom, that app initialize
+
+229
+00:14:32.660 --> 00:14:37.363
+and then it populated all those values for us.
+
+230
+00:14:38.220 --> 00:14:41.810
+And it looks like it still works great.
+
+231
+00:14:41.810 --> 00:14:43.509
+So, that's another way to do it.
+
+232
+00:14:43.509 --> 00:14:46.310
+You can start gettin' splittin' hairs,
+
+233
+00:14:46.310 --> 00:14:47.940
+I guess we don't need this as well.
+
+234
+00:14:47.940 --> 00:14:50.340
+You can start splittin' stuff like crazy
+
+235
+00:14:50.340 --> 00:14:54.080
+'cause all we've really done here is now our entry point
+
+236
+00:14:54.980 --> 00:14:56.970
+has almost nothing in it and we've just put it
+
+237
+00:14:56.970 --> 00:14:57.803
+in a separate file.
+
+238
+00:14:57.803 --> 00:14:58.640
+Was that okay?
+
+239
+00:14:58.640 --> 00:14:59.473
+Absolutely.
+
+240
+00:14:59.473 --> 00:15:00.950
+Some people like their entry point just to have
+
+241
+00:15:00.950 --> 00:15:03.370
+a very little code, you could've just certainly
+
+242
+00:15:03.370 --> 00:15:07.170
+just put all of this code in your money.js as well.
+
+243
+00:15:07.170 --> 00:15:08.790
+So, hopefully you learned a thing or two,
+
+244
+00:15:08.790 --> 00:15:12.193
+there, let's get into using bundlers.
+

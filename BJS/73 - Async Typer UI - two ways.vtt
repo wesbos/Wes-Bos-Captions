@@ -1,0 +1,1386 @@
+﻿WEBVTT
+
+1
+00:00:00.770 --> 00:00:05.740
+(upbeat music)
+
+2
+00:00:05.740 --> 00:00:07.110
+<v Instructor>Alright, we're gonna build one of these</v>
+
+3
+00:00:07.110 --> 00:00:09.530
+with async await as well as recursion.
+
+4
+00:00:09.530 --> 00:00:11.280
+I'm gonna show you two different ways
+
+5
+00:00:11.280 --> 00:00:15.093
+that we could could do this and essentially, you take any,
+
+6
+00:00:16.090 --> 00:00:19.070
+element that has a data-type attribute on it
+
+7
+00:00:19.070 --> 00:00:21.570
+and then we will figure out how can we like
+
+8
+00:00:21.570 --> 00:00:24.330
+make it look like that is being typed.
+
+9
+00:00:24.330 --> 00:00:28.580
+We also want the ability to pass in a min and a max
+
+10
+00:00:28.580 --> 00:00:31.510
+amount of time between each of the type
+
+11
+00:00:31.510 --> 00:00:34.500
+and that will make it look a little bit more human
+
+12
+00:00:34.500 --> 00:00:38.070
+in that there is not every letter will be immediately
+
+13
+00:00:38.070 --> 00:00:41.510
+after 100 milliseconds but they will be sort of a range
+
+14
+00:00:41.510 --> 00:00:42.343
+that we can do that.
+
+15
+00:00:42.343 --> 00:00:46.820
+So, I am in 71, async typer.js.
+
+16
+00:00:46.820 --> 00:00:50.140
+This will also show you a really good example
+
+17
+00:00:50.140 --> 00:00:52.370
+of why it's async because all four of these
+
+18
+00:00:52.370 --> 00:00:54.710
+are running at the exact same time.
+
+19
+00:00:54.710 --> 00:00:56.640
+So, if this was synchronous,
+
+20
+00:00:56.640 --> 00:00:58.410
+the first one would have to be done
+
+21
+00:00:58.410 --> 00:01:00.590
+then the next one, then the next one, then the next one,
+
+22
+00:01:00.590 --> 00:01:03.860
+but these can all wait for a certain amount of time
+
+23
+00:01:03.860 --> 00:01:05.773
+without interfering with each other.
+
+24
+00:01:07.170 --> 00:01:09.480
+So we'll go into our scripts.js here.
+
+25
+00:01:09.480 --> 00:01:12.630
+And first thing we wanna do is to make that function
+
+26
+00:01:12.630 --> 00:01:14.470
+called wait again, because I'm gonna make you
+
+27
+00:01:14.470 --> 00:01:15.303
+write it again.
+
+28
+00:01:15.303 --> 00:01:19.110
+And we'll install it pretty soon, from NPM,
+
+29
+00:01:19.110 --> 00:01:20.800
+once we learn about modules.
+
+30
+00:01:20.800 --> 00:01:23.423
+So from that, I'm gonna return a new Promise.
+
+31
+00:01:26.000 --> 00:01:29.870
+And we'll get resolve and we'll setTimeout resolve
+
+32
+00:01:29.870 --> 00:01:33.170
+after how many milliseconds are needed.
+
+33
+00:01:33.170 --> 00:01:37.010
+Then we also need a function called getRandomBetween,
+
+34
+00:01:38.220 --> 00:01:43.220
+and this is a function that will give you a random number
+
+35
+00:01:43.480 --> 00:01:45.630
+between a min and a max value.
+
+36
+00:01:45.630 --> 00:01:48.020
+So we already know that you can calculate
+
+37
+00:01:48.020 --> 00:01:51.740
+a min and a max value by saying, Math.random
+
+38
+00:01:51.740 --> 00:01:54.350
+and multiplying it by a number and that will give us
+
+39
+00:01:54.350 --> 00:01:58.860
+a random number between zero and 2.99999.
+
+40
+00:01:58.860 --> 00:02:00.683
+Or if I were to Math.floor it,
+
+41
+00:02:01.920 --> 00:02:04.800
+that would give us a random number between zero and two
+
+42
+00:02:04.800 --> 00:02:06.100
+every single time.
+
+43
+00:02:06.100 --> 00:02:08.060
+But like, what if you want a random number
+
+44
+00:02:08.060 --> 00:02:09.590
+between 10 and 15?
+
+45
+00:02:09.590 --> 00:02:10.470
+How do you do that?
+
+46
+00:02:10.470 --> 00:02:13.340
+Well, it's pretty much the exact same thing except the,
+
+47
+00:02:13.340 --> 00:02:16.440
+we shifted up by the amount of the min.
+
+48
+00:02:16.440 --> 00:02:19.423
+So we return Math.random.
+
+49
+00:02:20.440 --> 00:02:25.440
+We multiply that by the max minus the min.
+
+50
+00:02:25.680 --> 00:02:28.950
+And that will, so if I am passing in,
+
+51
+00:02:28.950 --> 00:02:30.630
+here let's do some defaults here.
+
+52
+00:02:30.630 --> 00:02:35.630
+So the min will be 20 milliseconds, and the max will be 150.
+
+53
+00:02:35.890 --> 00:02:39.070
+So, by doing this, I'm going to get a random number
+
+54
+00:02:39.070 --> 00:02:42.070
+between zero and 130.
+
+55
+00:02:42.070 --> 00:02:47.070
+So, that's good, but it's not between 20 and 150.
+
+56
+00:02:47.420 --> 00:02:50.190
+So then, then what we do is, we shift it up 20
+
+57
+00:02:50.190 --> 00:02:52.680
+by adding the min value there.
+
+58
+00:02:52.680 --> 00:02:54.430
+And then, what that should give us,
+
+59
+00:02:54.430 --> 00:02:56.693
+is, getRandomBetween,
+
+60
+00:02:59.530 --> 00:03:01.600
+we run it between zero and 100,
+
+61
+00:03:01.600 --> 00:03:04.680
+that will give us a random number between zero and 100.
+
+62
+00:03:04.680 --> 00:03:08.403
+If you want, you can also wrap that in a Math.floor.
+
+63
+00:03:12.410 --> 00:03:15.840
+And that's gonna give you a whole number.
+
+64
+00:03:15.840 --> 00:03:19.720
+One thing that people don't like about using random numbers
+
+65
+00:03:19.720 --> 00:03:22.940
+and also things that change over time, like dates,
+
+66
+00:03:22.940 --> 00:03:26.570
+is it's not a pure function and a pure function
+
+67
+00:03:26.570 --> 00:03:31.260
+is something like add a and b, and then you return a plus b.
+
+68
+00:03:31.260 --> 00:03:34.570
+So that is a pure function because every single time
+
+69
+00:03:34.570 --> 00:03:39.010
+that I run one and two, I'm always gonna get three.
+
+70
+00:03:39.010 --> 00:03:41.610
+If I run it again, 10 minutes later, it will be three.
+
+71
+00:03:41.610 --> 00:03:46.250
+If I run it again in 100 years, it will always be three.
+
+72
+00:03:46.250 --> 00:03:48.670
+So a pure function is this idea,
+
+73
+00:03:48.670 --> 00:03:51.300
+that a function that takes in arguments,
+
+74
+00:03:51.300 --> 00:03:56.030
+will always, always, always return the exact same value
+
+75
+00:03:56.030 --> 00:03:59.430
+and that makes testing your functions really, really easy.
+
+76
+00:03:59.430 --> 00:04:01.380
+Now, with this function,
+
+77
+00:04:01.380 --> 00:04:04.590
+and same thing with random numbers and dates,
+
+78
+00:04:04.590 --> 00:04:07.910
+you never know what those values are going to be.
+
+79
+00:04:07.910 --> 00:04:10.123
+And that makes this random number,
+
+80
+00:04:11.090 --> 00:04:15.840
+function really hard to sort of test
+
+81
+00:04:15.840 --> 00:04:19.430
+because every time you run it, you get a different value.
+
+82
+00:04:19.430 --> 00:04:22.020
+So like, how do you make a pure function,
+
+83
+00:04:22.020 --> 00:04:25.090
+when the thing is implicitly random.
+
+84
+00:04:25.090 --> 00:04:29.590
+And the way that you do that, is you pass in a random number
+
+85
+00:04:31.590 --> 00:04:33.180
+so that you can then test it.
+
+86
+00:04:33.180 --> 00:04:36.210
+So I'm gonna take an argument of a random number,
+
+87
+00:04:36.210 --> 00:04:40.453
+and then you replace Math.random with a random number.
+
+88
+00:04:41.540 --> 00:04:44.320
+And now, when I run this thing,
+
+89
+00:04:44.320 --> 00:04:46.420
+I can pass in a random number.
+
+90
+00:04:46.420 --> 00:04:50.200
+And I'm always, always, always gonna get the same value.
+
+91
+00:04:50.200 --> 00:04:52.140
+So, the way that you would then use that
+
+92
+00:04:52.140 --> 00:04:54.890
+in a production application is you say,
+
+93
+00:04:54.890 --> 00:04:59.260
+Math.random, so you call it
+
+94
+00:04:59.260 --> 00:05:00.770
+and then every time that you run it,
+
+95
+00:05:00.770 --> 00:05:04.330
+you can get a different value, but it is easily testable,
+
+96
+00:05:04.330 --> 00:05:09.230
+because if you pass in a consistent random number,
+
+97
+00:05:09.230 --> 00:05:12.860
+you'll always get a consistently random number back.
+
+98
+00:05:12.860 --> 00:05:15.560
+One little cheat you can do, to this,
+
+99
+00:05:15.560 --> 00:05:17.240
+is instead of having to pass it in,
+
+100
+00:05:17.240 --> 00:05:19.850
+is you can set the default random number
+
+101
+00:05:19.850 --> 00:05:22.180
+to just be Math.random.
+
+102
+00:05:22.180 --> 00:05:25.840
+And what that will do, is, if you don't pass,
+
+103
+00:05:25.840 --> 00:05:28.200
+the third argument, then it will just default
+
+104
+00:05:28.200 --> 00:05:32.290
+to a random number, similarly to how we had it initially.
+
+105
+00:05:32.290 --> 00:05:34.410
+But if you wanna use this in tests
+
+106
+00:05:34.410 --> 00:05:37.700
+or you want to get a consistently random number,
+
+107
+00:05:37.700 --> 00:05:41.793
+then you can pass in your own generated random number.
+
+108
+00:05:42.800 --> 00:05:46.233
+Next, we wanna make our function called draw,
+
+109
+00:05:47.080 --> 00:05:49.003
+that takes in an element,
+
+110
+00:05:51.130 --> 00:05:53.410
+and let's just console log,
+
+111
+00:05:53.410 --> 00:05:56.760
+the element and then we'll grab all of our elements.
+
+112
+00:05:56.760 --> 00:05:59.200
+So say const els is equal to
+
+113
+00:06:01.070 --> 00:06:02.743
+document.querySelectorAll.
+
+114
+00:06:03.890 --> 00:06:05.380
+And we're gonna select anything
+
+115
+00:06:05.380 --> 00:06:08.150
+that has a data-type attribute on it.
+
+116
+00:06:08.150 --> 00:06:09.500
+If you take a look at these,
+
+117
+00:06:09.500 --> 00:06:11.210
+they all have a data-type attribute
+
+118
+00:06:11.210 --> 00:06:13.040
+and then they have the ability to pass in
+
+119
+00:06:13.040 --> 00:06:14.723
+a min and a max value.
+
+120
+00:06:15.850 --> 00:06:19.120
+If they want, for this random between value,
+
+121
+00:06:19.120 --> 00:06:22.160
+then we'll take our els and we'll loop over each one
+
+122
+00:06:22.160 --> 00:06:26.340
+and for each element, we will draw the element
+
+123
+00:06:26.340 --> 00:06:27.640
+and we'll pass it.
+
+124
+00:06:27.640 --> 00:06:28.920
+Now that can be shortened.
+
+125
+00:06:28.920 --> 00:06:30.838
+Let's just make sure this works,
+
+126
+00:06:30.838 --> 00:06:33.550
+that we've got all four elements popping up.
+
+127
+00:06:33.550 --> 00:06:36.210
+But let that can be shortened quite a bit.
+
+128
+00:06:36.210 --> 00:06:39.030
+Instead of making an arrow function here and passing the el,
+
+129
+00:06:39.030 --> 00:06:40.993
+we can simply just pass it draw,
+
+130
+00:06:41.830 --> 00:06:45.160
+and it will call the function for us for each one.
+
+131
+00:06:45.160 --> 00:06:47.670
+And then we can actually get away with this,
+
+132
+00:06:47.670 --> 00:06:51.720
+deleting this variable and just calling .forEach,
+
+133
+00:06:51.720 --> 00:06:53.753
+right after the querySelectorAll.
+
+134
+00:06:54.710 --> 00:06:58.490
+Next up, what we wanna do is, start looping over it.
+
+135
+00:06:58.490 --> 00:06:59.750
+So we're gonna do it twice.
+
+136
+00:06:59.750 --> 00:07:04.340
+So we're going first do it with async for of loop
+
+137
+00:07:04.340 --> 00:07:07.053
+and then we're going to do it again with recursion.
+
+138
+00:07:08.870 --> 00:07:11.060
+So in here, what we'll do, is we'll take a copy
+
+139
+00:07:11.060 --> 00:07:12.470
+of the text of the elements.
+
+140
+00:07:12.470 --> 00:07:16.113
+So text is equal to element.textContent.
+
+141
+00:07:17.230 --> 00:07:19.823
+I'm gonna rename this to just el.
+
+142
+00:07:24.780 --> 00:07:26.970
+And then, the way that it's gonna work,
+
+143
+00:07:26.970 --> 00:07:29.110
+is that we're gonna erase all the text
+
+144
+00:07:29.110 --> 00:07:31.840
+that's in this element and letter by letter,
+
+145
+00:07:31.840 --> 00:07:34.490
+we're going to, write it back in.
+
+146
+00:07:34.490 --> 00:07:36.660
+So we'll say, first time it's just a T.
+
+147
+00:07:36.660 --> 00:07:38.000
+The next time is a Th.
+
+148
+00:07:38.000 --> 00:07:39.620
+The third time is Thi.
+
+149
+00:07:39.620 --> 00:07:41.760
+The fourth time is This and then the space,
+
+150
+00:07:41.760 --> 00:07:42.700
+you get the point.
+
+151
+00:07:42.700 --> 00:07:46.110
+So what we'll do, is we make a variable called soFar
+
+152
+00:07:47.030 --> 00:07:49.560
+and we'll set that to an empty string.
+
+153
+00:07:49.560 --> 00:07:52.730
+And then we'll loop over every letter of the text.
+
+154
+00:07:52.730 --> 00:07:54.850
+Now previously for looping over letter,
+
+155
+00:07:54.850 --> 00:07:56.970
+we've used like a spread or we split it
+
+156
+00:07:56.970 --> 00:07:59.900
+or something like that, but a for of loop,
+
+157
+00:07:59.900 --> 00:08:03.960
+we'll have the ability to loop over text,
+
+158
+00:08:03.960 --> 00:08:05.010
+one letter at a time.
+
+159
+00:08:05.010 --> 00:08:06.283
+So we just say const.
+
+160
+00:08:07.350 --> 00:08:12.190
+So we say for const letter of text.
+
+161
+00:08:14.074 --> 00:08:16.120
+You can console log, the letter.
+
+162
+00:08:16.120 --> 00:08:21.120
+And I'll say, soFar plus equals, the letter.
+
+163
+00:08:21.610 --> 00:08:24.330
+So for each letter, we're going to just tack it
+
+164
+00:08:24.330 --> 00:08:25.163
+on to the end.
+
+165
+00:08:25.163 --> 00:08:26.780
+You can also just say soFar,
+
+166
+00:08:26.780 --> 00:08:30.300
+is equal to soFar plus the letter.
+
+167
+00:08:30.300 --> 00:08:31.870
+And that would just, might yes,
+
+168
+00:08:31.870 --> 00:08:33.990
+let's just turn that right back there.
+
+169
+00:08:33.990 --> 00:08:36.683
+So, if we console log,
+
+170
+00:08:39.464 --> 00:08:44.464
+soFar, and I'm gonna take
+
+171
+00:08:45.480 --> 00:08:47.850
+the data-type off this paragraph,
+
+172
+00:08:47.850 --> 00:08:50.150
+just so we can visualize what's going on here.
+
+173
+00:08:51.740 --> 00:08:56.510
+You see what happens is this T, T, Th, Thi, This,
+
+174
+00:08:56.510 --> 00:09:00.250
+they're out of order because, some of them are,
+
+175
+00:09:00.250 --> 00:09:01.970
+they're all running at the exact same time
+
+176
+00:09:01.970 --> 00:09:04.060
+but you can kinda see if I scroll through here,
+
+177
+00:09:04.060 --> 00:09:08.203
+you'll see that they are slowly building themselves on up.
+
+178
+00:09:09.200 --> 00:09:11.580
+Now what we need to do, inside of this for of loop,
+
+179
+00:09:11.580 --> 00:09:14.800
+is, we can do this,
+
+180
+00:09:14.800 --> 00:09:16.063
+we'll say el.textContent,
+
+181
+00:09:18.730 --> 00:09:19.743
+is equal to soFar.
+
+182
+00:09:22.120 --> 00:09:26.240
+And when we reload the page, you don't even see it,
+
+183
+00:09:26.240 --> 00:09:27.073
+it's so fast,
+
+184
+00:09:27.073 --> 00:09:31.393
+but, we really are replacing it with the data that we want.
+
+185
+00:09:32.498 --> 00:09:34.430
+And I can show you that by just, I don't know,
+
+186
+00:09:34.430 --> 00:09:36.430
+concatenating on something else as well.
+
+187
+00:09:37.919 --> 00:09:41.050
+You'll see that when you load the page, very quickly,
+
+188
+00:09:41.050 --> 00:09:43.530
+it runs this code and updates the text.
+
+189
+00:09:43.530 --> 00:09:48.530
+So what we wanna do, is wait for some amount of time.
+
+190
+00:09:49.070 --> 00:09:53.593
+So we'll say await, wait for, I don't know, 10 milliseconds.
+
+191
+00:09:57.210 --> 00:10:00.410
+That doesn't work and we go to our console.
+
+192
+00:10:00.410 --> 00:10:03.910
+We cannot await unless we are inside of,
+
+193
+00:10:03.910 --> 00:10:08.113
+an async function, like that.
+
+194
+00:10:10.050 --> 00:10:12.380
+And that actually looks pretty cool,
+
+195
+00:10:12.380 --> 00:10:15.330
+but to make it a little bit more human,
+
+196
+00:10:15.330 --> 00:10:18.247
+we're gonna wait a random amount of time.
+
+197
+00:10:18.247 --> 00:10:19.940
+And that random amount of time,
+
+198
+00:10:19.940 --> 00:10:22.950
+will be determined by this.
+
+199
+00:10:22.950 --> 00:10:25.957
+We'll say const amountOfTimeToWait,
+
+200
+00:10:27.280 --> 00:10:29.553
+is equal to, getRandomBetween,
+
+201
+00:10:30.840 --> 00:10:33.700
+and we will say, let's just,
+
+202
+00:10:33.700 --> 00:10:34.740
+let's just run it like that,
+
+203
+00:10:34.740 --> 00:10:36.510
+because these all have defaults.
+
+204
+00:10:36.510 --> 00:10:40.293
+And we can take amountOfTimeToWait, pass it in here.
+
+205
+00:10:44.720 --> 00:10:47.150
+Looking good, looking good.
+
+206
+00:10:47.150 --> 00:10:50.063
+Now what we can do, is we can pull in,
+
+207
+00:10:51.680 --> 00:10:53.956
+the min and the max value, so say,
+
+208
+00:10:53.956 --> 00:10:58.956
+const typeMin and typeMax
+
+209
+00:10:59.437 --> 00:11:03.020
+is equal to, el.dataset.
+
+210
+00:11:07.740 --> 00:11:11.653
+And if we were to console log el.dataset, you'll see,
+
+211
+00:11:15.270 --> 00:11:17.200
+each of these will have a type
+
+212
+00:11:18.170 --> 00:11:21.190
+and maybe a typeMin and maybe a typeMax.
+
+213
+00:11:21.190 --> 00:11:25.010
+Now you'll see that it turned our kabob case,
+
+214
+00:11:25.010 --> 00:11:29.610
+data-type-max into camel case, which is good.
+
+215
+00:11:29.610 --> 00:11:31.490
+So we went from kabob to camel
+
+216
+00:11:31.490 --> 00:11:35.173
+and that's why we can access it with typeMin and typeMax.
+
+217
+00:11:36.090 --> 00:11:41.090
+Then we can just take typeMin and typeMax,
+
+218
+00:11:41.519 --> 00:11:44.186
+pass it to our getRandomBetween,
+
+219
+00:11:49.490 --> 00:11:53.920
+it looks like it's passing in those values nicely to us.
+
+220
+00:11:53.920 --> 00:11:56.340
+We can get rid of these console logs here
+
+221
+00:11:57.270 --> 00:12:01.510
+and let's put the data-type back on, to our paragraph tag
+
+222
+00:12:01.510 --> 00:12:02.640
+and see if that one works.
+
+223
+00:12:02.640 --> 00:12:04.100
+Look at that.
+
+224
+00:12:06.860 --> 00:12:08.943
+Looking good, looking good.
+
+225
+00:12:10.070 --> 00:12:13.950
+So that is how we do it with a for of loop.
+
+226
+00:12:13.950 --> 00:12:16.710
+What I wanna do is comment that out,
+
+227
+00:12:16.710 --> 00:12:19.200
+and I'll show you another way to do it with recursion.
+
+228
+00:12:19.200 --> 00:12:22.160
+And recursion refers to this concept,
+
+229
+00:12:22.160 --> 00:12:26.500
+of a function calling itself, until there is some sort of
+
+230
+00:12:26.500 --> 00:12:29.510
+what's called an exit condition, until it should stop.
+
+231
+00:12:29.510 --> 00:12:34.220
+So make a function, that should be async function.
+
+232
+00:12:34.220 --> 00:12:36.493
+And we'll call it draw, takes in an element.
+
+233
+00:12:38.050 --> 00:12:40.870
+And the way that this one was going to work, is that,
+
+234
+00:12:40.870 --> 00:12:44.660
+we're gonna keep an index, inside of here,
+
+235
+00:12:44.660 --> 00:12:47.570
+that will be incremented once every single time.
+
+236
+00:12:47.570 --> 00:12:49.970
+So we'll say, let index is equal to zero,
+
+237
+00:12:49.970 --> 00:12:51.720
+that will change your console to go back
+
+238
+00:12:51.720 --> 00:12:53.470
+and change that in a second.
+
+239
+00:12:53.470 --> 00:12:57.963
+Then we'll take the text, that's the el.textContent.
+
+240
+00:13:01.120 --> 00:13:03.763
+And I also, let's just grab,
+
+241
+00:13:06.100 --> 00:13:08.233
+the typeMin and typeMax.
+
+242
+00:13:10.370 --> 00:13:13.160
+Now, we are going to write another function
+
+243
+00:13:13.160 --> 00:13:14.650
+inside of this draw.
+
+244
+00:13:14.650 --> 00:13:17.510
+And we're taking advantage of closures here,
+
+245
+00:13:17.510 --> 00:13:19.690
+because we can run a function multiple times
+
+246
+00:13:19.690 --> 00:13:22.130
+by still accessing these values.
+
+247
+00:13:22.130 --> 00:13:25.180
+So make a function in here called drawLetter,
+
+248
+00:13:28.930 --> 00:13:30.670
+and that will be async, actually this one
+
+249
+00:13:30.670 --> 00:13:31.870
+doesn't need to be async.
+
+250
+00:13:31.870 --> 00:13:33.840
+It's just this one right here.
+
+251
+00:13:33.840 --> 00:13:35.180
+And the way that this one is gonna work,
+
+252
+00:13:35.180 --> 00:13:38.600
+is we'll take this index, and we're gonna take, the first,
+
+253
+00:13:38.600 --> 00:13:39.650
+we're gonna take zero letters.
+
+254
+00:13:39.650 --> 00:13:40.720
+Then we're gonna take one letter.
+
+255
+00:13:40.720 --> 00:13:41.700
+Then we're going to take two letters.
+
+256
+00:13:41.700 --> 00:13:42.600
+Then we'll take three letters
+
+257
+00:13:42.600 --> 00:13:45.330
+and we'll just update that element every single time.
+
+258
+00:13:45.330 --> 00:13:50.330
+So we say el.textContent, is equal to,
+
+259
+00:13:50.340 --> 00:13:52.740
+the text that they originally had typed in there,
+
+260
+00:13:52.740 --> 00:13:55.270
+and we'll slice it starting at zero,
+
+261
+00:13:55.270 --> 00:13:57.880
+and going up until the index that we have.
+
+262
+00:13:57.880 --> 00:14:01.800
+So remember slice we'll do something like this,
+
+263
+00:14:01.800 --> 00:14:05.820
+wes bos.slice, zero, go to two,
+
+264
+00:14:05.820 --> 00:14:09.380
+we get we, but if I go to six, wes bo.
+
+265
+00:14:09.380 --> 00:14:11.880
+And seven, I get all of them.
+
+266
+00:14:11.880 --> 00:14:14.740
+So, the idea is that this drawLetter,
+
+267
+00:14:14.740 --> 00:14:17.430
+is going to run the first time, was zero,
+
+268
+00:14:17.430 --> 00:14:19.170
+maybe we should just start at one actually
+
+269
+00:14:19.170 --> 00:14:21.630
+because otherwise there'd be no text there.
+
+270
+00:14:21.630 --> 00:14:25.130
+So started at one, and now,
+
+271
+00:14:25.130 --> 00:14:30.130
+when we run this, actually doesn't do anything
+
+272
+00:14:30.130 --> 00:14:32.520
+but it's because we haven't called this drawLetter.
+
+273
+00:14:32.520 --> 00:14:36.130
+So, we'll do a comment here,
+
+274
+00:14:36.130 --> 00:14:40.087
+when this function draw runs,
+
+275
+00:14:47.790 --> 00:14:49.760
+kick off drawLetter.
+
+276
+00:14:53.715 --> 00:14:54.882
+So drawLetter.
+
+277
+00:14:56.610 --> 00:14:59.670
+Now you see, if I do it really quickly,
+
+278
+00:14:59.670 --> 00:15:04.170
+you can see the text and then we run drawLetter
+
+279
+00:15:04.170 --> 00:15:06.870
+with the first letter, okay.
+
+280
+00:15:06.870 --> 00:15:08.690
+So, that's good.
+
+281
+00:15:08.690 --> 00:15:13.230
+But then part of this we could say, index is equal to,
+
+282
+00:15:13.230 --> 00:15:16.243
+index plus one, and we'll make this a let,
+
+283
+00:15:17.380 --> 00:15:19.593
+that just changes to index plus equals one.
+
+284
+00:15:20.580 --> 00:15:23.570
+And then we need to like run drawLetter again,
+
+285
+00:15:23.570 --> 00:15:25.090
+so like, how do you do that?
+
+286
+00:15:25.090 --> 00:15:27.540
+Well, you can drawLetter.
+
+287
+00:15:27.540 --> 00:15:29.850
+And this is their recursive part,
+
+288
+00:15:29.850 --> 00:15:31.760
+meaning that, drawLetter.
+
+289
+00:15:31.760 --> 00:15:35.350
+Part of the logic of drawLetter, is to call itself
+
+290
+00:15:35.350 --> 00:15:36.950
+and this will create an infinite loop.
+
+291
+00:15:36.950 --> 00:15:39.350
+This will probably break the browser, let's see.
+
+292
+00:15:40.960 --> 00:15:43.360
+Maximum call stack size exceeded.
+
+293
+00:15:43.360 --> 00:15:45.930
+Remember we talked about call stack,
+
+294
+00:15:45.930 --> 00:15:47.700
+and adding things to the call stack,
+
+295
+00:15:47.700 --> 00:15:51.290
+so drawLetter gets called and then it calls drawLetter,
+
+296
+00:15:51.290 --> 00:15:53.320
+which then, calls drawLetter,
+
+297
+00:15:53.320 --> 00:15:55.460
+which then calls drawLetter.
+
+298
+00:15:55.460 --> 00:15:57.640
+And it's just calling itself over and over and it,
+
+299
+00:15:57.640 --> 00:15:59.370
+eventually the browser is gonna say,
+
+300
+00:15:59.370 --> 00:16:02.060
+you've added too many things to the call stack,
+
+301
+00:16:02.060 --> 00:16:02.977
+you probably didn't mean to do that.
+
+302
+00:16:02.977 --> 00:16:05.790
+And it'll just break for you before your computer
+
+303
+00:16:05.790 --> 00:16:06.700
+catches on fire.
+
+304
+00:16:06.700 --> 00:16:09.360
+So what we need to do, is a little,
+
+305
+00:16:09.360 --> 00:16:11.870
+this is called an exit condition.
+
+306
+00:16:11.870 --> 00:16:16.340
+And we say, if the index,
+
+307
+00:16:16.340 --> 00:16:18.480
+is less or equal to,
+
+308
+00:16:18.480 --> 00:16:23.063
+the length of the text that we have, then run it again.
+
+309
+00:16:24.370 --> 00:16:25.790
+And what that will do is it will run it
+
+310
+00:16:25.790 --> 00:16:27.440
+if there's more letters to draw,
+
+311
+00:16:27.440 --> 00:16:30.313
+if not, it will stop and the whole function will be over.
+
+312
+00:16:33.720 --> 00:16:36.950
+And, that works.
+
+313
+00:16:36.950 --> 00:16:38.180
+I'm trying to figure out why it doesn't work
+
+314
+00:16:38.180 --> 00:16:39.350
+and we forgot the await part.
+
+315
+00:16:39.350 --> 00:16:41.810
+So it runs very quickly, right?
+
+316
+00:16:41.810 --> 00:16:46.810
+Because you could console.log, hi,
+
+317
+00:16:46.890 --> 00:16:51.890
+and you'll see hi is running there, a couple thousand times,
+
+318
+00:16:52.090 --> 00:16:54.460
+because there's a couple of thousand letters in here.
+
+319
+00:16:54.460 --> 00:16:58.870
+So what we wanna do is, wait for some time.
+
+320
+00:16:58.870 --> 00:17:03.560
+So await wait, for maybe 10 milliseconds,
+
+321
+00:17:03.560 --> 00:17:06.830
+will actually do that, right here,
+
+322
+00:17:06.830 --> 00:17:08.503
+not inside of the if statement.
+
+323
+00:17:11.730 --> 00:17:15.040
+You'll see now it's doing it right after 10 milliseconds
+
+324
+00:17:15.040 --> 00:17:18.693
+but then we can take the exact same thing
+
+325
+00:17:18.693 --> 00:17:20.053
+that we did earlier.
+
+326
+00:17:24.010 --> 00:17:28.444
+Say const amountofTimeToWait, is equal to,
+
+327
+00:17:28.444 --> 00:17:31.090
+get a random number and the reason why we're getting,
+
+328
+00:17:31.090 --> 00:17:33.500
+doing the calculation of the random amount of time
+
+329
+00:17:33.500 --> 00:17:35.940
+inside of drawLetter, is that every letter
+
+330
+00:17:35.940 --> 00:17:37.360
+I want it to be random.
+
+331
+00:17:37.360 --> 00:17:39.680
+And I don't wanna, if I were to put that up here,
+
+332
+00:17:39.680 --> 00:17:42.190
+the random value would be calculated once
+
+333
+00:17:42.190 --> 00:17:43.800
+and they would all be that amount.
+
+334
+00:17:43.800 --> 00:17:45.690
+By doing it inside of the drawLetter,
+
+335
+00:17:45.690 --> 00:17:47.540
+every single time we draw a letter,
+
+336
+00:17:47.540 --> 00:17:50.430
+we get a new random amount of time to wait,
+
+337
+00:17:50.430 --> 00:17:52.203
+then we pass that to our await.
+
+338
+00:17:56.410 --> 00:17:57.310
+Looks great.
+
+339
+00:17:57.310 --> 00:17:58.710
+So, two different ways to do it,
+
+340
+00:17:58.710 --> 00:18:01.420
+you probably could also do it with a While loop,
+
+341
+00:18:01.420 --> 00:18:04.500
+maybe if you wanna take a look at, into doing that,
+
+342
+00:18:04.500 --> 00:18:09.330
+but quite honestly, I probably would go,
+
+343
+00:18:09.330 --> 00:18:11.700
+the async for of loop.
+
+344
+00:18:11.700 --> 00:18:14.160
+Personally, but you're certainly will see
+
+345
+00:18:14.160 --> 00:18:15.970
+this quite a bit as well.
+
+346
+00:18:15.970 --> 00:18:17.170
+See you in the next one.
+

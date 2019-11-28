@@ -1,0 +1,1606 @@
+﻿WEBVTT
+
+1
+00:00:00.904 --> 00:00:03.487
+(upbeat music)
+
+2
+00:00:05.090 --> 00:00:06.420
+<v Instructor>All right, in the next two videos we are</v>
+
+3
+00:00:06.420 --> 00:00:10.840
+going to refactor our gallery and our slider exercises
+
+4
+00:00:10.840 --> 00:00:14.240
+that we did earlier to take advantage of the prototype.
+
+5
+00:00:14.240 --> 00:00:17.510
+So let's open up gallery and open up gallery.js.
+
+6
+00:00:17.510 --> 00:00:19.550
+I want you just to take a copy of that and
+
+7
+00:00:19.550 --> 00:00:21.693
+save it as gallery-prototype.
+
+8
+00:00:23.760 --> 00:00:28.760
+And then go into your index.html of your gallery
+
+9
+00:00:29.300 --> 00:00:32.123
+and change it to gallery-prototype.
+
+10
+00:00:34.040 --> 00:00:36.480
+Now there's a couple things that need to happen here.
+
+11
+00:00:36.480 --> 00:00:38.610
+First of all, let's just scroll all the way to the
+
+12
+00:00:38.610 --> 00:00:42.000
+bottom here and see that we have gallery1 and gallery2.
+
+13
+00:00:42.000 --> 00:00:44.670
+If I were to console.log gallery1 and gallery2,
+
+14
+00:00:44.670 --> 00:00:47.343
+let's just see what we're working with here.
+
+15
+00:00:48.210 --> 00:00:50.900
+We get undefined and undefined.
+
+16
+00:00:50.900 --> 00:00:51.733
+Now why is that?
+
+17
+00:00:51.733 --> 00:00:56.200
+Well, because this function doesn't actually return
+
+18
+00:00:56.200 --> 00:01:00.520
+anything from it, but if we change it to use a new
+
+19
+00:01:00.520 --> 00:01:04.670
+keyword, it'll automatically return an instance
+
+20
+00:01:04.670 --> 00:01:06.150
+of that gallery.
+
+21
+00:01:06.150 --> 00:01:07.750
+You can see there's nothing in it,
+
+22
+00:01:07.750 --> 00:01:10.650
+and there's nothing on the prototype of that.
+
+23
+00:01:10.650 --> 00:01:12.320
+So there's not much to do here,
+
+24
+00:01:12.320 --> 00:01:14.390
+but we're gonna see as we start adding things
+
+25
+00:01:14.390 --> 00:01:16.940
+to the prototype and to the instance,
+
+26
+00:01:16.940 --> 00:01:18.563
+we'll see them populate there.
+
+27
+00:01:20.120 --> 00:01:22.350
+So first thing I'm gonna do is go all the way
+
+28
+00:01:22.350 --> 00:01:23.270
+to the top here,
+
+29
+00:01:23.270 --> 00:01:24.950
+and we'll sorta go line by line.
+
+30
+00:01:24.950 --> 00:01:28.262
+This checking of the gallery is totally fine.
+
+31
+00:01:28.262 --> 00:01:32.990
+The only thing that we need to do now is to
+
+32
+00:01:32.990 --> 00:01:36.910
+save reference to the gallery div that was passed in
+
+33
+00:01:38.840 --> 00:01:41.210
+because we're going to need it in our prototype
+
+34
+00:01:41.210 --> 00:01:42.410
+methods in just a second.
+
+35
+00:01:42.410 --> 00:01:44.970
+So what we can do is say this.gallery is equal to
+
+36
+00:01:44.970 --> 00:01:46.810
+the gallery that was passed in.
+
+37
+00:01:46.810 --> 00:01:48.470
+Now when I refresh it,
+
+38
+00:01:48.470 --> 00:01:51.130
+and, oh it took my console logs out.
+
+39
+00:01:51.130 --> 00:01:52.023
+Let me keep that.
+
+40
+00:01:57.890 --> 00:01:59.510
+You see we have both of our galleries
+
+41
+00:01:59.510 --> 00:02:02.280
+and you can see that these are instance properties
+
+42
+00:02:02.280 --> 00:02:04.800
+because they're different in each one.
+
+43
+00:02:04.800 --> 00:02:07.990
+Okay now we need to go through all of these
+
+44
+00:02:09.050 --> 00:02:11.120
+variables that we created right here.
+
+45
+00:02:11.120 --> 00:02:13.680
+We just created them as variables inside of this
+
+46
+00:02:13.680 --> 00:02:16.600
+closure, but because we're gonna be moving
+
+47
+00:02:16.600 --> 00:02:19.413
+all of these open, close, handleClickOutside,
+
+48
+00:02:20.250 --> 00:02:22.370
+all of these methods are gonna be moved to the
+
+49
+00:02:22.370 --> 00:02:27.050
+prototype, they no longer will have access to
+
+50
+00:02:27.050 --> 00:02:28.180
+this closure.
+
+51
+00:02:28.180 --> 00:02:31.640
+Meaning that we need to surface these variables on
+
+52
+00:02:31.640 --> 00:02:33.250
+our instance somehow.
+
+53
+00:02:33.250 --> 00:02:34.870
+And the way that you can surface a variable
+
+54
+00:02:34.870 --> 00:02:38.500
+on an instance is simply saying this dot the name.
+
+55
+00:02:38.500 --> 00:02:40.490
+So we're gonna change all of these variables
+
+56
+00:02:40.490 --> 00:02:43.380
+in everywhere we've used them to this.images,
+
+57
+00:02:43.380 --> 00:02:44.420
+this.modal.
+
+58
+00:02:44.420 --> 00:02:46.380
+Now the easiest way I've found to do that is,
+
+59
+00:02:46.380 --> 00:02:48.860
+instead of trying to hunt them down,
+
+60
+00:02:48.860 --> 00:02:53.230
+just right click and we wanna say Rename Symbol,
+
+61
+00:02:53.230 --> 00:02:56.890
+and we wanna change it to this.images.
+
+62
+00:02:56.890 --> 00:02:59.110
+And then you remove the const because we're no longer
+
+63
+00:02:59.110 --> 00:03:00.360
+declaring a variable.
+
+64
+00:03:00.360 --> 00:03:03.890
+We're simply setting a property on the gallery instance.
+
+65
+00:03:03.890 --> 00:03:05.400
+So I give that a save.
+
+66
+00:03:05.400 --> 00:03:07.100
+And just go through the rest of them.
+
+67
+00:03:07.100 --> 00:03:10.823
+Rename, this dot, remove the const.
+
+68
+00:03:12.840 --> 00:03:13.673
+Rename.
+
+69
+00:03:16.670 --> 00:03:18.090
+Rename the symbol.
+
+70
+00:03:18.090 --> 00:03:20.933
+This dot, remove the const.
+
+71
+00:03:23.010 --> 00:03:24.513
+Right click, Rename.
+
+72
+00:03:25.480 --> 00:03:28.560
+This dot, remove the const.
+
+73
+00:03:28.560 --> 00:03:31.280
+We don't need the currentImage any longer
+
+74
+00:03:31.280 --> 00:03:35.230
+and that's because where ever we set the currentImage...
+
+75
+00:03:36.580 --> 00:03:38.090
+Where is currentImage?
+
+76
+00:03:38.090 --> 00:03:39.750
+Here we go, right here.
+
+77
+00:03:39.750 --> 00:03:44.290
+We will simply say this.currentImage equals element.
+
+78
+00:03:44.290 --> 00:03:47.140
+We're going to be able to put it on the instance.
+
+79
+00:03:47.140 --> 00:03:49.560
+So that's what we do there.
+
+80
+00:03:49.560 --> 00:03:51.523
+So delete the let currentImage.
+
+81
+00:03:53.430 --> 00:03:56.130
+Now if I refresh this, you'll see that each of our instances
+
+82
+00:03:56.130 --> 00:03:58.890
+now have these properties inside of them.
+
+83
+00:03:58.890 --> 00:04:00.830
+We've got our buttons, we've got our images,
+
+84
+00:04:00.830 --> 00:04:02.130
+and we have our gallery.
+
+85
+00:04:02.130 --> 00:04:06.020
+Then the rest of these functions are going to be shared
+
+86
+00:04:06.020 --> 00:04:08.840
+amongst each of the galleries by moving them
+
+87
+00:04:08.840 --> 00:04:09.940
+to the prototype.
+
+88
+00:04:09.940 --> 00:04:12.380
+So I'm gonna just select all of them
+
+89
+00:04:12.380 --> 00:04:13.550
+and move them out.
+
+90
+00:04:13.550 --> 00:04:15.993
+So openModal, closeModal, handleClickOutside,
+
+91
+00:04:17.442 --> 00:04:18.680
+handleKeyUp, showNextImage, showPrevImage, showImage,
+
+92
+00:04:21.901 --> 00:04:23.770
+and that's it.
+
+93
+00:04:23.770 --> 00:04:25.480
+You keep you event listeners in there.
+
+94
+00:04:25.480 --> 00:04:27.080
+We'll go over those in just a second.
+
+95
+00:04:27.080 --> 00:04:29.360
+So I'm gonna cut them outta here.
+
+96
+00:04:29.360 --> 00:04:32.900
+And I'm gonna go below where we've defined our gallery.
+
+97
+00:04:32.900 --> 00:04:35.330
+So this is our function gallery, open,
+
+98
+00:04:35.330 --> 00:04:38.140
+close, and then we'll go right below that
+
+99
+00:04:39.030 --> 00:04:40.530
+and paste them in.
+
+100
+00:04:40.530 --> 00:04:42.260
+Now what we need to do is,
+
+101
+00:04:42.260 --> 00:04:46.460
+we need to change each one of these functions
+
+102
+00:04:46.460 --> 00:04:50.020
+to now be on the prototype of the gallery.
+
+103
+00:04:50.020 --> 00:04:52.320
+So we're gonna remove the word function.
+
+104
+00:04:52.320 --> 00:04:55.917
+We'll say capital G, Gallery.prototype.openModal
+
+105
+00:04:59.630 --> 00:05:02.550
+is equal to a function,
+
+106
+00:05:02.550 --> 00:05:05.270
+and we give that a save and a refresh.
+
+107
+00:05:05.270 --> 00:05:08.570
+And now you'll see in your prototype of the gallery,
+
+108
+00:05:08.570 --> 00:05:10.990
+we now have access to this openModal.
+
+109
+00:05:10.990 --> 00:05:13.270
+Nothing will work yet 'cause it's all broken,
+
+110
+00:05:13.270 --> 00:05:15.030
+but we'll go through these one by one
+
+111
+00:05:15.030 --> 00:05:16.820
+and fix them all.
+
+112
+00:05:16.820 --> 00:05:19.020
+So now I won't make you do them all like this.
+
+113
+00:05:19.020 --> 00:05:20.070
+What I like to say is,
+
+114
+00:05:20.070 --> 00:05:22.770
+hold down click, hold down Command,
+
+115
+00:05:22.770 --> 00:05:25.050
+and then just put a cursor in front of every
+
+116
+00:05:25.050 --> 00:05:27.283
+single one of these.
+
+117
+00:05:31.130 --> 00:05:34.570
+And then I'm gonna hit Command + Shift + Left Arrow.
+
+118
+00:05:34.570 --> 00:05:37.810
+I think that's Control + Shift + Left Arrow on Windows.
+
+119
+00:05:37.810 --> 00:05:38.643
+And we'll say
+
+120
+00:05:38.643 --> 00:05:42.647
+capital G, Gallery.prototype.handleClickOutside,
+
+121
+00:05:44.690 --> 00:05:48.530
+now I'm gonna hit my Alt key and hit my Right Arrow
+
+122
+00:05:48.530 --> 00:05:50.620
+to jump to the end of the function,
+
+123
+00:05:50.620 --> 00:05:54.454
+and we'll set that to be equal to function.
+
+124
+00:05:54.454 --> 00:05:55.483
+There we go.
+
+125
+00:05:56.330 --> 00:05:58.830
+So now I've just renamed all of my functions to
+
+126
+00:05:58.830 --> 00:06:01.330
+be Gallery.prototype the name of the function
+
+127
+00:06:01.330 --> 00:06:03.540
+and that is equal to a function there.
+
+128
+00:06:03.540 --> 00:06:07.103
+Now it won't even load.
+
+129
+00:06:09.090 --> 00:06:12.350
+And that's okay because we get these errors
+
+130
+00:06:12.350 --> 00:06:14.810
+handleClickOutside is not defined.
+
+131
+00:06:14.810 --> 00:06:16.263
+If we go to line 29,
+
+132
+00:06:17.660 --> 00:06:19.860
+you're gonna see all of these.
+
+133
+00:06:19.860 --> 00:06:22.240
+Any time we reference one of our functions,
+
+134
+00:06:22.240 --> 00:06:25.220
+it now needs to be changed to
+
+135
+00:06:25.220 --> 00:06:26.353
+this.showImage.
+
+136
+00:06:27.930 --> 00:06:29.950
+And this is where ESLint becomes really helpful.
+
+137
+00:06:29.950 --> 00:06:32.300
+If I click on ESLint in the bottom here,
+
+138
+00:06:32.300 --> 00:06:34.410
+go to my problems,
+
+139
+00:06:34.410 --> 00:06:37.700
+you can see these are all of my problems.
+
+140
+00:06:37.700 --> 00:06:38.780
+They are not defined.
+
+141
+00:06:38.780 --> 00:06:40.760
+So I can just go one by one
+
+142
+00:06:40.760 --> 00:06:42.050
+and change them out,
+
+143
+00:06:42.050 --> 00:06:43.023
+this dot,
+
+144
+00:06:43.904 --> 00:06:45.620
+handleClickOutside,
+
+145
+00:06:45.620 --> 00:06:46.840
+this dot.
+
+146
+00:06:46.840 --> 00:06:49.300
+So anywhere you had a function from before,
+
+147
+00:06:49.300 --> 00:06:51.540
+it now needs to be changed to this dot.
+
+148
+00:06:51.540 --> 00:06:53.890
+So I'll just zoom out.
+
+149
+00:06:53.890 --> 00:06:55.480
+I'll just zoom through this really quickly.
+
+150
+00:06:55.480 --> 00:06:56.803
+You can do it as well.
+
+151
+00:06:57.817 --> 00:07:02.817
+♪ I don't wanna wait for our lives to be over ♪
+
+152
+00:07:03.557 --> 00:07:05.853
+♪ Will it be yes or will it be ♪
+
+153
+00:07:05.853 --> 00:07:08.150
+<v Instructor>All right, so I went through all of my</v>
+
+154
+00:07:08.150 --> 00:07:09.210
+ESLint problems.
+
+155
+00:07:09.210 --> 00:07:11.780
+It's still telling me I've got lots of spelling mistakes,
+
+156
+00:07:11.780 --> 00:07:12.980
+but that's totally fine.
+
+157
+00:07:14.120 --> 00:07:15.560
+We'll close that up.
+
+158
+00:07:15.560 --> 00:07:19.760
+Now that I have converted everything to a prototype,
+
+159
+00:07:19.760 --> 00:07:21.470
+all of my variables and all of my methods
+
+160
+00:07:21.470 --> 00:07:25.500
+are now referenceable by this dot their old name.
+
+161
+00:07:25.500 --> 00:07:27.830
+Let's go through the app and try
+
+162
+00:07:27.830 --> 00:07:30.640
+and sort of go through any issues that we now have.
+
+163
+00:07:30.640 --> 00:07:32.350
+So open up the gallery.
+
+164
+00:07:32.350 --> 00:07:33.320
+There it is.
+
+165
+00:07:33.320 --> 00:07:34.450
+If I click on one of these,
+
+166
+00:07:34.450 --> 00:07:36.880
+that seems to work just fine.
+
+167
+00:07:36.880 --> 00:07:39.490
+I'm going to click the buttons.
+
+168
+00:07:39.490 --> 00:07:41.980
+That is our first error.
+
+169
+00:07:41.980 --> 00:07:42.850
+Let's see what else.
+
+170
+00:07:42.850 --> 00:07:45.200
+We'll make a little laundry list here.
+
+171
+00:07:45.200 --> 00:07:49.903
+So clicking next/prev buttons is broke.
+
+172
+00:07:51.300 --> 00:07:53.663
+Now if I click outside, that's broken.
+
+173
+00:07:56.360 --> 00:07:59.193
+And if I hit Escape, that is also broken.
+
+174
+00:08:00.980 --> 00:08:05.980
+And I believe that is all the problems that we have
+
+175
+00:08:06.010 --> 00:08:06.843
+right now.
+
+176
+00:08:06.843 --> 00:08:07.676
+So let's go through those.
+
+177
+00:08:07.676 --> 00:08:09.530
+Clicking next/prev buttons is broken.
+
+178
+00:08:09.530 --> 00:08:10.540
+So open it up,
+
+179
+00:08:10.540 --> 00:08:11.750
+click Next.
+
+180
+00:08:11.750 --> 00:08:13.713
+The error says,
+
+181
+00:08:15.165 --> 00:08:18.710
+cannot read property nextElementSibling of undefined
+
+182
+00:08:18.710 --> 00:08:19.890
+on line 69.
+
+183
+00:08:19.890 --> 00:08:21.520
+Okay, let's do it.
+
+184
+00:08:21.520 --> 00:08:23.640
+69...
+
+185
+00:08:23.640 --> 00:08:28.320
+Cannot read property, nextElementSibling of undefined.
+
+186
+00:08:28.320 --> 00:08:32.470
+So what that's telling me is that
+
+187
+00:08:32.470 --> 00:08:35.540
+this.currentImage is undefined.
+
+188
+00:08:35.540 --> 00:08:36.590
+So my question is,
+
+189
+00:08:36.590 --> 00:08:38.260
+what is this?
+
+190
+00:08:38.260 --> 00:08:39.600
+Let's try.
+
+191
+00:08:39.600 --> 00:08:40.550
+Go here,
+
+192
+00:08:40.550 --> 00:08:43.360
+console.log this.
+
+193
+00:08:43.360 --> 00:08:45.160
+So now when I open it up,
+
+194
+00:08:45.160 --> 00:08:47.090
+this as far as we know,
+
+195
+00:08:47.090 --> 00:08:51.053
+this should always equal the instance of the gallery, right?
+
+196
+00:08:53.060 --> 00:08:54.570
+Button?
+
+197
+00:08:54.570 --> 00:08:56.513
+Why is this equal to a button?
+
+198
+00:08:57.440 --> 00:09:02.100
+Okay, let's figure out where showNextImage being
+
+199
+00:09:03.000 --> 00:09:04.040
+called from.
+
+200
+00:09:04.040 --> 00:09:06.490
+Not from, this is, this is for we use our keyboard.
+
+201
+00:09:06.490 --> 00:09:07.860
+We're clicking right now.
+
+202
+00:09:07.860 --> 00:09:09.310
+So let's find out where else.
+
+203
+00:09:09.310 --> 00:09:14.120
+There we go, showNextImage is being used right here.
+
+204
+00:09:14.120 --> 00:09:15.960
+To remove the event listener,
+
+205
+00:09:15.960 --> 00:09:18.790
+oh also, it's being used to,
+
+206
+00:09:18.790 --> 00:09:21.260
+here we go addEventListener.
+
+207
+00:09:21.260 --> 00:09:24.610
+So what's happening here is that
+
+208
+00:09:24.610 --> 00:09:26.150
+we are listening for a click
+
+209
+00:09:26.150 --> 00:09:27.660
+and then when that click happens,
+
+210
+00:09:27.660 --> 00:09:30.080
+the showNextImage function is running.
+
+211
+00:09:30.080 --> 00:09:33.850
+But what did I tell you about passing call backs
+
+212
+00:09:33.850 --> 00:09:36.670
+to addEventListener and the keyword this?
+
+213
+00:09:36.670 --> 00:09:39.600
+Whenever you pass a call back to an EventListener,
+
+214
+00:09:39.600 --> 00:09:42.920
+this keyword will be equal to the thing that
+
+215
+00:09:42.920 --> 00:09:45.170
+is to the left of the dot.
+
+216
+00:09:45.170 --> 00:09:48.436
+So does it make sense that the next button
+
+217
+00:09:48.436 --> 00:09:50.120
+is to the left?
+
+218
+00:09:50.120 --> 00:09:53.242
+And when we log this it's equal to it?
+
+219
+00:09:53.242 --> 00:09:55.576
+It should, somewhat.
+
+220
+00:09:55.576 --> 00:09:57.832
+(laughs)
+
+221
+00:09:57.832 --> 00:09:59.720
+The question is how do we fix that.
+
+222
+00:09:59.720 --> 00:10:02.570
+Because that's just how functions work.
+
+223
+00:10:02.570 --> 00:10:06.520
+Well, there's a couple ways you can sorta get around it.
+
+224
+00:10:06.520 --> 00:10:08.800
+I'll show you a couple ways.
+
+225
+00:10:08.800 --> 00:10:10.560
+First way, and this is pretty popular
+
+226
+00:10:10.560 --> 00:10:12.340
+in React world.
+
+227
+00:10:12.340 --> 00:10:16.560
+And that is just to pass an arrow function instead.
+
+228
+00:10:16.560 --> 00:10:17.870
+And what that will do is,
+
+229
+00:10:17.870 --> 00:10:20.500
+instead of passing the function directly,
+
+230
+00:10:20.500 --> 00:10:23.682
+we pass it a new function that will in turn
+
+231
+00:10:23.682 --> 00:10:27.610
+call showNextImage for us.
+
+232
+00:10:27.610 --> 00:10:29.343
+And watch what happens now.
+
+233
+00:10:29.343 --> 00:10:30.870
+Here I go.
+
+234
+00:10:30.870 --> 00:10:32.690
+Now that works.
+
+235
+00:10:32.690 --> 00:10:34.660
+But let me show you the problem with that.
+
+236
+00:10:34.660 --> 00:10:36.040
+And for that to work,
+
+237
+00:10:36.040 --> 00:10:38.730
+we also need to get our Escape working.
+
+238
+00:10:38.730 --> 00:10:41.570
+So let's do this.
+
+239
+00:10:41.570 --> 00:10:45.000
+handleKeyUp, let's do the same thing
+
+240
+00:10:45.000 --> 00:10:47.840
+except in this case handleKeyUp needs the event.
+
+241
+00:10:47.840 --> 00:10:50.593
+So we just have to hot potato the event from that function
+
+242
+00:10:50.593 --> 00:10:52.170
+to another.
+
+243
+00:10:52.170 --> 00:10:53.067
+Now let me show you the problem.
+
+244
+00:10:53.067 --> 00:10:54.197
+You open it up,
+
+245
+00:10:54.197 --> 00:10:55.900
+and I hit my Escape key.
+
+246
+00:10:55.900 --> 00:10:57.770
+And I open it up again,
+
+247
+00:10:57.770 --> 00:10:58.870
+hit my Escape key.
+
+248
+00:10:58.870 --> 00:11:00.130
+Open it up again,
+
+249
+00:11:00.130 --> 00:11:01.843
+and now when I click right,
+
+250
+00:11:03.260 --> 00:11:04.093
+whoa.
+
+251
+00:11:05.786 --> 00:11:07.640
+Okay, it's going from hoodie
+
+252
+00:11:07.640 --> 00:11:11.150
+to backpack.
+
+253
+00:11:11.150 --> 00:11:13.090
+It skipped two?
+
+254
+00:11:13.090 --> 00:11:14.253
+I'll close it down.
+
+255
+00:11:15.360 --> 00:11:16.630
+Let's go back to hoodie.
+
+256
+00:11:16.630 --> 00:11:19.200
+Now we'll go to backpack again.
+
+257
+00:11:19.200 --> 00:11:20.423
+Suitcase?
+
+258
+00:11:21.480 --> 00:11:22.563
+Open it again.
+
+259
+00:11:24.260 --> 00:11:25.283
+Jacket?
+
+260
+00:11:26.260 --> 00:11:27.390
+Every time I close it,
+
+261
+00:11:27.390 --> 00:11:28.970
+it's going one further.
+
+262
+00:11:28.970 --> 00:11:31.240
+Is it gonna go to shoes this time?
+
+263
+00:11:31.240 --> 00:11:33.300
+Oh my gosh, it is.
+
+264
+00:11:33.300 --> 00:11:34.850
+You see what's happening
+
+265
+00:11:34.850 --> 00:11:36.470
+is that,
+
+266
+00:11:36.470 --> 00:11:39.173
+let me go back to the showNextImage function here.
+
+267
+00:11:40.220 --> 00:11:44.503
+And let's just say console.log showing next image.
+
+268
+00:11:48.160 --> 00:11:49.390
+Clear this out, open it up.
+
+269
+00:11:49.390 --> 00:11:50.550
+Close it down, open it up.
+
+270
+00:11:50.550 --> 00:11:51.690
+Close it down, open it up.
+
+271
+00:11:51.690 --> 00:11:52.870
+Close it down, open it up.
+
+272
+00:11:52.870 --> 00:11:55.420
+Close it down, and I'll clear it.
+
+273
+00:11:55.420 --> 00:11:57.120
+And clear it one more time.
+
+274
+00:11:57.120 --> 00:11:58.223
+Now I'm gonna hit it.
+
+275
+00:12:00.130 --> 00:12:01.260
+Showing next image,
+
+276
+00:12:01.260 --> 00:12:02.560
+showing next image,
+
+277
+00:12:02.560 --> 00:12:03.590
+showing next image.
+
+278
+00:12:03.590 --> 00:12:05.400
+See what's happening here is that
+
+279
+00:12:05.400 --> 00:12:08.410
+every time that we open it up,
+
+280
+00:12:08.410 --> 00:12:10.490
+we're binding another,
+
+281
+00:12:10.490 --> 00:12:15.490
+we're listening for another click of it right here.
+
+282
+00:12:16.010 --> 00:12:18.360
+And the way we fixed that before is that we just
+
+283
+00:12:18.360 --> 00:12:23.360
+removed the event listener when we closed the modal.
+
+284
+00:12:23.440 --> 00:12:24.940
+And that way we added and removed it
+
+285
+00:12:24.940 --> 00:12:26.180
+every time we opened and closed it.
+
+286
+00:12:26.180 --> 00:12:28.210
+But what happens when you do this
+
+287
+00:12:29.180 --> 00:12:32.500
+is that you're creating another function
+
+288
+00:12:32.500 --> 00:12:34.820
+and in order to remove an event listener,
+
+289
+00:12:34.820 --> 00:12:38.530
+you have to have reference to that function.
+
+290
+00:12:38.530 --> 00:12:42.470
+So that's kind of annoying.
+
+291
+00:12:42.470 --> 00:12:46.040
+So the other way that we can sort of fix that
+
+292
+00:12:46.040 --> 00:12:49.660
+is by binding it to this
+
+293
+00:12:49.660 --> 00:12:52.740
+when we have access to this.
+
+294
+00:12:52.740 --> 00:12:55.350
+And that is inside of the gallery.
+
+295
+00:12:55.350 --> 00:12:56.840
+So it'll get a little bit complicated.
+
+296
+00:12:56.840 --> 00:12:58.860
+Don't sweat it if it doesn't make sense the first time.
+
+297
+00:12:58.860 --> 00:13:01.700
+This honestly took me a couple years to get it.
+
+298
+00:13:01.700 --> 00:13:04.690
+So stay with me, keep going through the exercises,
+
+299
+00:13:04.690 --> 00:13:06.480
+and this will make sense after,
+
+300
+00:13:06.480 --> 00:13:08.580
+I don't know, maybe the seventh time, eighth time
+
+301
+00:13:08.580 --> 00:13:11.460
+that you build something this way.
+
+302
+00:13:11.460 --> 00:13:13.460
+But this is a pretty common thing that happens
+
+303
+00:13:13.460 --> 00:13:14.880
+in React world.
+
+304
+00:13:14.880 --> 00:13:17.370
+And what we'll do is right here we'll say
+
+305
+00:13:18.210 --> 00:13:23.210
+bind our methods to the instance when we need them.
+
+306
+00:13:26.840 --> 00:13:30.400
+So we'll say this dot...
+
+307
+00:13:30.400 --> 00:13:32.950
+What was the ones that we were having trouble with?
+
+308
+00:13:36.329 --> 00:13:40.050
+showNextImage, handleKeyUp, and showPreviousImage.
+
+309
+00:13:40.050 --> 00:13:43.700
+So this.showNextImage is equal to
+
+310
+00:13:43.700 --> 00:13:48.700
+this.showNextImage.bind(this).
+
+311
+00:13:48.910 --> 00:13:50.610
+So what happened there?
+
+312
+00:13:50.610 --> 00:13:52.950
+Well, what we're doing is we're creating an instance
+
+313
+00:13:52.950 --> 00:13:57.630
+property of the same prototype function
+
+314
+00:13:57.630 --> 00:13:59.380
+but bound with this.
+
+315
+00:13:59.380 --> 00:14:01.120
+So what does this bind do?
+
+316
+00:14:01.120 --> 00:14:05.870
+Bind allows us to explicitly supply what this
+
+317
+00:14:05.870 --> 00:14:07.140
+will be equal to.
+
+318
+00:14:07.140 --> 00:14:09.950
+And because in our constructor this is equal to
+
+319
+00:14:09.950 --> 00:14:13.870
+the instance, we are creating a new function
+
+320
+00:14:13.870 --> 00:14:16.520
+that has this bound to it.
+
+321
+00:14:16.520 --> 00:14:19.220
+Then what that allows us to do
+
+322
+00:14:19.220 --> 00:14:22.300
+is where we go find or showNextImage,
+
+323
+00:14:27.040 --> 00:14:30.287
+we can now just simply pass showNextImage
+
+324
+00:14:33.090 --> 00:14:35.700
+without having to worry about any of that.
+
+325
+00:14:35.700 --> 00:14:36.670
+Click it.
+
+326
+00:14:36.670 --> 00:14:38.570
+Next, next, next.
+
+327
+00:14:38.570 --> 00:14:39.460
+It's working just fine.
+
+328
+00:14:39.460 --> 00:14:41.500
+Our previous isn't gonna work 'cause we haven't done it
+
+329
+00:14:41.500 --> 00:14:43.600
+there just yet.
+
+330
+00:14:43.600 --> 00:14:46.880
+Now the benefit of doing that over,
+
+331
+00:14:46.880 --> 00:14:49.387
+sometimes you might see people do this as well,
+
+332
+00:14:49.387 --> 00:14:50.220
+.bind(this).
+
+333
+00:14:51.460 --> 00:14:54.280
+And they'll do it right at the time,
+
+334
+00:14:54.280 --> 00:14:56.550
+is that we, by binding it here,
+
+335
+00:14:56.550 --> 00:14:58.940
+we lose reference to the new function
+
+336
+00:14:58.940 --> 00:15:00.220
+that was created.
+
+337
+00:15:00.220 --> 00:15:03.170
+And that stops us from being able to remove
+
+338
+00:15:03.170 --> 00:15:05.300
+that event listener in the future.
+
+339
+00:15:05.300 --> 00:15:08.000
+So you always need to hold onto your functions
+
+340
+00:15:08.000 --> 00:15:09.160
+when you create them
+
+341
+00:15:09.160 --> 00:15:11.220
+so that you can remove them in the future.
+
+342
+00:15:11.220 --> 00:15:12.950
+And by doing this,
+
+343
+00:15:12.950 --> 00:15:13.960
+we've lost it.
+
+344
+00:15:13.960 --> 00:15:17.420
+So we are saving reference to it
+
+345
+00:15:18.700 --> 00:15:20.430
+inside of our constructor.
+
+346
+00:15:20.430 --> 00:15:22.940
+So let's go ahead and duplicate that
+
+347
+00:15:22.940 --> 00:15:25.720
+and make it the showPrevImage.
+
+348
+00:15:30.158 --> 00:15:31.830
+So does that work?
+
+349
+00:15:31.830 --> 00:15:33.300
+Back, back, back works.
+
+350
+00:15:33.300 --> 00:15:34.940
+Okay.
+
+351
+00:15:34.940 --> 00:15:36.470
+Does my Escape key work?
+
+352
+00:15:36.470 --> 00:15:39.100
+Escape key is working.
+
+353
+00:15:39.100 --> 00:15:41.010
+Oh, but that's because we're passing
+
+354
+00:15:42.350 --> 00:15:43.670
+the E,
+
+355
+00:15:43.670 --> 00:15:44.830
+so we don't wanna do that.
+
+356
+00:15:44.830 --> 00:15:48.338
+Let's change that back to handleKeyUp.
+
+357
+00:15:48.338 --> 00:15:49.570
+You don't have to pass that
+
+358
+00:15:49.570 --> 00:15:51.630
+because we are removing it here, right?
+
+359
+00:15:51.630 --> 00:15:54.010
+So we need to go back up here
+
+360
+00:15:54.010 --> 00:15:59.010
+and say this.handleKeyUp is equal to this.handleKeyUp.
+
+361
+00:16:02.060 --> 00:16:03.460
+And I believe the last one is
+
+362
+00:16:03.460 --> 00:16:04.870
+the click outside.
+
+363
+00:16:04.870 --> 00:16:06.970
+Yeah, that's still the same problem as well.
+
+364
+00:16:06.970 --> 00:16:11.970
+So if we do this.handleClickOutside is equal to bind.
+
+365
+00:16:12.280 --> 00:16:14.240
+This is why a lot of people don't like this
+
+366
+00:16:14.240 --> 00:16:17.160
+method of doing it.
+
+367
+00:16:17.160 --> 00:16:19.910
+People much prefer just having a bunch of functions
+
+368
+00:16:19.910 --> 00:16:21.040
+and that is totally fine.
+
+369
+00:16:21.040 --> 00:16:24.040
+'Cause this is a bit of a pain having to figure
+
+370
+00:16:24.040 --> 00:16:25.870
+out what does this equal in each context
+
+371
+00:16:25.870 --> 00:16:27.710
+and it changes depending on what the function is
+
+372
+00:16:27.710 --> 00:16:30.350
+and it's not as explicit as just having a bunch
+
+373
+00:16:30.350 --> 00:16:31.190
+of functions are.
+
+374
+00:16:31.190 --> 00:16:33.061
+And if you feel that way,
+
+375
+00:16:33.061 --> 00:16:35.130
+I often feel that way myself,
+
+376
+00:16:35.130 --> 00:16:38.109
+then it may mean that this whole prototype
+
+377
+00:16:38.109 --> 00:16:40.310
+way of coding is not for you.
+
+378
+00:16:40.310 --> 00:16:45.310
+And there's certainly lots of people who think that way.
+
+379
+00:16:45.370 --> 00:16:47.840
+So I teach you all the ways
+
+380
+00:16:47.840 --> 00:16:49.310
+just because this is probably something
+
+381
+00:16:49.310 --> 00:16:50.610
+that will come up in an interview.
+
+382
+00:16:50.610 --> 00:16:52.690
+And there are lots of programmers who think
+
+383
+00:16:52.690 --> 00:16:54.840
+this is the best way to structure your apps.
+
+384
+00:16:54.840 --> 00:16:56.210
+Click it, there we go.
+
+385
+00:16:56.210 --> 00:16:59.750
+Now everything is working beautifully.
+
+386
+00:16:59.750 --> 00:17:01.360
+So we have our gallery.
+
+387
+00:17:01.360 --> 00:17:03.220
+We've got our instance properties.
+
+388
+00:17:03.220 --> 00:17:06.930
+We have our binding of our methods that need to have
+
+389
+00:17:06.930 --> 00:17:09.158
+access to this.
+
+390
+00:17:09.158 --> 00:17:11.710
+Then we have our images.
+
+391
+00:17:11.710 --> 00:17:13.670
+The reason why we don't remove the event listeners
+
+392
+00:17:13.670 --> 00:17:16.090
+is 'cause this only happens once
+
+393
+00:17:16.090 --> 00:17:18.733
+on page load when the gallery is created.
+
+394
+00:17:20.630 --> 00:17:25.630
+And then we have all of our prototypal methods
+
+395
+00:17:26.030 --> 00:17:27.060
+down below.
+
+396
+00:17:27.060 --> 00:17:29.800
+All right, so that is the gallery.
+
+397
+00:17:29.800 --> 00:17:34.030
+Maybe try and do the slider one yourself.
+
+398
+00:17:34.030 --> 00:17:35.910
+If not, I'll meet you in the next video.
+
+399
+00:17:35.910 --> 00:17:37.780
+We'll learn how to do that with prototypes.
+
+400
+00:17:37.780 --> 00:17:39.560
+And then we'll learn a little bit about classes
+
+401
+00:17:39.560 --> 00:17:42.513
+and do one final refactor for this app.
+

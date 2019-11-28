@@ -1,0 +1,2702 @@
+﻿WEBVTT
+
+1
+00:00:00.755 --> 00:00:03.338
+(upbeat music)
+
+2
+00:00:05.366 --> 00:00:06.199
+<v Instructor>All right in this one</v>
+
+3
+00:00:06.199 --> 00:00:07.070
+we're going to build a slider.
+
+4
+00:00:07.070 --> 00:00:08.460
+Looks a little something like this.
+
+5
+00:00:08.460 --> 00:00:11.220
+A slider is something I've probably built,
+
+6
+00:00:11.220 --> 00:00:16.220
+I don't know, 3,827 times in my career.
+
+7
+00:00:16.600 --> 00:00:18.424
+And a slider is one of those things your like,
+
+8
+00:00:18.424 --> 00:00:20.140
+"Huh, how hard could it be?"
+
+9
+00:00:20.140 --> 00:00:21.757
+And then you sorta get into it and you go,
+
+10
+00:00:21.757 --> 00:00:25.227
+"Wow, I realize why people use Slider Library's,
+
+11
+00:00:25.227 --> 00:00:27.460
+"because they're actually pretty complex."
+
+12
+00:00:27.460 --> 00:00:30.330
+So what our idea is here today,
+
+13
+00:00:30.330 --> 00:00:33.960
+is to build the basics of a slider,
+
+14
+00:00:33.960 --> 00:00:37.673
+in, I don't know, maybe about 60 lines of code.
+
+15
+00:00:39.130 --> 00:00:42.190
+And then I'm going to sort of hand that off to you
+
+16
+00:00:42.190 --> 00:00:43.317
+and you can look at how,
+
+17
+00:00:43.317 --> 00:00:44.527
+"Okay, what other features would I
+
+18
+00:00:44.527 --> 00:00:46.381
+"like to add to this thing?"
+
+19
+00:00:46.381 --> 00:00:48.610
+We're also going to be building it
+
+20
+00:00:48.610 --> 00:00:51.370
+similar to the last gallery one,
+
+21
+00:00:51.370 --> 00:00:53.690
+where we just built it with JavaScript straight up.
+
+22
+00:00:53.690 --> 00:00:57.110
+Then when we learn about prototypes and classes,
+
+23
+00:00:57.110 --> 00:00:59.160
+we're going to refactor it twice,
+
+24
+00:00:59.160 --> 00:01:03.470
+over to use prototypes as well as to use a classing,
+
+25
+00:01:03.470 --> 00:01:04.570
+because a really good example of
+
+26
+00:01:04.570 --> 00:01:06.700
+when you might want to use that.
+
+27
+00:01:06.700 --> 00:01:07.640
+Couple of things here,
+
+28
+00:01:07.640 --> 00:01:10.000
+let's look at the Dev/Tools, of these.
+
+29
+00:01:10.000 --> 00:01:12.310
+I've got two sliders on a page so that we can
+
+30
+00:01:12.310 --> 00:01:15.284
+really see that you can use the same code over
+
+31
+00:01:15.284 --> 00:01:18.160
+more than once on the same page.
+
+32
+00:01:18.160 --> 00:01:20.270
+And if you look at the HTML
+
+33
+00:01:20.270 --> 00:01:22.470
+that is inside of the slider,
+
+34
+00:01:22.470 --> 00:01:24.120
+I'll use this first one here.
+
+35
+00:01:24.120 --> 00:01:25.720
+Open up the slide, you'll see that
+
+36
+00:01:25.720 --> 00:01:27.160
+I've got all of my 20 slides.
+
+37
+00:01:27.160 --> 00:01:29.060
+Now as I hit the next button,
+
+38
+00:01:29.060 --> 00:01:31.964
+you'll see that a slider is just a fancy,
+
+39
+00:01:31.964 --> 00:01:35.000
+class adder and remover.
+
+40
+00:01:35.000 --> 00:01:37.960
+Meaning that, as you move through these ones,
+
+41
+00:01:37.960 --> 00:01:41.500
+we're adding a class of prev, current and next.
+
+42
+00:01:41.500 --> 00:01:44.840
+To each of them, and we're just moving on through.
+
+43
+00:01:44.840 --> 00:01:46.830
+There's a little bit of edge cases stuff around
+
+44
+00:01:46.830 --> 00:01:49.900
+when you loop back, see when we go backwards.
+
+45
+00:01:49.900 --> 00:01:54.900
+And when you go, reach the end and you queue it on up.
+
+46
+00:01:55.400 --> 00:01:56.720
+So how does this all work?
+
+47
+00:01:56.720 --> 00:02:00.580
+Well, I am, in this case I'm going to use SASS,
+
+48
+00:02:00.580 --> 00:02:02.440
+just to show you we can use SASS.
+
+49
+00:02:02.440 --> 00:02:04.220
+I'll show you how to get it up and running,
+
+50
+00:02:04.220 --> 00:02:05.270
+in just a second.
+
+51
+00:02:05.270 --> 00:02:08.230
+But, the way that it works is that,
+
+52
+00:02:08.230 --> 00:02:12.480
+we have our slides, which have our background,
+
+53
+00:02:12.480 --> 00:02:15.420
+it's got a position absolute on it,
+
+54
+00:02:15.420 --> 00:02:17.330
+it is grid itself so we can center
+
+55
+00:02:17.330 --> 00:02:18.630
+this number in the middle.
+
+56
+00:02:21.597 --> 00:02:25.377
+Then what we do is we take our slides
+
+57
+00:02:27.040 --> 00:02:30.330
+and we put them off screen.
+
+58
+00:02:30.330 --> 00:02:32.440
+So what we do is, the current slide
+
+59
+00:02:32.440 --> 00:02:34.673
+is going to be translateX(0).
+
+60
+00:02:35.990 --> 00:02:39.420
+And if we were to move that over to like 10px,
+
+61
+00:02:39.420 --> 00:02:41.430
+you see what this does, is we're just moving them
+
+62
+00:02:41.430 --> 00:02:42.710
+over and over and over,
+
+63
+00:02:42.710 --> 00:02:45.540
+but by translating something 100%
+
+64
+00:02:45.540 --> 00:02:48.700
+or maybe I should do that 90% to show you.
+
+65
+00:02:48.700 --> 00:02:51.260
+We are essentially just putting it outside
+
+66
+00:02:51.260 --> 00:02:54.830
+of this slides div, and there's an overflow hidden on that.
+
+67
+00:02:54.830 --> 00:02:56.820
+So you can't see what's outside of it.
+
+68
+00:02:56.820 --> 00:03:01.660
+So the next slide has a transform of 100%
+
+69
+00:03:01.660 --> 00:03:04.277
+and the current slide has a translate of 0
+
+70
+00:03:04.277 --> 00:03:09.277
+and the previous slide has a transform of -100.
+
+71
+00:03:11.250 --> 00:03:14.100
+And that's where, essentially, how we get our animation.
+
+72
+00:03:14.100 --> 00:03:17.590
+Now there is a transition on that,
+
+73
+00:03:17.590 --> 00:03:19.930
+with the 0.25 seconds on it.
+
+74
+00:03:19.930 --> 00:03:22.820
+And that's what allows it to give us this animation
+
+75
+00:03:22.820 --> 00:03:24.950
+to slide from side to side.
+
+76
+00:03:24.950 --> 00:03:26.620
+Now I've done this in a SASS file,
+
+77
+00:03:26.620 --> 00:03:29.000
+I'm not actually using any of the SASS properties,
+
+78
+00:03:29.000 --> 00:03:32.420
+anything, so you could just rename this to .css
+
+79
+00:03:32.420 --> 00:03:34.820
+and then swap it out with .css here.
+
+80
+00:03:34.820 --> 00:03:37.280
+But I wanted to show you, just in one of these example
+
+81
+00:03:37.280 --> 00:03:40.040
+that the parcel bundler tool that we're doing
+
+82
+00:03:40.040 --> 00:03:41.537
+will recognize that, like,
+
+83
+00:03:41.537 --> 00:03:42.967
+"Hey, you're not supposed to be able to
+
+84
+00:03:42.967 --> 00:03:46.370
+"just link up a SCSS file."
+
+85
+00:03:46.370 --> 00:03:47.640
+Why does that work?
+
+86
+00:03:47.640 --> 00:03:50.430
+Well the parcel bundler will detect these link tags
+
+87
+00:03:50.430 --> 00:03:52.400
+and it will compile the SASS for us
+
+88
+00:03:52.400 --> 00:03:54.530
+before it puts it into the browser.
+
+89
+00:03:54.530 --> 00:03:56.180
+So any SASS that you do want to use,
+
+90
+00:03:56.180 --> 00:03:58.400
+will automatically be bundled in.
+
+91
+00:03:58.400 --> 00:04:00.040
+So let's get started on this,
+
+92
+00:04:00.040 --> 00:04:03.010
+we'll open up our terminal here.
+
+93
+00:04:03.010 --> 00:04:07.760
+And I want you to go into the exercises folder
+
+94
+00:04:07.760 --> 00:04:10.630
+and then into the 57 Slider folder.
+
+95
+00:04:10.630 --> 00:04:12.830
+And go ahead type npm install.
+
+96
+00:04:12.830 --> 00:04:16.084
+While we do that, let's just crack open our package.json
+
+97
+00:04:16.084 --> 00:04:18.700
+and you'll see that we have two dependencies here.
+
+98
+00:04:18.700 --> 00:04:21.840
+We have SASS, which is going to allow us to compile the SASS
+
+99
+00:04:21.840 --> 00:04:25.650
+and then we have parcel, which is the tool we've been using.
+
+100
+00:04:25.650 --> 00:04:27.930
+And then when we type npm start,
+
+101
+00:04:27.930 --> 00:04:30.170
+that will inadvertently run,
+
+102
+00:04:30.170 --> 00:04:32.270
+I don't know if inadvertently is what I want to say here,
+
+103
+00:04:32.270 --> 00:04:37.270
+but that will run parcel index.html for us.
+
+104
+00:04:37.310 --> 00:04:40.980
+So this is what's referred to as a local install here,
+
+105
+00:04:40.980 --> 00:04:43.240
+rather than a global install where we've been
+
+106
+00:04:43.240 --> 00:04:45.510
+typing parcel from the command line.
+
+107
+00:04:45.510 --> 00:04:48.350
+Again we'll go much more into parcel in coming videos,
+
+108
+00:04:48.350 --> 00:04:50.880
+but I think it's helpful to have it for this one.
+
+109
+00:04:50.880 --> 00:04:54.040
+You don't necessarily need it, but I think it's helpful
+
+110
+00:04:54.040 --> 00:04:55.030
+to have it here.
+
+111
+00:04:55.030 --> 00:04:56.960
+Now we type npm start.
+
+112
+00:04:56.960 --> 00:04:59.760
+And it should run it on some port
+
+113
+00:04:59.760 --> 00:05:02.400
+that you have everything running on.
+
+114
+00:05:02.400 --> 00:05:06.960
+And you see, nothing is really working just yet,
+
+115
+00:05:06.960 --> 00:05:09.120
+but that is totally fine,
+
+116
+00:05:09.120 --> 00:05:11.250
+because we haven't written any JavaScript.
+
+117
+00:05:11.250 --> 00:05:13.130
+So let's jump into our index.js.
+
+118
+00:05:13.130 --> 00:05:17.260
+You'll see here I'm putting my JS in a source folder,
+
+119
+00:05:17.260 --> 00:05:19.480
+that's just pretty common thing to do
+
+120
+00:05:19.480 --> 00:05:20.754
+when you have many JavaScript files,
+
+121
+00:05:20.754 --> 00:05:25.120
+is to put them in a source folder or a lib folder.
+
+122
+00:05:25.120 --> 00:05:27.913
+And I'm using that in here, there's nothing else to that.
+
+123
+00:05:27.913 --> 00:05:31.453
+It's just a folder, a way to organize your files.
+
+124
+00:05:33.220 --> 00:05:34.820
+So, first thing we're going to do is,
+
+125
+00:05:34.820 --> 00:05:38.040
+let's make a function called Slider.
+
+126
+00:05:38.040 --> 00:05:43.040
+And that will take in a slider div, or slider Element.
+
+127
+00:05:43.657 --> 00:05:47.290
+Sometimes people like to call their variables El on the end,
+
+128
+00:05:47.290 --> 00:05:49.210
+and that shows you, the developer,
+
+129
+00:05:49.210 --> 00:05:50.830
+that that is actually an Element
+
+130
+00:05:50.830 --> 00:05:52.640
+and not just some other variable.
+
+131
+00:05:52.640 --> 00:05:54.350
+I'm going to keep mine as slider.
+
+132
+00:05:54.350 --> 00:05:57.040
+And then I'm going to kick it off
+
+133
+00:05:57.040 --> 00:05:59.880
+with the two sliders that are already on the page.
+
+134
+00:05:59.880 --> 00:06:01.310
+So if we take a look here,
+
+135
+00:06:01.310 --> 00:06:03.490
+we've got our div with a class of slider,
+
+136
+00:06:03.490 --> 00:06:05.790
+then we have each of our slides,
+
+137
+00:06:05.790 --> 00:06:10.280
+and then inside of that we have all of the slides.
+
+138
+00:06:10.280 --> 00:06:13.150
+And then we've got some controls underneath that.
+
+139
+00:06:13.150 --> 00:06:15.110
+Then I have a dog-slider,
+
+140
+00:06:15.110 --> 00:06:17.500
+where we have our slides in our slide.
+
+141
+00:06:17.500 --> 00:06:19.366
+Often when you make a plugin like this,
+
+142
+00:06:19.366 --> 00:06:21.917
+you'll tell somebody in the documentation,
+
+143
+00:06:21.917 --> 00:06:25.187
+"Make sure that you make your markup
+
+144
+00:06:25.187 --> 00:06:26.830
+"look something like this."
+
+145
+00:06:26.830 --> 00:06:28.660
+So we'll go back into our JavaScript here,
+
+146
+00:06:28.660 --> 00:06:30.060
+and we'll make two variables here.
+
+147
+00:06:30.060 --> 00:06:35.000
+So const mySlider is equal to Slider.
+
+148
+00:06:35.000 --> 00:06:38.300
+And we will pass it the reference to that slider,
+
+149
+00:06:38.300 --> 00:06:40.423
+so document.querySelector('.slider').
+
+150
+00:06:43.910 --> 00:06:45.270
+And then we'll make another one
+
+151
+00:06:45.270 --> 00:06:50.270
+called the dogSlider, and pass it dog-slider.
+
+152
+00:06:52.210 --> 00:06:54.520
+Now, first thing we want to do when we open this up
+
+153
+00:06:54.520 --> 00:06:57.793
+is check if somebody has passed in a slider.
+
+154
+00:06:57.793 --> 00:07:02.793
+What we can do is if there's no slider,
+
+155
+00:07:02.880 --> 00:07:07.880
+than we'll throw a new Error, No slider passed in.
+
+156
+00:07:08.420 --> 00:07:09.670
+And what that will do is it'll check if
+
+157
+00:07:09.670 --> 00:07:11.540
+somebody has passed in a slider or not.
+
+158
+00:07:11.540 --> 00:07:14.900
+However, this will actually not error out,
+
+159
+00:07:14.900 --> 00:07:18.580
+if I were to make another one, called mySlider2.
+
+160
+00:07:18.580 --> 00:07:21.460
+And I were to pass it literally anything,
+
+161
+00:07:21.460 --> 00:07:24.690
+it would still check that you've passed in a value
+
+162
+00:07:24.690 --> 00:07:25.817
+and this will say,
+
+163
+00:07:25.817 --> 00:07:28.070
+"Oh that's fine, they passed in something."
+
+164
+00:07:28.070 --> 00:07:29.530
+So what if we wanted to check,
+
+165
+00:07:29.530 --> 00:07:33.630
+did they pass in an actual HTML element?
+
+166
+00:07:33.630 --> 00:07:36.593
+Well, like we've told you before,
+
+167
+00:07:37.550 --> 00:07:42.550
+if we go and look at the docs for document.querySelector,
+
+168
+00:07:43.910 --> 00:07:44.810
+let's take a look.
+
+169
+00:07:48.680 --> 00:07:51.500
+It says the document returns the first element,
+
+170
+00:07:51.500 --> 00:07:53.230
+so if we click on that,
+
+171
+00:07:53.230 --> 00:07:55.283
+we see the capital E Element.
+
+172
+00:07:56.257 --> 00:07:57.440
+And you see that an Element is the
+
+173
+00:07:57.440 --> 00:07:59.330
+most general based class from which
+
+174
+00:07:59.330 --> 00:08:02.360
+all objects in a document inherit.
+
+175
+00:08:02.360 --> 00:08:06.450
+Okay, that maybe is not all that interesting to you
+
+176
+00:08:06.450 --> 00:08:07.900
+but essentially what that means,
+
+177
+00:08:07.900 --> 00:08:12.900
+is when we create a div or a span or a, any Element,
+
+178
+00:08:13.580 --> 00:08:17.180
+it actually inherits all of its based attributes
+
+179
+00:08:17.180 --> 00:08:20.450
+from the Element in the browser.
+
+180
+00:08:20.450 --> 00:08:23.230
+And if you open up you're Dev/Tools and you just type
+
+181
+00:08:23.230 --> 00:08:26.110
+Capital E Element, you'll see that it's a function
+
+182
+00:08:26.110 --> 00:08:27.453
+for creating an element.
+
+183
+00:08:28.380 --> 00:08:30.250
+Kind of interesting is that Element
+
+184
+00:08:30.250 --> 00:08:31.766
+is actually is born from a Node
+
+185
+00:08:31.766 --> 00:08:35.290
+and a Node is even born from an Event Target,
+
+186
+00:08:35.290 --> 00:08:36.690
+but we won't go that deep,
+
+187
+00:08:36.690 --> 00:08:39.561
+because that's a bit of an advanced thing
+
+188
+00:08:39.561 --> 00:08:40.790
+and honestly not all that useful.
+
+189
+00:08:40.790 --> 00:08:43.690
+But we would need to know that we have the Element.
+
+190
+00:08:43.690 --> 00:08:46.970
+So we can use this thing in JavaScript
+
+191
+00:08:46.970 --> 00:08:48.710
+that will say something like
+
+192
+00:08:48.710 --> 00:08:53.710
+document is instanceof an Element.
+
+193
+00:08:53.720 --> 00:08:57.200
+And it will tell you if that is an instance of the Element.
+
+194
+00:08:57.200 --> 00:09:01.260
+So if we take something like our slider
+
+195
+00:09:03.980 --> 00:09:05.440
+and we pass it an instanceof
+
+196
+00:09:06.810 --> 00:09:11.133
+and we change if it is an instanceof capital E Element.
+
+197
+00:09:13.370 --> 00:09:14.820
+Make sure you spell it right.
+
+198
+00:09:16.860 --> 00:09:18.570
+It will tell us, 'True.'
+
+199
+00:09:18.570 --> 00:09:20.810
+So what that means is that the user
+
+200
+00:09:20.810 --> 00:09:24.920
+has passed in a valid instance of an Element
+
+201
+00:09:24.920 --> 00:09:28.663
+and we can check with other things like a number,
+
+202
+00:09:29.800 --> 00:09:30.970
+and say, 'False.'
+
+203
+00:09:30.970 --> 00:09:34.150
+So we can make this a little bit better at just saying if,
+
+204
+00:09:34.150 --> 00:09:38.660
+so we'll say if instanceof and then on this side
+
+205
+00:09:38.660 --> 00:09:42.500
+we'll put slider and this side we'll capital E Element,
+
+206
+00:09:42.500 --> 00:09:45.920
+so if the slider is an instance of Element
+
+207
+00:09:45.920 --> 00:09:48.000
+then throw and Error we need the opposite of that.
+
+208
+00:09:48.000 --> 00:09:50.250
+So I'm going to wrap that in some parenthesis
+
+209
+00:09:51.170 --> 00:09:52.770
+and then put a bang in front of it
+
+210
+00:09:52.770 --> 00:09:54.970
+to get the opposite of that.
+
+211
+00:09:54.970 --> 00:09:58.600
+And then you see on the second time,
+
+212
+00:09:58.600 --> 00:10:01.730
+it tells us no slider was passed in,
+
+213
+00:10:01.730 --> 00:10:03.830
+if we delete that, everything works.
+
+214
+00:10:03.830 --> 00:10:06.210
+So that's even better.
+
+215
+00:10:06.210 --> 00:10:08.700
+All right, next line of code.
+
+216
+00:10:08.700 --> 00:10:11.933
+What we need to do is create some variables,
+
+217
+00:10:11.933 --> 00:10:13.860
+for working with it.
+
+218
+00:10:13.860 --> 00:10:18.520
+So say create some variables for working with the slider.
+
+219
+00:10:21.490 --> 00:10:25.670
+And this clicking next and back, like I showed you here,
+
+220
+00:10:25.670 --> 00:10:27.960
+we are just going to be keeping track
+
+221
+00:10:27.960 --> 00:10:31.080
+of what the current slide is, what the next slide is,
+
+222
+00:10:31.080 --> 00:10:32.770
+and what the previous slide is.
+
+223
+00:10:32.770 --> 00:10:36.870
+So in order to keep track of those, we need some variables
+
+224
+00:10:36.870 --> 00:10:39.450
+that are going to begin their life empty.
+
+225
+00:10:39.450 --> 00:10:44.450
+So let current, let previous and let next.
+
+226
+00:10:44.890 --> 00:10:47.836
+So again those are going to be empty,
+
+227
+00:10:47.836 --> 00:10:52.220
+because we will fill them up when the slider starts
+
+228
+00:10:52.220 --> 00:10:57.220
+and when a user navigates with the previous and next button.
+
+229
+00:10:58.560 --> 00:11:00.250
+Next what we need to do is select
+
+230
+00:11:00.250 --> 00:11:03.840
+the Elements needed for the slider.
+
+231
+00:11:03.840 --> 00:11:06.240
+So if we take a look at this, like what Elements do we need?
+
+232
+00:11:06.240 --> 00:11:08.310
+Oh we need all of the slides,
+
+233
+00:11:08.310 --> 00:11:10.390
+and we need the previous and the next buttons.
+
+234
+00:11:10.390 --> 00:11:13.220
+So that's const slides is equal to
+
+235
+00:11:13.220 --> 00:11:17.237
+slider.querySelectorAll('.slides')
+
+236
+00:11:19.220 --> 00:11:22.110
+and that is going to not give us the individual slides
+
+237
+00:11:22.110 --> 00:11:25.510
+that will just give us this one right here.
+
+238
+00:11:25.510 --> 00:11:28.780
+And the reason why we do slider.querySelectorAll
+
+239
+00:11:28.780 --> 00:11:31.330
+is because, well lets just console log it.
+
+240
+00:11:31.330 --> 00:11:34.250
+Console.log(slides)
+
+241
+00:11:34.250 --> 00:11:35.700
+and see what's in there.
+
+242
+00:11:35.700 --> 00:11:37.440
+You'll see we get two of them.
+
+243
+00:11:37.440 --> 00:11:42.093
+One for the top slider and the other,
+
+244
+00:11:43.020 --> 00:11:44.690
+which is the bottom slider.
+
+245
+00:11:44.690 --> 00:11:48.570
+So you see the beauty of running two of these at once
+
+246
+00:11:48.570 --> 00:11:50.130
+is that we can always make sure
+
+247
+00:11:50.130 --> 00:11:51.540
+as we are building this thing,
+
+248
+00:11:51.540 --> 00:11:54.560
+that it works for both use cases of it.
+
+249
+00:11:54.560 --> 00:11:56.330
+So here we're just looking inside
+
+250
+00:11:56.330 --> 00:11:58.300
+of the slider that got passed in,
+
+251
+00:11:58.300 --> 00:12:00.130
+not globally on the page,
+
+252
+00:12:00.130 --> 00:12:02.861
+which is what document query selector would have.
+
+253
+00:12:02.861 --> 00:12:04.613
+Then we need the prevButton.
+
+254
+00:12:10.242 --> 00:12:12.550
+GoToPrev, is the class on it
+
+255
+00:12:12.550 --> 00:12:14.763
+and then we need the nextButton,
+
+256
+00:12:17.970 --> 00:12:19.962
+make sure you capital N.
+
+257
+00:12:19.962 --> 00:12:21.583
+Next that.
+
+258
+00:12:24.540 --> 00:12:26.350
+All right now it's, it's no different
+
+259
+00:12:26.350 --> 00:12:27.270
+then the last one that we did,
+
+260
+00:12:27.270 --> 00:12:29.330
+we're just going to be creating a whole bunch of classes
+
+261
+00:12:29.330 --> 00:12:32.670
+to add and remove the CSS classes
+
+262
+00:12:32.670 --> 00:12:35.288
+and figure out what is next.
+
+263
+00:12:35.288 --> 00:12:37.250
+First thing we'll do is we'll make a function
+
+264
+00:12:37.250 --> 00:12:38.150
+called startSlider
+
+265
+00:12:39.700 --> 00:12:42.650
+and we're going to populate these variables right here.
+
+266
+00:12:42.650 --> 00:12:45.790
+So you'll notice that I am going to be updating
+
+267
+00:12:45.790 --> 00:12:49.780
+the current variable from within this function.
+
+268
+00:12:49.780 --> 00:12:52.290
+And the reason why I'm not creating
+
+269
+00:12:52.290 --> 00:12:54.040
+this variable inside of here,
+
+270
+00:12:54.040 --> 00:12:58.140
+is because we're going to have other functions.
+
+271
+00:12:58.140 --> 00:13:02.010
+Like function move and we'll have another function
+
+272
+00:13:02.010 --> 00:13:06.140
+called applyClasses and both of those functions
+
+273
+00:13:06.140 --> 00:13:10.040
+are going to need to be able to access the current slide.
+
+274
+00:13:10.040 --> 00:13:11.874
+So by creating this variable inside
+
+275
+00:13:11.874 --> 00:13:13.840
+of the startSlider function,
+
+276
+00:13:13.840 --> 00:13:17.490
+that would make it scoped only to this function.
+
+277
+00:13:17.490 --> 00:13:20.410
+And it would not be accessible in those other functions.
+
+278
+00:13:20.410 --> 00:13:24.850
+So by creating it up here, all of the functions
+
+279
+00:13:24.850 --> 00:13:27.690
+that live inside of our slider, will have access to it.
+
+280
+00:13:27.690 --> 00:13:32.050
+And that is exactly what this concept of a closure is,
+
+281
+00:13:32.050 --> 00:13:35.760
+meaning that we have these variables that will exist
+
+282
+00:13:35.760 --> 00:13:38.360
+and the other functions will be able to grab on them.
+
+283
+00:13:38.360 --> 00:13:41.020
+They're not global variables but they're variables
+
+284
+00:13:41.020 --> 00:13:45.340
+that live inside the closure of this slider function.
+
+285
+00:13:45.340 --> 00:13:47.390
+So I'm not going to put a const in front of it,
+
+286
+00:13:47.390 --> 00:13:49.422
+I'm just going to update the current variable,
+
+287
+00:13:49.422 --> 00:13:52.470
+and we are either going to set it to be,
+
+288
+00:13:52.470 --> 00:13:56.170
+the first slide that is in the slider,
+
+289
+00:13:56.170 --> 00:13:59.050
+or sometimes when people have a slider
+
+290
+00:13:59.050 --> 00:14:01.340
+they want to start it on a specific slide.
+
+291
+00:14:01.340 --> 00:14:03.890
+So this first slider I've given you a class of current
+
+292
+00:14:03.890 --> 00:14:05.260
+and that's we should start it.
+
+293
+00:14:05.260 --> 00:14:09.480
+And the second one there is no current.
+
+294
+00:14:09.480 --> 00:14:12.010
+So what we'll do here is say the current
+
+295
+00:14:12.010 --> 00:14:14.650
+is equal to slider.quarySelector.
+
+296
+00:14:14.650 --> 00:14:16.460
+Look for something with this class of current,
+
+297
+00:14:16.460 --> 00:14:18.590
+and if that doesn't exist, we'll use our little
+
+298
+00:14:18.590 --> 00:14:22.673
+or trick here, it's the slides.firstElementChild.
+
+299
+00:14:26.190 --> 00:14:29.700
+So that is a property that exists on our slides.
+
+300
+00:14:29.700 --> 00:14:32.710
+So right here, if I were to grab that
+
+301
+00:14:32.710 --> 00:14:34.970
+$0, that's our slides.
+
+302
+00:14:34.970 --> 00:14:37.010
+And the firstElmentChild will
+
+303
+00:14:37.010 --> 00:14:40.400
+give us access to the one slide
+
+304
+00:14:40.400 --> 00:14:43.803
+and similarly the lastElementChild will
+
+305
+00:14:45.340 --> 00:14:47.770
+give us access to the last one.
+
+306
+00:14:47.770 --> 00:14:51.670
+So there we have current and lets consol.log(current),
+
+307
+00:14:51.670 --> 00:14:53.320
+just make sure this works.
+
+308
+00:14:53.320 --> 00:14:56.100
+And then when the person creates the slider
+
+309
+00:14:56.100 --> 00:14:58.940
+we actually need to run this start slider function.
+
+310
+00:14:58.940 --> 00:15:01.402
+So what we'll do is we'll just run startSlider,
+
+311
+00:15:01.402 --> 00:15:02.927
+we'll put a comment,
+
+312
+00:15:02.927 --> 00:15:05.653
+"When this function runs ...
+
+313
+00:15:07.087 --> 00:15:08.213
+"when ...
+
+314
+00:15:10.367 --> 00:15:13.203
+"when this slider is created,
+
+315
+00:15:14.177 --> 00:15:17.120
+"run the start slider function."
+
+316
+00:15:17.120 --> 00:15:19.630
+This is often referred to as a constructor
+
+317
+00:15:19.630 --> 00:15:22.950
+and we'll be getting into that when we hit classes.
+
+318
+00:15:22.950 --> 00:15:25.776
+So now when I refresh it,
+
+319
+00:15:25.776 --> 00:15:28.620
+we get 16, which is the current slide.
+
+320
+00:15:28.620 --> 00:15:32.150
+And we get undefined for the second one.
+
+321
+00:15:32.150 --> 00:15:34.300
+So that's something, something broke there.
+
+322
+00:15:37.010 --> 00:15:38.320
+Let's see here.
+
+323
+00:15:38.320 --> 00:15:39.950
+So I'm going to debug this,
+
+324
+00:15:39.950 --> 00:15:41.410
+I honestly don't know what happened.
+
+325
+00:15:41.410 --> 00:15:43.790
+But I think it's helpful for you to see this.
+
+326
+00:15:43.790 --> 00:15:46.590
+So my thought process here is,
+
+327
+00:15:46.590 --> 00:15:49.510
+we're not getting like an error cannot read
+
+328
+00:15:49.510 --> 00:15:52.570
+method query selector of slider.
+
+329
+00:15:52.570 --> 00:15:55.940
+So that's probably not, there's probably
+
+330
+00:15:55.940 --> 00:15:59.100
+nothing wrong with slider, maybe slides is undefined?
+
+331
+00:15:59.100 --> 00:16:00.973
+Let's consol.log what slides is.
+
+332
+00:16:02.690 --> 00:16:03.883
+Is that the right one?
+
+333
+00:16:04.890 --> 00:16:06.333
+Yeah so that's right, okay.
+
+334
+00:16:07.340 --> 00:16:12.250
+Let's consol.log(slides.firstElementChild)
+
+335
+00:16:13.876 --> 00:16:15.620
+oh, undefined, okay.
+
+336
+00:16:15.620 --> 00:16:18.630
+So this is giving me undefined for some reason,
+
+337
+00:16:18.630 --> 00:16:21.410
+so I'm just going to debug it in my Dev/Tools here.
+
+338
+00:16:21.410 --> 00:16:22.883
+I'll click on Slides.
+
+339
+00:16:24.750 --> 00:16:26.163
+Give me $0.
+
+340
+00:16:27.040 --> 00:16:29.093
+Okay, firstElementChild
+
+341
+00:16:30.750 --> 00:16:32.630
+gives me the first slide.
+
+342
+00:16:32.630 --> 00:16:34.003
+So,
+
+343
+00:16:36.130 --> 00:16:40.400
+why is it working here?
+
+344
+00:16:40.400 --> 00:16:43.693
+But not inside of here?
+
+345
+00:16:46.550 --> 00:16:48.890
+Slides slider.querySelectorAll,
+
+346
+00:16:48.890 --> 00:16:51.113
+slides, is there a class on that?
+
+347
+00:16:53.890 --> 00:16:55.073
+Yeah that's fine.
+
+348
+00:17:00.720 --> 00:17:02.340
+We'll go into our IndexJS,
+
+349
+00:17:02.340 --> 00:17:04.500
+we're loading in the script,
+
+350
+00:17:04.500 --> 00:17:06.600
+after the HTML has been created.
+
+351
+00:17:06.600 --> 00:17:09.363
+So that is fine, it's not like a race condition.
+
+352
+00:17:12.080 --> 00:17:15.293
+Let's see if there is firstElementChild,
+
+353
+00:17:16.200 --> 00:17:20.154
+okay so if I'm seeing it here, there is a firstElementChild.
+
+354
+00:17:20.154 --> 00:17:22.321
+So it's firstElementChild.
+
+355
+00:17:23.800 --> 00:17:25.363
+Now that's giving me ...
+
+356
+00:17:29.196 --> 00:17:34.196
+So if I'm logging slides, you'll see I can open it up.
+
+357
+00:17:36.400 --> 00:17:40.400
+Oh, I think I see what's going on here.
+
+358
+00:17:40.400 --> 00:17:44.850
+My slides is querySelectorAll, ahhh.
+
+359
+00:17:45.960 --> 00:17:48.400
+Not querySelector, what I was going to do
+
+360
+00:17:48.400 --> 00:17:50.600
+I'll tell you as I was going to do debugger.
+
+361
+00:17:51.750 --> 00:17:56.750
+And then that would pause and show me the closure of slider.
+
+362
+00:17:57.880 --> 00:17:58.960
+Hey look at that.
+
+363
+00:17:58.960 --> 00:18:03.960
+Closure of slider, has a variable called Slides
+
+364
+00:18:04.080 --> 00:18:05.730
+and it has a length of one
+
+365
+00:18:05.730 --> 00:18:07.180
+and it shouldn't be length of one,
+
+366
+00:18:07.180 --> 00:18:09.050
+it should just be the Element itself.
+
+367
+00:18:09.050 --> 00:18:13.550
+So let's remove the All and that fixes it for us.
+
+368
+00:18:13.550 --> 00:18:15.595
+So back to it.
+
+369
+00:18:15.595 --> 00:18:18.080
+There we go, now we have both of our slides.
+
+370
+00:18:18.080 --> 00:18:21.390
+This should be the first one.
+
+371
+00:18:21.390 --> 00:18:23.340
+Oh actually, let's consol.log(current).
+
+372
+00:18:25.220 --> 00:18:27.230
+That's the 16th one and this is the first one.
+
+373
+00:18:27.230 --> 00:18:28.063
+Why?
+
+374
+00:18:28.063 --> 00:18:29.960
+Because this one started with a class on it,
+
+375
+00:18:29.960 --> 00:18:31.560
+there was no class on the second one,
+
+376
+00:18:31.560 --> 00:18:33.370
+so it starts at the first slide.
+
+377
+00:18:33.370 --> 00:18:36.050
+Let's go and do the previous one,
+
+378
+00:18:36.050 --> 00:18:41.050
+is going to be equal to the current.
+
+379
+00:18:41.521 --> 00:18:43.490
+now how do you get an Element that is
+
+380
+00:18:43.490 --> 00:18:45.200
+behind the current one?
+
+381
+00:18:45.200 --> 00:18:48.270
+Well we use previousElementSibling,
+
+382
+00:18:52.200 --> 00:18:55.060
+so again let me show you a little real quick example
+
+383
+00:18:55.060 --> 00:18:56.580
+if I open up the slider,
+
+384
+00:18:56.580 --> 00:18:58.503
+and I grab on number two.
+
+385
+00:19:00.127 --> 00:19:05.127
+$0.previousElementSibling will give us one.
+
+386
+00:19:06.530 --> 00:19:08.883
+And if we were to grab onto one,
+
+387
+00:19:09.857 --> 00:19:12.820
+and it has, gives us previousElementSibling gives us null.
+
+388
+00:19:12.820 --> 00:19:16.410
+Because there is nothing beside this one.
+
+389
+00:19:16.410 --> 00:19:17.750
+So we'll set it to,
+
+390
+00:19:17.750 --> 00:19:20.400
+the previous one is whatever the current one is,
+
+391
+00:19:20.400 --> 00:19:23.660
+and the previousElementSibling and if that doesn't exist,
+
+392
+00:19:23.660 --> 00:19:26.830
+then we'll fall back to the last slide,
+
+393
+00:19:26.830 --> 00:19:28.460
+in our slides directory.
+
+394
+00:19:28.460 --> 00:19:31.080
+So we'll say slides.lastElementChild.
+
+395
+00:19:33.920 --> 00:19:35.442
+Real quick, what's the difference between
+
+396
+00:19:35.442 --> 00:19:38.700
+lastElementChild and lastChild?
+
+397
+00:19:38.700 --> 00:19:41.200
+And previousElementSibling and previousSibling?
+
+398
+00:19:41.200 --> 00:19:43.050
+Like why am I using the ones say Element?
+
+399
+00:19:43.050 --> 00:19:46.840
+Well the real quick difference is,
+
+400
+00:19:46.840 --> 00:19:48.520
+let me show you,
+
+401
+00:19:48.520 --> 00:19:52.100
+let's go to the top here, and I'll make a paragraph.
+
+402
+00:19:52.100 --> 00:19:57.100
+It says, "I &lt;strong&gt;love to eat &lt;strong&gt;pizza."
+
+403
+00:20:01.730 --> 00:20:04.270
+And then let's go ahead and inspect this.
+
+404
+00:20:04.270 --> 00:20:09.270
+Now if I were to click on love,
+
+405
+00:20:11.037 --> 00:20:14.393
+$0, and we get nextSibling,
+
+406
+00:20:15.810 --> 00:20:17.720
+that gives us, "To eat"
+
+407
+00:20:17.720 --> 00:20:22.270
+and nextElementSibling is pizza.
+
+408
+00:20:22.270 --> 00:20:23.330
+So what's the difference?
+
+409
+00:20:23.330 --> 00:20:26.440
+Well, nextSibling gives us a Node
+
+410
+00:20:26.440 --> 00:20:31.440
+and a Node can either be straight up text or an Element.
+
+411
+00:20:32.310 --> 00:20:37.310
+Where as nextElementSibling will give us the actual Element.
+
+412
+00:20:37.400 --> 00:20:39.660
+And sometimes you're going to have weird things
+
+413
+00:20:39.660 --> 00:20:41.320
+where you have a space,
+
+414
+00:20:41.320 --> 00:20:43.630
+and it thinks that that is the next Node.
+
+415
+00:20:43.630 --> 00:20:45.340
+Always use ElementSibling when
+
+416
+00:20:45.340 --> 00:20:47.323
+you're looking for an Element.
+
+417
+00:20:50.014 --> 00:20:51.690
+Then we will.
+
+418
+00:20:51.690 --> 00:20:53.790
+Let's let me make this a little bit wider,
+
+419
+00:20:53.790 --> 00:20:56.170
+so we can read what's going on here.
+
+420
+00:20:56.170 --> 00:20:58.530
+So we got current, previous and the next
+
+421
+00:20:58.530 --> 00:21:00.750
+is going to be the current.nextElementSibling
+
+422
+00:21:04.506 --> 00:21:06.839
+or slides.firstElementChild.
+
+423
+00:21:09.160 --> 00:21:12.480
+Okay, so that's what we're working with here.
+
+424
+00:21:12.480 --> 00:21:15.860
+We're going to do this quiet a bit more over the time
+
+425
+00:21:15.860 --> 00:21:18.580
+but if we were to now consol that log,
+
+426
+00:21:18.580 --> 00:21:21.710
+current, previous and next,
+
+427
+00:21:21.710 --> 00:21:24.423
+put those in a object so we can see their values.
+
+428
+00:21:25.400 --> 00:21:28.670
+Current is the first slide,
+
+429
+00:21:28.670 --> 00:21:31.393
+previous is the last slide,
+
+430
+00:21:32.230 --> 00:21:34.460
+and next is the second slide.
+
+431
+00:21:34.460 --> 00:21:35.293
+Good.
+
+432
+00:21:35.293 --> 00:21:38.110
+If we go to that first one, open it up.
+
+433
+00:21:38.110 --> 00:21:41.080
+16 is the current slide,
+
+434
+00:21:41.080 --> 00:21:44.780
+15 is the previous and 17 is the next.
+
+435
+00:21:44.780 --> 00:21:46.693
+Okay we're in good shape.
+
+436
+00:21:48.100 --> 00:21:53.100
+Next what we need to do is start applying classes to these.
+
+437
+00:21:53.123 --> 00:21:55.920
+Because you can see that this ones just not showing up
+
+438
+00:21:55.920 --> 00:21:57.300
+because it has no classes.
+
+439
+00:21:57.300 --> 00:22:01.160
+So we'll make a function called applyClasses.
+
+440
+00:22:01.160 --> 00:22:06.160
+And we will take the current and we'll take the classList
+
+441
+00:22:08.360 --> 00:22:11.930
+and we will add current.
+
+442
+00:22:11.930 --> 00:22:14.030
+Previous and next.
+
+443
+00:22:14.030 --> 00:22:17.920
+So this is going to be prev, and next.
+
+444
+00:22:17.920 --> 00:22:20.690
+I'm using command D there to select every instance
+
+445
+00:22:20.690 --> 00:22:23.160
+or the next instance of it.
+
+446
+00:22:23.160 --> 00:22:25.590
+And then when the thing starts,
+
+447
+00:22:25.590 --> 00:22:28.250
+we'll just run applyClasses as well.
+
+448
+00:22:28.250 --> 00:22:29.280
+And there we go, look at that.
+
+449
+00:22:29.280 --> 00:22:34.280
+Now it is showing us the first slide shows up.
+
+450
+00:22:34.400 --> 00:22:35.890
+If I were to inspect this,
+
+451
+00:22:35.890 --> 00:22:37.990
+we see that we have our current, our previous
+
+452
+00:22:37.990 --> 00:22:41.080
+and our next classes added to each of them.
+
+453
+00:22:41.080 --> 00:22:44.200
+Next we need a function called move,
+
+454
+00:22:44.200 --> 00:22:47.840
+that takes in a direction, so back or forwards,
+
+455
+00:22:47.840 --> 00:22:50.529
+or previous or next, something like that.
+
+456
+00:22:50.529 --> 00:22:53.680
+Essentially what needs to happen here
+
+457
+00:22:53.680 --> 00:22:57.940
+is that we need to remove the previous, the current
+
+458
+00:22:57.940 --> 00:23:00.560
+and the next classes from the previous,
+
+459
+00:23:00.560 --> 00:23:01.719
+the current and the next.
+
+460
+00:23:01.719 --> 00:23:06.719
+(chuckle) And then we need to add classes
+
+461
+00:23:06.870 --> 00:23:08.230
+to the next version of them.
+
+462
+00:23:08.230 --> 00:23:10.680
+So if I did this manually I could do it like this.
+
+463
+00:23:10.680 --> 00:23:13.250
+Remove that, oops slid.
+
+464
+00:23:13.250 --> 00:23:14.600
+Let's make that back to slide.
+
+465
+00:23:14.600 --> 00:23:16.913
+And then move this one, current.
+
+466
+00:23:19.790 --> 00:23:23.100
+And then the next is off.
+
+467
+00:23:23.100 --> 00:23:26.140
+Then what I can do is I go to this one
+
+468
+00:23:26.140 --> 00:23:28.690
+and add a class of previous.
+
+469
+00:23:28.690 --> 00:23:31.103
+I go to the 17 and a class of current.
+
+470
+00:23:32.030 --> 00:23:35.540
+And then I go to this one and add a class of next.
+
+471
+00:23:35.540 --> 00:23:38.130
+And what that does is it sets it up for the animation,l
+
+472
+00:23:38.130 --> 00:23:41.470
+if you hover over top of it you can see 16 is to the left,
+
+473
+00:23:41.470 --> 00:23:45.343
+18 is to the right, 17 is bang right in the middle.
+
+474
+00:23:47.570 --> 00:23:48.560
+All right.
+
+475
+00:23:48.560 --> 00:23:50.683
+So, first we need to do is
+
+476
+00:23:50.683 --> 00:23:55.683
+first strip all the classes off the current slides.
+
+477
+00:23:56.800 --> 00:23:59.600
+So this is kind of a nifty way to do it
+
+478
+00:23:59.600 --> 00:24:01.820
+rather than selecting the one with previous
+
+479
+00:24:01.820 --> 00:24:02.960
+or moving the class of previous
+
+480
+00:24:02.960 --> 00:24:04.640
+and selecting what's current.
+
+481
+00:24:04.640 --> 00:24:06.290
+We're going to sort of loop over them.
+
+482
+00:24:06.290 --> 00:24:09.520
+So we're going to make an array of classes to remove.
+
+483
+00:24:09.520 --> 00:24:13.830
+So classesToRemove is equal to an array.
+
+484
+00:24:13.830 --> 00:24:15.670
+And what are the classes we want to remove?
+
+485
+00:24:15.670 --> 00:24:20.670
+Well previous, current and next.
+
+486
+00:24:25.020 --> 00:24:27.320
+And then we will take our previous Element
+
+487
+00:24:28.360 --> 00:24:30.562
+and we'll take the classList and we'll call remove
+
+488
+00:24:30.562 --> 00:24:35.000
+and now what we have to do is remove will take
+
+489
+00:24:35.000 --> 00:24:36.950
+three arguments or five arguments,
+
+490
+00:24:36.950 --> 00:24:38.870
+as many classes as you want to remove,
+
+491
+00:24:38.870 --> 00:24:39.760
+those will be the arguments.
+
+492
+00:24:39.760 --> 00:24:44.760
+So prev, current and next.
+
+493
+00:24:45.200 --> 00:24:50.200
+And then we have to do that with current and next.
+
+494
+00:24:50.370 --> 00:24:51.960
+But look that's kind of annoying right?
+
+495
+00:24:51.960 --> 00:24:53.890
+Or we could just like, just pass it
+
+496
+00:24:53.890 --> 00:24:55.070
+I guess we don't really need to pass
+
+497
+00:24:55.070 --> 00:24:56.830
+current and next we just do that.
+
+498
+00:24:56.830 --> 00:24:59.810
+But what is even better is what we can do
+
+499
+00:24:59.810 --> 00:25:03.220
+is we can take this array of classes to remove
+
+500
+00:25:03.220 --> 00:25:05.653
+and just spread into that.
+
+501
+00:25:06.490 --> 00:25:09.960
+Spread into these ones.
+
+502
+00:25:09.960 --> 00:25:14.090
+And then they would remove all of those classes for it.
+
+503
+00:25:14.090 --> 00:25:17.280
+Similarly we could even create an array of Elements
+
+504
+00:25:17.280 --> 00:25:20.220
+prev, current, next.
+
+505
+00:25:20.220 --> 00:25:25.220
+And loop over those, and for each Element we will remove
+
+506
+00:25:27.810 --> 00:25:29.957
+the classesToRemove.
+
+507
+00:25:32.546 --> 00:25:33.420
+Woo!
+
+508
+00:25:33.420 --> 00:25:35.920
+So I decided not to go with that,
+
+509
+00:25:35.920 --> 00:25:38.585
+because that's a bit hot shot I think.
+
+510
+00:25:38.585 --> 00:25:41.240
+Like what's the harm in having three lines?
+
+511
+00:25:41.240 --> 00:25:42.140
+There's no harm.
+
+512
+00:25:42.140 --> 00:25:43.820
+It's a little bit more readable in this case
+
+513
+00:25:43.820 --> 00:25:46.393
+so totally fine to do that.
+
+514
+00:25:48.460 --> 00:25:51.210
+Then we need to figure out which direction are they going.
+
+515
+00:25:51.210 --> 00:25:54.810
+Are they going in the next one?
+
+516
+00:25:54.810 --> 00:25:57.290
+Or are they going to the previous one?
+
+517
+00:25:57.290 --> 00:26:02.290
+So say if the direction is equal to back,
+
+518
+00:26:02.590 --> 00:26:06.800
+so if their going backwards, then what we need to do
+
+519
+00:26:06.800 --> 00:26:11.733
+is we need to take all of these current ...
+
+520
+00:26:15.800 --> 00:26:17.910
+We need to take our three current,
+
+521
+00:26:17.910 --> 00:26:20.070
+previous and next variables.
+
+522
+00:26:20.070 --> 00:26:21.990
+Actually let me reorder that.
+
+523
+00:26:21.990 --> 00:26:23.010
+Previous, current and next.
+
+524
+00:26:23.010 --> 00:26:24.459
+And shift them by one.
+
+525
+00:26:24.459 --> 00:26:29.459
+So if we are going backwards, previous will become current,
+
+526
+00:26:30.400 --> 00:26:35.197
+current will become next, and 14 will become previous.
+
+527
+00:26:35.197 --> 00:26:37.340
+(laughing) It's a little bit confusing,
+
+528
+00:26:37.340 --> 00:26:41.690
+but we're essentially shifting everything one to the left.
+
+529
+00:26:41.690 --> 00:26:43.900
+Now this is kind of some neat work
+
+530
+00:26:43.900 --> 00:26:45.520
+that I'm going to do here.
+
+531
+00:26:45.520 --> 00:26:48.330
+There's a bit of a problem when you're reassigning variables
+
+532
+00:26:48.330 --> 00:26:50.780
+to be each other, because it will work like this.
+
+533
+00:26:50.780 --> 00:26:55.320
+We'll say, well, okay so previous
+
+534
+00:26:55.320 --> 00:27:00.293
+is equal to the current prev.prevElementSibling.
+
+535
+00:27:04.050 --> 00:27:07.970
+So the current is going to be equal to what previous was.
+
+536
+00:27:07.970 --> 00:27:11.120
+(laughing) So what we say prev,
+
+537
+00:27:11.120 --> 00:27:13.240
+but now we run into this problem
+
+538
+00:27:13.240 --> 00:27:16.240
+where we've already updated what previous is.
+
+539
+00:27:16.240 --> 00:27:19.100
+So how do we access the old previous?
+
+540
+00:27:19.100 --> 00:27:22.530
+So you can make a variable called const oldPrev
+
+541
+00:27:22.530 --> 00:27:25.190
+is equal to prev and then you can say that
+
+542
+00:27:25.190 --> 00:27:27.613
+current is equal to the oldPrev
+
+543
+00:27:27.613 --> 00:27:31.277
+and you probably wanted to shut this video off now and say,
+
+544
+00:27:31.277 --> 00:27:33.467
+"Screw it! I'll become a farmer,
+
+545
+00:27:33.467 --> 00:27:35.140
+"this doesn't make any sense."
+
+546
+00:27:35.140 --> 00:27:37.310
+So what I'm going to show you,
+
+547
+00:27:37.310 --> 00:27:41.870
+is using destructing to switch variables very easily.
+
+548
+00:27:41.870 --> 00:27:44.340
+So we will destructure the previous,
+
+549
+00:27:44.340 --> 00:27:47.250
+the current and the next variables
+
+550
+00:27:47.250 --> 00:27:50.650
+into and then we'll make an array of their new values.
+
+551
+00:27:50.650 --> 00:27:55.650
+So we will say, "Make an new array of the new values,
+
+552
+00:27:56.537 --> 00:28:01.537
+"and destructure them over and into the
+
+553
+00:28:03.627 --> 00:28:07.260
+"prev, current and next variables."
+
+554
+00:28:07.260 --> 00:28:09.810
+So what that means is that the first thing
+
+555
+00:28:09.810 --> 00:28:12.670
+I put in this array will be assigned to previous.
+
+556
+00:28:12.670 --> 00:28:14.740
+The second thing I put in the array will be current
+
+557
+00:28:14.740 --> 00:28:16.210
+and the third thing will be next.
+
+558
+00:28:16.210 --> 00:28:18.880
+So the first thing I put into the array
+
+559
+00:28:18.880 --> 00:28:22.417
+will be prev.previousElementSibling
+
+560
+00:28:24.450 --> 00:28:28.360
+and then if we're at the case where we're wrapping around
+
+561
+00:28:28.360 --> 00:28:29.990
+ah, we'll take care of that in a second.
+
+562
+00:28:29.990 --> 00:28:32.700
+Let's just keep this as simple as possible.
+
+563
+00:28:32.700 --> 00:28:35.440
+Then the current will be the previous
+
+564
+00:28:35.440 --> 00:28:39.670
+and the next will be the current.
+
+565
+00:28:39.670 --> 00:28:40.503
+Okay?
+
+566
+00:28:40.503 --> 00:28:42.900
+And then else, it's the opposite,
+
+567
+00:28:42.900 --> 00:28:44.747
+you can just duplicate this,
+
+568
+00:28:44.747 --> 00:28:49.747
+and we'll say that the previous is going to be the current.
+
+569
+00:28:50.870 --> 00:28:53.950
+The current is going to be the next
+
+570
+00:28:53.950 --> 00:28:57.220
+and the next is going to be the next,
+
+571
+00:28:57.220 --> 00:29:02.173
+the old next.nextElementSibling.
+
+572
+00:29:02.173 --> 00:29:03.180
+Whoo!
+
+573
+00:29:03.180 --> 00:29:05.678
+So just picture me drawing some arrows,
+
+574
+00:29:05.678 --> 00:29:07.845
+(whistle)
+
+575
+00:29:11.970 --> 00:29:12.930
+right into those.
+
+576
+00:29:12.930 --> 00:29:15.710
+So current goes into previous, next goes into current and
+
+577
+00:29:15.710 --> 00:29:16.700
+I know it's a little bit confusing,
+
+578
+00:29:16.700 --> 00:29:20.680
+but we are just shifting them all one lower.
+
+579
+00:29:20.680 --> 00:29:22.240
+And then we're just going to rerun
+
+580
+00:29:22.240 --> 00:29:25.100
+the applyClasses function, which will in turn
+
+581
+00:29:25.100 --> 00:29:27.817
+just add current, previous and next to them.
+
+582
+00:29:27.817 --> 00:29:31.050
+And that should work it for us.
+
+583
+00:29:31.050 --> 00:29:36.050
+So now we can take our prevButton and our nextButton
+
+584
+00:29:36.800 --> 00:29:38.513
+and hook up click events.
+
+585
+00:29:39.580 --> 00:29:42.670
+And we can do this right below here.
+
+586
+00:29:42.670 --> 00:29:46.437
+We'll say, "Listen, Event Listeners,"
+
+587
+00:29:47.400 --> 00:29:52.170
+prevButton to addEventListener, listen for a click
+
+588
+00:29:53.090 --> 00:29:55.220
+and when that happens we'll just run
+
+589
+00:29:55.220 --> 00:29:58.070
+a quick little inline function here that says move(back).
+
+590
+00:29:59.320 --> 00:30:04.320
+And then we'll duplicate that and say the nextButton
+
+591
+00:30:04.334 --> 00:30:08.390
+when clicked will run the move function,
+
+592
+00:30:08.390 --> 00:30:09.870
+we could say like forwards,
+
+593
+00:30:09.870 --> 00:30:11.340
+but in our case you don't have to pass it anything.
+
+594
+00:30:11.340 --> 00:30:14.320
+So we can just pass it reference to the move function
+
+595
+00:30:14.320 --> 00:30:15.540
+and it will run it for us.
+
+596
+00:30:15.540 --> 00:30:17.210
+So that's the difference there,
+
+597
+00:30:17.210 --> 00:30:19.930
+if you need to pass an argument to a function
+
+598
+00:30:19.930 --> 00:30:22.470
+then you need to run an arrow function here.
+
+599
+00:30:22.470 --> 00:30:27.010
+Or use call or apply, learn about that in the coming video.
+
+600
+00:30:27.010 --> 00:30:29.110
+I much prefer using the arrow function.
+
+601
+00:30:29.110 --> 00:30:31.350
+And then if you don't need to pass arguments
+
+602
+00:30:31.350 --> 00:30:34.163
+then you simply pass it, move function.
+
+603
+00:30:36.090 --> 00:30:39.280
+Now I think when we click this, whoo.
+
+604
+00:30:39.280 --> 00:30:40.863
+You see what's happening here?
+
+605
+00:30:42.650 --> 00:30:45.910
+We're going right through all of them.
+
+606
+00:30:45.910 --> 00:30:47.770
+Little bit of an error, what's going on here?
+
+607
+00:30:47.770 --> 00:30:52.770
+Cannot read property, classList of null.
+
+608
+00:30:52.790 --> 00:30:56.170
+Okay so that's the problem is when we hit the very end,
+
+609
+00:30:56.170 --> 00:30:58.840
+so look at this previous, current, next.
+
+610
+00:30:58.840 --> 00:31:01.940
+Fine, fine, fine, but what's going to
+
+611
+00:31:01.940 --> 00:31:03.433
+happen now where I hit it?
+
+612
+00:31:04.730 --> 00:31:06.180
+Now we've lost our next.
+
+613
+00:31:06.180 --> 00:31:08.240
+Our next should be slide one
+
+614
+00:31:08.240 --> 00:31:10.350
+but we've hit the end here
+
+615
+00:31:10.350 --> 00:31:12.470
+and then if I do that we lost our current
+
+616
+00:31:12.470 --> 00:31:14.530
+and now everything is, it's all broken.
+
+617
+00:31:14.530 --> 00:31:16.350
+Right, you see all the errors building up?
+
+618
+00:31:16.350 --> 00:31:19.470
+So we need to go and say, when we
+
+619
+00:31:19.470 --> 00:31:22.680
+have the edge case of previous
+
+620
+00:31:24.010 --> 00:31:26.740
+we need to say get the previousElementSibling
+
+621
+00:31:26.740 --> 00:31:30.900
+or the slides.lastElementChild.
+
+622
+00:31:31.835 --> 00:31:33.820
+And what that will do, see it just formatted it
+
+623
+00:31:33.820 --> 00:31:36.060
+on it's, on multiple lines now.
+
+624
+00:31:36.060 --> 00:31:41.060
+What this one will do is say, "Get the prev slide,
+
+625
+00:31:41.257 --> 00:31:46.257
+"if there is none, get the last slide
+
+626
+00:31:46.359 --> 00:31:50.707
+"from the entire slider for wrapping."
+
+627
+00:31:52.740 --> 00:31:55.630
+And then we'll do here is the opposite
+
+628
+00:31:56.860 --> 00:32:01.860
+so next is nextElementSibling or slides.firstElementChild.
+
+629
+00:32:02.929 --> 00:32:04.967
+We'll do a little comment here,
+
+630
+00:32:04.967 --> 00:32:09.967
+"Get the next slide, or if it's at the end,
+
+631
+00:32:12.287 --> 00:32:16.277
+"loop around and grab the first slide."
+
+632
+00:32:19.620 --> 00:32:21.493
+Now does it work?
+
+633
+00:32:23.140 --> 00:32:25.190
+Here's the big, boom!
+
+634
+00:32:25.190 --> 00:32:27.130
+Is it up here?
+
+635
+00:32:27.130 --> 00:32:32.130
+It is and it was nicely wrap around for us.
+
+636
+00:32:32.130 --> 00:32:33.780
+Which is good, let's go down to this one
+
+637
+00:32:33.780 --> 00:32:35.403
+and make sure that is working.
+
+638
+00:32:36.860 --> 00:32:38.310
+No, this ones not working.
+
+639
+00:32:38.310 --> 00:32:39.880
+Okay.
+
+640
+00:32:39.880 --> 00:32:41.180
+Why not?
+
+641
+00:32:41.180 --> 00:32:42.693
+Let's go to our console here.
+
+642
+00:32:46.330 --> 00:32:49.420
+Oh I think I might know, so these buttons aren't working.
+
+643
+00:32:49.420 --> 00:32:50.253
+Why not?
+
+644
+00:32:52.040 --> 00:32:54.250
+Let's look, oh look at this.
+
+645
+00:32:54.250 --> 00:32:57.570
+Classic rookie move by me here.
+
+646
+00:32:57.570 --> 00:33:01.580
+I have selected, I've used document.querySelector
+
+647
+00:33:01.580 --> 00:33:03.080
+and grab the button.
+
+648
+00:33:03.080 --> 00:33:06.940
+And what that does is I bet if I click this,
+
+649
+00:33:06.940 --> 00:33:11.090
+yeah look their both going based on these buttons
+
+650
+00:33:11.090 --> 00:33:12.800
+and then this one doesn't work at all.
+
+651
+00:33:12.800 --> 00:33:15.270
+And that's because I've used querySelector
+
+652
+00:33:15.270 --> 00:33:18.080
+and it just finds the first element on the page
+
+653
+00:33:18.080 --> 00:33:20.050
+and binds to that.
+
+654
+00:33:20.050 --> 00:33:23.560
+So that shouldn't be document, that should be our slider.
+
+655
+00:33:23.560 --> 00:33:26.160
+We need to look for these buttons,
+
+656
+00:33:26.160 --> 00:33:28.310
+inside of the actual slider itself.
+
+657
+00:33:28.310 --> 00:33:33.093
+And now they run all on their own.
+
+658
+00:33:38.490 --> 00:33:41.639
+So that is a basic slider, 63 lines of code.
+
+659
+00:33:41.639 --> 00:33:42.900
+It's a little bit confusing with the
+
+660
+00:33:42.900 --> 00:33:46.430
+prev and next and current, but quiet honestly
+
+661
+00:33:46.430 --> 00:33:48.930
+I use a slide deck for conferences
+
+662
+00:33:48.930 --> 00:33:50.700
+and that's pretty much all it is,
+
+663
+00:33:50.700 --> 00:33:52.010
+there's obviously key bindings
+
+664
+00:33:52.010 --> 00:33:53.910
+and things like that built into it as well.
+
+665
+00:33:53.910 --> 00:33:56.620
+Maybe that would be a nice challenge
+
+666
+00:33:56.620 --> 00:33:57.770
+for you to do right now,
+
+667
+00:33:57.770 --> 00:34:02.340
+is can you get your arrow keys working for that,
+
+668
+00:34:02.340 --> 00:34:05.630
+but only when someone is focused in on one of these Divs,
+
+669
+00:34:05.630 --> 00:34:08.240
+that would be kind of a interesting one to do.
+
+670
+00:34:08.240 --> 00:34:09.300
+So give that a shot,
+
+671
+00:34:09.300 --> 00:34:11.900
+we will revisit this when we hit prototypes.
+
+672
+00:34:11.900 --> 00:34:16.360
+These functions here, applyClasses, move and startSlider
+
+673
+00:34:16.360 --> 00:34:18.160
+these are going to be moving onto
+
+674
+00:34:18.160 --> 00:34:19.560
+what are called the prototype.
+
+675
+00:34:19.560 --> 00:34:20.560
+See you in that one.
+

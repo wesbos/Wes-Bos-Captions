@@ -1,0 +1,3582 @@
+﻿WEBVTT
+
+1
+00:00:00.685 --> 00:00:03.435
+(soothing music)
+
+2
+00:00:04.752 --> 00:00:07.752
+(whoa, whoaa, whoa)
+
+3
+00:00:08.886 --> 00:00:11.408
+(claps)
+
+4
+00:00:11.408 --> 00:00:13.070
+(whoa)
+
+5
+00:00:13.070 --> 00:00:14.830
+<v Instructor>Get ready to yell at your computer</v>
+
+6
+00:00:14.830 --> 00:00:17.100
+or play a bunch of music for this one.
+
+7
+00:00:17.100 --> 00:00:19.830
+This one is using the Web Audio API.
+
+8
+00:00:19.830 --> 00:00:21.323
+So sure, so cool.
+
+9
+00:00:22.220 --> 00:00:25.530
+There's this whole spectrum of JavaScript,
+
+10
+00:00:25.530 --> 00:00:28.620
+which is just working with audio,
+
+11
+00:00:28.620 --> 00:00:29.870
+which is really interesting.
+
+12
+00:00:29.870 --> 00:00:31.030
+I unfortunately don't know
+
+13
+00:00:31.030 --> 00:00:33.800
+a whole lot about how audio works.
+
+14
+00:00:33.800 --> 00:00:34.810
+But I was able to--
+
+15
+00:00:34.810 --> 00:00:36.960
+like I don't understand how frequencies and time work.
+
+16
+00:00:36.960 --> 00:00:40.280
+So, we built this like kind of a cool little visualizer.
+
+17
+00:00:40.280 --> 00:00:42.770
+We've got this which is frequency along
+
+18
+00:00:42.770 --> 00:00:47.700
+the bottom and then along the, this little. (uuh)
+
+19
+00:00:47.700 --> 00:00:52.420
+That thing is time data as is the audio that's coming in.
+
+20
+00:00:52.420 --> 00:00:55.440
+And we're just painting those to canvas.
+
+21
+00:00:55.440 --> 00:00:57.210
+The the end thing is,
+
+22
+00:00:57.210 --> 00:00:59.810
+probably around about 100 lines of code,
+
+23
+00:00:59.810 --> 00:01:00.840
+which is pretty cool.
+
+24
+00:01:00.840 --> 00:01:03.010
+So like, this is the kind of stuff that,
+
+25
+00:01:03.010 --> 00:01:04.300
+that I think is going to get you
+
+26
+00:01:04.300 --> 00:01:05.770
+really excited about JavaScript,
+
+27
+00:01:05.770 --> 00:01:08.210
+especially if you know how audio works,
+
+28
+00:01:08.210 --> 00:01:10.770
+and you're really into audio because there's all kinds
+
+29
+00:01:10.770 --> 00:01:14.580
+of API's for changing data about audio.
+
+30
+00:01:14.580 --> 00:01:17.560
+You could make like, one of those like voice modulators.
+
+31
+00:01:17.560 --> 00:01:18.890
+So you could prank call people,
+
+32
+00:01:18.890 --> 00:01:21.710
+lots of kind of cool things you can do with it.
+
+33
+00:01:21.710 --> 00:01:23.720
+So, let's get into it.
+
+34
+00:01:23.720 --> 00:01:28.700
+We are in 83, dash audio visualizer a oscilloscope.
+
+35
+00:01:28.700 --> 00:01:30.560
+I think that's what this thing is called.
+
+36
+00:01:30.560 --> 00:01:33.050
+And I want you to open that up in your browser
+
+37
+00:01:33.050 --> 00:01:35.240
+and just go ahead and type, npm install.
+
+38
+00:01:35.240 --> 00:01:38.320
+When you're in that folder. take a quick look.
+
+39
+00:01:38.320 --> 00:01:40.350
+There's nothing about parcel js in here
+
+40
+00:01:40.350 --> 00:01:42.710
+as a dev dependency and a start script,
+
+41
+00:01:42.710 --> 00:01:43.543
+which will start it up
+
+42
+00:01:43.543 --> 00:01:46.750
+as well as our browsers list that we've got going on here.
+
+43
+00:01:46.750 --> 00:01:49.600
+And let's take a look at our index, that HTML.
+
+44
+00:01:49.600 --> 00:01:51.880
+We've got a blank canvas,
+
+45
+00:01:51.880 --> 00:01:55.060
+and we have a script tag to the sound.
+
+46
+00:01:55.060 --> 00:01:58.550
+And then finally, we have just some very basic styles,
+
+47
+00:01:58.550 --> 00:02:00.680
+which I'm using to stretch out the canvas
+
+48
+00:02:00.680 --> 00:02:05.260
+to whatever the width or the height is of,
+
+49
+00:02:05.260 --> 00:02:07.700
+of this thing just so it looks good no matter,
+
+50
+00:02:07.700 --> 00:02:08.533
+no matter where you're at.
+
+51
+00:02:08.533 --> 00:02:11.433
+Ooh, that looks kind of ribbony, I like that.
+
+52
+00:02:12.690 --> 00:02:16.580
+Now, this is going to be working off of the microphone,
+
+53
+00:02:16.580 --> 00:02:18.544
+but if you want it to go to music.
+
+54
+00:02:18.544 --> 00:02:23.544
+♪The lines our hearts are paved in, Form a constellation ♪
+
+55
+00:02:27.027 --> 00:02:28.320
+And that cool.
+
+56
+00:02:28.320 --> 00:02:31.000
+So, if you want it to go to music,
+
+57
+00:02:31.000 --> 00:02:32.080
+you have a couple options.
+
+58
+00:02:32.080 --> 00:02:36.070
+There are API's to pipe it in from an audio element.
+
+59
+00:02:36.070 --> 00:02:37.220
+I'm not going to go into those.
+
+60
+00:02:37.220 --> 00:02:39.990
+I'm just doing microphone right now.
+
+61
+00:02:39.990 --> 00:02:42.453
+Then your other options are that you can just,
+
+62
+00:02:43.420 --> 00:02:45.590
+unplug your headphones and play your music
+
+63
+00:02:45.590 --> 00:02:47.240
+over your speakers and that will make it back
+
+64
+00:02:47.240 --> 00:02:48.980
+into your microphone.
+
+65
+00:02:48.980 --> 00:02:51.100
+And then finally, the final option is
+
+66
+00:02:51.100 --> 00:02:53.260
+I use this little app called loopback
+
+67
+00:02:53.260 --> 00:02:56.020
+and it allows me to take apps like Spotify
+
+68
+00:02:56.020 --> 00:02:59.040
+and pipe that into my microphone.
+
+69
+00:02:59.040 --> 00:03:02.070
+I have like this Virtual interface from my microphone
+
+70
+00:03:02.070 --> 00:03:04.100
+that I use because I have multiple microphones
+
+71
+00:03:04.100 --> 00:03:04.933
+and they all go in.
+
+72
+00:03:04.933 --> 00:03:07.600
+So that's a paid app, you probably don't wanna use that.
+
+73
+00:03:07.600 --> 00:03:09.160
+But that's just sort of how that works.
+
+74
+00:03:09.160 --> 00:03:10.307
+That's how I'm doing it.
+
+75
+00:03:10.307 --> 00:03:12.460
+How I'm recording this tutorial.
+
+76
+00:03:12.460 --> 00:03:14.373
+So, let's open up sound.js,
+
+77
+00:03:15.350 --> 00:03:19.110
+and first thing that we wanna do is set up our canvas.
+
+78
+00:03:19.110 --> 00:03:24.110
+So, we need a width and a height variables here.
+
+79
+00:03:24.190 --> 00:03:28.330
+And this width and height actually doesn't matter that much.
+
+80
+00:03:28.330 --> 00:03:30.400
+If you do a lower number,
+
+81
+00:03:30.400 --> 00:03:33.910
+it's going to be much more responsive.
+
+82
+00:03:33.910 --> 00:03:36.220
+And if you do a higher number,
+
+83
+00:03:36.220 --> 00:03:38.800
+it's going to really slow down your computer.
+
+84
+00:03:38.800 --> 00:03:43.590
+So, I was running mine at like 2500 pixels by 25,
+
+85
+00:03:43.590 --> 00:03:44.890
+and it looked great.
+
+86
+00:03:44.890 --> 00:03:47.160
+It was probably even more than I needed.
+
+87
+00:03:47.160 --> 00:03:50.130
+But it was just slowing down my computer way too much.
+
+88
+00:03:50.130 --> 00:03:53.980
+So, I found at least on my computer 1500 by 1500.
+
+89
+00:03:53.980 --> 00:03:57.490
+If you find that this is too much for your computer,
+
+90
+00:03:57.490 --> 00:03:59.810
+just lower this value.
+
+91
+00:03:59.810 --> 00:04:03.420
+And at all the calculations we do will be based off of this.
+
+92
+00:04:03.420 --> 00:04:04.920
+So there's no sweat in being able
+
+93
+00:04:04.920 --> 00:04:07.140
+to change this back and forth.
+
+94
+00:04:07.140 --> 00:04:09.700
+Next we need is to get a canvas element.
+
+95
+00:04:09.700 --> 00:04:14.700
+So say document.querySelector, will grab the canvas.
+
+96
+00:04:16.490 --> 00:04:18.913
+And then we need the context.
+
+97
+00:04:20.350 --> 00:04:23.260
+And that will cc Canvas.getcontext.
+
+98
+00:04:24.625 --> 00:04:26.053
+Will get the 2d canvas.
+
+99
+00:04:27.050 --> 00:04:28.880
+And then we'll size up our canvas
+
+100
+00:04:28.880 --> 00:04:30.570
+to be the same height and width
+
+101
+00:04:30.570 --> 00:04:31.860
+as what we're expecting here.
+
+102
+00:04:31.860 --> 00:04:34.663
+So, say canvas.width is equal to WIDTH.
+
+103
+00:04:36.340 --> 00:04:40.463
+And Canvas.height is equal to Canvas height.
+
+104
+00:04:42.970 --> 00:04:45.470
+Then once your npm install has finished,
+
+105
+00:04:45.470 --> 00:04:47.503
+we can go ahead and npm start that.
+
+106
+00:04:50.350 --> 00:04:52.750
+Open it up in your browser,
+
+107
+00:04:52.750 --> 00:04:55.090
+and you shouldn't be able to see anything, just yet.
+
+108
+00:04:55.090 --> 00:04:57.340
+So, there's there's kinda two parts that's,
+
+109
+00:04:57.340 --> 00:04:59.260
+that's gonna go on here or are three parts.
+
+110
+00:04:59.260 --> 00:05:01.860
+There's first, we actually need to get the audio
+
+111
+00:05:01.860 --> 00:05:04.640
+and the data about the frequency
+
+112
+00:05:04.640 --> 00:05:06.880
+and the time and everything like that.
+
+113
+00:05:06.880 --> 00:05:09.310
+Then we wanna draw the frequency bars
+
+114
+00:05:09.310 --> 00:05:11.060
+that are down here at the bottom.
+
+115
+00:05:11.060 --> 00:05:14.100
+And then we also want to draw the time data,
+
+116
+00:05:14.100 --> 00:05:17.550
+which is this little jumpy guy in the middle there.
+
+117
+00:05:17.550 --> 00:05:19.810
+So let's do the audio first,
+
+118
+00:05:19.810 --> 00:05:21.350
+then we'll do one of the other
+
+119
+00:05:21.350 --> 00:05:24.116
+and then we'll do the finally the last one.
+
+120
+00:05:24.116 --> 00:05:29.073
+So, we need to make an async function called getAudio.
+
+121
+00:05:31.900 --> 00:05:34.700
+And we need to get access to the user's microphone.
+
+122
+00:05:34.700 --> 00:05:36.530
+That's why I'm running this on a server
+
+123
+00:05:36.530 --> 00:05:39.050
+because it needs to be over a secure origin.
+
+124
+00:05:39.050 --> 00:05:43.650
+Secure origin is something that is HTTPS, or local host.
+
+125
+00:05:43.650 --> 00:05:45.520
+Local host is also secure origin.
+
+126
+00:05:45.520 --> 00:05:47.230
+The browser will not allow you to have access
+
+127
+00:05:47.230 --> 00:05:49.970
+to a webcam or microphone or any of those API's
+
+128
+00:05:49.970 --> 00:05:51.430
+unless you're on a secure origin.
+
+129
+00:05:51.430 --> 00:05:54.700
+So, the const stream is equal to await.
+
+130
+00:05:54.700 --> 00:05:58.777
+And we'll say a navigator.mediaDevices.getUserMedia.
+
+131
+00:06:00.590 --> 00:06:03.360
+This is exactly the same API we used
+
+132
+00:06:03.360 --> 00:06:05.290
+when we're doing webcam stuff,
+
+133
+00:06:05.290 --> 00:06:09.840
+except in here we're going to pass audio is equal to true.
+
+134
+00:06:09.840 --> 00:06:11.620
+So we only want audio in this case,
+
+135
+00:06:11.620 --> 00:06:14.270
+we don't want access to use webcam.
+
+136
+00:06:14.270 --> 00:06:15.960
+You could actually, that be kind of cool.
+
+137
+00:06:15.960 --> 00:06:19.070
+You could like paint these bars over top of.
+
+138
+00:06:19.070 --> 00:06:21.030
+Oh man, there's so much cool stuff you could do with this.
+
+139
+00:06:21.030 --> 00:06:22.610
+We're not, we're not doing that right now though,
+
+140
+00:06:22.610 --> 00:06:25.030
+that's gonna run away from us.
+
+141
+00:06:25.030 --> 00:06:29.920
+Then we need to get audio context and in the browser,
+
+142
+00:06:29.920 --> 00:06:32.240
+the audio context is where all
+
+143
+00:06:32.240 --> 00:06:35.710
+of the processing of the audio will be done.
+
+144
+00:06:35.710 --> 00:06:37.260
+So we need to make a new one of those.
+
+145
+00:06:37.260 --> 00:06:42.260
+So, we'll say const audioCtx, is equal to new AudioContext.
+
+146
+00:06:44.960 --> 00:06:47.370
+Then we need to create an analyzer.
+
+147
+00:06:47.370 --> 00:06:49.960
+So, we've have this audio contacts and inside of there,
+
+148
+00:06:49.960 --> 00:06:51.440
+we can create an analyzer.
+
+149
+00:06:51.440 --> 00:06:53.740
+Now, this analyzer needs to be accessed.
+
+150
+00:06:53.740 --> 00:06:55.210
+We're gonna have three functions.
+
+151
+00:06:55.210 --> 00:06:57.620
+We're gonna have one function for getting the audio,
+
+152
+00:06:57.620 --> 00:07:01.170
+will have another function for drawing frequency bars.
+
+153
+00:07:01.170 --> 00:07:02.510
+And then we'll have another function
+
+154
+00:07:02.510 --> 00:07:04.120
+for drawing the time bars.
+
+155
+00:07:04.120 --> 00:07:08.630
+And all three of those need access to this audio context.
+
+156
+00:07:08.630 --> 00:07:11.910
+So what I'm gonna do is I'm gonna create a variable up here,
+
+157
+00:07:11.910 --> 00:07:14.170
+that is just scoped to this module.
+
+158
+00:07:14.170 --> 00:07:16.730
+And that will be, that will allow my other functions.
+
+159
+00:07:16.730 --> 00:07:19.470
+We could also pass it from one function or another.
+
+160
+00:07:19.470 --> 00:07:22.610
+But because this is so complex,
+
+161
+00:07:22.610 --> 00:07:24.610
+I wanna make it as simple as possible.
+
+162
+00:07:24.610 --> 00:07:28.080
+So, we're gonna do is scope it to the sound.js module.
+
+163
+00:07:28.080 --> 00:07:30.043
+So, we'll say let analyzer,
+
+164
+00:07:32.690 --> 00:07:33.660
+up here,
+
+165
+00:07:33.660 --> 00:07:35.280
+and then that just creates the variable.
+
+166
+00:07:35.280 --> 00:07:36.860
+Don't say that 'cause you're purple prettier
+
+167
+00:07:36.860 --> 00:07:38.580
+is gonna convert it to a const.
+
+168
+00:07:38.580 --> 00:07:40.803
+And then here will say analyzer,
+
+169
+00:07:44.880 --> 00:07:47.223
+is equal to, we'll take our audio context.
+
+170
+00:07:48.800 --> 00:07:52.060
+And there's a method on it called create analyzer.
+
+171
+00:07:52.060 --> 00:07:54.410
+So, there's a bunch of methods create gain,
+
+172
+00:07:54.410 --> 00:07:57.210
+create media stream, create buffer, buffer source,
+
+173
+00:07:57.210 --> 00:08:02.210
+create analyzer, create by quad filter create channel merge.
+
+174
+00:08:02.280 --> 00:08:05.660
+And if there's probably some musicians
+
+175
+00:08:05.660 --> 00:08:07.610
+watching this right now and,
+
+176
+00:08:07.610 --> 00:08:09.630
+and like you totally know what those things are,
+
+177
+00:08:09.630 --> 00:08:12.560
+and I would love to see what you do with them.
+
+178
+00:08:12.560 --> 00:08:16.060
+I unfortunately don't know a biquad filter is,
+
+179
+00:08:16.060 --> 00:08:18.120
+so I can't do anything with it.
+
+180
+00:08:18.120 --> 00:08:21.773
+But I do know that we can create an analyzer like this.
+
+181
+00:08:23.690 --> 00:08:26.470
+And finally, we need to create a source,
+
+182
+00:08:26.470 --> 00:08:28.380
+which takes our stream
+
+183
+00:08:29.630 --> 00:08:33.740
+and will pipe that into the audio context.
+
+184
+00:08:33.740 --> 00:08:36.970
+So, the sort of whole idea with these audio context things
+
+185
+00:08:36.970 --> 00:08:41.160
+is that you can take in data, pipe it through your context,
+
+186
+00:08:41.160 --> 00:08:43.260
+do stuff to it change,
+
+187
+00:08:43.260 --> 00:08:46.070
+change the frequencies, change the time,
+
+188
+00:08:46.070 --> 00:08:48.330
+you can, you can make some pretty fun little sound effects
+
+189
+00:08:48.330 --> 00:08:50.390
+with it and then you pipe the data out,
+
+190
+00:08:50.390 --> 00:08:54.190
+very much like if you had physical audio devices.
+
+191
+00:08:54.190 --> 00:08:56.620
+You'd type data into one out of the other
+
+192
+00:08:56.620 --> 00:08:59.950
+into one, like this microphone right now is being piped
+
+193
+00:08:59.950 --> 00:09:03.680
+into a couple different rack mounted things,
+
+194
+00:09:03.680 --> 00:09:06.480
+and then finally into my computer after that is done.
+
+195
+00:09:06.480 --> 00:09:09.263
+So, we'll take our audio context.
+
+196
+00:09:10.530 --> 00:09:11.810
+And we
+
+197
+00:09:13.910 --> 00:09:17.583
+will call a method called createMediaStreamSource.
+
+198
+00:09:18.466 --> 00:09:21.380
+And then we pass it, the source or sorry, not the source,
+
+199
+00:09:21.380 --> 00:09:25.440
+the stream that we got from the user
+
+200
+00:09:25.440 --> 00:09:29.850
+when they had gone ahead and allowed access to the webcam.
+
+201
+00:09:29.850 --> 00:09:30.900
+You see this little red dot.
+
+202
+00:09:30.900 --> 00:09:33.760
+That means that it has access to my webcam.
+
+203
+00:09:33.760 --> 00:09:35.110
+We wanna to stick that in a variable.
+
+204
+00:09:35.110 --> 00:09:39.440
+So, will say const source is equal to audio context
+
+205
+00:09:39.440 --> 00:09:40.880
+that created media stream,
+
+206
+00:09:40.880 --> 00:09:45.880
+and then we take our source and connect it to the analyzer,
+
+207
+00:09:47.310 --> 00:09:52.310
+and that should have wired everything up for us.
+
+208
+00:09:52.610 --> 00:09:53.870
+Next, what we need to do is,
+
+209
+00:09:53.870 --> 00:09:55.650
+now that we have this analyzer,
+
+210
+00:09:55.650 --> 00:10:00.650
+we need to figure out how much data we want access to.
+
+211
+00:10:00.810 --> 00:10:04.380
+Because you can, you can get really nitty gritty,
+
+212
+00:10:04.380 --> 00:10:05.890
+you can see like right now,
+
+213
+00:10:05.890 --> 00:10:07.490
+see how many like little bars,
+
+214
+00:10:07.490 --> 00:10:09.850
+I'm sampling a lot of data with that.
+
+215
+00:10:09.850 --> 00:10:12.010
+And I'm just gonna go ahead and change this
+
+216
+00:10:12.010 --> 00:10:13.850
+to something even more.
+
+217
+00:10:13.850 --> 00:10:15.133
+There, I just changed it and
+
+218
+00:10:15.133 --> 00:10:15.966
+Wooh!
+
+219
+00:10:15.966 --> 00:10:18.260
+Look at how thin these little bars are,
+
+220
+00:10:18.260 --> 00:10:21.618
+and look at how much data we're collecting about the time.
+
+221
+00:10:21.618 --> 00:10:23.535
+(whoa)
+
+222
+00:10:25.550 --> 00:10:27.060
+And then on the flip side,
+
+223
+00:10:27.060 --> 00:10:30.450
+I could sample only a little bit of data
+
+224
+00:10:30.450 --> 00:10:32.860
+from the Musers microphone,
+
+225
+00:10:32.860 --> 00:10:35.080
+and that's very low-res, right.
+
+226
+00:10:35.080 --> 00:10:37.610
+Like I've only got a couple of different bars here,
+
+227
+00:10:37.610 --> 00:10:40.300
+in this little time thing is, (makes noise)
+
+228
+00:10:40.300 --> 00:10:41.340
+going on all over the place.
+
+229
+00:10:41.340 --> 00:10:43.470
+So, this is up to us.
+
+230
+00:10:43.470 --> 00:10:45.380
+How much data do we wanna collect?
+
+231
+00:10:45.380 --> 00:10:49.003
+So, say how much data should we collect?
+
+232
+00:10:50.140 --> 00:10:54.800
+And we take our analyzer and we set the fft.Size.
+
+233
+00:10:55.810 --> 00:10:57.303
+If you wanna know what that is,
+
+234
+00:10:57.303 --> 00:10:58.373
+just look it up.
+
+235
+00:11:01.490 --> 00:11:05.640
+The fftSize property of analyzer node interfaces unsigned,
+
+236
+00:11:05.640 --> 00:11:08.220
+long value and represents the window size
+
+237
+00:11:08.220 --> 00:11:12.870
+and samples when performing a Fast Fourier Transform.
+
+238
+00:11:12.870 --> 00:11:16.453
+So, if you don't know what that is, like me, it's this.
+
+239
+00:11:18.300 --> 00:11:21.320
+You can you can go to Wikipedia and read up on that.
+
+240
+00:11:21.320 --> 00:11:24.480
+But as far as I can understand this is how much data
+
+241
+00:11:25.770 --> 00:11:28.430
+out off this microphone should we be sampling,
+
+242
+00:11:28.430 --> 00:11:30.770
+and what we'll do is we'll take two,
+
+243
+00:11:30.770 --> 00:11:32.870
+and we'll run to the power of,
+
+244
+00:11:32.870 --> 00:11:36.020
+I found that 10 is more than enough for me.
+
+245
+00:11:36.020 --> 00:11:39.520
+Right now I'm running this at two to the power of five.
+
+246
+00:11:39.520 --> 00:11:41.680
+Let me switch it over to to the power of 14.
+
+247
+00:11:41.680 --> 00:11:44.010
+So, these are just like, these are huge numbers
+
+248
+00:11:44.010 --> 00:11:45.940
+and that's why I'm doing to the power of
+
+249
+00:11:45.940 --> 00:11:48.440
+and that's how you do the power of in JavaScript.
+
+250
+00:11:48.440 --> 00:11:52.173
+It's times times, so two to the power of two.
+
+251
+00:11:53.360 --> 00:11:54.260
+Unexpected too
+
+252
+00:11:54.260 --> 00:11:55.440
+Oh, I did too many, there we go.
+
+253
+00:11:55.440 --> 00:11:56.780
+That's obviously four but then
+
+254
+00:11:56.780 --> 00:11:59.020
+to the power of three is eight.
+
+255
+00:11:59.020 --> 00:12:00.990
+This is math class, all over again.
+
+256
+00:12:00.990 --> 00:12:03.930
+So, two to the power of 10 is 1024.
+
+257
+00:12:03.930 --> 00:12:06.840
+That's how many, how many little pieces
+
+258
+00:12:06.840 --> 00:12:08.580
+of data we are sampling.
+
+259
+00:12:08.580 --> 00:12:10.570
+And the reason why we do two
+
+260
+00:12:10.570 --> 00:12:14.540
+is so that they all will stay in as bits.
+
+261
+00:12:14.540 --> 00:12:16.570
+So, if you look at like a gigabyte,
+
+262
+00:12:16.570 --> 00:12:21.570
+it's not actually 1000 megabytes, it's 1024 megabytes.
+
+263
+00:12:22.750 --> 00:12:24.750
+All right, now, we've got that.
+
+264
+00:12:24.750 --> 00:12:27.020
+You can obviously change that too.
+
+265
+00:12:27.020 --> 00:12:29.440
+You can play with it once we have it up and running.
+
+266
+00:12:29.440 --> 00:12:34.440
+Now let's go ahead and pull the data off the audio.
+
+267
+00:12:35.980 --> 00:12:37.610
+So, will say const timeData.
+
+268
+00:12:37.610 --> 00:12:38.540
+Let's do the Time dead.
+
+269
+00:12:38.540 --> 00:12:40.940
+Time data is this one, that's streaming across.
+
+270
+00:12:40.940 --> 00:12:43.350
+You can see as I talk,
+
+271
+00:12:43.350 --> 00:12:45.840
+you can still visualize it a second or two after that,
+
+272
+00:12:45.840 --> 00:12:49.150
+and obviously the bigger that we make this,
+
+273
+00:12:49.150 --> 00:12:52.113
+like let me do two to the power of 50.
+
+274
+00:12:53.147 --> 00:12:54.899
+(Whoo, whoo, whoo)
+
+275
+00:12:54.899 --> 00:12:57.350
+Oh, I broke it, It doesn't go that high.
+
+276
+00:13:00.380 --> 00:13:01.780
+It's two to the power of 20.
+
+277
+00:13:03.262 --> 00:13:05.179
+(Whoo)
+
+278
+00:13:07.305 --> 00:13:09.240
+(Whoo, whooo)
+
+279
+00:13:09.240 --> 00:13:12.840
+That's two to the power of 15.
+
+280
+00:13:12.840 --> 00:13:14.410
+And then if I make it really slow,
+
+281
+00:13:14.410 --> 00:13:16.600
+like two to the power of five,
+
+282
+00:13:16.600 --> 00:13:18.220
+it's almost gone immediately.
+
+283
+00:13:18.220 --> 00:13:20.550
+So, what we'll do here is we'll grab
+
+284
+00:13:20.550 --> 00:13:24.110
+that time data into an array.
+
+285
+00:13:24.110 --> 00:13:26.210
+And this is, this is kind of interesting.
+
+286
+00:13:26.210 --> 00:13:30.010
+It uses a different type of array that you often only see
+
+287
+00:13:30.010 --> 00:13:35.010
+this array when working with very, very large sets of data.
+
+288
+00:13:36.950 --> 00:13:40.817
+So, we say time data is equal to new
+
+289
+00:13:40.817 --> 00:13:41.650
+Uint8Array
+
+290
+00:13:47.290 --> 00:13:52.247
+and then we pass it the analyzer. frequencyBinCount.
+
+291
+00:13:57.990 --> 00:13:58.880
+Let's break that down.
+
+292
+00:13:58.880 --> 00:14:01.000
+So, what is this Uint8array?
+
+293
+00:14:04.490 --> 00:14:06.470
+It's a typed array to represent an array
+
+294
+00:14:06.470 --> 00:14:09.140
+of 8-bit unsigned integers.
+
+295
+00:14:09.140 --> 00:14:11.610
+The contents are initialized to zero.
+
+296
+00:14:11.610 --> 00:14:14.080
+Once established, you can reference elements in the array
+
+297
+00:14:14.080 --> 00:14:16.993
+or use standard array syntax to get into it.
+
+298
+00:14:18.180 --> 00:14:19.650
+So what does that mean?
+
+299
+00:14:19.650 --> 00:14:24.650
+Well, the data that we're getting back from the time data
+
+300
+00:14:25.120 --> 00:14:27.360
+is eight bits or one byte,
+
+301
+00:14:27.360 --> 00:14:29.550
+and this is getting, this is getting real nerdy.
+
+302
+00:14:29.550 --> 00:14:32.640
+But essentially, if you have an array,
+
+303
+00:14:32.640 --> 00:14:34.970
+normal arrays, you can put as much data
+
+304
+00:14:34.970 --> 00:14:36.940
+as you want in every single item.
+
+305
+00:14:36.940 --> 00:14:39.990
+With this special kind of Uint8array,
+
+306
+00:14:39.990 --> 00:14:44.990
+each item in the array can only ever be one bit or eight.
+
+307
+00:14:45.050 --> 00:14:46.740
+Sorry, eight bits, or one bite.
+
+308
+00:14:46.740 --> 00:14:49.270
+Eight bits is one bite.
+
+309
+00:14:49.270 --> 00:14:51.630
+And what that allows us to do is if we know ahead of time,
+
+310
+00:14:51.630 --> 00:14:53.050
+how big each of them are,
+
+311
+00:14:53.050 --> 00:14:56.800
+we can make really big arrays and they're also there types,
+
+312
+00:14:56.800 --> 00:14:58.880
+meaning that we're not accidentally
+
+313
+00:14:58.880 --> 00:14:59.930
+gonna put some data in there.
+
+314
+00:14:59.930 --> 00:15:01.320
+That doesn't work for us.
+
+315
+00:15:01.320 --> 00:15:04.850
+And that allows us to do really heavy duty lifting,
+
+316
+00:15:04.850 --> 00:15:07.250
+like data analysis.
+
+317
+00:15:07.250 --> 00:15:09.450
+You also see these special types of arrays
+
+318
+00:15:09.450 --> 00:15:11.380
+when working with graphics, as well.
+
+319
+00:15:11.380 --> 00:15:13.700
+So, this time data as a new array
+
+320
+00:15:13.700 --> 00:15:15.680
+that is data about the time.
+
+321
+00:15:15.680 --> 00:15:18.450
+So if we go ahead and console log that time data,
+
+322
+00:15:18.450 --> 00:15:22.123
+I believe we can just run get audio on page load.
+
+323
+00:15:24.040 --> 00:15:27.900
+And this should give us one array of audio.
+
+324
+00:15:27.900 --> 00:15:29.000
+So let's check it out.
+
+325
+00:15:31.410 --> 00:15:33.950
+Uncaught in promise, permission denied.
+
+326
+00:15:33.950 --> 00:15:36.020
+Okay, so that's kind of interesting right here.
+
+327
+00:15:36.020 --> 00:15:38.793
+So this get user media, it was denied by me.
+
+328
+00:15:39.630 --> 00:15:42.520
+So, I'm gonna make a handle error.
+
+329
+00:15:42.520 --> 00:15:45.560
+How's the error and we'll just say console.log,
+
+330
+00:15:45.560 --> 00:15:50.560
+you must give access to your mic in order to proceed.
+
+331
+00:15:54.830 --> 00:15:57.623
+We will go here and just catch,
+
+332
+00:15:59.120 --> 00:16:00.223
+handle that error.
+
+333
+00:16:01.810 --> 00:16:03.670
+And now says you must get access
+
+334
+00:16:03.670 --> 00:16:06.260
+to your mic in order to proceed.
+
+335
+00:16:06.260 --> 00:16:09.093
+So I'm gonna click on this and click Allow.
+
+336
+00:16:10.850 --> 00:16:11.840
+And here we go.
+
+337
+00:16:11.840 --> 00:16:14.130
+So, you'll see that we get an array of,
+
+338
+00:16:14.130 --> 00:16:15.930
+they're all zeros initially.
+
+339
+00:16:15.930 --> 00:16:19.840
+But as we start talking, and as we keep sampling this data,
+
+340
+00:16:19.840 --> 00:16:23.760
+this is gonna fill up with a bunch of numbers that represent
+
+341
+00:16:23.760 --> 00:16:26.790
+the frequencies and the time data in what we say.
+
+342
+00:16:26.790 --> 00:16:28.350
+So, we'll get into that in just a second.
+
+343
+00:16:28.350 --> 00:16:29.670
+Let's make the second one as well,
+
+344
+00:16:29.670 --> 00:16:34.670
+we'll make a frequency data array as well new Uint8array.
+
+345
+00:16:37.410 --> 00:16:41.403
+And then we take the analyzer.frequencyBinCount as well.
+
+346
+00:16:42.370 --> 00:16:45.820
+And now we've got these two arrays that are full of data.
+
+347
+00:16:45.820 --> 00:16:47.700
+Let's try this one again.
+
+348
+00:16:47.700 --> 00:16:48.723
+console log it.
+
+349
+00:16:49.610 --> 00:16:51.520
+Next, what we're gonna do is we're going
+
+350
+00:16:51.520 --> 00:16:54.986
+to make a function called drawTimeData.
+
+351
+00:16:54.986 --> 00:16:57.293
+And that takes in a time data variable.
+
+352
+00:16:59.180 --> 00:17:02.660
+And this thing is just going to run as,
+
+353
+00:17:02.660 --> 00:17:04.910
+as frequently as it possibly can.
+
+354
+00:17:04.910 --> 00:17:06.040
+So what we'll do here is,
+
+355
+00:17:06.040 --> 00:17:09.257
+we'll initially call it, so say drawTimeData.
+
+356
+00:17:10.460 --> 00:17:12.293
+And we'll pass it, our time data.
+
+357
+00:17:15.330 --> 00:17:16.630
+And then this function,
+
+358
+00:17:16.630 --> 00:17:19.013
+we can just console.log the timeData.
+
+359
+00:17:20.030 --> 00:17:25.030
+And then we can, we need to call itself as soon as possible.
+
+360
+00:17:25.810 --> 00:17:28.390
+And for that, what we'll use is
+
+361
+00:17:29.890 --> 00:17:31.310
+a request animation frame.
+
+362
+00:17:31.310 --> 00:17:32.410
+So what we'll say is,
+
+363
+00:17:32.410 --> 00:17:34.840
+hey, browser next time you're going to repaint something,
+
+364
+00:17:34.840 --> 00:17:37.930
+or next time, it's possible to paint to the screen again,
+
+365
+00:17:37.930 --> 00:17:40.120
+can you call this draw time data again?
+
+366
+00:17:40.120 --> 00:17:42.437
+So say requestAnimationFrame.
+
+367
+00:17:46.150 --> 00:17:46.983
+And when that runs,
+
+368
+00:17:46.983 --> 00:17:48.503
+we'll run a little inline function here.
+
+369
+00:17:48.503 --> 00:17:52.310
+will do an arrow that says, drawTimeData.
+
+370
+00:17:54.150 --> 00:17:57.150
+And we'll pass it
+
+371
+00:17:57.150 --> 00:18:00.750
+the timeData again.
+
+372
+00:18:00.750 --> 00:18:02.170
+Now when I refresh,
+
+373
+00:18:02.170 --> 00:18:04.260
+you'll see we've got this just streaming in.
+
+374
+00:18:04.260 --> 00:18:05.093
+Its console logging.
+
+375
+00:18:05.093 --> 00:18:06.480
+It's all zeros right now,
+
+376
+00:18:06.480 --> 00:18:08.100
+because it was zeros initially,
+
+377
+00:18:08.100 --> 00:18:10.690
+but we have another method that will allow us
+
+378
+00:18:10.690 --> 00:18:13.550
+to pull that data out of it.
+
+379
+00:18:13.550 --> 00:18:14.793
+So, what we can do is,
+
+380
+00:18:15.920 --> 00:18:18.763
+we will reference our analyzer,
+
+381
+00:18:19.600 --> 00:18:22.957
+and will use a method called getByteTimeDomain data
+
+382
+00:18:27.700 --> 00:18:30.650
+and pass it our time data array.
+
+383
+00:18:30.650 --> 00:18:31.560
+And what that will do--
+
+384
+00:18:31.560 --> 00:18:32.620
+This is a little bit weird,
+
+385
+00:18:32.620 --> 00:18:34.410
+'cause I initially thought it should look like this,
+
+386
+00:18:34.410 --> 00:18:38.380
+time data is equal to analyzer.GetByteTimeDomainData,
+
+387
+00:18:38.380 --> 00:18:39.960
+but it's a little bit backwards,
+
+388
+00:18:39.960 --> 00:18:43.780
+in that you just call the method and you pass it the array
+
+389
+00:18:43.780 --> 00:18:46.410
+that you want it to inject the data into.
+
+390
+00:18:46.410 --> 00:18:48.030
+And what this will do is
+
+391
+00:18:48.030 --> 00:18:53.030
+inject the time data into our time data array.
+
+392
+00:18:54.780 --> 00:18:57.890
+Now, if I were to console log timeData
+
+393
+00:19:01.220 --> 00:19:02.053
+You see,
+
+394
+00:19:03.730 --> 00:19:05.003
+as I'm talking,
+
+395
+00:19:06.690 --> 00:19:10.510
+these numbers go from 128, all the way up to,
+
+396
+00:19:10.510 --> 00:19:12.577
+I believe it's 255.
+
+397
+00:19:12.577 --> 00:19:14.080
+(yelling)
+
+398
+00:19:14.080 --> 00:19:16.670
+Yeah, if you start yelling, they go,
+
+399
+00:19:16.670 --> 00:19:17.720
+they go really, really high.
+
+400
+00:19:17.720 --> 00:19:21.700
+So between 128 and 255, and we're getting.
+
+401
+00:19:21.700 --> 00:19:25.240
+This is now a visual representation representation
+
+402
+00:19:25.240 --> 00:19:27.633
+of the words that I am speaking.
+
+403
+00:19:28.600 --> 00:19:30.900
+And now that we have this data,
+
+404
+00:19:30.900 --> 00:19:33.240
+now that we have the data,
+
+405
+00:19:33.240 --> 00:19:38.240
+let's turn it into something visual, right?
+
+406
+00:19:38.280 --> 00:19:40.903
+This is, this is just data visualization.
+
+407
+00:19:46.290 --> 00:19:48.630
+So, we'll start drawing with the canvas.
+
+408
+00:19:48.630 --> 00:19:51.010
+The first thing we need to do is just clear the canvas.
+
+409
+00:19:51.010 --> 00:19:55.113
+So, one, clear the canvas.
+
+410
+00:19:56.600 --> 00:19:58.170
+Let's actually just leave that as to do.
+
+411
+00:19:58.170 --> 00:20:00.150
+I wanna show you what happens when we don't,
+
+412
+00:20:00.150 --> 00:20:03.180
+When we don't clear the canvas.
+
+413
+00:20:03.180 --> 00:20:07.320
+Next we need to set up some Canvas drawing,
+
+414
+00:20:07.320 --> 00:20:10.970
+ctx.lineWith is equal to 10.
+
+415
+00:20:10.970 --> 00:20:12.860
+We can also play around with that.
+
+416
+00:20:12.860 --> 00:20:15.820
+And then we say ctx.StrokeStyle
+
+417
+00:20:16.920 --> 00:20:19.250
+is equal to whatever color you want it to be.
+
+418
+00:20:19.250 --> 00:20:23.230
+I'm gonna use my favorite ffc600.
+
+419
+00:20:23.230 --> 00:20:25.300
+You could change that to red or green or anyone,
+
+420
+00:20:25.300 --> 00:20:27.100
+and then we begin our paths.
+
+421
+00:20:27.100 --> 00:20:29.707
+So canvas.begin.Path
+
+422
+00:20:36.130 --> 00:20:37.060
+canvas.begin--
+
+423
+00:20:37.060 --> 00:20:39.450
+Oh, its ctx.beginPath.
+
+424
+00:20:39.450 --> 00:20:40.283
+Okay.
+
+425
+00:20:41.280 --> 00:20:42.123
+So, next what we need to do is,
+
+426
+00:20:42.123 --> 00:20:47.100
+we need to figure out how long will each line be
+
+427
+00:20:47.100 --> 00:20:49.220
+'cause the idea with this is that
+
+428
+00:20:49.220 --> 00:20:52.160
+we've got all of this data.
+
+429
+00:20:52.160 --> 00:20:54.630
+And there's, let's say we have, in here we have,
+
+430
+00:20:54.630 --> 00:20:57.160
+one two three four five six,
+
+431
+00:20:57.160 --> 00:20:59.140
+Let's say we have seven pieces of data.
+
+432
+00:20:59.140 --> 00:21:00.680
+That means we're gonna send,
+
+433
+00:21:00.680 --> 00:21:03.350
+we're gonna draw seven lines from one to the next
+
+434
+00:21:03.350 --> 00:21:05.950
+to the next to the next to the next to next to next.
+
+435
+00:21:05.950 --> 00:21:07.210
+And we need to figure out,
+
+436
+00:21:07.210 --> 00:21:10.270
+how wide are each of these lines going to be.
+
+437
+00:21:10.270 --> 00:21:13.250
+Because we've got, how wide is our--
+
+438
+00:21:13.250 --> 00:21:15.320
+We've got 1500 pixels.
+
+439
+00:21:15.320 --> 00:21:19.060
+And then we've got maybe 512
+
+440
+00:21:20.800 --> 00:21:22.060
+pieces of data,
+
+441
+00:21:22.060 --> 00:21:23.330
+or eight pieces of data.
+
+442
+00:21:23.330 --> 00:21:24.670
+And what we have is.
+
+443
+00:21:24.670 --> 00:21:26.190
+Okay, we've got 1500 pixels,
+
+444
+00:21:26.190 --> 00:21:28.700
+and let's say we have eight pieces of data.
+
+445
+00:21:28.700 --> 00:21:33.390
+That means each line is gonna be about 188 pixels wide.
+
+446
+00:21:33.390 --> 00:21:36.330
+Or if we have 512 pieces of data,
+
+447
+00:21:36.330 --> 00:21:39.710
+then each line will be about three,
+
+448
+00:21:39.710 --> 00:21:41.730
+two or three pixels wide.
+
+449
+00:21:41.730 --> 00:21:44.610
+So we need to figure out what is the width
+
+450
+00:21:44.610 --> 00:21:46.273
+of each of those going to be.
+
+451
+00:21:49.900 --> 00:21:53.640
+So, say const slice, will call that each.
+
+452
+00:21:53.640 --> 00:21:56.490
+Every time that we draw something like this is one two
+
+453
+00:21:56.490 --> 00:21:58.560
+three four five six seven.
+
+454
+00:21:58.560 --> 00:22:00.580
+We've got seven slices.
+
+455
+00:22:00.580 --> 00:22:01.413
+And then here as well,
+
+456
+00:22:01.413 --> 00:22:02.880
+we've got seven slices as well.
+
+457
+00:22:02.880 --> 00:22:06.463
+So we're gonna figure out what the slice width is equal to.
+
+458
+00:22:07.630 --> 00:22:09.450
+And we take the width,
+
+459
+00:22:09.450 --> 00:22:12.750
+and we divide that by the length of the,
+
+460
+00:22:12.750 --> 00:22:13.980
+we're gonna call that a buffer.
+
+461
+00:22:13.980 --> 00:22:16.050
+The array of time data.
+
+462
+00:22:16.050 --> 00:22:19.310
+So, let's actually just go and make a new variable for that,
+
+463
+00:22:19.310 --> 00:22:21.750
+'cause the buffer length is analyzer
+
+464
+00:22:21.750 --> 00:22:23.400
+that frequency been capped.
+
+465
+00:22:23.400 --> 00:22:25.290
+That's hard to hard to understand.
+
+466
+00:22:25.290 --> 00:22:28.907
+So let's go up to the very top and like a bufferLength.
+
+467
+00:22:31.840 --> 00:22:36.430
+Let bufferLength and let's go right here above time data,
+
+468
+00:22:36.430 --> 00:22:41.080
+and will just say bufferLength is equal to
+
+469
+00:22:42.510 --> 00:22:44.620
+analyzer.frequencyBinCount.
+
+470
+00:22:44.620 --> 00:22:49.350
+So that, this is going to be how many pieces
+
+471
+00:22:50.690 --> 00:22:52.543
+of data are there?
+
+472
+00:22:54.010 --> 00:22:54.843
+That's called bufferLength.
+
+473
+00:22:54.843 --> 00:22:56.700
+And then we can actually replace the,
+
+474
+00:22:56.700 --> 00:22:59.360
+all of these analyzers.frequencyBinCounts
+
+475
+00:22:59.360 --> 00:23:01.130
+with buffer length.
+
+476
+00:23:01.130 --> 00:23:02.590
+That's a little bit easier.
+
+477
+00:23:02.590 --> 00:23:05.330
+And then down here, we'll say slicewidth is equal to
+
+478
+00:23:05.330 --> 00:23:08.050
+WIDTH divided by bufferLength.
+
+479
+00:23:08.050 --> 00:23:11.370
+And that should give us how big each slice will be.
+
+480
+00:23:11.370 --> 00:23:15.396
+So in our case, if we console.log the sliceWidth,
+
+481
+00:23:15.396 --> 00:23:19.250
+and go into here, you'll see it's 2.9 pixels long,
+
+482
+00:23:20.220 --> 00:23:22.630
+for every slice that we have.
+
+483
+00:23:22.630 --> 00:23:26.593
+And if we are to make the width of this 2500 pixels,
+
+484
+00:23:27.600 --> 00:23:29.270
+it goes up to 4.8.
+
+485
+00:23:29.270 --> 00:23:32.010
+If we were to make it 500 pixels wide,
+
+486
+00:23:32.010 --> 00:23:34.050
+each one is going to be 0.97.
+
+487
+00:23:34.050 --> 00:23:36.730
+I'm not going round that because Canvas can do
+
+488
+00:23:36.730 --> 00:23:40.550
+a good enough job of rounding those values for us.
+
+489
+00:23:40.550 --> 00:23:43.000
+So we have our slice with that we want
+
+490
+00:23:45.870 --> 00:23:48.550
+and then we also need a x variable,
+
+491
+00:23:48.550 --> 00:23:49.820
+and we'll set that to zero.
+
+492
+00:23:49.820 --> 00:23:51.720
+And the reason why is because we're gonna loop over
+
+493
+00:23:51.720 --> 00:23:53.890
+each pieces of our time data.
+
+494
+00:23:53.890 --> 00:23:56.330
+And we're gonna increment that by the sliceWidth
+
+495
+00:23:56.330 --> 00:23:57.460
+every time we loop over it.
+
+496
+00:23:57.460 --> 00:24:00.550
+So we'll go say timeData.forEach.
+
+497
+00:24:00.550 --> 00:24:03.343
+So each piece of time data that we have,
+
+498
+00:24:04.640 --> 00:24:09.640
+we have our data, and we have our increment variable.
+
+499
+00:24:12.490 --> 00:24:15.050
+Then next up, we'll make a v variable
+
+500
+00:24:16.140 --> 00:24:18.520
+that is equal to the data.
+
+501
+00:24:18.520 --> 00:24:21.520
+So, the value that we're talking about,
+
+502
+00:24:21.520 --> 00:24:24.400
+and then divide that by 128.
+
+503
+00:24:24.400 --> 00:24:28.020
+And the reason why we do that is because if we remember,
+
+504
+00:24:28.020 --> 00:24:30.563
+if we were to console.log the data.
+
+505
+00:24:33.000 --> 00:24:36.300
+When I say nothing, it's 128.
+
+506
+00:24:36.300 --> 00:24:38.820
+And then as I start talking, it goes up.
+
+507
+00:24:38.820 --> 00:24:41.240
+So what I wanna do is, I say when you say nothing,
+
+508
+00:24:41.240 --> 00:24:42.900
+v is going to be one.
+
+509
+00:24:42.900 --> 00:24:45.800
+And then when it's all the way up to,
+
+510
+00:24:45.800 --> 00:24:47.650
+like 200 is going to be 1. 2.
+
+511
+00:24:47.650 --> 00:24:49.850
+So, the v variable here is just going
+
+512
+00:24:49.850 --> 00:24:52.860
+to be a multiplier that we will use
+
+513
+00:24:53.920 --> 00:24:54.900
+in drawing the data.
+
+514
+00:24:54.900 --> 00:24:56.650
+So it'll makes sense in just a sec.
+
+515
+00:24:57.550 --> 00:24:59.870
+Then we also wanna make a y value.
+
+516
+00:24:59.870 --> 00:25:02.640
+So, if we look at our example right here.
+
+517
+00:25:02.640 --> 00:25:07.563
+Let me make this a little bit more complex.
+
+518
+00:25:08.780 --> 00:25:09.670
+There we go.
+
+519
+00:25:09.670 --> 00:25:11.880
+So we wanna know, we've got this line,
+
+520
+00:25:11.880 --> 00:25:14.100
+you can visualize it going left to right.
+
+521
+00:25:14.100 --> 00:25:15.910
+And that's our x axis.
+
+522
+00:25:15.910 --> 00:25:20.560
+But we need to know how high or how low that needs to go,
+
+523
+00:25:20.560 --> 00:25:22.600
+and that's based on our y value.
+
+524
+00:25:22.600 --> 00:25:23.930
+So if we go back to our code here,
+
+525
+00:25:23.930 --> 00:25:24.913
+we'll take our y.
+
+526
+00:25:25.750 --> 00:25:28.460
+And what we'll say it is the V
+
+527
+00:25:28.460 --> 00:25:31.400
+times the height of the canvas divided by two.
+
+528
+00:25:31.400 --> 00:25:32.980
+And I'm sorry, if you don't like math,
+
+529
+00:25:32.980 --> 00:25:37.610
+but this is often how a lot of graphics and stuff is done.
+
+530
+00:25:37.610 --> 00:25:38.780
+Is that there's lots of division
+
+531
+00:25:38.780 --> 00:25:41.410
+and multiplication bringing things up and down.
+
+532
+00:25:41.410 --> 00:25:43.930
+Then we start to draw our lines.
+
+533
+00:25:43.930 --> 00:25:48.640
+And if the eye is equal to zero, if it's the first line,
+
+534
+00:25:48.640 --> 00:25:53.620
+we wanna say Canvas.moveTo, x and y.
+
+535
+00:25:53.620 --> 00:25:57.890
+And then else, what we wanna do is say Canvas., oops,
+
+536
+00:25:57.890 --> 00:25:59.963
+not remove, move to.
+
+537
+00:26:01.250 --> 00:26:02.920
+Otherwise wanna say the line to.
+
+538
+00:26:02.920 --> 00:26:06.630
+So, we're gonna start on the first one with moved to.
+
+539
+00:26:06.630 --> 00:26:09.540
+And then we're gonna use the lineTo method
+
+540
+00:26:09.540 --> 00:26:13.560
+to just keep drawing the line to x and y.
+
+541
+00:26:13.560 --> 00:26:15.500
+And then very, at the very end,
+
+542
+00:26:15.500 --> 00:26:18.513
+we'll say, x += sliceWidth.
+
+543
+00:26:19.570 --> 00:26:23.473
+What that will do is it will move our x axis along,
+
+544
+00:26:24.390 --> 00:26:26.263
+for every time that we loop over.
+
+545
+00:26:28.100 --> 00:26:29.503
+Turn this to a let.
+
+546
+00:26:31.490 --> 00:26:33.600
+And canvas.move to is not a func'.
+
+547
+00:26:33.600 --> 00:26:36.640
+Oh, sorry, it's not canvas. It's ctx.
+
+548
+00:26:36.640 --> 00:26:38.560
+That's where we do our drawing.
+
+549
+00:26:38.560 --> 00:26:41.620
+Then we'll get out of our time data for each
+
+550
+00:26:41.620 --> 00:26:46.263
+and we will run ctx.stroke,
+
+551
+00:26:50.350 --> 00:26:51.770
+and we'll see what that gives us.
+
+552
+00:26:51.770 --> 00:26:52.603
+Whoo!
+
+553
+00:26:53.940 --> 00:26:58.490
+Now, you can see that we're,
+
+554
+00:26:58.490 --> 00:27:00.870
+every single time that we're drawing something,
+
+555
+00:27:00.870 --> 00:27:03.530
+it's just drawing that to the page.
+
+556
+00:27:03.530 --> 00:27:05.580
+So we take our huge array of data,
+
+557
+00:27:05.580 --> 00:27:07.800
+we loop over each piece of that data,
+
+558
+00:27:07.800 --> 00:27:09.160
+we draw it to the canvas.
+
+559
+00:27:09.160 --> 00:27:13.000
+And then finally we run stroke at the very end.
+
+560
+00:27:13.000 --> 00:27:16.480
+And what that will do is it just paints it to the thing.
+
+561
+00:27:16.480 --> 00:27:18.160
+Now if we go back to step one,
+
+562
+00:27:18.160 --> 00:27:20.410
+we're wanna clear the canvas, will say
+
+563
+00:27:20.410 --> 00:27:24.053
+ctx.clearRect, zero, zero,
+
+564
+00:27:25.990 --> 00:27:27.400
+width and height
+
+565
+00:27:29.000 --> 00:27:31.280
+And now every single time that this runs,
+
+566
+00:27:31.280 --> 00:27:33.210
+we first clear out the canvas,
+
+567
+00:27:33.210 --> 00:27:35.410
+so it looks like it's actually animating.
+
+568
+00:27:35.410 --> 00:27:38.560
+But that's just us painting very, very quickly.
+
+569
+00:27:38.560 --> 00:27:40.730
+So, now we can actually go back up to
+
+570
+00:27:40.730 --> 00:27:43.150
+where we set the fftsize.
+
+571
+00:27:43.150 --> 00:27:44.870
+And we can set that to something really low,
+
+572
+00:27:44.870 --> 00:27:47.160
+like two to the power four.
+
+573
+00:27:47.160 --> 00:27:48.420
+Ah,
+
+574
+00:27:48.420 --> 00:27:49.730
+that is too low.
+
+575
+00:27:49.730 --> 00:27:53.370
+It's got to be between 32 and three,
+
+576
+00:27:53.370 --> 00:27:55.200
+so those are the upper limits.
+
+577
+00:27:55.200 --> 00:28:00.200
+So 32 would be two to the power of six
+
+578
+00:28:00.780 --> 00:28:04.720
+There we go, that's as very low as we can get it.
+
+579
+00:28:04.720 --> 00:28:06.900
+And then the higher limit was,
+
+580
+00:28:06.900 --> 00:28:10.990
+let's get the error back 32,768.
+
+581
+00:28:10.990 --> 00:28:13.157
+So you can even just manually set it like that.
+
+582
+00:28:13.157 --> 00:28:16.510
+And then you see that tons
+
+583
+00:28:19.570 --> 00:28:21.560
+of data being piped in.
+
+584
+00:28:21.560 --> 00:28:25.080
+So let's bring that back to two to the power of six.
+
+585
+00:28:25.080 --> 00:28:26.666
+(to, to)
+
+586
+00:28:26.666 --> 00:28:28.350
+And we bring that to 10.
+
+587
+00:28:28.350 --> 00:28:29.450
+Much better, right,
+
+588
+00:28:29.450 --> 00:28:32.140
+you get a little bit more data in there.
+
+589
+00:28:32.140 --> 00:28:34.550
+So that's totally up to you as well.
+
+590
+00:28:34.550 --> 00:28:36.984
+And of course, you can change this to red.
+
+591
+00:28:36.984 --> 00:28:38.780
+(yells)
+
+592
+00:28:38.780 --> 00:28:42.373
+It's kinda, kinda fun to be able to go through it.
+
+593
+00:28:44.860 --> 00:28:46.640
+We're wanna use HSL on the next one.
+
+594
+00:28:46.640 --> 00:28:48.450
+So you could just visually show how,
+
+595
+00:28:48.450 --> 00:28:49.850
+how different that would be.
+
+596
+00:28:50.770 --> 00:28:53.390
+Alright, so that's, that's the very first one.
+
+597
+00:28:53.390 --> 00:28:57.310
+So let's do it again now, but for the frequency data.
+
+598
+00:28:57.310 --> 00:29:00.380
+So, this right here analyzer.GetByteTimeDomain
+
+599
+00:29:01.860 --> 00:29:05.290
+that gives us the visualization over time.
+
+600
+00:29:05.290 --> 00:29:08.470
+However, the frequency shows us if you do something
+
+601
+00:29:08.470 --> 00:29:10.830
+that has a very high frequency,
+
+602
+00:29:10.830 --> 00:29:14.870
+they jump and very low frequency, it goes low.
+
+603
+00:29:14.870 --> 00:29:17.770
+So I've actually got a little frequency app
+
+604
+00:29:17.770 --> 00:29:18.603
+on my phone here.
+
+605
+00:29:18.603 --> 00:29:20.941
+I'm just going to show you how it works.
+
+606
+00:29:20.941 --> 00:29:24.524
+(varying frequency sounds)
+
+607
+00:29:28.110 --> 00:29:30.690
+And at a certain point, it gets way too high.
+
+608
+00:29:30.690 --> 00:29:32.790
+Apologies to your dog if he's in the room.
+
+609
+00:29:34.300 --> 00:29:36.580
+I have I've cut off a lot of the frequency
+
+610
+00:29:36.580 --> 00:29:39.553
+because it's too high for humans to hear.
+
+611
+00:29:39.553 --> 00:29:43.136
+(varying frequency sounds)
+
+612
+00:29:48.220 --> 00:29:50.500
+So, that's just like a good visualization of what's
+
+613
+00:29:50.500 --> 00:29:52.750
+happening is there's different frequencies in the audio
+
+614
+00:29:52.750 --> 00:29:55.707
+that's coming in and it shows you
+
+615
+00:29:55.707 --> 00:29:57.868
+and see how higher I can get.
+
+616
+00:29:57.868 --> 00:29:59.890
+(screaming)
+
+617
+00:29:59.890 --> 00:30:03.868
+I guess my screen has frequencies all over the place.
+
+618
+00:30:03.868 --> 00:30:05.440
+Just kinda interesting.
+
+619
+00:30:05.440 --> 00:30:08.743
+So let's make another function here called drawTime.
+
+620
+00:30:11.560 --> 00:30:13.613
+Oh no, not draw, drawFrequency.
+
+621
+00:30:18.360 --> 00:30:20.110
+And I believe we have Yeah,
+
+622
+00:30:20.110 --> 00:30:22.340
+we have a variable called frequencyData.
+
+623
+00:30:22.340 --> 00:30:24.220
+So let's just take that in.
+
+624
+00:30:24.220 --> 00:30:25.730
+And so the first thing we need to do,
+
+625
+00:30:25.730 --> 00:30:28.920
+is get the frequencyData into our,
+
+626
+00:30:33.890 --> 00:30:35.860
+frequencyData array.
+
+627
+00:30:35.860 --> 00:30:38.620
+So, we have this frequency data, kind of like a holder.
+
+628
+00:30:38.620 --> 00:30:40.470
+And we can inject the data about
+
+629
+00:30:40.470 --> 00:30:42.670
+the frequency into it by running,
+
+630
+00:30:42.670 --> 00:30:44.570
+taking our analyzer and running
+
+631
+00:30:44.570 --> 00:30:47.413
+the method on it called getByteFrequencyData.
+
+632
+00:30:53.210 --> 00:30:56.360
+And then we give it the frequencyData array.
+
+633
+00:30:56.360 --> 00:30:59.623
+And if we were to console that log, frequencyData.
+
+634
+00:31:02.640 --> 00:31:04.540
+I think we should get one of them.
+
+635
+00:31:04.540 --> 00:31:06.190
+Let's open up our dev tools here.
+
+636
+00:31:07.920 --> 00:31:12.250
+Oh, none of them happen because I have to also run
+
+637
+00:31:12.250 --> 00:31:16.210
+drawFrequency and pass it the frequencyData.
+
+638
+00:31:18.801 --> 00:31:19.634
+There we go.
+
+639
+00:31:19.634 --> 00:31:22.830
+So initially we get an array 512 spots,
+
+640
+00:31:22.830 --> 00:31:24.453
+and they're all zero.
+
+641
+00:31:25.430 --> 00:31:27.660
+And if we were to call this thing again,
+
+642
+00:31:27.660 --> 00:31:31.190
+requestAnimationFrame, or rather,
+
+643
+00:31:31.190 --> 00:31:33.342
+a little inline function here,
+
+644
+00:31:33.342 --> 00:31:38.342
+drawFrequency pass it the frequencyData array.
+
+645
+00:31:42.810 --> 00:31:43.690
+Here we go.
+
+646
+00:31:43.690 --> 00:31:44.540
+So you see
+
+647
+00:31:46.360 --> 00:31:47.453
+as I talk,
+
+648
+00:31:48.320 --> 00:31:53.320
+these low and high ends are starting to fill each other up.
+
+649
+00:31:53.740 --> 00:31:55.690
+If I zoom out and as I start talking,
+
+650
+00:31:55.690 --> 00:31:58.673
+you can visually see, (yells)
+
+651
+00:31:59.610 --> 00:32:01.640
+that the data is streaming in.
+
+652
+00:32:01.640 --> 00:32:04.690
+So you can kind of visualize it just with the raw numbers.
+
+653
+00:32:04.690 --> 00:32:06.620
+But obviously, that's not what we wanna do,
+
+654
+00:32:06.620 --> 00:32:11.090
+we wanna take that data and then paint it to Canvas.
+
+655
+00:32:11.090 --> 00:32:13.850
+So the kind of the same ideas happen here.
+
+656
+00:32:13.850 --> 00:32:18.230
+So first we'll figure out the bar width.
+
+657
+00:32:18.230 --> 00:32:20.330
+So based on how much data we have
+
+658
+00:32:20.330 --> 00:32:22.190
+and how much width we have,
+
+659
+00:32:22.190 --> 00:32:26.470
+what we'll do is we will calculate the bar width,
+
+660
+00:32:26.470 --> 00:32:29.400
+so const barWidth is equal to,
+
+661
+00:32:29.400 --> 00:32:33.027
+will take the width and divide that by our bufferLength.
+
+662
+00:32:33.940 --> 00:32:37.480
+And then that will tell us that the barwidth for each one
+
+663
+00:32:38.500 --> 00:32:40.020
+is barwidth
+
+664
+00:32:44.250 --> 00:32:46.530
+2.9 pixels just the same as our other one.
+
+665
+00:32:46.530 --> 00:32:49.230
+However, I am going to multiply this
+
+666
+00:32:50.860 --> 00:32:52.090
+by two and a half.
+
+667
+00:32:52.090 --> 00:32:54.970
+And the reason why I'm multiplying this by two and a half,
+
+668
+00:32:54.970 --> 00:32:57.240
+is so that we only get the lower end
+
+669
+00:32:57.240 --> 00:32:59.980
+because in my my testing of this there was
+
+670
+00:32:59.980 --> 00:33:04.420
+a whole lot of frequency on the left right hand side here
+
+671
+00:33:04.420 --> 00:33:06.830
+that I would quite honestly just never hit,
+
+672
+00:33:06.830 --> 00:33:08.660
+because maybe my microphone can pick it up,
+
+673
+00:33:08.660 --> 00:33:10.400
+maybe the human ear can pick it up.
+
+674
+00:33:10.400 --> 00:33:11.610
+It's just not frequencies.
+
+675
+00:33:11.610 --> 00:33:14.550
+So in order to get the visualization to look its best,
+
+676
+00:33:14.550 --> 00:33:17.110
+we're basically lopping off
+
+677
+00:33:17.110 --> 00:33:20.863
+over half of it by multiplying the width to be 2.5.
+
+678
+00:33:22.150 --> 00:33:24.670
+Next, we'll make a little X variable and set that to zero,
+
+679
+00:33:24.670 --> 00:33:27.163
+just like we did up here.
+
+680
+00:33:28.610 --> 00:33:33.283
+And then we'll loop over the frequencyData.
+
+681
+00:33:33.283 --> 00:33:35.100
+So frequencyData.forEach,
+
+682
+00:33:36.040 --> 00:33:39.823
+and we'll get the amount of data for that one.
+
+683
+00:33:40.870 --> 00:33:42.220
+And I'm using different variables here,
+
+684
+00:33:42.220 --> 00:33:44.530
+just to show you that it doesn't matter what you call them,
+
+685
+00:33:44.530 --> 00:33:46.620
+we'll call it amount in this one.
+
+686
+00:33:46.620 --> 00:33:51.550
+And then the frequencyData comes in from zero to 255.
+
+687
+00:33:51.550 --> 00:33:55.180
+And we need to figure out what height that will be
+
+688
+00:33:55.180 --> 00:33:57.280
+because if it's 100%,
+
+689
+00:33:57.280 --> 00:34:00.920
+I want it to be all the way up to the center line here,
+
+690
+00:34:00.920 --> 00:34:04.080
+and if it's zero percent so I'll see it at the bottom,
+
+691
+00:34:04.080 --> 00:34:07.610
+so we need to figure out what percent is this?
+
+692
+00:34:07.610 --> 00:34:09.880
+How high will it go?
+
+693
+00:34:09.880 --> 00:34:12.250
+So const percent is equal to,
+
+694
+00:34:12.250 --> 00:34:14.600
+will take the amount.
+
+695
+00:34:14.600 --> 00:34:18.190
+So again, remember the amount comes in from zero to 255.
+
+696
+00:34:18.190 --> 00:34:21.710
+If there's nothing on that frequency, it's a zero.
+
+697
+00:34:21.710 --> 00:34:25.900
+And if it's totally on that frequency, then it's 255.
+
+698
+00:34:25.900 --> 00:34:29.380
+So, by taking the amount of the frequency that we have,
+
+699
+00:34:29.380 --> 00:34:31.450
+and dividing that by 255,
+
+700
+00:34:31.450 --> 00:34:35.930
+we get a percentage of anywhere from zero percent to 100%.
+
+701
+00:34:35.930 --> 00:34:38.613
+And then we also figure out the barHeight
+
+702
+00:34:39.740 --> 00:34:43.470
+by taking the height of the canvas
+
+703
+00:34:43.470 --> 00:34:46.490
+and multiplying that by the percent
+
+704
+00:34:47.680 --> 00:34:50.180
+and that will tell us it's either zero percent high
+
+705
+00:34:50.180 --> 00:34:51.630
+or 100% high.
+
+706
+00:34:51.630 --> 00:34:55.023
+We will modify that just to go half way up in just a second.
+
+707
+00:34:56.660 --> 00:35:01.350
+And then we will convert
+
+708
+00:35:01.350 --> 00:35:03.490
+the color to HSL.
+
+709
+00:35:03.490 --> 00:35:05.770
+Let's leave that as a to do,
+
+710
+00:35:05.770 --> 00:35:08.860
+because we'll come back to that, in just a bit.
+
+711
+00:35:08.860 --> 00:35:10.130
+Toto, to do.
+
+712
+00:35:10.130 --> 00:35:12.330
+And we'll take the canvas context
+
+713
+00:35:12.330 --> 00:35:15.470
+and we'll set the fill style to be.
+
+714
+00:35:15.470 --> 00:35:16.630
+Let's just set it to red.
+
+715
+00:35:16.630 --> 00:35:18.270
+We'll come back and do HSL there
+
+716
+00:35:18.270 --> 00:35:19.670
+'cause it looks really cool.
+
+717
+00:35:23.070 --> 00:35:27.570
+Then we run ctx.fillRect,
+
+718
+00:35:27.570 --> 00:35:30.770
+and we do pass it four options here.
+
+719
+00:35:30.770 --> 00:35:33.300
+So the x and the y of where we start,
+
+720
+00:35:33.300 --> 00:35:37.360
+so we wanna start at our x variable, which is right here.
+
+721
+00:35:37.360 --> 00:35:41.723
+And we want to start at the y axis.
+
+722
+00:35:43.960 --> 00:35:47.080
+So, to calculate that y access will take our height
+
+723
+00:35:48.000 --> 00:35:50.860
+and we'll subtract the barHeight
+
+724
+00:35:53.860 --> 00:35:57.890
+because there's no way to tell it to anchor from the bottom.
+
+725
+00:35:57.890 --> 00:35:59.970
+So what we need to do is we need to tell it to
+
+726
+00:35:59.970 --> 00:36:01.150
+anchor from the top
+
+727
+00:36:02.150 --> 00:36:03.610
+plus,
+
+728
+00:36:03.610 --> 00:36:05.900
+however much, how the height of the bar
+
+729
+00:36:05.900 --> 00:36:08.700
+and that will allow us to start at like,
+
+730
+00:36:08.700 --> 00:36:12.563
+like 100 in and 20 down and it will start right here.
+
+731
+00:36:13.890 --> 00:36:16.350
+Then we need to give it how wide will it be?
+
+732
+00:36:16.350 --> 00:36:19.010
+Well, we have a variable called barWidth.
+
+733
+00:36:19.010 --> 00:36:20.550
+And how high will it be?
+
+734
+00:36:20.550 --> 00:36:22.657
+Well, we have variable called barHeight.
+
+735
+00:36:25.460 --> 00:36:27.230
+Now, oh, there we go.
+
+736
+00:36:27.230 --> 00:36:28.063
+Look at this.
+
+737
+00:36:28.063 --> 00:36:29.350
+You see,
+
+738
+00:36:29.350 --> 00:36:31.520
+it's (pow, pow)
+
+739
+00:36:32.791 --> 00:36:33.850
+(pow, pow).
+
+740
+00:36:33.850 --> 00:36:36.480
+It's going all the way to the top.
+
+741
+00:36:36.480 --> 00:36:38.100
+But it's not going across.
+
+742
+00:36:38.100 --> 00:36:39.920
+And that's 'cause we have this x variable
+
+743
+00:36:39.920 --> 00:36:44.560
+that we just need to increment by the width of the bar.
+
+744
+00:36:44.560 --> 00:36:47.160
+So they go all the way across.
+
+745
+00:36:47.160 --> 00:36:52.160
+So say x is equal to x plus the barWidth
+
+746
+00:36:54.414 --> 00:36:56.340
+and then we'll change this to a let
+
+747
+00:36:58.020 --> 00:36:59.970
+and now, oh, that didn't work.
+
+748
+00:36:59.970 --> 00:37:02.650
+Because I didn't do that inside of the loop.
+
+749
+00:37:02.650 --> 00:37:04.970
+So move that inside of the loop.
+
+750
+00:37:04.970 --> 00:37:08.460
+And now you see that the data is going all the way across.
+
+751
+00:37:08.460 --> 00:37:12.930
+One little trick I did is I just said bar width plus one.
+
+752
+00:37:12.930 --> 00:37:14.740
+And then that gives you a little bit of space,
+
+753
+00:37:14.740 --> 00:37:16.330
+you can even do plus 10,
+
+754
+00:37:16.330 --> 00:37:18.200
+we are throwing a little bit of data out
+
+755
+00:37:18.200 --> 00:37:20.240
+because that means if by adding 10 pixels,
+
+756
+00:37:20.240 --> 00:37:21.810
+You're spilling out over the canvas.
+
+757
+00:37:21.810 --> 00:37:24.110
+But what I'll say it looks fine to me
+
+758
+00:37:24.110 --> 00:37:25.830
+and it's getting all the things that we need.
+
+759
+00:37:25.830 --> 00:37:28.140
+So I'll plus one or plus two there,
+
+760
+00:37:28.140 --> 00:37:30.330
+that will give you a nice separation
+
+761
+00:37:30.330 --> 00:37:32.930
+in between each of your bars.
+
+762
+00:37:32.930 --> 00:37:35.450
+And now the sort of the other thing
+
+763
+00:37:35.450 --> 00:37:38.860
+that's bugging me a little bit is that they're all too high.
+
+764
+00:37:38.860 --> 00:37:43.140
+So what we can do there is we can just take the bar height
+
+765
+00:37:44.200 --> 00:37:45.563
+and divide that by two.
+
+766
+00:37:47.160 --> 00:37:50.260
+And now you see the bars don't go quite
+
+767
+00:37:50.260 --> 00:37:51.870
+as high as they would, right.
+
+768
+00:37:51.870 --> 00:37:54.020
+So you could also multiply that by like 1.2
+
+769
+00:37:55.000 --> 00:37:57.710
+and then your base is very low,
+
+770
+00:37:57.710 --> 00:37:59.510
+and they go all the way off the screen
+
+771
+00:37:59.510 --> 00:38:01.740
+when they're 100 percent.
+
+772
+00:38:01.740 --> 00:38:03.990
+You can also do like rgba(255,255,255,0,0.2),
+
+773
+00:38:12.220 --> 00:38:15.650
+And now you see that these are semi transparent
+
+774
+00:38:15.650 --> 00:38:19.090
+and the time bars will sort of show through,
+
+775
+00:38:19.090 --> 00:38:20.130
+which is just kind of cool.
+
+776
+00:38:20.130 --> 00:38:21.670
+Now, the cool thing we want to do here
+
+777
+00:38:21.670 --> 00:38:25.530
+is we want to use HSL, which is Hue Saturation lightness
+
+778
+00:38:25.530 --> 00:38:28.950
+to figure out what color each of the bars will be.
+
+779
+00:38:28.950 --> 00:38:30.530
+And if you go to this website,
+
+780
+00:38:30.530 --> 00:38:31.927
+Mother-effing HSL,
+
+781
+00:38:33.720 --> 00:38:35.200
+you can see that
+
+782
+00:38:35.200 --> 00:38:39.090
+HSL works in that the hue
+
+783
+00:38:39.090 --> 00:38:41.327
+goes from zero to 360.
+
+784
+00:38:43.345 --> 00:38:47.180
+And as you go from zero to 360,
+
+785
+00:38:47.180 --> 00:38:49.910
+you go through the entire rainbow.
+
+786
+00:38:49.910 --> 00:38:52.010
+So, what we can then do is we can say,
+
+787
+00:38:52.010 --> 00:38:56.210
+well, something that has a zero will be zero
+
+788
+00:38:56.210 --> 00:39:01.030
+on the HSL and something that has a 255
+
+789
+00:39:01.030 --> 00:39:06.030
+of frequency will be three 360 on the HSL spectrum,
+
+790
+00:39:06.350 --> 00:39:08.240
+and we can use that as a base
+
+791
+00:39:08.240 --> 00:39:09.900
+to go throughout the entire thing.
+
+792
+00:39:09.900 --> 00:39:12.343
+So what we can do here is we'll make an array.
+
+793
+00:39:13.471 --> 00:39:17.103
+Will say const h,s,l
+
+794
+00:39:20.010 --> 00:39:20.980
+is equal to
+
+795
+00:39:20.980 --> 00:39:22.100
+and we'll make a new array.
+
+796
+00:39:22.100 --> 00:39:25.790
+So the hue is going to be or we gonna move it down below
+
+797
+00:39:25.790 --> 00:39:30.573
+the percent, will take the percent and multiply that by 360.
+
+798
+00:39:35.070 --> 00:39:38.210
+And then you actually have to put parentheses around that
+
+799
+00:39:38.210 --> 00:39:41.320
+and use 360 divided by that
+
+800
+00:39:41.320 --> 00:39:44.840
+and that will give us our base of zero to 360 for the hue.
+
+801
+00:39:44.840 --> 00:39:48.630
+And then for the saturation and lightness,
+
+802
+00:39:48.630 --> 00:39:51.970
+I just do 0.5, 0.75
+
+803
+00:39:52.930 --> 00:39:53.933
+and that's it.
+
+804
+00:39:56.420 --> 00:39:59.320
+And what that will do that, that's the saturation here.
+
+805
+00:39:59.320 --> 00:40:02.130
+You can obviously go up, and it's very saturated and down,
+
+806
+00:40:02.130 --> 00:40:03.940
+it's not saturated at all.
+
+807
+00:40:03.940 --> 00:40:06.120
+And then the lightness will give it go
+
+808
+00:40:06.120 --> 00:40:08.060
+between white and black.
+
+809
+00:40:08.060 --> 00:40:12.060
+So, by keeping it at 0.75,
+
+810
+00:40:12.060 --> 00:40:14.190
+that's kind of where I'm happy with it.
+
+811
+00:40:14.190 --> 00:40:18.580
+Now, the thing about HSL is that HSL is really easy
+
+812
+00:40:18.580 --> 00:40:21.110
+to programmatically calculate values
+
+813
+00:40:21.110 --> 00:40:22.730
+like hue saturation, and lightness,
+
+814
+00:40:22.730 --> 00:40:27.730
+but we can't use HSL on canvas.
+
+815
+00:40:27.880 --> 00:40:29.360
+So it's a bit of a problem.
+
+816
+00:40:29.360 --> 00:40:32.530
+So what I've done is I've gone out in the utils,
+
+817
+00:40:32.530 --> 00:40:36.980
+there is this HSL to RGB function that takes in a
+
+818
+00:40:36.980 --> 00:40:39.297
+hue saturation lightness value
+
+819
+00:40:39.297 --> 00:40:43.740
+and will return to you a RGB value.
+
+820
+00:40:43.740 --> 00:40:45.683
+So we can use that to convert it.
+
+821
+00:40:46.730 --> 00:40:48.540
+So we'll go back to our sounds,
+
+822
+00:40:48.540 --> 00:40:51.640
+go to the very top and we'll import.
+
+823
+00:40:51.640 --> 00:40:53.403
+And what was that thing called?
+
+824
+00:40:54.625 --> 00:40:56.453
+Tt's hslToRbg,
+
+825
+00:40:59.550 --> 00:41:01.253
+and we will,
+
+826
+00:41:02.570 --> 00:41:04.823
+from ./utils
+
+827
+00:41:09.088 --> 00:41:10.505
+and go down here.
+
+828
+00:41:12.920 --> 00:41:15.870
+And right above the fillstyle, will say,
+
+829
+00:41:15.870 --> 00:41:19.080
+const r,g,b
+
+830
+00:41:19.080 --> 00:41:23.310
+is equal to hslToRgb.
+
+831
+00:41:23.310 --> 00:41:25.450
+We have this thing called the Royal Botanical Gardens
+
+832
+00:41:25.450 --> 00:41:29.020
+near me, and I always give it up because one of them is RBG
+
+833
+00:41:29.020 --> 00:41:30.120
+and one of them is RGB
+
+834
+00:41:31.440 --> 00:41:34.263
+and we pass it our h, our s, and our l values.
+
+835
+00:41:35.608 --> 00:41:39.107
+And then we can, that will convert it to RGB.
+
+836
+00:41:40.000 --> 00:41:43.120
+You can simply just pass it here.
+
+837
+00:41:43.120 --> 00:41:46.250
+So backticks, rgb
+
+838
+00:41:47.620 --> 00:41:49.450
+and we'll say,
+
+839
+00:41:49.450 --> 00:41:53.840
+let's just 000 and then we'll manually pipe them in r, g, b.
+
+840
+00:42:05.333 --> 00:42:07.190
+(yells)
+
+841
+00:42:07.190 --> 00:42:10.310
+Okay, it's working looking a little eastery to me,
+
+842
+00:42:10.310 --> 00:42:11.250
+a little pastary.
+
+843
+00:42:11.250 --> 00:42:13.070
+I think if we change
+
+844
+00:42:13.070 --> 00:42:15.920
+this to, change that to one and then
+
+845
+00:42:15.920 --> 00:42:19.160
+this one to 0.5 you get, Yeah.
+
+846
+00:42:19.160 --> 00:42:20.307
+Whoo!
+
+847
+00:42:20.307 --> 00:42:23.190
+That's, that's even a bit much that's too neon for me.
+
+848
+00:42:23.190 --> 00:42:24.023
+0.5,
+
+849
+00:42:24.970 --> 00:42:25.803
+all right.
+
+850
+00:42:25.803 --> 00:42:28.220
+See, that's that's looking looking pretty good to me.
+
+851
+00:42:28.220 --> 00:42:30.460
+But if you look at this one that I did,
+
+852
+00:42:30.460 --> 00:42:32.710
+the colors look way cooler,
+
+853
+00:42:32.710 --> 00:42:35.870
+because they're much more purples and reds and blues.
+
+854
+00:42:35.870 --> 00:42:38.860
+And these ones are mostly blues.
+
+855
+00:42:38.860 --> 00:42:43.320
+So what I did is if you simply subtract
+
+856
+00:42:45.320 --> 00:42:47.543
+0.5 from the hue,
+
+857
+00:42:48.410 --> 00:42:52.060
+it will then just kinda offset where you start
+
+858
+00:42:52.060 --> 00:42:55.630
+on the HSL spectrum and give us a few more reds
+
+859
+00:42:55.630 --> 00:42:57.270
+and things like that that we want.
+
+860
+00:42:57.270 --> 00:43:00.573
+So there, what if I move this up to eight?
+
+861
+00:43:01.730 --> 00:43:05.020
+Yeah, so you can obviously play with these HSL values.
+
+862
+00:43:05.020 --> 00:43:08.740
+The first one is hue, the second one is saturation,
+
+863
+00:43:08.740 --> 00:43:10.340
+and the third one is lightness.
+
+864
+00:43:10.340 --> 00:43:11.920
+If you go all the way up to one,
+
+865
+00:43:11.920 --> 00:43:13.250
+they're all going to be white.
+
+866
+00:43:13.250 --> 00:43:15.670
+If you go to zero, they'll all be black.
+
+867
+00:43:15.670 --> 00:43:17.950
+And then everywhere in between,
+
+868
+00:43:17.950 --> 00:43:20.723
+will give you different values that you have they're.
+
+869
+00:43:20.723 --> 00:43:23.410
+(whoa whoa, whoa)
+
+870
+00:43:23.410 --> 00:43:24.820
+Pretty fun.
+
+871
+00:43:24.820 --> 00:43:28.170
+So, that is the very basics of visualizing data.
+
+872
+00:43:28.170 --> 00:43:31.080
+One kind of cool thing I was hoping to do,
+
+873
+00:43:31.080 --> 00:43:32.050
+I can't figure it out,
+
+874
+00:43:32.050 --> 00:43:35.090
+but this time domain data,
+
+875
+00:43:35.090 --> 00:43:37.820
+it actually gives you decibel values.
+
+876
+00:43:37.820 --> 00:43:39.810
+And what would be cool is if you could map
+
+877
+00:43:39.810 --> 00:43:43.010
+that decibel value to HSL,
+
+878
+00:43:43.010 --> 00:43:44.840
+meaning that like the lowest decibel
+
+879
+00:43:44.840 --> 00:43:48.677
+that you can get is like a zero on HSL.
+
+880
+00:43:48.677 --> 00:43:51.400
+And the highest decibel that you can get is
+
+881
+00:43:51.400 --> 00:43:54.950
+a 360 and then that this thing is that of being yellow
+
+882
+00:43:54.950 --> 00:43:57.710
+would be like the high values would be I don't,
+
+883
+00:43:57.710 --> 00:44:00.360
+know you could visualize it differently and in HSL.
+
+884
+00:44:00.360 --> 00:44:03.830
+So, that would be kind of a cool challenge to check out
+
+885
+00:44:03.830 --> 00:44:07.110
+if you want to dive deep into the audio API's.
+
+886
+00:44:07.110 --> 00:44:08.160
+Hopefully you learned a thing or two.
+
+887
+00:44:08.160 --> 00:44:11.330
+I know that this stuff is, is pretty in the weeds,
+
+888
+00:44:11.330 --> 00:44:14.200
+especially when you're getting into multiplication division.
+
+889
+00:44:14.200 --> 00:44:15.570
+And then you also have to understand
+
+890
+00:44:15.570 --> 00:44:17.560
+sort of how sound works and things like that,
+
+891
+00:44:17.560 --> 00:44:20.550
+but this is the kind of stuff that makes me curious
+
+892
+00:44:20.550 --> 00:44:23.290
+about JavaScript and makes me want to dive deeper
+
+893
+00:44:23.290 --> 00:44:24.580
+and learn a little bit more.
+
+894
+00:44:24.580 --> 00:44:28.380
+So, I encourage you to dive deeper on this one as well.
+
+895
+00:44:28.380 --> 00:44:30.380
+See you in the next one.
+

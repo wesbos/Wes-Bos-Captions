@@ -1,0 +1,1942 @@
+﻿WEBVTT
+
+1
+00:00:00.579 --> 00:00:03.162
+(upbeat music)
+
+2
+00:00:05.690 --> 00:00:07.507
+<v Instructor>All right, let's learn about events,</v>
+
+3
+00:00:07.507 --> 00:00:10.050
+and event listeners and how to listen for them and how
+
+4
+00:00:10.050 --> 00:00:12.290
+to do stuff when things happen.
+
+5
+00:00:12.290 --> 00:00:14.750
+So dumb elements, things that are on the page,
+
+6
+00:00:14.750 --> 00:00:17.780
+they emit events, so when they're clicked,
+
+7
+00:00:17.780 --> 00:00:21.300
+when they're hovered, when they're dragged,
+
+8
+00:00:21.300 --> 00:00:23.990
+they will fire off, they will emit events
+
+9
+00:00:23.990 --> 00:00:25.590
+when they are interacted with.
+
+10
+00:00:25.590 --> 00:00:27.170
+We can use the event listeners
+
+11
+00:00:27.170 --> 00:00:29.410
+to listen for when these events happen,
+
+12
+00:00:29.410 --> 00:00:32.270
+and do something, and react to them.
+
+13
+00:00:32.270 --> 00:00:35.580
+So you can attach event listeners to all elements,
+
+14
+00:00:35.580 --> 00:00:37.890
+and you can also attach them
+
+15
+00:00:37.890 --> 00:00:40.300
+to the document as well as the window.
+
+16
+00:00:40.300 --> 00:00:41.550
+So let's start with a button,
+
+17
+00:00:41.550 --> 00:00:44.150
+because that's the most common.
+
+18
+00:00:44.150 --> 00:00:45.900
+We'll go to events.html.
+
+19
+00:00:45.900 --> 00:00:48.530
+I'm in the 29 events folder here.
+
+20
+00:00:48.530 --> 00:00:53.000
+And give ourselves a button with the class of butts.
+
+21
+00:00:53.000 --> 00:00:54.470
+Yeah, I did it.
+
+22
+00:00:54.470 --> 00:00:56.569
+Apologies if you're using this course.
+
+23
+00:00:56.569 --> 00:01:01.550
+(laughs) Sometimes people use these courses in school,
+
+24
+00:01:01.550 --> 00:01:05.060
+so hopefully that is appropriate for school.
+
+25
+00:01:05.060 --> 00:01:07.110
+Let's put something in there, "Click Me!"
+
+26
+00:01:08.060 --> 00:01:11.010
+Then let's make a new JavaScript file
+
+27
+00:01:11.010 --> 00:01:12.610
+if it's not already there.
+
+28
+00:01:12.610 --> 00:01:13.810
+We'll call it events.js.
+
+29
+00:01:14.850 --> 00:01:17.843
+Console log, "It works!!!"
+
+30
+00:01:19.120 --> 00:01:20.160
+Go down here.
+
+31
+00:01:20.160 --> 00:01:24.970
+Script source, and hook to events.js.
+
+32
+00:01:24.970 --> 00:01:27.150
+K. Open it up.
+
+33
+00:01:27.150 --> 00:01:27.983
+It works!
+
+34
+00:01:27.983 --> 00:01:31.030
+Gotta click me button, and you click it, nothing happens.
+
+35
+00:01:31.030 --> 00:01:32.300
+Good. Now, in order
+
+36
+00:01:32.300 --> 00:01:34.990
+to listen for events on elements, you first need
+
+37
+00:01:34.990 --> 00:01:37.807
+to go and off and get them, so we can select them.
+
+38
+00:01:37.807 --> 00:01:38.960
+Const, button.
+
+39
+00:01:38.960 --> 00:01:40.430
+Well, let's call it butts.
+
+40
+00:01:40.430 --> 00:01:44.087
+It goes document.queryselector('butts').
+
+41
+00:01:47.450 --> 00:01:49.940
+And then we take our butts. (laughs)
+
+42
+00:01:49.940 --> 00:01:51.830
+This is a good idea.
+
+43
+00:01:51.830 --> 00:01:55.687
+We take our butts, button, and we use the method called
+
+44
+00:01:55.687 --> 00:01:59.990
+.addEventListener, so butts.addEventListener,
+
+45
+00:02:02.040 --> 00:02:06.260
+and add event listener will take two arguments, usually.
+
+46
+00:02:06.260 --> 00:02:07.580
+There's possibility for three,
+
+47
+00:02:07.580 --> 00:02:08.710
+I'll talk about that in a second,
+
+48
+00:02:08.710 --> 00:02:10.830
+but usually two arguments first.
+
+49
+00:02:10.830 --> 00:02:15.260
+What is the type of events that you want to listen to?
+
+50
+00:02:15.260 --> 00:02:18.230
+For some reason it's recommending fullscreenchange,
+
+51
+00:02:18.230 --> 00:02:23.230
+which is an event when a video player goes full screen.
+
+52
+00:02:23.390 --> 00:02:24.620
+Maybe I was using that when I
+
+53
+00:02:24.620 --> 00:02:26.670
+was coding my course platform earlier.
+
+54
+00:02:26.670 --> 00:02:29.450
+But the event we want to listen to is obviously click.
+
+55
+00:02:29.450 --> 00:02:31.530
+That is probably the most common event
+
+56
+00:02:31.530 --> 00:02:33.790
+that you are going to be using.
+
+57
+00:02:33.790 --> 00:02:35.690
+And the second thing that you need
+
+58
+00:02:35.690 --> 00:02:38.360
+to pass is what's called a callback function,
+
+59
+00:02:38.360 --> 00:02:39.990
+now woo! Buzzword!
+
+60
+00:02:39.990 --> 00:02:41.580
+Buzzword alert.
+
+61
+00:02:41.580 --> 00:02:44.330
+So a callback function is just a regular function.
+
+62
+00:02:44.330 --> 00:02:46.260
+This is not a special type of function.
+
+63
+00:02:46.260 --> 00:02:48.770
+It's not like we learned about named functions,
+
+64
+00:02:48.770 --> 00:02:50.973
+anonymous functions and arrow functions.
+
+65
+00:02:52.160 --> 00:02:55.270
+It's not a new type of function called callback,
+
+66
+00:02:55.270 --> 00:02:59.457
+it's just a word we use to describe a function that we pass
+
+67
+00:02:59.457 --> 00:03:02.900
+to a method that will then be called
+
+68
+00:03:02.900 --> 00:03:04.180
+at a later point in time.
+
+69
+00:03:04.180 --> 00:03:06.320
+A callback function is just a regular function,
+
+70
+00:03:06.320 --> 00:03:08.720
+but instead of us calling the function,
+
+71
+00:03:08.720 --> 00:03:12.910
+we provide the name, or reference to a function
+
+72
+00:03:12.910 --> 00:03:17.110
+to addEventListener, and then the browser will take care
+
+73
+00:03:17.110 --> 00:03:21.960
+of calling or running that function for us when it needs to.
+
+74
+00:03:21.960 --> 00:03:23.567
+It's similar to saying, sort of like,
+
+75
+00:03:23.567 --> 00:03:25.647
+"Hey browser, I made this function.
+
+76
+00:03:25.647 --> 00:03:28.017
+"When somebody clicks on my butts button,
+
+77
+00:03:28.017 --> 00:03:31.227
+"can you please do me a favor and run it for me?
+
+78
+00:03:31.227 --> 00:03:32.130
+"Thanks a lot."
+
+79
+00:03:32.130 --> 00:03:35.200
+So probably the most common way, I don't know if
+
+80
+00:03:35.200 --> 00:03:38.860
+this is the most common, it's what I see a lot.
+
+81
+00:03:38.860 --> 00:03:40.330
+And this is what is referred
+
+82
+00:03:40.330 --> 00:03:42.460
+to as an anonymous callback function.
+
+83
+00:03:42.460 --> 00:03:44.200
+So what people will do
+
+84
+00:03:44.200 --> 00:03:47.063
+is they'll just write the word function in here.
+
+85
+00:03:47.960 --> 00:03:50.390
+And you don't give it a name.
+
+86
+00:03:50.390 --> 00:03:52.450
+We'll talk about the parameters in just a second,
+
+87
+00:03:52.450 --> 00:03:55.120
+then you open and close the function body right here.
+
+88
+00:03:55.120 --> 00:03:58.430
+So this is an argument, it might look a little bit funky
+
+89
+00:03:58.430 --> 00:03:59.990
+because this is now multiple lines,
+
+90
+00:03:59.990 --> 00:04:02.610
+but the second argument to addEventListener
+
+91
+00:04:02.610 --> 00:04:04.650
+is just a function.
+
+92
+00:04:04.650 --> 00:04:07.520
+And inside of that function, we can do whatever it is
+
+93
+00:04:07.520 --> 00:04:09.570
+that we want when the thing gets clicked,
+
+94
+00:04:09.570 --> 00:04:11.197
+so in our case, we'll console log,
+
+95
+00:04:11.197 --> 00:04:13.813
+"IT GOT CLICKED!!!"
+
+96
+00:04:15.600 --> 00:04:18.420
+Go ahead and now when we click on it,
+
+97
+00:04:18.420 --> 00:04:22.350
+you see that the call back function gets run once
+
+98
+00:04:22.350 --> 00:04:25.197
+for every single time that user has clicked it.
+
+99
+00:04:25.197 --> 00:04:28.053
+Sort of a little aside, it will also run it.
+
+100
+00:04:28.053 --> 00:04:32.450
+You see what I did there, is I hit tab to focus that button,
+
+101
+00:04:32.450 --> 00:04:34.450
+and then I used my enter key.
+
+102
+00:04:34.450 --> 00:04:36.870
+So that means that you don't necessarily need
+
+103
+00:04:36.870 --> 00:04:39.920
+to think about keyboard events as well
+
+104
+00:04:39.920 --> 00:04:43.620
+if you're thinking about your standard buttons,
+
+105
+00:04:43.620 --> 00:04:46.870
+and people hitting enter on them instead of clicking them.
+
+106
+00:04:46.870 --> 00:04:48.760
+So that's the basics so an event listener.
+
+107
+00:04:48.760 --> 00:04:50.985
+You take something, (chuckles)
+
+108
+00:04:50.985 --> 00:04:55.985
+when I used to teach event listeners in person,
+
+109
+00:04:56.410 --> 00:04:58.450
+we would always say there's three steps.
+
+110
+00:04:58.450 --> 00:05:01.730
+Go get something, listen for something,
+
+111
+00:05:01.730 --> 00:05:04.320
+which is your click, and then do something.
+
+112
+00:05:04.320 --> 00:05:07.610
+So go get something, listen for something,
+
+113
+00:05:07.610 --> 00:05:10.720
+and then go ahead and do something.
+
+114
+00:05:10.720 --> 00:05:12.170
+There's a lot more to event listeners,
+
+115
+00:05:12.170 --> 00:05:14.436
+so let's dive into that now.
+
+116
+00:05:14.436 --> 00:05:17.750
+I said before that this is an anonymous function,
+
+117
+00:05:17.750 --> 00:05:20.820
+and that is because there's no name to this function,
+
+118
+00:05:20.820 --> 00:05:22.710
+there's no way for us to reference
+
+119
+00:05:22.710 --> 00:05:24.790
+this function outside of here.
+
+120
+00:05:24.790 --> 00:05:27.310
+We simply just pass an anonymous function,
+
+121
+00:05:27.310 --> 00:05:29.980
+and then write the code that we wish to have.
+
+122
+00:05:29.980 --> 00:05:32.790
+However, we can also create a named function outside
+
+123
+00:05:32.790 --> 00:05:35.840
+of this, and pass it in as a reference,
+
+124
+00:05:35.840 --> 00:05:39.560
+so what I often like to do is, before I do the listening,
+
+125
+00:05:39.560 --> 00:05:42.744
+I'll make a function called, handleClick,
+
+126
+00:05:42.744 --> 00:05:47.743
+and that naming handle whatever, is not necessarily
+
+127
+00:05:47.743 --> 00:05:50.060
+just like a best practice or anything,
+
+128
+00:05:50.060 --> 00:05:53.190
+but it's often something that I'll do in my functions,
+
+129
+00:05:53.190 --> 00:05:56.110
+is I'll just name, I'll name the callbacks,
+
+130
+00:05:56.110 --> 00:05:58.910
+I'll start them with "Handle," and then that tells me
+
+131
+00:06:00.414 --> 00:06:02.526
+that it's a specific function that gets passed in
+
+132
+00:06:02.526 --> 00:06:04.290
+to an event handler.
+
+133
+00:06:04.290 --> 00:06:08.140
+And then we can move that console log up inside of here.
+
+134
+00:06:08.140 --> 00:06:10.920
+Now instead of passing an anonymous function,
+
+135
+00:06:10.920 --> 00:06:14.040
+you can just pass it, reference to the function names,
+
+136
+00:06:14.040 --> 00:06:16.988
+so we'll say handleClick, right?
+
+137
+00:06:16.988 --> 00:06:20.010
+That is pretty simple because we've made
+
+138
+00:06:20.010 --> 00:06:21.880
+a function called handleClick,
+
+139
+00:06:21.880 --> 00:06:24.140
+we can probably call it ourselves from here, right?
+
+140
+00:06:24.140 --> 00:06:27.910
+If we just type in handleClick, it's available there.
+
+141
+00:06:27.910 --> 00:06:30.260
+And then we've taken the name of the function and given it
+
+142
+00:06:30.260 --> 00:06:32.847
+to our event listener, and say,
+
+143
+00:06:32.847 --> 00:06:34.717
+"Hey can you call this for me,
+
+144
+00:06:34.717 --> 00:06:36.870
+"when somebody clicks me? Thanks a lot."
+
+145
+00:06:36.870 --> 00:06:38.670
+You'll notice, and I see this a lot,
+
+146
+00:06:38.670 --> 00:06:41.307
+where people think like, "Why isn't it like that?"
+
+147
+00:06:41.307 --> 00:06:43.927
+Like, "Why am I not running
+
+148
+00:06:43.927 --> 00:06:45.840
+"the function inside of here, right?"
+
+149
+00:06:45.840 --> 00:06:47.733
+And if we refresh the page now,
+
+150
+00:06:48.940 --> 00:06:51.390
+you see that it runs on page load.
+
+151
+00:06:51.390 --> 00:06:53.910
+So unless this function were to return another function,
+
+152
+00:06:53.910 --> 00:06:56.550
+which is something that can happen,
+
+153
+00:06:56.550 --> 00:06:58.357
+we've already let that that.
+
+154
+00:06:58.357 --> 00:07:01.390
+You do actually have to call the function yourself.
+
+155
+00:07:01.390 --> 00:07:02.940
+Why? Because the browser
+
+156
+00:07:02.940 --> 00:07:04.060
+will call it for us.
+
+157
+00:07:04.060 --> 00:07:06.470
+The browser will run the function for us,
+
+158
+00:07:06.470 --> 00:07:08.187
+we simply just say, "Here's the function.
+
+159
+00:07:08.187 --> 00:07:09.020
+"You do you.
+
+160
+00:07:09.020 --> 00:07:10.517
+"You do what you want (chuckles)
+
+161
+00:07:10.517 --> 00:07:12.480
+"when it's time to go ahead."
+
+162
+00:07:12.480 --> 00:07:15.820
+So what benefit does having
+
+163
+00:07:15.820 --> 00:07:19.570
+this function outside of the event listener have?
+
+164
+00:07:19.570 --> 00:07:22.753
+Well there's a couple things, so if we have another button.
+
+165
+00:07:23.660 --> 00:07:27.263
+Let's make another button, so "button.cool",
+
+166
+00:07:32.020 --> 00:07:35.100
+and "Click me also!"
+
+167
+00:07:35.100 --> 00:07:38.233
+If we wanna listen for that another one,
+
+168
+00:07:39.840 --> 00:07:44.117
+so "cool", and maybe I'll say "cool button,"
+
+169
+00:07:45.180 --> 00:07:47.480
+and then we can just basically duplicate this,
+
+170
+00:07:47.480 --> 00:07:48.980
+replace it with "cool button,"
+
+171
+00:07:48.980 --> 00:07:51.360
+and we can also listen on the cool button.
+
+172
+00:07:51.360 --> 00:07:54.510
+So now, doesn't matter which one I click,
+
+173
+00:07:54.510 --> 00:07:57.770
+both of them are referring to that same function.
+
+174
+00:07:57.770 --> 00:07:59.500
+If this was anonymous,
+
+175
+00:07:59.500 --> 00:08:02.980
+and I had written a function for both of them,
+
+176
+00:08:02.980 --> 00:08:06.490
+and here I console log "IT GOT CLICKED".
+
+177
+00:08:06.490 --> 00:08:08.150
+That doesn't seem like that big of a deal,
+
+178
+00:08:08.150 --> 00:08:10.580
+but you can think about scaling it up to
+
+179
+00:08:10.580 --> 00:08:12.710
+a whole bunch of stuff.
+
+180
+00:08:12.710 --> 00:08:14.070
+I've certainly have seen lots
+
+181
+00:08:14.070 --> 00:08:16.190
+of developers in the past do this.
+
+182
+00:08:16.190 --> 00:08:18.560
+Then you need to update what happens on a click,
+
+183
+00:08:18.560 --> 00:08:19.440
+you gotta make sure
+
+184
+00:08:19.440 --> 00:08:21.890
+that you have referenced every single one,
+
+185
+00:08:21.890 --> 00:08:24.800
+and that's not being a very dry programmer, of,
+
+186
+00:08:24.800 --> 00:08:25.870
+don't repeat yourself.
+
+187
+00:08:25.870 --> 00:08:28.120
+So we are going to just pass
+
+188
+00:08:28.120 --> 00:08:31.160
+in reference to the function like that.
+
+189
+00:08:31.160 --> 00:08:33.870
+And then any time that we wanna change it,
+
+190
+00:08:33.870 --> 00:08:34.967
+we wanna add a bug.
+
+191
+00:08:38.769 --> 00:08:40.710
+Little button that ardd, event listener,
+
+192
+00:08:40.710 --> 00:08:42.690
+addEventListener, there we go.
+
+193
+00:08:42.690 --> 00:08:46.150
+You see that obviously it's gonna be updated for every one.
+
+194
+00:08:46.150 --> 00:08:50.190
+So that is the first benefit, of it's dry,
+
+195
+00:08:50.190 --> 00:08:55.040
+and then the second thing is that if you want to remove
+
+196
+00:08:55.040 --> 00:08:57.090
+an event listener from an element,
+
+197
+00:08:57.090 --> 00:09:00.300
+you must have referenced to the function.
+
+198
+00:09:00.300 --> 00:09:04.200
+So, if I want to go to this butts,
+
+199
+00:09:04.200 --> 00:09:08.560
+and call removeEventListener, it works exactly the same
+
+200
+00:09:08.560 --> 00:09:11.500
+where you have to first, give it references to what event
+
+201
+00:09:11.500 --> 00:09:13.490
+do you wanna stop listening for?
+
+202
+00:09:13.490 --> 00:09:14.980
+And now that's not enough.
+
+203
+00:09:14.980 --> 00:09:19.320
+You can't just say, "Stop listening for all clicks."
+
+204
+00:09:19.320 --> 00:09:22.920
+That's not possible with the removeEventListener.
+
+205
+00:09:22.920 --> 00:09:26.040
+That's actually a very difficult thing to implement.
+
+206
+00:09:26.040 --> 00:09:27.980
+I know jQuery does it sort of behind the scenes,
+
+207
+00:09:27.980 --> 00:09:29.950
+but they have to keep reference to all the functions,
+
+208
+00:09:29.950 --> 00:09:32.430
+so in our case you have to pass the event you wish to stop
+
+209
+00:09:32.430 --> 00:09:35.760
+listening for, as well as the function which you wish
+
+210
+00:09:35.760 --> 00:09:37.830
+to stop listening for as well,
+
+211
+00:09:37.830 --> 00:09:40.680
+so in our case it's going to be handleClick.
+
+212
+00:09:40.680 --> 00:09:45.680
+So now, when I run it, nothing is actually running it.
+
+213
+00:09:45.880 --> 00:09:48.893
+We can even just maybe we'll just copy that, comment it out.
+
+214
+00:09:51.080 --> 00:09:53.703
+See, it clicks, and if I paste it in,
+
+215
+00:09:55.360 --> 00:09:58.506
+it no longer, it's called unbinding,
+
+216
+00:09:58.506 --> 00:10:00.657
+by the way that's another buzzword.
+
+217
+00:10:00.657 --> 00:10:02.300
+"Binding," what does that mean?
+
+218
+00:10:02.300 --> 00:10:06.220
+Well, a binding essentially means, taking a function
+
+219
+00:10:06.220 --> 00:10:09.610
+and listening for a specific click against an element,
+
+220
+00:10:09.610 --> 00:10:12.840
+so this function is bound that element.
+
+221
+00:10:12.840 --> 00:10:14.770
+This function is bound that element,
+
+222
+00:10:14.770 --> 00:10:15.870
+and when you take it off,
+
+223
+00:10:15.870 --> 00:10:19.533
+you're unbinding that function from that element.
+
+224
+00:10:19.533 --> 00:10:22.300
+So removing event listener, if you wanna remove it,
+
+225
+00:10:22.300 --> 00:10:24.860
+you must have referenced to the original function.
+
+226
+00:10:24.860 --> 00:10:27.770
+If we had done an anonymous function,
+
+227
+00:10:27.770 --> 00:10:31.290
+so function, over here let's say,
+
+228
+00:10:31.290 --> 00:10:34.107
+console log, "Im an anon!"
+
+229
+00:10:38.080 --> 00:10:39.630
+See? "Im an anon."
+
+230
+00:10:39.630 --> 00:10:42.380
+We couldn't take our butts,
+
+231
+00:10:42.380 --> 00:10:45.920
+and remove the click handler from it.
+
+232
+00:10:45.920 --> 00:10:49.210
+See even if I pass it reference to another function,
+
+233
+00:10:49.210 --> 00:10:50.560
+the anon functions still works.
+
+234
+00:10:50.560 --> 00:10:55.560
+And even if I path it, this exact same function, like this,
+
+235
+00:10:55.680 --> 00:10:58.000
+even though it's the exact same contents,
+
+236
+00:10:58.000 --> 00:11:01.310
+it's an anonymous function with the same console log inside,
+
+237
+00:11:01.310 --> 00:11:02.850
+it doesn't work.
+
+238
+00:11:02.850 --> 00:11:04.630
+And that's because there's no way
+
+239
+00:11:04.630 --> 00:11:07.920
+to reference the actual function that we were removing.
+
+240
+00:11:07.920 --> 00:11:09.480
+It's just not possible.
+
+241
+00:11:09.480 --> 00:11:12.070
+So, if you ever in the future need
+
+242
+00:11:12.070 --> 00:11:17.070
+to remove an event listener, you must use a named function,
+
+243
+00:11:17.870 --> 00:11:21.430
+or an arrow function, that is stored in a variable,
+
+244
+00:11:21.430 --> 00:11:23.600
+so that you can then reference and unbind it.
+
+245
+00:11:23.600 --> 00:11:26.503
+Anonymous functions cannot be removed.
+
+246
+00:11:27.870 --> 00:11:29.250
+Let me just show you real quick how you
+
+247
+00:11:29.250 --> 00:11:30.950
+do it with an arrow function as well.
+
+248
+00:11:30.950 --> 00:11:34.400
+So const,
+
+249
+00:11:34.400 --> 00:11:37.163
+hooray, is equal to an arrow function.
+
+250
+00:11:38.443 --> 00:11:41.207
+I'll just console.log, "HOORAY!"
+
+251
+00:11:42.530 --> 00:11:44.510
+And then in our case,
+
+252
+00:11:44.510 --> 00:11:46.510
+let's move this one back to handleClick.
+
+253
+00:11:50.030 --> 00:11:51.710
+If we take our cool button,
+
+254
+00:11:51.710 --> 00:11:55.040
+we can just reference the hooray function that we stored
+
+255
+00:11:55.040 --> 00:11:55.873
+in a variable.
+
+256
+00:11:55.873 --> 00:11:58.360
+So that technically is an anonymous function,
+
+257
+00:11:58.360 --> 00:12:01.700
+but because we've stored it in a variable, it will infer
+
+258
+00:12:01.700 --> 00:12:04.070
+the name of the function from the variable name,
+
+259
+00:12:04.070 --> 00:12:05.530
+and we can still reference it,
+
+260
+00:12:05.530 --> 00:12:07.970
+because it's stuck in a variable, and watch.
+
+261
+00:12:07.970 --> 00:12:10.963
+So now hooray works just fine.
+
+262
+00:12:12.870 --> 00:12:14.840
+Now that is the basics of event listeners,
+
+263
+00:12:14.840 --> 00:12:16.480
+we're going to go into what are
+
+264
+00:12:16.480 --> 00:12:18.740
+the other events that are out there as well as
+
+265
+00:12:18.740 --> 00:12:21.170
+how can we create our own custom events,
+
+266
+00:12:21.170 --> 00:12:24.875
+'cause a really handy thing is to be able
+
+267
+00:12:24.875 --> 00:12:28.960
+to emit a buy button, or a buy event,
+
+268
+00:12:28.960 --> 00:12:33.120
+or you wanna emit a success event, or something like that.
+
+269
+00:12:33.120 --> 00:12:35.400
+It's really handy to be able to just emit your own events,
+
+270
+00:12:35.400 --> 00:12:37.030
+so that you can then listen to them,
+
+271
+00:12:37.030 --> 00:12:39.290
+just like you're listening to regular clicks.
+
+272
+00:12:39.290 --> 00:12:40.606
+So we're gonna go into that,
+
+273
+00:12:40.606 --> 00:12:41.980
+but for now we're going
+
+274
+00:12:41.980 --> 00:12:46.980
+to move into listening for events on multiple items.
+
+275
+00:12:48.750 --> 00:12:52.600
+And this is an extremely common thing, you've got a list
+
+276
+00:12:52.600 --> 00:12:56.250
+of 40 buttons on the page, or any time you come across
+
+277
+00:12:56.250 --> 00:12:59.490
+a specific type of button, or any time you come across
+
+278
+00:12:59.490 --> 00:13:00.750
+a specific type of image,
+
+279
+00:13:00.750 --> 00:13:01.860
+or anything like that,
+
+280
+00:13:01.860 --> 00:13:05.530
+you want to listen for the event on all of those things
+
+281
+00:13:05.530 --> 00:13:07.330
+that are on the page.
+
+282
+00:13:07.330 --> 00:13:08.957
+So the way that that works is that,
+
+283
+00:13:08.957 --> 00:13:13.720
+you can't just take an array of elements
+
+284
+00:13:13.720 --> 00:13:15.030
+that you have selected,
+
+285
+00:13:15.030 --> 00:13:18.120
+so maybe we'll go down here,
+
+286
+00:13:18.120 --> 00:13:22.923
+and I'm going to give myself a button with the class of buy.
+
+287
+00:13:25.860 --> 00:13:30.860
+And I, we'll say "Buy Item 1."
+
+288
+00:13:31.510 --> 00:13:33.070
+And I actually want like ten of those.
+
+289
+00:13:33.070 --> 00:13:34.790
+So I can use my Emmet here.
+
+290
+00:13:34.790 --> 00:13:37.993
+Button.buy,
+
+291
+00:13:38.970 --> 00:13:43.970
+and the test will be "Buy Item $,"
+
+292
+00:13:44.000 --> 00:13:44.930
+and I want 10 of those.
+
+293
+00:13:44.930 --> 00:13:48.923
+So I'm using Emmet here to expand to expand to ten,
+
+294
+00:13:48.923 --> 00:13:50.510
+(exclaims) that was cool, hey?
+
+295
+00:13:50.510 --> 00:13:53.023
+10 buttons, all of them have a class of buy,
+
+296
+00:13:53.890 --> 00:13:56.167
+maybe I'll just put a h2 there.
+
+297
+00:13:56.167 --> 00:13:58.077
+"Buy buttons!"
+
+298
+00:14:01.030 --> 00:14:03.580
+there we go, so we've got all of these buttons here,
+
+299
+00:14:03.580 --> 00:14:07.580
+now how am I going to listen for a click on all of them?
+
+300
+00:14:07.580 --> 00:14:11.070
+It doesn't make sense to have to select all ten of them
+
+301
+00:14:11.070 --> 00:14:13.770
+and attach to event listener 10 times,
+
+302
+00:14:13.770 --> 00:14:14.970
+that's actually what we're doing,
+
+303
+00:14:14.970 --> 00:14:16.840
+but there's a much more efficient way.
+
+304
+00:14:16.840 --> 00:14:18.127
+Let's put a comment here.
+
+305
+00:14:18.127 --> 00:14:21.670
+"Listen on multiple items."
+
+306
+00:14:21.670 --> 00:14:24.617
+And the first thing we wanna do is select all of those,
+
+307
+00:14:24.617 --> 00:14:29.617
+const, buy buttons, is equal to document.querySelectorAll.
+
+308
+00:14:31.550 --> 00:14:32.383
+What's the difference between
+
+309
+00:14:32.383 --> 00:14:34.242
+querySelector and querySelectorAll?
+
+310
+00:14:34.242 --> 00:14:36.384
+querySelectorAll will select multiple,
+
+311
+00:14:36.384 --> 00:14:38.904
+whereas querySelector will just give you the first match
+
+312
+00:14:38.904 --> 00:14:41.677
+of the raw element, so anything with
+
+313
+00:14:41.677 --> 00:14:43.944
+the class of buy, right?
+
+314
+00:14:43.944 --> 00:14:47.262
+Maybe a button with the class of buy.
+
+315
+00:14:47.262 --> 00:14:49.653
+Then let's console log that.
+
+316
+00:14:51.252 --> 00:14:52.530
+"buyButtons."
+
+317
+00:14:52.530 --> 00:14:53.940
+You see we get a node list,
+
+318
+00:14:53.940 --> 00:14:55.930
+which is a list of all of the buttons
+
+319
+00:14:55.930 --> 00:14:56.920
+that match that's, right?
+
+320
+00:14:56.920 --> 00:14:58.730
+It's 10 things.
+
+321
+00:14:58.730 --> 00:15:03.047
+So, that's good, and you might think,
+
+322
+00:15:03.047 --> 00:15:07.277
+"Why can't we just go ahead, and take our buy buttons,
+
+323
+00:15:07.277 --> 00:15:11.480
+"and add an event listener of click?"
+
+324
+00:15:11.480 --> 00:15:13.270
+And maybe we'll make a function here.
+
+325
+00:15:13.270 --> 00:15:14.780
+Function.buyItem.
+
+326
+00:15:19.340 --> 00:15:22.410
+Console.log('BUYING ITEM')
+
+327
+00:15:24.810 --> 00:15:26.333
+Pass a buy,
+
+328
+00:15:27.690 --> 00:15:29.200
+item function to it, right?
+
+329
+00:15:29.200 --> 00:15:32.400
+So we have our elements, we listened for them,
+
+330
+00:15:32.400 --> 00:15:34.240
+we listened for a click, and then when that,
+
+331
+00:15:34.240 --> 00:15:37.640
+something clicks on each of those, you run the buy item.
+
+332
+00:15:37.640 --> 00:15:39.102
+So here we go.
+
+333
+00:15:39.102 --> 00:15:41.377
+(mimics buzzer) "Buy buttons at add event listener
+
+334
+00:15:41.377 --> 00:15:43.070
+"is not a function."
+
+335
+00:15:43.070 --> 00:15:44.740
+Oh. So what it's
+
+336
+00:15:44.740 --> 00:15:47.710
+telling us there is that, the buy buttons doesn't
+
+337
+00:15:47.710 --> 00:15:49.190
+have the method addEventListener.
+
+338
+00:15:49.190 --> 00:15:52.653
+Well, let's console.log the buy buttons.
+
+339
+00:15:54.050 --> 00:15:56.190
+Open it up, if you ever wanna see what all
+
+340
+00:15:56.190 --> 00:15:57.810
+of the different methods are,
+
+341
+00:15:57.810 --> 00:15:59.620
+you can actually look in the prototype.
+
+342
+00:15:59.620 --> 00:16:01.620
+Again, we haven't about the whoa!
+
+343
+00:16:01.620 --> 00:16:03.798
+We haven't learned about that yet,
+
+344
+00:16:03.798 --> 00:16:04.860
+but we will in the future,
+
+345
+00:16:04.860 --> 00:16:08.360
+and you see that the methods available for us
+
+346
+00:16:08.360 --> 00:16:12.070
+are item entries for each keys, and values.
+
+347
+00:16:12.070 --> 00:16:14.400
+There's no .addEventListener, whereas,
+
+348
+00:16:14.400 --> 00:16:18.053
+if I were to console.log the butts button,
+
+349
+00:16:22.670 --> 00:16:24.950
+I guess we gotta console.dir the button,
+
+350
+00:16:24.950 --> 00:16:26.760
+so let's see what's in it.
+
+351
+00:16:26.760 --> 00:16:29.703
+You will see that, somewhere in here,
+
+352
+00:16:31.301 --> 00:16:33.720
+I don't know where, it's huge,
+
+353
+00:16:33.720 --> 00:16:35.680
+somewhere in there is addEventListener,
+
+354
+00:16:35.680 --> 00:16:38.780
+which is a method on that specific element,
+
+355
+00:16:38.780 --> 00:16:42.900
+so in order to attach event listeners to multiple events,
+
+356
+00:16:42.900 --> 00:16:44.990
+you actually must loop over and
+
+357
+00:16:44.990 --> 00:16:48.450
+for each element attach it individually.
+
+358
+00:16:48.450 --> 00:16:51.360
+Now we haven't learned about loops just yet,
+
+359
+00:16:51.360 --> 00:16:54.380
+but I think that we can handle this just fine.
+
+360
+00:16:54.380 --> 00:16:56.940
+Remember we talked about this buyButtons?
+
+361
+00:16:57.850 --> 00:17:01.740
+And in the prototype, there is a method called forEach?
+
+362
+00:17:01.740 --> 00:17:06.350
+That is going to allow us to loop over each of the items.
+
+363
+00:17:06.350 --> 00:17:10.380
+So what we can is, get rid of all of this,
+
+364
+00:17:10.380 --> 00:17:12.670
+we'll take our buy buttons.
+
+365
+00:17:12.670 --> 00:17:14.520
+Wait, did I delete the querySelector?
+
+366
+00:17:19.210 --> 00:17:20.620
+Yeah, there we go.
+
+367
+00:17:20.620 --> 00:17:25.470
+Usually what I'll do is I'll put this selector at the top
+
+368
+00:17:25.470 --> 00:17:28.560
+of my file, not just kinda anywhere inside of it,
+
+369
+00:17:28.560 --> 00:17:31.150
+so it probably belongs a little bit more up here,
+
+370
+00:17:31.150 --> 00:17:33.780
+and that's what we're gonna be doing in all of our samples,
+
+371
+00:17:33.780 --> 00:17:37.520
+but for the sake of seeing all of the code in this example,
+
+372
+00:17:37.520 --> 00:17:38.590
+we're gonna keep it right here,
+
+373
+00:17:38.590 --> 00:17:40.290
+and there's nothing wrong with doing that,
+
+374
+00:17:40.290 --> 00:17:42.080
+just kind of our personal preferance.
+
+375
+00:17:42.080 --> 00:17:44.990
+So we have our buyButtons, we're going to take them,
+
+376
+00:17:44.990 --> 00:17:47.790
+and call the .forEach method on it.
+
+377
+00:17:47.790 --> 00:17:51.410
+Now, forEach is a method that will run
+
+378
+00:17:51.410 --> 00:17:56.010
+a function for each item in our node list,
+
+379
+00:17:56.010 --> 00:17:58.167
+so we can go ahead and pass an anonymous functions,
+
+380
+00:17:58.167 --> 00:18:01.380
+that's pretty common when you're doing looping,
+
+381
+00:18:01.380 --> 00:18:02.290
+it's just passing an anonymous function,
+
+382
+00:18:02.290 --> 00:18:04.600
+because there's, we don't have the same limitations
+
+383
+00:18:04.600 --> 00:18:07.210
+of having to remove them like an event listener.
+
+384
+00:18:07.210 --> 00:18:12.210
+And then that function is going to give you a argument
+
+385
+00:18:12.370 --> 00:18:15.300
+that is each of the individual items,
+
+386
+00:18:15.300 --> 00:18:17.270
+and we can name that whatever we want,
+
+387
+00:18:17.270 --> 00:18:22.137
+so we'll say, we'll call it, "buyButton", singular, right?
+
+388
+00:18:22.137 --> 00:18:26.110
+And that is just a parameter, that is just a placeholder
+
+389
+00:18:26.110 --> 00:18:30.630
+and the browser will pass us a viable called buyButton
+
+390
+00:18:30.630 --> 00:18:33.388
+when it runs it for us, and then we can go ahead and
+
+391
+00:18:33.388 --> 00:18:38.270
+console.log the buyButton, singular.
+
+392
+00:18:38.270 --> 00:18:40.183
+Now, when you run that,
+
+393
+00:18:41.260 --> 00:18:44.260
+you'll see that we have this logged out 10 times.
+
+394
+00:18:44.260 --> 00:18:48.490
+Anything I put in here will happen 10 times, right?
+
+395
+00:18:48.490 --> 00:18:51.240
+See, this says "hey" 10 times over,
+
+396
+00:18:51.240 --> 00:18:54.500
+so this function is, we're just passing it
+
+397
+00:18:54.500 --> 00:18:56.853
+a function that it will run once
+
+398
+00:18:56.853 --> 00:19:00.010
+for everything that it found,
+
+399
+00:19:00.010 --> 00:19:02.170
+and then it will also give us reference
+
+400
+00:19:02.170 --> 00:19:04.540
+to the individual element in here.
+
+401
+00:19:04.540 --> 00:19:07.830
+Now we have the individual elements that are on the page,
+
+402
+00:19:07.830 --> 00:19:11.720
+and we can use that addEventListener method
+
+403
+00:19:11.720 --> 00:19:12.710
+that we talked about.
+
+404
+00:19:12.710 --> 00:19:15.763
+So let's console.log inside of here,
+
+405
+00:19:17.237 --> 00:19:21.534
+"Binding the buy button."
+
+406
+00:19:21.534 --> 00:19:24.500
+That should run 10 times, good.
+
+407
+00:19:24.500 --> 00:19:29.500
+And then we'll take the buyButton.addEventListener,
+
+408
+00:19:30.264 --> 00:19:32.200
+it'll listen for a click,
+
+409
+00:19:32.200 --> 00:19:33.730
+and when someone does click that,
+
+410
+00:19:33.730 --> 00:19:36.090
+we can either pass an anonymous function, or
+
+411
+00:19:36.090 --> 00:19:39.180
+we can just pass it the reference to this buyItem function,
+
+412
+00:19:39.180 --> 00:19:40.389
+so we'll do that.
+
+413
+00:19:40.389 --> 00:19:41.222
+"buyItem".
+
+414
+00:19:43.230 --> 00:19:45.720
+Now when I refresh the page,
+
+415
+00:19:45.720 --> 00:19:50.040
+you see, every single one of those elements,
+
+416
+00:19:50.040 --> 00:19:51.999
+even though it just took me a couple lines of code,
+
+417
+00:19:51.999 --> 00:19:53.970
+every single one of those elements
+
+418
+00:19:53.970 --> 00:19:56.470
+has been bound individually.
+
+419
+00:19:56.470 --> 00:20:00.470
+Similarly, if you want to remove the eventListener
+
+420
+00:20:00.470 --> 00:20:03.550
+from each of those, you have to loop over them as well.
+
+421
+00:20:03.550 --> 00:20:04.780
+Now a couple things here.
+
+422
+00:20:04.780 --> 00:20:09.070
+I've already noted this, but I know this is a big hurdle,
+
+423
+00:20:09.070 --> 00:20:10.210
+and we've gone over this a bit,
+
+424
+00:20:10.210 --> 00:20:14.130
+is this parameter here can be named anything we want.
+
+425
+00:20:14.130 --> 00:20:17.210
+If we were to move this function outside,
+
+426
+00:20:17.210 --> 00:20:19.160
+so let's go up here actually.
+
+427
+00:20:19.160 --> 00:20:22.263
+Let's have a function called handleBuyButtonClick.
+
+428
+00:20:25.583 --> 00:20:29.880
+And the handleBuyButtonClick is gonna give us the buyButton.
+
+429
+00:20:29.880 --> 00:20:31.820
+And then what we can do,
+
+430
+00:20:31.820 --> 00:20:34.653
+is we can move this code up into this function.
+
+431
+00:20:35.600 --> 00:20:37.810
+And simply pass it
+
+432
+00:20:37.810 --> 00:20:40.550
+instead of doing an anonymous function like this,
+
+433
+00:20:40.550 --> 00:20:44.090
+pass it reference to the function that we wanted to call.
+
+434
+00:20:44.090 --> 00:20:47.428
+So handle buy button, click whoa!
+
+435
+00:20:47.428 --> 00:20:51.345
+(laughs) handleBuyButtonClick.
+
+436
+00:20:53.270 --> 00:20:56.880
+So now we've made this a named function,
+
+437
+00:20:56.880 --> 00:20:58.547
+you still maybe asking for like,
+
+438
+00:20:58.547 --> 00:20:59.937
+"Where does this come from?
+
+439
+00:20:59.937 --> 00:21:01.577
+"Where is the buyButton coming from?
+
+440
+00:21:01.577 --> 00:21:02.610
+"I don't understand."
+
+441
+00:21:02.610 --> 00:21:05.540
+Well this can be named anything we want,
+
+442
+00:21:05.540 --> 00:21:09.370
+because it is a parameter, or a placeholder,
+
+443
+00:21:09.370 --> 00:21:12.690
+that we're not supplying it, the browser is supplying it.
+
+444
+00:21:12.690 --> 00:21:15.430
+The browser will run this function for us,
+
+445
+00:21:15.430 --> 00:21:20.000
+and it knows that it will pass you the first argument
+
+446
+00:21:20.000 --> 00:21:21.980
+that is the element that got clicked.
+
+447
+00:21:21.980 --> 00:21:24.260
+So for us, we call it buyButton,
+
+448
+00:21:24.260 --> 00:21:26.900
+but we could call this "anythingWeWant".
+
+449
+00:21:29.400 --> 00:21:31.366
+Oh, and you can't have exclamation marks in it.
+
+450
+00:21:31.366 --> 00:21:33.210
+That's the only one.
+
+451
+00:21:33.210 --> 00:21:35.710
+So you notice here, I changed it to anythingWeWant.
+
+452
+00:21:35.710 --> 00:21:37.380
+It changed to anythingWeWant there.
+
+453
+00:21:37.380 --> 00:21:38.800
+It will still work.
+
+454
+00:21:38.800 --> 00:21:40.713
+I can go ahead and name it "oprah"
+
+455
+00:21:43.010 --> 00:21:44.310
+and it still works, right?
+
+456
+00:21:44.310 --> 00:21:48.080
+As long as your parameter is named whatever you want it
+
+457
+00:21:48.080 --> 00:21:50.059
+to be and you reference it whatever you need
+
+458
+00:21:50.059 --> 00:21:52.083
+to be the parameter.
+
+459
+00:21:53.930 --> 00:21:55.070
+Other things here,
+
+460
+00:21:55.070 --> 00:21:59.520
+you will often see people use arrow functions as well
+
+461
+00:21:59.520 --> 00:22:03.120
+for the handler, so maybe it'll say buyButtons.forEach
+
+462
+00:22:06.920 --> 00:22:09.080
+and then you'll see somebody give yourself
+
+463
+00:22:09.080 --> 00:22:09.913
+an arrow function,
+
+464
+00:22:09.913 --> 00:22:13.080
+which is the button and then they will
+
+465
+00:22:13.080 --> 00:22:15.610
+open up the curly brackets.
+
+466
+00:22:15.610 --> 00:22:19.893
+Say button.addEventListener('click',
+
+467
+00:22:21.270 --> 00:22:24.113
+and then here you can even use another arrow function.
+
+468
+00:22:26.300 --> 00:22:29.650
+Console.log('YOU CLICKED IT')
+
+469
+00:22:29.650 --> 00:22:30.500
+Right?
+
+470
+00:22:30.500 --> 00:22:33.660
+You see when I save it, it gets rid of these parentheses
+
+471
+00:22:33.660 --> 00:22:36.220
+because there's only one argument, so it's not necessary
+
+472
+00:22:36.220 --> 00:22:37.053
+to have that.
+
+473
+00:22:39.565 --> 00:22:42.640
+And that will work, just as well.
+
+474
+00:22:42.640 --> 00:22:46.110
+So arrow functions work just as fine.
+
+475
+00:22:46.110 --> 00:22:48.890
+Again, the only downside to using an arrow function here
+
+476
+00:22:48.890 --> 00:22:51.043
+for your addEventListner is that you cannot unbind it,
+
+477
+00:22:51.043 --> 00:22:53.963
+because it's an anonymous function in this case.
+
+478
+00:22:58.030 --> 00:22:59.270
+I think that's enough for this video.
+
+479
+00:22:59.270 --> 00:23:03.070
+In the next video, we're gonna jump into a very big topic
+
+480
+00:23:03.070 --> 00:23:05.050
+which is the event object,
+
+481
+00:23:05.050 --> 00:23:08.700
+so when a handler does get called,
+
+482
+00:23:08.700 --> 00:23:11.070
+like handleClick,
+
+483
+00:23:11.070 --> 00:23:13.400
+we actually get this thing called an event.
+
+484
+00:23:13.400 --> 00:23:15.150
+And the event has all kind of information.
+
+485
+00:23:15.150 --> 00:23:17.200
+So we'll get into that in the next video.
+

@@ -1,0 +1,1426 @@
+﻿WEBVTT
+
+1
+00:00:00.610 --> 00:00:03.193
+(upbeat music)
+
+2
+00:00:04.520 --> 00:00:05.353
+<v Instructor>All right, let's talk</v>
+
+3
+00:00:05.353 --> 00:00:06.600
+about security in JavaScript.
+
+4
+00:00:06.600 --> 00:00:10.320
+While much of security comes from running JavaScript
+
+5
+00:00:10.320 --> 00:00:13.100
+on the server side or any server side language,
+
+6
+00:00:13.100 --> 00:00:15.030
+that's where most of your security comes in.
+
+7
+00:00:15.030 --> 00:00:17.500
+Things like encryption, and certificates,
+
+8
+00:00:17.500 --> 00:00:20.780
+and firewalls, and white listing IPs.
+
+9
+00:00:20.780 --> 00:00:21.790
+Things like that.
+
+10
+00:00:21.790 --> 00:00:23.770
+Rate limiting, all of those things happen
+
+11
+00:00:23.770 --> 00:00:26.070
+generally on the server side,
+
+12
+00:00:26.070 --> 00:00:30.530
+however there are a couple places in front end JavaScript,
+
+13
+00:00:30.530 --> 00:00:32.270
+when you're building stuff in the browser
+
+14
+00:00:32.270 --> 00:00:35.440
+that you can accidentally shoot yourself in the foot
+
+15
+00:00:35.440 --> 00:00:38.380
+so this is the video where we are gonna go through
+
+16
+00:00:38.380 --> 00:00:42.100
+those things just so you can sort have them top of mind
+
+17
+00:00:42.100 --> 00:00:44.360
+and know that you're not accidentally
+
+18
+00:00:44.360 --> 00:00:46.560
+going to be committing security violations.
+
+19
+00:00:46.560 --> 00:00:48.730
+So, first thing we need to talk about
+
+20
+00:00:48.730 --> 00:00:51.840
+is JavaScript is totally public.
+
+21
+00:00:51.840 --> 00:00:52.710
+What does that mean?
+
+22
+00:00:52.710 --> 00:00:54.400
+Well we already know this
+
+23
+00:00:54.400 --> 00:00:56.750
+because if you open up your desk tools
+
+24
+00:00:56.750 --> 00:00:58.750
+and you go to your sources,
+
+25
+00:00:58.750 --> 00:01:00.760
+or you go to your network or anything like that,
+
+26
+00:01:00.760 --> 00:01:03.200
+you're able to see all of the code
+
+27
+00:01:03.200 --> 00:01:06.580
+that is related to your website.
+
+28
+00:01:06.580 --> 00:01:10.330
+So anything, you're essentially shipping all of your code
+
+29
+00:01:10.330 --> 00:01:13.380
+off to the browser and telling the browser to run it.
+
+30
+00:01:13.380 --> 00:01:15.410
+So, it would be the equivalent
+
+31
+00:01:15.410 --> 00:01:17.740
+of like something like Photoshop,
+
+32
+00:01:17.740 --> 00:01:19.410
+just giving you all of the code.
+
+33
+00:01:19.410 --> 00:01:21.304
+And say, hey run it yourself.
+
+34
+00:01:21.304 --> 00:01:22.800
+That's what the browser's doing.
+
+35
+00:01:22.800 --> 00:01:24.050
+We just give it the code,
+
+36
+00:01:24.050 --> 00:01:26.090
+and we tell it to run it ourselves.
+
+37
+00:01:26.090 --> 00:01:29.270
+So that means that anything that you put
+
+38
+00:01:29.270 --> 00:01:31.990
+in your source code is not safe.
+
+39
+00:01:31.990 --> 00:01:35.280
+Meaning, don't put sensitive information
+
+40
+00:01:35.280 --> 00:01:38.650
+in your client side JavaScript.
+
+41
+00:01:38.650 --> 00:01:39.960
+So don't trust the client
+
+42
+00:01:39.960 --> 00:01:42.200
+because even if there's some people
+
+43
+00:01:42.200 --> 00:01:45.070
+that you can obfuscate it,
+
+44
+00:01:45.070 --> 00:01:48.610
+you can maybe try to hide it a whole bunch of ways,
+
+45
+00:01:48.610 --> 00:01:49.443
+or encrypt it,
+
+46
+00:01:49.443 --> 00:01:51.440
+but as long as the browser can read it,
+
+47
+00:01:51.440 --> 00:01:53.160
+there's going to be somebody that's able
+
+48
+00:01:53.160 --> 00:01:56.150
+to reverse engineer this type of thing.
+
+49
+00:01:56.150 --> 00:01:57.370
+So, a couple examples.
+
+50
+00:01:57.370 --> 00:01:58.760
+API keys.
+
+51
+00:01:58.760 --> 00:02:02.300
+Sometimes it's okay to put API keys in the browser
+
+52
+00:02:02.300 --> 00:02:04.700
+and we'll look at an example like that coming up.
+
+53
+00:02:04.700 --> 00:02:08.200
+And sometimes it's not okay to put API keys in the browser.
+
+54
+00:02:08.200 --> 00:02:10.080
+And generally, when it's not okay
+
+55
+00:02:10.080 --> 00:02:12.430
+to put API keys in the browser,
+
+56
+00:02:12.430 --> 00:02:14.603
+they will restrict you the via Coors.
+
+57
+00:02:15.580 --> 00:02:18.020
+So things like a Google Map API key,
+
+58
+00:02:18.020 --> 00:02:20.750
+that's absolutely fine to put
+
+59
+00:02:20.750 --> 00:02:23.210
+into your client side JavaScript
+
+60
+00:02:23.210 --> 00:02:25.990
+because those API keys are going to be limited.
+
+61
+00:02:25.990 --> 00:02:29.910
+Google will limit those per domain or per visitor.
+
+62
+00:02:29.910 --> 00:02:32.490
+So you don't have to worry about that.
+
+63
+00:02:32.490 --> 00:02:34.380
+Links to private downloads.
+
+64
+00:02:34.380 --> 00:02:37.470
+So if you have like a object on your page somewhere,
+
+65
+00:02:37.470 --> 00:02:41.600
+and you need to be able to download a zip file of some thing
+
+66
+00:02:41.600 --> 00:02:43.730
+people will be able to find that.
+
+67
+00:02:43.730 --> 00:02:45.610
+Prices, this is a huge one.
+
+68
+00:02:45.610 --> 00:02:47.740
+I see this all the time.
+
+69
+00:02:47.740 --> 00:02:50.557
+People build a quick little JavaScript client side.
+
+70
+00:02:50.557 --> 00:02:53.820
+And they check out, they put the price in like a button,
+
+71
+00:02:53.820 --> 00:02:57.070
+but if somebody is able to change the price of that button
+
+72
+00:02:57.070 --> 00:03:01.150
+or change the code of that or whatever,
+
+73
+00:03:01.150 --> 00:03:03.940
+they are able modify in the client
+
+74
+00:03:03.940 --> 00:03:06.110
+when you send the price over,
+
+75
+00:03:06.110 --> 00:03:08.610
+then they'll be able to change the price
+
+76
+00:03:08.610 --> 00:03:10.420
+to whatever it is that they want.
+
+77
+00:03:10.420 --> 00:03:12.500
+So, I've seen this in the past,
+
+78
+00:03:12.500 --> 00:03:14.630
+where people have job boards
+
+79
+00:03:14.630 --> 00:03:16.870
+and a job board is $10 to post a job,
+
+80
+00:03:16.870 --> 00:03:19.700
+and spammers change the price to one cent,
+
+81
+00:03:19.700 --> 00:03:21.920
+and then just post thousands of messages
+
+82
+00:03:21.920 --> 00:03:24.560
+to thousands of different job boards.
+
+83
+00:03:24.560 --> 00:03:26.530
+In my advance react course,
+
+84
+00:03:26.530 --> 00:03:29.760
+we of course calculate the price on the client side,
+
+85
+00:03:29.760 --> 00:03:33.140
+because we want to show the total of the person's cart,
+
+86
+00:03:33.140 --> 00:03:37.600
+but then you also have to recalculate that on the server
+
+87
+00:03:37.600 --> 00:03:38.860
+where it could not be messed with.
+
+88
+00:03:38.860 --> 00:03:40.510
+I have this with my courses all the time.
+
+89
+00:03:40.510 --> 00:03:43.630
+People change the price to one cent
+
+90
+00:03:43.630 --> 00:03:45.900
+'cause they find the object where the price is
+
+91
+00:03:45.900 --> 00:03:48.480
+and they change it to one cent and then they send it,
+
+92
+00:03:48.480 --> 00:03:50.040
+and it looks like the check out
+
+93
+00:03:50.040 --> 00:03:51.530
+is gonna charge them one cent,
+
+94
+00:03:51.530 --> 00:03:53.540
+and they put in their credit card and everything,
+
+95
+00:03:53.540 --> 00:03:55.910
+and then it charges them the full price
+
+96
+00:03:55.910 --> 00:03:58.290
+'cause they double check that value on the server side
+
+97
+00:03:58.290 --> 00:03:59.503
+and recalculate it.
+
+98
+00:04:00.400 --> 00:04:01.500
+And it's pretty funny,
+
+99
+00:04:01.500 --> 00:04:02.900
+I've gotten a couple emails from people
+
+100
+00:04:02.900 --> 00:04:07.211
+being like, bravo, keep the money for the course,
+
+101
+00:04:07.211 --> 00:04:10.323
+I was just checking if I can get it for a penny.
+
+102
+00:04:11.920 --> 00:04:14.110
+So that is, don't trust the client.
+
+103
+00:04:14.110 --> 00:04:16.430
+Anything that is sensitive must be recalculated
+
+104
+00:04:16.430 --> 00:04:19.560
+or done on the server where it is in a secure environment.
+
+105
+00:04:19.560 --> 00:04:24.560
+Next is XSS and sanitizing your inputs.
+
+106
+00:04:25.530 --> 00:04:28.610
+So, I whipped up this little example
+
+107
+00:04:28.610 --> 00:04:30.400
+of FarceBook right here.
+
+108
+00:04:30.400 --> 00:04:32.590
+And this is a pretty common thing where you want to do,
+
+109
+00:04:32.590 --> 00:04:34.260
+you want to give somebody a place
+
+110
+00:04:34.260 --> 00:04:36.630
+where they can type in their name,
+
+111
+00:04:36.630 --> 00:04:38.750
+or a bio, or something like that,
+
+112
+00:04:38.750 --> 00:04:42.060
+and then you want to take that and display it on the page.
+
+113
+00:04:42.060 --> 00:04:45.060
+Now in some cases, you just have a text input
+
+114
+00:04:45.060 --> 00:04:47.040
+with just raw text.
+
+115
+00:04:47.040 --> 00:04:49.570
+But, however, in some other cases,
+
+116
+00:04:49.570 --> 00:04:51.470
+you want to generate HTML,
+
+117
+00:04:51.470 --> 00:04:53.920
+or even take in HTML from the user
+
+118
+00:04:53.920 --> 00:04:56.130
+and display it on the page.
+
+119
+00:04:56.130 --> 00:04:57.910
+Not an uncommon thing to do
+
+120
+00:04:57.910 --> 00:04:59.880
+and quite honestly this is what we've done
+
+121
+00:04:59.880 --> 00:05:04.500
+in a lot of our looping where we set the inner HTML.
+
+122
+00:05:04.500 --> 00:05:05.640
+So this is the rule,
+
+123
+00:05:05.640 --> 00:05:09.430
+anytime you are taking data from a user
+
+124
+00:05:09.430 --> 00:05:11.660
+and embedding it in HTML,
+
+125
+00:05:11.660 --> 00:05:13.150
+now text content is fine,
+
+126
+00:05:13.150 --> 00:05:14.980
+but anytime you using .innerHTML
+
+127
+00:05:16.270 --> 00:05:18.753
+or .insertadjacentHTML,
+
+128
+00:05:20.430 --> 00:05:22.570
+or anything where you're taking user data
+
+129
+00:05:22.570 --> 00:05:26.250
+and generating HTML from that, you must first sanitize it.
+
+130
+00:05:26.250 --> 00:05:28.900
+So this is a really simple example that I've got right here.
+
+131
+00:05:28.900 --> 00:05:31.970
+Where I allow the person to type in here
+
+132
+00:05:31.970 --> 00:05:33.580
+and when they type,
+
+133
+00:05:33.580 --> 00:05:36.730
+we are automatically just dumping that into their profile.
+
+134
+00:05:36.730 --> 00:05:38.640
+And this data could be coming from anywhere.
+
+135
+00:05:38.640 --> 00:05:40.840
+Most likely you give somebody a field
+
+136
+00:05:40.840 --> 00:05:43.400
+to type in on the back end
+
+137
+00:05:43.400 --> 00:05:45.200
+and they save it and then it displays
+
+138
+00:05:45.200 --> 00:05:49.120
+on their profile page or on a form or something like that.
+
+139
+00:05:49.120 --> 00:05:53.150
+So what can happen is you might want to allow people
+
+140
+00:05:53.150 --> 00:05:55.780
+to put images, image tags, and you might want people
+
+141
+00:05:55.780 --> 00:06:00.030
+to do mark and M and strong tags and things like that.
+
+142
+00:06:00.030 --> 00:06:02.040
+Maybe we'll do something like style tag
+
+143
+00:06:04.060 --> 00:06:08.610
+and it'll give a selector of a body, background red.
+
+144
+00:06:08.610 --> 00:06:09.443
+Boom!
+
+145
+00:06:09.443 --> 00:06:11.040
+Okay they've just changed the background to be red.
+
+146
+00:06:11.040 --> 00:06:11.990
+Okay.
+
+147
+00:06:11.990 --> 00:06:16.990
+Well they can maybe do something like font size 40px.
+
+148
+00:06:17.070 --> 00:06:17.903
+Oh, whoa!
+
+149
+00:06:17.903 --> 00:06:18.736
+That's really big.
+
+150
+00:06:18.736 --> 00:06:19.690
+Okay.
+
+151
+00:06:19.690 --> 00:06:23.520
+Or they could say trans, let me take that font size down,
+
+152
+00:06:23.520 --> 00:06:24.490
+so I can actually type here.
+
+153
+00:06:24.490 --> 00:06:25.803
+Transform,
+
+154
+00:06:28.870 --> 00:06:31.523
+rotate 20 degrees.
+
+155
+00:06:33.060 --> 00:06:34.110
+Oh my gosh!
+
+156
+00:06:34.110 --> 00:06:37.070
+Okay. (laughs)
+
+157
+00:06:37.070 --> 00:06:39.610
+Then you're allowing somebody to write code
+
+158
+00:06:39.610 --> 00:06:42.980
+that runs on your page and style,
+
+159
+00:06:42.980 --> 00:06:45.010
+like obviously you don't want to allow people
+
+160
+00:06:45.010 --> 00:06:47.940
+to totally goof up your website like that.
+
+161
+00:06:47.940 --> 00:06:50.870
+And that's probably the least of your worries
+
+162
+00:06:50.870 --> 00:06:52.560
+is somebody goofing with it.
+
+163
+00:06:52.560 --> 00:06:56.630
+They can even do something like display none.
+
+164
+00:06:56.630 --> 00:06:57.463
+Boom!
+
+165
+00:06:57.463 --> 00:06:59.660
+Now the entire website is gone.
+
+166
+00:06:59.660 --> 00:07:00.680
+If I hit backspace,
+
+167
+00:07:00.680 --> 00:07:03.250
+I can't even hit backspace 'cause it's totally gone.
+
+168
+00:07:03.250 --> 00:07:05.820
+I have to refresh the page in order to get it to work.
+
+169
+00:07:05.820 --> 00:07:08.750
+So that's like your first line of defense,
+
+170
+00:07:08.750 --> 00:07:11.120
+somebody can just inject styles,
+
+171
+00:07:11.120 --> 00:07:14.580
+but the reality is the much scarier security thing
+
+172
+00:07:14.580 --> 00:07:18.820
+is if somebody can run JavaScript on your page.
+
+173
+00:07:18.820 --> 00:07:22.983
+So anytime a user is able to run JavaScript on your page,
+
+174
+00:07:23.870 --> 00:07:27.630
+then you are in trouble.
+
+175
+00:07:27.630 --> 00:07:28.510
+So you might think okay,
+
+176
+00:07:28.510 --> 00:07:31.393
+well let's, let me just get a quick little script tag,
+
+177
+00:07:34.640 --> 00:07:37.550
+and we'll do the very basics, we'll just alert.
+
+178
+00:07:37.550 --> 00:07:38.990
+This is always how people show
+
+179
+00:07:38.990 --> 00:07:41.500
+that there's an successful mobility.
+
+180
+00:07:41.500 --> 00:07:42.333
+They hacked.
+
+181
+00:07:43.460 --> 00:07:44.293
+Oh!
+
+182
+00:07:44.293 --> 00:07:45.126
+It doesn't seem to do anything.
+
+183
+00:07:45.126 --> 00:07:48.130
+Okay, so the script tags won't do that,
+
+184
+00:07:48.130 --> 00:07:50.780
+but you can take an image tag
+
+185
+00:07:50.780 --> 00:07:54.730
+and hijack the onload event of the image tag
+
+186
+00:07:54.730 --> 00:07:57.570
+and then in here you can write any JavaScript you want,
+
+187
+00:07:57.570 --> 00:08:00.023
+like alert, see it just ran.
+
+188
+00:08:01.630 --> 00:08:02.463
+Hacked.
+
+189
+00:08:04.570 --> 00:08:05.403
+Boom!
+
+190
+00:08:05.403 --> 00:08:06.236
+Hacked.
+
+191
+00:08:06.236 --> 00:08:07.069
+Right?
+
+192
+00:08:07.069 --> 00:08:08.560
+And you might say like, oh cool you can alert something,
+
+193
+00:08:08.560 --> 00:08:12.110
+but like imagine this was your Facebook profile,
+
+194
+00:08:12.110 --> 00:08:14.540
+and you're allowed to run code
+
+195
+00:08:14.540 --> 00:08:17.630
+on anyone who's viewing your Facebook profile.
+
+196
+00:08:17.630 --> 00:08:21.430
+So you can do something like document.querySelector
+
+197
+00:08:23.260 --> 00:08:25.480
+and we want to grab that button up there
+
+198
+00:08:25.480 --> 00:08:27.560
+and then we'll just trigger a click on it.
+
+199
+00:08:27.560 --> 00:08:28.393
+Boom!
+
+200
+00:08:28.393 --> 00:08:29.460
+Send a million dollars.
+
+201
+00:08:29.460 --> 00:08:30.293
+Right?
+
+202
+00:08:30.293 --> 00:08:34.300
+So if somebody else is allowed to run JavaScript
+
+203
+00:08:34.300 --> 00:08:36.950
+then they become a puppet of your own account,
+
+204
+00:08:36.950 --> 00:08:38.330
+and you can't stop it.
+
+205
+00:08:38.330 --> 00:08:39.500
+And they're able to do things
+
+206
+00:08:39.500 --> 00:08:42.800
+like click buttons on behalf of you,
+
+207
+00:08:42.800 --> 00:08:47.240
+or they could grab some of your messages
+
+208
+00:08:47.240 --> 00:08:50.410
+and send them with a fetch request back to their own server.
+
+209
+00:08:50.410 --> 00:08:51.500
+The sky's the limit there.
+
+210
+00:08:51.500 --> 00:08:54.700
+So the onload in the onerror,
+
+211
+00:08:54.700 --> 00:08:57.140
+so if you had another, I got to get rid of this,
+
+212
+00:08:57.140 --> 00:08:58.473
+I can't even type!
+
+213
+00:09:07.863 --> 00:09:09.860
+Onerror on images will also work
+
+214
+00:09:09.860 --> 00:09:14.500
+so image source equals httpnothing.com
+
+215
+00:09:15.360 --> 00:09:18.200
+and let's put something that doesn't exist.
+
+216
+00:09:18.200 --> 00:09:22.483
+And then we'll say onerror is equal to alert,
+
+217
+00:09:24.360 --> 00:09:26.180
+see there we go.
+
+218
+00:09:26.180 --> 00:09:27.020
+It's running again.
+
+219
+00:09:27.020 --> 00:09:27.853
+Hacked.
+
+220
+00:09:29.080 --> 00:09:32.590
+Can barely type 'cause it pops up every time that it runs,
+
+221
+00:09:32.590 --> 00:09:35.353
+so that's how people do XSS.
+
+222
+00:09:38.280 --> 00:09:40.300
+That's how people do cross-site scripting
+
+223
+00:09:40.300 --> 00:09:44.860
+is they find a way to remotely run JavaScript
+
+224
+00:09:44.860 --> 00:09:47.780
+on somebody's page and almost always what they'll do
+
+225
+00:09:47.780 --> 00:09:50.010
+is they'll just hookup and image tag
+
+226
+00:09:50.010 --> 00:09:52.340
+and they'll say onerror of this image
+
+227
+00:09:52.340 --> 00:09:53.948
+then go ahead and fetch
+
+228
+00:09:53.948 --> 00:09:57.260
+some malicious JavaScript from somewhere else
+
+229
+00:09:57.260 --> 00:10:00.210
+and now somebody that you don't trust
+
+230
+00:10:00.210 --> 00:10:03.900
+is running JavaScript on your website to logged in users
+
+231
+00:10:03.900 --> 00:10:06.063
+and that's very, very scary, very bad.
+
+232
+00:10:08.870 --> 00:10:11.940
+Other examples of stuff that might not be malicious
+
+233
+00:10:11.940 --> 00:10:13.330
+but it's just kind of annoying,
+
+234
+00:10:13.330 --> 00:10:16.440
+is that somebody could take one of your images
+
+235
+00:10:16.440 --> 00:10:18.830
+and put a width of like 2,000 pixels on it
+
+236
+00:10:18.830 --> 00:10:23.810
+and now I've got a huge horizontal scrolling website.
+
+237
+00:10:23.810 --> 00:10:24.643
+Right?
+
+238
+00:10:24.643 --> 00:10:27.600
+So you need to be very careful
+
+239
+00:10:27.600 --> 00:10:30.450
+when you're taking in data from a user,
+
+240
+00:10:30.450 --> 00:10:33.550
+even if it's just a tiny little input box
+
+241
+00:10:33.550 --> 00:10:37.090
+someone could go into an input box,
+
+242
+00:10:37.090 --> 00:10:38.690
+like let me show you right here.
+
+243
+00:10:39.790 --> 00:10:44.590
+We go here, they just add input type of text,
+
+244
+00:10:44.590 --> 00:10:46.070
+someone could write their name in here,
+
+245
+00:10:46.070 --> 00:10:48.580
+my name is Wes and then they also take
+
+246
+00:10:48.580 --> 00:10:50.010
+an image source, whatever,
+
+247
+00:10:50.010 --> 00:10:52.260
+and then they use the onload trick there
+
+248
+00:10:52.260 --> 00:10:54.490
+and we don't want to be in that case.
+
+249
+00:10:54.490 --> 00:10:56.420
+So anytime you're taking user data
+
+250
+00:10:56.420 --> 00:10:57.940
+and putting it into HTML,
+
+251
+00:10:57.940 --> 00:10:59.850
+you must first sanitize it
+
+252
+00:10:59.850 --> 00:11:02.440
+and luckily there's a very easy library to use,
+
+253
+00:11:02.440 --> 00:11:04.860
+it's called DOMPurify,
+
+254
+00:11:04.860 --> 00:11:07.530
+and it will take in a string
+
+255
+00:11:07.530 --> 00:11:12.140
+and scrub it of all of those potentially nasty
+
+256
+00:11:12.140 --> 00:11:14.180
+or security issues for you.
+
+257
+00:11:14.180 --> 00:11:18.120
+So I've already went ahead and MPM installed DOMPurify
+
+258
+00:11:18.120 --> 00:11:20.660
+and up here at the top of this code here,
+
+259
+00:11:20.660 --> 00:11:24.660
+I've imported the sanitize method from DOMPurify
+
+260
+00:11:24.660 --> 00:11:26.560
+and then all we need to do to fix this
+
+261
+00:11:26.560 --> 00:11:30.980
+is to say const clean is equal to sanitize
+
+262
+00:11:30.980 --> 00:11:33.200
+we pass it the input.value
+
+263
+00:11:36.030 --> 00:11:40.010
+and we'll go here, we'll clean.replace.
+
+264
+00:11:40.010 --> 00:11:44.060
+I'm just replacing the line breaks here with a br tag
+
+265
+00:11:44.060 --> 00:11:46.550
+and that allows me to get these line breaks in between.
+
+266
+00:11:46.550 --> 00:11:48.230
+This is a red jecks.
+
+267
+00:11:48.230 --> 00:11:49.930
+This is a red jecks that searches
+
+268
+00:11:49.930 --> 00:11:52.600
+for new lines and globally,
+
+269
+00:11:52.600 --> 00:11:54.180
+meaning that it will find them all
+
+270
+00:11:54.180 --> 00:11:56.750
+and replaces with that br tag.
+
+271
+00:11:56.750 --> 00:11:57.583
+Good.
+
+272
+00:11:57.583 --> 00:11:59.740
+So now I've done that and I can go to this image tag
+
+273
+00:11:59.740 --> 00:12:04.493
+and say onload is equal to alert hacked
+
+274
+00:12:07.230 --> 00:12:08.930
+and now it no longer works, why?
+
+275
+00:12:08.930 --> 00:12:11.310
+If I inspect this seal here,
+
+276
+00:12:11.310 --> 00:12:14.300
+you'll see that they have stripped out
+
+277
+00:12:14.300 --> 00:12:16.850
+that potentially security vulnerability
+
+278
+00:12:16.850 --> 00:12:18.520
+of the onload onerror,
+
+279
+00:12:18.520 --> 00:12:23.140
+all of those in line event handlers on the image tag.
+
+280
+00:12:23.140 --> 00:12:25.820
+So you might say, okay what about style tags?
+
+281
+00:12:25.820 --> 00:12:26.670
+Did they do that?
+
+282
+00:12:31.460 --> 00:12:33.040
+Here.
+
+283
+00:12:33.040 --> 00:12:37.757
+And we'll say body background red.
+
+284
+00:12:44.040 --> 00:12:45.150
+Okay.
+
+285
+00:12:45.150 --> 00:12:46.300
+That doesn't seem to be working,
+
+286
+00:12:46.300 --> 00:12:48.520
+it still has a style tag being embedded,
+
+287
+00:12:48.520 --> 00:12:50.500
+in fact, you can inspect element on here
+
+288
+00:12:50.500 --> 00:12:51.710
+and you can see the style tag
+
+289
+00:12:51.710 --> 00:12:55.120
+is still being embedded in here.
+
+290
+00:12:55.120 --> 00:12:58.370
+So, what we need to do to fix that
+
+291
+00:12:58.370 --> 00:13:01.030
+is to pass some options to DOMPurify.
+
+292
+00:13:01.030 --> 00:13:04.090
+So by default it'll take all the nasty JavaScript stuff
+
+293
+00:13:06.670 --> 00:13:07.883
+out of there for us,
+
+294
+00:13:08.970 --> 00:13:13.550
+but there's a bunch of different options that you have.
+
+295
+00:13:13.550 --> 00:13:16.220
+The two that I use are forbid tags
+
+296
+00:13:16.220 --> 00:13:18.490
+and forbid attributes.
+
+297
+00:13:18.490 --> 00:13:20.430
+So we can go in here
+
+298
+00:13:20.430 --> 00:13:24.387
+and pass a secondary options object here,
+
+299
+00:13:24.387 --> 00:13:26.660
+and we'll call it forbid attributes.
+
+300
+00:13:26.660 --> 00:13:28.523
+We want to forbid width,
+
+301
+00:13:32.060 --> 00:13:33.380
+height,
+
+302
+00:13:33.380 --> 00:13:34.830
+and style.
+
+303
+00:13:34.830 --> 00:13:35.770
+'Cause we don't want people doing
+
+304
+00:13:35.770 --> 00:13:37.280
+in line styles as well on there.
+
+305
+00:13:37.280 --> 00:13:39.100
+And you might want to allow them
+
+306
+00:13:39.100 --> 00:13:41.630
+and in that case you take if off.
+
+307
+00:13:41.630 --> 00:13:44.560
+And then we also want forbid tags
+
+308
+00:13:44.560 --> 00:13:49.560
+and we want to forbid the style tag.
+
+309
+00:13:52.700 --> 00:13:55.123
+Okay, now if I try to use the style tag,
+
+310
+00:14:05.920 --> 00:14:09.490
+it no longer changes that off to be red.
+
+311
+00:14:09.490 --> 00:14:13.240
+If we take a look at our, take a look,
+
+312
+00:14:13.240 --> 00:14:16.390
+you see that style tag has been totally removed.
+
+313
+00:14:16.390 --> 00:14:19.683
+I can go ahead and try to use a script tag.
+
+314
+00:14:28.600 --> 00:14:29.433
+Hi.
+
+315
+00:14:29.433 --> 00:14:30.630
+Doesn't work either.
+
+316
+00:14:30.630 --> 00:14:33.200
+There's a bunch of other little tricks that people have
+
+317
+00:14:33.200 --> 00:14:35.870
+and it's nice knowing that this library
+
+318
+00:14:35.870 --> 00:14:38.480
+will just take care of all of those for you.
+
+319
+00:14:38.480 --> 00:14:42.770
+So that is the basics of the security that you need to...
+
+320
+00:14:46.240 --> 00:14:47.690
+The last little thing I want to talk to you
+
+321
+00:14:47.690 --> 00:14:51.720
+about security is when you are sending data,
+
+322
+00:14:51.720 --> 00:14:55.780
+always make sure that you're sending it to an HTTPS origin
+
+323
+00:14:56.667 --> 00:15:00.940
+and the reason behind that is that if you have an API
+
+324
+00:15:00.940 --> 00:15:03.840
+that's like dogsapi.com,
+
+325
+00:15:03.840 --> 00:15:07.710
+if you are like getting, which means you pull data,
+
+326
+00:15:07.710 --> 00:15:12.700
+if you get the dogs over a insecure origin HTTP,
+
+327
+00:15:13.890 --> 00:15:16.860
+there could be other people on the Wi-Fi network
+
+328
+00:15:16.860 --> 00:15:21.060
+or in the government or anywhere along the line
+
+329
+00:15:21.060 --> 00:15:22.250
+of you requesting that,
+
+330
+00:15:22.250 --> 00:15:25.850
+that would be able to just look into that request
+
+331
+00:15:25.850 --> 00:15:27.010
+and they can peer in and say,
+
+332
+00:15:27.010 --> 00:15:30.550
+huh, Wes, is interested in some weird dogs.
+
+333
+00:15:30.550 --> 00:15:32.740
+And that's interesting to us.
+
+334
+00:15:32.740 --> 00:15:35.440
+And then on the flip side, when you do post,
+
+335
+00:15:35.440 --> 00:15:37.889
+which means that you push data to the API.
+
+336
+00:15:37.889 --> 00:15:41.093
+Maybe you're creating or updating a dog,
+
+337
+00:15:41.930 --> 00:15:44.270
+then they would be able to see
+
+338
+00:15:44.270 --> 00:15:45.960
+all of the data that you are sending
+
+339
+00:15:45.960 --> 00:15:49.000
+as well as they can possibly modify it
+
+340
+00:15:49.000 --> 00:15:50.430
+and say like I like a weird dog,
+
+341
+00:15:50.430 --> 00:15:52.490
+like a dog dalmatian or something like that.
+
+342
+00:15:52.490 --> 00:15:54.733
+So if you make it an HTTPS,
+
+343
+00:15:55.670 --> 00:15:59.770
+all of that data going to and back from the API
+
+344
+00:15:59.770 --> 00:16:02.750
+will be encrypted and you want to make sure
+
+345
+00:16:02.750 --> 00:16:06.093
+that every API that you are using is encrypted.
+
+346
+00:16:07.030 --> 00:16:08.340
+It's not so much of an issue,
+
+347
+00:16:08.340 --> 00:16:11.620
+I've honestly never run into an API that isn't encrypted,
+
+348
+00:16:11.620 --> 00:16:16.030
+but just something to keep in mind when you have there.
+
+349
+00:16:16.030 --> 00:16:16.863
+That's it.
+
+350
+00:16:16.863 --> 00:16:18.387
+That's kind of what I think
+
+351
+00:16:18.387 --> 00:16:20.980
+the base security things will be.
+
+352
+00:16:20.980 --> 00:16:21.940
+Just keep it in mind.
+
+353
+00:16:21.940 --> 00:16:24.110
+The big one is whenever you take data
+
+354
+00:16:24.110 --> 00:16:26.970
+from a user and embed it into HTML,
+
+355
+00:16:26.970 --> 00:16:28.830
+make sure you sanitize it first,
+
+356
+00:16:28.830 --> 00:16:30.763
+otherwise you're gonna get got.
+

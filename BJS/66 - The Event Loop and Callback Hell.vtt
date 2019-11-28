@@ -1,0 +1,1330 @@
+﻿WEBVTT
+
+1
+00:00:00.560 --> 00:00:03.143
+(upbeat music)
+
+2
+00:00:05.043 --> 00:00:06.950
+<v Instructor>All right, before we get into promises,</v>
+
+3
+00:00:06.950 --> 00:00:10.445
+we need to talk about how JavaScript is asynchronous
+
+4
+00:00:10.445 --> 00:00:13.553
+and how the event loop works.
+
+5
+00:00:13.553 --> 00:00:17.233
+So, you'll often hear that almost everything in JavaScript
+
+6
+00:00:17.233 --> 00:00:20.070
+is asynchronous or non blocking.
+
+7
+00:00:20.070 --> 00:00:21.220
+What does that even mean?
+
+8
+00:00:21.220 --> 00:00:22.930
+Well in order to understand what that means
+
+9
+00:00:22.930 --> 00:00:25.991
+we need to talk about how JavaScript events work.
+
+10
+00:00:25.991 --> 00:00:28.630
+JavaScript is a single threaded language,
+
+11
+00:00:28.630 --> 00:00:31.332
+which means that only one thing can only be run
+
+12
+00:00:31.332 --> 00:00:32.496
+at a time.
+
+13
+00:00:32.496 --> 00:00:34.750
+Some other languages are multithreaded,
+
+14
+00:00:34.750 --> 00:00:37.350
+meaning they can run multiple processes at once,
+
+15
+00:00:37.350 --> 00:00:39.480
+but JavaScript is single threaded,
+
+16
+00:00:39.480 --> 00:00:42.050
+meaning we can only ever run one thing at once.
+
+17
+00:00:42.050 --> 00:00:43.320
+So let's visualize that.
+
+18
+00:00:43.320 --> 00:00:44.730
+I've got eventdashloop.
+
+19
+00:00:44.730 --> 00:00:46.380
+It's in our playground folder,
+
+20
+00:00:46.380 --> 00:00:49.193
+open that up and let's write some code here.
+
+21
+00:00:49.193 --> 00:00:51.700
+Let's just console.log starting
+
+22
+00:00:52.560 --> 00:00:56.782
+and we'll console.log ending and we refresh.
+
+23
+00:00:56.782 --> 00:00:58.850
+Nobody's surprised by that.
+
+24
+00:00:58.850 --> 00:01:00.159
+Now if I go into the middle here
+
+25
+00:01:00.159 --> 00:01:03.704
+and I wanna wait for two seconds.
+
+26
+00:01:03.704 --> 00:01:05.900
+Maybe we could do a timeout,
+
+27
+00:01:05.900 --> 00:01:07.380
+so do a setTimeout.
+
+28
+00:01:09.070 --> 00:01:14.070
+And that will take a function that will console.log running
+
+29
+00:01:15.940 --> 00:01:18.610
+and then we'll run that after two seconds.
+
+30
+00:01:18.610 --> 00:01:22.187
+So, if I refresh this, what are we gonna see?
+
+31
+00:01:22.187 --> 00:01:25.718
+Are we gonna see starting, running, ending?
+
+32
+00:01:25.718 --> 00:01:29.630
+Starting ending and then two seconds later, we got running.
+
+33
+00:01:29.630 --> 00:01:33.280
+Okay well, that's not the order that I coded this in.
+
+34
+00:01:33.280 --> 00:01:36.873
+Shouldn't it do starting, wait two seconds,
+
+35
+00:01:36.873 --> 00:01:39.965
+running and then ending and unfortunately,
+
+36
+00:01:39.965 --> 00:01:42.700
+it doesn't work that way because the way that JavaScript
+
+37
+00:01:42.700 --> 00:01:45.316
+works is that it will parse the first line.
+
+38
+00:01:45.316 --> 00:01:48.068
+And say okay, well, let's console.log starting.
+
+39
+00:01:48.068 --> 00:01:50.850
+Then it will parse the next couple lines
+
+40
+00:01:50.850 --> 00:01:54.000
+'cos this is a function called SetTimeout.
+
+41
+00:01:54.000 --> 00:01:57.940
+And it will say okay, there's this thing called
+
+42
+00:01:57.940 --> 00:01:59.470
+a callback here.
+
+43
+00:01:59.470 --> 00:02:01.440
+Let me put that sort of,
+
+44
+00:02:01.440 --> 00:02:03.740
+let me put a pin in that for a second,
+
+45
+00:02:03.740 --> 00:02:06.170
+and I'll come back to that in two seconds.
+
+46
+00:02:06.170 --> 00:02:08.310
+And then it goes ahead and runs the next line,
+
+47
+00:02:08.310 --> 00:02:11.698
+which is ending and then what happens is two seconds later,
+
+48
+00:02:11.698 --> 00:02:16.113
+what comes back is this callback that's been queued up,
+
+49
+00:02:16.113 --> 00:02:18.720
+and it will run it for us.
+
+50
+00:02:18.720 --> 00:02:21.080
+And that is what was referred to as the call stack.
+
+51
+00:02:21.080 --> 00:02:26.041
+Now there the whole call stack in the event loop is
+
+52
+00:02:26.041 --> 00:02:28.670
+it's a pretty complicated thing to understand.
+
+53
+00:02:28.670 --> 00:02:30.915
+And instead of me just sitting here,
+
+54
+00:02:30.915 --> 00:02:33.461
+I'm gonna give you some homework that is someone else
+
+55
+00:02:33.461 --> 00:02:37.087
+and Philip Roberts has this amazing talk.
+
+56
+00:02:37.087 --> 00:02:39.458
+Look at this over a million views.
+
+57
+00:02:39.458 --> 00:02:42.320
+It's probably seven years eight years old
+
+58
+00:02:42.320 --> 00:02:43.630
+by the time you're watching this,
+
+59
+00:02:43.630 --> 00:02:47.340
+but it doesn't matter because that stuff doesn't change.
+
+60
+00:02:47.340 --> 00:02:49.590
+It doesn't change how we understand.
+
+61
+00:02:49.590 --> 00:02:51.932
+So I would highly recommend that you go through
+
+62
+00:02:51.932 --> 00:02:53.853
+and watch this talk.
+
+63
+00:02:53.853 --> 00:02:56.613
+You don't necessarily have to do it before you move on
+
+64
+00:02:56.613 --> 00:02:59.904
+with this course, because I think we'll get to know
+
+65
+00:02:59.904 --> 00:03:01.990
+we'll know enough to get forward
+
+66
+00:03:01.990 --> 00:03:04.157
+but if you really want to understand the nitty gritty
+
+67
+00:03:04.157 --> 00:03:08.020
+into how this works, definitely take a look at this talk.
+
+68
+00:03:08.020 --> 00:03:09.190
+It's just a masterpiece.
+
+69
+00:03:09.190 --> 00:03:11.042
+Probably the most popular JavaScript talk
+
+70
+00:03:11.042 --> 00:03:13.043
+that has ever been given.
+
+71
+00:03:13.043 --> 00:03:17.740
+And what's cool about that is he has built this little tool
+
+72
+00:03:17.740 --> 00:03:20.935
+called loop, which will sort of help us visualize
+
+73
+00:03:20.935 --> 00:03:24.540
+the call stack and the call stack in JavaScript
+
+74
+00:03:24.540 --> 00:03:25.470
+we've looked at it before.
+
+75
+00:03:25.470 --> 00:03:27.660
+When you click something it will sure to give you a treasure
+
+76
+00:03:27.660 --> 00:03:30.505
+trail of what functions were called up until that,
+
+77
+00:03:30.505 --> 00:03:33.048
+but we know that the call stack can only ever run
+
+78
+00:03:33.048 --> 00:03:35.170
+one function at a time.
+
+79
+00:03:35.170 --> 00:03:38.263
+So what happens when you have to run this function?
+
+80
+00:03:38.263 --> 00:03:41.234
+Then you run this function you got to wait for two seconds.
+
+81
+00:03:41.234 --> 00:03:44.493
+JavaScript is asynchronous, meaning it's not going
+
+82
+00:03:44.493 --> 00:03:46.623
+to stop running this.
+
+83
+00:03:46.623 --> 00:03:49.202
+It's going to put this off in what we call
+
+84
+00:03:49.202 --> 00:03:54.202
+the web API, and when that has come back after two seconds,
+
+85
+00:03:54.641 --> 00:03:57.021
+it's going to stick it in the callback queue,
+
+86
+00:03:57.021 --> 00:04:00.237
+and when the call stack has a free second,
+
+87
+00:04:00.237 --> 00:04:02.230
+when it's not currently running anything
+
+88
+00:04:02.230 --> 00:04:04.860
+it's gonna reach into the callback queue,
+
+89
+00:04:04.860 --> 00:04:06.710
+grab that callback and run it for us.
+
+90
+00:04:06.710 --> 00:04:08.714
+So let's go ahead and take this code
+
+91
+00:04:08.714 --> 00:04:13.345
+and paste it in here and I'm just gonna bring this down here
+
+92
+00:04:13.345 --> 00:04:15.810
+so we got a console.log starting,
+
+93
+00:04:15.810 --> 00:04:19.045
+we got our setTimeout that has our console.log.
+
+94
+00:04:19.045 --> 00:04:21.840
+By the way this tool at least when I'm recording this
+
+95
+00:04:21.840 --> 00:04:23.210
+is a bit outdated.
+
+96
+00:04:23.210 --> 00:04:25.835
+So, it does not handle arrow functions
+
+97
+00:04:25.835 --> 00:04:29.870
+or any of the backticks or anything that we've done there.
+
+98
+00:04:29.870 --> 00:04:32.360
+So just use regular function declarations
+
+99
+00:04:32.360 --> 00:04:33.460
+when you're doing that.
+
+100
+00:04:33.460 --> 00:04:35.570
+Now when I go ahead and save and run this thing
+
+101
+00:04:35.570 --> 00:04:37.320
+we're gonna visualize what's happening here.
+
+102
+00:04:37.320 --> 00:04:40.017
+So it goes through, it runs console.log.
+
+103
+00:04:40.017 --> 00:04:42.856
+It runs our timeout and then it runs our console.log
+
+104
+00:04:42.856 --> 00:04:45.260
+and then it ships off.
+
+105
+00:04:45.260 --> 00:04:46.630
+Let me make this a little bit longer
+
+106
+00:04:46.630 --> 00:04:48.840
+so I can sort of talk to you while it's happening.
+
+107
+00:04:48.840 --> 00:04:50.991
+Let's make that seven seconds.
+
+108
+00:04:50.991 --> 00:04:53.700
+Runs our log, runs our timeout.
+
+109
+00:04:53.700 --> 00:04:57.368
+Oh there's a callback so let's put that into our Web API
+
+110
+00:04:57.368 --> 00:05:01.621
+and when that's done, it's going to stick it in the queue
+
+111
+00:05:01.621 --> 00:05:05.173
+and then the call stack, if it has nothing else to do,
+
+112
+00:05:06.070 --> 00:05:09.130
+at the time, it will then reach into the queue
+
+113
+00:05:09.130 --> 00:05:10.790
+and grab the next thing.
+
+114
+00:05:10.790 --> 00:05:15.260
+So the call stack is what JavaScript itself is doing.
+
+115
+00:05:15.260 --> 00:05:18.030
+The web API's are things that are waiting
+
+116
+00:05:18.030 --> 00:05:22.330
+or things that we are listening for like event handlers.
+
+117
+00:05:22.330 --> 00:05:24.870
+If I was listening for a click on a button,
+
+118
+00:05:24.870 --> 00:05:26.966
+something like that that, would go in our Web APIs
+
+119
+00:05:26.966 --> 00:05:29.634
+and then when something happens in the web API
+
+120
+00:05:29.634 --> 00:05:33.349
+like a click of a button or a timer that has finished,
+
+121
+00:05:33.349 --> 00:05:36.280
+it will stick it into the callback,
+
+122
+00:05:36.280 --> 00:05:39.230
+into the callback queue and then the call stack
+
+123
+00:05:39.230 --> 00:05:40.522
+will reach into the callback queue
+
+124
+00:05:40.522 --> 00:05:42.023
+when it has nothing left to do
+
+125
+00:05:42.023 --> 00:05:44.690
+and pull the next one on that.
+
+126
+00:05:44.690 --> 00:05:49.690
+So similarly if I were to set an interval like this,
+
+127
+00:05:53.800 --> 00:05:58.800
+and every 100 milliseconds let's just console.log,
+
+128
+00:05:58.880 --> 00:06:02.520
+boop, and let's name this function just so we can
+
+129
+00:06:02.520 --> 00:06:04.570
+visualize what it is, let's call it boop.
+
+130
+00:06:05.430 --> 00:06:08.488
+And when we run this now so your console.log,
+
+131
+00:06:08.488 --> 00:06:12.810
+or timeout it goes back to our anonymous function here.
+
+132
+00:06:12.810 --> 00:06:15.040
+Then the setinterval runs and then the console.log,
+
+133
+00:06:15.040 --> 00:06:16.878
+and you see every second it's going back
+
+134
+00:06:16.878 --> 00:06:21.743
+into our boop-boop-boop.
+
+135
+00:06:23.050 --> 00:06:24.550
+Last thing I want to show you here is that even
+
+136
+00:06:24.550 --> 00:06:27.640
+if this is zero seconds, and you might see this
+
+137
+00:06:27.640 --> 00:06:28.851
+every now and then.
+
+138
+00:06:28.851 --> 00:06:31.710
+So we log starting after zero seconds
+
+139
+00:06:31.710 --> 00:06:34.910
+we console.log running and then we run ending.
+
+140
+00:06:34.910 --> 00:06:35.920
+What are we gonna get there?
+
+141
+00:06:35.920 --> 00:06:39.793
+Ready? Starting, ending, running.
+
+142
+00:06:40.900 --> 00:06:42.470
+Starting, ending, running.
+
+143
+00:06:42.470 --> 00:06:45.620
+Even after zero seconds, well why is that?
+
+144
+00:06:45.620 --> 00:06:48.400
+Well even though it's after zero seconds
+
+145
+00:06:48.400 --> 00:06:51.566
+what happens is that JavaScript runs a first line.
+
+146
+00:06:51.566 --> 00:06:53.650
+Then it runs this set timeout
+
+147
+00:06:53.650 --> 00:06:57.750
+and queues up the callback to happen after zero seconds
+
+148
+00:06:57.750 --> 00:06:59.300
+and then runs the neckline,
+
+149
+00:06:59.300 --> 00:07:01.720
+and even though this is zero seconds
+
+150
+00:07:01.720 --> 00:07:05.220
+it still adds it to the Web API
+
+151
+00:07:05.220 --> 00:07:07.837
+and then that immediately adds it to the callback queue
+
+152
+00:07:07.837 --> 00:07:10.172
+but because the browser is already busy
+
+153
+00:07:10.172 --> 00:07:11.921
+running the console.log,
+
+154
+00:07:11.921 --> 00:07:15.040
+then this callback gets run after it.
+
+155
+00:07:15.040 --> 00:07:16.377
+So let me show you this.
+
+156
+00:07:16.377 --> 00:07:21.377
+It changes to zero seconds right here and run it.
+
+157
+00:07:21.860 --> 00:07:24.860
+Starting, running the timeout,
+
+158
+00:07:24.860 --> 00:07:26.920
+the anonymous functions in the callback queue.
+
+159
+00:07:26.920 --> 00:07:28.313
+Now here's nothing in the callback queue
+
+160
+00:07:28.313 --> 00:07:30.120
+and we go ahead and run it.
+
+161
+00:07:30.120 --> 00:07:34.860
+So let me call that running so we can visualize it again.
+
+162
+00:07:34.860 --> 00:07:39.310
+So run it, console.log, put some running
+
+163
+00:07:39.310 --> 00:07:43.080
+in the callback queue and then when there's nothing left
+
+164
+00:07:43.080 --> 00:07:45.760
+on the callback queue for it has a second.
+
+165
+00:07:45.760 --> 00:07:48.690
+It says okay uh I got a second to catch my breath.
+
+166
+00:07:48.690 --> 00:07:50.010
+Let me look in the callback here.
+
+167
+00:07:50.010 --> 00:07:51.300
+Oh there's something to do.
+
+168
+00:07:51.300 --> 00:07:53.360
+Let me grab that from the callback queue,
+
+169
+00:07:53.360 --> 00:07:56.830
+bring it up to the call stack and go ahead and run it.
+
+170
+00:07:56.830 --> 00:07:58.295
+So, that's a nice little visualization
+
+171
+00:07:58.295 --> 00:08:00.470
+of how the call stack works.
+
+172
+00:08:00.470 --> 00:08:02.503
+And again I encourage you to check out this talk
+
+173
+00:08:02.503 --> 00:08:06.084
+for a much more in-depth look at how it works.
+
+174
+00:08:06.084 --> 00:08:09.580
+It's a little bit complex and I don't think that you
+
+175
+00:08:09.580 --> 00:08:12.036
+as a beginner web developer or as an intermediate
+
+176
+00:08:12.036 --> 00:08:14.326
+JavaScript developer need to understand
+
+177
+00:08:14.326 --> 00:08:16.270
+the nitty-gritty of that.
+
+178
+00:08:16.270 --> 00:08:18.456
+I think what you need to really understand here is that
+
+179
+00:08:18.456 --> 00:08:20.245
+JavaScript is single threaded,
+
+180
+00:08:20.245 --> 00:08:23.360
+meaning that the call stack can only ever run one thing at
+
+181
+00:08:23.360 --> 00:08:26.038
+a time and if there are multiple things queued up,
+
+182
+00:08:26.038 --> 00:08:28.376
+this is obviously slowed down significantly,
+
+183
+00:08:28.376 --> 00:08:31.715
+but if there are multiple things queued up,
+
+184
+00:08:31.715 --> 00:08:33.847
+like if I were to delete this
+
+185
+00:08:33.847 --> 00:08:36.007
+and just go to his example that he has here
+
+186
+00:08:36.007 --> 00:08:38.520
+and run the example that we have here.
+
+187
+00:08:38.520 --> 00:08:39.805
+So this is a click handler.
+
+188
+00:08:39.805 --> 00:08:42.261
+This is jQuery but it's the same idea
+
+189
+00:08:42.261 --> 00:08:47.040
+when you click a button, set a timer for two seconds,
+
+190
+00:08:47.040 --> 00:08:50.234
+and say you clicked me, then console.log high,
+
+191
+00:08:50.234 --> 00:08:52.824
+then set another timer for five seconds
+
+192
+00:08:52.824 --> 00:08:54.700
+and then console.log.
+
+193
+00:08:54.700 --> 00:08:55.880
+So how does that work?
+
+194
+00:08:55.880 --> 00:08:58.661
+Well run it, it sticks to listener in here.
+
+195
+00:08:58.661 --> 00:09:00.070
+We console.log.
+
+196
+00:09:00.070 --> 00:09:01.020
+We set another timer.
+
+197
+00:09:01.020 --> 00:09:02.700
+See these things that are now queued up
+
+198
+00:09:02.700 --> 00:09:05.370
+and when they are finished, like the timer is done,
+
+199
+00:09:05.370 --> 00:09:06.897
+it sticks it into the callback queue
+
+200
+00:09:06.897 --> 00:09:08.960
+and the call stack picks it up.
+
+201
+00:09:08.960 --> 00:09:10.430
+Now if I were to click on it,
+
+202
+00:09:10.430 --> 00:09:13.203
+every single time I add a click handler in here it sticks
+
+203
+00:09:13.203 --> 00:09:15.710
+it into the callback queue and you see the call stack
+
+204
+00:09:15.710 --> 00:09:18.339
+is reaching in and grabbing the next callback
+
+205
+00:09:18.339 --> 00:09:19.360
+to handle itself.
+
+206
+00:09:19.360 --> 00:09:21.220
+This is significantly slowed down.
+
+207
+00:09:21.220 --> 00:09:22.809
+Obviously things are much faster than this
+
+208
+00:09:22.809 --> 00:09:25.950
+but that gives you an idea as to how this
+
+209
+00:09:25.950 --> 00:09:26.783
+is actually working.
+
+210
+00:09:26.783 --> 00:09:27.810
+You see these timers.
+
+211
+00:09:27.810 --> 00:09:29.460
+Whenever the timer runs out it sticks
+
+212
+00:09:29.460 --> 00:09:32.460
+it back in the call stack as well.
+
+213
+00:09:32.460 --> 00:09:36.526
+So all of that to say how do we deal with stuff
+
+214
+00:09:36.526 --> 00:09:39.760
+in JavaScript that does take time,
+
+215
+00:09:39.760 --> 00:09:42.619
+that does need to wait for two seconds,
+
+216
+00:09:42.619 --> 00:09:44.914
+that does need to wait for a network request
+
+217
+00:09:44.914 --> 00:09:45.747
+to come back?
+
+218
+00:09:45.747 --> 00:09:47.654
+Like the classic example in JavaScript
+
+219
+00:09:47.654 --> 00:09:50.239
+is if I want to go off to an API
+
+220
+00:09:50.239 --> 00:09:53.069
+and grab some data and then come back to it,
+
+221
+00:09:53.069 --> 00:09:55.901
+we shouldn't have to freeze up the entire browser
+
+222
+00:09:55.901 --> 00:09:58.280
+or we shouldn't have to stop everything else
+
+223
+00:09:58.280 --> 00:10:01.539
+in the browser, well that goes and fetches it.
+
+224
+00:10:01.539 --> 00:10:03.675
+What we want to do is we want to send off
+
+225
+00:10:03.675 --> 00:10:06.604
+the fetch request and to go get that data
+
+226
+00:10:06.604 --> 00:10:09.304
+and then carry on with the rest of our life,
+
+227
+00:10:09.304 --> 00:10:12.310
+and then when the data does come back to us,
+
+228
+00:10:12.310 --> 00:10:13.210
+we can deal with it.
+
+229
+00:10:13.210 --> 00:10:16.205
+Much like the set timeout when the timer is done,
+
+230
+00:10:16.205 --> 00:10:19.723
+then we can come back to that and deal with it.
+
+231
+00:10:21.500 --> 00:10:23.999
+So callbacks are great but it's very difficult
+
+232
+00:10:23.999 --> 00:10:27.570
+to orchestrate multiple things at once.
+
+233
+00:10:27.570 --> 00:10:31.760
+So let's try and do this example right here.
+
+234
+00:10:31.760 --> 00:10:34.823
+I'm just gonna copy paste my instructions in here.
+
+235
+00:10:36.130 --> 00:10:37.800
+What we want to do here is make a div
+
+236
+00:10:37.800 --> 00:10:39.870
+and change the text to go when it's clicked.
+
+237
+00:10:39.870 --> 00:10:41.700
+Then make up a circle after two seconds
+
+238
+00:10:41.700 --> 00:10:43.220
+and make it red after half a second
+
+239
+00:10:43.220 --> 00:10:45.385
+and make it square after 0.25 seconds,
+
+240
+00:10:45.385 --> 00:10:48.680
+make it purple, fade it out and then finish.
+
+241
+00:10:48.680 --> 00:10:52.070
+Okay like this is not an uncommon thing to do in JavaScript
+
+242
+00:10:52.070 --> 00:10:56.584
+where you have to do things in series one after another.
+
+243
+00:10:56.584 --> 00:10:58.913
+So what we'll do here is we'll make a div,
+
+244
+00:10:59.890 --> 00:11:03.930
+and we'll give it a class of go.
+
+245
+00:11:03.930 --> 00:11:07.083
+And we'll just say click me.
+
+246
+00:11:09.970 --> 00:11:11.490
+Now I'm just gonna console.log.
+
+247
+00:11:11.490 --> 00:11:12.960
+I'm gonna comment that out
+
+248
+00:11:12.960 --> 00:11:14.390
+and we'll go ahead and select that div
+
+249
+00:11:14.390 --> 00:11:18.503
+so, const go is equal to document.querySelector go.
+
+250
+00:11:22.690 --> 00:11:25.880
+And the first one is change the text to go when clicked.
+
+251
+00:11:25.880 --> 00:11:29.413
+Okay so we'll say go.addEventlistener.
+
+252
+00:11:30.520 --> 00:11:32.350
+We're gonna listen for a click
+
+253
+00:11:32.350 --> 00:11:34.830
+and when that happens, we'll run a function
+
+254
+00:11:36.590 --> 00:11:41.590
+and that will say we'll grab the event,
+
+255
+00:11:41.690 --> 00:11:46.420
+will say const the l is equal to
+
+256
+00:11:47.580 --> 00:11:49.107
+l e.currenttarget.
+
+257
+00:11:51.683 --> 00:11:53.920
+Lets console.log the l.
+
+258
+00:11:53.920 --> 00:11:55.460
+The reason why I'm sticking this in a variable
+
+259
+00:11:55.460 --> 00:11:57.110
+will make sense in just a second.
+
+260
+00:11:58.970 --> 00:12:01.250
+Open that up, I'll click it
+
+261
+00:12:01.250 --> 00:12:03.423
+and we get the div, okay cool.
+
+262
+00:12:04.380 --> 00:12:07.070
+Now let's put some default styling on that,
+
+263
+00:12:07.070 --> 00:12:10.150
+so just give yourself a style tag somewhere on the page,
+
+264
+00:12:10.150 --> 00:12:15.083
+and we'll grab the go and say margin five rem,
+
+265
+00:12:16.450 --> 00:12:21.450
+and background white, padding five rem as well.
+
+266
+00:12:23.920 --> 00:12:27.963
+Okay, cool, let's also give it a width of five rem.
+
+267
+00:12:28.880 --> 00:12:33.880
+No 15, no 25 okay cool.
+
+268
+00:12:36.610 --> 00:12:41.490
+So next thing make it a circle after two seconds.
+
+269
+00:12:41.490 --> 00:12:45.900
+Okay so, I have to start a time,
+
+270
+00:12:45.900 --> 00:12:48.460
+after they click it start a timer for two seconds.
+
+271
+00:12:48.460 --> 00:12:50.130
+Okay well we can put some in here.
+
+272
+00:12:50.130 --> 00:12:55.130
+So say set timeout and then we'll have a function
+
+273
+00:12:56.850 --> 00:13:00.053
+that runs in here after two seconds.
+
+274
+00:13:00.910 --> 00:13:05.910
+And we'll say l.classlists.add circle,
+
+275
+00:13:06.560 --> 00:13:08.860
+okay and then we'll go up to here,
+
+276
+00:13:08.860 --> 00:13:13.860
+say .go.circle, border radius 50%.
+
+277
+00:13:19.420 --> 00:13:22.210
+Click me, then it makes itself into a circle.
+
+278
+00:13:22.210 --> 00:13:25.900
+Oh we forgot to change the text to go when clicked.
+
+279
+00:13:25.900 --> 00:13:30.853
+So let's say l.textcontent is equal to go.
+
+280
+00:13:31.820 --> 00:13:34.370
+Let's put a height on this as well, so it's square.
+
+281
+00:13:37.520 --> 00:13:38.363
+Okay here we go.
+
+282
+00:13:39.316 --> 00:13:42.120
+Go that goes to circle.
+
+283
+00:13:42.120 --> 00:13:46.997
+If we put a transition on there, transition all 0.2 seconds.
+
+284
+00:13:53.740 --> 00:13:54.653
+Okay good.
+
+285
+00:13:56.160 --> 00:13:58.330
+Now next one, make it circle after two seconds.
+
+286
+00:13:58.330 --> 00:13:59.163
+We did that.
+
+287
+00:13:59.163 --> 00:14:00.840
+Let's put that here.
+
+288
+00:14:00.840 --> 00:14:03.260
+Make it red after 0.5 seconds.
+
+289
+00:14:03.260 --> 00:14:08.260
+Okay so now we have to put another setTimeout in here,
+
+290
+00:14:09.210 --> 00:14:14.210
+function and that is 500 milliseconds,
+
+291
+00:14:15.840 --> 00:14:20.623
+and we will l.classlist.add red.
+
+292
+00:14:22.080 --> 00:14:26.343
+Go up here say .go.red background red.
+
+293
+00:14:31.360 --> 00:14:36.360
+Good okay next one, make a square after 0.25 seconds.
+
+294
+00:14:36.491 --> 00:14:41.491
+Okay setTimeout function 250 milliseconds.
+
+295
+00:14:47.157 --> 00:14:50.987
+Then we'll say l.classlist.remove circle.
+
+296
+00:15:01.770 --> 00:15:04.760
+Make it purple after 0.4 seconds, oh boy,
+
+297
+00:15:04.760 --> 00:15:09.127
+function so setTimeout function 300 milliseconds
+
+298
+00:15:15.850 --> 00:15:20.850
+and we will l.classlist.remove red and add purple.
+
+299
+00:15:28.160 --> 00:15:28.993
+I'll go up here.
+
+300
+00:15:40.128 --> 00:15:42.963
+Okay maybe when it's purple, we'll change
+
+301
+00:15:42.963 --> 00:15:45.323
+the color to be white.
+
+302
+00:15:50.550 --> 00:15:52.480
+Beautiful.
+
+303
+00:15:52.480 --> 00:15:56.150
+Fade out after 0.5 seconds okay, we could do that.
+
+304
+00:15:56.150 --> 00:16:00.950
+setTimeout function 500 milliseconds,
+
+305
+00:16:06.400 --> 00:16:10.463
+and we'll say l.classlist.fadeout.
+
+306
+00:16:11.690 --> 00:16:14.390
+Nope .add fadeout.
+
+307
+00:16:19.236 --> 00:16:24.236
+Okay, I'll go here to .go.fadeout opacity zero.
+
+308
+00:16:33.630 --> 00:16:35.360
+All right whew.
+
+309
+00:16:35.360 --> 00:16:38.561
+So that was probably the simplest like little animation
+
+310
+00:16:38.561 --> 00:16:42.540
+that we did there, and like look at this.
+
+311
+00:16:42.540 --> 00:16:43.980
+Awful.
+
+312
+00:16:43.980 --> 00:16:47.780
+This is what is referred to as callback hell,
+
+313
+00:16:47.780 --> 00:16:50.524
+and callback hell is if you need to do one thing
+
+314
+00:16:50.524 --> 00:16:53.740
+after another, you must nest the callbacks
+
+315
+00:16:53.740 --> 00:16:55.912
+inside of each other because they all depend
+
+316
+00:16:55.912 --> 00:16:59.160
+on the previous callback to being called before
+
+317
+00:16:59.160 --> 00:17:01.347
+it can then go ahead and run.
+
+318
+00:17:01.347 --> 00:17:04.680
+And this is a relatively simple thing to do
+
+319
+00:17:04.680 --> 00:17:06.700
+and you end up getting,
+
+320
+00:17:06.700 --> 00:17:09.000
+this is also called Christmas tree code if you look
+
+321
+00:17:09.000 --> 00:17:10.210
+at it sideways here.
+
+322
+00:17:10.210 --> 00:17:14.910
+Look at how indented we are with this type of thing right?
+
+323
+00:17:14.910 --> 00:17:18.810
+Not really all that great to go ahead.
+
+324
+00:17:18.810 --> 00:17:21.389
+So, the solution to callback hell
+
+325
+00:17:21.389 --> 00:17:23.395
+is the promised land,
+
+326
+00:17:23.395 --> 00:17:26.532
+and promises are sort of an IOU for something
+
+327
+00:17:26.532 --> 00:17:28.326
+that will happen in the future,
+
+328
+00:17:28.326 --> 00:17:33.326
+and promises allow us to write code
+
+329
+00:17:33.570 --> 00:17:35.620
+that is much easier to look at.
+
+330
+00:17:35.620 --> 00:17:38.340
+It's much flatter and that's what we're gonna look at
+
+331
+00:17:38.340 --> 00:17:41.130
+in the next video as to how do we get out of callback hell
+
+332
+00:17:41.130 --> 00:17:42.480
+and into the promised land.
+

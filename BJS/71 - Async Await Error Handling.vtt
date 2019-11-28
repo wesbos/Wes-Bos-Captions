@@ -1,0 +1,1158 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.583
+(upbeat music)
+
+2
+00:00:05.150 --> 00:00:05.983
+<v Instructor>All right let's talk about</v>
+
+3
+00:00:05.983 --> 00:00:09.070
+error handling strategies for async-await.
+
+4
+00:00:09.070 --> 00:00:12.380
+Because there is no dot then, then, then,
+
+5
+00:00:12.380 --> 00:00:15.140
+it's not as easy as just chaining a .catch
+
+6
+00:00:15.140 --> 00:00:17.090
+onto the end of a promise chain
+
+7
+00:00:17.090 --> 00:00:19.230
+in order to deal with what's going on.
+
+8
+00:00:19.230 --> 00:00:20.980
+So I'm going to go into, I believe,
+
+9
+00:00:20.980 --> 00:00:22.440
+four different ways that you can
+
+10
+00:00:22.440 --> 00:00:24.810
+do error handling in async-await,
+
+11
+00:00:24.810 --> 00:00:28.350
+and then I'll tell you, like what I would use in most cases.
+
+12
+00:00:28.350 --> 00:00:32.800
+So let's go into our playground and make a new file.
+
+13
+00:00:32.800 --> 00:00:34.970
+And actually let's just go to async-await
+
+14
+00:00:34.970 --> 00:00:38.653
+and just copy that into async-await-error-handling.
+
+15
+00:00:43.710 --> 00:00:47.540
+And let's go and just delete everything
+
+16
+00:00:47.540 --> 00:00:50.540
+but our two functions of wait and makePizza.
+
+17
+00:00:50.540 --> 00:00:52.970
+Since we want to get rid of makeDinner
+
+18
+00:00:52.970 --> 00:00:54.353
+and our go function.
+
+19
+00:00:57.130 --> 00:00:59.810
+Okay, so our makePizza function
+
+20
+00:00:59.810 --> 00:01:02.220
+if it includes pineapple it will reject
+
+21
+00:01:02.220 --> 00:01:04.010
+because there is an error, right?
+
+22
+00:01:04.010 --> 00:01:07.080
+So we'll make our own function down here,
+
+23
+00:01:07.080 --> 00:01:09.210
+function, we'll call it go.
+
+24
+00:01:09.210 --> 00:01:12.540
+And make sure we call that right away I always forget.
+
+25
+00:01:12.540 --> 00:01:13.940
+And then inside of it we'll say
+
+26
+00:01:13.940 --> 00:01:17.173
+const pizza is equal to makePizza
+
+27
+00:01:20.350 --> 00:01:24.023
+and we'll try to throw a pineapple on there.
+
+28
+00:01:26.170 --> 00:01:27.943
+Now when I open this up.
+
+29
+00:01:29.610 --> 00:01:34.570
+Okay so if we add async-await to that, does that fix it?
+
+30
+00:01:34.570 --> 00:01:37.650
+Is that going to make pineapple pizza any more of a sin?
+
+31
+00:01:37.650 --> 00:01:39.080
+Or any less of a sin?
+
+32
+00:01:39.080 --> 00:01:40.410
+I don't think so.
+
+33
+00:01:40.410 --> 00:01:42.500
+No, it's exact same error, right?
+
+34
+00:01:42.500 --> 00:01:45.820
+If we were to try to consol.log the pizza here
+
+35
+00:01:45.820 --> 00:01:47.850
+we don't get anything, we don't even get the error.
+
+36
+00:01:47.850 --> 00:01:50.580
+So it's not like it will return the error to you.
+
+37
+00:01:50.580 --> 00:01:54.763
+So, there are four ways that we could sort of handle this,
+
+38
+00:01:55.690 --> 00:01:57.010
+error handling.
+
+39
+00:01:57.010 --> 00:02:00.620
+The first one, or the first two are with try and catch.
+
+40
+00:02:00.620 --> 00:02:04.848
+So, what try and catch are in JavaScript is
+
+41
+00:02:04.848 --> 00:02:06.180
+(laugh) it's in the name.
+
+42
+00:02:06.180 --> 00:02:08.280
+Try a bunch of stuff and you sort of
+
+43
+00:02:08.280 --> 00:02:10.110
+wrap it in this safety blanket
+
+44
+00:02:10.110 --> 00:02:11.790
+and then if anything goes wrong,
+
+45
+00:02:11.790 --> 00:02:14.270
+you catch the error and handle it.
+
+46
+00:02:14.270 --> 00:02:16.070
+So the way that it works is you can
+
+47
+00:02:16.070 --> 00:02:17.790
+do it inside of the function
+
+48
+00:02:17.790 --> 00:02:20.480
+when you actually go ahead and call it.
+
+49
+00:02:20.480 --> 00:02:24.740
+So we say try, and I'll put this in here,
+
+50
+00:02:24.740 --> 00:02:28.450
+so try to do that and then if not we catch
+
+51
+00:02:28.450 --> 00:02:30.100
+and it gives us the error
+
+52
+00:02:30.100 --> 00:02:32.750
+and in that case we can console.log the error.
+
+53
+00:02:32.750 --> 00:02:34.680
+This is where you would display
+
+54
+00:02:34.680 --> 00:02:37.680
+some sort of UI to your user that something went wrong,
+
+55
+00:02:37.680 --> 00:02:39.430
+you would maybe send off that data
+
+56
+00:02:39.430 --> 00:02:41.390
+to some error tracking service,
+
+57
+00:02:41.390 --> 00:02:44.330
+doing all of that with you right there.
+
+58
+00:02:44.330 --> 00:02:47.110
+Now if I were to refresh it.
+
+59
+00:02:47.110 --> 00:02:47.943
+Says, "Seriously?
+
+60
+00:02:47.943 --> 00:02:49.030
+"Get out."
+
+61
+00:02:49.030 --> 00:02:51.947
+So in here we can console.log, "Ohhh nooo!"
+
+62
+00:02:54.280 --> 00:02:55.113
+It says, "Ohhh nooo!
+
+63
+00:02:55.113 --> 00:02:55.946
+"Seriously?
+
+64
+00:02:55.946 --> 00:02:56.910
+"Get out."
+
+65
+00:02:56.910 --> 00:02:57.743
+So what happened is,
+
+66
+00:02:57.743 --> 00:03:00.678
+any code that tries to happen inside of a try
+
+67
+00:03:00.678 --> 00:03:02.493
+if anything goes wrong inside of here,
+
+68
+00:03:02.493 --> 00:03:05.837
+this is sort of like a safe zone,
+
+69
+00:03:05.837 --> 00:03:08.770
+it won't break your entire application
+
+70
+00:03:08.770 --> 00:03:10.637
+it will just fail over to the .catch.
+
+71
+00:03:10.637 --> 00:03:12.970
+And this works with anything, not just the async-away.
+
+72
+00:03:12.970 --> 00:03:15.223
+So, if I were to take window.doesNotExist,
+
+73
+00:03:17.550 --> 00:03:20.215
+like that's a method that does not exist, right?
+
+74
+00:03:20.215 --> 00:03:23.037
+And we were run it, it says, "Type Error!
+
+75
+00:03:23.037 --> 00:03:24.920
+"Window.doesNotExist is not a function."
+
+76
+00:03:24.920 --> 00:03:26.870
+You see it didn't break our JavaScript
+
+77
+00:03:26.870 --> 00:03:30.430
+because we wrapped it in this beautiful safety blanket
+
+78
+00:03:30.430 --> 00:03:32.300
+of a try and catch.
+
+79
+00:03:32.300 --> 00:03:34.830
+One downside to this is that it
+
+80
+00:03:34.830 --> 00:03:38.400
+kind of messes up the whole beautiful, beautiful?
+
+81
+00:03:38.400 --> 00:03:40.030
+Part of async-await,
+
+82
+00:03:40.030 --> 00:03:41.870
+which is you don't have to have a whole lot
+
+83
+00:03:41.870 --> 00:03:43.600
+of brackets or callbacks and things like that.
+
+84
+00:03:43.600 --> 00:03:47.480
+And you have to wrap the whole thing in a try and a catch.
+
+85
+00:03:47.480 --> 00:03:51.440
+So a benefit to that is that you can have multiple promise,
+
+86
+00:03:51.440 --> 00:03:54.490
+you could try to make multiple pineapple pizza's in here,
+
+87
+00:03:54.490 --> 00:03:56.560
+and if either one of them failed
+
+88
+00:03:56.560 --> 00:03:59.320
+it would all be caught by the same try/catch.
+
+89
+00:03:59.320 --> 00:04:03.070
+So another way that we can do that is just to,
+
+90
+00:04:03.070 --> 00:04:05.176
+what I call mix and match.
+
+91
+00:04:05.176 --> 00:04:08.000
+Meaning that we can use the async-await
+
+92
+00:04:08.000 --> 00:04:12.980
+but we can use the promise syntax for the error handling.
+
+93
+00:04:12.980 --> 00:04:15.110
+So we'll go, and lets get rid of
+
+94
+00:04:15.110 --> 00:04:16.973
+this try and catch all together.
+
+95
+00:04:18.012 --> 00:04:21.470
+Lets make a little function here called handleError
+
+96
+00:04:22.980 --> 00:04:24.990
+and that would have our error.
+
+97
+00:04:24.990 --> 00:04:26.300
+And inside of your error you would
+
+98
+00:04:26.300 --> 00:04:28.090
+display some sort of UI to your user,
+
+99
+00:04:28.090 --> 00:04:30.550
+you'd send it off to an error handling service,
+
+100
+00:04:30.550 --> 00:04:31.383
+something like that.
+
+101
+00:04:31.383 --> 00:04:32.660
+Just so you know exactly what's going on
+
+102
+00:04:32.660 --> 00:04:33.990
+on your clients side.
+
+103
+00:04:33.990 --> 00:04:35.823
+In our case we're just console.loging, "ohhh nooo"
+
+104
+00:04:37.910 --> 00:04:39.413
+and console.log the error.
+
+105
+00:04:40.350 --> 00:04:44.570
+Now what you can do is you can chain a .catch
+
+106
+00:04:44.570 --> 00:04:48.860
+onto the end of makePizza and just pass handleError.
+
+107
+00:04:48.860 --> 00:04:53.860
+Now what that will do is when it runs it will give us,
+
+108
+00:04:54.267 --> 00:04:55.100
+"Ohhh nooo.
+
+109
+00:04:55.100 --> 00:04:56.040
+"Seriously?
+
+110
+00:04:56.040 --> 00:04:56.873
+"Get Out."
+
+111
+00:04:56.873 --> 00:04:58.730
+We're sort of mix and matching the best of both worlds.
+
+112
+00:04:58.730 --> 00:05:02.730
+So, we're using await to get the data out of the promise
+
+113
+00:05:02.730 --> 00:05:04.410
+instead of a .then
+
+114
+00:05:04.410 --> 00:05:06.830
+but we're still using the older syntax,
+
+115
+00:05:06.830 --> 00:05:09.850
+which is a .catch onto the end of the function.
+
+116
+00:05:09.850 --> 00:05:13.770
+And this is helpful for when you want to
+
+117
+00:05:13.770 --> 00:05:18.770
+handle the error at the time that you define the function.
+
+118
+00:05:18.800 --> 00:05:21.150
+So you handle it inside of the function.
+
+119
+00:05:21.150 --> 00:05:23.750
+Sometimes you want to handle the error
+
+120
+00:05:23.750 --> 00:05:27.520
+when you call the actual function.
+
+121
+00:05:27.520 --> 00:05:28.700
+So if that's the case
+
+122
+00:05:28.700 --> 00:05:32.940
+we wouldn't handle it inside of the definition,
+
+123
+00:05:32.940 --> 00:05:36.200
+but we'd go down to where we call our async function
+
+124
+00:05:36.200 --> 00:05:39.560
+and change a .catch onto the end of here
+
+125
+00:05:39.560 --> 00:05:42.230
+and catch and handle the error there.
+
+126
+00:05:42.230 --> 00:05:43.960
+In your refresh you see
+
+127
+00:05:43.960 --> 00:05:46.531
+it's the exact same thing that happened.
+
+128
+00:05:46.531 --> 00:05:48.350
+What's kind of interesting about that
+
+129
+00:05:48.350 --> 00:05:52.150
+is you can also catch things that are unrelated.
+
+130
+00:05:52.150 --> 00:05:53.670
+Like again window.doesNotExist
+
+131
+00:05:56.900 --> 00:06:00.100
+it will catch those errors as well in here.
+
+132
+00:06:00.100 --> 00:06:01.619
+Now you might be saying,
+
+133
+00:06:01.619 --> 00:06:06.619
+"Wes, you said .then and .catch could only be used
+
+134
+00:06:09.967 --> 00:06:13.527
+"on functions that return a promise.
+
+135
+00:06:13.527 --> 00:06:18.527
+"But here you are using .catch on a function."
+
+136
+00:06:19.150 --> 00:06:21.840
+This doesn't return a promise, does it?
+
+137
+00:06:21.840 --> 00:06:25.000
+Like here let's return the pizza from this function
+
+138
+00:06:26.200 --> 00:06:27.520
+so this is a async go,
+
+139
+00:06:27.520 --> 00:06:28.920
+return the pizza
+
+140
+00:06:28.920 --> 00:06:33.880
+and if I were to say, like const result is equal to go
+
+141
+00:06:35.410 --> 00:06:39.570
+and console.log the result, what do we get?
+
+142
+00:06:39.570 --> 00:06:40.860
+Are we going to get the pizza?
+
+143
+00:06:40.860 --> 00:06:42.260
+Are we going to get nothing?
+
+144
+00:06:44.120 --> 00:06:47.040
+We get a promise, what?
+
+145
+00:06:47.040 --> 00:06:49.050
+So this is a very important thing
+
+146
+00:06:49.050 --> 00:06:50.960
+about promises and async-await
+
+147
+00:06:50.960 --> 00:06:54.660
+is that when you mark a function as async
+
+148
+00:06:55.780 --> 00:06:59.190
+it will immediately return a promise to you,
+
+149
+00:06:59.190 --> 00:07:01.430
+when the function is not marked as async
+
+150
+00:07:01.430 --> 00:07:02.710
+it's a regular function that will
+
+151
+00:07:02.710 --> 00:07:05.260
+return the data that you want.
+
+152
+00:07:05.260 --> 00:07:07.720
+But when you mark it as async,
+
+153
+00:07:07.720 --> 00:07:09.940
+that function will then return a promise.
+
+154
+00:07:09.940 --> 00:07:14.940
+So what's possible is that you can await
+
+155
+00:07:15.200 --> 00:07:16.260
+async functions as well
+
+156
+00:07:16.260 --> 00:07:19.040
+because they in themselves are promises.
+
+157
+00:07:19.040 --> 00:07:21.087
+So you could do something like this
+
+158
+00:07:21.087 --> 00:07:26.087
+.then(result) console.log the result
+
+159
+00:07:27.330 --> 00:07:29.150
+and catch the error.
+
+160
+00:07:29.150 --> 00:07:31.460
+Oh result is not defined line 40,
+
+161
+00:07:31.460 --> 00:07:33.170
+oh that's because this console.log is here,
+
+162
+00:07:33.170 --> 00:07:35.530
+it should go inside of this now.
+
+163
+00:07:35.530 --> 00:07:40.100
+And now in our case it will go to the catch,
+
+164
+00:07:40.100 --> 00:07:41.510
+but if that was pepperoni
+
+165
+00:07:43.160 --> 00:07:46.630
+then we would actually get access to the peperoni pizza,
+
+166
+00:07:46.630 --> 00:07:47.463
+okay?
+
+167
+00:07:47.463 --> 00:07:49.800
+So again, asynchronous functions
+
+168
+00:07:49.800 --> 00:07:54.150
+will always return a promise themselves,
+
+169
+00:07:54.150 --> 00:07:59.150
+which means we can use the .catch or the .then syntax
+
+170
+00:07:59.300 --> 00:08:01.570
+on async functions if we want.
+
+171
+00:08:01.570 --> 00:08:02.760
+Why would that be useful?
+
+172
+00:08:02.760 --> 00:08:04.730
+Well often you'll have a function
+
+173
+00:08:04.730 --> 00:08:07.580
+that does a few things with promises inside of it
+
+174
+00:08:07.580 --> 00:08:09.080
+but then you want to wait for that
+
+175
+00:08:09.080 --> 00:08:12.610
+entire function to finish returning its data
+
+176
+00:08:12.610 --> 00:08:14.010
+and if that's the case
+
+177
+00:08:14.010 --> 00:08:17.960
+then you can await or use a .then and catch on it.
+
+178
+00:08:17.960 --> 00:08:22.477
+So similarly I could say async function goGo
+
+179
+00:08:28.810 --> 00:08:33.810
+and I could await const result is equal to await go.
+
+180
+00:08:38.000 --> 00:08:40.003
+And I could take this out of here.
+
+181
+00:08:40.950 --> 00:08:44.330
+And you can await asynchronous functions as well.
+
+182
+00:08:44.330 --> 00:08:45.393
+This will probably error,
+
+183
+00:08:45.393 --> 00:08:47.173
+because we have pineapple.
+
+184
+00:08:51.850 --> 00:08:54.500
+It's not running at all, because I forgot to call it.
+
+185
+00:08:57.480 --> 00:08:58.810
+There we go, uncaught.
+
+186
+00:08:58.810 --> 00:09:00.740
+So how would you then handle that?
+
+187
+00:09:00.740 --> 00:09:05.740
+Well .catch and then pass it a handleError handler.
+
+188
+00:09:07.510 --> 00:09:08.360
+And we still have it.
+
+189
+00:09:08.360 --> 00:09:11.990
+So you can nest promises as deep as you want.
+
+190
+00:09:11.990 --> 00:09:16.700
+And it's pretty common for you to have a good number
+
+191
+00:09:16.700 --> 00:09:19.280
+of your functions marked as async
+
+192
+00:09:19.280 --> 00:09:20.560
+and you sort of just have promises
+
+193
+00:09:20.560 --> 00:09:21.770
+happening inside of promises.
+
+194
+00:09:21.770 --> 00:09:23.590
+We'll go into a lot more examples of that
+
+195
+00:09:23.590 --> 00:09:26.360
+that might be a little bit confusing to you right now.
+
+196
+00:09:26.360 --> 00:09:28.300
+So let's bring that back here,
+
+197
+00:09:28.300 --> 00:09:33.140
+we'll say go and I'll drive a catch and handle error.
+
+198
+00:09:33.140 --> 00:09:38.067
+So this is probably the one that I use most often,
+
+199
+00:09:38.067 --> 00:09:39.870
+it's sort of the best of both worlds,
+
+200
+00:09:39.870 --> 00:09:42.070
+you can just use your await like you want
+
+201
+00:09:42.070 --> 00:09:44.800
+and then catch them at call time.
+
+202
+00:09:44.800 --> 00:09:48.168
+The only difference of that is calling it inside of here,
+
+203
+00:09:48.168 --> 00:09:51.280
+that's useful if you need to do something
+
+204
+00:09:51.280 --> 00:09:53.330
+with the error inside of that function
+
+205
+00:09:53.330 --> 00:09:57.330
+like display a special Modal Box at the time of definition
+
+206
+00:09:57.330 --> 00:09:59.230
+rather then at the time of call.
+
+207
+00:09:59.230 --> 00:10:01.870
+The last way to handle an error with async-await
+
+208
+00:10:01.870 --> 00:10:03.930
+is called a higher order function.
+
+209
+00:10:03.930 --> 00:10:07.900
+And we've talked about this a couple of time now.
+
+210
+00:10:07.900 --> 00:10:09.610
+So what is a higher order function?
+
+211
+00:10:09.610 --> 00:10:13.920
+Well it's a function that returns another function.
+
+212
+00:10:13.920 --> 00:10:15.050
+So the way that it works is that
+
+213
+00:10:15.050 --> 00:10:17.400
+you go ahead and define all of your functions
+
+214
+00:10:17.400 --> 00:10:21.440
+just as if you were never to have any errors
+
+215
+00:10:22.310 --> 00:10:23.960
+and quiet honestly that's the way
+
+216
+00:10:23.960 --> 00:10:25.470
+that I like to write my code
+
+217
+00:10:25.470 --> 00:10:27.620
+is that I just write the async functions,
+
+218
+00:10:27.620 --> 00:10:30.230
+and I don't worry about error handling
+
+219
+00:10:30.230 --> 00:10:32.710
+inside of those functions.
+
+220
+00:10:32.710 --> 00:10:35.840
+Then when it comes time to calling that function
+
+221
+00:10:35.840 --> 00:10:36.990
+you have two options,
+
+222
+00:10:36.990 --> 00:10:40.420
+you can catch it at run time
+
+223
+00:10:41.640 --> 00:10:46.640
+or you can make a safe function with a high order function.
+
+224
+00:10:48.850 --> 00:10:51.580
+And the way that works is
+
+225
+00:10:51.580 --> 00:10:54.960
+you can make a function called makeSafe
+
+226
+00:10:58.900 --> 00:11:01.530
+and that takes in a function
+
+227
+00:11:01.530 --> 00:11:02.680
+we'll call it an fn
+
+228
+00:11:04.000 --> 00:11:05.369
+and what that will do is it will
+
+229
+00:11:05.369 --> 00:11:09.267
+return another function which then
+
+230
+00:11:11.480 --> 00:11:13.700
+calls our original function
+
+231
+00:11:13.700 --> 00:11:15.770
+this might not make sense,
+
+232
+00:11:15.770 --> 00:11:17.670
+it didn't make sense to me for years.
+
+233
+00:11:17.670 --> 00:11:20.140
+So it totally, don't sweat it if it doesn't.
+
+234
+00:11:20.140 --> 00:11:24.450
+But you can chain the .catch on to the end
+
+235
+00:11:25.390 --> 00:11:29.840
+and you can handle the error there.
+
+236
+00:11:29.840 --> 00:11:33.363
+Probably makes sense to pass in the errorHandler as well.
+
+237
+00:11:34.577 --> 00:11:35.660
+ErrorHandler.
+
+238
+00:11:37.080 --> 00:11:38.680
+And then just catch it there.
+
+239
+00:11:38.680 --> 00:11:43.620
+So what we just did there is we made a safer function
+
+240
+00:11:43.620 --> 00:11:47.300
+and then what you want to do is like go,
+
+241
+00:11:47.300 --> 00:11:48.583
+that is unsafe.
+
+242
+00:11:49.470 --> 00:11:53.470
+And of course if we run that it will say, "Uncaught error."
+
+243
+00:11:53.470 --> 00:11:58.470
+But we can say const safeGo is equal to makeSafe(go)
+
+244
+00:12:04.528 --> 00:12:07.090
+and then we also have to pass it in error handler as well
+
+245
+00:12:07.090 --> 00:12:09.020
+which is our handleError function.
+
+246
+00:12:09.020 --> 00:12:11.730
+So what this will do is it will take in a function
+
+247
+00:12:11.730 --> 00:12:14.750
+and then return a new function
+
+248
+00:12:14.750 --> 00:12:16.370
+that is just your original function
+
+249
+00:12:16.370 --> 00:12:18.323
+with a catch tacked onto the end of it.
+
+250
+00:12:19.700 --> 00:12:21.100
+And now we refresh,
+
+251
+00:12:21.100 --> 00:12:23.900
+here let me comment out that go initially,
+
+252
+00:12:23.900 --> 00:12:25.700
+now we have this thing called safeGo
+
+253
+00:12:27.210 --> 00:12:29.130
+which is just a function that has
+
+254
+00:12:29.130 --> 00:12:31.190
+a catch tacked onto the end of it.
+
+255
+00:12:31.190 --> 00:12:33.670
+And then we can go ahead and call it
+
+256
+00:12:33.670 --> 00:12:36.426
+without having to worry about anything.
+
+257
+00:12:36.426 --> 00:12:38.230
+Woo, look at it, it works just fine.
+
+258
+00:12:38.230 --> 00:12:43.230
+Now why would that be better then catching at this time?
+
+259
+00:12:44.930 --> 00:12:48.120
+More often then not I have a function like safeGo
+
+260
+00:12:48.120 --> 00:12:52.590
+or a function that does a specific task
+
+261
+00:12:52.590 --> 00:12:54.080
+and I use that, I don't know,
+
+262
+00:12:54.080 --> 00:12:56.640
+30 times throughout my application.
+
+263
+00:12:56.640 --> 00:12:58.960
+And if I have to write the code
+
+264
+00:12:58.960 --> 00:13:01.990
+to handle the error 30 different times,
+
+265
+00:13:01.990 --> 00:13:03.970
+that's a little bit cumbersome.
+
+266
+00:13:03.970 --> 00:13:05.610
+So what you can do is you can
+
+267
+00:13:05.610 --> 00:13:08.650
+just make the safe function once
+
+268
+00:13:08.650 --> 00:13:10.760
+with this, the thing right here,
+
+269
+00:13:10.760 --> 00:13:13.090
+and then you can carry this thing around
+
+270
+00:13:13.090 --> 00:13:14.500
+and run it whenever you want,
+
+271
+00:13:14.500 --> 00:13:19.500
+knowing that the error handler will have been attached on.
+
+272
+00:13:19.980 --> 00:13:22.040
+So, those are a couple of different options
+
+273
+00:13:22.040 --> 00:13:22.940
+that you have there.
+
+274
+00:13:22.940 --> 00:13:24.260
+which ones do I use?
+
+275
+00:13:24.260 --> 00:13:25.430
+I use a mix.
+
+276
+00:13:25.430 --> 00:13:27.600
+Mostly this one right here.
+
+277
+00:13:27.600 --> 00:13:31.110
+And then when I'm in Node Express Land
+
+278
+00:13:31.110 --> 00:13:32.260
+I use this quiet a bit,
+
+279
+00:13:32.260 --> 00:13:35.850
+because this is getting,
+
+280
+00:13:35.850 --> 00:13:37.400
+this is a totally different course
+
+281
+00:13:37.400 --> 00:13:39.440
+and I do this in my Node course as well,
+
+282
+00:13:39.440 --> 00:13:42.660
+but the error handling in Node
+
+283
+00:13:42.660 --> 00:13:46.030
+is basically show a page and tell the user what went wrong.
+
+284
+00:13:46.030 --> 00:13:49.450
+And I can take all of my functions
+
+285
+00:13:49.450 --> 00:13:51.980
+that display all of the different pages
+
+286
+00:13:51.980 --> 00:13:53.880
+and I can just let them all do that
+
+287
+00:13:53.880 --> 00:13:55.880
+exact same error handling.
+
+288
+00:13:55.880 --> 00:13:57.350
+So that is the different ways,
+
+289
+00:13:57.350 --> 00:14:00.363
+let's get into some more examples in the next video.
+

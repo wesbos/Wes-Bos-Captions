@@ -1,0 +1,2094 @@
+﻿WEBVTT
+
+1
+00:00:00.669 --> 00:00:03.252
+(Techno music)
+
+2
+00:00:05.360 --> 00:00:06.930
+<v Instructor>All right, let's talk about events</v>
+
+3
+00:00:06.930 --> 00:00:08.140
+in Javascript.
+
+4
+00:00:08.140 --> 00:00:11.950
+The event object is a gold mine of information
+
+5
+00:00:11.950 --> 00:00:15.590
+about what happens when an event goes.
+
+6
+00:00:15.590 --> 00:00:19.760
+So let's actually peel this back a little bit
+
+7
+00:00:19.760 --> 00:00:21.140
+just so we can get some more practice.
+
+8
+00:00:21.140 --> 00:00:24.060
+We'll keep the buy button query selector off,
+
+9
+00:00:24.060 --> 00:00:25.940
+and then everything underneath that,
+
+10
+00:00:25.940 --> 00:00:27.800
+let's just remove it.
+
+11
+00:00:27.800 --> 00:00:29.860
+So we have sorta fresh.
+
+12
+00:00:29.860 --> 00:00:32.190
+Now I wanna loop over every single buy button,
+
+13
+00:00:32.190 --> 00:00:34.010
+and then attach a handler to it.
+
+14
+00:00:34.010 --> 00:00:36.810
+So I'll make a new function called handleBuyButtonClick,
+
+15
+00:00:41.460 --> 00:00:45.050
+console.log, you are buying it!
+
+16
+00:00:45.050 --> 00:00:47.280
+And then we'll go down here and we'll say
+
+17
+00:00:47.280 --> 00:00:50.093
+buyButtons.forEach function button,
+
+18
+00:00:57.905 --> 00:00:59.010
+well, we'll call it buy button just to keep it
+
+19
+00:01:00.230 --> 00:01:01.437
+the same as we had.
+
+20
+00:01:01.437 --> 00:01:04.113
+Buy.button and then down here we'll say buy.button,
+
+21
+00:01:07.267 --> 00:01:10.760
+addEventListener, and listen for a click again,
+
+22
+00:01:10.760 --> 00:01:12.380
+and we are going to pass it
+
+23
+00:01:12.380 --> 00:01:15.500
+the handleBuyButtonClick function.
+
+24
+00:01:15.500 --> 00:01:16.860
+All right, so got it,
+
+25
+00:01:16.860 --> 00:01:19.970
+let me make this a little bigger so it all goes on one line.
+
+26
+00:01:19.970 --> 00:01:21.970
+There we go, make this a little smaller.
+
+27
+00:01:23.310 --> 00:01:24.710
+So we loop over it.
+
+28
+00:01:24.710 --> 00:01:27.273
+When it runs, we have it.
+
+29
+00:01:28.270 --> 00:01:29.103
+Good.
+
+30
+00:01:29.103 --> 00:01:33.970
+So now my question is, is when somebody clicks a button,
+
+31
+00:01:33.970 --> 00:01:38.970
+how do I get information about what button they're clicking?
+
+32
+00:01:39.290 --> 00:01:41.600
+'Cause if I have one single function
+
+33
+00:01:41.600 --> 00:01:43.890
+that handles the clicking of 10 buttons,
+
+34
+00:01:43.890 --> 00:01:48.530
+how do I know specifically which button they have clicked?
+
+35
+00:01:48.530 --> 00:01:52.130
+And that information is hidden away in the event object.
+
+36
+00:01:52.130 --> 00:01:54.200
+The event object is an object that's filled
+
+37
+00:01:54.200 --> 00:01:57.240
+with all kinds of user useful informations
+
+38
+00:01:57.240 --> 00:01:59.190
+and methods for working with your event.
+
+39
+00:01:59.190 --> 00:02:00.560
+To access the event object,
+
+40
+00:02:00.560 --> 00:02:03.700
+we modify our callback, or our handler, right,
+
+41
+00:02:03.700 --> 00:02:05.340
+that we have right here.
+
+42
+00:02:05.340 --> 00:02:09.110
+We modify it to accept a param that is the event.
+
+43
+00:02:09.110 --> 00:02:11.560
+Remember parameters are placeholders,
+
+44
+00:02:11.560 --> 00:02:13.530
+so when we define our function,
+
+45
+00:02:13.530 --> 00:02:16.303
+we can put a parameter here and call it event.
+
+46
+00:02:17.260 --> 00:02:19.280
+And it doesn't matter what we call it here
+
+47
+00:02:19.280 --> 00:02:22.400
+as long as it's the first argument of our callback.
+
+48
+00:02:22.400 --> 00:02:23.510
+And why is that?
+
+49
+00:02:23.510 --> 00:02:27.740
+Well, when the browser goes ahead and runs
+
+50
+00:02:27.740 --> 00:02:30.660
+this handleBuyButtonClick function for us,
+
+51
+00:02:30.660 --> 00:02:32.190
+when somebody clicks it,
+
+52
+00:02:32.190 --> 00:02:35.900
+it's going to run the function and pass us
+
+53
+00:02:35.900 --> 00:02:37.170
+a number of arguments.
+
+54
+00:02:37.170 --> 00:02:40.300
+And the first one is going to be the event object.
+
+55
+00:02:40.300 --> 00:02:42.077
+And how do I know that?
+
+56
+00:02:42.077 --> 00:02:44.090
+Well, I don't know, we can go to addEventListener.
+
+57
+00:02:44.090 --> 00:02:46.190
+First of all, I'm very smart so I know these things.
+
+58
+00:02:46.190 --> 00:02:48.500
+But how would you know that?
+
+59
+00:02:48.500 --> 00:02:52.263
+If not, well, you can take a look at addEventListener.
+
+60
+00:02:56.200 --> 00:02:59.490
+And you see that it takes a couple of things,
+
+61
+00:02:59.490 --> 00:03:01.240
+a type and a listener.
+
+62
+00:03:01.240 --> 00:03:05.230
+The listener is a callback function, so the object which
+
+63
+00:03:05.230 --> 00:03:06.963
+receives a notification.
+
+64
+00:03:07.976 --> 00:03:09.610
+Blah, blah, blah.
+
+65
+00:03:09.610 --> 00:03:10.483
+Listener.
+
+66
+00:03:12.120 --> 00:03:14.800
+See the event listener callback for details
+
+67
+00:03:14.800 --> 00:03:17.580
+on the callback itself, so that's good.
+
+68
+00:03:17.580 --> 00:03:19.820
+So this thing right here is what we pass it,
+
+69
+00:03:19.820 --> 00:03:21.800
+and then the actual call back itself
+
+70
+00:03:21.800 --> 00:03:24.370
+has event listener callback so I'll click that.
+
+71
+00:03:24.370 --> 00:03:25.480
+And it says right here,
+
+72
+00:03:25.480 --> 00:03:28.040
+the callback accepts a single parameter,
+
+73
+00:03:28.040 --> 00:03:29.360
+so only one parameter,
+
+74
+00:03:29.360 --> 00:03:30.940
+an object based on the event,
+
+75
+00:03:30.940 --> 00:03:33.050
+describing the event which has occurred,
+
+76
+00:03:33.050 --> 00:03:34.300
+and returns nothing.
+
+77
+00:03:34.300 --> 00:03:35.390
+Okay, cool.
+
+78
+00:03:35.390 --> 00:03:37.760
+So what we can do here,
+
+79
+00:03:37.760 --> 00:03:42.760
+is go in here and console.log the event.
+
+80
+00:03:45.480 --> 00:03:48.110
+Now when we go and click on one of these things,
+
+81
+00:03:48.110 --> 00:03:49.050
+Boom!
+
+82
+00:03:49.050 --> 00:03:50.320
+What do we have here?
+
+83
+00:03:50.320 --> 00:03:51.730
+This thing called a pointer event.
+
+84
+00:03:51.730 --> 00:03:53.020
+I'm gonna talk to you a little bit more
+
+85
+00:03:53.020 --> 00:03:55.810
+about pointer events, but essentially,
+
+86
+00:03:55.810 --> 00:03:57.980
+we have clicks and we have touches,
+
+87
+00:03:57.980 --> 00:03:59.740
+and we have all these mouse events.
+
+88
+00:03:59.740 --> 00:04:02.260
+And they're all sorta being consolidated into one
+
+89
+00:04:02.260 --> 00:04:05.080
+event called a pointer event, which is great.
+
+90
+00:04:05.080 --> 00:04:08.870
+So we will look at that in the future, but for now,
+
+91
+00:04:08.870 --> 00:04:10.130
+we're just using clicks because
+
+92
+00:04:10.130 --> 00:04:11.170
+it's probably the most common,
+
+93
+00:04:11.170 --> 00:04:13.830
+and they're not going anywhere
+
+94
+00:04:13.830 --> 00:04:15.430
+and they're probably the easiest to understand.
+
+95
+00:04:15.430 --> 00:04:17.480
+So if we open up that event here,
+
+96
+00:04:17.480 --> 00:04:18.800
+you're gonna see all kinds of stuff here.
+
+97
+00:04:18.800 --> 00:04:20.520
+Is trusted.
+
+98
+00:04:20.520 --> 00:04:23.445
+That kind of a little boolean that will tell you
+
+99
+00:04:23.445 --> 00:04:27.300
+if the click was actually coming from someone's mouse,
+
+100
+00:04:27.300 --> 00:04:30.930
+cause it is possible to fake event clicks.
+
+101
+00:04:30.930 --> 00:04:32.790
+And you can imagine if you're making a game,
+
+102
+00:04:32.790 --> 00:04:35.950
+you don't want someone to programmatically click on items.
+
+103
+00:04:35.950 --> 00:04:38.860
+In my Javascript 30 course we make a whack-a-mole,
+
+104
+00:04:38.860 --> 00:04:41.506
+and you could just set up a loop to click all the moles,
+
+105
+00:04:41.506 --> 00:04:43.800
+as soon as they appear,
+
+106
+00:04:43.800 --> 00:04:47.230
+but the is trusted would be false if you fake a click.
+
+107
+00:04:47.230 --> 00:04:49.570
+Pointer id width and height and pressure,
+
+108
+00:04:49.570 --> 00:04:50.620
+oh pressure's kinda cool,
+
+109
+00:04:50.620 --> 00:04:53.390
+so on newer IPad's and a lot of things,
+
+110
+00:04:53.390 --> 00:04:55.060
+there's pressure sensitivity.
+
+111
+00:04:55.060 --> 00:04:59.410
+So what happens you can tell how powerful
+
+112
+00:04:59.410 --> 00:05:01.500
+somebody is pressing down with their finger,
+
+113
+00:05:01.500 --> 00:05:02.333
+things like that.
+
+114
+00:05:02.333 --> 00:05:03.270
+You get the point right?
+
+115
+00:05:03.270 --> 00:05:05.250
+Power type, mouse.
+
+116
+00:05:05.250 --> 00:05:08.180
+It tells you the screen x screen y, client x client y,
+
+117
+00:05:08.180 --> 00:05:11.890
+so these are details as to where in the screen,
+
+118
+00:05:11.890 --> 00:05:15.590
+and where in the page, here's page x and page y,
+
+119
+00:05:15.590 --> 00:05:16.790
+the person has clicked.
+
+120
+00:05:16.790 --> 00:05:19.880
+A bunch of other information about what happens.
+
+121
+00:05:19.880 --> 00:05:21.240
+What element was clicked on.
+
+122
+00:05:21.240 --> 00:05:22.370
+All kinds of neat stuff.
+
+123
+00:05:22.370 --> 00:05:24.650
+The one we are interested in is this thing called the
+
+124
+00:05:24.650 --> 00:05:27.120
+target, as well as there's something
+
+125
+00:05:27.120 --> 00:05:29.560
+called a current target.
+
+126
+00:05:29.560 --> 00:05:32.310
+Which I'll explain the difference between those right now.
+
+127
+00:05:32.310 --> 00:05:34.170
+So if you go into here.
+
+128
+00:05:34.170 --> 00:05:36.973
+And you console log the event.target,
+
+129
+00:05:38.240 --> 00:05:39.930
+now we are to refresh.
+
+130
+00:05:39.930 --> 00:05:42.300
+Now when you click on the different buttons,
+
+131
+00:05:42.300 --> 00:05:45.250
+it will show you which button the user has clicked on.
+
+132
+00:05:45.250 --> 00:05:50.040
+And that's really helpful because we could go in here,
+
+133
+00:05:50.040 --> 00:05:53.270
+and maybe add data attributes to each of our buttons.
+
+134
+00:05:53.270 --> 00:05:54.843
+So data-price.
+
+135
+00:06:00.300 --> 00:06:03.103
+And we could put just a random price.
+
+136
+00:06:04.630 --> 00:06:06.713
+Do I have a way to randomize?
+
+137
+00:06:12.220 --> 00:06:13.310
+Let's just do that.
+
+138
+00:06:13.310 --> 00:06:15.563
+Different amounts of dollars.
+
+139
+00:06:16.940 --> 00:06:18.557
+And then we can go in here,
+
+140
+00:06:18.557 --> 00:06:21.470
+and console log the event.target.dataset,
+
+141
+00:06:21.470 --> 00:06:24.240
+that should give us the dataset.
+
+142
+00:06:24.240 --> 00:06:25.883
+And then we can get the price.
+
+143
+00:06:27.120 --> 00:06:29.530
+And that will give us the actual price of the thing,
+
+144
+00:06:29.530 --> 00:06:31.470
+and we can wrap that entire thing,
+
+145
+00:06:31.470 --> 00:06:34.770
+that's actually if we check it, it is a type of
+
+146
+00:06:34.770 --> 00:06:37.463
+in front of it, it's still actually a string.
+
+147
+00:06:39.268 --> 00:06:40.190
+So we could parseFloat.
+
+148
+00:06:45.400 --> 00:06:47.220 line:15% 
+Get a true number there.
+
+149
+00:06:47.220 --> 00:06:49.560
+Which is pretty nifty.
+
+150
+00:06:49.560 --> 00:06:53.700
+So again, the event contains a whole bunch of information
+
+151
+00:06:53.700 --> 00:06:56.160
+about what happened in this event.
+
+152
+00:06:56.160 --> 00:07:00.320
+Including the event type, was it a mouse click, whatever.
+
+153
+00:07:00.320 --> 00:07:02.750
+And then you have the target,
+
+154
+00:07:02.750 --> 00:07:04.890
+and then once you have the target,
+
+155
+00:07:04.890 --> 00:07:07.710
+you can access anything you want about it.
+
+156
+00:07:07.710 --> 00:07:10.930
+So what I often like to do is do things like this.
+
+157
+00:07:10.930 --> 00:07:15.900
+I just say const the el, or maybe we'll call it the button,
+
+158
+00:07:15.900 --> 00:07:17.620
+is equal to event.target.
+
+159
+00:07:17.620 --> 00:07:22.500
+And then you can just go ahead and say console.log the
+
+160
+00:07:22.500 --> 00:07:25.523
+button.textContent.
+
+161
+00:07:26.720 --> 00:07:29.223
+Let's try that, get rid of the other console log.
+
+162
+00:07:31.620 --> 00:07:33.730
+You see the text that was inside of it?
+
+163
+00:07:33.730 --> 00:07:36.450
+You can access anything about that specific element.
+
+164
+00:07:36.450 --> 00:07:41.230
+So that is via the event.target.
+
+165
+00:07:41.230 --> 00:07:45.130
+Now there's also this other one, if I comment those two out.
+
+166
+00:07:45.130 --> 00:07:48.360
+If I console.log the event.currentTarget,
+
+167
+00:07:51.530 --> 00:07:52.930
+what are we gonna get there?
+
+168
+00:07:54.370 --> 00:07:57.150
+You get the same thing.
+
+169
+00:07:57.150 --> 00:08:00.870
+So what is the difference between event.target,
+
+170
+00:08:00.870 --> 00:08:02.690
+and event.currentTarget?
+
+171
+00:08:03.659 --> 00:08:07.880
+Let's just console log the same thing.
+
+172
+00:08:07.880 --> 00:08:10.520
+And then let's do a third one,
+
+173
+00:08:10.520 --> 00:08:13.120
+where we just say is the event.currentTarget
+
+174
+00:08:13.120 --> 00:08:16.120
+equal to the event.currentTarget?
+
+175
+00:08:16.120 --> 00:08:17.963
+Are they the same element?
+
+176
+00:08:19.810 --> 00:08:21.460
+True, so yeah.
+
+177
+00:08:21.460 --> 00:08:24.440
+True, true, true, true.
+
+178
+00:08:24.440 --> 00:08:27.460
+So the difference comes in is when you have
+
+179
+00:08:27.460 --> 00:08:30.050
+elements that are nested inside of the
+
+180
+00:08:30.050 --> 00:08:32.100
+element that you are listening to.
+
+181
+00:08:32.100 --> 00:08:35.590
+So if I were then to go and
+
+182
+00:08:35.590 --> 00:08:38.253
+let's select all of these numbers here.
+
+183
+00:08:39.120 --> 00:08:44.120
+And let's wrap them in a strong tag.
+
+184
+00:08:46.400 --> 00:08:47.540
+Boy that got big.
+
+185
+00:08:47.540 --> 00:08:49.110
+But you see what happened here,
+
+186
+00:08:49.110 --> 00:08:54.110
+is that now all of my numbers are wrapped in a strong tag.
+
+187
+00:08:54.360 --> 00:08:58.860
+And what happens if I click on the number?
+
+188
+00:08:58.860 --> 00:08:59.693
+Is it gonna work?
+
+189
+00:08:59.693 --> 00:09:00.720
+Am I clicking on the button or
+
+190
+00:09:00.720 --> 00:09:02.320
+am I clicking on the strong tag?
+
+191
+00:09:03.740 --> 00:09:05.600
+Boom!
+
+192
+00:09:05.600 --> 00:09:10.450
+Well, the event.target is the
+
+193
+00:09:10.450 --> 00:09:13.260
+thing that actually got clicked.
+
+194
+00:09:13.260 --> 00:09:17.810
+And the event.currentTarget is the
+
+195
+00:09:17.810 --> 00:09:21.630
+thing that fired the event listener.
+
+196
+00:09:21.630 --> 00:09:23.760
+So in most cases,
+
+197
+00:09:23.760 --> 00:09:26.130
+you probably wanna reach for
+
+198
+00:09:26.130 --> 00:09:29.830
+event.currentTarget instead of event.target.
+
+199
+00:09:29.830 --> 00:09:32.830
+But it often is helpful to know,
+
+200
+00:09:32.830 --> 00:09:36.660
+did somebody click on an element inside of me?
+
+201
+00:09:36.660 --> 00:09:39.120
+Or did they click on the actual element?
+
+202
+00:09:39.120 --> 00:09:41.140
+So that's pretty common,
+
+203
+00:09:41.140 --> 00:09:44.650
+because we can go a little bit further and say something
+
+204
+00:09:44.650 --> 00:09:46.100
+like window.addEventListener.
+
+205
+00:09:47.120 --> 00:09:49.670
+So our window again is the entire browser.
+
+206
+00:09:49.670 --> 00:09:52.500
+You can add event listeners to the window.
+
+207
+00:09:52.500 --> 00:09:55.860
+And you can listen for clicks on the window.
+
+208
+00:09:55.860 --> 00:09:57.993
+And if that happens,
+
+209
+00:09:59.390 --> 00:10:04.113
+let's go ahead and console.log, you clicked the window.
+
+210
+00:10:05.740 --> 00:10:08.993
+So now, I'm just gonna click on the blue.
+
+211
+00:10:09.950 --> 00:10:11.373
+You clicked on the window.
+
+212
+00:10:11.373 --> 00:10:13.360
+If I click on this h too.
+
+213
+00:10:13.360 --> 00:10:15.370
+You also clicked on this window.
+
+214
+00:10:15.370 --> 00:10:18.400
+But if I click on one of these buttons,
+
+215
+00:10:18.400 --> 00:10:20.100
+am I clicking on the window?
+
+216
+00:10:20.100 --> 00:10:22.663
+Or am I clicking on the button?
+
+217
+00:10:23.600 --> 00:10:24.800
+Let's try it.
+
+218
+00:10:24.800 --> 00:10:25.633
+This is crazy,
+
+219
+00:10:25.633 --> 00:10:28.543
+maybe we'll click on the span or the strong tag later.
+
+220
+00:10:29.510 --> 00:10:30.380
+Whoa!
+
+221
+00:10:30.380 --> 00:10:32.460
+So what happened,
+
+222
+00:10:32.460 --> 00:10:35.350
+is that both of those fired.
+
+223
+00:10:35.350 --> 00:10:37.470
+The window event listener fired,
+
+224
+00:10:37.470 --> 00:10:40.560
+and the handleBuyButtonClick fired.
+
+225
+00:10:40.560 --> 00:10:43.810
+So we technically clicked on both of them.
+
+226
+00:10:43.810 --> 00:10:48.530
+So it is possible to be clicking on multiple things
+
+227
+00:10:48.530 --> 00:10:49.930
+at a certain time,
+
+228
+00:10:49.930 --> 00:10:53.230
+and that is what is referred to as propagation.
+
+229
+00:10:53.230 --> 00:10:57.100
+The propagation is a big word, but essentially,
+
+230
+00:10:57.100 --> 00:11:00.220
+when I go ahead and click on this strong tag,
+
+231
+00:11:00.220 --> 00:11:03.890
+what happens is that event bubbles up.
+
+232
+00:11:03.890 --> 00:11:07.150
+Meaning that I clicked on the strong tag.
+
+233
+00:11:07.150 --> 00:11:09.940
+But let's inspect it here.
+
+234
+00:11:09.940 --> 00:11:11.310
+I clicked on the strong tag,
+
+235
+00:11:11.310 --> 00:11:13.290
+but I also clicked on the button.
+
+236
+00:11:13.290 --> 00:11:14.123
+Right?
+
+237
+00:11:14.123 --> 00:11:16.560
+And then I also clicked on the body.
+
+238
+00:11:16.560 --> 00:11:19.340
+And I also clicked on the html tag.
+
+239
+00:11:19.340 --> 00:11:21.810
+And I also clicked on the window.
+
+240
+00:11:21.810 --> 00:11:25.040
+And I also clicked on the google chrome browser.
+
+241
+00:11:25.040 --> 00:11:30.040
+And I also clicked on my operating system.
+
+242
+00:11:31.540 --> 00:11:33.580
+You see how that event,
+
+243
+00:11:33.580 --> 00:11:36.802
+even though I clicked on this tiny little strong tag,
+
+244
+00:11:36.802 --> 00:11:39.710
+both the browser and the operating system will
+
+245
+00:11:39.710 --> 00:11:44.340
+register that click, and it will keep bubbling up.
+
+246
+00:11:44.340 --> 00:11:47.660
+Meaning that I clicked there, clicked there, clicked there,
+
+247
+00:11:47.660 --> 00:11:50.160
+and then we're listening on the button,
+
+248
+00:11:50.160 --> 00:11:52.680
+and the button will say great thank you,
+
+249
+00:11:52.680 --> 00:11:56.670
+but I'm gonna keep allowing that event to keep going up,
+
+250
+00:11:56.670 --> 00:12:00.550
+in case anybody else higher than me was listening.
+
+251
+00:12:00.550 --> 00:12:02.910
+So the way that you can prevent that,
+
+252
+00:12:02.910 --> 00:12:05.040
+is with a method on the event,
+
+253
+00:12:05.040 --> 00:12:07.220
+that's called stop propagation.
+
+254
+00:12:07.220 --> 00:12:10.930
+So we can go over here, and write a comment.
+
+255
+00:12:10.930 --> 00:12:15.930
+Stop this event from bubbling up,
+
+256
+00:12:16.390 --> 00:12:17.973
+so we'll say event.stopPropagation.
+
+257
+00:12:24.040 --> 00:12:26.573
+And now, when I do that exact same thing,
+
+258
+00:12:28.490 --> 00:12:30.350
+You see when I click anywhere it says the window,
+
+259
+00:12:30.350 --> 00:12:31.913
+but if I click on the button,
+
+260
+00:12:33.720 --> 00:12:38.240
+we only get the callback for clicking on the button,
+
+261
+00:12:38.240 --> 00:12:40.950
+and the window listener doesn't fire,
+
+262
+00:12:40.950 --> 00:12:43.870
+because we sort of stop it dead in it's tracks.
+
+263
+00:12:43.870 --> 00:12:47.773
+It was like all right hold on, I stopped you there.
+
+264
+00:12:48.872 --> 00:12:52.420
+And the event was meant to be handled on the button,
+
+265
+00:12:52.420 --> 00:12:55.642
+the window event listener calm down, don't worry about it.
+
+266
+00:12:55.642 --> 00:12:57.480
+You can do that.
+
+267
+00:12:57.480 --> 00:12:58.720
+What's kinda cool about that,
+
+268
+00:12:58.720 --> 00:13:01.283
+is if we modify this window here,
+
+269
+00:13:02.120 --> 00:13:04.940
+And we pass it the event,
+
+270
+00:13:04.940 --> 00:13:08.713
+and we were to console.log the event.target.
+
+271
+00:13:11.470 --> 00:13:13.633
+Now any time I click on something,
+
+272
+00:13:15.260 --> 00:13:18.150
+it will show me what it is you're actually clicking on.
+
+273
+00:13:18.150 --> 00:13:21.520
+So even though I'm listening on the window,
+
+274
+00:13:21.520 --> 00:13:24.230
+it will tell you what the actual element
+
+275
+00:13:24.230 --> 00:13:25.910
+that you clicked on, is.
+
+276
+00:13:25.910 --> 00:13:30.290
+Whether it's a button, or an h2, or another button,
+
+277
+00:13:30.290 --> 00:13:33.501
+or an image tag, or the body.
+
+278
+00:13:33.501 --> 00:13:34.430
+I wonder what the difference is,
+
+279
+00:13:34.430 --> 00:13:36.380
+can I get it to click on a body?
+
+280
+00:13:36.380 --> 00:13:38.090
+There we go if I click over here,
+
+281
+00:13:38.090 --> 00:13:41.390
+it fires off on the actual body.
+
+282
+00:13:41.390 --> 00:13:44.340
+So that's the first sort of method that we learned there.
+
+283
+00:13:44.340 --> 00:13:46.333
+It's stop propagation.
+
+284
+00:13:46.333 --> 00:13:47.680
+One other thing,
+
+285
+00:13:47.680 --> 00:13:50.550
+while we're sort of currently in this head space,
+
+286
+00:13:50.550 --> 00:13:52.770
+is that events bubble up.
+
+287
+00:13:52.770 --> 00:13:55.010
+And if we want to stop them from bubbling up,
+
+288
+00:13:55.010 --> 00:13:56.880
+we run stopPropagation.
+
+289
+00:13:56.880 --> 00:13:59.490
+But there is a way to sort of flip that,
+
+290
+00:13:59.490 --> 00:14:01.110
+and I'm gonna explain that right now.
+
+291
+00:14:01.110 --> 00:14:04.150
+So capture is sort of the opposite.
+
+292
+00:14:04.150 --> 00:14:06.700
+And I'm just bring up this diagram from the w3,
+
+293
+00:14:06.700 --> 00:14:09.940
+these are the people that decide on how Javascript works,
+
+294
+00:14:09.940 --> 00:14:13.010
+and how the browsers work, and how events happen.
+
+295
+00:14:13.010 --> 00:14:14.770
+And I thought this was great, because
+
+296
+00:14:14.770 --> 00:14:19.000
+if you have an element very low, like a td,
+
+297
+00:14:19.000 --> 00:14:20.850
+or in our case it's a button.
+
+298
+00:14:20.850 --> 00:14:23.320
+And we're listening on the td,
+
+299
+00:14:23.320 --> 00:14:26.760
+what happens is that when somebody makes a click
+
+300
+00:14:26.760 --> 00:14:29.430
+right here, we actually click on the document,
+
+301
+00:14:29.430 --> 00:14:32.420
+then we click on the html, then we click on the body,
+
+302
+00:14:32.420 --> 00:14:37.420
+and then finally end up clicking on the actual button.
+
+303
+00:14:38.380 --> 00:14:41.101
+And if there was div's and other things wrapped in there,
+
+304
+00:14:41.101 --> 00:14:43.300
+they would kinda go through that, right?
+
+305
+00:14:43.300 --> 00:14:46.150
+So the click kinda goes through every single element
+
+306
+00:14:46.150 --> 00:14:49.370
+along the way and doesn't do anything, but it's sort of like
+
+307
+00:14:49.370 --> 00:14:52.610
+keeping a diary, and dear diary today I pass through the
+
+308
+00:14:52.610 --> 00:14:55.550
+document, then the html, then the body, and then
+
+309
+00:14:55.550 --> 00:14:58.820
+finally I made my way to the button.
+
+310
+00:14:58.820 --> 00:15:00.900
+And then maybe even I went one further,
+
+311
+00:15:00.900 --> 00:15:05.230
+and went to that strong tag that wraps that number there.
+
+312
+00:15:05.230 --> 00:15:09.640
+Then what happens, is that it starts to bubble up.
+
+313
+00:15:09.640 --> 00:15:13.750
+Meaning that okay I finally got to the very lowest dom node
+
+314
+00:15:13.750 --> 00:15:16.900
+that I can find, in our case it's either just gonna be
+
+315
+00:15:16.900 --> 00:15:20.190
+a raw buy button or a strong tag.
+
+316
+00:15:20.190 --> 00:15:23.530
+And then begins what is called the bubbling.
+
+317
+00:15:23.530 --> 00:15:26.100
+So it will sort of bubble on up,
+
+318
+00:15:26.100 --> 00:15:30.490
+meaning that it will trigger a click on the strong,
+
+319
+00:15:30.490 --> 00:15:32.450
+it will trigger a click on the button,
+
+320
+00:15:32.450 --> 00:15:35.090
+it will trigger a click on the body and the html,
+
+321
+00:15:35.090 --> 00:15:36.530
+and then finally the document.
+
+322
+00:15:36.530 --> 00:15:39.910
+So that's what it means by bubbling up.
+
+323
+00:15:39.910 --> 00:15:44.910
+Now, we can sort of stop it as part of this capture phase.
+
+324
+00:15:46.690 --> 00:15:50.320
+So these events right here, handleBuyButtonClick,
+
+325
+00:15:50.320 --> 00:15:53.270
+this happens during the bubble phase.
+
+326
+00:15:53.270 --> 00:15:54.640
+While it's going back up.
+
+327
+00:15:54.640 --> 00:15:58.870
+But there's an option of when you listen for clicks,
+
+328
+00:15:58.870 --> 00:16:00.490
+or when you listen for any event,
+
+329
+00:16:00.490 --> 00:16:02.710
+you can listen during the capture phase.
+
+330
+00:16:02.710 --> 00:16:05.950
+Meaning that if we wanna listen for a
+
+331
+00:16:05.950 --> 00:16:07.360
+click on the window first,
+
+332
+00:16:07.360 --> 00:16:11.040
+and stop it from going any further, we can do that.
+
+333
+00:16:11.040 --> 00:16:14.470
+And that is with a third argument to addEventListener.
+
+334
+00:16:14.470 --> 00:16:16.400
+So I have it right here.
+
+335
+00:16:16.400 --> 00:16:18.762
+This is sometimes a little bit confusing because
+
+336
+00:16:18.762 --> 00:16:23.710
+addEventListener has three possible different ways to do it.
+
+337
+00:16:23.710 --> 00:16:26.960
+And usually the first one is the most modern way,
+
+338
+00:16:26.960 --> 00:16:31.230
+so it used to be that addEventListener took a boolean,
+
+339
+00:16:31.230 --> 00:16:35.100
+a true or false at the end, that was use capture or not.
+
+340
+00:16:35.100 --> 00:16:38.800
+But now they have an options object
+
+341
+00:16:38.800 --> 00:16:41.120
+that they wanna pass through.
+
+342
+00:16:41.120 --> 00:16:43.960
+And I've never seen this, so don't even worry about that.
+
+343
+00:16:43.960 --> 00:16:47.420
+So we will be passing an options object,
+
+344
+00:16:47.420 --> 00:16:50.300
+which inside of it has a couple of options.
+
+345
+00:16:50.300 --> 00:16:53.860
+One being capture, and a couple other sort of handy ones.
+
+346
+00:16:53.860 --> 00:16:56.640
+The once one is kinda neat, I'll show you that in a second.
+
+347
+00:16:56.640 --> 00:16:59.470
+So what we can do is we can go to our window event listener
+
+348
+00:16:59.470 --> 00:17:02.980
+here and pass it an options object.
+
+349
+00:17:02.980 --> 00:17:06.140
+So again the first argument is the type,
+
+350
+00:17:06.140 --> 00:17:09.400
+the second argument is the function that should be run,
+
+351
+00:17:09.400 --> 00:17:11.230
+and the third argument is now a
+
+352
+00:17:11.230 --> 00:17:15.390
+new object filled with options.
+
+353
+00:17:15.390 --> 00:17:19.340
+And I believe the one that we want is called capture.
+
+354
+00:17:19.340 --> 00:17:23.423
+So we just say capture is equal to true.
+
+355
+00:17:24.600 --> 00:17:26.810
+I believe it's true.
+
+356
+00:17:26.810 --> 00:17:29.980
+Boolean indicated dispatched to any listener.
+
+357
+00:17:29.980 --> 00:17:33.050
+It's either true or false, we'll try it on true,
+
+358
+00:17:33.050 --> 00:17:34.183
+and we'll come back.
+
+359
+00:17:35.530 --> 00:17:39.210
+So actually let me just comment that our really quickly
+
+360
+00:17:39.210 --> 00:17:40.850
+before hand.
+
+361
+00:17:40.850 --> 00:17:42.200
+So if I click on this button right here,
+
+362
+00:17:42.200 --> 00:17:44.860
+you'll see that the order at which it happens,
+
+363
+00:17:44.860 --> 00:17:49.090
+is first it's actually happening on the button level.
+
+364
+00:17:49.090 --> 00:17:50.830
+So let's modify this a little bit.
+
+365
+00:17:50.830 --> 00:17:54.543
+First let's say console log you clicked a button.
+
+366
+00:17:57.410 --> 00:17:59.480
+And then here we have you clicked the window.
+
+367
+00:17:59.480 --> 00:18:04.080
+And we'll temporarily take this stop propagation off,
+
+368
+00:18:04.080 --> 00:18:05.950
+cause we want it to trigger both on the button,
+
+369
+00:18:05.950 --> 00:18:06.973
+and the window.
+
+370
+00:18:07.900 --> 00:18:10.450
+So now if I click on this button here,
+
+371
+00:18:10.450 --> 00:18:12.650
+you see at first it says you clicked on the button,
+
+372
+00:18:12.650 --> 00:18:15.500
+and then it says you clicked on the window.
+
+373
+00:18:15.500 --> 00:18:18.913
+However, if I switch this to capture true.
+
+374
+00:18:21.220 --> 00:18:24.350
+I forgot a parenthesis somewhere.
+
+375
+00:18:24.350 --> 00:18:26.000
+Where did I forget a parenthesis?
+
+376
+00:18:27.562 --> 00:18:29.373
+That one, function.
+
+377
+00:18:30.470 --> 00:18:33.010
+There we go, I think that was probably it.
+
+378
+00:18:33.010 --> 00:18:35.330
+Now if I click it, remember at first it was button,
+
+379
+00:18:35.330 --> 00:18:37.770
+then it was window, and now if I click it,
+
+380
+00:18:37.770 --> 00:18:41.030
+first we get window, and then we get button.
+
+381
+00:18:41.030 --> 00:18:45.910
+Meaning that the order at which these suckers are fired,
+
+382
+00:18:45.910 --> 00:18:49.490
+goes from top down, rather than bubble up.
+
+383
+00:18:49.490 --> 00:18:52.440
+So capture down, bubble up.
+
+384
+00:18:52.440 --> 00:18:56.163
+And we can use the same event.stopPropagation there,
+
+385
+00:18:59.090 --> 00:19:04.090
+and that will allow us to stop the event from
+
+386
+00:19:04.190 --> 00:19:07.080
+propagating down instead of bubbling up.
+
+387
+00:19:07.080 --> 00:19:09.180
+So here we go click it, boom!
+
+388
+00:19:09.180 --> 00:19:10.523
+You clicked on the window,
+
+389
+00:19:11.370 --> 00:19:14.050
+and you notice that the handleBuyButtonClick
+
+390
+00:19:15.400 --> 00:19:18.720
+will never actually be run.
+
+391
+00:19:18.720 --> 00:19:21.783
+Because we're stopping it at the window level.
+
+392
+00:19:24.510 --> 00:19:26.540
+I say all of that because that's interesting
+
+393
+00:19:26.540 --> 00:19:27.600
+and it's good to know,
+
+394
+00:19:27.600 --> 00:19:31.620
+but probably I've used that three times in my entire career,
+
+395
+00:19:31.620 --> 00:19:33.310
+this sort of capture here.
+
+396
+00:19:33.310 --> 00:19:35.700
+That's maybe more of an interview question
+
+397
+00:19:35.700 --> 00:19:38.860
+about the intricacies of how events work.
+
+398
+00:19:38.860 --> 00:19:42.840
+Most of my career is spent simply just listening for
+
+399
+00:19:42.840 --> 00:19:45.000
+clicks on lower level stuff,
+
+400
+00:19:45.000 --> 00:19:47.470
+and stopping the propagation from handling
+
+401
+00:19:47.470 --> 00:19:48.900
+when you click on that thing,
+
+402
+00:19:48.900 --> 00:19:51.230
+so that things that are higher that are also
+
+403
+00:19:51.230 --> 00:19:56.180
+listening for clicks do not also fire that specific thing.
+
+404
+00:19:56.180 --> 00:19:57.170
+So a couple of other things I
+
+405
+00:19:57.170 --> 00:19:59.850
+wanna make sure that we understand about this,
+
+406
+00:19:59.850 --> 00:20:02.330
+is that event is just a parameter,
+
+407
+00:20:02.330 --> 00:20:04.980
+meaning that we call it event here,
+
+408
+00:20:04.980 --> 00:20:09.080
+it's also pretty common to name it something like e.
+
+409
+00:20:09.080 --> 00:20:12.240
+So if I take every instance of that,
+
+410
+00:20:12.240 --> 00:20:13.453
+I can call it e.
+
+411
+00:20:14.850 --> 00:20:16.950
+And I guess I'll take the stop propagation out,
+
+412
+00:20:16.950 --> 00:20:18.423
+otherwise it'll never fire.
+
+413
+00:20:20.000 --> 00:20:22.360
+And it still works exactly the same how we had.
+
+414
+00:20:22.360 --> 00:20:24.240
+So whatever you name it here,
+
+415
+00:20:24.240 --> 00:20:26.780
+it may be called that inside of the function,
+
+416
+00:20:26.780 --> 00:20:28.090
+it's just the parameter,
+
+417
+00:20:28.090 --> 00:20:30.430
+which is a place holder and it makes that
+
+418
+00:20:30.430 --> 00:20:34.500
+variable available to us scoped to that function.
+
+419
+00:20:34.500 --> 00:20:35.860
+Let me bring that back, event.
+
+420
+00:20:35.860 --> 00:20:37.210
+You could call it elephant.
+
+421
+00:20:39.170 --> 00:20:41.510
+Is it gonna work when it's elephant?
+
+422
+00:20:41.510 --> 00:20:42.600
+I bet it will.
+
+423
+00:20:42.600 --> 00:20:44.530
+That's the whole point of this exercise.
+
+424
+00:20:44.530 --> 00:20:45.830
+Yeah it still works.
+
+425
+00:20:45.830 --> 00:20:49.360
+So you may name this event here anything that you want,
+
+426
+00:20:49.360 --> 00:20:54.030
+most likely it's either going to be e or event,
+
+427
+00:20:54.030 --> 00:20:57.120
+or some weirdos do ev.
+
+428
+00:20:57.120 --> 00:20:59.150
+Come on, don't do that, that's electric vehicle.
+
+429
+00:20:59.150 --> 00:21:01.230
+E is probably the most common that I use,
+
+430
+00:21:01.230 --> 00:21:05.030
+or event is a little bit more explicit.
+
+431
+00:21:05.030 --> 00:21:08.320
+A few more other things that we want to do here.
+
+432
+00:21:08.320 --> 00:21:11.400
+Is let's just take a look at this window event listener.
+
+433
+00:21:11.400 --> 00:21:13.580
+We console log the event to target.
+
+434
+00:21:13.580 --> 00:21:15.623
+Let's console the event.type,
+
+435
+00:21:18.240 --> 00:21:21.300
+and let's console log event.bubbles.
+
+436
+00:21:21.300 --> 00:21:23.230
+These are just kinda a couple more properties that
+
+437
+00:21:23.230 --> 00:21:25.490
+you'll probably find useful here.
+
+438
+00:21:25.490 --> 00:21:30.220
+So it will tell us that the target I clicked on the html.
+
+439
+00:21:30.220 --> 00:21:31.930
+The type, which is the click.
+
+440
+00:21:31.930 --> 00:21:34.353
+There's lots of other events we're gonna learn about.
+
+441
+00:21:35.296 --> 00:21:37.610
+And if this event is going to bubble or not,
+
+442
+00:21:37.610 --> 00:21:41.530
+and that is whether the person has called stop propagation
+
+443
+00:21:41.530 --> 00:21:43.420
+on it or not.
+
+444
+00:21:43.420 --> 00:21:45.650
+So if I were then to take a look at the event
+
+445
+00:21:45.650 --> 00:21:47.920
+and another handler, that would be false.
+
+446
+00:21:47.920 --> 00:21:50.402
+So one last thing I wanna teach you,
+
+447
+00:21:50.402 --> 00:21:51.360
+I'm gonna take that propagation off.
+
+448
+00:21:51.360 --> 00:21:54.530
+Let's do a brand new thing.
+
+449
+00:21:54.530 --> 00:21:59.470
+Let's make a, let's do an image right here.
+
+450
+00:21:59.470 --> 00:22:02.659
+So we have an image tag, source is
+
+451
+00:22:02.659 --> 00:22:07.530
+https://picsum.photos/200 alt nice.
+
+452
+00:22:10.180 --> 00:22:11.690
+All right there we got it.
+
+453
+00:22:11.690 --> 00:22:15.773
+And we'll give it a class of photo.
+
+454
+00:22:17.440 --> 00:22:18.890
+And I'll go here and grab it.
+
+455
+00:22:20.631 --> 00:22:24.007
+PhotoEl is equal to document.querySelector .photo.
+
+456
+00:22:28.180 --> 00:22:31.560
+And we can take that photoEl and add an event listener.
+
+457
+00:22:31.560 --> 00:22:36.513
+Let's use mousemove as the event here.
+
+458
+00:22:37.580 --> 00:22:39.853
+And we'll grab a function.
+
+459
+00:22:43.770 --> 00:22:46.710
+And console.log the event.currentTarget.
+
+460
+00:22:50.350 --> 00:22:54.490
+So now any time e is not, oh because I didn't pass it.
+
+461
+00:22:54.490 --> 00:22:56.310
+E is not defined, why not?
+
+462
+00:22:56.310 --> 00:22:58.220
+Because I have not set up the parameter
+
+463
+00:22:58.220 --> 00:22:59.453
+inside of this function.
+
+464
+00:23:01.050 --> 00:23:04.000
+Now if I move inside of this thing,
+
+465
+00:23:04.000 --> 00:23:06.360
+you see it fires millions of times.
+
+466
+00:23:06.360 --> 00:23:09.810
+Kinda cool thing is you can use console.count here,
+
+467
+00:23:09.810 --> 00:23:12.773
+and it will tell you how often something has fired.
+
+468
+00:23:13.790 --> 00:23:16.110
+On that specific thing, which is kinda cool.
+
+469
+00:23:16.110 --> 00:23:19.590
+So maybe go easy on the mouse move.
+
+470
+00:23:19.590 --> 00:23:21.350
+There's also mouseenter.
+
+471
+00:23:24.210 --> 00:23:27.461
+It's only when I leave and then enter again,
+
+472
+00:23:27.461 --> 00:23:29.670
+that will actually fire on you.
+
+473
+00:23:29.670 --> 00:23:31.530
+But that's not what I wanna tell you here,
+
+474
+00:23:31.530 --> 00:23:34.660
+I want to talk about the word this.
+
+475
+00:23:34.660 --> 00:23:37.470
+So if I were to console log just the keyword this,
+
+476
+00:23:37.470 --> 00:23:40.033
+what is that gonna be equal to?
+
+477
+00:23:40.883 --> 00:23:43.310
+I didn't pass it in as a parameter,
+
+478
+00:23:43.310 --> 00:23:45.180
+can I just use that variable?
+
+479
+00:23:45.180 --> 00:23:46.880
+That is because I can,
+
+480
+00:23:46.880 --> 00:23:49.010
+and it is a special word in Javascript.
+
+481
+00:23:49.010 --> 00:23:52.030
+It is a reserved word in Javascript,
+
+482
+00:23:52.030 --> 00:23:53.770
+that's a little bit special to us.
+
+483
+00:23:53.770 --> 00:23:57.293
+So if I were then to hover over top of it,
+
+484
+00:23:58.510 --> 00:23:59.860
+let's console.log both of these,
+
+485
+00:23:59.860 --> 00:24:01.460
+see what the difference is here.
+
+486
+00:24:03.790 --> 00:24:05.860
+It's exactly the same thing.
+
+487
+00:24:05.860 --> 00:24:10.700
+So if you have a callback function and you wanna reference
+
+488
+00:24:10.700 --> 00:24:15.380
+the actual element that the event was called against,
+
+489
+00:24:15.380 --> 00:24:18.590
+this keyword is going to surface that for you.
+
+490
+00:24:18.590 --> 00:24:21.490
+We're gonna go into the this keyword a little bit more,
+
+491
+00:24:21.490 --> 00:24:24.950
+but sort of the way that we can remember it for now,
+
+492
+00:24:24.950 --> 00:24:27.950
+is that the this keyword is always going to be
+
+493
+00:24:27.950 --> 00:24:32.630
+equal to whatever is to the left of the dot.
+
+494
+00:24:32.630 --> 00:24:35.350
+So if we call the method called addEventListener
+
+495
+00:24:35.350 --> 00:24:37.050
+look to the left of the dot,
+
+496
+00:24:37.050 --> 00:24:39.550
+and that's what this is going to be equal to.
+
+497
+00:24:39.550 --> 00:24:42.840
+Now, why is there two different ways to do it,
+
+498
+00:24:42.840 --> 00:24:45.150
+and which way should you use?
+
+499
+00:24:45.150 --> 00:24:49.960
+Well, the this keyword has a bit of a downside
+
+500
+00:24:49.960 --> 00:24:53.003
+in that if you change this function to an arrow function,
+
+501
+00:24:56.210 --> 00:25:01.210
+then the this keyword is no longer scoped to that element,
+
+502
+00:25:01.500 --> 00:25:04.110
+and that's sort of an upside of arrow functions.
+
+503
+00:25:04.110 --> 00:25:06.973
+Meaning that, if you don't wanna change what the this
+
+504
+00:25:06.973 --> 00:25:10.420
+is scoped to, sometimes we have nested functions,
+
+505
+00:25:10.420 --> 00:25:12.100
+getting a bit ahead of ourselves here,
+
+506
+00:25:12.100 --> 00:25:13.423
+but sometimes we have nested functions
+
+507
+00:25:13.423 --> 00:25:15.410
+that we don't wanna change what the
+
+508
+00:25:15.410 --> 00:25:18.630
+keyword this is scoped to, so you can use an arrow function
+
+509
+00:25:18.630 --> 00:25:21.910
+to sorta get around that and because of that,
+
+510
+00:25:21.910 --> 00:25:24.330
+because sometimes we're using regular functions,
+
+511
+00:25:24.330 --> 00:25:26.260
+sometimes we're using arrow functions,
+
+512
+00:25:26.260 --> 00:25:29.090
+and you might not necessarily know what this is equal to,
+
+513
+00:25:29.090 --> 00:25:31.600
+I recommend just not using this.
+
+514
+00:25:31.600 --> 00:25:33.300
+Not at all, this is great,
+
+515
+00:25:33.300 --> 00:25:37.720
+but don't use it in event listen or callbacks.
+
+516
+00:25:37.720 --> 00:25:41.780
+Always use e.currentTarget or e.target instead of this.
+
+517
+00:25:41.780 --> 00:25:45.350
+So you might see that out there, and that's why,
+
+518
+00:25:45.350 --> 00:25:48.190
+but don't take my word as gospel,
+
+519
+00:25:48.190 --> 00:25:50.680
+I'm just one guy on the internet saying this,
+
+520
+00:25:50.680 --> 00:25:54.240
+but that's my own personal opinion on that.
+
+521
+00:25:54.240 --> 00:25:56.813
+So, that's enough for Javascript events,
+
+522
+00:25:56.813 --> 00:25:59.140
+we've got some coming up in the next video,
+
+523
+00:25:59.140 --> 00:26:00.853
+but I think that's enough for this video.
+

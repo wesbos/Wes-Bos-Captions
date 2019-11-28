@@ -1,0 +1,2162 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.500
+(Intro music)
+
+2
+00:00:05.160 --> 00:00:06.980
+<v ->Let's talk about scope.</v>
+
+3
+00:00:06.980 --> 00:00:08.680
+We've talked a little bit about scope
+
+4
+00:00:08.680 --> 00:00:10.030
+through the last couple of videos
+
+5
+00:00:10.030 --> 00:00:12.690
+because it is sort of hard to know anything about variables
+
+6
+00:00:12.690 --> 00:00:14.480
+without slightly touching on it
+
+7
+00:00:14.480 --> 00:00:16.880
+but let's now get into the nitty gritty
+
+8
+00:00:16.880 --> 00:00:18.830
+and hopefully get a really good understanding
+
+9
+00:00:18.830 --> 00:00:21.080
+of how scope works, so what is scope?
+
+10
+00:00:21.080 --> 00:00:22.800
+Scope answers the question:
+
+11
+00:00:22.800 --> 00:00:26.193
+where are my variables and functions available to me?
+
+12
+00:00:26.193 --> 00:00:30.490
+We've been making functions, we've been making variables and
+
+13
+00:00:30.490 --> 00:00:32.860
+generally they have been available anywhere we want them
+
+14
+00:00:32.860 --> 00:00:34.620
+but we have seen some issues where,
+
+15
+00:00:34.620 --> 00:00:36.520
+if you create a variable inside of a function
+
+16
+00:00:36.520 --> 00:00:38.320
+then they are not available outside of that function
+
+17
+00:00:38.320 --> 00:00:40.417
+that is what scope is, so let's go in to understanding
+
+18
+00:00:40.417 --> 00:00:41.840
+the different types of scope
+
+19
+00:00:41.840 --> 00:00:44.029
+and how we can figure out scope look-up is
+
+20
+00:00:44.029 --> 00:00:46.030
+and this thing called hoisting
+
+21
+00:00:46.030 --> 00:00:48.240
+and lots of good stuff to learn here
+
+22
+00:00:48.240 --> 00:00:51.830
+so let's first make... lets go to the playground folder
+
+23
+00:00:51.830 --> 00:00:55.250
+and make a new file called scope dot html
+
+24
+00:00:55.250 --> 00:00:59.020
+I'm going to use my html base inside of there
+
+25
+00:01:00.026 --> 00:01:03.750
+and let's give ourself the script source to
+
+26
+00:01:03.750 --> 00:01:05.780
+let's call it scope dot js
+
+27
+00:01:05.780 --> 00:01:08.000
+and let's go ahead and make that file
+
+28
+00:01:08.000 --> 00:01:13.000
+go to the playground, new file, scope dot js and console log
+
+29
+00:01:13.180 --> 00:01:14.613
+it works.
+
+30
+00:01:16.198 --> 00:01:18.763
+Let's open up scope dot html in the browser,
+
+31
+00:01:19.830 --> 00:01:20.663
+it works!
+
+32
+00:01:21.850 --> 00:01:23.860
+All right, so lets talk about the first type of scope
+
+33
+00:01:23.860 --> 00:01:26.010
+which is what are called "global variables".
+
+34
+00:01:26.010 --> 00:01:29.430
+Global variables are if you have a script tag
+
+35
+00:01:29.430 --> 00:01:32.337
+or a JavaScript file or you run it in the console
+
+36
+00:01:32.337 --> 00:01:34.250
+and anytime you declare a variable
+
+37
+00:01:34.250 --> 00:01:37.030
+its gonna be available anywhere in your application
+
+38
+00:01:37.030 --> 00:01:40.390
+so case in point if I do something like this
+
+39
+00:01:40.390 --> 00:01:42.410
+const first is equal to wes
+
+40
+00:01:43.670 --> 00:01:46.960
+and I go in here and just type in 'first'
+
+41
+00:01:46.960 --> 00:01:47.830
+its available to me there
+
+42
+00:01:47.830 --> 00:01:52.000
+and also if I were to go into a script tag right on the page
+
+43
+00:01:53.400 --> 00:01:57.040
+and we just console dot log
+
+44
+00:01:57.040 --> 00:01:57.873
+first
+
+45
+00:01:58.740 --> 00:02:00.650
+is that going to work? Is that going to be undefined?
+
+46
+00:02:00.650 --> 00:02:02.370
+What is that going to be?
+
+47
+00:02:02.370 --> 00:02:03.250
+Its wes.
+
+48
+00:02:03.250 --> 00:02:04.083
+Why?
+
+49
+00:02:04.083 --> 00:02:05.920
+Because when you just go ahead and create a variable
+
+50
+00:02:05.920 --> 00:02:07.180
+in a JavaScript file
+
+51
+00:02:07.180 --> 00:02:10.780
+while not inside of a function, not inside of a module,
+
+52
+00:02:10.780 --> 00:02:12.950
+not inside of an if statement,
+
+53
+00:02:12.950 --> 00:02:14.810
+when you just create it out in the open.
+
+54
+00:02:14.810 --> 00:02:17.470
+That is what is referred to as a global variable
+
+55
+00:02:17.470 --> 00:02:21.200
+and you can access them from any other JavaScript that's
+
+56
+00:02:21.200 --> 00:02:25.820
+running on the page like a script tag or via the console
+
+57
+00:02:25.820 --> 00:02:28.550
+In the browser the global scope is called the window.
+
+58
+00:02:28.550 --> 00:02:30.855
+If you go ahead in your browser
+
+59
+00:02:30.855 --> 00:02:32.370
+and just type in window and then open that up,
+
+60
+00:02:32.370 --> 00:02:34.050
+you'll see that there is actually everything
+
+61
+00:02:34.050 --> 00:02:38.100
+that is attached to the global scope is inside the window.
+
+62
+00:02:38.100 --> 00:02:40.430
+That's why sometimes you gonna see people saying things like
+
+63
+00:02:40.430 --> 00:02:44.181
+window dot set timeout or set interval, we looked at that
+
+64
+00:02:44.181 --> 00:02:49.181
+and there is also just regular, old setTimeout.
+
+65
+00:02:49.290 --> 00:02:53.000
+Those are both the exact same thing so methods that are
+
+66
+00:02:53.000 --> 00:02:56.016
+globally available to us like setTimeout
+
+67
+00:02:56.016 --> 00:02:59.130
+they are actually on the window object
+
+68
+00:02:59.130 --> 00:03:01.040
+and that is what is called global.
+
+69
+00:03:01.040 --> 00:03:04.900
+There is like one thing you should know about const and let
+
+70
+00:03:05.903 --> 00:03:08.230
+is that if I make a , lets turn off eslint
+
+71
+00:03:09.174 --> 00:03:11.480
+eslint disable
+
+72
+00:03:15.350 --> 00:03:18.920
+and I make a let second equals bos
+
+73
+00:03:19.803 --> 00:03:23.780
+and I make a var age equals a hundred
+
+74
+00:03:23.780 --> 00:03:27.260
+if I go in here and I type in first, good
+
+75
+00:03:27.260 --> 00:03:29.410
+second, good, then age
+
+76
+00:03:29.410 --> 00:03:32.600
+those are all global variables, however, if you type in
+
+77
+00:03:32.600 --> 00:03:36.160
+window dot first you get undefined
+
+78
+00:03:36.160 --> 00:03:38.470
+window dot second you get undefined
+
+79
+00:03:38.470 --> 00:03:41.300
+and then window dot age, you actually get a hundred.
+
+80
+00:03:41.300 --> 00:03:44.540
+And that is because var variables are attached to the
+
+81
+00:03:45.400 --> 00:03:49.170
+window object and they are globally scoped
+
+82
+00:03:49.170 --> 00:03:52.200
+and const and let variables, when declared like this
+
+83
+00:03:52.200 --> 00:03:53.620
+they are still globally scoped,
+
+84
+00:03:53.620 --> 00:03:55.500
+they are just not attached to the window.
+
+85
+00:03:55.500 --> 00:03:57.190
+That's not really all that important
+
+86
+00:03:57.190 --> 00:03:58.770
+because as we are going to learn
+
+87
+00:03:58.770 --> 00:04:00.620
+you probably shouldn't be doing this anyway
+
+88
+00:04:00.620 --> 00:04:02.260
+you shouldn't be making global variables
+
+89
+00:04:02.260 --> 00:04:04.929
+it's sort of a recipe for a headache
+
+90
+00:04:04.929 --> 00:04:07.810
+but that's just to show you that sometimes
+
+91
+00:04:07.810 --> 00:04:10.460
+you are going to see people saying, window dot
+
+92
+00:04:10.460 --> 00:04:12.860
+and sometimes you are going to see people typing
+
+93
+00:04:13.696 --> 00:04:15.920
+the global variable directly,
+
+94
+00:04:15.920 --> 00:04:18.950
+and that's because anything that is global,
+
+95
+00:04:18.950 --> 00:04:21.760
+especially the built in methods are just attached to it
+
+96
+00:04:21.760 --> 00:04:23.070
+so the same thing with functions,
+
+97
+00:04:23.070 --> 00:04:27.630
+if I make a function called "say hi" and you console log
+
+98
+00:04:30.140 --> 00:04:31.380
+hi
+
+99
+00:04:31.380 --> 00:04:32.770
+we can run it from here
+
+100
+00:04:32.770 --> 00:04:34.550
+let's do it, say hi
+
+101
+00:04:36.651 --> 00:04:38.351
+it works! You can run it from here
+
+102
+00:04:39.948 --> 00:04:40.781
+its available there
+
+103
+00:04:40.781 --> 00:04:43.128
+you can also run it by saying window dot say hi
+
+104
+00:04:43.128 --> 00:04:45.700
+why is it available at window dot say hi?
+
+105
+00:04:45.700 --> 00:04:47.771
+Because anything that is in the global scope
+
+106
+00:04:47.771 --> 00:04:50.210
+is attached to the window object
+
+107
+00:04:50.210 --> 00:04:51.808
+with the exception of
+
+108
+00:04:51.808 --> 00:04:54.280
+const and let variables
+
+109
+00:04:54.280 --> 00:04:56.680
+but functions, when declared globally
+
+110
+00:04:56.680 --> 00:04:59.020
+are available inside of the window.
+
+111
+00:04:59.020 --> 00:05:02.110
+Now, in saying that, in almost all use cases
+
+112
+00:05:02.110 --> 00:05:04.182
+using global scope isn't a good idea
+
+113
+00:05:04.182 --> 00:05:07.150
+but before we discuss why it isn't a good idea
+
+114
+00:05:07.150 --> 00:05:10.730
+let's learn about how the different parts of scope work
+
+115
+00:05:10.730 --> 00:05:12.140
+so let's back this up here,
+
+116
+00:05:12.140 --> 00:05:13.900
+let's get rid of the script tag here
+
+117
+00:05:13.900 --> 00:05:15.838
+let's remove everything inside of there
+
+118
+00:05:15.838 --> 00:05:20.838
+and let's say const age is equal to one hundred
+
+119
+00:05:21.390 --> 00:05:22.980
+make a function called go
+
+120
+00:05:24.279 --> 00:05:27.200
+and say const hair is equal to blonde
+
+121
+00:05:29.540 --> 00:05:32.240
+and then we'll go down here and we'll console log age
+
+122
+00:05:32.240 --> 00:05:34.970
+and we'll console log hair.
+
+123
+00:05:34.970 --> 00:05:37.420
+So what do you think is gonna run?
+
+124
+00:05:37.420 --> 00:05:41.655
+When I console log age is it going to be a hundred?
+
+125
+00:05:41.655 --> 00:05:44.550
+And when I console log hair is it going to be blonde?
+
+126
+00:05:44.550 --> 00:05:45.400
+Let's see.
+
+127
+00:05:45.400 --> 00:05:46.500
+A hundred, good.
+
+128
+00:05:46.500 --> 00:05:49.770
+And uncaught reference error hair is not defined.
+
+129
+00:05:49.770 --> 00:05:52.840
+Okay, or maybe it's because I didn't run the go function,
+
+130
+00:05:52.840 --> 00:05:53.780
+I just defined it,
+
+131
+00:05:53.780 --> 00:05:57.483
+lets run the go function so that variable gets declared.
+
+132
+00:05:59.060 --> 00:06:01.800
+Hair is not defined, same problem!
+
+133
+00:06:01.800 --> 00:06:03.750
+Well, what's going on here?
+
+134
+00:06:03.750 --> 00:06:05.190
+So this is the next type of scope
+
+135
+00:06:05.190 --> 00:06:06.917
+which is called function scope.
+
+136
+00:06:06.917 --> 00:06:08.770
+What function scope is
+
+137
+00:06:08.770 --> 00:06:13.360
+is when variables are created inside of a function
+
+138
+00:06:13.360 --> 00:06:16.240
+those variables are only ever available
+
+139
+00:06:16.240 --> 00:06:17.870
+inside of that function.
+
+140
+00:06:17.870 --> 00:06:21.200
+Meaning that anything that we create inside of this function
+
+141
+00:06:21.200 --> 00:06:23.530
+is not available outside of that function
+
+142
+00:06:23.530 --> 00:06:25.970
+unless we were to explicitly return it
+
+143
+00:06:25.970 --> 00:06:28.856
+and put it into its own variable when that function is run.
+
+144
+00:06:28.856 --> 00:06:31.580
+So if I go, put this console log here,
+
+145
+00:06:31.580 --> 00:06:33.980
+and I put that inside here
+
+146
+00:06:35.535 --> 00:06:38.000
+we're going to get blonde, right there.
+
+147
+00:06:38.000 --> 00:06:40.512
+Why? Because this variable is inside of here
+
+148
+00:06:40.512 --> 00:06:45.512
+but it is not available down here because these are...
+
+149
+00:06:45.980 --> 00:06:47.860
+I always like to think of these curly brackets
+
+150
+00:06:47.860 --> 00:06:51.420
+as sort of like fences. These fences, whenever you see them
+
+151
+00:06:51.420 --> 00:06:53.242
+they keep the variables in
+
+152
+00:06:53.242 --> 00:06:56.640
+and do not allow them to leak out.
+
+153
+00:06:56.640 --> 00:06:59.030
+Now, is that the same for the opposite?
+
+154
+00:06:59.030 --> 00:07:02.380
+If I were to go in... let's put that hair back inside
+
+155
+00:07:02.380 --> 00:07:05.090
+but if I were to also console log the age
+
+156
+00:07:05.970 --> 00:07:09.283
+if variables can't leak out, can they go in?
+
+157
+00:07:10.220 --> 00:07:12.320
+And yes they can.
+
+158
+00:07:12.320 --> 00:07:15.920
+So this is kind of interesting about JavaScript
+
+159
+00:07:15.920 --> 00:07:19.780
+and this is how most programming languages work is that
+
+160
+00:07:19.780 --> 00:07:21.560
+this is something called the scope look-up
+
+161
+00:07:21.560 --> 00:07:24.570
+that we are going to look at in just a second but this...
+
+162
+00:07:24.570 --> 00:07:27.076
+Variables if not found inside of a function,
+
+163
+00:07:27.076 --> 00:07:29.050
+will go up a level higher
+
+164
+00:07:29.050 --> 00:07:31.480
+and look for a variable in that scope
+
+165
+00:07:31.480 --> 00:07:32.980
+and if it's not available in that scope
+
+166
+00:07:32.980 --> 00:07:34.210
+it'll go up a level higher.
+
+167
+00:07:34.210 --> 00:07:36.690
+We'll talk about multiple nested scope in just a second
+
+168
+00:07:36.690 --> 00:07:40.416
+but what happens here is that when it's looking for age
+
+169
+00:07:40.416 --> 00:07:41.570
+it says "oh!,
+
+170
+00:07:41.570 --> 00:07:44.400
+there is no variable inside of this function called age,
+
+171
+00:07:44.400 --> 00:07:46.880
+so I'll go up one more level and look for that."
+
+172
+00:07:46.880 --> 00:07:50.310
+Now, if I were to do this, const age is equal to two hundred
+
+173
+00:07:51.760 --> 00:07:53.010
+and get rid of this
+
+174
+00:07:53.010 --> 00:07:54.570
+what is it gonna be now?
+
+175
+00:07:54.570 --> 00:07:56.006
+Is that gonna be an error?
+
+176
+00:07:56.006 --> 00:07:59.639
+Is that going to be a
+
+177
+00:07:59.639 --> 00:08:00.522
+two hundred
+
+178
+00:08:00.522 --> 00:08:03.060
+or is it gonna be one hundred?
+
+179
+00:08:03.060 --> 00:08:03.980
+It's two hundred.
+
+180
+00:08:03.980 --> 00:08:06.098
+First of all, is that allowed?
+
+181
+00:08:06.098 --> 00:08:09.040
+And second of all, why is it two hundred?
+
+182
+00:08:09.040 --> 00:08:11.728
+Well, first let's do the second question first here
+
+183
+00:08:11.728 --> 00:08:13.580
+let's console log age
+
+184
+00:08:13.580 --> 00:08:17.670
+and you see that it looks in the local function first
+
+185
+00:08:17.670 --> 00:08:19.620
+and it does find a variable called age
+
+186
+00:08:19.620 --> 00:08:22.470
+and therefore, that's the variable it needs
+
+187
+00:08:22.470 --> 00:08:23.820
+however, if not found,
+
+188
+00:08:23.820 --> 00:08:26.800
+it'll go up a level higher and look for that value.
+
+189
+00:08:26.800 --> 00:08:28.153
+So, that's kind of interesting
+
+190
+00:08:28.153 --> 00:08:30.100
+Why is this allowed?
+
+191
+00:08:30.100 --> 00:08:31.240
+Why is this not breaking?
+
+192
+00:08:31.240 --> 00:08:32.540
+Even if I hover over it
+
+193
+00:08:32.540 --> 00:08:36.360
+it says, age is already declared in the upper scope.
+
+194
+00:08:36.360 --> 00:08:39.100
+That's what's referred to as shadow variables
+
+195
+00:08:39.100 --> 00:08:42.202
+so you can name variables the same thing
+
+196
+00:08:42.202 --> 00:08:44.569
+if they are not in the same scope
+
+197
+00:08:44.569 --> 00:08:46.413
+however, it's not a good idea
+
+198
+00:08:46.413 --> 00:08:49.030
+because if you name a variable the same thing
+
+199
+00:08:49.030 --> 00:08:50.626
+as something that is in another scope,
+
+200
+00:08:50.626 --> 00:08:54.090
+you've just limited yourself to being able to access that
+
+201
+00:08:54.090 --> 00:08:56.866
+so if I wanted to now access this one hundred age,
+
+202
+00:08:56.866 --> 00:08:59.263
+there is absolutely no way I could do that
+
+203
+00:08:59.263 --> 00:09:03.770
+because the variable has been shadowed
+
+204
+00:09:03.770 --> 00:09:05.659
+which means its been over-written,
+
+205
+00:09:05.659 --> 00:09:07.960
+which is legal but is not allowed
+
+206
+00:09:07.960 --> 00:09:11.800
+so if you ever have a variable that is outside of a function
+
+207
+00:09:11.800 --> 00:09:13.300
+and you need to have another variable
+
+208
+00:09:13.300 --> 00:09:15.503
+that is kind of the same thing inside of a function,
+
+209
+00:09:15.503 --> 00:09:19.233
+just create a better named variable inside of it
+
+210
+00:09:19.233 --> 00:09:22.640
+just in case you ever need to reach outside out of it
+
+211
+00:09:22.640 --> 00:09:25.510
+so I am using my age is equal to that
+
+212
+00:09:27.520 --> 00:09:29.500
+now age is a hundred
+
+213
+00:09:29.500 --> 00:09:32.230
+and I could just change this one to be my age
+
+214
+00:09:33.475 --> 00:09:34.308
+there you go
+
+215
+00:09:34.308 --> 00:09:35.141
+one hundred and two hundred
+
+216
+00:09:35.141 --> 00:09:36.520
+I can access both of them.
+
+217
+00:09:36.520 --> 00:09:39.340
+Let's talk about the next one which is blocked scope.
+
+218
+00:09:39.340 --> 00:09:43.300
+So remember earlier we talked about var, let and const
+
+219
+00:09:43.300 --> 00:09:44.390
+let me comment this out here
+
+220
+00:09:44.390 --> 00:09:47.240
+var, let and const variables are scoped differently
+
+221
+00:09:47.240 --> 00:09:50.550
+we talked about how const variables can't be re-assigned
+
+222
+00:09:50.550 --> 00:09:53.590
+and let and var variables can be re-assigned
+
+223
+00:09:53.590 --> 00:09:55.829
+they have a different way of how they are scoped.
+
+224
+00:09:55.829 --> 00:09:58.360
+We'll go in here and say if one is equal to one
+
+225
+00:09:58.360 --> 00:10:00.960
+obviously one is equal to one, so that will be true
+
+226
+00:10:00.960 --> 00:10:03.796
+then we'll make a variable const cool is equal to true
+
+227
+00:10:03.796 --> 00:10:05.140
+go down here
+
+228
+00:10:05.140 --> 00:10:06.615
+console log cool
+
+229
+00:10:06.615 --> 00:10:10.109
+when I run that, is it going to work?
+
+230
+00:10:10.109 --> 00:10:13.090
+Reference error, cool is not defined.
+
+231
+00:10:13.090 --> 00:10:13.923
+Why not?
+
+232
+00:10:13.923 --> 00:10:15.913
+Well, what if I make that a var?
+
+233
+00:10:18.490 --> 00:10:19.720
+It works!
+
+234
+00:10:19.720 --> 00:10:21.203
+What id I make it a let?
+
+235
+00:10:22.417 --> 00:10:25.320
+I've got me eslint helping me out there,
+
+236
+00:10:25.320 --> 00:10:26.640
+eslint disable
+
+237
+00:10:29.360 --> 00:10:31.430
+No, let doesn't work either
+
+238
+00:10:31.430 --> 00:10:34.380
+so what's happening here is that whenever you have
+
+239
+00:10:34.380 --> 00:10:36.390
+a set of curly brackets,
+
+240
+00:10:36.390 --> 00:10:38.960
+that is what is referred to as a block
+
+241
+00:10:38.960 --> 00:10:41.840
+now blocks were showing up in lots of places,
+
+242
+00:10:41.840 --> 00:10:44.690
+probably the most common is an if statement
+
+243
+00:10:44.690 --> 00:10:46.610
+we'll see lots more examples of what blocks are
+
+244
+00:10:46.610 --> 00:10:48.780
+but essentially whenever you see these blocks
+
+245
+00:10:48.780 --> 00:10:50.580
+these curly brackets
+
+246
+00:10:50.580 --> 00:10:52.680
+you can think of them as gates
+
+247
+00:10:52.680 --> 00:10:55.720
+and those gates like to keep variables in
+
+248
+00:10:55.720 --> 00:10:58.740
+anytime something that was inside of these gates,
+
+249
+00:10:58.740 --> 00:11:00.810
+they are not allowed to leave those gates
+
+250
+00:11:00.810 --> 00:11:03.444
+so if you need to access a variable
+
+251
+00:11:03.444 --> 00:11:06.090
+that was created inside of the gates
+
+252
+00:11:06.090 --> 00:11:07.425
+outside of the gates
+
+253
+00:11:07.425 --> 00:11:10.820
+you simply are not allowed to do it
+
+254
+00:11:10.820 --> 00:11:11.980
+so some solutions to that
+
+255
+00:11:11.980 --> 00:11:13.800
+every now and then I do run into a situation
+
+256
+00:11:13.800 --> 00:11:15.560
+where I do need a variable to be available
+
+257
+00:11:15.560 --> 00:11:16.797
+outside of a block
+
+258
+00:11:16.797 --> 00:11:20.660
+what happens is that you have to create a variable above it
+
+259
+00:11:20.660 --> 00:11:22.540
+so we'll say let cool
+
+260
+00:11:23.990 --> 00:11:26.670
+and then here we just simply do not declare it
+
+261
+00:11:26.670 --> 00:11:28.639
+but we update that variable
+
+262
+00:11:28.639 --> 00:11:31.240
+and what that does is that it creates is in the higher scope
+
+263
+00:11:31.240 --> 00:11:32.850
+in this case its the global variable
+
+264
+00:11:32.850 --> 00:11:35.390
+and we'll look at if this was created inside our function
+
+265
+00:11:35.390 --> 00:11:36.960
+it would be function scoped
+
+266
+00:11:36.960 --> 00:11:39.080
+then we update the variable here
+
+267
+00:11:39.080 --> 00:11:40.710
+and then it's available to us
+
+268
+00:11:40.710 --> 00:11:43.300
+so there we go it's now true
+
+269
+00:11:43.300 --> 00:11:45.660
+now that probably won't be a global variable
+
+270
+00:11:45.660 --> 00:11:49.743
+it would most likely be any function called, "isCool"
+
+271
+00:11:51.297 --> 00:11:53.950
+and then inside of that, it will look like this
+
+272
+00:11:53.950 --> 00:11:55.550
+now this is where we are starting
+
+273
+00:11:55.550 --> 00:11:58.440
+to get into two different kind of scopes
+
+274
+00:11:58.440 --> 00:12:00.291
+so we return
+
+275
+00:12:00.291 --> 00:12:01.483
+cool.
+
+276
+00:12:04.610 --> 00:12:06.400
+Lets actually make this a little bit...
+
+277
+00:12:06.400 --> 00:12:08.207
+Name, and then we'll say
+
+278
+00:12:08.207 --> 00:12:12.168
+"if the person's name is equal to wes
+
+279
+00:12:12.168 --> 00:12:13.750
+cool is equal to true
+
+280
+00:12:13.750 --> 00:12:15.460
+then we return cool.
+
+281
+00:12:15.460 --> 00:12:19.760
+So what's going on here is that we have one scope
+
+282
+00:12:19.760 --> 00:12:21.800
+which is called a function scope
+
+283
+00:12:21.800 --> 00:12:23.810
+and that is open with this block
+
+284
+00:12:23.810 --> 00:12:25.765
+kind of the confusing thing here is that a function
+
+285
+00:12:25.765 --> 00:12:28.130
+also has a block
+
+286
+00:12:28.130 --> 00:12:32.250
+and so any let, const or var variables are automatically
+
+287
+00:12:32.250 --> 00:12:33.959
+scoped to a function
+
+288
+00:12:33.959 --> 00:12:37.213
+because regardless of if its a function or a block
+
+289
+00:12:37.213 --> 00:12:39.921
+it's still a set of curly brackets, so it's scoped to that.
+
+290
+00:12:39.921 --> 00:12:43.480
+Then we go inside of here, and this is scoped so again
+
+291
+00:12:43.480 --> 00:12:45.950
+if I were to just make a const variable here
+
+292
+00:12:45.950 --> 00:12:47.040
+and remove that,
+
+293
+00:12:47.040 --> 00:12:48.890
+this is not going to be available to us
+
+294
+00:12:48.890 --> 00:12:50.640
+so is cool
+
+295
+00:12:50.640 --> 00:12:52.240
+wes
+
+296
+00:12:52.240 --> 00:12:53.600
+cool is not defined
+
+297
+00:12:53.600 --> 00:12:56.000
+but if I were to do something like this
+
+298
+00:12:57.640 --> 00:12:58.653
+let cool,
+
+299
+00:13:00.300 --> 00:13:01.420
+then update it
+
+300
+00:13:01.420 --> 00:13:02.530
+then return it
+
+301
+00:13:03.700 --> 00:13:04.533
+it works.
+
+302
+00:13:04.533 --> 00:13:05.580
+Which is good for us.
+
+303
+00:13:05.580 --> 00:13:08.811
+So that is the idea of what blocked scoping is
+
+304
+00:13:08.811 --> 00:13:11.863
+is anytime yo have a set of curly brackets
+
+305
+00:13:11.863 --> 00:13:15.950
+and most likely its going to be an if statement
+
+306
+00:13:15.950 --> 00:13:18.490
+but we are going to run into a lot of other
+
+307
+00:13:18.490 --> 00:13:19.903
+different situations
+
+308
+00:13:19.903 --> 00:13:22.240
+this is not really a hindrance
+
+309
+00:13:22.240 --> 00:13:23.920
+I know I showed you how to solve it here
+
+310
+00:13:23.920 --> 00:13:27.050
+but in most cased this is going to be really nice
+
+311
+00:13:27.050 --> 00:13:28.430
+because you don't have to worry
+
+312
+00:13:28.430 --> 00:13:30.476
+about variables leaking out of it
+
+313
+00:13:30.476 --> 00:13:34.280
+in the past we've had um! Like what are called for loops
+
+314
+00:13:34.280 --> 00:13:37.435
+so we'll have something that looks like this
+
+315
+00:13:37.435 --> 00:13:39.030
+"for
+
+316
+00:13:40.710 --> 00:13:43.200
+var i is equal to zero"
+
+317
+00:13:43.200 --> 00:13:44.910
+i is
+
+318
+00:13:44.910 --> 00:13:46.300
+less than ten
+
+319
+00:13:46.300 --> 00:13:47.133
+i plus plus",
+
+320
+00:13:47.133 --> 00:13:48.864
+we'll go over what this is in the future
+
+321
+00:13:48.864 --> 00:13:51.810
+and then right here what we'll do is
+
+322
+00:13:51.810 --> 00:13:54.800
+we will console log "i"
+
+323
+00:13:54.800 --> 00:13:56.110
+so watch what happens here
+
+324
+00:13:56.110 --> 00:13:57.870
+we get zero through nine
+
+325
+00:13:57.870 --> 00:14:00.194
+and if I were just to go and type "i" now
+
+326
+00:14:00.194 --> 00:14:03.470
+we get this like random variable that's just out floating
+
+327
+00:14:03.470 --> 00:14:05.463
+in outer space called, "i"
+
+328
+00:14:06.960 --> 00:14:08.204
+this increment here
+
+329
+00:14:08.204 --> 00:14:11.080
+it should only be available to this loop
+
+330
+00:14:11.080 --> 00:14:13.510
+and for some reason now because there was a "var"
+
+331
+00:14:13.510 --> 00:14:14.820
+now its leaked outside
+
+332
+00:14:14.820 --> 00:14:17.050
+and now we have like this random i variable on
+
+333
+00:14:17.050 --> 00:14:22.050
+if you ever need to like go ahead and make another for loop
+
+334
+00:14:22.170 --> 00:14:23.870
+and you already have another "i" variable on
+
+335
+00:14:23.870 --> 00:14:25.280
+that can cause bugs in future
+
+336
+00:14:25.280 --> 00:14:27.980
+so by simply just making it a let
+
+337
+00:14:29.260 --> 00:14:32.500
+it works the same and now there is no "i" variable
+
+338
+00:14:32.500 --> 00:14:33.920
+see "i" is not defined.
+
+339
+00:14:33.920 --> 00:14:34.790
+So that's beautiful
+
+340
+00:14:34.790 --> 00:14:37.640
+because it's then scoped to the curly brackets.
+
+341
+00:14:37.640 --> 00:14:39.602
+So, big fan of blocked scoping
+
+342
+00:14:39.602 --> 00:14:42.010
+I think that's why most people say
+
+343
+00:14:42.010 --> 00:14:43.857
+always use "const" by default,
+
+344
+00:14:43.857 --> 00:14:45.430
+"let" when you need to re-assign it
+
+345
+00:14:45.430 --> 00:14:46.350
+and don't use "var"
+
+346
+00:14:46.350 --> 00:14:49.020
+unless there is any specific use case for it.
+
+347
+00:14:49.020 --> 00:14:51.020
+Actually one more thing I should show you here is that...
+
+348
+00:14:51.020 --> 00:14:53.260
+also this function "isCool"
+
+349
+00:14:53.260 --> 00:14:56.464
+could also be solved by just doing this "var"
+
+350
+00:14:56.464 --> 00:14:59.690
+and watch this now, wes
+
+351
+00:14:59.690 --> 00:15:01.550
+it still works.
+
+352
+00:15:01.550 --> 00:15:02.383
+Why?
+
+353
+00:15:02.383 --> 00:15:05.039
+Because when I created this variable inside of this block
+
+354
+00:15:05.039 --> 00:15:06.670
+it was a "var" variable
+
+355
+00:15:06.670 --> 00:15:08.522
+and "var" variables are not block scoped,
+
+356
+00:15:08.522 --> 00:15:10.190
+they are function scoped.
+
+357
+00:15:10.190 --> 00:15:12.487
+So they are available outside of this
+
+358
+00:15:12.487 --> 00:15:14.930
+but they are only available inside of this function
+
+359
+00:15:14.930 --> 00:15:17.634
+so that's why I am able to console log cool
+
+360
+00:15:17.634 --> 00:15:19.400
+below this "if" statement
+
+361
+00:15:19.400 --> 00:15:22.260
+but if it was a "let" it would not work.
+
+362
+00:15:22.260 --> 00:15:23.350
+Let me show you one more time
+
+363
+00:15:23.350 --> 00:15:24.220
+here we go,
+
+364
+00:15:24.220 --> 00:15:26.584
+see, again make it a "var"
+
+365
+00:15:26.584 --> 00:15:28.095
+I think you get the point here
+
+366
+00:15:28.095 --> 00:15:28.947
+(chuckles)
+
+367
+00:15:28.947 --> 00:15:30.516
+"var" variables are function scoped
+
+368
+00:15:30.516 --> 00:15:33.837
+"let" and "const" variables are block scoped.
+
+369
+00:15:33.837 --> 00:15:36.114
+And that answers where they are available to you.
+
+370
+00:15:36.114 --> 00:15:40.170
+Let's do another example of some scope look-up
+
+371
+00:15:40.170 --> 00:15:41.446
+just to get that concept.
+
+372
+00:15:41.446 --> 00:15:43.430
+Down pad here
+
+373
+00:15:43.430 --> 00:15:44.520
+What I want to do is
+
+374
+00:15:44.520 --> 00:15:45.890
+lets make a variable called dog
+
+375
+00:15:45.890 --> 00:15:47.923
+and lets set that to "snickers"
+
+376
+00:15:53.150 --> 00:15:56.163
+and then we'll make a function called, "logDog"
+
+377
+00:15:57.410 --> 00:16:00.843
+which will simply just console log the dog's name.
+
+378
+00:16:02.410 --> 00:16:04.010
+Then I have a function
+
+379
+00:16:08.880 --> 00:16:09.713
+called go
+
+380
+00:16:10.660 --> 00:16:12.660
+and inside of that we make another dog variable
+
+381
+00:16:12.660 --> 00:16:14.623
+let's set that to "sunny"
+
+382
+00:16:16.450 --> 00:16:17.827
+and we'll call logDog.
+
+383
+00:16:19.210 --> 00:16:20.320
+And then we run go.
+
+384
+00:16:20.320 --> 00:16:21.840
+Okay, so what's going on here?
+
+385
+00:16:21.840 --> 00:16:23.697
+We have a variable called dog, set to snickers.
+
+386
+00:16:23.697 --> 00:16:28.103
+We have a function that will log a variable called dog.
+
+387
+00:16:28.103 --> 00:16:29.373
+Which doesn't.
+
+388
+00:16:31.690 --> 00:16:33.140
+Then we have a function called go,
+
+389
+00:16:33.140 --> 00:16:35.340
+which created a variable called dog again
+
+390
+00:16:35.340 --> 00:16:36.320
+named "sunny"
+
+391
+00:16:36.320 --> 00:16:39.660
+then we run that function and then we go ahead and run it.
+
+392
+00:16:39.660 --> 00:16:43.255
+So lets see, when we call this logDog function,
+
+393
+00:16:43.255 --> 00:16:46.794
+is it going to log "sunny"
+
+394
+00:16:46.794 --> 00:16:49.288
+or is it going to log "snickers"?
+
+395
+00:16:49.288 --> 00:16:51.420
+You might think it's going to log "sunny"
+
+396
+00:16:51.420 --> 00:16:56.310
+because we've declared the dog in this function scope
+
+397
+00:16:56.310 --> 00:16:58.380
+so when this function runs,
+
+398
+00:16:58.380 --> 00:17:01.070
+shouldn't it look in its own scope for that?
+
+399
+00:17:01.070 --> 00:17:02.380
+Or you might think
+
+400
+00:17:02.380 --> 00:17:05.230
+it's going to run snickers
+
+401
+00:17:05.230 --> 00:17:07.880
+because this function is declared here
+
+402
+00:17:07.880 --> 00:17:10.400
+there is obviously no "dog" variable inside of that function
+
+403
+00:17:10.400 --> 00:17:13.580
+and it will look-up for that.
+
+404
+00:17:13.580 --> 00:17:16.400
+So lets go ahead and run it, place your bets now
+
+405
+00:17:17.337 --> 00:17:18.720
+"snickers"
+
+406
+00:17:18.720 --> 00:17:23.360
+so even though I ran the function inside of this go function
+
+407
+00:17:23.360 --> 00:17:24.780
+and even though this go function
+
+408
+00:17:24.780 --> 00:17:27.128
+has a locally scoped variable called "sunny"
+
+409
+00:17:27.128 --> 00:17:30.170
+it still logged "snickers".
+
+410
+00:17:30.170 --> 00:17:33.460
+And this is because JavaScript is what is referred to as,
+
+411
+00:17:33.460 --> 00:17:34.790
+some buzzwords coming here,
+
+412
+00:17:34.790 --> 00:17:37.780
+Lexical scoping or static scoping
+
+413
+00:17:37.780 --> 00:17:38.920
+you're going to hear these words,
+
+414
+00:17:38.920 --> 00:17:39.847
+I don't know, thrown around
+
+415
+00:17:39.847 --> 00:17:43.200
+"its a lexically scoped language".
+
+416
+00:17:43.200 --> 00:17:45.960
+And what that means is that, simply,
+
+417
+00:17:45.960 --> 00:17:49.250
+the way that variable look-up or scope look-up happens
+
+418
+00:17:49.250 --> 00:17:51.530
+is where the functions are defined
+
+419
+00:17:51.530 --> 00:17:52.920
+not where they are run.
+
+420
+00:17:52.920 --> 00:17:55.310
+So even thought this function here
+
+421
+00:17:55.310 --> 00:17:59.900
+is run inside of another function which has a locally scoped
+
+422
+00:17:59.900 --> 00:18:02.220
+it doesn't care about where its run,
+
+423
+00:18:02.220 --> 00:18:04.360
+it cares about where it's defined.
+
+424
+00:18:04.360 --> 00:18:06.180
+So because this function here
+
+425
+00:18:06.180 --> 00:18:08.809
+is then console logging the dog
+
+426
+00:18:08.809 --> 00:18:12.100
+it was defined here so it will look up
+
+427
+00:18:12.100 --> 00:18:14.850
+it obviously doesn't have a local one named dog,
+
+428
+00:18:14.850 --> 00:18:17.000
+and then it will just go up one level.
+
+429
+00:18:17.000 --> 00:18:20.810
+So that's what you need to know about scope look-up.
+
+430
+00:18:20.810 --> 00:18:23.440
+Ideally this function wouldn't even look outside
+
+431
+00:18:23.440 --> 00:18:25.230
+of the function for that variable,
+
+432
+00:18:25.230 --> 00:18:27.970
+ideally, this function called "logDog"
+
+433
+00:18:27.970 --> 00:18:31.335
+would take in a variable called "dog"
+
+434
+00:18:31.335 --> 00:18:35.860
+and then you would pass in a variable called anything,
+
+435
+00:18:35.860 --> 00:18:36.693
+you can call it dog,
+
+436
+00:18:36.693 --> 00:18:38.410
+let's call it something else.
+
+437
+00:18:38.410 --> 00:18:40.407
+Let's call it, "Rufus".
+
+438
+00:18:41.680 --> 00:18:43.693
+Now what is it going to log?
+
+439
+00:18:44.660 --> 00:18:48.426
+Its... we log dog, we pass it a param...
+
+440
+00:18:48.426 --> 00:18:50.590
+we pass an argument called Rufus,
+
+441
+00:18:50.590 --> 00:18:52.870
+that parameter's name is dog so we console log dog
+
+442
+00:18:52.870 --> 00:18:56.540
+what's it going to be? Sunny, Snickers or Rufus?
+
+443
+00:18:56.540 --> 00:18:57.603
+Rufus. Why?
+
+444
+00:18:57.603 --> 00:19:00.070
+Because, what happens is that
+
+445
+00:19:00.070 --> 00:19:01.994
+when a function takes in an argument
+
+446
+00:19:01.994 --> 00:19:05.850
+it will make local variables inside of that function
+
+447
+00:19:05.850 --> 00:19:08.350
+named whatever you named the parameter.
+
+448
+00:19:08.350 --> 00:19:10.120
+And then that's available to it.
+
+449
+00:19:10.120 --> 00:19:12.240
+It's the same thing as doing something like this:
+
+450
+00:19:12.240 --> 00:19:16.850
+const dog is equal to whatever you passed in
+
+451
+00:19:16.850 --> 00:19:21.531
+as the first argument to the function.
+
+452
+00:19:21.531 --> 00:19:23.570
+JavaScript does that behind the scenes,
+
+453
+00:19:23.570 --> 00:19:24.520
+it will say "Okay,
+
+454
+00:19:24.520 --> 00:19:26.780
+lets make some local variables to this function."
+
+455
+00:19:26.780 --> 00:19:28.670
+Function scoped variables,
+
+456
+00:19:28.670 --> 00:19:30.970
+and it makes them all available to us
+
+457
+00:19:30.970 --> 00:19:31.960
+based on what we call it.
+
+458
+00:19:31.960 --> 00:19:34.500
+Now we could call that whatever we want,
+
+459
+00:19:34.500 --> 00:19:38.198
+but the fact that I'm passing in a dog variable here,
+
+460
+00:19:38.198 --> 00:19:40.727
+now this is going to get a little confusing here
+
+461
+00:19:40.727 --> 00:19:42.530
+it's Sunny,
+
+462
+00:19:42.530 --> 00:19:45.530
+it doesn't care what you call the variable
+
+463
+00:19:45.530 --> 00:19:46.760
+that you are passing in,
+
+464
+00:19:46.760 --> 00:19:48.580
+it just cares what the value is
+
+465
+00:19:48.580 --> 00:19:51.730
+so that is the same thing as just passing in
+
+466
+00:19:51.730 --> 00:19:53.240
+a string of
+
+467
+00:19:54.510 --> 00:19:55.343
+"Sunny".
+
+468
+00:19:55.343 --> 00:19:58.220
+So scope look-up is a little bit of a funky thing,
+
+469
+00:19:58.220 --> 00:19:59.780
+we're going to go through a lot more examples
+
+470
+00:19:59.780 --> 00:20:01.470
+and figuring out how it is
+
+471
+00:20:01.470 --> 00:20:03.820
+and also there is some sort of best practices
+
+472
+00:20:03.820 --> 00:20:07.140
+that we can go through in making sure that we don't get this
+
+473
+00:20:07.140 --> 00:20:09.510
+confusion here where you have variables
+
+474
+00:20:09.510 --> 00:20:11.752
+called the same thing that's inside of the function
+
+475
+00:20:11.752 --> 00:20:15.310
+that's just sort of a recipe for confusion
+
+476
+00:20:15.310 --> 00:20:17.120
+as well as a potential bugs
+
+477
+00:20:17.120 --> 00:20:19.580
+where you accidentally goof up scoping.
+
+478
+00:20:19.580 --> 00:20:21.330
+So let's talk about some best practices
+
+479
+00:20:21.330 --> 00:20:22.589
+for variables real quick.
+
+480
+00:20:22.589 --> 00:20:25.572
+First, try not to create global variables.
+
+481
+00:20:25.572 --> 00:20:28.550
+Its fine for us to create them as we're doing this
+
+482
+00:20:28.550 --> 00:20:31.530
+and when we get into what are called modules,
+
+483
+00:20:31.530 --> 00:20:35.543
+its actually almost impossible to create global variables
+
+484
+00:20:35.543 --> 00:20:38.530
+unless you have to explicitly do something like
+
+485
+00:20:38.530 --> 00:20:43.222
+window dot IAmAGlobal equals wes.
+
+486
+00:20:43.222 --> 00:20:46.857
+And then you can go into here, say IAmAGlobal
+
+487
+00:20:49.490 --> 00:20:53.100
+unless you explicitly attache is to the window
+
+488
+00:20:53.100 --> 00:20:56.507
+with a module, it very hard to create a global variable
+
+489
+00:20:56.507 --> 00:20:58.110
+and that is intentional
+
+490
+00:20:58.110 --> 00:21:00.390
+because having global variables can lead to bugs
+
+491
+00:21:00.390 --> 00:21:03.320
+down the road where you accidentally overlap things
+
+492
+00:21:03.320 --> 00:21:04.890
+I've been on projects before
+
+493
+00:21:04.890 --> 00:21:07.560
+where everybody used global variables
+
+494
+00:21:07.560 --> 00:21:09.880
+and someone named a global variable called twitter
+
+495
+00:21:09.880 --> 00:21:12.300
+and someone else thought twitter was a good variable name
+
+496
+00:21:12.300 --> 00:21:14.521
+as well and then those start to overlap each other
+
+497
+00:21:14.521 --> 00:21:16.840
+and before you know it things start breaking
+
+498
+00:21:16.840 --> 00:21:18.520
+because you are not expecting them to be
+
+499
+00:21:18.520 --> 00:21:20.600
+the values that you expect them to be.
+
+500
+00:21:20.600 --> 00:21:23.510
+So we will not go ahead and do that.
+
+501
+00:21:23.510 --> 00:21:25.488
+Lets talk about function scoping.
+
+502
+00:21:25.488 --> 00:21:29.610
+Functions are scoped the exact same as variables
+
+503
+00:21:29.610 --> 00:21:33.310
+so if you have a function here called "sayHi"
+
+504
+00:21:33.310 --> 00:21:35.677
+that takes in a name
+
+505
+00:21:35.677 --> 00:21:39.480
+and then you were to make another function inside of that
+
+506
+00:21:39.480 --> 00:21:40.313
+is that allowed?
+
+507
+00:21:40.313 --> 00:21:42.400
+Absolutely, and we'll look up some examples
+
+508
+00:21:42.400 --> 00:21:43.730
+of why you might want to do that.
+
+509
+00:21:43.730 --> 00:21:47.250
+So if you make a "yell" function inside of that
+
+510
+00:21:47.250 --> 00:21:49.120
+and you console log
+
+511
+00:21:50.940 --> 00:21:54.510
+the name dot to upper case
+
+512
+00:21:55.360 --> 00:21:57.233
+and then we run "yell"
+
+513
+00:21:59.428 --> 00:22:01.243
+if I were to run "sayHi"
+
+514
+00:22:03.030 --> 00:22:04.590
+wes,
+
+515
+00:22:04.590 --> 00:22:05.940
+it will yell wes.
+
+516
+00:22:05.940 --> 00:22:07.120
+So what's happening here
+
+517
+00:22:07.120 --> 00:22:08.790
+is that I've made a function called "sayHi"
+
+518
+00:22:08.790 --> 00:22:11.540
+and that inside of that I've made a function called "yell"
+
+519
+00:22:11.540 --> 00:22:15.100
+if I go down here and try to run "yell" directly
+
+520
+00:22:15.100 --> 00:22:16.033
+is it gonna work?
+
+521
+00:22:16.877 --> 00:22:18.040
+"yell" is not defined.
+
+522
+00:22:18.040 --> 00:22:18.873
+Why?
+
+523
+00:22:18.873 --> 00:22:20.240
+Because, just like variables,
+
+524
+00:22:20.240 --> 00:22:23.570
+functions are going to be scoped to the parent function.
+
+525
+00:22:23.570 --> 00:22:26.280
+So if you create a function, inside of another function,
+
+526
+00:22:26.280 --> 00:22:29.680
+that function will only ever be available inside of that
+
+527
+00:22:29.680 --> 00:22:31.560
+so that's getting a little ahead of ourselves,
+
+528
+00:22:31.560 --> 00:22:35.820
+that's starting to open up what is referred to as a closure
+
+529
+00:22:35.820 --> 00:22:38.140
+which is a little more of an advanced example
+
+530
+00:22:38.140 --> 00:22:40.340
+we'll go through it in this course for sure
+
+531
+00:22:40.340 --> 00:22:41.620
+but just to let you know that
+
+532
+00:22:41.620 --> 00:22:44.420
+it is possible to do a function inside of a function,
+
+533
+00:22:44.420 --> 00:22:46.940
+generally you are not going to be doing that though
+
+534
+00:22:46.940 --> 00:22:49.350
+generally you are just going to be doing functions
+
+535
+00:22:49.350 --> 00:22:50.413
+all at the top level
+
+536
+00:22:50.413 --> 00:22:53.250
+and then if you want to reference one function from another
+
+537
+00:22:53.250 --> 00:22:54.907
+that's absolutely fine.
+
+538
+00:22:54.907 --> 00:22:57.330
+I think that's enough for this example,
+
+539
+00:22:57.330 --> 00:23:00.660
+let's go jump into the next video and we will explain
+
+540
+00:23:00.660 --> 00:23:01.493
+hoisting.
+

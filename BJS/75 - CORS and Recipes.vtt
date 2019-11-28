@@ -1,0 +1,2755 @@
+﻿WEBVTT
+
+1
+00:00:00.881 --> 00:00:04.020
+(upbeat music)
+
+2
+00:00:04.020 --> 00:00:05.040
+<v Instructor>All right, we're gonna build</v>
+
+3
+00:00:05.040 --> 00:00:08.840
+another little app here that searches for a recipe
+
+4
+00:00:08.840 --> 00:00:11.330
+based on pizza or something like that.
+
+5
+00:00:11.330 --> 00:00:13.970
+And we are gonna attempt to display the data.
+
+6
+00:00:13.970 --> 00:00:17.860
+Now, instead of me showing you this perfect API
+
+7
+00:00:17.860 --> 00:00:22.250
+with perfect search, and perfect absolutely everything,
+
+8
+00:00:22.250 --> 00:00:24.170
+what I'm gonna do, is I'm gonna show you
+
+9
+00:00:24.170 --> 00:00:26.990
+all of the hurdles that you would usually hit
+
+10
+00:00:26.990 --> 00:00:29.310
+when you are attempting to use a new API.
+
+11
+00:00:29.310 --> 00:00:31.930
+Because this stuff can be frustrating
+
+12
+00:00:31.930 --> 00:00:36.120
+and I want to show you how you can sort of get around
+
+13
+00:00:36.120 --> 00:00:38.990
+some of these things, or if you know if you have to say,
+
+14
+00:00:38.990 --> 00:00:41.820
+okay, I can't use this API for this app.
+
+15
+00:00:41.820 --> 00:00:43.557
+So, let's go through that.
+
+16
+00:00:43.557 --> 00:00:47.040
+I'm gonna be using this recipepuppy.com,
+
+17
+00:00:47.040 --> 00:00:49.283
+and if we take a look here,
+
+18
+00:00:50.418 --> 00:00:52.900
+and the way that it works is that you go to the URL
+
+19
+00:00:52.900 --> 00:00:55.370
+and you pass an i, which is ingredients;
+
+20
+00:00:55.370 --> 00:00:57.780
+you pass a q, which is your query;
+
+21
+00:00:57.780 --> 00:01:01.423
+and you pass a p, which is your page.
+
+22
+00:01:03.020 --> 00:01:06.730
+Now you will see, on the homepage here,
+
+23
+00:01:06.730 --> 00:01:08.700
+they have additional parameters
+
+24
+00:01:08.700 --> 00:01:11.250
+that you can then pass via this
+
+25
+00:01:11.250 --> 00:01:12.410
+and that's actually pretty cool.
+
+26
+00:01:12.410 --> 00:01:14.780
+So, let's just talk about parameters real quick.
+
+27
+00:01:14.780 --> 00:01:16.930
+When you go to a URL, you sometimes see
+
+28
+00:01:16.930 --> 00:01:18.860
+these question mark on the end.
+
+29
+00:01:18.860 --> 00:01:21.170
+Even when we submit a form, we see those on the end.
+
+30
+00:01:21.170 --> 00:01:23.710
+Those are what are referred to as query params.
+
+31
+00:01:23.710 --> 00:01:25.050
+And if I were to break those down,
+
+32
+00:01:25.050 --> 00:01:27.810
+you'll see that we've got our API endpoint.
+
+33
+00:01:27.810 --> 00:01:30.270
+And then, query params always start with a question mark,
+
+34
+00:01:30.270 --> 00:01:34.000
+that's the part of the URL that has the query params on.
+
+35
+00:01:34.000 --> 00:01:37.370
+And then, each param, in our case we have i
+
+36
+00:01:37.370 --> 00:01:41.760
+and we have q, and we have p.
+
+37
+00:01:41.760 --> 00:01:44.200
+The first one will always, always, always start
+
+38
+00:01:44.200 --> 00:01:46.770
+with a question mark and then the additional ones
+
+39
+00:01:46.770 --> 00:01:49.760
+always have an ampersand in between them
+
+40
+00:01:49.760 --> 00:01:51.190
+and that's how you know you can pass
+
+41
+00:01:51.190 --> 00:01:54.330
+multiple parameters to a URL.
+
+42
+00:01:54.330 --> 00:01:56.400
+So, in our case, we're passing ingredients.
+
+43
+00:01:56.400 --> 00:01:59.010
+This is passing multiple, the fact that they used
+
+44
+00:01:59.010 --> 00:02:01.330
+a comma there is not a standard thing,
+
+45
+00:02:01.330 --> 00:02:03.400
+that is just how this API works.
+
+46
+00:02:03.400 --> 00:02:06.610
+This case is "q is omelet and p is equal to three.
+
+47
+00:02:06.610 --> 00:02:08.030
+That's how they handle pagination.
+
+48
+00:02:08.030 --> 00:02:09.480
+Again, these are never standard.
+
+49
+00:02:09.480 --> 00:02:11.660
+Every API implements them a little bit differently,
+
+50
+00:02:11.660 --> 00:02:14.850
+so you always have to go and read the docs.
+
+51
+00:02:14.850 --> 00:02:19.590
+So, my idea here is that we've got this index.html here,
+
+52
+00:02:19.590 --> 00:02:24.590
+by the way, I'm in the folder 72-CORS and Recipe.
+
+53
+00:02:24.600 --> 00:02:27.680
+And I've got this form here
+
+54
+00:02:27.680 --> 00:02:29.460
+that we can type something like pizza
+
+55
+00:02:29.460 --> 00:02:31.570
+and when I hit enter, it will search for pizza
+
+56
+00:02:31.570 --> 00:02:33.893
+and bring back a list of recipes,
+
+57
+00:02:34.920 --> 00:02:36.830
+as well as maybe some ingredients.
+
+58
+00:02:36.830 --> 00:02:39.450
+Some of them have thumbnails as well.
+
+59
+00:02:39.450 --> 00:02:41.253
+Oh, look at that.
+(whistling)
+
+60
+00:02:41.253 --> 00:02:42.303
+That looks good.
+
+61
+00:02:43.391 --> 00:02:44.224
+(laughing)
+
+62
+00:02:44.224 --> 00:02:47.400
+You can, that you can go ahead and show them in there, okay.
+
+63
+00:02:47.400 --> 00:02:49.200
+So, let's get goin'.
+
+64
+00:02:49.200 --> 00:02:52.350
+I'm not gonna worry about the UI just yet
+
+65
+00:02:52.350 --> 00:02:53.850
+because there are a couple of things
+
+66
+00:02:53.850 --> 00:02:55.080
+that we're going to bump in to,
+
+67
+00:02:55.080 --> 00:02:57.495
+and I'm gonna show you how we can kinda get around them.
+
+68
+00:02:57.495 --> 00:02:59.760
+First thing we're gonna do, is let's just go
+
+69
+00:02:59.760 --> 00:03:01.990
+to our scripts console.log hey.
+
+70
+00:03:01.990 --> 00:03:03.253
+Make sure it's working.
+
+71
+00:03:05.160 --> 00:03:06.870
+It is working, good.
+
+72
+00:03:06.870 --> 00:03:08.280
+Now we're gonna make a function.
+
+73
+00:03:08.280 --> 00:03:09.653
+We'll mark it as async.
+
+74
+00:03:10.610 --> 00:03:13.077
+And that will just be fetchRecipes.
+
+75
+00:03:14.520 --> 00:03:16.543
+And that will take in a query.
+
+76
+00:03:18.250 --> 00:03:21.747
+And on page load, we'll just run fetchRecipes.
+
+77
+00:03:22.660 --> 00:03:24.233
+We'll look for pizza.
+
+78
+00:03:26.690 --> 00:03:29.050
+And then I'll say const response is equal to.
+
+79
+00:03:29.050 --> 00:03:31.070
+I guess we need our base URL here,
+
+80
+00:03:31.070 --> 00:03:32.683
+so let's go grab this.
+
+81
+00:03:33.810 --> 00:03:35.797
+Say const baseEndpoint,
+
+82
+00:03:42.930 --> 00:03:47.600
+and I'll take the stuff off the end there.
+
+83
+00:03:47.600 --> 00:03:49.290
+And then here, we'll go ahead and say
+
+84
+00:03:49.290 --> 00:03:52.763
+fetch the baseEndpoint
+
+85
+00:03:55.770 --> 00:03:57.010
+and then to pop the params on the end
+
+86
+00:03:57.010 --> 00:03:59.810
+you do question mark, the name of the param, q,
+
+87
+00:03:59.810 --> 00:04:03.080
+and the, in here we can just hard code pizza,
+
+88
+00:04:03.080 --> 00:04:05.010
+but in our case, we're going to interpolate
+
+89
+00:04:05.010 --> 00:04:07.652
+the variable that was passed in called query,
+
+90
+00:04:07.652 --> 00:04:11.320
+not pizza, and then when we fetchRecipes,
+
+91
+00:04:11.320 --> 00:04:13.230
+that should be populated.
+
+92
+00:04:13.230 --> 00:04:16.260
+Then we'll say const data is equal to,
+
+93
+00:04:16.260 --> 00:04:18.750
+oh, we gotta pop in await in front of this,
+
+94
+00:04:18.750 --> 00:04:23.283
+and then an await in front of this, res.json.
+
+95
+00:04:24.150 --> 00:04:27.120
+All right, so that's the very basics to fetch some data.
+
+96
+00:04:27.120 --> 00:04:30.610
+Let's go to our DevTools and see what we're working
+
+97
+00:04:30.610 --> 00:04:31.840
+with here.
+
+98
+00:04:31.840 --> 00:04:36.550
+Huh, access to fetch at recipepuppy api,
+
+99
+00:04:36.550 --> 00:04:39.060
+see look, it put the little thing on there,
+
+100
+00:04:39.060 --> 00:04:42.003
+from null has been blocked by a CORS policy.
+
+101
+00:04:42.860 --> 00:04:45.680
+No Access-Control-Allow-Origin header is present.
+
+102
+00:04:45.680 --> 00:04:48.510
+Ah, all kinds of blah blah blah blah blah,
+
+103
+00:04:48.510 --> 00:04:51.000
+and if you look at the network tab
+
+104
+00:04:51.000 --> 00:04:53.923
+you can click on all or you can filter for XHR.
+
+105
+00:04:53.923 --> 00:04:56.500
+And you see, there it is.
+
+106
+00:04:56.500 --> 00:05:00.740
+And response, it's not in there.
+
+107
+00:05:00.740 --> 00:05:01.920
+What happened?
+
+108
+00:05:01.920 --> 00:05:04.400
+Well, what happened is that the browser blocked it
+
+109
+00:05:04.400 --> 00:05:06.180
+because of something called CORS.
+
+110
+00:05:07.360 --> 00:05:09.550
+And what does CORS mean?
+
+111
+00:05:09.550 --> 00:05:14.550
+Well, CORS stands for cross origin resource sharing.
+
+112
+00:05:15.060 --> 00:05:18.106
+So let's break that down here.
+
+113
+00:05:18.106 --> 00:05:20.940
+CO means cross origin.
+
+114
+00:05:20.940 --> 00:05:21.880
+What are origins?
+
+115
+00:05:21.880 --> 00:05:26.700
+Well, we might have wesbos.com.
+
+116
+00:05:26.700 --> 00:05:29.570
+And we might have github.com.
+
+117
+00:05:29.570 --> 00:05:31.920
+These are both origins, right?
+
+118
+00:05:31.920 --> 00:05:33.490
+Domain names are origins.
+
+119
+00:05:33.490 --> 00:05:38.220
+And if I want to share data between the two,
+
+120
+00:05:38.220 --> 00:05:40.790
+let's get a little sweet little diagram going here.
+
+121
+00:05:40.790 --> 00:05:45.760
+By default you're not allowed to share data between origins.
+
+122
+00:05:45.760 --> 00:05:50.600
+You can share data from wesbos.com to wesbos.com/about.
+
+123
+00:05:50.600 --> 00:05:51.500
+That is allowed.
+
+124
+00:05:51.500 --> 00:05:53.220
+By default you're allowed to grab data
+
+125
+00:05:53.220 --> 00:05:55.110
+from other parts of your website.
+
+126
+00:05:55.110 --> 00:05:57.390
+But as soon as you go cross origin
+
+127
+00:05:57.390 --> 00:06:00.550
+from one domain name to another domain name,
+
+128
+00:06:00.550 --> 00:06:02.150
+then you start getting in trouble
+
+129
+00:06:02.150 --> 00:06:05.540
+because there's a bit of a security issue
+
+130
+00:06:05.540 --> 00:06:10.540
+in the browser is if I was logged into like my bank.com.
+
+131
+00:06:10.560 --> 00:06:13.830
+And I am running code on wesbos.com.
+
+132
+00:06:13.830 --> 00:06:16.100
+I shouldn't be able to run JavaScript
+
+133
+00:06:16.100 --> 00:06:19.580
+from wesbos.com and reach into bank.com.
+
+134
+00:06:19.580 --> 00:06:21.310
+That's a bit of a security issue.
+
+135
+00:06:21.310 --> 00:06:24.930
+So by default websites cannot talk to each other
+
+136
+00:06:24.930 --> 00:06:28.720
+from domain name to another domain name.
+
+137
+00:06:28.720 --> 00:06:32.030
+Now that is a pretty valid use case
+
+138
+00:06:32.030 --> 00:06:34.437
+where if I have wesbos.com
+
+139
+00:06:35.830 --> 00:06:39.810
+and I want to pull data from recipepuppy
+
+140
+00:06:39.810 --> 00:06:44.360
+or any other domain name and I wanna display the recipes
+
+141
+00:06:44.360 --> 00:06:48.110
+on wesbos.com I need to be able to talk
+
+142
+00:06:48.110 --> 00:06:51.210
+from recipepuppy to wesbos.com.
+
+143
+00:06:51.210 --> 00:06:54.800
+So what has to happen is that recipepuppy
+
+144
+00:06:54.800 --> 00:06:58.600
+has to implement something called a CORS policy.
+
+145
+00:06:58.600 --> 00:07:01.190
+And a CORS policy is something that happens
+
+146
+00:07:01.190 --> 00:07:02.670
+on the server.
+
+147
+00:07:02.670 --> 00:07:04.390
+It must happen on the server.
+
+148
+00:07:04.390 --> 00:07:07.840
+This is nothing you can do in the browser about this.
+
+149
+00:07:07.840 --> 00:07:10.440
+On the server there's a CORS policy
+
+150
+00:07:10.440 --> 00:07:14.290
+that says something like, okay, wesbos.com
+
+151
+00:07:14.290 --> 00:07:19.290
+is allowed to ask for data and we will return it.
+
+152
+00:07:19.970 --> 00:07:21.450
+That is safe.
+
+153
+00:07:21.450 --> 00:07:25.220
+So basically, recipepuppy.com has to say,
+
+154
+00:07:25.220 --> 00:07:28.390
+okay, these are the domain names
+
+155
+00:07:28.390 --> 00:07:32.400
+that are allowed to transfer data from one to another.
+
+156
+00:07:32.400 --> 00:07:35.220
+And it has to happen on the server
+
+157
+00:07:35.220 --> 00:07:37.760
+of the person that has the data.
+
+158
+00:07:37.760 --> 00:07:39.760
+So in order for us to
+
+159
+00:07:41.020 --> 00:07:42.820
+initially get involved with CORS
+
+160
+00:07:42.820 --> 00:07:46.660
+is you need an origin before you can go ahead and use it.
+
+161
+00:07:46.660 --> 00:07:49.230
+And if we take a look at the error that we have,
+
+162
+00:07:49.230 --> 00:07:53.060
+it says no Access-Control-Allow-Origin header is present
+
+163
+00:07:53.060 --> 00:07:55.310
+on the requested resource.
+
+164
+00:07:55.310 --> 00:07:58.090
+It says from the origin null.
+
+165
+00:07:58.090 --> 00:07:59.660
+And that's because we're running this
+
+166
+00:07:59.660 --> 00:08:01.430
+right off of the file access.
+
+167
+00:08:01.430 --> 00:08:04.260
+So the first thing you do when you see this issue
+
+168
+00:08:04.260 --> 00:08:05.630
+is you say okay,
+
+169
+00:08:05.630 --> 00:08:10.530
+I no longer can run this thing from the file.
+
+170
+00:08:10.530 --> 00:08:12.390
+I need to run it from a server.
+
+171
+00:08:12.390 --> 00:08:13.870
+So that's the first step that we're gonna do,
+
+172
+00:08:13.870 --> 00:08:16.450
+is we're gonna get a server up and running
+
+173
+00:08:16.450 --> 00:08:19.350
+so that we can at least see if that fixes it.
+
+174
+00:08:19.350 --> 00:08:20.690
+'cause in most cases it will.
+
+175
+00:08:20.690 --> 00:08:21.970
+So let's go into
+
+176
+00:08:23.950 --> 00:08:25.400
+our hyper-term here.
+
+177
+00:08:25.400 --> 00:08:28.190
+And let's get into this folder.
+
+178
+00:08:28.190 --> 00:08:30.590
+We're in 73-CORS in Recipes.
+
+179
+00:08:30.590 --> 00:08:32.900
+So I'm gonna go up a level.
+
+180
+00:08:32.900 --> 00:08:35.410
+I'm going to take a look at where I am.
+
+181
+00:08:35.410 --> 00:08:39.883
+I'm going to go into exercises and then into 73.
+
+182
+00:08:43.000 --> 00:08:45.910
+All right, now I need to use some sort of server.
+
+183
+00:08:45.910 --> 00:08:47.570
+This could be any server.
+
+184
+00:08:47.570 --> 00:08:49.240
+If you're familiar with browser sync,
+
+185
+00:08:49.240 --> 00:08:51.230
+that's what I use in my JavaScript 30 course,
+
+186
+00:08:51.230 --> 00:08:53.940
+you could just upload this to something like CodePen
+
+187
+00:08:53.940 --> 00:08:56.310
+if you wanted to do that as well.
+
+188
+00:08:56.310 --> 00:08:57.960
+In our case we're gonna use Parcel,
+
+189
+00:08:57.960 --> 00:08:59.440
+which is a nice little quick server.
+
+190
+00:08:59.440 --> 00:09:01.570
+So how we get Parcel up and running
+
+191
+00:09:01.570 --> 00:09:03.893
+is first we need to do npm init here.
+
+192
+00:09:05.550 --> 00:09:08.530
+And you can go ahead and just hit enter.
+
+193
+00:09:08.530 --> 00:09:09.540
+Oh, this is (voice muffled)
+
+194
+00:09:09.540 --> 00:09:11.620
+it can only contain url from the characters.
+
+195
+00:09:11.620 --> 00:09:14.333
+So we'll call this dogrecipes.
+
+196
+00:09:16.600 --> 00:09:18.800
+And then just hit enter for the rest of 'em.
+
+197
+00:09:19.660 --> 00:09:20.493
+That is fine.
+
+198
+00:09:20.493 --> 00:09:22.910
+And then we're gonna type npm install
+
+199
+00:09:22.910 --> 00:09:25.113
+parcel-bundler.
+
+200
+00:09:27.600 --> 00:09:29.180
+Once that has installed you should
+
+201
+00:09:29.180 --> 00:09:32.850
+see a package.json file in your folder.
+
+202
+00:09:32.850 --> 00:09:34.603
+There will also be a lock file.
+
+203
+00:09:35.530 --> 00:09:38.070
+And here's where we can go back and change our scripts
+
+204
+00:09:38.070 --> 00:09:39.440
+just like we did before.
+
+205
+00:09:39.440 --> 00:09:41.170
+We'll make this script called test.
+
+206
+00:09:41.170 --> 00:09:46.170
+Or sorry, we'll make, we'll make this script called start.
+
+207
+00:09:46.410 --> 00:09:51.160
+And to run it we'll simply just run parcel index.html.
+
+208
+00:09:53.120 --> 00:09:55.720
+All right, so when we now run
+
+209
+00:09:57.050 --> 00:09:58.610
+it will start it up.
+
+210
+00:09:58.610 --> 00:10:03.530
+So we can run npm run start
+
+211
+00:10:03.530 --> 00:10:05.310
+or just npm start will work.
+
+212
+00:10:05.310 --> 00:10:09.040
+It should open up localhost 1234.
+
+213
+00:10:09.040 --> 00:10:09.970
+So open this up.
+
+214
+00:10:09.970 --> 00:10:11.630
+Now we got another issue.
+
+215
+00:10:11.630 --> 00:10:13.790
+So this is issue number two.
+
+216
+00:10:13.790 --> 00:10:15.950
+regeneratorRuntime is not defined.
+
+217
+00:10:15.950 --> 00:10:18.910
+So this has nothing to do with CORS right now,
+
+218
+00:10:18.910 --> 00:10:22.740
+although, spoiler, we'll come back to CORS in just a second.
+
+219
+00:10:22.740 --> 00:10:25.000
+But regeneratorRuntime is not defined,
+
+220
+00:10:25.000 --> 00:10:25.833
+what does that mean?
+
+221
+00:10:25.833 --> 00:10:29.090
+It's likely that you might not have this issue,
+
+222
+00:10:29.090 --> 00:10:30.520
+and if you don't see this issue,
+
+223
+00:10:30.520 --> 00:10:33.200
+but you see another CORS issue then you can skip ahead
+
+224
+00:10:33.200 --> 00:10:34.470
+to that part because this will
+
+225
+00:10:34.470 --> 00:10:35.910
+hopefully be solved at some point.
+
+226
+00:10:35.910 --> 00:10:38.120
+But let me explain it to you if you do run into it
+
+227
+00:10:38.120 --> 00:10:39.810
+'cause I see this all the time.
+
+228
+00:10:39.810 --> 00:10:44.350
+So regeneratorRuntime is this thing called babel,
+
+229
+00:10:44.350 --> 00:10:46.580
+or babel, it's babel, but I say babel,
+
+230
+00:10:46.580 --> 00:10:48.220
+so whatever.
+
+231
+00:10:48.220 --> 00:10:51.744
+What babel does is, or maybe I do say babel now.
+
+232
+00:10:51.744 --> 00:10:56.060
+It takes your JavaScript with things like
+
+233
+00:10:56.060 --> 00:10:57.730
+async, await, and back ticks,
+
+234
+00:10:57.730 --> 00:11:00.890
+and these are things that are relatively new to JavaScript.
+
+235
+00:11:00.890 --> 00:11:03.160
+And sometimes you need to support browsers
+
+236
+00:11:03.160 --> 00:11:05.150
+that are old and don't know about
+
+237
+00:11:05.150 --> 00:11:07.920
+things like async functions, awaiting,
+
+238
+00:11:07.920 --> 00:11:10.210
+the fetch API or back ticks.
+
+239
+00:11:10.210 --> 00:11:15.110
+So what babel will do is it will transpile your code
+
+240
+00:11:15.110 --> 00:11:18.610
+from modern JavaScript into JavaScript
+
+241
+00:11:18.610 --> 00:11:21.630
+that is runnable on older browsers like maybe
+
+242
+00:11:21.630 --> 00:11:25.140
+an IE or an older Safari on a super old iPad
+
+243
+00:11:25.140 --> 00:11:26.450
+or something like that.
+
+244
+00:11:26.450 --> 00:11:31.450
+So, that will give you JavaScript that works the same way.
+
+245
+00:11:32.080 --> 00:11:34.640
+It's just being transpiled to the equivalent
+
+246
+00:11:34.640 --> 00:11:37.680
+in older JavaScript with callbacks and things like that.
+
+247
+00:11:37.680 --> 00:11:39.720
+Now, the weird thing about babel
+
+248
+00:11:39.720 --> 00:11:41.780
+is by default it doesn't,
+
+249
+00:11:41.780 --> 00:11:44.640
+it wants to compile async await,
+
+250
+00:11:44.640 --> 00:11:48.140
+even though in most cases you don't need to compile
+
+251
+00:11:48.140 --> 00:11:52.580
+async await because it's available in almost all browsers.
+
+252
+00:11:52.580 --> 00:11:54.510
+It has been for a few years.
+
+253
+00:11:54.510 --> 00:11:58.540
+So what we need to do is we need to tell babel
+
+254
+00:11:58.540 --> 00:12:02.270
+don't transpile async await because
+
+255
+00:12:02.270 --> 00:12:05.140
+I don't need that transpiled.
+
+256
+00:12:05.140 --> 00:12:07.320
+Because if you want to do async await
+
+257
+00:12:07.320 --> 00:12:09.420
+it makes you install plugins and it's a pain in the butt
+
+258
+00:12:09.420 --> 00:12:11.620
+and that's just something that you probably
+
+259
+00:12:11.620 --> 00:12:12.700
+won't have to deal with because
+
+260
+00:12:12.700 --> 00:12:14.670
+the tooling is getting much better.
+
+261
+00:12:14.670 --> 00:12:18.403
+The way that I get around that is I go my package.json,
+
+262
+00:12:19.750 --> 00:12:22.110
+and I will put in somewhere in here,
+
+263
+00:12:22.110 --> 00:12:24.380
+doesn't matter where, but if you do it at the very end
+
+264
+00:12:24.380 --> 00:12:26.830
+make sure you put a comma after this.
+
+265
+00:12:26.830 --> 00:12:31.010
+And you say there's a new property called browserslist.
+
+266
+00:12:31.010 --> 00:12:35.790
+So browsers with an s and browserlist is this package
+
+267
+00:12:35.790 --> 00:12:38.480
+that allows you to define which browsers
+
+268
+00:12:38.480 --> 00:12:40.840
+you are currently supporting.
+
+269
+00:12:40.840 --> 00:12:42.630
+If you take a look here you can do things
+
+270
+00:12:42.630 --> 00:12:46.010
+like greater than 1% usage, last one version,
+
+271
+00:12:46.010 --> 00:12:49.560
+maintained node, not dead, blackberry seven.
+
+272
+00:12:49.560 --> 00:12:52.550
+There's a huge list of things here,
+
+273
+00:12:52.550 --> 00:12:54.250
+and you can just write them in plain English
+
+274
+00:12:54.250 --> 00:12:55.680
+and it will convert them.
+
+275
+00:12:55.680 --> 00:12:57.960
+And that tells babel what to transpile
+
+276
+00:12:57.960 --> 00:12:59.950
+and what to just leave as is.
+
+277
+00:12:59.950 --> 00:13:02.600
+So the trick that I use here is you say browserslist.
+
+278
+00:13:02.600 --> 00:13:04.510
+It's an array, so square brackets.
+
+279
+00:13:04.510 --> 00:13:05.560
+And then in there, by the way,
+
+280
+00:13:05.560 --> 00:13:08.360
+you have to use double quotes in this because it's JSON.
+
+281
+00:13:09.590 --> 00:13:13.690
+And we just say last one chrome versions,
+
+282
+00:13:13.690 --> 00:13:14.910
+with an s on the end.
+
+283
+00:13:14.910 --> 00:13:17.320
+And what that odes is basically it tricks
+
+284
+00:13:19.230 --> 00:13:21.760
+babel into thinking that you are
+
+285
+00:13:21.760 --> 00:13:23.820
+supporting the latest and greatest,
+
+286
+00:13:23.820 --> 00:13:27.370
+and then there's no need to actually transpile it.
+
+287
+00:13:27.370 --> 00:13:29.340
+So as son as we did that you see
+
+288
+00:13:30.250 --> 00:13:32.460
+that the error is now gone.
+
+289
+00:13:32.460 --> 00:13:33.790
+There's a new error, which is fine,
+
+290
+00:13:33.790 --> 00:13:34.940
+we'll tackle that in just a second,
+
+291
+00:13:34.940 --> 00:13:36.160
+but the error is now gone.
+
+292
+00:13:36.160 --> 00:13:38.930
+One thing is if you do have issues,
+
+293
+00:13:38.930 --> 00:13:41.520
+quick trouble shooting is you can kill it,
+
+294
+00:13:41.520 --> 00:13:43.600
+and then open that up in your finder
+
+295
+00:13:43.600 --> 00:13:47.190
+and find this cache and dist folder
+
+296
+00:13:47.190 --> 00:13:49.040
+and just delete those.
+
+297
+00:13:49.040 --> 00:13:51.340
+That, sometimes settings get stuck in there,
+
+298
+00:13:51.340 --> 00:13:54.040
+and then you could just rerun npm start,
+
+299
+00:13:54.040 --> 00:13:56.683
+and that will, that will fire it up again.
+
+300
+00:13:57.770 --> 00:13:59.770
+So, problem number two, solved.
+
+301
+00:13:59.770 --> 00:14:01.600
+We just put browserslist in there.
+
+302
+00:14:01.600 --> 00:14:04.610
+You might not need to do that in the future.
+
+303
+00:14:04.610 --> 00:14:07.510
+Next, all right, we're back to the kind of the same error.
+
+304
+00:14:08.910 --> 00:14:13.910
+Access to fetch from origin localhost 1234 has been blocked
+
+305
+00:14:14.630 --> 00:14:16.420
+by a CORS policy.
+
+306
+00:14:16.420 --> 00:14:21.223
+Remember this one was null and this one is localhost 1234.
+
+307
+00:14:22.190 --> 00:14:25.140
+So sometimes this will fix our issue
+
+308
+00:14:25.140 --> 00:14:28.240
+because you can't just access it right from file.
+
+309
+00:14:28.240 --> 00:14:31.460
+That is the same issue with a lot of our webcam
+
+310
+00:14:31.460 --> 00:14:33.900
+and microphone access.
+
+311
+00:14:33.900 --> 00:14:37.120
+But in this case it look like the poor recipepuppy
+
+312
+00:14:37.120 --> 00:14:40.803
+is saying, nu-uh, not supposed to use this in the browser.
+
+313
+00:14:41.640 --> 00:14:43.160
+So if we take a look at it,
+
+314
+00:14:43.160 --> 00:14:45.180
+sometimes they'll offer solutions,
+
+315
+00:14:45.180 --> 00:14:48.744
+sometimes they'll say something like call back.
+
+316
+00:14:48.744 --> 00:14:51.120
+There's nothing on this page to suggest
+
+317
+00:14:51.120 --> 00:14:54.090
+that you should or should not use this with JavaScript.
+
+318
+00:14:54.090 --> 00:14:56.120
+So that's a bit of a bummer that they didn't tell us,
+
+319
+00:14:56.120 --> 00:14:57.860
+but you run into this all the time.
+
+320
+00:14:57.860 --> 00:15:02.150
+So, what are you to do if this CORS policy doesn't work?
+
+321
+00:15:02.150 --> 00:15:05.630
+Well, the idea with this CORS policy is that
+
+322
+00:15:06.470 --> 00:15:09.020
+you should only be using these from other things
+
+323
+00:15:09.020 --> 00:15:10.470
+that don't have CORS policies.
+
+324
+00:15:10.470 --> 00:15:11.880
+So what are you to do if they
+
+325
+00:15:11.880 --> 00:15:13.970
+don't have a CORS policy on it?
+
+326
+00:15:13.970 --> 00:15:15.530
+Because it's not like they are
+
+327
+00:15:15.530 --> 00:15:19.068
+explicitly blocking websites from accessing it,
+
+328
+00:15:19.068 --> 00:15:21.493
+it's just like it's likely that thy just haven't
+
+329
+00:15:21.493 --> 00:15:25.780
+implemented a CORS policy because I was just on the website,
+
+330
+00:15:25.780 --> 00:15:29.170
+taking a look, and it looks like they have an iPhone app.
+
+331
+00:15:29.170 --> 00:15:31.840
+And if you were using this from an iPhone
+
+332
+00:15:31.840 --> 00:15:34.610
+in like an iPhone app you're not restricted to CORS
+
+333
+00:15:34.610 --> 00:15:38.080
+because there is no multiple tabs open and things like that.
+
+334
+00:15:38.080 --> 00:15:41.440
+So the solution is that this would work
+
+335
+00:15:41.440 --> 00:15:45.890
+if you made the request from anything other than a browser.
+
+336
+00:15:45.890 --> 00:15:49.350
+If we go back to our little diagram that we have here,
+
+337
+00:15:49.350 --> 00:15:52.410
+you'll know that if we were to request this
+
+338
+00:15:52.410 --> 00:15:57.410
+from like a Node.js or php or ruby on rails
+
+339
+00:15:57.560 --> 00:16:00.120
+or if we were to request this from anything else
+
+340
+00:16:00.980 --> 00:16:03.870
+to that then it is totally allowed,
+
+341
+00:16:03.870 --> 00:16:05.323
+yes, yes, yes.
+
+342
+00:16:06.300 --> 00:16:11.300
+So the solution is that instead of going directly from,
+
+343
+00:16:11.450 --> 00:16:13.880
+let's do a new thing here,
+
+344
+00:16:13.880 --> 00:16:17.353
+instead of going from localhost to recipepuppy,
+
+345
+00:16:19.310 --> 00:16:21.890
+because that doesn't work,
+
+346
+00:16:21.890 --> 00:16:23.960
+we need to put something in between.
+
+347
+00:16:23.960 --> 00:16:25.820
+That's called a proxy.
+
+348
+00:16:25.820 --> 00:16:29.935
+And what a proxy is is that it basically,
+
+349
+00:16:29.935 --> 00:16:32.540
+localhost will send the data to the proxy,
+
+350
+00:16:32.540 --> 00:16:37.270
+and then the proxy will do server side make the request
+
+351
+00:16:37.270 --> 00:16:40.100
+to recipepuppy, and then recipepuppy will say,
+
+352
+00:16:40.100 --> 00:16:41.630
+oh, that's fine.
+
+353
+00:16:41.630 --> 00:16:43.290
+Sends the data back to the proxy,
+
+354
+00:16:43.290 --> 00:16:45.890
+and then the proxy sends it back to the localhost.
+
+355
+00:16:45.890 --> 00:16:49.630
+So you either have to build one of those yourself,
+
+356
+00:16:49.630 --> 00:16:52.420
+and that's, you would have to build like an entire server
+
+357
+00:16:52.420 --> 00:16:55.060
+that handled your request and you'd have to lock it down.
+
+358
+00:16:55.060 --> 00:16:58.840
+Or in some cases, where it's just something silly like this,
+
+359
+00:16:58.840 --> 00:17:01.640
+where there's no, there's no usernames,
+
+360
+00:17:01.640 --> 00:17:02.810
+so there's no passwords.
+
+361
+00:17:02.810 --> 00:17:05.530
+There's nothing sensitive being sent.
+
+362
+00:17:05.530 --> 00:17:08.710
+You can use what is being referred to as a CORS proxy
+
+363
+00:17:08.710 --> 00:17:11.220
+that people have provided to you
+
+364
+00:17:11.220 --> 00:17:14.460
+that you can just stick it in front of your url
+
+365
+00:17:14.460 --> 00:17:17.240
+and it will proxy the data for you.
+
+366
+00:17:17.240 --> 00:17:20.593
+So just go to your Google and type in CORS proxy.
+
+367
+00:17:22.400 --> 00:17:24.450
+And we'll take a look.
+
+368
+00:17:24.450 --> 00:17:25.560
+We'll scroll down here.
+
+369
+00:17:25.560 --> 00:17:28.210
+And the one that I found works the best
+
+370
+00:17:28.210 --> 00:17:31.260
+is this cors-anywhere.herokuapp.com.
+
+371
+00:17:31.260 --> 00:17:32.370
+If you click through to it,
+
+372
+00:17:32.370 --> 00:17:34.680
+see it's just like a text here.
+
+373
+00:17:34.680 --> 00:17:37.438
+The way that it works is you take this url,
+
+374
+00:17:37.438 --> 00:17:39.688
+cors-anywhere.herokuapp.com
+
+375
+00:17:40.603 --> 00:17:43.220
+and you paste it in front of your urls,
+
+376
+00:17:43.220 --> 00:17:46.840
+and what that will do is it will proxy that data for you.
+
+377
+00:17:46.840 --> 00:17:48.970
+So let me be absolutely clear,
+
+378
+00:17:48.970 --> 00:17:52.590
+you are sending your data through a random web server
+
+379
+00:17:52.590 --> 00:17:56.090
+that is controlled by some, who knows,
+
+380
+00:17:56.090 --> 00:17:59.030
+maybe a gargoyle or someone super scary.
+
+381
+00:17:59.030 --> 00:18:02.650
+So don't every use this for something that has
+
+382
+00:18:02.650 --> 00:18:05.950
+sensitive data like passwords or email
+
+383
+00:18:05.950 --> 00:18:07.410
+or login or anything like that.
+
+384
+00:18:07.410 --> 00:18:10.160
+If that's the case, you have to run your own proxy server.
+
+385
+00:18:10.160 --> 00:18:12.270
+You have to run your own server yourself,
+
+386
+00:18:12.270 --> 00:18:13.950
+but in the case of building these things,
+
+387
+00:18:13.950 --> 00:18:16.160
+especially when you're just trying to learn,
+
+388
+00:18:16.160 --> 00:18:17.940
+and it's getting in the way,
+
+389
+00:18:17.940 --> 00:18:19.960
+you can pop this url in front,
+
+390
+00:18:19.960 --> 00:18:21.320
+some random dude is gonna see
+
+391
+00:18:21.320 --> 00:18:23.170
+what recipes you're searching for,
+
+392
+00:18:23.170 --> 00:18:25.240
+but that's okay.
+
+393
+00:18:25.240 --> 00:18:27.510
+So this url in front of it,
+
+394
+00:18:27.510 --> 00:18:29.550
+we can even go a little bit further,
+
+395
+00:18:29.550 --> 00:18:32.023
+and put it in front, so const,
+
+396
+00:18:33.071 --> 00:18:35.210
+what did we call that?
+
+397
+00:18:35.210 --> 00:18:36.043
+Proxy
+
+398
+00:18:37.190 --> 00:18:39.100
+is equal to that.
+
+399
+00:18:39.100 --> 00:18:43.000
+And then just in front of this we will just pop the proxy
+
+400
+00:18:46.160 --> 00:18:48.363
+and now if we go to our url here,
+
+401
+00:18:49.320 --> 00:18:50.830
+no more error.
+
+402
+00:18:50.830 --> 00:18:52.603
+We should console.log the data.
+
+403
+00:18:55.028 --> 00:18:56.340
+Here we go.
+
+404
+00:18:56.340 --> 00:18:59.170
+Recipepuppy and there's our results.
+
+405
+00:18:59.170 --> 00:19:00.060
+Good, good, good.
+
+406
+00:19:00.060 --> 00:19:02.930
+So, let's,
+
+407
+00:19:02.930 --> 00:19:05.530
+now that we finally got the data working,
+
+408
+00:19:05.530 --> 00:19:10.240
+let's loop through these and show them
+
+409
+00:19:10.240 --> 00:19:13.240
+and based on what the user has searched for.
+
+410
+00:19:13.240 --> 00:19:16.000
+So this fetch recipes right here,
+
+411
+00:19:16.000 --> 00:19:17.720
+we are going to fire that.
+
+412
+00:19:17.720 --> 00:19:22.720
+Let's fire it on page load for pizza.
+
+413
+00:19:23.360 --> 00:19:28.250
+So maybe it will default this input value to pizza
+
+414
+00:19:28.250 --> 00:19:29.223
+so that matches up.
+
+415
+00:19:31.890 --> 00:19:35.020
+And then we will allow the user to type in
+
+416
+00:19:35.020 --> 00:19:38.023
+whatever they want and then we'll fetch that data.
+
+417
+00:19:41.290 --> 00:19:43.640
+So go back to our scripts here.
+
+418
+00:19:43.640 --> 00:19:47.460
+We'll make a function called a handleSubmit
+
+419
+00:19:48.920 --> 00:19:50.290
+as our event.
+
+420
+00:19:50.290 --> 00:19:51.970
+Then we'll grab our form.
+
+421
+00:19:51.970 --> 00:19:53.590
+Let's go up to the top here and select that.
+
+422
+00:19:53.590 --> 00:19:56.537
+Const form is equal to document.querySelector
+
+423
+00:19:57.940 --> 00:20:00.870
+form. what is on it?
+
+424
+00:20:00.870 --> 00:20:01.703
+Search.
+
+425
+00:20:04.650 --> 00:20:08.220
+And I'll say form.addEventListener.
+
+426
+00:20:08.220 --> 00:20:09.607
+We'll listen for the submit event.
+
+427
+00:20:09.607 --> 00:20:13.293
+And when that happens we will run the handleSubmit function.
+
+428
+00:20:15.090 --> 00:20:20.090
+We'll take our event and call .preventDefault on that.
+
+429
+00:20:20.870 --> 00:20:24.590
+And console.log event.currentTarget.
+
+430
+00:20:27.110 --> 00:20:28.730
+Event.target would do the same thing in this case
+
+431
+00:20:28.730 --> 00:20:31.883
+since the submit event doesn't bubble.
+
+432
+00:20:33.210 --> 00:20:34.510
+Beautiful.
+
+433
+00:20:34.510 --> 00:20:37.823
+Okay, and then if we say event.currentTarget.query,
+
+434
+00:20:40.700 --> 00:20:41.533
+is that it?
+
+435
+00:20:42.520 --> 00:20:44.031
+There we go.
+
+436
+00:20:44.031 --> 00:20:45.183
+.value.
+
+437
+00:20:48.370 --> 00:20:49.703
+Pizza, okay good.
+
+438
+00:20:50.730 --> 00:20:52.510
+Now, first thing we wanna do
+
+439
+00:20:52.510 --> 00:20:56.016
+is do some sort of loading screen because
+
+440
+00:20:56.016 --> 00:20:57.900
+we don't want the user searching
+
+441
+00:20:57.900 --> 00:21:00.220
+for many things over and over again,
+
+442
+00:21:00.220 --> 00:21:03.230
+so what we wanna do is we wanna be able to lock down
+
+443
+00:21:03.230 --> 00:21:04.540
+the ability to do this.
+
+444
+00:21:04.540 --> 00:21:06.810
+So there's a couple ways you could do that.
+
+445
+00:21:06.810 --> 00:21:09.130
+And probably the easiest is if you go
+
+446
+00:21:09.130 --> 00:21:12.173
+onto your input button and just type disabled.
+
+447
+00:21:14.880 --> 00:21:18.220
+That will stop the user from actually clicking it.
+
+448
+00:21:18.220 --> 00:21:20.060
+There's no visual difference there, actually.
+
+449
+00:21:20.060 --> 00:21:21.693
+So maybe we should add that.
+
+450
+00:21:22.860 --> 00:21:26.253
+So we'll say button that has a disabled attribute.
+
+451
+00:21:27.140 --> 00:21:29.040
+Say opacity 0.2.
+
+452
+00:21:38.955 --> 00:21:39.788
+There we go.
+
+453
+00:21:39.788 --> 00:21:40.621
+It's clearly disabled.
+
+454
+00:21:40.621 --> 00:21:44.270
+Another trick you can do is you can take a fieldset
+
+455
+00:21:46.120 --> 00:21:48.710
+and wrap all of your inputs in that fieldset
+
+456
+00:21:48.710 --> 00:21:52.793
+and you can put a disabled attribute on the fieldset itself,
+
+457
+00:21:53.890 --> 00:21:56.080
+and that will stop somebody from being able
+
+458
+00:21:56.080 --> 00:22:00.790
+to type in the box or click on the buttons as well,
+
+459
+00:22:00.790 --> 00:22:03.433
+which may be what you want to do.
+
+460
+00:22:06.740 --> 00:22:09.060
+Either one is totally fine.
+
+461
+00:22:09.060 --> 00:22:12.740
+Just make sure your user isn't firing off many requests
+
+462
+00:22:12.740 --> 00:22:14.993
+at one given time.
+
+463
+00:22:15.890 --> 00:22:17.483
+So go back to our scripts here.
+
+464
+00:22:18.580 --> 00:22:20.840
+And we'll find the button.
+
+465
+00:22:20.840 --> 00:22:22.180
+We need to select that button,
+
+466
+00:22:22.180 --> 00:22:24.413
+so we'll give that button a name of submit.
+
+467
+00:22:26.930 --> 00:22:30.830
+And we'll say const to form
+
+468
+00:22:34.190 --> 00:22:36.627
+const form is equal to, we'll just grab this.
+
+469
+00:22:38.520 --> 00:22:39.793
+Change that to form.
+
+470
+00:22:40.880 --> 00:22:44.260
+Say form.submit.disabled
+
+471
+00:22:45.210 --> 00:22:46.900
+is equal to true.
+
+472
+00:22:46.900 --> 00:22:50.283
+So turn, turn the form off.
+
+473
+00:22:52.880 --> 00:22:56.203
+Then we want to submit the search.
+
+474
+00:23:01.810 --> 00:23:05.900
+And in our case we will run fetchRecipes,
+
+475
+00:23:05.900 --> 00:23:09.603
+and we'll pass it the value of that box.
+
+476
+00:23:10.900 --> 00:23:13.574
+And then we need to go modify this fetchRecipes
+
+477
+00:23:13.574 --> 00:23:16.340
+of here and instead of just console logging it
+
+478
+00:23:16.340 --> 00:23:18.853
+we wanna return the data.
+
+479
+00:23:20.360 --> 00:23:24.500
+And here what we can do is we can say const recipes
+
+480
+00:23:25.816 --> 00:23:28.705
+is equal to await fetchRecipes.
+
+481
+00:23:28.705 --> 00:23:32.010
+And then we know that we have to mark this as async.
+
+482
+00:23:32.010 --> 00:23:34.580
+And what this will do is it will now fetchRecipes
+
+483
+00:23:35.660 --> 00:23:36.860
+is its own function.
+
+484
+00:23:36.860 --> 00:23:39.340
+We don't have to care about fetch or anything like that.
+
+485
+00:23:39.340 --> 00:23:40.620
+We just know that this function
+
+486
+00:23:40.620 --> 00:23:43.940
+will return to us some recipes when it's done.
+
+487
+00:23:43.940 --> 00:23:46.030
+And we should be able to console.log
+
+488
+00:23:49.960 --> 00:23:51.103
+the recipes,
+
+489
+00:23:53.520 --> 00:23:55.860
+and let's move this console.log up here
+
+490
+00:23:55.860 --> 00:23:57.860
+so we know that it's actually searching.
+
+491
+00:24:00.360 --> 00:24:02.360
+It's giving me a red.
+
+492
+00:24:02.360 --> 00:24:05.070
+Form is already declared in the upper scope.
+
+493
+00:24:05.070 --> 00:24:07.163
+Oh yeah, you're right.
+
+494
+00:24:08.026 --> 00:24:10.463
+So we shouldn't call that form.
+
+495
+00:24:11.520 --> 00:24:12.853
+We'll call that el.
+
+496
+00:24:14.660 --> 00:24:15.493
+El,
+
+497
+00:24:17.266 --> 00:24:18.099
+and el,
+
+498
+00:24:18.099 --> 00:24:18.932
+as for element.
+
+499
+00:24:19.900 --> 00:24:21.840
+All right, so now when I submit it,
+
+500
+00:24:21.840 --> 00:24:24.630
+it should disable this.
+
+501
+00:24:24.630 --> 00:24:26.150
+Oh we should enable it again,
+
+502
+00:24:26.150 --> 00:24:27.350
+so turn it back on.
+
+503
+00:24:27.350 --> 00:24:29.193
+So turn that to false.
+
+504
+00:24:30.810 --> 00:24:32.593
+So if I search for chicken,
+
+505
+00:24:34.610 --> 00:24:36.500
+disables itself for a quick sec,
+
+506
+00:24:36.500 --> 00:24:38.840
+comes back with some recipes,
+
+507
+00:24:38.840 --> 00:24:40.620
+and then re-enables itself.
+
+508
+00:24:40.620 --> 00:24:42.090
+Okay, good.
+
+509
+00:24:42.090 --> 00:24:46.100
+Now we can make another function called displayRecipes
+
+510
+00:24:49.750 --> 00:24:52.253
+that takes in an array of recipes.
+
+511
+00:24:54.380 --> 00:24:56.700
+And let's just console.log
+
+512
+00:24:56.700 --> 00:24:58.633
+Creating HTML.
+
+513
+00:25:00.540 --> 00:25:01.900
+And here we'll call it.
+
+514
+00:25:01.900 --> 00:25:03.470
+So we'll call displayRecipes.
+
+515
+00:25:03.470 --> 00:25:04.920
+We'll pass it the recipes.
+
+516
+00:25:04.920 --> 00:25:09.920
+Now, the data, how do I pass it just the recipes, right?
+
+517
+00:25:10.527 --> 00:25:13.483
+'Cause we called this variable recipes.
+
+518
+00:25:15.830 --> 00:25:18.233
+But if I were to console.log the recipes,
+
+519
+00:25:21.550 --> 00:25:24.010
+you'll see that it's actually
+
+520
+00:25:25.580 --> 00:25:29.420
+the results what is what we want, right?
+
+521
+00:25:29.420 --> 00:25:32.963
+So we wanna pass the recipes.results,
+
+522
+00:25:34.610 --> 00:25:36.740
+we don't care about the title,
+
+523
+00:25:36.740 --> 00:25:39.020
+the version, the href, or anything else.
+
+524
+00:25:39.020 --> 00:25:40.900
+We just care about the results.
+
+525
+00:25:40.900 --> 00:25:43.010
+So we run this displayRecipes.
+
+526
+00:25:43.010 --> 00:25:43.910
+It's yelling at me because
+
+527
+00:25:43.910 --> 00:25:45.810
+this function is defined after it.
+
+528
+00:25:45.810 --> 00:25:47.140
+That's fine.
+
+529
+00:25:47.140 --> 00:25:49.690
+You can move it above if you're worried about that.
+
+530
+00:25:51.200 --> 00:25:52.150
+Now we're in here.
+
+531
+00:25:52.150 --> 00:25:54.050
+We can console.log them one more time.
+
+532
+00:25:58.610 --> 00:26:00.300
+Let's see, we've got everything here.
+
+533
+00:26:00.300 --> 00:26:01.250
+Those are all of 'em.
+
+534
+00:26:01.250 --> 00:26:03.080
+Now we can loop over each one.
+
+535
+00:26:03.080 --> 00:26:06.140
+So, say, const
+
+536
+00:26:07.270 --> 00:26:12.270
+html is equal to recipes.map,
+
+537
+00:26:12.570 --> 00:26:13.903
+and we've got a recipe.
+
+538
+00:26:18.010 --> 00:26:22.593
+And then for each one we will return a div.
+
+539
+00:26:24.970 --> 00:26:29.240
+And in each of those divs we'll have h2
+
+540
+00:26:29.240 --> 00:26:32.610
+that has the recipe.title in it.
+
+541
+00:26:32.610 --> 00:26:34.620
+So wrap that in curly brackets,
+
+542
+00:26:34.620 --> 00:26:39.420
+put a dollar sign, then we also need a paragraph
+
+543
+00:26:40.690 --> 00:26:42.560
+that explains it.
+
+544
+00:26:42.560 --> 00:26:44.983
+Oh I deleted my console.log.
+
+545
+00:26:47.000 --> 00:26:47.833
+Oh there we go.
+
+546
+00:26:47.833 --> 00:26:48.666
+I can see it here.
+
+547
+00:26:48.666 --> 00:26:49.499
+Results.
+
+548
+00:26:49.499 --> 00:26:50.600
+What else is in here?
+
+549
+00:26:50.600 --> 00:26:52.380
+Ingredients.
+
+550
+00:26:52.380 --> 00:26:54.580
+Okay, so we'll put the ingredients in there.
+
+551
+00:27:01.150 --> 00:27:03.183
+And then some of them have a thumbnail.
+
+552
+00:27:07.320 --> 00:27:09.160
+That one has a thumbnail.
+
+553
+00:27:09.160 --> 00:27:11.910
+So we need to have a little conditional in here.
+
+554
+00:27:11.910 --> 00:27:15.040
+So we'll say, if there is a recipe thumbnail
+
+555
+00:27:19.810 --> 00:27:22.450
+we can either do the question mark like that
+
+556
+00:27:22.450 --> 00:27:24.530
+or we can use the and and hack.
+
+557
+00:27:24.530 --> 00:27:28.710
+If that is true, then return an image tag
+
+558
+00:27:28.710 --> 00:27:33.337
+where the source is equal to recipe.thumbnail,
+
+559
+00:27:35.550 --> 00:27:38.620
+and the alt is gonna be equal to,
+
+560
+00:27:38.620 --> 00:27:40.393
+we'll put that to the recipe title.
+
+561
+00:27:42.690 --> 00:27:44.010
+So this is a little bit confusing,
+
+562
+00:27:44.010 --> 00:27:48.610
+but you can nest template tags inside of template tags
+
+563
+00:27:48.610 --> 00:27:49.920
+infinitely long.
+
+564
+00:27:49.920 --> 00:27:53.217
+So what we did here is we have one template tag,
+
+565
+00:27:53.217 --> 00:27:57.221
+and inside of that template tag you can run JavaScript logic
+
+566
+00:27:57.221 --> 00:28:00.820
+and also return another template tag,
+
+567
+00:28:00.820 --> 00:28:04.670
+which in turn will have template tags inside of them.
+
+568
+00:28:04.670 --> 00:28:07.000
+So kind of interesting there.
+
+569
+00:28:07.000 --> 00:28:08.680
+It's pretty handy.
+
+570
+00:28:08.680 --> 00:28:12.083
+We should be able to console.log this html now.
+
+571
+00:28:16.570 --> 00:28:17.697
+Go ahead and submit that.
+
+572
+00:28:17.697 --> 00:28:21.940
+You see for each thing that comes back you get a div,
+
+573
+00:28:21.940 --> 00:28:25.653
+barbecue chicken, pizza, ranch dressing, salt.
+
+574
+00:28:26.600 --> 00:28:27.433
+Looks good.
+
+575
+00:28:27.433 --> 00:28:28.963
+Maybe we'll put a class on here.
+
+576
+00:28:34.170 --> 00:28:38.040
+And then let's go to our index.html
+
+577
+00:28:39.680 --> 00:28:43.493
+and let's make a recipes div.
+
+578
+00:28:44.720 --> 00:28:48.320
+And in that we'll put a grid of recipes.
+
+579
+00:28:48.320 --> 00:28:51.070
+So we'll go up back to our JavaScript,
+
+580
+00:28:51.070 --> 00:28:52.270
+go to the top.
+
+581
+00:28:52.270 --> 00:28:53.853
+We'll say recipes.
+
+582
+00:28:54.780 --> 00:28:57.853
+Element or maybe recipesGrid.
+
+583
+00:28:57.853 --> 00:29:00.103
+SQL querySelector .recipes.
+
+584
+00:29:03.804 --> 00:29:07.967
+And we'll go here and we'll say recipesGrid.innerHTML
+
+585
+00:29:07.967 --> 00:29:12.220
+is equal to html and we're gonna join it on nothing,
+
+586
+00:29:12.220 --> 00:29:14.370
+as if we didn't join it that would put a comma
+
+587
+00:29:14.370 --> 00:29:16.510
+between each of the elements.
+
+588
+00:29:16.510 --> 00:29:18.493
+So now if I search, boom.
+
+589
+00:29:21.340 --> 00:29:26.340
+Looks like what happened is each one we created a div,
+
+590
+00:29:29.410 --> 00:29:30.860
+which had a class of recipe.
+
+591
+00:29:30.860 --> 00:29:34.780
+We got h2 paragraph and then some of them have images.
+
+592
+00:29:34.780 --> 00:29:36.250
+There was a little thing here.
+
+593
+00:29:36.250 --> 00:29:39.120
+A cookie associated with a cross-site blah blah blah
+
+594
+00:29:39.120 --> 00:29:42.820
+as Chrome now only delivers cookies for cross-site requests
+
+595
+00:29:42.820 --> 00:29:45.890
+if they are set with SameSite=None and Secure.
+
+596
+00:29:45.890 --> 00:29:48.390
+You can review, that's totally fine.
+
+597
+00:29:48.390 --> 00:29:49.240
+Don't worry about that.
+
+598
+00:29:49.240 --> 00:29:52.630
+That's just for developers to know about things.
+
+599
+00:29:52.630 --> 00:29:54.150
+This is because people are reusing them
+
+600
+00:29:54.150 --> 00:29:55.730
+to do cross-site tracking
+
+601
+00:29:55.730 --> 00:29:58.380
+and that's how email open pixels work and stuff.
+
+602
+00:29:58.380 --> 00:30:00.350
+So ignore that.
+
+603
+00:30:00.350 --> 00:30:02.130
+Totally fine.
+
+604
+00:30:02.130 --> 00:30:04.510
+Looks like these are working well.
+
+605
+00:30:04.510 --> 00:30:05.850
+One thing we could do is just
+
+606
+00:30:05.850 --> 00:30:08.180
+write a little bit of CSS here.
+
+607
+00:30:08.180 --> 00:30:09.563
+So .recipes.
+
+608
+00:30:10.630 --> 00:30:12.613
+display grid,
+
+609
+00:30:12.613 --> 00:30:15.710
+grid-template columns
+
+610
+00:30:15.710 --> 00:30:20.450
+repeat auto-fit, fill maybe?
+
+611
+00:30:20.450 --> 00:30:25.193
+Min, max, minimum 200px, max 1fr.
+
+612
+00:30:30.811 --> 00:30:31.644
+Looking good.
+
+613
+00:30:33.330 --> 00:30:35.493
+We will say each recipe.
+
+614
+00:30:37.420 --> 00:30:39.010
+We'll put a gap on here,
+
+615
+00:30:39.010 --> 00:30:41.343
+so grid, gap, 20px.
+
+616
+00:30:43.130 --> 00:30:46.850
+Each recipe maybe has a border, 1px
+
+617
+00:30:48.670 --> 00:30:49.990
+solid rgba.
+
+618
+00:30:58.570 --> 00:30:59.450
+Lookin' good.
+
+619
+00:30:59.450 --> 00:31:00.850
+Put a little bit of padding,
+
+620
+00:31:02.640 --> 00:31:03.713
+20px on that.
+
+621
+00:31:12.320 --> 00:31:13.153
+Beautiful.
+
+622
+00:31:13.153 --> 00:31:16.430
+Oh last thing we forgot to do is the actually linking to it.
+
+623
+00:31:16.430 --> 00:31:19.763
+So if we take a look at the recipes that come back,
+
+624
+00:31:21.460 --> 00:31:25.930
+they all have a href on it.
+
+625
+00:31:25.930 --> 00:31:30.170
+So go back here and you can make a button,
+
+626
+00:31:30.170 --> 00:31:31.430
+or not a button, a link.
+
+627
+00:31:31.430 --> 00:31:33.523
+In this case it is a link, so a.
+
+628
+00:31:34.930 --> 00:31:37.080
+Href is equal to recipe.href.
+
+629
+00:31:38.977 --> 00:31:40.703
+And then we just say view Recipe.
+
+630
+00:31:50.780 --> 00:31:51.613
+Beautiful.
+
+631
+00:31:55.320 --> 00:31:56.960
+I like it.
+
+632
+00:31:56.960 --> 00:31:58.810
+Obviously you could add a little bit more CSS
+
+633
+00:31:58.810 --> 00:31:59.840
+to make that look better.
+
+634
+00:31:59.840 --> 00:32:02.350
+But I think that works well for us.
+
+635
+00:32:02.350 --> 00:32:06.320
+The only other thing is it's not loading on page load.
+
+636
+00:32:06.320 --> 00:32:08.573
+So why is that?
+
+637
+00:32:10.040 --> 00:32:12.040
+Because right now
+
+638
+00:32:14.130 --> 00:32:16.180
+oh, on page load we're just fetching them
+
+639
+00:32:16.180 --> 00:32:17.960
+and returning the data.
+
+640
+00:32:17.960 --> 00:32:22.960
+And in our case we want to basically run this right here.
+
+641
+00:32:23.940 --> 00:32:28.280
+So maybe this logic is too heavily tied to the submit event
+
+642
+00:32:28.280 --> 00:32:30.900
+because right now I can't just run that on page load
+
+643
+00:32:30.900 --> 00:32:32.870
+unless I were to fake a submit event.
+
+644
+00:32:32.870 --> 00:32:36.083
+So what we could do here is we'll make another function.
+
+645
+00:32:37.680 --> 00:32:39.960
+Make it async function.
+
+646
+00:32:39.960 --> 00:32:41.623
+We'll call it fetchAndDisplay
+
+647
+00:32:44.770 --> 00:32:47.283
+based on the search term.
+
+648
+00:32:48.770 --> 00:32:50.120
+What did we call that up here?
+
+649
+00:32:50.120 --> 00:32:52.180
+We'll call it query, keep it the same.
+
+650
+00:32:52.180 --> 00:32:55.290
+And I'm gonna take everything from here
+
+651
+00:32:56.622 --> 00:32:57.672
+and paste it in here.
+
+652
+00:33:01.887 --> 00:33:03.130
+And then in our handleSubmit we're just
+
+653
+00:33:03.130 --> 00:33:04.580
+going to run fetchAndDisplay.
+
+654
+00:33:05.630 --> 00:33:08.923
+And we'll pass it a form.query.value.
+
+655
+00:33:10.050 --> 00:33:11.760
+And then back in our fetchAndDisplay
+
+656
+00:33:11.760 --> 00:33:14.830
+we'll just switch this out with the query.
+
+657
+00:33:14.830 --> 00:33:16.580
+It gets passed in.
+
+658
+00:33:16.580 --> 00:33:18.210
+The last thing is that now that
+
+659
+00:33:18.210 --> 00:33:19.910
+we move this to another function
+
+660
+00:33:19.910 --> 00:33:23.970
+we no longer have access to our el here.
+
+661
+00:33:23.970 --> 00:33:27.760
+And that would then need to be either globally scoped
+
+662
+00:33:27.760 --> 00:33:30.680
+because there's only one element,
+
+663
+00:33:30.680 --> 00:33:31.770
+or passed along.
+
+664
+00:33:31.770 --> 00:33:35.770
+In our case we actually did globally scope the form here.
+
+665
+00:33:35.770 --> 00:33:37.570
+So we can change this
+
+666
+00:33:39.290 --> 00:33:40.123
+form
+
+667
+00:33:40.980 --> 00:33:41.813
+there.
+
+668
+00:33:45.410 --> 00:33:47.640
+Now on page load it's still not running.
+
+669
+00:33:47.640 --> 00:33:50.230
+That's because we haven't run fetchAndDisplay
+
+670
+00:33:50.230 --> 00:33:51.063
+on page load.
+
+671
+00:33:51.063 --> 00:33:53.090
+So we change that out.
+
+672
+00:33:53.090 --> 00:33:57.863
+Say on page load run it with pizza.
+
+673
+00:34:00.233 --> 00:34:01.880
+There we go, now it's running on page load.
+
+674
+00:34:01.880 --> 00:34:04.433
+I should be able to type in burgers.
+
+675
+00:34:05.640 --> 00:34:07.220
+And it's working.
+
+676
+00:34:07.220 --> 00:34:08.580
+Good, good, good.
+
+677
+00:34:08.580 --> 00:34:10.350
+So that's the very basics.
+
+678
+00:34:10.350 --> 00:34:13.090
+What would be cool is if you could then
+
+679
+00:34:13.090 --> 00:34:17.900
+take it a little bit further and use this ingredients.
+
+680
+00:34:17.900 --> 00:34:22.900
+So people could even very basic just have an input box
+
+681
+00:34:23.020 --> 00:34:25.770
+where people could put comma delimited ingredients
+
+682
+00:34:25.770 --> 00:34:28.150
+and it would pass that along for the ride.
+
+683
+00:34:28.150 --> 00:34:31.740
+At a hard level I would say maybe make a list of ingredients
+
+684
+00:34:31.740 --> 00:34:34.900
+that are check boxes and have users check and uncheck
+
+685
+00:34:34.900 --> 00:34:37.550
+the ones that they're interested in passing along.
+
+686
+00:34:37.550 --> 00:34:39.350
+That would be pretty fun to do.
+
+687
+00:34:39.350 --> 00:34:41.784
+So that's the first example here.
+
+688
+00:34:41.784 --> 00:34:46.323
+Let's jump into a more ajax examples.
+
