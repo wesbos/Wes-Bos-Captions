@@ -16,6 +16,8 @@ This is a Github Repo containing all the captions for my video courses. Edits ar
 
 `ARG` → [Advanced React](https://AdvancedReact.com)
 
+`BJS` → [Beginner JavaScript](https://BeginnerJavaScript.com)
+
 
 ## Translations
 Translations are welcome - just append the language code to the file name. Example:
