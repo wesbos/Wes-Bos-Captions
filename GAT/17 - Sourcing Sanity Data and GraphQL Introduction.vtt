@@ -1,0 +1,1626 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.583
+(smooth music)
+
+2
+00:00:04.860 --> 00:00:07.900
+<v Instructor>So Gatsby plugins are exactly that.</v>
+
+3
+00:00:07.900 --> 00:00:11.410
+They're plugins that make working with other packages,
+
+4
+00:00:11.410 --> 00:00:13.410
+other libraries,
+
+5
+00:00:13.410 --> 00:00:18.250
+other services easy and integrated right into into Gatsby.
+
+6
+00:00:18.250 --> 00:00:21.340
+And the way that we specify which plugins we want
+
+7
+00:00:21.340 --> 00:00:25.020
+our VA plugins array that live inside of your config.
+
+8
+00:00:25.020 --> 00:00:27.000
+So right below we have site metadata.
+
+9
+00:00:27.000 --> 00:00:29.320
+Let's use a plugins array.
+
+10
+00:00:29.320 --> 00:00:30.560
+So that's that.
+
+11
+00:00:30.560 --> 00:00:33.150
+And there's two different ways that you can specify
+
+12
+00:00:33.150 --> 00:00:34.360
+a plugin in Gatsby,
+
+13
+00:00:34.360 --> 00:00:36.917
+you can just specify the name of the plugin,
+
+14
+00:00:36.917 --> 00:00:40.920
+and except all of the default options that we have.
+
+15
+00:00:40.920 --> 00:00:44.370
+So we're actually gonna be using a styled component plugin
+
+16
+00:00:44.370 --> 00:00:48.940
+that surfaces the CSS to Gatsby.
+
+17
+00:00:48.940 --> 00:00:51.560
+And that way, Gatsby's able to figure out what the critical
+
+18
+00:00:51.560 --> 00:00:53.890
+CSS is and do everything it needs to do.
+
+19
+00:00:53.890 --> 00:00:56.010
+So let's actually install that right now.
+
+20
+00:00:56.010 --> 00:00:59.320
+So quotes, and then you just give it the name
+
+21
+00:00:59.320 --> 00:01:01.230
+of the plugin that you want.
+
+22
+00:01:01.230 --> 00:01:04.510
+So they usually start with gatsby-plugin
+
+23
+00:01:04.510 --> 00:01:06.160
+and then the name of it in our case
+
+24
+00:01:06.160 --> 00:01:10.490
+its gonna be styled-components and then a comma.
+
+25
+00:01:10.490 --> 00:01:11.323
+So that's one way.
+
+26
+00:01:11.323 --> 00:01:14.540
+And the other way to specify a plugin
+
+27
+00:01:14.540 --> 00:01:19.030
+is if there are settings that need to be set on that plugin,
+
+28
+00:01:19.030 --> 00:01:21.240
+you pass an object.
+
+29
+00:01:21.240 --> 00:01:24.850
+And then you have a resolve property on that object.
+
+30
+00:01:24.850 --> 00:01:27.030
+That is the name of the plugin that you're adding.
+
+31
+00:01:27.030 --> 00:01:32.030
+So let's, let's say this is the name of the plugin
+
+32
+00:01:32.820 --> 00:01:34.330
+you are adding.
+
+33
+00:01:34.330 --> 00:01:38.530
+So we're going to say gatsby-source-sanity.
+
+34
+00:01:38.530 --> 00:01:42.690
+So a lot of the plugins that are for sourcing data,
+
+35
+00:01:42.690 --> 00:01:46.600
+they are gatsby-source-whatever the service is.
+
+36
+00:01:46.600 --> 00:01:49.710
+And if we take a look at our package JSON,
+
+37
+00:01:49.710 --> 00:01:52.050
+you'll see like where are these coming from?
+
+38
+00:01:52.050 --> 00:01:54.760
+Well, I have already installed them for you.
+
+39
+00:01:54.760 --> 00:01:57.750
+So if you find a plugin that you wanna add to your site,
+
+40
+00:01:57.750 --> 00:02:00.300
+you would simply just npm install
+
+41
+00:02:00.300 --> 00:02:03.560
+gatsby-plugin-style-components or Gatsby-source-sanity
+
+42
+00:02:03.560 --> 00:02:06.763
+or whatever the different plugin is that you want.
+
+43
+00:02:07.700 --> 00:02:09.190
+So that's resolving there.
+
+44
+00:02:09.190 --> 00:02:11.090
+And then we have an options
+
+45
+00:02:12.480 --> 00:02:14.340
+object inside of that,
+
+46
+00:02:14.340 --> 00:02:16.990
+where we pass a couple different options services.
+
+47
+00:02:16.990 --> 00:02:20.690
+ProjectId, capital I on that D there.
+
+48
+00:02:20.690 --> 00:02:24.330
+And now we're gonna need the projectId, insanity.
+
+49
+00:02:24.330 --> 00:02:29.010
+So go to manage.sanity.io and find the project
+
+50
+00:02:29.010 --> 00:02:29.930
+that you're working with.
+
+51
+00:02:29.930 --> 00:02:32.190
+So we're gonna click on this one right here.
+
+52
+00:02:32.190 --> 00:02:34.330
+And we find the project ID right here.
+
+53
+00:02:34.330 --> 00:02:35.640
+So just copy that.
+
+54
+00:02:35.640 --> 00:02:37.603
+Don't use mine use yours.
+
+55
+00:02:38.770 --> 00:02:42.160
+The next thing is the data set that we want to work with.
+
+56
+00:02:42.160 --> 00:02:45.230
+So let's take a look at our data sets here.
+
+57
+00:02:45.230 --> 00:02:48.490
+We only have one which is production.
+
+58
+00:02:48.490 --> 00:02:50.360
+But if you had additional data sets,
+
+59
+00:02:50.360 --> 00:02:51.620
+you could totally do that.
+
+60
+00:02:51.620 --> 00:02:53.373
+So we'll say production.
+
+61
+00:02:56.360 --> 00:02:59.860
+Next thing is we want to have the watch mode of true
+
+62
+00:02:59.860 --> 00:03:02.410
+and what this will do is it's super cool
+
+63
+00:03:02.410 --> 00:03:04.708
+is that when you're in development,
+
+64
+00:03:04.708 --> 00:03:07.580
+and you make a change to your sanity CMS
+
+65
+00:03:07.580 --> 00:03:10.260
+and you as you type it and as you hit save,
+
+66
+00:03:10.260 --> 00:03:13.360
+it will automatically be updated inside of your Gatsby,
+
+67
+00:03:13.360 --> 00:03:16.230
+you don't need to rebuild the entire thing.
+
+68
+00:03:16.230 --> 00:03:19.130
+So you get this sort of like real time editing experience
+
+69
+00:03:19.130 --> 00:03:20.570
+when you're in development mode,
+
+70
+00:03:20.570 --> 00:03:21.610
+which is really cool.
+
+71
+00:03:21.610 --> 00:03:23.660
+So definitely turn that one on.
+
+72
+00:03:23.660 --> 00:03:25.120
+And then finally,
+
+73
+00:03:25.120 --> 00:03:29.150
+what we want is our token for sanity.
+
+74
+00:03:29.150 --> 00:03:30.680
+And how do you get your token?
+
+75
+00:03:30.680 --> 00:03:34.520
+Well we go to, I believe it is settings
+
+76
+00:03:34.520 --> 00:03:38.163
+and API.
+
+77
+00:03:40.100 --> 00:03:44.793
+And then we go ahead and add a new token here.
+
+78
+00:03:46.450 --> 00:03:49.120
+And you want a token,
+
+79
+00:03:49.120 --> 00:03:53.150
+just that can read because we're not gonna be writing data
+
+80
+00:03:53.150 --> 00:03:54.750
+to our sanity.
+
+81
+00:03:54.750 --> 00:03:56.680
+That's what our sanity used to do it for.
+
+82
+00:03:56.680 --> 00:03:58.270
+And we're also not gonna be deploying
+
+83
+00:03:58.270 --> 00:03:59.520
+the sanity studio either.
+
+84
+00:03:59.520 --> 00:04:01.130
+So we just want a read one,
+
+85
+00:04:01.130 --> 00:04:02.150
+we'll give it a label,
+
+86
+00:04:02.150 --> 00:04:07.150
+lets say Gatsby Slick's Slices.
+
+87
+00:04:08.780 --> 00:04:11.620
+And we're gonna go ahead and add the new token.
+
+88
+00:04:11.620 --> 00:04:13.960
+And you only get this token once.
+
+89
+00:04:13.960 --> 00:04:17.100
+Now I'm gonna be copying it.
+
+90
+00:04:17.100 --> 00:04:18.910
+And we'll go over here.
+
+91
+00:04:18.910 --> 00:04:20.540
+And actually, you know what,
+
+92
+00:04:20.540 --> 00:04:23.240
+I'm gonna put it in a new tab just right here just for now.
+
+93
+00:04:23.240 --> 00:04:25.360
+Okay, then we're done with that,
+
+94
+00:04:25.360 --> 00:04:27.040
+we'll go ahead and click X.
+
+95
+00:04:27.040 --> 00:04:31.050
+Another thing you'll want to do is you have to add
+
+96
+00:04:31.050 --> 00:04:32.823
+a course origin.
+
+97
+00:04:33.740 --> 00:04:36.690
+That if you're accessing it straight from the browser.
+
+98
+00:04:36.690 --> 00:04:39.370
+Now, we don't need that for localhost 8000,
+
+99
+00:04:39.370 --> 00:04:43.647
+because the browser will not be talking directly to sanity,
+
+100
+00:04:44.860 --> 00:04:46.810
+it's actually gonna be happening at build time
+
+101
+00:04:46.810 --> 00:04:47.810
+on the node server.
+
+102
+00:04:47.810 --> 00:04:50.330
+And if that's the case CORS does not apply.
+
+103
+00:04:50.330 --> 00:04:53.110
+CORS stands for cross origin resource sharing,
+
+104
+00:04:53.110 --> 00:04:55.590
+meaning cross domain.
+
+105
+00:04:55.590 --> 00:04:56.860
+In our case, we're not doing that yet.
+
+106
+00:04:56.860 --> 00:04:58.880
+We will be actually doing it this,
+
+107
+00:04:58.880 --> 00:05:00.670
+let me show you this home page right here,
+
+108
+00:05:00.670 --> 00:05:02.030
+see how these are loading
+
+109
+00:05:02.030 --> 00:05:05.240
+and they're not they're immediately on page load?
+
+110
+00:05:05.240 --> 00:05:08.140
+Because these are gonna be live pulled from sanity
+
+111
+00:05:08.140 --> 00:05:09.260
+and not done at build time.
+
+112
+00:05:09.260 --> 00:05:10.730
+So I will show you how to do that.
+
+113
+00:05:10.730 --> 00:05:12.883
+But for now, we'll leave it at that.
+
+114
+00:05:15.110 --> 00:05:17.510
+And now let's talk about the the token here.
+
+115
+00:05:17.510 --> 00:05:22.510
+So you don't want to put sensitive information
+
+116
+00:05:23.030 --> 00:05:24.517
+in your Gatsby config.
+
+117
+00:05:25.520 --> 00:05:29.890
+Even though this Gatsby config is not going to be surfaced,
+
+118
+00:05:29.890 --> 00:05:31.460
+via your website,
+
+119
+00:05:31.460 --> 00:05:34.450
+this file does go in your version control,
+
+120
+00:05:34.450 --> 00:05:37.130
+meaning that it's gonna be checked into Git.
+
+121
+00:05:37.130 --> 00:05:38.750
+And as a general rule of thumb,
+
+122
+00:05:38.750 --> 00:05:41.680
+you don't put this is called a secret.
+
+123
+00:05:41.680 --> 00:05:45.220
+You don't put secrets which are the equivalent to passwords
+
+124
+00:05:45.220 --> 00:05:47.590
+like I'm gonna have to change this.
+
+125
+00:05:47.590 --> 00:05:48.860
+After I record this video,
+
+126
+00:05:48.860 --> 00:05:51.330
+I'm gonna have to delete that token and make a new one
+
+127
+00:05:51.330 --> 00:05:54.370
+for myself because you could pause the screen right now.
+
+128
+00:05:54.370 --> 00:05:58.640
+type this entirely in and get all of my data actually,
+
+129
+00:05:58.640 --> 00:06:00.560
+I don't like care if you get my pizza that's fine.
+
+130
+00:06:00.560 --> 00:06:03.230
+But if this was more sensitive than that,
+
+131
+00:06:03.230 --> 00:06:05.310
+that would definitely be an issue.
+
+132
+00:06:05.310 --> 00:06:07.660
+So what we're gonna do is not put the token
+
+133
+00:06:07.660 --> 00:06:09.300
+in your Gatsby config,
+
+134
+00:06:09.300 --> 00:06:12.210
+but put it into a .env file.
+
+135
+00:06:12.210 --> 00:06:15.130
+and a .env file looks like this.
+
+136
+00:06:15.130 --> 00:06:16.810
+We'll go into our route.
+
+137
+00:06:16.810 --> 00:06:20.460
+And we'll make a new file it's .env.
+
+138
+00:06:20.460 --> 00:06:21.510
+So look at that.
+
+139
+00:06:21.510 --> 00:06:23.350
+It's there's no nothing before it,
+
+140
+00:06:23.350 --> 00:06:25.253
+it's just simply .env.
+
+141
+00:06:26.630 --> 00:06:27.870
+And then in here,
+
+142
+00:06:27.870 --> 00:06:30.383
+we'll say SANITY_TOKEN=
+
+143
+00:06:31.548 --> 00:06:32.890
+and there's no quotes here,
+
+144
+00:06:32.890 --> 00:06:36.480
+just copy the entire thing and paste it in.
+
+145
+00:06:36.480 --> 00:06:40.470
+And then the way that we access that is right here.
+
+146
+00:06:40.470 --> 00:06:43.903
+We say process.env.SANITY_TOKEN.
+
+147
+00:06:45.800 --> 00:06:48.260
+Now that's not gonna work just yet.
+
+148
+00:06:48.260 --> 00:06:50.290
+There's one more thing we need to do.
+
+149
+00:06:50.290 --> 00:06:54.690
+And that is import a package called .env.
+
+150
+00:06:54.690 --> 00:06:59.470
+So well say import dotenv from dotenv.
+
+151
+00:06:59.470 --> 00:07:02.300
+That's the package I've installed for you.
+
+152
+00:07:02.300 --> 00:07:06.210
+And by default sanity will surface tokens that start
+
+153
+00:07:06.210 --> 00:07:11.030
+with Gatsby underscore anything to your, your front end.
+
+154
+00:07:11.030 --> 00:07:14.790
+But it will not surface any other tokens that do not start
+
+155
+00:07:14.790 --> 00:07:16.480
+with Gatsby underscore.
+
+156
+00:07:16.480 --> 00:07:19.670
+And that's because tokens that are sensitive
+
+157
+00:07:19.670 --> 00:07:21.760
+and shouldn't be in the browser
+
+158
+00:07:21.760 --> 00:07:23.270
+should not be in the browser,
+
+159
+00:07:23.270 --> 00:07:26.330
+because that would allow just regular users to find you,
+
+160
+00:07:26.330 --> 00:07:28.560
+essentially your password to your CMS.
+
+161
+00:07:28.560 --> 00:07:30.980
+So we don't want that to happen.
+
+162
+00:07:30.980 --> 00:07:33.920
+But that does, that is not true in Gatsby config.
+
+163
+00:07:33.920 --> 00:07:36.970
+If you wanna access environmental variables
+
+164
+00:07:36.970 --> 00:07:38.940
+inside of your Gatsby config,
+
+165
+00:07:38.940 --> 00:07:43.770
+then you need to use this little package called .env
+
+166
+00:07:43.770 --> 00:07:44.637
+and it works like that.
+
+167
+00:07:44.637 --> 00:07:47.113
+You just say dotenv.config,
+
+168
+00:07:49.083 --> 00:07:51.670
+and then you pass an object where the path
+
+169
+00:07:51.670 --> 00:07:53.100
+is equal to .env.
+
+170
+00:07:53.100 --> 00:07:56.150
+I think that actually might even be the default.
+
+171
+00:07:56.150 --> 00:07:58.200
+But I like to just make it explicit.
+
+172
+00:07:58.200 --> 00:08:01.020
+I know some people like to do things like
+
+173
+00:08:01.020 --> 00:08:05.590
+development.env or in some of my other courses,
+
+174
+00:08:05.590 --> 00:08:09.110
+I've done variables.env because sometimes the .files
+
+175
+00:08:09.110 --> 00:08:11.260
+get lost on people's computer but in this case,
+
+176
+00:08:11.260 --> 00:08:12.663
+we'll just do .env.
+
+177
+00:08:15.410 --> 00:08:20.410
+Okay, so we have created our token we have piped it in here.
+
+178
+00:08:20.660 --> 00:08:21.750
+If you're like,
+
+179
+00:08:21.750 --> 00:08:24.800
+wondering if that has worked or not
+
+180
+00:08:24.800 --> 00:08:27.640
+one little debugging tip I have for you is you can simply
+
+181
+00:08:27.640 --> 00:08:31.713
+just console.log inside of this.
+
+182
+00:08:32.960 --> 00:08:35.713
+And you can go to aerial look,
+
+183
+00:08:36.930 --> 00:08:38.730
+it just it just console logs right here.
+
+184
+00:08:38.730 --> 00:08:41.450
+Usually what I would do is I would just,
+
+185
+00:08:41.450 --> 00:08:43.600
+I would just kill it and restart it,
+
+186
+00:08:43.600 --> 00:08:45.343
+but it looks like it did it.
+
+187
+00:08:46.350 --> 00:08:48.380
+Oh! We've got a little bit of an error here.
+
+188
+00:08:48.380 --> 00:08:49.430
+If you have explicit,
+
+189
+00:08:49.430 --> 00:08:50.770
+oh I've seen this error before.
+
+190
+00:08:50.770 --> 00:08:54.003
+You can, you can safely ignore this if you see that pop up.
+
+191
+00:08:54.990 --> 00:08:57.950
+Okay, so I have added that plugin.
+
+192
+00:08:57.950 --> 00:09:02.950
+I do think we need to restart but let's try this now.
+
+193
+00:09:03.790 --> 00:09:05.500
+We'll go back to our GraphQl,
+
+194
+00:09:05.500 --> 00:09:07.990
+Explorer refresh it.
+
+195
+00:09:07.990 --> 00:09:10.290
+We don't see any new queries pop up here.
+
+196
+00:09:10.290 --> 00:09:15.290
+So let's go back and kill our build and restart it.
+
+197
+00:09:15.560 --> 00:09:16.393
+NPM start
+
+198
+00:09:17.350 --> 00:09:20.220
+and take that console log out.
+
+199
+00:09:20.220 --> 00:09:22.200
+That's actually console logging
+
+200
+00:09:23.640 --> 00:09:26.120
+environmental variables is actually a bit of an issue
+
+201
+00:09:26.120 --> 00:09:28.240
+because if you have a log on a server,
+
+202
+00:09:28.240 --> 00:09:30.430
+then your server will have access to that.
+
+203
+00:09:30.430 --> 00:09:32.400
+So be careful with that.
+
+204
+00:09:32.400 --> 00:09:35.040
+GraphQl API not deployed.
+
+205
+00:09:35.040 --> 00:09:37.300
+Okay, now, we forgot a step here.
+
+206
+00:09:37.300 --> 00:09:42.090
+We need to go ahead and deploy a GraphQL API for sanity
+
+207
+00:09:42.090 --> 00:09:44.350
+because by default,
+
+208
+00:09:44.350 --> 00:09:48.410
+sanity has what's called a grok API.
+
+209
+00:09:48.410 --> 00:09:51.320
+And if you want a GraphQL API,
+
+210
+00:09:51.320 --> 00:09:54.140
+which is actually built with grok, it's kind of cool.
+
+211
+00:09:54.140 --> 00:09:58.240
+Then we need to enable that so just go click on the link
+
+212
+00:09:58.240 --> 00:09:59.403
+that they have here.
+
+213
+00:10:00.270 --> 00:10:02.190
+It says by deploying a GraphQL API,
+
+214
+00:10:02.190 --> 00:10:04.730
+let's click through that there's some,
+
+215
+00:10:04.730 --> 00:10:08.363
+here we go sanity graphql deploy.
+
+216
+00:10:09.700 --> 00:10:13.173
+And I believe that is it.
+
+217
+00:10:14.960 --> 00:10:15.793
+Let's try it.
+
+218
+00:10:16.650 --> 00:10:18.667
+Let's go over to our sanity tab
+
+219
+00:10:18.667 --> 00:10:22.700
+and make not in your Gatsby tab kill your sanity.
+
+220
+00:10:22.700 --> 00:10:25.753
+And we'll say sanity deploy graph.
+
+221
+00:10:28.600 --> 00:10:30.320
+Was it deploy?
+
+222
+00:10:30.320 --> 00:10:34.480
+No sanity graphql deploy.
+
+223
+00:10:34.480 --> 00:10:38.650
+And I believe we have to give it the name of our data set,
+
+224
+00:10:38.650 --> 00:10:39.963
+which is production.
+
+225
+00:10:41.810 --> 00:10:44.260
+Again, the name of the data set can be found
+
+226
+00:10:45.730 --> 00:10:46.623
+right here.
+
+227
+00:10:47.961 --> 00:10:51.263
+So if you want to enable graphql playground Y.
+
+228
+00:10:57.860 --> 00:11:00.420
+There we go and it actually gives us a URL
+
+229
+00:11:00.420 --> 00:11:01.560
+of our GraphQL API,
+
+230
+00:11:01.560 --> 00:11:02.920
+so we can go ahead and click that.
+
+231
+00:11:02.920 --> 00:11:07.920
+So this is something called GraphQL playground,
+
+232
+00:11:08.490 --> 00:11:12.770
+which is very similar or it's based upon graphical.
+
+233
+00:11:12.770 --> 00:11:15.220
+It just looks a little bit different.
+
+234
+00:11:15.220 --> 00:11:17.680
+But you can actually see a list of all of your queries
+
+235
+00:11:17.680 --> 00:11:19.810
+by clicking on the schema tab.
+
+236
+00:11:19.810 --> 00:11:22.980
+And you'll see look, pizza topping person.
+
+237
+00:11:22.980 --> 00:11:26.620
+So let's look for already we have all pizza,
+
+238
+00:11:26.620 --> 00:11:28.123
+let's let's do that query.
+
+239
+00:11:31.120 --> 00:11:32.253
+All whoops!
+
+240
+00:11:33.530 --> 00:11:35.160
+All pizza.
+
+241
+00:11:35.160 --> 00:11:38.730
+And then what will do is return you a list of pizzas,
+
+242
+00:11:38.730 --> 00:11:41.640
+but we need to get fields for each of our pizzas.
+
+243
+00:11:41.640 --> 00:11:45.450
+So we'll say the name of the pizza.
+
+244
+00:11:45.450 --> 00:11:47.463
+And the,
+
+245
+00:11:49.600 --> 00:11:51.960
+I think that's let's just see if that works.
+
+246
+00:11:51.960 --> 00:11:54.050
+Do we have a description for our pizzas?
+
+247
+00:11:54.050 --> 00:11:56.070
+We'll check, run it.
+
+248
+00:11:56.070 --> 00:11:58.540
+Boom, there's our two pizzas that get deployed.
+
+249
+00:11:58.540 --> 00:12:00.663
+Now this is not our Gatsby API.
+
+250
+00:12:00.663 --> 00:12:02.170
+This is our sanity API,
+
+251
+00:12:02.170 --> 00:12:05.490
+we're actually not gonna be working with this API directly
+
+252
+00:12:05.490 --> 00:12:06.620
+just yet.
+
+253
+00:12:06.620 --> 00:12:09.560
+We want to get the data out of the sanity API
+
+254
+00:12:09.560 --> 00:12:11.600
+and into the Gatsby API.
+
+255
+00:12:11.600 --> 00:12:15.673
+So by restarting this,
+
+256
+00:12:17.390 --> 00:12:21.030
+that should then go ahead slurp up all the data from sanity
+
+257
+00:12:21.030 --> 00:12:23.883
+and stick it into our Gatsby GraphQL API.
+
+258
+00:12:27.830 --> 00:12:30.060
+See, look here, sanity fetching,
+
+259
+00:12:30.060 --> 00:12:32.730
+schema transforming it all.
+
+260
+00:12:32.730 --> 00:12:34.023
+Blah, blah, blah.
+
+261
+00:12:35.730 --> 00:12:36.570
+And there we go.
+
+262
+00:12:36.570 --> 00:12:39.940
+So we go back to our GraphQL Explorer,
+
+263
+00:12:39.940 --> 00:12:42.490
+we refresh this sucker.
+
+264
+00:12:42.490 --> 00:12:43.950
+Hey, look at that.
+
+265
+00:12:43.950 --> 00:12:44.960
+They've all shown up.
+
+266
+00:12:44.960 --> 00:12:47.500
+Now the queries are gonna look a little bit different
+
+267
+00:12:47.500 --> 00:12:49.470
+than this.
+
+268
+00:12:49.470 --> 00:12:51.750
+We can't just say all pizza,
+
+269
+00:12:51.750 --> 00:12:55.320
+because they are a little bit different in Gatsby land,
+
+270
+00:12:55.320 --> 00:12:57.270
+versus sanity land but you see
+
+271
+00:12:57.270 --> 00:12:59.720
+that they are all available here.
+
+272
+00:12:59.720 --> 00:13:00.863
+So Let's try it.
+
+273
+00:13:01.880 --> 00:13:06.410
+All sanity pizza is the query that gives you all pizzas.
+
+274
+00:13:06.410 --> 00:13:07.960
+So open that up.
+
+275
+00:13:07.960 --> 00:13:10.920
+And then for each pizza,
+
+276
+00:13:10.920 --> 00:13:15.070
+let's go ahead and we wanna grab the,
+
+277
+00:13:15.070 --> 00:13:16.743
+I think it's the node yeah?
+
+278
+00:13:17.610 --> 00:13:21.470
+Because that's, that's the individual pizza.
+
+279
+00:13:21.470 --> 00:13:22.860
+And then for each node,
+
+280
+00:13:22.860 --> 00:13:27.620
+we want the name and the price for it.
+
+281
+00:13:27.620 --> 00:13:29.500
+So let's go ahead and run that.
+
+282
+00:13:29.500 --> 00:13:32.160
+Look at that veggie delight price.
+
+283
+00:13:32.160 --> 00:13:36.660
+You can go a little bit further and reference the slug.
+
+284
+00:13:36.660 --> 00:13:38.730
+And you can see you can grab the current
+
+285
+00:13:38.730 --> 00:13:41.430
+is how you actually get the name of the slug.
+
+286
+00:13:41.430 --> 00:13:44.520
+But the slug has also has a key and a type available
+
+287
+00:13:44.520 --> 00:13:46.460
+with that as well that you could grab,
+
+288
+00:13:46.460 --> 00:13:48.100
+you'll see here,
+
+289
+00:13:48.100 --> 00:13:49.130
+it returns it to us.
+
+290
+00:13:49.130 --> 00:13:51.340
+It's not not that useful to us,
+
+291
+00:13:51.340 --> 00:13:53.090
+so we can go ahead and delete that.
+
+292
+00:13:54.430 --> 00:13:55.263
+That's cool.
+
+293
+00:13:55.263 --> 00:13:57.470
+And now I'm gonna show you like one really,
+
+294
+00:13:57.470 --> 00:14:00.240
+really nifty thing about GraphQL.
+
+295
+00:14:00.240 --> 00:14:03.060
+So one of the benefits of GraphQL is that you can query
+
+296
+00:14:03.060 --> 00:14:04.690
+as much data as you want.
+
+297
+00:14:04.690 --> 00:14:08.003
+So even if I wanted to query all of the pizzas,
+
+298
+00:14:08.003 --> 00:14:09.820
+in the same query,
+
+299
+00:14:09.820 --> 00:14:12.917
+I could also query allsanityperson.
+
+300
+00:14:14.370 --> 00:14:15.560
+And for each person,
+
+301
+00:14:15.560 --> 00:14:17.076
+I want the nodes.
+
+302
+00:14:17.076 --> 00:14:18.793
+And we want their name.
+
+303
+00:14:19.700 --> 00:14:22.010
+Let her run that you see all person.
+
+304
+00:14:22.010 --> 00:14:24.320
+So that's One really cool thing
+
+305
+00:14:24.320 --> 00:14:26.920
+is that there's only one endpoint of GraphQL.
+
+306
+00:14:26.920 --> 00:14:29.790
+And we can grab all of the data that we want.
+
+307
+00:14:29.790 --> 00:14:32.750
+Furthermore, we can also
+
+308
+00:14:33.910 --> 00:14:35.690
+go for nested data types.
+
+309
+00:14:35.690 --> 00:14:39.270
+So pizzas have toppings, right?
+
+310
+00:14:39.270 --> 00:14:42.030
+So we can say toppings.
+
+311
+00:14:42.030 --> 00:14:43.450
+And for each topping,
+
+312
+00:14:43.450 --> 00:14:46.200
+we want the name so run it.
+
+313
+00:14:46.200 --> 00:14:51.200
+So now we're seeing here that we get all of the pizzas
+
+314
+00:14:51.620 --> 00:14:56.040
+and for each pizza, we get the name, the price, the slug,
+
+315
+00:14:56.040 --> 00:14:58.180
+and then the topping in each name.
+
+316
+00:14:58.180 --> 00:15:00.820
+So you imagine in Gatsby we'll be able to fetch
+
+317
+00:15:00.820 --> 00:15:02.700
+all this data and loop over it,
+
+318
+00:15:02.700 --> 00:15:05.240
+and display it in each of our templates,
+
+319
+00:15:05.240 --> 00:15:07.230
+which is really cool.
+
+320
+00:15:07.230 --> 00:15:12.210
+We can also select individual pizzas.
+
+321
+00:15:12.210 --> 00:15:15.693
+So if we were to grab the ID of a pizza,
+
+322
+00:15:16.810 --> 00:15:19.670
+let's grab the master pizza ID.
+
+323
+00:15:19.670 --> 00:15:23.000
+Let's just copy and paste that into a new thing here.
+
+324
+00:15:23.000 --> 00:15:26.200
+And I'm gonna just commas that out.
+
+325
+00:15:26.200 --> 00:15:28.323
+I just hit command forward slash there.
+
+326
+00:15:29.690 --> 00:15:31.463
+And let's write a query.
+
+327
+00:15:37.777 --> 00:15:41.500
+Trying to make this sucker smaller.
+
+328
+00:15:41.500 --> 00:15:42.463
+Oh, there we go.
+
+329
+00:15:44.180 --> 00:15:45.040
+I got rid of it.
+
+330
+00:15:45.040 --> 00:15:47.350
+How do I get it back?
+
+331
+00:15:47.350 --> 00:15:48.183
+Oh, Explorer.
+
+332
+00:15:48.183 --> 00:15:49.016
+There we go.
+
+333
+00:15:49.016 --> 00:15:49.849
+Cool.
+
+334
+00:15:49.849 --> 00:15:50.993
+So query.
+
+335
+00:15:54.320 --> 00:15:57.600
+We want to grab just a sanity pizza.
+
+336
+00:15:57.600 --> 00:15:59.520
+So that's a single pizza.
+
+337
+00:15:59.520 --> 00:16:01.610
+If you ever want to create a single pizza.
+
+338
+00:16:01.610 --> 00:16:02.460
+And in this case,
+
+339
+00:16:02.460 --> 00:16:05.510
+you have to tell it which one you want,
+
+340
+00:16:05.510 --> 00:16:08.990
+based on any of these fields here.
+
+341
+00:16:08.990 --> 00:16:11.960
+So we wanna grab a pizza,
+
+342
+00:16:11.960 --> 00:16:14.250
+or the ID is equal to and this is GraphQl,
+
+343
+00:16:14.250 --> 00:16:17.580
+so you have to use double quotes when you're doing
+
+344
+00:16:17.580 --> 00:16:18.413
+this thing,
+
+345
+00:16:18.413 --> 00:16:21.223
+and then just go ahead and paste in the ID of that pizza.
+
+346
+00:16:23.930 --> 00:16:25.660
+And then for that pizza,
+
+347
+00:16:25.660 --> 00:16:28.280
+we don't need nodes because it's not an array anymore,
+
+348
+00:16:28.280 --> 00:16:31.420
+we can simply just ask for the name of that pizza,
+
+349
+00:16:31.420 --> 00:16:33.040
+and go ahead and run it.
+
+350
+00:16:33.040 --> 00:16:38.040
+And ah, expected string query operator input found ID.
+
+351
+00:16:40.100 --> 00:16:44.410
+Okay, so this is telling us that it wasn't expecting us
+
+352
+00:16:44.410 --> 00:16:46.453
+to pass it an ID directly.
+
+353
+00:16:46.453 --> 00:16:50.360
+It was expecting us to pass a different type of input.
+
+354
+00:16:50.360 --> 00:16:52.300
+So I don't know what that is.
+
+355
+00:16:52.300 --> 00:16:54.610
+Let's go ahead and look at it and I can figure out
+
+356
+00:16:54.610 --> 00:16:57.880
+what it is expecting by going to this Doc's tab here
+
+357
+00:16:58.730 --> 00:17:01.150
+and clicking on query,
+
+358
+00:17:01.150 --> 00:17:03.920
+and then it will give you a list of all of the queries.
+
+359
+00:17:03.920 --> 00:17:08.170
+So ours is sanity pizza.
+
+360
+00:17:08.170 --> 00:17:09.193
+So click on that.
+
+361
+00:17:14.120 --> 00:17:19.120
+And it's telling us the ID is not supposed to be a string,
+
+362
+00:17:20.430 --> 00:17:22.860
+but a StringQueryOperatorinput.
+
+363
+00:17:22.860 --> 00:17:24.030
+What is that?
+
+364
+00:17:24.030 --> 00:17:26.160
+I don't know, click on it.
+
+365
+00:17:26.160 --> 00:17:27.240
+Hey, there we go.
+
+366
+00:17:27.240 --> 00:17:30.490
+So it's expecting an object,
+
+367
+00:17:30.490 --> 00:17:35.490
+not a string to say equal, not equal, in, not in regex,
+
+368
+00:17:36.590 --> 00:17:37.820
+or glob.
+
+369
+00:17:37.820 --> 00:17:40.770
+So I believe I bet,
+
+370
+00:17:40.770 --> 00:17:44.653
+we can just do change this to a, an object.
+
+371
+00:17:46.750 --> 00:17:51.543
+Let me say where the ID is equal to that.
+
+372
+00:17:52.478 --> 00:17:53.660
+And then go ahead and run it.
+
+373
+00:17:53.660 --> 00:17:54.750
+There we go.
+
+374
+00:17:54.750 --> 00:17:56.247
+So that is what we got.
+
+375
+00:17:56.247 --> 00:17:57.580
+And that's actually kind of cool
+
+376
+00:17:57.580 --> 00:18:00.270
+because we can use those operators.
+
+377
+00:18:00.270 --> 00:18:02.780
+And not just use the ID,
+
+378
+00:18:02.780 --> 00:18:06.180
+we can say, give me a sanity pizza
+
+379
+00:18:07.400 --> 00:18:08.880
+where the name
+
+380
+00:18:12.140 --> 00:18:14.530
+equals, doesn't equal, or regex.
+
+381
+00:18:14.530 --> 00:18:19.530
+We can say regex I believe, quotes veggie.
+
+382
+00:18:25.020 --> 00:18:27.160
+This probably won't return anything.
+
+383
+00:18:27.160 --> 00:18:30.093
+Nothing no and if I put I there,
+
+384
+00:18:31.800 --> 00:18:34.270
+it returns to us Veggie Delight what that I means
+
+385
+00:18:34.270 --> 00:18:37.380
+insensitive case insensitive as a capital V on there.
+
+386
+00:18:37.380 --> 00:18:39.170
+I put a lowercase V here.
+
+387
+00:18:39.170 --> 00:18:41.630
+And that's really cool because if you wanna search
+
+388
+00:18:41.630 --> 00:18:44.003
+for a specific pizza but you only know,
+
+389
+00:18:44.950 --> 00:18:47.330
+if you only know the sort of the name of it,
+
+390
+00:18:47.330 --> 00:18:49.360
+or what the one word that is in it,
+
+391
+00:18:49.360 --> 00:18:50.640
+you can go ahead and use that.
+
+392
+00:18:50.640 --> 00:18:53.380
+And similarly you can also use all sanity pizza
+
+393
+00:18:53.380 --> 00:18:56.670
+to get all the pizzas that have the word veggie in them.
+
+394
+00:18:56.670 --> 00:18:58.880
+Of course, we can do things like toppings,
+
+395
+00:18:58.880 --> 00:19:03.310
+and grab the name of that topping as well as,
+
+396
+00:19:03.310 --> 00:19:05.830
+what do we have?
+
+397
+00:19:05.830 --> 00:19:07.750
+Yeah, we have a vegetarian Boolean
+
+398
+00:19:09.140 --> 00:19:11.620
+on each of those toppings, which is cool.
+
+399
+00:19:11.620 --> 00:19:15.730
+And then where's the other one called master?
+
+400
+00:19:15.730 --> 00:19:17.560
+Let's see if that works.
+
+401
+00:19:17.560 --> 00:19:18.830
+Beautiful master pizza.
+
+402
+00:19:18.830 --> 00:19:20.270
+Cool, cool, cool.
+
+403
+00:19:20.270 --> 00:19:24.360
+So now that the data is in our GraphQL Explorer,
+
+404
+00:19:24.360 --> 00:19:26.120
+we're able to in the next video,
+
+405
+00:19:26.120 --> 00:19:28.880
+pull the data out of here by writing queries
+
+406
+00:19:28.880 --> 00:19:32.740
+and get it into the actual templates of our Gatsby website.
+

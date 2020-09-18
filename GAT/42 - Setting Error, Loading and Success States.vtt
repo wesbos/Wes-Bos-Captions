@@ -1,0 +1,666 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.583
+(upbeat music)
+
+2
+00:00:04.470 --> 00:00:05.303
+<v Educator>All right in this video,</v>
+
+3
+00:00:05.303 --> 00:00:07.530
+we're gonna work on our success,
+
+4
+00:00:07.530 --> 00:00:10.245
+error and loading states.
+
+5
+00:00:10.245 --> 00:00:13.730
+And in order to test our loading state,
+
+6
+00:00:13.730 --> 00:00:16.410
+let's go into our,
+
+7
+00:00:16.410 --> 00:00:17.643
+place order.
+
+8
+00:00:20.870 --> 00:00:25.420
+Place order .js and let's just make this function
+
+9
+00:00:27.260 --> 00:00:30.220
+the handler just take like a couple more seconds
+
+10
+00:00:30.220 --> 00:00:32.110
+and sort of the best way to do that
+
+11
+00:00:32.110 --> 00:00:34.030
+is I have a little package called wait,
+
+12
+00:00:34.030 --> 00:00:36.020
+and it allows you to wait a certain amount of seconds,
+
+13
+00:00:36.020 --> 00:00:37.690
+but we can just code it right here.
+
+14
+00:00:37.690 --> 00:00:41.103
+So we'll just make a function that is async,
+
+15
+00:00:42.660 --> 00:00:44.150
+and I'll call it wait
+
+16
+00:00:45.320 --> 00:00:47.190
+that takes in a number of milliseconds
+
+17
+00:00:47.190 --> 00:00:50.323
+and that returns a promise.
+
+18
+00:00:51.480 --> 00:00:54.070
+And from that promise,
+
+19
+00:00:54.070 --> 00:00:56.680
+we get a resolve and a reject
+
+20
+00:00:58.950 --> 00:01:02.330
+and after however many milliseconds are passed in,
+
+21
+00:01:02.330 --> 00:01:03.590
+we will resolve it.
+
+22
+00:01:03.590 --> 00:01:06.023
+So I'll say set timeout,
+
+23
+00:01:07.170 --> 00:01:12.170
+and we will resolve it after however many milliseconds.
+
+24
+00:01:12.230 --> 00:01:15.323
+And let's default that to zero milliseconds.
+
+25
+00:01:16.330 --> 00:01:19.260
+And I believe that's all we need.
+
+26
+00:01:19.260 --> 00:01:21.800
+Now in here was simply just await.
+
+27
+00:01:21.800 --> 00:01:24.880
+Actually, this doesn't need to be in a sync function,
+
+28
+00:01:24.880 --> 00:01:27.090
+just await. Wait.
+
+29
+00:01:27.090 --> 00:01:31.020
+And, let's wait for 5,000.
+
+30
+00:01:31.020 --> 00:01:34.190
+Let's wait for five seconds to see if that works.
+
+31
+00:01:34.190 --> 00:01:37.280
+Now, when I go ahead and add something and submit it
+
+32
+00:01:38.580 --> 00:01:41.150
+still says immediately go eat
+
+33
+00:01:41.150 --> 00:01:43.530
+and it's not going to our loading state.
+
+34
+00:01:43.530 --> 00:01:46.350
+So we'll go back to our user pizza and take a look.
+
+35
+00:01:46.350 --> 00:01:49.740
+Here! That's because when someone submits the order,
+
+36
+00:01:49.740 --> 00:01:52.630
+we are successfully setting the message to go eat.
+
+37
+00:01:52.630 --> 00:01:55.003
+So let's comment that out.
+
+38
+00:01:56.660 --> 00:01:58.440
+And when someone submits an order,
+
+39
+00:01:58.440 --> 00:02:00.440
+we set the loading to true.
+
+40
+00:02:00.440 --> 00:02:05.113
+And then when it is successfully done,
+
+41
+00:02:05.970 --> 00:02:08.320
+then we, right here.
+
+42
+00:02:08.320 --> 00:02:10.870
+This is the success, then we turn the loading off.
+
+43
+00:02:10.870 --> 00:02:11.993
+So let's try that.
+
+44
+00:02:13.500 --> 00:02:18.053
+One, two, three, four, five,
+
+45
+00:02:19.040 --> 00:02:19.920
+and then oops!
+
+46
+00:02:19.920 --> 00:02:21.980
+You are missing the email field. Okay, cool.
+
+47
+00:02:21.980 --> 00:02:26.980
+So we just did see right there that it's working.
+
+48
+00:02:27.210 --> 00:02:29.940
+Now, if I hit it again, am I still able to type in here?
+
+49
+00:02:29.940 --> 00:02:33.950
+Yeah. One, thing I like to do is go to
+
+50
+00:02:33.950 --> 00:02:38.950
+our order .js and let's disable all of those fields while,
+
+51
+00:02:40.540 --> 00:02:42.340
+while it's in place.
+
+52
+00:02:42.340 --> 00:02:44.730
+So the one kind of cool thing about a field set
+
+53
+00:02:44.730 --> 00:02:47.910
+is you can disable an entire field set.
+
+54
+00:02:47.910 --> 00:02:50.670
+So we take a look at our very first field set.
+
+55
+00:02:50.670 --> 00:02:53.113
+Again there's we can give it a disabled,
+
+56
+00:02:54.072 --> 00:02:55.453
+okay a disabled of true.
+
+57
+00:02:57.180 --> 00:02:58.410
+And you see I can't type into there.
+
+58
+00:02:58.410 --> 00:02:59.980
+I believe actually you just have to give it
+
+59
+00:02:59.980 --> 00:03:02.513
+a disabled attribute.
+
+60
+00:03:03.420 --> 00:03:06.133
+Yeah. If it's simply there, then it will disable it.
+
+61
+00:03:07.130 --> 00:03:11.967
+So what we can do is we can say disabled is equal to loading
+
+62
+00:03:15.890 --> 00:03:18.620
+and now I can type in here, but when I submit it,
+
+63
+00:03:18.620 --> 00:03:20.450
+see how it disables itself?
+
+64
+00:03:20.450 --> 00:03:21.920
+And then after five seconds,
+
+65
+00:03:21.920 --> 00:03:23.700
+it should allow me to type it in.
+
+66
+00:03:23.700 --> 00:03:24.790
+There we go. Beautiful!
+
+67
+00:03:24.790 --> 00:03:28.047
+So let's take that disabled loading attribute
+
+68
+00:03:28.047 --> 00:03:31.143
+and put it on all of our field sets.
+
+69
+00:03:32.410 --> 00:03:33.963
+So there's that one.
+
+70
+00:03:34.870 --> 00:03:36.073
+There's that one.
+
+71
+00:03:39.008 --> 00:03:39.841
+That one.
+
+72
+00:03:41.281 --> 00:03:44.600
+And that one, let's give it a shot.
+
+73
+00:03:44.600 --> 00:03:45.743
+Type in here.
+
+74
+00:03:48.760 --> 00:03:49.833
+Order ahead.
+
+75
+00:03:52.240 --> 00:03:53.470
+Well, that's not a valid email.
+
+76
+00:03:53.470 --> 00:03:55.270
+I'm just gonna take it out entirely.
+
+77
+00:03:56.350 --> 00:03:57.183
+There we go.
+
+78
+00:03:57.183 --> 00:03:58.640
+Look, I can't click on these buttons.
+
+79
+00:03:58.640 --> 00:04:01.320
+Can't click on anything while it is placing the order,
+
+80
+00:04:01.320 --> 00:04:02.370
+so that's good. Okay.
+
+81
+00:04:03.500 --> 00:04:07.730
+Next is our errors are working just fine now.
+
+82
+00:04:07.730 --> 00:04:11.220
+That's good because I guess our problem before
+
+83
+00:04:11.220 --> 00:04:13.790
+was that we were setting a success message.
+
+84
+00:04:13.790 --> 00:04:16.933
+Then let's go ahead and actually fill out everything.
+
+85
+00:04:18.020 --> 00:04:20.810
+Order ahead. It's gonna take five seconds
+
+86
+00:04:20.810 --> 00:04:23.973
+and then we should see a success message show up.
+
+87
+00:04:27.170 --> 00:04:28.960
+Maybe five seconds was too long.
+
+88
+00:04:28.960 --> 00:04:30.171
+There we go. Ah!
+
+89
+00:04:30.171 --> 00:04:31.004
+It didn't work.
+
+90
+00:04:31.840 --> 00:04:35.410
+Unexpected character at line one in column one
+
+91
+00:04:35.410 --> 00:04:36.963
+of the JSON data.
+
+92
+00:04:38.140 --> 00:04:38.973
+Okay.
+
+93
+00:04:39.900 --> 00:04:40.790
+So what?
+
+94
+00:04:42.730 --> 00:04:44.100
+Let's first just see if we actually
+
+95
+00:04:44.100 --> 00:04:45.683
+got an email about our pizza.
+
+96
+00:04:47.380 --> 00:04:51.190
+Yeah, so our pizza email came in, so I bet it's something
+
+97
+00:04:51.190 --> 00:04:54.870
+to do with the success message that we're sending back.
+
+98
+00:04:54.870 --> 00:04:57.663
+So, body. Oops.
+
+99
+00:05:07.490 --> 00:05:09.090
+Looks fine.
+
+100
+00:05:09.090 --> 00:05:11.940
+So now my next question is if we go to network,
+
+101
+00:05:11.940 --> 00:05:13.800
+let's try it again.
+
+102
+00:05:13.800 --> 00:05:16.150
+Let's take that five seconds off, okay.
+
+103
+00:05:16.150 --> 00:05:17.923
+'Cause we don't need that anymore.
+
+104
+00:05:19.910 --> 00:05:21.340
+I'll leave that wait function in there
+
+105
+00:05:21.340 --> 00:05:23.773
+just in case you wanna grab it for yourself.
+
+106
+00:05:25.400 --> 00:05:27.834
+So let's go ahead and run it.
+
+107
+00:05:27.834 --> 00:05:30.693
+Wesbos@gmail, add.
+
+108
+00:05:32.210 --> 00:05:34.400
+Okay. So I'm going to clear this out.
+
+109
+00:05:34.400 --> 00:05:37.050
+I'm gonna add on a filter for
+
+110
+00:05:37.050 --> 00:05:38.743
+I just want to see all, yeah,
+
+111
+00:05:39.990 --> 00:05:41.853
+then go ahead and click order ahead.
+
+112
+00:05:45.270 --> 00:05:47.513
+So there's our XHR request.
+
+113
+00:05:48.700 --> 00:05:50.593
+And success! Oh.
+
+114
+00:05:52.900 --> 00:05:54.543
+Why did it break before?
+
+115
+00:05:55.827 --> 00:05:56.660
+(laughs)
+
+116
+00:05:56.660 --> 00:05:58.360
+Let's try it one more time.
+
+117
+00:05:58.360 --> 00:06:00.377
+May be one of those things where we just ignore it
+
+118
+00:06:00.377 --> 00:06:02.533
+and it will always work from here on out.
+
+119
+00:06:05.200 --> 00:06:06.943
+And go ahead and order.
+
+120
+00:06:08.980 --> 00:06:09.813
+It works.
+
+121
+00:06:09.813 --> 00:06:12.160
+Is it because we didn't have any pizzas in that order?
+
+122
+00:06:12.160 --> 00:06:12.993
+Is that why?
+
+123
+00:06:20.020 --> 00:06:21.583
+Oh, okay. You know what?
+
+124
+00:06:22.730 --> 00:06:24.850
+That's fine, but we should fix that
+
+125
+00:06:24.850 --> 00:06:28.440
+in that the fact that you shouldn't be able to order,
+
+126
+00:06:28.440 --> 00:06:30.080
+submit an order with nothing in it.
+
+127
+00:06:30.080 --> 00:06:32.380
+Watch. Now we should have an empty order here.
+
+128
+00:06:34.600 --> 00:06:35.610
+Huh, zero dollars!
+
+129
+00:06:35.610 --> 00:06:37.990
+Right, you shouldn't be able to submit as zero dollars.
+
+130
+00:06:37.990 --> 00:06:39.773
+So let's go to our order here.
+
+131
+00:06:40.820 --> 00:06:44.200
+So field of required fields, checking that the name,
+
+132
+00:06:44.200 --> 00:06:47.983
+email and order fields are okay.
+
+133
+00:06:50.280 --> 00:06:52.150
+So in this case,
+
+134
+00:06:52.150 --> 00:06:56.023
+the order field was submitted but it was empty.
+
+135
+00:06:57.000 --> 00:06:59.433
+So what we'll do is make, I'll do it here.
+
+136
+00:06:59.433 --> 00:07:02.970
+It will say, make sure they actually
+
+137
+00:07:04.470 --> 00:07:07.253
+have items in that order.
+
+138
+00:07:08.440 --> 00:07:11.310
+And this should always be done server-side, this validation.
+
+139
+00:07:11.310 --> 00:07:13.010
+You could do it client side as well,
+
+140
+00:07:13.010 --> 00:07:15.650
+but at the end of the day, when you're doing an API,
+
+141
+00:07:15.650 --> 00:07:17.480
+your validation should happen
+
+142
+00:07:18.510 --> 00:07:20.480
+before it goes into some database.
+
+143
+00:07:20.480 --> 00:07:24.040
+So what we'll do here is we'll say,
+
+144
+00:07:24.040 --> 00:07:26.290
+get rid of these two things,
+
+145
+00:07:26.290 --> 00:07:29.623
+we'll say if the body.order,
+
+146
+00:07:35.043 --> 00:07:39.450
+if there's no body order .length then,
+
+147
+00:07:43.450 --> 00:07:47.213
+why would you order nothing?
+
+148
+00:07:50.291 --> 00:07:52.503
+Uh oh, something broke there.
+
+149
+00:07:55.230 --> 00:07:56.950
+Curly bracket.
+
+150
+00:07:56.950 --> 00:07:58.630
+Man, I don't like that rule!
+
+151
+00:07:58.630 --> 00:08:00.403
+If I delete this and save it?
+
+152
+00:08:02.300 --> 00:08:03.610
+Oh, I deleted it before.
+
+153
+00:08:03.610 --> 00:08:05.170
+Yeah. What the heck?
+
+154
+00:08:05.170 --> 00:08:06.913
+Don't accidentally delete my code.
+
+155
+00:08:08.040 --> 00:08:10.380
+I don't like that rule I'm gonna turn that off.
+
+156
+00:08:10.380 --> 00:08:11.863
+I don't know what that rule is.
+
+157
+00:08:11.863 --> 00:08:14.263
+That just started happening to me the other day.
+
+158
+00:08:15.742 --> 00:08:16.690
+Okay. Let's try it.
+
+159
+00:08:16.690 --> 00:08:20.063
+So go to order ahead, let's try to order nothing.
+
+160
+00:08:27.340 --> 00:08:29.027
+Error. Why would you order nothing?
+
+161
+00:08:29.027 --> 00:08:30.500
+Okay. That's good.
+
+162
+00:08:30.500 --> 00:08:33.420
+So we've got our errors, we've got our loading
+
+163
+00:08:33.420 --> 00:08:34.980
+and we have our success message.
+
+164
+00:08:34.980 --> 00:08:36.500
+Everything is working.
+
+165
+00:08:36.500 --> 00:08:37.410
+Good good good.
+
+166
+00:08:37.410 --> 00:08:39.010
+Let's move on to the next video.
+

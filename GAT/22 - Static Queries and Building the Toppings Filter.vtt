@@ -1,0 +1,1946 @@
+﻿WEBVTT
+
+1
+00:00:00.028 --> 00:00:02.695
+(playful music)
+
+2
+00:00:04.690 --> 00:00:05.640
+<v Instructor>We're on the pizza page</v>
+
+3
+00:00:05.640 --> 00:00:09.300
+and we want to create a little filter up here
+
+4
+00:00:09.300 --> 00:00:11.900
+that will list all of the toppings, all of the,
+
+5
+00:00:11.900 --> 00:00:14.220
+the number of pizza that's have that topping
+
+6
+00:00:14.220 --> 00:00:16.990
+as well as the ability to click on each one
+
+7
+00:00:16.990 --> 00:00:20.140
+and then filter for pizzas that have that topping.
+
+8
+00:00:20.140 --> 00:00:24.710
+So let's go into our components and make a new component
+
+9
+00:00:24.710 --> 00:00:28.750
+capital T toppings, capital F filter dot JS,
+
+10
+00:00:28.750 --> 00:00:30.510
+and we'll do the whole song and dance
+
+11
+00:00:30.510 --> 00:00:34.333
+for import, react from react.
+
+12
+00:00:35.270 --> 00:00:40.093
+And then we'll make a export default function,
+
+13
+00:00:42.270 --> 00:00:44.193
+toppings filter.
+
+14
+00:00:47.530 --> 00:00:50.940
+And from that, we'll just return a div
+
+15
+00:00:50.940 --> 00:00:53.143
+and paragraph toppings.
+
+16
+00:00:54.140 --> 00:00:56.133
+We'll go into our pizza list.
+
+17
+00:00:57.030 --> 00:00:58.470
+Is there a pizza list?
+
+18
+00:00:58.470 --> 00:00:59.303
+No, it's not.
+
+19
+00:00:59.303 --> 00:01:01.350
+It's pizzas.js.
+
+20
+00:01:01.350 --> 00:01:04.640
+And up here, we will use our toppings filter.
+
+21
+00:01:04.640 --> 00:01:06.713
+So toppings filter.
+
+22
+00:01:08.350 --> 00:01:11.480
+And we will try to auto import that sucker.
+
+23
+00:01:11.480 --> 00:01:12.313
+There we go.
+
+24
+00:01:12.313 --> 00:01:15.820
+So imported toppings filter from where it lives.
+
+25
+00:01:15.820 --> 00:01:18.050
+And then we go ahead and render that out.
+
+26
+00:01:18.050 --> 00:01:19.160
+Gatsby broke.
+
+27
+00:01:19.160 --> 00:01:19.993
+We refresh it.
+
+28
+00:01:19.993 --> 00:01:20.830
+There we go.
+
+29
+00:01:20.830 --> 00:01:22.250
+We've got it showing up.
+
+30
+00:01:22.250 --> 00:01:25.200
+So there's a couple of things we need to do here.
+
+31
+00:01:25.200 --> 00:01:29.620
+First, we need to get a list of all the toppings.
+
+32
+00:01:29.620 --> 00:01:34.620
+Then we also need to get a list of all the pizzas
+
+33
+00:01:35.480 --> 00:01:38.400
+with their toppings.
+
+34
+00:01:38.400 --> 00:01:43.400
+Then we need to like count how many pizzas
+
+35
+00:01:43.710 --> 00:01:46.227
+are in each topping.
+
+36
+00:01:46.227 --> 00:01:51.227
+And then we need to loop over the list of toppings
+
+37
+00:01:51.460 --> 00:01:56.460
+and display the topping and the count of pizzas
+
+38
+00:01:58.860 --> 00:02:01.390
+in that topping.
+
+39
+00:02:01.390 --> 00:02:03.380
+And then we link it up,
+
+40
+00:02:03.380 --> 00:02:04.500
+blah, blah, blah, blah, blah, blah, blah.
+
+41
+00:02:04.500 --> 00:02:05.500
+Okay.
+
+42
+00:02:05.500 --> 00:02:07.380
+So this is where we get into
+
+43
+00:02:07.380 --> 00:02:09.460
+what is referred to a static query.
+
+44
+00:02:09.460 --> 00:02:12.873
+So pizzas.js,
+
+45
+00:02:14.050 --> 00:02:18.240
+we exported a graphql query from the page.
+
+46
+00:02:18.240 --> 00:02:20.270
+This is a page.
+
+47
+00:02:20.270 --> 00:02:24.980
+And the thing about page queries is that in the future,
+
+48
+00:02:24.980 --> 00:02:26.880
+we are going to be able to say,
+
+49
+00:02:26.880 --> 00:02:29.938
+give me all of the pizzas where the toppings
+
+50
+00:02:29.938 --> 00:02:32.653
+are equal to pepperoni, right?
+
+51
+00:02:33.700 --> 00:02:36.690
+And that is a dynamic query,
+
+52
+00:02:36.690 --> 00:02:39.496
+meaning that we can pass it variables like toppings
+
+53
+00:02:39.496 --> 00:02:42.890
+or vegetarian or whatever.
+
+54
+00:02:42.890 --> 00:02:46.480
+Now, if you want to query data anywhere else,
+
+55
+00:02:46.480 --> 00:02:50.550
+outside of a page like inside of a component,
+
+56
+00:02:50.550 --> 00:02:52.819
+you have to use, what's called a static query
+
+57
+00:02:52.819 --> 00:02:57.819
+and static queries are queries that do not take variables.
+
+58
+00:02:58.750 --> 00:03:01.492
+And that's just a bit of a limitation
+
+59
+00:03:01.492 --> 00:03:04.490
+with Gatsby right now, at least
+
+60
+00:03:04.490 --> 00:03:07.230
+where you cannot create a dynamic query.
+
+61
+00:03:07.230 --> 00:03:08.670
+So if you need to be dynamic,
+
+62
+00:03:08.670 --> 00:03:11.680
+you have to do it at a page level and pass the data down.
+
+63
+00:03:11.680 --> 00:03:15.080
+If it's just a static query that has no variables passed
+
+64
+00:03:15.080 --> 00:03:20.080
+into it, you can simply run that wherever you want
+
+65
+00:03:20.080 --> 00:03:22.590
+with a react hook.
+
+66
+00:03:22.590 --> 00:03:23.840
+So let's start with that.
+
+67
+00:03:23.840 --> 00:03:26.143
+So it's called use static query.
+
+68
+00:03:26.143 --> 00:03:30.493
+So we'll say const pizzas is equal to useStaticQuery,
+
+69
+00:03:33.040 --> 00:03:34.790
+and we'll go ahead and import that.
+
+70
+00:03:37.410 --> 00:03:40.260
+So useStaticQuery comes from Gatsby.
+
+71
+00:03:40.260 --> 00:03:44.990
+And then inside of that, we say graphql and back text.
+
+72
+00:03:44.990 --> 00:03:47.683
+And we had to import graphql as well.
+
+73
+00:03:48.630 --> 00:03:50.040
+That comes from Gatsby.
+
+74
+00:03:50.040 --> 00:03:53.400
+So useStaticQuery and graphql both come from Gatsby.
+
+75
+00:03:53.400 --> 00:03:54.650
+And then inside of here,
+
+76
+00:03:54.650 --> 00:03:58.900
+we write a query where we want all of our toppings.
+
+77
+00:03:58.900 --> 00:04:01.842
+So say toppings is equal to actually,
+
+78
+00:04:01.842 --> 00:04:04.520
+we can do it like this, all,
+
+79
+00:04:04.520 --> 00:04:05.353
+you know what?
+
+80
+00:04:05.353 --> 00:04:08.270
+let's write it on our graphql endpoint.
+
+81
+00:04:08.270 --> 00:04:10.513
+underscore underscore underscore graphql.
+
+82
+00:04:12.980 --> 00:04:14.723
+Let's go here.
+
+83
+00:04:16.580 --> 00:04:20.173
+Query allSanityTopping.
+
+84
+00:04:22.340 --> 00:04:25.790
+And then for each topping, we want the nodes.
+
+85
+00:04:25.790 --> 00:04:27.990
+And then we want the name of the topping,
+
+86
+00:04:27.990 --> 00:04:31.440
+the idea of a vegetarian and you run that.
+
+87
+00:04:31.440 --> 00:04:34.410
+We see onions ID vegetarian,
+
+88
+00:04:34.410 --> 00:04:36.254
+all of the stuff that we want.
+
+89
+00:04:36.254 --> 00:04:37.410
+Okay, good.
+
+90
+00:04:37.410 --> 00:04:42.410
+So let's take that query and just pop it in here.
+
+91
+00:04:45.130 --> 00:04:46.960
+And I also like to rename this
+
+92
+00:04:46.960 --> 00:04:50.083
+from all sanity topping to toppings.
+
+93
+00:04:51.021 --> 00:04:56.021
+Some graphql packages will automatically pluralize
+
+94
+00:04:57.260 --> 00:05:00.350
+the names of your data types, which is cool.
+
+95
+00:05:00.350 --> 00:05:01.900
+It'd be cool if Sanity do that,
+
+96
+00:05:01.900 --> 00:05:03.420
+but it doesn't look like it does
+
+97
+00:05:03.420 --> 00:05:05.823
+so we can just rename it with toppings S.
+
+98
+00:05:07.280 --> 00:05:09.030
+And why did I call that pizzas?
+
+99
+00:05:09.030 --> 00:05:14.030
+It's top, and then let's go ahead and console log, toppings,
+
+100
+00:05:16.370 --> 00:05:19.550
+we go back to our thing here.
+
+101
+00:05:19.550 --> 00:05:23.450
+And you see, it's showing up in our console here,
+
+102
+00:05:23.450 --> 00:05:24.810
+object oh, you know what?
+
+103
+00:05:24.810 --> 00:05:27.180
+We don't want toppings.topping.
+
+104
+00:05:27.180 --> 00:05:28.830
+So we want to destructure that.
+
+105
+00:05:28.830 --> 00:05:30.030
+This is data.
+
+106
+00:05:30.030 --> 00:05:31.910
+And if we want the toppings directly,
+
+107
+00:05:31.910 --> 00:05:35.520
+we can destructure toppings from that data return payload.
+
+108
+00:05:35.520 --> 00:05:36.600
+There we go.
+
+109
+00:05:36.600 --> 00:05:40.060
+So every go nodes in each one of them.
+
+110
+00:05:40.060 --> 00:05:42.670
+So that is our,
+
+111
+00:05:42.670 --> 00:05:45.090
+get a list of all the pizzas with their toppings.
+
+112
+00:05:45.090 --> 00:05:46.347
+That that's the next one, I guess.
+
+113
+00:05:46.347 --> 00:05:47.660
+'Cause we got a list of them.
+
+114
+00:05:47.660 --> 00:05:52.300
+So in the same query, we can also query our pizzas.
+
+115
+00:05:52.300 --> 00:05:54.524
+So I bump this up.
+
+116
+00:05:54.524 --> 00:05:57.600
+We could say allSanityPizza.
+
+117
+00:05:57.600 --> 00:05:59.003
+We've done this before.
+
+118
+00:06:00.380 --> 00:06:01.293
+Nodes.
+
+119
+00:06:02.720 --> 00:06:03.640
+Etc. etc.
+
+120
+00:06:03.640 --> 00:06:05.260
+So I'm not gonna write it in here.
+
+121
+00:06:05.260 --> 00:06:07.100
+Let's just write it directly inside of here.
+
+122
+00:06:07.100 --> 00:06:10.290
+So we'll go below this.
+
+123
+00:06:10.290 --> 00:06:13.323
+I'll say pizzas, it's allSanityPizza.
+
+124
+00:06:16.910 --> 00:06:21.493
+For the nodes, we want the toppings for that pizza.
+
+125
+00:06:23.090 --> 00:06:25.660
+And for each topping we don't want the name and the ID.
+
+126
+00:06:25.660 --> 00:06:26.780
+And we're gonna use that to count.
+
+127
+00:06:26.780 --> 00:06:31.360
+I guess we could also just use just this query
+
+128
+00:06:31.360 --> 00:06:33.353
+to get a list of all of the toppings
+
+129
+00:06:33.353 --> 00:06:37.010
+and then like uniquefy them.
+
+130
+00:06:37.010 --> 00:06:37.910
+But whatever.
+
+131
+00:06:37.910 --> 00:06:39.770
+I'm going to show you, show you this way.
+
+132
+00:06:39.770 --> 00:06:41.597
+I think that this is probably a little bit better
+
+133
+00:06:41.597 --> 00:06:46.597
+because if there was a topping that had no pizzas in it,
+
+134
+00:06:47.610 --> 00:06:49.151
+you would still wanna be able to show the pizza
+
+135
+00:06:49.151 --> 00:06:51.070
+and that wouldn't show up in this case.
+
+136
+00:06:51.070 --> 00:06:52.240
+So there, there we go.
+
+137
+00:06:52.240 --> 00:06:53.073
+That's good.
+
+138
+00:06:53.073 --> 00:06:55.720
+So to get a list of all the pizzas with their topping,
+
+139
+00:06:55.720 --> 00:07:00.090
+go up here and then, we have to also destructure that
+
+140
+00:07:00.090 --> 00:07:01.203
+into pizzas.
+
+141
+00:07:04.110 --> 00:07:05.682
+Let's go here.
+
+142
+00:07:05.682 --> 00:07:07.317
+Here we go.
+
+143
+00:07:07.317 --> 00:07:09.243
+Oh, we got a console log as well.
+
+144
+00:07:13.069 --> 00:07:13.902
+There we go.
+
+145
+00:07:13.902 --> 00:07:14.735
+It's the second one.
+
+146
+00:07:14.735 --> 00:07:16.190
+So a little trick I'm gonna show you here.
+
+147
+00:07:16.190 --> 00:07:17.023
+Ready?
+
+148
+00:07:17.023 --> 00:07:18.230
+Ready for this little trick?
+
+149
+00:07:18.230 --> 00:07:20.600
+So now I'm console logging two things
+
+150
+00:07:20.600 --> 00:07:22.500
+and I'm just like, what are they?
+
+151
+00:07:22.500 --> 00:07:23.333
+Right?
+
+152
+00:07:23.333 --> 00:07:25.910
+So if you want to know what the variables of something is,
+
+153
+00:07:25.910 --> 00:07:29.433
+you can just wrap your console log in curly brackets,
+
+154
+00:07:30.360 --> 00:07:32.580
+and then that will log them out
+
+155
+00:07:32.580 --> 00:07:34.680
+with their actual variable names.
+
+156
+00:07:34.680 --> 00:07:36.900
+And that's not a special console log.
+
+157
+00:07:36.900 --> 00:07:39.330
+That's actually just creating an object
+
+158
+00:07:39.330 --> 00:07:44.180
+where the name of the property is equal to the variable.
+
+159
+00:07:44.180 --> 00:07:47.000
+And the name of the property is equal to the variable.
+
+160
+00:07:47.000 --> 00:07:48.750
+I use that all the time.
+
+161
+00:07:48.750 --> 00:07:51.920
+So again, if you want to know what your variables
+
+162
+00:07:51.920 --> 00:07:54.320
+are called, when your console log something,
+
+163
+00:07:54.320 --> 00:07:56.980
+you can throw some curly brackets around your console log
+
+164
+00:07:56.980 --> 00:07:59.300
+and it will show you what the names are.
+
+165
+00:07:59.300 --> 00:08:01.020
+Good, so we've got our pizzas,
+
+166
+00:08:01.020 --> 00:08:04.650
+our 14 pizzas with the toppings in it.
+
+167
+00:08:04.650 --> 00:08:06.983
+Okay, good, good, good, good.
+
+168
+00:08:08.440 --> 00:08:09.330
+Well, what's next?
+
+169
+00:08:09.330 --> 00:08:12.700
+Count how many pizzas are in each topping?
+
+170
+00:08:12.700 --> 00:08:13.533
+Okay.
+
+171
+00:08:15.450 --> 00:08:17.650
+We will.
+
+172
+00:08:17.650 --> 00:08:19.320
+Let's make a function, let's go up here.
+
+173
+00:08:19.320 --> 00:08:22.330
+Let's make a function called function,
+
+174
+00:08:22.330 --> 00:08:27.330
+count toppings or count.
+
+175
+00:08:30.130 --> 00:08:32.820
+We'll say function, countPizzasInToppings.
+
+176
+00:08:36.529 --> 00:08:38.862
+And that will take in pizzas
+
+177
+00:08:39.971 --> 00:08:43.304
+and then return the pizzas with counts.
+
+178
+00:08:48.320 --> 00:08:50.740
+So let's go down here.
+
+179
+00:08:50.740 --> 00:08:52.390
+Count how many pizzas are each toppings?
+
+180
+00:08:52.390 --> 00:08:56.557
+So we'll say const toppingswithcounts is equal to,
+
+181
+00:08:58.049 --> 00:08:59.670
+what did we name that silly function?
+
+182
+00:08:59.670 --> 00:09:01.503
+CountPizzasInToppings.
+
+183
+00:09:02.929 --> 00:09:05.409
+CountPizzasInToppings
+
+184
+00:09:05.409 --> 00:09:08.826
+And then we need to pass it pizzas.nodes.
+
+185
+00:09:12.556 --> 00:09:16.556
+And let's just console log toppings with counts.
+
+186
+00:09:19.950 --> 00:09:21.970
+You see how like, this is kind of annoying.
+
+187
+00:09:21.970 --> 00:09:24.110
+Like if I'm working on something like this
+
+188
+00:09:24.110 --> 00:09:28.260
+and the console, doesn't clear because of hot reloading.
+
+189
+00:09:28.260 --> 00:09:31.800
+One little hot tip I got for you
+
+190
+00:09:31.800 --> 00:09:36.800
+is console.clear before you do all of your console logging.
+
+191
+00:09:36.870 --> 00:09:38.980
+And that will then just clear the console
+
+192
+00:09:38.980 --> 00:09:40.410
+every single time that you make a change.
+
+193
+00:09:40.410 --> 00:09:43.640
+So you're not seeing any old data in there.
+
+194
+00:09:43.640 --> 00:09:46.609
+So let's go up to this function
+
+195
+00:09:46.609 --> 00:09:48.780
+and do a little bit of lifting.
+
+196
+00:09:48.780 --> 00:09:53.780
+So let's just console log the pizzas.
+
+197
+00:09:56.190 --> 00:09:57.960
+So we see our pizza's good.
+
+198
+00:09:57.960 --> 00:09:59.410
+Let's get rid of that other console log.
+
+199
+00:09:59.410 --> 00:10:00.360
+We don't need that.
+
+200
+00:10:03.110 --> 00:10:06.200
+Then we'll do a little bit of map reduce
+
+201
+00:10:06.200 --> 00:10:07.570
+to actually get this data.
+
+202
+00:10:07.570 --> 00:10:09.180
+So we'll say
+
+203
+00:10:13.545 --> 00:10:17.450
+returnpizzas.map.
+
+204
+00:10:17.450 --> 00:10:22.093
+And for each pizza we wanna just return pizza.toppings.
+
+205
+00:10:25.500 --> 00:10:29.190
+So now that gives us an array of arrays,
+
+206
+00:10:29.190 --> 00:10:33.670
+which is every single pizzas topping array.
+
+207
+00:10:33.670 --> 00:10:35.700
+And now we wanna make just one big array
+
+208
+00:10:35.700 --> 00:10:38.030
+of every single topping imaginable.
+
+209
+00:10:38.030 --> 00:10:41.230
+And that is very easily done without flat.
+
+210
+00:10:41.230 --> 00:10:46.230
+And what flat will do is it will take an array of arrays
+
+211
+00:10:46.410 --> 00:10:48.025
+and turn it into just one big array.
+
+212
+00:10:48.025 --> 00:10:52.300
+So you look at, this is an array of 49 toppings.
+
+213
+00:10:52.300 --> 00:10:55.610
+Now what we need to do is just count the number of times
+
+214
+00:10:55.610 --> 00:10:58.910
+something like honey or pear or bacon shows up,
+
+215
+00:10:58.910 --> 00:11:00.930
+and then we'll know how many pizzas
+
+216
+00:11:00.930 --> 00:11:02.920
+are in that specific topping.
+
+217
+00:11:02.920 --> 00:11:06.850
+And that is a good use case for a reduced function.
+
+218
+00:11:06.850 --> 00:11:07.760
+Give it a save.
+
+219
+00:11:07.760 --> 00:11:08.593
+There we go.
+
+220
+00:11:08.593 --> 00:11:10.750
+My (indistinct) puts it on its own line
+
+221
+00:11:10.750 --> 00:11:13.840
+and reduced function takes in two arguments.
+
+222
+00:11:13.840 --> 00:11:17.553
+An accumulator ACC and the individual item,
+
+223
+00:11:17.553 --> 00:11:19.383
+which is a topping.
+
+224
+00:11:20.570 --> 00:11:23.100
+And then whatever you return from that
+
+225
+00:11:23.100 --> 00:11:25.280
+will be used on the next loop.
+
+226
+00:11:25.280 --> 00:11:28.490
+So we'll give ourselves some of this.
+
+227
+00:11:28.490 --> 00:11:30.180
+And then we also, that reduce
+
+228
+00:11:30.180 --> 00:11:31.650
+the second argument of reduced
+
+229
+00:11:31.650 --> 00:11:32.820
+is what do you wanna start with?
+
+230
+00:11:32.820 --> 00:11:34.927
+And in our case, I want to start with an empty object.
+
+231
+00:11:34.927 --> 00:11:37.140
+'Cause that's what we're going to be storing
+
+232
+00:11:37.140 --> 00:11:38.393
+all of our accounts.
+
+233
+00:11:39.660 --> 00:11:41.530
+Now, we need to do few things.
+
+234
+00:11:41.530 --> 00:11:46.063
+We'll say check if this is an existing topping,
+
+235
+00:11:47.180 --> 00:11:52.180
+if it is, increment it by one,
+
+236
+00:11:52.280 --> 00:11:57.280
+otherwise, create a new entry in our accumulator
+
+237
+00:11:58.950 --> 00:12:01.550
+and set it to one.
+
+238
+00:12:01.550 --> 00:12:04.570
+So what's gonna happen here is we'll take our toppings
+
+239
+00:12:05.430 --> 00:12:08.879
+and we're gonna say, Oh, ham, that's a new one.
+
+240
+00:12:08.879 --> 00:12:11.510
+One, one pizza has ham.
+
+241
+00:12:11.510 --> 00:12:13.260
+Spinach, oh, that's a new one.
+
+242
+00:12:13.260 --> 00:12:15.280
+One pizza has spinach.
+
+243
+00:12:15.280 --> 00:12:17.700
+And then the third topping, oh, ham again.
+
+244
+00:12:17.700 --> 00:12:19.770
+I remember I had that one.
+
+245
+00:12:19.770 --> 00:12:22.820
+Ham is now equal to two and spinach is now equal to one
+
+246
+00:12:22.820 --> 00:12:25.810
+and it'll just keep going over every single topping,
+
+247
+00:12:25.810 --> 00:12:27.670
+counting them as we go on.
+
+248
+00:12:27.670 --> 00:12:32.070
+So what we'll do here is we'll say cons existing topping
+
+249
+00:12:32.070 --> 00:12:34.700
+is equal to we'll take our accumulator.
+
+250
+00:12:34.700 --> 00:12:36.360
+And the accumulator is this object
+
+251
+00:12:36.360 --> 00:12:37.700
+that will be holding our counts.
+
+252
+00:12:37.700 --> 00:12:39.350
+And right now it's empty.
+
+253
+00:12:39.350 --> 00:12:43.890
+Accumulator square bracket, topping.name.
+
+254
+00:12:43.890 --> 00:12:46.690
+We could probably also use the topping ID here,
+
+255
+00:12:46.690 --> 00:12:50.320
+but should we use the topping ID?
+
+256
+00:12:50.320 --> 00:12:53.253
+Let's see, the topping IDs, do they start with numbers?
+
+257
+00:12:54.120 --> 00:12:54.953
+It doesn't matter.
+
+258
+00:12:54.953 --> 00:12:56.700
+Let's use the topping name or the ID
+
+259
+00:12:56.700 --> 00:13:00.140
+because if the name has like an emoji or something in it,
+
+260
+00:13:00.140 --> 00:13:01.930
+like that, that will break it.
+
+261
+00:13:01.930 --> 00:13:04.000
+So we'll use the topping ID.
+
+262
+00:13:04.000 --> 00:13:09.000
+And then we'll say if there is an existing topping,
+
+263
+00:13:09.460 --> 00:13:12.320
+then we will increment it by one.
+
+264
+00:13:12.320 --> 00:13:16.640
+So accumulator square bracket topping.ID
+
+265
+00:13:19.900 --> 00:13:24.900
+is equal to whatever the value was before plus one.
+
+266
+00:13:27.850 --> 00:13:30.345
+This is giving me an error,
+
+267
+00:13:30.345 --> 00:13:34.000
+Assignment can be replaced with operator assignment.
+
+268
+00:13:34.000 --> 00:13:36.480
+So I believe we can just do plus plus
+
+269
+00:13:41.330 --> 00:13:43.140
+No, it doesn't like that.
+
+270
+00:13:43.140 --> 00:13:46.870
+Oh, is it the plus equals one?
+
+271
+00:13:46.870 --> 00:13:47.703
+Yes, okay.
+
+272
+00:13:47.703 --> 00:13:52.703
+So basically that is equal to that plus one.
+
+273
+00:13:53.270 --> 00:13:58.270
+That's just a long way of saying plus equals one.
+
+274
+00:14:01.480 --> 00:14:04.993
+And from this, we have to return our accumulator.
+
+275
+00:14:07.010 --> 00:14:10.130
+Otherwise, create a new entry in our accumulator
+
+276
+00:14:10.130 --> 00:14:11.850
+and set it to one.
+
+277
+00:14:11.850 --> 00:14:16.300
+So otherwise the accumulator of topping.id
+
+278
+00:14:16.300 --> 00:14:21.030
+is equal to a curly bracket.
+
+279
+00:14:21.030 --> 00:14:24.310
+Oh we need to set some sub properties here.
+
+280
+00:14:24.310 --> 00:14:29.310
+So we'll say the ID is equal to the topping.id.
+
+281
+00:14:31.620 --> 00:14:35.070
+The name is equal to topping.name.
+
+282
+00:14:35.070 --> 00:14:37.220
+And then the count is equal to one.
+
+283
+00:14:37.220 --> 00:14:40.703
+And actually up here, we need to do topping,
+
+284
+00:14:45.480 --> 00:14:49.080
+not the accumulator of ID.
+
+285
+00:14:49.080 --> 00:14:52.400
+Well, we can, we can just use this existing topping variable
+
+286
+00:14:53.410 --> 00:14:55.740
+and then we'll use dot count
+
+287
+00:14:55.740 --> 00:14:58.690
+because we're not updating the property directly.
+
+288
+00:14:58.690 --> 00:15:01.500
+We're updating the count property on the object.
+
+289
+00:15:01.500 --> 00:15:03.530
+So this will make sense in just a second.
+
+290
+00:15:03.530 --> 00:15:05.550
+So let's save that.
+
+291
+00:15:05.550 --> 00:15:08.820
+And there we go, let's open up our object.
+
+292
+00:15:08.820 --> 00:15:10.400
+You'll see.
+
+293
+00:15:10.400 --> 00:15:13.480
+There's our first one, which is vegan cheese.
+
+294
+00:15:13.480 --> 00:15:16.580
+There is one pizza and then, the idea is kinda long,
+
+295
+00:15:16.580 --> 00:15:18.881
+but that's a good way to do it.
+
+296
+00:15:18.881 --> 00:15:21.280
+Count, there we go.
+
+297
+00:15:21.280 --> 00:15:22.680
+Count.
+
+298
+00:15:22.680 --> 00:15:23.720
+Good, good, good.
+
+299
+00:15:23.720 --> 00:15:28.720
+And finally, we wanna sort this ascending, descending.
+
+300
+00:15:29.390 --> 00:15:30.910
+We wanna have the most,
+
+301
+00:15:30.910 --> 00:15:32.553
+the piece with the most toppings first
+
+302
+00:15:32.553 --> 00:15:35.030
+and then go down from there.
+
+303
+00:15:35.030 --> 00:15:37.070
+So we're not actually gonna return.
+
+304
+00:15:37.070 --> 00:15:38.080
+This pizza's right here.
+
+305
+00:15:38.080 --> 00:15:41.920
+So we'll just say const counts is equal to.
+
+306
+00:15:41.920 --> 00:15:43.598
+And we'll go down here and we'll just say,
+
+307
+00:15:43.598 --> 00:15:47.586
+sort them based on their count.
+
+308
+00:15:47.586 --> 00:15:51.550
+Const sorted toppings is equal to
+
+309
+00:15:52.920 --> 00:15:57.823
+we'll take our counts.sort.
+
+310
+00:15:59.290 --> 00:16:01.180
+Oh, actually we can't call sort directly on it
+
+311
+00:16:01.180 --> 00:16:03.060
+because it's an object.
+
+312
+00:16:03.060 --> 00:16:07.633
+So we have to run object.values on that.
+
+313
+00:16:08.580 --> 00:16:12.580
+And we'll say count, was it counts?
+
+314
+00:16:12.580 --> 00:16:13.893
+Yeah counts with an S.
+
+315
+00:16:15.130 --> 00:16:17.830
+And then we'll run sort on that.
+
+316
+00:16:17.830 --> 00:16:22.830
+Where we have A, and B and we return b.count minus a.count.
+
+317
+00:16:24.870 --> 00:16:27.100
+And that's just a quick little search function
+
+318
+00:16:27.100 --> 00:16:28.500
+that will sort them for us.
+
+319
+00:16:28.500 --> 00:16:32.250
+And then finally return the sort of toppings variable.
+
+320
+00:16:32.250 --> 00:16:33.083
+There we go.
+
+321
+00:16:33.083 --> 00:16:34.823
+Array of 34 toppings.
+
+322
+00:16:35.710 --> 00:16:38.253
+Open that up, one.
+
+323
+00:16:46.560 --> 00:16:48.730
+I think we got a bit of an error here
+
+324
+00:16:48.730 --> 00:16:53.730
+'cause it's telling us every single topping has one in it.
+
+325
+00:16:53.930 --> 00:16:54.970
+So let's debug that.
+
+326
+00:16:54.970 --> 00:16:56.820
+I don't think that's right and that's not right.
+
+327
+00:16:56.820 --> 00:16:59.663
+'Cause like pepperoni is on at least a couple of them.
+
+328
+00:17:00.536 --> 00:17:02.875
+So let's debug this real quick.
+
+329
+00:17:02.875 --> 00:17:06.070
+If there is an existing topping,
+
+330
+00:17:06.070 --> 00:17:07.640
+then take the existing topping.count.
+
+331
+00:17:07.640 --> 00:17:10.090
+So we have to console log
+
+332
+00:17:13.400 --> 00:17:16.450
+existing topping and then console log
+
+333
+00:17:16.450 --> 00:17:20.470
+the existing topping.name.
+
+334
+00:17:20.470 --> 00:17:23.150
+Let's see what we're working with here.
+
+335
+00:17:23.150 --> 00:17:24.823
+Existing topping mushrooms.
+
+336
+00:17:28.620 --> 00:17:32.950
+It thinks all of them are exist.
+
+337
+00:17:32.950 --> 00:17:33.783
+Does it?
+
+338
+00:17:33.783 --> 00:17:35.110
+No, oh we have to do the other one here
+
+339
+00:17:35.110 --> 00:17:38.690
+and say console log new topping,
+
+340
+00:17:43.560 --> 00:17:44.723
+topping.name.
+
+341
+00:17:49.635 --> 00:17:51.163
+New topping pear.
+
+342
+00:17:52.690 --> 00:17:57.690
+So it is figuring out if it is existing or not.
+
+343
+00:17:59.780 --> 00:18:04.253
+Oh, is it because we forgot an else?
+
+344
+00:18:05.410 --> 00:18:07.130
+Yeah, we forgot.
+
+345
+00:18:07.130 --> 00:18:08.883
+Did we forget an else around here?
+
+346
+00:18:14.520 --> 00:18:17.313
+Oh, we can't have a console log inside of it.
+
+347
+00:18:19.495 --> 00:18:20.328
+Alright.
+
+348
+00:18:20.328 --> 00:18:22.983
+Let's see if that, did that work for us?
+
+349
+00:18:25.380 --> 00:18:26.213
+There we go.
+
+350
+00:18:26.213 --> 00:18:27.095
+Onion count three.
+
+351
+00:18:27.095 --> 00:18:28.650
+Now we're in good shape.
+
+352
+00:18:28.650 --> 00:18:31.360
+So good catch there.
+
+353
+00:18:31.360 --> 00:18:32.193
+Next step.
+
+354
+00:18:32.193 --> 00:18:36.590
+What we want to do is loop over this newly created
+
+355
+00:18:36.590 --> 00:18:40.040
+array here and start to show them.
+
+356
+00:18:40.040 --> 00:18:42.823
+So let's go ahead and do that.
+
+357
+00:18:44.290 --> 00:18:48.620
+So count how many good loop over each of the toppings.
+
+358
+00:18:48.620 --> 00:18:53.620
+So let's say curly brackets, toppings with counts.map.
+
+359
+00:18:56.090 --> 00:18:58.750
+This is how you loop over things in React
+
+360
+00:18:58.750 --> 00:19:01.110
+and we'll loop over the topping.
+
+361
+00:19:01.110 --> 00:19:02.793
+And for each topping,
+
+362
+00:19:05.520 --> 00:19:10.520
+we are going to return parenthesis and let's just do,
+
+363
+00:19:11.020 --> 00:19:13.180
+we're gonna need a link tag.
+
+364
+00:19:13.180 --> 00:19:17.700
+So auto import that from Gatsby and then inside of that,
+
+365
+00:19:17.700 --> 00:19:20.993
+let's just do topping.name.
+
+366
+00:19:21.950 --> 00:19:23.073
+Make sure it works.
+
+367
+00:19:31.070 --> 00:19:32.670
+Okay, it's not working.
+
+368
+00:19:32.670 --> 00:19:36.740
+Oh, I didn't put this inside of my JSX.
+
+369
+00:19:36.740 --> 00:19:38.260
+This is just up here.
+
+370
+00:19:38.260 --> 00:19:42.660
+So let's bring that sucker down here
+
+371
+00:19:42.660 --> 00:19:47.193
+and remove the paragraph tag and that parenthesis.
+
+372
+00:19:49.170 --> 00:19:50.700
+Here we go.
+
+373
+00:19:50.700 --> 00:19:52.833
+Onion, pepper roasted, good, good, good.
+
+374
+00:19:55.300 --> 00:19:59.743
+Now we also need to link this to,
+
+375
+00:20:00.907 --> 00:20:04.142
+and in our case, I'm going to be using the topping name
+
+376
+00:20:04.142 --> 00:20:05.520
+right in the URL.
+
+377
+00:20:05.520 --> 00:20:07.750
+So earlier, remember we generated slugs
+
+378
+00:20:07.750 --> 00:20:09.300
+for each of the pizza's names
+
+379
+00:20:09.300 --> 00:20:11.710
+and as well as the slice masters name?
+
+380
+00:20:11.710 --> 00:20:16.710
+you can also just use the pizza's name without a slug
+
+381
+00:20:16.740 --> 00:20:17.940
+directly in the URL.
+
+382
+00:20:17.940 --> 00:20:22.900
+The downside to that is if the topping has like a space
+
+383
+00:20:22.900 --> 00:20:24.812
+or some other character in it,
+
+384
+00:20:24.812 --> 00:20:27.161
+then it will get encoded in the URL
+
+385
+00:20:27.161 --> 00:20:29.560
+rather than looking nice with a slug.
+
+386
+00:20:29.560 --> 00:20:32.110
+So I thought I would show you both ways.
+
+387
+00:20:32.110 --> 00:20:34.220
+So I wanna link to forward slash topping
+
+388
+00:20:34.220 --> 00:20:37.223
+forward slash topping.name.
+
+389
+00:20:39.260 --> 00:20:41.543
+And now if I click on roasted garlic,
+
+390
+00:20:42.620 --> 00:20:45.860
+you see it doesn't go anywhere
+
+391
+00:20:45.860 --> 00:20:49.920
+because we haven't created a single topping pages just yet,
+
+392
+00:20:49.920 --> 00:20:51.610
+but it does link you to it.
+
+393
+00:20:51.610 --> 00:20:52.720
+Actually that looks pretty good,
+
+394
+00:20:52.720 --> 00:20:54.150
+it has a space in it.
+
+395
+00:20:54.150 --> 00:20:57.670
+You can see that it puts the URL encoded space in the error,
+
+396
+00:20:57.670 --> 00:21:00.320
+but not right here, which is pretty cool.
+
+397
+00:21:00.320 --> 00:21:02.090
+Okay, so that's working,
+
+398
+00:21:02.090 --> 00:21:04.108
+but we need to show a few more things here.
+
+399
+00:21:04.108 --> 00:21:09.108
+So let's also give ourselves some room inside this link.
+
+400
+00:21:10.040 --> 00:21:14.940
+We need a span with the class of name.
+
+401
+00:21:14.940 --> 00:21:15.980
+We'll put the topping name.
+
+402
+00:21:15.980 --> 00:21:20.270
+We need to span with the class of count.
+
+403
+00:21:20.270 --> 00:21:23.173
+We'll put the topping.count in there.
+
+404
+00:21:26.120 --> 00:21:27.250
+Let's open up our dev tools.
+
+405
+00:21:27.250 --> 00:21:31.230
+I bet it's yelling at us for not having a key.
+
+406
+00:21:31.230 --> 00:21:32.883
+I'll take that concept clear out.
+
+407
+00:21:35.870 --> 00:21:38.290
+Oh, weird, it's not.
+
+408
+00:21:38.290 --> 00:21:39.123
+Oh, there we go.
+
+409
+00:21:39.123 --> 00:21:40.521
+That's what we're looking for.
+
+410
+00:21:40.521 --> 00:21:43.080
+Each child in a list should have unique key prop.
+
+411
+00:21:43.080 --> 00:21:43.913
+Okay.
+
+412
+00:21:43.913 --> 00:21:46.110
+So again, anytime you map over something,
+
+413
+00:21:46.110 --> 00:21:50.540
+your immediate child needs a key prop.
+
+414
+00:21:50.540 --> 00:21:52.573
+And for that, we'll use the topping.id.
+
+415
+00:21:53.910 --> 00:21:55.771
+We're also gonna need a class on here
+
+416
+00:21:55.771 --> 00:21:58.520
+that shows us if we're on the toppings page,
+
+417
+00:21:58.520 --> 00:22:00.370
+but that's ahead of us right now.
+
+418
+00:22:00.370 --> 00:22:01.826
+So we're gonna leave it at that.
+
+419
+00:22:01.826 --> 00:22:03.910
+Let's write a little bit more CSS
+
+420
+00:22:03.910 --> 00:22:06.640
+to get this looking kinda nifty.
+
+421
+00:22:06.640 --> 00:22:10.180
+So we'll go up to the top here.
+
+422
+00:22:10.180 --> 00:22:14.713
+Say const capital T toppings, styles.
+
+423
+00:22:16.780 --> 00:22:18.923
+Is equal to style.div.
+
+424
+00:22:20.600 --> 00:22:25.471
+Gotta import style from, oh, that wasn't it.
+
+425
+00:22:25.471 --> 00:22:26.304
+There we go.
+
+426
+00:22:26.304 --> 00:22:28.820
+Import styles from style components.
+
+427
+00:22:28.820 --> 00:22:30.770
+And again, if you don't feel like writing this CSS,
+
+428
+00:22:30.770 --> 00:22:34.440
+you can just go grab this from the finished file,
+
+429
+00:22:34.440 --> 00:22:36.320
+but I'm gonna go ahead and show you.
+
+430
+00:22:36.320 --> 00:22:39.270
+So we are going to use Flexbox for this one.
+
+431
+00:22:39.270 --> 00:22:43.546
+And the reason behind that is because I'll show you.
+
+432
+00:22:43.546 --> 00:22:45.260
+We wanna flex.
+
+433
+00:22:45.260 --> 00:22:47.580
+Let me show you here is if I give that a save
+
+434
+00:22:47.580 --> 00:22:49.484
+and we go ahead and use this topping styles
+
+435
+00:22:49.484 --> 00:22:54.484
+on right here instead of div, we want these topping styles.
+
+436
+00:22:57.390 --> 00:22:59.319
+So this is gonna go forever.
+
+437
+00:22:59.319 --> 00:23:04.203
+So we wanna wrap that, flex, wrap wrap.
+
+438
+00:23:06.060 --> 00:23:07.910
+Let's make this a little bit smaller.
+
+439
+00:23:09.290 --> 00:23:12.290
+A gap of one rem.
+
+440
+00:23:12.290 --> 00:23:16.610
+It's another beautiful thing about Flexbox
+
+441
+00:23:16.610 --> 00:23:18.710
+is that now we have a gap property
+
+442
+00:23:18.710 --> 00:23:22.370
+and then margin bottom for rem.
+
+443
+00:23:22.370 --> 00:23:24.300
+Just a little space right here.
+
+444
+00:23:24.300 --> 00:23:25.670
+Okay, good.
+
+445
+00:23:25.670 --> 00:23:28.010
+We'll take each of the links that are in there.
+
+446
+00:23:28.010 --> 00:23:31.580
+So even though we use a link tag in Gatsby,
+
+447
+00:23:31.580 --> 00:23:33.930
+it is always just rendered out to an anchor link
+
+448
+00:23:33.930 --> 00:23:36.960
+so we can still use the a selector to grab it.
+
+449
+00:23:36.960 --> 00:23:39.900
+And for that, we wanna display grid on it
+
+450
+00:23:39.900 --> 00:23:42.403
+because we wanna put these things side by side.
+
+451
+00:23:45.213 --> 00:23:47.763
+We'll add some padding, 5px.
+
+452
+00:23:49.850 --> 00:23:52.623
+I'll do grid template,
+
+453
+00:23:53.800 --> 00:23:58.800
+columns auto 1fr grid gap zero, one rem.
+
+454
+00:24:01.560 --> 00:24:06.010
+So in this case, I only want the spacing to between here,
+
+455
+00:24:06.010 --> 00:24:08.923
+but not to the top and to the bottom of each of those.
+
+456
+00:24:09.949 --> 00:24:14.949
+The background, it's gonna be a variable, var gray.
+
+457
+00:24:19.174 --> 00:24:20.343
+Okay, okay.
+
+458
+00:24:21.540 --> 00:24:26.540
+We will do some more align items on Flexbox center
+
+459
+00:24:30.500 --> 00:24:34.393
+that just aligns the items vertically.
+
+460
+00:24:36.130 --> 00:24:37.443
+Border radius.
+
+461
+00:24:42.372 --> 00:24:46.480
+2px.
+
+462
+00:24:46.480 --> 00:24:48.460
+And then we'll grab the count.
+
+463
+00:24:48.460 --> 00:24:49.400
+So .count
+
+464
+00:24:54.023 --> 00:24:56.150
+``background, white
+
+465
+00:24:58.290 --> 00:25:02.890
+padding, 2px, 5px.
+
+466
+00:25:02.890 --> 00:25:06.517
+This is why we did that align items right here,
+
+467
+00:25:06.517 --> 00:25:08.970
+because now we've added padding.
+
+468
+00:25:08.970 --> 00:25:10.133
+See if I take it off,
+
+469
+00:25:11.310 --> 00:25:13.150
+you see how like the padding
+
+470
+00:25:13.150 --> 00:25:14.390
+only made them make the padding
+
+471
+00:25:14.390 --> 00:25:16.063
+a little bit more ridiculous.
+
+472
+00:25:17.210 --> 00:25:20.180
+See how this is not vertically align itself?
+
+473
+00:25:20.180 --> 00:25:22.650
+But if I put that align items back on,
+
+474
+00:25:22.650 --> 00:25:24.650
+it will then center itself inside of it,
+
+475
+00:25:24.650 --> 00:25:27.853
+regardless of if he add padding to one thing or another.
+
+476
+00:25:29.912 --> 00:25:31.362
+We'll bring that back to two.
+
+477
+00:25:35.650 --> 00:25:40.650
+And we will also just look ahead when we have an active,
+
+478
+00:25:40.789 --> 00:25:42.653
+we'll say the background,
+
+479
+00:25:45.380 --> 00:25:47.423
+let's say var yellow.
+
+480
+00:25:49.880 --> 00:25:51.897
+All right, that's looking pretty good.
+
+481
+00:25:51.897 --> 00:25:54.250
+What we need to do now is to figure out
+
+482
+00:25:54.250 --> 00:25:57.450
+how do we dynamically create the pages
+
+483
+00:25:57.450 --> 00:25:59.680
+both for like the pizza, you click on a pizza,
+
+484
+00:25:59.680 --> 00:26:02.870
+it doesn't work, you click on a topping,
+
+485
+00:26:02.870 --> 00:26:04.350
+that also doesn't work.
+
+486
+00:26:04.350 --> 00:26:06.453
+So that's what we're gonna be learning next.
+

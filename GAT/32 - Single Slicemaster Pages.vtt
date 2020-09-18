@@ -1,0 +1,586 @@
+﻿WEBVTT
+
+1
+00:00:00.016 --> 00:00:02.599
+(upbeat music)
+
+2
+00:00:04.410 --> 00:00:05.243
+<v Instructor>Alright, now we gotta work</v>
+
+3
+00:00:05.243 --> 00:00:07.950
+on the individual SliceMasters pages
+
+4
+00:00:07.950 --> 00:00:09.400
+and this is something you should be able
+
+5
+00:00:09.400 --> 00:00:10.460
+to do on your own right now.
+
+6
+00:00:10.460 --> 00:00:14.320
+So I'm gonna invite you to try to,
+
+7
+00:00:14.320 --> 00:00:16.900
+when you click on one of these slice masters make this page,
+
+8
+00:00:16.900 --> 00:00:17.960
+do all the querying,
+
+9
+00:00:17.960 --> 00:00:21.480
+all the looping, all of that good stuff and then like
+
+10
+00:00:21.480 --> 00:00:23.460
+if you got it you can skip this video,
+
+11
+00:00:23.460 --> 00:00:25.280
+if you'd like to see how I come up on it,
+
+12
+00:00:25.280 --> 00:00:27.550
+then let's get going.
+
+13
+00:00:27.550 --> 00:00:28.950
+So, what do we need to do?
+
+14
+00:00:28.950 --> 00:00:33.530
+Well, we need to make a component
+
+15
+00:00:33.530 --> 00:00:35.150
+that is a template for this page
+
+16
+00:00:35.150 --> 00:00:38.190
+because we're not gonna manually make each single page,
+
+17
+00:00:38.190 --> 00:00:40.676
+we are going to be creating...
+
+18
+00:00:40.676 --> 00:00:44.270
+It'd be kind of cool and this is what Next.js does
+
+19
+00:00:44.270 --> 00:00:46.930
+is if we had like a pages directory,
+
+20
+00:00:46.930 --> 00:00:48.990
+a source, pages and like,
+
+21
+00:00:48.990 --> 00:00:51.200
+we had like a folder called slicemaster
+
+22
+00:00:51.200 --> 00:00:55.320
+and then we had just like a star dot JS or person dot JS,
+
+23
+00:00:55.320 --> 00:00:57.340
+and it automatically pick that up for us,
+
+24
+00:00:57.340 --> 00:00:58.410
+that would be really neat,
+
+25
+00:00:58.410 --> 00:01:01.120
+like a kind of file based routing,
+
+26
+00:01:01.120 --> 00:01:03.440
+but Gatsby doesn't have that, at least not yet,
+
+27
+00:01:03.440 --> 00:01:04.730
+I'm not sure if they're planning on that.
+
+28
+00:01:04.730 --> 00:01:07.970
+So what we need to do is go into our Gatsby node,
+
+29
+00:01:07.970 --> 00:01:10.940
+clear all the data, loop over them, create the page,
+
+30
+00:01:10.940 --> 00:01:14.830
+which is very much like we've done with the rest of it.
+
+31
+00:01:14.830 --> 00:01:18.770
+So you can actually sort of like piggyback
+
+32
+00:01:18.770 --> 00:01:23.000
+on our function right here, turn slicemasters into pages,
+
+33
+00:01:23.000 --> 00:01:28.000
+because we have already queried all the slice masters,
+
+34
+00:01:28.010 --> 00:01:30.760
+and we've already looped over them.
+
+35
+00:01:30.760 --> 00:01:32.210
+So we can actually go in here
+
+36
+00:01:32.210 --> 00:01:34.070
+where we wrote this little To Do,
+
+37
+00:01:34.070 --> 00:01:36.400
+turn each slice master into their own page.
+
+38
+00:01:36.400 --> 00:01:39.090
+So that's what we will do right now.
+
+39
+00:01:39.090 --> 00:01:42.600
+Well what do we got here?
+
+40
+00:01:42.600 --> 00:01:45.220
+Data dot, what do we call that?
+
+41
+00:01:45.220 --> 00:01:48.893
+Slicemasters, slice masters.forEach slice master.
+
+42
+00:01:53.040 --> 00:01:58.040
+And we'll go in here, say actions.create,
+
+43
+00:01:59.500 --> 00:02:00.450
+what was I creating?
+
+44
+00:02:00.450 --> 00:02:02.360
+Node createPage.
+
+45
+00:02:02.360 --> 00:02:05.490
+Remember we did that right here.
+
+46
+00:02:05.490 --> 00:02:07.000
+So createPage.
+
+47
+00:02:08.090 --> 00:02:10.363
+And the template will be,
+
+48
+00:02:11.210 --> 00:02:14.080
+we will resolve the...
+
+49
+00:02:14.080 --> 00:02:17.010
+Actually we have to create it first, so hold on a sec here.
+
+50
+00:02:17.010 --> 00:02:21.460
+Let's go into our templates directory,
+
+51
+00:02:21.460 --> 00:02:24.770
+and let's actually just open up Pizza.js
+
+52
+00:02:25.990 --> 00:02:28.610
+and just save a copy of Pizza.js
+
+53
+00:02:28.610 --> 00:02:31.800
+and make it Slicemaster capital S
+
+54
+00:02:31.800 --> 00:02:32.950
+singular Slicemaster.js
+
+55
+00:02:35.380 --> 00:02:38.993
+And then let's just take out the Pizza Grid,
+
+56
+00:02:39.940 --> 00:02:41.143
+let's take that out,
+
+57
+00:02:42.210 --> 00:02:44.460
+let's sorry, let's just take everything out here,
+
+58
+00:02:44.460 --> 00:02:46.023
+let's just do a paragraph hey,
+
+59
+00:02:47.370 --> 00:02:49.610
+then we'll rename the Single Pizza Page
+
+60
+00:02:49.610 --> 00:02:52.610
+to slicemaster Page
+
+61
+00:02:52.610 --> 00:02:55.697
+and destructure the slicemaster.
+
+62
+00:02:59.210 --> 00:03:04.210
+Yeah slicemaster and then
+
+63
+00:03:07.810 --> 00:03:10.033
+let's take this query,
+
+64
+00:03:10.960 --> 00:03:12.083 line:15% 
+out for now.
+
+65
+00:03:13.360 --> 00:03:18.053 line:15% 
+Okay and then we'll go back to our Gatsby Node and resolve.
+
+66
+00:03:19.170 --> 00:03:23.907
+We need to go into the source, template, Slicemaster.js.
+
+67
+00:03:31.120 --> 00:03:32.160
+Oh, that shouldn't be template,
+
+68
+00:03:32.160 --> 00:03:35.680
+that should be component, sorry, component.
+
+69
+00:03:35.680 --> 00:03:38.530
+Other things we need to do is pass it a path,
+
+70
+00:03:38.530 --> 00:03:40.760
+so it's gonna be /slicemaster/
+
+71
+00:03:43.410 --> 00:03:45.820
+make this backtick so we can interpolate the slug
+
+72
+00:03:45.820 --> 00:03:46.653
+of the person
+
+73
+00:03:46.653 --> 00:03:50.253
+slicemaster.slug.current.
+
+74
+00:03:52.600 --> 00:03:56.440
+And then we also wanna pass some context to that,
+
+75
+00:03:56.440 --> 00:04:01.030
+or the name of the person is the slicemaster.person,
+
+76
+00:04:01.030 --> 00:04:05.673
+and the slug is the slicemaster.slug.current.
+
+77
+00:04:08.130 --> 00:04:11.223
+Alright, let's go ahead and kill our process here.
+
+78
+00:04:14.210 --> 00:04:15.083
+Restart it.
+
+79
+00:04:17.530 --> 00:04:20.820
+And let's just see if these pages are being created for us,
+
+80
+00:04:20.820 --> 00:04:23.020
+or if we get any errors that we need to fix.
+
+81
+00:04:26.900 --> 00:04:28.943
+Oh, a bit of an error popped up here.
+
+82
+00:04:29.910 --> 00:04:34.910
+Oh, data.slicemasters.forEach is not a function, okay?
+
+83
+00:04:36.260 --> 00:04:39.083
+So that means this is wrong.
+
+84
+00:04:41.354 --> 00:04:44.880
+Slicemasters.nodes,I always do that, always do it.
+
+85
+00:04:44.880 --> 00:04:46.260
+Alright, we'll kill it,
+
+86
+00:04:46.260 --> 00:04:47.383
+start it again.
+
+87
+00:04:50.261 --> 00:04:51.780
+There we go it's up and running,
+
+88
+00:04:51.780 --> 00:04:52.963
+now, if I refresh,
+
+89
+00:04:54.010 --> 00:04:55.150
+we do get a page,
+
+90
+00:04:55.150 --> 00:04:58.373
+we get an error here, cannot access property, oh yeah.
+
+91
+00:04:59.550 --> 00:05:00.950
+Slice masters cause we're trying
+
+92
+00:05:00.950 --> 00:05:02.700
+to destructure slice master here
+
+93
+00:05:02.700 --> 00:05:03.590
+when we haven't...
+
+94
+00:05:03.590 --> 00:05:04.500
+We don't have a query.
+
+95
+00:05:04.500 --> 00:05:08.200
+So let's just take that whole thing out, Save it,
+
+96
+00:05:08.200 --> 00:05:09.880
+there we go.
+
+97
+00:05:09.880 --> 00:05:13.140
+Okay, so if we go to any slicemaster now,
+
+98
+00:05:13.140 --> 00:05:15.680
+we should see a page that's been created
+
+99
+00:05:15.680 --> 00:05:20.680
+and if we go to a page that doesn't exist, we should see,
+
+100
+00:05:23.150 --> 00:05:26.920
+we have pages for every single slicemaster, okay?
+
+101
+00:05:26.920 --> 00:05:27.770
+So next up,
+
+102
+00:05:27.770 --> 00:05:31.933
+we need to create a query for that specific person.
+
+103
+00:05:34.840 --> 00:05:39.563
+So we will export const query is equal to graphql.
+
+104
+00:05:43.107 --> 00:05:47.700
+And then in here we will query and we expect somebody
+
+105
+00:05:47.700 --> 00:05:50.300
+to pass us the slug
+
+106
+00:05:50.300 --> 00:05:54.510
+and of course our context will be passing us the slug
+
+107
+00:05:54.510 --> 00:05:57.470
+and we'll use that slug to query the specific person
+
+108
+00:05:57.470 --> 00:06:00.893
+for that, so there'll be a String that is required,
+
+109
+00:06:02.160 --> 00:06:07.160
+then we'll ask for a person which is really sanityPerson,
+
+110
+00:06:09.320 --> 00:06:14.320
+where the slug.current is equal to the slug value,
+
+111
+00:06:18.360 --> 00:06:21.480
+slug variable that was passed in.
+
+112
+00:06:21.480 --> 00:06:26.083
+Alright, then for each person, you know note their name,
+
+113
+00:06:28.780 --> 00:06:29.613
+note their ID,
+
+114
+00:06:29.613 --> 00:06:32.450
+note their description,
+
+115
+00:06:32.450 --> 00:06:35.570
+and we want their image, which has an asset,
+
+116
+00:06:35.570 --> 00:06:38.500
+which has a fluid.
+
+117
+00:06:38.500 --> 00:06:41.510
+And we're going to give ourselves a big picture
+
+118
+00:06:41.510 --> 00:06:42.580
+of the slice master.
+
+119
+00:06:42.580 --> 00:06:45.030
+So a thousand pixels
+
+120
+00:06:45.030 --> 00:06:49.883
+and max height of 750 PX.
+
+121
+00:06:52.000 --> 00:06:55.020
+And then we want ...GatsbySanityImageFluid.
+
+122
+00:06:59.610 --> 00:07:03.070
+Alright, let's go to one of our slice masters pages,
+
+123
+00:07:03.070 --> 00:07:04.570
+let's go to Slick himself
+
+124
+00:07:05.660 --> 00:07:09.720
+and then we will destructure data
+
+125
+00:07:09.720 --> 00:07:11.270
+and let's just console.logdata,
+
+126
+00:07:15.320 --> 00:07:18.883
+data.person, here we go, there's Slick himself.
+
+127
+00:07:19.810 --> 00:07:22.310
+So we can, destructure this a little bit further,
+
+128
+00:07:22.310 --> 00:07:26.020
+we could destructure the person like that
+
+129
+00:07:26.020 --> 00:07:29.920
+and then console.log the person, here we go.
+
+130
+00:07:29.920 --> 00:07:31.750
+We're seeing it, okay, cool,
+
+131
+00:07:31.750 --> 00:07:36.750
+now what I need to do is just return a div...
+
+132
+00:07:36.920 --> 00:07:39.520
+I'm gonna just give it a div of the class of center.
+
+133
+00:07:40.370 --> 00:07:43.480
+And then in that we need Gatsby image
+
+134
+00:07:43.480 --> 00:07:48.480
+or a person fluid is equal to person.image.asset.fluid,
+
+135
+00:07:51.720 --> 00:07:53.230
+let's see if an image shows up,
+
+136
+00:07:53.230 --> 00:07:56.373
+there he is and loads,
+
+137
+00:07:57.280 --> 00:07:59.690
+underneath that we'll have the h2
+
+138
+00:07:59.690 --> 00:08:03.770
+span with a class of mark on it.
+
+139
+00:08:03.770 --> 00:08:07.003
+And then inside of that, we say person.name,
+
+140
+00:08:09.860 --> 00:08:12.160
+that's working on the file underneath
+
+141
+00:08:12.160 --> 00:08:15.363
+that paragraph tag, person.description.
+
+142
+00:08:19.570 --> 00:08:23.860
+Beautiful, I don't need any more CSS added to that,
+
+143
+00:08:23.860 --> 00:08:25.730
+so actually we can get rid of this importing
+
+144
+00:08:25.730 --> 00:08:27.240
+of styled components
+
+145
+00:08:27.240 --> 00:08:30.600
+and that is our single slicemaster page.
+
+146
+00:08:30.600 --> 00:08:31.433
+Good job.
+

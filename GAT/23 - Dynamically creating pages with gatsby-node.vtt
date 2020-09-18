@@ -1,0 +1,1770 @@
+﻿WEBVTT
+
+1
+00:00:00.219 --> 00:00:02.802
+(upbeat music)
+
+2
+00:00:05.130 --> 00:00:05.963
+<v Instructor>We're gonna talk about</v>
+
+3
+00:00:05.963 --> 00:00:07.100
+dynamically creating pages.
+
+4
+00:00:07.100 --> 00:00:09.740
+So every single one of these pizzas, Pear Necessities,
+
+5
+00:00:09.740 --> 00:00:11.940
+Veggie Delight, Cluck Norris, all of these,
+
+6
+00:00:11.940 --> 00:00:13.700
+when you click on one of them,
+
+7
+00:00:13.700 --> 00:00:16.660
+it goes to /pizza, forward slash whatever the slug is.
+
+8
+00:00:16.660 --> 00:00:21.130
+Now, if we wanna create a new page for every single pizza,
+
+9
+00:00:21.130 --> 00:00:24.090
+does that mean we have to go into our pages folder here
+
+10
+00:00:24.090 --> 00:00:26.930
+and create a new folder called pizzas?
+
+11
+00:00:26.930 --> 00:00:29.330
+And then every single pizza has its own file?
+
+12
+00:00:29.330 --> 00:00:30.860
+No, that doesn't make sense.
+
+13
+00:00:30.860 --> 00:00:34.010
+Cause like then how would somebody log into your sanity,
+
+14
+00:00:34.010 --> 00:00:36.310
+create a pizza and expect it to show up on the page?
+
+15
+00:00:36.310 --> 00:00:39.760
+So now we're gonna look at how we can programmatically
+
+16
+00:00:39.760 --> 00:00:42.380
+create pages with the Gatsby node file.
+
+17
+00:00:42.380 --> 00:00:45.757
+So let's crack open our Gatsby-
+
+18
+00:00:45.757 --> 00:00:48.010
+No, we don't even have that file yet.
+
+19
+00:00:48.010 --> 00:00:51.090
+Okay. So we've got all these,
+
+20
+00:00:51.090 --> 00:00:53.370
+we've got Gatsby browser, which we wrap it.
+
+21
+00:00:53.370 --> 00:00:56.210
+We have Gatsby SSR, which is essentially the same thing,
+
+22
+00:00:56.210 --> 00:00:59.540
+but happens when the pages are generated rather than
+
+23
+00:00:59.540 --> 00:01:00.980
+after the page is loaded.
+
+24
+00:01:00.980 --> 00:01:05.360
+And then finally we have Gatsby-node and I have
+
+25
+00:01:05.360 --> 00:01:08.770
+the docs open here and it gives plugins and site builders,
+
+26
+00:01:08.770 --> 00:01:10.640
+site builders, that's us,
+
+27
+00:01:10.640 --> 00:01:14.870
+APIs for controlling your site's data in the graph QL layer.
+
+28
+00:01:14.870 --> 00:01:16.290
+So that's cool.
+
+29
+00:01:16.290 --> 00:01:17.880
+So we're gonna go ahead and make one of those.
+
+30
+00:01:17.880 --> 00:01:22.880
+It's called Gatsby-node.js and just like all the other
+
+31
+00:01:24.390 --> 00:01:29.090
+Gatsby-whatever files we're able to hook in
+
+32
+00:01:29.090 --> 00:01:32.010
+to different points of Gatsby build cycle
+
+33
+00:01:32.010 --> 00:01:35.520
+and do things like dynamically create pages.
+
+34
+00:01:35.520 --> 00:01:38.910
+So we're going to be hooking into the create pages hook.
+
+35
+00:01:38.910 --> 00:01:42.150
+It says this extension point, I call it a hook.
+
+36
+00:01:42.150 --> 00:01:43.990
+It's called an extension point.
+
+37
+00:01:43.990 --> 00:01:46.620
+It's called after the initial sourcing of data.
+
+38
+00:01:46.620 --> 00:01:51.620
+So that's after all of the sanity data has been
+
+39
+00:01:52.130 --> 00:01:55.650
+pulled into our graph QL API so that you can query data
+
+40
+00:01:55.650 --> 00:01:57.130
+in order to create pages.
+
+41
+00:01:57.130 --> 00:01:58.357
+That's exactly what we wanna do.
+
+42
+00:01:58.357 --> 00:02:00.250
+We wanna be able to query our pizzas
+
+43
+00:02:00.250 --> 00:02:01.660
+and create each of those pages.
+
+44
+00:02:01.660 --> 00:02:06.660
+So, what we'll do here is we will export a function called
+
+45
+00:02:07.750 --> 00:02:09.100
+create pages.
+
+46
+00:02:09.100 --> 00:02:11.660
+'Cause this is a specific function name,
+
+47
+00:02:11.660 --> 00:02:13.270
+that's from the API.
+
+48
+00:02:13.270 --> 00:02:18.060
+And then we also have to make that in a sync function.
+
+49
+00:02:18.060 --> 00:02:19.380
+And then inside of here,
+
+50
+00:02:19.380 --> 00:02:21.843
+let's just console log creating pages.
+
+51
+00:02:24.250 --> 00:02:26.120
+Let's put a bunch in there just so we can see it.
+
+52
+00:02:26.120 --> 00:02:30.440
+Now, what I want you to do is go back to your Gatsby build,
+
+53
+00:02:30.440 --> 00:02:33.400
+kill it, and let's start it up again.
+
+54
+00:02:33.400 --> 00:02:38.400
+And we'll see, as this thing runs, it's going to note that,
+
+55
+00:02:39.050 --> 00:02:42.880
+oh, there's a create pages entry point.
+
+56
+00:02:42.880 --> 00:02:45.320
+I'm going to run whatever code is in there.
+
+57
+00:02:45.320 --> 00:02:49.100
+So give it a sec. See, how it's sourcing data from sanity.
+
+58
+00:02:49.100 --> 00:02:51.580
+Once sanity, there you go, look at that.
+
+59
+00:02:51.580 --> 00:02:52.413
+There's your dinner.
+
+60
+00:02:52.413 --> 00:02:55.650
+You get all the, you get the hook right into,
+
+61
+00:02:55.650 --> 00:02:58.200
+after the sanity data has been done
+
+62
+00:02:58.200 --> 00:03:01.730
+before it actually goes ahead and builds the website.
+
+63
+00:03:01.730 --> 00:03:05.640
+So that's exactly what we wanna do right there.
+
+64
+00:03:05.640 --> 00:03:09.030
+They pass you a set of params here,
+
+65
+00:03:09.030 --> 00:03:12.070
+that if we take a look here, create pages,
+
+66
+00:03:12.070 --> 00:03:13.240
+they give you a graph QL,
+
+67
+00:03:13.240 --> 00:03:15.590
+they give you some actions in the graph Qls
+
+68
+00:03:15.590 --> 00:03:16.830
+used for querying data
+
+69
+00:03:16.830 --> 00:03:20.380
+actions are used for actually manually creating pages.
+
+70
+00:03:20.380 --> 00:03:25.380
+So what we wanna do here is to create a page for ourselves.
+
+71
+00:03:25.470 --> 00:03:30.470
+Now we're going to be doing create pages dynamically.
+
+72
+00:03:32.160 --> 00:03:35.610
+We wanna create, we've got, we've three different kinds.
+
+73
+00:03:35.610 --> 00:03:39.570
+We have the pizzas, we've got the toppings
+
+74
+00:03:39.570 --> 00:03:41.750
+and we have the slice masters.
+
+75
+00:03:41.750 --> 00:03:44.010
+So all three of these pieces of content
+
+76
+00:03:44.010 --> 00:03:46.040
+needed to be dynamically created.
+
+77
+00:03:46.040 --> 00:03:49.340
+So rather than just stuff them all into here,
+
+78
+00:03:49.340 --> 00:03:52.160
+what I'd like to do is make another function and simply just
+
+79
+00:03:52.160 --> 00:03:53.740
+await it inside of here.
+
+80
+00:03:53.740 --> 00:03:55.890
+So we're going to make a new function here.
+
+81
+00:03:55.890 --> 00:04:00.890
+That's called turn pizzas into pages
+
+82
+00:04:01.091 --> 00:04:04.041
+and that will take params, oh, this should have an S on it.
+
+83
+00:04:05.980 --> 00:04:09.330
+And that also should be in a sync function.
+
+84
+00:04:09.330 --> 00:04:11.080
+And there's a couple of things we're gonna do,
+
+85
+00:04:11.080 --> 00:04:14.410
+One, get a template for this page.
+
+86
+00:04:14.410 --> 00:04:17.660
+'Cause we still need to write some JSX and template it out
+
+87
+00:04:17.660 --> 00:04:21.540
+two, we need to query all pizzas,
+
+88
+00:04:21.540 --> 00:04:25.700
+three, loop over each pizza
+
+89
+00:04:25.700 --> 00:04:29.720
+and create a page for that pizza.
+
+90
+00:04:29.720 --> 00:04:31.270
+All right. So let's go ahead and do that.
+
+91
+00:04:31.270 --> 00:04:34.760
+So first thing we need to do is we're going to create
+
+92
+00:04:34.760 --> 00:04:36.320
+a template for this page.
+
+93
+00:04:36.320 --> 00:04:41.010
+Now this is the same idea as a pages page,
+
+94
+00:04:41.010 --> 00:04:43.990
+but because it's not a route we're going to stick them.
+
+95
+00:04:43.990 --> 00:04:46.660
+You can stick them in the components folder.
+
+96
+00:04:46.660 --> 00:04:50.443
+I like to create a new folder called templates.
+
+97
+00:04:51.403 --> 00:04:52.910
+Oh, oh, it already exists.
+
+98
+00:04:52.910 --> 00:04:54.260
+It's in there. Okay.
+
+99
+00:04:54.260 --> 00:04:57.700
+It's already in there and we will call that,
+
+100
+00:04:57.700 --> 00:04:59.203
+what do we call that?
+
+101
+00:05:03.130 --> 00:05:05.900
+And we will call that capital P pizza.JS.
+
+102
+00:05:05.900 --> 00:05:07.680
+You may be asking Wes,
+
+103
+00:05:07.680 --> 00:05:10.360
+why does that pizza have a capital
+
+104
+00:05:10.360 --> 00:05:15.230
+where all your other pages don't have capitals on them?
+
+105
+00:05:15.230 --> 00:05:18.160
+Well, to me, this is a template
+
+106
+00:05:18.160 --> 00:05:20.620
+that can be reused multiple times.
+
+107
+00:05:20.620 --> 00:05:23.971
+And if something can be reuse multiple times,
+
+108
+00:05:23.971 --> 00:05:27.590
+it is a class and it should have a capital on it
+
+109
+00:05:27.590 --> 00:05:31.050
+because every single instance will be lower case P pizza.
+
+110
+00:05:31.050 --> 00:05:33.840
+So that's kinda why I put a capital in there.
+
+111
+00:05:33.840 --> 00:05:36.310
+Does it matter? No, absolutely not.
+
+112
+00:05:36.310 --> 00:05:39.090
+But that's just kinda how I like to go about it.
+
+113
+00:05:39.090 --> 00:05:40.830
+Now in here,
+
+114
+00:05:40.830 --> 00:05:43.970
+we are going to export default pizza page
+
+115
+00:05:45.340 --> 00:05:48.040
+or maybe call it single pizza page
+
+116
+00:05:48.980 --> 00:05:52.120
+and then let's just return P
+
+117
+00:05:53.060 --> 00:05:56.433
+and let's just return P single pizza.
+
+118
+00:05:59.510 --> 00:06:04.080
+Then we'll go into here and get the template for that page.
+
+119
+00:06:04.080 --> 00:06:06.540
+Okay. So I'll say const,
+
+120
+00:06:06.540 --> 00:06:08.680
+pizza template is equal to,
+
+121
+00:06:08.680 --> 00:06:13.040
+now we need to use some node APIs to resolve this file.
+
+122
+00:06:13.040 --> 00:06:16.080
+So we need to import
+
+123
+00:06:20.090 --> 00:06:25.090
+import path from path. That's a node API.
+
+124
+00:06:25.410 --> 00:06:29.990
+We did an npm install that just comes from node directly.
+
+125
+00:06:29.990 --> 00:06:33.840
+And then here we say, path.resolve,
+
+126
+00:06:33.840 --> 00:06:36.940
+and we give it a relative path.
+
+127
+00:06:36.940 --> 00:06:39.160
+So into the source directory,
+
+128
+00:06:39.160 --> 00:06:44.160
+into our templates directory and pizza.JS.
+
+129
+00:06:44.410 --> 00:06:46.010
+Make sure you put the .JS on there.
+
+130
+00:06:46.010 --> 00:06:48.650
+'cause it's not an import it's just a,
+
+131
+00:06:48.650 --> 00:06:50.723
+a file path resolution.
+
+132
+00:06:52.620 --> 00:06:55.350
+Next, what we need to do is query all the pizzas.
+
+133
+00:06:55.350 --> 00:06:58.610
+Okay. So in this params comes two things
+
+134
+00:06:58.610 --> 00:06:59.510
+that's pretty common.
+
+135
+00:06:59.510 --> 00:07:01.460
+It's pretty common to destructure the params
+
+136
+00:07:01.460 --> 00:07:03.480
+into graph QL and actions.
+
+137
+00:07:03.480 --> 00:07:05.480
+We're actually gonna go ahead and do that ourselves.
+
+138
+00:07:05.480 --> 00:07:10.410
+So we'll say graph QL and actions,
+
+139
+00:07:10.410 --> 00:07:14.050
+and then let's actually go down into this create pages
+
+140
+00:07:14.050 --> 00:07:15.770
+and call it ourselves.
+
+141
+00:07:15.770 --> 00:07:20.387
+So we will await turn pizzas into pages
+
+142
+00:07:20.387 --> 00:07:22.350
+and just pass it to params.
+
+143
+00:07:22.350 --> 00:07:24.730
+And the reason why we call await in front of it
+
+144
+00:07:24.730 --> 00:07:26.860
+is 'cause this is in a sync function.
+
+145
+00:07:26.860 --> 00:07:29.330
+'Cause it will take couple seconds,
+
+146
+00:07:29.330 --> 00:07:32.420
+maybe even up to several seconds
+
+147
+00:07:32.420 --> 00:07:35.500
+in order to query all that data and create the pages for us.
+
+148
+00:07:35.500 --> 00:07:37.920
+So it is an a sync function that we await.
+
+149
+00:07:37.920 --> 00:07:41.110
+Otherwise this will run before it's done creating
+
+150
+00:07:41.110 --> 00:07:43.300
+and we won't have our pages.
+
+151
+00:07:43.300 --> 00:07:47.753
+So query all the pages we'll say const,
+
+152
+00:07:47.753 --> 00:07:49.180
+curly brackets data,
+
+153
+00:07:49.180 --> 00:07:51.360
+we're gonna destructure the data right off the bat,
+
+154
+00:07:51.360 --> 00:07:53.780
+and we will await graph QL.
+
+155
+00:07:53.780 --> 00:07:55.290
+Now this is a little bit different, right?
+
+156
+00:07:55.290 --> 00:07:58.600
+Like previously, when we did our single pages,
+
+157
+00:07:58.600 --> 00:08:00.150
+there was no await
+
+158
+00:08:00.150 --> 00:08:03.135
+and it was just graph QL tag template literal.
+
+159
+00:08:03.135 --> 00:08:05.110
+When you're using the node API,
+
+160
+00:08:05.110 --> 00:08:08.580
+it's a little bit different because it's asynchronous.
+
+161
+00:08:08.580 --> 00:08:10.730
+So we need to put the await keyword in front of it
+
+162
+00:08:10.730 --> 00:08:15.010
+and graph QL is a function.
+
+163
+00:08:15.010 --> 00:08:17.850 line:15%
+It means you don't get the highlighting in here,
+
+164
+00:08:17.850 --> 00:08:18.900 line:15%
+which has a bit of a bummer.
+
+165
+00:08:18.900 --> 00:08:20.190 line:15%
+There's some tricks around it,
+
+166
+00:08:20.190 --> 00:08:22.920 line:15%
+but we're just gonna bite and chew on that.
+
+167
+00:08:22.920 --> 00:08:24.080
+We'll go ahead and write our query.
+
+168
+00:08:24.080 --> 00:08:26.270
+This is the regular queries that we have.
+
+169
+00:08:26.270 --> 00:08:28.563
+So all sanity Pizza,
+
+170
+00:08:29.520 --> 00:08:34.040
+and let's just rename that pizzas right off the bat
+
+171
+00:08:34.040 --> 00:08:36.373
+as for our nodes and for each node,
+
+172
+00:08:36.373 --> 00:08:40.930
+we want the name and the slug, which has the current.
+
+173
+00:08:40.930 --> 00:08:42.730
+So really that that's all we need here.
+
+174
+00:08:42.730 --> 00:08:45.400
+We don't need the toppings or the description
+
+175
+00:08:45.400 --> 00:08:47.080
+or anything else about this pizza,
+
+176
+00:08:47.080 --> 00:08:49.550
+because that will be queried inside of this page.
+
+177
+00:08:49.550 --> 00:08:54.550
+We just need enough to actually render out the template.
+
+178
+00:08:54.990 --> 00:08:56.110
+And then the template itself,
+
+179
+00:08:56.110 --> 00:08:59.083
+will go off and fetch the rest of the data that we want.
+
+180
+00:09:00.290 --> 00:09:02.050
+All right. So I think, I think we've written enough code.
+
+181
+00:09:02.050 --> 00:09:04.200
+Let's make sure this is working.
+
+182
+00:09:04.200 --> 00:09:08.800
+We'll console.log all of this data here
+
+183
+00:09:10.100 --> 00:09:15.100
+and we'll go back and you have to kill the build
+
+184
+00:09:16.350 --> 00:09:20.760
+every single time that you make a change to Gatsby node.
+
+185
+00:09:20.760 --> 00:09:22.663
+So go ahead and rerun it.
+
+186
+00:09:23.980 --> 00:09:25.360
+And, oh, this is the,
+
+187
+00:09:25.360 --> 00:09:27.640
+I guess the downside to just console log indirectly
+
+188
+00:09:27.640 --> 00:09:29.053
+in your terminal is,
+
+189
+00:09:29.053 --> 00:09:31.280
+you can't actually open up these things,
+
+190
+00:09:31.280 --> 00:09:35.700
+but we can tell that there are pizzas showing up one pizza
+
+191
+00:09:35.700 --> 00:09:38.630
+for everyone in our sanity database.
+
+192
+00:09:38.630 --> 00:09:39.650
+So that's good.
+
+193
+00:09:39.650 --> 00:09:42.640
+And that allows us to now go into step three,
+
+194
+00:09:42.640 --> 00:09:44.040
+which is loop over each pizza
+
+195
+00:09:44.040 --> 00:09:46.190
+and create a page for that pizza.
+
+196
+00:09:46.190 --> 00:09:50.610
+So we will take our data and .pizzas.
+
+197
+00:09:50.610 --> 00:09:52.890
+I think it's data.pizzas. Is that right?
+
+198
+00:09:52.890 --> 00:09:57.490
+Yeah. You can tell it's right here dot for each,
+
+199
+00:09:57.490 --> 00:09:58.780
+now this is not a map
+
+200
+00:09:58.780 --> 00:10:00.830
+because we're not returning anything from this.
+
+201
+00:10:00.830 --> 00:10:05.830
+We're simply just going off and doing some data and the,
+
+202
+00:10:06.280 --> 00:10:09.410
+the create page I've function that we're gonna use
+
+203
+00:10:09.410 --> 00:10:10.610
+I believe is synchronous.
+
+204
+00:10:10.610 --> 00:10:13.330
+So there's no for of needed here
+
+205
+00:10:13.330 --> 00:10:14.913
+for each will work just great.
+
+206
+00:10:16.000 --> 00:10:18.380
+So for each pizza,
+
+207
+00:10:18.380 --> 00:10:20.253
+and then let's just console log,
+
+208
+00:10:22.040 --> 00:10:25.653
+creating a page for pizza.name.
+
+209
+00:10:26.510 --> 00:10:29.203
+Let's kill the build, try running it again.
+
+210
+00:10:31.070 --> 00:10:32.550
+I did this a lot because like
+
+211
+00:10:32.550 --> 00:10:35.230
+you can get kinda lost in this file.
+
+212
+00:10:35.230 --> 00:10:38.170
+And if you just like take a couple extra minutes
+
+213
+00:10:38.170 --> 00:10:40.070
+and kill the build and restart it
+
+214
+00:10:40.070 --> 00:10:43.430
+just to double-check that every single step is working,
+
+215
+00:10:43.430 --> 00:10:46.090
+then you're in a bit of a better space.
+
+216
+00:10:46.090 --> 00:10:47.500
+Oh, I've a little bit of an error here,
+
+217
+00:10:47.500 --> 00:10:49.050
+so good thing I did that.
+
+218
+00:10:49.050 --> 00:10:51.903
+Dated.pizzas.for each is not a function.
+
+219
+00:10:52.750 --> 00:10:53.583
+Oh, you know why?
+
+220
+00:10:53.583 --> 00:10:56.160
+'Cause it's dated.pizzas.nodes.
+
+221
+00:10:56.160 --> 00:10:58.300
+Did I say peaches?
+
+222
+00:10:58.300 --> 00:11:00.233
+Pizzas. Let's try that again.
+
+223
+00:11:01.180 --> 00:11:02.020
+Here we go.
+
+224
+00:11:02.020 --> 00:11:03.670
+I'm creating a page for Pear Necessities,
+
+225
+00:11:03.670 --> 00:11:05.780
+Cluck Norris, Here Comes Truffle, The Bee Sting,
+
+226
+00:11:05.780 --> 00:11:07.680
+Dough Exotic, you get the point, right?
+
+227
+00:11:07.680 --> 00:11:09.360
+So good. We've we've created our data.
+
+228
+00:11:09.360 --> 00:11:10.870
+We're looping over it.
+
+229
+00:11:10.870 --> 00:11:15.000
+The last step is we need to create a page for that pizza.
+
+230
+00:11:15.000 --> 00:11:17.390
+So that's what we do is we take actions.
+
+231
+00:11:17.390 --> 00:11:21.470
+Now actions has been passed in right here to the thing,
+
+232
+00:11:21.470 --> 00:11:25.790
+and that was initially in the create pages params.
+
+233
+00:11:25.790 --> 00:11:30.790
+And then on actions, there is a create page function.
+
+234
+00:11:30.860 --> 00:11:34.950
+So not create pages, that's the hook into it.
+
+235
+00:11:34.950 --> 00:11:37.130
+But the create page is the actual method
+
+236
+00:11:37.130 --> 00:11:38.800
+that we use to create it.
+
+237
+00:11:38.800 --> 00:11:42.680
+And then that takes a number of different params.
+
+238
+00:11:42.680 --> 00:11:47.680
+So we say the path is, so what is the URL?
+
+239
+00:11:47.990 --> 00:11:52.223
+Let's say, what is the URL for this new page?
+
+240
+00:11:53.110 --> 00:11:56.790
+So the path is gonna be pizza/
+
+241
+00:11:56.790 --> 00:11:59.183
+now we'll take the pizza.slug.current.
+
+242
+00:12:00.820 --> 00:12:04.890
+Then we also need component.
+
+243
+00:12:04.890 --> 00:12:08.660
+And that will be the pizza template.
+
+244
+00:12:08.660 --> 00:12:11.020
+So remember we did this,
+
+245
+00:12:11.020 --> 00:12:14.030
+you could also just take the path that resolve
+
+246
+00:12:14.030 --> 00:12:16.070
+and put that right here if you wanted to.
+
+247
+00:12:16.070 --> 00:12:19.210
+But I like to do it this way.
+
+248
+00:12:19.210 --> 00:12:21.390
+Let's pause there and make sure that's still working.
+
+249
+00:12:21.390 --> 00:12:23.290
+And then we'll get into this, the third part,
+
+250
+00:12:23.290 --> 00:12:24.910
+which is context.
+
+251
+00:12:24.910 --> 00:12:28.023
+So kill it, start it up again.
+
+252
+00:12:31.840 --> 00:12:33.110
+Get a bit of an error here.
+
+253
+00:12:33.110 --> 00:12:37.643
+Generating development field, unexpected semi.
+
+254
+00:12:38.530 --> 00:12:40.930
+Oh, you know what I did?
+
+255
+00:12:40.930 --> 00:12:41.910
+I forgot the word.
+
+256
+00:12:41.910 --> 00:12:43.610
+There's so many words you've got to put in here.
+
+257
+00:12:43.610 --> 00:12:46.060
+Sometimes you forget a word. All right.
+
+258
+00:12:46.060 --> 00:12:47.550
+Let's see if that..
+
+259
+00:12:47.550 --> 00:12:50.223
+I believe we need to kill it again and restart.
+
+260
+00:12:53.050 --> 00:12:55.113
+Here we go. Now it's up and running.
+
+261
+00:12:57.380 --> 00:12:59.170
+Ooh, that's cool.
+
+262
+00:12:59.170 --> 00:13:01.440
+The development process needs to be restarted
+
+263
+00:13:01.440 --> 00:13:03.300
+for changes to Gatsby node to people.
+
+264
+00:13:03.300 --> 00:13:04.840
+Okay. So look at that,
+
+265
+00:13:04.840 --> 00:13:06.550
+like remember I was telling you kill the build.
+
+266
+00:13:06.550 --> 00:13:08.920
+It looks like Gatsby now,
+
+267
+00:13:08.920 --> 00:13:11.200
+will prompt you on your actual website
+
+268
+00:13:11.200 --> 00:13:13.920
+and it will kill the build for you, which is pretty cool.
+
+269
+00:13:13.920 --> 00:13:15.580
+I don't need that right now.
+
+270
+00:13:15.580 --> 00:13:20.530
+So we'll just go ahead and go back to our homepage,
+
+271
+00:13:20.530 --> 00:13:23.883
+go to our pizza menu and click on one of our pizzas.
+
+272
+00:13:25.110 --> 00:13:30.110
+And it doesn't work because I forgot to import React,
+
+273
+00:13:31.060 --> 00:13:33.373
+import React from React.
+
+274
+00:13:37.730 --> 00:13:38.580
+There we go.
+
+275
+00:13:38.580 --> 00:13:42.020
+That's our single pizza being rendered out for the...
+
+276
+00:13:42.020 --> 00:13:43.540
+If we go back to the Pizza menu,
+
+277
+00:13:43.540 --> 00:13:46.970
+click on a random Nacho Average Pizza, single pizza.
+
+278
+00:13:46.970 --> 00:13:51.970
+Now what is really cool about that is if we can inspect it,
+
+279
+00:13:53.470 --> 00:13:58.470
+go to our components here and let's search for what was that
+
+280
+00:13:58.770 --> 00:14:03.340
+single pizza page, here we go.
+
+281
+00:14:03.340 --> 00:14:05.650
+You see the props of that page.
+
+282
+00:14:05.650 --> 00:14:07.147
+You have the location
+
+283
+00:14:07.147 --> 00:14:09.980
+and then we have this thing called page context.
+
+284
+00:14:09.980 --> 00:14:11.400
+There's nothing in there.
+
+285
+00:14:11.400 --> 00:14:15.100
+Now, if you need to pass some data
+
+286
+00:14:15.100 --> 00:14:20.000
+from this create page method to the actual template,
+
+287
+00:14:20.000 --> 00:14:21.960
+that can be done via context.
+
+288
+00:14:21.960 --> 00:14:23.963
+So I go into here and we'll say context.
+
+289
+00:14:25.722 --> 00:14:29.930
+And I'll give a curly bracket and say, Wes is cool.
+
+290
+00:14:29.930 --> 00:14:34.930
+And let's say slug is pizza.slug.current.
+
+291
+00:14:37.460 --> 00:14:39.493
+And let's just try that.
+
+292
+00:14:41.150 --> 00:14:42.610
+All right. Let's try this.
+
+293
+00:14:42.610 --> 00:14:43.443
+Okay.
+
+294
+00:14:47.880 --> 00:14:49.880
+That's cool. So now it restarts it for you.
+
+295
+00:14:49.880 --> 00:14:52.160
+I think that's changed as started recording this course,
+
+296
+00:14:52.160 --> 00:14:54.390
+which is pretty nifty.
+
+297
+00:14:54.390 --> 00:14:57.093
+Gatsby is restarting the development server.
+
+298
+00:14:58.330 --> 00:14:59.720
+All right. So that restarted.
+
+299
+00:14:59.720 --> 00:15:02.390
+Now we still see our single pizzas page here
+
+300
+00:15:02.390 --> 00:15:04.240
+and open that up, page context.
+
+301
+00:15:04.240 --> 00:15:07.040
+We have our slug, Nacho Average Pizza
+
+302
+00:15:07.040 --> 00:15:09.380
+as well as Wes is cool.
+
+303
+00:15:09.380 --> 00:15:14.380
+So you could have also pulled that information from the URL,
+
+304
+00:15:15.070 --> 00:15:18.010
+but this is the proper way to do it
+
+305
+00:15:18.010 --> 00:15:20.610
+is pass it via page context.
+
+306
+00:15:20.610 --> 00:15:22.570
+There also you'll see there's path contexts.
+
+307
+00:15:22.570 --> 00:15:23.600
+It looks like the same thing.
+
+308
+00:15:23.600 --> 00:15:25.960
+I believe that is the old deprecated one.
+
+309
+00:15:25.960 --> 00:15:28.176
+And we use page contexts now.
+
+310
+00:15:28.176 --> 00:15:29.009
+All right.
+
+311
+00:15:29.009 --> 00:15:32.690
+So now we can just go to our pizza.JS and just,
+
+312
+00:15:32.690 --> 00:15:37.030
+just use it as if it were a regular query.
+
+313
+00:15:37.030 --> 00:15:42.030
+So we can export const query is equal to graph QL,
+
+314
+00:15:42.750 --> 00:15:47.750
+go ahead and import graph QL from Gatsby.
+
+315
+00:15:48.480 --> 00:15:50.030
+And we have a query.
+
+316
+00:15:50.030 --> 00:15:54.660
+Now this is where we start to interpolate variables
+
+317
+00:15:54.660 --> 00:15:56.030
+into our query.
+
+318
+00:15:56.030 --> 00:15:59.190
+So normally we would say query,
+
+319
+00:15:59.190 --> 00:16:02.893
+our pizza is equal to sanity pizza.
+
+320
+00:16:03.760 --> 00:16:08.030
+And for that pizza, we want the name and the ID.
+
+321
+00:16:08.030 --> 00:16:10.010
+Let's just start at that.
+
+322
+00:16:10.010 --> 00:16:12.270
+We need a lot more than that, but let's just start at that.
+
+323
+00:16:12.270 --> 00:16:16.090
+So this needs to be dynamic, right?
+
+324
+00:16:16.090 --> 00:16:21.090
+This needs to be dynamic based on the slug passed in
+
+325
+00:16:23.540 --> 00:16:28.540
+via context in Gatsby node.
+
+326
+00:16:29.150 --> 00:16:30.660
+Okay.
+
+327
+00:16:30.660 --> 00:16:35.660
+So like how do we get, how do we get that into here?
+
+328
+00:16:36.260 --> 00:16:39.100
+Well, this is a graph QL query
+
+329
+00:16:39.100 --> 00:16:40.720
+and actually has access
+
+330
+00:16:40.720 --> 00:16:43.700
+to all of our page context variables directly.
+
+331
+00:16:43.700 --> 00:16:46.860
+So the first thing we do is we set up our query
+
+332
+00:16:46.860 --> 00:16:50.610
+to expect to take an argument.
+
+333
+00:16:50.610 --> 00:16:53.050
+So we'll say dollar sign slug.
+
+334
+00:16:53.050 --> 00:16:56.310
+And because this is graph QL, you always have to type it,
+
+335
+00:16:56.310 --> 00:16:58.120
+meaning that you can't just say,
+
+336
+00:16:58.120 --> 00:17:00.630
+I expect them to pass me a slug.
+
+337
+00:17:00.630 --> 00:17:04.030
+You have to say, I expect them to pass me a slug
+
+338
+00:17:04.030 --> 00:17:06.430
+that is a type of string
+
+339
+00:17:06.430 --> 00:17:09.770
+and the bang on the end means it's absolutely required.
+
+340
+00:17:09.770 --> 00:17:13.643
+So if somebody tries to run this template without the slug,
+
+341
+00:17:14.630 --> 00:17:17.440
+it will break because you can't view this page
+
+342
+00:17:17.440 --> 00:17:19.320
+without passing it a slug.
+
+343
+00:17:19.320 --> 00:17:23.050
+Okay. So that sets up our query to accept it.
+
+344
+00:17:23.050 --> 00:17:25.810
+Then we need to hot potato that parameter
+
+345
+00:17:25.810 --> 00:17:27.680
+over to the sanity pizza.
+
+346
+00:17:27.680 --> 00:17:31.316
+Remember if we go to our graph QL here and we write a query,
+
+347
+00:17:31.316 --> 00:17:32.566
+pa pa pa pa pap
+
+348
+00:17:33.670 --> 00:17:36.213
+and we'll say a sanity pizza.
+
+349
+00:17:36.213 --> 00:17:38.560
+So this is a single pizza,
+
+350
+00:17:38.560 --> 00:17:43.240
+and we want to grab a single pizza where the slug
+
+351
+00:17:43.240 --> 00:17:44.473
+is equal to,
+
+352
+00:17:47.340 --> 00:17:48.763
+what's this one right here,
+
+353
+00:17:50.020 --> 00:17:51.763
+Nacho Average Pizza.
+
+354
+00:17:56.207 --> 00:17:58.550
+And then for that, we want the name.
+
+355
+00:17:58.550 --> 00:18:00.633
+Let's go ahead and run that, run.
+
+356
+00:18:01.590 --> 00:18:03.083
+PQ is not defined.
+
+357
+00:18:05.700 --> 00:18:09.193
+Why not? By type slugs sanity.
+
+358
+00:18:13.147 --> 00:18:16.730
+Oh, I see. It's because it's not just slug.
+
+359
+00:18:17.950 --> 00:18:20.130
+It's slug.current.
+
+360
+00:18:20.130 --> 00:18:21.150
+So if you wanna like,
+
+361
+00:18:21.150 --> 00:18:23.760
+do it a little bit deeper than that,
+
+362
+00:18:23.760 --> 00:18:24.980
+we've got to bring this back a little.
+
+363
+00:18:24.980 --> 00:18:29.760
+So we've got the slug, current is equal to
+
+364
+00:18:34.170 --> 00:18:37.438
+Nacho Average Pizza and there we go.
+
+365
+00:18:37.438 --> 00:18:39.320
+We turned the thing and if we want,
+
+366
+00:18:39.320 --> 00:18:42.640
+we could grab the toppings and the name of each topping
+
+367
+00:18:42.640 --> 00:18:44.350
+that's on that and run it, right?
+
+368
+00:18:44.350 --> 00:18:48.580
+So this part that needs to be dynamic, right?
+
+369
+00:18:48.580 --> 00:18:51.830
+So we'll go back to our pizza JS here
+
+370
+00:18:51.830 --> 00:18:54.490
+and we'll modify this to say,
+
+371
+00:18:54.490 --> 00:18:58.543
+we wanna grab the sanity pizza where the slug, current,
+
+372
+00:19:00.376 --> 00:19:04.260
+that current is because it's slug.current,
+
+373
+00:19:04.260 --> 00:19:07.850
+is equal to, and we can hardcode this
+
+374
+00:19:07.850 --> 00:19:10.350
+like Nacho Average Pizza,
+
+375
+00:19:10.350 --> 00:19:12.560
+but we don't want it to be that for every single one.
+
+376
+00:19:12.560 --> 00:19:14.400
+It needs to be based on our variable.
+
+377
+00:19:14.400 --> 00:19:19.271
+And that's where we pass in slug, like that, okay?
+
+378
+00:19:19.271 --> 00:19:21.190
+And you may be saying like
+
+379
+00:19:21.190 --> 00:19:23.580
+where's slug coming from in the first place?
+
+380
+00:19:23.580 --> 00:19:28.020
+Well, that is this slug, right?
+
+381
+00:19:28.020 --> 00:19:29.600
+You could pass in anything you want here.
+
+382
+00:19:29.600 --> 00:19:32.697
+We don't need Wes is cool. You can take that out.
+
+383
+00:19:32.697 --> 00:19:37.290
+All right, now, if we go to our page here
+
+384
+00:19:40.930 --> 00:19:45.930
+and take a look at our data pizza, and there it is.
+
+385
+00:19:47.160 --> 00:19:51.870
+Now, if we go to another page and checkout Cluck Norris
+
+386
+00:19:53.900 --> 00:19:57.380
+and look for our single pizza page,
+
+387
+00:19:57.380 --> 00:19:59.450
+we should see a different pizza.
+
+388
+00:19:59.450 --> 00:20:02.670
+There we go. Cluck Norris, different pizza showing up.
+
+389
+00:20:02.670 --> 00:20:04.640
+That is awesome.
+
+390
+00:20:04.640 --> 00:20:09.170
+So some people, and you may be saying like, Wes,
+
+391
+00:20:09.170 --> 00:20:14.170
+Wes, Wes, why don't we just query the entire pizza
+
+392
+00:20:14.200 --> 00:20:19.200
+right here and pass the entire pizza via context,
+
+393
+00:20:19.870 --> 00:20:23.440
+and then just skip the whole query here entirely.
+
+394
+00:20:23.440 --> 00:20:25.400
+And that is perfectly valid.
+
+395
+00:20:25.400 --> 00:20:30.210
+So if you want to, you can just do the entire query
+
+396
+00:20:30.210 --> 00:20:32.050
+in your Gatsby node,
+
+397
+00:20:32.050 --> 00:20:37.050
+but because all of your pages have to work like this.
+
+398
+00:20:38.550 --> 00:20:40.990
+I'd rather just keep the actual query
+
+399
+00:20:40.990 --> 00:20:42.950
+in the actual page itself.
+
+400
+00:20:42.950 --> 00:20:44.460
+That way, if I'm working on the page,
+
+401
+00:20:44.460 --> 00:20:46.730
+I can quickly modify the query
+
+402
+00:20:46.730 --> 00:20:49.260
+without having to jump back into my Gatsby node.
+
+403
+00:20:49.260 --> 00:20:53.560
+But that is certainly an option and just live your life,
+
+404
+00:20:53.560 --> 00:20:56.100
+if that's the way you would like to do it.
+
+405
+00:20:56.100 --> 00:20:59.360
+So we wanna grab all of the data for our pizza.
+
+406
+00:20:59.360 --> 00:21:00.820
+We have the name, the ID,
+
+407
+00:21:00.820 --> 00:21:04.790
+we're gonna grab the image, asset, fluid.
+
+408
+00:21:04.790 --> 00:21:06.830
+Now we want a larger version of it,
+
+409
+00:21:06.830 --> 00:21:10.630
+so we just say, we want a max width of 800.
+
+410
+00:21:10.630 --> 00:21:13.300
+Remember we just resized an image there.
+
+411
+00:21:13.300 --> 00:21:16.560
+And then we want the same dot, dot, dot Gatsby,
+
+412
+00:21:16.560 --> 00:21:19.793
+sanity, image, fluid.
+
+413
+00:21:21.050 --> 00:21:24.920
+Then for, this is too many curly brackets,
+
+414
+00:21:24.920 --> 00:21:26.110
+I like to highlight the one
+
+415
+00:21:26.110 --> 00:21:29.080
+and then click beside it and go underneath.
+
+416
+00:21:29.080 --> 00:21:32.980
+We want the toppings and for each topping with the name,
+
+417
+00:21:32.980 --> 00:21:36.143
+the ID and whether it's vegetarian or not.
+
+418
+00:21:42.560 --> 00:21:44.020
+And I believe, see,
+
+419
+00:21:44.020 --> 00:21:48.450
+oh that's also a nice benefit of doing the query directly
+
+420
+00:21:48.450 --> 00:21:50.400
+inside of your template.
+
+421
+00:21:50.400 --> 00:21:52.490
+See, I just, I just hit save there,
+
+422
+00:21:52.490 --> 00:21:55.330
+and the data immediately updated itself.
+
+423
+00:21:55.330 --> 00:21:57.720
+If you wrote your entire query in Gatsby node,
+
+424
+00:21:57.720 --> 00:22:00.670
+you'd have to kill the process and start it again.
+
+425
+00:22:00.670 --> 00:22:03.080
+And that feedback cycle is slow.
+
+426
+00:22:03.080 --> 00:22:05.760
+Especially once you get into, like, I don't know,
+
+427
+00:22:05.760 --> 00:22:07.190
+like my own personal website,
+
+428
+00:22:07.190 --> 00:22:09.320
+sometimes it takes a couple minutes to get going
+
+429
+00:22:09.320 --> 00:22:10.800
+and that's brutal.
+
+430
+00:22:10.800 --> 00:22:11.910
+That's really slow for me.
+
+431
+00:22:11.910 --> 00:22:15.050
+So I rather do it in here where it's hot reloaded
+
+432
+00:22:15.050 --> 00:22:17.193
+and the data is fetched on demand.
+
+433
+00:22:18.160 --> 00:22:21.210
+Right, now we're at a point where we just need to display
+
+434
+00:22:21.210 --> 00:22:23.990
+all this data and write a little bit of CSS.
+
+435
+00:22:23.990 --> 00:22:24.940
+That's in the next video.
+
+436
+00:22:24.940 --> 00:22:27.010
+Although maybe I'm gonna encourage you
+
+437
+00:22:27.010 --> 00:22:29.820
+to try to do this one yourself, and then,
+
+438
+00:22:29.820 --> 00:22:32.370
+then look back at my answer or follow along after,
+
+439
+00:22:32.370 --> 00:22:35.290
+because we're at a point now where you should be,
+
+440
+00:22:35.290 --> 00:22:37.740
+feel comfortable given the data.
+
+441
+00:22:37.740 --> 00:22:40.100
+You should be able to template it out and make it look
+
+442
+00:22:40.100 --> 00:22:42.620
+however it is that you want on the page.
+

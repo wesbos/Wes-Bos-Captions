@@ -1,0 +1,1230 @@
+﻿WEBVTT
+
+1
+00:00:00.216 --> 00:00:02.966
+(cheerful music)
+
+2
+00:00:04.819 --> 00:00:06.300
+<v Instructor>A pretty common thing</v>
+
+3
+00:00:06.300 --> 00:00:08.570
+that you wanna do in a website
+
+4
+00:00:08.570 --> 00:00:10.370
+is you wanna have like a settings page
+
+5
+00:00:10.370 --> 00:00:14.410
+where you control everything
+
+6
+00:00:14.410 --> 00:00:19.040
+from little things like headlines over to selecting content
+
+7
+00:00:19.040 --> 00:00:20.800
+that you wanna put on the homepage.
+
+8
+00:00:20.800 --> 00:00:24.800
+And these are what I like to call like, options pages
+
+9
+00:00:24.800 --> 00:00:27.830
+or one-off pages, meaning that
+
+10
+00:00:27.830 --> 00:00:30.020
+they still need to be stored in the database
+
+11
+00:00:30.020 --> 00:00:32.480
+just like the people, and the pizzas, and everything else,
+
+12
+00:00:32.480 --> 00:00:36.340
+but there's not gonna be multiple of them.
+
+13
+00:00:36.340 --> 00:00:39.080
+There's only going to be one page of them.
+
+14
+00:00:39.080 --> 00:00:40.930
+So, that's a pretty common thing.
+
+15
+00:00:40.930 --> 00:00:42.620
+I've done that in dozens of sites
+
+16
+00:00:42.620 --> 00:00:43.820
+for clients over the years.
+
+17
+00:00:43.820 --> 00:00:45.690
+And I thought I'd show you how to do that
+
+18
+00:00:45.690 --> 00:00:46.730
+because on the homepage,
+
+19
+00:00:46.730 --> 00:00:50.320
+I want someone to be able to go into the backend here,
+
+20
+00:00:50.320 --> 00:00:52.390
+and click on something in the sidebar,
+
+21
+00:00:52.390 --> 00:00:55.570
+and then be able to select, who is currently working
+
+22
+00:00:55.570 --> 00:01:00.460
+and what pizzas are currently available by the slice.
+
+23
+00:01:00.460 --> 00:01:01.720
+And we wanna pull that data
+
+24
+00:01:01.720 --> 00:01:05.250
+into our front end of our website.
+
+25
+00:01:05.250 --> 00:01:09.080
+So, we're gonna be cracking open the sanity folder.
+
+26
+00:01:09.080 --> 00:01:13.853
+So, actually I gotta kill this real quick and open it up.
+
+27
+00:01:16.490 --> 00:01:19.670
+And I'm gonna run it again and PM start.
+
+28
+00:01:19.670 --> 00:01:21.560
+Right, so, we are in the sanity.
+
+29
+00:01:21.560 --> 00:01:24.530
+So, first thing we need to do is to make a schema
+
+30
+00:01:24.530 --> 00:01:25.690
+for that setting.
+
+31
+00:01:25.690 --> 00:01:27.460
+Now, the way that sanity does it
+
+32
+00:01:27.460 --> 00:01:30.900
+is no different than any other data type.
+
+33
+00:01:30.900 --> 00:01:33.940
+It allows you to create multiple versions of a,
+
+34
+00:01:33.940 --> 00:01:35.750
+I guess settings page or something like that.
+
+35
+00:01:35.750 --> 00:01:37.640
+However, we're going to restrict
+
+36
+00:01:37.640 --> 00:01:39.850
+creating multiple versions of them
+
+37
+00:01:39.850 --> 00:01:44.290
+by modifying the sidebar that we have right here.
+
+38
+00:01:44.290 --> 00:01:46.963
+Let's open up our pizza schema,
+
+39
+00:01:48.200 --> 00:01:51.080
+and just duplicate the whole sucker
+
+40
+00:01:51.080 --> 00:01:55.640
+over to storesettings.js.
+
+41
+00:01:55.640 --> 00:01:59.390
+And let's just go through each one of these things
+
+42
+00:01:59.390 --> 00:02:00.390
+line by line.
+
+43
+00:02:00.390 --> 00:02:03.510
+So, here we have, we'll say MDStore.
+
+44
+00:02:07.242 --> 00:02:09.183
+We don't need our custom price input.
+
+45
+00:02:10.400 --> 00:02:13.860
+The name is going to be store settings.
+
+46
+00:02:13.860 --> 00:02:17.340
+The title is going to be capital S settings.
+
+47
+00:02:17.340 --> 00:02:18.270
+Type is the document.
+
+48
+00:02:18.270 --> 00:02:21.490
+Icon is what we imported earlier up here.
+
+49
+00:02:21.490 --> 00:02:22.880
+The fields that we have,
+
+50
+00:02:22.880 --> 00:02:25.510
+okay, so, let's just go ahead and delete all the fields
+
+51
+00:02:25.510 --> 00:02:27.740
+and actually everything else that we have.
+
+52
+00:02:27.740 --> 00:02:31.660
+So, delete all the fields,
+
+53
+00:02:31.660 --> 00:02:34.110
+and delete all the preview metadata.
+
+54
+00:02:34.110 --> 00:02:36.190
+We'll come back to that in just a second.
+
+55
+00:02:36.190 --> 00:02:37.220
+So, fields that we have.
+
+56
+00:02:37.220 --> 00:02:38.740
+First field is going to be
+
+57
+00:02:40.830 --> 00:02:43.373
+a slicemasters field.
+
+58
+00:02:44.840 --> 00:02:46.610
+The title is going to be
+
+59
+00:02:48.466 --> 00:02:51.433
+slicemasters currently slicing.
+
+60
+00:02:56.900 --> 00:02:59.420
+The type is going to be an array
+
+61
+00:02:59.420 --> 00:03:03.354
+because it's gonna be an array of slicemasters.
+
+62
+00:03:03.354 --> 00:03:06.980
+So, the type is an array of array type,
+
+63
+00:03:09.070 --> 00:03:11.010
+and it's going to be a reference.
+
+64
+00:03:11.010 --> 00:03:14.810
+Remember we're going to link it to a list of other ones.
+
+65
+00:03:14.810 --> 00:03:19.747
+A reference to, this is another array, hokey smokes.
+
+66
+00:03:20.820 --> 00:03:23.520
+Type of person.
+
+67
+00:03:23.520 --> 00:03:27.820
+And again, that person comes from this, which is a person.
+
+68
+00:03:27.820 --> 00:03:30.270
+You have a name of person right here.
+
+69
+00:03:30.270 --> 00:03:31.103
+Okay, good.
+
+70
+00:03:31.103 --> 00:03:32.010
+So, that's a very basic.
+
+71
+00:03:32.010 --> 00:03:34.600
+Let's just make sure this is up and running.
+
+72
+00:03:34.600 --> 00:03:37.450
+Let's go into our schema.js,
+
+73
+00:03:37.450 --> 00:03:40.733
+and we will import store settings.
+
+74
+00:03:43.560 --> 00:03:48.560
+And then we'll just pop that sucker into the store settings.
+
+75
+00:03:49.020 --> 00:03:52.450
+Now, this should show up in our sanity backend.
+
+76
+00:03:52.450 --> 00:03:53.283
+There we go.
+
+77
+00:03:53.283 --> 00:03:56.320
+Settings, and there are no settings,
+
+78
+00:03:56.320 --> 00:03:59.130
+and it will allow us to create
+
+79
+00:03:59.130 --> 00:04:00.930
+a new set of store settings.
+
+80
+00:04:00.930 --> 00:04:03.497
+Don't create one yet because we're gonna manually make it.
+
+81
+00:04:03.497 --> 00:04:04.550
+But you can see here,
+
+82
+00:04:04.550 --> 00:04:07.653
+I'll be able to add, where's Enock?
+
+83
+00:04:09.060 --> 00:04:09.973
+Here he is.
+
+84
+00:04:10.920 --> 00:04:12.270
+And you get the point, right?
+
+85
+00:04:12.270 --> 00:04:13.840
+So, that's good.
+
+86
+00:04:13.840 --> 00:04:17.533
+Then we'll just go ahead and duplicate that field,
+
+87
+00:04:19.060 --> 00:04:21.993
+and we'll call the next one, hot slices.
+
+88
+00:04:22.870 --> 00:04:24.400
+And then we'll see,
+
+89
+00:04:24.400 --> 00:04:29.400
+hot slices available in the case.
+
+90
+00:04:31.110 --> 00:04:34.500
+And we want it to be an array to pizza.
+
+91
+00:04:34.500 --> 00:04:36.050
+And we save.
+
+92
+00:04:36.050 --> 00:04:38.270
+And this should refresh.
+
+93
+00:04:38.270 --> 00:04:39.630
+Here we go, hot slices.
+
+94
+00:04:39.630 --> 00:04:42.630
+You can select the different pizzas that show up.
+
+95
+00:04:42.630 --> 00:04:43.810
+Again, I'm on slow internet,
+
+96
+00:04:43.810 --> 00:04:46.900
+that's why it's taking a second to show up.
+
+97
+00:04:46.900 --> 00:04:49.800
+All right, so, that is our first one.
+
+98
+00:04:49.800 --> 00:04:52.400
+Let's actually pop a quick name field on here too,
+
+99
+00:04:52.400 --> 00:04:54.260
+'cause like, if you add it,
+
+100
+00:04:54.260 --> 00:04:56.470
+it like, doesn't know like,
+
+101
+00:04:56.470 --> 00:04:58.500
+what to put in this preview here.
+
+102
+00:04:58.500 --> 00:05:02.033
+So, let's just go into pizza.
+
+103
+00:05:03.010 --> 00:05:04.563
+Let's grab the name field,
+
+104
+00:05:05.410 --> 00:05:06.857
+pop it in here,
+
+105
+00:05:06.857 --> 00:05:08.650
+and then just say,
+
+106
+00:05:08.650 --> 00:05:10.250
+we'll call it a store name because
+
+107
+00:05:10.250 --> 00:05:15.250
+the kind of the cool thing about this that we have here
+
+108
+00:05:15.570 --> 00:05:19.970
+is even though we are gonna be able to do a one off,
+
+109
+00:05:19.970 --> 00:05:21.150
+the whole idea is that
+
+110
+00:05:21.150 --> 00:05:23.540
+it's still a repeatable piece of content,
+
+111
+00:05:23.540 --> 00:05:25.870
+so that if you opened up a second store,
+
+112
+00:05:25.870 --> 00:05:27.810
+you wouldn't have to like, copy paste this.
+
+113
+00:05:27.810 --> 00:05:29.760
+You'd still be able to create a settings page
+
+114
+00:05:29.760 --> 00:05:33.670
+for a secondary store without much extra effort,
+
+115
+00:05:33.670 --> 00:05:34.503
+which is pretty cool.
+
+116
+00:05:34.503 --> 00:05:36.050
+So, look at this.
+
+117
+00:05:36.050 --> 00:05:37.020
+We've got two of them here,
+
+118
+00:05:37.020 --> 00:05:39.250
+just cause these are saved drafts
+
+119
+00:05:39.250 --> 00:05:41.640
+just as I was talking to you, it's shown up,
+
+120
+00:05:41.640 --> 00:05:42.950
+and then we have the name.
+
+121
+00:05:42.950 --> 00:05:44.050
+You can pop the name in there.
+
+122
+00:05:44.050 --> 00:05:45.430
+Okay, cool.
+
+123
+00:05:45.430 --> 00:05:48.480
+Now, the next step that we wanna have is
+
+124
+00:05:48.480 --> 00:05:51.460
+we don't want to have the settings page here,
+
+125
+00:05:51.460 --> 00:05:53.470
+although that wouldn't be the end of the world.
+
+126
+00:05:53.470 --> 00:05:56.193
+Like, you could just say like the Hamilton store,
+
+127
+00:05:57.150 --> 00:05:59.360
+and then save that.
+
+128
+00:05:59.360 --> 00:06:02.750
+But you always like, run the chance that
+
+129
+00:06:02.750 --> 00:06:03.957
+somebody would come in here and be like,
+
+130
+00:06:03.957 --> 00:06:05.480
+"Hey, I created a new store
+
+131
+00:06:05.480 --> 00:06:07.350
+'cause I couldn't figure out how to edit the old one."
+
+132
+00:06:07.350 --> 00:06:09.670
+And we don't necessarily want that.
+
+133
+00:06:09.670 --> 00:06:12.810
+We just want a settings thing in the sidebar here
+
+134
+00:06:12.810 --> 00:06:15.300
+that goes directly to this edit screen,
+
+135
+00:06:15.300 --> 00:06:18.350
+and doesn't allow the user to create multiple stores
+
+136
+00:06:18.350 --> 00:06:20.190
+and sort of get confusion like that.
+
+137
+00:06:20.190 --> 00:06:21.950
+And that's the kind of finesse that
+
+138
+00:06:21.950 --> 00:06:23.620
+I think makes a really good website,
+
+139
+00:06:23.620 --> 00:06:26.810
+and you're not gonna get calls at two in the morning
+
+140
+00:06:26.810 --> 00:06:28.950
+from an angry client cause they goofed it up.
+
+141
+00:06:28.950 --> 00:06:30.320
+So, the way that we do that is
+
+142
+00:06:30.320 --> 00:06:33.230
+just go into your sanity core here,
+
+143
+00:06:33.230 --> 00:06:35.540
+and by core, I mean just the root folder,
+
+144
+00:06:35.540 --> 00:06:37.523
+and make a sidebar.js,
+
+145
+00:06:39.050 --> 00:06:43.410
+then inside there, we're going to import react from react.
+
+146
+00:06:43.410 --> 00:06:45.880
+We're going to import capital S from,
+
+147
+00:06:45.880 --> 00:06:47.140
+and this is long.
+
+148
+00:06:47.140 --> 00:06:48.790
+So, hold onto your parts.
+
+149
+00:06:48.790 --> 00:06:53.790
+It's @sanity/desktool/structure-builder.
+
+150
+00:06:55.230 --> 00:06:59.590
+And this is just the internal sanity studio,
+
+151
+00:06:59.590 --> 00:07:01.670
+similar to how we created our own input.
+
+152
+00:07:01.670 --> 00:07:03.560
+We're now going to be using their own tool
+
+153
+00:07:03.560 --> 00:07:07.050
+to create a custom sidebar file.
+
+154
+00:07:07.050 --> 00:07:08.700
+Then before we go any further,
+
+155
+00:07:08.700 --> 00:07:12.880
+we wanna go into our sanity.json file,
+
+156
+00:07:12.880 --> 00:07:17.880
+and we need to let sanity know about this extra part
+
+157
+00:07:18.260 --> 00:07:19.093
+that we have here.
+
+158
+00:07:19.093 --> 00:07:21.660
+So, you see this one part we have right here,
+
+159
+00:07:21.660 --> 00:07:23.660
+we'll put a comma after that,
+
+160
+00:07:23.660 --> 00:07:25.850
+open another set of curly brackets,
+
+161
+00:07:25.850 --> 00:07:30.570
+and we'll say the name is part:@sanity,
+
+162
+00:07:30.570 --> 00:07:35.380
+It's not base schema, it's desk tool/structure.
+
+163
+00:07:35.380 --> 00:07:37.990
+And sanity has a bunch of examples of this.
+
+164
+00:07:37.990 --> 00:07:39.230
+Make sure you put that in quotes
+
+165
+00:07:39.230 --> 00:07:41.740
+'cause this is JSON not JavaScript.
+
+166
+00:07:41.740 --> 00:07:46.487
+And then the path to that is going to be
+
+167
+00:07:46.487 --> 00:07:50.153
+/./sidebar.js.
+
+168
+00:07:52.810 --> 00:07:55.227
+I believe we now have to,
+
+169
+00:07:55.227 --> 00:07:58.890
+not sure if we need to kill the builder or not, we'll see.
+
+170
+00:07:58.890 --> 00:07:59.880
+Well, let's try that.
+
+171
+00:07:59.880 --> 00:08:02.500
+Now, let's jump back into our sidebar,
+
+172
+00:08:02.500 --> 00:08:07.390
+and this is where we get to building our custom sidebar.
+
+173
+00:08:07.390 --> 00:08:10.740
+So, build a custom sidebar.
+
+174
+00:08:10.740 --> 00:08:15.713
+So, we'll export default function.
+
+175
+00:08:17.010 --> 00:08:18.293
+We'll call it sidebar.
+
+176
+00:08:19.200 --> 00:08:22.763
+And from that we'll return s.list.
+
+177
+00:08:24.000 --> 00:08:27.173
+And let's just kinda go through that one by one.
+
+178
+00:08:28.440 --> 00:08:33.050
+So, let's refresh this page now that we just ran s.list.
+
+179
+00:08:33.050 --> 00:08:35.520
+Doesn't look like anything has changed, okay?
+
+180
+00:08:35.520 --> 00:08:36.830
+Okay, good.
+
+181
+00:08:36.830 --> 00:08:41.830
+Then on top of that, we need a .title,
+
+182
+00:08:41.910 --> 00:08:45.280
+and that is Slick's Slices.
+
+183
+00:08:45.280 --> 00:08:46.410
+I'm gonna use back ticks there,
+
+184
+00:08:46.410 --> 00:08:49.340
+so, I don't have to worry about escaping it.
+
+185
+00:08:49.340 --> 00:08:51.513
+And this will give us like, a sort of,
+
+186
+00:08:51.513 --> 00:08:54.600
+you see how it's just this content right now?
+
+187
+00:08:54.600 --> 00:08:55.490
+We're gonna replace that
+
+188
+00:08:55.490 --> 00:08:57.750
+with our own title called Slick's Slices.
+
+189
+00:08:57.750 --> 00:08:59.470
+And then underneath that,
+
+190
+00:08:59.470 --> 00:09:03.840
+we're gonna say the items are an array of
+
+191
+00:09:05.210 --> 00:09:06.473
+s.listitem.
+
+192
+00:09:08.459 --> 00:09:09.530
+So, we're gonna create a new item.
+
+193
+00:09:09.530 --> 00:09:11.570
+Maybe I should comment this.
+
+194
+00:09:11.570 --> 00:09:14.723
+A new sub item.
+
+195
+00:09:18.740 --> 00:09:21.720
+And a chain onto that is a .title.
+
+196
+00:09:21.720 --> 00:09:23.740
+Notice how I'm not putting semi-colons on here
+
+197
+00:09:23.740 --> 00:09:27.070
+just cause we are chaining forever.
+
+198
+00:09:27.070 --> 00:09:29.333
+The title will be the homepage.
+
+199
+00:09:30.990 --> 00:09:32.760
+Let's see what that gives us so far.
+
+200
+00:09:32.760 --> 00:09:34.470
+This should at least show up.
+
+201
+00:09:34.470 --> 00:09:37.133
+And if it's not, we know we did something wrong.
+
+202
+00:09:37.133 --> 00:09:38.530
+Okay, nothing's showing up yet.
+
+203
+00:09:38.530 --> 00:09:42.423
+So, I bet we need to kill our build and restart it.
+
+204
+00:09:44.060 --> 00:09:44.893
+Here we go, okay.
+
+205
+00:09:44.893 --> 00:09:45.920
+So, now, that we killed it,
+
+206
+00:09:45.920 --> 00:09:50.160
+you see that we are creating a custom sidebar
+
+207
+00:09:50.160 --> 00:09:50.993
+that is in here.
+
+208
+00:09:50.993 --> 00:09:54.400
+So, now, we just have homepage, and you click that,
+
+209
+00:09:54.400 --> 00:09:56.660
+it goes to nothing, right?
+
+210
+00:09:56.660 --> 00:09:59.700
+So, that's good 'cause we haven't finished yet.
+
+211
+00:09:59.700 --> 00:10:01.370
+So, on top of that,
+
+212
+00:10:01.370 --> 00:10:03.683
+we can chain a .icon,
+
+213
+00:10:04.850 --> 00:10:08.520
+and an icon is just an inline function
+
+214
+00:10:08.520 --> 00:10:12.380
+that returns a strong tag with a,
+
+215
+00:10:12.380 --> 00:10:14.070
+let's just put a fire emoji in there.
+
+216
+00:10:14.070 --> 00:10:16.270
+And again, you could import an icon
+
+217
+00:10:16.270 --> 00:10:18.850
+just like we did from react icons.
+
+218
+00:10:18.850 --> 00:10:20.020
+I'm just gonna show you here
+
+219
+00:10:20.020 --> 00:10:23.340
+how you can make literally any react component,
+
+220
+00:10:23.340 --> 00:10:25.170
+and it should swap itself out.
+
+221
+00:10:25.170 --> 00:10:26.003
+There we go.
+
+222
+00:10:26.003 --> 00:10:27.530
+Okay, good.
+
+223
+00:10:27.530 --> 00:10:29.960
+Then the children of that.
+
+224
+00:10:29.960 --> 00:10:32.513
+So, let's say .child.
+
+225
+00:10:35.760 --> 00:10:38.760
+And inside of that s.editor
+
+226
+00:10:40.160 --> 00:10:42.463
+and .schematype.
+
+227
+00:10:46.296 --> 00:10:47.710
+It's gonna be store settings.
+
+228
+00:10:47.710 --> 00:10:51.130
+Again, that lines up with this schema right here.
+
+229
+00:10:51.130 --> 00:10:52.110
+So, we're saying,
+
+230
+00:10:52.110 --> 00:10:54.910
+create an editor, like when someone clicks on it,
+
+231
+00:10:54.910 --> 00:10:58.200
+create an editor for the schema type, and
+
+232
+00:11:03.995 --> 00:11:06.138
+link it to the document ID of,
+
+233
+00:11:06.138 --> 00:11:08.090
+and now, what is the document ID?
+
+234
+00:11:08.090 --> 00:11:12.690
+Well, normally in our backend here,
+
+235
+00:11:12.690 --> 00:11:14.490
+let me go to one that I have right here.
+
+236
+00:11:14.490 --> 00:11:17.020
+Is if you like, go to a pizza
+
+237
+00:11:17.020 --> 00:11:18.590
+and you click on one of the pizzas,
+
+238
+00:11:18.590 --> 00:11:20.610
+the document ID is this, right?
+
+239
+00:11:20.610 --> 00:11:24.090
+It's just a random number that we have here.
+
+240
+00:11:24.090 --> 00:11:26.080
+However, you can
+
+241
+00:11:28.400 --> 00:11:30.880
+customize what that document ID is.
+
+242
+00:11:30.880 --> 00:11:31.713
+And in our case,
+
+243
+00:11:31.713 --> 00:11:34.320
+we can just pass it a document ID that does not exist
+
+244
+00:11:34.320 --> 00:11:35.760
+and it will just create it for us.
+
+245
+00:11:35.760 --> 00:11:40.700
+So, make a new document ID
+
+246
+00:11:40.700 --> 00:11:45.700
+so we don't have a random string of numbers.
+
+247
+00:11:47.040 --> 00:11:48.900
+So, the document ID is going to just be,
+
+248
+00:11:48.900 --> 00:11:50.080
+we'll call it downtown.
+
+249
+00:11:50.080 --> 00:11:52.660
+Like that's the downtown location.
+
+250
+00:11:52.660 --> 00:11:53.520
+I got a red.
+
+251
+00:11:53.520 --> 00:11:55.470
+There should be a dot in front of that.
+
+252
+00:11:58.570 --> 00:12:00.520
+And I would take a look at what we got.
+
+253
+00:12:03.390 --> 00:12:04.240
+It's opened it up.
+
+254
+00:12:04.240 --> 00:12:05.720
+It looks like it's picking up the data
+
+255
+00:12:05.720 --> 00:12:07.120
+that I was working with earlier.
+
+256
+00:12:07.120 --> 00:12:10.473
+So, let's go and just nuke that, delete it.
+
+257
+00:12:12.190 --> 00:12:14.993
+And let's delete this one as well.
+
+258
+00:12:17.180 --> 00:12:18.420
+Oh, no, there we go.
+
+259
+00:12:18.420 --> 00:12:20.890
+You see, if there are no documents,
+
+260
+00:12:20.890 --> 00:12:22.950
+it will then create a new one for you,
+
+261
+00:12:22.950 --> 00:12:24.020
+which is what we want
+
+262
+00:12:24.020 --> 00:12:27.580
+and it will give it the ID of downtown.
+
+263
+00:12:27.580 --> 00:12:28.430
+That's good.
+
+264
+00:12:28.430 --> 00:12:30.880
+And then the other thing we wanna do is just like
+
+265
+00:12:31.860 --> 00:12:33.010
+add in the rest
+
+266
+00:12:35.110 --> 00:12:37.630
+of our document items.
+
+267
+00:12:37.630 --> 00:12:38.463
+And in this case,
+
+268
+00:12:38.463 --> 00:12:41.500
+we don't need to manually do all this huge song and dance.
+
+269
+00:12:41.500 --> 00:12:42.935
+We can simply just say
+
+270
+00:12:42.935 --> 00:12:44.593
+...s.documenttypelistitems.
+
+271
+00:12:47.167 --> 00:12:48.000
+So, document type list items.
+
+272
+00:12:53.217 --> 00:12:56.117
+And that should populate the rest of the...
+
+273
+00:12:56.117 --> 00:12:57.090
+Oh, there we go.
+
+274
+00:12:57.090 --> 00:12:58.460
+Pizzas topping slice masters,
+
+275
+00:12:58.460 --> 00:13:00.630
+and now it still shows us settings.
+
+276
+00:13:00.630 --> 00:13:02.690
+So, we'll have to do one more thing
+
+277
+00:13:02.690 --> 00:13:06.510
+and actually remove that settings value from here
+
+278
+00:13:06.510 --> 00:13:09.270
+because we don't want anyone to actually see this interface.
+
+279
+00:13:09.270 --> 00:13:12.860
+We only want them to be able to edit the homepage data
+
+280
+00:13:12.860 --> 00:13:14.580
+from the sidebar here.
+
+281
+00:13:14.580 --> 00:13:15.760
+And the way that we do that is
+
+282
+00:13:15.760 --> 00:13:17.810
+because this just returns an array,
+
+283
+00:13:17.810 --> 00:13:20.593
+we can just do a regular filter on that.
+
+284
+00:13:21.600 --> 00:13:25.900
+And we will say for each item that it returns,
+
+285
+00:13:25.900 --> 00:13:29.010
+check if the item.id,
+
+286
+00:13:29.010 --> 00:13:31.180
+so, we run item.getid
+
+287
+00:13:31.180 --> 00:13:33.860
+is not equal to,
+
+288
+00:13:33.860 --> 00:13:36.573
+in our case, it's store settings.
+
+289
+00:13:39.410 --> 00:13:42.880
+And that should just filter out a list of all of them.
+
+290
+00:13:42.880 --> 00:13:45.230
+This will rebuild and that should be gone forever.
+
+291
+00:13:45.230 --> 00:13:46.470
+Beautiful, okay.
+
+292
+00:13:46.470 --> 00:13:50.650
+So, now, let's just say like, downtown store.
+
+293
+00:13:50.650 --> 00:13:54.100
+Let's add a couple slice masters currently slicing.
+
+294
+00:13:54.100 --> 00:13:55.173
+Ooh, what's this?
+
+295
+00:13:56.340 --> 00:13:58.010
+Must be a reference to a document.
+
+296
+00:13:58.010 --> 00:13:58.923
+It is.
+
+297
+00:14:02.700 --> 00:14:03.533
+Good.
+
+298
+00:14:06.970 --> 00:14:08.240
+Close ad.
+
+299
+00:14:08.240 --> 00:14:09.960
+So, I'm just gonna go ahead and fill this out
+
+300
+00:14:09.960 --> 00:14:11.700
+with four pizzas and four people.
+
+301
+00:14:11.700 --> 00:14:12.850
+And the next video we'll look at
+
+302
+00:14:12.850 --> 00:14:14.500
+pulling those into the front end.
+
+303
+00:14:17.620 --> 00:14:20.500
+All right, I've got my four values here
+
+304
+00:14:20.500 --> 00:14:23.770
+and I can always go to it by clicking on the homepage.
+
+305
+00:14:23.770 --> 00:14:24.840
+All right, so, that's that.
+
+306
+00:14:24.840 --> 00:14:25.673
+In the next video,
+
+307
+00:14:25.673 --> 00:14:27.553
+we'll look at pulling them into the front end.
+

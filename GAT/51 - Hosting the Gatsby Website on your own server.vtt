@@ -1,0 +1,342 @@
+﻿WEBVTT
+
+1
+00:00:00.129 --> 00:00:02.712
+(upbeat music)
+
+2
+00:00:04.300 --> 00:00:06.750
+<v Instructor>So what if you want to host your Gatsby site</v>
+
+3
+00:00:06.750 --> 00:00:08.550
+on like a server that you already have.
+
+4
+00:00:08.550 --> 00:00:11.240
+So, more than likely, you have some server
+
+5
+00:00:11.240 --> 00:00:13.010
+you're paying a couple of bucks a month for
+
+6
+00:00:13.010 --> 00:00:16.460
+whether that's DigitalOcean or whether that's some sort
+
+7
+00:00:16.460 --> 00:00:20.220
+of Bluehost or GoDaddy or, I'm not judging you right now,
+
+8
+00:00:20.220 --> 00:00:22.230
+but everybody's got one of these servers there.
+
+9
+00:00:22.230 --> 00:00:23.063
+They're kicking around.
+
+10
+00:00:23.063 --> 00:00:24.830
+You've got a couple of sites hosted on the thing,
+
+11
+00:00:24.830 --> 00:00:27.480
+and you just want to host your Gatsby website on it.
+
+12
+00:00:27.480 --> 00:00:28.370
+Totally doable.
+
+13
+00:00:28.370 --> 00:00:30.770
+So what I do is, I just got this bosstype.com,
+
+14
+00:00:30.770 --> 00:00:33.620
+which is just a server that I use for my company.
+
+15
+00:00:33.620 --> 00:00:36.900
+I've got a couple of WordPress projects on it and what not,
+
+16
+00:00:36.900 --> 00:00:38.850
+and I just made a folder called pizza.
+
+17
+00:00:38.850 --> 00:00:43.450
+Now, in order to run your Gatsby website on a subfolder,
+
+18
+00:00:43.450 --> 00:00:46.230
+you need to change the build slightly
+
+19
+00:00:46.230 --> 00:00:49.630
+so that it won't run on bosstype.com,
+
+20
+00:00:49.630 --> 00:00:52.230
+but it'll be bosstype.com/pizza.
+
+21
+00:00:52.230 --> 00:00:56.070
+So the way that we do that is open up your gatsby.
+
+22
+00:00:56.070 --> 00:00:59.580
+We'll open up our gatsby-config.js,
+
+23
+00:00:59.580 --> 00:01:03.870
+and in our export default here,
+
+24
+00:01:03.870 --> 00:01:08.683
+we're going to put a pathPrefix that is /pizza,
+
+25
+00:01:09.690 --> 00:01:12.240
+and then we simply run,
+
+26
+00:01:12.240 --> 00:01:13.870
+npm run build,
+
+27
+00:01:13.870 --> 00:01:18.520
+but in this case, we need to pass an additional flag,
+
+28
+00:01:18.520 --> 00:01:20.510
+so that it will build with the prefix
+
+29
+00:01:20.510 --> 00:01:22.760
+on all the links that we have.
+
+30
+00:01:22.760 --> 00:01:27.593
+So, the way that we do that is normally it's --prefix-paths,
+
+31
+00:01:28.520 --> 00:01:32.290
+but, in our case, we're already running npm run build,
+
+32
+00:01:32.290 --> 00:01:34.886
+so in order to pass arguments, you have to say
+
+33
+00:01:34.886 --> 00:01:39.823
+<v ->- --prefix-paths,</v>
+
+34
+00:01:44.700 --> 00:01:47.060
+and you can see that it passed that prefix-paths
+
+35
+00:01:47.060 --> 00:01:48.643
+along to gatsby build.
+
+36
+00:01:53.630 --> 00:01:56.590
+Once it's built that whole thing, open up your ftp client.
+
+37
+00:01:56.590 --> 00:01:58.170
+I'm using Transmit here.
+
+38
+00:01:58.170 --> 00:02:01.320
+Go into your gatsby folder, go into your public folder,
+
+39
+00:02:01.320 --> 00:02:06.170
+select everything in there, drag, drop, go grab a coffee
+
+40
+00:02:06.170 --> 00:02:09.860
+'cause this will take, I don't know, five or six minutes.
+
+41
+00:02:09.860 --> 00:02:13.400
+The output of the gatsby build is not necessarily large,
+
+42
+00:02:13.400 --> 00:02:16.860
+but ftp only uploads a couple of files at once,
+
+43
+00:02:16.860 --> 00:02:20.400
+so it needs to do the whole connect, upload, handshake,
+
+44
+00:02:20.400 --> 00:02:21.470
+close down.
+
+45
+00:02:21.470 --> 00:02:23.270
+That's why uploading lots
+
+46
+00:02:23.270 --> 00:02:25.350
+of very small files can sometimes take a while,
+
+47
+00:02:25.350 --> 00:02:28.300
+so I'll pause it, and I'll come back once this is uploaded.
+
+48
+00:02:30.980 --> 00:02:32.260
+All right, that finished uploading.
+
+49
+00:02:32.260 --> 00:02:35.920
+Refresh this sucker, boom!
+
+50
+00:02:35.920 --> 00:02:37.300
+Fonts are loading.
+
+51
+00:02:37.300 --> 00:02:38.650
+Images are loading.
+
+52
+00:02:38.650 --> 00:02:42.430
+You will need to add bosstype.com or your domain name
+
+53
+00:02:42.430 --> 00:02:47.430
+to the allowed origins on your Sanity Studio,
+
+54
+00:02:47.550 --> 00:02:49.840
+but again, we've gone through that a couple of times,
+
+55
+00:02:49.840 --> 00:02:51.137
+so I'm not gonna show you how to do that.
+
+56
+00:02:51.137 --> 00:02:52.190
+All right, let's click through.
+
+57
+00:02:52.190 --> 00:02:54.063
+Make sure all these URLs are working.
+
+58
+00:02:54.950 --> 00:02:56.920
+Looks good, looks good.
+
+59
+00:02:56.920 --> 00:02:58.960
+I like it.
+
+60
+00:02:58.960 --> 00:03:01.930
+Oh, one little thing is it's looking
+
+61
+00:03:01.930 --> 00:03:05.700
+like the favicon is looking for forward slash,
+
+62
+00:03:05.700 --> 00:03:10.080
+and that's probably because of our meta,
+
+63
+00:03:11.510 --> 00:03:13.870
+what was that called?
+
+64
+00:03:13.870 --> 00:03:15.343
+Let's look in that layout.
+
+65
+00:03:18.384 --> 00:03:21.051
+ContentStyles, is it in the nav?
+
+66
+00:03:22.920 --> 00:03:24.130
+It's in our SEO.
+
+67
+00:03:24.130 --> 00:03:28.223
+This, right here, is linking, so you'd have to modify that
+
+68
+00:03:28.223 --> 00:03:31.650
+or pull the URL from an environmental variable.
+
+69
+00:03:31.650 --> 00:03:32.920
+I'm not gonna fix that right now,
+
+70
+00:03:32.920 --> 00:03:35.290
+but that's really the only issue that we have.
+
+71
+00:03:35.290 --> 00:03:37.230
+Everything else seems to be working.
+
+72
+00:03:37.230 --> 00:03:40.660
+Just find, I think the only downside is that,
+
+73
+00:03:40.660 --> 00:03:43.870
+there are no serverless functions being run
+
+74
+00:03:43.870 --> 00:03:47.740
+on your own current server, so if you wanted
+
+75
+00:03:47.740 --> 00:03:49.540
+to get that to work, then you'd have to deploy it
+
+76
+00:03:49.540 --> 00:03:51.740
+to some other serverless function host,
+
+77
+00:03:51.740 --> 00:03:55.457
+and that's a whole ordeal on it's own.
+
+78
+00:03:55.457 --> 00:03:57.900
+So, that really depends if you're using serverless functions
+
+79
+00:03:57.900 --> 00:03:59.100
+for your website or not.
+
+80
+00:03:59.100 --> 00:04:01.130
+If you're not, you can host it pretty much anywhere.
+
+81
+00:04:01.130 --> 00:04:04.700
+If you want, if you are, I would recommend sticking
+
+82
+00:04:04.700 --> 00:04:07.630
+with Netlify because Netlify just takes care
+
+83
+00:04:07.630 --> 00:04:09.520
+of all of that for you, which is pretty cool.
+
+84
+00:04:09.520 --> 00:04:11.850
+So that is hosting it off on your own.
+
+85
+00:04:11.850 --> 00:04:13.053
+See you in the next video.
+

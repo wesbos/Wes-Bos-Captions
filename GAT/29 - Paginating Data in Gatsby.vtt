@@ -1,0 +1,1310 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:03.417
+(gentle twinkling music)
+
+2
+00:00:04.520 --> 00:00:07.210
+<v ->All right, we're going to make all of the pages</v>
+
+3
+00:00:07.210 --> 00:00:08.363
+for the slicemasters
+
+4
+00:00:08.363 --> 00:00:10.410
+because we don't want to put 10 on a page.
+
+5
+00:00:10.410 --> 00:00:12.060
+We want to put, I don't know, two or four,
+
+6
+00:00:12.060 --> 00:00:15.360
+or however many that we want to go on each page.
+
+7
+00:00:15.360 --> 00:00:19.160
+Now, somewhere we need to store the number of people
+
+8
+00:00:19.160 --> 00:00:20.720
+that will go on each page.
+
+9
+00:00:20.720 --> 00:00:22.190
+And then based on that number,
+
+10
+00:00:22.190 --> 00:00:24.170
+we're gonna be able to calculate things
+
+11
+00:00:24.170 --> 00:00:25.700
+like how many pages there are.
+
+12
+00:00:25.700 --> 00:00:28.430
+So, and this is a little bit different
+
+13
+00:00:28.430 --> 00:00:30.350
+than pagination you might have done in the past,
+
+14
+00:00:30.350 --> 00:00:33.190
+because usually you just do that on demand
+
+15
+00:00:33.190 --> 00:00:36.300
+where you have like p=3,
+
+16
+00:00:36.300 --> 00:00:37.770
+here we go, page=2.
+
+17
+00:00:37.770 --> 00:00:38.603
+You usually do something like that
+
+18
+00:00:38.603 --> 00:00:40.780
+and that will just do it on demand.
+
+19
+00:00:40.780 --> 00:00:43.187
+But because it's Gatsby is all pre-generated at build time,
+
+20
+00:00:43.187 --> 00:00:47.410
+we need to know at build time how many pages there are,
+
+21
+00:00:47.410 --> 00:00:49.623
+and we're gonna go into our Gatsby node.
+
+22
+00:00:50.610 --> 00:00:55.010
+And we're going to do things like make a page for,
+
+23
+00:00:55.010 --> 00:00:58.123
+let's say we've got 10 people and there's two per page.
+
+24
+00:00:59.260 --> 00:01:02.780
+That means we have to make five pages for the slicemasters,
+
+25
+00:01:02.780 --> 00:01:05.350
+we need /slicemasters.
+
+26
+00:01:05.350 --> 00:01:09.220
+We need /slicemasters/2, three,
+
+27
+00:01:09.220 --> 00:01:10.172
+four and five.
+
+28
+00:01:10.172 --> 00:01:12.560
+So those all need to be generated ahead of time.
+
+29
+00:01:12.560 --> 00:01:16.576
+So we're gonna go into our .env file,
+
+30
+00:01:16.576 --> 00:01:20.020
+and we're gonna set some environmental variables here
+
+31
+00:01:20.020 --> 00:01:22.350
+that show how many are on each page.
+
+32
+00:01:22.350 --> 00:01:25.810
+And this value probably could also be put on
+
+33
+00:01:27.170 --> 00:01:29.660
+in like a JavaScript file, like settingsjs,
+
+34
+00:01:29.660 --> 00:01:30.600
+or something like that.
+
+35
+00:01:30.600 --> 00:01:33.580
+But I'm gonna show you how to put
+
+36
+00:01:33.580 --> 00:01:36.820
+environmental variables in here and surface them to Gatsby.
+
+37
+00:01:36.820 --> 00:01:39.320
+So if you want an environmental variable
+
+38
+00:01:39.320 --> 00:01:41.040
+to show up in Gatsby,
+
+39
+00:01:41.040 --> 00:01:44.523
+you have to prefix it with GATSBY_PAGE_SIZE=4.
+
+40
+00:01:49.350 --> 00:01:51.943
+And then let's go into our slicemasters,
+
+41
+00:01:52.970 --> 00:01:57.230
+and I'm gonna show you just how to surface that.
+
+42
+00:01:57.230 --> 00:02:01.030
+So if I have a paragraph right above this here,
+
+43
+00:02:01.030 --> 00:02:02.347
+we can do curly brackets and say
+
+44
+00:02:02.347 --> 00:02:06.330
+{process.env.GATSBY_PAGE
+
+45
+00:02:07.881 --> 00:02:08.802
+and what did we call it?
+
+46
+00:02:08.802 --> 00:02:09.635
+PAGE_SIZE.
+
+47
+00:02:12.195 --> 00:02:15.270
+That save and go to our slicemasters page.
+
+48
+00:02:15.270 --> 00:02:17.790
+And that's not there.
+
+49
+00:02:17.790 --> 00:02:20.380
+I think I need to kill it and start it up again.
+
+50
+00:02:20.380 --> 00:02:22.090
+All right. It regenerate it, now refresh the page.
+
+51
+00:02:22.090 --> 00:02:23.850
+There we go. We got four.
+
+52
+00:02:23.850 --> 00:02:27.180
+So, you see this environmental variable is showing up
+
+53
+00:02:27.180 --> 00:02:28.752
+and you may also say okay, well,
+
+54
+00:02:28.752 --> 00:02:31.973
+I can also show my sanity token. Let's try that.
+
+55
+00:02:33.780 --> 00:02:36.230
+You see, sanity token doesn't show up.
+
+56
+00:02:36.230 --> 00:02:40.100
+And that's because this is not meant to be surfaced
+
+57
+00:02:40.100 --> 00:02:41.040
+to the front end.
+
+58
+00:02:41.040 --> 00:02:44.490
+So if you want to explicitly allow something to be surfaced
+
+59
+00:02:44.490 --> 00:02:46.220
+via the front end in Gatsby,
+
+60
+00:02:46.220 --> 00:02:49.130
+you have to prefix it with GATSBY_PAGE_SIZE.
+
+61
+00:02:50.968 --> 00:02:52.511
+Also, while we're here, put this...
+
+62
+00:02:52.511 --> 00:02:55.340
+You might not need this by the time you're watching this,
+
+63
+00:02:55.340 --> 00:02:58.393
+but make a new variable called GATSBY_HOT_LOADER.
+
+64
+00:02:59.950 --> 00:03:01.310
+At the time of recording,
+
+65
+00:03:01.310 --> 00:03:04.530
+are trying this new one called fast-refresh.
+
+66
+00:03:04.530 --> 00:03:06.690
+And it's a bit of a better hot reloader
+
+67
+00:03:06.690 --> 00:03:07.890
+if you're having issues with it.
+
+68
+00:03:07.890 --> 00:03:11.000
+So give that a save, kill it, restart it again.
+
+69
+00:03:11.000 --> 00:03:14.990
+If you see like it errors about like refreshing or whatever,
+
+70
+00:03:14.990 --> 00:03:16.210
+just remove this one line.
+
+71
+00:03:16.210 --> 00:03:18.710
+Or if you're live reloading is not working,
+
+72
+00:03:18.710 --> 00:03:19.700
+just remove this line.
+
+73
+00:03:19.700 --> 00:03:21.546
+But at the time of recording,
+
+74
+00:03:21.546 --> 00:03:24.960
+I've been running this when I was working on this project,
+
+75
+00:03:24.960 --> 00:03:26.710
+and it's much better, much faster
+
+76
+00:03:26.710 --> 00:03:30.923
+and the CSS refreshes are even better.
+
+77
+00:03:31.920 --> 00:03:34.430
+So while that rebundles, let's go.
+
+78
+00:03:34.430 --> 00:03:38.143
+There we go. Seems like it's up and running.
+
+79
+00:03:39.270 --> 00:03:42.490
+So next what we need to do is to go into our Gatsby node
+
+80
+00:03:42.490 --> 00:03:44.987
+and we're going to make a new function that's going to
+
+81
+00:03:44.987 --> 00:03:47.550
+turn the slicemasters into pages.
+
+82
+00:03:47.550 --> 00:03:50.493
+So let's make a new function below,
+
+83
+00:03:50.493 --> 00:03:53.450
+fetchBeersAndTurnInto pages.
+
+84
+00:03:53.450 --> 00:03:54.820
+Let's make another one.
+
+85
+00:03:54.820 --> 00:03:57.589
+That's async function.
+
+86
+00:03:57.589 --> 00:03:59.756
+turnSlicemastersIntoPages.
+
+87
+00:04:04.340 --> 00:04:06.830
+And there's a couple things that need to happen inside
+
+88
+00:04:06.830 --> 00:04:10.010
+if you're actually before we even do anything,
+
+89
+00:04:10.010 --> 00:04:12.500
+let's just destructure graphql and actions
+
+90
+00:04:12.500 --> 00:04:14.413
+just like we did before.
+
+91
+00:04:14.413 --> 00:04:17.163
+And then let's take that turn turnSlicemastersIntoPages
+
+92
+00:04:18.230 --> 00:04:22.260
+and just pop it on the end along with the other
+
+93
+00:04:22.260 --> 00:04:23.573
+turnPizzasIntoPages and turnToppingsIntoPages.
+
+94
+00:04:25.830 --> 00:04:26.840
+Okay, so in here,
+
+95
+00:04:26.840 --> 00:04:28.330
+there's a couple things that need to happen.
+
+96
+00:04:28.330 --> 00:04:31.883
+So one we need to query all slicemasters.
+
+97
+00:04:33.860 --> 00:04:38.860
+Two, we need to turn each slicemaster into their own page.
+
+98
+00:04:41.670 --> 00:04:45.970
+So like when you click on one of these slicemasters here,
+
+99
+00:04:45.970 --> 00:04:49.770
+it's gonna go to /slashslicemaster/ their slug.
+
+100
+00:04:49.770 --> 00:04:50.603
+We got to do that.
+
+101
+00:04:50.603 --> 00:04:52.770
+I'm not gonna do that right now. We'll come back to that.
+
+102
+00:04:52.770 --> 00:04:55.288
+I want to say TODO.
+
+103
+00:04:55.288 --> 00:04:57.830
+Actually, I got that cool little highlighter TODO.
+
+104
+00:04:57.830 --> 00:04:59.870
+Ooh, look at that. Okay,
+
+105
+00:04:59.870 --> 00:05:01.408
+Now three,
+
+106
+00:05:01.408 --> 00:05:06.408
+we want to figure out how many pages there are
+
+107
+00:05:06.950 --> 00:05:09.740
+based on how many slicemasters
+
+108
+00:05:11.310 --> 00:05:13.240
+there are,
+
+109
+00:05:13.240 --> 00:05:17.410
+and how many per page.
+
+110
+00:05:17.410 --> 00:05:20.100
+So like, again, example,
+
+111
+00:05:20.100 --> 00:05:22.700
+if you have two per page
+
+112
+00:05:22.700 --> 00:05:24.250
+and you have 10 slicemasters,
+
+113
+00:05:24.250 --> 00:05:28.003
+you know you have to create five pages.
+
+114
+00:05:29.150 --> 00:05:32.040
+And then four,
+
+115
+00:05:32.040 --> 00:05:36.920
+loop over or loop from one to n,
+
+116
+00:05:36.920 --> 00:05:40.263
+and whereas n is the number of pages that you have,
+
+117
+00:05:41.828 --> 00:05:44.510
+and then the fifth step I guess we have,
+
+118
+00:05:44.510 --> 00:05:47.250
+is we're going to go back into our slicemasters,
+
+119
+00:05:47.250 --> 00:05:50.230
+and modify this query right here
+
+120
+00:05:50.230 --> 00:05:52.550
+to accept some arguments
+
+121
+00:05:52.550 --> 00:05:55.948
+that allow us to only pull four at a time
+
+122
+00:05:55.948 --> 00:05:59.750
+as well as skip over.
+
+123
+00:05:59.750 --> 00:06:01.060
+Like if you're on page two,
+
+124
+00:06:01.060 --> 00:06:06.060
+you want items five through five, six, seven and eight.
+
+125
+00:06:06.887 --> 00:06:08.640
+(laughs) Numbers are hard.
+
+126
+00:06:08.640 --> 00:06:11.080
+Okay. So let's do it.
+
+127
+00:06:11.080 --> 00:06:14.573
+So first, query all the slicemasters.
+
+128
+00:06:20.240 --> 00:06:21.200
+We will
+
+129
+00:06:22.862 --> 00:06:27.033
+const, { data } = await graph qL, ()
+
+130
+00:06:29.299 --> 00:06:31.010
+Remember the parentheses in this case,
+
+131
+00:06:31.010 --> 00:06:34.950
+and we will query allSanityPerson
+
+132
+00:06:36.960 --> 00:06:39.330
+and we want the totalCount.
+
+133
+00:06:39.330 --> 00:06:42.870
+And then for each person, we want
+
+134
+00:06:42.870 --> 00:06:45.883
+the name, the ID, the slug.
+
+135
+00:06:47.165 --> 00:06:50.030
+The slug is also has like current property
+
+136
+00:06:50.030 --> 00:06:51.550
+that's nested in it.
+
+137
+00:06:51.550 --> 00:06:53.180
+So I believe that is...
+
+138
+00:06:53.180 --> 00:06:54.013
+Don't need that.
+
+139
+00:06:54.013 --> 00:06:57.050
+I think in graphqL, you can put commas here,
+
+140
+00:06:57.050 --> 00:06:58.603
+but it's not necessary.
+
+141
+00:06:59.721 --> 00:07:01.370
+All right, so that's that.
+
+142
+00:07:01.370 --> 00:07:03.500
+Two, turn each slicemaster into their own page.
+
+143
+00:07:03.500 --> 00:07:05.240
+We'll do that, we've done that a bunch,
+
+144
+00:07:05.240 --> 00:07:07.470
+but we'll come to that in a future video.
+
+145
+00:07:07.470 --> 00:07:10.000
+Three, figure out how many pages there are
+
+146
+00:07:10.000 --> 00:07:11.960
+based on how many slicemasters there are.
+
+147
+00:07:11.960 --> 00:07:14.480
+Okay, so we need a couple variables here.
+
+148
+00:07:14.480 --> 00:07:17.600
+So const pageSize is equal to,
+
+149
+00:07:17.600 --> 00:07:20.930
+now we need to get that environmental variable right here.
+
+150
+00:07:20.930 --> 00:07:22.570
+So we say,
+
+151
+00:07:22.570 --> 00:07:25.023
+process.env.GATSBY_PAGE_SIZE.
+
+152
+00:07:27.140 --> 00:07:28.870
+Now, one weird thing about that
+
+153
+00:07:28.870 --> 00:07:33.430
+is even though this is a number, it comes in as a string,
+
+154
+00:07:33.430 --> 00:07:37.050
+which is odd, asked me how I know.
+
+155
+00:07:37.050 --> 00:07:38.837
+I wasted a good chunk of my day on that one,
+
+156
+00:07:38.837 --> 00:07:42.060
+Not a day, but at least a couple minutes on it
+
+157
+00:07:42.060 --> 00:07:42.893
+and I was frustrated.
+
+158
+00:07:42.893 --> 00:07:45.673
+So we need to wrap that in a parseInt,
+
+159
+00:07:46.685 --> 00:07:49.360
+and that will turn it from a string into a number.
+
+160
+00:07:49.360 --> 00:07:53.430
+And then we need another variable
+
+161
+00:07:53.430 --> 00:07:55.820
+that has the amount of pages that we need.
+
+162
+00:07:55.820 --> 00:08:00.040
+So say pageCount is equal to, so we'll take,
+
+163
+00:08:00.040 --> 00:08:01.830
+how many people there are
+
+164
+00:08:01.830 --> 00:08:04.930
+divided by how many people per page
+
+165
+00:08:04.930 --> 00:08:07.230
+and then take the upper bound of that.
+
+166
+00:08:07.230 --> 00:08:09.530
+And that will give us how many pages that we need.
+
+167
+00:08:09.530 --> 00:08:13.871
+So like if you have nine people and you have two per page,
+
+168
+00:08:13.871 --> 00:08:16.540
+you have four and a half pages.
+
+169
+00:08:16.540 --> 00:08:18.840
+But even if you have one person on my page,
+
+170
+00:08:18.840 --> 00:08:20.060
+you still need that last page.
+
+171
+00:08:20.060 --> 00:08:22.360
+So we'll take the upper bound of that the ceiling
+
+172
+00:08:22.360 --> 00:08:24.285
+and that will be five.
+
+173
+00:08:24.285 --> 00:08:25.118
+So say Math.ceil,
+
+174
+00:08:25.118 --> 00:08:27.860
+Oh, wrong kind of seil, ceil.
+
+175
+00:08:27.860 --> 00:08:30.560
+And we'll take the
+
+176
+00:08:30.560 --> 00:08:32.363
+data.allsanity,
+
+177
+00:08:36.290 --> 00:08:38.170
+let's rename that all sanity person.
+
+178
+00:08:38.170 --> 00:08:40.153
+Let's rename that to people.
+
+179
+00:08:41.470 --> 00:08:44.920
+Let's do slicemasters, slicemasters.
+
+180
+00:08:44.920 --> 00:08:49.920
+So data.slicemasters.totalCount, capital C,
+
+181
+00:08:50.100 --> 00:08:52.053
+divided by pageSize.
+
+182
+00:08:55.460 --> 00:08:58.440
+And then let's just do a little console log here.
+
+183
+00:08:58.440 --> 00:08:59.633
+So console log,
+
+184
+00:09:00.685 --> 00:09:05.685
+there are data.slicemasters.totalCount
+
+185
+00:09:07.960 --> 00:09:09.253
+total people.
+
+186
+00:09:10.500 --> 00:09:15.500
+And we have page count, pages
+
+187
+00:09:18.260 --> 00:09:23.260
+with pageSize per page.
+
+188
+00:09:23.270 --> 00:09:27.150
+So this should give us make sure that we now understand
+
+189
+00:09:27.150 --> 00:09:29.290
+that we have the three pieces of data we need
+
+190
+00:09:29.290 --> 00:09:30.760
+to do pagination.
+
+191
+00:09:30.760 --> 00:09:32.703
+So go ahead and reboot that sucker.
+
+192
+00:09:36.220 --> 00:09:37.920
+This is not working for me.
+
+193
+00:09:37.920 --> 00:09:40.050
+It's supposed to restart the whole build,
+
+194
+00:09:40.050 --> 00:09:42.070
+but it doesn't look like it's doing that.
+
+195
+00:09:42.070 --> 00:09:44.905
+So I'm gonna kill it, rerun it myself.
+
+196
+00:09:44.905 --> 00:09:47.520
+There we go. There it is.
+
+197
+00:09:47.520 --> 00:09:50.288
+There are 10 people total and we have three pages
+
+198
+00:09:50.288 --> 00:09:52.640
+with four per page.
+
+199
+00:09:52.640 --> 00:09:53.560
+So does that make sense?
+
+200
+00:09:53.560 --> 00:09:56.617
+We have 10 people and we have four people per page
+
+201
+00:09:56.617 --> 00:10:00.840
+that was two and a half pages, was four per page. Good.
+
+202
+00:10:00.840 --> 00:10:03.080
+I mean, we'll go and change that value later
+
+203
+00:10:03.080 --> 00:10:06.390
+to make sure that our pagination works,
+
+204
+00:10:06.390 --> 00:10:08.440
+regardless of how many people we have.
+
+205
+00:10:08.440 --> 00:10:09.759
+Okay, so that's good.
+
+206
+00:10:09.759 --> 00:10:11.870
+Let's see, where are we right now?
+
+207
+00:10:11.870 --> 00:10:13.670
+So figure out how many pages there are
+
+208
+00:10:13.670 --> 00:10:15.530
+and how many slicemasters for page.
+
+209
+00:10:15.530 --> 00:10:17.004
+Good.
+
+210
+00:10:17.004 --> 00:10:22.004
+Then loop from one to n and create pages for each of them.
+
+211
+00:10:22.440 --> 00:10:24.060
+Okay.
+
+212
+00:10:24.060 --> 00:10:26.470
+So we will...
+
+213
+00:10:26.470 --> 00:10:31.220
+how do you loop from one to four or one to three?
+
+214
+00:10:31.220 --> 00:10:34.250
+Well, we can say Array.from,
+
+215
+00:10:34.250 --> 00:10:37.362
+and we create an object where the length:
+
+216
+00:10:37.362 --> 00:10:40.980
+is equal to the pageCount.
+
+217
+00:10:40.980 --> 00:10:42.735
+And what that will do is,
+
+218
+00:10:42.735 --> 00:10:44.773
+let me show you real quick here.
+
+219
+00:10:47.080 --> 00:10:47.913
+Get rid of this.
+
+220
+00:10:47.913 --> 00:10:49.740
+I'll say array.from,
+
+221
+00:10:49.740 --> 00:10:53.520
+we have an object where you give it a length of five
+
+222
+00:10:53.520 --> 00:10:54.640
+that gives you
+
+223
+00:10:55.930 --> 00:11:00.750
+an array of this many slots.
+
+224
+00:11:00.750 --> 00:11:04.640
+And then what we can do is we can map over that
+
+225
+00:11:07.060 --> 00:11:11.110
+or we can for each over that, and we can get the slot,
+
+226
+00:11:11.110 --> 00:11:12.570
+which we don't care about,
+
+227
+00:11:12.570 --> 00:11:15.453
+because that's just undefined and we get the index.
+
+228
+00:11:17.430 --> 00:11:20.920
+And then for each one, we can return the index.
+
+229
+00:11:20.920 --> 00:11:22.530
+And we got a console log.
+
+230
+00:11:22.530 --> 00:11:25.847
+Console, get out of here. log(i).
+
+231
+00:11:26.860 --> 00:11:27.693
+So they you go.
+
+232
+00:11:27.693 --> 00:11:29.700
+See what we just did there is we took five
+
+233
+00:11:29.700 --> 00:11:30.533
+and we looped over it.
+
+234
+00:11:30.533 --> 00:11:33.213
+And that's a good way to count from one to whatever.
+
+235
+00:11:33.213 --> 00:11:36.010
+Obviously, we're off by one because indexes are off,
+
+236
+00:11:36.010 --> 00:11:39.310
+so we just need to add one to each.
+
+237
+00:11:39.310 --> 00:11:42.190
+So we're go from one to five, not zero to four.
+
+238
+00:11:42.190 --> 00:11:43.790
+So Array.from pageCount.forEach.
+
+239
+00:11:45.670 --> 00:11:49.340
+And then we don't care about the actual item in the array,
+
+240
+00:11:49.340 --> 00:11:50.430
+because that's just undefined.
+
+241
+00:11:50.430 --> 00:11:52.840
+So a lot of times people will just put an underscore there
+
+242
+00:11:52.840 --> 00:11:55.590
+just to put a garbage variable in there.
+
+243
+00:11:55.590 --> 00:11:56.423
+We're not going to use it,
+
+244
+00:11:56.423 --> 00:11:58.070
+but we just need to get to the second argument
+
+245
+00:11:58.070 --> 00:12:01.740
+which is the eye the index of that so for each
+
+246
+00:12:02.730 --> 00:12:05.660
+and then let's just console.log
+
+247
+00:12:05.660 --> 00:12:09.193
+Creating page i,
+
+248
+00:12:10.767 --> 00:12:14.250
+and that will be zero to four,
+
+249
+00:12:14.250 --> 00:12:18.890
+then we will take our actions that get passed in right here.
+
+250
+00:12:18.890 --> 00:12:20.670
+Remember we've done this two times already,
+
+251
+00:12:20.670 --> 00:12:22.390
+this is our third time doing it,
+
+252
+00:12:22.390 --> 00:12:23.340
+actions.createPage.
+
+253
+00:12:26.010 --> 00:12:29.369
+A object where the path is going to be
+
+254
+00:12:29.369 --> 00:12:32.407
+/slicemasters/i + 1.
+
+255
+00:12:39.030 --> 00:12:41.105
+The component we need.
+
+256
+00:12:41.105 --> 00:12:42.540
+We haven't done this one yet.
+
+257
+00:12:42.540 --> 00:12:45.680
+So remember, we would have to make a template for it.
+
+258
+00:12:45.680 --> 00:12:47.780
+Luckily, we already have a template for it
+
+259
+00:12:47.780 --> 00:12:49.830
+and that is our slicemaster's page.
+
+260
+00:12:49.830 --> 00:12:52.630
+So we can just use our path.resolve
+
+261
+00:12:53.700 --> 00:12:54.960
+right inside of here.
+
+262
+00:12:54.960 --> 00:12:59.960
+Previously, I have shown you how to grab the template
+
+263
+00:13:01.150 --> 00:13:02.520
+in a variable right here,
+
+264
+00:13:02.520 --> 00:13:05.060
+you can also just resolve it directly in here.
+
+265
+00:13:05.060 --> 00:13:09.870
+So we'll say resolve("src/pages/slicemasters.js")
+
+266
+00:13:13.270 --> 00:13:15.120
+and then context.
+
+267
+00:13:15.120 --> 00:13:18.000
+So a couple pieces of data that need to be passed
+
+268
+00:13:18.000 --> 00:13:18.833
+to the template.
+
+269
+00:13:18.833 --> 00:13:23.730
+So this data is passed to the template when we create it.
+
+270
+00:13:28.300 --> 00:13:29.740
+So what do we need here?
+
+271
+00:13:29.740 --> 00:13:31.520
+We need the skip.
+
+272
+00:13:31.520 --> 00:13:35.720
+So this will tell us how many people should we skip
+
+273
+00:13:35.720 --> 00:13:38.900
+because if we're querying four slicemasters,
+
+274
+00:13:38.900 --> 00:13:40.540
+but we're on page two,
+
+275
+00:13:40.540 --> 00:13:44.630
+we need to tell it, give me four but skip the first four.
+
+276
+00:13:44.630 --> 00:13:49.160
+So we will take the index page and
+
+277
+00:13:49.160 --> 00:13:51.680
+multiply that by the page size.
+
+278
+00:13:51.680 --> 00:13:56.680
+So on the first page, we will skip four times zero,
+
+279
+00:13:57.130 --> 00:13:58.360
+and that's we'll skip zero.
+
+280
+00:13:58.360 --> 00:14:00.750
+On the second page, we will skip one times four,
+
+281
+00:14:00.750 --> 00:14:01.583
+and that's four.
+
+282
+00:14:01.583 --> 00:14:05.020
+On the third page, we will skip two times four,
+
+283
+00:14:05.020 --> 00:14:05.853
+you get the point.
+
+284
+00:14:05.853 --> 00:14:07.621
+So that's how many we are skipping,
+
+285
+00:14:07.621 --> 00:14:09.850
+the current page that we're on.
+
+286
+00:14:09.850 --> 00:14:12.750
+So current page is i + 1,
+
+287
+00:14:12.750 --> 00:14:15.410
+very similar to how we did it right up here.
+
+288
+00:14:15.410 --> 00:14:20.410
+And then we also want to pass the page size value to it.
+
+289
+00:14:20.570 --> 00:14:23.840
+We can always access it via this
+
+290
+00:14:23.840 --> 00:14:25.293
+process.envGATSBY_page_size,
+
+291
+00:14:26.431 --> 00:14:28.545
+but I'm gonna pass it in via context,
+
+292
+00:14:28.545 --> 00:14:31.613
+just so that we have it all in one neat place.
+
+293
+00:14:33.220 --> 00:14:36.850
+Okay, so with that done,
+
+294
+00:14:36.850 --> 00:14:39.682
+I should be able to reboot this sucker.
+
+295
+00:14:39.682 --> 00:14:43.560
+And we should now have page one, page two
+
+296
+00:14:43.560 --> 00:14:45.760
+and page three showing up.
+
+297
+00:14:45.760 --> 00:14:47.170
+There we go. We've got our console log
+
+298
+00:14:47.170 --> 00:14:48.770
+creating page zero, one and two.
+
+299
+00:14:49.780 --> 00:14:53.620
+Now if we refresh this page,
+
+300
+00:14:53.620 --> 00:14:56.380
+this still works and shows us all the people
+
+301
+00:14:56.380 --> 00:15:00.340
+but we should be able to go to slicemasters/2
+
+302
+00:15:02.190 --> 00:15:04.470
+and that is now a page,
+
+303
+00:15:04.470 --> 00:15:07.331
+it still has all the same people,
+
+304
+00:15:07.331 --> 00:15:09.220
+because we haven't modified our actual query yet.
+
+305
+00:15:09.220 --> 00:15:11.750
+And then we can go ahead in page three,
+
+306
+00:15:11.750 --> 00:15:15.630
+that is page and I don't think we have a page. No.
+
+307
+00:15:15.630 --> 00:15:17.850
+And if you go to a page that doesn't exist,
+
+308
+00:15:17.850 --> 00:15:22.710
+you should be able to see in your list of pages here.
+
+309
+00:15:22.710 --> 00:15:27.410
+There we go /slicemasters, one, two, and three,
+
+310
+00:15:27.410 --> 00:15:28.650
+are now showing up.
+
+311
+00:15:28.650 --> 00:15:33.650
+So if we then change that slicemasters env variable
+
+312
+00:15:34.590 --> 00:15:37.490
+to two people per page, so go back to your env,
+
+313
+00:15:37.490 --> 00:15:38.903
+kill it and restart.
+
+314
+00:15:40.600 --> 00:15:42.060
+If we did the math right,
+
+315
+00:15:42.060 --> 00:15:46.023
+we should now see what six pages instead of three.
+
+316
+00:15:54.250 --> 00:15:56.500
+Five pages, how does math even work?
+
+317
+00:15:56.500 --> 00:15:57.590
+So refresh?
+
+318
+00:15:57.590 --> 00:16:00.290
+See now this page four is actually a page
+
+319
+00:16:00.290 --> 00:16:01.470
+and you should be able to see all of them.
+
+320
+00:16:01.470 --> 00:16:02.303
+Okay,
+
+321
+00:16:05.300 --> 00:16:07.320
+I think that's enough for this video.
+
+322
+00:16:07.320 --> 00:16:08.170
+In the next video,
+
+323
+00:16:08.170 --> 00:16:09.590
+what we're gonna do is we're gonna figure out
+
+324
+00:16:09.590 --> 00:16:11.660
+how to modify this query,
+
+325
+00:16:11.660 --> 00:16:15.880
+so that this query takes the incoming context
+
+326
+00:16:15.880 --> 00:16:17.598
+that we pass right here
+
+327
+00:16:17.598 --> 00:16:20.953
+and we actually get different people on each page.
+

@@ -1,0 +1,1694 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.667
+(playful music)
+
+2
+00:00:04.170 --> 00:00:06.170
+<v instructor>And just like we did with these pizza pages</v>
+
+3
+00:00:06.170 --> 00:00:08.240
+where we dynamically created them
+
+4
+00:00:08.240 --> 00:00:10.850
+because we're not about to go ahead
+
+5
+00:00:10.850 --> 00:00:13.780
+and make a new JS file for every single pizza.
+
+6
+00:00:13.780 --> 00:00:17.370
+We need to do the same for our toppings.
+
+7
+00:00:17.370 --> 00:00:18.820
+However, it's a little bit different
+
+8
+00:00:18.820 --> 00:00:23.820
+in that we are going to reuse the pizza.js page,
+
+9
+00:00:23.840 --> 00:00:28.840
+but just pass it the ability to search for a specific topic.
+
+10
+00:00:30.020 --> 00:00:33.550
+So this one is kind of similar to what we did.
+
+11
+00:00:33.550 --> 00:00:34.660
+There's a little bit extra.
+
+12
+00:00:34.660 --> 00:00:37.970
+So I'm gonna encourage you to try and do this one yourself.
+
+13
+00:00:37.970 --> 00:00:41.320
+So if I click on roasted garlic,
+
+14
+00:00:41.320 --> 00:00:44.530
+I should see a page that looks exactly like this.
+
+15
+00:00:44.530 --> 00:00:48.130
+however I should only see three pizzas shown on that page.
+
+16
+00:00:48.130 --> 00:00:51.150
+And then also a roasted garlic should be the topping
+
+17
+00:00:51.150 --> 00:00:53.150
+selector should be highlighted showing us
+
+18
+00:00:53.150 --> 00:00:56.200
+that where we're specifically on that page.
+
+19
+00:00:56.200 --> 00:00:59.600
+So welcome back, good job.
+
+20
+00:00:59.600 --> 00:01:00.530
+You did a great job,
+
+21
+00:01:00.530 --> 00:01:02.330
+let's do it ourselves.
+
+22
+00:01:02.330 --> 00:01:07.330
+So we're gonna go into our Gatsby-node.JS,
+
+23
+00:01:07.720 --> 00:01:10.000
+and we're gonna write another one of these functions
+
+24
+00:01:10.000 --> 00:01:13.780
+like this turn pizzas into pages.
+
+25
+00:01:13.780 --> 00:01:15.840
+We're gonna make another one called
+
+26
+00:01:15.840 --> 00:01:17.590
+turn toppings into pages.
+
+27
+00:01:17.590 --> 00:01:19.860
+So we're gonna go down here.
+
+28
+00:01:19.860 --> 00:01:24.753
+Were making a sync function called turn toppings into pages,
+
+29
+00:01:26.170 --> 00:01:28.890
+and then we need to do a couple things.
+
+30
+00:01:28.890 --> 00:01:30.513
+One, get the template,
+
+31
+00:01:32.460 --> 00:01:36.600
+two query all the toppings,
+
+32
+00:01:36.600 --> 00:01:41.600
+three create page for that topping
+
+33
+00:01:43.080 --> 00:01:48.080
+and then four like pass topping data to pizza.JS,Okay.
+
+34
+00:01:52.278 --> 00:01:55.180
+And then before we even even get going,
+
+35
+00:01:55.180 --> 00:01:58.380
+we need to make sure that this turned toppings into pages
+
+36
+00:01:58.380 --> 00:01:59.240
+runs right here.
+
+37
+00:01:59.240 --> 00:02:00.459
+Now you might think okay, well,
+
+38
+00:02:00.459 --> 00:02:02.500
+I can play that game.
+
+39
+00:02:02.500 --> 00:02:04.280
+Turn toppings into pages,
+
+40
+00:02:04.280 --> 00:02:06.980
+we've got our params and we're often running.
+
+41
+00:02:06.980 --> 00:02:11.060
+Now this is a common thing that happens with a sync await
+
+42
+00:02:11.060 --> 00:02:14.640
+is that if we were to await right here,
+
+43
+00:02:14.640 --> 00:02:17.600
+that we'll pause this create pages function from running,
+
+44
+00:02:17.600 --> 00:02:18.433
+it will go off,
+
+45
+00:02:18.433 --> 00:02:20.740
+turn all the pizzas into pages and then done.
+
+46
+00:02:20.740 --> 00:02:22.250
+And then it moves on to the next line,
+
+47
+00:02:22.250 --> 00:02:23.892
+turn toppings into the pages.
+
+48
+00:02:23.892 --> 00:02:27.250
+So these things are not related,
+
+49
+00:02:27.250 --> 00:02:30.220
+meaning that we don't have to wait for the pizzas
+
+50
+00:02:30.220 --> 00:02:31.960
+to be turned into pages
+
+51
+00:02:31.960 --> 00:02:34.610
+before we can turn the toppings into pages,
+
+52
+00:02:34.610 --> 00:02:36.740
+they can be run at the same time.
+
+53
+00:02:36.740 --> 00:02:39.270
+And the word that we're looking for here in JavaScript is
+
+54
+00:02:39.270 --> 00:02:42.070
+they can be run concurrently at the same time.
+
+55
+00:02:42.070 --> 00:02:46.960
+So what we can do is we can turn these two.
+
+56
+00:02:46.960 --> 00:02:49.370
+These are both promise based function.
+
+57
+00:02:49.370 --> 00:02:50.450
+So this one says,
+
+58
+00:02:50.450 --> 00:02:52.610
+I promise I'll turn the pizzas into pages.
+
+59
+00:02:52.610 --> 00:02:53.443
+And this one says,
+
+60
+00:02:53.443 --> 00:02:55.680
+I promise I'll turn the toppings into pages.
+
+61
+00:02:55.680 --> 00:02:59.000
+So if we want to run them concurrently at the same time,
+
+62
+00:02:59.000 --> 00:03:02.680
+we can await capital P promise.all
+
+63
+00:03:03.590 --> 00:03:07.330
+and pass it in array of promises.
+
+64
+00:03:07.330 --> 00:03:09.240
+And what that will do is they'll run them all
+
+65
+00:03:09.240 --> 00:03:11.010
+and wait for all of them to finish,
+
+66
+00:03:11.010 --> 00:03:13.480
+and that's gonna make your bills faster.
+
+67
+00:03:13.480 --> 00:03:16.050
+So what we'll do here is we'll put that
+
+68
+00:03:16.050 --> 00:03:18.200
+as the first item in that array.
+
+69
+00:03:18.200 --> 00:03:20.800
+And we don't need the await keywords anymore
+
+70
+00:03:20.800 --> 00:03:23.060
+because we are simply awaiting all of them.
+
+71
+00:03:23.060 --> 00:03:25.723
+So right here, we'll say,
+
+72
+00:03:27.970 --> 00:03:29.850
+wait, we can get rid of,
+
+73
+00:03:29.850 --> 00:03:31.100
+I'll put these down here.
+
+74
+00:03:32.110 --> 00:03:33.700
+I'll just say,
+
+75
+00:03:33.700 --> 00:03:38.700
+wait for all promises to be resolved
+
+76
+00:03:40.220 --> 00:03:44.050
+before finishing this function.
+
+77
+00:03:44.050 --> 00:03:46.540
+And that's how Gatsby knows to wait for these pages
+
+78
+00:03:46.540 --> 00:03:48.870
+to be created before it starts to server
+
+79
+00:03:48.870 --> 00:03:53.720
+and tells you that it's OK to go to local host 8,000.
+
+80
+00:03:53.720 --> 00:03:56.980
+Alright, so let's just put a little comment in here.
+
+81
+00:03:56.980 --> 00:04:01.980
+Console log, turning the toppings into pages.
+
+82
+00:04:04.580 --> 00:04:05.950
+So first get the template.
+
+83
+00:04:05.950 --> 00:04:09.400
+Well, we can pretty much borrow a lot from here.
+
+84
+00:04:09.400 --> 00:04:12.200
+So it's a template equals path that resolve,
+
+85
+00:04:12.200 --> 00:04:13.150
+we'll go down here,
+
+86
+00:04:15.250 --> 00:04:17.050
+we'll call this,
+
+87
+00:04:17.050 --> 00:04:22.050
+let's call it toppings template path that resolve.
+
+88
+00:04:22.630 --> 00:04:23.750
+And in our case,
+
+89
+00:04:23.750 --> 00:04:28.170
+we are not going to be making another template.
+
+90
+00:04:28.170 --> 00:04:29.930
+Cause we already have a template.
+
+91
+00:04:29.930 --> 00:04:32.070
+And that is pizzas.JS.
+
+92
+00:04:32.070 --> 00:04:33.790
+It's in our pages directory.
+
+93
+00:04:33.790 --> 00:04:35.950
+And it's being used to render out this page
+
+94
+00:04:35.950 --> 00:04:37.040
+with all of them.
+
+95
+00:04:37.040 --> 00:04:41.560
+So we wanna just use that same page to render out the
+
+96
+00:04:41.560 --> 00:04:43.250
+subsection of a topping.
+
+97
+00:04:43.250 --> 00:04:46.300
+And we're gonna modify this query right here
+
+98
+00:04:46.300 --> 00:04:51.230
+to take in an argument as to which toppings to filter for.
+
+99
+00:04:51.230 --> 00:04:54.300
+So we will go into our pages directory
+
+100
+00:04:54.300 --> 00:04:57.073
+and get lowercase, pizzas.JS.
+
+101
+00:04:58.160 --> 00:05:00.610
+Next, We want to query all of the toppings.
+
+102
+00:05:00.610 --> 00:05:05.230
+We'll say cons query bracket data is equal to GraphQL
+
+103
+00:05:06.600 --> 00:05:08.310
+and now okay, GraphQL.
+
+104
+00:05:08.310 --> 00:05:09.330
+Where's that coming from?
+
+105
+00:05:09.330 --> 00:05:11.140
+Well it's not something you import our case
+
+106
+00:05:11.140 --> 00:05:16.140
+remember we have to destructure GraphQL and the actions
+
+107
+00:05:16.230 --> 00:05:19.560
+you'll see that this is called the Function Signature.
+
+108
+00:05:19.560 --> 00:05:21.920
+The function signature looks the same
+
+109
+00:05:21.920 --> 00:05:25.500
+for all of these functions that turn data into pages.
+
+110
+00:05:25.500 --> 00:05:28.070
+So we destructure GraphQL and actions.
+
+111
+00:05:28.070 --> 00:05:31.370
+We use GraphQL here and we'll write a quick query
+
+112
+00:05:31.370 --> 00:05:34.750
+to get all of our toppings where we say,
+
+113
+00:05:34.750 --> 00:05:38.253
+toppings all sanity toppings.
+
+114
+00:05:39.380 --> 00:05:41.050
+topping sorry, singular.
+
+115
+00:05:41.050 --> 00:05:42.610
+Yeah, it got me there.
+
+116
+00:05:42.610 --> 00:05:44.550
+That would have been a bad day.
+
+117
+00:05:44.550 --> 00:05:46.790
+We want the nodes and for each one
+
+118
+00:05:46.790 --> 00:05:49.640
+we want the name of the topping
+
+119
+00:05:49.640 --> 00:05:52.170
+and the ID of the topping.
+
+120
+00:05:52.170 --> 00:05:54.433
+I believe that's all we need.
+
+121
+00:05:56.670 --> 00:05:57.860
+Ooh, look can you see this
+
+122
+00:05:57.860 --> 00:05:58.850
+You wanna restart it?
+
+123
+00:05:58.850 --> 00:05:59.820
+We don't need to restart it yet.
+
+124
+00:05:59.820 --> 00:06:02.170
+Let's just keep, keep writing some data.
+
+125
+00:06:02.170 --> 00:06:04.750
+All right, now we need to loop over each of the toppings
+
+126
+00:06:04.750 --> 00:06:06.090
+and create a page for that.
+
+127
+00:06:06.090 --> 00:06:11.090
+So say data.toppings.nodes.foureach topping
+
+128
+00:06:14.290 --> 00:06:19.290
+and let's just console log creating page for topping
+
+129
+00:06:21.160 --> 00:06:22.940
+topping.name.
+
+130
+00:06:22.940 --> 00:06:24.330
+Let's stop there,
+
+131
+00:06:24.330 --> 00:06:26.803
+let's try this little restart thing.
+
+132
+00:06:35.340 --> 00:06:37.600
+Doesn't look like it's actually restarting for me.
+
+133
+00:06:37.600 --> 00:06:39.143
+I'm gonna just kill it myself.
+
+134
+00:06:40.070 --> 00:06:41.730
+It started again.
+
+135
+00:06:41.730 --> 00:06:43.280
+All right, I got an error here.
+
+136
+00:06:44.490 --> 00:06:46.550
+Cannot read property toppings
+
+137
+00:06:46.550 --> 00:06:50.273
+of undefined data.toppings.
+
+138
+00:06:51.960 --> 00:06:55.070
+Okay looks like we need to back it up.
+
+139
+00:06:55.070 --> 00:06:56.302
+We got a little cocky there
+
+140
+00:06:56.302 --> 00:07:00.290
+and wrote too much code without seeing
+
+141
+00:07:00.290 --> 00:07:02.790
+that this works.
+
+142
+00:07:02.790 --> 00:07:04.760
+So how do we fix that?
+
+143
+00:07:04.760 --> 00:07:07.550
+Well, let's comment out this number three here
+
+144
+00:07:07.550 --> 00:07:09.300
+and console log data,
+
+145
+00:07:09.300 --> 00:07:11.550
+see what we're working with here.
+
+146
+00:07:11.550 --> 00:07:13.820
+Is anyone else just mash their keyboard
+
+147
+00:07:13.820 --> 00:07:15.453
+in order to kill their process?
+
+148
+00:07:16.390 --> 00:07:19.323
+Boom Okay, so look, look we got our toppings.
+
+149
+00:07:21.970 --> 00:07:23.390
+Oh no that's not it,
+
+150
+00:07:23.390 --> 00:07:26.500
+that's a console log from something else.
+
+151
+00:07:26.500 --> 00:07:29.413
+Oh, I got myself there, okay.
+
+152
+00:07:30.920 --> 00:07:33.300
+And it looks like this blank line
+
+153
+00:07:33.300 --> 00:07:37.313
+is probably our console.log, okay.
+
+154
+00:07:39.140 --> 00:07:40.820
+If this is the case,
+
+155
+00:07:40.820 --> 00:07:44.640
+you can also destructure the error property
+
+156
+00:07:44.640 --> 00:07:48.160
+or you can just say response or yes.
+
+157
+00:07:48.160 --> 00:07:49.620
+Let's just console log their response
+
+158
+00:07:49.620 --> 00:07:52.000
+see what we're working with there.
+
+159
+00:07:52.000 --> 00:07:56.140
+Another thing we could do is just as a gut check,
+
+160
+00:07:56.140 --> 00:08:01.140
+go to our query__GraphQL.
+
+161
+00:08:01.710 --> 00:08:04.660
+And we could test if this is working,
+
+162
+00:08:04.660 --> 00:08:06.420
+Oh, we're not gonna be able to go to GraphQL,
+
+163
+00:08:06.420 --> 00:08:09.220
+cause it's not running but there we go
+
+164
+00:08:09.220 --> 00:08:12.410
+we're console logging the response here.
+
+165
+00:08:12.410 --> 00:08:13.780
+And it tells us it's a promise.
+
+166
+00:08:13.780 --> 00:08:15.300
+So what did I forget?
+
+167
+00:08:15.300 --> 00:08:17.320
+I forgot to await this GraphQL.
+
+168
+00:08:17.320 --> 00:08:19.980
+So let's bring that back to destructuring data,
+
+169
+00:08:19.980 --> 00:08:21.700
+await GraphQL.
+
+170
+00:08:21.700 --> 00:08:23.760
+I better work now I'm so confident
+
+171
+00:08:23.760 --> 00:08:25.790
+I'm going to put the data to topping,
+
+172
+00:08:25.790 --> 00:08:27.640
+stop for each back,
+
+173
+00:08:27.640 --> 00:08:30.223
+Kill the process, start that sucker again.
+
+174
+00:08:33.230 --> 00:08:34.960
+Here we go and so now we've got
+
+175
+00:08:34.960 --> 00:08:36.840
+creating page for grumpy mushroom.
+
+176
+00:08:36.840 --> 00:08:38.860
+So every single topping we're looping over it
+
+177
+00:08:38.860 --> 00:08:40.630
+and we see it showing up, good.
+
+178
+00:08:40.630 --> 00:08:45.630
+Okay, so a next step that we have is we'll take our actions.
+
+179
+00:08:46.120 --> 00:08:51.120
+Remember actions gets passed in via the function right here,
+
+180
+00:08:51.700 --> 00:08:54.393
+and we use the.create page,
+
+181
+00:08:56.135 --> 00:08:59.450
+and that takes an object
+
+182
+00:08:59.450 --> 00:09:00.730
+and then in that we say,
+
+183
+00:09:00.730 --> 00:09:05.730
+the path is going to be a topping/thetopping.name
+
+184
+00:09:09.660 --> 00:09:12.500
+and the component is going to be,
+
+185
+00:09:12.500 --> 00:09:13.640
+what did we call it here?
+
+186
+00:09:13.640 --> 00:09:14.743
+Topping template.
+
+187
+00:09:17.530 --> 00:09:22.530
+Okay, and the context we are going to pass along is
+
+188
+00:09:23.840 --> 00:09:27.350
+the topping is topping.name
+
+189
+00:09:27.350 --> 00:09:31.890
+and let's put it to do regex for topping.
+
+190
+00:09:31.890 --> 00:09:33.980
+I'll explain that in just a second.
+
+191
+00:09:33.980 --> 00:09:38.980
+But let's see if that actually creates the topping page
+
+192
+00:09:40.360 --> 00:09:42.810
+and then we'll work at actually filtering it out.
+
+193
+00:09:46.990 --> 00:09:49.530
+All right, our thing is up and running.
+
+194
+00:09:49.530 --> 00:09:52.133
+Now if I click on mushrooms,
+
+195
+00:09:53.710 --> 00:09:57.360
+you see we have topping/mushrooms,
+
+196
+00:09:57.360 --> 00:09:59.690
+but obviously we still see all the pizzas,
+
+197
+00:09:59.690 --> 00:10:04.690
+but all of these pages are now existing in the uron .
+
+198
+00:10:06.840 --> 00:10:07.970
+Another kind of cool thing
+
+199
+00:10:07.970 --> 00:10:10.570
+is you can go to a page that actually doesn't exist.
+
+200
+00:10:11.830 --> 00:10:14.440
+And our 404 page will show us a list
+
+201
+00:10:14.440 --> 00:10:18.570
+of all of the pages and look at all of these toppings pages
+
+202
+00:10:18.570 --> 00:10:22.420
+are now showing up in our website, which is awesome.
+
+203
+00:10:22.420 --> 00:10:24.820
+Okay, so now the question is,
+
+204
+00:10:24.820 --> 00:10:29.820
+how do we go back to our pizzas.JS and filter this
+
+205
+00:10:30.760 --> 00:10:34.760
+query for the specific toppings that we currently want?
+
+206
+00:10:34.760 --> 00:10:36.738
+So the way that we do that is,
+
+207
+00:10:36.738 --> 00:10:39.620
+let's go back to our graphical here,
+
+208
+00:10:39.620 --> 00:10:41.740
+bumped us right up,
+
+209
+00:10:41.740 --> 00:10:44.173
+make it as big as we can.
+
+210
+00:10:45.110 --> 00:10:47.300
+And let's write a query from scratch.
+
+211
+00:10:47.300 --> 00:10:50.250
+So query all sanity pizza,
+
+212
+00:10:50.250 --> 00:10:51.900
+and then for the nodes,
+
+213
+00:10:51.900 --> 00:10:54.650
+we want the pizza.name.
+
+214
+00:10:54.650 --> 00:10:57.770
+Oh, pizza We want the name, not the pizza.name
+
+215
+00:10:57.770 --> 00:11:00.030
+run, boom, got all the pizzas here.
+
+216
+00:11:00.030 --> 00:11:03.490
+Okay, so now we can take that all sanity pizza
+
+217
+00:11:03.490 --> 00:11:08.490
+and say, filter where the toppings,
+
+218
+00:11:11.010 --> 00:11:12.530
+now this is a little bit weird
+
+219
+00:11:12.530 --> 00:11:14.840
+because their toppings is an array.
+
+220
+00:11:14.840 --> 00:11:17.690
+And if you want to find an item
+
+221
+00:11:17.690 --> 00:11:21.070
+where something in the array matches it,
+
+222
+00:11:21.070 --> 00:11:23.360
+in our case, we use ELEM match.
+
+223
+00:11:23.360 --> 00:11:27.910
+And these filters are never standard across GraphQL.
+
+224
+00:11:27.910 --> 00:11:31.550
+You will see them look very similar from GraphQL
+
+225
+00:11:31.550 --> 00:11:33.690
+implementation to another,
+
+226
+00:11:33.690 --> 00:11:36.470
+but this is the way that sanity does it.
+
+227
+00:11:36.470 --> 00:11:39.450
+Actually, this is the way that Gatsby does it.
+
+228
+00:11:39.450 --> 00:11:44.450
+So we do another one here and we say elem match.
+
+229
+00:11:44.830 --> 00:11:48.290
+And we wanna match the element
+
+230
+00:11:48.290 --> 00:11:51.453
+where the name of the topping is,
+
+231
+00:11:56.060 --> 00:11:57.500
+now we have all of these right here.
+
+232
+00:11:57.500 --> 00:11:59.500
+So I think if you hit, yeah,
+
+233
+00:11:59.500 --> 00:12:03.170
+if you hit control or option space, no,
+
+234
+00:12:03.170 --> 00:12:06.860
+it's a control space equal, not equal, in not in
+
+235
+00:12:06.860 --> 00:12:10.653
+regex or glob in our case name.
+
+236
+00:12:11.580 --> 00:12:14.630
+in this case we can either do in
+
+237
+00:12:15.790 --> 00:12:18.423
+and I believe we can say pepperoni,
+
+238
+00:12:20.800 --> 00:12:24.060
+run that, there we go. We've got two,
+
+239
+00:12:24.060 --> 00:12:26.060
+or we can use a regex
+
+240
+00:12:27.186 --> 00:12:30.700
+and that will allow us to do partial matches.
+
+241
+00:12:30.700 --> 00:12:35.700
+So in quotes// Pepper on a Pepper pep,
+
+242
+00:12:40.510 --> 00:12:44.130
+and that doesn't work because we need an eye there,
+
+243
+00:12:44.130 --> 00:12:46.390
+which means it's insensitive to case
+
+244
+00:12:46.390 --> 00:12:48.050
+and the capital P or lowercase p.
+
+245
+00:12:48.050 --> 00:12:49.230
+And there are we good,
+
+246
+00:12:49.230 --> 00:12:51.040
+There we go we're seeing all of them.
+
+247
+00:12:51.040 --> 00:12:54.620
+Let's actually go ahead and say toppings name.
+
+248
+00:12:54.620 --> 00:12:56.540
+Let's see what's on these pizzas,
+
+249
+00:12:56.540 --> 00:12:58.110
+chicken, onion, pepper, see our matches
+
+250
+00:12:58.110 --> 00:13:00.110
+peppers or pepperoni.
+
+251
+00:13:00.110 --> 00:13:03.440
+So there's two different ways to go about that.
+
+252
+00:13:03.440 --> 00:13:05.240
+The regex is a little bit more flexible,
+
+253
+00:13:05.240 --> 00:13:09.950
+especially if you have the user typing in your data.
+
+254
+00:13:09.950 --> 00:13:13.570
+Otherwise the in will work if it, you know exactly
+
+255
+00:13:13.570 --> 00:13:16.320
+that it's gonna be an exact match.
+
+256
+00:13:16.320 --> 00:13:18.430
+I'm gonna show you how to do the regex,
+
+257
+00:13:18.430 --> 00:13:20.080
+just because I'll show you how to do both.
+
+258
+00:13:20.080 --> 00:13:21.819
+what the heck, okay.
+
+259
+00:13:21.819 --> 00:13:26.480
+So we can go back to our pizzas
+
+260
+00:13:26.480 --> 00:13:28.330
+and we can modify this right here.
+
+261
+00:13:28.330 --> 00:13:30.393
+So pizzas all sanity pizza,
+
+262
+00:13:31.270 --> 00:13:36.263
+will say filter where the toppings
+
+263
+00:13:42.390 --> 00:13:47.390
+elemmatch capital M E L E M M A T C H.
+
+264
+00:13:49.770 --> 00:13:54.770
+And the name is in and now how do we get
+
+265
+00:13:58.150 --> 00:14:00.810
+the topping from here to there?
+
+266
+00:14:00.810 --> 00:14:03.803
+So we have to go back and modify this pizza query,
+
+267
+00:14:04.740 --> 00:14:08.980
+where we could say, we're going to take a topping.
+
+268
+00:14:08.980 --> 00:14:12.760
+And that is a string that's not required.
+
+269
+00:14:12.760 --> 00:14:14.150
+Last time we put a bang on the end,
+
+270
+00:14:14.150 --> 00:14:17.260
+in this case not because there is a chance
+
+271
+00:14:17.260 --> 00:14:20.700
+where you will be searching for all of the pizzas,
+
+272
+00:14:20.700 --> 00:14:25.503
+and then we can go in here and just say in topping,
+
+273
+00:14:27.510 --> 00:14:31.820
+I believe that is it.
+
+274
+00:14:31.820 --> 00:14:35.060
+I just gave it a save there and it put it all on one line.
+
+275
+00:14:35.060 --> 00:14:37.720
+So it's a little bit confusing with all the curly brackets,
+
+276
+00:14:37.720 --> 00:14:40.020
+but that's just the way it is.
+
+277
+00:14:40.020 --> 00:14:43.660
+Now, I believe variable topping,
+
+278
+00:14:43.660 --> 00:14:47.300
+type of string used in a position expecting type
+
+279
+00:14:47.300 --> 00:14:49.230
+square bracket and array of string.
+
+280
+00:14:49.230 --> 00:14:50.903
+Alright, well let's try that.
+
+281
+00:14:51.900 --> 00:14:55.950
+That's weird, I guess you can give it in multiple,
+
+282
+00:14:55.950 --> 00:14:57.923
+if you like, does that works?
+
+283
+00:15:00.213 --> 00:15:02.210
+It works, I've got to zoom back out.
+
+284
+00:15:02.210 --> 00:15:03.043
+Hey, look at that.
+
+285
+00:15:03.043 --> 00:15:07.870
+So if I click on onion, I get three.
+
+286
+00:15:07.870 --> 00:15:10.070
+If I click on hot peppers, I get two.
+
+287
+00:15:10.070 --> 00:15:12.910
+Okay, so that's one way to go about it.
+
+288
+00:15:12.910 --> 00:15:16.637
+The other way to go about it is if
+
+289
+00:15:16.637 --> 00:15:17.680
+and this is key.
+
+290
+00:15:17.680 --> 00:15:20.310
+If you are ever trying to do case insensitive
+
+291
+00:15:20.310 --> 00:15:21.350
+and things like that is.
+
+292
+00:15:21.350 --> 00:15:23.910
+If you're trying to regex it,
+
+293
+00:15:23.910 --> 00:15:26.860
+we'll leave it within but I'll show you a regex.
+
+294
+00:15:26.860 --> 00:15:30.493
+You can't just do something like this.
+
+295
+00:15:31.392 --> 00:15:34.700
+// insensitive and then put the topping in there.
+
+296
+00:15:34.700 --> 00:15:38.340
+You can't interpolate values into a regex
+
+297
+00:15:38.340 --> 00:15:40.730
+inside of here and you might be saying, okay,
+
+298
+00:15:40.730 --> 00:15:44.550
+Wes will create this whole string in JavaScript
+
+299
+00:15:44.550 --> 00:15:47.320
+and then pass it in, that doesn't work as well.
+
+300
+00:15:47.320 --> 00:15:51.180
+So Gatsby queries, this is GraphQL.
+
+301
+00:15:51.180 --> 00:15:52.510
+This is not JavaScript,
+
+302
+00:15:52.510 --> 00:15:54.750
+this is GraphQL template string,
+
+303
+00:15:54.750 --> 00:15:58.960
+and there's no way to interpolate a variable into an input,
+
+304
+00:15:58.960 --> 00:16:00.740
+which our cases is a regex input.
+
+305
+00:16:00.740 --> 00:16:05.380
+So if you wanted to pass in a regex,
+
+306
+00:16:05.380 --> 00:16:09.443
+what you would need to do here is say topping regex,
+
+307
+00:16:10.770 --> 00:16:15.770
+and you would need to create the regex in JavaScript,
+
+308
+00:16:16.420 --> 00:16:18.730
+which is in our Gatsby node so,
+
+309
+00:16:18.730 --> 00:16:23.340
+and then take the topping.name,
+
+310
+00:16:23.340 --> 00:16:26.363
+make that insensitive and also global.
+
+311
+00:16:27.800 --> 00:16:29.800
+Actually, we don't need it to be global.
+
+312
+00:16:31.170 --> 00:16:33.630
+as long as it's there, once it's fine.
+
+313
+00:16:33.630 --> 00:16:38.630
+And then we would go back here and modify this topping
+
+314
+00:16:39.320 --> 00:16:40.740
+to be topping regex,
+
+315
+00:16:40.740 --> 00:16:43.540
+and that will be a string.
+
+316
+00:16:43.540 --> 00:16:48.310
+And then the regex will be dollar sign topping regex.
+
+317
+00:16:48.310 --> 00:16:51.540
+So let's just see if that works.
+
+318
+00:16:51.540 --> 00:16:53.973
+We have to kill the build and start that again.
+
+319
+00:16:56.370 --> 00:16:59.320
+And let's refresh and the hot peppers page.
+
+320
+00:16:59.320 --> 00:17:01.330
+So it all works exactly the same.
+
+321
+00:17:01.330 --> 00:17:04.290
+So it's just two different ways to go about it.
+
+322
+00:17:04.290 --> 00:17:06.050
+But I thought I would actually,
+
+323
+00:17:06.050 --> 00:17:11.050
+no, look at this onion has one, two, three, four, five.
+
+324
+00:17:11.830 --> 00:17:15.753
+Why? Because, ah, you know why?
+
+325
+00:17:18.680 --> 00:17:23.110
+Because I have some of them say onions
+
+326
+00:17:23.110 --> 00:17:25.240
+and some of them say onion.
+
+327
+00:17:25.240 --> 00:17:28.050
+So it looks like there's some trouble in my data,
+
+328
+00:17:28.050 --> 00:17:29.270
+but I'm glad that happened,
+
+329
+00:17:29.270 --> 00:17:32.180
+'cause I'm happy to show you that the regex
+
+330
+00:17:32.180 --> 00:17:35.880
+is a little bit more flexible in this use case.
+
+331
+00:17:35.880 --> 00:17:37.560
+And that's certainly something that would happen
+
+332
+00:17:37.560 --> 00:17:39.250
+from a user
+
+333
+00:17:39.250 --> 00:17:41.760
+so you would have to go back and modify,
+
+334
+00:17:41.760 --> 00:17:45.690
+delete that onions with an S and then modify it back in
+
+335
+00:17:45.690 --> 00:17:47.250
+and put them all under onion, right?
+
+336
+00:17:47.250 --> 00:17:48.690
+I'm Gonna leave it like that just to show you.
+
+337
+00:17:48.690 --> 00:17:50.460
+So two ways to go about it,
+
+338
+00:17:50.460 --> 00:17:51.783
+which way should you do?
+
+339
+00:17:53.410 --> 00:17:56.180
+Probably the inversion is the simplest,
+
+340
+00:17:56.180 --> 00:17:58.390
+but the regex is a little bit more flexible.
+
+341
+00:17:58.390 --> 00:17:59.290
+I'll leave it at regex,
+
+342
+00:17:59.290 --> 00:18:01.423
+you can roll back to in if you want.
+
+343
+00:18:02.310 --> 00:18:06.170
+So that is dynamically creating our pages.
+
+344
+00:18:06.170 --> 00:18:09.130
+The last thing that we need to do is to highlight
+
+345
+00:18:09.130 --> 00:18:12.620
+whatever the current topping is.
+
+346
+00:18:12.620 --> 00:18:15.400
+And the way that we do that
+
+347
+00:18:15.400 --> 00:18:19.360
+is we'll go to our toppings filter
+
+348
+00:18:19.360 --> 00:18:22.463
+and we will pass it the act of topping.
+
+349
+00:18:23.610 --> 00:18:28.200
+And that will be pulled in via here we can,
+
+350
+00:18:28.200 --> 00:18:31.730
+we can destructure so go page context,
+
+351
+00:18:31.730 --> 00:18:35.780
+and here we can say page context.topping.
+
+352
+00:18:35.780 --> 00:18:37.070
+And why does that work?
+
+353
+00:18:37.070 --> 00:18:39.930
+Well, because when we created the page,
+
+354
+00:18:39.930 --> 00:18:42.490
+we've passed context.topping
+
+355
+00:18:42.490 --> 00:18:45.700
+as whatever the current topping name is,
+
+356
+00:18:45.700 --> 00:18:50.240
+and then we can get access to that via page context.topping
+
+357
+00:18:50.240 --> 00:18:53.273
+And then if we go into our toppings filter.JS,
+
+358
+00:18:55.940 --> 00:19:00.800
+we can destructure that value active topping,
+
+359
+00:19:01.650 --> 00:19:03.640
+and let's just console log it out,
+
+360
+00:19:03.640 --> 00:19:05.100
+or let's display it somewhere
+
+361
+00:19:05.100 --> 00:19:08.523
+just to make sure that it's actually working.
+
+362
+00:19:10.037 --> 00:19:11.920
+So let's just put a paragraph tag
+
+363
+00:19:11.920 --> 00:19:13.703
+curly bracket active topping.
+
+364
+00:19:14.906 --> 00:19:18.850
+There you go, so currently a mushrooms, honey, hot peppers.
+
+365
+00:19:18.850 --> 00:19:20.830
+So you see that that value is changing.
+
+366
+00:19:20.830 --> 00:19:25.830
+So we wanna use that value to highlight the link tag here.
+
+367
+00:19:25.850 --> 00:19:28.180
+So we'll go on the link tag will say,
+
+368
+00:19:28.180 --> 00:19:32.080
+class name is equal to curly brackets.
+
+369
+00:19:32.080 --> 00:19:34.630
+And I'll say if the current topping.name
+
+370
+00:19:34.630 --> 00:19:37.330
+is equal to the act of topping,
+
+371
+00:19:37.330 --> 00:19:39.170
+so whatever the current one is,
+
+372
+00:19:39.170 --> 00:19:41.673
+then give it a class of active.
+
+373
+00:19:42.880 --> 00:19:45.743
+Otherwise, give it a class of nothing.
+
+374
+00:19:46.590 --> 00:19:48.640
+So there we go, that's how we got that.
+
+375
+00:19:48.640 --> 00:19:52.980
+Now, if we go to roasted garlic and inspect that,
+
+376
+00:19:52.980 --> 00:19:55.313
+does that have a class of active?
+
+377
+00:19:57.220 --> 00:19:59.530
+There we go active.
+
+378
+00:19:59.530 --> 00:20:04.530
+We also have Aria current page that is on there as well.
+
+379
+00:20:04.750 --> 00:20:06.963
+So we could probably get,
+
+380
+00:20:08.440 --> 00:20:10.760
+actually we probably don't even need that class
+
+381
+00:20:10.760 --> 00:20:13.720
+cause it has an Aria attribute on it.
+
+382
+00:20:13.720 --> 00:20:15.510
+So let's go off to our CSS here
+
+383
+00:20:17.980 --> 00:20:22.980
+and the class of active should have a background of yellow.
+
+384
+00:20:25.000 --> 00:20:27.020
+It doesn't seem like it's working.
+
+385
+00:20:27.020 --> 00:20:29.563
+Let's take a look at our CSS a little bit more.
+
+386
+00:20:39.083 --> 00:20:40.773
+Okay, it doesn't look like
+
+387
+00:20:43.039 --> 00:20:46.510
+aaah, it's when it has a class of active.
+
+388
+00:20:46.510 --> 00:20:48.410
+So put an ampersand in front of that
+
+389
+00:20:49.759 --> 00:20:51.609
+and there we go that's showing up now
+
+390
+00:20:52.750 --> 00:20:53.720
+and up there we go.
+
+391
+00:20:53.720 --> 00:20:57.890
+Now it's showing up as the currently active topping
+
+392
+00:20:57.890 --> 00:20:59.170
+is being highlighted.
+
+393
+00:20:59.170 --> 00:21:01.830
+We could probably also get away with just saying
+
+394
+00:21:03.028 --> 00:21:06.283
+an Aria-Current is equal to page.
+
+395
+00:21:08.470 --> 00:21:09.480
+Does that work too?
+
+396
+00:21:09.480 --> 00:21:10.950
+Yeah, all right,
+
+397
+00:21:10.950 --> 00:21:12.940
+So we don't even need it because Gatsby
+
+398
+00:21:12.940 --> 00:21:14.750
+will give us this Aria attribute
+
+399
+00:21:14.750 --> 00:21:17.123
+of it being the current page.
+
+400
+00:21:17.970 --> 00:21:21.230
+So there's no sense in putting that act of class
+
+401
+00:21:21.230 --> 00:21:23.910
+directly on there which is cool.
+
+402
+00:21:23.910 --> 00:21:24.970
+The other thing we need to do
+
+403
+00:21:24.970 --> 00:21:28.280
+is to put a link for all of the toppings.
+
+404
+00:21:28.280 --> 00:21:33.280
+So we'll go right here and give ourselves a link
+
+405
+00:21:34.400 --> 00:21:39.400
+to /pizzas and we'll just say all,
+
+406
+00:21:43.830 --> 00:21:46.610
+and we also need a span,
+
+407
+00:21:46.610 --> 00:21:49.330
+actually, that all needs to be in a span as well.
+
+408
+00:21:49.330 --> 00:21:51.440
+So a span with a class of name,
+
+409
+00:21:51.440 --> 00:21:55.143
+all span with a class of count,
+
+410
+00:21:56.090 --> 00:22:00.433
+and we will say pizza's.nodes.length.
+
+411
+00:22:06.880 --> 00:22:07.830
+Does that highlight two?
+
+412
+00:22:07.830 --> 00:22:11.540
+That highlights two cause Gatsby puts a current page on it.
+
+413
+00:22:11.540 --> 00:22:15.300
+Awesome, Awesome, awesome, Awesome I like it.
+
+414
+00:22:15.300 --> 00:22:18.680
+Cool, also you probably see these,
+
+415
+00:22:18.680 --> 00:22:21.871
+things going in really slow.
+
+416
+00:22:21.871 --> 00:22:23.830
+I'm in the middle of the woods right now
+
+417
+00:22:23.830 --> 00:22:25.330
+on a very slow connection.
+
+418
+00:22:25.330 --> 00:22:28.180
+So normally they are not that slow,
+
+419
+00:22:28.180 --> 00:22:30.110
+but it just goes to show that
+
+420
+00:22:30.110 --> 00:22:32.350
+it still does provide a nice experience
+
+421
+00:22:32.350 --> 00:22:34.150
+even if you are on a slow connection with me,
+
+422
+00:22:34.150 --> 00:22:35.960
+which is the whole point of it.
+
+423
+00:22:35.960 --> 00:22:38.370
+Alright, I'll see you in the next one.
+

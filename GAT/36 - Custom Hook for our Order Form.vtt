@@ -1,0 +1,1226 @@
+﻿WEBVTT
+
+1
+00:00:00.076 --> 00:00:02.659
+(bright music)
+
+2
+00:00:04.202 --> 00:00:05.920
+<v Instructor>Hey there. We're going to write a custom hook</v>
+
+3
+00:00:05.920 --> 00:00:07.820
+so that when you click on one of these buttons,
+
+4
+00:00:07.820 --> 00:00:09.310
+they will add it to your order.
+
+5
+00:00:09.310 --> 00:00:11.470
+And then we can loop over the order
+
+6
+00:00:11.470 --> 00:00:12.960
+and start to display it in here,
+
+7
+00:00:12.960 --> 00:00:15.870
+as well as show a button to check out
+
+8
+00:00:15.870 --> 00:00:17.730
+and show the total, all that good stuff.
+
+9
+00:00:17.730 --> 00:00:21.570
+So, let's get rocking on this.
+
+10
+00:00:21.570 --> 00:00:25.480
+We'll go into our utils and we will make a new file.
+
+11
+00:00:25.480 --> 00:00:28.060
+Let's call it, usePizza.js
+
+12
+00:00:31.780 --> 00:00:36.293
+And we'll export, default, function, use pizza.
+
+13
+00:00:37.680 --> 00:00:40.490
+And, that will take in two arguments.
+
+14
+00:00:40.490 --> 00:00:44.080
+We'll do curly brackets here. We'll accept one argument,
+
+15
+00:00:44.080 --> 00:00:46.140
+which is really an object with two properties.
+
+16
+00:00:46.140 --> 00:00:48.170
+And we want pizzas and inputs.
+
+17
+00:00:48.170 --> 00:00:50.660
+Inputs we're going to cross that bridge
+
+18
+00:00:50.660 --> 00:00:52.310
+when we get to sending emails,
+
+19
+00:00:52.310 --> 00:00:54.200
+for now, the pizzas are just going to be a list
+
+20
+00:00:54.200 --> 00:00:56.060
+of the actual pizzas that we have.
+
+21
+00:00:56.060 --> 00:00:59.490
+So, what we need to do inside of here is we need to,
+
+22
+00:00:59.490 --> 00:01:03.733
+one, create some state to hold our order.
+
+23
+00:01:04.650 --> 00:01:09.650
+Two, we need, to make a function to add things to order,
+
+24
+00:01:11.560 --> 00:01:12.820
+and then we'll make a function
+
+25
+00:01:12.820 --> 00:01:17.283
+to remove things from the order.
+
+26
+00:01:21.640 --> 00:01:26.640
+And then in the future, four is send this data to a
+
+27
+00:01:27.690 --> 00:01:31.640
+serverless function when they check out.
+
+28
+00:01:31.640 --> 00:01:33.960
+So that is a future video.
+
+29
+00:01:33.960 --> 00:01:35.760
+We're not going to be doing that in this video right now.
+
+30
+00:01:35.760 --> 00:01:38.398
+So first one, create some state to hold our order.
+
+31
+00:01:38.398 --> 00:01:40.040
+Okay. That's pretty simple.
+
+32
+00:01:40.040 --> 00:01:45.040
+We can go ahead and say const, square bracket,
+
+33
+00:01:45.320 --> 00:01:50.320
+order and set order. And that is equal to use state.
+
+34
+00:01:53.890 --> 00:01:57.260
+And we'll default it to an empty array.
+
+35
+00:01:57.260 --> 00:02:00.473
+We need to import usestate from react.
+
+36
+00:02:02.190 --> 00:02:04.473
+There we go. It's importing from react. Good.
+
+37
+00:02:05.570 --> 00:02:07.600
+Then number two, we need to make a function
+
+38
+00:02:07.600 --> 00:02:09.741
+to add things to the order.
+
+39
+00:02:09.741 --> 00:02:13.840
+So, we'll make a function here called add to order
+
+40
+00:02:14.890 --> 00:02:17.823
+that takes in an ordered pizza.
+
+41
+00:02:20.400 --> 00:02:22.953
+And from that we'll return. Oh no, we won't return it,
+
+42
+00:02:22.953 --> 00:02:27.350
+we'll just run set order and we'll take our array of
+
+43
+00:02:27.350 --> 00:02:32.350
+existing order items and the ordered pizza.
+
+44
+00:02:32.720 --> 00:02:36.010
+So this is very similar.
+
+45
+00:02:36.010 --> 00:02:38.120
+We probably could also just return
+
+46
+00:02:38.120 --> 00:02:41.280
+this set state function here,
+
+47
+00:02:41.280 --> 00:02:43.710
+but it's a little bit nicer to be able to just pass it in a
+
+48
+00:02:43.710 --> 00:02:48.090
+pizza and for us to internally set that and
+
+49
+00:02:48.090 --> 00:02:50.260
+deal with all the copying of it.
+
+50
+00:02:50.260 --> 00:02:52.810
+Similarly, we need to make a function.
+
+51
+00:02:52.810 --> 00:02:55.600
+I'll remove from order.
+
+52
+00:02:55.600 --> 00:02:57.750
+And this will just take in an index
+
+53
+00:02:57.750 --> 00:02:59.110
+that needs to be removed.
+
+54
+00:02:59.110 --> 00:03:02.010
+And in our case, we will set order again,
+
+55
+00:03:02.010 --> 00:03:06.700
+where we pass an array and the items in the array are going
+
+56
+00:03:06.700 --> 00:03:11.700
+to be everything before the item we want to remove.
+
+57
+00:03:13.800 --> 00:03:18.770
+And then everything after the item we want to remove.
+
+58
+00:03:18.770 --> 00:03:22.290
+So basically if you have like an array of
+
+59
+00:03:22.290 --> 00:03:24.960
+one, two, three, four, five,
+
+60
+00:03:24.960 --> 00:03:28.320
+we want to make a new array of the parts before.
+
+61
+00:03:28.320 --> 00:03:29.970
+Like let's say we're removing three.
+
+62
+00:03:29.970 --> 00:03:33.490
+We want to make a new array of the parts before one and two,
+
+63
+00:03:33.490 --> 00:03:35.760
+and the parts after four and five.
+
+64
+00:03:35.760 --> 00:03:38.150
+And then what that does is just leaves out three
+
+65
+00:03:38.150 --> 00:03:41.080
+and that set is removed.
+
+66
+00:03:41.080 --> 00:03:46.010
+So, we'll ...order.slice.
+
+67
+00:03:46.010 --> 00:03:48.880
+We start at zero and go to the index right before
+
+68
+00:03:48.880 --> 00:03:52.387
+the one we want to remove and then ...order.slice
+
+69
+00:03:55.960 --> 00:03:58.650
+And then we'll go from everything after the index.
+
+70
+00:03:58.650 --> 00:04:00.720
+Index plus one, to the end.
+
+71
+00:04:00.720 --> 00:04:03.950
+And if you omit the second argument of slice,
+
+72
+00:04:03.950 --> 00:04:06.600
+it will just go to the end of the array that we want.
+
+73
+00:04:07.860 --> 00:04:08.880
+All right.
+
+74
+00:04:08.880 --> 00:04:12.762
+And then finally, down here, we'll just say, to do,
+
+75
+00:04:12.762 --> 00:04:16.930
+and then we will return all the functionality that
+
+76
+00:04:19.010 --> 00:04:21.340
+this custom hook needs to surface
+
+77
+00:04:21.340 --> 00:04:23.200
+to whoever is using the hook.
+
+78
+00:04:23.200 --> 00:04:25.500
+So, what things do we need to return
+
+79
+00:04:25.500 --> 00:04:29.453
+while we want to return the actual order itself?
+
+80
+00:04:30.400 --> 00:04:34.283
+We want to return add to order and remove from order.
+
+81
+00:04:35.230 --> 00:04:37.920
+And those are our two utility functions.
+
+82
+00:04:37.920 --> 00:04:41.060
+And then once we get into this fourth part here,
+
+83
+00:04:41.060 --> 00:04:44.160
+we'll also have some loading and error states
+
+84
+00:04:44.160 --> 00:04:45.410
+that need to be returned.
+
+85
+00:04:46.620 --> 00:04:47.563
+Okay, cool.
+
+86
+00:04:48.420 --> 00:04:53.370
+Then what we can do, is hop back into our order.js
+
+87
+00:04:54.693 --> 00:04:57.060
+And we'll go to our order page.
+
+88
+00:04:57.060 --> 00:05:00.400
+Right below, where we use our use form.
+
+89
+00:05:00.400 --> 00:05:05.400
+We'll say const, curly brackets, order, add to order,
+
+90
+00:05:06.950 --> 00:05:11.140
+remove from order is equal to usepizza.
+
+91
+00:05:11.140 --> 00:05:14.880
+And we'll have to import that usepizza hook.
+
+92
+00:05:14.880 --> 00:05:17.870
+Boom. Where did that go? Right there.
+
+93
+00:05:17.870 --> 00:05:21.350
+It's imported from our utilities folder.
+
+94
+00:05:21.350 --> 00:05:24.970
+And then I believe now we should be able to...
+
+95
+00:05:24.970 --> 00:05:26.150
+Oh, got a bit of an error.
+
+96
+00:05:26.150 --> 00:05:27.900
+Oh, it's because we didn't pass it.
+
+97
+00:05:28.820 --> 00:05:33.820
+Pizzas, which is what is... What is our pizzas? Pizzas
+
+98
+00:05:39.330 --> 00:05:40.163
+Oh, it's right here.
+
+99
+00:05:40.163 --> 00:05:43.763
+I've got to move this value and move that up to the top.
+
+100
+00:05:44.750 --> 00:05:47.900
+So pizzas, and then we also need to pass at the inputs,
+
+101
+00:05:47.900 --> 00:05:49.390
+which is going to be our value.
+
+102
+00:05:49.390 --> 00:05:51.440
+So that won't make sense just yet,
+
+103
+00:05:51.440 --> 00:05:54.163
+but we'll come back to that in just a bit.
+
+104
+00:05:55.410 --> 00:06:00.410
+Okay. So we should able to inspect this order page
+
+105
+00:06:00.540 --> 00:06:02.103
+in our react components,
+
+106
+00:06:12.500 --> 00:06:16.950
+And go to our hooks. See, we have two hooks in here.
+
+107
+00:06:16.950 --> 00:06:19.990
+First one is our form. The second one is pizza.
+
+108
+00:06:19.990 --> 00:06:22.120
+And then our state is an empty array.
+
+109
+00:06:22.120 --> 00:06:24.457
+So we'll keep that open while we code the rest of it.
+
+110
+00:06:24.457 --> 00:06:27.420
+And we should see that then populate.
+
+111
+00:06:27.420 --> 00:06:30.980
+So, when you go to our buttons,
+
+112
+00:06:30.980 --> 00:06:33.353
+small, medium, large, extra large,
+
+113
+00:06:38.120 --> 00:06:40.280
+we'll add an onclick handler to that button.
+
+114
+00:06:40.280 --> 00:06:43.600
+So we say on click is equal to curly brackets,
+
+115
+00:06:43.600 --> 00:06:48.140
+we'll do an inline function and
+
+116
+00:06:48.140 --> 00:06:51.983
+we will just run, add to order.
+
+117
+00:06:56.190 --> 00:06:58.130
+And let's take a look at our actual
+
+118
+00:06:58.130 --> 00:07:03.130
+use pizza add to order. Takes in an ordered pizza.
+
+119
+00:07:03.510 --> 00:07:07.490
+And the ordered pizza is going to have an id and a size.
+
+120
+00:07:07.490 --> 00:07:12.490
+So curly brackets, id is pizza.id
+
+121
+00:07:12.910 --> 00:07:15.940
+And the size is going to be the size variable.
+
+122
+00:07:15.940 --> 00:07:20.130
+And that will just be sent as a size.
+
+123
+00:07:20.130 --> 00:07:23.440
+So, when somebody clicks it, run the add to order function,
+
+124
+00:07:23.440 --> 00:07:26.930
+which comes from our hook and then add this object,
+
+125
+00:07:26.930 --> 00:07:28.100
+which is ID and size
+
+126
+00:07:28.100 --> 00:07:32.480
+So now I believe, if we click on one of these boom, boom.
+
+127
+00:07:32.480 --> 00:07:34.750
+If we open up our pizza here,
+
+128
+00:07:34.750 --> 00:07:39.650
+you see our state for each of these pizzas is showing up.
+
+129
+00:07:39.650 --> 00:07:41.140
+And we don't need to pass all of the
+
+130
+00:07:41.140 --> 00:07:42.880
+information about the pizza
+
+131
+00:07:42.880 --> 00:07:45.750
+because we can look up the name of the pizza and all that.
+
+132
+00:07:45.750 --> 00:07:48.880
+We just need to know the size as well as
+
+133
+00:07:48.880 --> 00:07:50.510
+the id of the pizza.
+
+134
+00:07:50.510 --> 00:07:52.510
+So one look as I start to add things
+
+135
+00:07:53.470 --> 00:07:56.960
+that internal state will be added.
+
+136
+00:07:56.960 --> 00:07:58.430
+Okay.
+
+137
+00:07:58.430 --> 00:08:02.030
+So now that we've got some state showing up here...
+
+138
+00:08:02.030 --> 00:08:04.440
+By the way, if you refresh this page, it will be gone.
+
+139
+00:08:04.440 --> 00:08:08.140
+We'll look at how to at least maintain the state
+
+140
+00:08:08.140 --> 00:08:09.480
+when you go from page to page.
+
+141
+00:08:09.480 --> 00:08:12.080
+But for now, you have to click the button a couple of times,
+
+142
+00:08:12.080 --> 00:08:13.730
+every time you come to this page.
+
+143
+00:08:14.890 --> 00:08:17.880
+So let's go over to our components folder.
+
+144
+00:08:17.880 --> 00:08:19.340
+And we're going to make a new component
+
+145
+00:08:19.340 --> 00:08:22.900
+that is going to hold the displaying of our order items.
+
+146
+00:08:22.900 --> 00:08:25.233
+So go to components, create a new file.
+
+147
+00:08:26.310 --> 00:08:30.550
+We'll call it capital PizzaOrder.js
+
+148
+00:08:33.030 --> 00:08:37.933
+Import, react from react, export default,
+
+149
+00:08:41.970 --> 00:08:44.033
+function, pizza order.
+
+150
+00:08:51.260 --> 00:08:53.220
+That will take a couple of props.
+
+151
+00:08:53.220 --> 00:08:56.580
+We need to pass it our actual order so we can display it.
+
+152
+00:08:56.580 --> 00:08:59.840
+It needs a list of the pizzas, so we can look up their image
+
+153
+00:08:59.840 --> 00:09:04.090
+and the price and the name and all that good stuff about it.
+
+154
+00:09:04.090 --> 00:09:08.830
+It needs our remove from order function,
+
+155
+00:09:08.830 --> 00:09:11.780
+because we have to be able to remove it from the order,
+
+156
+00:09:11.780 --> 00:09:12.900
+if you don't want it.
+
+157
+00:09:12.900 --> 00:09:16.500
+And then we also want a plain image,
+
+158
+00:09:16.500 --> 00:09:19.830
+which is going to display the actual image that we have.
+
+159
+00:09:19.830 --> 00:09:20.663
+Okay.
+
+160
+00:09:22.480 --> 00:09:23.500
+Now, from this,
+
+161
+00:09:23.500 --> 00:09:26.610
+we don't want to return a div because
+
+162
+00:09:26.610 --> 00:09:29.070
+we want to return just the raw order items.
+
+163
+00:09:29.070 --> 00:09:31.630
+So what we'll do here, is we'll turn the fragments
+
+164
+00:09:33.470 --> 00:09:35.600
+and then inside of there, just say order.
+
+165
+00:09:35.600 --> 00:09:38.960
+Let's just make sure we can get this on the page now.
+
+166
+00:09:38.960 --> 00:09:42.880
+So go back to our actual order page and go down here,
+
+167
+00:09:45.440 --> 00:09:50.283
+where it says order legend, and we'll just say pizza order.
+
+168
+00:09:52.885 --> 00:09:54.783
+Now make sure you auto import that.
+
+169
+00:09:59.930 --> 00:10:03.373
+Auto import is not working for me. Maybe I try it again.
+
+170
+00:10:07.496 --> 00:10:09.610
+Here we go. That one worked.
+
+171
+00:10:09.610 --> 00:10:11.350
+Now, what do we need to pass in?
+
+172
+00:10:11.350 --> 00:10:13.460
+Well we need to pass in our order.
+
+173
+00:10:13.460 --> 00:10:15.810
+The list of pizzas, they're removed from order
+
+174
+00:10:15.810 --> 00:10:17.310
+and the plain image.
+
+175
+00:10:17.310 --> 00:10:21.140
+So I'll go over here and I'll say our order is equal to.
+
+176
+00:10:21.140 --> 00:10:22.810
+Well, you can still access that because
+
+177
+00:10:22.810 --> 00:10:24.840
+it's in the same scope, right there.
+
+178
+00:10:24.840 --> 00:10:28.870
+Order variable, order.
+
+179
+00:10:28.870 --> 00:10:33.833
+Remove from order is equal to remove from order.
+
+180
+00:10:35.700 --> 00:10:37.207
+And you might be asking like,
+
+181
+00:10:37.207 --> 00:10:40.910
+"Wes, why does that function need to be passed in?
+
+182
+00:10:40.910 --> 00:10:43.470
+Can't I just grab it from our hook?"
+
+183
+00:10:43.470 --> 00:10:46.310
+And the important part is that this remove from order
+
+184
+00:10:46.310 --> 00:10:50.260
+function is bound to our list of state.
+
+185
+00:10:50.260 --> 00:10:52.370
+And if you were to use the hook again,
+
+186
+00:10:52.370 --> 00:10:55.170
+you would create a separate set of pizzas
+
+187
+00:10:55.170 --> 00:10:56.680
+and you wouldn't be able to talk to each other.
+
+188
+00:10:56.680 --> 00:10:59.220
+So in our case, you have to pass it in.
+
+189
+00:10:59.220 --> 00:11:02.590
+What else do we need? Remove from order, pizzas.
+
+190
+00:11:02.590 --> 00:11:07.590
+Pizza is an easy to pass. So pizzas is equal to pizzas.
+
+191
+00:11:07.760 --> 00:11:09.810
+And then the last one, a plain image.
+
+192
+00:11:09.810 --> 00:11:10.643
+Now, we don't need that.
+
+193
+00:11:10.643 --> 00:11:14.920
+Sorry, that was the old version of this that I was building.
+
+194
+00:11:14.920 --> 00:11:17.690
+We don't need to do that. So remove that.
+
+195
+00:11:17.690 --> 00:11:19.053
+And we're good.
+
+196
+00:11:20.360 --> 00:11:23.000
+Now, we should be able to go into here
+
+197
+00:11:23.000 --> 00:11:25.990
+and let's just do a paragraph.
+
+198
+00:11:25.990 --> 00:11:30.990
+Say you have ordered.length items in your order.
+
+199
+00:11:35.990 --> 00:11:38.530
+Zero and then as you click this, there we go.
+
+200
+00:11:38.530 --> 00:11:40.570
+See how it's going up and up and up.
+
+201
+00:11:40.570 --> 00:11:43.250
+And we should also see it in here.
+
+202
+00:11:43.250 --> 00:11:46.393
+The state is it's being added. Good.
+
+203
+00:11:48.490 --> 00:11:52.270
+So, now let's start looping over the items in our order.
+
+204
+00:11:52.270 --> 00:11:56.233
+So, curly brackets, order.map,
+
+205
+00:11:57.770 --> 00:12:01.343
+and we'll call this a single order.
+
+206
+00:12:03.470 --> 00:12:05.490
+We also need to put parentheses around this
+
+207
+00:12:05.490 --> 00:12:08.220
+because we need the index as well.
+
+208
+00:12:08.220 --> 00:12:11.560
+So, if we need to remove it, we can have that.
+
+209
+00:12:11.560 --> 00:12:16.560
+From this, we return, menu, item, styles.
+
+210
+00:12:16.610 --> 00:12:18.663
+Make sure you import that sucker.
+
+211
+00:12:24.610 --> 00:12:29.310
+It's not working. Import menu item styles from
+
+212
+00:12:31.534 --> 00:12:36.534
+../styles/ What was it? Let's just grab it from here.
+
+213
+00:12:42.530 --> 00:12:47.190
+Upper level, into styles/MenuItemStyles.
+
+214
+00:12:49.380 --> 00:12:53.950
+Okay. Then return menu items, styles,
+
+215
+00:12:53.950 --> 00:12:56.890
+and let's just give ourselves an h2 tag
+
+216
+00:12:57.740 --> 00:13:02.740
+that has the single order.id.
+
+217
+00:13:04.030 --> 00:13:06.830
+Let's just put that in there and make sure it's working.
+
+218
+00:13:07.880 --> 00:13:08.940
+Boom, boom.
+
+219
+00:13:08.940 --> 00:13:11.300
+Every time you add one, the id of that is showing up.
+
+220
+00:13:11.300 --> 00:13:13.743
+Okay. That's kind of working.
+
+221
+00:13:15.120 --> 00:13:17.940
+Let's get working on rendering this out a little bit more.
+
+222
+00:13:17.940 --> 00:13:19.530
+We need a key here.
+
+223
+00:13:19.530 --> 00:13:24.530
+So singleOrder.id, let's give ourselves the image.
+
+224
+00:13:25.540 --> 00:13:29.433
+We'll import image, import Img from Gatsby image.
+
+225
+00:13:30.623 --> 00:13:34.697
+We go down here. Fluid is equal to now.
+
+226
+00:13:35.600 --> 00:13:38.590
+We've got to look up the actual
+
+227
+00:13:38.590 --> 00:13:40.990
+singular pizza for this specific
+
+228
+00:13:40.990 --> 00:13:43.330
+Because remember a single order only gives us
+
+229
+00:13:43.330 --> 00:13:45.040
+the size and the id.
+
+230
+00:13:45.040 --> 00:13:46.770
+If we want all the information about
+
+231
+00:13:46.770 --> 00:13:48.870
+the pizza that they're ordering,
+
+232
+00:13:48.870 --> 00:13:52.173
+we need to look it up in the pizzas array.
+
+233
+00:13:55.100 --> 00:13:59.933
+So we'll go change this to curly brackets,
+
+234
+00:14:11.820 --> 00:14:14.510
+put a return, then up here you say
+
+235
+00:14:14.510 --> 00:14:18.110
+const pizza is equal to pizzas.find,
+
+236
+00:14:18.110 --> 00:14:21.030
+and then we'll just look for where the pizza.id
+
+237
+00:14:23.330 --> 00:14:27.140
+is equal to the singleOrder.id
+
+238
+00:14:27.140 --> 00:14:32.040
+And that should give us the pizza that they want.
+
+239
+00:14:32.040 --> 00:14:36.680
+And then in here we can say pizza.image.fluid.asset
+
+240
+00:14:39.227 --> 00:14:40.060
+.fluid
+
+241
+00:14:43.200 --> 00:14:47.870
+Hey, that's working. So, if I add a pizza,
+
+242
+00:14:47.870 --> 00:14:49.720
+the actual image is showing up. Good.
+
+243
+00:14:51.890 --> 00:14:53.093
+So we've got our image.
+
+244
+00:14:57.554 --> 00:15:01.717
+We got our h2 and we need a paragraph that shows us
+
+245
+00:15:03.340 --> 00:15:06.000
+how much that pizza is.
+
+246
+00:15:06.000 --> 00:15:10.290
+So curly brackets, we'll say pizza.price
+
+247
+00:15:12.370 --> 00:15:15.030
+Okay. And now we need to do the whole song and dance
+
+248
+00:15:15.030 --> 00:15:17.740
+that we did before. Calculate the pizza price.
+
+249
+00:15:17.740 --> 00:15:20.093
+Calculate pizza price.
+
+250
+00:15:22.985 --> 00:15:24.433
+You need to import that.
+
+251
+00:15:28.410 --> 00:15:32.363
+And then we also need a format, money surrounding that,
+
+252
+00:15:39.600 --> 00:15:40.729
+None.
+
+253
+00:15:40.729 --> 00:15:42.040
+(laughs)
+
+254
+00:15:42.040 --> 00:15:42.930
+Oh, what did we do?
+
+255
+00:15:42.930 --> 00:15:45.440
+Oh, we forgot to pass, calculate pizza price.
+
+256
+00:15:45.440 --> 00:15:49.627
+We forgot to pass it, the size. So singleOrder.size
+
+257
+00:15:53.010 --> 00:15:54.463
+There we go. Okay.
+
+258
+00:15:57.430 --> 00:16:01.050
+Still inside this paragraph, but below,
+
+259
+00:16:01.050 --> 00:16:05.293
+we need a button with the type of button,
+
+260
+00:16:07.150 --> 00:16:11.033
+class name of remove, that's for the CSS we wrote earlier.
+
+261
+00:16:11.900 --> 00:16:16.900
+A title of back ticks that says, remove singleorder.size
+
+262
+00:16:23.320 --> 00:16:28.033
+pizza.name from order. So that's for accessibilities.
+
+263
+00:16:29.070 --> 00:16:29.970
+And then inside of that,
+
+264
+00:16:29.970 --> 00:16:32.143
+I'm just going to do n percent times.
+
+265
+00:16:34.110 --> 00:16:38.133
+And single order is not defined. Capital O on our Order.
+
+266
+00:16:40.410 --> 00:16:41.963
+Add an item to our order.
+
+267
+00:16:43.990 --> 00:16:46.230
+What we need to do is replace this id
+
+268
+00:16:46.230 --> 00:16:47.580
+with the actual pizza name.
+
+269
+00:16:48.660 --> 00:16:53.660
+So, pizza.name. There we go.
+
+270
+00:16:56.680 --> 00:16:58.463
+Our button is not showing up.
+
+271
+00:17:04.000 --> 00:17:07.003
+Let's take a look. Paragraph.
+
+272
+00:17:08.290 --> 00:17:11.800
+Oh, the button is like, it's in the top right hand corner.
+
+273
+00:17:11.800 --> 00:17:14.700
+I bet we didn't put a position relative
+
+274
+00:17:14.700 --> 00:17:17.500
+on our menu item styles.
+
+275
+00:17:17.500 --> 00:17:19.373
+So we go to our menu, item, styles,
+
+276
+00:17:20.360 --> 00:17:24.680
+pop a pasrel on there. There we go.
+
+277
+00:17:24.680 --> 00:17:25.850
+Now these x's are showing up.
+
+278
+00:17:25.850 --> 00:17:28.100
+So, important thing to note here,
+
+279
+00:17:28.100 --> 00:17:33.100
+these x's I'm using the end times semi-colon,
+
+280
+00:17:34.370 --> 00:17:37.023
+that's the HTML entity for multiplication sign.
+
+281
+00:17:38.030 --> 00:17:40.363
+And if we did not do this title here,
+
+282
+00:17:42.510 --> 00:17:45.420
+users who are using screen reader would just hear
+
+283
+00:17:45.420 --> 00:17:47.340
+multiplication sign.
+
+284
+00:17:47.340 --> 00:17:51.510
+And they have no idea that X means remove it from the order.
+
+285
+00:17:51.510 --> 00:17:54.260
+So it's good. But now if you click it, it does nothing.
+
+286
+00:17:54.260 --> 00:17:57.710
+So we need to say on click is equal to
+
+287
+00:17:59.030 --> 00:18:00.500
+we'll do a little arrow function,
+
+288
+00:18:00.500 --> 00:18:05.500
+remove from order and we need to pastel the index of the
+
+289
+00:18:06.660 --> 00:18:08.610
+item in our order to remove it.
+
+290
+00:18:08.610 --> 00:18:10.770
+So let's add a bunch of items here.
+
+291
+00:18:10.770 --> 00:18:14.120
+Now, if I remove this, boom,
+
+292
+00:18:14.120 --> 00:18:17.630
+you see it now removes it from our actual state.
+
+293
+00:18:17.630 --> 00:18:21.283
+You can add them up all day and remove them, good.
+
+294
+00:18:22.260 --> 00:18:24.780
+So we've got our order being shown up.
+
+295
+00:18:24.780 --> 00:18:28.490
+We have our menu being able to add the items here.
+
+296
+00:18:28.490 --> 00:18:30.700
+One kind of weird thing is if you
+
+297
+00:18:30.700 --> 00:18:32.057
+like one of these pizzas, you're like,
+
+298
+00:18:32.057 --> 00:18:34.710
+"Oh, the pear necessities, what was on that again?"
+
+299
+00:18:34.710 --> 00:18:37.460
+You go to pizza and then you find
+
+300
+00:18:37.460 --> 00:18:40.060
+the pizza that you want. There it is.
+
+301
+00:18:40.060 --> 00:18:41.700
+That was really lucky. I clicked the right thing.
+
+302
+00:18:41.700 --> 00:18:43.292
+That was not intentional.
+
+303
+00:18:43.292 --> 00:18:46.240
+And then you go back to your order, your order is gone.
+
+304
+00:18:46.240 --> 00:18:47.230
+So in the next video,
+
+305
+00:18:47.230 --> 00:18:52.230
+I'm going to show you how to persist that using react
+
+306
+00:18:52.350 --> 00:18:57.063
+context instead of just state inside of this component.
+

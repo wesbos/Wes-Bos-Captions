@@ -1,0 +1,946 @@
+﻿WEBVTT
+
+1
+00:00:00.210 --> 00:00:02.793
+(upbeat music)
+
+2
+00:00:04.460 --> 00:00:05.293
+<v Instructor>All right, in this video</v>
+
+3
+00:00:05.293 --> 00:00:08.900
+we're going to work on the sort of outline of the website.
+
+4
+00:00:08.900 --> 00:00:13.430
+We get these sort of slash dashes here
+
+5
+00:00:13.430 --> 00:00:15.810
+and as well as sort of confining it
+
+6
+00:00:15.810 --> 00:00:18.620
+so that it doesn't cause us this horizontal scroll.
+
+7
+00:00:18.620 --> 00:00:20.940
+So I'll open up layout.js,
+
+8
+00:00:20.940 --> 00:00:24.940
+and we are going to make a content style.
+
+9
+00:00:24.940 --> 00:00:29.940
+So I'll say const content styles equals style.div.
+
+10
+00:00:30.230 --> 00:00:31.800
+You notice how I'm not putting this
+
+11
+00:00:31.800 --> 00:00:33.720
+in its own file.
+
+12
+00:00:33.720 --> 00:00:35.730
+This is generally how I approach my CSSs,
+
+13
+00:00:35.730 --> 00:00:38.670
+I'll just put it above the component that I'm styling.
+
+14
+00:00:38.670 --> 00:00:43.070
+And then as this file starts to get too big,
+
+15
+00:00:43.070 --> 00:00:47.120
+or as I need to reuse this style in many components,
+
+16
+00:00:47.120 --> 00:00:49.030
+then I'll put it into its own file.
+
+17
+00:00:49.030 --> 00:00:54.030
+And that keeps me from unnecessarily creating files,
+
+18
+00:00:54.560 --> 00:00:55.970
+just for the heck of it.
+
+19
+00:00:55.970 --> 00:00:57.280
+Some people much prefer
+
+20
+00:00:57.280 --> 00:01:00.260
+to always create their own file for each thing,
+
+21
+00:01:00.260 --> 00:01:02.680
+and I find that a bit harder to jump around.
+
+22
+00:01:02.680 --> 00:01:04.040
+So that's just personal preference,
+
+23
+00:01:04.040 --> 00:01:08.410
+there's no right or wrong way to go about that.
+
+24
+00:01:08.410 --> 00:01:12.960
+So I'm going to import that styled.
+
+25
+00:01:12.960 --> 00:01:17.960
+Boom, and then you see it's underlined here
+
+26
+00:01:18.040 --> 00:01:21.860
+and it says that's because I have relative imports here
+
+27
+00:01:21.860 --> 00:01:26.860
+and then I have like an MPM modules or node modules.
+
+28
+00:01:26.870 --> 00:01:31.870
+Usually when you save it, it's supposed to move it up,
+
+29
+00:01:32.470 --> 00:01:34.740
+but I'm gonna go ahead and move it up myself
+
+30
+00:01:35.850 --> 00:01:38.630
+and, oh I gotta move it all the way to the top there.
+
+31
+00:01:38.630 --> 00:01:40.500
+Same with normalize CSS, there we go.
+
+32
+00:01:40.500 --> 00:01:41.650
+Okay, cool.
+
+33
+00:01:41.650 --> 00:01:43.440
+Then we will say,
+
+34
+00:01:43.440 --> 00:01:48.430
+background is equal to white and padding is two rem.
+
+35
+00:01:48.430 --> 00:01:51.600
+And we'll go down here, and we don't need this link.
+
+36
+00:01:51.600 --> 00:01:54.340
+And we'll take our content styles
+
+37
+00:01:55.350 --> 00:01:59.430
+and put our nav children and footer inside of it.
+
+38
+00:01:59.430 --> 00:02:00.840
+And then this div here,
+
+39
+00:02:00.840 --> 00:02:03.170
+this is an unnecessary div,
+
+40
+00:02:03.170 --> 00:02:05.420
+the only reason I have this div here
+
+41
+00:02:05.420 --> 00:02:07.240
+is because I wanna return multiple things.
+
+42
+00:02:07.240 --> 00:02:08.423
+So if we've removed it,
+
+43
+00:02:09.590 --> 00:02:10.780
+you'll see we we get an error,
+
+44
+00:02:10.780 --> 00:02:13.400
+cannot return adjacent JSX elements.
+
+45
+00:02:13.400 --> 00:02:16.150
+So you need to wrap them in some sort of tag,
+
+46
+00:02:16.150 --> 00:02:17.880
+in our case there's a div,
+
+47
+00:02:17.880 --> 00:02:20.830
+but you can wrap it in a react fragment,
+
+48
+00:02:20.830 --> 00:02:23.460
+and the way that you can do react fragments in JSX.
+
+49
+00:02:23.460 --> 00:02:26.640
+Normally it's like that's react. what is it, .frag?
+
+50
+00:02:26.640 --> 00:02:31.560
+There we go, fragment, but you can just use open.
+
+51
+00:02:31.560 --> 00:02:33.020
+I call them ghost tags,
+
+52
+00:02:33.020 --> 00:02:37.070
+open and closing tags that have nothing inside of it.
+
+53
+00:02:37.070 --> 00:02:38.640
+And you'll see that the reason why I do that
+
+54
+00:02:38.640 --> 00:02:42.040
+is because these things are not actually rendering out
+
+55
+00:02:42.040 --> 00:02:47.040
+any dom, they're simply just sticking CSS into the page.
+
+56
+00:02:48.870 --> 00:02:51.008
+All right, so we've got our white on there
+
+57
+00:02:51.008 --> 00:02:54.280
+and then I also have this, look at the answer here.
+
+58
+00:02:54.280 --> 00:02:57.810
+You'll see we've got this like little cool little border.
+
+59
+00:02:57.810 --> 00:02:59.720
+So we're going to do that now as well.
+
+60
+00:02:59.720 --> 00:03:02.090
+So we'll make that called site border style.
+
+61
+00:03:02.090 --> 00:03:06.393
+So const site border styles equals to style.div,
+
+62
+00:03:08.130 --> 00:03:12.883
+and we'll put a max width of 1,000 px on it.
+
+63
+00:03:14.840 --> 00:03:16.120
+Margin is going to,
+
+64
+00:03:16.120 --> 00:03:17.950
+now, these margins are gonna seem a little funny,
+
+65
+00:03:17.950 --> 00:03:22.950
+12 rem at the top auto, four rem at the bottom
+
+66
+00:03:23.440 --> 00:03:26.410
+and auto on the left and right.
+
+67
+00:03:26.410 --> 00:03:29.760
+And you'll see what that does is nothing
+
+68
+00:03:29.760 --> 00:03:31.710
+'cause I didn't use it.
+
+69
+00:03:31.710 --> 00:03:36.710
+Okay, so we will wrap the content styles in that.
+
+70
+00:03:36.870 --> 00:03:38.290
+So we've got our site border styles,
+
+71
+00:03:38.290 --> 00:03:39.713
+then our content styles.
+
+72
+00:03:40.710 --> 00:03:44.430
+There we go, and you see by bumping it down a little bit,
+
+73
+00:03:44.430 --> 00:03:47.680
+that allows the nav to show to us.
+
+74
+00:03:47.680 --> 00:03:52.680
+But next up, we are going to override the margin top again,
+
+75
+00:03:53.620 --> 00:03:56.410
+and we're going to use CSS clamp or at a minimum
+
+76
+00:03:56.410 --> 00:03:58.100
+it needs to be two rem,
+
+77
+00:03:58.100 --> 00:04:00.890
+at a maximum it's going to be 12 rem.
+
+78
+00:04:00.890 --> 00:04:03.020
+And then in between those two values,
+
+79
+00:04:03.020 --> 00:04:04.773
+we're gonna say 10 vw.
+
+80
+00:04:08.050 --> 00:04:13.050
+And what that does is it scales the margin top value
+
+81
+00:04:13.680 --> 00:04:16.250
+up and down with a min and max value,
+
+82
+00:04:16.250 --> 00:04:18.700
+along with the actual size of the logo.
+
+83
+00:04:18.700 --> 00:04:23.700
+If you remember the size of the logo, we set the font size,
+
+84
+00:04:23.880 --> 00:04:25.700
+add to a clamp value
+
+85
+00:04:25.700 --> 00:04:27.610
+and that scales with the width of the browser,
+
+86
+00:04:27.610 --> 00:04:29.310
+so does the margin top value.
+
+87
+00:04:29.310 --> 00:04:33.700
+And the reason why I didn't put that right here
+
+88
+00:04:33.700 --> 00:04:37.110
+is because some browsers don't support this clamp just yet.
+
+89
+00:04:37.110 --> 00:04:38.440
+So if they don't support it,
+
+90
+00:04:38.440 --> 00:04:40.260
+they'll just ignore this line entirely,
+
+91
+00:04:40.260 --> 00:04:43.340
+and then just pick up the 12 rem which looks okay.
+
+92
+00:04:44.840 --> 00:04:45.673
+And then we say,
+
+93
+00:04:45.673 --> 00:04:50.673
+background is white and we are going to,
+
+94
+00:04:51.240 --> 00:04:52.770
+let me actually show you how it's gonna work.
+
+95
+00:04:52.770 --> 00:04:55.320
+So we'll say put a background red on there,
+
+96
+00:04:55.320 --> 00:04:57.220
+a real quick second,
+
+97
+00:04:57.220 --> 00:05:00.280
+and then we'll give ourselves a padding of
+
+98
+00:05:01.310 --> 00:05:02.683
+let's just say five px.
+
+99
+00:05:03.730 --> 00:05:05.110
+So you see that red border,
+
+100
+00:05:05.110 --> 00:05:10.110
+that's what's peaking out behind these content styles
+
+101
+00:05:10.310 --> 00:05:12.600
+and then the white background is hiding it.
+
+102
+00:05:12.600 --> 00:05:14.210
+So the padding is actually going to be
+
+103
+00:05:14.210 --> 00:05:15.480
+a clamp value as well.
+
+104
+00:05:15.480 --> 00:05:17.783
+You'll see, I'm gonna duplicate the padding value here
+
+105
+00:05:17.783 --> 00:05:21.533
+and we'll say clamp, minimum five px, one vw,
+
+106
+00:05:22.600 --> 00:05:27.600
+flex value, and then 25 px at a maximum.
+
+107
+00:05:28.760 --> 00:05:33.760
+And watch now, see the size of the, it grows.
+
+108
+00:05:34.290 --> 00:05:35.670
+And you see at a certain point,
+
+109
+00:05:35.670 --> 00:05:38.090
+it doesn't get any smaller because I have that clamp value
+
+110
+00:05:38.090 --> 00:05:43.090
+of minimum five, maximum 25 in between one vw,
+
+111
+00:05:43.140 --> 00:05:45.953
+which is viewport width.
+
+112
+00:05:47.190 --> 00:05:49.310
+And again, the reason we duplicated it
+
+113
+00:05:49.310 --> 00:05:51.620
+is because if the browser does not support clamp,
+
+114
+00:05:51.620 --> 00:05:54.620
+then we'll just fall back to this value here.
+
+115
+00:05:54.620 --> 00:05:57.670
+I will put a box shadow on it,
+
+116
+00:05:57.670 --> 00:06:01.940
+zero, zero, five px and three px.
+
+117
+00:06:01.940 --> 00:06:06.400
+And then the value will be RGBA zero, zero, zero.
+
+118
+00:06:06.400 --> 00:06:10.980
+So it's a black, and then I like to use 0.44.
+
+119
+00:06:10.980 --> 00:06:12.050
+I don't like to use that,
+
+120
+00:06:12.050 --> 00:06:14.000
+that's why I figured out it looks best.
+
+121
+00:06:14.970 --> 00:06:18.242
+And you'll see that it has
+
+122
+00:06:18.242 --> 00:06:22.600
+a bit of a box shadow surrounding it.
+
+123
+00:06:22.600 --> 00:06:24.277
+Okay, so now let's go back to this background here.
+
+124
+00:06:24.277 --> 00:06:27.210
+And we actually want it to use those stripes
+
+125
+00:06:27.210 --> 00:06:28.530
+that we used in the logo.
+
+126
+00:06:28.530 --> 00:06:30.370
+So if you take a look at the logo,
+
+127
+00:06:30.370 --> 00:06:32.930
+you see, I imported the SVG file.
+
+128
+00:06:32.930 --> 00:06:34.440
+And again, this is not normally
+
+129
+00:06:34.440 --> 00:06:36.120
+something you can do in JavaScript,
+
+130
+00:06:36.120 --> 00:06:40.440
+but by importing it into your JavaScript,
+
+131
+00:06:40.440 --> 00:06:42.950
+then Gatsby will then turn it into.
+
+132
+00:06:42.950 --> 00:06:45.293
+Let me see if I can show you the CSS here.
+
+133
+00:06:50.420 --> 00:06:51.450
+Oh, there we go.
+
+134
+00:06:51.450 --> 00:06:54.130
+Gatsby will then, oh, it looks like.
+
+135
+00:06:54.130 --> 00:06:56.380
+Oh, it's so small, I didn't even realize this.
+
+136
+00:06:56.380 --> 00:06:57.760
+Normally what would happen is,
+
+137
+00:06:57.760 --> 00:07:01.160
+this background image of our logo URL stripes,
+
+138
+00:07:01.160 --> 00:07:06.160
+it'll say something like assets/images/stripes.SVG,
+
+139
+00:07:08.150 --> 00:07:09.850
+but Gatsby was so smart it said,
+
+140
+00:07:09.850 --> 00:07:11.940
+hey, this thing is pretty tiny.
+
+141
+00:07:11.940 --> 00:07:14.270
+These little red stripes that you're using,
+
+142
+00:07:14.270 --> 00:07:15.710
+they're not all that big.
+
+143
+00:07:15.710 --> 00:07:18.030
+So Gatsby was smart enough to turn it into this,
+
+144
+00:07:18.030 --> 00:07:21.460
+which is a base 64 representation of the stripes.
+
+145
+00:07:21.460 --> 00:07:22.380
+And if that's the case,
+
+146
+00:07:22.380 --> 00:07:24.100
+it doesn't need to make another request.
+
+147
+00:07:24.100 --> 00:07:26.050
+It doesn't need to download another file,
+
+148
+00:07:26.050 --> 00:07:29.670
+it just knows that this is the stripes,
+
+149
+00:07:29.670 --> 00:07:33.250
+which is pretty pretty nifty if you ask me,
+
+150
+00:07:33.250 --> 00:07:35.830
+and that's just the perfect example of Gatsby
+
+151
+00:07:35.830 --> 00:07:37.650
+doing the heavy lifting for you.
+
+152
+00:07:37.650 --> 00:07:39.420
+So we're gonna do that again.
+
+153
+00:07:39.420 --> 00:07:42.250
+We're gonna import, oh, we're in the wrong file here.
+
+154
+00:07:42.250 --> 00:07:46.483
+I'll go back into our layout import stripes from.
+
+155
+00:07:47.520 --> 00:07:48.620
+Where are we here?
+
+156
+00:07:48.620 --> 00:07:53.620
+So we're in our components folder
+
+157
+00:07:54.430 --> 00:07:58.690
+and we need to go up a level into assets, images, stripes.
+
+158
+00:07:58.690 --> 00:08:00.230
+Okay.
+
+159
+00:08:00.230 --> 00:08:05.230
+So we'll go up a level into assets, images, stripes.SVG.
+
+160
+00:08:09.570 --> 00:08:12.510
+And then we'll just take that URL and say,
+
+161
+00:08:12.510 --> 00:08:14.720
+background is white,
+
+162
+00:08:14.720 --> 00:08:18.080
+not red, red was just to show us URL
+
+163
+00:08:18.080 --> 00:08:22.452
+and then we need to interpolate the stripes variable there.
+
+164
+00:08:22.452 --> 00:08:24.351
+There we go.
+
+165
+00:08:24.351 --> 00:08:25.184
+Woo.
+
+166
+00:08:28.320 --> 00:08:29.743
+Looking pretty good.
+
+167
+00:08:30.640 --> 00:08:34.680
+Next thing I wanna do just in anticipation of media queries,
+
+168
+00:08:34.680 --> 00:08:38.410
+we'll say at media, whoa, moz user disabled.
+
+169
+00:08:38.410 --> 00:08:40.893
+Max with 1,000 px.
+
+170
+00:08:41.730 --> 00:08:44.150
+Oh no, 1100 px.
+
+171
+00:08:44.150 --> 00:08:47.970
+So when we hit the max with the 1100 px,
+
+172
+00:08:47.970 --> 00:08:52.970
+we'll say margin left is 1.5 rem and margin right.
+
+173
+00:08:54.890 --> 00:08:56.790
+Do see what I was doing, is a mr-1.5r,
+
+174
+00:09:00.700 --> 00:09:02.420
+and then I hit my Emmett abbreviation.
+
+175
+00:09:02.420 --> 00:09:04.470
+Oh, it's even suggesting it for me there.
+
+176
+00:09:05.870 --> 00:09:07.570
+That's not what I want.
+
+177
+00:09:07.570 --> 00:09:08.990
+The m is not perfect.
+
+178
+00:09:08.990 --> 00:09:11.410
+It thinks that's a tag with a class.
+
+179
+00:09:11.410 --> 00:09:14.280
+So that's the reason why I don't use TAB and Enter,
+
+180
+00:09:14.280 --> 00:09:16.800
+so I'm just gonna hit my Control + E expansion
+
+181
+00:09:17.870 --> 00:09:21.020
+and not negative, sorry, just 1.5 rem.
+
+182
+00:09:21.020 --> 00:09:26.020
+And that way, once I hit that 1100 px,
+
+183
+00:09:26.370 --> 00:09:28.020
+it will pop a little bit of margin
+
+184
+00:09:28.020 --> 00:09:30.810
+to the left and to the right of our layout here.
+
+185
+00:09:30.810 --> 00:09:32.550
+Couple more little finessy things,
+
+186
+00:09:32.550 --> 00:09:35.650
+I would say this is overlapping on top of it.
+
+187
+00:09:35.650 --> 00:09:40.620
+And if I go to gatsby.pizza to look at the final version,
+
+188
+00:09:40.620 --> 00:09:41.453
+there's a couple little things.
+
+189
+00:09:41.453 --> 00:09:44.180
+So let's get that little white border going.
+
+190
+00:09:44.180 --> 00:09:45.690
+So we'll go here.
+
+191
+00:09:45.690 --> 00:09:50.523
+Say border five px, solid white.
+
+192
+00:09:52.610 --> 00:09:53.570
+Looking good.
+
+193
+00:09:53.570 --> 00:09:58.290
+The background is larger on the final version.
+
+194
+00:09:58.290 --> 00:10:01.750
+So I believe we can go here and just say background size
+
+195
+00:10:01.750 --> 00:10:05.700
+is 80m, let's see how that looks good.
+
+196
+00:10:10.059 --> 00:10:13.870
+You can kinda sort of fiddle with this like 500 px.
+
+197
+00:10:13.870 --> 00:10:18.870
+See that's really small, 1500 px, that would work.
+
+198
+00:10:19.800 --> 00:10:21.350
+Maybe leave it at 1500 px,
+
+199
+00:10:21.350 --> 00:10:24.853
+that'll give you a better look as to how it looks.
+
+200
+00:10:25.790 --> 00:10:27.400
+Now we need to work on our logo here.
+
+201
+00:10:27.400 --> 00:10:29.100
+We've got all this extra space here
+
+202
+00:10:29.100 --> 00:10:31.350
+and we've obviously bumped the logo.
+
+203
+00:10:31.350 --> 00:10:32.790
+We've bumped everything down
+
+204
+00:10:32.790 --> 00:10:34.510
+and anchored it from the bottom.
+
+205
+00:10:34.510 --> 00:10:37.800
+But now we need to account for this extra padding here.
+
+206
+00:10:37.800 --> 00:10:40.580
+And I believe we go to our nav,
+
+207
+00:10:40.580 --> 00:10:42.210
+go to the unordered list
+
+208
+00:10:42.210 --> 00:10:46.890
+and we'll say margin top negative six rem,
+
+209
+00:10:46.890 --> 00:10:50.410
+and that should bump it up enough.
+
+210
+00:10:50.410 --> 00:10:52.380
+There we go, that's looking pretty good.
+
+211
+00:10:52.380 --> 00:10:54.510
+One more thing I should say about the nav is that
+
+212
+00:10:54.510 --> 00:10:57.700
+if you wanna style the links,
+
+213
+00:10:57.700 --> 00:10:59.990
+like if we go to the pizza menu,
+
+214
+00:10:59.990 --> 00:11:02.410
+you'll see that the links have an aria current of page
+
+215
+00:11:02.410 --> 00:11:03.870
+when you are on that page.
+
+216
+00:11:03.870 --> 00:11:07.290
+And if you ever wanted to style the current page,
+
+217
+00:11:07.290 --> 00:11:08.550
+we could go to our nav.
+
+218
+00:11:08.550 --> 00:11:11.120
+Let's find our link, here we go.
+
+219
+00:11:11.120 --> 00:11:15.010
+And we could say, and aria-current equals page.
+
+220
+00:11:15.010 --> 00:11:16.220
+And what that will do is it'll say
+
+221
+00:11:16.220 --> 00:11:18.900
+if the anchor link has an attribute
+
+222
+00:11:18.900 --> 00:11:21.240
+of aria current page on it,
+
+223
+00:11:21.240 --> 00:11:25.290
+then we could say color is equal to var--red.
+
+224
+00:11:31.263 --> 00:11:33.620
+And then you see now the current page in Gatsby.
+
+225
+00:11:33.620 --> 00:11:35.460
+So Gatsby will do that for you,
+
+226
+00:11:35.460 --> 00:11:37.180
+it will figure out what the current pages.
+
+227
+00:11:37.180 --> 00:11:42.180
+You see even the logo is turning red when we're on it,
+
+228
+00:11:42.350 --> 00:11:47.350
+because that is also the current page as well.
+
+229
+00:11:47.630 --> 00:11:49.500
+So I don't have that as part of my design,
+
+230
+00:11:49.500 --> 00:11:52.080
+we will use that one to get the pagination.
+
+231
+00:11:52.080 --> 00:11:53.250
+So I'll just comment that out
+
+232
+00:11:53.250 --> 00:11:54.640
+just in case you want that
+
+233
+00:11:54.640 --> 00:11:55.970
+'cause that's a pretty common thing
+
+234
+00:11:55.970 --> 00:11:58.970
+that you'll wanna do in your website.
+
+235
+00:11:58.970 --> 00:12:01.300
+All right, that's it for the layout so far,
+
+236
+00:12:01.300 --> 00:12:03.353
+let's move into generating some data.
+

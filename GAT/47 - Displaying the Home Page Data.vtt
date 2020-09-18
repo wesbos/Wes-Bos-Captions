@@ -1,0 +1,1542 @@
+﻿WEBVTT
+
+1
+00:00:00.069 --> 00:00:02.652
+(upbeat music)
+
+2
+00:00:05.720 --> 00:00:07.650
+<v Wes>All right, now let's work on getting</v>
+
+3
+00:00:07.650 --> 00:00:10.350
+the actual data being looped in,
+
+4
+00:00:10.350 --> 00:00:12.640
+and we need to amend our GraphQL query
+
+5
+00:00:12.640 --> 00:00:15.170
+just to get a little bit more data that we're looking for,
+
+6
+00:00:15.170 --> 00:00:17.680
+so pop open your index.js page,
+
+7
+00:00:17.680 --> 00:00:21.580
+and scroll around until you find
+
+8
+00:00:21.580 --> 00:00:26.580
+the actual query that we have, which is, where did it go?
+
+9
+00:00:26.740 --> 00:00:27.573
+Oh, you know what?
+
+10
+00:00:27.573 --> 00:00:30.260
+It's not, it's in useLatestData.
+
+11
+00:00:30.260 --> 00:00:31.890
+That's where the GraphQL query lives.
+
+12
+00:00:31.890 --> 00:00:34.820
+Okay, so I told you that I would show you
+
+13
+00:00:34.820 --> 00:00:37.980
+a trick to get this working,
+
+14
+00:00:37.980 --> 00:00:40.260
+because this is just a string,
+
+15
+00:00:40.260 --> 00:00:42.010
+which it is, at the end of the day,
+
+16
+00:00:42.010 --> 00:00:46.220
+but you know that if you put gql in front of it,
+
+17
+00:00:46.220 --> 00:00:48.400
+then Gatsby, or no, not Gatsby,
+
+18
+00:00:48.400 --> 00:00:50.140
+VS Code will think that it is
+
+19
+00:00:50.140 --> 00:00:52.790
+actually a tagged GraphQL query,
+
+20
+00:00:52.790 --> 00:00:53.910
+and then when you save it,
+
+21
+00:00:53.910 --> 00:00:56.550
+it will do all of your formatting and everything for you.
+
+22
+00:00:56.550 --> 00:00:58.420
+It'll also give you your syntax highlighting,
+
+23
+00:00:58.420 --> 00:01:02.600
+so you can very quickly see if you've made a mistake.
+
+24
+00:01:02.600 --> 00:01:05.300
+You can see what the syntax highlights, so that's awesome.
+
+25
+00:01:05.300 --> 00:01:08.460
+The problem is that we're not actually importing
+
+26
+00:01:08.460 --> 00:01:13.040
+a GraphQL library into our front end, and I'd rather not.
+
+27
+00:01:13.040 --> 00:01:15.040
+We don't need an entire GraphQL library.
+
+28
+00:01:15.040 --> 00:01:16.720
+It's just a string at the end of the day,
+
+29
+00:01:16.720 --> 00:01:19.033
+but we can fake out.
+
+30
+00:01:20.270 --> 00:01:23.800
+We can fake out VS Code by doing a little trick.
+
+31
+00:01:23.800 --> 00:01:26.260
+So, I tweeted this a while ago.
+
+32
+00:01:26.260 --> 00:01:31.260
+If you want auto-formatting for VS Code,
+
+33
+00:01:31.580 --> 00:01:34.830
+just make this fake gql function
+
+34
+00:01:34.830 --> 00:01:37.100
+that takes in all the parts and all the pieces,
+
+35
+00:01:37.100 --> 00:01:39.960
+like if you've never used a tag template literal,
+
+36
+00:01:39.960 --> 00:01:41.070
+I've got a blog post on it,
+
+37
+00:01:41.070 --> 00:01:43.010
+but basically, take in all the parts
+
+38
+00:01:43.010 --> 00:01:45.990
+and pieces and then join them back together,
+
+39
+00:01:45.990 --> 00:01:47.530
+and this will give you fake,
+
+40
+00:01:47.530 --> 00:01:49.077
+and then somebody replied,
+
+41
+00:01:49.077 --> 00:01:52.033
+"You can just use String.raw,
+
+42
+00:01:53.080 --> 00:01:55.500
+and that will do the same thing."
+
+43
+00:01:55.500 --> 00:01:57.920
+I think in most cases, there's probably some edge cases,
+
+44
+00:01:57.920 --> 00:01:59.630
+but in our case, this will work just great,
+
+45
+00:01:59.630 --> 00:02:02.480
+so what we can do is you see
+
+46
+00:02:02.480 --> 00:02:04.260
+how it's like gql is not defined.
+
+47
+00:02:04.260 --> 00:02:07.150
+We can go up here, and make a fake tag.
+
+48
+00:02:07.150 --> 00:02:12.150
+Let's say const gql is equal to capital S, String.raw,
+
+49
+00:02:13.600 --> 00:02:17.130
+and that will just use a raw string,
+
+50
+00:02:17.130 --> 00:02:21.220
+but it will fake out our VS Code for thinking it's GraphQL,
+
+51
+00:02:21.220 --> 00:02:25.260
+and it will highlight it as such, so big fan of that.
+
+52
+00:02:25.260 --> 00:02:28.360
+I think you can also use that for CSS.
+
+53
+00:02:28.360 --> 00:02:29.900
+Yeah, and a couple others,
+
+54
+00:02:29.900 --> 00:02:31.300
+so if you ever need syntax highlighting
+
+55
+00:02:31.300 --> 00:02:33.060
+without actually importing a library,
+
+56
+00:02:33.060 --> 00:02:35.230
+you can use String.raw.
+
+57
+00:02:35.230 --> 00:02:38.570
+All right, next, we need to modify this query here
+
+58
+00:02:38.570 --> 00:02:41.350
+to grab everything that we need.
+
+59
+00:02:41.350 --> 00:02:44.793
+So, we'll go to our Slicemasters first,
+
+60
+00:02:46.010 --> 00:02:49.430
+and for each of the Slicemasters,
+
+61
+00:02:49.430 --> 00:02:52.333
+we will take the name, the _id,
+
+62
+00:02:53.984 --> 00:02:56.150
+and then we also want the image of the person.
+
+63
+00:02:56.150 --> 00:02:59.740
+Now, this is not going to be using gatsby-image,
+
+64
+00:02:59.740 --> 00:03:02.380
+because we're sort of outside of gatsby-image right now,
+
+65
+00:03:02.380 --> 00:03:04.550
+so I'm gonna show you how to use it.
+
+66
+00:03:04.550 --> 00:03:08.290
+You can use the different parts of this just on your own.
+
+67
+00:03:08.290 --> 00:03:10.240
+I'm sure you could query all the different parts
+
+68
+00:03:10.240 --> 00:03:12.040
+that you want from gatsby-image,
+
+69
+00:03:12.040 --> 00:03:14.720
+but there sometimes is a use case
+
+70
+00:03:14.720 --> 00:03:16.710
+where you just wanna grab the parts yourself,
+
+71
+00:03:16.710 --> 00:03:20.030
+and use a regular image tag, so for the image,
+
+72
+00:03:20.030 --> 00:03:23.353
+we want the asset, and in the asset,
+
+73
+00:03:23.353 --> 00:03:27.760
+we want the URL of the asset, and we also want the metadata,
+
+74
+00:03:27.760 --> 00:03:31.510
+and then there's this thing called LQIP.
+
+75
+00:03:31.510 --> 00:03:33.770
+I'm not actually sure what that stands for.
+
+76
+00:03:33.770 --> 00:03:34.713
+Let's look it up.
+
+77
+00:03:35.680 --> 00:03:37.850
+Low Quality Image Placeholder.
+
+78
+00:03:37.850 --> 00:03:39.400
+That's the fuzzy version.
+
+79
+00:03:39.400 --> 00:03:43.230
+That's the low-quality image that will show in place
+
+80
+00:03:43.230 --> 00:03:45.150
+while we download the larger image.
+
+81
+00:03:45.150 --> 00:03:46.540
+So, we need the full URL,
+
+82
+00:03:46.540 --> 00:03:49.650
+as well as the Low Quality Image Placeholder.
+
+83
+00:03:49.650 --> 00:03:52.210
+Then we'll go down to our hotSlices here.
+
+84
+00:03:52.210 --> 00:03:54.630
+We'll grab the name, we'll grab the ID.
+
+85
+00:03:54.630 --> 00:03:59.030
+We want the image, the asset, URL,
+
+86
+00:03:59.030 --> 00:04:01.610
+and we also want the metadata
+
+87
+00:04:01.610 --> 00:04:04.990
+with the Low Quality Image Placeholder.
+
+88
+00:04:04.990 --> 00:04:08.250
+Let's get back to our browser here, and let's take a look.
+
+89
+00:04:08.250 --> 00:04:11.570
+It says cannot access property StoreSettings,
+
+90
+00:04:11.570 --> 00:04:13.180
+res.data is undefined.
+
+91
+00:04:13.180 --> 00:04:16.000
+So, that happens when something goes wrong
+
+92
+00:04:16.000 --> 00:04:18.150
+with our Fetch request, and we didn't actually,
+
+93
+00:04:18.150 --> 00:04:20.640
+if we open up our dev tools here,
+
+94
+00:04:20.640 --> 00:04:24.020
+there's not really any good thing going on here,
+
+95
+00:04:24.020 --> 00:04:25.610
+so we didn't catch our error.
+
+96
+00:04:25.610 --> 00:04:30.110
+We can go back to where we have our useLatestData,
+
+97
+00:04:30.110 --> 00:04:31.330
+and we'll say then, then, then,
+
+98
+00:04:31.330 --> 00:04:32.580
+and the way we can see that is
+
+99
+00:04:32.580 --> 00:04:35.150
+we can catch the error right here,
+
+100
+00:04:35.150 --> 00:04:38.220
+and we can just console.log the error,
+
+101
+00:04:38.220 --> 00:04:41.760
+maybe a console.log SHOOOOOT,
+
+102
+00:04:41.760 --> 00:04:43.870
+just to see what's going on here.
+
+103
+00:04:43.870 --> 00:04:45.820
+Now, when you refresh this, here we go.
+
+104
+00:04:47.310 --> 00:04:51.290
+Cannot access property Store Setting, res.data is undefined.
+
+105
+00:04:51.290 --> 00:04:54.743
+Gives us our stack trace, and Webpack.
+
+106
+00:04:54.743 --> 00:04:59.743
+That actually didn't give us any good information.
+
+107
+00:04:59.890 --> 00:05:03.660
+Okay, so next, what I'll do is I'll go into my Network tab,
+
+108
+00:05:03.660 --> 00:05:05.800
+and we'll take a look at the request.
+
+109
+00:05:05.800 --> 00:05:10.210
+There it is, POST, and we'll look at the response.
+
+110
+00:05:10.210 --> 00:05:15.210
+There we go, field url must not have a selection,
+
+111
+00:05:15.480 --> 00:05:17.770
+since type of string has no subfields.
+
+112
+00:05:17.770 --> 00:05:18.663
+Did we put?
+
+113
+00:05:21.260 --> 00:05:25.130
+Ah, I see, it's url, and then the sibling is metadata.
+
+114
+00:05:25.130 --> 00:05:27.230
+Here, we did url with a sub,
+
+115
+00:05:27.230 --> 00:05:32.123
+so let's just grab that, and replace that.
+
+116
+00:05:34.160 --> 00:05:35.883
+I bet that will fix it for us.
+
+117
+00:05:36.956 --> 00:05:39.847
+There we go, there's our data coming in,
+
+118
+00:05:39.847 --> 00:05:41.340
+and if we open it up,
+
+119
+00:05:41.340 --> 00:05:44.960
+you'll see that we've got the image to the person,
+
+120
+00:05:44.960 --> 00:05:48.680
+and as well as we have a Base64 version of that.
+
+121
+00:05:48.680 --> 00:05:51.460
+One more thing here is that we just typed
+
+122
+00:05:51.460 --> 00:05:52.630
+the same thing twice,
+
+123
+00:05:52.630 --> 00:05:57.050
+name, _id, image, asset, url, metadata, and lqip.
+
+124
+00:05:57.050 --> 00:06:00.963
+One thing we can do is swap that out for a fragment.
+
+125
+00:06:01.800 --> 00:06:05.343
+So, go above your query, and we'll just say, fragment.
+
+126
+00:06:07.160 --> 00:06:10.900
+We'll call it deets, and open that up,
+
+127
+00:06:10.900 --> 00:06:15.050
+and we'll take all the data
+
+128
+00:06:15.050 --> 00:06:17.720
+about the slicemaster and the hotSlices,
+
+129
+00:06:17.720 --> 00:06:19.870
+so name, all the way through that,
+
+130
+00:06:19.870 --> 00:06:22.950
+and swap it out with ...deets.
+
+131
+00:06:22.950 --> 00:06:24.423
+I'll put that in here,
+
+132
+00:06:26.217 --> 00:06:27.940
+and then we'll do the same thing
+
+133
+00:06:29.180 --> 00:06:33.803
+for this, ...deets,
+
+134
+00:06:35.630 --> 00:06:37.803
+and then we'll refresh the page,
+
+135
+00:06:39.300 --> 00:06:43.400
+and didn't work.
+
+136
+00:06:43.400 --> 00:06:46.710
+Let's go to our Network.
+
+137
+00:06:46.710 --> 00:06:48.500
+Take a look here.
+
+138
+00:06:48.500 --> 00:06:52.220
+Expected on, found, oh, when you make a fragment,
+
+139
+00:06:52.220 --> 00:06:55.970
+you have to tell it what type it is on,
+
+140
+00:06:55.970 --> 00:06:59.963
+so we'll say fragment deets on, I think it's StoreSettings.
+
+141
+00:07:05.670 --> 00:07:09.360
+Cannot spread as an object on type of Person can never be,
+
+142
+00:07:09.360 --> 00:07:10.373
+Oh, no, no, no.
+
+143
+00:07:12.300 --> 00:07:14.853
+It is on Person,
+
+144
+00:07:17.000 --> 00:07:19.580
+but then we also need it on Store,
+
+145
+00:07:19.580 --> 00:07:23.490
+so how do you do a fragment on multiple types in GraphQL?
+
+146
+00:07:23.490 --> 00:07:24.610
+That's actually something I don't know.
+
+147
+00:07:24.610 --> 00:07:26.533
+Let's let's figure this out.
+
+148
+00:07:27.440 --> 00:07:32.197
+So, we'll search GraphQL fragment, multiple types.
+
+149
+00:07:36.350 --> 00:07:40.730
+Oh, just a comma, (laughs) that's easy.
+
+150
+00:07:40.730 --> 00:07:43.080
+So, fragment deets on Person,
+
+151
+00:07:43.080 --> 00:07:46.893
+and what was the other type that we had?
+
+152
+00:07:48.550 --> 00:07:53.063
+Slice, Pizza, that is the two types.
+
+153
+00:07:54.830 --> 00:07:55.973
+Now, let's see.
+
+154
+00:08:02.500 --> 00:08:04.893
+Expected curly bracket.
+
+155
+00:08:13.060 --> 00:08:16.400
+Oh, fragments are only, GraphQL,
+
+156
+00:08:16.400 --> 00:08:18.540
+they can't be used inside your schema.
+
+157
+00:08:18.540 --> 00:08:20.760
+GraphQL does not support type inheritance,
+
+158
+00:08:20.760 --> 00:08:21.883
+or anything like that.
+
+159
+00:08:22.820 --> 00:08:25.520
+Oh, it looks like you can't do that.
+
+160
+00:08:25.520 --> 00:08:28.580
+I obviously was reading the question, not the answer.
+
+161
+00:08:28.580 --> 00:08:30.040
+So, what someone is saying is
+
+162
+00:08:30.040 --> 00:08:35.040
+just stick it in a template string, and interpolate it,
+
+163
+00:08:35.110 --> 00:08:37.310
+so I like that actually,
+
+164
+00:08:37.310 --> 00:08:41.183
+so let's just take that,
+
+165
+00:08:42.340 --> 00:08:44.200
+and that away, and let's take a list
+
+166
+00:08:44.200 --> 00:08:46.143
+of all the fields that we want,
+
+167
+00:08:50.200 --> 00:08:52.480
+and we'll go right up here.
+
+168
+00:08:52.480 --> 00:08:55.723
+Let's say const deets is equal to backticks,
+
+169
+00:08:57.100 --> 00:08:58.470
+and paste it in there.
+
+170
+00:08:58.470 --> 00:09:02.143
+We can use our gql again to highlight it.
+
+171
+00:09:05.750 --> 00:09:07.730
+Actually, that's not gonna work,
+
+172
+00:09:07.730 --> 00:09:09.010
+'cause we need curly brackets,
+
+173
+00:09:09.010 --> 00:09:10.930
+so what I'll do is I'll just pop curly brackets
+
+174
+00:09:10.930 --> 00:09:14.120 line:15% 
+in there for just a second, and then I'll remove them.
+
+175
+00:09:14.120 --> 00:09:19.120 line:15% 
+Okay, then we can go here, where we have deets,
+
+176
+00:09:19.700 --> 00:09:22.253
+and replace that with the variable.
+
+177
+00:09:23.960 --> 00:09:25.093
+Is that gonna work?
+
+178
+00:09:29.740 --> 00:09:31.270
+There we go! Okay, good.
+
+179
+00:09:31.270 --> 00:09:33.330
+So, that, I don't know if that was worth it or not,
+
+180
+00:09:33.330 --> 00:09:36.620
+but now if we want to change what we're selecting
+
+181
+00:09:36.620 --> 00:09:39.000
+about both the pizzas and the people,
+
+182
+00:09:39.000 --> 00:09:41.660
+we can change it in one spot, 'cause it's just a variable.
+
+183
+00:09:41.660 --> 00:09:43.960
+We don't even have to put gql inside of there,
+
+184
+00:09:44.980 --> 00:09:48.190
+'cause it's not technically a full GraphQL string.
+
+185
+00:09:48.190 --> 00:09:50.340
+It is just a string that we're interpolating
+
+186
+00:09:50.340 --> 00:09:52.280
+into each of these queries here.
+
+187
+00:09:52.280 --> 00:09:54.830
+Okay, cool, now let's start looping
+
+188
+00:09:54.830 --> 00:09:56.660
+over the data and displaying it.
+
+189
+00:09:56.660 --> 00:10:00.310
+We'll go back to our index.js,
+
+190
+00:10:00.310 --> 00:10:03.210
+and let's start with the slicemasters,
+
+191
+00:10:03.210 --> 00:10:05.533
+and we'll go right below here.
+
+192
+00:10:06.570 --> 00:10:10.700
+We'll say if there is slicemasters,
+
+193
+00:10:10.700 --> 00:10:15.700
+and there is a length on them, then we will loop over them,
+
+194
+00:10:16.230 --> 00:10:19.130
+and we're gonna create a new component called an ItemGrid.
+
+195
+00:10:20.070 --> 00:10:21.500
+That's different than ItemsGrid.
+
+196
+00:10:21.500 --> 00:10:22.333
+That's our styles,
+
+197
+00:10:22.333 --> 00:10:24.293
+but this is gonna be singular ItemGrid,
+
+198
+00:10:25.250 --> 00:10:30.250
+and that takes in items, which is our slicemasters,
+
+199
+00:10:32.111 --> 00:10:34.550
+and then we'll just do the same thing
+
+200
+00:10:34.550 --> 00:10:36.660
+for our hotSlices down here,
+
+201
+00:10:36.660 --> 00:10:40.173
+but we'll replace slicemasters with hotSlices.
+
+202
+00:10:43.569 --> 00:10:44.402
+Then what we need to do
+
+203
+00:10:44.402 --> 00:10:46.853
+is make a new component called ItemGrid.
+
+204
+00:10:51.260 --> 00:10:53.860
+So go into our components folder, make a new file.
+
+205
+00:10:53.860 --> 00:10:57.623
+Capital I, Item, capital G, Grid.js.
+
+206
+00:10:58.950 --> 00:11:02.970
+Import React from react, and we'll export
+
+207
+00:11:04.270 --> 00:11:09.250
+default function ItemGrid,
+
+208
+00:11:09.250 --> 00:11:11.840
+ItemGrid, and then we'll destructure
+
+209
+00:11:11.840 --> 00:11:14.503
+the items that come in via properties,
+
+210
+00:11:15.440 --> 00:11:19.053
+and then from that, we will return our ItemsGrid,
+
+211
+00:11:19.890 --> 00:11:21.483
+so that is going to be,
+
+212
+00:11:22.500 --> 00:11:26.580
+are imported from our styles,
+
+213
+00:11:26.580 --> 00:11:28.020
+so we need to import
+
+214
+00:11:33.160 --> 00:11:38.160
+ItemsGrid from ../, go into our styles directory,
+
+215
+00:11:40.480 --> 00:11:43.273
+and into our Grids file.
+
+216
+00:11:45.400 --> 00:11:47.150
+Make sure you spell function right,
+
+217
+00:11:51.840 --> 00:11:54.270
+and then inside of here, we'll have four items.
+
+218
+00:11:54.270 --> 00:11:56.210
+Let's just put some dummy items in there,
+
+219
+00:11:56.210 --> 00:11:58.563
+just for a second, Hey.
+
+220
+00:12:04.480 --> 00:12:07.250
+Oh, this needs to be an S.
+
+221
+00:12:07.250 --> 00:12:08.083
+There we go.
+
+222
+00:12:12.210 --> 00:12:14.253
+ItemGrid is not defined.
+
+223
+00:12:17.000 --> 00:12:19.090
+Oh, I see here.
+
+224
+00:12:19.090 --> 00:12:20.830
+We need to import ItemGrid.
+
+225
+00:12:20.830 --> 00:12:22.940
+Now that we created it in this component,
+
+226
+00:12:22.940 --> 00:12:25.010
+we need to import it into our page here,
+
+227
+00:12:25.010 --> 00:12:27.720
+so I'm gonna go ahead and do that, boom.
+
+228
+00:12:27.720 --> 00:12:29.313
+Let's double-check at the top.
+
+229
+00:12:31.280 --> 00:12:33.400
+Looks like it's being imported. There we go.
+
+230
+00:12:33.400 --> 00:12:35.960
+Now we've got our four Hey, Hey, Hey, Heys showing up.
+
+231
+00:12:35.960 --> 00:12:37.620
+See, ba ba bum.
+
+232
+00:12:37.620 --> 00:12:40.830
+Now, once they actually load, we're showing up,
+
+233
+00:12:40.830 --> 00:12:43.130
+so we can go into our ItemGrid here
+
+234
+00:12:43.130 --> 00:12:46.893
+and remove those four, and we'll take our items.
+
+235
+00:12:48.200 --> 00:12:49.903
+We'll map over each one.
+
+236
+00:12:51.090 --> 00:12:53.570
+So, each item, and then we'll do,
+
+237
+00:12:53.570 --> 00:12:55.080
+I'm gonna do an implicit return here,
+
+238
+00:12:55.080 --> 00:12:59.913
+so smooth parentheses, and we need our ItemStyles.
+
+239
+00:13:01.780 --> 00:13:05.963
+That will need to be imported from our Grid, again.
+
+240
+00:13:06.830 --> 00:13:08.510
+Inside of there, we need a paragraph.
+
+241
+00:13:08.510 --> 00:13:11.060
+Inside of that, we'll have a span with a class of mark,
+
+242
+00:13:11.060 --> 00:13:13.793
+and we'll give ourselves the item.name.
+
+243
+00:13:14.670 --> 00:13:16.683
+Now, here we go.
+
+244
+00:13:17.680 --> 00:13:19.900
+We see loading, loading, loading,
+
+245
+00:13:19.900 --> 00:13:20.880
+and once it does load,
+
+246
+00:13:20.880 --> 00:13:23.470
+we get Slick, Piper, Enoch, and Waldo,
+
+247
+00:13:23.470 --> 00:13:25.270
+and then the three or four pizzas
+
+248
+00:13:25.270 --> 00:13:27.310
+that are showing up, so that's good.
+
+249
+00:13:27.310 --> 00:13:30.150
+Next, we'll give ourselves an image tag.
+
+250
+00:13:30.150 --> 00:13:31.880
+Source of the image, and I'm gonna ask you
+
+251
+00:13:31.880 --> 00:13:32.860
+to do backticks here,
+
+252
+00:13:32.860 --> 00:13:34.390
+and I'll show you why in just a second,
+
+253
+00:13:34.390 --> 00:13:38.570
+and then interpolate the item.image.asset.url.
+
+254
+00:13:38.570 --> 00:13:40.880
+Remember, that's the thing we queried.
+
+255
+00:13:40.880 --> 00:13:43.880
+Let's do the alt, before we forget.
+
+256
+00:13:43.880 --> 00:13:45.563
+Just item.name,
+
+257
+00:13:47.060 --> 00:13:49.670
+and boom, there it is.
+
+258
+00:13:49.670 --> 00:13:51.060
+See how long these are taking?
+
+259
+00:13:51.060 --> 00:13:53.838
+Oh, these are massive photos.
+
+260
+00:13:53.838 --> 00:13:55.910
+(trills tongue) This is like the 90s internet,
+
+261
+00:13:55.910 --> 00:13:57.230
+taking forever to download.
+
+262
+00:13:57.230 --> 00:13:59.780
+Poor Slick is not even downloaded at all,
+
+263
+00:13:59.780 --> 00:14:02.680
+and they're all different sizes, which is annoying.
+
+264
+00:14:02.680 --> 00:14:06.380
+So, this is a downside to not using gatsby-image,
+
+265
+00:14:06.380 --> 00:14:09.610
+is that it just gives us the raw actual image,
+
+266
+00:14:09.610 --> 00:14:13.090
+like I'll copy the image location, and paste it in here.
+
+267
+00:14:13.090 --> 00:14:15.010
+Boom, look how big that is, that's massive.
+
+268
+00:14:15.010 --> 00:14:18.350
+We can't be loading that sucker right into our website,
+
+269
+00:14:18.350 --> 00:14:22.360
+so luckily Sanity has image resizing
+
+270
+00:14:22.360 --> 00:14:24.710
+just via the URL, which is really cool,
+
+271
+00:14:24.710 --> 00:14:27.110
+so we don't have to worry too much about that.
+
+272
+00:14:27.110 --> 00:14:30.640
+So, if we go on the end here, and we pop a query string,
+
+273
+00:14:30.640 --> 00:14:34.870
+?w, so width, is equal to 500,
+
+274
+00:14:34.870 --> 00:14:37.110
+and height, oops,
+
+275
+00:14:37.110 --> 00:14:40.740
+and height, h, is equal to 400,
+
+276
+00:14:40.740 --> 00:14:43.053
+and fit is equal to crop.
+
+277
+00:14:45.920 --> 00:14:48.890
+Now you see that the different size images
+
+278
+00:14:48.890 --> 00:14:49.970
+are now being cropped in.
+
+279
+00:14:49.970 --> 00:14:52.910
+If I copy the image location now, you see we're getting
+
+280
+00:14:52.910 --> 00:14:56.400
+a much smaller image that's being popped in.
+
+281
+00:14:56.400 --> 00:14:58.270
+We'll go to this image here,
+
+282
+00:14:58.270 --> 00:15:03.270
+and give ourselves a width of 500 and a height of 400,
+
+283
+00:15:03.560 --> 00:15:05.913
+just so that we can maintain that aspect ratio.
+
+284
+00:15:07.820 --> 00:15:09.920
+Boom, and then the last thing we want to do is,
+
+285
+00:15:09.920 --> 00:15:11.360
+see, some of these images are still,
+
+286
+00:15:11.360 --> 00:15:12.690
+I'm on really slow internet here,
+
+287
+00:15:12.690 --> 00:15:13.890
+but you see that some of these images
+
+288
+00:15:13.890 --> 00:15:17.290
+are still taking a second to load,
+
+289
+00:15:17.290 --> 00:15:20.240
+so what we can do is we can show that LQIP,
+
+290
+00:15:20.240 --> 00:15:23.337
+Low Quality Image Placeholder while we do it,
+
+291
+00:15:23.337 --> 00:15:25.010
+and the way that we do that is we just say
+
+292
+00:15:25.010 --> 00:15:27.400
+background, oh, no, no, no, no.
+
+293
+00:15:27.400 --> 00:15:30.360
+It's not background, it's style,
+
+294
+00:15:30.360 --> 00:15:34.000
+and the way you can just inject styles in React
+
+295
+00:15:34.000 --> 00:15:36.170
+is you just provide an object
+
+296
+00:15:36.170 --> 00:15:40.710
+where the background is gonna be backticks, url,
+
+297
+00:15:40.710 --> 00:15:42.420
+and we'll interpolate
+
+298
+00:15:42.420 --> 00:15:47.150
+the item.image.asset.metadata.lqip.
+
+299
+00:15:52.260 --> 00:15:56.330
+Yeah, open this up, and you see, oh, (laughs) look at that.
+
+300
+00:15:56.330 --> 00:15:59.130
+There's like 1,000 of them showing up,
+
+301
+00:15:59.130 --> 00:16:02.540
+but you see that the background of these images
+
+302
+00:16:03.610 --> 00:16:08.280
+are this long Base64-encoded string,
+
+303
+00:16:08.280 --> 00:16:09.970
+which is kind of fuzzy,
+
+304
+00:16:09.970 --> 00:16:12.710
+and then what we can do is we can also say
+
+305
+00:16:12.710 --> 00:16:15.550
+backgroundSize is cover,
+
+306
+00:16:15.550 --> 00:16:17.140
+and it's not background-size.
+
+307
+00:16:17.140 --> 00:16:20.070
+Because this is JavaScript, you have to camel-case them,
+
+308
+00:16:20.070 --> 00:16:22.710
+and now when we refresh this page,
+
+309
+00:16:22.710 --> 00:16:25.410
+you'll see for a split second while it's downloading,
+
+310
+00:16:25.410 --> 00:16:27.670
+you see the fuzzy version of it,
+
+311
+00:16:27.670 --> 00:16:30.100
+which is a little bit nicer, just showing.
+
+312
+00:16:30.100 --> 00:16:32.640
+I guess a little issue is look at this.
+
+313
+00:16:32.640 --> 00:16:35.320
+Waldo's head, and then boop, he pops up,
+
+314
+00:16:35.320 --> 00:16:37.140
+but I don't know, whatever.
+
+315
+00:16:37.140 --> 00:16:39.070
+I think that that's totally fine.
+
+316
+00:16:39.070 --> 00:16:40.610
+Beautiful, looking really good.
+
+317
+00:16:40.610 --> 00:16:42.700
+Let's go back to our index.js page,
+
+318
+00:16:42.700 --> 00:16:44.530
+and put some titles above each of these.
+
+319
+00:16:44.530 --> 00:16:47.250
+So, above the slicemasters,
+
+320
+00:16:47.250 --> 00:16:50.180
+we'll give ourselves an h2 with a class of center,
+
+321
+00:16:50.180 --> 00:16:51.340
+and then inside of that,
+
+322
+00:16:51.340 --> 00:16:56.060
+a span with the class of mark and tilt.
+
+323
+00:16:56.060 --> 00:16:57.310
+I don't know if we did that tilt yet.
+
+324
+00:16:57.310 --> 00:17:00.293
+We'll take a look, and we'll just say Slicemasters On.
+
+325
+00:17:01.960 --> 00:17:04.333
+Boom, and then just copy that,
+
+326
+00:17:05.900 --> 00:17:07.630
+and go above your hotSlices,
+
+327
+00:17:07.630 --> 00:17:11.373
+and say Slicemasters On.
+
+328
+00:17:15.810 --> 00:17:18.020
+Beautiful, and we'll put
+
+329
+00:17:18.020 --> 00:17:21.460
+a little paragraph tag underneath it.
+
+330
+00:17:21.460 --> 00:17:25.393
+It says Standing by ready to slice you up.
+
+331
+00:17:29.850 --> 00:17:31.460
+Good, good, good, and a little paragraph
+
+332
+00:17:31.460 --> 00:17:33.323
+underneath this one, p.
+
+333
+00:17:35.370 --> 00:17:36.793
+Oh no, Slice you up would,
+
+334
+00:17:42.030 --> 00:17:43.220
+oh, that was wrong.
+
+335
+00:17:43.220 --> 00:17:47.550
+This is for slicemasters, so I'll just do that,
+
+336
+00:17:47.550 --> 00:17:52.400
+and then this one right here will be Hot Slices,
+
+337
+00:17:52.400 --> 00:17:53.233
+and we'll say
+
+338
+00:17:55.110 --> 00:17:57.893
+Come on by, by the slice.
+
+339
+00:17:59.690 --> 00:18:03.023
+Oh, we should say B-U-Y, like a little pun.
+
+340
+00:18:03.880 --> 00:18:05.720
+I like it.
+
+341
+00:18:05.720 --> 00:18:07.810
+Next thing is that little tilt class
+
+342
+00:18:07.810 --> 00:18:09.840
+I've put on a couple of things is not written yet.
+
+343
+00:18:09.840 --> 00:18:13.270
+I'm just gonna stick that in our GlobalStyles.
+
+344
+00:18:13.270 --> 00:18:15.970
+We'll go here, and just create it.
+
+345
+00:18:15.970 --> 00:18:20.683
+We'll just say .tilt, transform, translate,
+
+346
+00:18:22.230 --> 00:18:24.340
+rotate, oh no.
+
+347
+00:18:24.340 --> 00:18:27.340
+It's rotate, I don't know, two degrees, something like that.
+
+348
+00:18:30.260 --> 00:18:33.063
+I believe it has to be position relative as well.
+
+349
+00:18:35.480 --> 00:18:37.763
+It's not working, let's inspect it.
+
+350
+00:18:39.360 --> 00:18:44.360
+Oh, display block,
+
+351
+00:18:48.420 --> 00:18:52.590
+inline block, I like it.
+
+352
+00:18:52.590 --> 00:18:55.850
+I want that to be negative two degrees, though.
+
+353
+00:18:55.850 --> 00:18:57.250
+There we go, looking nice.
+
+354
+00:18:57.250 --> 00:19:00.410
+All right, a couple little minor CSS things.
+
+355
+00:19:00.410 --> 00:19:02.870
+These titles need to be brought up,
+
+356
+00:19:02.870 --> 00:19:06.640
+because I want them to overlap on top of it.
+
+357
+00:19:06.640 --> 00:19:10.823
+So, that is our paragraph tag,
+
+358
+00:19:12.350 --> 00:19:16.230
+and we are translating Y already negative 50%,
+
+359
+00:19:16.230 --> 00:19:17.433
+but that is not,
+
+360
+00:19:23.180 --> 00:19:24.210
+it seems like it needs to be
+
+361
+00:19:24.210 --> 00:19:29.210
+more like negative 140%, so let's go.
+
+362
+00:19:29.610 --> 00:19:31.570
+That is ItemStyles, I think.
+
+363
+00:19:31.570 --> 00:19:34.840
+Let's go into, where is that item?
+
+364
+00:19:34.840 --> 00:19:37.300
+See, if you don't know where something is in VS Code,
+
+365
+00:19:37.300 --> 00:19:38.890
+just go to where you use it,
+
+366
+00:19:38.890 --> 00:19:41.800
+so that would be in our ItemGrid.
+
+367
+00:19:41.800 --> 00:19:42.890
+This is ItemStyles,
+
+368
+00:19:42.890 --> 00:19:46.580
+and then just hold down your Command key and click on it,
+
+369
+00:19:46.580 --> 00:19:49.170
+or sorry, that's your Option key, and click on it,
+
+370
+00:19:49.170 --> 00:19:52.230
+and it will tell you where you actually wrote it,
+
+371
+00:19:52.230 --> 00:19:53.480
+and you can click through to it.
+
+372
+00:19:53.480 --> 00:19:58.163
+So, here we are, negative 140%.
+
+373
+00:20:00.030 --> 00:20:02.504
+That's looking good, and then look at this.
+
+374
+00:20:02.504 --> 00:20:04.130
+There we've got a bit of a forehead right here,
+
+375
+00:20:04.130 --> 00:20:07.660
+so we've gotta ask ourselves what's causing all of this,
+
+376
+00:20:07.660 --> 00:20:09.660
+and it is our nav.
+
+377
+00:20:09.660 --> 00:20:11.563
+It has a bunch of margin on it,
+
+378
+00:20:13.180 --> 00:20:15.050
+and if we take that off,
+
+379
+00:20:15.050 --> 00:20:17.700
+does that get in the way of other things?
+
+380
+00:20:17.700 --> 00:20:20.063
+No, let's open up our nav,
+
+381
+00:20:21.690 --> 00:20:25.300
+and I think we can just take that off temporarily,
+
+382
+00:20:25.300 --> 00:20:26.250
+see what's causing it.
+
+383
+00:20:26.250 --> 00:20:28.050
+There we go, that's looking a little bit better.
+
+384
+00:20:28.050 --> 00:20:30.350
+Go home, this is looking good!
+
+385
+00:20:30.350 --> 00:20:32.023
+Let's jump into the next video.
+

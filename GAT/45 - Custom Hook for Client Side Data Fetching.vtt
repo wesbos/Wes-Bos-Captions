@@ -1,0 +1,2025 @@
+﻿WEBVTT
+
+1
+00:00:00.462 --> 00:00:02.962
+(light music)
+
+2
+00:00:03.909 --> 00:00:05.660
+<v ->And we're gonna pull in the list</v>
+
+3
+00:00:05.660 --> 00:00:08.630
+of currently slicing pizzas and list
+
+4
+00:00:08.630 --> 00:00:11.530
+of currently slicing slice masters into the homepage.
+
+5
+00:00:11.530 --> 00:00:15.010
+Now this is, I don't know if it's necessarily a downside,
+
+6
+00:00:15.010 --> 00:00:18.640
+but it's certainly a limitation of Gatsby in that,
+
+7
+00:00:18.640 --> 00:00:20.980
+that data is very time sensitive,
+
+8
+00:00:20.980 --> 00:00:23.620
+meaning that it could change in a second,
+
+9
+00:00:23.620 --> 00:00:26.940
+and the website needed to be updated within a second.
+
+10
+00:00:26.940 --> 00:00:31.770
+So that data is probably not best suited
+
+11
+00:00:31.770 --> 00:00:35.420
+for running it through the Gatsby graph QL.
+
+12
+00:00:35.420 --> 00:00:36.253
+Why?
+
+13
+00:00:36.253 --> 00:00:39.100
+Because Gatsby is built at build time.
+
+14
+00:00:39.100 --> 00:00:41.080
+And as soon as you build the website,
+
+15
+00:00:41.080 --> 00:00:43.210
+whoever was slicing and whatever pizzas
+
+16
+00:00:43.210 --> 00:00:46.910
+were currently in the case at the time of build time,
+
+17
+00:00:46.910 --> 00:00:49.020
+that's the data that will sit on the website
+
+18
+00:00:49.020 --> 00:00:51.640
+forever until the site is regenerated.
+
+19
+00:00:51.640 --> 00:00:55.440
+And certainly you could regenerate the website every single
+
+20
+00:00:55.440 --> 00:00:58.820
+time that any of that data changes,
+
+21
+00:00:58.820 --> 00:01:01.860
+you could go into a whatever your database is.
+
+22
+00:01:01.860 --> 00:01:03.370
+And there's probably some sort of web hook
+
+23
+00:01:03.370 --> 00:01:05.720
+that will trigger a rebuild or something like that.
+
+24
+00:01:05.720 --> 00:01:06.802
+But,
+
+25
+00:01:06.802 --> 00:01:10.640
+it makes more sense to
+
+26
+00:01:10.640 --> 00:01:12.730
+fetch that data at client side,
+
+27
+00:01:12.730 --> 00:01:16.650
+rather than to fetch that data at build time.
+
+28
+00:01:16.650 --> 00:01:21.370
+And currently Gatsby doesn't have an API.
+
+29
+00:01:21.370 --> 00:01:23.920
+Meaning that there's only an API at build time.
+
+30
+00:01:23.920 --> 00:01:25.500
+And then when you launch your website,
+
+31
+00:01:25.500 --> 00:01:27.870
+there's no graph QL API that we can hit.
+
+32
+00:01:27.870 --> 00:01:31.350
+So we have to go directly to the source of the data
+
+33
+00:01:31.350 --> 00:01:35.000
+from the client side, meaning from the browser.
+
+34
+00:01:35.000 --> 00:01:36.780
+And I'm going to show you how to do that.
+
+35
+00:01:36.780 --> 00:01:39.440
+And it's a pretty common thing that you want to do.
+
+36
+00:01:39.440 --> 00:01:41.040
+I bet, I don't know.
+
+37
+00:01:41.040 --> 00:01:43.700
+I don't have any insight to this, but I bet at some point,
+
+38
+00:01:43.700 --> 00:01:47.370
+Gatsby will roll out some sort of hosted graph QL,
+
+39
+00:01:47.370 --> 00:01:51.170
+where you can like maybe put like a little,
+
+40
+00:01:51.170 --> 00:01:52.640
+you have like a graph QL query,
+
+41
+00:01:52.640 --> 00:01:54.400
+and there's probably some sort of tag you could add
+
+42
+00:01:54.400 --> 00:01:56.590
+to it called refetch on client meaning that you,
+
+43
+00:01:56.590 --> 00:01:57.640
+you do it at build time,
+
+44
+00:01:57.640 --> 00:02:00.270
+but then when it hits the front end you could,
+
+45
+00:02:00.270 --> 00:02:01.730
+you could re fetch that data.
+
+46
+00:02:01.730 --> 00:02:06.140
+And even Gatsby's docs has instructions on how to fetch it
+
+47
+00:02:06.140 --> 00:02:10.210
+at build time as well as how to fetch it on graph QL.
+
+48
+00:02:10.210 --> 00:02:12.870
+But if that's the case, then you're writing a Gatsby
+
+49
+00:02:12.870 --> 00:02:16.010
+graph QL query, and the sanity graph QL query,
+
+50
+00:02:16.010 --> 00:02:17.580
+which aren't exactly the same thing.
+
+51
+00:02:17.580 --> 00:02:19.570
+And that's just not a great way.
+
+52
+00:02:19.570 --> 00:02:23.070
+So we are going to be building it entirely client side,
+
+53
+00:02:23.070 --> 00:02:24.550
+meaning that when you load the page,
+
+54
+00:02:24.550 --> 00:02:25.620
+it will go and fetch it.
+
+55
+00:02:25.620 --> 00:02:29.340
+So if I go to Gatsby dot pizza, you'll see here.
+
+56
+00:02:29.340 --> 00:02:30.900
+Loading, loading, loading.
+
+57
+00:02:30.900 --> 00:02:32.980
+And second later they boom,
+
+58
+00:02:32.980 --> 00:02:37.150
+they all come in and everything is loaded on up.
+
+59
+00:02:37.150 --> 00:02:37.983
+Cool.
+
+60
+00:02:37.983 --> 00:02:39.590
+So let's go to a backdoor at Gatsby,
+
+61
+00:02:39.590 --> 00:02:42.070
+and let's open up our index.js page.
+
+62
+00:02:42.070 --> 00:02:44.350
+And let's just get rid of everything in here.
+
+63
+00:02:44.350 --> 00:02:48.990
+Give herself a div with a class of center inside of that,
+
+64
+00:02:48.990 --> 00:02:50.853
+we'll have an h1 tag that says,
+
+65
+00:02:52.525 --> 00:02:57.525
+the best pizza downtown and that paragraph,
+
+66
+00:02:57.710 --> 00:03:01.595
+open 11:00 AM to 11:00 PM every
+
+67
+00:03:01.595 --> 00:03:03.880
+single day.
+
+68
+00:03:03.880 --> 00:03:08.350
+And you could, you could go into your store settings
+
+69
+00:03:08.350 --> 00:03:11.250
+and make inputs for both of these things
+
+70
+00:03:11.250 --> 00:03:12.280
+and be able to pull them in.
+
+71
+00:03:12.280 --> 00:03:14.520
+So maybe that something that you want to, you want to do,
+
+72
+00:03:14.520 --> 00:03:18.044
+or you could also pull this data from your Gatsby config
+
+73
+00:03:18.044 --> 00:03:20.470
+so that data could live a couple of different places.
+
+74
+00:03:20.470 --> 00:03:22.426
+I'm just going to hard code it in here,
+
+75
+00:03:22.426 --> 00:03:25.260
+but that decision is up to you.
+
+76
+00:03:25.260 --> 00:03:26.093
+All right, good.
+
+77
+00:03:26.093 --> 00:03:26.926
+Then we're going to have a grid.
+
+78
+00:03:26.926 --> 00:03:31.853
+So that's just a div and then we'll have our slice masters.
+
+79
+00:03:33.010 --> 00:03:34.410
+Actually, let's just make the components.
+
+80
+00:03:34.410 --> 00:03:36.673
+Now we'll call it currently slicing,
+
+81
+00:03:37.970 --> 00:03:41.253
+and we have a hot slices component.
+
+82
+00:03:42.340 --> 00:03:44.490
+And then we'll go ahead and make those two.
+
+83
+00:03:50.710 --> 00:03:55.260
+So I'll say a function currently slicing return div,
+
+84
+00:03:57.450 --> 00:03:58.810
+and then let's just put a paragraph
+
+85
+00:03:58.810 --> 00:04:01.633
+that has the name of that component in it.
+
+86
+00:04:06.667 --> 00:04:08.680
+And we'll go to our homepage,
+
+87
+00:04:08.680 --> 00:04:10.920
+there we go currently slicing and hot slices.
+
+88
+00:04:10.920 --> 00:04:12.380
+Cool.
+
+89
+00:04:12.380 --> 00:04:15.760
+Next let's let's work on fetching the data from that.
+
+90
+00:04:15.760 --> 00:04:17.560
+So like where do we get our data from?
+
+91
+00:04:17.560 --> 00:04:20.170
+Well if we can't get it from our Gatsby graph QL,
+
+92
+00:04:20.170 --> 00:04:22.511
+we have to get it straight from sanity.
+
+93
+00:04:22.511 --> 00:04:27.511
+So the way you know what the URL of your sanity endpoint is,
+
+94
+00:04:27.950 --> 00:04:29.863
+is you can go to your,
+
+95
+00:04:31.350 --> 00:04:33.160
+your sanity folder and you can quit
+
+96
+00:04:33.160 --> 00:04:34.380
+the process if you have it.
+
+97
+00:04:34.380 --> 00:04:38.240
+And you simply just run sanity graph QL list.
+
+98
+00:04:38.240 --> 00:04:40.680
+And what that will do is it's going to list
+
+99
+00:04:40.680 --> 00:04:43.180
+all of the different domains that you have.
+
+100
+00:04:43.180 --> 00:04:44.080
+Oh, hi.
+
+101
+00:04:44.080 --> 00:04:45.690
+<v Girl>Daddy, can you fix this?</v>
+
+102
+00:04:45.690 --> 00:04:47.450
+<v Wes>Yeah, I'm just working right now.</v>
+
+103
+00:04:47.450 --> 00:04:49.030
+Can you give me 10 minutes?
+
+104
+00:04:50.019 --> 00:04:51.594
+<v ->I know it, it's broken.</v>
+<v ->What is it?</v>
+
+105
+00:04:51.594 --> 00:04:52.427
+<v Girl>The net.</v>
+
+106
+00:04:52.427 --> 00:04:53.260
+<v Wes>It broke?</v>
+
+107
+00:04:53.260 --> 00:04:54.093
+Oh, the net.
+
+108
+00:04:54.093 --> 00:04:55.800
+Yeah, I ran over it with the lawnmower.
+
+109
+00:04:56.800 --> 00:04:58.563
+Sorry, we'll have to get a new one.
+
+110
+00:04:59.740 --> 00:05:00.790
+Did you leave it out?
+
+111
+00:05:02.118 --> 00:05:03.990
+<v ->Daddy.</v>
+<v ->I'm just recording.</v>
+
+112
+00:05:03.990 --> 00:05:07.180
+<v ->Thanks.</v>
+<v ->It's off and it's broke.</v>
+
+113
+00:05:07.180 --> 00:05:09.640
+<v Wes>Sorry, I ran over the butterfly net</v>
+
+114
+00:05:09.640 --> 00:05:11.520
+with the lawnmower.
+
+115
+00:05:11.520 --> 00:05:14.010
+Anyways, Sandy graph QL list.
+
+116
+00:05:14.010 --> 00:05:19.010
+It will give you a URL to your graph QL database.
+
+117
+00:05:20.350 --> 00:05:24.230
+And you can click on that, open it up.
+
+118
+00:05:24.230 --> 00:05:26.900
+And this is going to give you your sanity graph QL.
+
+119
+00:05:26.900 --> 00:05:28.270
+So there's a little bit of difference
+
+120
+00:05:28.270 --> 00:05:31.430
+between sanity graph QL and Gatsby graph QL.
+
+121
+00:05:31.430 --> 00:05:34.356
+So your queries aren't gonna look exactly the same.
+
+122
+00:05:34.356 --> 00:05:37.720
+Most importantly, it's not going to be sanity all pizza.
+
+123
+00:05:37.720 --> 00:05:41.050
+It will simply just be all pizza, et cetera, et cetera.
+
+124
+00:05:41.050 --> 00:05:44.040
+And that is how we can go ahead and do it.
+
+125
+00:05:44.040 --> 00:05:45.320
+So what we want to do is we're going to make
+
+126
+00:05:45.320 --> 00:05:47.680
+a custom react hook that's going to go and fetch
+
+127
+00:05:47.680 --> 00:05:51.400
+the data that we want and store it inside of there.
+
+128
+00:05:51.400 --> 00:05:54.103
+So we'll go into our sidebar here,
+
+129
+00:05:55.020 --> 00:05:56.430
+go into our utils folder,
+
+130
+00:05:56.430 --> 00:06:00.487
+make a new file and we'll call it useLatestData.js
+
+131
+00:06:04.481 --> 00:06:08.564
+And we'll make a function called use latest data,
+
+132
+00:06:10.880 --> 00:06:15.880
+and we need hot slices and we need slice masters.
+
+133
+00:06:16.180 --> 00:06:18.090
+You could make this two separate hooks,
+
+134
+00:06:18.090 --> 00:06:19.820
+but I'm just going to put it in one
+
+135
+00:06:19.820 --> 00:06:22.690
+just because it all is on the same page.
+
+136
+00:06:22.690 --> 00:06:24.840
+And for that, we need two pieces of state.
+
+137
+00:06:24.840 --> 00:06:27.533
+So it's like const hot slices,
+
+138
+00:06:28.620 --> 00:06:33.620
+and set hot slices is equal to use state.
+
+139
+00:06:35.770 --> 00:06:38.893
+We'll go ahead and import use state from react.
+
+140
+00:06:41.000 --> 00:06:41.833
+There we go.
+
+141
+00:06:43.210 --> 00:06:44.043
+Oh, look at this.
+
+142
+00:06:44.043 --> 00:06:46.980
+It require, I guess like the auto import,
+
+143
+00:06:46.980 --> 00:06:49.030
+if it doesn't see anything that makes it
+
+144
+00:06:49.030 --> 00:06:52.573
+think it's ESX module it will just use common JS.
+
+145
+00:06:53.550 --> 00:06:57.550
+So we will import
+
+146
+00:06:57.550 --> 00:06:58.383
+use state
+
+147
+00:07:01.480 --> 00:07:03.190
+from react.
+
+148
+00:07:03.190 --> 00:07:04.987
+There we go.
+
+149
+00:07:04.987 --> 00:07:07.000
+And second, we'll just duplicate that,
+
+150
+00:07:07.000 --> 00:07:11.863
+and change the hot slices to slice masters.
+
+151
+00:07:13.180 --> 00:07:15.403
+And that needs a capital S on it.
+
+152
+00:07:18.460 --> 00:07:20.260
+Alright, so here's what we'll do is,
+
+153
+00:07:20.260 --> 00:07:23.810
+we will use a side effect
+
+154
+00:07:25.330 --> 00:07:26.990
+to fetch
+
+155
+00:07:26.990 --> 00:07:31.540
+the data from the graph QL endpoint.
+
+156
+00:07:31.540 --> 00:07:32.470
+Okay, cool.
+
+157
+00:07:32.470 --> 00:07:35.590
+So we can do a little bit something like this.
+
+158
+00:07:35.590 --> 00:07:36.803
+We'll say use effect,
+
+159
+00:07:38.960 --> 00:07:41.700
+and use effect needs to be imported from react.
+
+160
+00:07:41.700 --> 00:07:42.533
+There it is.
+
+161
+00:07:46.020 --> 00:07:47.853
+And that takes a function.
+
+162
+00:07:49.260 --> 00:07:50.093
+And in here,
+
+163
+00:07:50.093 --> 00:07:55.093
+we will say when the component loads,
+
+164
+00:07:55.240 --> 00:07:56.500
+fetch the data.
+
+165
+00:07:56.500 --> 00:07:59.970
+So the use effect is a graph QL, sorry,
+
+166
+00:07:59.970 --> 00:08:03.070
+it's a react hook that when run,
+
+167
+00:08:03.070 --> 00:08:05.610
+or when the component mounts,
+
+168
+00:08:05.610 --> 00:08:08.750
+it will run the code that is inside of here.
+
+169
+00:08:08.750 --> 00:08:10.380
+That's our mounting.
+
+170
+00:08:10.380 --> 00:08:15.380
+And then it will also rerun it if any of the data changes.
+
+171
+00:08:16.550 --> 00:08:18.570
+And in our case, there is no data,
+
+172
+00:08:18.570 --> 00:08:22.010
+but we just pass in secondary argument,
+
+173
+00:08:22.010 --> 00:08:23.120
+which is an empty array.
+
+174
+00:08:23.120 --> 00:08:25.710
+And if we did want to rerun this hook
+
+175
+00:08:25.710 --> 00:08:29.130
+every single time that maybe like a variable changed,
+
+176
+00:08:29.130 --> 00:08:34.130
+like a timer, or age, or name, every single time that like,
+
+177
+00:08:34.150 --> 00:08:36.360
+maybe like the store name changed,
+
+178
+00:08:36.360 --> 00:08:37.860
+then you want it to rerun this hook
+
+179
+00:08:37.860 --> 00:08:39.660
+and fetch the data for that store.
+
+180
+00:08:39.660 --> 00:08:41.930
+Then you could put variables in here in our case,
+
+181
+00:08:41.930 --> 00:08:44.470
+there's nothing, we only want it to run on,
+
+182
+00:08:44.470 --> 00:08:45.570
+on the component load.
+
+183
+00:08:45.570 --> 00:08:48.200
+So we just pass it an empty array.
+
+184
+00:08:48.200 --> 00:08:49.304
+Okay.
+
+185
+00:08:49.304 --> 00:08:52.820
+Then we need to go off and fetch the data.
+
+186
+00:08:52.820 --> 00:08:55.730
+So like, let's, maybe let's try to write a query in here.
+
+187
+00:08:55.730 --> 00:08:58.260
+So the query is going to be
+
+188
+00:09:00.820 --> 00:09:02.390
+store.
+
+189
+00:09:02.390 --> 00:09:04.380
+What is that store settings?
+
+190
+00:09:04.380 --> 00:09:07.423
+All person, person, at the look at our schema here.
+
+191
+00:09:09.400 --> 00:09:11.793
+Pizza, topping, person.
+
+192
+00:09:14.870 --> 00:09:17.913
+That doesn't seem to have my store settings.
+
+193
+00:09:18.920 --> 00:09:20.623
+Pizza, topping, person.
+
+194
+00:09:25.250 --> 00:09:29.700
+Oh maybe, maybe I didn't deploy my graph QL API.
+
+195
+00:09:29.700 --> 00:09:32.710
+Do I have to redeploy my graph QL API?
+
+196
+00:09:32.710 --> 00:09:35.633
+We'll say sanity graph QL,
+
+197
+00:09:37.030 --> 00:09:38.550
+deploy production.
+
+198
+00:09:38.550 --> 00:09:40.200
+Yeah I think that's what we need.
+
+199
+00:09:43.110 --> 00:09:44.070
+Do you want enable it?
+
+200
+00:09:44.070 --> 00:09:45.083
+Yes.
+
+201
+00:09:51.300 --> 00:09:54.053
+All right so that's the same URL.
+
+202
+00:09:56.642 --> 00:09:57.510
+Dot API.
+
+203
+00:09:57.510 --> 00:10:01.563
+And now if I refresh this, will we get,
+
+204
+00:10:02.640 --> 00:10:04.590
+Hey, look at that store settings.
+
+205
+00:10:04.590 --> 00:10:05.423
+Okay, cool.
+
+206
+00:10:05.423 --> 00:10:06.256
+That's what we want.
+
+207
+00:10:06.256 --> 00:10:07.720
+So capital S store settings,
+
+208
+00:10:07.720 --> 00:10:10.650
+where the ID is going to be equal to downtown.
+
+209
+00:10:10.650 --> 00:10:13.290
+Remember that the ID of the store setting,
+
+210
+00:10:13.290 --> 00:10:16.160
+we manually set it to downtown,
+
+211
+00:10:16.160 --> 00:10:18.180
+and let's just grab the name from that.
+
+212
+00:10:18.180 --> 00:10:19.603
+Now, when we run that,
+
+213
+00:10:20.520 --> 00:10:23.470
+you get downtown store and we should now,
+
+214
+00:10:23.470 --> 00:10:25.930
+also be able to get the slice masters
+
+215
+00:10:25.930 --> 00:10:30.340
+that are currently slicing and their name and the,
+
+216
+00:10:30.340 --> 00:10:31.173
+what was it called?
+
+217
+00:10:31.173 --> 00:10:34.030
+Hot slices and the
+
+218
+00:10:35.250 --> 00:10:36.550
+name of the pizza.
+
+219
+00:10:36.550 --> 00:10:38.160
+So I'll give that a run.
+
+220
+00:10:38.160 --> 00:10:39.930
+You see, these are the four people
+
+221
+00:10:39.930 --> 00:10:41.450
+that are currently slicing.
+
+222
+00:10:41.450 --> 00:10:44.140
+These are the four people that are sorry,
+
+223
+00:10:44.140 --> 00:10:46.110
+the four slices that are currently in the case.
+
+224
+00:10:46.110 --> 00:10:50.003
+And if we were to go and delete Jimi Hendrix,
+
+225
+00:10:51.220 --> 00:10:54.163
+and publish that now rerun it.
+
+226
+00:10:55.730 --> 00:10:57.050
+Yeah, good, there's only three.
+
+227
+00:10:57.050 --> 00:10:58.440
+And that's the benefit of,
+
+228
+00:10:58.440 --> 00:11:00.750
+of doing it in the browser is that as soon
+
+229
+00:11:00.750 --> 00:11:03.890
+as the data has changed in our sanity backend,
+
+230
+00:11:03.890 --> 00:11:06.808
+the next time the person that loads that page,
+
+231
+00:11:06.808 --> 00:11:10.580
+you'll be able to see the updated data,
+
+232
+00:11:10.580 --> 00:11:12.570
+which is pretty cool.
+
+233
+00:11:12.570 --> 00:11:15.360
+So that is our URL right here.
+
+234
+00:11:15.360 --> 00:11:16.740
+And that is our query.
+
+235
+00:11:16.740 --> 00:11:19.720
+So let's try and fetch that data.
+
+236
+00:11:19.720 --> 00:11:23.240
+Now we don't need, you don't need any special libraries
+
+237
+00:11:23.240 --> 00:11:26.150
+or anything to fetch graph QL data,
+
+238
+00:11:26.150 --> 00:11:27.110
+because at the end of the day,
+
+239
+00:11:27.110 --> 00:11:29.590
+it's just json and you're sending it off.
+
+240
+00:11:29.590 --> 00:11:31.730
+So that's what we're going to be doing here.
+
+241
+00:11:31.730 --> 00:11:35.590
+We will, let's actually take this URL here and at the top,
+
+242
+00:11:35.590 --> 00:11:40.590
+let's just say const endpoint actually,
+
+243
+00:11:45.010 --> 00:11:48.053
+did we put it in our environment variable?
+
+244
+00:11:49.870 --> 00:11:51.630
+No, let's stick it in here.
+
+245
+00:11:51.630 --> 00:11:54.289
+We'll say Gatsby, Gartsby. (laughs)
+
+246
+00:11:54.289 --> 00:11:56.830
+That would be a really good, Gartsby.
+
+247
+00:11:56.830 --> 00:11:59.170
+That'd be like a really good like theme name
+
+248
+00:11:59.170 --> 00:12:01.260
+or something like that for Gatsby.
+
+249
+00:12:01.260 --> 00:12:03.333
+But it's going to be Gatsby_graphQL,
+
+250
+00:12:07.930 --> 00:12:10.870
+endpoint is equal to that.
+
+251
+00:12:10.870 --> 00:12:12.387
+Okay.
+
+252
+00:12:12.387 --> 00:12:15.573
+And then in here we can say fetch
+
+253
+00:12:18.610 --> 00:12:19.443
+and the endpoint
+
+254
+00:12:19.443 --> 00:12:23.200
+will be process.ENV.Gartsby,
+
+255
+00:12:23.200 --> 00:12:25.960
+Gatsby underscore, what do we call it?
+
+256
+00:12:25.960 --> 00:12:27.383
+Graph QL endpoint.
+
+257
+00:12:28.920 --> 00:12:30.320
+And then there's a bunch of settings
+
+258
+00:12:30.320 --> 00:12:32.030
+that need to go along with it.
+
+259
+00:12:32.030 --> 00:12:36.020
+So we need a object as a second argument of fetch.
+
+260
+00:12:36.020 --> 00:12:38.750
+And that will say the method is post.
+
+261
+00:12:38.750 --> 00:12:40.670
+'Cause you can't just get graph QL.
+
+262
+00:12:40.670 --> 00:12:42.510
+And in the case of sanity,
+
+263
+00:12:42.510 --> 00:12:44.710
+you have to post the data to them,
+
+264
+00:12:44.710 --> 00:12:49.133
+the headers, which will be the content type.
+
+265
+00:12:50.710 --> 00:12:54.483
+I guess that has to be capital C, capital T,
+
+266
+00:12:55.620 --> 00:12:58.400
+is application/json
+
+267
+00:13:00.382 --> 00:13:02.080
+And then the body
+
+268
+00:13:05.050 --> 00:13:10.050
+is going to be an object that has a query inside of it.
+
+269
+00:13:10.480 --> 00:13:13.010
+Now, we can't just pass it a,
+
+270
+00:13:13.010 --> 00:13:15.100
+an object where it says query like this,
+
+271
+00:13:15.100 --> 00:13:18.460
+because the data that is posted to this backend
+
+272
+00:13:18.460 --> 00:13:20.780
+needs to be a string, not an object.
+
+273
+00:13:20.780 --> 00:13:23.100
+You can't just send an object over the wire.
+
+274
+00:13:23.100 --> 00:13:25.090
+So what we'll have to do is we say,
+
+275
+00:13:25.090 --> 00:13:29.000
+json.stringify our settings here.
+
+276
+00:13:29.000 --> 00:13:29.840
+The query
+
+277
+00:13:32.922 --> 00:13:34.530
+is going to be in, in our case.
+
+278
+00:13:34.530 --> 00:13:36.080
+Let's just use back ticks for now,
+
+279
+00:13:36.080 --> 00:13:38.440
+and I'll show you a little trick in just a second.
+
+280
+00:13:38.440 --> 00:13:43.440
+So our query will be, and just go ahead and grab this data,
+
+281
+00:13:43.520 --> 00:13:46.070
+paste it in there and look at it, it's gonna,
+
+282
+00:13:46.070 --> 00:13:47.740
+the paste is going to look weird,
+
+283
+00:13:47.740 --> 00:13:49.920
+but I'll show you how to fix that in just a second,
+
+284
+00:13:49.920 --> 00:13:52.440
+as well as there's going to be no syntax highlighting.
+
+285
+00:13:52.440 --> 00:13:54.590
+And that will be fixed with the same thing,
+
+286
+00:13:55.450 --> 00:13:59.210
+however let's just get this working for now.
+
+287
+00:13:59.210 --> 00:14:03.470
+So when this data hook runs,
+
+288
+00:14:03.470 --> 00:14:05.310
+create two pieces of state,
+
+289
+00:14:05.310 --> 00:14:08.460
+go ahead and run fetch
+
+290
+00:14:10.350 --> 00:14:11.680
+inside of there.
+
+291
+00:14:11.680 --> 00:14:13.410
+And then when that is done,
+
+292
+00:14:13.410 --> 00:14:16.010
+we want to set the data to json.
+
+293
+00:14:16.010 --> 00:14:18.010
+And this is actually a really good use case
+
+294
+00:14:18.010 --> 00:14:20.520
+for not using async await,
+
+295
+00:14:20.520 --> 00:14:24.213
+because if you make this function async,
+
+296
+00:14:24.213 --> 00:14:26.420
+react is going to yell at you.
+
+297
+00:14:26.420 --> 00:14:29.600
+So rather than having to do another function inside of that,
+
+298
+00:14:29.600 --> 00:14:32.390
+we'll just use a regular dot then syntax.
+
+299
+00:14:32.390 --> 00:14:35.570
+So we've got to find the end of this fetch here.
+
+300
+00:14:35.570 --> 00:14:37.520
+I'm going to click on that.
+
+301
+00:14:37.520 --> 00:14:39.640
+That's this one right here.
+
+302
+00:14:39.640 --> 00:14:43.440
+And we'll say dot then, and we get the response.
+
+303
+00:14:43.440 --> 00:14:45.363
+The response will be in json.
+
+304
+00:14:46.428 --> 00:14:49.150
+And then we tag in another .then on the end.
+
+305
+00:14:49.150 --> 00:14:51.250
+It gives us a response.
+
+306
+00:14:51.250 --> 00:14:55.173
+And then we can to do check for errors.
+
+307
+00:15:00.370 --> 00:15:04.540
+But what we really want to do is set the data to state,
+
+308
+00:15:04.540 --> 00:15:08.900
+but let's just console.log, the response.data,
+
+309
+00:15:08.900 --> 00:15:10.340
+see what workin' with, right?
+
+310
+00:15:10.340 --> 00:15:11.702
+Like we just,
+
+311
+00:15:11.702 --> 00:15:13.110
+we just wrote a lot of code and we have no clue
+
+312
+00:15:13.110 --> 00:15:16.280
+if we goofed up the first line and let's not be a hero,
+
+313
+00:15:16.280 --> 00:15:17.550
+let's just get this thing working.
+
+314
+00:15:17.550 --> 00:15:20.090
+Okay, so we wrote this custom hook here.
+
+315
+00:15:20.090 --> 00:15:23.270
+We should export it from this file.
+
+316
+00:15:23.270 --> 00:15:27.260
+So export default function use latest data.
+
+317
+00:15:27.260 --> 00:15:30.033
+Then we'll go back into our index page here,
+
+318
+00:15:32.060 --> 00:15:33.820
+and we will run it.
+
+319
+00:15:33.820 --> 00:15:35.293
+So at the homepage,
+
+320
+00:15:37.890 --> 00:15:38.913
+let's say const.
+
+321
+00:15:40.640 --> 00:15:41.657
+Oh no, I forgot to do,
+
+322
+00:15:41.657 --> 00:15:46.170
+it was we forgot to actually return this data.
+
+323
+00:15:46.170 --> 00:15:49.640
+So let's return the hot slices and slice masters.
+
+324
+00:15:49.640 --> 00:15:52.480
+So very end, simply return
+
+325
+00:15:53.320 --> 00:15:55.383
+hot slices and slice masters.
+
+326
+00:16:01.360 --> 00:16:04.215
+Alright, so we'll just.
+
+327
+00:16:04.215 --> 00:16:06.300
+(clicks tongue)
+
+328
+00:16:06.300 --> 00:16:08.680
+Let's just say const the result.
+
+329
+00:16:08.680 --> 00:16:10.627
+We'll destructure that in a second,
+
+330
+00:16:10.627 --> 00:16:13.657
+and we'll say use latest data
+
+331
+00:16:13.657 --> 00:16:15.723
+and then we'll have to import that.
+
+332
+00:16:17.468 --> 00:16:18.301
+There we go.
+
+333
+00:16:22.320 --> 00:16:24.630
+Cause results equal to use latest data,
+
+334
+00:16:24.630 --> 00:16:28.000
+and we will just console.log the results.
+
+335
+00:16:28.000 --> 00:16:29.250
+Okay, so what's happening here?
+
+336
+00:16:29.250 --> 00:16:32.300
+Well we used the hook and when this sucker,
+
+337
+00:16:32.300 --> 00:16:34.220
+when the homepage renders out,
+
+338
+00:16:34.220 --> 00:16:36.633
+it's going to run this hook once.
+
+339
+00:16:37.510 --> 00:16:41.680
+And then that hook will in turn run this side effect,
+
+340
+00:16:41.680 --> 00:16:43.840
+which is a fetch request.
+
+341
+00:16:43.840 --> 00:16:45.420
+And then that just comes back,
+
+342
+00:16:45.420 --> 00:16:48.840
+turns it back into an object and then we console log it.
+
+343
+00:16:48.840 --> 00:16:51.480
+So if we did everything right, unlikely,
+
+344
+00:16:51.480 --> 00:16:54.960
+we should see a bunch of data being logged.
+
+345
+00:16:54.960 --> 00:16:56.793
+Let's go back to our site here.
+
+346
+00:17:02.120 --> 00:17:04.970
+json.parse expected character, blah, blah, blah.
+
+347
+00:17:04.970 --> 00:17:09.970
+Okay, so whenever you get this line one column one,
+
+348
+00:17:10.360 --> 00:17:13.500
+that means that you got some data back,
+
+349
+00:17:13.500 --> 00:17:15.550
+and you try to turn it into an object,
+
+350
+00:17:15.550 --> 00:17:18.700
+but it obviously wasn't json to begin with.
+
+351
+00:17:18.700 --> 00:17:19.940
+So how do I fix that?
+
+352
+00:17:19.940 --> 00:17:21.680
+I go into my network.
+
+353
+00:17:21.680 --> 00:17:22.750
+Let me clear this out,
+
+354
+00:17:22.750 --> 00:17:27.090
+refresh the page and then look for
+
+355
+00:17:28.020 --> 00:17:29.150
+the failed
+
+356
+00:17:30.020 --> 00:17:31.100
+XHR requests.
+
+357
+00:17:31.100 --> 00:17:32.393
+So let's filter for XHR.
+
+358
+00:17:34.125 --> 00:17:35.810
+They all look the same.
+
+359
+00:17:35.810 --> 00:17:36.643
+Oh, this is it.
+
+360
+00:17:37.490 --> 00:17:40.320
+So in our case, it wasn't failed XHR request.
+
+361
+00:17:40.320 --> 00:17:45.150
+But the result that came back was not json.
+
+362
+00:17:45.150 --> 00:17:48.200
+So if I click that, you can see the request.
+
+363
+00:17:48.200 --> 00:17:49.870
+See the request was our query
+
+364
+00:17:49.870 --> 00:17:52.180
+of store slices and slice masters.
+
+365
+00:17:52.180 --> 00:17:55.400
+And the response was nothing.
+
+366
+00:17:55.400 --> 00:17:56.320
+It was empty.
+
+367
+00:17:56.320 --> 00:17:59.440
+So, and I see exactly what it was is that we,
+
+368
+00:17:59.440 --> 00:18:02.470
+we tried to ping undefined as a URL.
+
+369
+00:18:02.470 --> 00:18:05.130
+When in reality we need to be hitting
+
+370
+00:18:05.130 --> 00:18:06.370
+our graph QL end point.
+
+371
+00:18:06.370 --> 00:18:09.840
+And I bet that's because we're using the ENV,
+
+372
+00:18:09.840 --> 00:18:11.990
+and we didn't restart our process.
+
+373
+00:18:11.990 --> 00:18:15.660
+So let's go back to our Gatsby process,
+
+374
+00:18:15.660 --> 00:18:18.443
+kill it, start that sucker again,
+
+375
+00:18:19.470 --> 00:18:20.970
+and deal with the next problem
+
+376
+00:18:20.970 --> 00:18:23.050
+that inevitably will come up.
+
+377
+00:18:23.050 --> 00:18:25.000
+All right, looks like it is running.
+
+378
+00:18:25.000 --> 00:18:29.240
+Give it a sec, we should see our new homepage.
+
+379
+00:18:29.240 --> 00:18:30.540
+There we go.
+
+380
+00:18:30.540 --> 00:18:33.040
+Okay, network error when attempting to fetch a resource.
+
+381
+00:18:33.040 --> 00:18:33.873
+Okay.
+
+382
+00:18:38.530 --> 00:18:39.463
+Blocked.
+
+383
+00:18:40.560 --> 00:18:42.800
+Let's see, let's see a request.
+
+384
+00:18:42.800 --> 00:18:47.320
+Response, request, response, nothing in there.
+
+385
+00:18:47.320 --> 00:18:48.850
+Why would it be blocked?
+
+386
+00:18:48.850 --> 00:18:50.910
+Oh, I bet I know.
+
+387
+00:18:50.910 --> 00:18:52.800
+I bet I know.
+
+388
+00:18:52.800 --> 00:18:57.310
+So if we
+
+389
+00:18:57.310 --> 00:18:59.681
+were to go to our console, here we go.
+
+390
+00:18:59.681 --> 00:19:02.250
+We should see some CORS issues.
+
+391
+00:19:02.250 --> 00:19:05.900
+The same origin policy just allows rereading from this.
+
+392
+00:19:05.900 --> 00:19:09.500
+And that is because we have,
+
+393
+00:19:09.500 --> 00:19:13.940
+in order to go to this graph QL endpoint from a URL,
+
+394
+00:19:13.940 --> 00:19:18.550
+we have to allow that URL in our sanity.
+
+395
+00:19:18.550 --> 00:19:23.400
+So let's go to, I guess we'll go to sanity.io
+
+396
+00:19:25.670 --> 00:19:26.503
+We'll log in.
+
+397
+00:19:30.850 --> 00:19:33.223
+We'll find our project, that's this one.
+
+398
+00:19:35.750 --> 00:19:37.060
+If, you can always double check
+
+399
+00:19:37.060 --> 00:19:39.110
+the project ID that you have,
+
+400
+00:19:39.110 --> 00:19:41.370
+yours won't be the same as mine.
+
+401
+00:19:41.370 --> 00:19:45.210
+Go to your, I believe settings, API
+
+402
+00:19:46.090 --> 00:19:47.710
+and yeah look at this.
+
+403
+00:19:47.710 --> 00:19:50.530
+CORS origins, hosts that can connect to the project API.
+
+404
+00:19:50.530 --> 00:19:54.130
+Local host 3.3.3.3 is good,
+
+405
+00:19:54.130 --> 00:19:58.537
+but no other, other websites are allowed to access it.
+
+406
+00:19:58.537 --> 00:20:01.250
+And in our case, we are local host 8.8.8.8,
+
+407
+00:20:01.250 --> 00:20:03.850
+and then also local hosts, 8,000.
+
+408
+00:20:03.850 --> 00:20:06.400
+So what we can do is add a new origin,
+
+409
+00:20:06.400 --> 00:20:10.563
+we'll say HTTP//localhost:
+
+410
+00:20:12.320 --> 00:20:13.520
+and we can just use star.
+
+411
+00:20:13.520 --> 00:20:16.130
+And that way it'll run on all the local hosts there.
+
+412
+00:20:16.130 --> 00:20:19.330
+You do want to be careful that you're not just allowing
+
+413
+00:20:19.330 --> 00:20:21.440
+any website to access it,
+
+414
+00:20:21.440 --> 00:20:24.520
+but in our case local host is fine.
+
+415
+00:20:24.520 --> 00:20:28.273
+Go ahead and allow credentials and add a new origin.
+
+416
+00:20:29.810 --> 00:20:34.100
+Now I bet if we refresh this page that arrow will go away.
+
+417
+00:20:34.100 --> 00:20:34.983
+Here we go.
+
+418
+00:20:36.560 --> 00:20:37.943
+Looks like,
+
+419
+00:20:39.200 --> 00:20:40.380
+use latest data,
+
+420
+00:20:40.380 --> 00:20:44.270
+online 36 is what we want.
+
+421
+00:20:44.270 --> 00:20:45.723
+There's our store settings.
+
+422
+00:20:46.980 --> 00:20:51.050
+And we get, there's our slice masters.
+
+423
+00:20:51.050 --> 00:20:52.520
+And there is our hot slices.
+
+424
+00:20:52.520 --> 00:20:53.850
+Good, so we know that data
+
+425
+00:20:53.850 --> 00:20:56.360
+is actually at least coming back from our API.
+
+426
+00:20:56.360 --> 00:20:57.940
+That's working just fine.
+
+427
+00:20:57.940 --> 00:21:00.860
+Let's hop back into this instead of console logging it,
+
+428
+00:21:00.860 --> 00:21:02.993
+we want to set the data to state.
+
+429
+00:21:02.993 --> 00:21:06.840
+So what we'll do is we'll just say set hot slices,
+
+430
+00:21:06.840 --> 00:21:10.433
+and that would be response.data.StoreSettings.hotSlices.
+
+431
+00:21:14.342 --> 00:21:17.230
+And then we also want a set.
+
+432
+00:21:17.230 --> 00:21:18.273
+What was the other one?
+
+433
+00:21:18.273 --> 00:21:20.356
+SliceMasters.slicemaster.
+
+434
+00:21:24.020 --> 00:21:26.283
+Oh, it's singular.
+
+435
+00:21:27.740 --> 00:21:30.410
+So it makes sure that is singular there.
+
+436
+00:21:30.410 --> 00:21:31.940
+Okay.
+
+437
+00:21:31.940 --> 00:21:35.950
+Now we want to see is that data being properly set to state?
+
+438
+00:21:35.950 --> 00:21:39.570
+So what we do here is we'll go back to this,
+
+439
+00:21:39.570 --> 00:21:40.930
+and we'll console log the result,
+
+440
+00:21:40.930 --> 00:21:41.910
+which I already have in there.
+
+441
+00:21:41.910 --> 00:21:44.510
+You saw earlier, it was undefined that's cause we weren't,
+
+442
+00:21:44.510 --> 00:21:46.300
+weren't actually setting anything to state.
+
+443
+00:21:46.300 --> 00:21:49.803
+But now if I refresh, still undefined.
+
+444
+00:21:50.700 --> 00:21:51.533
+Oh.
+
+445
+00:21:53.060 --> 00:21:54.540
+Oh, that's kind of interesting.
+
+446
+00:21:54.540 --> 00:21:56.300
+It runs three times.
+
+447
+00:21:56.300 --> 00:21:57.890
+First time, it's undefined, undefined.
+
+448
+00:21:57.890 --> 00:22:02.727
+Second time, it's hot slices and undefined,
+
+449
+00:22:02.727 --> 00:22:05.223
+and the third time it's everything?
+
+450
+00:22:07.860 --> 00:22:09.163
+That's weird.
+
+451
+00:22:10.700 --> 00:22:12.300
+So how would I, how would I debug that?
+
+452
+00:22:12.300 --> 00:22:14.580
+Well, my question is, is this,
+
+453
+00:22:14.580 --> 00:22:17.760
+is this effect running multiple times?
+
+454
+00:22:17.760 --> 00:22:20.263
+console.log fetching data.
+
+455
+00:22:21.760 --> 00:22:23.400
+Let's see.
+
+456
+00:22:23.400 --> 00:22:26.230
+That's one, no only once.
+
+457
+00:22:26.230 --> 00:22:27.063
+Okay.
+
+458
+00:22:27.063 --> 00:22:27.896
+Oh, okay.
+
+459
+00:22:27.896 --> 00:22:28.729
+I see, I see.
+
+460
+00:22:28.729 --> 00:22:29.940
+I see, I see.
+
+461
+00:22:29.940 --> 00:22:32.190
+That, that makes total sense.
+
+462
+00:22:32.190 --> 00:22:35.683
+So what's happening is that when this thing runs,
+
+463
+00:22:37.190 --> 00:22:39.920
+it immediately returns the empty state.
+
+464
+00:22:39.920 --> 00:22:44.920
+Then when the fetch comes back, it sets hot slices first.
+
+465
+00:22:45.790 --> 00:22:49.089
+So that, that updates it and, that does that,
+
+466
+00:22:49.089 --> 00:22:51.210
+and then it also sets slice masters.
+
+467
+00:22:51.210 --> 00:22:54.050
+So that updates it and does it again.
+
+468
+00:22:54.050 --> 00:22:55.870
+There's probably some stuff you can do
+
+469
+00:22:55.870 --> 00:22:57.820
+so this will only run once undefined,
+
+470
+00:22:57.820 --> 00:22:59.470
+and once with both pieces of data,
+
+471
+00:22:59.470 --> 00:23:01.160
+but honestly it's not a big deal.
+
+472
+00:23:01.160 --> 00:23:02.870
+It's not going to give you any perf issues,
+
+473
+00:23:02.870 --> 00:23:04.620
+or any scary things like that,
+
+474
+00:23:04.620 --> 00:23:06.810
+that you see a lot of people talk about with react.
+
+475
+00:23:06.810 --> 00:23:10.950
+Totally fine for this thing to run three times,
+
+476
+00:23:10.950 --> 00:23:12.370
+or not even run three times,
+
+477
+00:23:12.370 --> 00:23:16.420
+but to update the state twice.
+
+478
+00:23:16.420 --> 00:23:21.420
+So that is our data is now showing up on here.
+
+479
+00:23:21.430 --> 00:23:23.940
+Then what we need to do is,
+
+480
+00:23:23.940 --> 00:23:26.870
+to take that data result
+
+481
+00:23:26.870 --> 00:23:29.520
+and pass that into each of the components.
+
+482
+00:23:29.520 --> 00:23:33.620
+So we can just go ahead and render that on out.
+
+483
+00:23:33.620 --> 00:23:35.420
+So we'll go to our current slicing and say,
+
+484
+00:23:35.420 --> 00:23:39.320
+slice masters, pass it in via a prop.
+
+485
+00:23:39.320 --> 00:23:42.860
+And that is, let's actually just destructure
+
+486
+00:23:42.860 --> 00:23:47.860
+this result into two things, slice masters and hot slices.
+
+487
+00:23:48.770 --> 00:23:52.873
+And then we'll just simply pass that as a prop.
+
+488
+00:24:01.890 --> 00:24:04.670
+This is one thing I wish that react would fix or not,
+
+489
+00:24:04.670 --> 00:24:06.050
+or make better in that,
+
+490
+00:24:06.050 --> 00:24:07.400
+like, if you want to pass a prop,
+
+491
+00:24:07.400 --> 00:24:09.170
+that's the same name as a variable,
+
+492
+00:24:09.170 --> 00:24:13.460
+I wish that you could just like, do like that,
+
+493
+00:24:13.460 --> 00:24:15.150
+where it would just like pass down the prop
+
+494
+00:24:15.150 --> 00:24:18.860
+as the name of the variable but unfortunately it doesn't.
+
+495
+00:24:18.860 --> 00:24:20.910
+We've got to get rid of this result here.
+
+496
+00:24:22.910 --> 00:24:24.420
+Okay.
+
+497
+00:24:24.420 --> 00:24:28.610
+And now I believe if we were to inspect element
+
+498
+00:24:28.610 --> 00:24:31.540
+on one of our components currently slicing,
+
+499
+00:24:31.540 --> 00:24:34.430
+we should see, good, there's a prop
+
+500
+00:24:34.430 --> 00:24:37.170
+of our slice masters are being passed in.
+
+501
+00:24:37.170 --> 00:24:38.003
+All right.
+
+502
+00:24:38.003 --> 00:24:38.980
+I think that's enough for this video.
+
+503
+00:24:38.980 --> 00:24:40.120
+In the next video, we'll figure out,
+
+504
+00:24:40.120 --> 00:24:41.990
+how do we actually query the rest of the data,
+
+505
+00:24:41.990 --> 00:24:44.883
+as well as loop over it inside of our react app.
+

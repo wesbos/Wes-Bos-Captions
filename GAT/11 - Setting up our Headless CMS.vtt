@@ -1,0 +1,1327 @@
+﻿WEBVTT
+
+1
+00:00:00.673 --> 00:00:03.423
+(cheerful music)
+
+2
+00:00:04.510 --> 00:00:07.320
+<v Lecturer>All right, let's talk about the sanity backend</v>
+
+3
+00:00:07.320 --> 00:00:08.560
+that we're gonna be building.
+
+4
+00:00:08.560 --> 00:00:11.300
+So this is the CMS that we're gonna be building.
+
+5
+00:00:11.300 --> 00:00:12.510
+It's called Sanity.
+
+6
+00:00:12.510 --> 00:00:14.600
+It's a headless CMS,
+
+7
+00:00:14.600 --> 00:00:17.110
+which means that, the whole headless term
+
+8
+00:00:17.110 --> 00:00:21.060
+means that there's no front end, there's no theme,
+
+9
+00:00:21.060 --> 00:00:25.190
+or there's no way to actually view the data in your website
+
+10
+00:00:25.190 --> 00:00:27.610
+with Sanity, because it's just the backend,
+
+11
+00:00:27.610 --> 00:00:29.340
+meaning that we log in,
+
+12
+00:00:29.340 --> 00:00:30.877
+we're gonna be able to create our content types
+
+13
+00:00:30.877 --> 00:00:34.640
+and our fields and update data and delete data and all that,
+
+14
+00:00:34.640 --> 00:00:36.740
+and then the front end is what we're building.
+
+15
+00:00:36.740 --> 00:00:38.180
+That's Slick's Slices.
+
+16
+00:00:38.180 --> 00:00:41.610
+And that data is gonna be pulled in via Gatsby,
+
+17
+00:00:41.610 --> 00:00:43.180
+via a plugin that we use as well as
+
+18
+00:00:43.180 --> 00:00:46.080
+we're gonna use their graph QL API straight.
+
+19
+00:00:46.080 --> 00:00:49.160
+So that's what it means as a headless CMS.
+
+20
+00:00:49.160 --> 00:00:51.680
+And the steps that we take here today will be
+
+21
+00:00:51.680 --> 00:00:53.020
+almost exactly the same,
+
+22
+00:00:53.020 --> 00:00:56.120
+regardless of which headless CMS that you take.
+
+23
+00:00:56.120 --> 00:00:58.120
+You create your data and we're gonna ingest it
+
+24
+00:00:58.120 --> 00:01:01.780
+into our Gatsby site in a little bit more.
+
+25
+00:01:01.780 --> 00:01:05.670
+Now, full disclosure, sanity is a sponsor of my podcast,
+
+26
+00:01:05.670 --> 00:01:09.450
+but they did not pay to be in this tutorial.
+
+27
+00:01:09.450 --> 00:01:12.340
+I tried out about six or seven of them out there
+
+28
+00:01:12.340 --> 00:01:14.960
+and I ended up on sanity because I think it's probably
+
+29
+00:01:14.960 --> 00:01:18.930
+the best balance between up and running quickly
+
+30
+00:01:18.930 --> 00:01:20.490
+and like done for you.
+
+31
+00:01:20.490 --> 00:01:23.070
+A lot of it is done for you and you can just use it.
+
+32
+00:01:23.070 --> 00:01:24.910
+And if you want to customize it,
+
+33
+00:01:24.910 --> 00:01:26.130
+we're gonna look at how we can do that.
+
+34
+00:01:26.130 --> 00:01:28.210
+You can customize it, which is kinda cool.
+
+35
+00:01:28.210 --> 00:01:29.670
+So that's why I'm doing it.
+
+36
+00:01:29.670 --> 00:01:32.120
+I had a bunch of other companies offer to sponsor
+
+37
+00:01:33.310 --> 00:01:37.283
+being the CMS in this tutorial, but I thought no.
+
+38
+00:01:38.590 --> 00:01:40.060
+So let's get rolling.
+
+39
+00:01:40.060 --> 00:01:43.530
+Sanity.io is the URL that you can have
+
+40
+00:01:43.530 --> 00:01:44.950
+and we already did this,
+
+41
+00:01:44.950 --> 00:01:47.030
+but just double check that you have sanity globally
+
+42
+00:01:47.030 --> 00:01:48.090
+installed on your computer.
+
+43
+00:01:48.090 --> 00:01:51.370
+You can just type sanity--version
+
+44
+00:01:52.310 --> 00:01:54.530
+and that will tell you which version you have.
+
+45
+00:01:54.530 --> 00:01:55.530
+If you get like an error,
+
+46
+00:01:55.530 --> 00:01:57.620
+like sanity is not a command or something like that,
+
+47
+00:01:57.620 --> 00:02:02.030
+just go ahead and run this to install globally
+
+48
+00:02:02.030 --> 00:02:02.863
+on your computer.
+
+49
+00:02:02.863 --> 00:02:04.630
+Now, normally with a new sanity project,
+
+50
+00:02:04.630 --> 00:02:07.050
+you type sanity init and what that will do
+
+51
+00:02:07.050 --> 00:02:10.120
+is it will download all the starter files for you
+
+52
+00:02:10.120 --> 00:02:13.170
+and it'll give you some base folders
+
+53
+00:02:13.170 --> 00:02:15.770
+and even it'll give you some examples,
+
+54
+00:02:15.770 --> 00:02:18.110
+and that's great if you wanna try another project.
+
+55
+00:02:18.110 --> 00:02:20.770
+However, if we take a look at what I've given you,
+
+56
+00:02:20.770 --> 00:02:24.963
+it's basically the same output of sanity init.
+
+57
+00:02:26.250 --> 00:02:28.430
+I didn't do some sneaky coding and give you some of it.
+
+58
+00:02:28.430 --> 00:02:32.850
+Sometimes people get annoyed when I give them code already,
+
+59
+00:02:32.850 --> 00:02:35.050
+but this all comes with sanity init.
+
+60
+00:02:35.050 --> 00:02:36.060
+There's just a couple difference.
+
+61
+00:02:36.060 --> 00:02:41.060
+I'm using NPM instead of yarn, just to keep it simple.
+
+62
+00:02:41.570 --> 00:02:43.130
+Yarn has a lot going on right now.
+
+63
+00:02:43.130 --> 00:02:44.990
+I'm not sure if it will be around for a long time,
+
+64
+00:02:44.990 --> 00:02:46.993
+so I'm just using that.
+
+65
+00:02:48.941 --> 00:02:53.330
+And I've got some sample data in here as well as some stuff.
+
+66
+00:02:53.330 --> 00:02:55.570
+So I basically, and I got VS Code stuff here.
+
+67
+00:02:55.570 --> 00:02:57.080
+So I basically wanted to give you a folder
+
+68
+00:02:57.080 --> 00:02:59.760
+with some files in it and sanity init doesn't work
+
+69
+00:02:59.760 --> 00:03:01.200
+on an empty, that's the only reason
+
+70
+00:03:01.200 --> 00:03:03.490
+why we're gonna go ahead and do this.
+
+71
+00:03:03.490 --> 00:03:07.930
+So in order to initialize our app and to log in
+
+72
+00:03:07.930 --> 00:03:10.020
+and to create a new data set with Sanity,
+
+73
+00:03:10.020 --> 00:03:15.020
+what you need to do is type sanity init -- reconfigure,
+
+74
+00:03:17.470 --> 00:03:18.480
+I hit enter.
+
+75
+00:03:18.480 --> 00:03:21.150
+And what this will do is if you are not already
+
+76
+00:03:21.150 --> 00:03:23.360
+created an account and signed in with sanity,
+
+77
+00:03:23.360 --> 00:03:26.410
+it's going to prompt you to create a new account.
+
+78
+00:03:26.410 --> 00:03:28.580
+If at any time you ever want to re-log in
+
+79
+00:03:28.580 --> 00:03:30.550
+you just type sanity login,
+
+80
+00:03:30.550 --> 00:03:33.030
+and that will allow you to go off to the browser, log in
+
+81
+00:03:33.030 --> 00:03:37.190
+and come back and you will see that you are logged in.
+
+82
+00:03:37.190 --> 00:03:38.060
+So once you're logged in,
+
+83
+00:03:38.060 --> 00:03:41.040
+you don't have to create a project or anything like that.
+
+84
+00:03:41.040 --> 00:03:44.960
+The sanity init is going to do all this for us.
+
+85
+00:03:44.960 --> 00:03:47.040
+So it has a series of questions for us.
+
+86
+00:03:47.040 --> 00:03:50.260
+It says, would you like to use an existing project?
+
+87
+00:03:50.260 --> 00:03:51.740
+You see, I have a couple of existing projects,
+
+88
+00:03:51.740 --> 00:03:53.010
+or create a new project.
+
+89
+00:03:53.010 --> 00:03:55.580
+That's what we're gonna do; create a new project.
+
+90
+00:03:55.580 --> 00:03:57.240
+What do you want to call it?
+
+91
+00:03:57.240 --> 00:03:59.940
+I'm gonna call it Slicks Slices
+
+92
+00:04:00.920 --> 00:04:02.540
+and just put your name at the end of there.
+
+93
+00:04:02.540 --> 00:04:06.890
+That just makes it simple if we're sharing files
+
+94
+00:04:06.890 --> 00:04:08.840
+or you're trying to get help or something in the chat room,
+
+95
+00:04:08.840 --> 00:04:10.320
+just put your name on the end.
+
+96
+00:04:10.320 --> 00:04:11.303
+So you have that.
+
+97
+00:04:13.060 --> 00:04:15.000
+Then it says your content will be stored
+
+98
+00:04:15.000 --> 00:04:17.330
+in a dataset that can be public or private.
+
+99
+00:04:17.330 --> 00:04:19.070
+We'll talk about that in a bit.
+
+100
+00:04:19.070 --> 00:04:21.080
+By default, it will be called production.
+
+101
+00:04:21.080 --> 00:04:22.850
+We are gonna go ahead and use production
+
+102
+00:04:22.850 --> 00:04:25.520
+however you can also have multiple data sets.
+
+103
+00:04:25.520 --> 00:04:28.430
+So if you wanna do some testing on development
+
+104
+00:04:28.430 --> 00:04:29.700
+before you move into production,
+
+105
+00:04:29.700 --> 00:04:31.230
+you're able to do that with sanity.
+
+106
+00:04:31.230 --> 00:04:35.330
+So I'll just say yes, and it creates a dataset
+
+107
+00:04:35.330 --> 00:04:39.770
+in the sanity dashboard and we are up and running.
+
+108
+00:04:39.770 --> 00:04:44.770
+If you take a look here, you might have a yarn.lock file.
+
+109
+00:04:44.840 --> 00:04:46.720
+Sometimes I see that pop up and not,
+
+110
+00:04:46.720 --> 00:04:49.520
+you can delete that if you do see it pop up.
+
+111
+00:04:49.520 --> 00:04:52.360
+The reason why is because we have a similar package
+
+112
+00:04:52.360 --> 00:04:53.860
+called package lock json,
+
+113
+00:04:53.860 --> 00:04:55.580
+it's just two different tools
+
+114
+00:04:55.580 --> 00:04:59.640
+to work with node packages that we have here.
+
+115
+00:04:59.640 --> 00:05:01.890
+Now, in order to start it, we type npm start.
+
+116
+00:05:01.890 --> 00:05:05.150
+That is in turn going to run the command sanity start
+
+117
+00:05:05.150 --> 00:05:07.500
+and that's gonna fire up a little local host server
+
+118
+00:05:07.500 --> 00:05:09.580
+that will give us something called sanity studio.
+
+119
+00:05:09.580 --> 00:05:13.370
+So sanity is the API that we interact with
+
+120
+00:05:13.370 --> 00:05:15.510
+and sanity studio is the actual UI
+
+121
+00:05:16.900 --> 00:05:19.430
+that would log into and create,
+
+122
+00:05:19.430 --> 00:05:21.830
+update, read, delete all of our data.
+
+123
+00:05:21.830 --> 00:05:24.710
+So there we go; local host 3333.
+
+124
+00:05:24.710 --> 00:05:26.730
+It will pop up here.
+
+125
+00:05:26.730 --> 00:05:28.880
+It might ask you to log in.
+
+126
+00:05:28.880 --> 00:05:30.390
+Here we go, it's asking me to log in.
+
+127
+00:05:30.390 --> 00:05:33.240
+So I'm gonna go ahead and do that.
+
+128
+00:05:33.240 --> 00:05:34.660
+And I'm logged in.
+
+129
+00:05:34.660 --> 00:05:37.700
+There's nothing here yet cause we haven't done anything,
+
+130
+00:05:37.700 --> 00:05:41.040
+but we can go ahead and start making our first schema.
+
+131
+00:05:41.040 --> 00:05:46.040
+So if we take a look at sanity.json and scroll down here,
+
+132
+00:05:46.940 --> 00:05:50.630
+you'll see that there are parts, and these are essentially
+
+133
+00:05:50.630 --> 00:05:53.900
+just pieces of JavaScript file that need to be loaded.
+
+134
+00:05:53.900 --> 00:05:57.460
+You only ever need to really touch this once when we do
+
+135
+00:05:57.460 --> 00:06:02.050
+a custom one and you'll see that it goes to the schema.js.
+
+136
+00:06:02.050 --> 00:06:05.990
+So if we open that up, you'll see here,
+
+137
+00:06:05.990 --> 00:06:07.810
+we import createSchema,
+
+138
+00:06:07.810 --> 00:06:10.610
+again, this is all stuff that comes with sanity init.
+
+139
+00:06:10.610 --> 00:06:12.600
+It's not something you would probably have to remember
+
+140
+00:06:12.600 --> 00:06:14.350
+or memorize or anything like that.
+
+141
+00:06:14.350 --> 00:06:17.050
+The important thing is here is that we take
+
+142
+00:06:17.050 --> 00:06:20.730
+all of our data types and concatenate them into our schema.
+
+143
+00:06:20.730 --> 00:06:23.540
+So we can go ahead and make our own schema.
+
+144
+00:06:23.540 --> 00:06:26.040
+Let's start with the pizza schema.
+
+145
+00:06:26.040 --> 00:06:29.620
+We'll go over to our schema folder, make a new file.
+
+146
+00:06:29.620 --> 00:06:31.183
+Lowercase P, pizza.js.
+
+147
+00:06:33.480 --> 00:06:36.400
+And in here, we simply just are going to be exporting
+
+148
+00:06:36.400 --> 00:06:38.540
+an object that has a bunch of data in it.
+
+149
+00:06:38.540 --> 00:06:43.180
+So we can just export default, curly brackets,
+
+150
+00:06:43.180 --> 00:06:44.680
+and we give it a couple of properties.
+
+151
+00:06:44.680 --> 00:06:46.620
+The name is pizza,
+
+152
+00:06:46.620 --> 00:06:50.290
+the title is going to be pizzas.
+
+153
+00:06:50.290 --> 00:06:52.710
+So this is the important thing, the name,
+
+154
+00:06:52.710 --> 00:06:54.190
+this is the computer name
+
+155
+00:06:55.340 --> 00:06:59.250
+and this is the visible title
+
+156
+00:07:00.350 --> 00:07:05.350
+and the type is going to be a document.
+
+157
+00:07:07.250 --> 00:07:09.200
+You can also create your own fields in here
+
+158
+00:07:09.200 --> 00:07:11.880
+and we'll be doing that in a future.
+
+159
+00:07:11.880 --> 00:07:13.550
+Then what we wanna do,
+
+160
+00:07:13.550 --> 00:07:15.810
+we'll be adding our own fields in just a second,
+
+161
+00:07:15.810 --> 00:07:17.100
+but what we wanna do is go back
+
+162
+00:07:17.100 --> 00:07:19.520
+into our schema and import this.
+
+163
+00:07:19.520 --> 00:07:23.883
+So go down here and say import pizza from pizza.
+
+164
+00:07:25.040 --> 00:07:27.440
+And then we will pass the reference
+
+165
+00:07:27.440 --> 00:07:30.150
+to the pizza schema down here.
+
+166
+00:07:30.150 --> 00:07:33.600
+Then when you save it, it will regen
+
+167
+00:07:33.600 --> 00:07:36.230
+and reload the sanity Studio here.
+
+168
+00:07:36.230 --> 00:07:39.440
+It looks like it has to have fields array.
+
+169
+00:07:39.440 --> 00:07:44.440
+So we'll go here, say fields is going to be an array.
+
+170
+00:07:44.560 --> 00:07:48.260
+And here's where we define all of the different fields
+
+171
+00:07:48.260 --> 00:07:49.460
+in an array of objects.
+
+172
+00:07:49.460 --> 00:07:54.460
+So the first field is going to be our name of the pizza.
+
+173
+00:07:54.550 --> 00:07:59.550
+So we'll just call it name and the title is going to be,
+
+174
+00:08:00.270 --> 00:08:02.010
+again, this is the human readable one,
+
+175
+00:08:02.010 --> 00:08:03.310
+we can call it pizza name.
+
+176
+00:08:04.650 --> 00:08:07.380
+The type of field is going to be the string.
+
+177
+00:08:07.380 --> 00:08:09.190
+So if you look at the sanity docs,
+
+178
+00:08:09.190 --> 00:08:12.130
+they have all kinds of different inputs
+
+179
+00:08:12.130 --> 00:08:14.990
+and we'll be using a handful of them throughout this course,
+
+180
+00:08:14.990 --> 00:08:16.660
+as well as creating our own.
+
+181
+00:08:16.660 --> 00:08:17.620
+And then finally,
+
+182
+00:08:17.620 --> 00:08:21.033
+the description is going to be the name of the pizza.
+
+183
+00:08:22.570 --> 00:08:27.570
+Now I bet this will give us some data here,
+
+184
+00:08:28.183 --> 00:08:30.180
+here we go, pizzas,
+
+185
+00:08:30.180 --> 00:08:33.880
+and it will allow us to create a new pizza
+
+186
+00:08:34.920 --> 00:08:39.390
+and we should see just the pizza name,
+
+187
+00:08:39.390 --> 00:08:41.240
+the name of the pizza and the actual field here.
+
+188
+00:08:41.240 --> 00:08:42.570
+So don't create one just yet,
+
+189
+00:08:42.570 --> 00:08:44.280
+we gotta do the rest of the fields.
+
+190
+00:08:44.280 --> 00:08:46.360
+One thing I wanna do is do an icon.
+
+191
+00:08:46.360 --> 00:08:49.070
+So here you can say icon
+
+192
+00:08:49.070 --> 00:08:51.730
+and you can give it any react component.
+
+193
+00:08:51.730 --> 00:08:52.850
+It's actually kinda interesting.
+
+194
+00:08:52.850 --> 00:08:56.300
+So if you wanted to, you could just return a bunch of X's
+
+195
+00:08:56.300 --> 00:08:59.783
+and I believe that should, oh, I forgot a comma.
+
+196
+00:09:02.220 --> 00:09:03.463
+I believe that should render out there.
+
+197
+00:09:03.463 --> 00:09:04.296
+Here we go.
+
+198
+00:09:04.296 --> 00:09:08.200
+So you could render out a pizza emoji if you wanted to.
+
+199
+00:09:08.200 --> 00:09:09.580
+Pizza, here we go.
+
+200
+00:09:09.580 --> 00:09:12.230
+Oh, it's gotta be in quotes
+
+201
+00:09:12.230 --> 00:09:14.530
+and you'll see whatever we pass as the icon
+
+202
+00:09:14.530 --> 00:09:15.363
+will be rendered out.
+
+203
+00:09:15.363 --> 00:09:16.610
+So it's kinda interesting.
+
+204
+00:09:16.610 --> 00:09:20.170
+Everything in sanity studio is a react component
+
+205
+00:09:20.170 --> 00:09:23.210
+so you can pass it a react component if you want.
+
+206
+00:09:23.210 --> 00:09:24.910
+In our case, I'm going to be using
+
+207
+00:09:26.047 --> 00:09:28.410
+a library called React Icons
+
+208
+00:09:28.410 --> 00:09:30.600
+in order to import the icons myself.
+
+209
+00:09:30.600 --> 00:09:33.300
+So we're going to import.
+
+210
+00:09:33.300 --> 00:09:36.023
+It's called MD Local Pizza.
+
+211
+00:09:36.870 --> 00:09:41.870
+And we'll import that from React Icons forward slash MD.
+
+212
+00:09:43.160 --> 00:09:46.830
+So React Icons is a library that has, I don't know,
+
+213
+00:09:46.830 --> 00:09:50.840
+15 different icon libraries built into it.
+
+214
+00:09:50.840 --> 00:09:52.210
+And there's a couple of different libraries.
+
+215
+00:09:52.210 --> 00:09:54.633
+MD, I believe it stands for mark down.
+
+216
+00:09:55.480 --> 00:09:56.320
+Is that true?
+
+217
+00:09:56.320 --> 00:09:58.640
+React icons, let's see.
+
+218
+00:09:58.640 --> 00:10:01.540
+No, it stands for material design not mark down.
+
+219
+00:10:01.540 --> 00:10:04.380
+And that's the icon set I'm gonna be using.
+
+220
+00:10:04.380 --> 00:10:07.490
+And then I also like to import it not as the long name,
+
+221
+00:10:07.490 --> 00:10:09.350
+but just as icon.
+
+222
+00:10:09.350 --> 00:10:11.320
+And then what that will allow me to do is just
+
+223
+00:10:11.320 --> 00:10:16.300
+pass icon as icon, or if I save this,
+
+224
+00:10:16.300 --> 00:10:19.070
+you'll see that it goes from icon icon just to simply that
+
+225
+00:10:19.070 --> 00:10:21.330
+and that's just the shorthand of the property
+
+226
+00:10:21.330 --> 00:10:23.660
+and the variable name being the same thing.
+
+227
+00:10:23.660 --> 00:10:26.520
+Now I'll go back to my sanity dashboard
+
+228
+00:10:27.430 --> 00:10:31.800
+and it's not showing up and it's a lower D.
+
+229
+00:10:31.800 --> 00:10:34.210
+One thing, if you goof these up a lot,
+
+230
+00:10:34.210 --> 00:10:36.660
+you can use the react icons
+
+231
+00:10:36.660 --> 00:10:38.690
+and you can just search for pizza.
+
+232
+00:10:38.690 --> 00:10:41.090
+It'll show you the actual pizza icon
+
+233
+00:10:41.090 --> 00:10:43.110
+and you can just click it and it will copy
+
+234
+00:10:43.110 --> 00:10:44.067
+and you paste it in there
+
+235
+00:10:44.067 --> 00:10:47.080
+and that will avoid any goof ups of typing it.
+
+236
+00:10:47.080 --> 00:10:49.200
+You can see there's a whole bunch of different pizza icons
+
+237
+00:10:49.200 --> 00:10:51.160
+in there, or you can use an emoji, whatever you want.
+
+238
+00:10:51.160 --> 00:10:52.210
+Oh, here we go.
+
+239
+00:10:52.210 --> 00:10:53.090
+Looking good.
+Okay.
+
+240
+00:10:53.090 --> 00:10:55.170
+So let's keep going with the rest of these fields.
+
+241
+00:10:55.170 --> 00:10:58.810
+So we also need a slug field.
+
+242
+00:10:58.810 --> 00:11:02.470
+So what I like to do is take the first field that we have,
+
+243
+00:11:02.470 --> 00:11:06.040
+including the closing comma and just duplicate it.
+
+244
+00:11:06.040 --> 00:11:11.040
+And then we'll say the name is slug, title is slug.
+
+245
+00:11:11.900 --> 00:11:14.300
+The type is a slug and I'll show you
+
+246
+00:11:14.300 --> 00:11:16.190
+what that is in just a second.
+
+247
+00:11:16.190 --> 00:11:18.110
+And then there's not a description,
+
+248
+00:11:18.110 --> 00:11:19.300
+oh, you can add a description,
+
+249
+00:11:19.300 --> 00:11:21.630
+but in this case we don't need it, self-explanatory,
+
+250
+00:11:21.630 --> 00:11:24.467
+but we have an options object inside there.
+
+251
+00:11:24.467 --> 00:11:27.930
+And we say the source of the slug comes from the name field.
+
+252
+00:11:27.930 --> 00:11:31.640
+So that comes from this, it's gonna be auto-generated.
+
+253
+00:11:31.640 --> 00:11:35.270
+And then the max length of the slug
+
+254
+00:11:35.270 --> 00:11:36.540
+will be 100 characters.
+
+255
+00:11:36.540 --> 00:11:39.270
+We don't want it to be any longer than that.
+
+256
+00:11:39.270 --> 00:11:40.710
+Now watch what happens.
+
+257
+00:11:40.710 --> 00:11:43.983
+We can type in a pizza like pepperoni,
+
+258
+00:11:44.970 --> 00:11:46.550
+and then you can click generate,
+
+259
+00:11:46.550 --> 00:11:48.500
+and it will automatically generate a slug.
+
+260
+00:11:48.500 --> 00:11:52.960
+So, I love to eat pizza and generate,
+
+261
+00:11:52.960 --> 00:11:54.920
+and you see it will slug-ify
+
+262
+00:11:54.920 --> 00:11:58.040
+whatever field that we linked it to right there.
+
+263
+00:11:58.040 --> 00:12:01.053
+Let's copy that first one again and keep going.
+
+264
+00:12:02.320 --> 00:12:04.683
+We want an image of the pizza, so image.
+
+265
+00:12:05.570 --> 00:12:10.570
+The title will be photo of,
+
+266
+00:12:10.800 --> 00:12:12.580
+we'll just call image,
+
+267
+00:12:12.580 --> 00:12:15.230
+type, it's going to be an image
+
+268
+00:12:15.230 --> 00:12:20.070
+and options is hotspot is true.
+
+269
+00:12:20.070 --> 00:12:21.650
+Let me show you what this hotspot thing is.
+
+270
+00:12:21.650 --> 00:12:23.573
+It's pretty nifty.
+
+271
+00:12:24.500 --> 00:12:29.500
+So when you go and upload a file in sanity studio.
+
+272
+00:12:30.870 --> 00:12:33.610
+So I have supplied you with a bunch of images
+
+273
+00:12:33.610 --> 00:12:37.240
+in the sample data folder of the sanity folder
+
+274
+00:12:37.240 --> 00:12:39.600
+so you can grab those there if you want them.
+
+275
+00:12:39.600 --> 00:12:41.973
+So upload this one.
+
+276
+00:12:43.060 --> 00:12:45.620
+And when you edit that image,
+
+277
+00:12:45.620 --> 00:12:49.080
+you'll see that it gives you this, oh, that's funny.
+
+278
+00:12:49.080 --> 00:12:50.860
+It like perfectly circled the pizza.
+
+279
+00:12:50.860 --> 00:12:52.910
+That's just cause it's an oval.
+
+280
+00:12:52.910 --> 00:12:55.870
+It's not some sort of pizza detection thing,
+
+281
+00:12:55.870 --> 00:12:57.780
+but what you can do is you can hotspot
+
+282
+00:12:57.780 --> 00:13:02.530
+the important information like somebody's face or a device
+
+283
+00:13:02.530 --> 00:13:06.580
+and then when we have different sizes for mobile, landscape,
+
+284
+00:13:06.580 --> 00:13:10.410
+pano, square, it will make sure that that important hotspot
+
+285
+00:13:10.410 --> 00:13:12.340
+is always in the center of the photo
+
+286
+00:13:12.340 --> 00:13:14.520
+and then the rest of it won't be cropped off.
+
+287
+00:13:14.520 --> 00:13:18.910
+So that's a really cool feature that sanity has built in.
+
+288
+00:13:18.910 --> 00:13:21.820
+We also need two more things.
+
+289
+00:13:21.820 --> 00:13:24.310
+We need toppings and a price.
+
+290
+00:13:24.310 --> 00:13:27.090
+Right now we don't have the toppings data typed
+
+291
+00:13:27.090 --> 00:13:28.730
+so we're gonna leave that off until we create it
+
+292
+00:13:28.730 --> 00:13:31.140
+and then we're gonna create a relationship
+
+293
+00:13:31.140 --> 00:13:34.070
+between toppings and pizzas.
+
+294
+00:13:34.070 --> 00:13:35.580
+So we'll go with the last one.
+
+295
+00:13:35.580 --> 00:13:37.700
+Just paste that first one in again,
+
+296
+00:13:37.700 --> 00:13:39.603
+and we'll name it the price,
+
+297
+00:13:43.050 --> 00:13:47.403
+type of a number, and the description,
+
+298
+00:13:48.340 --> 00:13:52.203
+price of the pizza in cents.
+
+299
+00:13:53.180 --> 00:13:57.410
+Now, there is a couple more options that you can have
+
+300
+00:13:57.410 --> 00:13:59.660
+for this one and in our case,
+
+301
+00:13:59.660 --> 00:14:02.870
+I want it to be a minimum $10 pizza.
+
+302
+00:14:02.870 --> 00:14:06.130
+You don't want anyone accidentally putting like a $4 pizza
+
+303
+00:14:06.130 --> 00:14:07.700
+and us going out of business.
+
+304
+00:14:07.700 --> 00:14:12.700
+So we'll say validation, property, and we get a rule prop.
+
+305
+00:14:13.870 --> 00:14:17.533
+And from that, you can say rule.min, 1000.
+
+306
+00:14:18.403 --> 00:14:23.310
+So that's $10 and you can also chain, you could say max,
+
+307
+00:14:23.310 --> 00:14:25.320
+you only want a maximum of $50 pizza
+
+308
+00:14:25.320 --> 00:14:27.160
+and there's a whole different set of rules.
+
+309
+00:14:27.160 --> 00:14:30.660
+So that's how you do data validation inside of sanity.
+
+310
+00:14:30.660 --> 00:14:34.040
+It's pretty cool because this is just a function
+
+311
+00:14:34.040 --> 00:14:36.970
+so you could add any logic that you want in there.
+
+312
+00:14:36.970 --> 00:14:39.670
+And they specifically give you this rule object
+
+313
+00:14:39.670 --> 00:14:43.680
+that has a number of helper methods for common things,
+
+314
+00:14:43.680 --> 00:14:47.200
+minimum, maximum, includes, things like that.
+
+315
+00:14:47.200 --> 00:14:48.380
+And then we will also,
+
+316
+00:14:48.380 --> 00:14:52.140
+let's add a to do, add custom component
+
+317
+00:14:54.430 --> 00:14:57.520
+because I wanna show you how to do custom input components
+
+318
+00:14:57.520 --> 00:15:00.480
+in sanity because, like price is a number,
+
+319
+00:15:00.480 --> 00:15:03.370
+we want a little bit more control over how it looks.
+
+320
+00:15:03.370 --> 00:15:05.830
+And I'm gonna show you how to do that in a coming video.
+
+321
+00:15:05.830 --> 00:15:07.240
+So give that a save
+
+322
+00:15:08.580 --> 00:15:11.910
+and now you'll see that we've got all of our,
+
+323
+00:15:11.910 --> 00:15:13.860
+that's actually cool, it just hot reloads it
+
+324
+00:15:13.860 --> 00:15:15.220
+and keeps the data that I have
+
+325
+00:15:15.220 --> 00:15:18.610
+even though this is not a saved value just yet.
+
+326
+00:15:18.610 --> 00:15:23.610
+So we could say the price of the pizza is $10 and 34 cents
+
+327
+00:15:23.950 --> 00:15:25.913
+and go ahead and hit publish on that.
+
+328
+00:15:26.894 --> 00:15:27.860
+You see that now we have pizza.
+
+329
+00:15:27.860 --> 00:15:30.210
+You can make a few more but hold off on that
+
+330
+00:15:30.210 --> 00:15:32.620
+just until we create the other data types
+
+331
+00:15:32.620 --> 00:15:33.827
+in the coming videos.
+

@@ -1,0 +1,1954 @@
+﻿WEBVTT
+
+1
+00:00:00.264 --> 00:00:02.847
+(upbeat music)
+
+2
+00:00:04.250 --> 00:00:06.860
+<v Instructor>Let's talk about like SEO and meta tags</v>
+
+3
+00:00:06.860 --> 00:00:09.360
+and all that stuff that goes in the head of your document.
+
+4
+00:00:09.360 --> 00:00:11.640
+So, if you kind of take a look at our website,
+
+5
+00:00:11.640 --> 00:00:13.570
+you say, "Okay, like what's the highest level
+
+6
+00:00:13.570 --> 00:00:14.403
+that we can go?"
+
+7
+00:00:14.403 --> 00:00:15.710
+And that's our...
+
+8
+00:00:15.710 --> 00:00:18.233
+Oh no, I spilled my coffee.
+
+9
+00:00:19.230 --> 00:00:21.323
+Oh man, a little bit, let's pause.
+
+10
+00:00:24.460 --> 00:00:26.343
+Hey, we're back, I cleaned it up.
+
+11
+00:00:27.330 --> 00:00:29.420
+Talking about the highest level that we can get,
+
+12
+00:00:29.420 --> 00:00:31.720
+and that is our layout.js.
+
+13
+00:00:31.720 --> 00:00:34.300
+And if we take a look at our layout,
+
+14
+00:00:34.300 --> 00:00:36.770
+there's no HTML tag, there's no body tag.
+
+15
+00:00:36.770 --> 00:00:38.820
+All of that stuff gets added by Gatsby.
+
+16
+00:00:38.820 --> 00:00:43.270
+So the question is, like okay but so how do you stick stuff
+
+17
+00:00:43.270 --> 00:00:44.850
+in the head if you need to?
+
+18
+00:00:44.850 --> 00:00:46.790
+Most likely the one thing that we're missing
+
+19
+00:00:46.790 --> 00:00:49.150
+on our website is a title tag.
+
+20
+00:00:49.150 --> 00:00:50.290
+There's nothing...
+
+21
+00:00:50.290 --> 00:00:52.690
+If you go to our page here,
+
+22
+00:00:52.690 --> 00:00:55.750
+there's nothing in the title tag that can help us out.
+
+23
+00:00:55.750 --> 00:00:57.960
+So, what we use for that is something
+
+24
+00:00:57.960 --> 00:00:59.307
+called the React Helmet.
+
+25
+00:00:59.307 --> 00:01:02.370
+And a React Helmet allows us to stick tags
+
+26
+00:01:02.370 --> 00:01:04.710
+into a React Helmet, and it will transport them
+
+27
+00:01:04.710 --> 00:01:06.340
+out of wherever you put them
+
+28
+00:01:06.340 --> 00:01:07.730
+into our document's head.
+
+29
+00:01:07.730 --> 00:01:10.380
+And that's useful for things like
+
+30
+00:01:10.380 --> 00:01:13.633
+HTML tags or HTML attributes,
+
+31
+00:01:14.670 --> 00:01:18.590
+SEO stuff, Open Graph meta tags, all that good stuff.
+
+32
+00:01:18.590 --> 00:01:20.600
+So, I'm gonna show you,
+
+33
+00:01:20.600 --> 00:01:22.523
+let's go to,
+
+34
+00:01:23.760 --> 00:01:25.470
+let's just go to pizza.js,
+
+35
+00:01:25.470 --> 00:01:26.640
+like the singular pizza,
+
+36
+00:01:26.640 --> 00:01:27.700
+and I'm gonna show you how to use it,
+
+37
+00:01:27.700 --> 00:01:29.800
+and then we're gonna pull it back a little bit
+
+38
+00:01:29.800 --> 00:01:32.410
+and look at how to make a reusable SEO component.
+
+39
+00:01:32.410 --> 00:01:33.730
+So first thing you need to do,
+
+40
+00:01:33.730 --> 00:01:38.273
+is import curly bracket Helmet from React Helmet,
+
+41
+00:01:39.410 --> 00:01:41.510
+And then the way that this works,
+
+42
+00:01:41.510 --> 00:01:43.370
+is that you can stick a helmet
+
+43
+00:01:43.370 --> 00:01:46.050
+anywhere you want in your component,
+
+44
+00:01:46.050 --> 00:01:48.790
+and then just start putting tags in it.
+
+45
+00:01:48.790 --> 00:01:52.990
+So let's say we're inside of this PizzaGrid right here.
+
+46
+00:01:52.990 --> 00:01:56.250
+If we put a helmet here
+
+47
+00:01:56.250 --> 00:02:00.003
+and then we do a title tag that says, hey, give it a save.
+
+48
+00:02:00.910 --> 00:02:02.393
+Look what happens.
+
+49
+00:02:03.470 --> 00:02:04.303
+That didn't change.
+
+50
+00:02:04.303 --> 00:02:06.770
+Maybe I've to close my tab and open it again.
+
+51
+00:02:06.770 --> 00:02:09.170
+Oh, it's 'cause I have to go to an actual pizza.
+
+52
+00:02:09.170 --> 00:02:10.930
+Let's click on a pizza, there we go.
+
+53
+00:02:10.930 --> 00:02:14.330
+See, that has been added to the head of the document.
+
+54
+00:02:14.330 --> 00:02:16.210
+And if we were to inspect it,
+
+55
+00:02:16.210 --> 00:02:18.480
+go into the head and there we go,
+
+56
+00:02:18.480 --> 00:02:20.530
+there's our title tag that's been showed up.
+
+57
+00:02:20.530 --> 00:02:23.350
+So this is what it's referred to as a side effect.
+
+58
+00:02:23.350 --> 00:02:26.910
+When JavaScript reaches outside of the component
+
+59
+00:02:26.910 --> 00:02:30.440
+and updates something outside of itself.
+
+60
+00:02:30.440 --> 00:02:31.400
+And in that case,
+
+61
+00:02:31.400 --> 00:02:33.130
+we use React Helmet to do it.
+
+62
+00:02:33.130 --> 00:02:33.990
+So what can you do?
+
+63
+00:02:33.990 --> 00:02:37.360
+Well, you can actually just take the pizza.name
+
+64
+00:02:37.360 --> 00:02:38.700
+and put it in there.
+
+65
+00:02:38.700 --> 00:02:40.690
+And now all of a sudden,
+
+66
+00:02:40.690 --> 00:02:44.780
+all of the pizzas names are showing up in...
+
+67
+00:02:44.780 --> 00:02:46.256
+There we go, look at that.
+
+68
+00:02:46.256 --> 00:02:47.300
+Do I have to go closer?
+
+69
+00:02:47.300 --> 00:02:48.133
+There we go.
+
+70
+00:02:49.090 --> 00:02:51.330
+Pear Necessities is showing on up.
+
+71
+00:02:51.330 --> 00:02:53.850
+So that's awesome.
+
+72
+00:02:53.850 --> 00:02:56.570
+You can put these wherever you want.
+
+73
+00:02:56.570 --> 00:02:58.810
+Like we could put one here
+
+74
+00:02:58.810 --> 00:03:01.470
+and then if we wanted to put another one somewhere else,
+
+75
+00:03:01.470 --> 00:03:04.360
+and if for some reason the title tags overlap,
+
+76
+00:03:04.360 --> 00:03:08.210
+the one that comes later in the component tree will win out.
+
+77
+00:03:08.210 --> 00:03:09.500
+So at any time,
+
+78
+00:03:09.500 --> 00:03:10.510
+if you need to stick something
+
+79
+00:03:10.510 --> 00:03:11.580
+into the head of your document,
+
+80
+00:03:11.580 --> 00:03:13.690
+you can pop a helmet in there
+
+81
+00:03:13.690 --> 00:03:14.980
+and then put your tags in there.
+
+82
+00:03:14.980 --> 00:03:17.250
+Now, what I like to do
+
+83
+00:03:17.250 --> 00:03:20.650
+is to create a reusable SEO component
+
+84
+00:03:20.650 --> 00:03:22.470
+that has a set of defaults.
+
+85
+00:03:22.470 --> 00:03:24.320
+That way, by default all of your pages
+
+86
+00:03:24.320 --> 00:03:26.450
+are just covered with some good defaults
+
+87
+00:03:26.450 --> 00:03:28.950
+and then you can start to overwrite those,
+
+88
+00:03:28.950 --> 00:03:30.960
+or set them on every single page.
+
+89
+00:03:30.960 --> 00:03:33.880
+So we're actually gonna remove this helmet here.
+
+90
+00:03:33.880 --> 00:03:36.210
+You can remove the import here.
+
+91
+00:03:36.210 --> 00:03:37.960
+And then the last thing I want you to do
+
+92
+00:03:37.960 --> 00:03:40.190
+is to go into your Gatsby config.
+
+93
+00:03:40.190 --> 00:03:43.070
+So Gatsbyconfig.js,
+
+94
+00:03:43.070 --> 00:03:46.580
+and we need to use a React Helmet plugin.
+
+95
+00:03:46.580 --> 00:03:48.370
+And the reason behind that is because,
+
+96
+00:03:48.370 --> 00:03:49.870
+like, it just worked just fine,
+
+97
+00:03:49.870 --> 00:03:52.130
+but when we get into server rendering,
+
+98
+00:03:52.130 --> 00:03:54.340
+when we get into pre-building,
+
+99
+00:03:54.340 --> 00:03:55.940
+there's a little plugin that's needed
+
+100
+00:03:55.940 --> 00:03:58.680
+in order to make that work for your server render,
+
+101
+00:03:58.680 --> 00:04:00.520
+which is really important for your SEO.
+
+102
+00:04:00.520 --> 00:04:02.790
+So just go to your plugins
+
+103
+00:04:02.790 --> 00:04:04.770
+and you can do this at the top or at the bottom.
+
+104
+00:04:04.770 --> 00:04:06.250
+It doesn't matter the order of this case.
+
+105
+00:04:06.250 --> 00:04:10.707
+And we just say gatsby-plugin-react-helmet.
+
+106
+00:04:10.707 --> 00:04:13.700
+And that will make sure that our server render
+
+107
+00:04:13.700 --> 00:04:15.660
+has access to all of those.
+
+108
+00:04:15.660 --> 00:04:17.460
+Let's go into our Components folder here
+
+109
+00:04:17.460 --> 00:04:22.460
+and we'll create a new file and call it SEO.js
+
+110
+00:04:22.540 --> 00:04:26.223
+and then we'll import React from react,
+
+111
+00:04:28.380 --> 00:04:32.763
+export default function SEO.
+
+112
+00:04:34.150 --> 00:04:35.440
+And then we also need
+
+113
+00:04:35.440 --> 00:04:40.440
+to import Helmet from React Helmet.
+
+114
+00:04:40.760 --> 00:04:43.610
+So import Helmet, oh, it's in curly brackets,
+
+115
+00:04:43.610 --> 00:04:45.073
+they changed it recently.
+
+116
+00:04:45.970 --> 00:04:47.613
+From react helmet.
+
+117
+00:04:48.627 --> 00:04:50.220
+And then inside here,
+
+118
+00:04:50.220 --> 00:04:54.230
+we can start to put all of our different tags that we need.
+
+119
+00:04:54.230 --> 00:04:55.640
+So what tags do we need?
+
+120
+00:04:55.640 --> 00:04:58.210
+Let's actually just code out all the tags that we need
+
+121
+00:04:58.210 --> 00:05:01.530
+and then we'll go through and pop them all in.
+
+122
+00:05:01.530 --> 00:05:05.740
+So in this SEO, we're going to destructure the props
+
+123
+00:05:05.740 --> 00:05:09.893
+into children, location, description,
+
+124
+00:05:12.570 --> 00:05:14.430
+title, and image.
+
+125
+00:05:14.430 --> 00:05:17.920
+And don't worry, that all makes sense in just a second.
+
+126
+00:05:17.920 --> 00:05:19.960
+Then inside of here, we can start.
+
+127
+00:05:19.960 --> 00:05:21.290
+First of all, what we need to do
+
+128
+00:05:21.290 --> 00:05:24.913
+is give yourself an HTML tag.
+
+129
+00:05:27.330 --> 00:05:28.370
+And this is a little bit weird,
+
+130
+00:05:28.370 --> 00:05:30.530
+but a self-closing HTML tag,
+
+131
+00:05:30.530 --> 00:05:33.120
+about lang is equal to 'en
+
+132
+00:05:33.120 --> 00:05:35.780
+or whatever language you are currently using.
+
+133
+00:05:35.780 --> 00:05:37.160
+And the reason why we do that,
+
+134
+00:05:37.160 --> 00:05:39.670
+is so that the browser will know
+
+135
+00:05:39.670 --> 00:05:41.280
+which language your HTML is.
+
+136
+00:05:41.280 --> 00:05:44.110
+That's sort of just like a very basic accessibility
+
+137
+00:05:44.110 --> 00:05:46.470
+and SEO thing that you should do for all of your websites
+
+138
+00:05:46.470 --> 00:05:49.253
+is specify which language your website is in.
+
+139
+00:05:50.110 --> 00:05:53.680
+Now, if we look at our,
+
+140
+00:05:53.680 --> 00:05:55.120
+oh, it's not showing up yet,
+
+141
+00:05:55.120 --> 00:05:56.650
+'cause we haven't used this component anywhere,
+
+142
+00:05:56.650 --> 00:05:57.710
+but we will.
+
+143
+00:05:57.710 --> 00:06:02.010
+Other things is React Helmet can take title template.
+
+144
+00:06:02.010 --> 00:06:04.800
+So we'll say title template
+
+145
+00:06:04.800 --> 00:06:09.390
+is equal to curly brackets, back text
+
+146
+00:06:10.400 --> 00:06:12.940
+and then you do dollar, oh sorry, %s -,
+
+147
+00:06:15.720 --> 00:06:18.000
+and then we also need the name.
+
+148
+00:06:18.000 --> 00:06:20.810
+I will do something like this Slick's Slices.
+
+149
+00:06:20.810 --> 00:06:25.560
+And by doing this, anytime that we specify a title tag,
+
+150
+00:06:25.560 --> 00:06:27.670
+it will automatically append
+
+151
+00:06:27.670 --> 00:06:30.610
+dash Slick's Slices onto the end.
+
+152
+00:06:30.610 --> 00:06:33.208
+And for my own website,
+
+153
+00:06:33.208 --> 00:06:35.380
+every time I had to specify a title tag,
+
+154
+00:06:35.380 --> 00:06:37.600
+I just mainly wrote Wes Bos on the end.
+
+155
+00:06:37.600 --> 00:06:38.630
+And I was like, that's kind of annoying
+
+156
+00:06:38.630 --> 00:06:41.410
+that I have to write that on every single one.
+
+157
+00:06:41.410 --> 00:06:44.667
+But this title template will allow you to specify a title
+
+158
+00:06:44.667 --> 00:06:47.980
+and it will manually append that on every single one.
+
+159
+00:06:47.980 --> 00:06:50.590
+Now you probably are thinking okay, Wes,
+
+160
+00:06:50.590 --> 00:06:53.530
+but we shouldn't be hard coding that.
+
+161
+00:06:53.530 --> 00:06:55.350
+You shouldn't be hard coding Slick's Slices,
+
+162
+00:06:55.350 --> 00:06:58.060
+because what if I changed the name of my website?
+
+163
+00:06:58.060 --> 00:07:00.230
+What if I use this template for our client's website
+
+164
+00:07:00.230 --> 00:07:02.400
+and then they're like, who's Slick's Slices?
+
+165
+00:07:02.400 --> 00:07:04.500
+Well, that's somewhat easy.
+
+166
+00:07:04.500 --> 00:07:06.830
+We can actually query the data of the website
+
+167
+00:07:06.830 --> 00:07:09.331
+from our siteMetadata.
+
+168
+00:07:09.331 --> 00:07:11.423
+Remember we have a title,
+
+169
+00:07:11.423 --> 00:07:13.720
+a site URL and a description?
+
+170
+00:07:13.720 --> 00:07:15.380
+We can query that data from here.
+
+171
+00:07:15.380 --> 00:07:17.240
+Now, my question to you is,
+
+172
+00:07:17.240 --> 00:07:20.750
+how do we query data into a component
+
+173
+00:07:20.750 --> 00:07:23.280
+when we're not at a page level?
+
+174
+00:07:23.280 --> 00:07:27.010
+Well, that happens with a used static query.
+
+175
+00:07:27.010 --> 00:07:29.020
+And this is a perfect use case for a static query.
+
+176
+00:07:29.020 --> 00:07:31.863
+So right above,
+
+177
+00:07:34.099 --> 00:07:36.050
+above here, actually we need to return this.
+
+178
+00:07:36.050 --> 00:07:38.160
+Make sure you put a return in front of that.
+
+179
+00:07:38.160 --> 00:07:41.390
+And here we'll say const {site}
+
+180
+00:07:41.390 --> 00:07:43.677
+is equal to useStaticQuery(graphql``).
+
+181
+00:07:50.210 --> 00:07:52.720
+And then if we want a query metadata about our site,
+
+182
+00:07:52.720 --> 00:07:57.720
+we'll say query, site, siteMetadata lowercase d.
+
+183
+00:08:01.980 --> 00:08:05.550
+And then we want the title, the description,
+
+184
+00:08:05.550 --> 00:08:07.320
+and we also want a Twitter account.
+
+185
+00:08:07.320 --> 00:08:10.110
+So actually go back to your siteMetadata
+
+186
+00:08:10.110 --> 00:08:12.410
+and pop a Twitter in there
+
+187
+00:08:12.410 --> 00:08:17.150
+and send it to the Twitter account of Slick's Slices.
+
+188
+00:08:17.150 --> 00:08:21.793
+And you could probably also put this in like a sanity panel.
+
+189
+00:08:22.820 --> 00:08:27.120
+We'll look at doing store specific settings,
+
+190
+00:08:27.120 --> 00:08:28.640
+in sanity and upcoming video.
+
+191
+00:08:28.640 --> 00:08:31.100
+So you could put this information there as well.
+
+192
+00:08:31.100 --> 00:08:33.867
+So in here, so now we have that,
+
+193
+00:08:33.867 --> 00:08:35.370
+I need to make sure that we import
+
+194
+00:08:35.370 --> 00:08:40.150
+useStaticQuery and import graphql.
+
+195
+00:08:40.150 --> 00:08:41.580
+So here we are import useStaticQuery
+
+196
+00:08:41.580 --> 00:08:43.713
+and graphql from Gatsby.
+
+197
+00:08:45.210 --> 00:08:48.410
+Then we'll go down here and we'll interpolate
+
+198
+00:08:48.410 --> 00:08:51.640
+the actual name instead of manually typing Slick's Slices,
+
+199
+00:08:51.640 --> 00:08:55.733
+we will put in site.metadata.
+
+200
+00:08:58.340 --> 00:09:02.463
+Oh, it's not, site.siteMetadata.title.
+
+201
+00:09:04.900 --> 00:09:07.120
+And let's we wrote a lot of code here.
+
+202
+00:09:07.120 --> 00:09:10.190
+So it let's go and make sure that the very basics
+
+203
+00:09:10.190 --> 00:09:15.190
+of the template working in the HTML is working.
+
+204
+00:09:15.260 --> 00:09:18.400
+So what we wanna do is go into one of our pages
+
+205
+00:09:18.400 --> 00:09:23.400
+like pizza.js, and we'll go ahead and put the SEO tag
+
+206
+00:09:24.060 --> 00:09:25.580
+in wherever it is we want.
+
+207
+00:09:25.580 --> 00:09:28.730
+In our case, I'm not gonna put it inside of our Pizza Grid
+
+208
+00:09:28.730 --> 00:09:33.730
+because that is sort of mixing Markup and metadata.
+
+209
+00:09:33.770 --> 00:09:35.680
+So in this case, I'm going to put
+
+210
+00:09:36.660 --> 00:09:41.540
+some of these fragment tags around the entire thing,
+
+211
+00:09:41.540 --> 00:09:44.343
+and then we put our SEO tag right in there.
+
+212
+00:09:45.300 --> 00:09:48.090
+I'll go ahead and import that SEO tag.
+
+213
+00:09:48.090 --> 00:09:51.750
+So import SEO from components SEO,
+
+214
+00:09:51.750 --> 00:09:54.193
+and then this SEO then takes,
+
+215
+00:09:56.100 --> 00:09:58.480
+we can pass the children, location,
+
+216
+00:09:58.480 --> 00:10:01.550
+description, title, and image.
+
+217
+00:10:01.550 --> 00:10:04.830
+In our case, we're not using any of these just yet.
+
+218
+00:10:04.830 --> 00:10:05.940
+So we won't pass it.
+
+219
+00:10:05.940 --> 00:10:10.493
+But by using this and refreshing the page,
+
+220
+00:10:12.410 --> 00:10:13.930
+oh, we got a bit of an error.
+
+221
+00:10:13.930 --> 00:10:15.330
+There was an error that your graphql
+
+222
+00:10:15.330 --> 00:10:19.383
+cannot query field siteMetadata on type site, why not?
+
+223
+00:10:21.410 --> 00:10:25.263
+Well, let's go to our graphql explore and figure out why.
+
+224
+00:10:30.480 --> 00:10:35.343
+So query site, site,
+
+225
+00:10:37.660 --> 00:10:40.199
+oh, maybe it's just like,
+
+226
+00:10:40.199 --> 00:10:42.610
+where did the siteMetadata go?
+
+227
+00:10:42.610 --> 00:10:44.450
+where did the siteMetadata go?
+
+228
+00:10:44.450 --> 00:10:47.293
+No it was not siteBuildMetadata, grphql.config.
+
+229
+00:10:48.260 --> 00:10:50.170
+I just debugged it for like five minutes
+
+230
+00:10:50.170 --> 00:10:54.130
+and then I just restarted it and it started to work.
+
+231
+00:10:54.130 --> 00:10:57.770
+So I'm not sure why maybe because we like,
+
+232
+00:10:57.770 --> 00:11:02.490
+I added the Twitter and then it like,
+
+233
+00:11:02.490 --> 00:11:04.869
+knew that I changed the siteMetadata
+
+234
+00:11:04.869 --> 00:11:07.390
+and I didn't bring in any of it, I don't know.
+
+235
+00:11:07.390 --> 00:11:11.540
+But just restart it sometimes before you lose your mind.
+
+236
+00:11:11.540 --> 00:11:15.560
+So that's working now, what we can then see, what did we do?
+
+237
+00:11:15.560 --> 00:11:20.080
+We put the HTML lang "en" on there, that's then showing up.
+
+238
+00:11:20.080 --> 00:11:21.680
+We can also see which attributes
+
+239
+00:11:21.680 --> 00:11:23.380
+have been added by React Helmet,
+
+240
+00:11:23.380 --> 00:11:26.700
+'cause it'll put data-react-helmet on it,
+
+241
+00:11:26.700 --> 00:11:28.310
+which is really cool.
+
+242
+00:11:28.310 --> 00:11:32.490
+And then I believe if we go down here
+
+243
+00:11:32.490 --> 00:11:35.730
+and we give ourselves a title tag
+
+244
+00:11:35.730 --> 00:11:38.030
+and pass in the title attribute
+
+245
+00:11:38.030 --> 00:11:40.300
+that has been destructured from props,
+
+246
+00:11:40.300 --> 00:11:43.180
+we go back into our pizza.js and then pass that.
+
+247
+00:11:43.180 --> 00:11:47.183
+So title is equal to pizza.name.
+
+248
+00:11:49.370 --> 00:11:53.860
+You see that we now have, let's go into our head.
+
+249
+00:11:53.860 --> 00:11:56.490
+Let's go and find the title tag,
+
+250
+00:11:56.490 --> 00:11:59.310
+where are you little title tag?
+
+251
+00:11:59.310 --> 00:12:02.020
+Here we go, Pear Necessities, Slick's Slices.
+
+252
+00:12:02.020 --> 00:12:06.710
+So even though I just put title in there,
+
+253
+00:12:06.710 --> 00:12:08.990
+it's adding dash Slick's Slices,
+
+254
+00:12:08.990 --> 00:12:12.640
+which has in turn queried from our graphql metadata.
+
+255
+00:12:12.640 --> 00:12:15.260
+So that's the base of it, now let's keep going.
+
+256
+00:12:15.260 --> 00:12:18.070
+We need fav icons to show up
+
+257
+00:12:18.070 --> 00:12:22.010
+and to do that, we have a link tag,
+
+258
+00:12:22.010 --> 00:12:26.540
+which is, has a rel of icon,
+
+259
+00:12:26.540 --> 00:12:31.540
+the type is going to be, I'm gonna try to do an SVG icon,
+
+260
+00:12:31.900 --> 00:12:33.330
+cause that is pretty well supported
+
+261
+00:12:33.330 --> 00:12:34.360
+in a lot of browsers now.
+
+262
+00:12:34.360 --> 00:12:38.507
+So image, image/svg+xml, what a combo
+
+263
+00:12:40.770 --> 00:12:44.957
+and then href is equal to /favicon.svg.
+
+264
+00:12:46.270 --> 00:12:48.730
+So this is the first time
+
+265
+00:12:48.730 --> 00:12:50.857
+that we are using the static folder.
+
+266
+00:12:50.857 --> 00:12:52.573
+And you see, we have favicon.svg.
+
+267
+00:12:54.230 --> 00:12:59.230
+It's serving this sucker up to the thing there.
+
+268
+00:12:59.870 --> 00:13:02.833
+And I believe now watch, when I hit Save,
+
+269
+00:13:04.020 --> 00:13:06.250
+this is gonna go from the old icon
+
+270
+00:13:06.250 --> 00:13:09.160
+woo, to the new icon, why?
+
+271
+00:13:09.160 --> 00:13:11.450
+By default, it looks in a static directory
+
+272
+00:13:11.450 --> 00:13:13.460
+and looks for just favicon.ico,
+
+273
+00:13:13.460 --> 00:13:15.170
+just browsers do that in general.
+
+274
+00:13:15.170 --> 00:13:18.700
+So you always should put that there as a very basic backup.
+
+275
+00:13:18.700 --> 00:13:21.703
+And then we also will provide a backup,
+
+276
+00:13:23.490 --> 00:13:27.297
+which is ICO for browsers that don't support SVG.
+
+277
+00:13:28.630 --> 00:13:31.640
+So I'll do another link tag
+
+278
+00:13:31.640 --> 00:13:35.140
+and rel is equal to alternate icon
+
+279
+00:13:38.780 --> 00:13:42.623
+and the href is equal to favicon.ico.
+
+280
+00:13:45.370 --> 00:13:48.530
+That way we've covered our butts in three ways.
+
+281
+00:13:48.530 --> 00:13:50.150
+We have the file that lives
+
+282
+00:13:50.150 --> 00:13:52.230
+where it should for browsers to check it.
+
+283
+00:13:52.230 --> 00:13:56.400
+We also have our SVG, which is great for making it bigger.
+
+284
+00:13:56.400 --> 00:13:59.287
+And then finally, we have our alternate icon here.
+
+285
+00:13:59.287 --> 00:14:04.183
+Hit at Save, there we go, looking good.
+
+286
+00:14:06.510 --> 00:14:08.713
+Next, we wanna do some meta tags.
+
+287
+00:14:14.330 --> 00:14:19.330
+So we want a meta let's do, is there a viewport?
+
+288
+00:14:20.120 --> 00:14:22.870
+Yeah, meta name equals viewport,
+
+289
+00:14:22.870 --> 00:14:24.620
+content equals width, the device width
+
+290
+00:14:24.620 --> 00:14:27.960
+initial scale equals one, that's good.
+
+291
+00:14:27.960 --> 00:14:28.830
+We don't have to do anything
+
+292
+00:14:28.830 --> 00:14:33.540
+that will just give us better responsive design.
+
+293
+00:14:33.540 --> 00:14:35.400
+We also want our char set.
+
+294
+00:14:35.400 --> 00:14:39.957
+So meta Setchar capital S is equal to UTF eight.
+
+295
+00:14:43.820 --> 00:14:45.860
+We want our meta description.
+
+296
+00:14:45.860 --> 00:14:49.590
+So meta description, the content of the meta description
+
+297
+00:14:49.590 --> 00:14:53.327
+will be site.siteMetadata.description.
+
+298
+00:14:57.100 --> 00:15:01.810
+So now if you take a look, we should see here we go.
+
+299
+00:15:01.810 --> 00:15:03.630
+The best pizza place in Hamilton,
+
+300
+00:15:03.630 --> 00:15:05.700
+that's being pulled from our config
+
+301
+00:15:05.700 --> 00:15:08.250
+and then being put in there.
+
+302
+00:15:08.250 --> 00:15:10.030
+Next up, we want our Open Graph.
+
+303
+00:15:10.030 --> 00:15:15.030
+So Open Graph is a specification for meta tags
+
+304
+00:15:17.090 --> 00:15:19.450
+for things like Facebook and Twitter and Pinterest,
+
+305
+00:15:19.450 --> 00:15:23.520
+and any website that wants to gulp up your information
+
+306
+00:15:23.520 --> 00:15:28.520
+about the website and you put Open Graph meta tags in there.
+
+307
+00:15:28.660 --> 00:15:30.190
+So what we wanna do here
+
+308
+00:15:30.190 --> 00:15:34.970
+is we want to pass the URL for this website,
+
+309
+00:15:34.970 --> 00:15:38.120
+and that makes sure that we have a location property.
+
+310
+00:15:38.120 --> 00:15:43.040
+So I'll say location and, and meta property
+
+311
+00:15:44.100 --> 00:15:48.663
+is equal to not UTF eight, but og:url.
+
+312
+00:15:52.910 --> 00:15:57.870
+And then the content of that will be the location.href.
+
+313
+00:15:57.870 --> 00:16:02.210
+So we'll pass that in, if it is available,
+
+314
+00:16:02.210 --> 00:16:04.070
+which it always is on our pages.
+
+315
+00:16:04.070 --> 00:16:06.460
+Remember our pages, we can actually get access
+
+316
+00:16:06.460 --> 00:16:08.050
+to our location via here,
+
+317
+00:16:08.050 --> 00:16:10.390
+so we can pass that in if we want,
+
+318
+00:16:10.390 --> 00:16:12.280
+and then pass in the meta location.
+
+319
+00:16:12.280 --> 00:16:17.120
+You can also use that to pass in a URL,
+
+320
+00:16:17.120 --> 00:16:18.360
+if it's slightly different.
+
+321
+00:16:18.360 --> 00:16:20.600
+If you've got like query parameters in the URL
+
+322
+00:16:20.600 --> 00:16:22.870
+that you don't want showing up, when someone shares it,
+
+323
+00:16:22.870 --> 00:16:26.143
+then you can overwrite that value with the location there.
+
+324
+00:16:27.050 --> 00:16:31.790
+We want another one, I'll say meta property
+
+325
+00:16:31.790 --> 00:16:34.023
+is equal to og:image.
+
+326
+00:16:35.137 --> 00:16:37.750
+And then I'll say content is equal to,
+
+327
+00:16:37.750 --> 00:16:40.780
+in this case, we're either gonna pass in a custom image
+
+328
+00:16:40.780 --> 00:16:42.360
+for the Open Graph image,
+
+329
+00:16:42.360 --> 00:16:47.360
+or we'll just fall back to the logo.svg.
+
+330
+00:16:48.400 --> 00:16:51.240
+So I'll just /logo.svg.
+
+331
+00:16:51.240 --> 00:16:53.490
+And that, because that is in a static folder,
+
+332
+00:16:53.490 --> 00:16:56.563
+we can reference it with an absolute path there.
+
+333
+00:16:58.530 --> 00:17:00.263
+Next up we want ogtitle.
+
+334
+00:17:01.260 --> 00:17:05.640
+So meta property, opengraph:title.
+
+335
+00:17:10.070 --> 00:17:11.920
+Some of these are gonna be duplicates,
+
+336
+00:17:11.920 --> 00:17:15.473
+but content is equal to title.
+
+337
+00:17:17.100 --> 00:17:21.190
+And the key, for some reason, you need a key in this one,
+
+338
+00:17:21.190 --> 00:17:22.090
+which is, ogtitle,
+
+339
+00:17:23.120 --> 00:17:24.973
+oh, that's quotes, ogtitle.
+
+340
+00:17:29.007 --> 00:17:30.480
+And on another one,
+
+341
+00:17:30.480 --> 00:17:32.680
+this is not that exciting, but it needs to happen,
+
+342
+00:17:32.680 --> 00:17:34.680
+and that's why I like to do it in one thing.
+
+343
+00:17:34.680 --> 00:17:37.610
+'Cause imagine having to write these for every single page
+
+344
+00:17:37.610 --> 00:17:39.550
+that you write, right, that's kind of annoying.
+
+345
+00:17:39.550 --> 00:17:44.550
+So the next one is the property is our ogsitename.
+
+346
+00:17:44.567 --> 00:17:45.533
+So og:site_name,
+
+347
+00:17:51.460 --> 00:17:52.650
+the content is equal
+
+348
+00:17:52.650 --> 00:17:57.650
+to curly brackets site.siteMetadata.title.
+
+349
+00:18:02.986 --> 00:18:05.653
+And then the key is, ogsitename.
+
+350
+00:18:10.420 --> 00:18:15.420
+And last one, meta property is equal to description.
+
+351
+00:18:19.720 --> 00:18:22.083
+It's actually og:description.
+
+352
+00:18:24.240 --> 00:18:29.240
+The content is equal to description of that page
+
+353
+00:18:30.930 --> 00:18:35.930
+that will be passed in and the key is, ogdescription.
+
+354
+00:18:37.960 --> 00:18:42.750
+Finally, I like to just pass any children in here,
+
+355
+00:18:42.750 --> 00:18:47.750
+because we do make the ability to pass in your own location,
+
+356
+00:18:47.830 --> 00:18:49.750
+description, title, and image.
+
+357
+00:18:49.750 --> 00:18:54.750
+But for whatever reason you wanted to put in another tag
+
+358
+00:18:54.860 --> 00:18:57.620
+in here, then you wouldn't be able to do that.
+
+359
+00:18:57.620 --> 00:18:59.410
+So what I do is I just,
+
+360
+00:18:59.410 --> 00:19:02.830
+we take any children that are passed to the SEO
+
+361
+00:19:02.830 --> 00:19:04.470
+and just put them at the bottom here.
+
+362
+00:19:04.470 --> 00:19:05.990
+And then what that allows us to do
+
+363
+00:19:05.990 --> 00:19:09.803
+is we can open and close our SEO tag,
+
+364
+00:19:12.230 --> 00:19:14.950
+and we could go in here and just make up a tag.
+
+365
+00:19:14.950 --> 00:19:18.210
+Like maybe we wanted to overwrite the title tag entirely.
+
+366
+00:19:18.210 --> 00:19:19.043
+If that was the case,
+
+367
+00:19:19.043 --> 00:19:20.690
+I could do it like that,
+
+368
+00:19:20.690 --> 00:19:24.050
+and see how the title tag gets overwritten.
+
+369
+00:19:24.050 --> 00:19:27.240
+So we just pass down any and overwrite any existing one.
+
+370
+00:19:27.240 --> 00:19:29.630
+That's kind of, sort of just a little escape patch.
+
+371
+00:19:29.630 --> 00:19:31.940
+And we don't use that in this course at all,
+
+372
+00:19:31.940 --> 00:19:33.970
+because we've covered all of our bases,
+
+373
+00:19:33.970 --> 00:19:35.203
+but it's a nice just to have it
+
+374
+00:19:35.203 --> 00:19:37.410
+just in case you do run into a situation
+
+375
+00:19:38.370 --> 00:19:40.000
+where you need it.
+
+376
+00:19:40.000 --> 00:19:42.210
+So that is the base of it.
+
+377
+00:19:42.210 --> 00:19:44.900
+Now, what we need to do is go through every single page.
+
+378
+00:19:44.900 --> 00:19:48.740
+So everything that lives in our pages,
+
+379
+00:19:48.740 --> 00:19:53.740
+as well as our templates, we will go through them.
+
+380
+00:19:55.010 --> 00:19:57.220
+So let's start with our pages
+
+381
+00:19:57.220 --> 00:19:59.080
+and that let's go to pizza at first,
+
+382
+00:19:59.080 --> 00:20:00.570
+actually, we already started that one.
+
+383
+00:20:00.570 --> 00:20:01.403
+And we'll go here and say,
+
+384
+00:20:01.403 --> 00:20:06.380
+image is equal to curly bracket pizza.image.asset.fluid.src.
+
+385
+00:20:08.570 --> 00:20:11.440
+So in this case, we're gonna pass the raw source to it.
+
+386
+00:20:11.440 --> 00:20:12.750
+Give that a Save.
+
+387
+00:20:12.750 --> 00:20:14.823
+Now, if you go into your head,
+
+388
+00:20:16.165 --> 00:20:21.165
+you should see, here we go, ogproperty, og:image,
+
+389
+00:20:21.530 --> 00:20:23.560
+and then this should be the URL
+
+390
+00:20:23.560 --> 00:20:26.370
+to an actual image of the pizza, beautiful.
+
+391
+00:20:26.370 --> 00:20:28.270
+One thing I like to do
+
+392
+00:20:28.270 --> 00:20:31.980
+with these is that it's likely that at some point
+
+393
+00:20:31.980 --> 00:20:34.810
+you may accidentally, you might delete an image,
+
+394
+00:20:34.810 --> 00:20:37.990
+and that will cause the entire page to stop rendering,
+
+395
+00:20:37.990 --> 00:20:42.020
+because it's gonna try to grab asset.fluid. Source
+
+396
+00:20:42.020 --> 00:20:43.760
+from something that is undefined.
+
+397
+00:20:43.760 --> 00:20:46.200
+So what you can do here is just put a question mark
+
+398
+00:20:46.200 --> 00:20:48.433
+on the end of these, each of these,
+
+399
+00:20:49.550 --> 00:20:52.590
+and what that will do is it will make sure that pizza.image
+
+400
+00:20:52.590 --> 00:20:56.430
+exists before it goes pizza.image.asset,
+
+401
+00:20:56.430 --> 00:20:59.070
+and then it will make sure that pizza.image.asset exists
+
+402
+00:20:59.070 --> 00:21:01.100
+before it grabs fluid.
+
+403
+00:21:01.100 --> 00:21:04.810
+And this is called nested chaining.
+
+404
+00:21:04.810 --> 00:21:06.660
+And previously, you would have to check
+
+405
+00:21:06.660 --> 00:21:08.750
+if all of these things existed before going,
+
+406
+00:21:08.750 --> 00:21:10.860
+and you can just put a question mark on the end.
+
+407
+00:21:10.860 --> 00:21:14.360
+And Gatsby is set up to under the hood
+
+408
+00:21:14.360 --> 00:21:15.300
+and it will actually change
+
+409
+00:21:15.300 --> 00:21:17.780
+those to a long drawn out if statement.
+
+410
+00:21:17.780 --> 00:21:22.780
+So nice, little bit of fallback values there.
+
+411
+00:21:23.990 --> 00:21:28.293
+Next let's go to pizzas.js, pizzas.js.
+
+412
+00:21:31.180 --> 00:21:34.060
+We'll go and pop in an SEO component
+
+413
+00:21:34.060 --> 00:21:35.953
+and import that sucker.
+
+414
+00:21:39.748 --> 00:21:40.581
+There we go.
+
+415
+00:21:42.370 --> 00:21:44.203
+And that needs a title.
+
+416
+00:21:45.100 --> 00:21:48.810
+And in our case, let's go to the pizza's page here.
+
+417
+00:21:48.810 --> 00:21:53.340
+The title is either going to be All Pizzas,
+
+418
+00:21:53.340 --> 00:21:55.880
+or if it's on a specific topping page,
+
+419
+00:21:55.880 --> 00:21:57.510
+we wanna say like pepperoni pizzas,
+
+420
+00:21:57.510 --> 00:21:59.770
+or roasted garlic pizzas.
+
+421
+00:21:59.770 --> 00:22:03.323
+So what we'll do here is we'll say title is equal to,
+
+422
+00:22:04.330 --> 00:22:08.990
+I'll say, if there is pageContext.topping,
+
+423
+00:22:08.990 --> 00:22:13.990
+if that is true, then we will say Pizzas With,
+
+424
+00:22:14.800 --> 00:22:16.290
+and we'll pop in the topping in there.
+
+425
+00:22:16.290 --> 00:22:19.103
+So pageContext.topping.
+
+426
+00:22:21.090 --> 00:22:25.490
+Otherwise, colon we'll just say All Pizzas.
+
+427
+00:22:30.270 --> 00:22:33.480
+There we go, so now we're on All Pizzas,
+
+428
+00:22:33.480 --> 00:22:36.230
+but if I click on hot peppers,
+
+429
+00:22:36.230 --> 00:22:38.240
+it says Pizzas with Hot Peppers,
+
+430
+00:22:38.240 --> 00:22:40.310
+and then it also puts Slick's Slices at the end.
+
+431
+00:22:40.310 --> 00:22:42.160
+Don't you love this package,
+
+432
+00:22:42.160 --> 00:22:44.130
+React Helmet, it's like really simple to do it,
+
+433
+00:22:44.130 --> 00:22:46.430
+and you can stick these anywhere.
+
+434
+00:22:46.430 --> 00:22:47.853
+So that is good.
+
+435
+00:22:49.920 --> 00:22:51.263
+What do we got next?
+
+436
+00:22:52.280 --> 00:22:53.830
+So we've got our homepage,
+
+437
+00:22:53.830 --> 00:22:56.380
+which will default to the Slick's Slices,
+
+438
+00:22:56.380 --> 00:22:58.670
+we got our Pizza Menu, SliceMasters.
+
+439
+00:22:58.670 --> 00:23:00.577
+So let's go to slicemasters.js,
+
+440
+00:23:02.700 --> 00:23:06.073
+and we'll go down here, give yourself an SEO component.
+
+441
+00:23:07.920 --> 00:23:11.163
+And we'll oh, actually we have to import that sucker.
+
+442
+00:23:12.830 --> 00:23:15.543
+Sometimes I have to hit this auto import thing twice.
+
+443
+00:23:17.380 --> 00:23:18.570
+There we go.
+
+444
+00:23:18.570 --> 00:23:23.273
+So SEO, the title is going to be slice, oh back text,
+
+445
+00:23:25.021 --> 00:23:28.021
+Slicemasters and I'll say - page,
+
+446
+00:23:31.670 --> 00:23:33.570
+and then we'll put the page in there.
+
+447
+00:23:33.570 --> 00:23:38.570
+So pageContext.currentpage or one.
+
+448
+00:23:40.947 --> 00:23:42.370
+There we go SlicemastersPage one.
+
+449
+00:23:42.370 --> 00:23:44.770
+And as we go through the pagination,
+
+450
+00:23:44.770 --> 00:23:47.093
+it's now updating the title tag for us.
+
+451
+00:23:48.360 --> 00:23:50.290
+Beautiful, what other pages do we have?
+
+452
+00:23:50.290 --> 00:23:53.710
+The Order page, so go to order.js.
+
+453
+00:23:53.710 --> 00:23:54.890
+There's nothing on this page yet,
+
+454
+00:23:54.890 --> 00:23:56.980
+but let's do the SEO while we're at it.
+
+455
+00:23:56.980 --> 00:24:01.980
+Say title is equal to Order a Pizza.
+
+456
+00:24:03.012 --> 00:24:04.363
+I got to import that.
+
+457
+00:24:08.890 --> 00:24:10.850
+Cool, and then what does that last page?
+
+458
+00:24:10.850 --> 00:24:11.813
+We have beers.
+
+459
+00:24:13.180 --> 00:24:17.590
+Let's go to beers, we'll go here.
+
+460
+00:24:22.110 --> 00:24:25.223
+SEO title is equal to,
+
+461
+00:24:26.328 --> 00:24:27.870
+we can do this 'beers.'
+
+462
+00:24:34.600 --> 00:24:39.600
+We have data.beers.nodes.length in stock.
+
+463
+00:24:45.820 --> 00:24:47.490
+And SEO is not defined,
+
+464
+00:24:47.490 --> 00:24:50.003
+oh, I forgot to import that component.
+
+465
+00:24:53.120 --> 00:24:56.250
+There you go, 141 beers in stock.
+
+466
+00:24:56.250 --> 00:24:57.750
+Actually, one last thing I forgot to do is,
+
+467
+00:24:57.750 --> 00:25:00.720
+if you go to a specific SlicemasterPage,
+
+468
+00:25:00.720 --> 00:25:02.683
+so single SliceMaster,
+
+469
+00:25:03.740 --> 00:25:05.933
+we need SEO tag for that as well.
+
+470
+00:25:11.700 --> 00:25:15.170
+So we'll go and give ourselves some fragments
+
+471
+00:25:17.920 --> 00:25:22.640
+and the SEO component and the title.
+
+472
+00:25:28.440 --> 00:25:30.750
+You see how like it gives me the last page I was on,
+
+473
+00:25:30.750 --> 00:25:32.020
+if there is no title tag.
+
+474
+00:25:32.020 --> 00:25:35.850
+So make sure we always put a title tag on each one,
+
+475
+00:25:35.850 --> 00:25:40.850
+what is it, person.name, Slick.
+
+476
+00:25:40.890 --> 00:25:44.480
+Maybe we also want an image
+
+477
+00:25:44.480 --> 00:25:46.360
+for that specific person to show up.
+
+478
+00:25:46.360 --> 00:25:49.193
+So if that's the case, it would be;
+
+479
+00:25:51.910 --> 00:25:56.910
+person.image.asset.src and that's showing up, good.
+
+480
+00:25:58.400 --> 00:26:01.900
+So that is SEO, it's pretty, pretty straightforward.
+
+481
+00:26:01.900 --> 00:26:04.210
+You just gotta make sure that you cover all your tags,
+
+482
+00:26:04.210 --> 00:26:06.090
+pass in the pieces that you want,
+
+483
+00:26:06.090 --> 00:26:08.330
+and then you can stick this SEO component
+
+484
+00:26:08.330 --> 00:26:09.800
+anywhere that you want it.
+
+485
+00:26:09.800 --> 00:26:13.150
+It doesn't just have to be a page level,
+
+486
+00:26:13.150 --> 00:26:14.960
+it can also be at a component level
+
+487
+00:26:14.960 --> 00:26:16.913
+and you can mix and match them as well.
+
+488
+00:26:17.870 --> 00:26:19.953
+So let's jump into the next one.
+

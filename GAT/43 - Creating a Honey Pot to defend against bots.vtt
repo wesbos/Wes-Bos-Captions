@@ -1,0 +1,542 @@
+﻿WEBVTT
+
+1
+00:00:00.086 --> 00:00:02.669
+(upbeat music)
+
+2
+00:00:04.400 --> 00:00:05.940
+<v Narrator>Now we're gonna make a honeypot.</v>
+
+3
+00:00:05.940 --> 00:00:08.470
+So, one of the unfortunate things about the internet
+
+4
+00:00:08.470 --> 00:00:11.560
+is that it's not so simple where you just have a form,
+
+5
+00:00:11.560 --> 00:00:13.200
+you fill out some fields,
+
+6
+00:00:13.200 --> 00:00:15.330
+we create our place order function,
+
+7
+00:00:15.330 --> 00:00:16.570
+and it sends off an email.
+
+8
+00:00:16.570 --> 00:00:19.260
+Because there are bad people in the world
+
+9
+00:00:19.260 --> 00:00:22.829
+and bad people create robots that will destroy us all.
+
+10
+00:00:22.829 --> 00:00:27.380
+And what happens with forms that are fill-outable
+
+11
+00:00:27.380 --> 00:00:31.130
+and submittable without any sort of bot detection,
+
+12
+00:00:31.130 --> 00:00:34.070
+is that they get submitted with
+
+13
+00:00:34.070 --> 00:00:36.920
+all kinds of scrupulous stuff from the internet.
+
+14
+00:00:36.920 --> 00:00:41.920
+So what we need to do is sort of put in some steps
+
+15
+00:00:41.970 --> 00:00:44.940
+that will at least deter bots
+
+16
+00:00:44.940 --> 00:00:48.020
+that are just spamming thousands of forms
+
+17
+00:00:48.020 --> 00:00:52.180
+every single second from submitting that form.
+
+18
+00:00:52.180 --> 00:00:54.150
+And we actually did a whole,
+
+19
+00:00:54.150 --> 00:00:58.670
+if you go to syntax.fm, we did a whole podcast on it.
+
+20
+00:00:58.670 --> 00:01:03.260
+It was called Forms, Captcha.
+
+21
+00:01:03.260 --> 00:01:04.093
+Here we go.
+
+22
+00:01:04.093 --> 00:01:05.550
+Hasty Treat - Forms, Captchas, Honeypots,
+
+23
+00:01:05.550 --> 00:01:06.770
+Dealing With Malicious Users
+
+24
+00:01:06.770 --> 00:01:08.190
+and the Sad State of Contact Forms.
+
+25
+00:01:08.190 --> 00:01:09.170
+So listen to that.
+
+26
+00:01:09.170 --> 00:01:12.340
+If you want to sort of a look into, to all of them.
+
+27
+00:01:12.340 --> 00:01:15.510
+The best way to do it is to put a Captcha on it,
+
+28
+00:01:15.510 --> 00:01:18.170
+where you have that little, I am not a robot,
+
+29
+00:01:18.170 --> 00:01:19.390
+or you have to type in those letters
+
+30
+00:01:19.390 --> 00:01:20.500
+that don't make any sense,
+
+31
+00:01:20.500 --> 00:01:23.040
+or fill out forms and things like that.
+
+32
+00:01:23.040 --> 00:01:25.459
+But I asked on Twitter,
+
+33
+00:01:25.459 --> 00:01:28.210
+what do you do if you don't want to put a Captcha in it?
+
+34
+00:01:28.210 --> 00:01:31.240
+And a lot of people said, just put a honeypot in there.
+
+35
+00:01:31.240 --> 00:01:33.670
+And that works for almost all of my use cases.
+
+36
+00:01:33.670 --> 00:01:38.100
+So a honeypot is a field in your contact form
+
+37
+00:01:38.100 --> 00:01:40.560
+that the user is not supposed to fill out.
+
+38
+00:01:40.560 --> 00:01:43.330
+And if a bot fills that out,
+
+39
+00:01:43.330 --> 00:01:44.530
+then you know it's a bot,
+
+40
+00:01:44.530 --> 00:01:47.440
+because regular people would not have filled that out.
+
+41
+00:01:47.440 --> 00:01:48.273
+So what we're going to do is
+
+42
+00:01:48.273 --> 00:01:52.710
+we're going to go over to our order form or our order page.
+
+43
+00:01:52.710 --> 00:01:55.603
+And we'll look for where we have the email form.
+
+44
+00:01:56.730 --> 00:02:00.510
+Here we go. And let's just duplicate the label.
+
+45
+00:02:00.510 --> 00:02:02.730
+Actually, yeah. No, don't even need the label.
+
+46
+00:02:02.730 --> 00:02:04.350
+Just the input.
+
+47
+00:02:04.350 --> 00:02:08.730
+And we will change that to, don't call it honey,
+
+48
+00:02:08.730 --> 00:02:11.600
+because the bots are smart enough not to look for honey.
+
+49
+00:02:11.600 --> 00:02:14.840
+So being the Canadian I am, we'll call it mapleSyrup,
+
+50
+00:02:14.840 --> 00:02:16.433
+S-Y-R-U-P.
+
+51
+00:02:17.350 --> 00:02:20.560
+And then we'll have to go up
+
+52
+00:02:20.560 --> 00:02:23.280
+to where we created the useForm hook
+
+53
+00:02:23.280 --> 00:02:27.023
+and also create a mapleSyrup value.
+
+54
+00:02:28.950 --> 00:02:33.950
+And here we go. So that is our new one.
+
+55
+00:02:34.240 --> 00:02:35.680
+Then what we'll need to do
+
+56
+00:02:35.680 --> 00:02:40.680
+is when the person submits the form,
+
+57
+00:02:40.870 --> 00:02:42.723
+so that is in usePizza,
+
+58
+00:02:47.590 --> 00:02:50.533
+we will have to add mapleSyrup here,
+
+59
+00:02:55.770 --> 00:02:59.010
+and that will send the value of this input box
+
+60
+00:02:59.010 --> 00:03:00.580
+to our server.
+
+61
+00:03:00.580 --> 00:03:02.490
+And then we'll go to our placeOrder dot (indistinct)
+
+62
+00:03:02.490 --> 00:03:06.670
+which is our server side.
+
+63
+00:03:06.670 --> 00:03:10.220
+And we will check if they have submitted
+
+64
+00:03:10.220 --> 00:03:12.020
+the mapleSyrup field.
+
+65
+00:03:12.020 --> 00:03:13.280
+So we'll go right here.
+
+66
+00:03:13.280 --> 00:03:14.113
+Let's go.
+
+67
+00:03:14.113 --> 00:03:14.946
+First thing we'll check
+
+68
+00:03:14.946 --> 00:03:19.170
+if they have filled out the honeypot.
+
+69
+00:03:19.170 --> 00:03:23.053
+So let's say if body.mapleSyrup,
+
+70
+00:03:25.670 --> 00:03:27.580
+so if it exists,
+
+71
+00:03:27.580 --> 00:03:30.080
+then we return statusCode 400
+
+72
+00:03:33.870 --> 00:03:38.870
+and body JSON.stringify - oh, it's capital JSON.
+
+73
+00:03:40.960 --> 00:03:45.960
+And the message is Boop beep bop zzzzttt good bye.
+
+74
+00:03:55.220 --> 00:03:56.140
+Okay. That's good.
+
+75
+00:03:56.140 --> 00:03:57.670
+Another thing I like to do here
+
+76
+00:03:57.670 --> 00:04:00.980
+is you just put like an error,
+
+77
+00:04:00.980 --> 00:04:03.420
+like you put like a number in here.
+
+78
+00:04:03.420 --> 00:04:05.750
+So if somebody, for whatever reason,
+
+79
+00:04:05.750 --> 00:04:07.960
+somebody fills that out and they're like,
+
+80
+00:04:07.960 --> 00:04:09.120
+Hey I'm getting an error
+
+81
+00:04:09.120 --> 00:04:11.210
+three four two three four on your website,
+
+82
+00:04:11.210 --> 00:04:12.043
+you know exactly,
+
+83
+00:04:12.043 --> 00:04:14.880
+oh they hit the honeypot
+
+84
+00:04:15.750 --> 00:04:17.670
+and there's something wrong with your honeypot.
+
+85
+00:04:17.670 --> 00:04:20.780
+If a regular user has actually filled that out.
+
+86
+00:04:20.780 --> 00:04:25.687
+Okay, now let's try to submit it.
+
+87
+00:04:27.220 --> 00:04:29.170
+So we'll go ahead and fill it out
+
+88
+00:04:30.590 --> 00:04:33.190
+and we'll fill out our honeypot with just something.
+
+89
+00:04:33.190 --> 00:04:34.540
+That's what a bot would do.
+
+90
+00:04:35.810 --> 00:04:38.940
+And then we go ahead and click on Order.
+
+91
+00:04:38.940 --> 00:04:42.880
+Oh, I forgot to submit it. There we go.
+
+92
+00:04:42.880 --> 00:04:44.880
+Error. Boop beep bop zzzzttt good bye.
+
+93
+00:04:44.880 --> 00:04:46.580
+Okay. So that is our honeypot.
+
+94
+00:04:46.580 --> 00:04:50.873
+Now what we need to do is you need to hide this input.
+
+95
+00:04:52.310 --> 00:04:56.250
+But we can't just use the hidden attribute on the input
+
+96
+00:04:56.250 --> 00:04:59.450
+because the bot will be smart enough to figure out
+
+97
+00:04:59.450 --> 00:05:00.750
+that that is a hidden input
+
+98
+00:05:00.750 --> 00:05:03.580
+and shouldn't be actually visible.
+
+99
+00:05:03.580 --> 00:05:08.580
+So what we'll do is we'll go to our styles for our order,
+
+100
+00:05:08.810 --> 00:05:10.913
+which is orderStyles.
+
+101
+00:05:13.520 --> 00:05:14.743
+We'll open up that.
+
+102
+00:05:17.440 --> 00:05:20.910
+And here I'll just say, did we give that one a class?
+
+103
+00:05:20.910 --> 00:05:22.960
+I think we need to give that one a class.
+
+104
+00:05:24.376 --> 00:05:29.376
+Let's say, class mapleSyrup, className of mapleSyrup.
+
+105
+00:05:33.230 --> 00:05:34.283
+I'll go in here.
+
+106
+00:05:35.430 --> 00:05:38.170
+And we'll just say anything with the class of mapleSyrup
+
+107
+00:05:38.170 --> 00:05:39.770
+just display none on it.
+
+108
+00:05:39.770 --> 00:05:41.660
+Now I thought like, okay,
+
+109
+00:05:41.660 --> 00:05:45.370
+wouldn't a bot be smart enough not to just like,
+
+110
+00:05:45.370 --> 00:05:48.240
+be able to figure out if it's visible via CSS or not?
+
+111
+00:05:48.240 --> 00:05:50.840
+And apparently the answer to that is no.
+
+112
+00:05:50.840 --> 00:05:53.640
+This is coming from dozens of people who use this
+
+113
+00:05:53.640 --> 00:05:55.200
+in production and client websites.
+
+114
+00:05:55.200 --> 00:05:56.280
+So that's good enough.
+
+115
+00:05:56.280 --> 00:05:57.730
+Other ways you could hide it
+
+116
+00:05:57.730 --> 00:06:01.100
+is you could scale it to zero,
+
+117
+00:06:01.100 --> 00:06:02.720
+or like scale to one pixel,
+
+118
+00:06:02.720 --> 00:06:06.530
+or use z-index, or use text indent.
+
+119
+00:06:06.530 --> 00:06:09.860
+There's all kinds of tricks to hide things on the internet.
+
+120
+00:06:09.860 --> 00:06:14.160
+But you also have to make sure that you're not throwing off
+
+121
+00:06:14.160 --> 00:06:17.751
+screen reader users because some CSS attributes
+
+122
+00:06:17.751 --> 00:06:22.400
+will still read themselves aloud to screen reader users.
+
+123
+00:06:22.400 --> 00:06:23.730
+But if it is display none,
+
+124
+00:06:23.730 --> 00:06:25.620
+the screen reader will skip over that.
+
+125
+00:06:25.620 --> 00:06:28.450
+So there's one robot you need to appreciate.
+
+126
+00:06:28.450 --> 00:06:32.170
+And one robot you need to make sure that they're not there.
+
+127
+00:06:32.170 --> 00:06:35.850
+Now that is totally missing.
+
+128
+00:06:35.850 --> 00:06:38.913
+And if let's try to fill it out one more time.
+
+129
+00:06:40.150 --> 00:06:42.490
+Add a couple pizzas.
+
+130
+00:06:42.490 --> 00:06:43.743
+Go ahead and submit it.
+
+131
+00:06:49.130 --> 00:06:50.230
+Boom.
+
+132
+00:06:50.230 --> 00:06:51.850
+That email has been sent.
+
+133
+00:06:51.850 --> 00:06:54.390
+So that is a honeypot.
+
+134
+00:06:54.390 --> 00:06:55.270
+Hopefully enjoy that one.
+
+135
+00:06:55.270 --> 00:06:56.770
+And catch you in the next one.
+

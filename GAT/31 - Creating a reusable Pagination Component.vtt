@@ -1,0 +1,1626 @@
+﻿WEBVTT
+
+1
+00:00:00.480 --> 00:00:03.803
+(upbeat music)
+
+2
+00:00:03.803 --> 00:00:05.860
+<v Instructor>Pagination component.</v>
+
+3
+00:00:05.860 --> 00:00:07.720
+We are going to make sort of a general,
+
+4
+00:00:07.720 --> 00:00:09.060
+use pagination component
+
+5
+00:00:09.060 --> 00:00:11.008
+because it's likely that you will use this
+
+6
+00:00:11.008 --> 00:00:11.908
+component for,
+
+7
+00:00:11.908 --> 00:00:15.570
+I don't know if you have lots of different types of data on
+
+8
+00:00:15.570 --> 00:00:18.520
+a page, you want to be able to use reuse this over and over.
+
+9
+00:00:18.520 --> 00:00:20.980
+So go into our components folder and make a new file.
+
+10
+00:00:20.980 --> 00:00:24.323
+And we will call that pagination.js,
+
+11
+00:00:25.560 --> 00:00:28.830
+and we'll do our regular song and dance of importing react
+
+12
+00:00:29.710 --> 00:00:31.013
+from react,
+
+13
+00:00:31.990 --> 00:00:34.683
+export default pagination,
+
+14
+00:00:36.150 --> 00:00:38.900
+or I always forget the word function.
+
+15
+00:00:38.900 --> 00:00:39.733
+Here we go.
+
+16
+00:00:41.430 --> 00:00:45.030
+Now, that pagination let's actually return a div,
+
+17
+00:00:45.030 --> 00:00:47.193
+just say, P pagination,
+
+18
+00:00:48.030 --> 00:00:49.173
+we'll go into,
+
+19
+00:00:53.190 --> 00:00:56.530
+we'll go into our Slice Masters.js page.
+
+20
+00:00:56.530 --> 00:00:58.333
+And we'll go ahead and use that.
+
+21
+00:00:59.507 --> 00:01:02.320
+So right here where we did this process, .env,
+
+22
+00:01:02.320 --> 00:01:06.500
+delete those and just put a pagination component in there
+
+23
+00:01:06.500 --> 00:01:10.080
+and then make sure you import, that pagination.
+
+24
+00:01:10.080 --> 00:01:10.950
+You see how this,
+
+25
+00:01:10.950 --> 00:01:12.993
+the errors here a little bit different,
+
+26
+00:01:13.860 --> 00:01:15.830
+that's because I changed
+
+27
+00:01:15.830 --> 00:01:19.450
+it to GATSBY-HOT-LOADER or fast refresh.
+
+28
+00:01:19.450 --> 00:01:21.239
+So if you're seeing that,
+
+29
+00:01:21.239 --> 00:01:23.330
+if you see different kinds of low things, that's great.
+
+30
+00:01:23.330 --> 00:01:26.910
+And I believe one of the benefits to this
+
+31
+00:01:26.910 --> 00:01:29.403
+is that when , I save,
+
+32
+00:01:30.803 --> 00:01:32.420
+it comes back from it.
+
+33
+00:01:32.420 --> 00:01:34.730
+So previously, if I broke the build,
+
+34
+00:01:34.730 --> 00:01:39.250
+like if I didn't import this pagination, and I used it,
+
+35
+00:01:39.250 --> 00:01:42.117
+it's broken and then, Oh, I forgot to import it.
+
+36
+00:01:42.117 --> 00:01:44.690
+And then you give it a save and then you'd have to go like a
+
+37
+00:01:44.690 --> 00:01:47.230
+sucker and go hit the refresh button.
+
+38
+00:01:47.230 --> 00:01:49.950
+But with this, with this fast refresh,
+
+39
+00:01:49.950 --> 00:01:53.480
+it's good enough just to refresh it for you, which is great.
+
+40
+00:01:53.480 --> 00:01:56.570
+Okay. So we have imported our pagination component.
+
+41
+00:01:56.570 --> 00:01:59.613
+We have gone ahead and used it in here,
+
+42
+00:02:00.450 --> 00:02:03.580
+and then we are working in, in here right now.
+
+43
+00:02:03.580 --> 00:02:07.230
+So there's a couple pieces of information that need to be
+
+44
+00:02:07.230 --> 00:02:10.760
+passed in via Props. In order for the pagination to work,
+
+45
+00:02:10.760 --> 00:02:15.760
+we need a, how many per page? we need the total count.
+
+46
+00:02:15.790 --> 00:02:19.200
+We need the current page that we're on.
+
+47
+00:02:19.200 --> 00:02:21.120
+We need the skip value
+
+48
+00:02:21.120 --> 00:02:23.640
+and we need the base value.
+
+49
+00:02:23.640 --> 00:02:26.253
+And I'll show you what the base is in just a sec.
+
+50
+00:02:27.840 --> 00:02:32.500
+Then we need to, make some more variables,
+
+51
+00:02:32.500 --> 00:02:34.450
+make some variables.
+
+52
+00:02:34.450 --> 00:02:38.197
+So we'll say cons, total pages is equal to Math.ceil,
+
+53
+00:02:38.197 --> 00:02:42.420
+and we could probably pass this value in, but whatever.
+
+54
+00:02:42.420 --> 00:02:43.710
+Well, let's calculate it again.
+
+55
+00:02:43.710 --> 00:02:47.323
+Total count divided by, per page.
+
+56
+00:02:50.460 --> 00:02:54.150
+Then we need some links for previous next and whether it has
+
+57
+00:02:54.150 --> 00:02:57.142
+a previous page and whether it doesn't have previous page,
+
+58
+00:02:57.142 --> 00:03:00.640
+we'll get those in just a sec.
+
+59
+00:03:00.640 --> 00:03:05.640
+So first thing we need to do is to create some links for the
+
+60
+00:03:05.720 --> 00:03:09.401
+previous and next pages. So we'll go here.
+
+61
+00:03:09.401 --> 00:03:11.610
+We'll give ourselves a link.
+
+62
+00:03:11.610 --> 00:03:15.210
+We'll import that link from Gatsby.
+
+63
+00:03:15.210 --> 00:03:19.070
+Let's say link to is equal to now.
+
+64
+00:03:19.070 --> 00:03:22.349
+Normally you'd just say like Slice Masters. Oops, sorry.
+
+65
+00:03:22.349 --> 00:03:24.271
+I got some curly brackets there.
+
+66
+00:03:24.271 --> 00:03:26.930
+Normally you just say like Slice Masters for slash and then
+
+67
+00:03:26.930 --> 00:03:31.930
+will interpolate the current page value in there.
+
+68
+00:03:33.180 --> 00:03:37.440
+But that then makes this not
+
+69
+00:03:37.440 --> 00:03:39.380
+flexible enough for other types
+
+70
+00:03:39.380 --> 00:03:43.110
+of content. So that's why we pass in this base value here.
+
+71
+00:03:43.110 --> 00:03:45.370
+And that will allow us to make this flexible.
+
+72
+00:03:45.370 --> 00:03:48.843
+So the base will be, like that.
+
+73
+00:03:49.910 --> 00:03:53.977
+And then the current page is going to be minus ,
+
+74
+00:03:55.000 --> 00:03:56.380
+minus one.
+
+75
+00:03:56.380 --> 00:03:57.213
+Okay.
+
+76
+00:03:57.213 --> 00:03:59.860
+So let's stop there for just a second.
+
+77
+00:03:59.860 --> 00:04:03.503
+We need to go back to our Slice Masters.js,
+
+78
+00:04:04.450 --> 00:04:08.470
+and pass all that data into our pagination component.
+
+79
+00:04:08.470 --> 00:04:10.870
+So we'll go here and pagination,
+
+80
+00:04:10.870 --> 00:04:12.533
+what do we need per page?
+
+81
+00:04:13.890 --> 00:04:15.833
+Does he go to parse,
+
+82
+00:04:17.030 --> 00:04:19.640
+per page that comes in?
+
+83
+00:04:19.640 --> 00:04:22.663
+Where does that come in? Gatsby dash Node,
+
+84
+00:04:24.730 --> 00:04:26.453
+page size.
+
+85
+00:04:27.440 --> 00:04:28.440
+Yeah. See, I'm,
+
+86
+00:04:28.440 --> 00:04:31.770
+I'm mixing my words here per page and page size.
+
+87
+00:04:31.770 --> 00:04:32.973
+They're the same thing.
+
+88
+00:04:34.670 --> 00:04:37.200
+Let's stick with page size.
+
+89
+00:04:37.200 --> 00:04:41.293
+So let's, rename that per page to page size,
+
+90
+00:04:44.480 --> 00:04:48.100
+and let's go back to our pagination and rename that
+
+91
+00:04:48.100 --> 00:04:50.370
+to page size
+
+92
+00:04:50.370 --> 00:04:51.963
+here in here. Okay, cool.
+
+93
+00:04:53.460 --> 00:04:57.450
+The page size is the data is going to be coming in from the
+
+94
+00:04:57.450 --> 00:04:58.720
+page context.
+
+95
+00:04:58.720 --> 00:05:01.690
+So we need to restructure that page context again,
+
+96
+00:05:01.690 --> 00:05:04.950
+that page context variable, is all of the data that was
+
+97
+00:05:04.950 --> 00:05:06.713
+passed in right here.
+
+98
+00:05:11.160 --> 00:05:14.723
+So page size is page context. That page size,
+
+99
+00:05:16.300 --> 00:05:19.023
+the total count is equal to,
+
+100
+00:05:21.991 --> 00:05:23.160
+SliceMasters.totalcount.
+
+101
+00:05:23.160 --> 00:05:25.663
+Again, remember we created that right here.
+
+102
+00:05:31.040 --> 00:05:33.440
+The current page is equal to
+
+103
+00:05:34.814 --> 00:05:35.647
+EVN
+
+104
+00:05:35.647 --> 00:05:36.520
+page context
+
+105
+00:05:37.420 --> 00:05:38.253
+dot
+
+106
+00:05:39.210 --> 00:05:40.220
+current page
+
+107
+00:05:41.639 --> 00:05:43.030
+and then one should say or one,
+
+108
+00:05:43.030 --> 00:05:46.850
+cause we might be on the first page and without the fourth
+
+109
+00:05:46.850 --> 00:05:48.760
+slash one on there,
+
+110
+00:05:48.760 --> 00:05:50.360
+our skip,
+
+111
+00:05:50.360 --> 00:05:53.570
+is page context
+
+112
+00:05:53.570 --> 00:05:54.653
+dot skip.
+
+113
+00:05:55.540 --> 00:06:00.080
+And then finally our base is going to be a forward slash
+
+114
+00:06:00.080 --> 00:06:01.373
+Slice Masters.
+
+115
+00:06:03.110 --> 00:06:05.200
+Okay. So all that data is being piped in.
+
+116
+00:06:05.200 --> 00:06:09.230
+We'll go back to our pagination component here and we will
+
+117
+00:06:09.230 --> 00:06:11.980
+actually, we don't need the forward slash on this here.
+
+118
+00:06:13.725 --> 00:06:15.360
+And we need a variable for the previous page.
+
+119
+00:06:15.360 --> 00:06:18.512
+Cause I don't like to do the math right inside of here.
+
+120
+00:06:18.512 --> 00:06:19.345
+So we'll hear, say,
+
+121
+00:06:19.345 --> 00:06:24.010
+const preview page is equal to the current page minus one.
+
+122
+00:06:25.090 --> 00:06:27.640
+And then we'll do the same thing for the next page.
+
+123
+00:06:30.100 --> 00:06:32.043
+That's just a current page plus one.
+
+124
+00:06:35.130 --> 00:06:36.030
+And we'll go here.
+
+125
+00:06:37.010 --> 00:06:38.470
+Link
+
+126
+00:06:38.470 --> 00:06:39.841
+is
+
+127
+00:06:39.841 --> 00:06:40.674
+prev
+
+128
+00:06:40.674 --> 00:06:41.507
+page,
+
+129
+00:06:48.220 --> 00:06:49.330
+and inside of that,
+
+130
+00:06:49.330 --> 00:06:52.450
+I'll just give myself a little arrow that says prev.
+
+131
+00:06:52.450 --> 00:06:55.634
+So this is just a Unicode arrow.
+
+132
+00:06:55.634 --> 00:06:56.670
+If you don't know how to,
+
+133
+00:06:56.670 --> 00:06:59.143
+I have a little shortcut for those.
+
+134
+00:07:00.140 --> 00:07:01.800
+If you don't know how to get those,
+
+135
+00:07:01.800 --> 00:07:04.340
+just Google Unicode arrow,
+
+136
+00:07:04.340 --> 00:07:07.060
+and you'll be able to copy and paste it.
+
+137
+00:07:07.060 --> 00:07:08.563
+So we have our previous,
+
+138
+00:07:10.370 --> 00:07:11.640
+let's see, does that work?
+
+139
+00:07:11.640 --> 00:07:15.383
+So we'll go to Slice Masters four slash three,
+
+140
+00:07:16.420 --> 00:07:20.096
+and then if I click on it, it brings me to two.
+
+141
+00:07:20.096 --> 00:07:23.940
+It brings me to one and then it goes to zero.
+
+142
+00:07:23.940 --> 00:07:26.820
+We'll have to we'll fix that in just a second. Okay.
+
+143
+00:07:26.820 --> 00:07:30.373
+Now duplicate that and we'll go to the next page.
+
+144
+00:07:32.970 --> 00:07:34.063
+Let's say,
+
+145
+00:07:35.390 --> 00:07:36.303
+next.
+
+146
+00:07:42.130 --> 00:07:45.040
+Okay, So we've got our previous and the next one.
+
+147
+00:07:45.040 --> 00:07:47.400
+It allows me to go back and forth.
+
+148
+00:07:47.400 --> 00:07:48.503
+I like it.
+
+149
+00:07:50.561 --> 00:07:53.937
+Let's take care of the fact that you can ,
+
+150
+00:07:55.060 --> 00:07:58.610
+go to page six and page zero when they do not exist.
+
+151
+00:07:58.610 --> 00:08:00.972
+So we'll make some more variables here.
+
+152
+00:08:00.972 --> 00:08:03.780
+So that const has next page is equal to,
+
+153
+00:08:03.780 --> 00:08:05.740
+if the next page,
+
+154
+00:08:05.740 --> 00:08:08.410
+is less or equal to the total pages ,
+
+155
+00:08:08.410 --> 00:08:10.570
+that is going to be true or false.
+
+156
+00:08:10.570 --> 00:08:15.140
+And then we'll do the same thing for has preview page.
+
+157
+00:08:15.140 --> 00:08:20.140
+And that is if the previous page is greater or equal to one,
+
+158
+00:08:20.390 --> 00:08:25.380
+that will tell us if we have a previous page,
+
+159
+00:08:25.380 --> 00:08:28.870
+and then we can go down to these links here.
+
+160
+00:08:28.870 --> 00:08:30.263
+I'll just say disabled.
+
+161
+00:08:31.550 --> 00:08:32.383
+Once you go to,
+
+162
+00:08:34.814 --> 00:08:38.790
+bang has pre-phase and as next page.
+
+163
+00:08:40.610 --> 00:08:44.090
+So you could also conditionally show and hide,
+
+164
+00:08:44.090 --> 00:08:46.940
+these values, with react.
+
+165
+00:08:46.940 --> 00:08:49.193
+Like you could check if it's there or not,
+
+166
+00:08:50.150 --> 00:08:53.550
+but I don't like doing that because as soon as you hit a
+
+167
+00:08:53.550 --> 00:08:54.520
+page where there is no previous,
+
+168
+00:08:54.520 --> 00:08:56.400
+the whole pagination shifts,
+
+169
+00:08:56.400 --> 00:09:00.310
+so I'd rather just make it unclickable I'm in gray it out.
+
+170
+00:09:00.310 --> 00:09:04.490
+And we, these will still work to click ,
+
+171
+00:09:04.490 --> 00:09:06.450
+even like let's go to page one,
+
+172
+00:09:06.450 --> 00:09:07.870
+they watch I'm going to click it
+
+173
+00:09:07.870 --> 00:09:10.070
+like putting disabled on a, an anchor link.
+
+174
+00:09:10.070 --> 00:09:11.623
+Doesn't actually do anything,
+
+175
+00:09:12.520 --> 00:09:14.610
+that only works for buttons,
+
+176
+00:09:14.610 --> 00:09:17.700
+but I'm gonna show you how to actually make it work with
+
+177
+00:09:17.700 --> 00:09:19.450
+some CSS once we get to that. Okay.
+
+178
+00:09:19.450 --> 00:09:22.340
+So that's our previous and next buttons,
+
+179
+00:09:22.340 --> 00:09:25.440
+but we also need the like one, two, three, four, five
+
+180
+00:09:25.440 --> 00:09:26.853
+that goes in the middle.
+
+181
+00:09:27.830 --> 00:09:30.810
+So what we'll do is we'll go in between here.
+
+182
+00:09:30.810 --> 00:09:34.910
+We'll use our own little trick arrayed out from,
+
+183
+00:09:34.910 --> 00:09:37.453
+length of total pages.
+
+184
+00:09:39.580 --> 00:09:42.440
+And now we will map over it,
+
+185
+00:09:42.440 --> 00:09:44.110
+with the underscore I ,
+
+186
+00:09:44.110 --> 00:09:46.830
+see this is just like we did in our gets. We know,
+
+187
+00:09:46.830 --> 00:09:48.980
+but now we're doing it in a react template.
+
+188
+00:09:52.870 --> 00:09:54.090
+And for each one,
+
+189
+00:09:54.090 --> 00:09:56.680
+we overturn a link tag,
+
+190
+00:09:56.680 --> 00:09:57.883
+that has,
+
+191
+00:09:59.270 --> 00:10:02.120
+the I plus one,
+
+192
+00:10:02.120 --> 00:10:03.083
+inside of it.
+
+193
+00:10:04.120 --> 00:10:05.320
+Let's see if that works,
+
+194
+00:10:12.566 --> 00:10:14.540
+that didn't work.
+
+195
+00:10:14.540 --> 00:10:15.923
+Why is it not showing up?
+
+196
+00:10:19.870 --> 00:10:22.450
+Maybe Gatsby needs it to have a, to value.
+
+197
+00:10:22.450 --> 00:10:23.410
+Otherwise it doesn't show up.
+
+198
+00:10:23.410 --> 00:10:25.143
+So let's just say link to,
+
+199
+00:10:29.510 --> 00:10:31.180
+and back ticks,
+
+200
+00:10:31.180 --> 00:10:32.013
+will say
+
+201
+00:10:34.100 --> 00:10:35.470
+the base,
+
+202
+00:10:35.470 --> 00:10:36.597
+Ford slash ,
+
+203
+00:10:39.490 --> 00:10:41.410
+I plus one.
+
+204
+00:10:41.410 --> 00:10:42.610
+Let's see if that works.
+
+205
+00:10:44.690 --> 00:10:46.573
+No nothing's showing up. Okay.
+
+206
+00:10:50.170 --> 00:10:51.060
+Y
+
+207
+00:10:52.680 --> 00:10:54.740
+let's depo this together right up from,
+
+208
+00:10:54.740 --> 00:10:57.523
+we have a length of 12 pages. And from each one we map,
+
+209
+00:11:03.978 --> 00:11:05.973
+if I replaced this with just a paragraph that says, Hey,
+
+210
+00:11:08.411 --> 00:11:10.000
+that doesn't show up. Okay.
+
+211
+00:11:10.000 --> 00:11:10.993
+Bring that back.
+
+212
+00:11:12.590 --> 00:11:14.780
+If I put some text here. Okay.
+
+213
+00:11:14.780 --> 00:11:16.713
+So our build is still working.
+
+214
+00:11:18.190 --> 00:11:21.643
+I believe, that this array is not,
+
+215
+00:11:22.770 --> 00:11:24.750
+being created,
+
+216
+00:11:24.750 --> 00:11:26.640
+right up from like the top pages.
+
+217
+00:11:26.640 --> 00:11:28.050
+So,
+
+218
+00:11:28.050 --> 00:11:29.113
+what I'll do,
+
+219
+00:11:31.010 --> 00:11:33.620
+is I'll put this in its own variable constant.
+
+220
+00:11:33.620 --> 00:11:35.490
+You don't have to do this. This is just me debugging.
+
+221
+00:11:35.490 --> 00:11:38.913
+I'll I'll bring it back and then console log that array.
+
+222
+00:11:40.740 --> 00:11:42.690
+Let's see if there's anything in there.
+
+223
+00:11:45.340 --> 00:11:46.330
+Yeah. Look at that.
+
+224
+00:11:46.330 --> 00:11:48.593
+Sucker sucker is empty.
+
+225
+00:11:52.421 --> 00:11:56.360
+So I'm to console log total pages,
+
+226
+00:11:56.360 --> 00:11:57.193
+None.
+
+227
+00:12:02.176 --> 00:12:03.009
+Okay.
+
+228
+00:12:03.009 --> 00:12:05.490
+So that means our total pages value,
+
+229
+00:12:05.490 --> 00:12:07.250
+is not being correctly done.
+
+230
+00:12:07.250 --> 00:12:09.403
+So let's console log total count,
+
+231
+00:12:10.400 --> 00:12:11.890
+undefined.
+
+232
+00:12:11.890 --> 00:12:13.793
+Ah, so total count,
+
+233
+00:12:15.600 --> 00:12:17.780
+is not being passed in properly.
+
+234
+00:12:17.780 --> 00:12:20.100
+So our math is not working. So we'll go here.
+
+235
+00:12:20.100 --> 00:12:22.943
+Total count is equal to, ah,
+
+236
+00:12:24.520 --> 00:12:26.560
+you know why it's because ,
+
+237
+00:12:26.560 --> 00:12:27.827
+the total count ,
+
+238
+00:12:29.100 --> 00:12:31.800
+value is not on Nodes.
+
+239
+00:12:31.800 --> 00:12:33.000
+It's a level higher.
+
+240
+00:12:33.000 --> 00:12:35.637
+So what we need to do is go to our data total count here,
+
+241
+00:12:35.637 --> 00:12:40.630
+and we'll say data.SliceMasters.totalcount.
+
+242
+00:12:43.800 --> 00:12:45.260
+There we go.
+
+243
+00:12:45.260 --> 00:12:46.093
+Alright.
+
+244
+00:12:46.093 --> 00:12:47.330
+So we're back up and running.
+
+245
+00:12:47.330 --> 00:12:48.917
+I'm going to bring this array ,
+
+246
+00:12:50.050 --> 00:12:50.883
+back,
+
+247
+00:12:52.650 --> 00:12:53.483
+here.
+
+248
+00:12:55.440 --> 00:12:58.440
+Now we've got one, two, three, four, five showing up.
+
+249
+00:12:58.440 --> 00:13:00.540
+One thing,
+
+250
+00:13:00.540 --> 00:13:03.503
+that I want is if I click on one,
+
+251
+00:13:04.470 --> 00:13:06.930
+I actually just want it to go to Ford slash Slice Masters,
+
+252
+00:13:06.930 --> 00:13:09.490
+not Ford slash Slice Masters four slash one.
+
+253
+00:13:09.490 --> 00:13:12.953
+So we can, we can fix that by going,
+
+254
+00:13:15.930 --> 00:13:18.070
+here, and I'll say,
+
+255
+00:13:18.070 --> 00:13:20.523
+if I is greater than zero.
+
+256
+00:13:25.290 --> 00:13:27.230
+So if it's one,
+
+257
+00:13:27.230 --> 00:13:28.063
+then,
+
+258
+00:13:31.020 --> 00:13:32.250
+we will return.
+
+259
+00:13:32.250 --> 00:13:34.070
+I plus one,
+
+260
+00:13:34.070 --> 00:13:36.453
+otherwise we returned just a blank string.
+
+261
+00:13:37.870 --> 00:13:39.483
+And if we click on one,
+
+262
+00:13:42.080 --> 00:13:44.330
+it goes to four slash Slice Masters.
+
+263
+00:13:44.330 --> 00:13:45.993
+But Oh it looks like,
+
+264
+00:13:47.350 --> 00:13:49.640
+our pagination is not showing up because total
+
+265
+00:13:49.640 --> 00:13:52.400
+pages is not anything.
+
+266
+00:13:52.400 --> 00:13:55.420
+And that's likely because,
+
+267
+00:13:55.420 --> 00:13:57.493
+the page size,
+
+268
+00:14:00.010 --> 00:14:01.800
+that's why, Cause our page size,
+
+269
+00:14:01.800 --> 00:14:04.800
+gets passed in via page context.
+
+270
+00:14:04.800 --> 00:14:08.020
+But when you go to Forrest slash Slice Masters,
+
+271
+00:14:08.020 --> 00:14:11.020
+this page is not being generated by Gatsby Node.
+
+272
+00:14:11.020 --> 00:14:14.300
+That page is being generated by simply just being in
+
+273
+00:14:14.300 --> 00:14:15.960
+page dot js.
+
+274
+00:14:15.960 --> 00:14:17.123
+So,
+
+275
+00:14:18.050 --> 00:14:21.350
+we let's modify this,
+
+276
+00:14:21.350 --> 00:14:22.330
+to,
+
+277
+00:14:22.330 --> 00:14:23.660
+be the old way.
+
+278
+00:14:23.660 --> 00:14:25.260
+Parse env,
+
+279
+00:14:25.260 --> 00:14:26.690
+I'll say process,
+
+280
+00:14:26.690 --> 00:14:27.973
+dot env,
+
+281
+00:14:29.390 --> 00:14:32.713
+dot Gatsby underscore page on square size.
+
+282
+00:14:37.120 --> 00:14:38.603
+Gotta spell process. Right.
+
+283
+00:14:39.810 --> 00:14:40.710
+There we go. Okay.
+
+284
+00:14:40.710 --> 00:14:43.590
+That fixed it for us next, next, next.
+
+285
+00:14:43.590 --> 00:14:44.423
+Okay.
+
+286
+00:14:44.423 --> 00:14:47.430
+So everything seems to be working
+
+287
+00:14:47.430 --> 00:14:49.150
+and now we just gotta slap
+
+288
+00:14:49.150 --> 00:14:52.630
+some CSS on it, so it doesn't look awful.
+
+289
+00:14:52.630 --> 00:14:56.073
+So let's go and make some pagination styled.
+
+290
+00:14:57.558 --> 00:14:59.740
+So go back to our pagination.js.
+
+291
+00:14:59.740 --> 00:15:04.480
+We'll say const pagination styles is equal to styled,
+
+292
+00:15:04.480 --> 00:15:06.000
+dot div,
+
+293
+00:15:06.000 --> 00:15:07.363
+got an import style.
+
+294
+00:15:09.030 --> 00:15:10.143
+Ooh, that was wrong.
+
+295
+00:15:11.010 --> 00:15:13.890
+That one. Okay.
+
+296
+00:15:13.890 --> 00:15:15.430
+We'll display,
+
+297
+00:15:15.430 --> 00:15:16.790
+grid,
+
+298
+00:15:16.790 --> 00:15:18.360
+on that.
+
+299
+00:15:18.360 --> 00:15:19.913
+A grid.
+
+300
+00:15:20.820 --> 00:15:22.590
+We'll say align content,
+
+301
+00:15:22.590 --> 00:15:23.620
+center,
+
+302
+00:15:23.620 --> 00:15:25.003
+line items,
+
+303
+00:15:26.410 --> 00:15:27.700
+center,
+
+304
+00:15:27.700 --> 00:15:29.173
+justify items.
+
+305
+00:15:30.230 --> 00:15:31.480
+If you don't know how to center,
+
+306
+00:15:31.480 --> 00:15:33.920
+something and CSS grid just put all of them on
+
+307
+00:15:34.920 --> 00:15:36.670
+and you've probably, it might work.
+
+308
+00:15:38.470 --> 00:15:41.393
+Let's pop this pagination styles on the surrounding div.
+
+309
+00:15:45.928 --> 00:15:47.053
+Here we go.
+
+310
+00:15:52.410 --> 00:15:54.930
+And that's wrong. This shouldn't have been grid.
+
+311
+00:15:54.930 --> 00:15:56.173
+This should be flex.
+
+312
+00:15:57.670 --> 00:15:59.263
+Yes. Okay.
+
+313
+00:16:03.020 --> 00:16:06.530
+We also want to pop a border one PX,
+
+314
+00:16:06.530 --> 00:16:08.370
+solid gray
+
+315
+00:16:11.220 --> 00:16:13.183
+margin to REM zero,
+
+316
+00:16:15.950 --> 00:16:17.890
+border radius,
+
+317
+00:16:17.890 --> 00:16:21.290
+five PX. Alright, so that is looking okay.
+
+318
+00:16:21.290 --> 00:16:23.763
+Then we'll grab each flex item. So we'll say,
+
+319
+00:16:25.440 --> 00:16:27.117
+and the direct descendant ,
+
+320
+00:16:29.240 --> 00:16:30.163
+on REM.
+
+321
+00:16:31.610 --> 00:16:33.400
+All right. All right.
+
+322
+00:16:33.400 --> 00:16:35.033
+I'll say flex one.
+
+323
+00:16:36.010 --> 00:16:37.210
+Boom.
+
+324
+00:16:37.210 --> 00:16:38.163
+I like it.
+
+325
+00:16:39.370 --> 00:16:40.653
+Margin zero.
+
+326
+00:16:42.091 --> 00:16:44.310
+We don't need margin. Zero on that does nothing border.
+
+327
+00:16:44.310 --> 00:16:45.630
+Right?
+
+328
+00:16:45.630 --> 00:16:48.270
+One PX solid,
+
+329
+00:16:48.270 --> 00:16:50.163
+far dash dash gray.
+
+330
+00:16:52.240 --> 00:16:53.073
+Okay.
+
+331
+00:17:00.100 --> 00:17:02.113
+These are not centering themselves.
+
+332
+00:17:03.410 --> 00:17:05.710
+We didn't do a text line center on the parent.
+
+333
+00:17:06.730 --> 00:17:07.790
+Okay. Looking good.
+
+334
+00:17:07.790 --> 00:17:11.170
+Looking good on the actual links themselves.
+
+335
+00:17:11.170 --> 00:17:13.110
+We'll say text decoration, none.
+
+336
+00:17:13.110 --> 00:17:15.210
+Take that red off. Good.
+
+337
+00:17:15.210 --> 00:17:17.133
+And then we'll say,
+
+338
+00:17:19.660 --> 00:17:20.820
+any of these items.
+
+339
+00:17:20.820 --> 00:17:23.850
+So, and we're still inside of this direct descendant.
+
+340
+00:17:23.850 --> 00:17:25.773
+Anything that has an Aria,
+
+341
+00:17:26.710 --> 00:17:28.740
+dash current property,
+
+342
+00:17:28.740 --> 00:17:29.800
+or a class
+
+343
+00:17:29.800 --> 00:17:31.253
+of current on it,
+
+344
+00:17:32.620 --> 00:17:34.590
+then we will say color,
+
+345
+00:17:34.590 --> 00:17:35.993
+far, dash dash red.
+
+346
+00:17:39.800 --> 00:17:40.723
+And,
+
+347
+00:17:42.308 --> 00:17:45.060
+here we go. One to see how this is working.
+
+348
+00:17:45.060 --> 00:17:47.503
+Or if we go to one page, one,
+
+349
+00:17:49.320 --> 00:17:50.370
+it's showing up.
+
+350
+00:17:50.370 --> 00:17:53.890
+But if we click on Slice Masters in the heading, this is,
+
+351
+00:17:53.890 --> 00:17:55.760
+this is goofy. Look at that skin.
+
+352
+00:17:55.760 --> 00:17:57.210
+Can you figure this one out,
+
+353
+00:17:57.210 --> 00:18:02.040
+click on one and then click on Slice Masters in the nav.
+
+354
+00:18:02.040 --> 00:18:03.890
+And it goes away.
+
+355
+00:18:03.890 --> 00:18:08.370
+And that is because of the trailing slash,
+
+356
+00:18:08.370 --> 00:18:09.203
+it's a bit of a
+
+357
+00:18:09.203 --> 00:18:10.170
+weird thing with Gatsby link.
+
+358
+00:18:10.170 --> 00:18:13.532
+It doesn't totally match it up if there's a trailing slash.
+
+359
+00:18:13.532 --> 00:18:15.283
+So to fix that,
+
+360
+00:18:16.320 --> 00:18:17.293
+we,
+
+361
+00:18:18.830 --> 00:18:20.360
+go back,
+
+362
+00:18:20.360 --> 00:18:21.920
+to our link here
+
+363
+00:18:23.180 --> 00:18:26.863
+and we'll say class name is equal to curly brackets.
+
+364
+00:18:30.210 --> 00:18:32.020
+And it will say if the current page
+
+365
+00:18:33.940 --> 00:18:35.960
+is equal to one,
+
+366
+00:18:35.960 --> 00:18:38.130
+and the index
+
+367
+00:18:38.130 --> 00:18:40.543
+is equal to zero,
+
+368
+00:18:43.910 --> 00:18:46.800
+then we'll give it a class of current.
+
+369
+00:18:46.800 --> 00:18:49.240
+Otherwise we give a class and nothing,
+
+370
+00:18:49.240 --> 00:18:52.066
+and it's not turning red. Let's inspect it.
+
+371
+00:18:52.066 --> 00:18:54.093
+Let's see the classes there.
+
+372
+00:18:56.070 --> 00:18:57.583
+What's wrong with our CSS.
+
+373
+00:18:59.187 --> 00:19:00.460
+Oh,
+
+374
+00:19:00.460 --> 00:19:03.760
+this seems to ampersand on it because it's not a child with
+
+375
+00:19:03.760 --> 00:19:06.010
+a current, it's the same element,
+
+376
+00:19:06.010 --> 00:19:07.763
+but also a class of current.
+
+377
+00:19:08.990 --> 00:19:10.350
+There we go. Okay.
+
+378
+00:19:10.350 --> 00:19:13.830
+So that's a little bit of weirdness around Gatsby link,
+
+379
+00:19:13.830 --> 00:19:16.070
+but we fixed it there.
+
+380
+00:19:16.070 --> 00:19:18.400
+Oh, next, next, next last thing is,
+
+381
+00:19:18.400 --> 00:19:23.400
+is if you are on page five and you want to click next,
+
+382
+00:19:24.070 --> 00:19:25.560
+you shouldn't be able to click that.
+
+383
+00:19:25.560 --> 00:19:28.360
+See how there's a disabled value on there.
+
+384
+00:19:28.360 --> 00:19:29.453
+So what we'll do,
+
+385
+00:19:30.860 --> 00:19:33.180
+is we'll say anything,
+
+386
+00:19:33.180 --> 00:19:34.800
+and
+
+387
+00:19:34.800 --> 00:19:37.763
+anything that has the disabled attribute,
+
+388
+00:19:39.160 --> 00:19:40.430
+then we'll say ,pointer
+
+389
+00:19:41.530 --> 00:19:42.700
+events,
+
+390
+00:19:42.700 --> 00:19:43.533
+none.
+
+391
+00:19:43.533 --> 00:19:47.097
+And that will make it not clickable or not keyboard
+
+392
+00:19:47.097 --> 00:19:48.647
+navigatable.
+
+393
+00:19:48.647 --> 00:19:52.183
+And then the color is going to be a gray color.
+
+394
+00:19:54.970 --> 00:19:55.803
+There we go.
+
+395
+00:19:55.803 --> 00:19:58.500
+And then what that does is you can't click it now and that's
+
+396
+00:19:59.476 --> 00:20:01.941
+just a nice way to disable it. This should also happen.
+
+397
+00:20:01.941 --> 00:20:05.140
+There we go on page one and if we go to Slice Masters,
+
+398
+00:20:05.140 --> 00:20:07.610
+it's, unclickable beautiful.
+
+399
+00:20:07.610 --> 00:20:11.710
+So that's how we do pagination in,
+
+400
+00:20:11.710 --> 00:20:13.700
+Gatsby pretty straight
+
+401
+00:20:13.700 --> 00:20:14.740
+forward.
+
+402
+00:20:14.740 --> 00:20:15.573
+Well,
+
+403
+00:20:15.573 --> 00:20:17.650
+last thing we need to do and I'll save this for the next
+
+404
+00:20:17.650 --> 00:20:21.320
+video, but that is when you click on an actual Slice master
+
+405
+00:20:21.320 --> 00:20:22.153
+themselves,
+
+406
+00:20:22.153 --> 00:20:24.600
+we should be able to see them as well as their bio.
+

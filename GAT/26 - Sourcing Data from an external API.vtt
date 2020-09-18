@@ -1,0 +1,1254 @@
+﻿WEBVTT
+
+1
+00:00:00.106 --> 00:00:02.856
+(dramatic music)
+
+2
+00:00:04.260 --> 00:00:05.093
+<v Instructor>All right.</v>
+
+3
+00:00:05.093 --> 00:00:07.560
+So far all the data that we've been pulling into our website
+
+4
+00:00:07.560 --> 00:00:10.800
+is just living inside of sanity.
+
+5
+00:00:10.800 --> 00:00:11.633
+Whoever...
+
+6
+00:00:11.633 --> 00:00:14.050
+It's probably the case that your website
+
+7
+00:00:14.050 --> 00:00:16.780
+also has data that needs to be pulled into
+
+8
+00:00:17.690 --> 00:00:20.420
+your website from another place.
+
+9
+00:00:20.420 --> 00:00:22.240
+Most likely in API.
+
+10
+00:00:22.240 --> 00:00:24.920
+So, what if you have a rest API?
+
+11
+00:00:24.920 --> 00:00:27.680
+Whether that's tweets or Instagram posts,
+
+12
+00:00:27.680 --> 00:00:31.280
+or maybe your GitHub, or just some API
+
+13
+00:00:31.280 --> 00:00:33.390
+that comes from your, like list of products
+
+14
+00:00:33.390 --> 00:00:35.080
+or something like that.
+
+15
+00:00:35.080 --> 00:00:38.600
+How do you get that data into Gatsby
+
+16
+00:00:38.600 --> 00:00:42.087
+and still reap all the benefits of it-
+
+17
+00:00:42.087 --> 00:00:44.337
+(coughing)
+
+18
+00:00:47.860 --> 00:00:48.693
+Woo.
+
+19
+00:00:50.350 --> 00:00:53.800
+And still reap all the benefits of the server rendered,
+
+20
+00:00:53.800 --> 00:00:57.210
+pre-rendered, SEO friendly, all the Gatsby good stuff?
+
+21
+00:00:57.210 --> 00:01:02.210
+So, we are gonna go to this website, sampleapis.com,
+
+22
+00:01:02.540 --> 00:01:06.713
+and, you can pick your own, you can pick your own API.
+
+23
+00:01:06.713 --> 00:01:09.810
+There's all kinds of interesting PlayStation games,
+
+24
+00:01:09.810 --> 00:01:10.643
+Xbox games.
+
+25
+00:01:10.643 --> 00:01:13.290
+We are going to be doing beers.
+
+26
+00:01:13.290 --> 00:01:15.643
+So, you go to beers and click on API link.
+
+27
+00:01:16.750 --> 00:01:19.990
+And then, it has the choice
+
+28
+00:01:19.990 --> 00:01:21.150
+of three different kinds of beers.
+
+29
+00:01:21.150 --> 00:01:23.290
+So we are gonna click on ale here.
+
+30
+00:01:23.290 --> 00:01:27.850
+And then this just kicks us off to a JSON file,
+
+31
+00:01:27.850 --> 00:01:32.130
+which has a list of, I don't know, hundreds of beers.
+
+32
+00:01:32.130 --> 00:01:34.090
+And it actually does not matter that
+
+33
+00:01:34.090 --> 00:01:35.360
+this is hundreds of beers
+
+34
+00:01:35.360 --> 00:01:38.030
+because, we are not gonna be fetching this on page load,
+
+35
+00:01:38.030 --> 00:01:40.250
+we'll be fetching this up build time.
+
+36
+00:01:40.250 --> 00:01:42.200
+So, what we need to do is figure out,
+
+37
+00:01:42.200 --> 00:01:47.040
+how do we get this data into our Gatsby GraphQL API,
+
+38
+00:01:47.040 --> 00:01:49.540
+and then do the whole query and pull it in.
+
+39
+00:01:49.540 --> 00:01:54.237
+So, that is going to be done in our Gatsby dash Nodes.
+
+40
+00:01:54.237 --> 00:01:57.040
+So, Gatsby dash Node dot JS.
+
+41
+00:01:57.040 --> 00:02:00.990
+And we've already used one of these like hooks, right?
+
+42
+00:02:00.990 --> 00:02:05.050
+We are hooking into the create pages API.
+
+43
+00:02:05.050 --> 00:02:09.240
+However, there also is an API for sourcing Nodes.
+
+44
+00:02:09.240 --> 00:02:13.000
+So now, two words there, sourcing and Nodes.
+
+45
+00:02:13.000 --> 00:02:17.260
+Sourcing means putting the data into your Gatsby API
+
+46
+00:02:17.260 --> 00:02:19.210
+and Nodes is...
+
+47
+00:02:19.210 --> 00:02:22.070
+A Node is a piece of data.
+
+48
+00:02:22.070 --> 00:02:24.240
+And that's why whenever we do our like,
+
+49
+00:02:24.240 --> 00:02:26.630
+pizza query, we ask for the Nodes,
+
+50
+00:02:26.630 --> 00:02:28.760
+and then we ask for the name and the toppings.
+
+51
+00:02:28.760 --> 00:02:31.840
+That's because each piece of data in the Gatsby API
+
+52
+00:02:31.840 --> 00:02:33.220
+is referred to as a Node.
+
+53
+00:02:33.220 --> 00:02:34.940
+That's a GraphQL thing.
+
+54
+00:02:34.940 --> 00:02:38.230
+So, what we wanna do is, put pieces of data
+
+55
+00:02:38.230 --> 00:02:41.230
+into the GraphQL API by sourcing them.
+
+56
+00:02:41.230 --> 00:02:46.190
+So, what we do is we export async function
+
+57
+00:02:46.190 --> 00:02:48.940
+and then the function that we hook into
+
+58
+00:02:48.940 --> 00:02:51.131
+is called sourceNodes.
+
+59
+00:02:51.131 --> 00:02:54.621
+And if you just Google that like sourceNodes Gatsby,
+
+60
+00:02:54.621 --> 00:02:55.454
+A tu tuu.
+
+61
+00:02:55.454 --> 00:02:56.287
+There it is.
+
+62
+00:02:57.277 --> 00:03:01.630
+You see. Extension point to tell plugins to sourceNodes.
+
+63
+00:03:01.630 --> 00:03:04.660
+This API is called during the Gatsby bootstraps sequence.
+
+64
+00:03:04.660 --> 00:03:07.380
+So, this actually happens before the create page is done,
+
+65
+00:03:07.380 --> 00:03:09.530
+because the data needs to exist first
+
+66
+00:03:09.530 --> 00:03:10.820
+before the pages are created.
+
+67
+00:03:10.820 --> 00:03:15.313
+So, actually just for your sanity sake, put that up here,
+
+68
+00:03:16.800 --> 00:03:18.440
+because this happens before that.
+
+69
+00:03:18.440 --> 00:03:21.673
+So, now we have this function called sourceNodes
+
+70
+00:03:21.673 --> 00:03:23.040
+and inside of that,
+
+71
+00:03:23.040 --> 00:03:28.040
+we want to fetch a list of beers
+
+72
+00:03:29.120 --> 00:03:34.120
+and source them into our Gatsby API.
+
+73
+00:03:35.170 --> 00:03:39.380
+So, I'm going to make another function above this.
+
+74
+00:03:39.380 --> 00:03:42.103
+It will be an async function and we'll call it,
+
+75
+00:03:43.519 --> 00:03:45.769
+fetchBeersAndTurnIntoNodes.
+
+76
+00:03:50.800 --> 00:03:54.410
+And that will take three arguments that are destructure.
+
+77
+00:03:54.410 --> 00:03:55.860
+So curly brackets.
+
+78
+00:03:55.860 --> 00:03:58.001
+We have actions, just like we did before.
+
+79
+00:03:58.001 --> 00:04:00.540
+We have createNodeId.
+
+80
+00:04:00.540 --> 00:04:02.400
+I'll explain what that is in just a second.
+
+81
+00:04:02.400 --> 00:04:05.020
+And then also createContentDigest.
+
+82
+00:04:07.390 --> 00:04:12.390
+And then they'll just console log, Turn Beers into Nodes.
+
+83
+00:04:14.450 --> 00:04:15.283
+Okay.
+
+84
+00:04:15.283 --> 00:04:18.460
+Then we take this fetchBeersAndTurnIntoNodes,
+
+85
+00:04:18.460 --> 00:04:20.800
+and we go into our sourceNodes here
+
+86
+00:04:20.800 --> 00:04:24.533
+and we can await fetchBeersAndTurnIntoNodes.
+
+87
+00:04:26.840 --> 00:04:28.253
+What I like to do,
+
+88
+00:04:29.230 --> 00:04:32.430
+because like this might not be the only thing that I do,
+
+89
+00:04:32.430 --> 00:04:35.960
+is actually just, I immediately go for the Promise.all
+
+90
+00:04:35.960 --> 00:04:37.300
+like we did down here.
+
+91
+00:04:37.300 --> 00:04:39.240
+In that way, if I want to add something in the future,
+
+92
+00:04:39.240 --> 00:04:40.520
+it's really easy to do.
+
+93
+00:04:40.520 --> 00:04:45.520
+So, let's say await capital P Promise.all array,
+
+94
+00:04:47.000 --> 00:04:50.390
+and then fetchBeerAndTurnIntoNodes.
+
+95
+00:04:50.390 --> 00:04:51.470
+That's just one thing.
+
+96
+00:04:51.470 --> 00:04:53.820
+And it doesn't matter if you Promise that all one Promise,
+
+97
+00:04:53.820 --> 00:04:55.640
+it will just wait for that one Promise to resolve.
+
+98
+00:04:55.640 --> 00:04:57.763
+So, there's no downside to doing that.
+
+99
+00:04:58.660 --> 00:04:59.493
+Okay.
+
+100
+00:05:00.390 --> 00:05:03.480
+I think we should try and make sure
+
+101
+00:05:03.480 --> 00:05:05.210
+that our hook is working fine.
+
+102
+00:05:05.210 --> 00:05:07.640
+So, let's go to our terminal here.
+
+103
+00:05:07.640 --> 00:05:09.653
+We'll kill it, rerun it,
+
+104
+00:05:10.830 --> 00:05:13.870
+and, looks like we got an error.
+
+105
+00:05:13.870 --> 00:05:16.850
+Cannot destructure property actions of undefined or null.
+
+106
+00:05:16.850 --> 00:05:18.160
+Oh, you know why?
+
+107
+00:05:18.160 --> 00:05:22.120
+Because we forgot to take the params
+
+108
+00:05:22.120 --> 00:05:24.360
+and pass them to this.
+
+109
+00:05:24.360 --> 00:05:25.560
+So let's try that again.
+
+110
+00:05:26.750 --> 00:05:28.180
+Well, you see it happened there.
+
+111
+00:05:28.180 --> 00:05:32.780
+So, at first it sourced all this data
+
+112
+00:05:32.780 --> 00:05:36.440
+from sanity and then it ran this turn beers into Nodes,
+
+113
+00:05:36.440 --> 00:05:38.270
+then it was done transforming the Nodes
+
+114
+00:05:38.270 --> 00:05:41.610
+and then it goes ahead and creates our pages after that.
+
+115
+00:05:41.610 --> 00:05:42.443
+Okay.
+
+116
+00:05:42.443 --> 00:05:45.780
+So, what we wanna do here, is...
+
+117
+00:05:45.780 --> 00:05:47.520
+Let's go into here.
+
+118
+00:05:47.520 --> 00:05:52.503
+We'll say one, fetch a list of beers.
+
+119
+00:05:55.160 --> 00:05:59.313
+Two, loop over each one.
+
+120
+00:06:00.715 --> 00:06:04.113
+And then three, create a Node for that beer.
+
+121
+00:06:05.080 --> 00:06:07.460
+And then, that will be it.
+
+122
+00:06:07.460 --> 00:06:10.530
+And at that point we can just go into one of our pages
+
+123
+00:06:10.530 --> 00:06:11.990
+and query that data.
+
+124
+00:06:11.990 --> 00:06:14.120
+So, we wanna fetch a list of beer.
+
+125
+00:06:14.120 --> 00:06:17.620
+So, first thing is we wanna be able to use fetch,
+
+126
+00:06:17.620 --> 00:06:21.920
+but since this is a Node file, fetch is a browser API,
+
+127
+00:06:21.920 --> 00:06:23.040
+at least right now.
+
+128
+00:06:23.040 --> 00:06:25.430
+They are working at getting fetch into Node.
+
+129
+00:06:25.430 --> 00:06:28.500
+But if you wanna use the fetch API in a Node file,
+
+130
+00:06:28.500 --> 00:06:31.617
+you have to use this thing called isomorphic fetch.
+
+131
+00:06:31.617 --> 00:06:33.853
+So what we'll do here is we'll say import.
+
+132
+00:06:35.950 --> 00:06:40.950
+We'll say import fetch from isomorphic-fetch.
+
+133
+00:06:41.110 --> 00:06:44.441
+And we'll go back down to our turn fetch,
+
+134
+00:06:44.441 --> 00:06:46.390
+fetchBeersAndTurnIntoNodes.
+
+135
+00:06:46.390 --> 00:06:50.560
+Const response, or RES is equal to await fetch.
+
+136
+00:06:50.560 --> 00:06:54.540
+And then in quotes, we will get that API that we had,
+
+137
+00:06:54.540 --> 00:06:55.373
+right here.
+
+138
+00:06:56.900 --> 00:07:00.910
+And then once I const beers is equal to the response.json.
+
+139
+00:07:00.910 --> 00:07:02.810
+So, let's assume that the...
+
+140
+00:07:02.810 --> 00:07:05.610
+This returns from JSON and we turn it into JSON.
+
+141
+00:07:05.610 --> 00:07:07.130
+Then, we have our list of beers.
+
+142
+00:07:07.130 --> 00:07:09.070
+Let's console log it.
+
+143
+00:07:09.070 --> 00:07:11.600
+Just to double check that it's working.
+
+144
+00:07:11.600 --> 00:07:15.300
+Well, let's also get rid of any other console dot logs
+
+145
+00:07:15.300 --> 00:07:18.193
+that we have in here.
+
+146
+00:07:21.000 --> 00:07:23.123
+Otherwise it gets a little bit too messy.
+
+147
+00:07:24.170 --> 00:07:25.520
+Okay, good.
+
+148
+00:07:25.520 --> 00:07:26.830
+Start that sucker up.
+
+149
+00:07:26.830 --> 00:07:27.663
+There we go.
+
+150
+00:07:27.663 --> 00:07:29.380
+Oh, we got a Promise here.
+
+151
+00:07:29.380 --> 00:07:30.213
+Why?
+
+152
+00:07:30.213 --> 00:07:31.340
+Oh, we didn't await it.
+
+153
+00:07:31.340 --> 00:07:33.753
+Because this is a Promise too.
+
+154
+00:07:33.753 --> 00:07:35.110
+So you have to await that.
+
+155
+00:07:35.110 --> 00:07:35.943
+Try it one more time.
+
+156
+00:07:35.943 --> 00:07:38.360
+You see how like, this is one thing I don't like
+
+157
+00:07:38.360 --> 00:07:40.670
+about Gatsby, is the feedback cycle
+
+158
+00:07:40.670 --> 00:07:43.130
+to working in your Node.js file,
+
+159
+00:07:43.130 --> 00:07:45.710
+is sometimes like, Oh, I made a mistake.
+
+160
+00:07:45.710 --> 00:07:47.620
+Now I have to wait another minute.
+
+161
+00:07:47.620 --> 00:07:49.230
+And I bet that will get better.
+
+162
+00:07:49.230 --> 00:07:51.900
+But that's definitely a downside for Gatsby.
+
+163
+00:07:51.900 --> 00:07:53.123
+Hey, there we go.
+
+164
+00:07:53.123 --> 00:07:55.300
+Got all of our beers showing up. That's good.
+
+165
+00:07:55.300 --> 00:07:57.370
+We got a price, name, rating,
+
+166
+00:07:57.370 --> 00:08:01.380
+which has average reviews, and then also an image,
+
+167
+00:08:01.380 --> 00:08:03.070
+when you click on it and it will give you an image.
+
+168
+00:08:03.070 --> 00:08:03.903
+Good.
+
+169
+00:08:03.903 --> 00:08:05.760
+So let's move over to the second one
+
+170
+00:08:05.760 --> 00:08:07.510
+which is loop over each beers.
+
+171
+00:08:07.510 --> 00:08:09.050
+So we could do it two ways.
+
+172
+00:08:09.050 --> 00:08:11.500
+We could say beers dot for each,
+
+173
+00:08:11.500 --> 00:08:12.760
+because there is an array.
+
+174
+00:08:12.760 --> 00:08:17.570
+Or you could say for const beer of beers.
+
+175
+00:08:17.570 --> 00:08:18.403
+I'll show you this way.
+
+176
+00:08:18.403 --> 00:08:20.390
+Just cause there's two different ways to loop over thing.
+
+177
+00:08:20.390 --> 00:08:22.280
+Before we did dot for each,
+
+178
+00:08:22.280 --> 00:08:24.303
+here we are using a four of loop.
+
+179
+00:08:25.810 --> 00:08:30.810
+Then inside of that, we need to create a Node for each beer.
+
+180
+00:08:31.110 --> 00:08:33.890
+So it's like const nodeContent
+
+181
+00:08:33.890 --> 00:08:37.330
+is equal to JSON dot stringify.
+
+182
+00:08:37.330 --> 00:08:40.940
+So, we take the object and stringify the single beer.
+
+183
+00:08:40.940 --> 00:08:43.940
+Then we create a second variable called nodeMeta.
+
+184
+00:08:43.940 --> 00:08:46.360
+Because when you create a Node,
+
+185
+00:08:46.360 --> 00:08:50.560
+you need to both give it the actual data
+
+186
+00:08:50.560 --> 00:08:52.250
+that you are gonna be putting in that Node,
+
+187
+00:08:52.250 --> 00:08:54.790
+as well as some Metadata about the data
+
+188
+00:08:55.792 --> 00:08:57.450
+that you are putting in.
+
+189
+00:08:57.450 --> 00:08:59.670
+So that is an object.
+
+190
+00:08:59.670 --> 00:09:03.520
+And we'll say the ID of this Node, right?
+
+191
+00:09:03.520 --> 00:09:05.510
+Because if we are looking here,
+
+192
+00:09:05.510 --> 00:09:07.860
+like these don't have IDs, right?
+
+193
+00:09:07.860 --> 00:09:09.210
+So, if you don't have an ID,
+
+194
+00:09:09.210 --> 00:09:12.130
+you have to make a unique ID that lives inside of Gatsby.
+
+195
+00:09:12.130 --> 00:09:16.060
+And they give us this nice little helper function,
+
+196
+00:09:16.060 --> 00:09:17.250
+called createNodeId.
+
+197
+00:09:17.250 --> 00:09:18.860
+See how we destructured it
+
+198
+00:09:18.860 --> 00:09:20.900
+from the function signature right here.
+
+199
+00:09:20.900 --> 00:09:23.150
+We'll go ahead and use that here.
+
+200
+00:09:23.150 --> 00:09:24.500
+And we will start it.
+
+201
+00:09:24.500 --> 00:09:27.130
+I like to prefix mine with the type of data.
+
+202
+00:09:27.130 --> 00:09:32.130
+So beer dash, and then we'll use the beer.name as the ID.
+
+203
+00:09:34.000 --> 00:09:35.980
+Then we say, parent is null.
+
+204
+00:09:35.980 --> 00:09:38.470
+So, if this was like relational data,
+
+205
+00:09:38.470 --> 00:09:41.960
+like a beer had like a parent beer or something like that,
+
+206
+00:09:41.960 --> 00:09:44.580
+you could link it to another Node
+
+207
+00:09:44.580 --> 00:09:47.740
+similar to have like how pizzas have toppings,
+
+208
+00:09:47.740 --> 00:09:49.420
+how they're related.
+
+209
+00:09:49.420 --> 00:09:50.460
+You could do that.
+
+210
+00:09:50.460 --> 00:09:52.420
+In our case, it's null.
+
+211
+00:09:52.420 --> 00:09:53.253
+Also same thing.
+
+212
+00:09:53.253 --> 00:09:54.900
+Children is going to be an empty array.
+
+213
+00:09:54.900 --> 00:09:56.960
+There are no children beers.
+
+214
+00:09:56.960 --> 00:10:00.980
+And then there's also an internal sub object
+
+215
+00:10:00.980 --> 00:10:02.180
+that lives inside of that,
+
+216
+00:10:02.180 --> 00:10:05.293
+where we give it a type of capital B, Beer.
+
+217
+00:10:07.020 --> 00:10:11.790
+And that is going to specify our query name.
+
+218
+00:10:11.790 --> 00:10:13.140
+I'll show you that in a second.
+
+219
+00:10:13.140 --> 00:10:17.700
+The media type capital T is application,
+
+220
+00:10:17.700 --> 00:10:18.940
+forward slash JSON.
+
+221
+00:10:18.940 --> 00:10:21.260
+Why? Because when you're sourcing Nodes,
+
+222
+00:10:21.260 --> 00:10:23.920
+it could be images, it could be marked down,
+
+223
+00:10:23.920 --> 00:10:24.753
+it could be anything.
+
+224
+00:10:24.753 --> 00:10:26.460
+In our case, we are saying it's JSON.
+
+225
+00:10:27.450 --> 00:10:29.550
+And the only reason we put this here
+
+226
+00:10:29.550 --> 00:10:32.240
+is so that other plugins that are looking
+
+227
+00:10:32.240 --> 00:10:34.927
+for that type of media, can find it.
+
+228
+00:10:34.927 --> 00:10:37.283
+We aren't using that, but sometimes
+
+229
+00:10:37.283 --> 00:10:39.650
+you source something like markdown,
+
+230
+00:10:39.650 --> 00:10:42.760
+and then you use another plugin to parse that mark down.
+
+231
+00:10:42.760 --> 00:10:45.000
+And by setting the media type here,
+
+232
+00:10:45.000 --> 00:10:48.590
+other plugins will be able to find the type of media
+
+233
+00:10:48.590 --> 00:10:50.420
+that it's looking for.
+
+234
+00:10:50.420 --> 00:10:53.680
+And then the contentDigest,
+
+235
+00:10:56.070 --> 00:10:59.630
+is createContentDigest.
+
+236
+00:10:59.630 --> 00:11:01.060
+And we pass it the beer.
+
+237
+00:11:01.060 --> 00:11:03.950
+And that is just an internal thing in Gatsby.
+
+238
+00:11:03.950 --> 00:11:07.530
+So it knows if the data has changed or not.
+
+239
+00:11:07.530 --> 00:11:09.350
+So, you can look up the docs for that,
+
+240
+00:11:09.350 --> 00:11:11.190
+but you just kinda have to do that in every single one.
+
+241
+00:11:11.190 --> 00:11:15.380
+Okay. So, we created the actual nodeContent,
+
+242
+00:11:15.380 --> 00:11:18.200
+and then we also created a bunch of Metadata about it.
+
+243
+00:11:18.200 --> 00:11:22.053
+The final thing we need to do here is take our actions,
+
+244
+00:11:25.730 --> 00:11:29.430
+and run the Createnode method.
+
+245
+00:11:29.430 --> 00:11:31.310
+And that will take an object
+
+246
+00:11:31.310 --> 00:11:33.200
+with those two things we just created.
+
+247
+00:11:33.200 --> 00:11:35.680
+So, it's really just one object, right?
+
+248
+00:11:35.680 --> 00:11:37.750
+It's the nodeMeta and the nodeContent,
+
+249
+00:11:37.750 --> 00:11:39.340
+but it goes into one object.
+
+250
+00:11:39.340 --> 00:11:40.870
+So, we'll spread it in there.
+
+251
+00:11:40.870 --> 00:11:41.790
+We'll take the beer.
+
+252
+00:11:41.790 --> 00:11:45.380
+And we also spread in the nodeMeta.
+
+253
+00:11:45.380 --> 00:11:47.700
+And, I'm just looking at that.
+
+254
+00:11:47.700 --> 00:11:50.040
+Actually, we don't even need this.
+
+255
+00:11:50.040 --> 00:11:52.630
+For some reason, I thought we needed this.
+
+256
+00:11:52.630 --> 00:11:53.650
+No, we don't need it.
+
+257
+00:11:53.650 --> 00:11:54.870
+Okay. Sorry.
+
+258
+00:11:54.870 --> 00:11:58.230
+The two pieces that we need are not nodeMeta nodeContent.
+
+259
+00:11:58.230 --> 00:12:00.910
+It's nodeMeta and the actual beer itself.
+
+260
+00:12:00.910 --> 00:12:01.940
+The singular beer.
+
+261
+00:12:01.940 --> 00:12:04.810
+So, founders all day IPA,
+
+262
+00:12:04.810 --> 00:12:06.450
+and all of the data that goes along with that.
+
+263
+00:12:06.450 --> 00:12:10.690
+So, with that comment above there,
+
+264
+00:12:10.690 --> 00:12:11.900
+give it a save.
+
+265
+00:12:11.900 --> 00:12:16.160
+Now let's rerun our NPM start.
+
+266
+00:12:16.160 --> 00:12:17.750
+And once this has finished,
+
+267
+00:12:17.750 --> 00:12:20.290
+we should be able to go to our GraphQL API,
+
+268
+00:12:20.290 --> 00:12:23.330
+and be able to see the data in that API
+
+269
+00:12:23.330 --> 00:12:26.590
+as well as some additional queries that were created for us.
+
+270
+00:12:26.590 --> 00:12:27.423
+Boom.
+
+271
+00:12:27.423 --> 00:12:28.753
+So, GraphQL API.
+
+272
+00:12:31.080 --> 00:12:32.260
+Let's get rid of this.
+
+273
+00:12:32.260 --> 00:12:35.210
+Let's go to our Explorer. Look at this.
+
+274
+00:12:35.210 --> 00:12:38.150
+So if you click on Explorer right here,
+
+275
+00:12:38.150 --> 00:12:39.610
+you see, all beer.
+
+276
+00:12:39.610 --> 00:12:44.167
+And why? Because the type was specified right here,
+
+277
+00:12:44.167 --> 00:12:48.330
+and Gatsby will automatically make two queries for you.
+
+278
+00:12:48.330 --> 00:12:52.860
+All beer, and singular beer, which is great.
+
+279
+00:12:52.860 --> 00:12:56.640
+And then it gives you the ability to filter,
+
+280
+00:12:56.640 --> 00:13:01.330
+and give you Nodes, and all kinds of really neat info.
+
+281
+00:13:01.330 --> 00:13:02.163
+I really liked that.
+
+282
+00:13:02.163 --> 00:13:05.250
+So, I we'll say all beer, Nodes,
+
+283
+00:13:05.250 --> 00:13:06.960
+and for each Node there,
+
+284
+00:13:06.960 --> 00:13:11.960
+we want the name, the price, the rating,
+
+285
+00:13:12.780 --> 00:13:13.860
+and then for the rating,
+
+286
+00:13:13.860 --> 00:13:17.220
+we want the reviews, and the average, right?
+
+287
+00:13:17.220 --> 00:13:21.490
+That's so cool because in a lot of GraphQL APIs,
+
+288
+00:13:21.490 --> 00:13:24.940
+you have to explicitly type out all of the fields.
+
+289
+00:13:24.940 --> 00:13:27.140
+With Gatsby, you just give it some data
+
+290
+00:13:27.140 --> 00:13:29.390
+and it will figure out all this for you.
+
+291
+00:13:29.390 --> 00:13:30.423
+Then we'll go ahead and run it.
+
+292
+00:13:30.423 --> 00:13:33.660
+And you see, now this data is being pulled in
+
+293
+00:13:33.660 --> 00:13:37.040
+to our GraphQL API for us, based on
+
+294
+00:13:37.040 --> 00:13:39.230
+whatever pieces of information
+
+295
+00:13:40.750 --> 00:13:42.570
+that we want are being pulled in.
+
+296
+00:13:42.570 --> 00:13:45.390
+And, I think that's so cool because,
+
+297
+00:13:45.390 --> 00:13:50.190
+the difference between writing a plugin for Gatsby
+
+298
+00:13:50.190 --> 00:13:55.190
+and just writing it in your Gatsby.GatsbynoJS, is nothing.
+
+299
+00:13:56.170 --> 00:14:00.360
+Like if you were to crack open the sanity source plugin,
+
+300
+00:14:00.360 --> 00:14:03.210
+you'll see that they're just doing this exact same thing.
+
+301
+00:14:03.210 --> 00:14:05.660
+They are going grabbing some data,
+
+302
+00:14:05.660 --> 00:14:07.450
+they are looping over that data
+
+303
+00:14:07.450 --> 00:14:10.870
+and then putting it into your GraphQL API for you.
+
+304
+00:14:10.870 --> 00:14:12.650
+So that part is done.
+
+305
+00:14:12.650 --> 00:14:13.720
+In the next video, what we'll do
+
+306
+00:14:13.720 --> 00:14:16.710
+is we'll write some queries to actually pull this into
+
+307
+00:14:16.710 --> 00:14:17.690
+our beer's page.
+
+308
+00:14:17.690 --> 00:14:19.700
+So we'd go ahead and display it.
+
+309
+00:14:19.700 --> 00:14:21.680
+So maybe that's a little challenge to you.
+
+310
+00:14:21.680 --> 00:14:23.040
+Try to make a beer's page,
+
+311
+00:14:23.040 --> 00:14:25.840
+query all the beers, and then display them
+
+312
+00:14:25.840 --> 00:14:29.040
+based on if they have a photo or not,
+
+313
+00:14:29.040 --> 00:14:31.553
+as well as the rating of that.
+

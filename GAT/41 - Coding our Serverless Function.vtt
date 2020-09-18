@@ -1,0 +1,1142 @@
+﻿WEBVTT
+
+1
+00:00:00.065 --> 00:00:02.565
+(intro music)
+
+2
+00:00:05.250 --> 00:00:06.900
+<v ->Into the serverless function again</v>
+
+3
+00:00:06.900 --> 00:00:08.960
+and write the code that will validate the data
+
+4
+00:00:08.960 --> 00:00:11.980
+as well as send it off to the email.
+
+5
+00:00:11.980 --> 00:00:16.060
+So we're going to open up our placeOrder.js.
+
+6
+00:00:16.060 --> 00:00:18.890
+And we'll go down to our handler here.
+
+7
+00:00:18.890 --> 00:00:21.980
+And above that, let's write some stuff that needs to happen.
+
+8
+00:00:21.980 --> 00:00:24.390
+We need to validate
+
+9
+00:00:24.390 --> 00:00:27.193
+the data coming in is correct.
+
+10
+00:00:28.210 --> 00:00:31.060
+We also need to send the email
+
+11
+00:00:31.060 --> 00:00:33.460
+and then we need to
+
+12
+00:00:33.460 --> 00:00:36.226
+send the success or error message
+
+13
+00:00:36.226 --> 00:00:38.020
+depending on what happened.
+
+14
+00:00:38.020 --> 00:00:39.690
+Okay. So first let's validate the data.
+
+15
+00:00:39.690 --> 00:00:42.510
+So, we'll make an array here of required fields.
+
+16
+00:00:42.510 --> 00:00:44.850
+So, const required,
+
+17
+00:00:44.850 --> 00:00:46.270
+fields is equal to,
+
+18
+00:00:46.270 --> 00:00:48.800
+we want to make sure that they send us an email,
+
+19
+00:00:48.800 --> 00:00:51.340
+and we want to make sure that there is a name
+
+20
+00:00:51.340 --> 00:00:53.320
+and that they gave us an order.
+
+21
+00:00:53.320 --> 00:00:55.540
+So what we'll do is we'll loop over each of these
+
+22
+00:00:55.540 --> 00:00:57.200
+and if we're missing any of them,
+
+23
+00:00:57.200 --> 00:00:59.930
+we'll send an error back for that.
+
+24
+00:00:59.930 --> 00:01:03.840
+Now, normally for arrays, I like to use a .for-each,
+
+25
+00:01:03.840 --> 00:01:08.620
+but because we need to return from this function,
+
+26
+00:01:08.620 --> 00:01:10.990
+using a for-each would create another function scope,
+
+27
+00:01:10.990 --> 00:01:13.860
+and you can't return from a inner scope of an outer scope.
+
+28
+00:01:13.860 --> 00:01:16.510
+So what we'll use here is a for-of loop.
+
+29
+00:01:16.510 --> 00:01:17.350
+So say for
+
+30
+00:01:18.330 --> 00:01:19.840
+const field of
+
+31
+00:01:19.840 --> 00:01:21.480
+required
+
+32
+00:01:21.480 --> 00:01:22.313
+fields.
+
+33
+00:01:23.470 --> 00:01:26.130
+And then let's just console log, checking.
+
+34
+00:01:26.130 --> 00:01:28.360
+Maybe I'll do back ticks to checking. That
+
+35
+00:01:30.160 --> 00:01:31.710
+field
+
+36
+00:01:31.710 --> 00:01:32.543
+is good.
+
+37
+00:01:33.450 --> 00:01:36.910
+Okay. Now we'll go to our terminal here.
+
+38
+00:01:36.910 --> 00:01:39.630
+Clear it out, submit this.
+
+39
+00:01:39.630 --> 00:01:41.070
+That's fine that it broke.
+
+40
+00:01:41.070 --> 00:01:42.920
+Just cause we haven't sent a reply back
+
+41
+00:01:42.920 --> 00:01:45.053
+But we should at least see,
+
+42
+00:01:46.600 --> 00:01:49.320
+the fact that this function is running
+
+43
+00:01:49.320 --> 00:01:50.153
+in our console.
+
+44
+00:01:50.153 --> 00:01:51.327
+So maybe we have to kill it
+
+45
+00:01:51.327 --> 00:01:54.530
+and run NPM run nullify once more.
+
+46
+00:01:54.530 --> 00:01:55.610
+Let's try it again.
+
+47
+00:01:55.610 --> 00:01:58.730
+Refresh, add some things to your order.
+
+48
+00:01:58.730 --> 00:02:02.010
+Make sure you don't fill out email or name.
+
+49
+00:02:02.010 --> 00:02:03.440
+Click it.
+
+50
+00:02:03.440 --> 00:02:04.760
+Boom. Okay, there we go.
+
+51
+00:02:04.760 --> 00:02:05.997
+So we did need to restart it.
+
+52
+00:02:05.997 --> 00:02:09.180
+Sometimes it seems like a lot in this course.
+
+53
+00:02:09.180 --> 00:02:10.930
+You just need to restart the thing.
+
+54
+00:02:12.100 --> 00:02:13.607
+So what happened here is
+
+55
+00:02:13.607 --> 00:02:14.920
+you check that email is good,
+
+56
+00:02:14.920 --> 00:02:16.303
+name and order. Okay. Cool.
+
+57
+00:02:17.530 --> 00:02:19.490
+All right. So next I want to check
+
+58
+00:02:19.490 --> 00:02:21.190
+that the data is actually being sent
+
+59
+00:02:21.190 --> 00:02:24.223
+from our used pizza hook right here,
+
+60
+00:02:24.223 --> 00:02:26.500
+and then we can accept it on this end.
+
+61
+00:02:26.500 --> 00:02:29.880
+So the way that you get the body of the request
+
+62
+00:02:29.880 --> 00:02:32.850
+is you just console.log event.body,
+
+63
+00:02:32.850 --> 00:02:36.220
+and that should give us what's being sent over.
+
+64
+00:02:36.220 --> 00:02:38.940
+So I believe, now I just add something.
+
+65
+00:02:38.940 --> 00:02:40.333
+Go ahead and order ahead.
+
+66
+00:02:41.240 --> 00:02:43.623
+We get object object.
+
+67
+00:02:44.650 --> 00:02:45.670
+That, whenever you see that,
+
+68
+00:02:45.670 --> 00:02:48.180
+that means that your object was turned to a string
+
+69
+00:02:48.180 --> 00:02:50.960
+without properly being stringified.
+
+70
+00:02:50.960 --> 00:02:52.660
+So I,
+
+71
+00:02:52.660 --> 00:02:54.900
+what I'll do here is I'll go into our network tab,
+
+72
+00:02:54.900 --> 00:02:58.150
+refresh the page, go to your network tab,
+
+73
+00:02:58.150 --> 00:02:59.323
+clear it all out,
+
+74
+00:03:00.620 --> 00:03:01.580
+try to run it
+
+75
+00:03:04.380 --> 00:03:06.793
+and see what happens here. Options?
+
+76
+00:03:12.070 --> 00:03:13.063
+Oh, here we go.
+
+77
+00:03:14.280 --> 00:03:17.210
+Cores is missing. Oh, you know what?
+
+78
+00:03:17.210 --> 00:03:20.850 line:15% 
+I'm on localhost:8000. That should be 8888
+
+79
+00:03:20.850 --> 00:03:22.930
+in order for it to work properly.
+
+80
+00:03:22.930 --> 00:03:24.463
+Okay. Clear it out again.
+
+81
+00:03:25.380 --> 00:03:26.280
+Add something
+
+82
+00:03:27.700 --> 00:03:29.080
+and go ahead and order.
+
+83
+00:03:29.080 --> 00:03:30.510
+Actually I'm going to clear out my console.
+
+84
+00:03:30.510 --> 00:03:32.890
+So I can see just this request.
+
+85
+00:03:32.890 --> 00:03:34.110
+There we go.
+
+86
+00:03:34.110 --> 00:03:35.349
+Look at this.
+
+87
+00:03:35.349 --> 00:03:37.637
+The event
+
+88
+00:03:37.637 --> 00:03:39.050
+.body,
+
+89
+00:03:39.050 --> 00:03:40.290
+is this,
+
+90
+00:03:40.290 --> 00:03:41.123
+is coming in.
+
+91
+00:03:41.123 --> 00:03:44.110
+It's actually a string, not
+
+92
+00:03:44.110 --> 00:03:45.320
+an actual object.
+
+93
+00:03:45.320 --> 00:03:49.215
+So if we want to turn it into an object, we can do this.
+
+94
+00:03:49.215 --> 00:03:51.520
+Const body is equal to
+
+95
+00:03:51.520 --> 00:03:52.370
+JSON
+
+96
+00:03:53.250 --> 00:03:54.250
+dot
+
+97
+00:03:54.250 --> 00:03:55.120
+parse
+
+98
+00:03:55.120 --> 00:03:56.360
+event.body
+
+99
+00:03:56.360 --> 00:03:58.580
+Again, remember we, we stringified-ed it,
+
+100
+00:03:58.580 --> 00:04:01.210
+stringefied-ed it here.
+
+101
+00:04:01.210 --> 00:04:03.500
+And then we turn it back into an object
+
+102
+00:04:03.500 --> 00:04:07.000
+by parsing it into a variable called body.
+
+103
+00:04:07.000 --> 00:04:08.890
+And that will allow us. Here watch.
+
+104
+00:04:08.890 --> 00:04:11.150
+Now, if we console.log, the body
+
+105
+00:04:13.560 --> 00:04:14.530
+variable,
+
+106
+00:04:14.530 --> 00:04:16.270
+we should see it nicely formatted.
+
+107
+00:04:16.270 --> 00:04:18.180
+Similar to this.
+
+108
+00:04:18.180 --> 00:04:21.260
+I had a zero on there. Take the zero off,
+
+109
+00:04:21.260 --> 00:04:24.860
+add this, go ahead and let's clear it out.
+
+110
+00:04:24.860 --> 00:04:26.910
+Boom, order ahead.
+
+111
+00:04:26.910 --> 00:04:29.210
+And there is our entire order.
+
+112
+00:04:29.210 --> 00:04:32.010
+You also see that name and email are there.
+
+113
+00:04:32.010 --> 00:04:35.450
+So what we want to do is loop through these order,
+
+114
+00:04:35.450 --> 00:04:36.990
+name, and email
+
+115
+00:04:36.990 --> 00:04:39.860
+and make sure that those fields are being sent.
+
+116
+00:04:39.860 --> 00:04:41.350
+So it can say here, if
+
+117
+00:04:42.620 --> 00:04:44.410
+there is no
+
+118
+00:04:44.410 --> 00:04:47.000
+body, square bracket field,
+
+119
+00:04:47.000 --> 00:04:48.250
+then
+
+120
+00:04:48.250 --> 00:04:50.350
+we will return
+
+121
+00:04:50.350 --> 00:04:51.430
+status code
+
+122
+00:04:53.840 --> 00:04:55.720
+400, something went wrong.
+
+123
+00:04:55.720 --> 00:04:57.980
+And the body will say,
+
+124
+00:04:57.980 --> 00:04:59.113
+JSON
+
+125
+00:04:59.113 --> 00:05:00.810
+.stringify,
+
+126
+00:05:00.810 --> 00:05:03.140
+we'll give it a message that says
+
+127
+00:05:04.110 --> 00:05:05.030
+oops,
+
+128
+00:05:05.030 --> 00:05:06.300
+you are
+
+129
+00:05:06.300 --> 00:05:07.133
+missing
+
+130
+00:05:07.990 --> 00:05:08.823
+the
+
+131
+00:05:11.210 --> 00:05:12.500
+field,
+
+132
+00:05:12.500 --> 00:05:13.333
+field.
+
+133
+00:05:15.270 --> 00:05:17.400
+And I know that we can put required on the client,
+
+134
+00:05:17.400 --> 00:05:18.920
+but it's always good to validate.
+
+135
+00:05:18.920 --> 00:05:21.430
+Triple check your data on the server as well.
+
+136
+00:05:21.430 --> 00:05:23.550
+So now I believe
+
+137
+00:05:23.550 --> 00:05:24.520
+we go here
+
+138
+00:05:26.810 --> 00:05:30.150
+and try to submit it without having a name or email
+
+139
+00:05:31.530 --> 00:05:33.553
+clear out this, go ahead and run it.
+
+140
+00:05:36.334 --> 00:05:37.330
+(laughs)
+
+141
+00:05:37.330 --> 00:05:38.950
+It says, go eat.
+
+142
+00:05:38.950 --> 00:05:39.783
+That's cause we haven't...
+
+143
+00:05:39.783 --> 00:05:41.210
+I don't think we've handled it properly.
+
+144
+00:05:41.210 --> 00:05:44.243
+But we should see the response. There we go.
+
+145
+00:05:44.243 --> 00:05:45.730
+The response from this is, oops,
+
+146
+00:05:45.730 --> 00:05:47.530
+you are missing the email field. Okay, good.
+
+147
+00:05:47.530 --> 00:05:51.453
+So our validation of our data is working properly.
+
+148
+00:05:52.410 --> 00:05:55.860
+Next up, all we need to do is to send the email.
+
+149
+00:05:55.860 --> 00:05:58.140
+And before we do that, we need an entire function
+
+150
+00:05:58.140 --> 00:05:59.840
+that will generate the order email.
+
+151
+00:05:59.840 --> 00:06:01.360
+So let's just go up here
+
+152
+00:06:02.266 --> 00:06:06.090
+and we'll say function generate order email
+
+153
+00:06:06.090 --> 00:06:09.270
+that will take in an object with two properties,
+
+154
+00:06:09.270 --> 00:06:10.883
+the order and the total.
+
+155
+00:06:13.050 --> 00:06:15.330
+And then from that, we'll just return back ticks.
+
+156
+00:06:15.330 --> 00:06:17.150
+So we're not in React anymore.
+
+157
+00:06:17.150 --> 00:06:20.160
+So we can't use React on this.
+
+158
+00:06:20.160 --> 00:06:23.190
+There are whole frameworks, you can use React for email.
+
+159
+00:06:23.190 --> 00:06:26.930
+But just regular HTML templating is great.
+
+160
+00:06:26.930 --> 00:06:28.163
+So we'll return a div.
+
+161
+00:06:29.290 --> 00:06:30.963
+And then inside there, h2.
+
+162
+00:06:32.460 --> 00:06:34.300
+Your recent
+
+163
+00:06:34.300 --> 00:06:36.280
+order for
+
+164
+00:06:36.280 --> 00:06:38.310
+I'll put the total in there,
+
+165
+00:06:38.310 --> 00:06:40.340
+paragraph, it'll say, please start walking over.
+
+166
+00:06:40.340 --> 00:06:42.973
+We'll have your order ready in the next 20 minutes.
+
+167
+00:06:44.950 --> 00:06:47.070
+Then here we'll list out what they got for their order.
+
+168
+00:06:47.070 --> 00:06:49.900
+So unordered list, then we'll take
+
+169
+00:06:49.900 --> 00:06:51.940
+the, we'll do dollar sign, curly bracket,
+
+170
+00:06:51.940 --> 00:06:56.280
+we'll take the order and we'll map over each of those items.
+
+171
+00:06:56.280 --> 00:07:00.200
+And for each item, we want to return a list item. Oh.
+
+172
+00:07:00.200 --> 00:07:03.363
+This is not React any longer. So we need back ticks.
+
+173
+00:07:04.270 --> 00:07:06.310
+So list item,
+
+174
+00:07:06.310 --> 00:07:09.800
+then inside each li, we will
+
+175
+00:07:09.800 --> 00:07:12.390
+give ourselves an image tag
+
+176
+00:07:12.390 --> 00:07:15.250
+where the source is equal to
+
+177
+00:07:15.250 --> 00:07:18.220
+the item.thumbnail. Again, this is not React.
+
+178
+00:07:18.220 --> 00:07:20.410
+So the syntax is a little bit different.
+
+179
+00:07:20.410 --> 00:07:23.053
+The alt will be the item.name,
+
+180
+00:07:24.390 --> 00:07:25.740
+and then below that
+
+181
+00:07:27.260 --> 00:07:29.790
+we'll template out the item.size
+
+182
+00:07:32.020 --> 00:07:33.210
+item.name
+
+183
+00:07:34.200 --> 00:07:35.140
+and dash
+
+184
+00:07:37.800 --> 00:07:39.653
+item.price.
+
+185
+00:07:42.060 --> 00:07:43.161
+And then under that.
+
+186
+00:07:43.161 --> 00:07:46.023
+Paragraph, your total is,
+
+187
+00:07:51.150 --> 00:07:53.400
+Oh yeah. Dollar sign for the actual dollar sign
+
+188
+00:07:53.400 --> 00:07:55.860
+and then dollar sign for templating, total
+
+189
+00:07:57.440 --> 00:07:58.943
+due at pickup.
+
+190
+00:07:59.960 --> 00:08:02.620
+Okay. So it's just the regular old function
+
+191
+00:08:02.620 --> 00:08:05.600
+that takes in data and interpolates it for us.
+
+192
+00:08:05.600 --> 00:08:06.770
+Then we can go
+
+193
+00:08:08.220 --> 00:08:09.560
+down here
+
+194
+00:08:09.560 --> 00:08:11.660
+where we have the send email.
+
+195
+00:08:11.660 --> 00:08:14.313
+We can comment this back again.
+
+196
+00:08:17.440 --> 00:08:19.850
+And it will say from, to.
+
+197
+00:08:19.850 --> 00:08:24.850
+So to, we can cc the actual person who ordered it
+
+198
+00:08:25.010 --> 00:08:26.430
+or just put them in the to field.
+
+199
+00:08:26.430 --> 00:08:27.510
+So let's say
+
+200
+00:08:32.840 --> 00:08:34.343
+take the person's name.
+
+201
+00:08:35.350 --> 00:08:36.650
+There also needs to be back ticks
+
+202
+00:08:36.650 --> 00:08:38.720
+in order for this to work. There we go.
+
+203
+00:08:38.720 --> 00:08:40.403
+And then the person's email,
+
+204
+00:08:43.510 --> 00:08:46.210
+This is just the syntax that is needed
+
+205
+00:08:46.210 --> 00:08:48.073
+if you want to do a name and a email.
+
+206
+00:08:50.910 --> 00:08:53.200
+Oh you know what? It's not name and email it's
+
+207
+00:08:53.200 --> 00:08:56.130
+body.name and body.email.
+
+208
+00:08:56.130 --> 00:08:57.100
+Okay.
+
+209
+00:08:57.100 --> 00:09:00.120
+And then the HTML will now be generated.
+
+210
+00:09:00.120 --> 00:09:03.710
+Generate order email, and then you pass it
+
+211
+00:09:03.710 --> 00:09:04.543
+the
+
+212
+00:09:05.470 --> 00:09:07.220
+order, which is
+
+213
+00:09:10.100 --> 00:09:11.700
+body dot
+
+214
+00:09:11.700 --> 00:09:12.790
+order.
+
+215
+00:09:12.790 --> 00:09:15.723
+And the total, which is body.total.
+
+216
+00:09:18.090 --> 00:09:19.823
+I'm getting some red.
+
+217
+00:09:21.293 --> 00:09:22.126
+You know what?
+
+218
+00:09:22.126 --> 00:09:23.200
+This happened to me before.
+
+219
+00:09:23.200 --> 00:09:25.300
+I think this is red,
+
+220
+00:09:25.300 --> 00:09:26.133
+I think it's,
+
+221
+00:09:27.160 --> 00:09:28.890
+there's something in one of these
+
+222
+00:09:28.890 --> 00:09:31.440
+syntax things that's making it
+
+223
+00:09:31.440 --> 00:09:34.200
+think that it's incorrectly highlighted.
+
+224
+00:09:34.200 --> 00:09:36.454
+But I believe this is right. We'll see.
+
+225
+00:09:36.454 --> 00:09:38.570
+So now what we can do
+
+226
+00:09:39.730 --> 00:09:41.510
+is we have this info
+
+227
+00:09:45.290 --> 00:09:47.620
+and here we will return,
+
+228
+00:09:47.620 --> 00:09:52.140
+instead of that, we'll return a status was a success
+
+229
+00:09:52.140 --> 00:09:53.960
+or actually we are gonna say message.
+
+230
+00:09:53.960 --> 00:09:55.510
+'Cause that's what we're using.
+
+231
+00:09:57.220 --> 00:09:58.130
+Okay.
+
+232
+00:09:58.130 --> 00:10:00.150
+So let's try it.
+
+233
+00:10:00.150 --> 00:10:02.973
+Let's go to our order page,
+
+234
+00:10:06.260 --> 00:10:09.250
+Wes. Wes Bos at Gmail.
+
+235
+00:10:09.250 --> 00:10:11.273
+Order a couple of different pizzas.
+
+236
+00:10:14.410 --> 00:10:17.073
+And go ahead and order ahead.
+
+237
+00:10:22.650 --> 00:10:26.653
+Now, we can check our email inbox here.
+
+238
+00:10:32.900 --> 00:10:36.303
+This was our order, just happened right now. Open it up.
+
+239
+00:10:39.020 --> 00:10:42.423
+Your recent order for $146 worth of pizza.
+
+240
+00:10:43.810 --> 00:10:46.410
+And it looks like a medium parent is...
+
+241
+00:10:46.410 --> 00:10:49.390
+It looks like everything is working.
+
+242
+00:10:49.390 --> 00:10:52.310
+We can make this look a little bit nicer.
+
+243
+00:10:52.310 --> 00:10:54.500
+We go to the template here.
+
+244
+00:10:54.500 --> 00:10:56.000
+You can put a
+
+245
+00:10:56.000 --> 00:10:58.033
+strong around that.
+
+246
+00:10:59.740 --> 00:11:03.190
+And then you can also just put style tag
+
+247
+00:11:03.190 --> 00:11:04.190
+right inside of there.
+
+248
+00:11:04.190 --> 00:11:05.623
+And you could say ul,
+
+249
+00:11:07.970 --> 00:11:11.240
+this is a little bit hard to write, but
+
+250
+00:11:11.240 --> 00:11:12.860
+it works.
+
+251
+00:11:12.860 --> 00:11:15.720
+So style tag, ul, list
+
+252
+00:11:15.720 --> 00:11:17.433
+style, none.
+
+253
+00:11:18.659 --> 00:11:20.230
+Take those bullet points off
+
+254
+00:11:21.130 --> 00:11:24.660
+And you could go to town writing CSS for this email
+
+255
+00:11:24.660 --> 00:11:26.300
+and it will all work,
+
+256
+00:11:26.300 --> 00:11:29.180
+but I'm not going to go into that in this course.
+
+257
+00:11:29.180 --> 00:11:31.040
+Let's just try it once more.
+
+258
+00:11:31.040 --> 00:11:32.783
+Go to order ahead.
+
+259
+00:11:32.783 --> 00:11:34.150
+Wes.
+
+260
+00:11:34.150 --> 00:11:34.983
+Wes Bos
+
+261
+00:11:36.111 --> 00:11:37.536
+Wes Bos at Gmail.
+
+262
+00:11:37.536 --> 00:11:40.194
+(doot sounds)
+
+263
+00:11:40.194 --> 00:11:42.210
+(got-item tune)
+
+264
+00:11:42.210 --> 00:11:44.250
+Lots of pizza.
+
+265
+00:11:44.250 --> 00:11:45.930
+Go ahead and order it.
+
+266
+00:11:45.930 --> 00:11:47.013
+Go check our email.
+
+267
+00:11:53.440 --> 00:11:55.773
+There it is. Just showed up.
+
+268
+00:11:59.490 --> 00:12:01.470
+Beautiful. Oh, one last thing
+
+269
+00:12:01.470 --> 00:12:03.200
+is this comma right here
+
+270
+00:12:04.110 --> 00:12:06.840
+is because when you map over things
+
+271
+00:12:06.840 --> 00:12:09.450
+in just regular JavaScript,
+
+272
+00:12:09.450 --> 00:12:11.000
+it will automatically join them
+
+273
+00:12:11.000 --> 00:12:12.630
+with a comma so we can put a
+
+274
+00:12:12.630 --> 00:12:15.470
+join nothing on the end there.
+
+275
+00:12:15.470 --> 00:12:18.817
+And that will take the comma out for us.
+
+276
+00:12:18.817 --> 00:12:22.560
+$277 worth of pizza. Beautiful. Okay.
+
+277
+00:12:22.560 --> 00:12:25.000
+There's a couple of little things here and there.
+
+278
+00:12:25.000 --> 00:12:28.710
+Obviously this thing just assumes that everything is fine
+
+279
+00:12:28.710 --> 00:12:30.480
+as soon as it fires.
+
+280
+00:12:30.480 --> 00:12:31.660
+But, what we should be doing
+
+281
+00:12:31.660 --> 00:12:34.050
+is we should be putting a loading state on there,
+
+282
+00:12:34.050 --> 00:12:36.760
+waiting for the message to come back and displaying that
+
+283
+00:12:36.760 --> 00:12:38.680
+as well as if anything goes wrong,
+
+284
+00:12:38.680 --> 00:12:42.470
+we should be getting, displaying the error to the user.
+
+285
+00:12:42.470 --> 00:12:44.520
+So we'll clean that up in the next video.
+

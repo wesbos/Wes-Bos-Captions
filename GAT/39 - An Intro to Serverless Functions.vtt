@@ -1,0 +1,1350 @@
+﻿WEBVTT
+
+1
+00:00:00.020 --> 00:00:02.603
+(cheery music)
+
+2
+00:00:03.850 --> 00:00:04.683
+<v Instructor>All right, in this video,</v>
+
+3
+00:00:04.683 --> 00:00:06.960
+we're going to start talking about serverless functions.
+
+4
+00:00:06.960 --> 00:00:09.187
+So the thing about Gatsby is that
+
+5
+00:00:09.187 --> 00:00:11.910
+when you build Gatsby it just kicks it out
+
+6
+00:00:11.910 --> 00:00:14.850
+to HTML pages, CSS files,
+
+7
+00:00:14.850 --> 00:00:18.286
+and JavaScript in order to handle the page transitions
+
+8
+00:00:18.286 --> 00:00:21.080
+and then any other custom functionality that we create.
+
+9
+00:00:21.080 --> 00:00:25.510
+But if you need to do something on the back end,
+
+10
+00:00:25.510 --> 00:00:26.760
+you can't really do that.
+
+11
+00:00:26.760 --> 00:00:29.530
+Like we have sanity and that handles almost all
+
+12
+00:00:29.530 --> 00:00:32.150
+of our use cases for creating and updating
+
+13
+00:00:32.150 --> 00:00:33.550
+and pulling in data.
+
+14
+00:00:33.550 --> 00:00:36.620
+But what if you need to do something like send email.
+
+15
+00:00:36.620 --> 00:00:38.720
+That has to happen on the server side
+
+16
+00:00:38.720 --> 00:00:43.720
+and when you reach a point in your website where you say,
+
+17
+00:00:44.237 --> 00:00:46.065
+"okay I need to make a contact form.
+
+18
+00:00:46.065 --> 00:00:47.220
+I wanna send an email,
+
+19
+00:00:47.220 --> 00:00:50.760
+or I wanna do something on the server side."
+
+20
+00:00:50.760 --> 00:00:53.650
+We're sort of out of luck with Gatsby.
+
+21
+00:00:53.650 --> 00:00:55.440
+However, Gatsby works very well
+
+22
+00:00:55.440 --> 00:00:57.410
+with something called serverless functions.
+
+23
+00:00:57.410 --> 00:01:00.057
+Now serverless functions are very similar
+
+24
+00:01:00.057 --> 00:01:02.730
+to just running a node server.
+
+25
+00:01:02.730 --> 00:01:05.590
+Except that instead of running an entire server
+
+26
+00:01:05.590 --> 00:01:07.900
+what that does lots and lots of stuff.
+
+27
+00:01:07.900 --> 00:01:10.600
+A serverless function is just a function
+
+28
+00:01:10.600 --> 00:01:14.090
+that does one thing and then shuts itself down
+
+29
+00:01:14.090 --> 00:01:16.530
+after the fact and you could use serverless functions
+
+30
+00:01:16.530 --> 00:01:18.920
+with literally any framework out there,
+
+31
+00:01:18.920 --> 00:01:21.860
+you just have to have a URL that you can ping
+
+32
+00:01:21.860 --> 00:01:25.250
+but we are going to be using Netlify functions
+
+33
+00:01:25.250 --> 00:01:28.850
+because Netlify does a really good job at hosting Gatsby.
+
+34
+00:01:28.850 --> 00:01:30.570
+And another part of their offering
+
+35
+00:01:30.570 --> 00:01:32.300
+is hosting serverless functions.
+
+36
+00:01:32.300 --> 00:01:35.150
+So all the code that we're going to write here today,
+
+37
+00:01:35.150 --> 00:01:36.743
+it's just gonna be a regular, no JS code.
+
+38
+00:01:36.743 --> 00:01:38.610
+You can host these serverless functions
+
+39
+00:01:38.610 --> 00:01:39.720
+wherever you want.
+
+40
+00:01:39.720 --> 00:01:41.700
+Netlify makes it really easy.
+
+41
+00:01:41.700 --> 00:01:42.836
+Both locally development,
+
+42
+00:01:42.836 --> 00:01:44.760
+as well as when we deploy it.
+
+43
+00:01:44.760 --> 00:01:48.760
+So let's get started with that.
+
+44
+00:01:48.760 --> 00:01:51.510
+First thing we wanna do is make a new folder.
+
+45
+00:01:51.510 --> 00:01:53.140
+If you don't already have a folder
+
+46
+00:01:53.140 --> 00:01:56.330
+in the very root called functions,
+
+47
+00:01:56.330 --> 00:02:00.370
+we need to create a netlify.toml file
+
+48
+00:02:00.370 --> 00:02:01.690
+in the root of our directory.
+
+49
+00:02:01.690 --> 00:02:03.073
+So netlify.toml
+
+50
+00:02:04.630 --> 00:02:07.560
+and we need to tell it where those functions are living.
+
+51
+00:02:07.560 --> 00:02:09.730
+So it works like this,
+
+52
+00:02:09.730 --> 00:02:14.730
+do square brackets build and then this is important, tab,
+
+53
+00:02:15.410 --> 00:02:20.410
+functions is equal to quotes functions forward slash,
+
+54
+00:02:21.918 --> 00:02:23.990
+and that will just tell it where the functions are.
+
+55
+00:02:23.990 --> 00:02:26.820
+Now, take a look at your package jason.
+
+56
+00:02:26.820 --> 00:02:31.760
+We've been running NPM start which runs NPM develop
+
+57
+00:02:31.760 --> 00:02:34.410
+and then that internal run Gatsby develop.
+
+58
+00:02:34.410 --> 00:02:37.570
+We need to now run NPM run Netlify
+
+59
+00:02:37.570 --> 00:02:40.020
+which will run Netlify dev.
+
+60
+00:02:40.020 --> 00:02:44.930
+And that will both under the hood run our NPM run start
+
+61
+00:02:44.930 --> 00:02:48.680
+but it will also set itself up properly
+
+62
+00:02:48.680 --> 00:02:51.600
+for running our serverless functions.
+
+63
+00:02:51.600 --> 00:02:56.600
+So let's go back to our Gatsby directory here,
+
+64
+00:02:57.350 --> 00:02:58.470
+killed the build.
+
+65
+00:02:58.470 --> 00:03:01.840
+You should see nothing is working right now
+
+66
+00:03:01.840 --> 00:03:04.083
+in NPM run Netlify.
+
+67
+00:03:06.090 --> 00:03:11.090
+And it runs Netlify dev and it should give us a URL.
+
+68
+00:03:11.760 --> 00:03:13.180
+There we go, local hosts eight,
+
+69
+00:03:13.180 --> 00:03:14.013
+eight, eight, eight.
+
+70
+00:03:14.013 --> 00:03:17.780
+So that is the URL in which we are now going
+
+71
+00:03:17.780 --> 00:03:19.560
+to be running our website off of.
+
+72
+00:03:19.560 --> 00:03:22.430
+It previously was local hosts 8,000
+
+73
+00:03:22.430 --> 00:03:25.280
+but Netlify dev will proxy our Gatsby website.
+
+74
+00:03:25.280 --> 00:03:27.660
+And look it's doing all the regular Gatsby stuff
+
+75
+00:03:27.660 --> 00:03:29.450
+for us under the hood.
+
+76
+00:03:29.450 --> 00:03:34.056
+So make sure that you go to the local host eight,
+
+77
+00:03:34.056 --> 00:03:35.950
+eight, eight, eight.
+
+78
+00:03:35.950 --> 00:03:37.650
+While that starts up,
+
+79
+00:03:37.650 --> 00:03:38.490
+eventually, actually we should
+
+80
+00:03:38.490 --> 00:03:41.040
+just see our Gatsby website pop up here.
+
+81
+00:03:41.040 --> 00:03:43.500
+We wanna make our first serverless function.
+
+82
+00:03:43.500 --> 00:03:46.330
+So go into your functions and for each of the functions
+
+83
+00:03:46.330 --> 00:03:48.980
+that we have you wanna create a new folder.
+
+84
+00:03:48.980 --> 00:03:50.483
+Let's just say, hello.
+
+85
+00:03:51.440 --> 00:03:55.260
+And then inside of that, you need to make a JS file
+
+86
+00:03:55.260 --> 00:03:59.170
+that is the same name as the folder that it's in.
+
+87
+00:03:59.170 --> 00:04:02.730
+So the folders name, hello, the JavaScript name is hello.
+
+88
+00:04:02.730 --> 00:04:06.640
+And in here you code what is referred to as a handler.
+
+89
+00:04:06.640 --> 00:04:09.220
+Now these handlers are just no JS.
+
+90
+00:04:09.220 --> 00:04:13.480
+They're actually Amazon serverless functions under the hood.
+
+91
+00:04:13.480 --> 00:04:16.260
+So if you ever looking for any documentation on this,
+
+92
+00:04:16.260 --> 00:04:19.470
+I found that the Netlify docs weren't the best for this
+
+93
+00:04:19.470 --> 00:04:21.690 line:15%
+because you can just go straight
+
+94
+00:04:21.690 --> 00:04:25.340 line:15%
+to the Amazon serverless functions
+
+95
+00:04:25.340 --> 00:04:27.620 line:15%
+and it will give you the same things for that.
+
+96
+00:04:27.620 --> 00:04:32.470
+So we say exports dot handler is equal to,
+
+97
+00:04:32.470 --> 00:04:35.950
+it's an a sync function, and we get two arguments.
+
+98
+00:04:35.950 --> 00:04:39.320
+We get the event that happened and the context.
+
+99
+00:04:39.320 --> 00:04:40.660
+And then back from that,
+
+100
+00:04:40.660 --> 00:04:44.230
+we will return status code.
+
+101
+00:04:44.230 --> 00:04:45.063
+Oh no.
+
+102
+00:04:45.063 --> 00:04:49.660
+We return an object where the status code is 200
+
+103
+00:04:49.660 --> 00:04:52.770
+and the body is going to say hello or whatever
+
+104
+00:04:52.770 --> 00:04:53.603
+it is that you want.
+
+105
+00:04:53.603 --> 00:04:55.560
+You can also console log the event up here.
+
+106
+00:04:55.560 --> 00:04:58.650
+If you want to see what's going on.
+
+107
+00:04:58.650 --> 00:05:01.930
+Now in order to visit this URL, hello dot JS.
+
+108
+00:05:01.930 --> 00:05:03.690
+We go to local host eight, eight,
+
+109
+00:05:03.690 --> 00:05:07.380
+eight forward slash dot Netlify.
+
+110
+00:05:07.380 --> 00:05:12.174
+Forward slash functions and then forward slash hello.
+
+111
+00:05:12.174 --> 00:05:15.190
+And oh, it says not function not found.
+
+112
+00:05:15.190 --> 00:05:16.363
+Let's take a look here.
+
+113
+00:05:17.690 --> 00:05:20.563
+A Netlify functions low, okay.
+
+114
+00:05:22.540 --> 00:05:24.610
+So it is telling us that we went
+
+115
+00:05:24.610 --> 00:05:26.223
+to forward slash low.
+
+116
+00:05:27.290 --> 00:05:29.053
+That should work.
+
+117
+00:05:30.400 --> 00:05:31.930
+Sometimes you need to restart it.
+
+118
+00:05:31.930 --> 00:05:34.350
+Let's try and give it a restart.
+
+119
+00:05:34.350 --> 00:05:36.240
+All right, it's up and running refresh.
+
+120
+00:05:36.240 --> 00:05:37.160
+There we go, hello.
+
+121
+00:05:37.160 --> 00:05:38.990
+So just needed a bit of a restart.
+
+122
+00:05:38.990 --> 00:05:40.865
+Sometimes things need that.
+
+123
+00:05:40.865 --> 00:05:44.310
+And that is the very basics of a serverless function.
+
+124
+00:05:44.310 --> 00:05:47.990
+Now inside of this file right here,
+
+125
+00:05:47.990 --> 00:05:49.930
+you can return really anything you want.
+
+126
+00:05:49.930 --> 00:05:52.010
+So you can npm install any package.
+
+127
+00:05:52.010 --> 00:05:54.730
+You can require anything.
+
+128
+00:05:54.730 --> 00:05:55.770
+You can parse anything.
+
+129
+00:05:55.770 --> 00:05:56.603
+And at the end of the day,
+
+130
+00:05:56.603 --> 00:06:00.010
+you can finally just return the data that you want.
+
+131
+00:06:00.010 --> 00:06:01.540
+So what we're gonna be doing is
+
+132
+00:06:01.540 --> 00:06:04.780
+we're gonna be creating a serverless function
+
+133
+00:06:04.780 --> 00:06:06.640
+called place order.
+
+134
+00:06:06.640 --> 00:06:10.470
+And that is going to use node mailer to actually hook up
+
+135
+00:06:10.470 --> 00:06:14.460
+to an external email service and send those emails out.
+
+136
+00:06:14.460 --> 00:06:16.810
+So go into our functions folder here,
+
+137
+00:06:16.810 --> 00:06:20.313
+and we'll make a new folder called place order,
+
+138
+00:06:22.290 --> 00:06:27.290
+and we'll make a place order dot JS inside of there.
+
+139
+00:06:27.410 --> 00:06:32.410
+Now sometimes your serverless functions are so big
+
+140
+00:06:32.460 --> 00:06:34.140
+or you want them to be their own thing
+
+141
+00:06:34.140 --> 00:06:36.820
+that you wanna have your own package jason
+
+142
+00:06:36.820 --> 00:06:38.610
+for a serverless function.
+
+143
+00:06:38.610 --> 00:06:41.860
+Now Netlify makes it really simple where if you want,
+
+144
+00:06:41.860 --> 00:06:44.363
+you can use packages in your,
+
+145
+00:06:45.350 --> 00:06:46.513
+in this package, jason.
+
+146
+00:06:47.440 --> 00:06:48.878
+However if you want it to,
+
+147
+00:06:48.878 --> 00:06:51.210
+you can have your own package jason just
+
+148
+00:06:51.210 --> 00:06:52.260
+for this place order.
+
+149
+00:06:52.260 --> 00:06:54.660
+And I think that makes a lot of sense
+
+150
+00:06:54.660 --> 00:06:55.920
+for your functions that you have.
+
+151
+00:06:55.920 --> 00:06:59.910
+So what I want to do is I'm gonna open up a new tab.
+
+152
+00:06:59.910 --> 00:07:04.910
+So leave your NPM run Netlify running,
+
+153
+00:07:05.430 --> 00:07:07.810
+and we're going to go to Z master.
+
+154
+00:07:07.810 --> 00:07:09.840
+So I'm gonna go to my master Gatsby.
+
+155
+00:07:09.840 --> 00:07:11.420
+I'm gonna go into my Gatsby folder
+
+156
+00:07:11.420 --> 00:07:14.020
+and then go into my functions folder.
+
+157
+00:07:14.020 --> 00:07:17.130
+I'm gonna go into my place order folder.
+
+158
+00:07:17.130 --> 00:07:20.630
+There we go and just LL or LS dash L.
+
+159
+00:07:20.630 --> 00:07:23.090
+You can see we only ever place ordered dot js
+
+160
+00:07:23.090 --> 00:07:24.550
+so we can type NPM init
+
+161
+00:07:25.680 --> 00:07:28.440
+and just hold down the enter key until you're done.
+
+162
+00:07:28.440 --> 00:07:31.530
+And that will create a package jason.
+
+163
+00:07:31.530 --> 00:07:33.400
+Then we only need one dependence here.
+
+164
+00:07:33.400 --> 00:07:36.230
+It's npm install, node mailer,
+
+165
+00:07:36.230 --> 00:07:37.920
+and that is going to allow us
+
+166
+00:07:37.920 --> 00:07:40.963
+to send emails with JavaScript.
+
+167
+00:07:42.542 --> 00:07:44.420
+(hums)
+
+168
+00:07:44.420 --> 00:07:45.550
+There we go.
+
+169
+00:07:45.550 --> 00:07:47.253
+And we look in the package, Jason,
+
+170
+00:07:48.120 --> 00:07:52.980
+and you see, here we go.
+
+171
+00:07:52.980 --> 00:07:56.790
+Our dependency of node mailer has been installed in there
+
+172
+00:07:56.790 --> 00:07:59.580
+and let's open up our place order dot JS
+
+173
+00:07:59.580 --> 00:08:02.370
+and we need to require node mailer.
+
+174
+00:08:02.370 --> 00:08:05.310
+So unfortunately we can't use the import syntax here,
+
+175
+00:08:05.310 --> 00:08:07.270
+at least at the time of recording we can't.
+
+176
+00:08:07.270 --> 00:08:08.895
+So you have to use the older common JS syntax
+
+177
+00:08:08.895 --> 00:08:10.610
+so that's fine.
+
+178
+00:08:10.610 --> 00:08:12.070
+It's just one line.
+
+179
+00:08:12.070 --> 00:08:17.070
+So node mailer equals require node mailer.
+
+180
+00:08:19.000 --> 00:08:24.000
+Then we need to create a transport for node mailer.
+
+181
+00:08:27.920 --> 00:08:31.290
+Cost transporter is equal
+
+182
+00:08:31.290 --> 00:08:34.880
+to node mailer dot create transport
+
+183
+00:08:39.560 --> 00:08:41.850
+and curly bracket, okay.
+
+184
+00:08:41.850 --> 00:08:42.683
+Then inside of here,
+
+185
+00:08:42.683 --> 00:08:45.780
+we put all of the authentication variables
+
+186
+00:08:45.780 --> 00:08:47.650
+that we need in order to connect to it.
+
+187
+00:08:47.650 --> 00:08:50.660
+So normally what you do is you would sign up
+
+188
+00:08:50.660 --> 00:08:53.880
+for what's called a transactional email service
+
+189
+00:08:53.880 --> 00:08:57.010
+and that's a service will send one off emails for you.
+
+190
+00:08:57.010 --> 00:09:00.380
+And I really like using one called postmark
+
+191
+00:09:00.380 --> 00:09:02.610
+and they are really good.
+
+192
+00:09:02.610 --> 00:09:04.000
+There's one called SendGrid.
+
+193
+00:09:04.000 --> 00:09:05.930
+That is also very good.
+
+194
+00:09:05.930 --> 00:09:07.450
+There's dozens of them out there.
+
+195
+00:09:07.450 --> 00:09:09.810
+And you would sign in and they will give you a username
+
+196
+00:09:09.810 --> 00:09:11.040
+and a password.
+
+197
+00:09:11.040 --> 00:09:13.370
+And you can send transactional email with them,
+
+198
+00:09:13.370 --> 00:09:15.860
+however, rather than getting into that
+
+199
+00:09:15.860 --> 00:09:18.770
+and putting credit card numbers in and all that stuff.
+
+200
+00:09:18.770 --> 00:09:23.480
+What you can do is you can use this etherial.email
+
+201
+00:09:23.480 --> 00:09:26.930
+and this is actually created by the node mail folks.
+
+202
+00:09:26.930 --> 00:09:27.860
+And it allows you just
+
+203
+00:09:27.860 --> 00:09:32.120
+to create a temporary testing email account,
+
+204
+00:09:32.120 --> 00:09:34.360
+which is exactly what you need when you're in development.
+
+205
+00:09:34.360 --> 00:09:36.213
+So this should be require.
+
+206
+00:09:39.170 --> 00:09:44.170
+So go into here and we'll say the host is going to be.
+
+207
+00:09:44.430 --> 00:09:47.050
+Let's create ethereal email account.
+
+208
+00:09:47.050 --> 00:09:48.780
+There we go, we just created an account.
+
+209
+00:09:48.780 --> 00:09:51.190
+Our name is Geraldine cozy.
+
+210
+00:09:51.190 --> 00:09:52.023
+That's nice.
+
+211
+00:09:52.023 --> 00:09:55.870
+Username is this email address and the password is that.
+
+212
+00:09:55.870 --> 00:09:57.690
+So it actually,
+
+213
+00:09:57.690 --> 00:09:59.916
+it actually just gives us the node mail config right here,
+
+214
+00:09:59.916 --> 00:10:00.750
+which is great.
+
+215
+00:10:00.750 --> 00:10:02.850
+So just we can just go ahead and copy that
+
+216
+00:10:04.850 --> 00:10:07.250
+and use the SMTP dot ethereal email.
+
+217
+00:10:07.250 --> 00:10:09.010
+The port is five 87.
+
+218
+00:10:09.010 --> 00:10:10.651
+That's going to be true for almost all
+
+219
+00:10:10.651 --> 00:10:12.600
+of your email sending.
+
+220
+00:10:12.600 --> 00:10:15.130
+And then the authentication is your username, your password.
+
+221
+00:10:15.130 --> 00:10:17.930
+Now you don't really want to hard code these things
+
+222
+00:10:17.930 --> 00:10:20.040
+because obviously in production,
+
+223
+00:10:20.040 --> 00:10:21.890
+you're not going to be using ethereal email.
+
+224
+00:10:21.890 --> 00:10:23.770
+You're going to use postmark or something like that.
+
+225
+00:10:23.770 --> 00:10:28.050
+So where can we put variables that need to be changed out
+
+226
+00:10:28.050 --> 00:10:29.770
+depending on their environment
+
+227
+00:10:29.770 --> 00:10:31.823
+that goes in our dot ENV file.
+
+228
+00:10:33.660 --> 00:10:36.340
+So we can go into our dot EMB file
+
+229
+00:10:36.340 --> 00:10:39.100
+and we can just make some more mail underscore host
+
+230
+00:10:39.100 --> 00:10:40.760
+is equal to.
+
+231
+00:10:40.760 --> 00:10:44.313
+Let's grab this mail underscore user,
+
+232
+00:10:51.430 --> 00:10:56.430
+Geraldine 92 and password is this.
+
+233
+00:10:57.420 --> 00:11:02.420
+And mail under score pass is equal to that.
+
+234
+00:11:02.730 --> 00:11:05.940
+All right, then we can go back here and replace these.
+
+235
+00:11:05.940 --> 00:11:09.890
+So our host is going to be processed dot ENV,
+
+236
+00:11:09.890 --> 00:11:14.890
+dot mail underscore host and the user.
+
+237
+00:11:16.050 --> 00:11:18.380
+You could also make the port in there,
+
+238
+00:11:18.380 --> 00:11:20.160
+but I'm just gonna leave that hard-coded cause
+
+239
+00:11:20.160 --> 00:11:21.803
+that's almost always what it is.
+
+240
+00:11:22.699 --> 00:11:27.699
+Underscore user and mail underscore pass.
+
+241
+00:11:30.010 --> 00:11:35.010
+Okay then let's just like test send an email.
+
+242
+00:11:36.360 --> 00:11:38.490
+So when somebody visits the serverless function,
+
+243
+00:11:38.490 --> 00:11:41.470
+we'll just take our trans porter
+
+244
+00:11:41.470 --> 00:11:44.363
+and we'll run the dot send mail function.
+
+245
+00:11:46.860 --> 00:11:48.053
+It has a from.
+
+246
+00:11:49.340 --> 00:11:52.573
+We'll say from slicks slices,
+
+247
+00:11:57.450 --> 00:12:00.890
+slick example.com.
+
+248
+00:12:00.890 --> 00:12:02.420
+Always use the example.com
+
+249
+00:12:02.420 --> 00:12:04.130
+if you're filling in a dummy email address
+
+250
+00:12:04.130 --> 00:12:06.480
+that you don't actually care where it goes to.
+
+251
+00:12:06.480 --> 00:12:09.200
+'Cause example.com is actually set aside for that.
+
+252
+00:12:09.200 --> 00:12:11.720
+If you use like, like poop.com,
+
+253
+00:12:11.720 --> 00:12:13.720
+somebody actually owns poop.com
+
+254
+00:12:13.720 --> 00:12:17.140
+and somebody will get those emails.
+
+255
+00:12:17.140 --> 00:12:20.500
+And if you accidentally send sensitive information,
+
+256
+00:12:20.500 --> 00:12:21.550
+then you're pooched.
+
+257
+00:12:21.550 --> 00:12:24.813
+So always use example.com when you're doing stuff like that.
+
+258
+00:12:25.660 --> 00:12:30.660
+To and this will be sent to whoever is the receiver.
+
+259
+00:12:34.850 --> 00:12:38.020
+So like right now, let's just say orders,
+
+260
+00:12:38.020 --> 00:12:41.010
+at example.com and we'll come out and swap that out
+
+261
+00:12:41.010 --> 00:12:46.010
+with the actual user's email address, subject a new order.
+
+262
+00:12:46.230 --> 00:12:48.130
+And we'll put the name in there as well.
+
+263
+00:12:48.130 --> 00:12:50.446
+And then the HTML for that,
+
+264
+00:12:50.446 --> 00:12:54.350
+it's gonna be let's just back text paragraph.
+
+265
+00:12:54.350 --> 00:12:57.978
+Your new pizza order is here.
+
+266
+00:12:57.978 --> 00:13:00.250
+Okay so that's obviously really simple
+
+267
+00:13:00.250 --> 00:13:04.030
+but that's the very basics for sending email with no jazz.
+
+268
+00:13:04.030 --> 00:13:06.880
+So we'll come back and do a little bit more.
+
+269
+00:13:06.880 --> 00:13:11.210
+So now I believe if we, oh no,
+
+270
+00:13:11.210 --> 00:13:14.020
+we forgot to code our handler.
+
+271
+00:13:14.020 --> 00:13:14.853
+So one, I'm sorry.
+
+272
+00:13:14.853 --> 00:13:17.840
+One more exports dot handler is equal
+
+273
+00:13:17.840 --> 00:13:19.670
+to a sink and you might be asking like,
+
+274
+00:13:19.670 --> 00:13:22.730
+why is this not export default or export con's handler?
+
+275
+00:13:22.730 --> 00:13:27.200
+This is cause it's common JS and not ES modules.
+
+276
+00:13:27.200 --> 00:13:29.126
+So sync, we get our event,
+
+277
+00:13:29.126 --> 00:13:30.770
+we get our context
+
+278
+00:13:32.790 --> 00:13:36.683
+and then let's actually put this in the handler.
+
+279
+00:13:40.300 --> 00:13:45.300
+And we will say, we'll capture the result of that.
+
+280
+00:13:45.360 --> 00:13:47.820
+So cons info is equal to await.
+
+281
+00:13:47.820 --> 00:13:48.950
+So put it in a wait in front
+
+282
+00:13:48.950 --> 00:13:51.495
+of the transporter dot send email
+
+283
+00:13:51.495 --> 00:13:54.203
+and then we will just return an object.
+
+284
+00:13:55.200 --> 00:13:59.170
+And the status code is 200.
+
+285
+00:13:59.170 --> 00:14:00.720
+I think it's capital C on there
+
+286
+00:14:03.010 --> 00:14:07.320
+and the body will be not sure what's in info, we'll see.
+
+287
+00:14:07.320 --> 00:14:08.410
+Let's see what's in info.
+
+288
+00:14:08.410 --> 00:14:10.820
+You can also just console dot log the info
+
+289
+00:14:10.820 --> 00:14:13.390
+to see what the result of that is.
+
+290
+00:14:13.390 --> 00:14:15.000
+All right, so here we go.
+
+291
+00:14:15.000 --> 00:14:19.180
+We're gonna go to forward slash place order
+
+292
+00:14:20.800 --> 00:14:22.379
+and function not found.
+
+293
+00:14:22.379 --> 00:14:23.489
+(honks)
+
+294
+00:14:23.489 --> 00:14:26.330
+We gotta reach, restart the sucker,
+
+295
+00:14:26.330 --> 00:14:27.790
+that's weird they had to restart it.
+
+296
+00:14:27.790 --> 00:14:30.641
+It like, it knows that it's there,
+
+297
+00:14:30.641 --> 00:14:32.560
+but if for some reason you still have
+
+298
+00:14:32.560 --> 00:14:33.960
+to kill it, you restart.
+
+299
+00:14:33.960 --> 00:14:34.793
+All right, there we go.
+
+300
+00:14:34.793 --> 00:14:35.803
+Now it's restarted.
+
+301
+00:14:40.870 --> 00:14:42.680
+Boom function...
+
+302
+00:14:43.730 --> 00:14:46.877
+Invocation failed incorrect function response body.
+
+303
+00:14:46.877 --> 00:14:47.927
+Okay, Something.
+
+304
+00:14:47.927 --> 00:14:51.360
+Oh, you know why it's cause we returned a body object,
+
+305
+00:14:51.360 --> 00:14:53.853
+but here is the info.
+
+306
+00:14:55.010 --> 00:14:58.760
+And we could just send,
+
+307
+00:14:58.760 --> 00:15:01.460
+we could send that back as like stringify,
+
+308
+00:15:01.460 --> 00:15:05.680
+jason dot stringify info.
+
+309
+00:15:05.680 --> 00:15:09.290
+Let's try that before we refresh that page, though,
+
+310
+00:15:09.290 --> 00:15:12.680
+we should be able to go to our inbox
+
+311
+00:15:12.680 --> 00:15:14.620
+for this ethereal email.
+
+312
+00:15:14.620 --> 00:15:15.850
+So open mailbox
+
+313
+00:15:19.280 --> 00:15:23.570
+and here is our Geraldine 92.
+
+314
+00:15:23.570 --> 00:15:25.260
+This is your ethereal inbox.
+
+315
+00:15:25.260 --> 00:15:27.346
+That's not what we want.
+
+316
+00:15:27.346 --> 00:15:30.980
+Oh here it is orders dot example.com new order, open it up.
+
+317
+00:15:30.980 --> 00:15:32.630
+And here it is, here's the email.
+
+318
+00:15:32.630 --> 00:15:35.040
+So the email was actually sent and there's no difference
+
+319
+00:15:35.040 --> 00:15:37.680
+between this ethereal email
+
+320
+00:15:37.680 --> 00:15:41.040
+and actually using a transactional email service.
+
+321
+00:15:41.040 --> 00:15:43.380
+You would just switch out the credentials
+
+322
+00:15:43.380 --> 00:15:44.630
+and you'd be up and running.
+
+323
+00:15:44.630 --> 00:15:46.120
+Okay so let's try it again.
+
+324
+00:15:46.120 --> 00:15:48.680
+Now that I've changed jason stringified the results.
+
+325
+00:15:48.680 --> 00:15:49.553
+Refresh.
+
+326
+00:15:53.520 --> 00:15:54.353
+There we go.
+
+327
+00:15:54.353 --> 00:15:57.670
+So that's the actual response.
+
+328
+00:15:57.670 --> 00:15:59.803
+Now, if I go back to my email inbox,
+
+329
+00:16:01.320 --> 00:16:05.830
+I bet if I refresh this, here we go.
+
+330
+00:16:05.830 --> 00:16:07.870
+There's our new order.
+
+331
+00:16:07.870 --> 00:16:09.000
+It's now showing up.
+
+332
+00:16:09.000 --> 00:16:11.780
+So that's the very basics of serverless functions.
+
+333
+00:16:11.780 --> 00:16:14.280
+In the next video what we'll do is,
+
+334
+00:16:14.280 --> 00:16:17.740
+we'll figure out how do we take the user's order
+
+335
+00:16:17.740 --> 00:16:21.150
+from the client, send it to our serverless function
+
+336
+00:16:21.150 --> 00:16:24.010
+and then template out the HTML that displays
+
+337
+00:16:24.010 --> 00:16:25.510
+what they have in their order.
+

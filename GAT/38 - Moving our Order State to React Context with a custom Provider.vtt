@@ -1,0 +1,1122 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.583
+(upbeat music)
+
+2
+00:00:04.480 --> 00:00:06.490
+<v ->All right, so one weird thing about this order is</v>
+
+3
+00:00:06.490 --> 00:00:08.210
+if I add something to my order,
+
+4
+00:00:08.210 --> 00:00:10.830
+go to a different page and come back, it's gone.
+
+5
+00:00:10.830 --> 00:00:14.940
+And that's because the state that we are saving this in
+
+6
+00:00:14.940 --> 00:00:17.520
+exists in our order page.
+
+7
+00:00:17.520 --> 00:00:20.780
+And when you navigate away from a page and then back to it
+
+8
+00:00:21.960 --> 00:00:24.460
+Gatsby will actually unmount and remount it,
+
+9
+00:00:24.460 --> 00:00:26.960
+and then thus, any state is lost.
+
+10
+00:00:26.960 --> 00:00:29.250
+So if you want...
+
+11
+00:00:29.250 --> 00:00:31.450
+and this is a pretty common thing to do in Gatsby is
+
+12
+00:00:31.450 --> 00:00:34.750
+if you wanna maintain some sort of state
+
+13
+00:00:34.750 --> 00:00:36.950
+across page changes,
+
+14
+00:00:36.950 --> 00:00:39.750
+then you need to put that state at a...
+
+15
+00:00:39.750 --> 00:00:42.480
+at the very highest level in Gatsby,
+
+16
+00:00:42.480 --> 00:00:45.110
+so that it doesn't unmount and remount it.
+
+17
+00:00:45.110 --> 00:00:49.663
+So let's take a look at our Gatsby browser,
+
+18
+00:00:51.390 --> 00:00:52.920
+dot js.
+
+19
+00:00:52.920 --> 00:00:55.530
+Remember we have here, we have a wrap page element,
+
+20
+00:00:55.530 --> 00:00:57.300
+and we wrap it in a layout.
+
+21
+00:00:57.300 --> 00:01:00.350
+There's another hook called wrap root element.
+
+22
+00:01:00.350 --> 00:01:03.700
+And that will allow us to wrap the actual Gatsby root.
+
+23
+00:01:03.700 --> 00:01:06.943
+And if we take a look at our React dev tools here,
+
+24
+00:01:07.810 --> 00:01:11.630
+and you go all the way up,
+
+25
+00:01:11.630 --> 00:01:13.710
+you see that we've got this root, right here.
+
+26
+00:01:13.710 --> 00:01:16.990
+And you see, when I change pages,
+
+27
+00:01:16.990 --> 00:01:19.450
+that root stays there.
+
+28
+00:01:19.450 --> 00:01:21.320
+That's the only element on the page
+
+29
+00:01:21.320 --> 00:01:22.810
+that actually stays there,
+
+30
+00:01:22.810 --> 00:01:25.240
+and the rest of the elements on the page
+
+31
+00:01:25.240 --> 00:01:26.330
+unmount and remount,
+
+32
+00:01:26.330 --> 00:01:28.500
+every single time that you move from page to page.
+
+33
+00:01:28.500 --> 00:01:30.940
+So that all to say,
+
+34
+00:01:30.940 --> 00:01:34.810
+if you want some data to stay from page to page,
+
+35
+00:01:34.810 --> 00:01:37.870
+you have to stick it, or you have to wrap the root element,
+
+36
+00:01:37.870 --> 00:01:41.743
+and that allows us to persist that data.
+
+37
+00:01:42.630 --> 00:01:44.740
+And then we also need to talk about like,
+
+38
+00:01:44.740 --> 00:01:45.590
+how do we do that?
+
+39
+00:01:45.590 --> 00:01:46.770
+Well...
+
+40
+00:01:46.770 --> 00:01:49.650
+Because if we take a look at our...
+
+41
+00:01:50.980 --> 00:01:52.900
+where's our order.js?
+
+42
+00:01:52.900 --> 00:01:54.860
+And we have this usePizza.
+
+43
+00:01:54.860 --> 00:01:56.560
+There we go.
+
+44
+00:01:56.560 --> 00:02:01.560
+We are sticking the state in this hook at an order level,
+
+45
+00:02:02.580 --> 00:02:04.740
+and we need to stick that at a root level.
+
+46
+00:02:04.740 --> 00:02:06.130
+So what we'll do is
+
+47
+00:02:06.130 --> 00:02:08.853
+we will stick all of that data into context.
+
+48
+00:02:10.240 --> 00:02:14.950
+And context allows us to store data and functionality
+
+49
+00:02:14.950 --> 00:02:15.950
+at a high level,
+
+50
+00:02:15.950 --> 00:02:18.260
+and then access it at a much lower level
+
+51
+00:02:18.260 --> 00:02:21.640
+without having to pass that data down via props.
+
+52
+00:02:21.640 --> 00:02:24.180
+So let's get rocking.
+
+53
+00:02:24.180 --> 00:02:28.107
+We're gonna make a new file called OrderContext.js.
+
+54
+00:02:29.600 --> 00:02:33.840
+So we'll go into our components folder,
+
+55
+00:02:33.840 --> 00:02:34.830
+make a new file.
+
+56
+00:02:34.830 --> 00:02:36.890
+We'll call that order...
+
+57
+00:02:39.550 --> 00:02:40.900
+Capital O, OrderContext.js.
+
+58
+00:02:44.440 --> 00:02:47.543
+And we need to do a couple things inside here.
+
+59
+00:02:50.560 --> 00:02:55.560
+Import React and use state from react.
+
+60
+00:02:58.030 --> 00:03:02.397
+Then we need to create a OrderContext.
+
+61
+00:03:03.520 --> 00:03:06.110
+So we say const OrderContext
+
+62
+00:03:06.110 --> 00:03:09.900
+it's equal to, React.createContext.
+
+63
+00:03:12.400 --> 00:03:14.500
+Then we need to make what's called a provider.
+
+64
+00:03:14.500 --> 00:03:16.760
+And a provider is just a component
+
+65
+00:03:16.760 --> 00:03:19.590
+that will live at a higher level,
+
+66
+00:03:19.590 --> 00:03:22.260
+and then we inject that around our route.
+
+67
+00:03:22.260 --> 00:03:27.260
+So we say const OrderProvider is equal to function...
+
+68
+00:03:27.760 --> 00:03:29.380
+I don't know why I'm doing it this way, actually,
+
+69
+00:03:29.380 --> 00:03:30.213
+let's do it this way.
+
+70
+00:03:30.213 --> 00:03:32.980
+Function, OrderProvider...
+
+71
+00:03:32.980 --> 00:03:35.040
+I've done it that way the entire course,
+
+72
+00:03:35.040 --> 00:03:36.640
+so why change now?
+
+73
+00:03:36.640 --> 00:03:39.553
+And that will destructure some children.
+
+74
+00:03:41.190 --> 00:03:46.190
+And from this, we need to stick state in here, right?
+
+75
+00:03:47.740 --> 00:03:51.400
+Because we've been sticking state in our lower level hook.
+
+76
+00:03:51.400 --> 00:03:54.080
+What we'll do is we'll stick the state in our provider
+
+77
+00:03:54.080 --> 00:03:57.320
+and access that state from our actual hook.
+
+78
+00:03:57.320 --> 00:04:02.320
+So we'll say const square brackets order and set order
+
+79
+00:04:02.760 --> 00:04:07.340
+is equal to useState, and we'll empty...
+
+80
+00:04:07.340 --> 00:04:09.900
+Look, let's open up our use pizza hook, just to see
+
+81
+00:04:09.900 --> 00:04:12.280
+like, look, we're just doing this again,
+
+82
+00:04:12.280 --> 00:04:14.750
+but what we're gonna do is we're gonna move this state
+
+83
+00:04:14.750 --> 00:04:17.093
+from here up into our OrderContext.
+
+84
+00:04:18.450 --> 00:04:22.490
+And let's do something silly and set the default
+
+85
+00:04:22.490 --> 00:04:25.480
+to use state poop emoji.
+
+86
+00:04:25.480 --> 00:04:28.060
+And we'll see how we can actually access that
+
+87
+00:04:28.060 --> 00:04:30.450
+at a lower level before we get into it.
+
+88
+00:04:30.450 --> 00:04:31.710
+Finally, what we do is
+
+89
+00:04:31.710 --> 00:04:36.400
+we return OrderContext.Provider.
+
+90
+00:04:36.400 --> 00:04:38.963
+So this is, a tag.
+
+91
+00:04:42.860 --> 00:04:45.453
+And then inside of that, we just do children.
+
+92
+00:04:46.500 --> 00:04:50.287
+And then finally we export default OrderContext,
+
+93
+00:04:51.560 --> 00:04:54.630
+and export the...
+
+94
+00:04:54.630 --> 00:04:56.033
+Actually, we can just stick,
+
+95
+00:04:58.320 --> 00:04:59.853
+export in front of that.
+
+96
+00:05:02.440 --> 00:05:06.400
+Okay, so now I want you to go into your...
+
+97
+00:05:06.400 --> 00:05:08.430
+back to your Gatsby browser,
+
+98
+00:05:08.430 --> 00:05:11.103
+and we'll export function called wrapRootElement.
+
+99
+00:05:12.560 --> 00:05:15.543
+And that will, destructure one argument called element,
+
+100
+00:05:17.550 --> 00:05:20.090
+and then from that we return
+
+101
+00:05:20.090 --> 00:05:23.603
+our new OrderProvider component.
+
+102
+00:05:24.720 --> 00:05:28.110
+And inside of that is the actual element.
+
+103
+00:05:28.110 --> 00:05:31.430
+So we'll try to import that, there we go.
+
+104
+00:05:31.430 --> 00:05:34.010
+So import OrderProvider from
+
+105
+00:05:34.010 --> 00:05:36.160
+that OrderContext file we just created,
+
+106
+00:05:36.160 --> 00:05:40.570
+and then wrap the root element with this OrderProvider.
+
+107
+00:05:40.570 --> 00:05:42.210
+Now I believe...
+
+108
+00:05:42.210 --> 00:05:43.483
+Here we go.
+
+109
+00:05:45.530 --> 00:05:47.810
+If we look at our React dev tools,
+
+110
+00:05:47.810 --> 00:05:49.930
+you see here's our root element,
+
+111
+00:05:49.930 --> 00:05:52.820
+and we now have wrapped that root element
+
+112
+00:05:52.820 --> 00:05:55.300
+in our OrderProvider.
+
+113
+00:05:55.300 --> 00:05:57.010
+And now, when you take a look.
+
+114
+00:05:57.010 --> 00:05:58.540
+Look at this, there's our root element,
+
+115
+00:05:58.540 --> 00:06:00.800
+and there is our OrderProvider.
+
+116
+00:06:00.800 --> 00:06:04.730
+If you open it up, you see there is...
+
+117
+00:06:04.730 --> 00:06:07.050
+there's some state in there,
+
+118
+00:06:07.050 --> 00:06:11.670
+I guess that is from Gatsby queries.
+
+119
+00:06:11.670 --> 00:06:13.550
+That's cool, that has nothing to do with what we want.
+
+120
+00:06:13.550 --> 00:06:15.150
+Oh this, it's cause I was on the wrong one.
+
+121
+00:06:15.150 --> 00:06:15.983
+There we go.
+
+122
+00:06:15.983 --> 00:06:17.030
+OrderProvider, there we go.
+
+123
+00:06:17.030 --> 00:06:18.920
+There's our state and there's the poop.
+
+124
+00:06:18.920 --> 00:06:23.250
+So that data is very nice and high.
+
+125
+00:06:23.250 --> 00:06:24.510
+Now the question is,
+
+126
+00:06:24.510 --> 00:06:28.390
+is if we go into our usePizza,
+
+127
+00:06:28.390 --> 00:06:30.942
+how do we access that state...
+
+128
+00:06:30.942 --> 00:06:34.910
+Like, I don't know, a hundred components deeper.
+
+129
+00:06:34.910 --> 00:06:38.293
+So let's go into our usePizza hook.
+
+130
+00:06:39.570 --> 00:06:44.460
+And we'll just say const curly bracket.
+
+131
+00:06:44.460 --> 00:06:46.580
+We'll say...
+
+132
+00:06:46.580 --> 00:06:49.960
+Actually we'll just say const silly is equal to
+
+133
+00:06:49.960 --> 00:06:51.960
+what's it, useContext,
+
+134
+00:06:51.960 --> 00:06:55.147
+and we have to pass it our OrderContext.
+
+135
+00:06:56.100 --> 00:06:59.873
+So a couple of things we need to import OrderContext
+
+136
+00:07:00.760 --> 00:07:02.540
+from our OrderContext.
+
+137
+00:07:02.540 --> 00:07:06.170
+And we also need to import use context.
+
+138
+00:07:06.170 --> 00:07:07.003
+That comes...
+
+139
+00:07:07.003 --> 00:07:08.610
+That's part of React.
+
+140
+00:07:08.610 --> 00:07:10.510
+We import it straight from React.
+
+141
+00:07:10.510 --> 00:07:14.773
+Now watch this, console.log silly.
+
+142
+00:07:17.330 --> 00:07:20.793
+And we go to our console, go to your order page,
+
+143
+00:07:21.700 --> 00:07:25.423
+and undefined.
+
+144
+00:07:26.490 --> 00:07:29.060
+Okay, that's not what we wanted (laughs).
+
+145
+00:07:29.060 --> 00:07:30.890
+That didn't work, let's see...
+
+146
+00:07:32.270 --> 00:07:35.520
+We our OrderContext.
+
+147
+00:07:35.520 --> 00:07:36.847
+Yeah, useState.
+
+148
+00:07:37.752 --> 00:07:41.120
+So we have export default OrderContext, that's here.
+
+149
+00:07:42.440 --> 00:07:44.710
+OrderContext.Provider...
+
+150
+00:07:44.710 --> 00:07:46.193
+go to our pizza here,
+
+151
+00:07:49.220 --> 00:07:51.940
+import the OrderContext, good.
+
+152
+00:07:51.940 --> 00:07:54.223
+And it is undefined.
+
+153
+00:07:55.100 --> 00:07:55.933
+One thing...
+
+154
+00:07:55.933 --> 00:07:56.830
+other thing we have to do is
+
+155
+00:07:56.830 --> 00:08:01.270
+we also need to put this Gatsby browser, wrapRootElement
+
+156
+00:08:01.270 --> 00:08:06.270
+that also needs to go into gatsby-ssr
+
+157
+00:08:06.420 --> 00:08:08.840
+because it needs to happen in both of them.
+
+158
+00:08:08.840 --> 00:08:11.560
+So you just go ahead and copy that function,
+
+159
+00:08:11.560 --> 00:08:14.130
+and paste it into here.
+
+160
+00:08:14.130 --> 00:08:15.510
+I don't believe that's our issue,
+
+161
+00:08:15.510 --> 00:08:18.103
+but let's do that now just to rule that out.
+
+162
+00:08:19.080 --> 00:08:20.313
+You know, refresh.
+
+163
+00:08:21.330 --> 00:08:22.890
+We got another...
+
+164
+00:08:22.890 --> 00:08:23.723
+another error here.
+
+165
+00:08:23.723 --> 00:08:24.660
+Let's clean this up,
+
+166
+00:08:24.660 --> 00:08:26.630
+so we just can get to the root of this.
+
+167
+00:08:26.630 --> 00:08:30.480
+Each child should have a unique key prop in order page.
+
+168
+00:08:30.480 --> 00:08:33.491
+So let's go to order JS, look for (indistinct).
+
+169
+00:08:33.491 --> 00:08:34.423
+There we go.
+
+170
+00:08:35.410 --> 00:08:38.290
+This button here, doesn't have a key.
+
+171
+00:08:38.290 --> 00:08:39.640
+We'll give it a size of...
+
+172
+00:08:42.180 --> 00:08:44.700
+Okay, those two things have been fixed,
+
+173
+00:08:44.700 --> 00:08:46.053
+but that's not our issue.
+
+174
+00:08:46.980 --> 00:08:51.980
+We wanna know why we can't access the OrderContext.
+
+175
+00:08:53.470 --> 00:08:56.370
+Oh, I think I know.
+
+176
+00:08:56.370 --> 00:08:58.600
+If we go back to our OrderContext.
+
+177
+00:08:58.600 --> 00:09:00.560
+Oh, I see what the issue is.
+
+178
+00:09:00.560 --> 00:09:02.260
+Here, we created our state,
+
+179
+00:09:02.260 --> 00:09:05.610
+but we forgot to actually surface that state.
+
+180
+00:09:05.610 --> 00:09:07.510
+We can see it in our React dev tools,
+
+181
+00:09:07.510 --> 00:09:09.400
+but it's not actually being surfaced
+
+182
+00:09:09.400 --> 00:09:12.250
+unless you explicitly go to your provider
+
+183
+00:09:12.250 --> 00:09:14.810
+where you are using it.
+
+184
+00:09:14.810 --> 00:09:19.810
+And we say value is equal to curly brackets, array,
+
+185
+00:09:20.150 --> 00:09:21.640
+and then we'll pass down our order
+
+186
+00:09:21.640 --> 00:09:23.523
+and our set order function.
+
+187
+00:09:25.670 --> 00:09:28.060
+And hey, there we go.
+
+188
+00:09:28.060 --> 00:09:31.660
+Okay, so that was our issue there, is that,
+
+189
+00:09:31.660 --> 00:09:35.450
+we create the state inside of this provider function,
+
+190
+00:09:35.450 --> 00:09:38.950
+but then if you want to surface it at a higher level,
+
+191
+00:09:38.950 --> 00:09:43.390
+you must pass the value prop to your provider.
+
+192
+00:09:43.390 --> 00:09:45.120
+And this might be a little bit confusing
+
+193
+00:09:45.120 --> 00:09:46.670
+cause you have two providers,
+
+194
+00:09:46.670 --> 00:09:47.820
+but what we're doing is,
+
+195
+00:09:47.820 --> 00:09:51.050
+we're just making our own custom little provider here,
+
+196
+00:09:51.050 --> 00:09:54.510
+so that we can tuck away the complexity of state,
+
+197
+00:09:54.510 --> 00:09:56.530
+as well as passing values.
+
+198
+00:09:56.530 --> 00:09:59.490
+And we can simply just wrap the root
+
+199
+00:09:59.490 --> 00:10:01.480
+in our own OrderProvider.
+
+200
+00:10:01.480 --> 00:10:03.100
+Okay, so that's what we want,
+
+201
+00:10:03.100 --> 00:10:05.530
+but we don't actually want an emoji poop.
+
+202
+00:10:05.530 --> 00:10:10.063
+We want just to start with an empty array of pizzas.
+
+203
+00:10:12.160 --> 00:10:15.800
+And now we can go back to our usePizza hook,
+
+204
+00:10:15.800 --> 00:10:20.060
+and we'll comment out this line right here,
+
+205
+00:10:20.060 --> 00:10:21.370
+where we have useState.
+
+206
+00:10:21.370 --> 00:10:23.080
+We'll put a comment over that.
+
+207
+00:10:23.080 --> 00:10:27.470
+We got rid of this line because,
+
+208
+00:10:27.470 --> 00:10:32.470
+we moved useState up to the provider.
+
+209
+00:10:33.410 --> 00:10:34.760
+And then down here,
+
+210
+00:10:34.760 --> 00:10:39.760
+now we access both our state and our updater function,
+
+211
+00:10:42.500 --> 00:10:46.710
+which is setOrder via context.
+
+212
+00:10:48.380 --> 00:10:50.220
+So now we can go here, and just say
+
+213
+00:10:50.220 --> 00:10:53.720
+const, square bracket, order and setOrder
+
+214
+00:10:53.720 --> 00:10:56.090
+is equal to useContext,
+
+215
+00:10:56.090 --> 00:10:57.893
+and get rid of that silly there.
+
+216
+00:11:01.740 --> 00:11:02.573
+Boom.
+
+217
+00:11:02.573 --> 00:11:05.430
+So now you see what we did is we basically just swapped out
+
+218
+00:11:05.430 --> 00:11:08.300
+the array of items as well as the updater.
+
+219
+00:11:08.300 --> 00:11:12.040
+And we took it from living inside of the custom hook
+
+220
+00:11:12.040 --> 00:11:14.100
+to living inside of our provider,
+
+221
+00:11:14.100 --> 00:11:17.310
+and then we just grab it by using useContext.
+
+222
+00:11:17.310 --> 00:11:19.610
+And now, what should happen here,
+
+223
+00:11:19.610 --> 00:11:22.610
+is now when I add items to my order,
+
+224
+00:11:22.610 --> 00:11:25.985
+and I go to another page and come back,
+
+225
+00:11:25.985 --> 00:11:28.230
+the pizzas are still there
+
+226
+00:11:28.230 --> 00:11:32.090
+because the data lives inside of our provider.
+
+227
+00:11:32.090 --> 00:11:34.560
+Again, we can go to our components folder here,
+
+228
+00:11:34.560 --> 00:11:36.100
+we go to OrderProvider.
+
+229
+00:11:36.100 --> 00:11:39.290
+Look, there is the data about our state.
+
+230
+00:11:39.290 --> 00:11:41.200
+If you go to another page,
+
+231
+00:11:41.200 --> 00:11:43.030
+that component does not unmount,
+
+232
+00:11:43.030 --> 00:11:44.730
+and that data still lives there.
+
+233
+00:11:44.730 --> 00:11:48.160
+One more thing is that the data will be gone
+
+234
+00:11:48.160 --> 00:11:50.260
+when you refresh the page.
+
+235
+00:11:50.260 --> 00:11:52.220
+You could stick that in local storage
+
+236
+00:11:52.220 --> 00:11:54.750
+and then when it mounts, you can pull it back in.
+
+237
+00:11:54.750 --> 00:11:56.600
+But I think that at this point,
+
+238
+00:11:56.600 --> 00:11:58.630
+that's good enough to have it,
+
+239
+00:11:58.630 --> 00:12:01.040
+just cause your user is just going from page to page,
+
+240
+00:12:01.040 --> 00:12:03.120
+and adding items to their order.
+
+241
+00:12:03.120 --> 00:12:05.530
+You wanna go back to the pizza,
+
+242
+00:12:05.530 --> 00:12:07.403
+take a look at one of the pizzas,
+
+243
+00:12:08.460 --> 00:12:09.850
+and go back to your order.
+
+244
+00:12:09.850 --> 00:12:11.530
+Everything is still there.
+
+245
+00:12:11.530 --> 00:12:13.630
+Cool, let's clean this up real quick.
+
+246
+00:12:13.630 --> 00:12:15.360
+I think I saw...
+
+247
+00:12:16.900 --> 00:12:20.700
+some errors in our console, here we go.
+
+248
+00:12:20.700 --> 00:12:21.910
+Where was that coming from?
+
+249
+00:12:21.910 --> 00:12:23.483
+If I go to order head,
+
+250
+00:12:26.350 --> 00:12:29.143
+and I add an item, there we go.
+
+251
+00:12:30.120 --> 00:12:33.930
+Encountered two children with the same key.
+
+252
+00:12:33.930 --> 00:12:35.100
+Keys should be unique,
+
+253
+00:12:35.100 --> 00:12:37.930
+So that components maintain their identity across updates.
+
+254
+00:12:37.930 --> 00:12:40.440
+Non-unique keys will cause children to be duplicated
+
+255
+00:12:40.440 --> 00:12:42.300
+or admitted The behaviors unsupported.
+
+256
+00:12:42.300 --> 00:12:44.260
+It could change in a future version.
+
+257
+00:12:44.260 --> 00:12:46.410
+Oh, okay...
+
+258
+00:12:46.410 --> 00:12:50.143
+So it's telling us the error's at PizzaOrder js, line 81.
+
+259
+00:12:53.550 --> 00:12:54.710
+That's our PizzaOrder.
+
+260
+00:12:54.710 --> 00:12:56.590
+Okay, so we need to open up our PizzaOrder.
+
+261
+00:12:56.590 --> 00:12:59.790
+One little trick in React is if you hold down option,
+
+262
+00:12:59.790 --> 00:13:01.660
+or this is vs code, and click it,
+
+263
+00:13:01.660 --> 00:13:03.343
+it'll open up that component.
+
+264
+00:13:05.310 --> 00:13:08.450
+And here we go, we're mapping over each of the orders
+
+265
+00:13:08.450 --> 00:13:13.450
+and using the ID of the pizza as the key.
+
+266
+00:13:13.980 --> 00:13:17.050
+But if you put the same pizza in your cart twice,
+
+267
+00:13:17.050 --> 00:13:19.840
+then the keys are gonna be the same.
+
+268
+00:13:19.840 --> 00:13:23.040
+So what we need to do is make this a unique key.
+
+269
+00:13:23.040 --> 00:13:26.740
+And what I like to do for that is to,
+
+270
+00:13:26.740 --> 00:13:30.260
+first, just put the original ID back in,
+
+271
+00:13:30.260 --> 00:13:33.040
+and then some sort of other unique identifier
+
+272
+00:13:33.040 --> 00:13:34.357
+that is tacked onto it.
+
+273
+00:13:34.357 --> 00:13:36.620
+And in this case we don't have another ID,
+
+274
+00:13:36.620 --> 00:13:39.940
+but we do have the index of that item.
+
+275
+00:13:39.940 --> 00:13:42.610
+And then in this case, even though the ID will be the same,
+
+276
+00:13:42.610 --> 00:13:44.690
+the index will be different.
+
+277
+00:13:44.690 --> 00:13:49.270
+So I believe, now if we add the same item two times,
+
+278
+00:13:49.270 --> 00:13:50.740
+yeah, that ever goes away.
+
+279
+00:13:50.740 --> 00:13:52.410
+Cool, all right, that's enough for this video,
+
+280
+00:13:52.410 --> 00:13:54.460
+I'll catch you in the next one.
+

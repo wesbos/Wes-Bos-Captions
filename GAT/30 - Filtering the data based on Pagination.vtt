@@ -1,0 +1,406 @@
+﻿WEBVTT
+
+1
+00:00:00.040 --> 00:00:02.790
+(cheerful music)
+
+2
+00:00:04.560 --> 00:00:05.430
+<v Instructor>The last video,</v>
+
+3
+00:00:05.430 --> 00:00:08.110
+we looked at how to actually create
+
+4
+00:00:08.110 --> 00:00:10.980
+the pages for the pagination that we need.
+
+5
+00:00:10.980 --> 00:00:12.290
+In this video we are going
+
+6
+00:00:12.290 --> 00:00:14.250
+to modify our query,
+
+7
+00:00:14.250 --> 00:00:18.360
+to actually only show us two or four per page.
+
+8
+00:00:18.360 --> 00:00:20.900
+Right now we've got it, to set to two,
+
+9
+00:00:20.900 --> 00:00:21.750
+people per page.
+
+10
+00:00:21.750 --> 00:00:25.690
+So, let's go into our slicemasters.JS,
+
+11
+00:00:25.690 --> 00:00:29.040
+and let's modify this query here to accept some variables.
+
+12
+00:00:29.040 --> 00:00:31.540
+So, remember that any context
+
+13
+00:00:31.540 --> 00:00:35.200
+that gets passed via create page
+
+14
+00:00:35.200 --> 00:00:38.780
+is automatically available inside of your GraphQL query,
+
+15
+00:00:38.780 --> 00:00:41.550
+as long as you specify it
+
+16
+00:00:41.550 --> 00:00:42.800
+when you're writing your query.
+
+17
+00:00:42.800 --> 00:00:45.073
+So we'll go into our query here,
+
+18
+00:00:47.610 --> 00:00:51.493
+we're expecting a skip variable to be passed.
+
+19
+00:00:53.370 --> 00:00:58.370
+And that will be an integer that is required,
+
+20
+00:00:59.150 --> 00:01:01.900
+and set to zero by default.
+
+21
+00:01:01.900 --> 00:01:03.570
+Actually, I don't think that's required then,
+
+22
+00:01:03.570 --> 00:01:06.093
+because if we go to Slice Masters.
+
+23
+00:01:07.060 --> 00:01:10.410
+Then it's not going to be passed.
+
+24
+00:01:10.410 --> 00:01:13.113
+Because if we're not on any page at all,
+
+25
+00:01:14.279 --> 00:01:15.690
+We might come back to that, we'll see.
+
+26
+00:01:15.690 --> 00:01:18.260
+And then we also need the,
+
+27
+00:01:18.260 --> 00:01:21.060
+page size variable.
+
+28
+00:01:21.060 --> 00:01:24.610
+And that is going to be an integer,
+
+29
+00:01:24.610 --> 00:01:27.460
+that is set to four by default.
+
+30
+00:01:27.460 --> 00:01:30.423
+And that little backup there is just in case,
+
+31
+00:01:31.320 --> 00:01:33.190
+just in case it gets passed undefined
+
+32
+00:01:33.190 --> 00:01:34.023
+or something like that.
+
+33
+00:01:34.023 --> 00:01:36.130
+It's nice to have a little default.
+
+34
+00:01:36.130 --> 00:01:38.410
+So, what this does is it sets up our query
+
+35
+00:01:38.410 --> 00:01:40.120
+to accept variables.
+
+36
+00:01:40.120 --> 00:01:41.200
+Then we can go ahead,
+
+37
+00:01:41.200 --> 00:01:42.590
+and use those variables
+
+38
+00:01:42.590 --> 00:01:43.927
+and pass them to,
+
+39
+00:01:43.927 --> 00:01:47.053
+our GraphQL query.
+
+40
+00:01:48.270 --> 00:01:50.253
+If we go to our GraphQL API,
+
+41
+00:01:52.070 --> 00:01:53.713
+let's take a look underscore,
+
+42
+00:01:57.130 --> 00:01:59.080
+GraphQL, here we go.
+
+43
+00:01:59.080 --> 00:02:01.470
+If we have our all sanity person,
+
+44
+00:02:01.470 --> 00:02:05.040
+you'll see that there are some functions here we can use.
+
+45
+00:02:05.040 --> 00:02:07.030
+We can filter them, we can limit them,
+
+46
+00:02:07.030 --> 00:02:08.010
+we can skip them,
+
+47
+00:02:08.010 --> 00:02:09.510
+and we can sort them.
+
+48
+00:02:09.510 --> 00:02:11.523
+So in our case, we want to,
+
+49
+00:02:12.690 --> 00:02:13.910
+if we wanna limit them,
+
+50
+00:02:13.910 --> 00:02:15.800
+now maybe limit them to two.
+
+51
+00:02:15.800 --> 00:02:17.500
+If you run that,
+
+52
+00:02:17.500 --> 00:02:18.940
+it just brings us back.
+
+53
+00:02:18.940 --> 00:02:20.690
+Oh, I forgot to.
+
+54
+00:02:20.690 --> 00:02:21.743
+Give me their name.
+
+55
+00:02:25.030 --> 00:02:27.730
+It just gives us two people, right?
+
+56
+00:02:27.730 --> 00:02:29.400
+So we get August and Slick,
+
+57
+00:02:29.400 --> 00:02:31.350
+but then also we have skip.
+
+58
+00:02:31.350 --> 00:02:33.210
+If you wanna skip to,
+
+59
+00:02:33.210 --> 00:02:35.380
+we're still going to get two,
+
+60
+00:02:35.380 --> 00:02:36.520
+but it's gonna give us
+
+61
+00:02:36.520 --> 00:02:38.910
+the third and fourth Louise and Roscoe,
+
+62
+00:02:38.910 --> 00:02:40.490
+cause those are the third and fourth.
+
+63
+00:02:40.490 --> 00:02:41.560
+And it still tells us
+
+64
+00:02:41.560 --> 00:02:42.830
+they're 10 in total.
+
+65
+00:02:42.830 --> 00:02:45.130
+But, we now see the skip values.
+
+66
+00:02:45.130 --> 00:02:46.940
+So that's limit and skip,
+
+67
+00:02:46.940 --> 00:02:49.140
+And we're gonna pass those values our variable.
+
+68
+00:02:49.140 --> 00:02:50.220
+So filter no,
+
+69
+00:02:50.220 --> 00:02:51.590
+not filter,
+
+70
+00:02:51.590 --> 00:02:53.140
+limit
+
+71
+00:02:53.140 --> 00:02:53.973
+to
+
+72
+00:02:55.090 --> 00:02:56.260
+a page size
+
+73
+00:02:57.730 --> 00:02:59.110
+and skip
+
+74
+00:02:59.110 --> 00:02:59.943
+is gonna be,
+
+75
+00:02:59.943 --> 00:03:01.000
+our skip
+
+76
+00:03:02.480 --> 00:03:03.313
+variable.
+
+77
+00:03:04.720 --> 00:03:06.490
+All right.
+
+78
+00:03:06.490 --> 00:03:08.500
+So, give that a save.
+
+79
+00:03:08.500 --> 00:03:09.333
+Now we go here,
+
+80
+00:03:09.333 --> 00:03:10.620
+hey, look at this.
+
+81
+00:03:10.620 --> 00:03:11.900
+So we're on page four.
+
+82
+00:03:11.900 --> 00:03:13.550
+We see Waldo and Fia.
+
+83
+00:03:13.550 --> 00:03:15.720
+If you go to
+
+84
+00:03:15.720 --> 00:03:16.803
+page two,
+
+85
+00:03:17.740 --> 00:03:19.240
+you'll see Louise and Roscoe.
+
+86
+00:03:19.240 --> 00:03:20.930
+If you go to page one,
+
+87
+00:03:20.930 --> 00:03:22.160
+you see August and Slick.
+
+88
+00:03:22.160 --> 00:03:23.610
+And then also if we just go
+
+89
+00:03:23.610 --> 00:03:25.853
+to straight Slice Masters.
+
+90
+00:03:27.180 --> 00:03:28.960
+Oh, we see four there.
+
+91
+00:03:28.960 --> 00:03:30.023
+How come?
+
+92
+00:03:31.080 --> 00:03:32.013
+Oh, I see.
+
+93
+00:03:33.580 --> 00:03:35.830
+That's because we have defaulted it to four here.
+
+94
+00:03:35.830 --> 00:03:37.410
+So maybe change that to two,
+
+95
+00:03:37.410 --> 00:03:38.600
+here we go.
+
+96
+00:03:38.600 --> 00:03:39.700
+August, Slick.
+
+97
+00:03:39.700 --> 00:03:42.850
+Okay, so that was really easy, right?
+
+98
+00:03:42.850 --> 00:03:45.390
+Now, let's actually get some,
+
+99
+00:03:45.390 --> 00:03:46.780
+links up and running so that
+
+100
+00:03:46.780 --> 00:03:49.253
+we can do next and previous.
+
+101
+00:03:50.560 --> 00:03:53.043
+And we'll do that in the next video.
+

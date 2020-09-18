@@ -1,0 +1,1288 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.667
+(bells chiming)
+
+2
+00:00:04.980 --> 00:00:06.710
+<v Instructor>Go back to your pizzas here</v>
+
+3
+00:00:06.710 --> 00:00:10.283
+and take that one pizza that we've created here.
+
+4
+00:00:13.450 --> 00:00:15.463
+And let's name it a pepperoni.
+
+5
+00:00:16.820 --> 00:00:19.010
+Actually let's call it master pizza.
+
+6
+00:00:19.010 --> 00:00:21.050
+We're gonna put all of the toppings on this one.
+
+7
+00:00:21.050 --> 00:00:22.740
+Go ahead and update that.
+
+8
+00:00:22.740 --> 00:00:24.680
+Now you see there is a price input.
+
+9
+00:00:24.680 --> 00:00:26.370
+There is a slug, there is a name,
+
+10
+00:00:26.370 --> 00:00:29.620
+but there's no way to select what toppings go on that pizza.
+
+11
+00:00:29.620 --> 00:00:32.480
+So let's open up the schema for our pizza.
+
+12
+00:00:32.480 --> 00:00:34.780
+So pizza.js,
+
+13
+00:00:34.780 --> 00:00:38.160
+and let's go down to the fields array
+
+14
+00:00:38.160 --> 00:00:40.550
+and we'll go,
+
+15
+00:00:40.550 --> 00:00:42.140
+where should we go here?
+
+16
+00:00:42.140 --> 00:00:44.000
+Let's go right under...
+
+17
+00:00:46.270 --> 00:00:48.260
+Let's go to the end, okay.
+
+18
+00:00:48.260 --> 00:00:49.580
+Make sure you have a comma there
+
+19
+00:00:49.580 --> 00:00:51.310
+and give yourself a new object.
+
+20
+00:00:51.310 --> 00:00:54.513
+Now the name of this is going to be toppings.
+
+21
+00:00:55.440 --> 00:00:58.713
+The title, it's going to be a capital T, Toppings.
+
+22
+00:00:59.650 --> 00:01:03.530
+The type is going to be, what is it?
+
+23
+00:01:03.530 --> 00:01:05.713
+Like the type of it is,
+
+24
+00:01:06.610 --> 00:01:09.360
+well, it's a relational content and we could,
+
+25
+00:01:09.360 --> 00:01:13.400
+in this case, just go have a reference to topping.
+
+26
+00:01:13.400 --> 00:01:16.410
+But in our case, we wanna have a one to many relationships.
+
+27
+00:01:16.410 --> 00:01:18.710
+So we want an array of references.
+
+28
+00:01:18.710 --> 00:01:21.623
+So we'll say the type is array.
+
+29
+00:01:23.060 --> 00:01:25.243
+And then we have an of,
+
+30
+00:01:26.130 --> 00:01:27.680
+let's look at the docs for this right now.
+
+31
+00:01:27.680 --> 00:01:32.680
+So go back to the docs here, go to references, schema types,
+
+32
+00:01:35.200 --> 00:01:36.993
+and we'll go to array.
+
+33
+00:01:40.340 --> 00:01:43.040
+You'll see that it allows you to select multiple
+
+34
+00:01:43.040 --> 00:01:45.350
+in their case they have an array of people
+
+35
+00:01:45.350 --> 00:01:47.530
+that are like in a movie or something like that.
+
+36
+00:01:47.530 --> 00:01:49.523
+So the type and of,
+
+37
+00:01:52.190 --> 00:01:56.380
+and they got a really simple version here of type of string.
+
+38
+00:01:56.380 --> 00:01:57.470
+So we could do that.
+
+39
+00:01:57.470 --> 00:02:00.490
+So we can say of array.
+
+40
+00:02:00.490 --> 00:02:03.190
+And now we're just doing like another one of these.
+
+41
+00:02:03.190 --> 00:02:05.550
+We're just doing another array of fields.
+
+42
+00:02:05.550 --> 00:02:10.550
+So in here I can say array of type string.
+
+43
+00:02:10.887 --> 00:02:12.813
+Let's, let's see what that looks like when we do it.
+
+44
+00:02:14.900 --> 00:02:18.010
+Here we go, toppings, add so pepperoni
+
+45
+00:02:20.740 --> 00:02:25.310
+and mushrooms, and we'd go ahead and publish that.
+
+46
+00:02:25.310 --> 00:02:28.900
+Now, the reason why we're not going to be doing that
+
+47
+00:02:28.900 --> 00:02:32.730
+is because these are not related
+
+48
+00:02:32.730 --> 00:02:34.220
+to the actual toppings type.
+
+49
+00:02:34.220 --> 00:02:38.610
+And if I were to make an update to the pepperoni type,
+
+50
+00:02:38.610 --> 00:02:40.430
+there's no connection between the two.
+
+51
+00:02:40.430 --> 00:02:44.830
+Like maybe I wanted to like put a capital P on that.
+
+52
+00:02:44.830 --> 00:02:45.663
+If that was the case,
+
+53
+00:02:45.663 --> 00:02:47.313
+then it would have to go through every single pizza
+
+54
+00:02:47.313 --> 00:02:48.870
+that has that pepperoni.
+
+55
+00:02:48.870 --> 00:02:50.150
+And we don't want to do that.
+
+56
+00:02:50.150 --> 00:02:51.450
+We wanna relate it to topping.
+
+57
+00:02:51.450 --> 00:02:55.070
+So if I make a change to pepperoni's display name,
+
+58
+00:02:55.070 --> 00:02:57.050
+or if I upload a new photo for a pepperoni
+
+59
+00:02:57.050 --> 00:02:57.883
+or anything like that,
+
+60
+00:02:57.883 --> 00:03:00.420
+it will be updated for every pizza that has that topping.
+
+61
+00:03:00.420 --> 00:03:05.420
+So one kinda cool thing about sanity is if you were to,
+
+62
+00:03:05.890 --> 00:03:08.664
+now that I just like added data and saved it.
+
+63
+00:03:08.664 --> 00:03:11.030
+If you were to change this,
+
+64
+00:03:11.030 --> 00:03:14.230
+it would notice that you have data saved in the database,
+
+65
+00:03:14.230 --> 00:03:17.010
+but then that no longer,
+
+66
+00:03:17.010 --> 00:03:18.910
+no longer has a field of string.
+
+67
+00:03:18.910 --> 00:03:21.870
+And it will tell you, you can delete that data yourself,
+
+68
+00:03:21.870 --> 00:03:23.450
+but in our case, let's just go ahead
+
+69
+00:03:23.450 --> 00:03:24.590
+and delete those two things.
+
+70
+00:03:24.590 --> 00:03:26.490
+If you did it and publish it.
+
+71
+00:03:26.490 --> 00:03:29.280
+So we don't have any ghost data that's inaccessible.
+
+72
+00:03:29.280 --> 00:03:31.500
+So our case is not a type of string.
+
+73
+00:03:31.500 --> 00:03:33.322
+It's going to be a type of,
+
+74
+00:03:33.322 --> 00:03:36.690
+well, let's go to the types, reference, right?
+
+75
+00:03:36.690 --> 00:03:39.480
+So we're kinda using two different field types here.
+
+76
+00:03:39.480 --> 00:03:43.400
+We're having an array of a special type,
+
+77
+00:03:43.400 --> 00:03:44.950
+which is a reference.
+
+78
+00:03:44.950 --> 00:03:47.140
+So we'll say type of reference
+
+79
+00:03:48.460 --> 00:03:50.860
+and we wanna reference it to,
+
+80
+00:03:50.860 --> 00:03:53.090
+and in this case, it's really cool.
+
+81
+00:03:53.090 --> 00:03:56.120
+Normally you think, okay, just reference to topping,
+
+82
+00:03:56.120 --> 00:03:59.560
+but you can have reference to multiple types.
+
+83
+00:03:59.560 --> 00:04:03.230
+So if you had like toppings and sauces,
+
+84
+00:04:03.230 --> 00:04:06.240
+maybe you wanted to sauces versus own type.
+
+85
+00:04:06.240 --> 00:04:07.170
+You could do that.
+
+86
+00:04:07.170 --> 00:04:10.653
+So in our case it's going to be an array again,
+
+87
+00:04:11.940 --> 00:04:15.730
+with a type of topping.
+
+88
+00:04:15.730 --> 00:04:18.400
+And where do I get that topping from?
+
+89
+00:04:18.400 --> 00:04:22.810
+Well, that is the name of our topping.
+
+90
+00:04:22.810 --> 00:04:24.430
+So that's linked right here.
+
+91
+00:04:24.430 --> 00:04:25.950
+That's really important there.
+
+92
+00:04:25.950 --> 00:04:29.210
+So a type of array,
+
+93
+00:04:29.210 --> 00:04:34.210
+it's an array of references that reference topping.
+
+94
+00:04:35.100 --> 00:04:37.520
+We'll give it a save, go here.
+
+95
+00:04:37.520 --> 00:04:40.170
+Now, when you click add it pops this up
+
+96
+00:04:40.170 --> 00:04:43.873
+and I can type something like P-E, pepperoni pops up,
+
+97
+00:04:45.290 --> 00:04:49.730
+and this is a little confusing to me.
+
+98
+00:04:49.730 --> 00:04:51.570
+Cause you think it's like added.
+
+99
+00:04:51.570 --> 00:04:55.490
+So you think you could close, you can do it again.
+
+100
+00:04:55.490 --> 00:04:58.360
+You can't add multiples as of right now,
+
+101
+00:04:58.360 --> 00:04:59.510
+I talked to the team myself.
+
+102
+00:04:59.510 --> 00:05:01.400
+So it was like onions.
+
+103
+00:05:01.400 --> 00:05:04.333
+But if you were to do another one like mushrooms,
+
+104
+00:05:05.400 --> 00:05:06.890
+you see it just deleted onion.
+
+105
+00:05:06.890 --> 00:05:11.450
+So you have to add one, close it, open it up again.
+
+106
+00:05:11.450 --> 00:05:15.620
+Then we'll put onions in there and finally bacon.
+
+107
+00:05:15.620 --> 00:05:17.373
+Go ahead and hit publish.
+
+108
+00:05:19.400 --> 00:05:22.020
+All right, so now this pepperoni,
+
+109
+00:05:22.020 --> 00:05:23.380
+You'll see that, that the media
+
+110
+00:05:23.380 --> 00:05:24.760
+is actually already showing up.
+
+111
+00:05:24.760 --> 00:05:26.970
+It just detected that we had an image field
+
+112
+00:05:26.970 --> 00:05:28.310
+and it starts to show it in there.
+
+113
+00:05:28.310 --> 00:05:30.620
+However, we do have control over that.
+
+114
+00:05:30.620 --> 00:05:32.511
+And ideally, what I would like to do
+
+115
+00:05:32.511 --> 00:05:35.980
+is underneath this pizza is list
+
+116
+00:05:35.980 --> 00:05:38.580
+a couple of the toppings that that pizza has.
+
+117
+00:05:38.580 --> 00:05:40.590
+So let's add one more pizza here
+
+118
+00:05:42.770 --> 00:05:47.770
+and we'll call it veggie delight, generate a slug for it.
+
+119
+00:05:47.780 --> 00:05:50.000
+I'm gonna upload an image.
+
+120
+00:05:50.000 --> 00:05:51.830
+I may say Jimmy Hendrix.
+
+121
+00:05:51.830 --> 00:05:55.390
+We have some really neat names for these coming up.
+
+122
+00:05:55.390 --> 00:05:58.450
+The price of it is $22 and 56 cents.
+
+123
+00:05:58.450 --> 00:06:02.070
+And then the toppings are just our two vegetarian ones,
+
+124
+00:06:02.070 --> 00:06:05.320
+which is mushroom and onion.
+
+125
+00:06:05.320 --> 00:06:07.550
+I realize that's probably not a very good pizza,
+
+126
+00:06:07.550 --> 00:06:08.480
+but we'll get
+(laughing loudly)
+
+127
+00:06:08.480 --> 00:06:09.970
+some more toppings in a bit.
+
+128
+00:06:09.970 --> 00:06:11.410
+Go ahead and publish it.
+
+129
+00:06:11.410 --> 00:06:13.520
+Alright, so now I'm looking at these pizzas
+
+130
+00:06:13.520 --> 00:06:16.260
+and if I'm the editor, this is not even our website,
+
+131
+00:06:16.260 --> 00:06:19.870
+but if I'm editing it, I would like to see what toppings
+
+132
+00:06:19.870 --> 00:06:22.620
+are on the pizza just as a quick glance.
+
+133
+00:06:22.620 --> 00:06:26.600
+So what we can do here is we can create a custom preview
+
+134
+00:06:27.690 --> 00:06:31.950
+on our pizza just as we did on our toppings yes.
+
+135
+00:06:31.950 --> 00:06:35.520
+I'll go down to your pizza all the way to the bottom here.
+
+136
+00:06:35.520 --> 00:06:38.703
+And we will give ourselves a preview property.
+
+137
+00:06:39.560 --> 00:06:43.980
+And remember the preview has our select and our prepare.
+
+138
+00:06:43.980 --> 00:06:45.940
+So what fields do we wanna select?
+
+139
+00:06:45.940 --> 00:06:50.030
+What we want, the title, which is the name we want...
+
+140
+00:06:50.030 --> 00:06:52.530
+Oh, in our case, I said, name last time
+
+141
+00:06:52.530 --> 00:06:54.860
+in this case, I'm saying title.
+
+142
+00:06:54.860 --> 00:06:56.720
+It doesn't matter what you call them.
+
+143
+00:06:56.720 --> 00:06:59.430
+It's just, that's what it's going to be called
+
+144
+00:06:59.430 --> 00:07:01.450
+in your preview function.
+
+145
+00:07:01.450 --> 00:07:02.960
+So maybe that's good that I switched them up
+
+146
+00:07:02.960 --> 00:07:04.720
+just to show you that it doesn't really matter.
+
+147
+00:07:04.720 --> 00:07:06.750
+There's nothing special there.
+
+148
+00:07:06.750 --> 00:07:11.750
+We also want the media and that will be the image field.
+
+149
+00:07:15.140 --> 00:07:16.900
+And then we want all of the toppings.
+
+150
+00:07:16.900 --> 00:07:19.150
+Now, normally I thought like, okay, just say,
+
+151
+00:07:20.670 --> 00:07:25.670
+topping is going to be the toppings field, right?
+
+152
+00:07:26.030 --> 00:07:28.110
+And the way you can tell what your like,
+
+153
+00:07:28.110 --> 00:07:30.610
+sort of debug these things is,
+
+154
+00:07:30.610 --> 00:07:33.803
+if you go down under select and we say, prepare,
+
+155
+00:07:37.270 --> 00:07:40.683
+we want, let's just do fields.
+
+156
+00:07:43.950 --> 00:07:46.630
+And then we'll return pizza name
+
+157
+00:07:48.400 --> 00:07:50.633
+and then let's console log, the fields.
+
+158
+00:07:51.860 --> 00:07:55.000
+So we have our prepare function that takes in our fields
+
+159
+00:07:55.000 --> 00:07:56.910
+and we're on the console log to fields
+
+160
+00:07:56.910 --> 00:07:57.743
+and then return the pizza named.
+
+161
+00:07:57.743 --> 00:07:59.913
+As you open your up your dev tools here.
+
+162
+00:08:00.870 --> 00:08:03.460
+You might see a whole bunch of stuff.
+
+163
+00:08:03.460 --> 00:08:06.100
+So maybe refresh and see what we got here.
+
+164
+00:08:06.100 --> 00:08:08.320
+So this is kind of a bummer that Firefox
+
+165
+00:08:08.320 --> 00:08:09.153
+does this all the time.
+
+166
+00:08:09.153 --> 00:08:12.360
+Anytime you have a web socket and you're like,
+
+167
+00:08:12.360 --> 00:08:16.360
+reload the page like complains about the web socket,
+
+168
+00:08:16.360 --> 00:08:18.453
+not being able to close properly.
+
+169
+00:08:19.350 --> 00:08:23.510
+That's half Firefox, half the actual library.
+
+170
+00:08:23.510 --> 00:08:27.743
+So you just have to ignore that, unfortunately.
+
+171
+00:08:28.590 --> 00:08:29.790
+So here we go.
+
+172
+00:08:29.790 --> 00:08:32.350
+So there's all kinds of junk in here.
+
+173
+00:08:32.350 --> 00:08:35.140
+Just wade through it until you find your thing,
+
+174
+00:08:35.140 --> 00:08:37.900
+pizza JS line 56, good.
+
+175
+00:08:37.900 --> 00:08:40.350
+And then you will see that the fields that we got,
+
+176
+00:08:40.350 --> 00:08:45.350
+are media, which is our image we see in the asset,
+
+177
+00:08:47.780 --> 00:08:50.460
+they have the reference to the image ID.
+
+178
+00:08:50.460 --> 00:08:53.633
+They have a topping and then they have the toppings array.
+
+179
+00:08:54.520 --> 00:08:56.790
+But in this case,
+
+180
+00:08:56.790 --> 00:08:59.240
+you'll see that it just gives us a reference
+
+181
+00:08:59.240 --> 00:09:03.240
+to the actual thing, because that is a reference
+
+182
+00:09:03.240 --> 00:09:04.180
+to another type.
+
+183
+00:09:04.180 --> 00:09:05.840
+It doesn't give us the actual name.
+
+184
+00:09:05.840 --> 00:09:07.960
+So in order to select the topping name,
+
+185
+00:09:07.960 --> 00:09:10.770
+cause I don't care about the key or the reference ID here.
+
+186
+00:09:10.770 --> 00:09:13.870
+I want the actual name like pepperoni or mushroom.
+
+187
+00:09:13.870 --> 00:09:15.640
+We have to select it like this.
+
+188
+00:09:15.640 --> 00:09:16.560
+It's a little bit weird,
+
+189
+00:09:16.560 --> 00:09:20.470
+but also in the docs, it says just select what you need.
+
+190
+00:09:20.470 --> 00:09:22.770
+Don't select an entire array because you could be
+
+191
+00:09:22.770 --> 00:09:24.410
+unnecessarily fetching data.
+
+192
+00:09:24.410 --> 00:09:28.820
+So not toppings is going to be topping zero
+
+193
+00:09:29.820 --> 00:09:34.200
+and it's toppings.0.name.
+
+194
+00:09:34.200 --> 00:09:37.000
+So it's saying select the toppings array,
+
+195
+00:09:37.000 --> 00:09:39.220
+then grab the first thing and then grab the name.
+
+196
+00:09:39.220 --> 00:09:43.300
+That's not JavaScript, but that's the, just the syntax
+
+197
+00:09:43.300 --> 00:09:45.270
+that sanity studio is using.
+
+198
+00:09:45.270 --> 00:09:48.110
+And then we're just gonna select the first four toppings
+
+199
+00:09:48.110 --> 00:09:50.570
+because we don't, if the pizza has a hundred toppings,
+
+200
+00:09:50.570 --> 00:09:53.840
+we can't display that in there, right?
+
+201
+00:09:53.840 --> 00:09:56.000
+So we'll do that.
+
+202
+00:09:57.459 --> 00:09:59.370
+(beeping)
+
+203
+00:09:59.370 --> 00:10:04.370
+Let's see if I can use my text pastry one to X.
+
+204
+00:10:06.370 --> 00:10:11.370
+No, that didn't work, but I think I can do this delete text.
+
+205
+00:10:12.740 --> 00:10:14.560
+This is a little extension.
+
+206
+00:10:14.560 --> 00:10:16.810
+There we go called text pastry.
+
+207
+00:10:16.810 --> 00:10:20.210
+And if you have cursors, you can just say text pressure,
+
+208
+00:10:20.210 --> 00:10:22.540
+you one to X and everywhere there's a cursor
+
+209
+00:10:22.540 --> 00:10:25.030
+we'll insert one, two, three, four,
+
+210
+00:10:25.030 --> 00:10:25.863
+and did that.
+
+211
+00:10:25.863 --> 00:10:28.743
+And then I can just use my cursors to do the same thing.
+
+212
+00:10:30.566 --> 00:10:31.399
+There we go.
+
+213
+00:10:31.399 --> 00:10:33.090
+Yeah, I'm being a hot shot there.
+
+214
+00:10:33.090 --> 00:10:35.703
+You can certainly just go and type it yourself.
+
+215
+00:10:36.950 --> 00:10:39.460
+I just like to flex a little bit.
+
+216
+00:10:39.460 --> 00:10:42.590
+Now, if we refresh this page, here we go.
+
+217
+00:10:42.590 --> 00:10:46.765
+You see veggie delight, topping zero.
+
+218
+00:10:46.765 --> 00:10:49.990
+Here we go to topping one, topping two, topping three.
+
+219
+00:10:49.990 --> 00:10:51.830
+So those are undefined because
+
+220
+00:10:51.830 --> 00:10:54.320
+they don't have more than two toppings.
+
+221
+00:10:54.320 --> 00:10:57.350
+So one little trick I like to do here
+
+222
+00:10:57.350 --> 00:11:01.280
+is we could destructure all of them, like this.
+
+223
+00:11:01.280 --> 00:11:06.070
+So we could say title media toppings,
+
+224
+00:11:06.070 --> 00:11:11.070
+zero topping one, topping two, topping three.
+
+225
+00:11:12.530 --> 00:11:14.270
+And then we could just console log
+
+226
+00:11:14.270 --> 00:11:16.073
+all those variables like this,
+
+227
+00:11:20.000 --> 00:11:21.540
+and that will work.
+
+228
+00:11:21.540 --> 00:11:24.378
+So here we go, mushrooms, onions, undefined, undefined,
+
+229
+00:11:24.378 --> 00:11:27.723
+but one kind of little cool thing is you can use,
+
+230
+00:11:28.600 --> 00:11:33.150
+a rest pram and a function to destructure the things
+
+231
+00:11:33.150 --> 00:11:35.560
+that you want title in media.
+
+232
+00:11:35.560 --> 00:11:38.680
+And then you can use the three little dots to capture
+
+233
+00:11:38.680 --> 00:11:42.340
+the rest of the arguments into an object.
+
+234
+00:11:42.340 --> 00:11:45.340
+And the way we can do that is we delete all these.
+
+235
+00:11:45.340 --> 00:11:48.023
+And we simply say ...toppings.
+
+236
+00:11:49.380 --> 00:11:52.210
+And by saying that if we say anything else
+
+237
+00:11:52.210 --> 00:11:55.010
+that we haven't already destructured,
+
+238
+00:11:55.010 --> 00:11:57.800
+just stick it in an object called toppings.
+
+239
+00:11:57.800 --> 00:12:00.150
+And that's kinda cool because we know the rest
+
+240
+00:12:00.150 --> 00:12:02.480
+of the things are just toppings.
+
+241
+00:12:02.480 --> 00:12:03.330
+So we could just,
+
+242
+00:12:03.330 --> 00:12:06.020
+now, if you log toppings like that,
+
+243
+00:12:06.020 --> 00:12:08.140
+now, if you open it up, you'll see,
+
+244
+00:12:08.140 --> 00:12:12.260
+we have an object here with the rest of the toppings,
+
+245
+00:12:12.260 --> 00:12:13.360
+which is kind of cool.
+
+246
+00:12:13.360 --> 00:12:16.640
+So next thing we wanted to do is take care
+
+247
+00:12:16.640 --> 00:12:18.190
+of these undefined.
+
+248
+00:12:18.190 --> 00:12:21.280
+So let's write a little bit of comments here.
+
+249
+00:12:21.280 --> 00:12:26.280
+So one, just like filter undefined toppings out,
+
+250
+00:12:26.910 --> 00:12:31.363
+and then two, return the preview object
+
+251
+00:12:33.900 --> 00:12:37.290
+for the pizza.
+
+252
+00:12:37.290 --> 00:12:39.010
+So let's actually do two first.
+
+253
+00:12:39.010 --> 00:12:42.100
+So return an object where the title
+
+254
+00:12:42.100 --> 00:12:44.320
+is equal to the title property.
+
+255
+00:12:44.320 --> 00:12:47.033
+So I saved that it just does that.
+
+256
+00:12:48.130 --> 00:12:48.973
+Actually, no,
+
+257
+00:12:50.080 --> 00:12:52.830
+you see my prettier made it an implicit return.
+
+258
+00:12:52.830 --> 00:12:53.760
+I don't want that.
+
+259
+00:12:53.760 --> 00:12:55.763
+So I'm just gonna go into the logs stay.
+
+260
+00:12:56.950 --> 00:12:57.783
+Okay, good.
+
+261
+00:12:57.783 --> 00:12:59.230
+So we returned the title property
+
+262
+00:12:59.230 --> 00:13:01.293
+and we also returned the media property.
+
+263
+00:13:02.340 --> 00:13:03.870
+So you see it's as visually delayed already,
+
+264
+00:13:03.870 --> 00:13:06.850
+that should change to a thumbnail, good.
+
+265
+00:13:06.850 --> 00:13:09.130
+And then we also have the option
+
+266
+00:13:09.130 --> 00:13:12.493
+to put a subtitle, like this.
+
+267
+00:13:13.460 --> 00:13:14.760
+You see there's a subtitle there
+
+268
+00:13:14.760 --> 00:13:18.003
+so we can take our toppings,
+
+269
+00:13:19.600 --> 00:13:22.573
+join them with a comma and a space.
+
+270
+00:13:27.070 --> 00:13:29.893
+And it broke, what happened?
+
+271
+00:13:31.832 --> 00:13:34.320
+Heads up, got an error while preparing preview,
+
+272
+00:13:34.320 --> 00:13:35.760
+click for details.
+
+273
+00:13:35.760 --> 00:13:36.810
+It's nice, thank you.
+
+274
+00:13:37.700 --> 00:13:39.303
+Encountered an error.
+
+275
+00:13:40.560 --> 00:13:43.370
+Toppings that join is not a function.
+
+276
+00:13:43.370 --> 00:13:48.370
+Oh, obviously, because toppings is an object.
+
+277
+00:13:48.610 --> 00:13:50.390
+So if you want all the values,
+
+278
+00:13:50.390 --> 00:13:54.763
+you would have to wrap that in it, object.values.
+
+279
+00:13:56.040 --> 00:13:58.427
+And that will turn it from an object into an array.
+
+280
+00:13:58.427 --> 00:14:00.870
+And we only care about the,
+
+281
+00:14:00.870 --> 00:14:02.180
+we only care about the values here.
+
+282
+00:14:02.180 --> 00:14:03.850
+We don't care about the properties,
+
+283
+00:14:03.850 --> 00:14:06.840
+which is these four right here.
+
+284
+00:14:06.840 --> 00:14:07.800
+And then there we go.
+
+285
+00:14:07.800 --> 00:14:09.650
+That's actually looking pretty good.
+
+286
+00:14:09.650 --> 00:14:12.740
+We've got mushrooms, onions, except for that like little,
+
+287
+00:14:12.740 --> 00:14:16.790
+the undefined ones have this extra little space here.
+
+288
+00:14:16.790 --> 00:14:19.270
+So the way that we can do that is we'll create
+
+289
+00:14:19.270 --> 00:14:20.700
+another variable up here.
+
+290
+00:14:20.700 --> 00:14:25.700
+We'll say const tops is equal to object.values, toppings,
+
+291
+00:14:29.190 --> 00:14:33.553
+and then we can just filter it for if it is falcy,
+
+292
+00:14:34.740 --> 00:14:38.600
+meaning if it is undefined, it will filter itself out.
+
+293
+00:14:38.600 --> 00:14:41.600
+And we could just, normally you would say like topping,
+
+294
+00:14:43.530 --> 00:14:48.530
+topping is equal to undefined or not equal to undefined.
+
+295
+00:14:49.030 --> 00:14:52.640
+So if the topic is not undefined, then we want to keep it.
+
+296
+00:14:52.640 --> 00:14:54.030
+So we're filtering it.
+
+297
+00:14:54.030 --> 00:14:56.330
+And I actually tweeted that and someone's like,
+
+298
+00:14:56.330 --> 00:14:58.750
+well, you can just filter Boolean.
+
+299
+00:14:58.750 --> 00:15:00.400
+And what that will do is it will,
+
+300
+00:15:02.550 --> 00:15:05.093
+if you have Boolean, this.
+
+301
+00:15:06.210 --> 00:15:07.680
+Boolean,
+
+302
+00:15:07.680 --> 00:15:11.180
+if you have undefined, it returned false.
+
+303
+00:15:11.180 --> 00:15:15.340
+If you have a mushroom, it will turn true.
+
+304
+00:15:15.340 --> 00:15:17.800
+And it will also also filter out some nice things
+
+305
+00:15:17.800 --> 00:15:20.660
+if you have like a topping, that is just a space,
+
+306
+00:15:20.660 --> 00:15:21.803
+something went wrong.
+
+307
+00:15:23.040 --> 00:15:26.250
+Oh actually, no, that's wrong.
+(laughing loudly)
+
+308
+00:15:26.250 --> 00:15:28.140
+It will keep it if it is a space,
+
+309
+00:15:28.140 --> 00:15:30.600
+what if it is a topping of zero?
+
+310
+00:15:30.600 --> 00:15:33.540
+No, so if you have a topic of zero, it will filter it out.
+
+311
+00:15:33.540 --> 00:15:34.940
+Don't know why you would have that
+
+312
+00:15:34.940 --> 00:15:38.480
+but that is just a way to convert
+
+313
+00:15:38.480 --> 00:15:41.250
+a value into a true Boolean.
+
+314
+00:15:41.250 --> 00:15:44.020
+So we filter them out there and then we'll go down here
+
+315
+00:15:44.020 --> 00:15:48.370
+and replace this object.values with our new array,
+
+316
+00:15:48.370 --> 00:15:51.700
+which is tops or pizzas.
+
+317
+00:15:51.700 --> 00:15:53.667
+Here we go, mushrooms, onions, pepperoni, mushrooms,
+
+318
+00:15:53.667 --> 00:15:55.150
+and onions bacon.
+
+319
+00:15:55.150 --> 00:15:55.983
+Beautiful.
+
+320
+00:15:55.983 --> 00:15:58.530
+So a little bit extra work here,
+
+321
+00:15:58.530 --> 00:16:01.953
+but a nice control over how it looks in our sanity studio.
+

@@ -1,0 +1,822 @@
+﻿WEBVTT
+
+1
+00:00:00.141 --> 00:00:02.724
+(Upbeat music)
+
+2
+00:00:04.140 --> 00:00:05.620
+<v Narrator>At this point in the course,</v>
+
+3
+00:00:05.620 --> 00:00:06.805
+we've set up our Gatsby website.
+
+4
+00:00:06.805 --> 00:00:09.600
+And we've done some very basic templating and layout
+
+5
+00:00:09.600 --> 00:00:11.030
+and creating of pages.
+
+6
+00:00:11.030 --> 00:00:13.110
+On the other hand, we've done our sanity,
+
+7
+00:00:13.110 --> 00:00:14.360
+we've created our schemers
+
+8
+00:00:14.360 --> 00:00:15.940
+and we've created a couple content types
+
+9
+00:00:15.940 --> 00:00:17.970
+and added some data to that.
+
+10
+00:00:17.970 --> 00:00:19.490
+But now the question is,
+
+11
+00:00:19.490 --> 00:00:22.190
+how do I take the data that lives in sanity,
+
+12
+00:00:22.190 --> 00:00:24.705
+and get it into my Gatsby website.
+
+13
+00:00:24.705 --> 00:00:26.614
+Before we even get into how to do that,
+
+14
+00:00:26.614 --> 00:00:31.614
+I want to bring you into the GraphQL playground.
+
+15
+00:00:31.710 --> 00:00:32.860
+If you take a look at...
+
+16
+00:00:32.860 --> 00:00:36.650
+when you run NPM start on your Gatsby website,
+
+17
+00:00:36.650 --> 00:00:38.060
+obviously gives you a local host,
+
+18
+00:00:38.060 --> 00:00:40.710
+whatever for your Gatsby website.
+
+19
+00:00:40.710 --> 00:00:42.120
+That's what we got going here.
+
+20
+00:00:42.120 --> 00:00:44.030
+But then it also gives you this URL,
+
+21
+00:00:44.030 --> 00:00:46.450
+___GraphQL.
+
+22
+00:00:46.450 --> 00:00:49.330
+And if we go ahead and visit that,
+
+23
+00:00:49.330 --> 00:00:50.210
+you'll see actually,
+
+24
+00:00:50.210 --> 00:00:53.120
+you probably won't see this beer query.
+
+25
+00:00:53.120 --> 00:00:55.023
+That's to come.
+
+26
+00:00:56.700 --> 00:00:58.853
+Just you wait, it's gonna be real good.
+
+27
+00:00:59.700 --> 00:01:01.080
+This is the graphical,
+
+28
+00:01:01.080 --> 00:01:03.000
+graphical is how you say it?
+
+29
+00:01:03.000 --> 00:01:04.850
+And basically this is just a playground
+
+30
+00:01:04.850 --> 00:01:08.723
+that allows you to see what are called GraphQL queries.
+
+31
+00:01:09.570 --> 00:01:11.660
+And you can run queries in here
+
+32
+00:01:11.660 --> 00:01:13.627
+and see what data it returns you.
+
+33
+00:01:13.627 --> 00:01:15.940
+We're going to be leaning on this a lot
+
+34
+00:01:15.940 --> 00:01:19.160
+in order to write the different queries that are needed.
+
+35
+00:01:19.160 --> 00:01:21.160
+The whole idea behind Gatsby
+
+36
+00:01:21.160 --> 00:01:24.880
+is that at build time,
+
+37
+00:01:24.880 --> 00:01:25.950
+when we build our website,
+
+38
+00:01:25.950 --> 00:01:28.710
+before we deploy it to the internet,
+
+39
+00:01:28.710 --> 00:01:32.620
+Gatsby will go and gather all of the the data
+
+40
+00:01:32.620 --> 00:01:34.690
+that it needs in order to run.
+
+41
+00:01:34.690 --> 00:01:37.200
+In our case, it's going to go over to sanity
+
+42
+00:01:37.200 --> 00:01:38.570
+and grab all the pizzas,
+
+43
+00:01:38.570 --> 00:01:39.620
+all the people,
+
+44
+00:01:39.620 --> 00:01:40.810
+all the toppings,
+
+45
+00:01:40.810 --> 00:01:43.530
+and all the relationships between all of those
+
+46
+00:01:43.530 --> 00:01:44.363
+and all...
+
+47
+00:01:44.363 --> 00:01:45.196
+everything that we've done.
+
+48
+00:01:45.196 --> 00:01:47.150
+It's going to go ahead and grab all that data,
+
+49
+00:01:47.150 --> 00:01:49.970
+and it's going to stick it in...
+
+50
+00:01:49.970 --> 00:01:51.650
+I'm not going to call it a database
+
+51
+00:01:51.650 --> 00:01:53.834
+because as soon as it's done,
+
+52
+00:01:53.834 --> 00:01:54.667
+it's disappeared,
+
+53
+00:01:54.667 --> 00:01:58.030
+but it sticks it into its memory
+
+54
+00:01:58.030 --> 00:02:03.030
+and it allows us to query that data via GraphQL queries.
+
+55
+00:02:03.420 --> 00:02:07.240
+Now if we look at this GraphQL endpoint right now,
+
+56
+00:02:07.240 --> 00:02:11.530
+you'll see there is already a couple of different queries
+
+57
+00:02:11.530 --> 00:02:14.000
+that come standard with Gatsby.
+
+58
+00:02:14.000 --> 00:02:17.820
+And there's some pretty simple things like all files,
+
+59
+00:02:17.820 --> 00:02:19.023
+all site,
+
+60
+00:02:19.023 --> 00:02:20.860
+you can get some siteMetadata,
+
+61
+00:02:20.860 --> 00:02:22.350
+directories, things like that.
+
+62
+00:02:22.350 --> 00:02:27.030
+But most of this is not very useful to us as web developers.
+
+63
+00:02:27.030 --> 00:02:30.270
+It's more for lower level plugin authors
+
+64
+00:02:30.270 --> 00:02:31.533
+and things like that.
+
+65
+00:02:32.570 --> 00:02:35.640
+What we want to do is to figure out
+
+66
+00:02:35.640 --> 00:02:39.380
+how do we surface the data from our sanity
+
+67
+00:02:39.380 --> 00:02:42.500
+into this GraphQL explorer here,
+
+68
+00:02:42.500 --> 00:02:44.960
+so that we'll see it listed in the queries
+
+69
+00:02:44.960 --> 00:02:47.540
+and we'll be able to go ahead and pull that.
+
+70
+00:02:47.540 --> 00:02:49.520
+The way that we do that is via plugins
+
+71
+00:02:49.520 --> 00:02:54.520
+and plugins are defined in our Gatsby-config.js
+
+72
+00:02:54.770 --> 00:02:59.770
+and the Gatsby config file is a spot
+
+73
+00:03:00.000 --> 00:03:01.180
+where we can...
+
+74
+00:03:01.180 --> 00:03:04.600
+mostly you're going to be specifying plugins
+
+75
+00:03:04.600 --> 00:03:06.660
+that are used on your website.
+
+76
+00:03:06.660 --> 00:03:09.090
+However you can also specify Metadata
+
+77
+00:03:09.090 --> 00:03:11.930
+about your website things like URLs,
+
+78
+00:03:11.930 --> 00:03:14.490
+and titles and whatnot.
+
+79
+00:03:14.490 --> 00:03:17.310
+And then there's some lesser used ones.
+
+80
+00:03:17.310 --> 00:03:18.930
+Things like pathPrefix.
+
+81
+00:03:18.930 --> 00:03:21.000
+Like if you're deploying this Gatsby website
+
+82
+00:03:21.000 --> 00:03:24.540
+to Westboss.com/blog,
+
+83
+00:03:24.540 --> 00:03:25.950
+and not just like a domain,
+
+84
+00:03:25.950 --> 00:03:27.910
+you could add that there.
+
+85
+00:03:27.910 --> 00:03:30.280
+And then some polyfilling and whatnot stuff
+
+86
+00:03:30.280 --> 00:03:32.220
+that isn't as commonly used.
+
+87
+00:03:32.220 --> 00:03:34.380
+Let's go ahead and create that file.
+
+88
+00:03:34.380 --> 00:03:36.840
+And we'll actually do some site Metadata first,
+
+89
+00:03:36.840 --> 00:03:38.790
+just to show you how we can add it
+
+90
+00:03:38.790 --> 00:03:43.610
+and how it gets sourced to the GraphQL Explorer,
+
+91
+00:03:43.610 --> 00:03:45.800
+and then we'll look at adding sanity plugins,
+
+92
+00:03:45.800 --> 00:03:47.290
+so we can pull all of our data in there.
+
+93
+00:03:47.290 --> 00:03:50.907
+We already have Gatsby browser, Gatsby SSR,
+
+94
+00:03:50.907 --> 00:03:52.730
+and we're in to make a new one
+
+95
+00:03:52.730 --> 00:03:54.320
+in the very root of our folder
+
+96
+00:03:54.320 --> 00:03:59.090
+and that's going to be called gatsby-config.js.
+
+97
+00:03:59.090 --> 00:04:01.687
+Then in here, we'll say export default {
+
+98
+00:04:03.403 --> 00:04:04.730
+In a lot of the documentation,
+
+99
+00:04:04.730 --> 00:04:05.650
+you might see this,
+
+100
+00:04:05.650 --> 00:04:07.410
+this is module.exports.
+
+101
+00:04:07.410 --> 00:04:11.380
+This is what's referred to as commonJS syntax.
+
+102
+00:04:11.380 --> 00:04:13.143
+And at the time of recording,
+
+103
+00:04:13.991 --> 00:04:18.530
+NOJA's is currently adding the ability to do this
+
+104
+00:04:18.530 --> 00:04:20.230
+which is ES modules
+
+105
+00:04:20.230 --> 00:04:22.133
+And this is commonJS module.
+
+106
+00:04:23.110 --> 00:04:26.870
+I don't like having to use commonJS modules
+
+107
+00:04:26.870 --> 00:04:29.020
+because everything else is ES modules
+
+108
+00:04:29.020 --> 00:04:30.450
+I like to just keep it all the same.
+
+109
+00:04:30.450 --> 00:04:34.960
+So I've added a little bit of stuff in the package JSON,
+
+110
+00:04:34.960 --> 00:04:36.680
+in order to start it.
+
+111
+00:04:36.680 --> 00:04:38.140
+Let me see here,
+
+112
+00:04:38.140 --> 00:04:40.430
+this little trick right here
+
+113
+00:04:40.430 --> 00:04:41.700
+that might even be gone
+
+114
+00:04:41.700 --> 00:04:43.260
+by the time you're taking this course
+
+115
+00:04:43.260 --> 00:04:46.130
+because as soon as Gatsby implements this,
+
+116
+00:04:46.130 --> 00:04:47.040
+I'll just take that out,
+
+117
+00:04:47.040 --> 00:04:49.680
+and it will simply just be Gatsby build.
+
+118
+00:04:49.680 --> 00:04:51.670
+So don't worry about that all that much.
+
+119
+00:04:51.670 --> 00:04:54.007
+Then in here, we can say siteMetadata.
+
+120
+00:04:55.510 --> 00:04:58.940
+This one has cost me a couple hours,
+
+121
+00:04:58.940 --> 00:05:01.130
+make sure it's capital M on Metadata
+
+122
+00:05:01.130 --> 00:05:03.510
+but no capital D on that
+
+123
+00:05:03.510 --> 00:05:05.960
+because Metadata is one word.
+
+124
+00:05:05.960 --> 00:05:07.810
+I had a capital D on one of my websites
+
+125
+00:05:07.810 --> 00:05:10.683
+and it worked for the longest time until it didn't.
+
+126
+00:05:11.750 --> 00:05:13.180
+And that's an object.
+
+127
+00:05:13.180 --> 00:05:14.260
+And then inside of there,
+
+128
+00:05:14.260 --> 00:05:17.253
+we can do things like the title of Gatsby.
+
+129
+00:05:18.380 --> 00:05:21.370
+You notice that Gatsby docs use backticks here.
+
+130
+00:05:21.370 --> 00:05:24.330
+And there's nothing special about that.
+
+131
+00:05:24.330 --> 00:05:26.180
+You can use single, double, triple
+
+132
+00:05:26.180 --> 00:05:29.520
+because this is JavaScript file, not a JSON file.
+
+133
+00:05:29.520 --> 00:05:30.353
+You can use,
+
+134
+00:05:30.353 --> 00:05:33.068
+I'll use backticks here just to show you again,
+
+135
+00:05:33.068 --> 00:05:35.460
+I'll call it Slick's Slices,
+
+136
+00:05:35.460 --> 00:05:38.380
+can do things like site URL,
+
+137
+00:05:38.380 --> 00:05:43.350
+it's going to be https://gatsby.pizza
+
+138
+00:05:46.090 --> 00:05:47.630
+And then description,
+
+139
+00:05:47.630 --> 00:05:52.373
+we'll say the best pizza place in Hamilton.
+
+140
+00:05:53.530 --> 00:05:55.010
+Give that a save.
+
+141
+00:05:55.010 --> 00:05:59.370
+Now I believe that you need to...
+
+142
+00:05:59.370 --> 00:06:02.320
+you might need to restart your build.
+
+143
+00:06:02.320 --> 00:06:06.590
+Currently, they're working on not having to restart
+
+144
+00:06:06.590 --> 00:06:07.740
+your build every time
+
+145
+00:06:07.740 --> 00:06:11.820
+that you change your Gatsby browser config, or SSR.
+
+146
+00:06:11.820 --> 00:06:15.900
+So that might be changed by the time you're doing this.
+
+147
+00:06:15.900 --> 00:06:18.060
+But let's see here.
+
+148
+00:06:18.060 --> 00:06:21.910
+We'll go back to our graphical
+
+149
+00:06:21.910 --> 00:06:23.580
+and just refresh that page,
+
+150
+00:06:23.580 --> 00:06:27.440
+then we should be able to query the data via this.
+
+151
+00:06:27.440 --> 00:06:29.170
+However, because we just created this,
+
+152
+00:06:29.170 --> 00:06:31.790
+you might need to restart your process
+
+153
+00:06:31.790 --> 00:06:32.700
+at the time of recording,
+
+154
+00:06:32.700 --> 00:06:34.900
+you do need to restart your process.
+
+155
+00:06:34.900 --> 00:06:36.690
+Just go to your terminal,
+
+156
+00:06:36.690 --> 00:06:38.230
+hit Ctrl+C to kill it,
+
+157
+00:06:38.230 --> 00:06:39.350
+I always like to clear it out.
+
+158
+00:06:39.350 --> 00:06:41.540
+I hit command-K or Command-R,
+
+159
+00:06:41.540 --> 00:06:45.500
+and then I rerun NPM start from there.
+
+160
+00:06:45.500 --> 00:06:47.530
+And what that will do is when it's starting,
+
+161
+00:06:47.530 --> 00:06:50.910
+it first checks for gatsby-config.js,
+
+162
+00:06:50.910 --> 00:06:52.530
+and then any settings that are in here
+
+163
+00:06:52.530 --> 00:06:55.123
+gets applied to that build.
+
+164
+00:06:56.606 --> 00:06:57.439
+There we go,
+
+165
+00:06:57.439 --> 00:06:59.330
+now if we refresh the page here,
+
+166
+00:06:59.330 --> 00:07:00.870
+get rid of whatever is in here.
+
+167
+00:07:00.870 --> 00:07:03.110
+These are all the queries that we have in here.
+
+168
+00:07:03.110 --> 00:07:05.650
+And the way that you write a query in GraphQL,
+
+169
+00:07:05.650 --> 00:07:08.330
+is you type query and {.
+
+170
+00:07:08.330 --> 00:07:11.480
+And we're going to be writing quite a few of these
+
+171
+00:07:11.480 --> 00:07:14.370
+in our different pages and components.
+
+172
+00:07:14.370 --> 00:07:17.393
+And then inside of there, we see that we have site.
+
+173
+00:07:18.640 --> 00:07:19.473
+We can grab...
+
+174
+00:07:19.473 --> 00:07:20.644
+actually look,
+
+175
+00:07:20.644 --> 00:07:22.170
+if you just open and close,
+
+176
+00:07:22.170 --> 00:07:24.730
+the thing you'll add it to your query.
+
+177
+00:07:24.730 --> 00:07:26.220
+So it'll build the query for you,
+
+178
+00:07:26.220 --> 00:07:27.280
+instead of you having to type it.
+
+179
+00:07:27.280 --> 00:07:31.160
+It will also give you like IntelliSense.
+
+180
+00:07:31.160 --> 00:07:33.540
+So as you start typing site,
+
+181
+00:07:33.540 --> 00:07:34.840
+open that up,
+
+182
+00:07:34.840 --> 00:07:36.430
+I believe it's Ctrl+Space
+
+183
+00:07:36.430 --> 00:07:38.422
+will give you a possible...
+
+184
+00:07:38.422 --> 00:07:40.500
+this is what people are referring to
+
+185
+00:07:40.500 --> 00:07:42.570
+when they talk about typed things
+
+186
+00:07:42.570 --> 00:07:46.730
+and things like TypeScript or GraphQL is also typed.
+
+187
+00:07:46.730 --> 00:07:48.910
+They know ahead of time what the possible values are,
+
+188
+00:07:48.910 --> 00:07:51.890
+so you get this really nice autocomplete.
+
+189
+00:07:51.890 --> 00:07:55.540
+Inside a site, we can grab siteMetadata,
+
+190
+00:07:55.540 --> 00:07:57.223
+and then inside of that,
+
+191
+00:07:58.420 --> 00:08:00.730
+we are able to access the site,
+
+192
+00:08:00.730 --> 00:08:02.830
+the title, the site URL and the description.
+
+193
+00:08:02.830 --> 00:08:04.010
+You can take a look right here,
+
+194
+00:08:04.010 --> 00:08:04.843
+look,
+
+195
+00:08:04.843 --> 00:08:06.620
+description, site URL and title.
+
+196
+00:08:06.620 --> 00:08:09.430
+Then we go ahead and run that query.
+
+197
+00:08:09.430 --> 00:08:13.290
+And you'll see that it returns that data to us.
+
+198
+00:08:13.290 --> 00:08:15.490
+Now we are going to do the same thing
+
+199
+00:08:15.490 --> 00:08:17.230
+with our sanity studio.
+
+200
+00:08:17.230 --> 00:08:21.100
+However we're not going to be just manually typing in here.
+
+201
+00:08:21.100 --> 00:08:22.780
+We're going to be installing a plugin
+
+202
+00:08:22.780 --> 00:08:25.420
+that will source that data from sanity
+
+203
+00:08:25.420 --> 00:08:29.300
+and put it into our GraphQL explorer
+
+204
+00:08:29.300 --> 00:08:30.702
+that we have right here.
+
+205
+00:08:30.702 --> 00:08:32.460
+That's what we'll do in the next video
+

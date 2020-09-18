@@ -1,0 +1,1722 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:03.995
+(gentle music)
+
+2
+00:00:03.995 --> 00:00:07.840
+<v Instructor>Video let's work on getting the pizzas,</v>
+
+3
+00:00:07.840 --> 00:00:08.850
+the list of pizzas,
+
+4
+00:00:08.850 --> 00:00:10.190
+their name, and their emails.
+
+5
+00:00:10.190 --> 00:00:12.420
+Let's get up, get working on that data,
+
+6
+00:00:12.420 --> 00:00:15.110
+being sent over to our serverless function,
+
+7
+00:00:15.110 --> 00:00:17.440
+and then in the following video we'll work on
+
+8
+00:00:17.440 --> 00:00:18.710
+actually sending that
+
+9
+00:00:18.710 --> 00:00:20.280
+and templating it into an email.
+
+10
+00:00:20.280 --> 00:00:24.040
+So we need to go into our usePizza hook
+
+11
+00:00:24.040 --> 00:00:25.453
+that we wrote earlier,
+
+12
+00:00:26.430 --> 00:00:29.540
+and that is up here.
+
+13
+00:00:29.540 --> 00:00:31.120
+Okay, cool.
+
+14
+00:00:31.120 --> 00:00:33.610
+We need a couple new pieces of state
+
+15
+00:00:33.610 --> 00:00:34.940
+that live inside of this pizza.
+
+16
+00:00:34.940 --> 00:00:37.870
+We need something that will handle errors
+
+17
+00:00:37.870 --> 00:00:40.170
+and we need something that will handle the loading state
+
+18
+00:00:40.170 --> 00:00:43.650
+and also something that will handle any return messages.
+
+19
+00:00:43.650 --> 00:00:45.230
+So in order to do that,
+
+20
+00:00:45.230 --> 00:00:49.503
+we will make them const the error set error,
+
+21
+00:00:50.510 --> 00:00:52.200
+is equal to useState,
+
+22
+00:00:52.200 --> 00:00:54.160
+and there's no default state.
+
+23
+00:00:54.160 --> 00:00:57.283
+Then we'll also grab loading,
+
+24
+00:01:00.493 --> 00:01:03.984
+setLoading, and that will default to false.
+
+25
+00:01:03.984 --> 00:01:05.400
+And then finally,
+
+26
+00:01:05.400 --> 00:01:09.031
+we have a message and we'll have a setMessage
+
+27
+00:01:09.031 --> 00:01:13.491
+that will default to an empty string, okay.
+
+28
+00:01:13.491 --> 00:01:15.180
+Then what we need to do
+
+29
+00:01:15.180 --> 00:01:19.530
+is return those new values
+
+30
+00:01:19.530 --> 00:01:22.110
+So error, loading, and message.
+
+31
+00:01:22.110 --> 00:01:25.573
+All three of those need to be returned from our hook.
+
+32
+00:01:30.969 --> 00:01:34.610
+And then we can use them in our,
+
+33
+00:01:34.610 --> 00:01:36.333
+I believe it's our order page.
+
+34
+00:01:39.007 --> 00:01:42.080
+UsePizza, here we go.
+
+35
+00:01:42.080 --> 00:01:44.320
+So we can restructure them here.
+
+36
+00:01:44.320 --> 00:01:45.802
+So error, loading
+
+37
+00:01:45.802 --> 00:01:50.373
+and message comes in from our usePizza.
+
+38
+00:01:51.580 --> 00:01:53.253
+Then we can.
+
+39
+00:01:56.240 --> 00:01:58.240
+Let's do the loading state first.
+
+40
+00:01:58.240 --> 00:02:01.320
+So we'll go down to where it says order ahead,
+
+41
+00:02:01.320 --> 00:02:02.180
+and we'll grab this button
+
+42
+00:02:02.180 --> 00:02:03.550
+and when it's loading,
+
+43
+00:02:03.550 --> 00:02:05.020
+we'll disable it.
+
+44
+00:02:05.020 --> 00:02:09.570
+So also disabled is equal to loading.
+
+45
+00:02:09.570 --> 00:02:10.920
+And then in here,
+
+46
+00:02:10.920 --> 00:02:13.420
+the order ahead text can be dynamic based on
+
+47
+00:02:13.420 --> 00:02:14.640
+if it's loading or not.
+
+48
+00:02:14.640 --> 00:02:17.600
+So let's say loading, if that is true,
+
+49
+00:02:17.600 --> 00:02:19.817
+then we'll say placing order ...,
+
+50
+00:02:20.950 --> 00:02:24.113
+otherwise we will say order ahead,
+
+51
+00:02:25.230 --> 00:02:26.063
+okay.
+
+52
+00:02:26.063 --> 00:02:29.264
+So now we need to create a handler
+
+53
+00:02:29.264 --> 00:02:33.180
+for when somebody clicks on this button right here.
+
+54
+00:02:33.180 --> 00:02:34.270
+So we'll go back to our usePizza
+
+55
+00:02:34.270 --> 00:02:37.450
+and make another function in here.
+
+56
+00:02:37.450 --> 00:02:38.493
+So this is our usePizza.
+
+57
+00:02:38.493 --> 00:02:39.990
+This is our state.
+
+58
+00:02:39.990 --> 00:02:42.120
+These are our functions.
+
+59
+00:02:42.120 --> 00:02:44.870
+We're going to create another function
+
+60
+00:02:44.870 --> 00:02:46.790
+that is called submitOrder.
+
+61
+00:02:46.790 --> 00:02:48.763
+So it's in the sync function,
+
+62
+00:02:50.467 --> 00:02:53.630
+submitOrder that takes in the event.
+
+63
+00:02:53.630 --> 00:02:56.140
+So this is the function that is run
+
+64
+00:02:58.900 --> 00:03:01.023
+when someone submits the form.
+
+65
+00:03:02.800 --> 00:03:05.300
+So the first thing we need to do is e.preventDefault.
+
+66
+00:03:05.300 --> 00:03:08.040
+'Cause watch, if I submit this sucker right now,
+
+67
+00:03:08.040 --> 00:03:09.830
+like types of stuff into here
+
+68
+00:03:09.830 --> 00:03:12.140
+and go ahead and click order,
+
+69
+00:03:12.140 --> 00:03:15.720
+you see, it actually puts it in the URL.
+
+70
+00:03:15.720 --> 00:03:16.930
+We don't want that, right?
+
+71
+00:03:16.930 --> 00:03:19.600
+We want this data
+
+72
+00:03:19.600 --> 00:03:21.820
+to be submitted to the backend.
+
+73
+00:03:21.820 --> 00:03:23.970
+So what we can do is e.preventDefault
+
+74
+00:03:26.470 --> 00:03:31.170
+and let's just console.log the event.
+
+75
+00:03:31.170 --> 00:03:32.720
+And then we'll also,
+
+76
+00:03:32.720 --> 00:03:35.720
+say set loading
+
+77
+00:03:38.520 --> 00:03:39.433
+to true.
+
+78
+00:03:42.100 --> 00:03:44.558
+So watch this now when we cook it.
+
+79
+00:03:44.558 --> 00:03:45.391
+Oh no,
+
+80
+00:03:45.391 --> 00:03:47.270
+We haven't hooked it up yet.
+
+81
+00:03:47.270 --> 00:03:49.529
+So we have this submitOrder function.
+
+82
+00:03:49.529 --> 00:03:52.300
+We have to return it from our hook.
+
+83
+00:03:52.300 --> 00:03:55.040
+We have to go to our order page
+
+84
+00:03:55.920 --> 00:03:58.483
+and destructure structure it from our hook.
+
+85
+00:04:00.250 --> 00:04:05.012
+And then we'll take our order form.
+
+86
+00:04:05.012 --> 00:04:10.012
+And we'll say on submit is equal to submitOrder.
+
+87
+00:04:10.130 --> 00:04:13.600
+So this is a form tag once it gets rendered out.
+
+88
+00:04:13.600 --> 00:04:17.560
+Now I believe if we click this, here we go.
+
+89
+00:04:17.560 --> 00:04:19.580
+You see, as soon as I clicked that
+
+90
+00:04:20.900 --> 00:04:23.239
+it ran submitOrder,
+
+91
+00:04:23.239 --> 00:04:27.230
+which currently prevents default, good.
+
+92
+00:04:27.230 --> 00:04:30.017
+It also should have logged the event.
+
+93
+00:04:30.017 --> 00:04:32.180
+There she is.
+
+94
+00:04:32.180 --> 00:04:34.570
+And it sets loading to true,
+
+95
+00:04:34.570 --> 00:04:37.420
+which causes it to say placing order, right?
+
+96
+00:04:37.420 --> 00:04:40.033
+So order head here we go placing order.
+
+97
+00:04:41.730 --> 00:04:42.563
+Good,
+
+98
+00:04:42.563 --> 00:04:44.240
+next thing we need to do here
+
+99
+00:04:45.580 --> 00:04:46.910
+is to
+
+100
+00:04:49.610 --> 00:04:51.800
+gather all the data
+
+101
+00:04:54.430 --> 00:04:55.640
+that needs to be sent.
+
+102
+00:04:55.640 --> 00:04:56.993
+So we'll say const,
+
+103
+00:04:58.490 --> 00:05:02.610
+let's just name that body as equal to curly brackets
+
+104
+00:05:05.570 --> 00:05:08.930
+and the body will be the order
+
+105
+00:05:08.930 --> 00:05:12.940
+is going to be our actual order.
+
+106
+00:05:12.940 --> 00:05:15.610
+We'll just have an empty array.
+
+107
+00:05:15.610 --> 00:05:17.300
+We have our total,
+
+108
+00:05:17.300 --> 00:05:21.550
+which is going to be format money
+
+109
+00:05:21.550 --> 00:05:24.496
+and calculate order total.
+
+110
+00:05:24.496 --> 00:05:28.143
+And we'll pass it our order with our pizzas,
+
+111
+00:05:31.030 --> 00:05:35.540
+the name is going to be pulled from the inputs.
+
+112
+00:05:35.540 --> 00:05:39.510
+Remember we take a look at our order.
+
+113
+00:05:39.510 --> 00:05:41.810
+You see that we have our values here
+
+114
+00:05:41.810 --> 00:05:45.590
+and those get passed to our usePizza.
+
+115
+00:05:45.590 --> 00:05:47.803
+We rename it to inputs here.
+
+116
+00:05:50.493 --> 00:05:51.969
+I'm not sure why let's name.
+
+117
+00:05:51.969 --> 00:05:55.750
+Let's rename that to values.
+
+118
+00:05:55.750 --> 00:05:57.330
+That's better.
+
+119
+00:05:57.330 --> 00:05:59.280
+We'll go to pizza.
+
+120
+00:05:59.280 --> 00:06:01.333
+We'll change this to values.
+
+121
+00:06:02.380 --> 00:06:07.160
+And then back down here is values.name.
+
+122
+00:06:08.170 --> 00:06:10.973
+Email is values.email.
+
+123
+00:06:16.210 --> 00:06:19.453
+This formatMoney function needs to be imported, good.
+
+124
+00:06:23.440 --> 00:06:25.780
+Okay. So that's our body.
+
+125
+00:06:25.780 --> 00:06:28.246
+Last thing we need to do is we can
+
+126
+00:06:28.246 --> 00:06:29.246
+just put order here for now.
+
+127
+00:06:29.246 --> 00:06:31.230
+we've got to create a new function
+
+128
+00:06:31.230 --> 00:06:33.360
+to actually attach the names
+
+129
+00:06:33.360 --> 00:06:34.710
+and the prices to the order,
+
+130
+00:06:34.710 --> 00:06:36.450
+but this should be our data.
+
+131
+00:06:36.450 --> 00:06:37.700
+So let's go ahead
+
+132
+00:06:37.700 --> 00:06:41.560
+and console.log the body
+
+133
+00:06:43.570 --> 00:06:47.010
+and let's go add some stuff.
+
+134
+00:06:47.010 --> 00:06:48.660
+Let's type some stuff into here
+
+135
+00:06:50.715 --> 00:06:52.483
+and go ahead and submit it.
+
+136
+00:06:53.580 --> 00:06:55.430
+Oh, that's not a valid email address.
+
+137
+00:06:56.498 --> 00:06:57.890
+Okay, that's good.
+
+138
+00:06:57.890 --> 00:06:59.580
+We get our email or our name,
+
+139
+00:06:59.580 --> 00:07:00.910
+our order and our total, good.
+
+140
+00:07:00.910 --> 00:07:05.498
+So all of that data needs to be sent over to the backend.
+
+141
+00:07:05.498 --> 00:07:07.760
+Let's just take a quick look at this order though.
+
+142
+00:07:07.760 --> 00:07:10.760
+The order is obviously not what we want.
+
+143
+00:07:10.760 --> 00:07:12.920
+So we need to make a new function.
+
+144
+00:07:12.920 --> 00:07:15.950
+I'm gonna call that attach names and prices.
+
+145
+00:07:15.950 --> 00:07:18.533
+So we'll go into our utils folder here,
+
+146
+00:07:19.460 --> 00:07:20.730
+make a new file,
+
+147
+00:07:20.730 --> 00:07:23.023
+call attachNamesAndPrices.JS,
+
+148
+00:07:27.731 --> 00:07:29.040
+export,
+
+149
+00:07:29.040 --> 00:07:32.830
+default function attachNamesAndPrices
+
+150
+00:07:34.890 --> 00:07:37.520
+that we'll take in the order itself,
+
+151
+00:07:37.520 --> 00:07:39.760
+as well as the list of pizzas.
+
+152
+00:07:39.760 --> 00:07:43.110
+And in here we will return the order
+
+153
+00:07:43.110 --> 00:07:44.170
+and we'll map over it
+
+154
+00:07:44.170 --> 00:07:46.773
+and change each of these to actually
+
+155
+00:07:46.773 --> 00:07:48.610
+be a little bit more populated.
+
+156
+00:07:48.610 --> 00:07:52.623
+So map we'll call that in item.
+
+157
+00:07:53.610 --> 00:07:54.960
+And then from that,
+
+158
+00:07:54.960 --> 00:07:58.430
+we want to say the const pizza is equal to,
+
+159
+00:07:58.430 --> 00:08:02.133
+well pizzas.find where the pizza.
+
+160
+00:08:05.970 --> 00:08:08.160
+Pizza.id is equal to
+
+161
+00:08:08.160 --> 00:08:11.600
+the item.id that will give us the pizza.
+
+162
+00:08:11.600 --> 00:08:12.433
+And then finally from here,
+
+163
+00:08:12.433 --> 00:08:17.433
+we will return the a copy of everything we have.
+
+164
+00:08:17.478 --> 00:08:18.311
+So item,
+
+165
+00:08:18.311 --> 00:08:20.620
+and then we also wanna add the name
+
+166
+00:08:20.620 --> 00:08:23.030
+of the pizza on pizza.name.
+
+167
+00:08:23.030 --> 00:08:24.713
+We wanna add the thumbnail,
+
+168
+00:08:25.860 --> 00:08:26.693
+which is gonna be
+
+169
+00:08:26.693 --> 00:08:30.757
+pizza.image.asset.fluid.src.
+
+170
+00:08:31.680 --> 00:08:35.500
+And then we wanna attach the price to that.
+
+171
+00:08:35.500 --> 00:08:39.660
+And that would be pizza.price.
+
+172
+00:08:39.660 --> 00:08:42.005
+But as we know, that is in cents
+
+173
+00:08:42.005 --> 00:08:47.005
+We can wrap that in calculate pizza price,
+
+174
+00:08:50.280 --> 00:08:52.830
+and (indistinct) to pass it the item.sized
+
+175
+00:08:52.830 --> 00:08:54.363
+in order for it to do that.
+
+176
+00:08:56.517 --> 00:08:57.730
+And then we also need
+
+177
+00:08:57.730 --> 00:09:01.370
+the formatMoney function we wrote earlier,
+
+178
+00:09:01.370 --> 00:09:03.850
+you see how we're using these all over our files.
+
+179
+00:09:03.850 --> 00:09:05.560
+That's why we put them in their own file
+
+180
+00:09:05.560 --> 00:09:07.540
+because we reuse them over.
+
+181
+00:09:07.540 --> 00:09:09.290
+Make sure you import them.
+
+182
+00:09:09.290 --> 00:09:10.490
+There we go.
+
+183
+00:09:10.490 --> 00:09:12.743
+Both of those have been imported.
+
+184
+00:09:14.050 --> 00:09:16.210
+So I believe we should now be able
+
+185
+00:09:16.210 --> 00:09:17.640
+to use this attach names
+
+186
+00:09:17.640 --> 00:09:18.850
+and prices function,
+
+187
+00:09:18.850 --> 00:09:21.393
+we go back to our usePizza.
+
+188
+00:09:22.481 --> 00:09:26.340
+In our order will say attach names
+
+189
+00:09:26.340 --> 00:09:28.317
+and prices to the order
+
+190
+00:09:28.317 --> 00:09:30.496
+and give it the list of pizzas as well.
+
+191
+00:09:30.496 --> 00:09:33.743
+Make sure you import attachNamesAndPrices
+
+192
+00:09:33.743 --> 00:09:36.452
+from the file that it lives in.
+
+193
+00:09:36.452 --> 00:09:40.033
+Now I believe if we go ahead and fill this out,
+
+194
+00:09:43.150 --> 00:09:44.640
+I had a bunch of pizzas
+
+195
+00:09:46.580 --> 00:09:47.813
+then order ahead,
+
+196
+00:09:48.710 --> 00:09:51.030
+our order is now there we go,
+
+197
+00:09:51.030 --> 00:09:52.380
+you see it's now populated
+
+198
+00:09:52.380 --> 00:09:57.002
+with the actual pieces of information that we need.
+
+199
+00:09:57.002 --> 00:09:59.163
+Awesome, looking good.
+
+200
+00:10:00.070 --> 00:10:01.679
+Now what we need to do is number four,
+
+201
+00:10:01.679 --> 00:10:06.380
+send this data to the server (indistinct) function
+
+202
+00:10:06.380 --> 00:10:08.010
+when they check out, okay.
+
+203
+00:10:08.010 --> 00:10:09.300
+So let's do that now.
+
+204
+00:10:09.300 --> 00:10:13.840
+So we will run const response is equal to,
+
+205
+00:10:13.840 --> 00:10:16.010
+we'll use a fetch function
+
+206
+00:10:16.010 --> 00:10:17.036
+and we need to fetch.
+
+207
+00:10:17.036 --> 00:10:19.356
+It's usually something like this,
+
+208
+00:10:19.356 --> 00:10:24.004
+//.netlify// what was it?
+
+209
+00:10:24.004 --> 00:10:28.900
+Placefunctions//place order.
+
+210
+00:10:28.900 --> 00:10:33.080
+But I don't want you hard coding this
+
+211
+00:10:33.080 --> 00:10:34.275
+into your URL
+
+212
+00:10:34.275 --> 00:10:36.330
+because like what happens
+
+213
+00:10:36.330 --> 00:10:38.030
+if you choose not to host it on netlify?
+
+214
+00:10:38.030 --> 00:10:39.650
+You wanna host it somewhere else, right.
+
+215
+00:10:39.650 --> 00:10:42.350
+Your code should not be specifically written
+
+216
+00:10:42.350 --> 00:10:43.515
+for a deployment target.
+
+217
+00:10:43.515 --> 00:10:46.700
+So you wanna make that a little bit flexible if we can.
+
+218
+00:10:46.700 --> 00:10:49.259
+So we're gonna store that path
+
+219
+00:10:49.259 --> 00:10:52.009
+in a environmental variable.
+
+220
+00:10:52.009 --> 00:10:54.060
+And then if you ever need to change that,
+
+221
+00:10:54.060 --> 00:10:56.000
+you just have to change the environmental variable
+
+222
+00:10:56.000 --> 00:10:57.480
+and not change any of your code.
+
+223
+00:10:57.480 --> 00:10:59.749
+So go into your .env file
+
+224
+00:10:59.749 --> 00:11:00.980
+and we'll add it here.
+
+225
+00:11:00.980 --> 00:11:01.813
+We'll say
+
+226
+00:11:01.813 --> 00:11:02.646
+Gatsby_serverless_base.
+
+227
+00:11:08.770 --> 00:11:10.735
+So this is gonna be where the base
+
+228
+00:11:10.735 --> 00:11:13.060
+of your functions will live.
+
+229
+00:11:13.060 --> 00:11:14.203
+And that is,
+
+230
+00:11:15.265 --> 00:11:17.190
+http://localhost:8888/
+
+231
+00:11:20.189 --> 00:11:24.170
+.netlify/funtions.
+
+232
+00:11:24.170 --> 00:11:27.430
+And then if you decide to put these functions anywhere else,
+
+233
+00:11:27.430 --> 00:11:29.460
+you just have to swap that URL out
+
+234
+00:11:29.460 --> 00:11:31.773
+and everything else will stay the same.
+
+235
+00:11:32.630 --> 00:11:34.751
+Again, we prefix it with Gatsby_
+
+236
+00:11:34.751 --> 00:11:37.560
+so that we can access it in the browser,
+
+237
+00:11:37.560 --> 00:11:40.530
+on the client and we'll go back here
+
+238
+00:11:40.530 --> 00:11:44.380
+and we will interpolate it.
+
+239
+00:11:44.380 --> 00:11:46.380
+So what is again,
+
+240
+00:11:46.380 --> 00:11:49.357
+process.env.Gatsby_
+
+241
+00:11:51.309 --> 00:11:56.142
+serverless_base.
+
+242
+00:11:58.464 --> 00:12:01.131
+And then do we end it with a no,
+
+243
+00:12:02.160 --> 00:12:04.739
+I never end my URLs with a forward slash
+
+244
+00:12:04.739 --> 00:12:06.930
+because if for some reason you need to take it off,
+
+245
+00:12:06.930 --> 00:12:09.880
+it's really hard, but it's always easy to
+
+246
+00:12:09.880 --> 00:12:12.720
+just add it on yourself like that.
+
+247
+00:12:12.720 --> 00:12:15.350
+/placeorder okay.
+
+248
+00:12:15.350 --> 00:12:17.500
+So that's the first bit of it.
+
+249
+00:12:17.500 --> 00:12:20.210
+And then the second argument to this fetch request
+
+250
+00:12:20.210 --> 00:12:22.010
+is going to be,
+
+251
+00:12:22.010 --> 00:12:24.560
+method is going to be post
+
+252
+00:12:24.560 --> 00:12:27.900
+as your posting data not getting it that's the default
+
+253
+00:12:27.900 --> 00:12:30.880
+headers is going to be Json.
+
+254
+00:12:30.880 --> 00:12:33.830
+So you can post all kinds of data to an end point.
+
+255
+00:12:33.830 --> 00:12:36.206
+It can be just raw form data.
+
+256
+00:12:36.206 --> 00:12:39.510
+It can be a form and coded data in our case,
+
+257
+00:12:39.510 --> 00:12:40.940
+we're sending it Json.
+
+258
+00:12:40.940 --> 00:12:44.480
+So we have to tell the server that is accepting it that,
+
+259
+00:12:44.480 --> 00:12:45.650
+Hey, this is Json.
+
+260
+00:12:45.650 --> 00:12:47.286
+So when it comes in
+
+261
+00:12:47.286 --> 00:12:50.820
+make sure you appropriately parse it as so.
+
+262
+00:12:50.820 --> 00:12:53.770
+So the content type this
+
+263
+00:12:53.770 --> 00:12:55.370
+because there's a dash in it,
+
+264
+00:12:55.370 --> 00:12:58.955
+you have to put the property in quotes.
+
+265
+00:12:58.955 --> 00:13:01.470
+There's very few things in JavaScript like that.
+
+266
+00:13:01.470 --> 00:13:03.751
+But in our case that is one
+
+267
+00:13:03.751 --> 00:13:05.768
+and the content type is going to be,
+
+268
+00:13:05.768 --> 00:13:08.243
+this is called a mime type
+
+269
+00:13:08.243 --> 00:13:11.330
+as application/Json.
+
+270
+00:13:11.330 --> 00:13:13.803
+That is the base type for Json.
+
+271
+00:13:14.690 --> 00:13:18.150
+The body is going
+
+272
+00:13:18.150 --> 00:13:19.690
+to be normally you think like, okay,
+
+273
+00:13:19.690 --> 00:13:23.710
+just we have this body right here,
+
+274
+00:13:23.710 --> 00:13:26.300
+but it can't be sent as an object.
+
+275
+00:13:26.300 --> 00:13:27.750
+It has to be sent as a string.
+
+276
+00:13:27.750 --> 00:13:30.740
+So you have to wrap it in Json.stringify
+
+277
+00:13:30.740 --> 00:13:32.470
+and then pass it your body,
+
+278
+00:13:32.470 --> 00:13:34.423
+which we created up here.
+
+279
+00:13:36.475 --> 00:13:40.390
+Okay looks like we might have a scoping issue.
+
+280
+00:13:40.390 --> 00:13:43.726
+Oh, I just coded all of this outside
+
+281
+00:13:43.726 --> 00:13:46.040
+of the submitOrder function.
+
+282
+00:13:46.040 --> 00:13:48.788
+So make sure we bring it back inside
+
+283
+00:13:48.788 --> 00:13:50.803
+of the submitOrder function.
+
+284
+00:13:51.980 --> 00:13:53.490
+And that's the beauty of,
+
+285
+00:13:53.490 --> 00:13:54.323
+lemme bring it back.
+
+286
+00:13:54.323 --> 00:13:56.070
+You see how, like this was saying,
+
+287
+00:13:56.070 --> 00:13:57.260
+body is not defined.
+
+288
+00:13:57.260 --> 00:14:01.350
+And then this was telling me body was never used.
+
+289
+00:14:01.350 --> 00:14:03.180
+And that immediately told me,
+
+290
+00:14:03.180 --> 00:14:05.200
+Oh, I have a scoping issue.
+
+291
+00:14:05.200 --> 00:14:06.550
+That that's why I love using (indistinct)
+
+292
+00:14:06.550 --> 00:14:08.230
+for things like that.
+
+293
+00:14:08.230 --> 00:14:09.340
+It jumped out right out,
+
+294
+00:14:09.340 --> 00:14:10.313
+right away to me.
+
+295
+00:14:12.140 --> 00:14:13.670
+We have a response okay.
+
+296
+00:14:13.670 --> 00:14:16.910
+Then what we need to do is to parse the response.
+
+297
+00:14:16.910 --> 00:14:18.970
+So fetch requests are in two stages.
+
+298
+00:14:18.970 --> 00:14:20.840
+First, you get the response.
+
+299
+00:14:20.840 --> 00:14:22.650
+And then when it's,
+
+300
+00:14:22.650 --> 00:14:25.740
+I think that just has like the headers in it immediately,
+
+301
+00:14:25.740 --> 00:14:27.410
+and then if you actually want
+
+302
+00:14:27.410 --> 00:14:31.000
+to wait for the body to finish coming back,
+
+303
+00:14:31.000 --> 00:14:33.880
+we have to get the response from that so say,
+
+304
+00:14:33.880 --> 00:14:37.490
+const text is equal to,
+
+305
+00:14:37.490 --> 00:14:41.210
+await response.text,
+
+306
+00:14:41.210 --> 00:14:44.070
+and Oh, we forgot our await in front of this fetch too.
+
+307
+00:14:44.070 --> 00:14:45.920
+Make sure you put that there.
+
+308
+00:14:45.920 --> 00:14:47.940
+And then the response from this,
+
+309
+00:14:47.940 --> 00:14:48.773
+we haven't done this.
+
+310
+00:14:48.773 --> 00:14:49.700
+This is on the server side
+
+311
+00:14:49.700 --> 00:14:52.470
+we have that's gonna be in Json again.
+
+312
+00:14:52.470 --> 00:14:54.140
+So we have to Jason, Oop.
+
+313
+00:14:54.140 --> 00:14:57.920
+Not that kind of Json, this kind of Json.parse it,
+
+314
+00:14:57.920 --> 00:15:00.289
+submit wrap your
+
+315
+00:15:00.289 --> 00:15:04.223
+await response.text in a Json.parse.
+
+316
+00:15:05.740 --> 00:15:08.249
+All right so send it over,
+
+317
+00:15:08.249 --> 00:15:10.480
+wait for the response.
+
+318
+00:15:10.480 --> 00:15:13.730
+And then here we will look,
+
+319
+00:15:13.730 --> 00:15:15.170
+let's write the logic we haven't,
+
+320
+00:15:15.170 --> 00:15:17.320
+I know we haven't written the server side part of this yet,
+
+321
+00:15:17.320 --> 00:15:19.890
+but let's clean up all this logic first
+
+322
+00:15:19.890 --> 00:15:22.050
+and then we'll go right the backend.
+
+323
+00:15:22.050 --> 00:15:23.300
+So it actually works with it.
+
+324
+00:15:23.300 --> 00:15:26.040
+So what we need to do here is check
+
+325
+00:15:27.730 --> 00:15:31.405
+if everything worked
+
+326
+00:15:31.405 --> 00:15:33.696
+everything,
+
+327
+00:15:33.696 --> 00:15:36.023
+let's say, if the response.status
+
+328
+00:15:36.980 --> 00:15:38.900
+is greater or equal to 400.
+
+329
+00:15:38.900 --> 00:15:43.617
+So all of the responses above 400 are going to be okay
+
+330
+00:15:44.763 --> 00:15:48.738
+oh, sorry everything above 400 are bad statuses.
+
+331
+00:15:48.738 --> 00:15:50.160
+And then we say,
+
+332
+00:15:50.160 --> 00:15:54.670
+and the response.status has less than 600.
+
+333
+00:15:54.670 --> 00:15:58.960
+So between between 400 and including 400,
+
+334
+00:15:58.960 --> 00:16:00.496
+all the way up to 599,
+
+335
+00:16:00.496 --> 00:16:03.580
+those status codes are something went wrong.
+
+336
+00:16:03.580 --> 00:16:05.840
+And if that's the case, then what we need
+
+337
+00:16:05.840 --> 00:16:08.360
+to do is say set loading false.
+
+338
+00:16:08.360 --> 00:16:11.433
+So we got to turn off loading.
+
+339
+00:16:17.490 --> 00:16:19.900
+We need to also set the error.
+
+340
+00:16:19.900 --> 00:16:24.900
+So set error and we take the text.message.
+
+341
+00:16:25.120 --> 00:16:28.440
+And that is gonna be sent from our server side.
+
+342
+00:16:28.440 --> 00:16:31.730
+Otherwise else it worked.
+
+343
+00:16:31.730 --> 00:16:35.380
+It's a set loading to be false again,
+
+344
+00:16:35.380 --> 00:16:38.793
+and set message to be success.
+
+345
+00:16:39.720 --> 00:16:42.453
+Come on down for your pizza.
+
+346
+00:16:43.790 --> 00:16:45.490
+And we can probably also send this message
+
+347
+00:16:45.490 --> 00:16:46.940
+from the server side
+
+348
+00:16:46.940 --> 00:16:49.900
+but let's just code it in there right now okay.
+
+349
+00:16:49.900 --> 00:16:51.720
+Okay we're doing pretty good.
+
+350
+00:16:51.720 --> 00:16:53.030
+Other thing we need to do is
+
+351
+00:16:53.030 --> 00:16:53.863
+if we ever hit this
+
+352
+00:16:53.863 --> 00:16:55.840
+like something went wrong with the order
+
+353
+00:16:55.840 --> 00:16:59.470
+like I don't know you shouldn't order pineapple on pizza.
+
+354
+00:16:59.470 --> 00:17:02.250
+If that is an error, then you set it here.
+
+355
+00:17:02.250 --> 00:17:05.050
+And then when the person corrects their order
+
+356
+00:17:05.050 --> 00:17:06.860
+by removing pineapple,
+
+357
+00:17:06.860 --> 00:17:10.170
+then they should we have to clear it.
+
+358
+00:17:10.170 --> 00:17:14.060
+So what we'll do is up here where we say set loading true.
+
+359
+00:17:14.060 --> 00:17:16.830
+We also need to set error
+
+360
+00:17:20.195 --> 00:17:21.300
+to be null
+
+361
+00:17:22.320 --> 00:17:26.710
+and also set message to be null as well.
+
+362
+00:17:26.710 --> 00:17:28.870
+Then we need to handle actually showing
+
+363
+00:17:28.870 --> 00:17:31.230
+and hiding of these errors and messages.
+
+364
+00:17:31.230 --> 00:17:35.400
+So we'll go to our order here
+
+365
+00:17:35.400 --> 00:17:39.743
+and let's go no order, sorry, order page.
+
+366
+00:17:40.760 --> 00:17:43.970
+Let's go right above the button.
+
+367
+00:17:43.970 --> 00:17:47.280
+And if there is an error, we'll put it in there.
+
+368
+00:17:47.280 --> 00:17:51.343
+So just give yourself div.
+
+369
+00:17:52.300 --> 00:17:54.483
+And we'll say, if there is an error,
+
+370
+00:17:56.100 --> 00:17:59.760
+then we will return a paragraph.
+
+371
+00:17:59.760 --> 00:18:03.570
+This is error and display what the error is.
+
+372
+00:18:03.570 --> 00:18:05.270
+Otherwise it will explain nothing,
+
+373
+00:18:06.739 --> 00:18:08.260
+(mumbles)
+
+374
+00:18:08.260 --> 00:18:12.133
+What did I do there? I broke it unexpected colon.
+
+375
+00:18:14.660 --> 00:18:16.613
+question if there's an error.
+
+376
+00:18:19.472 --> 00:18:22.287
+Oh, I forgot to close the paragraph tag
+
+377
+00:18:23.320 --> 00:18:24.943
+or I did it in the wrong spot.
+
+378
+00:18:26.290 --> 00:18:28.470
+There we go so now like watch,
+
+379
+00:18:28.470 --> 00:18:32.630
+if we go to our usePizza hook here
+
+380
+00:18:32.630 --> 00:18:34.490
+and when somebody,
+
+381
+00:18:34.490 --> 00:18:37.490
+I don't know, just like when someone submits the order,
+
+382
+00:18:37.490 --> 00:18:38.700
+if we were to set the error,
+
+383
+00:18:38.700 --> 00:18:40.763
+like no way,
+
+384
+00:18:41.870 --> 00:18:43.053
+watch this.
+
+385
+00:18:43.979 --> 00:18:44.973
+Boom.
+
+386
+00:18:47.991 --> 00:18:49.100
+Oh, I know why
+
+387
+00:18:49.100 --> 00:18:50.200
+it's 'cause we did this here.
+
+388
+00:18:50.200 --> 00:18:51.780
+Just return right here.
+
+389
+00:18:51.780 --> 00:18:53.008
+Just skip all of this.
+
+390
+00:18:53.008 --> 00:18:54.360
+'Cause we haven't written that.
+
+391
+00:18:54.360 --> 00:18:55.193
+Oh no.
+
+392
+00:18:57.680 --> 00:18:59.600
+What happened to all that code there.
+
+393
+00:18:59.600 --> 00:19:04.403
+If you put a return and save it deletes it,
+
+394
+00:19:05.920 --> 00:19:08.015
+that's not good, I'll control + Z it .
+
+395
+00:19:08.015 --> 00:19:09.260
+(laughs)
+
+396
+00:19:09.260 --> 00:19:11.440
+That must be new I've never seen that happen.
+
+397
+00:19:11.440 --> 00:19:14.993
+So adding things order ahead,
+
+398
+00:19:14.993 --> 00:19:15.826
+here we go.
+
+399
+00:19:15.826 --> 00:19:17.000
+See if there is an error,
+
+400
+00:19:17.000 --> 00:19:19.343
+it will then show up right here,
+
+401
+00:19:20.209 --> 00:19:21.410
+which is great.
+
+402
+00:19:21.410 --> 00:19:23.430
+So let's roll that back
+
+403
+00:19:23.430 --> 00:19:24.630
+and make sure we got it.
+
+404
+00:19:27.960 --> 00:19:32.690
+And then we also wanna go to our order here
+
+405
+00:19:33.580 --> 00:19:37.260
+all the way up right here.
+
+406
+00:19:37.260 --> 00:19:38.731
+And if there is a message,
+
+407
+00:19:38.731 --> 00:19:41.640
+then we don't need any of this stuff.
+
+408
+00:19:41.640 --> 00:19:42.490
+So let's just say
+
+409
+00:19:44.610 --> 00:19:49.193
+if there is a message return P.
+
+410
+00:19:51.015 --> 00:19:54.031
+Then we'll put the message in there.
+
+411
+00:19:54.031 --> 00:19:57.060
+Otherwise we're gonna return the entire pizza.
+
+412
+00:19:57.060 --> 00:19:59.053
+So let's try that real quick.
+
+413
+00:20:00.440 --> 00:20:02.560
+Take that set error and set to null.
+
+414
+00:20:02.560 --> 00:20:06.293
+I'll set the message to go eat.
+
+415
+00:20:09.495 --> 00:20:10.623
+And it should say,
+
+416
+00:20:11.550 --> 00:20:12.530
+go eat for just a second
+
+417
+00:20:12.530 --> 00:20:13.720
+it we'll probably break again,
+
+418
+00:20:13.720 --> 00:20:14.800
+but let's see. Boom.
+
+419
+00:20:14.800 --> 00:20:16.510
+All right it just did for a quick second.
+
+420
+00:20:16.510 --> 00:20:17.990
+And then it broke.
+
+421
+00:20:17.990 --> 00:20:19.403
+We can return here.
+
+422
+00:20:22.458 --> 00:20:23.291
+There we go.
+
+423
+00:20:23.291 --> 00:20:26.760
+Then I just takes the entire order form away
+
+424
+00:20:26.760 --> 00:20:29.001
+if that is the case.
+
+425
+00:20:29.001 --> 00:20:30.990
+Beautiful okay.
+
+426
+00:20:30.990 --> 00:20:33.430
+So that's the client side part of it
+
+427
+00:20:33.430 --> 00:20:34.870
+in the next video we'll pick it up
+
+428
+00:20:34.870 --> 00:20:38.710
+and actually see if we can intercept this data
+
+429
+00:20:38.710 --> 00:20:40.210
+or accept this data
+
+430
+00:20:40.210 --> 00:20:41.863
+and then start to email it out.
+

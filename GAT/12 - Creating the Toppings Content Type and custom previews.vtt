@@ -1,0 +1,818 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.583
+(bell chiming)
+
+2
+00:00:04.640 --> 00:00:06.600
+<v Instructor>Hi let's keep going with our schema.</v>
+
+3
+00:00:06.600 --> 00:00:09.360
+I pulled up the docs here just to show you,
+
+4
+00:00:09.360 --> 00:00:10.920
+how do I know all these options
+
+5
+00:00:10.920 --> 00:00:12.630
+while you look it up in the doc?
+
+6
+00:00:12.630 --> 00:00:15.800
+So I went to the sanity.io4/docs
+
+7
+00:00:15.800 --> 00:00:20.800
+and then I went down to reference and schema types.
+
+8
+00:00:21.580 --> 00:00:23.850
+And in here you'll see all of the different types
+
+9
+00:00:23.850 --> 00:00:24.683
+that we have.
+
+10
+00:00:24.683 --> 00:00:29.460
+Obviously so far we've used text, we've used slug,
+
+11
+00:00:29.460 --> 00:00:32.230
+and you can see there's a whole bunch of different options
+
+12
+00:00:32.230 --> 00:00:34.960
+here including like stuff for geolocation
+
+13
+00:00:34.960 --> 00:00:38.250
+and Google Maps inputs, file uploads linking
+
+14
+00:00:38.250 --> 00:00:40.880
+to other documents, Array of Things.
+
+15
+00:00:40.880 --> 00:00:45.420
+So if you wanted to have like multiple text inputs
+
+16
+00:00:45.420 --> 00:00:48.330
+or multiple image uploads you could do an array of,
+
+17
+00:00:48.330 --> 00:00:50.090
+and we'll be looking at examples of that.
+
+18
+00:00:50.090 --> 00:00:52.810
+But right now let's work on the topping
+
+19
+00:00:52.810 --> 00:00:54.890
+because we've got our pizza
+
+20
+00:00:54.890 --> 00:00:56.600
+and then we're gonna have a second data type
+
+21
+00:00:56.600 --> 00:00:57.840
+that's called topping
+
+22
+00:00:57.840 --> 00:01:01.110
+and then our pizza will have many toppings.
+
+23
+00:01:01.110 --> 00:01:03.160
+That's a pretty common thing you wanna do
+
+24
+00:01:04.140 --> 00:01:08.210
+and a thing that's called a one to many relationship
+
+25
+00:01:08.210 --> 00:01:10.640
+where one pizza has many toppings
+
+26
+00:01:10.640 --> 00:01:13.210
+and then the topping, you could go the other way
+
+27
+00:01:13.210 --> 00:01:14.150
+and we are gonna do that.
+
+28
+00:01:14.150 --> 00:01:16.070
+You're gonna say based on this topping
+
+29
+00:01:16.070 --> 00:01:19.480
+show me pizzas that have that topping on it.
+
+30
+00:01:19.480 --> 00:01:24.440
+So we'll go to our schema and say topping.js
+
+31
+00:01:25.660 --> 00:01:29.820
+and what I'll do here is I just copy everything
+
+32
+00:01:29.820 --> 00:01:33.400
+from pizza.js and paste it in there, sort of a base.
+
+33
+00:01:33.400 --> 00:01:37.980
+And then I go and delete or maybe just start
+
+34
+00:01:37.980 --> 00:01:39.070
+to switch things out.
+
+35
+00:01:39.070 --> 00:01:41.930
+Maybe I'll delete all the fields except for the first one
+
+36
+00:01:41.930 --> 00:01:44.483
+'cause it's likely we want a name as well.
+
+37
+00:01:45.540 --> 00:01:50.090
+Okay then we will import the icon.
+
+38
+00:01:50.090 --> 00:01:51.723
+We'll say FaPepperHot.
+
+39
+00:01:55.500 --> 00:01:59.040
+And that comes from FA so this is coming from Font Awesome.
+
+40
+00:01:59.040 --> 00:02:01.510
+And this is why I really liked this react-icons package
+
+41
+00:02:01.510 --> 00:02:05.070
+because you can pull one icon from one library,
+
+42
+00:02:05.070 --> 00:02:06.840
+another icon from another library
+
+43
+00:02:06.840 --> 00:02:10.940
+and what it does is it actually just imports that icon
+
+44
+00:02:10.940 --> 00:02:13.560
+and not the entire library for you.
+
+45
+00:02:13.560 --> 00:02:17.550
+Then we'll go down here and we'll say the name is topping,
+
+46
+00:02:17.550 --> 00:02:20.120
+always do singular lowercase for the name.
+
+47
+00:02:20.120 --> 00:02:23.670
+And then the title you can, whatever is a human readable.
+
+48
+00:02:23.670 --> 00:02:25.680
+I'm gonna call it toppings.
+
+49
+00:02:25.680 --> 00:02:26.960
+The type is a document.
+
+50
+00:02:26.960 --> 00:02:29.760
+The icon is the icon that we imported right here.
+
+51
+00:02:29.760 --> 00:02:32.650
+And then the different fields that we have are,
+
+52
+00:02:32.650 --> 00:02:35.280
+first we have the name of the topping.
+
+53
+00:02:35.280 --> 00:02:38.720
+What is the name of the topping?
+
+54
+00:02:38.720 --> 00:02:40.770
+And then let's just stop there and make sure
+
+55
+00:02:40.770 --> 00:02:41.980
+that it's actually showing up.
+
+56
+00:02:41.980 --> 00:02:44.800
+So if you go to your dashboard you'll see it's not there
+
+57
+00:02:44.800 --> 00:02:45.950
+like it's not showing up yet.
+
+58
+00:02:45.950 --> 00:02:48.460
+And that's because we've not yet merged
+
+59
+00:02:48.460 --> 00:02:49.440
+that into our schema.
+
+60
+00:02:49.440 --> 00:02:54.090
+We've created the file but we have not yet done it here.
+
+61
+00:02:54.090 --> 00:02:58.340
+So we can just duplicate this import pizza from pizza,
+
+62
+00:02:58.340 --> 00:02:59.350
+duplicate it.
+
+63
+00:02:59.350 --> 00:03:01.060
+I'm just rename that to topping.
+
+64
+00:03:01.060 --> 00:03:03.330
+That's a little trick I like to use is doubleClick
+
+65
+00:03:03.330 --> 00:03:04.440
+the first one.
+
+66
+00:03:04.440 --> 00:03:07.800
+I hit command D to select the next instance of it
+
+67
+00:03:07.800 --> 00:03:10.520
+and then just type topping and go here
+
+68
+00:03:10.520 --> 00:03:13.173
+to where we have it comma topping.
+
+69
+00:03:14.250 --> 00:03:17.560
+And now I give it a second to refresh something broke.
+
+70
+00:03:17.560 --> 00:03:19.270
+Okay, let's see here.
+
+71
+00:03:19.270 --> 00:03:21.820
+Module build failed.
+
+72
+00:03:21.820 --> 00:03:24.660
+It's telling us that this, right,
+
+73
+00:03:24.660 --> 00:03:27.170
+let's take a look at. okay look.
+
+74
+00:03:27.170 --> 00:03:30.280
+So we could have told that if I saw the little squiggle,
+
+75
+00:03:30.280 --> 00:03:35.280
+unexpected token fields I forgot the closing curly bracket
+
+76
+00:03:37.530 --> 00:03:39.793
+for that field, there we go.
+
+77
+00:03:43.170 --> 00:03:47.120
+Here we go, so your toppings shows up and it should allow us
+
+78
+00:03:47.120 --> 00:03:50.963
+to create a new topping with a name input.
+
+79
+00:03:52.100 --> 00:03:55.030
+Beautiful, by the way if this seems slow,
+
+80
+00:03:55.030 --> 00:03:57.540
+it's because I'm on extremely slow internet connection
+
+81
+00:03:57.540 --> 00:03:58.400
+right now.
+
+82
+00:03:58.400 --> 00:03:59.920
+I'm about my cottage in the woods.
+
+83
+00:03:59.920 --> 00:04:02.180
+So it's normally much faster than that.
+
+84
+00:04:02.180 --> 00:04:03.780
+That's not effective.
+
+85
+00:04:03.780 --> 00:04:06.080
+The CMS it's effective me being in the middle
+
+86
+00:04:06.080 --> 00:04:07.670
+of the woods.
+
+87
+00:04:07.670 --> 00:04:08.810
+Let's go back to the toppings
+
+88
+00:04:08.810 --> 00:04:11.173
+and get the rest of the fields here.
+
+89
+00:04:12.350 --> 00:04:16.350
+So I'm going to have another one called a vegetarian.
+
+90
+00:04:16.350 --> 00:04:18.610
+And that will allow us to mark
+
+91
+00:04:18.610 --> 00:04:21.153
+Whether that topping is vegetarian or not.
+
+92
+00:04:25.200 --> 00:04:28.310
+And the type will be, well let's look at the docs here,
+
+93
+00:04:28.310 --> 00:04:32.610
+a Boolean click onto it.
+
+94
+00:04:32.610 --> 00:04:36.530
+The type is required options layout,
+
+95
+00:04:36.530 --> 00:04:40.450
+either a switch or a checkbox.
+
+96
+00:04:40.450 --> 00:04:42.990
+This lets you control the visual appearance of the input.
+
+97
+00:04:42.990 --> 00:04:44.840
+By default the input for Boolean fields
+
+98
+00:04:44.840 --> 00:04:46.470
+will be displayed as a switch
+
+99
+00:04:46.470 --> 00:04:48.450
+but you can also make it appear as a check box.
+
+100
+00:04:48.450 --> 00:04:52.220
+Okay, let's try that.
+
+101
+00:04:52.220 --> 00:04:57.220
+We'll change it to Boolean, balling Boolean.
+
+102
+00:05:01.090 --> 00:05:04.610
+There we go, and then I think what was the setting?
+
+103
+00:05:04.610 --> 00:05:09.610
+Layout, it can be a checkbox let's see what that looks like.
+
+104
+00:05:17.260 --> 00:05:18.663
+It's still a switch.
+
+105
+00:05:24.380 --> 00:05:29.380
+Layout option can be a switch, default or checkbox.
+
+106
+00:05:31.270 --> 00:05:32.430
+It doesn't seem like it's working.
+
+107
+00:05:32.430 --> 00:05:36.640
+Maybe that's a little bug in the library
+
+108
+00:05:36.640 --> 00:05:39.250
+but that's typically how you would apply.
+
+109
+00:05:39.250 --> 00:05:41.820
+Oh no, no, no I'm wrong.
+
+110
+00:05:41.820 --> 00:05:43.040
+It's options.
+
+111
+00:05:43.040 --> 00:05:46.070
+So options go on like that. right?
+
+112
+00:05:46.070 --> 00:05:47.640
+And then the layout goes in there.
+
+113
+00:05:47.640 --> 00:05:51.210
+That's not at the library it's a bug on my brain.
+
+114
+00:05:51.210 --> 00:05:54.803
+Here we go, it's cool I like it.
+
+115
+00:05:55.660 --> 00:05:58.253
+We will what do we do?
+
+116
+00:06:00.350 --> 00:06:03.560
+Yeah I like to check box better.
+
+117
+00:06:03.560 --> 00:06:05.410
+Let's do the checkbox okay, cool.
+
+118
+00:06:05.410 --> 00:06:08.040
+Let's go ahead and add a couple toppings.
+
+119
+00:06:08.040 --> 00:06:10.980
+And I'm gonna show you how to create
+
+120
+00:06:12.421 --> 00:06:14.140
+a custom prepared view here.
+
+121
+00:06:14.140 --> 00:06:16.000
+So let's say Pepperoni
+
+122
+00:06:18.550 --> 00:06:20.213
+and that is not vegetarian.
+
+123
+00:06:24.250 --> 00:06:27.723
+And let's make it a new, another one onions.
+
+124
+00:06:28.810 --> 00:06:31.010
+And that is vegetarian.
+
+125
+00:06:31.010 --> 00:06:35.490
+And another one mushrooms, that is vegetarian.
+
+126
+00:06:40.929 --> 00:06:42.929
+And then let's do bacon.
+
+127
+00:06:48.285 --> 00:06:51.166
+And that is not vegetarian.
+
+128
+00:06:51.166 --> 00:06:54.870
+Okay so, well, we see this layout right here,
+
+129
+00:06:54.870 --> 00:06:58.700
+but default is just gonna give you the name of the topping.
+
+130
+00:06:58.700 --> 00:07:03.700
+However, you can control what shows up in here rather
+
+131
+00:07:04.710 --> 00:07:07.290
+by default, it will just grab the name of the thing.
+
+132
+00:07:07.290 --> 00:07:10.110
+But if you wanna control what shows up under the toppings
+
+133
+00:07:10.110 --> 00:07:11.630
+you totally can.
+
+134
+00:07:11.630 --> 00:07:15.380
+And that's done with the preview part of the dock.
+
+135
+00:07:15.380 --> 00:07:20.380
+So if we take a look here, preview, let's go to reference.
+
+136
+00:07:22.370 --> 00:07:24.170
+Maybe it would just do this preview.
+
+137
+00:07:26.350 --> 00:07:28.230
+Oh, there we go, Sanity Studio.
+
+138
+00:07:28.230 --> 00:07:29.870
+So if you're looking at all this stuff,
+
+139
+00:07:29.870 --> 00:07:31.880
+you always wanna look for the Sanity Studio.
+
+140
+00:07:31.880 --> 00:07:33.530
+One is, that's what we're working in.
+
+141
+00:07:33.530 --> 00:07:35.760
+And you see the first thing we need to do here is select.
+
+142
+00:07:35.760 --> 00:07:38.170
+So it say, okay, well you're gonna generate
+
+143
+00:07:38.170 --> 00:07:39.600
+this preview right here.
+
+144
+00:07:39.600 --> 00:07:42.010
+What fields do we need to generate the preview?
+
+145
+00:07:42.010 --> 00:07:44.400
+So we'll go here and say preview
+
+146
+00:07:44.400 --> 00:07:47.153
+that's not under fields that is here preview.
+
+147
+00:07:48.740 --> 00:07:52.380
+We wanna select the following fields for it to work.
+
+148
+00:07:52.380 --> 00:07:56.513
+The name is going to be the name field and vegetarian.
+
+149
+00:07:58.730 --> 00:08:01.330
+Is going to be the vegetarian field.
+
+150
+00:08:01.330 --> 00:08:03.370
+So basically we're saying select something,
+
+151
+00:08:03.370 --> 00:08:05.740
+call it name and reference the name field,
+
+152
+00:08:05.740 --> 00:08:08.893
+select vegetarian, and reference to vegetarian field.
+
+153
+00:08:10.060 --> 00:08:13.700
+Then if we go back here, you'll see, that does nothing.
+
+154
+00:08:13.700 --> 00:08:18.470
+Actually it does do something because we've now said,
+
+155
+00:08:18.470 --> 00:08:20.290
+don't just grab the name field.
+
+156
+00:08:20.290 --> 00:08:24.090
+We are going to customize what the preview looks like
+
+157
+00:08:24.090 --> 00:08:26.450
+and now returning nothing.
+
+158
+00:08:26.450 --> 00:08:28.510
+So we have to have a prepare function
+
+159
+00:08:30.250 --> 00:08:34.130
+and that will give us all of the fields that we want.
+
+160
+00:08:34.130 --> 00:08:37.640
+So fields and we'll just do a little arrow function.
+
+161
+00:08:37.640 --> 00:08:40.900
+And from that you need to return a title.
+
+162
+00:08:40.900 --> 00:08:43.460
+This is the title.
+
+163
+00:08:43.460 --> 00:08:46.310
+You see, it's showing whatever is returned
+
+164
+00:08:46.310 --> 00:08:49.460
+from this prepare function as an object.
+
+165
+00:08:49.460 --> 00:08:52.180
+The title is going to be whatever is in here.
+
+166
+00:08:52.180 --> 00:08:56.440
+And then further more we also have media,
+
+167
+00:08:56.440 --> 00:08:58.550
+which I'll show you how to do that on the pizza,
+
+168
+00:08:58.550 --> 00:09:00.890
+because you can have images.
+
+169
+00:09:00.890 --> 00:09:02.950
+If you have images associated with the content type,
+
+170
+00:09:02.950 --> 00:09:04.750
+you can show it as a preview there.
+
+171
+00:09:04.750 --> 00:09:09.750
+So like we can then do, let's make this back ticks
+
+172
+00:09:10.670 --> 00:09:15.283
+and you can interpolate fields. and then name.
+
+173
+00:09:16.240 --> 00:09:19.250
+Because of the fields, that's the things you selected
+
+174
+00:09:19.250 --> 00:09:22.363
+and then the name, say bacon, mushroom, onions, pepperoni.
+
+175
+00:09:23.370 --> 00:09:26.613
+Now what's kind of cool about that is we can say,
+
+176
+00:09:28.300 --> 00:09:31.090
+let's just make it fields name
+
+177
+00:09:31.090 --> 00:09:34.730
+and then we will conditionally show a little leaf
+
+178
+00:09:34.730 --> 00:09:36.380
+if that topping is vegetarian.
+
+179
+00:09:36.380 --> 00:09:39.510
+So it will say actually.
+
+180
+00:09:39.510 --> 00:09:41.260
+Let's do it at the end here.
+
+181
+00:09:41.260 --> 00:09:46.080
+Say if it is vegetarian question mark
+
+182
+00:09:46.080 --> 00:09:51.080
+then show the leaf emoji.
+
+183
+00:09:52.010 --> 00:09:53.423
+Maybe it's seedling.
+
+184
+00:09:55.090 --> 00:09:57.250
+Yeah, it's called seedling.
+
+185
+00:09:57.250 --> 00:10:00.130
+Otherwise we will show nothing beside it.
+
+186
+00:10:00.130 --> 00:10:03.710
+So that's just a nice way to, Oh, that's giving me red.
+
+187
+00:10:03.710 --> 00:10:05.690
+Why is it vegetarian?
+
+188
+00:10:05.690 --> 00:10:10.140
+Because it is fields.vegetarian.
+
+189
+00:10:10.140 --> 00:10:14.574
+There you go, so that's just like a little bit further away
+
+190
+00:10:14.574 --> 00:10:18.010
+to show what should then show up.
+
+191
+00:10:18.010 --> 00:10:21.680
+Finally, a lot of people instead of saying fields.name,
+
+192
+00:10:21.680 --> 00:10:26.410
+fields.vegetarian, what they like to do is to pass
+
+193
+00:10:26.410 --> 00:10:29.300
+the fields but then destructure the properties
+
+194
+00:10:29.300 --> 00:10:30.610
+into their own variables.
+
+195
+00:10:30.610 --> 00:10:35.610
+So instead of fields, we just say name and vegetarian
+
+196
+00:10:36.310 --> 00:10:40.190
+and then we can take the fields. off of each of those
+
+197
+00:10:40.190 --> 00:10:41.320
+and simply just use it.
+
+198
+00:10:41.320 --> 00:10:44.240
+So this is destructuring in JavaScript
+
+199
+00:10:44.240 --> 00:10:46.040
+where we take the one argument
+
+200
+00:10:46.040 --> 00:10:49.340
+which is fields and break it down into their properties
+
+201
+00:10:49.340 --> 00:10:52.373
+into their own variables, called name and vegetarian.
+
+202
+00:10:53.890 --> 00:10:56.640
+That looks good, in the next video
+
+203
+00:10:56.640 --> 00:11:00.823
+what we'll do now is to relate these two content types
+
+204
+00:11:00.823 --> 00:11:04.553
+then allow us to pick what toppings are on a specific pizza.
+

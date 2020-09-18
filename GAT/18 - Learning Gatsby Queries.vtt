@@ -1,0 +1,2078 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.583
+(upbeat music)
+
+2
+00:00:04.217 --> 00:00:06.560
+<v ->Hi folks we gonna start learning about Gatsby querying.</v>
+
+3
+00:00:06.560 --> 00:00:10.200
+There's two different types of queries that live in Gatsby.
+
+4
+00:00:10.200 --> 00:00:13.640
+There are page queries and there are static queries.
+
+5
+00:00:13.640 --> 00:00:16.340
+The difference between a page query and a static query
+
+6
+00:00:16.340 --> 00:00:20.130
+is that a page query can accept variables
+
+7
+00:00:20.130 --> 00:00:24.610
+and can only be done on an actual page in your pages folder.
+
+8
+00:00:24.610 --> 00:00:27.700
+And a static query can be done anywhere you want,
+
+9
+00:00:27.700 --> 00:00:29.680
+however they are they cannot be dynamic,
+
+10
+00:00:29.680 --> 00:00:30.937
+meaning they cannot take variables
+
+11
+00:00:30.937 --> 00:00:33.180
+and so allow me to explain here.
+
+12
+00:00:33.180 --> 00:00:35.870
+If we go to the finished version that we have here,
+
+13
+00:00:35.870 --> 00:00:38.470
+we are going, if we go to the pizzas page,
+
+14
+00:00:38.470 --> 00:00:40.900
+we get a list of all of the pizzas that we have,
+
+15
+00:00:40.900 --> 00:00:43.670
+but we also want the ability to filter
+
+16
+00:00:43.670 --> 00:00:46.490
+based on a specific topping.
+
+17
+00:00:46.490 --> 00:00:49.070
+And I don't wanna like code this page twice
+
+18
+00:00:49.070 --> 00:00:50.930
+I don't wanna code the pieces page.
+
+19
+00:00:50.930 --> 00:00:53.080
+And then I don't wanna code a toppings page
+
+20
+00:00:53.080 --> 00:00:54.150
+just a little bit different.
+
+21
+00:00:54.150 --> 00:00:57.480
+So what I wanna do here is on the pizzas page,
+
+22
+00:00:57.480 --> 00:01:00.870
+I'm gonna query all of the pizzas that meet
+
+23
+00:01:00.870 --> 00:01:05.050
+that have this topping, or if there is no topping specified,
+
+24
+00:01:05.050 --> 00:01:08.833
+I'm just gonna query all of the, the pizzas that we have.
+
+25
+00:01:09.870 --> 00:01:13.010
+Now, we'll go a little bit more into that in the future,
+
+26
+00:01:13.010 --> 00:01:14.710
+but it's really important to note
+
+27
+00:01:14.710 --> 00:01:17.400
+that if you wanna have variables in your query,
+
+28
+00:01:17.400 --> 00:01:19.800
+meaning that you wanna pipe in mushrooms,
+
+29
+00:01:19.800 --> 00:01:21.950
+it has to happen at a page level.
+
+30
+00:01:21.950 --> 00:01:24.860
+That's a bit of a limitation of Gatsby,
+
+31
+00:01:24.860 --> 00:01:26.970
+just I guess, because of the way that it works,
+
+32
+00:01:26.970 --> 00:01:29.640
+how it all needs to be generated upfront.
+
+33
+00:01:29.640 --> 00:01:33.410
+So let's get into page queries.
+
+34
+00:01:33.410 --> 00:01:37.620
+And the way that you specify a page query is you just export
+
+35
+00:01:37.620 --> 00:01:41.787
+a query from the page and Gatsby is smart enough to say,
+
+36
+00:01:41.787 --> 00:01:45.320
+"Oh!, that's a query I better go and get that data for you
+
+37
+00:01:45.320 --> 00:01:46.960
+when we run the build"
+
+38
+00:01:46.960 --> 00:01:49.800
+and then it will pass it to our page component.
+
+39
+00:01:49.800 --> 00:01:53.630
+So we go here and we'll just say, export const,
+
+40
+00:01:53.630 --> 00:01:58.170
+a query is equal to graphql, and then we'll use back text.
+
+41
+00:01:58.170 --> 00:01:59.990
+So a couple of things need to happen right here.
+
+42
+00:01:59.990 --> 00:02:01.873
+So this variable right here,
+
+43
+00:02:02.920 --> 00:02:05.120
+I always thought that that was like special.
+
+44
+00:02:05.120 --> 00:02:08.760
+You will also see people using page query
+
+45
+00:02:08.760 --> 00:02:11.670
+and it doesn't matter what you call it.
+
+46
+00:02:11.670 --> 00:02:14.440
+It just matters that if you are exporting something
+
+47
+00:02:14.440 --> 00:02:17.190
+that is a graphql query,
+
+48
+00:02:17.190 --> 00:02:19.960
+it will then turn that into data for you.
+
+49
+00:02:19.960 --> 00:02:22.943
+This graphql here, we may be can auto import it.
+
+50
+00:02:24.480 --> 00:02:25.370
+There we go.
+
+51
+00:02:25.370 --> 00:02:28.800
+It's imported as graphql from Gatsby.
+
+52
+00:02:28.800 --> 00:02:31.100
+And then we also, I can get rid of this layout,
+
+53
+00:02:31.100 --> 00:02:33.370
+cause we're no longer using that.
+
+54
+00:02:33.370 --> 00:02:34.510
+Then inside of here,
+
+55
+00:02:34.510 --> 00:02:36.020
+that's where we're going to go ahead
+
+56
+00:02:36.020 --> 00:02:37.420
+and write all of our queries.
+
+57
+00:02:37.420 --> 00:02:41.891
+So if we open up the local host, underscore, underscore,
+
+58
+00:02:41.891 --> 00:02:44.180
+underscore underscore graphql
+
+59
+00:02:44.180 --> 00:02:47.980
+you remember that we wrote this query here.
+
+60
+00:02:47.980 --> 00:02:50.150
+It says allSanityPizza.
+
+61
+00:02:50.150 --> 00:02:52.730
+And then for each node, we want the name,
+
+62
+00:02:52.730 --> 00:02:55.620
+the ID the price of slug and all of that good data.
+
+63
+00:02:55.620 --> 00:02:58.560
+So when here we can go ahead and start writing our queries.
+
+64
+00:02:58.560 --> 00:02:59.603
+So we type query.
+
+65
+00:03:00.460 --> 00:03:04.040
+Now we are gonna come back and modify this to take
+
+66
+00:03:04.040 --> 00:03:06.830
+variables, which is the filter for the pizza.
+
+67
+00:03:06.830 --> 00:03:08.360
+But in our case,
+
+68
+00:03:08.360 --> 00:03:11.803
+we are not going to be doing that right now.
+
+69
+00:03:13.460 --> 00:03:17.520
+You can also name this query called like pizza query.
+
+70
+00:03:17.520 --> 00:03:20.530
+You may see, and I might do this myself.
+
+71
+00:03:20.530 --> 00:03:22.330
+People not do it
+
+72
+00:03:22.330 --> 00:03:26.270
+just because it's not necessary to add it,
+
+73
+00:03:26.270 --> 00:03:27.730
+but you can pop a name on it.
+
+74
+00:03:27.730 --> 00:03:29.250
+It's kind of like an anonymous function
+
+75
+00:03:29.250 --> 00:03:30.763
+versus the name function.
+
+76
+00:03:31.650 --> 00:03:36.100
+Then inside of here, we will query all of our sanity pizza
+
+77
+00:03:36.100 --> 00:03:37.833
+So say allSanityPizza.
+
+78
+00:03:39.640 --> 00:03:42.140
+Now I, you saw me put parentheses on the end there.
+
+79
+00:03:42.140 --> 00:03:43.190
+We don't need them just yet.
+
+80
+00:03:43.190 --> 00:03:45.330
+We will add them when we need to filter
+
+81
+00:03:45.330 --> 00:03:47.710
+for the different topics that we have.
+
+82
+00:03:47.710 --> 00:03:51.810
+And then for each sanity pizza, we need the node.
+
+83
+00:03:51.810 --> 00:03:56.070
+And this is probably easier just to go into your graphql
+
+84
+00:03:56.070 --> 00:03:58.360
+explorer here, or graphical
+
+85
+00:03:58.360 --> 00:04:00.760
+and write this query inside of here,
+
+86
+00:04:00.760 --> 00:04:03.883
+because you get all of the, the IntelliSense here.
+
+87
+00:04:03.883 --> 00:04:05.670
+It will try to auto complete it.
+
+88
+00:04:05.670 --> 00:04:08.760
+And also if you're having trouble with a query,
+
+89
+00:04:08.760 --> 00:04:12.450
+like, let's say, you accidentally forgot the S on nodes.
+
+90
+00:04:12.450 --> 00:04:13.960
+Like I just did.
+
+91
+00:04:13.960 --> 00:04:15.650
+And then I want the name of the pizza.
+
+92
+00:04:15.650 --> 00:04:18.610
+Let's try run this query so you would select all of this,
+
+93
+00:04:18.610 --> 00:04:21.277
+not the surrounding backticks
+
+94
+00:04:21.277 --> 00:04:24.240
+and just paste it in here and you run it.
+
+95
+00:04:24.240 --> 00:04:25.370
+And it gives you an error,
+
+96
+00:04:25.370 --> 00:04:28.070
+cannot read node on sanity pizza connection.
+
+97
+00:04:28.070 --> 00:04:29.490
+Did you mean nodes?
+
+98
+00:04:29.490 --> 00:04:30.660
+Yes, I did.
+
+99
+00:04:30.660 --> 00:04:33.230
+So I'd go and add an S here.
+
+100
+00:04:33.230 --> 00:04:35.270
+I had an S here.
+
+101
+00:04:35.270 --> 00:04:38.680
+Run it, and there we go see it's now showing up.
+
+102
+00:04:38.680 --> 00:04:39.770
+What else do we want for here?
+
+103
+00:04:39.770 --> 00:04:41.910
+We want the ID of the pizza.
+
+104
+00:04:41.910 --> 00:04:46.133
+We want the slug of the pizza, which has a current property.
+
+105
+00:04:47.070 --> 00:04:50.040
+We also want the toppings on each of those pizza
+
+106
+00:04:51.040 --> 00:04:52.490
+and for each of the toppings,
+
+107
+00:04:52.490 --> 00:04:53.880
+you want the topping ID
+
+108
+00:04:55.410 --> 00:04:57.010
+and the name of that topping.
+
+109
+00:04:57.010 --> 00:05:00.840
+And then finally, and this is where we get into images.
+
+110
+00:05:00.840 --> 00:05:03.110
+We'll cross that in a second, but we'll query it right now.
+
+111
+00:05:03.110 --> 00:05:04.150
+We say image
+
+112
+00:05:05.760 --> 00:05:06.920
+cause that's our field
+
+113
+00:05:06.920 --> 00:05:09.670
+and normally you think like, Oh I just get the image
+
+114
+00:05:09.670 --> 00:05:13.390
+and it gives me a URL,
+
+115
+00:05:13.390 --> 00:05:15.450
+but in our case, we're going to be using something
+
+116
+00:05:15.450 --> 00:05:16.380
+called Gatsby image,
+
+117
+00:05:16.380 --> 00:05:18.130
+which we'll go into in just a second.
+
+118
+00:05:18.130 --> 00:05:20.600
+But for now we just have to write this ourselves.
+
+119
+00:05:20.600 --> 00:05:23.670
+So image, asset, nested inside of that,
+
+120
+00:05:23.670 --> 00:05:28.560
+we want fluid parenthesis max width 400.
+
+121
+00:05:28.560 --> 00:05:31.670
+Again, this will makes sense once we get into Gatsby image,
+
+122
+00:05:31.670 --> 00:05:34.290
+and then we use something in graphql called the fragment.
+
+123
+00:05:34.290 --> 00:05:36.230
+So inside of this fluid,
+
+124
+00:05:36.230 --> 00:05:37.120
+there's gonna be something,
+
+125
+00:05:37.120 --> 00:05:38.790
+there's gonna be like a don't type this
+
+126
+00:05:38.790 --> 00:05:41.370
+there's gonna be like a base 64.
+
+127
+00:05:41.370 --> 00:05:43.423
+There's also gonna be like an asseturl.
+
+128
+00:05:47.090 --> 00:05:49.190
+There's gonna be a width there's gonna be a height.
+
+129
+00:05:49.190 --> 00:05:52.880
+And so often you're gonna be querying all of these fields
+
+130
+00:05:52.880 --> 00:05:54.380
+for the same thing.
+
+131
+00:05:54.380 --> 00:05:57.340
+And in graphql, when you query the same thing
+
+132
+00:05:57.340 --> 00:05:59.310
+over and over and over again,
+
+133
+00:05:59.310 --> 00:06:01.240
+it's easier to not just have to type it,
+
+134
+00:06:01.240 --> 00:06:03.560
+but to stick it inside of a fragment.
+
+135
+00:06:03.560 --> 00:06:08.560
+And a fragment is just a collection of fields that we want.
+
+136
+00:06:08.610 --> 00:06:10.230
+That's kind of a weird thing about graphql.
+
+137
+00:06:10.230 --> 00:06:13.000
+As you can't just like ask for like give me everything
+
+138
+00:06:13.000 --> 00:06:13.960
+that you have.
+
+139
+00:06:13.960 --> 00:06:17.320
+You have to specifically ask for every field that you want.
+
+140
+00:06:17.320 --> 00:06:19.960
+And if that's feeling a little bit cumbersome to you,
+
+141
+00:06:19.960 --> 00:06:21.540
+you need to stick it in a fragment.
+
+142
+00:06:21.540 --> 00:06:22.380
+And in our case,
+
+143
+00:06:22.380 --> 00:06:23.930
+the fragments come with Gatsby
+
+144
+00:06:23.930 --> 00:06:25.580
+So it's ...GatsbySanityImageFluid
+
+145
+00:06:32.350 --> 00:06:35.010
+So all this is called upper camel case.
+
+146
+00:06:35.010 --> 00:06:37.370
+So capital G on and then capital letters
+
+147
+00:06:37.370 --> 00:06:38.830
+on all of the letters.
+
+148
+00:06:38.830 --> 00:06:40.990
+Now, one kind of weird thing about that
+
+149
+00:06:40.990 --> 00:06:44.580
+is now, if you were to take this query
+
+150
+00:06:44.580 --> 00:06:46.083
+and paste it into here,
+
+151
+00:06:47.500 --> 00:06:50.590
+we get an unknown fragment Gatsby sanity fluid.
+
+152
+00:06:50.590 --> 00:06:54.480
+And that's because I'm not sure why
+
+153
+00:06:54.480 --> 00:06:55.570
+this doesn't work that way,
+
+154
+00:06:55.570 --> 00:06:57.930
+I guess, just because Gatsby adds this fragment
+
+155
+00:06:57.930 --> 00:06:59.300
+as part of the build,
+
+156
+00:06:59.300 --> 00:07:01.250
+but it's not available in graphical,
+
+157
+00:07:01.250 --> 00:07:03.883
+it seems like maybe they could fix that.
+
+158
+00:07:04.720 --> 00:07:08.320
+But if that was the case, then you'd have to, I don't know,
+
+159
+00:07:08.320 --> 00:07:10.380
+Here we go you can just select some,
+
+160
+00:07:10.380 --> 00:07:14.410
+you can just change it to SFC and that will see it gives you
+
+161
+00:07:14.410 --> 00:07:16.667
+an actual URL of the actual pizza,
+
+162
+00:07:16.667 --> 00:07:19.140
+but we need a lot more fields than just the SFC.
+
+163
+00:07:19.140 --> 00:07:21.430
+So we'll be using that.
+
+164
+00:07:21.430 --> 00:07:24.260
+Okay, so give that a Save now and now go back
+
+165
+00:07:24.260 --> 00:07:28.363
+to your page and open up react dev tools.
+
+166
+00:07:29.790 --> 00:07:33.280
+And we want to find our pizzas page component.
+
+167
+00:07:33.280 --> 00:07:36.050
+This is why it's important to name your page components
+
+168
+00:07:36.050 --> 00:07:38.310
+because we can go to the react dev tools
+
+169
+00:07:38.310 --> 00:07:40.860
+and then just search for the pizzas page component
+
+170
+00:07:42.370 --> 00:07:46.863
+which is here we pizzas page right here.
+
+171
+00:07:49.080 --> 00:07:52.170
+Ooh! Hot export it pizzas page (laughs)
+
+172
+00:07:52.170 --> 00:07:53.700
+That's funny so hot export
+
+173
+00:07:53.700 --> 00:07:55.350
+it means that that's hot reloading.
+
+174
+00:07:55.350 --> 00:07:57.710
+That's the quick reload,
+
+175
+00:07:57.710 --> 00:07:59.370
+but you should see in here
+
+176
+00:07:59.370 --> 00:08:02.730
+that we now have in the props of that component,
+
+177
+00:08:02.730 --> 00:08:04.950
+we have a data prop,
+
+178
+00:08:04.950 --> 00:08:07.590
+and then it says allSanityPizza.
+
+179
+00:08:07.590 --> 00:08:09.270
+And then inside of that, we have our nodes.
+
+180
+00:08:09.270 --> 00:08:12.000
+And then finally we have both of our pizzas
+
+181
+00:08:12.000 --> 00:08:13.920
+accessible to us.
+
+182
+00:08:13.920 --> 00:08:15.310
+One little thing I like to do
+
+183
+00:08:15.310 --> 00:08:17.810
+is I don't like to type all sanity pizza
+
+184
+00:08:17.810 --> 00:08:21.120
+or all sanity people or anything like that.
+
+185
+00:08:21.120 --> 00:08:24.020
+I like to just name them what they are pizzas.
+
+186
+00:08:24.020 --> 00:08:24.900
+And that's especially true
+
+187
+00:08:24.900 --> 00:08:27.520
+if you were to ever like switch CMSs,
+
+188
+00:08:27.520 --> 00:08:29.310
+you might have to update your queries anyways.
+
+189
+00:08:29.310 --> 00:08:31.400
+But I don't like the name of this.
+
+190
+00:08:31.400 --> 00:08:34.890
+So you can rename a query in graphql
+
+191
+00:08:34.890 --> 00:08:37.610
+by doing this pizzas colon.
+
+192
+00:08:37.610 --> 00:08:39.400
+And what that does is it renames it
+
+193
+00:08:39.400 --> 00:08:42.070
+from allSanityPizza just to pizzas.
+
+194
+00:08:42.070 --> 00:08:45.150
+And now look at that I just refreshed,
+
+195
+00:08:45.150 --> 00:08:48.730
+now, we see pizzas instead of allSanityPizzas.
+
+196
+00:08:48.730 --> 00:08:53.320
+Okay, so now the question is how do you access that in here?
+
+197
+00:08:53.320 --> 00:08:55.250
+Well, we can go into here
+
+198
+00:08:55.250 --> 00:08:56.850
+and we could say props
+
+199
+00:08:56.850 --> 00:08:59.420
+and we could just simply just console.log the props
+
+200
+00:08:59.420 --> 00:09:01.051
+that are available to us.
+
+201
+00:09:01.051 --> 00:09:02.250
+And this is a little bit weird.
+
+202
+00:09:02.250 --> 00:09:03.083
+You might be asking like,
+
+203
+00:09:03.083 --> 00:09:06.460
+okay, well like how does this get from here to there?
+
+204
+00:09:06.460 --> 00:09:07.715
+Like we're not passing it or anything.
+
+205
+00:09:07.715 --> 00:09:10.030
+And that's a little bit of Gatsby magic
+
+206
+00:09:10.030 --> 00:09:14.240
+Gatsby will recognize that you have exported a graphql
+
+207
+00:09:14.240 --> 00:09:16.550
+component from the page,
+
+208
+00:09:16.550 --> 00:09:20.020
+and then it will run it behind the scenes
+
+209
+00:09:20.020 --> 00:09:22.270
+and then stick it into props.data.
+
+210
+00:09:22.270 --> 00:09:23.520
+So let's just console log props.
+
+211
+00:09:23.520 --> 00:09:25.170
+See what we're working with here.
+
+212
+00:09:30.600 --> 00:09:33.010
+I like to just refresh the page,
+
+213
+00:09:33.010 --> 00:09:34.803
+clear out any garbage in there.
+
+214
+00:09:35.930 --> 00:09:38.290
+And oh! I think I cleared it out too early.
+
+215
+00:09:38.290 --> 00:09:40.080
+Let's refresh it, there we go.
+
+216
+00:09:40.080 --> 00:09:41.500
+There's our props.
+
+217
+00:09:41.500 --> 00:09:42.590
+And inside of that,
+
+218
+00:09:42.590 --> 00:09:44.900
+you see stuff about where we are
+
+219
+00:09:44.900 --> 00:09:47.970
+a little navigate function, but most importantly,
+
+220
+00:09:47.970 --> 00:09:50.840
+we have props.data.pizzas.
+
+221
+00:09:50.840 --> 00:09:54.993
+So we can say console log props.data.pizzas.
+
+222
+00:09:56.630 --> 00:10:00.000
+And now when it runs, we just get our pizzas directly.
+
+223
+00:10:00.000 --> 00:10:03.290
+So what a lot of people will do is they'll destructure that
+
+224
+00:10:03.290 --> 00:10:07.950
+one or two levels deep as sort of as deep as you want.
+
+225
+00:10:07.950 --> 00:10:10.570
+So you could destructure that into data.
+
+226
+00:10:10.570 --> 00:10:13.550
+And then we don't need to console log props, that data,
+
+227
+00:10:13.550 --> 00:10:15.383
+it's just data.pizzas.
+
+228
+00:10:16.280 --> 00:10:18.020
+There we go that's still works,
+
+229
+00:10:18.020 --> 00:10:19.900
+and you could go even further.
+
+230
+00:10:19.900 --> 00:10:23.080
+And destructure that into pizzas directly.
+
+231
+00:10:23.080 --> 00:10:24.080
+I'm not gonna do that
+
+232
+00:10:24.080 --> 00:10:28.050
+just cause like I'm not a hot shot.
+
+233
+00:10:28.050 --> 00:10:30.345
+That seems a little unnecessary to me.
+
+234
+00:10:30.345 --> 00:10:32.630
+And it gets a little hard to read.
+
+235
+00:10:32.630 --> 00:10:36.290
+So I just like the destructure one level deep.
+
+236
+00:10:36.290 --> 00:10:38.370
+I'll probably (laughs) contradict myself
+
+237
+00:10:38.370 --> 00:10:39.320
+later in this course,
+
+238
+00:10:39.320 --> 00:10:41.720
+but that's all I'm feeling right now.
+
+239
+00:10:41.720 --> 00:10:43.520
+And let's just console log the data.
+
+240
+00:10:45.420 --> 00:10:46.253
+Beautiful, okay.
+
+241
+00:10:46.253 --> 00:10:49.400
+So, that's working so far.
+
+242
+00:10:49.400 --> 00:10:51.720
+Now, we want to figure out
+
+243
+00:10:51.720 --> 00:10:54.550
+how to start to display our pizzas on the page.
+
+244
+00:10:54.550 --> 00:10:56.210
+Well, we can start doing something like this.
+
+245
+00:10:56.210 --> 00:10:58.010
+Let's go into this paragraph and say,
+
+246
+00:10:58.010 --> 00:11:01.100
+Hey there are, I can go in here and say
+
+247
+00:11:01.100 --> 00:11:05.413
+data.pizzas.length pizzas.
+
+248
+00:11:08.410 --> 00:11:13.410
+There are, Oh! There our pizzas (laughs)
+
+249
+00:11:17.480 --> 00:11:18.490
+What did we do?
+
+250
+00:11:18.490 --> 00:11:21.831
+Alright, data.pizzas.
+
+251
+00:11:21.831 --> 00:11:23.090
+Oh! There we go.
+
+252
+00:11:23.090 --> 00:11:24.900
+So that's a bit of a problem it's not pizzas.
+
+253
+00:11:24.900 --> 00:11:26.830
+It's nodes inside of that.
+
+254
+00:11:26.830 --> 00:11:30.370
+So data.pizzas.nodes.length
+
+255
+00:11:33.050 --> 00:11:34.730
+and there we go there are two pizzas.
+
+256
+00:11:34.730 --> 00:11:36.837
+You may also do this up here.
+
+257
+00:11:36.837 --> 00:11:40.370
+You could just say const pizzas
+
+258
+00:11:41.420 --> 00:11:46.420
+is equal to data.pizzas.nodes.
+
+259
+00:11:47.010 --> 00:11:47.950
+And then we can just go ahead
+
+260
+00:11:47.950 --> 00:11:50.400
+and have this nice clean variable called pizzas.
+
+261
+00:11:50.400 --> 00:11:52.600
+So again, you could destructure in the object
+
+262
+00:11:52.600 --> 00:11:56.110
+or do it right before you return your JSX.
+
+263
+00:11:56.110 --> 00:11:57.940
+Both of them work really well.
+
+264
+00:11:57.940 --> 00:11:59.810
+There we go, the hey there are two pieces.
+
+265
+00:11:59.810 --> 00:12:01.420
+So we now see, we have the data.
+
+266
+00:12:01.420 --> 00:12:02.900
+Now you might be saying like, okay,
+
+267
+00:12:02.900 --> 00:12:05.720
+West, like what about loading state, right?
+
+268
+00:12:05.720 --> 00:12:07.801
+Like you refresh the page
+
+269
+00:12:07.801 --> 00:12:10.350
+and just works like in your other courses,
+
+270
+00:12:10.350 --> 00:12:11.840
+we always had to do this whole song
+
+271
+00:12:11.840 --> 00:12:15.530
+and dance of if it's loading and then also check,
+
+272
+00:12:15.530 --> 00:12:18.447
+is there data and in Gatsby you just go ahead and use it.
+
+273
+00:12:18.447 --> 00:12:20.700
+And that's the beauty of Gatsby
+
+274
+00:12:20.700 --> 00:12:23.450
+is that there's never a loading state in Gatsby
+
+275
+00:12:23.450 --> 00:12:25.720
+because it's all prebuilt.
+
+276
+00:12:25.720 --> 00:12:28.520
+So before this page even renders,
+
+277
+00:12:28.520 --> 00:12:30.080
+the pizzas will be there very similar
+
+278
+00:12:30.080 --> 00:12:31.530
+to how server side rendering works.
+
+279
+00:12:31.530 --> 00:12:34.670
+It just happens at build time rather than render time.
+
+280
+00:12:34.670 --> 00:12:36.900
+So we don't have to check if there's loading
+
+281
+00:12:36.900 --> 00:12:38.990
+and throw up spinner or something like that,
+
+282
+00:12:38.990 --> 00:12:41.400
+because the pizzas will always be there
+
+283
+00:12:41.400 --> 00:12:43.020
+because this page will not be rendered
+
+284
+00:12:43.020 --> 00:12:45.440
+until it's there and in build time,
+
+285
+00:12:45.440 --> 00:12:46.640
+we'll build it,
+
+286
+00:12:46.640 --> 00:12:47.690
+the pizzas will be there
+
+287
+00:12:47.690 --> 00:12:50.500
+and then we'll ship it off to the server.
+
+288
+00:12:50.500 --> 00:12:51.810
+Okay, cool.
+
+289
+00:12:51.810 --> 00:12:55.190
+Now, we wanna build another component that we'll go ahead
+
+290
+00:12:55.190 --> 00:12:57.890
+and display all of the pizzas that we have.
+
+291
+00:12:57.890 --> 00:13:00.590
+We could loop over the pieces right inside of here,
+
+292
+00:13:00.590 --> 00:13:05.590
+but I always like to keep my pages as thin as possible,
+
+293
+00:13:06.550 --> 00:13:07.670
+where you have your queries
+
+294
+00:13:07.670 --> 00:13:10.170
+and then you just kind of block out the pieces
+
+295
+00:13:10.170 --> 00:13:11.230
+that you want there.
+
+296
+00:13:11.230 --> 00:13:13.210
+And then we'll use another component
+
+297
+00:13:13.210 --> 00:13:15.010
+to actually display the pizzas.
+
+298
+00:13:15.010 --> 00:13:18.280
+So let's go into our components folder here
+
+299
+00:13:18.280 --> 00:13:19.490
+and make a new file.
+
+300
+00:13:19.490 --> 00:13:22.177
+And we'll call that capital P PizzaList.js.
+
+301
+00:13:29.330 --> 00:13:32.713
+I'm going to use import react from react,
+
+302
+00:13:34.640 --> 00:13:38.280
+export default function, pizzaList.
+
+303
+00:13:42.130 --> 00:13:45.893
+And then we're just return paragraph list of pizzas.
+
+304
+00:13:47.410 --> 00:13:50.390
+And we'll go into here and try to use that component.
+
+305
+00:13:50.390 --> 00:13:53.390
+So now I'm gonna get rid of this paragraph tag
+
+306
+00:13:54.650 --> 00:13:59.350
+and we will just say PizzaList component,
+
+307
+00:13:59.350 --> 00:14:02.450
+and then we will try to auto import that sucker.
+
+308
+00:14:02.450 --> 00:14:03.283
+Boom! Okay.
+
+309
+00:14:03.283 --> 00:14:05.580
+So if that didn't work for you import pizzaList
+
+310
+00:14:05.580 --> 00:14:08.460
+from we go up a level into components
+
+311
+00:14:08.460 --> 00:14:10.840
+and then grab it from the piece of list directory,
+
+312
+00:14:10.840 --> 00:14:15.023
+give that a Save and pizzaList is not defined.
+
+313
+00:14:16.300 --> 00:14:17.750
+Just needed a refresh.
+
+314
+00:14:17.750 --> 00:14:19.970
+Sometimes you gotta we'll call that,
+
+315
+00:14:19.970 --> 00:14:20.930
+give it a hot supper.
+
+316
+00:14:20.930 --> 00:14:22.930
+So sometimes you just gotta give it a hot supper
+
+317
+00:14:22.930 --> 00:14:24.090
+and refresh the whole thing.
+
+318
+00:14:24.090 --> 00:14:26.280
+So it works.
+
+319
+00:14:26.280 --> 00:14:27.460
+Alright, so now we have this.
+
+320
+00:14:27.460 --> 00:14:29.440
+Now we wanna get the pizzas,
+
+321
+00:14:29.440 --> 00:14:31.540
+which is here into that component.
+
+322
+00:14:31.540 --> 00:14:33.830
+So we'll pass that down via props.
+
+323
+00:14:33.830 --> 00:14:35.250
+So we'll go here,
+
+324
+00:14:35.250 --> 00:14:39.773
+we'll say pizzas is equal to curly bracket pizzas.
+
+325
+00:14:41.600 --> 00:14:44.750
+Then we can go into this pizzaList
+
+326
+00:14:44.750 --> 00:14:49.040
+and destructure that prop pizzas, is that what we call it?
+
+327
+00:14:49.040 --> 00:14:49.873
+Yep.
+
+328
+00:14:51.370 --> 00:14:54.120
+And then let's just do one more check to say,
+
+329
+00:14:54.120 --> 00:14:58.187
+there are pizzas.length zas.
+
+330
+00:15:01.323 --> 00:15:02.156
+There we go,
+
+331
+00:15:03.030 --> 00:15:04.463
+Looking good, okay.
+
+332
+00:15:06.180 --> 00:15:10.240
+Now, what we wanna do is to loop over each of those pizzas
+
+333
+00:15:10.240 --> 00:15:12.400
+and display each one that we have.
+
+334
+00:15:12.400 --> 00:15:15.740
+So I'm gonna go and remove this
+
+335
+00:15:15.740 --> 00:15:18.240
+and let's just give ourselves a div for now.
+
+336
+00:15:18.240 --> 00:15:21.780
+And then we'll do curly brackets and we take our pizzas
+
+337
+00:15:21.780 --> 00:15:23.190
+and you map over it.
+
+338
+00:15:23.190 --> 00:15:25.670
+So if you wanna loop over something in react,
+
+339
+00:15:25.670 --> 00:15:27.560
+you use a map function.
+
+340
+00:15:27.560 --> 00:15:30.050
+And then from each pizza that you have,
+
+341
+00:15:30.050 --> 00:15:32.450
+we get singular pizza.
+
+342
+00:15:32.450 --> 00:15:36.360
+So for each pizza that we have take an individual pizza,
+
+343
+00:15:36.360 --> 00:15:38.740
+and then from that return,
+
+344
+00:15:38.740 --> 00:15:41.653
+a paragraph tag that says pizza,
+
+345
+00:15:43.430 --> 00:15:44.950
+and there we go, so we have two pizzas.
+
+346
+00:15:44.950 --> 00:15:47.004
+So we get two paragraph tags that show us
+
+347
+00:15:47.004 --> 00:15:50.090
+that we each have a pizza, okay.
+
+348
+00:15:50.090 --> 00:15:51.740
+Then we could replace that.
+
+349
+00:15:51.740 --> 00:15:53.623
+We could say like pizza.name,
+
+350
+00:15:56.210 --> 00:15:58.740
+there we go veggie delight and master pizza.
+
+351
+00:15:58.740 --> 00:16:00.740
+But what I'm gonna do is I'm gonna make another
+
+352
+00:16:00.740 --> 00:16:04.750
+component that is used for displaying a single pizza.
+
+353
+00:16:04.750 --> 00:16:08.270
+So anytime I have this whole like grid of items
+
+354
+00:16:08.270 --> 00:16:09.720
+and then singular items,
+
+355
+00:16:09.720 --> 00:16:12.070
+I'll almost always make a separate component
+
+356
+00:16:12.070 --> 00:16:14.530
+for the grid and then another component
+
+357
+00:16:14.530 --> 00:16:15.890
+for the individual one.
+
+358
+00:16:15.890 --> 00:16:20.090
+So let's go (clicking) let's go above it.
+
+359
+00:16:20.090 --> 00:16:24.933
+So I'll say function single pizza.
+
+360
+00:16:26.730 --> 00:16:28.617
+And you'll notice I'm not exporting this one.
+
+361
+00:16:28.617 --> 00:16:29.700
+And the reason behind that
+
+362
+00:16:29.700 --> 00:16:31.990
+is because I'm not actually gonna be using this
+
+363
+00:16:31.990 --> 00:16:33.400
+anywhere else throughout the website.
+
+364
+00:16:33.400 --> 00:16:36.210
+If I was, I could simply just export it
+
+365
+00:16:36.210 --> 00:16:38.120
+and that would make it accessible.
+
+366
+00:16:38.120 --> 00:16:40.600
+And I could use that anywhere else I wanted on the site.
+
+367
+00:16:40.600 --> 00:16:43.160
+But in my case, we're just gonna be using it right here.
+
+368
+00:16:43.160 --> 00:16:45.000
+So I'm gonna keep it in the same file.
+
+369
+00:16:45.000 --> 00:16:46.900
+You might also be asking West,
+
+370
+00:16:46.900 --> 00:16:49.960
+like why didn't you create like one function per component?
+
+371
+00:16:49.960 --> 00:16:51.860
+Like, why don't you just create another component
+
+372
+00:16:51.860 --> 00:16:53.360
+for that single pizza,
+
+373
+00:16:53.360 --> 00:16:56.250
+And into that I say, that's too confusing.
+
+374
+00:16:56.250 --> 00:16:58.350
+If I'm just gonna use it here,
+
+375
+00:16:58.350 --> 00:17:00.030
+then I'm gonna put it in the same file.
+
+376
+00:17:00.030 --> 00:17:02.235
+And then if I find myself saying like,
+
+377
+00:17:02.235 --> 00:17:04.560
+Oh! Man, like I'm using this all over the website.
+
+378
+00:17:04.560 --> 00:17:06.310
+I better put it in its own component.
+
+379
+00:17:06.310 --> 00:17:10.420
+But in this case, I always opt for putting it all
+
+380
+00:17:10.420 --> 00:17:14.020
+in one file and then chunking it out if I need to,
+
+381
+00:17:14.020 --> 00:17:16.560
+rather than by default making a million files,
+
+382
+00:17:16.560 --> 00:17:19.150
+cause that's no way to live your life.
+
+383
+00:17:19.150 --> 00:17:21.230
+Or maybe it is you do you, yeah?
+
+384
+00:17:21.230 --> 00:17:22.630
+It's a free world out there.
+
+385
+00:17:23.997 --> 00:17:24.830
+What do we've got here?
+
+386
+00:17:24.830 --> 00:17:25.880
+Single pizza, okay.
+
+387
+00:17:25.880 --> 00:17:30.880
+And that will take in a pizza prop, okay.
+
+388
+00:17:31.110 --> 00:17:35.010
+And then from here, let's just return.
+
+389
+00:17:35.010 --> 00:17:37.680
+Let's do this first return a paragraph tag
+
+390
+00:17:37.680 --> 00:17:40.670
+with the pizza.name inside of it.
+
+391
+00:17:40.670 --> 00:17:42.030
+And we can go down here
+
+392
+00:17:42.890 --> 00:17:45.340
+and replace this paragraph tag
+
+393
+00:17:45.340 --> 00:17:49.057
+with a single pizza component.
+
+394
+00:17:51.410 --> 00:17:56.033
+And then that needs to be passed the singular pizza.
+
+395
+00:17:59.400 --> 00:18:01.910
+And that should work, give it a hot supper refresh.
+
+396
+00:18:01.910 --> 00:18:03.780
+And here we go it's working now.
+
+397
+00:18:03.780 --> 00:18:06.010
+It will yell at us about a key
+
+398
+00:18:06.010 --> 00:18:07.310
+let's take a look here.
+
+399
+00:18:07.310 --> 00:18:09.270
+Warning each child in a list
+
+400
+00:18:09.270 --> 00:18:11.393
+should have a unique key prop, okay.
+
+401
+00:18:11.393 --> 00:18:12.230
+Now, that's good.
+
+402
+00:18:12.230 --> 00:18:14.450
+So anytime you map over something,
+
+403
+00:18:14.450 --> 00:18:19.020
+you must give the individual item a unique key,
+
+404
+00:18:19.020 --> 00:18:22.810
+so react can keep track of it and update it quickly.
+
+405
+00:18:22.810 --> 00:18:26.880
+And that's why we queried the ID of the pizza.
+
+406
+00:18:26.880 --> 00:18:30.230
+Cause that is a perfect use case for an ID in a key.
+
+407
+00:18:30.230 --> 00:18:35.030
+So I would say key is equal to pizza.id,
+
+408
+00:18:35.030 --> 00:18:37.930
+give it a Save, hot supper refresh
+
+409
+00:18:37.930 --> 00:18:42.320
+and all kinds of other garbage in here.
+
+410
+00:18:42.320 --> 00:18:43.710
+Hopefully this gets cleaned up soon,
+
+411
+00:18:43.710 --> 00:18:47.717
+but there's no actual error coming from our things.
+
+412
+00:18:47.717 --> 00:18:50.230
+And the way you can tell if that's an error,
+
+413
+00:18:50.230 --> 00:18:54.160
+is if the actual error that you're getting here is coming
+
+414
+00:18:54.160 --> 00:18:56.050
+from one of your components
+
+415
+00:18:56.050 --> 00:19:01.050
+versus some junk in inside of Gatsby, okay.
+
+416
+00:19:02.100 --> 00:19:03.970
+Alright, let's work on the single pizza here.
+
+417
+00:19:03.970 --> 00:19:05.850
+So instead of returning a paragraph tag,
+
+418
+00:19:05.850 --> 00:19:07.360
+we'll return a div
+
+419
+00:19:08.240 --> 00:19:11.340
+inside of that, we'll have a link to that pizza.
+
+420
+00:19:11.340 --> 00:19:15.420
+So a link to, and this is how we generate
+
+421
+00:19:15.420 --> 00:19:18.730
+the individual pizza URL.
+
+422
+00:19:18.730 --> 00:19:21.650
+So we'll link to forward slash pizza
+
+423
+00:19:21.650 --> 00:19:24.090
+forward slash and we're gonna interpolate.
+
+424
+00:19:24.090 --> 00:19:26.350
+So that's why we did this is a little bit confusing,
+
+425
+00:19:26.350 --> 00:19:30.690
+but if you wanna generate a slug,
+
+426
+00:19:30.690 --> 00:19:31.890
+you around here,
+
+427
+00:19:31.890 --> 00:19:33.897
+you use curly brackets backticks.
+
+428
+00:19:33.897 --> 00:19:35.870
+And then from there on out,
+
+429
+00:19:35.870 --> 00:19:38.670
+it's just a ESX template strings.
+
+430
+00:19:38.670 --> 00:19:40.840
+So we have to use dollar-sign, curly bracket
+
+431
+00:19:40.840 --> 00:19:45.690
+to interpolate things like the pizza.slug.current.
+
+432
+00:19:45.690 --> 00:19:46.627
+You may be saying like, West,
+
+433
+00:19:46.627 --> 00:19:50.280
+"How did you know that that was pizza.slug.current?"
+
+434
+00:19:50.280 --> 00:19:52.993
+Well, you could go to my components here.
+
+435
+00:19:54.110 --> 00:19:56.640
+And oh! It's given us grief about the link
+
+436
+00:19:56.640 --> 00:19:59.070
+we got to auto import that sucker.
+
+437
+00:19:59.070 --> 00:20:01.120
+There we go, important link from Gatsby
+
+438
+00:20:05.400 --> 00:20:09.270
+and let's look for a single pizza, here we go.
+
+439
+00:20:09.270 --> 00:20:12.720
+Let's see in here, we've got two single pizzas
+
+440
+00:20:12.720 --> 00:20:15.960
+and you see in the props, we have our slug.
+
+441
+00:20:15.960 --> 00:20:18.560
+And then it gives us the current value of the slug,
+
+442
+00:20:18.560 --> 00:20:20.560
+which is veggie-delight.
+
+443
+00:20:20.560 --> 00:20:23.620
+Now we can go inside of this link.
+
+444
+00:20:23.620 --> 00:20:26.420
+I hope my prettier auto closed it.
+
+445
+00:20:26.420 --> 00:20:30.470
+I gotta close it like that and put something inside of it.
+
+446
+00:20:30.470 --> 00:20:31.380
+I'm Inside of that,
+
+447
+00:20:31.380 --> 00:20:34.770
+let's give ourselves an h2 tag
+
+448
+00:20:34.770 --> 00:20:39.770
+where we put the pizza.name inside of it.
+
+449
+00:20:43.300 --> 00:20:45.260
+Here we go, Veggie delight, Master Pizza.
+
+450
+00:20:45.260 --> 00:20:48.410
+If we click on one of those, it doesn't work.
+
+451
+00:20:48.410 --> 00:20:50.760
+And that's because we haven't created
+
+452
+00:20:50.760 --> 00:20:52.910
+this veggie delight page yet.
+
+453
+00:20:52.910 --> 00:20:54.280
+In order to do this,
+
+454
+00:20:54.280 --> 00:20:56.380
+we're not gonna be creating a new page
+
+455
+00:20:56.380 --> 00:20:58.110
+in our pages folder for every single pizza.
+
+456
+00:20:58.110 --> 00:21:00.450
+Cause that would be millions of pizzas
+
+457
+00:21:00.450 --> 00:21:01.670
+or millions of pages,
+
+458
+00:21:01.670 --> 00:21:04.420
+but we will be dynamically creating those pages
+
+459
+00:21:04.420 --> 00:21:05.913
+in a future video.
+
+460
+00:21:07.170 --> 00:21:08.570
+Also what we want inside of here,
+
+461
+00:21:08.570 --> 00:21:11.233
+just for some CSS that's coming up.
+
+462
+00:21:12.090 --> 00:21:17.090
+I want you to take a span with a class of Mark
+
+463
+00:21:19.900 --> 00:21:22.850
+and then put the pizza.name inside of that.
+
+464
+00:21:22.850 --> 00:21:25.810
+That's just gonna be for some styling.
+
+465
+00:21:25.810 --> 00:21:28.430
+Look that we have you take a look here.
+
+466
+00:21:28.430 --> 00:21:30.883
+This little highlight here is a class of Mark.
+
+467
+00:21:31.780 --> 00:21:33.640
+Go back to the pizzas page, there we go.
+
+468
+00:21:33.640 --> 00:21:35.800
+See, that's showing up there.
+
+469
+00:21:35.800 --> 00:21:38.060
+Now below this h2 we wanna,
+
+470
+00:21:38.060 --> 00:21:40.300
+let's render out a list of the toppings that we have.
+
+471
+00:21:40.300 --> 00:21:42.430
+So we'll give ourselves a paragraph tag
+
+472
+00:21:42.430 --> 00:21:47.430
+and we'll take the pizza.toppings and we'll map over that.
+
+473
+00:21:47.520 --> 00:21:49.860
+So you could kick this out to a separate component,
+
+474
+00:21:49.860 --> 00:21:52.350
+but I don't think it's necessary given how small it is.
+
+475
+00:21:52.350 --> 00:21:54.480
+So a map over each topping,
+
+476
+00:21:54.480 --> 00:21:58.710
+and then this is an implicit return arrow function.
+
+477
+00:21:58.710 --> 00:22:03.710
+We will return the topping.name.
+
+478
+00:22:05.780 --> 00:22:07.380
+And you might be saying like West,
+
+479
+00:22:07.380 --> 00:22:09.580
+where's the like a paragraph tag
+
+480
+00:22:09.580 --> 00:22:10.890
+or where's the span around that?
+
+481
+00:22:10.890 --> 00:22:12.950
+Let me show you what we got here.
+
+482
+00:22:12.950 --> 00:22:14.660
+So give that a Save.
+
+483
+00:22:14.660 --> 00:22:15.880
+You'll see, Oh!Look at that,
+
+484
+00:22:15.880 --> 00:22:18.140
+mushrooms, onions, pepperoni mushrooms, onions bacon.
+
+485
+00:22:18.140 --> 00:22:21.140
+So what we did there is we simply just took
+
+486
+00:22:21.140 --> 00:22:23.830
+the list of toppings mapped over it
+
+487
+00:22:23.830 --> 00:22:25.690
+and returned just the topping name.
+
+488
+00:22:25.690 --> 00:22:27.260
+So let me show you an example here.
+
+489
+00:22:27.260 --> 00:22:30.633
+So let's look for a single pizza again, there we go.
+
+490
+00:22:33.056 --> 00:22:35.230
+And then we open up the pizza
+
+491
+00:22:35.230 --> 00:22:39.540
+and I believe that we can access this component.
+
+492
+00:22:39.540 --> 00:22:42.470
+If I click on it and go to our console,
+
+493
+00:22:42.470 --> 00:22:44.770
+we can type $r.
+
+494
+00:22:44.770 --> 00:22:49.230
+There we go, that gives us the component
+
+495
+00:22:49.230 --> 00:22:51.270
+that is currently selected in here.
+
+496
+00:22:51.270 --> 00:22:54.590
+And then if we look inside of there, do we have props,
+
+497
+00:22:54.590 --> 00:22:58.910
+good $r.props.pizza.
+
+498
+00:22:58.910 --> 00:23:02.600
+Okay, and then .toppings that gives us an array
+
+499
+00:23:02.600 --> 00:23:05.650
+of the toppings, but like, don't care about the ID.
+
+500
+00:23:05.650 --> 00:23:08.030
+I just want the name of it.
+
+501
+00:23:08.030 --> 00:23:12.730
+So it will say $r.pizza.toppings.map.
+
+502
+00:23:12.730 --> 00:23:14.990
+I'll say topping and we're just return
+
+503
+00:23:14.990 --> 00:23:17.190
+the topping.name and what that does
+
+504
+00:23:18.830 --> 00:23:23.110
+is returns just an Array of the toppings.
+
+505
+00:23:23.110 --> 00:23:25.580
+And then we can simply just run .join
+
+506
+00:23:25.580 --> 00:23:29.170
+on it with anything we want in between
+
+507
+00:23:29.170 --> 00:23:31.470
+in our case we'll just join those things together
+
+508
+00:23:31.470 --> 00:23:33.510
+with our divider here.
+
+509
+00:23:33.510 --> 00:23:37.890
+So in our case, we wanted to use a comma space
+
+510
+00:23:37.890 --> 00:23:39.610
+here we go nice little list.
+
+511
+00:23:39.610 --> 00:23:42.980
+So in our case, there's no need to loop over it
+
+512
+00:23:42.980 --> 00:23:44.750
+and wrap each one in a span.
+
+513
+00:23:44.750 --> 00:23:48.630
+So we could just do this where we map over it.
+
+514
+00:23:48.630 --> 00:23:53.543
+And then we use join comma space after.
+
+515
+00:23:54.590 --> 00:23:57.500
+Here we go, got all of our toppings showing up.
+
+516
+00:23:57.500 --> 00:23:59.900
+Cool, so I think that's enough for this video
+
+517
+00:23:59.900 --> 00:24:03.040
+and what we have left here yet is being able
+
+518
+00:24:03.040 --> 00:24:05.550
+to get the images showing up
+
+519
+00:24:05.550 --> 00:24:07.243
+on this page of the pizza.
+
