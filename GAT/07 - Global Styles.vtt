@@ -1,0 +1,1186 @@
+﻿WEBVTT
+
+1
+00:00:00.336 --> 00:00:03.086
+(ethereal music)
+
+2
+00:00:04.390 --> 00:00:06.140
+<v Wes>All right, let's talk about styles in CSS.</v>
+
+3
+00:00:06.140 --> 00:00:07.890
+So now that we've got this layout here,
+
+4
+00:00:07.890 --> 00:00:09.700
+you might be thinking, okay, where's styles?
+
+5
+00:00:09.700 --> 00:00:14.650
+No problem, pop a link tag in there, give it a relative path
+
+6
+00:00:14.650 --> 00:00:16.800
+to my CSS file and we'll call it a day.
+
+7
+00:00:16.800 --> 00:00:19.820
+However, that would actually work,
+
+8
+00:00:19.820 --> 00:00:24.820
+but it goes against the idea of Gatsby, in that Gatsby needs
+
+9
+00:00:25.570 --> 00:00:27.920
+to know about everything in your project.
+
+10
+00:00:27.920 --> 00:00:31.390
+It needs to know about your data, your images,
+
+11
+00:00:31.390 --> 00:00:33.790
+your pages, your links,
+
+12
+00:00:33.790 --> 00:00:36.240
+and it needs to know about your CSS, why?
+
+13
+00:00:36.240 --> 00:00:39.190
+Because like, I don't know, if we go to wesbos.com
+
+14
+00:00:39.190 --> 00:00:41.850
+and we were to view Page Source here,
+
+15
+00:00:41.850 --> 00:00:45.060
+you'll see that all of the CSS that is being dumped
+
+16
+00:00:45.060 --> 00:00:49.850
+in here is being dumped before any of the content.
+
+17
+00:00:49.850 --> 00:00:53.750
+And that's because Gatsby has figured out what CSS
+
+18
+00:00:53.750 --> 00:00:57.120
+that I've written for this website is necessary
+
+19
+00:00:57.120 --> 00:00:59.560
+is what's called the Critical CSS
+
+20
+00:00:59.560 --> 00:01:02.360
+in order for that page to render
+
+21
+00:01:02.360 --> 00:01:07.360
+without having a big sort of a flash of unstyled text.
+
+22
+00:01:08.540 --> 00:01:10.900
+So instead of just linking to it like this,
+
+23
+00:01:10.900 --> 00:01:13.060
+because that goes outside of Gatsby,
+
+24
+00:01:13.060 --> 00:01:15.250
+we need to import it through Gatsby.
+
+25
+00:01:15.250 --> 00:01:17.230
+Now, there's a whole bunch of different ways
+
+26
+00:01:17.230 --> 00:01:20.440
+that you can do CSS in Gatsby.
+
+27
+00:01:20.440 --> 00:01:23.070
+And we are eventually going to just land
+
+28
+00:01:23.070 --> 00:01:25.060
+on using styled-components.
+
+29
+00:01:25.060 --> 00:01:27.170
+But I'm gonna show you just a couple of ways
+
+30
+00:01:27.170 --> 00:01:28.003
+that you could do it.
+
+31
+00:01:28.003 --> 00:01:31.830
+So, certainly, you could go into your styles folder,
+
+32
+00:01:31.830 --> 00:01:34.910
+and let's just make like a red.css.
+
+33
+00:01:34.910 --> 00:01:36.810
+And inside of that, let's just say,
+
+34
+00:01:36.810 --> 00:01:41.810
+body is background is red.
+
+35
+00:01:42.590 --> 00:01:45.990
+Then what you can do is you go into your gatsby-browser.js
+
+36
+00:01:45.990 --> 00:01:49.080
+and simply just import that right in.
+
+37
+00:01:49.080 --> 00:01:52.170
+So, we just say import, what is it?
+
+38
+00:01:52.170 --> 00:01:57.170
+It's in our source folder, that's in our styles folder,
+
+39
+00:01:57.347 --> 00:01:59.580
+and then it's red.css.
+
+40
+00:01:59.580 --> 00:02:00.530
+Give that a save.
+
+41
+00:02:00.530 --> 00:02:01.690
+And now we go to this page.
+
+42
+00:02:01.690 --> 00:02:04.140
+The background is obviously red.
+
+43
+00:02:04.140 --> 00:02:08.080
+And what's important about that is that Gatsby will know
+
+44
+00:02:08.080 --> 00:02:11.940
+that this is necessary in order to make that first render
+
+45
+00:02:11.940 --> 00:02:13.330
+and it will stick it.
+
+46
+00:02:13.330 --> 00:02:16.420
+If you view Page Source on this, you're not gonna see it.
+
+47
+00:02:16.420 --> 00:02:18.190
+And that's because we're in development mode.
+
+48
+00:02:18.190 --> 00:02:21.130
+But if you were to run a Gatsby build
+
+49
+00:02:21.130 --> 00:02:23.900
+which we will be doing in just a bit, you would see that
+
+50
+00:02:23.900 --> 00:02:26.820
+it would stick that into a style tag right on the page.
+
+51
+00:02:26.820 --> 00:02:28.350
+So that's one way.
+
+52
+00:02:28.350 --> 00:02:32.500
+Another way is Gatsby in the docs, they show you
+
+53
+00:02:32.500 --> 00:02:35.233
+how to use this CSS modules,
+
+54
+00:02:36.280 --> 00:02:38.050
+which I'll let you go into the docs and read it.
+
+55
+00:02:38.050 --> 00:02:40.020
+I don't need another tutorial saying exactly
+
+56
+00:02:40.020 --> 00:02:42.410
+what is in the documentation.
+
+57
+00:02:42.410 --> 00:02:43.750
+It's not my favorite.
+
+58
+00:02:43.750 --> 00:02:47.240
+I feel like it's like a little bit clunky.
+
+59
+00:02:47.240 --> 00:02:50.150
+One thing I like to use is called styled-components.
+
+60
+00:02:50.150 --> 00:02:55.150
+And this is just a way to do scope CSS
+
+61
+00:02:55.240 --> 00:02:57.800
+inside of React application.
+
+62
+00:02:57.800 --> 00:03:00.920
+And I actually use it in my own personal website
+
+63
+00:03:00.920 --> 00:03:02.200
+and a lot of my other courses.
+
+64
+00:03:02.200 --> 00:03:04.290
+And I'm a big fan of it.
+
+65
+00:03:04.290 --> 00:03:08.070
+So that is to say, I don't actually use a whole lot
+
+66
+00:03:08.070 --> 00:03:10.540
+of the special styled-component stuff,
+
+67
+00:03:10.540 --> 00:03:15.540
+I use it mostly for the ability to scope my CSS
+
+68
+00:03:16.670 --> 00:03:19.280
+and make reusable styled-components.
+
+69
+00:03:19.280 --> 00:03:22.210
+So the first thing that we need to do is
+
+70
+00:03:22.210 --> 00:03:24.830
+to set some global styles in our application.
+
+71
+00:03:24.830 --> 00:03:25.850
+And the second thing we're gonna do
+
+72
+00:03:25.850 --> 00:03:30.250
+is to create some typography styles
+
+73
+00:03:30.250 --> 00:03:33.500
+and then we'll get into writing the CSS
+
+74
+00:03:33.500 --> 00:03:34.830
+throughout the entire course.
+
+75
+00:03:34.830 --> 00:03:38.700
+And usually in my courses, I don't include writing all
+
+76
+00:03:38.700 --> 00:03:41.820
+of the CSS just because it would take forever,
+
+77
+00:03:41.820 --> 00:03:43.610
+but in this course, part of it,
+
+78
+00:03:43.610 --> 00:03:45.500
+I'm just gonna tell you to go grab it.
+
+79
+00:03:45.500 --> 00:03:47.720
+And then other parts that are interesting
+
+80
+00:03:47.720 --> 00:03:50.590
+in terms of like neat layout, tricks, and whatnot,
+
+81
+00:03:50.590 --> 00:03:51.680
+I'm gonna code it with you.
+
+82
+00:03:51.680 --> 00:03:54.910
+And if you're totally not interested in writing CSS with me,
+
+83
+00:03:54.910 --> 00:03:56.870
+you can just go grab it from the finished-file.
+
+84
+00:03:56.870 --> 00:04:01.160
+So what we need to do first is to set up some
+
+85
+00:04:01.160 --> 00:04:05.420
+of our global styles, because on any website,
+
+86
+00:04:05.420 --> 00:04:08.610
+oh, I got to get rid of this red.css, it's too much.
+
+87
+00:04:08.610 --> 00:04:10.993
+I already did, did I?
+
+88
+00:04:12.740 --> 00:04:14.423
+Gatsby-browser. No, I didn't.
+
+89
+00:04:16.170 --> 00:04:17.920
+All right, well, what was I saying?
+
+90
+00:04:18.849 --> 00:04:21.900
+On any website, you're gonna have global styles,
+
+91
+00:04:21.900 --> 00:04:25.240
+things like what color is the background?
+
+92
+00:04:25.240 --> 00:04:27.410
+What are the different fonts?
+
+93
+00:04:27.410 --> 00:04:29.100
+What do buttons look like?
+
+94
+00:04:29.100 --> 00:04:32.860
+What do the scroll bars look like?
+
+95
+00:04:32.860 --> 00:04:35.610
+Is there any max-width on the images?
+
+96
+00:04:35.610 --> 00:04:36.900
+There's a whole bunch of stuff that you want,
+
+97
+00:04:36.900 --> 00:04:40.460
+sorta just globally applied on your website.
+
+98
+00:04:40.460 --> 00:04:42.190
+So global styles, what are things?
+
+99
+00:04:42.190 --> 00:04:43.380
+If we take a look at this website,
+
+100
+00:04:43.380 --> 00:04:46.300
+we've got this kind of background pattern here,
+
+101
+00:04:46.300 --> 00:04:50.020
+we've got the specific black, that specific yellow,
+
+102
+00:04:50.020 --> 00:04:54.990
+that specific red, things like, if we go to them,
+
+103
+00:04:54.990 --> 00:04:59.990
+if we see text, how big is that text,
+
+104
+00:05:00.270 --> 00:05:03.220
+things like how big are the images at their maximum.
+
+105
+00:05:03.220 --> 00:05:04.490
+Those are all things that need
+
+106
+00:05:04.490 --> 00:05:07.380
+to be in our global styles initially,
+
+107
+00:05:07.380 --> 00:05:09.720
+because it doesn't make a lot of sense to have
+
+108
+00:05:09.720 --> 00:05:12.590
+to reset those every single time that we make a component.
+
+109
+00:05:12.590 --> 00:05:14.900
+And if you're not sure what a scope style is,
+
+110
+00:05:14.900 --> 00:05:16.930
+it'll make a whole lot of sense when we start to make it.
+
+111
+00:05:16.930 --> 00:05:18.150
+So, first thing we need to do
+
+112
+00:05:18.150 --> 00:05:21.530
+is just reset our entire application,
+
+113
+00:05:21.530 --> 00:05:25.760
+because by default, all the browsers have a bit
+
+114
+00:05:25.760 --> 00:05:27.310
+of a different baseline.
+
+115
+00:05:27.310 --> 00:05:28.690
+And a package that I use
+
+116
+00:05:28.690 --> 00:05:33.440 line:15% 
+to just reset everything is called normalize.css.
+
+117
+00:05:33.440 --> 00:05:35.160 line:15% 
+I guess the reset is not a good word,
+
+118
+00:05:35.160 --> 00:05:38.220 line:15% 
+it normalizes all of the browsers so that you're starting
+
+119
+00:05:38.220 --> 00:05:41.170
+with the exact same foundation on every single one.
+
+120
+00:05:41.170 --> 00:05:44.280
+So, simply just go into your Layout.js, and at the top,
+
+121
+00:05:44.280 --> 00:05:48.580
+we're just gonna import 'normalize.css'.
+
+122
+00:05:48.580 --> 00:05:51.740
+And you're gonna say to yourself, like, look,
+
+123
+00:05:51.740 --> 00:05:52.913
+if I comment that out,
+
+124
+00:05:54.230 --> 00:05:56.020
+you see how there's like this itty-bitty,
+
+125
+00:05:56.020 --> 00:05:58.520
+tiny little border around.
+
+126
+00:05:58.520 --> 00:06:01.000
+I think it's the HTML lets the body.
+
+127
+00:06:01.000 --> 00:06:02.330
+So, if I hover over the body,
+
+128
+00:06:02.330 --> 00:06:04.610
+there's like a random margin around the body,
+
+129
+00:06:04.610 --> 00:06:06.050
+like what's the point of that?
+
+130
+00:06:06.050 --> 00:06:10.300
+So by including normalize.css, you see how that goes away.
+
+131
+00:06:10.300 --> 00:06:12.913
+And now if I were to inspect my body,
+
+132
+00:06:16.580 --> 00:06:18.840
+you'll see it applies a margin zero.
+
+133
+00:06:18.840 --> 00:06:20.240
+So just little things like that.
+
+134
+00:06:20.240 --> 00:06:21.887
+Nice little base importing.
+
+135
+00:06:21.887 --> 00:06:22.720
+And you might say like,
+
+136
+00:06:22.720 --> 00:06:25.517
+"Wes, I don't see that CSS file anywhere.
+
+137
+00:06:25.517 --> 00:06:27.407
+"Like where is normalize.css?"
+
+138
+00:06:27.407 --> 00:06:28.990
+And it's actually a package.
+
+139
+00:06:28.990 --> 00:06:32.360
+If you open package JSON, you'll see it,
+
+140
+00:06:32.360 --> 00:06:34.700
+in here that I've installed it for you.
+
+141
+00:06:34.700 --> 00:06:37.310
+And it's actually just including the package,
+
+142
+00:06:37.310 --> 00:06:39.610
+which in turn will give you the CSS.
+
+143
+00:06:39.610 --> 00:06:40.830
+All right, next, what we need to do
+
+144
+00:06:40.830 --> 00:06:42.640
+is to make some global style.
+
+145
+00:06:42.640 --> 00:06:45.480
+So let's go into our styles directory here
+
+146
+00:06:45.480 --> 00:06:50.480 line:15% 
+and let's create a file called GlobalStyles.js.
+
+147
+00:06:52.250 --> 00:06:53.880 line:15% 
+It's not CSS in this case.
+
+148
+00:06:53.880 --> 00:06:55.210 line:15% 
+And that's because we're
+
+149
+00:06:55.210 --> 00:06:59.440
+using a package called styled-components, which allows us
+
+150
+00:06:59.440 --> 00:07:02.870
+to create reusable styles over and over again.
+
+151
+00:07:02.870 --> 00:07:04.940
+So, inside of this global styles,
+
+152
+00:07:04.940 --> 00:07:07.180
+I'm actually gonna just gonna get you to copy
+
+153
+00:07:07.180 --> 00:07:10.530
+and paste it from the finished-files, why?
+
+154
+00:07:10.530 --> 00:07:12.160
+Because it's not all that interesting.
+
+155
+00:07:12.160 --> 00:07:14.460
+It's just a some boilerplate for the stuff.
+
+156
+00:07:14.460 --> 00:07:15.860
+That's a lot more interesting
+
+157
+00:07:15.860 --> 00:07:17.910
+in terms of like how we lay this stuff out.
+
+158
+00:07:17.910 --> 00:07:19.160
+I'll go through that with you.
+
+159
+00:07:19.160 --> 00:07:23.200
+So go to the finished-files that we have here
+
+160
+00:07:23.200 --> 00:07:27.303
+in our Gatsby folder and then in our source folder,
+
+161
+00:07:28.290 --> 00:07:33.270
+in our styles folder, and then find your global styles.
+
+162
+00:07:33.270 --> 00:07:36.450
+Instead of just copy pasting it here,
+
+163
+00:07:36.450 --> 00:07:40.660
+I just like to click Raw, copy, and then paste it into here.
+
+164
+00:07:40.660 --> 00:07:43.830
+So let's go through what's going on in here.
+
+165
+00:07:43.830 --> 00:07:47.000
+So, we've got our createGlobalStyle.
+
+166
+00:07:47.000 --> 00:07:51.390
+This is a function from our styled-components library,
+
+167
+00:07:51.390 --> 00:07:55.110
+which is something that I've installed for you.
+
+168
+00:07:55.110 --> 00:07:56.830
+Then, this is kind of interesting.
+
+169
+00:07:56.830 --> 00:07:59.350
+So you don't see this really all that often.
+
+170
+00:07:59.350 --> 00:08:04.350
+Like, I'm importing SVGs inside of JavaScript.
+
+171
+00:08:05.300 --> 00:08:08.150
+And like over here, you're importing CSS
+
+172
+00:08:08.150 --> 00:08:09.370
+inside of JavaScript.
+
+173
+00:08:09.370 --> 00:08:12.660
+Like I'm pretty sure that's not valid JavaScript.
+
+174
+00:08:12.660 --> 00:08:13.493
+And it's not.
+
+175
+00:08:13.493 --> 00:08:17.210
+It's not valid JavaScript, but because the way
+
+176
+00:08:17.210 --> 00:08:20.500
+that Gatsby works is that Gatsby allows you
+
+177
+00:08:20.500 --> 00:08:25.090
+to import anything, including images in CSS,
+
+178
+00:08:25.090 --> 00:08:27.920
+and then Gatsby knows not to actually render that out
+
+179
+00:08:27.920 --> 00:08:30.783
+to JavaScript, but it knows to render that out to CSS
+
+180
+00:08:31.640 --> 00:08:33.710
+or to a compressed image or something like that.
+
+181
+00:08:33.710 --> 00:08:36.710
+So I'm importing these right here.
+
+182
+00:08:36.710 --> 00:08:39.610
+And the reason I'm not just sticking them
+
+183
+00:08:39.610 --> 00:08:44.050
+in my assets folder and referencing from there is because
+
+184
+00:08:44.050 --> 00:08:47.460
+if I were just to reference them in here,
+
+185
+00:08:47.460 --> 00:08:49.870
+then that would have to go in the static folder,
+
+186
+00:08:49.870 --> 00:08:51.440
+and Gatsby doesn't know about it.
+
+187
+00:08:51.440 --> 00:08:54.150
+So I'll show you what this renders out to
+
+188
+00:08:54.150 --> 00:08:55.563
+in just a quick second.
+
+189
+00:08:56.880 --> 00:08:58.640
+Then I have some variables.
+
+190
+00:08:58.640 --> 00:09:01.780
+So these are just regular old CSS variables
+
+191
+00:09:01.780 --> 00:09:04.090
+or they're called custom properties.
+
+192
+00:09:04.090 --> 00:09:06.100
+And the reason why I put them on the root
+
+193
+00:09:06.100 --> 00:09:08.870
+is so that they are available anywhere I want
+
+194
+00:09:08.870 --> 00:09:09.930
+through the application.
+
+195
+00:09:09.930 --> 00:09:13.193
+So I use this red, black, yellow pretty frequently.
+
+196
+00:09:14.320 --> 00:09:18.053
+Then we have our base styles for HTML and our body.
+
+197
+00:09:19.185 --> 00:09:22.570
+I have some base styles for fieldsets.
+
+198
+00:09:22.570 --> 00:09:26.110
+Some base styles for all of our buttons in here.
+
+199
+00:09:26.110 --> 00:09:28.230
+Some people like to create reusable buttons
+
+200
+00:09:28.230 --> 00:09:30.920
+over and over again, but I just like to use a regular button
+
+201
+00:09:30.920 --> 00:09:34.630
+and style it the same way for the entire application.
+
+202
+00:09:34.630 --> 00:09:39.630
+This, right here, is how I select the Gatsby images
+
+203
+00:09:41.700 --> 00:09:44.050
+before they are fully rendered.
+
+204
+00:09:44.050 --> 00:09:48.740
+So, if we take a look at this right here and I refresh,
+
+205
+00:09:48.740 --> 00:09:50.180
+actually, no, that's a bad example.
+
+206
+00:09:50.180 --> 00:09:51.460
+If we go to the pizza, so there we go,
+
+207
+00:09:51.460 --> 00:09:54.730
+you see that the pizza's, right here,
+
+208
+00:09:54.730 --> 00:09:58.560
+what Gatsby actually does under the hood,
+
+209
+00:09:58.560 --> 00:10:00.690
+I take a drink every time I say under the hood
+
+210
+00:10:00.690 --> 00:10:01.523
+in this course.
+
+211
+00:10:01.523 --> 00:10:03.550
+I'm sorry if I overuse it.
+
+212
+00:10:03.550 --> 00:10:05.880
+Gatsby actually renders out their images
+
+213
+00:10:06.760 --> 00:10:08.490
+with all kinds of really neat things.
+
+214
+00:10:08.490 --> 00:10:13.490
+They render out image with multiple formats.
+
+215
+00:10:13.500 --> 00:10:14.760
+So this is WebP.
+
+216
+00:10:14.760 --> 00:10:18.040
+This is a format that works in, I think,
+
+217
+00:10:18.040 --> 00:10:21.263
+Chrome, Firefox, not Safari.
+
+218
+00:10:22.280 --> 00:10:25.220
+I don't know, it works in some browsers, not all of them,
+
+219
+00:10:25.220 --> 00:10:29.870
+but it will fall back to other versions if it doesn't.
+
+220
+00:10:29.870 --> 00:10:33.570
+And then it also ships multiple sizes of that image.
+
+221
+00:10:33.570 --> 00:10:36.710
+So based on the size of the user's device,
+
+222
+00:10:36.710 --> 00:10:38.640
+it will load larger or smaller versions,
+
+223
+00:10:38.640 --> 00:10:39.890
+which is really cool.
+
+224
+00:10:39.890 --> 00:10:43.670
+And then one more neat thing that it does
+
+225
+00:10:43.670 --> 00:10:48.670
+is when you load up the image for the first time
+
+226
+00:10:50.350 --> 00:10:53.150
+before any of these images have finished downloading
+
+227
+00:10:53.150 --> 00:10:55.730
+from the server, it actually just renders
+
+228
+00:10:55.730 --> 00:10:58.410
+out this Base64 string.
+
+229
+00:10:58.410 --> 00:11:01.750
+And this is really cool because instead of having
+
+230
+00:11:01.750 --> 00:11:04.540
+to wait for a small thumbnail version,
+
+231
+00:11:04.540 --> 00:11:08.740
+it just ships that image as text
+
+232
+00:11:08.740 --> 00:11:10.660
+in something called Base64.
+
+233
+00:11:10.660 --> 00:11:15.470
+So if I were to copy this and paste this Base64 in here,
+
+234
+00:11:15.470 --> 00:11:20.470
+this is a pizza with pear on it.
+
+235
+00:11:21.450 --> 00:11:26.200
+That's a bit odd, pear and potato, but that image is,
+
+236
+00:11:26.200 --> 00:11:28.470
+if you were just to paste that into your browser,
+
+237
+00:11:28.470 --> 00:11:30.390
+I think, yeah, look, look, it's tiny.
+
+238
+00:11:30.390 --> 00:11:31.970
+It's 20 by 20 pixels.
+
+239
+00:11:31.970 --> 00:11:36.700
+Absolutely tiny, but the idea is that you can blur,
+
+240
+00:11:36.700 --> 00:11:40.680
+you can scale up that image really large and blur it.
+
+241
+00:11:40.680 --> 00:11:45.680
+And inside of this mumble jumble, somewhere like BAAMBAAA,
+
+242
+00:11:48.010 --> 00:11:49.960
+that means pear.
+
+243
+00:11:49.960 --> 00:11:54.960
+And MUFBA, that means sweet potato.
+
+244
+00:11:55.250 --> 00:11:58.020
+And all of these letters mean something.
+
+245
+00:11:58.020 --> 00:11:59.530
+And if you were just to change one
+
+246
+00:11:59.530 --> 00:12:02.263
+of these letters like the F to A,
+
+247
+00:12:03.210 --> 00:12:05.750
+it would sorta somewhere in that pizza,
+
+248
+00:12:05.750 --> 00:12:06.820
+that the thing changed.
+
+249
+00:12:06.820 --> 00:12:08.840
+So, when we load it really quickly,
+
+250
+00:12:08.840 --> 00:12:10.660
+it's actually just scaling it up.
+
+251
+00:12:10.660 --> 00:12:15.660
+And then I've applied a image-rendering pixelated to it,
+
+252
+00:12:17.370 --> 00:12:21.113
+just to give it a cool little fade in effect.
+
+253
+00:12:22.140 --> 00:12:24.240
+If you don't like that, you can take it off.
+
+254
+00:12:24.240 --> 00:12:26.830
+This is the scrollbar styles
+
+255
+00:12:26.830 --> 00:12:29.230
+to get it to work cross browser.
+
+256
+00:12:29.230 --> 00:12:32.080
+This is styling of all of my HRs.
+
+257
+00:12:32.080 --> 00:12:34.610
+And then this just puts a max-width of 100%
+
+258
+00:12:34.610 --> 00:12:36.510
+on all of my images so they don't overflow.
+
+259
+00:12:36.510 --> 00:12:39.260
+So, pretty basic styles.
+
+260
+00:12:39.260 --> 00:12:42.550
+Now, in order to use these global styles,
+
+261
+00:12:42.550 --> 00:12:44.230
+we stick them in a variable.
+
+262
+00:12:44.230 --> 00:12:47.780
+And then I exported them from this file.
+
+263
+00:12:47.780 --> 00:12:49.690
+And then we need to inject them
+
+264
+00:12:49.690 --> 00:12:51.100
+into our application somewhere.
+
+265
+00:12:51.100 --> 00:12:55.030
+So, at a high level, I'm gonna inject it into our layout.
+
+266
+00:12:55.030 --> 00:12:59.520
+And I'm just gonna go in here and write my global styles.
+
+267
+00:12:59.520 --> 00:13:02.210
+And then I'm gonna use my handy-dandy import trick
+
+268
+00:13:03.380 --> 00:13:07.790
+to import GlobalStyles from the actual relative path
+
+269
+00:13:07.790 --> 00:13:08.950
+where it lives.
+
+270
+00:13:08.950 --> 00:13:11.890
+Now, if we go to our application, we should be able
+
+271
+00:13:11.890 --> 00:13:15.000
+to see that it's starting to look a little bit different.
+
+272
+00:13:15.000 --> 00:13:18.270
+Good, so you see the background
+
+273
+00:13:18.270 --> 00:13:23.070
+of my body tag now has that cool pattern on it.
+
+274
+00:13:23.070 --> 00:13:25.780
+And if we make this a little bit bigger
+
+275
+00:13:25.780 --> 00:13:30.500
+and get into inspecting our, where is it?
+
+276
+00:13:30.500 --> 00:13:31.973
+It's on the HTML.
+
+277
+00:13:32.920 --> 00:13:37.920
+You'll see that the background image is not equal
+
+278
+00:13:38.340 --> 00:13:41.270
+to this is the background image
+
+279
+00:13:41.270 --> 00:13:45.260
+with the cheese and everything, it's not equal to bg.svg.
+
+280
+00:13:45.260 --> 00:13:48.450
+It's equal to bg-386111, whatever.
+
+281
+00:13:48.450 --> 00:13:53.060
+And that's because Gatsby took that SVG,
+
+282
+00:13:53.060 --> 00:13:55.590
+put it through its compressor or anything else
+
+283
+00:13:55.590 --> 00:13:59.070
+that it needs to do and puts a unique identifier on it.
+
+284
+00:13:59.070 --> 00:14:00.470
+And what's cool about that is that
+
+285
+00:14:00.470 --> 00:14:03.580
+if you ever change your BG, Gatsby will know,
+
+286
+00:14:03.580 --> 00:14:06.680
+and it'll put a different random identifier on it.
+
+287
+00:14:06.680 --> 00:14:08.790
+And then you never have the issue where you have
+
+288
+00:14:08.790 --> 00:14:10.850
+to tell people to do a hard refresh,
+
+289
+00:14:10.850 --> 00:14:14.920
+because it's literally a different file name
+
+290
+00:14:14.920 --> 00:14:17.440
+and it won't be cashed in there.
+
+291
+00:14:17.440 --> 00:14:20.070
+So, which is pretty nifty.
+
+292
+00:14:20.070 --> 00:14:21.950
+So that's it for global styles.
+
+293
+00:14:21.950 --> 00:14:23.900
+If you ever have something you want globally,
+
+294
+00:14:23.900 --> 00:14:25.990
+you just pop it in this file.
+
+295
+00:14:25.990 --> 00:14:28.130
+Next, I'm gonna do a little bit more global styles,
+
+296
+00:14:28.130 --> 00:14:31.153
+but I have my own file that's just related to topography.
+
