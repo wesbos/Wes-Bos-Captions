@@ -1,0 +1,2058 @@
+﻿WEBVTT
+
+1
+00:00:01.780 --> 00:00:04.800
+<v ->All right, let's code our sign in component.</v>
+
+2
+00:00:04.800 --> 00:00:06.375
+So we're not gonna do it right at this page.
+
+3
+00:00:06.375 --> 00:00:07.570
+And the reason behind that
+
+4
+00:00:07.570 --> 00:00:09.840
+is because we want to in its own component.
+
+5
+00:00:09.840 --> 00:00:11.100
+Because you can literally pop
+
+6
+00:00:11.100 --> 00:00:13.050
+this sign in component or whatever you want.
+
+7
+00:00:13.050 --> 00:00:15.420
+Especially like if somebody is trying to access
+
+8
+00:00:17.086 --> 00:00:19.040
+like a component that is restricted,
+
+9
+00:00:19.040 --> 00:00:20.880
+they can only see it when they're signed in,
+
+10
+00:00:20.880 --> 00:00:23.510
+then you can simply just see if the user's logged in.
+
+11
+00:00:23.510 --> 00:00:25.580
+If not, render out the signing component
+
+12
+00:00:25.580 --> 00:00:28.680
+otherwise render out the component
+
+13
+00:00:28.680 --> 00:00:30.840
+that has privilege that you want to show them.
+
+14
+00:00:30.840 --> 00:00:32.640
+So we'll go into our components here.
+
+15
+00:00:32.640 --> 00:00:36.330 line:15% 
+And we'll make a new one called SignIn.js.
+
+16
+00:00:36.330 --> 00:00:38.670 line:15% 
+Capital S, capital I.
+
+17
+00:00:38.670 --> 00:00:43.130
+And we'll export default function SignIn().
+
+18
+00:00:46.210 --> 00:00:50.800
+And we need a form that is going to allow us to
+
+19
+00:00:52.360 --> 00:00:53.800
+get their username,
+
+20
+00:00:53.800 --> 00:00:54.633
+or the sorry,
+
+21
+00:00:54.633 --> 00:00:57.040
+their email address and their password.
+
+22
+00:00:57.040 --> 00:00:59.573
+So we've done this a couple of times.
+
+23
+00:01:02.325 --> 00:01:05.220
+So feel free to skip ahead if you know how to do this
+
+24
+00:01:05.220 --> 00:01:06.620
+or maybe this is a good example
+
+25
+00:01:06.620 --> 00:01:08.000
+of when you can do it yourself.
+
+26
+00:01:08.000 --> 00:01:10.660
+But as always, I'll take you along for the ride.
+
+27
+00:01:10.660 --> 00:01:12.383
+So we need a form.
+
+28
+00:01:12.383 --> 00:01:17.187
+Take capital F because that is our styles that we have and,
+
+29
+00:01:20.410 --> 00:01:22.880
+doesn't look like it's in here.
+
+30
+00:01:22.880 --> 00:01:27.880
+So what we'll do is we'll import Form from'./styles/Form'.
+
+31
+00:01:33.840 --> 00:01:38.840
+And here let's give it a form and say,
+
+32
+00:01:39.030 --> 00:01:39.863
+test.
+
+33
+00:01:42.080 --> 00:01:45.710
+Then we'll try to use this sign in component
+
+34
+00:01:45.710 --> 00:01:47.263
+on our sign in page.
+
+35
+00:01:49.040 --> 00:01:50.490
+Now we've got to import that.
+
+36
+00:01:51.560 --> 00:01:52.393
+Boom!
+
+37
+00:01:54.560 --> 00:01:56.970
+Sign in. Nothing was returned from render.
+
+38
+00:01:56.970 --> 00:01:59.542
+Oh, that's why my auto import wasn't working.
+
+39
+00:01:59.542 --> 00:02:00.770
+(laughing) I always forget the return.
+
+40
+00:02:00.770 --> 00:02:01.603
+There we go.
+
+41
+00:02:01.603 --> 00:02:02.863
+So our test is showing up.
+
+42
+00:02:04.040 --> 00:02:04.873
+Next,
+
+43
+00:02:04.873 --> 00:02:06.520
+and this is this is very important.
+
+44
+00:02:06.520 --> 00:02:11.520
+On our form tag, we need to put a method of post on it.
+
+45
+00:02:12.380 --> 00:02:14.770
+And we normally don't do that.
+
+46
+00:02:14.770 --> 00:02:16.790
+But I'll show you the reason behind it
+
+47
+00:02:16.790 --> 00:02:20.310
+because if you have an input with the
+
+48
+00:02:20.310 --> 00:02:21.320
+name
+
+49
+00:02:22.400 --> 00:02:24.410
+of password
+
+50
+00:02:24.410 --> 00:02:27.160
+and the type of password,
+
+51
+00:02:27.160 --> 00:02:28.810
+you don't have to code this I'll just show you.
+
+52
+00:02:28.810 --> 00:02:32.693
+Button type = "submit"&gt; Submit.
+
+53
+00:02:33.820 --> 00:02:35.690
+Watch this, if I type in here
+
+54
+00:02:35.690 --> 00:02:38.680
+and JavaScript for whatever reason is broken,
+
+55
+00:02:38.680 --> 00:02:40.570
+and I go ahead and submit it,
+
+56
+00:02:40.570 --> 00:02:42.640
+you see what happens in the URL bar.
+
+57
+00:02:42.640 --> 00:02:45.360
+It puts the password in the URL bar.
+
+58
+00:02:45.360 --> 00:02:48.110
+And then all of a sudden what you've done is,
+
+59
+00:02:48.110 --> 00:02:51.880
+first, you've had a security issue with your user
+
+60
+00:02:51.880 --> 00:02:55.200
+because now their password is in their browser history.
+
+61
+00:02:55.200 --> 00:02:59.130
+And then second, that's security issue on your end
+
+62
+00:02:59.130 --> 00:03:03.520
+because somewhere on your logs for your server
+
+63
+00:03:03.520 --> 00:03:04.743
+it will say like,
+
+64
+00:03:05.790 --> 00:03:07.140
+get whatever.
+
+65
+00:03:07.140 --> 00:03:09.830
+Like that's the URL someone tried to request.
+
+66
+00:03:09.830 --> 00:03:12.110
+And then you've got a problem
+
+67
+00:03:12.110 --> 00:03:14.930
+because you have somebody's password
+
+68
+00:03:14.930 --> 00:03:17.762
+in your logs on your server.
+
+69
+00:03:17.762 --> 00:03:20.130
+And you should never know somebody's password.
+
+70
+00:03:20.130 --> 00:03:22.323
+That should always be stayed as hash.
+
+71
+00:03:23.431 --> 00:03:27.617
+So what will happen is you can just put a...
+
+72
+00:03:28.960 --> 00:03:30.400
+what is it here?
+
+73
+00:03:30.400 --> 00:03:32.570
+You can put a type of submit.
+
+74
+00:03:32.570 --> 00:03:33.653
+Where did it go?
+
+75
+00:03:35.450 --> 00:03:37.549
+Oh yeah, I didn't put it on yet.
+
+76
+00:03:37.549 --> 00:03:40.860
+If you put a method of post,
+
+77
+00:03:40.860 --> 00:03:45.820
+that will make sure that it doesn't go into the URL.
+
+78
+00:03:45.820 --> 00:03:46.730
+You still gotta be careful
+
+79
+00:03:46.730 --> 00:03:49.180
+that you don't log out the body of that request
+
+80
+00:03:49.180 --> 00:03:52.330
+'cause it still will send it over to your server.
+
+81
+00:03:52.330 --> 00:03:56.960
+But it won't put it in the URL, which is really important.
+
+82
+00:03:56.960 --> 00:03:58.730
+Next up, what we need is
+
+83
+00:04:00.060 --> 00:04:01.900
+a field set.
+
+84
+00:04:01.900 --> 00:04:06.600
+And in that field set, we need a label for email.
+
+85
+00:04:06.600 --> 00:04:09.910
+We need a label that says email.
+
+86
+00:04:09.910 --> 00:04:12.610
+We need it input with the type of email.
+
+87
+00:04:12.610 --> 00:04:14.460
+Everything is going to be email here.
+
+88
+00:04:15.320 --> 00:04:16.353
+name = "email"
+
+89
+00:04:17.880 --> 00:04:22.880
+placeholder = Your Email Address.
+
+90
+00:04:27.330 --> 00:04:32.160
+autoComplete = "email" that will...
+
+91
+00:04:32.160 --> 00:04:34.810
+Most browsers will take the type of email
+
+92
+00:04:34.810 --> 00:04:36.140
+and try to auto complete it.
+
+93
+00:04:36.140 --> 00:04:38.370
+But that doesn't hurt putting it in there.
+
+94
+00:04:38.370 --> 00:04:39.530
+That way it tells the browser,
+
+95
+00:04:39.530 --> 00:04:41.440
+hey, if you're trying to fill an auto complete,
+
+96
+00:04:41.440 --> 00:04:44.290
+this is an email. This is an email field.
+
+97
+00:04:44.290 --> 00:04:48.059
+And then we finally, I'm gonna comment this out,
+
+98
+00:04:48.059 --> 00:04:48.892
+we need a value.
+
+99
+00:04:49.890 --> 00:04:51.600
+And we need an
+
+100
+00:04:52.870 --> 00:04:55.050
+onChange handler for that one.
+
+101
+00:04:55.050 --> 00:04:57.110
+So that is looking good.
+
+102
+00:04:57.110 --> 00:04:58.950
+Yeah, see if I focus it my one password
+
+103
+00:04:58.950 --> 00:05:00.340
+is already trying to say,
+
+104
+00:05:00.340 --> 00:05:01.720
+hey, I recognize this.
+
+105
+00:05:01.720 --> 00:05:05.003
+I wonder if you take the email off, does it still do that?
+
+106
+00:05:06.350 --> 00:05:07.183
+Yeah, it does.
+
+107
+00:05:07.183 --> 00:05:08.280
+So it can detect it.
+
+108
+00:05:08.280 --> 00:05:09.753
+But that never hurts.
+
+109
+00:05:11.030 --> 00:05:14.210
+Then just copy that entire one
+
+110
+00:05:14.210 --> 00:05:16.660
+and we're gonna do it for their password.
+
+111
+00:05:16.660 --> 00:05:19.410
+So (humming a note)
+
+112
+00:05:19.410 --> 00:05:20.263
+password.
+
+113
+00:05:21.672 --> 00:05:23.633
+The label is password.
+
+114
+00:05:24.749 --> 00:05:25.582
+The type is password,
+
+115
+00:05:25.582 --> 00:05:28.900
+the name is password, the placeholder is...
+
+116
+00:05:28.900 --> 00:05:30.663
+Do passwords have placeholders?
+
+117
+00:05:35.150 --> 00:05:36.730
+Yeah, they do. Okay.
+
+118
+00:05:36.730 --> 00:05:39.110
+And we need a value and an onchange.
+
+119
+00:05:39.110 --> 00:05:41.290
+And then finally underneath that,
+
+120
+00:05:41.290 --> 00:05:45.260
+we need a button with the type of submit
+
+121
+00:05:45.260 --> 00:05:47.423
+and then it says Sign In.
+
+122
+00:05:48.760 --> 00:05:50.653
+Beautiful, put a capital I on that.
+
+123
+00:05:52.270 --> 00:05:54.640
+Okay, so that's our just our JSX.
+
+124
+00:05:54.640 --> 00:05:58.580
+Now we need to be able to sync these values to state
+
+125
+00:05:58.580 --> 00:06:00.880
+so that we can send the data
+
+126
+00:06:00.880 --> 00:06:05.020
+to our sign in API once the user actually submits it.
+
+127
+00:06:05.020 --> 00:06:08.043
+So we'll go up here and we'll say
+
+128
+00:06:08.043 --> 00:06:10.197
+const {inputs, handleChange, resetForm} =
+
+129
+00:06:15.520 --> 00:06:17.590
+you guessed it, useForm.
+
+130
+00:06:17.590 --> 00:06:19.820
+And then we need to give it our defaults of emails
+
+131
+00:06:19.820 --> 00:06:23.303
+of nothing and password is nothing as well.
+
+132
+00:06:25.500 --> 00:06:26.390
+UseForm is not defined.
+
+133
+00:06:26.390 --> 00:06:27.473
+We didn't import it.
+
+134
+00:06:28.530 --> 00:06:30.900
+So import useForm from
+
+135
+00:06:35.824 --> 00:06:36.657
+useForm.
+
+136
+00:06:38.200 --> 00:06:41.750
+Okay. Now we can go ahead and update these values here.
+
+137
+00:06:41.750 --> 00:06:44.590
+So the value= {inputs.email}
+
+138
+00:06:46.380 --> 00:06:48.963
+and the onchange is going to be
+
+139
+00:06:49.838 --> 00:06:50.921
+handleChange.
+
+140
+00:06:53.220 --> 00:06:55.560
+We can put that in for the password as well
+
+141
+00:06:55.560 --> 00:06:58.700
+and then just change email to password.
+
+142
+00:06:58.700 --> 00:07:00.993
+Now, if I type into these fields here,
+
+143
+00:07:02.860 --> 00:07:03.693
+they good.
+
+144
+00:07:03.693 --> 00:07:04.900
+They now update.
+
+145
+00:07:04.900 --> 00:07:07.290
+There's one little issue here.
+
+146
+00:07:07.290 --> 00:07:08.660
+No, that's not still an issue.
+
+147
+00:07:08.660 --> 00:07:12.730
+That was just a problem because I hadn't refreshed yet
+
+148
+00:07:12.730 --> 00:07:15.763
+before we had hooked up the value in the onchange handlers.
+
+149
+00:07:17.158 --> 00:07:17.991
+All right.
+
+150
+00:07:17.991 --> 00:07:19.091
+So that's that so far.
+
+151
+00:07:20.140 --> 00:07:21.093
+Next thing,
+
+152
+00:07:22.350 --> 00:07:23.240
+we need is,
+
+153
+00:07:23.240 --> 00:07:25.460
+Oh I guess we need a little &lt;h2&gt; tag here.
+
+154
+00:07:25.460 --> 00:07:28.599
+This is Sign Into Your
+
+155
+00:07:28.599 --> 00:07:29.623
+Account.
+
+156
+00:07:34.910 --> 00:07:36.600
+When somebody submits the form,
+
+157
+00:07:36.600 --> 00:07:38.440
+we need to send that data to an API.
+
+158
+00:07:38.440 --> 00:07:40.628
+So we'll go to our form here and say,
+
+159
+00:07:40.628 --> 00:07:41.461
+onSubmit=
+
+160
+00:07:44.760 --> 00:07:45.890
+and we can either do this
+
+161
+00:07:45.890 --> 00:07:49.346
+in line or define another function.
+
+162
+00:07:49.346 --> 00:07:50.920
+Let's define another function.
+
+163
+00:07:50.920 --> 00:07:52.690
+'Cause I showed you this way last time.
+
+164
+00:07:52.690 --> 00:07:54.200
+So handleSubmit.
+
+165
+00:07:54.200 --> 00:07:57.090
+Go up here and make a function called handleSubmit
+
+166
+00:07:57.090 --> 00:07:59.190
+that takes in an event.
+
+167
+00:07:59.190 --> 00:08:01.653
+First thing we'll do is e.preventDefault.
+
+168
+00:08:02.940 --> 00:08:05.223
+That will stop the Form from submitting.
+
+169
+00:08:08.980 --> 00:08:12.510
+And then we'll just log out inputs
+
+170
+00:08:12.510 --> 00:08:14.490
+just to see what data we have.
+
+171
+00:08:14.490 --> 00:08:19.120
+So if you type some stuff in here and submit it.
+
+172
+00:08:19.120 --> 00:08:21.373
+Oh it's got to be a proper email address.
+
+173
+00:08:22.680 --> 00:08:23.513
+There we go.
+
+174
+00:08:23.513 --> 00:08:26.320 line:15% 
+We've get an object with the actual values in here.
+
+175
+00:08:26.320 --> 00:08:30.310 line:15% 
+A couple of times I've had people
+
+176
+00:08:30.310 --> 00:08:33.100 line:15% 
+email me saying that this is security issue
+
+177
+00:08:33.100 --> 00:08:35.913 line:15% 
+because the password is in clear text.
+
+178
+00:08:37.200 --> 00:08:38.380 line:15% 
+I hate to break it to you
+
+179
+00:08:38.380 --> 00:08:40.730 line:15% 
+but that is how the browser works.
+
+180
+00:08:40.730 --> 00:08:42.950 line:15% 
+If you ever have a password field
+
+181
+00:08:42.950 --> 00:08:44.800 line:15% 
+and you want to know what's in it,
+
+182
+00:08:44.800 --> 00:08:46.810 line:15% 
+you can simply just inspect it
+
+183
+00:08:46.810 --> 00:08:49.370 line:15% 
+and change the type from password to text.
+
+184
+00:08:49.370 --> 00:08:51.620 line:15% 
+And it will just display it in clear text.
+
+185
+00:08:51.620 --> 00:08:55.530 line:15% 
+So the password is submitted over the wire
+
+186
+00:08:55.530 --> 00:08:59.110 line:15% 
+or over the network, to your server in clear text.
+
+187
+00:08:59.110 --> 00:09:01.266 line:15% 
+But then what happens is the server hashes it
+
+188
+00:09:01.266 --> 00:09:06.266 line:15% 
+and compares it to what it has on file for its own hash.
+
+189
+00:09:06.750 --> 00:09:11.140 line:15% 
+So that's how all passwords work on the internet.
+
+190
+00:09:11.140 --> 00:09:12.770 line:15% 
+So that is totally fine.
+
+191
+00:09:12.770 --> 00:09:15.380 line:15% 
+The thing that you might be concerned about is,
+
+192
+00:09:15.380 --> 00:09:18.470 line:15% 
+okay we're sending my password in clear text
+
+193
+00:09:18.470 --> 00:09:20.090 line:15% 
+over the network.
+
+194
+00:09:20.090 --> 00:09:23.860
+And that's why we use HTTPS on our websites.
+
+195
+00:09:23.860 --> 00:09:27.130
+And what HTTPS does is that
+
+196
+00:09:27.130 --> 00:09:29.960
+when the client, which is the browser,
+
+197
+00:09:29.960 --> 00:09:33.810
+and the server, which is the (laughing) server,
+
+198
+00:09:33.810 --> 00:09:35.870
+when data goes between the client
+
+199
+00:09:35.870 --> 00:09:39.700
+and the server, it goes over
+
+200
+00:09:39.700 --> 00:09:43.360
+like your Wi-Fi router.
+
+201
+00:09:43.360 --> 00:09:45.560
+It goes to your ISP.
+
+202
+00:09:45.560 --> 00:09:48.860
+It goes through the US government.
+
+203
+00:09:48.860 --> 00:09:50.578
+Who's going to sniff it.
+
+204
+00:09:50.578 --> 00:09:51.820
+(chuckling) And I'm just joking about that.
+
+205
+00:09:51.820 --> 00:09:52.820
+Well, maybe I'm not.
+
+206
+00:09:52.820 --> 00:09:57.820
+But the idea is that the data coming from here to here,
+
+207
+00:09:58.150 --> 00:09:59.920
+HTTPS make sure that that's encrypted.
+
+208
+00:09:59.920 --> 00:10:04.481
+Meaning that anyone that could possibly sniff these packets
+
+209
+00:10:04.481 --> 00:10:07.410
+along the way, they they'll just see something like this
+
+210
+00:10:07.410 --> 00:10:09.720
+instead of your actual password.
+
+211
+00:10:09.720 --> 00:10:12.710
+And that's the key there.
+
+212
+00:10:12.710 --> 00:10:14.993
+That's why we use HTTPS on our website.
+
+213
+00:10:16.520 --> 00:10:21.350
+Next, we need to, because we're logging out our inputs.
+
+214
+00:10:21.350 --> 00:10:24.760
+Here what we need to do is send the email
+
+215
+00:10:24.760 --> 00:10:28.080
+and password to the
+
+216
+00:10:28.080 --> 00:10:29.453
+graphqlAPI.
+
+217
+00:10:30.370 --> 00:10:33.093
+So we'll write a little query here.
+
+218
+00:10:35.175 --> 00:10:37.160
+So const SIGNIN_MUTATION= gql.
+
+219
+00:10:42.640 --> 00:10:43.590
+Import that.
+
+220
+00:10:43.590 --> 00:10:44.423
+Boom!
+
+221
+00:10:44.423 --> 00:10:45.256
+There it is.
+
+222
+00:10:47.430 --> 00:10:51.420
+We'll have a mutation called SIGNIN_MUTATION.
+
+223
+00:10:51.420 --> 00:10:55.310
+that takes in someone's email address which is a string
+
+224
+00:10:57.070 --> 00:10:58.330
+and is required.
+
+225
+00:10:58.330 --> 00:11:00.690
+And then it also takes in a password
+
+226
+00:11:02.508 --> 00:11:06.370
+which is also a string that's required.
+
+227
+00:11:06.370 --> 00:11:09.130
+Like you'll never want to call this mutation without
+
+228
+00:11:09.130 --> 00:11:11.623
+both an email address and a password.
+
+229
+00:11:12.560 --> 00:11:16.030
+Then, inside of that mutation, we call what it is
+
+230
+00:11:16.030 --> 00:11:19.210
+on our graphqlAPI to log the user in.
+
+231
+00:11:19.210 --> 00:11:20.933
+So if we go here,
+
+232
+00:11:22.060 --> 00:11:23.000
+it will be
+
+233
+00:11:25.170 --> 00:11:26.083
+user,
+
+234
+00:11:28.660 --> 00:11:31.160
+it'll be authenticate,
+
+235
+00:11:31.160 --> 00:11:32.979
+Oh no, it's a mutation.
+
+236
+00:11:32.979 --> 00:11:34.153
+So we got to write mutation here.
+
+237
+00:11:35.550 --> 00:11:37.030
+And that is going to be
+
+238
+00:11:38.438 --> 00:11:39.860
+authenticateUserWithPassword.
+
+239
+00:11:39.860 --> 00:11:42.170
+Let me take a look at our docs here.
+
+240
+00:11:42.170 --> 00:11:44.550
+Search for authenticateUserWithPassword
+
+241
+00:11:44.550 --> 00:11:46.323
+takes in an email and a password,
+
+242
+00:11:47.254 --> 00:11:48.087
+and will return,
+
+243
+00:11:48.087 --> 00:11:49.591
+ah, look at this!
+
+244
+00:11:49.591 --> 00:11:50.850
+It's another union.
+
+245
+00:11:50.850 --> 00:11:53.710
+It returns either,
+
+246
+00:11:53.710 --> 00:11:55.660
+a UserAuthenticationWithPasswordFailure
+
+247
+00:11:59.170 --> 00:12:00.890
+or it returns a success, right?
+
+248
+00:12:00.890 --> 00:12:03.400
+So the result is going to be one of two things,
+
+249
+00:12:03.400 --> 00:12:07.440
+a success response with a token and the user itself
+
+250
+00:12:07.440 --> 00:12:11.270
+or it's going to be a failure response
+
+251
+00:12:11.270 --> 00:12:14.280
+with a code and a message.
+
+252
+00:12:14.280 --> 00:12:15.483
+So what we'll do here,
+
+253
+00:12:18.957 --> 00:12:21.910
+is we'll say ...on User...
+
+254
+00:12:21.910 --> 00:12:24.133
+I got a copy paste that. That's way too big.
+
+255
+00:12:26.336 --> 00:12:28.970
+UserAuthenticationWithPasswordSuccess.
+
+256
+00:12:28.970 --> 00:12:32.380
+If that happens, give me the item
+
+257
+00:12:32.380 --> 00:12:34.240
+which is going to be a user again.
+
+258
+00:12:34.240 --> 00:12:36.530
+Remember item could be anything.
+
+259
+00:12:36.530 --> 00:12:38.880
+Could be a company in our case, it's obviously a user.
+
+260
+00:12:38.880 --> 00:12:41.060
+So on the item,
+
+261
+00:12:41.060 --> 00:12:42.540
+give me the ID,
+
+262
+00:12:42.540 --> 00:12:46.700
+the email and the name of the currently logged in user.
+
+263
+00:12:46.700 --> 00:12:47.790
+We're not actually gonna use this.
+
+264
+00:12:47.790 --> 00:12:49.295
+I just want to show you
+
+265
+00:12:49.295 --> 00:12:51.220
+that you can return the user from that.
+
+266
+00:12:51.220 --> 00:12:52.143
+Then in here,
+
+267
+00:12:55.823 --> 00:12:57.600
+we need to call that mutation.
+
+268
+00:12:57.600 --> 00:12:59.500
+So let's set it up here.
+
+269
+00:12:59.500 --> 00:13:00.973
+Up here, so we'll say
+
+270
+00:13:00.973 --> 00:13:03.430
+const [sign In].
+
+271
+00:13:03.430 --> 00:13:05.630
+That's the name of the mutation.
+
+272
+00:13:05.630 --> 00:13:08.983
+And then also {error, loading}= useMutation.
+
+273
+00:13:12.580 --> 00:13:16.523
+And you pass the name of the mutation.
+
+274
+00:13:16.523 --> 00:13:19.900
+We also need to pass it, the username and the password.
+
+275
+00:13:19.900 --> 00:13:21.900
+So those are passed as variables,
+
+276
+00:13:21.900 --> 00:13:24.660
+which are stored in our inputs.
+
+277
+00:13:24.660 --> 00:13:27.163
+And luckily those will map nicely to each other.
+
+278
+00:13:28.508 --> 00:13:32.170
+And then we also want to refetch some queries.
+
+279
+00:13:32.170 --> 00:13:33.900
+And what this will do is
+
+280
+00:13:36.284 --> 00:13:37.117
+refetch,
+
+281
+00:13:40.460 --> 00:13:43.230
+the currently logged in user.
+
+282
+00:13:43.230 --> 00:13:46.610
+So refretchQueries, that's an array.
+
+283
+00:13:46.610 --> 00:13:49.627
+Each query is an object and we say,
+
+284
+00:13:49.627 --> 00:13:51.780
+Query: Current_ User_Query.
+
+285
+00:13:51.780 --> 00:13:53.410
+Now I think that auto imported it.
+
+286
+00:13:53.410 --> 00:13:54.390
+Yap.
+
+287
+00:13:54.390 --> 00:13:56.091
+From our user.
+
+288
+00:13:56.091 --> 00:13:58.970
+And that's exactly why we exported it from here
+
+289
+00:13:58.970 --> 00:13:59.880
+because it will say, all right
+
+290
+00:13:59.880 --> 00:14:01.660
+anywhere that you're using this query,
+
+291
+00:14:01.660 --> 00:14:03.040
+let's just go back to the network
+
+292
+00:14:03.040 --> 00:14:06.460
+and refetch that specific one.
+
+293
+00:14:06.460 --> 00:14:07.970
+So give it a save.
+
+294
+00:14:07.970 --> 00:14:10.130
+The reason why we're not just like updating it
+
+295
+00:14:10.130 --> 00:14:12.680
+in the cache is because then we're going
+
+296
+00:14:12.680 --> 00:14:15.120
+to get into querying the cart
+
+297
+00:14:15.120 --> 00:14:17.300
+and orders and things like that.
+
+298
+00:14:17.300 --> 00:14:18.330
+And I don't want to have
+
+299
+00:14:18.330 --> 00:14:20.610
+to requery all of that every single time.
+
+300
+00:14:20.610 --> 00:14:21.743
+In here, we simply can just tell it,
+
+301
+00:14:21.743 --> 00:14:23.860
+all right. I did this query somewhere else.
+
+302
+00:14:23.860 --> 00:14:27.630
+Go ahead and re fetch that for me, will you?
+
+303
+00:14:27.630 --> 00:14:31.810
+Then this useMutation gives us back our sign in function
+
+304
+00:14:31.810 --> 00:14:33.540
+so we can go in here.
+
+305
+00:14:33.540 --> 00:14:35.950
+Let's actually mark this as async.
+
+306
+00:14:35.950 --> 00:14:39.200
+And we can say const or not const.
+
+307
+00:14:39.200 --> 00:14:40.567
+Await signin.
+
+308
+00:14:45.610 --> 00:14:48.230
+And if you want to see what comes back from that sign in,
+
+309
+00:14:48.230 --> 00:14:51.913
+you can store it in a variable and log it out.
+
+310
+00:14:56.130 --> 00:14:57.830
+And we should see.
+
+311
+00:14:57.830 --> 00:15:01.393
+So now if we go back, I'm going to sign in.
+
+312
+00:15:02.690 --> 00:15:07.170
+Password is Wes Wes Wes. Go to my console. Clear it out.
+
+313
+00:15:07.170 --> 00:15:08.003
+Sign in.
+
+314
+00:15:10.390 --> 00:15:11.720
+Bit of an issue.
+
+315
+00:15:11.720 --> 00:15:15.517
+Response not successful. Received a status code 400.
+
+316
+00:15:16.376 --> 00:15:17.209
+Okay.
+
+317
+00:15:19.350 --> 00:15:21.180 line:15% 
+Fragment can not be spread here
+
+318
+00:15:21.180 --> 00:15:23.970 line:15% 
+as objects of type of mutation can never be
+
+319
+00:15:23.970 --> 00:15:28.520 line:15% 
+of type UserAuthenticationWithPasswordSuccess.
+
+320
+00:15:28.520 --> 00:15:29.353
+Why not?
+
+321
+00:15:31.284 --> 00:15:32.630
+Oh, I see what we forgot.
+
+322
+00:15:32.630 --> 00:15:33.610
+We forgot to actually run
+
+323
+00:15:33.610 --> 00:15:35.790
+the name of the mutation here, right?
+
+324
+00:15:35.790 --> 00:15:38.700
+Because we've got a variable.
+
+325
+00:15:38.700 --> 00:15:41.130
+We defined what the mutation is.
+
+326
+00:15:41.130 --> 00:15:42.750
+But we never actually called
+
+327
+00:15:44.492 --> 00:15:47.290
+the authenticateUserWithPassword function here.
+
+328
+00:15:47.290 --> 00:15:48.980
+So we've got to do that now.
+
+329
+00:15:48.980 --> 00:15:50.393
+So authenticateUserWithPassword.
+
+330
+00:15:52.070 --> 00:15:55.963
+Email is the email string.
+
+331
+00:15:58.720 --> 00:16:00.930
+Password is the...
+
+332
+00:16:00.930 --> 00:16:01.970
+Oops.
+
+333
+00:16:01.970 --> 00:16:04.533
+Password is the password variable.
+
+334
+00:16:06.330 --> 00:16:07.633
+And then,
+
+335
+00:16:08.770 --> 00:16:10.323
+as a result of that,
+
+336
+00:16:13.144 --> 00:16:13.977
+there we go.
+
+337
+00:16:14.990 --> 00:16:16.960
+Some of this stuff seems a little repetitive
+
+338
+00:16:16.960 --> 00:16:19.013
+and verbose to me sometimes.
+
+339
+00:16:21.170 --> 00:16:23.366
+I think that's typed stuff in general.
+
+340
+00:16:23.366 --> 00:16:24.880
+The same thing as with TypeScript.
+
+341
+00:16:24.880 --> 00:16:26.550
+You're like, why, I have to type this again?
+
+342
+00:16:26.550 --> 00:16:28.759
+This seems like a little bit much
+
+343
+00:16:28.759 --> 00:16:29.990
+but definitely worth the hassle.
+
+344
+00:16:29.990 --> 00:16:33.200
+Why? Because like, even though we broke it there,
+
+345
+00:16:33.200 --> 00:16:36.370
+we got a really good error message back saying like,
+
+346
+00:16:36.370 --> 00:16:37.630
+hey this is a thing,
+
+347
+00:16:37.630 --> 00:16:40.173
+but you're not ever supposed to get that here.
+
+348
+00:16:41.350 --> 00:16:43.480
+Something got goofed up when you did that.
+
+349
+00:16:43.480 --> 00:16:46.200
+So now give it a save, refresh.
+
+350
+00:16:46.200 --> 00:16:47.400
+Let's try sign in again.
+
+351
+00:16:53.386 --> 00:16:54.640
+There we go.
+
+352
+00:16:54.640 --> 00:16:55.473 line:15% 
+Look at that. Okay.
+
+353
+00:16:55.473 --> 00:16:58.907 line:15% 
+Couple of things happen there, is we get the data.
+
+354
+00:16:58.907 --> 00:17:00.680 line:15% 
+The authenticateUserWithPassword.
+
+355
+00:17:00.680 --> 00:17:03.050 line:15% 
+I got the actual information about my account.
+
+356
+00:17:03.050 --> 00:17:03.883 line:15% 
+Good.
+
+357
+00:17:03.883 --> 00:17:05.363 line:15% 
+And then also look.
+
+358
+00:17:06.947 --> 00:17:11.533
+The navigation changed immediately because we refetched
+
+359
+00:17:12.729 --> 00:17:16.200
+that query and we are now logged in.
+
+360
+00:17:16.200 --> 00:17:19.570
+And now the navigation has now changed
+
+361
+00:17:19.570 --> 00:17:21.180
+and updated what it's in.
+
+362
+00:17:21.180 --> 00:17:25.190 line:15% 
+We actually don't need this value right here.
+
+363
+00:17:25.190 --> 00:17:28.580
+And if you ever wanted the data here
+
+364
+00:17:28.580 --> 00:17:31.140
+somewhere else, you can also get it from here.
+
+365
+00:17:31.140 --> 00:17:33.328
+That's what data is, right?
+
+366
+00:17:33.328 --> 00:17:34.161
+There's two different ways.
+
+367
+00:17:34.161 --> 00:17:35.230
+You can get it from the returned
+
+368
+00:17:35.230 --> 00:17:36.388
+asynchronous function here,
+
+369
+00:17:36.388 --> 00:17:39.090
+or you can restructure it from your mutation.
+
+370
+00:17:39.090 --> 00:17:40.790
+In our case, we don't want either.
+
+371
+00:17:45.100 --> 00:17:46.740
+We just simply just have to refresh the query
+
+372
+00:17:46.740 --> 00:17:47.800
+and it will be apparent.
+
+373
+00:17:47.800 --> 00:17:51.610
+One thing we do need to do is reset the form
+
+374
+00:17:51.610 --> 00:17:54.200
+cause it needs to empty it on out.
+
+375
+00:17:54.200 --> 00:17:56.870
+And then we also do need to account for errors.
+
+376
+00:17:56.870 --> 00:17:59.773
+So let's just make sure that reset works.
+
+377
+00:18:05.270 --> 00:18:06.103
+There we go.
+
+378
+00:18:06.103 --> 00:18:08.333
+It worked. Now it is clear.
+
+379
+00:18:10.324 --> 00:18:12.140
+We also need to account for errors.
+
+380
+00:18:12.140 --> 00:18:13.493
+So if I do,
+
+381
+00:18:15.300 --> 00:18:16.680
+something like that,
+
+382
+00:18:16.680 --> 00:18:17.573
+sign in.
+
+383
+00:18:20.040 --> 00:18:21.350
+Oh, we don't get an error there
+
+384
+00:18:21.350 --> 00:18:22.850
+'cause I'm currently logged in.
+
+385
+00:18:22.850 --> 00:18:23.970
+The way that you can
+
+386
+00:18:25.690 --> 00:18:26.725
+sign out,
+
+387
+00:18:26.725 --> 00:18:28.150
+because we don't have a sign out button yet.
+
+388
+00:18:28.150 --> 00:18:31.333
+It's just close it and reopen a new incognito.
+
+389
+00:18:32.380 --> 00:18:34.397
+And then we'll go wesbos@gmail.com
+
+390
+00:18:34.397 --> 00:18:35.983
+and the password is no.
+
+391
+00:18:38.090 --> 00:18:38.933
+Sign in.
+
+392
+00:18:40.420 --> 00:18:44.210 line:15% 
+You see, we get a UserAuthenticationWithPasswordFailure.
+
+393
+00:18:44.210 --> 00:18:45.480
+Okay.
+
+394
+00:18:45.480 --> 00:18:48.523
+Is that information available in this error variable?
+
+395
+00:18:49.907 --> 00:18:51.810
+Let's console.log it to see.
+
+396
+00:18:51.810 --> 00:18:53.470
+So just pretty much anywhere.
+
+397
+00:18:53.470 --> 00:18:54.303
+Log.
+
+398
+00:19:07.610 --> 00:19:09.020
+It is undefined.
+
+399
+00:19:09.020 --> 00:19:11.760
+Okay. So this is a bit of a weird thing
+
+400
+00:19:11.760 --> 00:19:13.350
+is that
+
+401
+00:19:13.350 --> 00:19:16.170
+the mutation
+
+402
+00:19:16.170 --> 00:19:18.340
+is successfully erroring.
+
+403
+00:19:18.340 --> 00:19:23.340
+Meaning that this mutation, even though it comes back,
+
+404
+00:19:23.870 --> 00:19:25.320
+it's successfully erroring
+
+405
+00:19:25.320 --> 00:19:28.090
+and we're not actually logged in.
+
+406
+00:19:28.090 --> 00:19:32.550
+So what we need to do is to capture that error
+
+407
+00:19:32.550 --> 00:19:35.193
+and pass it to an error component.
+
+408
+00:19:36.130 --> 00:19:40.250
+So what we'll do here, is we need to de structure
+
+409
+00:19:40.250 --> 00:19:42.000
+that data value here.
+
+410
+00:19:42.000 --> 00:19:44.160
+We need to go up here
+
+411
+00:19:44.160 --> 00:19:46.960
+and query the actual information about the error.
+
+412
+00:19:46.960 --> 00:19:50.650
+So let's take a look at what we got here.
+
+413
+00:19:50.650 --> 00:19:51.870
+UserAuthentication
+
+414
+00:19:54.680 --> 00:19:55.680
+WithPasswordFailure.
+
+415
+00:19:58.480 --> 00:20:00.550
+So go here say, ... on
+
+416
+00:20:01.810 --> 00:20:02.920
+the failure.
+
+417
+00:20:02.920 --> 00:20:06.154
+Then we want the code
+
+418
+00:20:06.154 --> 00:20:08.510
+and the message.
+
+419
+00:20:08.510 --> 00:20:11.403
+So say, code. The message.
+
+420
+00:20:15.890 --> 00:20:17.870
+And now let's try to console.log the error
+
+421
+00:20:17.870 --> 00:20:19.420
+to see what we're working with.
+
+422
+00:20:28.640 --> 00:20:30.547 line:15% 
+There it is. Data.
+
+423
+00:20:30.547 --> 00:20:33.130 line:15% 
+UserAuthenticationWithPassword.
+
+424
+00:20:33.130 --> 00:20:34.870 line:15% 
+And the type name is...
+
+425
+00:20:34.870 --> 00:20:35.840 line:15% 
+IDENTITY_NOT_FOUND.
+
+426
+00:20:35.840 --> 00:20:38.960 line:15% 
+The email value provided isn't identifying any of the users.
+
+427
+00:20:38.960 --> 00:20:43.753
+So what we can do is we'll get our error component.
+
+428
+00:20:48.901 --> 00:20:50.633
+And we'll do it right here.
+
+429
+00:20:56.550 --> 00:21:01.337
+error={data?.authenticateUserWithPassword}.
+
+430
+00:21:06.480 --> 00:21:09.403
+Let's copy paste that. These are some long strings.
+
+431
+00:21:15.527 --> 00:21:16.360
+.Failure.
+
+432
+00:21:18.370 --> 00:21:20.110
+I love using these question marks
+
+433
+00:21:20.110 --> 00:21:24.200
+because this error component won't render out anything
+
+434
+00:21:24.200 --> 00:21:28.550
+unless this entire nested property is actually a thing.
+
+435
+00:21:28.550 --> 00:21:30.600
+So we need to import our error component.
+
+436
+00:21:32.510 --> 00:21:33.657
+So, import Error from
+
+437
+00:21:38.927 --> 00:21:40.094
+error message.
+
+438
+00:21:41.560 --> 00:21:43.233
+Let's see if it works now.
+
+439
+00:21:50.370 --> 00:21:51.861
+Didn't work. Why not?
+
+440
+00:21:51.861 --> 00:21:54.730
+Let's try it with a manual error here.
+
+441
+00:21:54.730 --> 00:21:59.160
+So the error could be just something
+
+442
+00:21:59.160 --> 00:22:02.263
+with a message that says, ahhhhhhhhh.
+
+443
+00:22:03.810 --> 00:22:06.100
+Okay. So if we pass it an object
+
+444
+00:22:06.100 --> 00:22:07.590
+with an error message on it,
+
+445
+00:22:07.590 --> 00:22:09.970
+it says, shoot! Ahhhhhhh.
+
+446
+00:22:09.970 --> 00:22:11.783
+But, if we pass it,
+
+447
+00:22:14.710 --> 00:22:17.149
+UserAuthenticationWithPasswordFailure.
+
+448
+00:22:17.149 --> 00:22:18.570
+Ah, is it a capital?
+
+449
+00:22:18.570 --> 00:22:19.853
+Is it the capital?
+
+450
+00:22:20.960 --> 00:22:22.560
+Let's look at our docs here.
+
+451
+00:22:22.560 --> 00:22:25.420
+This is where something like TypeScript would really help us
+
+452
+00:22:25.420 --> 00:22:28.220
+because it would immediately say,
+
+453
+00:22:28.220 --> 00:22:31.120
+hey, that's not a possible property on there.
+
+454
+00:22:31.120 --> 00:22:32.663
+So let's take a look here.
+
+455
+00:22:36.470 --> 00:22:37.880
+Don't see it as a capital U.
+
+456
+00:22:37.880 --> 00:22:38.963
+I bet it's not.
+
+457
+00:22:40.470 --> 00:22:42.910
+Let's just try it with a lowercase U.
+
+458
+00:22:42.910 --> 00:22:45.660
+So not@not. Not.
+
+459
+00:22:45.660 --> 00:22:46.543
+Sign in.
+
+460
+00:22:49.421 --> 00:22:50.300 line:15% 
+No! Okay.
+
+461
+00:22:50.300 --> 00:22:51.683 line:15% 
+Let's look at it here.
+
+462
+00:22:52.704 --> 00:22:53.537 line:15% 
+Oh, I see the issue.
+
+463
+00:22:53.537 --> 00:22:55.460 line:15% 
+It's data.authenticateUserWithPassword.
+
+464
+00:22:56.670 --> 00:22:59.483 line:15% 
+And then we have to say, it's the type name.
+
+465
+00:23:00.670 --> 00:23:02.033 line:15% 
+I see.
+
+466
+00:23:04.220 --> 00:23:05.970
+So what we'll do here is we'll say,
+
+467
+00:23:07.560 --> 00:23:09.113
+the error is that.
+
+468
+00:23:10.540 --> 00:23:11.453
+And,
+
+469
+00:23:12.300 --> 00:23:14.140
+we'll go up here and make a little variable.
+
+470
+00:23:14.140 --> 00:23:16.610
+Say const error =
+
+471
+00:23:16.610 --> 00:23:19.460
+We can stop de-structuring this because we don't need it.
+
+472
+00:23:20.850 --> 00:23:22.583
+We don't lock to console.log it.
+
+473
+00:23:23.570 --> 00:23:25.083
+And right here we'll say,
+
+474
+00:23:27.725 --> 00:23:31.620 line:15% 
+the error = data?authenticatedUserWithPassword._ _typename
+
+475
+00:23:43.487 --> 00:23:44.987
+===
+
+476
+00:23:47.070 --> 00:23:48.163
+that type.
+
+477
+00:23:50.790 --> 00:23:53.053
+If that is true, then,
+
+478
+00:23:58.590 --> 00:24:00.350
+will return that.
+
+479
+00:24:00.350 --> 00:24:04.533
+Otherwise will return undefined because there is no error.
+
+480
+00:24:06.960 --> 00:24:10.093
+Oh, these are backwards. Excuse me here.
+
+481
+00:24:11.610 --> 00:24:13.240
+Hoo! Okay, that was a big one.
+
+482
+00:24:13.240 --> 00:24:15.300
+Let me catch you up if he got lost there.
+
+483
+00:24:15.300 --> 00:24:19.100
+The error is equal to the response
+
+484
+00:24:19.100 --> 00:24:22.950
+but only when the response's type name is this.
+
+485
+00:24:22.950 --> 00:24:23.840
+It's a little bit weird
+
+486
+00:24:23.840 --> 00:24:26.021
+that they don't throw like a 400 network error
+
+487
+00:24:26.021 --> 00:24:28.680
+because then a regular error component would work.
+
+488
+00:24:28.680 --> 00:24:32.210
+But that's the case here successfully errored.
+
+489
+00:24:32.210 --> 00:24:34.170
+If that is true,
+
+490
+00:24:34.170 --> 00:24:37.110
+then we return the response which is an error.
+
+491
+00:24:37.110 --> 00:24:38.740
+Otherwise we return nothing.
+
+492
+00:24:38.740 --> 00:24:40.980
+And then we can go into our error component
+
+493
+00:24:40.980 --> 00:24:42.853
+and simply just pass that value.
+
+494
+00:24:45.378 --> 00:24:47.329
+I bet that will work, hopefully.
+
+495
+00:24:47.329 --> 00:24:49.020
+(Wes laughing)
+
+496
+00:24:49.020 --> 00:24:52.090
+There we go. Sign in. Boom! There we go.
+
+497
+00:24:52.090 --> 00:24:55.040
+Shoot! The value provided didn't identify any of its users.
+
+498
+00:24:56.420 --> 00:24:57.768
+Last thing, some people think that this is
+
+499
+00:24:57.768 --> 00:25:00.830
+a bit of a security issue telling somebody.
+
+500
+00:25:00.830 --> 00:25:01.920
+Like someone could come here
+
+501
+00:25:01.920 --> 00:25:03.920
+and check if anyone has an account.
+
+502
+00:25:03.920 --> 00:25:06.718
+And if this was like a sensitive website,
+
+503
+00:25:06.718 --> 00:25:08.750
+like a dating website or something like that,
+
+504
+00:25:08.750 --> 00:25:11.590
+you would be able to tell if somebody has an account
+
+505
+00:25:11.590 --> 00:25:12.470
+on that with that.
+
+506
+00:25:12.470 --> 00:25:14.720
+So there is a setting in keystone
+
+507
+00:25:14.720 --> 00:25:16.650
+where you can simply just turn that off.
+
+508
+00:25:16.650 --> 00:25:19.100
+I honestly don't think it's that big of a deal
+
+509
+00:25:19.100 --> 00:25:21.730
+because it's a street wear website
+
+510
+00:25:21.730 --> 00:25:23.720
+and not a dating website.
+
+511
+00:25:23.720 --> 00:25:24.950
+So, there's that one.
+
+512
+00:25:24.950 --> 00:25:26.430
+That's the sign in component.
+
+513
+00:25:26.430 --> 00:25:27.430
+And the next one
+
+514
+00:25:27.430 --> 00:25:31.993
+we will code a sign out and a sign up component.
+

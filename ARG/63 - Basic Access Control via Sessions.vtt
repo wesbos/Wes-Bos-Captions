@@ -1,0 +1,782 @@
+﻿WEBVTT
+
+1
+00:00:01.640 --> 00:00:04.630
+<v Instructor>Now that we've assigned roles to users</v>
+
+2
+00:00:04.630 --> 00:00:07.560
+you can then go ahead and query that data
+
+3
+00:00:07.560 --> 00:00:09.790
+on the currently authenticated user
+
+4
+00:00:09.790 --> 00:00:11.950
+by saying something like this; authenticated item,
+
+5
+00:00:11.950 --> 00:00:14.620
+and then when it is a user, give me the role
+
+6
+00:00:14.620 --> 00:00:16.980
+and on each of those, we will have all
+
+7
+00:00:16.980 --> 00:00:20.300
+of our can manage, can manage roles, can manage orders
+
+8
+00:00:20.300 --> 00:00:22.440
+can see other users, can manage products.
+
+9
+00:00:22.440 --> 00:00:25.210
+These are all the check boxes that we created
+
+10
+00:00:25.210 --> 00:00:28.400
+in our fields.ts value.
+
+11
+00:00:28.400 --> 00:00:31.340
+Now, part of our sort of permissions array
+
+12
+00:00:31.340 --> 00:00:35.260
+is we're going to want to have access
+
+13
+00:00:35.260 --> 00:00:38.470
+to all of these permissions on the session.
+
+14
+00:00:38.470 --> 00:00:41.130
+Remember, the session is a little bit of information
+
+15
+00:00:41.130 --> 00:00:43.100
+about the currently logged-in user
+
+16
+00:00:43.100 --> 00:00:47.120
+that we get access to when we are doing
+
+17
+00:00:47.120 --> 00:00:48.620
+any sort of server site check.
+
+18
+00:00:48.620 --> 00:00:52.370
+So Keystone has access to the session when it checks
+
+19
+00:00:52.370 --> 00:00:54.990
+if you're able to update an item or delete an item
+
+20
+00:00:54.990 --> 00:00:59.340
+or to create an item or to update a specific field;
+
+21
+00:00:59.340 --> 00:01:03.300
+Keystone will check the session for all of those things.
+
+22
+00:01:03.300 --> 00:01:05.330
+So what we need to do is go back
+
+23
+00:01:05.330 --> 00:01:08.830
+to our Keystone.ts and you already see
+
+24
+00:01:08.830 --> 00:01:12.250
+that we've queried on every single session,
+
+25
+00:01:12.250 --> 00:01:15.820
+we've queried the ID, the name and the email
+
+26
+00:01:15.820 --> 00:01:17.470
+of the currently logged in user.
+
+27
+00:01:17.470 --> 00:01:20.140
+And what that does is every single time there's a request,
+
+28
+00:01:20.140 --> 00:01:22.900
+Keystone goes and grabs that data from the database
+
+29
+00:01:22.900 --> 00:01:25.410
+and then it uses it in simple things
+
+30
+00:01:25.410 --> 00:01:27.690
+like our add-to-cart mutation,
+
+31
+00:01:27.690 --> 00:01:32.360
+we get access to the session and then we check here.
+
+32
+00:01:32.360 --> 00:01:34.340
+We check if the user is logged in
+
+33
+00:01:34.340 --> 00:01:36.890
+and you can use any information on the session you want.
+
+34
+00:01:36.890 --> 00:01:38.670
+And that's just a little shortcut
+
+35
+00:01:38.670 --> 00:01:41.010
+so that we don't have to explicitly query
+
+36
+00:01:41.010 --> 00:01:44.150
+the current user every single time that we want to.
+
+37
+00:01:44.150 --> 00:01:47.080
+So what we want to do is, including the ID,
+
+38
+00:01:47.080 --> 00:01:49.420
+the name and the email on every session,
+
+39
+00:01:49.420 --> 00:01:53.110
+we also want to query the user's roles
+
+40
+00:01:53.110 --> 00:01:56.010
+because we're going to need these pieces of information
+
+41
+00:01:56.010 --> 00:01:58.960
+when we go to give a yes or a no
+
+42
+00:01:58.960 --> 00:02:02.620
+to whether somebody should access something.
+
+43
+00:02:02.620 --> 00:02:04.430
+So what we do here is you could simply just
+
+44
+00:02:04.430 --> 00:02:07.030
+write the GraphQL query, which is the role,
+
+45
+00:02:07.030 --> 00:02:09.730
+and then curly brackets, and this is on one line.
+
+46
+00:02:09.730 --> 00:02:11.900
+You could put it on multiple lines if you want
+
+47
+00:02:11.900 --> 00:02:13.670
+and then you would just normally
+
+48
+00:02:13.670 --> 00:02:16.380
+just type all the fields that you want;
+
+49
+00:02:16.380 --> 00:02:20.010
+so something like that, can manage cart, can manage users.
+
+50
+00:02:20.010 --> 00:02:22.130
+You'd be able to type all of that in there.
+
+51
+00:02:22.130 --> 00:02:23.360
+Now that's a little bit annoying
+
+52
+00:02:23.360 --> 00:02:24.900
+and this is actually something that comes
+
+53
+00:02:24.900 --> 00:02:26.850
+up a lot for me in GraphQL,
+
+54
+00:02:26.850 --> 00:02:30.710
+is that often you find yourself typing the same thing
+
+55
+00:02:30.710 --> 00:02:32.020
+over and over and over again
+
+56
+00:02:32.020 --> 00:02:35.130
+because GraphQL doesn't have a way just to say
+
+57
+00:02:35.130 --> 00:02:36.940
+give me everything, everything you got.
+
+58
+00:02:36.940 --> 00:02:40.180
+You have to be explicit with each of the fields
+
+59
+00:02:40.180 --> 00:02:43.270
+and pieces of information that you want from GraphQL.
+
+60
+00:02:43.270 --> 00:02:46.030
+So, because we've already written
+
+61
+00:02:46.030 --> 00:02:50.300
+all of these can values here, so what I did
+
+62
+00:02:50.300 --> 00:02:54.280
+in this file here is we took those permission fields,
+
+63
+00:02:54.280 --> 00:02:56.410
+we took the keys from them,
+
+64
+00:02:56.410 --> 00:02:58.660
+so if you have an object
+
+65
+00:02:58.660 --> 00:03:00.893
+the keys are just gonna be these values.
+
+66
+00:03:01.750 --> 00:03:04.570
+And what that will do is it will give us
+
+67
+00:03:04.570 --> 00:03:05.880
+an array of all of them
+
+68
+00:03:05.880 --> 00:03:08.010
+and then we just exported them
+
+69
+00:03:08.010 --> 00:03:10.780
+as a variable called permissions list.
+
+70
+00:03:10.780 --> 00:03:13.302
+It's an array of type of permissions.
+
+71
+00:03:13.302 --> 00:03:17.390
+Then what we can do is in here, we can import that array
+
+72
+00:03:17.390 --> 00:03:20.950
+and then just interpolate it into this user right here.
+
+73
+00:03:20.950 --> 00:03:24.210
+So what we'll do is we'll leave the curly brackets there,
+
+74
+00:03:24.210 --> 00:03:28.030
+turn this into backticks so that we can use interpolation,
+
+75
+00:03:28.030 --> 00:03:29.310
+and then we'll use dollar sign
+
+76
+00:03:29.310 --> 00:03:33.710
+curly bracket to take the permission list.
+
+77
+00:03:33.710 --> 00:03:38.710
+And we'll call it .join on that with a space in between
+
+78
+00:03:39.610 --> 00:03:41.900
+and what that will do is it doesn't matter
+
+79
+00:03:41.900 --> 00:03:43.380
+if it's on a new line or not,
+
+80
+00:03:43.380 --> 00:03:46.440
+but these queries will run if they're all in the same line,
+
+81
+00:03:46.440 --> 00:03:47.860
+as long as there's a space in between
+
+82
+00:03:47.860 --> 00:03:49.620
+each field that you want, see?
+
+83
+00:03:49.620 --> 00:03:51.870
+It works exactly the same.
+
+84
+00:03:51.870 --> 00:03:55.990
+Then make sure we imported that permission list.
+
+85
+00:03:55.990 --> 00:03:57.723
+Let's look for where it is.
+
+86
+00:04:02.165 --> 00:04:02.998
+There we go,
+
+87
+00:04:02.998 --> 00:04:05.630
+import permission list from schema, forward slash fields.
+
+88
+00:04:05.630 --> 00:04:07.130
+Okay.
+
+89
+00:04:07.130 --> 00:04:12.130
+That looks like it's working really well for us.
+
+90
+00:04:12.260 --> 00:04:15.160
+Now, what we want to do is to write
+
+91
+00:04:15.160 --> 00:04:18.773
+our very first access control function
+
+92
+00:04:18.773 --> 00:04:22.060
+and an access control function is at the very basics
+
+93
+00:04:22.060 --> 00:04:24.823
+going to say yes or no, can we access something?
+
+94
+00:04:25.707 --> 00:04:26.540
+So what I want you to do is go into
+
+95
+00:04:26.540 --> 00:04:29.000
+your Keystone folder for the backend
+
+96
+00:04:29.000 --> 00:04:32.280
+and create a new file just in the root of the folder.
+
+97
+00:04:32.280 --> 00:04:35.860
+It's gonna be a sibling to Types and Keystone.ts.
+
+98
+00:04:35.860 --> 00:04:38.570
+We'll go in here and we'll call it access.ts
+
+99
+00:04:41.350 --> 00:04:43.330
+And then in here we're going to write
+
+100
+00:04:43.330 --> 00:04:44.890
+all of our access functions.
+
+101
+00:04:44.890 --> 00:04:46.990
+So we'll write a very simple one now
+
+102
+00:04:46.990 --> 00:04:49.540
+and get into a couple more complex ones in coming videos.
+
+103
+00:04:49.540 --> 00:04:51.790
+So we'll write a little comment here
+
+104
+00:04:51.790 --> 00:04:53.113
+that says at its simplest,
+
+105
+00:04:55.230 --> 00:04:59.160
+access control is either a yes or a no value
+
+106
+00:04:59.160 --> 00:05:01.950
+depending on the user session.
+
+107
+00:05:01.950 --> 00:05:04.940
+So a really good one for that is
+
+108
+00:05:04.940 --> 00:05:07.110
+is the user signed in or not?
+
+109
+00:05:07.110 --> 00:05:10.120
+So what we'll do here is we'll export a function
+
+110
+00:05:10.120 --> 00:05:12.383
+called is signed in,
+
+111
+00:05:13.470 --> 00:05:17.710
+and then part of that will give us access to the context
+
+112
+00:05:17.710 --> 00:05:20.450
+or this function will always have access to the context,
+
+113
+00:05:20.450 --> 00:05:23.750
+just like we did in our add-to-cart function.
+
+114
+00:05:23.750 --> 00:05:25.330
+You see, we've got the context here.
+
+115
+00:05:25.330 --> 00:05:29.470
+So inside of context, we have access to the user's session
+
+116
+00:05:29.470 --> 00:05:31.940
+and what we can do is we can check
+
+117
+00:05:31.940 --> 00:05:35.200
+if there is even a user session at all.
+
+118
+00:05:35.200 --> 00:05:37.500
+So what we'll do here is we'll simply say
+
+119
+00:05:37.500 --> 00:05:40.120
+return bang bang session.
+
+120
+00:05:40.120 --> 00:05:44.570
+So what that will do is, is if session is undefined,
+
+121
+00:05:44.570 --> 00:05:46.500
+putting a double bang in front of it;
+
+122
+00:05:46.500 --> 00:05:48.040
+so let's say we have undefined here;
+
+123
+00:05:48.040 --> 00:05:51.230
+putting a double bang in front of it will return false,
+
+124
+00:05:51.230 --> 00:05:53.460
+meaning that they are not signed in
+
+125
+00:05:53.460 --> 00:05:56.810
+but if the user session is signed in;
+
+126
+00:05:56.810 --> 00:06:00.860
+so just like something like email is, Hey;
+
+127
+00:06:00.860 --> 00:06:04.150
+then that will return true because it is.
+
+128
+00:06:04.150 --> 00:06:07.270
+So the bang bang is not entirely necessary there,
+
+129
+00:06:07.270 --> 00:06:10.429
+but what it does is it takes these falsey
+
+130
+00:06:10.429 --> 00:06:13.800
+and truthy values and converts them,
+
+131
+00:06:13.800 --> 00:06:16.280
+or coerces them is the proper name,
+
+132
+00:06:16.280 --> 00:06:20.170
+into true booleons of true or false.
+
+133
+00:06:20.170 --> 00:06:24.940
+So that's the very basics of a function here.
+
+134
+00:06:24.940 --> 00:06:26.080
+One more thing we can do here
+
+135
+00:06:26.080 --> 00:06:30.340
+is type this as list access args
+
+136
+00:06:30.340 --> 00:06:33.080
+and that should import the list access args
+
+137
+00:06:33.080 --> 00:06:36.920
+from our Types file, which is right here,
+
+138
+00:06:36.920 --> 00:06:39.430
+list access args and there we go,
+
+139
+00:06:39.430 --> 00:06:41.320
+has the item ID in the session.
+
+140
+00:06:41.320 --> 00:06:45.210
+So now that we have that
+
+141
+00:06:45.210 --> 00:06:47.710
+I'm gonna show you how we can hook that up
+
+142
+00:06:47.710 --> 00:06:51.330
+to our access control on each of our lists.
+
+143
+00:06:51.330 --> 00:06:53.600
+So let's open one of our schema lists
+
+144
+00:06:53.600 --> 00:06:57.245
+which is product.ts, that's a very simple one,
+
+145
+00:06:57.245 --> 00:06:59.670
+and then every single list
+
+146
+00:06:59.670 --> 00:07:02.170
+for every single data type that we have
+
+147
+00:07:02.170 --> 00:07:04.330
+you can add an access value
+
+148
+00:07:04.330 --> 00:07:08.910
+to either the entire list or an individual field
+
+149
+00:07:08.910 --> 00:07:12.240
+and each access will tell us if we can crud it;
+
+150
+00:07:12.240 --> 00:07:15.110
+create, read, update, delete.
+
+151
+00:07:15.110 --> 00:07:17.993
+So we'll go here and we'll say access.
+
+152
+00:07:19.660 --> 00:07:22.190
+I got to put a comma there and get rid of this to do
+
+153
+00:07:22.190 --> 00:07:23.460
+because we're doing it,
+
+154
+00:07:23.460 --> 00:07:25.730
+and then it'll say access create.
+
+155
+00:07:25.730 --> 00:07:27.350
+Is the user allowed to create it?
+
+156
+00:07:27.350 --> 00:07:29.280
+You can just put false there if you want.
+
+157
+00:07:29.280 --> 00:07:33.880
+Is the create read, update, and delete.
+
+158
+00:07:33.880 --> 00:07:37.620
+So what this would do is it would stop anybody ever
+
+159
+00:07:37.620 --> 00:07:41.300
+from create, read, update, delete any of the actual values.
+
+160
+00:07:41.300 --> 00:07:44.850
+But what you can do is you can replace these
+
+161
+00:07:44.850 --> 00:07:47.570
+with functions that will figure out
+
+162
+00:07:47.570 --> 00:07:49.070
+if it should be true or false.
+
+163
+00:07:49.070 --> 00:07:51.810
+So let's just replace all of them right now
+
+164
+00:07:51.810 --> 00:07:55.110
+and we'll replace it with our is signed in function
+
+165
+00:07:56.020 --> 00:07:57.970
+and what that should do is,
+
+166
+00:07:57.970 --> 00:08:00.640
+we should auto import it as well, it comes in right here;
+
+167
+00:08:00.640 --> 00:08:03.310
+import is signed in from access
+
+168
+00:08:03.310 --> 00:08:05.670
+which is the function we just wrote right here
+
+169
+00:08:05.670 --> 00:08:10.030
+and that function will return true or false for us.
+
+170
+00:08:10.030 --> 00:08:12.890
+So now if we restart our backend here
+
+171
+00:08:15.060 --> 00:08:18.110
+and let's just write a little query called,
+
+172
+00:08:18.110 --> 00:08:19.190
+here, I've got one right here,
+
+173
+00:08:19.190 --> 00:08:22.980
+query all products, grab the name and the ID on it.
+
+174
+00:08:22.980 --> 00:08:24.230
+I'm just gonna refresh the page
+
+175
+00:08:24.230 --> 00:08:25.880
+so I know when Keystone is ready.
+
+176
+00:08:27.670 --> 00:08:29.730
+There we go, go ahead and run it.
+
+177
+00:08:29.730 --> 00:08:31.320
+We get a list of all our products, right?
+
+178
+00:08:31.320 --> 00:08:34.400
+Not a big deal, but if I were to open this
+
+179
+00:08:34.400 --> 00:08:37.800
+in a private window where I'm not signed in
+
+180
+00:08:37.800 --> 00:08:40.063
+and try and run the same query,
+
+181
+00:08:40.940 --> 00:08:43.910
+we will get an authentication error.
+
+182
+00:08:43.910 --> 00:08:44.743
+Why?
+
+183
+00:08:44.743 --> 00:08:46.140
+You do not have access to this resource.
+
+184
+00:08:46.140 --> 00:08:48.620
+So what we've done there is we've limited
+
+185
+00:08:48.620 --> 00:08:52.410
+being able to query; in our case, we were reading;
+
+186
+00:08:52.410 --> 00:08:54.900
+products to only people who are signed in
+
+187
+00:08:54.900 --> 00:08:56.750
+and now that's not actually what we want to do
+
+188
+00:08:56.750 --> 00:08:59.530
+because we do want people to be able to
+
+189
+00:08:59.530 --> 00:09:01.630
+read them all the time.
+
+190
+00:09:01.630 --> 00:09:03.730
+We only want them to create them if they're signed in,
+
+191
+00:09:03.730 --> 00:09:06.760
+we only want them to update them when they own them,
+
+192
+00:09:06.760 --> 00:09:08.620
+and we only want people to delete them
+
+193
+00:09:08.620 --> 00:09:11.370
+when they own them or you are an admin.
+
+194
+00:09:11.370 --> 00:09:13.410
+So that's a little bit more complicated
+
+195
+00:09:13.410 --> 00:09:15.510
+and we'll get into that in the next video.
+

@@ -1,0 +1,1090 @@
+﻿WEBVTT
+
+1
+00:00:01.650 --> 00:00:02.984
+<v ->Let's talk about this handleSubmit function.</v>
+
+2
+00:00:02.984 --> 00:00:05.880
+There's a whole bunch of custom logic and flow
+
+3
+00:00:05.880 --> 00:00:07.810
+that needs to happen inside of here.
+
+4
+00:00:07.810 --> 00:00:09.410
+What I'm gonna do is I'm gonna write it all out
+
+5
+00:00:09.410 --> 00:00:11.560
+in pseudocode and over the next couple of videos,
+
+6
+00:00:11.560 --> 00:00:13.710
+we're gonna go ahead and implement it one by one.
+
+7
+00:00:13.710 --> 00:00:15.800
+So, first thing is,
+
+8
+00:00:15.800 --> 00:00:19.010
+we need to stop the form from submitting
+
+9
+00:00:19.970 --> 00:00:23.253
+and turn the loader on.
+
+10
+00:00:24.210 --> 00:00:25.420
+Okay, that's good.
+
+11
+00:00:25.420 --> 00:00:28.470
+And then, second thing we need to do is to,
+
+12
+00:00:28.470 --> 00:00:30.193
+start the page transition.
+
+13
+00:00:33.840 --> 00:00:35.607
+Third thing we need to do is to
+
+14
+00:00:35.607 --> 00:00:38.383
+create the payment method via Stripe.
+
+15
+00:00:42.610 --> 00:00:45.793
+Fourth thing we need to do is handle any errors from Stripe.
+
+16
+00:00:47.660 --> 00:00:49.920
+Those are gonna be errors like,
+
+17
+00:00:49.920 --> 00:00:52.930
+credit card is not accepted, it's been declined.
+
+18
+00:00:52.930 --> 00:00:55.710
+There's not enough currency on it.
+
+19
+00:00:55.710 --> 00:00:58.790
+Things like Discover card is not accepted in this country.
+
+20
+00:00:58.790 --> 00:01:01.340
+All the errors that you could possibly get back
+
+21
+00:01:01.340 --> 00:01:03.210
+from a credit card processor
+
+22
+00:01:03.210 --> 00:01:05.930
+are gonna be handled in that number four,
+
+23
+00:01:05.930 --> 00:01:08.610
+and then we'll display them to the user.
+
+24
+00:01:08.610 --> 00:01:11.840
+The fifth thing is we need to send the token
+
+25
+00:01:11.840 --> 00:01:13.760
+that just came from step four.
+
+26
+00:01:13.760 --> 00:01:18.663
+Okay, we'll say token comes back here if successful.
+
+27
+00:01:19.800 --> 00:01:21.460
+Actually that doesn't happen in the error step,
+
+28
+00:01:21.460 --> 00:01:23.950
+it happens in right here,
+
+29
+00:01:23.950 --> 00:01:25.490
+create the payment method.
+
+30
+00:01:25.490 --> 00:01:29.353
+So, we will send the token from step three,
+
+31
+00:01:32.100 --> 00:01:37.100
+to our keystone server via a custom mutation.
+
+32
+00:01:40.050 --> 00:01:43.470
+And number six, what we need to do is
+
+33
+00:01:43.470 --> 00:01:46.203
+change the page to view the order.
+
+34
+00:01:49.410 --> 00:01:52.030
+So, if they have successfully come back
+
+35
+00:01:52.030 --> 00:01:53.380
+from sending the token,
+
+36
+00:01:53.380 --> 00:01:55.240
+what will have happened in step five is that
+
+37
+00:01:55.240 --> 00:01:57.400
+we've created an order on the backend.
+
+38
+00:01:57.400 --> 00:01:59.610
+And then we wanna change the user to the page,
+
+39
+00:01:59.610 --> 00:02:01.160
+so they can view that order
+
+40
+00:02:01.160 --> 00:02:03.293
+of any information that they might have.
+
+41
+00:02:04.300 --> 00:02:05.483
+And then seven,
+
+42
+00:02:06.380 --> 00:02:07.313
+close the cart,
+
+43
+00:02:08.380 --> 00:02:10.000
+and eight,
+
+44
+00:02:10.000 --> 00:02:11.323
+turn the loader off.
+
+45
+00:02:17.030 --> 00:02:18.430
+All right, so first thing.
+
+46
+00:02:18.430 --> 00:02:19.760
+Stop the form from submitting
+
+47
+00:02:19.760 --> 00:02:20.680
+and turn the loader on.
+
+48
+00:02:20.680 --> 00:02:24.290
+Okay. So we need our own loading state in this case, Why?
+
+49
+00:02:24.290 --> 00:02:28.650
+Because, normally we would use the loading state
+
+50
+00:02:28.650 --> 00:02:31.130
+from our query or our mutation,
+
+51
+00:02:31.130 --> 00:02:32.450
+which was happening here.
+
+52
+00:02:32.450 --> 00:02:34.690
+But in this case, we need to be basically saying
+
+53
+00:02:34.690 --> 00:02:36.330
+we're doing a whole bunch of work,
+
+54
+00:02:36.330 --> 00:02:39.230
+everywhere from this step to this step.
+
+55
+00:02:39.230 --> 00:02:43.890
+We need to show the user that something is happening.
+
+56
+00:02:43.890 --> 00:02:45.400
+So, if that's the case,
+
+57
+00:02:45.400 --> 00:02:48.070
+you need to hold your own piece of state,
+
+58
+00:02:48.070 --> 00:02:49.840
+both for errors and for loading.
+
+59
+00:02:49.840 --> 00:02:52.740
+So, at the very top of your checkout,
+
+60
+00:02:52.740 --> 00:02:55.820
+we'll say const, error and setError
+
+61
+00:02:57.330 --> 00:02:58.803
+is equal to useState,
+
+62
+00:03:00.940 --> 00:03:04.763
+and we gotta import useState from React, good.
+
+63
+00:03:05.750 --> 00:03:07.960
+And then the next one will be
+
+64
+00:03:07.960 --> 00:03:09.663
+loading and setLoading,
+
+65
+00:03:11.570 --> 00:03:12.403
+is equal to useState,
+
+66
+00:03:12.403 --> 00:03:16.630
+and by default loading is in a false state.
+
+67
+00:03:16.630 --> 00:03:17.710
+While we're up here,
+
+68
+00:03:17.710 --> 00:03:21.220
+we'll also get access to our Stripe objects.
+
+69
+00:03:21.220 --> 00:03:24.490
+So const stripe is equal to useStripe
+
+70
+00:03:24.490 --> 00:03:29.490
+that is shipped via the React JS Stripe library,
+
+71
+00:03:29.520 --> 00:03:30.800
+and we're going to use that
+
+72
+00:03:30.800 --> 00:03:33.150
+in one of the steps down here.
+
+73
+00:03:33.150 --> 00:03:35.440
+What is it yelling at us for?
+
+74
+00:03:35.440 --> 00:03:37.630
+Cannot find the element in context,
+
+75
+00:03:37.630 --> 00:03:39.540
+you need to wrap the part of your app,
+
+76
+00:03:39.540 --> 00:03:42.300
+that calls useStripe in an elements provider.
+
+77
+00:03:42.300 --> 00:03:44.670
+Ah, I see that's a bit of an issue,
+
+78
+00:03:44.670 --> 00:03:47.210
+we're trying to say useStripe right here,
+
+79
+00:03:47.210 --> 00:03:49.370
+but it's not until this
+
+80
+00:03:49.370 --> 00:03:51.210
+that we actually get access to it.
+
+81
+00:03:51.210 --> 00:03:53.210
+So the provider is at a lower level
+
+82
+00:03:53.210 --> 00:03:54.800
+than where we're trying to use it.
+
+83
+00:03:54.800 --> 00:03:57.020
+So, little solution,
+
+84
+00:03:57.020 --> 00:04:01.177
+let's rename this checkout component here to CheckoutForm.
+
+85
+00:04:03.060 --> 00:04:04.720
+And then what we wanna do
+
+86
+00:04:04.720 --> 00:04:08.193
+is make a new component down here called Checkout.
+
+87
+00:04:09.070 --> 00:04:13.517
+That is simply just going to return these two,
+
+88
+00:04:14.630 --> 00:04:16.743
+so the Stripe element provider,
+
+89
+00:04:19.120 --> 00:04:20.700
+and then inside of that
+
+90
+00:04:20.700 --> 00:04:22.753
+we'll render out the CheckoutForm.
+
+91
+00:04:26.330 --> 00:04:28.800
+Okay. So what happened there is,
+
+92
+00:04:28.800 --> 00:04:31.020
+we redid the Checkout component.
+
+93
+00:04:31.020 --> 00:04:33.720
+It's still the thing that's exported from this file,
+
+94
+00:04:33.720 --> 00:04:36.753
+but because we need access to this useStripe,
+
+95
+00:04:37.590 --> 00:04:39.610
+this checkout form needs to be wrapped
+
+96
+00:04:39.610 --> 00:04:42.500
+in that elements provider.
+
+97
+00:04:42.500 --> 00:04:44.250
+So, we just put it in its own component
+
+98
+00:04:44.250 --> 00:04:46.180
+and render that with child inside of it,
+
+99
+00:04:46.180 --> 00:04:49.720
+and therefore, the provider is at a higher level
+
+100
+00:04:49.720 --> 00:04:50.553
+that we have that.
+
+101
+00:04:50.553 --> 00:04:53.730
+Okay. So that's not no longer giving us grief,
+
+102
+00:04:53.730 --> 00:04:55.210
+about any of that stuff.
+
+103
+00:04:55.210 --> 00:04:56.960
+Good, we can still render that out.
+
+104
+00:04:58.400 --> 00:05:02.110
+So, we have our loading state.
+
+105
+00:05:02.110 --> 00:05:05.020
+So, we'll go right here,
+
+106
+00:05:05.020 --> 00:05:06.240
+stop the form 'cause it ain't good,
+
+107
+00:05:06.240 --> 00:05:09.763
+and then we'll say setLoading is true.
+
+108
+00:05:11.810 --> 00:05:13.960
+We gotta start the page transition.
+
+109
+00:05:13.960 --> 00:05:14.980
+So, we'll go here
+
+110
+00:05:14.980 --> 00:05:19.430
+and we'll say nProgress.start
+
+111
+00:05:19.430 --> 00:05:21.993
+and we'll need to import nProgress.
+
+112
+00:05:22.940 --> 00:05:25.030
+Take a look here, there we go.
+
+113
+00:05:25.030 --> 00:05:26.183
+It's being imported.
+
+114
+00:05:29.360 --> 00:05:32.150
+And I think this should start working already.
+
+115
+00:05:32.150 --> 00:05:33.890
+So, if I go ahead and submit it,
+
+116
+00:05:33.890 --> 00:05:36.660
+see the nProgress starts going,
+
+117
+00:05:36.660 --> 00:05:37.720
+it will just inch along
+
+118
+00:05:37.720 --> 00:05:40.313
+until it eventually decides to stop.
+
+119
+00:05:40.313 --> 00:05:42.940
+'Cause we're not actually doing anything behind,
+
+120
+00:05:42.940 --> 00:05:45.170
+but that's working.
+
+121
+00:05:45.170 --> 00:05:47.990
+Next one, create the payment method via Stripe.
+
+122
+00:05:47.990 --> 00:05:51.260
+Token comes back here if successful.
+
+123
+00:05:51.260 --> 00:05:53.310
+Okay. So this is where we got that
+
+124
+00:05:53.310 --> 00:05:55.680
+interface with our Stripe library.
+
+125
+00:05:55.680 --> 00:05:58.150
+So, the method we're gonna be calling is,
+
+126
+00:05:58.150 --> 00:06:00.530
+stripe.createPaymentMethod.
+
+127
+00:06:01.810 --> 00:06:04.620
+And that will take a couple options.
+
+128
+00:06:04.620 --> 00:06:05.520
+Basically just say,
+
+129
+00:06:05.520 --> 00:06:07.520
+the type is a card
+
+130
+00:06:07.520 --> 00:06:09.750
+because Stripe will also let you pay
+
+131
+00:06:09.750 --> 00:06:11.880
+via a couple other options,
+
+132
+00:06:11.880 --> 00:06:16.400
+AHC, ACH, Automatic Clearing House.
+
+133
+00:06:16.400 --> 00:06:17.780
+Yeah, we don't have that in Canada,
+
+134
+00:06:17.780 --> 00:06:19.710
+but that's a very popular way.
+
+135
+00:06:19.710 --> 00:06:21.060
+Debit cards, things like that
+
+136
+00:06:21.060 --> 00:06:22.840
+in our case we're doing credit card.
+
+137
+00:06:22.840 --> 00:06:25.080
+And then the actual card is,
+
+138
+00:06:25.080 --> 00:06:30.080
+you just give it reference to the actual Stripe elements,
+
+139
+00:06:30.210 --> 00:06:32.090
+which is available down here.
+
+140
+00:06:32.090 --> 00:06:33.930
+So we say elements,
+
+141
+00:06:33.930 --> 00:06:36.760
+and that element is gonna be available via another hook.
+
+142
+00:06:36.760 --> 00:06:38.020
+So, we gotta go back up here,
+
+143
+00:06:38.020 --> 00:06:40.780
+const elements is equal to useElements
+
+144
+00:06:42.340 --> 00:06:45.620
+and that auto imported from the,
+
+145
+00:06:45.620 --> 00:06:49.330
+again from the Stripe React JS library.
+
+146
+00:06:49.330 --> 00:06:51.550
+I'll say elements.getElement,
+
+147
+00:06:51.550 --> 00:06:53.737
+and then you pass it, cardElement.
+
+148
+00:06:56.055 --> 00:06:58.490
+And it is smart enough to know,
+
+149
+00:06:58.490 --> 00:07:00.780
+that you're only allowed to render out
+
+150
+00:07:00.780 --> 00:07:03.150
+one of those card elements on the page.
+
+151
+00:07:03.150 --> 00:07:04.730
+So, you don't have to actually have a ref
+
+152
+00:07:04.730 --> 00:07:07.360
+or anything like that, between those.
+
+153
+00:07:07.360 --> 00:07:09.130
+Now, this is in asynchronous function,
+
+154
+00:07:09.130 --> 00:07:10.920
+so we'll put an await in front of it.
+
+155
+00:07:10.920 --> 00:07:12.140
+And from that it,
+
+156
+00:07:12.140 --> 00:07:14.680
+what is returned is,
+
+157
+00:07:14.680 --> 00:07:17.000
+so say const error.
+
+158
+00:07:17.000 --> 00:07:18.130
+So if there's any errors
+
+159
+00:07:18.130 --> 00:07:20.190
+they will be returned as a value here,
+
+160
+00:07:20.190 --> 00:07:21.140
+which is really nice.
+
+161
+00:07:21.140 --> 00:07:22.780
+So, you don't have to catch them.
+
+162
+00:07:22.780 --> 00:07:25.702
+And then payment method is going to be,
+
+163
+00:07:25.702 --> 00:07:27.900
+have the token that's on it.
+
+164
+00:07:27.900 --> 00:07:31.523
+So, go ahead and console.log the payment method,
+
+165
+00:07:34.600 --> 00:07:36.670
+Just to see what we're working with.
+
+166
+00:07:36.670 --> 00:07:38.830
+And we need to,
+
+167
+00:07:38.830 --> 00:07:40.653
+Oh, it's giving me some grief.
+
+168
+00:07:43.670 --> 00:07:46.440
+Oh, await is only allowed inside of an async function.
+
+169
+00:07:46.440 --> 00:07:47.933
+We forgot to make this async.
+
+170
+00:07:50.500 --> 00:07:52.750
+Oh no, not that one, not the component,
+
+171
+00:07:52.750 --> 00:07:54.693
+the handle submit needs to be async.
+
+172
+00:08:02.879 --> 00:08:06.060
+Give it a refresh, open it up.
+
+173
+00:08:06.060 --> 00:08:09.330
+Now, there is a whole bunch of Stripe test cards
+
+174
+00:08:09.330 --> 00:08:10.330
+that you can use,
+
+175
+00:08:10.330 --> 00:08:13.440
+to test successful transactions.
+
+176
+00:08:13.440 --> 00:08:16.713
+If you just Google Stripe test cards,
+
+177
+00:08:18.160 --> 00:08:22.270
+you'll see that there's a whole page of different cards
+
+178
+00:08:22.270 --> 00:08:26.050
+that will say no authentication required,
+
+179
+00:08:26.050 --> 00:08:29.790
+authentication required, Visa, MasterCard,
+
+180
+00:08:29.790 --> 00:08:34.790
+Discover, international cards, 3D secure testing cards,
+
+181
+00:08:36.410 --> 00:08:38.001
+specific responses and errors,
+
+182
+00:08:38.001 --> 00:08:40.810
+it's nuts how many they can possibly have.
+
+183
+00:08:40.810 --> 00:08:44.240
+And they also have cards that will throw specific errors,
+
+184
+00:08:44.240 --> 00:08:45.543
+so you can handle them.
+
+185
+00:08:46.400 --> 00:08:48.500
+And, but in our case they always just send
+
+186
+00:08:48.500 --> 00:08:50.060
+a really good message back to the user.
+
+187
+00:08:50.060 --> 00:08:51.860
+So, I've even in my own website,
+
+188
+00:08:51.860 --> 00:08:53.390
+i've not needed to use those.
+
+189
+00:08:53.390 --> 00:08:56.650
+The only one that I need to use is
+
+190
+00:08:56.650 --> 00:08:58.790
+four two four two, four two four two,
+
+191
+00:08:58.790 --> 00:09:00.100
+four two four two.
+
+192
+00:09:00.100 --> 00:09:05.100
+And I have a little keyboard shortcut in my text expander,
+
+193
+00:09:05.570 --> 00:09:08.320
+is any time i type colon four two,
+
+194
+00:09:08.320 --> 00:09:10.456
+it'll just expand to four two four two four two four two
+
+195
+00:09:10.456 --> 00:09:11.990
+four two four two four two.
+
+196
+00:09:11.990 --> 00:09:14.010
+So, I wonder what the captions were
+
+197
+00:09:14.010 --> 00:09:15.330
+like when I was saying that.
+
+198
+00:09:15.330 --> 00:09:19.190
+Four two, and then month, two two two.
+
+199
+00:09:19.190 --> 00:09:22.620
+So if you're taking this after February 2022,
+
+200
+00:09:22.620 --> 00:09:24.290
+sorry, you'll have to change that.
+
+201
+00:09:24.290 --> 00:09:27.410
+Two two two, two two two two two.
+
+202
+00:09:27.410 --> 00:09:31.160
+And I love that because I can just hold on to my two key
+
+203
+00:09:31.160 --> 00:09:32.320
+and it will work out.
+
+204
+00:09:32.320 --> 00:09:33.970
+So, I'm gonna open up my dev tools here
+
+205
+00:09:33.970 --> 00:09:35.763
+and go ahead and submit that.
+
+206
+00:09:36.901 --> 00:09:39.030
+It says we gotta do some work and good bam
+
+207
+00:09:39.030 --> 00:09:40.840
+oh, it just after a split second,
+
+208
+00:09:40.840 --> 00:09:43.960
+what comes back is this object here.
+
+209
+00:09:43.960 --> 00:09:45.337
+And this is the information
+
+210
+00:09:45.337 --> 00:09:48.740
+that comes back from Stripe.
+
+211
+00:09:48.740 --> 00:09:51.530
+You can tell that it says live mode is false,
+
+212
+00:09:51.530 --> 00:09:53.800
+object is payment method.
+
+213
+00:09:53.800 --> 00:09:56.010
+The most important one is this ID.
+
+214
+00:09:56.010 --> 00:09:58.770
+This is your actual, your token
+
+215
+00:09:58.770 --> 00:10:00.630
+that we're going to be using.
+
+216
+00:10:00.630 --> 00:10:02.460
+So, we'll head back to this
+
+217
+00:10:02.460 --> 00:10:04.050
+and keep going through all of them.
+
+218
+00:10:04.050 --> 00:10:06.170
+So handle any errors that are from Stripe.
+
+219
+00:10:06.170 --> 00:10:09.850
+So we'll say, if there is an error, then setError
+
+220
+00:10:11.130 --> 00:10:13.960
+and then we can go back down,
+
+221
+00:10:13.960 --> 00:10:15.680
+right above this card element,
+
+222
+00:10:15.680 --> 00:10:17.630
+and we'll give ourselves a little
+
+223
+00:10:17.630 --> 00:10:19.450
+if statement that says error.
+
+224
+00:10:19.450 --> 00:10:20.840
+If there is an error,
+
+225
+00:10:20.840 --> 00:10:24.100
+then go ahead and give yourself a paragraph
+
+226
+00:10:24.100 --> 00:10:26.380
+with the error.message.
+
+227
+00:10:26.380 --> 00:10:28.770
+And I believe we can find one of those test cards
+
+228
+00:10:28.770 --> 00:10:32.320
+that will give you a, an actual error.
+
+229
+00:10:32.320 --> 00:10:37.040
+IntegrationError can only create one element of type card.
+
+230
+00:10:37.040 --> 00:10:38.380
+Oh, sometimes that pops up.
+
+231
+00:10:38.380 --> 00:10:41.140
+Sometimes it has, I think because of the dance
+
+232
+00:10:41.140 --> 00:10:44.080
+that we do back and forth between Next JS and whatnot,
+
+233
+00:10:44.080 --> 00:10:46.240
+but don't sweat about that.
+
+234
+00:10:46.240 --> 00:10:48.700
+It's probably because of the live reloading
+
+235
+00:10:48.700 --> 00:10:51.040
+and whatnot, that that pops up.
+
+236
+00:10:51.040 --> 00:10:53.320
+But let's take a look at these tests and cards.
+
+237
+00:10:53.320 --> 00:10:58.320
+There should be an error card.
+
+238
+00:10:59.430 --> 00:11:00.420
+Here we go.
+
+239
+00:11:00.420 --> 00:11:03.943
+We'll, this one will fail with an error.
+
+240
+00:11:05.690 --> 00:11:07.103
+So, go back,
+
+241
+00:11:08.320 --> 00:11:09.693
+try to use that card.
+
+242
+00:11:13.240 --> 00:11:14.570
+Check it out
+
+243
+00:11:14.570 --> 00:11:16.680
+and (laughs)
+
+244
+00:11:16.680 --> 00:11:18.160
+it just says error.message,
+
+245
+00:11:18.160 --> 00:11:21.283
+because I forgot to put curly brackets around it.
+
+246
+00:11:22.543 --> 00:11:23.376
+Here we go,
+
+247
+00:11:23.376 --> 00:11:24.940
+your postal code is incomplete.
+
+248
+00:11:24.940 --> 00:11:26.010
+So there we go.
+
+249
+00:11:26.010 --> 00:11:29.580
+Actually in this case, the payment did go through,
+
+250
+00:11:29.580 --> 00:11:31.490
+but you can see how we can catch errors
+
+251
+00:11:31.490 --> 00:11:33.350
+and actually display it to the user.
+
+252
+00:11:33.350 --> 00:11:37.683
+That text is very large.
+
+253
+00:11:39.170 --> 00:11:41.150
+So, we probably wanna make that
+
+254
+00:11:41.150 --> 00:11:42.770
+a little bit smaller.
+
+255
+00:11:42.770 --> 00:11:45.760
+You can, I'm just gonna do a quick little hack here.
+
+256
+00:11:45.760 --> 00:11:47.850
+You could make a custom stock component,
+
+257
+00:11:47.850 --> 00:11:50.253
+but I'm just gonna say font size is 12.
+
+258
+00:11:51.310 --> 00:11:52.633
+There we go, much better.
+
+259
+00:11:57.670 --> 00:12:00.830
+Next up, send the token from step three
+
+260
+00:12:00.830 --> 00:12:01.710
+to our keystone server.
+
+261
+00:12:01.710 --> 00:12:03.670
+Okay, we'll get into that in a second.
+
+262
+00:12:03.670 --> 00:12:05.250
+Change the page, we'll get into that.
+
+263
+00:12:05.250 --> 00:12:06.970
+Close the cart.
+
+264
+00:12:06.970 --> 00:12:09.890
+We'll get into that if it's successful.
+
+265
+00:12:09.890 --> 00:12:14.070
+So we can, and then finally turn the loader off.
+
+266
+00:12:14.070 --> 00:12:18.253
+So, we'll say setLoading is false.
+
+267
+00:12:21.007 --> 00:12:26.007
+And then we also want to say nProgress.done.
+
+268
+00:12:28.110 --> 00:12:30.590
+Okay, so that's not totally flashed out just yet,
+
+269
+00:12:30.590 --> 00:12:32.250
+but I think that's enough for this video.
+
+270
+00:12:32.250 --> 00:12:33.210
+In the next one,
+
+271
+00:12:33.210 --> 00:12:35.060
+we'll have to start getting into the backend,
+
+272
+00:12:35.060 --> 00:12:37.943
+and writing some custom mutations for that spot.
+

@@ -1,0 +1,1326 @@
+﻿WEBVTT
+
+1
+00:00:00.173 --> 00:00:01.687
+(Whoosh)
+
+2
+00:00:01.687 --> 00:00:05.060
+<v ->(claps) Alright, now we got to make the custom mutation</v>
+
+3
+00:00:05.060 --> 00:00:07.260
+to actually go ahead and charge the card.
+
+4
+00:00:07.260 --> 00:00:11.520
+So, real quick how it works again is, we get the token
+
+5
+00:00:11.520 --> 00:00:14.410
+on the client side and basically all we're doing there
+
+6
+00:00:14.410 --> 00:00:16.960
+is sending credit card information.
+
+7
+00:00:16.960 --> 00:00:19.530
+And that just basically goes to stripe and says
+
+8
+00:00:19.530 --> 00:00:21.600
+this is a real credit card.
+
+9
+00:00:21.600 --> 00:00:23.910
+I think it's called pre-authorization.
+
+10
+00:00:23.910 --> 00:00:27.100
+And then we take that token to our back end
+
+11
+00:00:27.100 --> 00:00:29.350
+and we're allowed to go ahead
+
+12
+00:00:29.350 --> 00:00:32.210
+and push the charge through as well as provide information
+
+13
+00:00:32.210 --> 00:00:35.700
+about the total amount for that.
+
+14
+00:00:35.700 --> 00:00:40.280
+So we need to go into our mutations folder here
+
+15
+00:00:40.280 --> 00:00:42.900
+and go to index.ts.
+
+16
+00:00:42.900 --> 00:00:46.110
+And we're going to add a new mutation here.
+
+17
+00:00:46.110 --> 00:00:50.210
+So the mutation here is going to be called the checkout.
+
+18
+00:00:50.210 --> 00:00:54.810
+So checkout, that takes in a token from the client side
+
+19
+00:00:54.810 --> 00:00:57.880
+and that is a type of string that is required,
+
+20
+00:00:57.880 --> 00:01:01.250
+and returned from that will be an order.
+
+21
+00:01:01.250 --> 00:01:03.010
+Then we'll go down to the resolvers here
+
+22
+00:01:03.010 --> 00:01:06.693
+and we'll make a new mutation resolver, called checkout.
+
+23
+00:01:07.770 --> 00:01:11.260
+And we have to then go ahead and make that really quickly.
+
+24
+00:01:11.260 --> 00:01:16.250
+So, I'm just gonna open my add to cart mutation here.
+
+25
+00:01:16.250 --> 00:01:19.120
+And I'm going to just save a copy of it
+
+26
+00:01:19.120 --> 00:01:21.440
+and we'll call it checkout.ts.
+
+27
+00:01:21.440 --> 00:01:23.673
+Again, this is in our mutations folder.
+
+28
+00:01:25.610 --> 00:01:30.610
+Then, we can go ahead and start to delete a couple of things
+
+29
+00:01:31.380 --> 00:01:32.810
+that we need here.
+
+30
+00:01:32.810 --> 00:01:37.200
+Basically, we can take out all of the code from within it,
+
+31
+00:01:37.200 --> 00:01:39.920
+I really just wanted this function signature right here,
+
+32
+00:01:39.920 --> 00:01:41.110
+'cause it's kind of hard to type.
+
+33
+00:01:41.110 --> 00:01:44.313
+So, delete everything inside the body of that.
+
+34
+00:01:46.400 --> 00:01:51.200
+And this is going to return a promise which returns
+
+35
+00:01:51.200 --> 00:01:55.533
+an order, create input.
+
+36
+00:01:57.900 --> 00:02:02.853
+And then we'll rename this to checkout.
+
+37
+00:02:05.410 --> 00:02:07.210
+Okay, I think we're in good shape.
+
+38
+00:02:07.210 --> 00:02:12.210
+You can remove the, any additional data
+
+39
+00:02:13.170 --> 00:02:14.563
+that you have up here.
+
+40
+00:02:15.900 --> 00:02:19.420
+And we'll go back to our index and make sure we import
+
+41
+00:02:19.420 --> 00:02:23.353
+that checkout function.
+
+42
+00:02:24.310 --> 00:02:26.423
+I'll just duplicate this and say checkout.
+
+43
+00:02:28.680 --> 00:02:31.150
+Okay, still giving me heck here,
+
+44
+00:02:31.150 --> 00:02:33.857
+unsafe assignment of an any value.
+
+45
+00:02:33.857 --> 00:02:35.270
+What!
+
+46
+00:02:35.270 --> 00:02:38.020
+(mouse clicking)
+
+47
+00:02:40.220 --> 00:02:43.493
+Oh, it's because we didn't export it properly.
+
+48
+00:02:45.150 --> 00:02:47.680
+It always knows, it always knows.
+
+49
+00:02:47.680 --> 00:02:50.300
+We also need to modify this,
+
+50
+00:02:50.300 --> 00:02:54.000
+this is no longer a product ID but we're taking in a token.
+
+51
+00:02:54.000 --> 00:02:56.680
+Again, this second argument to the function
+
+52
+00:02:56.680 --> 00:02:59.310
+is gonna be arguments, we're de-structuring
+
+53
+00:02:59.310 --> 00:03:02.720
+the arguments.token, and then you have to provide
+
+54
+00:03:02.720 --> 00:03:04.340
+an object type here.
+
+55
+00:03:04.340 --> 00:03:05.910
+Basically we're saying give me an object
+
+56
+00:03:05.910 --> 00:03:07.650
+that has a token and a string.
+
+57
+00:03:07.650 --> 00:03:10.160
+Additionally, you could also just say like,
+
+58
+00:03:10.160 --> 00:03:14.400
+interface arguments.
+
+59
+00:03:14.400 --> 00:03:17.530
+And then in there you could say we have a token,
+
+60
+00:03:17.530 --> 00:03:19.783
+which is a type of string.
+
+61
+00:03:20.750 --> 00:03:23.460
+And then we can go down here and just replace that.
+
+62
+00:03:23.460 --> 00:03:27.551
+That might be a little bit easier to read.
+
+63
+00:03:27.551 --> 00:03:31.060
+Just to clarify, I know that this gets a little bit hairy
+
+64
+00:03:31.060 --> 00:03:33.240
+if you're not into TypeScript a whole lot.
+
+65
+00:03:33.240 --> 00:03:36.280
+Okay, so, we've got everything working.
+
+66
+00:03:36.280 --> 00:03:40.420
+If we kill our process and started again, my question is,
+
+67
+00:03:40.420 --> 00:03:45.420
+do we now see the checkout function showing up
+
+68
+00:03:45.540 --> 00:03:47.220
+in our GraphQL Playground?
+
+69
+00:03:47.220 --> 00:03:48.700
+So I'm just gonna refresh this
+
+70
+00:03:48.700 --> 00:03:50.200
+and wait for Keystone to load.
+
+71
+00:03:54.470 --> 00:03:57.640
+And we'll take a look at our docks here
+
+72
+00:03:57.640 --> 00:03:59.746
+and look for checkout.
+
+73
+00:03:59.746 --> 00:04:00.579
+There we go.
+
+74
+00:04:00.579 --> 00:04:04.540
+Mutation checkout, takes in a token, returns an order,
+
+75
+00:04:04.540 --> 00:04:07.940
+and it knows exactly all the information
+
+76
+00:04:07.940 --> 00:04:09.580
+that is going to return to us.
+
+77
+00:04:09.580 --> 00:04:10.413
+Awesome.
+
+78
+00:04:10.413 --> 00:04:12.520
+So now the sort of the hard work that we have
+
+79
+00:04:12.520 --> 00:04:17.520
+to do right now is inside of this checkout function,
+
+80
+00:04:17.770 --> 00:04:21.760
+we need to do a whole bunch of work.
+
+81
+00:04:21.760 --> 00:04:23.520
+So first thing we have to do
+
+82
+00:04:23.520 --> 00:04:26.583
+is make sure they are signed in.
+
+83
+00:04:28.020 --> 00:04:29.710
+Then the second thing we want to do
+
+84
+00:04:29.710 --> 00:04:32.933
+is calculate the total price.
+
+85
+00:04:35.130 --> 00:04:38.440
+And how that's gonna work is that in step number one,
+
+86
+00:04:38.440 --> 00:04:40.850
+we're gonna query the current user.
+
+87
+00:04:40.850 --> 00:04:42.830
+And if there's not a user, we'll throw an error
+
+88
+00:04:42.830 --> 00:04:45.670
+and if there is a user, we will also have to query
+
+89
+00:04:45.670 --> 00:04:48.520
+the entire cart for that user which is great.
+
+90
+00:04:48.520 --> 00:04:51.640
+So that will allow us to calculate
+
+91
+00:04:51.640 --> 00:04:53.800
+the total price of their cart.
+
+92
+00:04:53.800 --> 00:04:57.760
+Third thing we want to do is create the payment
+
+93
+00:04:57.760 --> 00:05:00.470
+with the stripe library.
+
+94
+00:05:00.470 --> 00:05:02.440
+So we also have to import the stripe library
+
+95
+00:05:02.440 --> 00:05:05.633
+into our back end and go ahead and charge that.
+
+96
+00:05:06.600 --> 00:05:08.900
+Then the fourth thing we'll do
+
+97
+00:05:08.900 --> 00:05:13.900
+is convert the cart items to order items, remember,
+
+98
+00:05:14.670 --> 00:05:18.300
+because we can't leave them as just regular products.
+
+99
+00:05:18.300 --> 00:05:21.610
+And then finally, the fifth thing we wanna do
+
+100
+00:05:21.610 --> 00:05:25.170
+is create the order and return it.
+
+101
+00:05:25.170 --> 00:05:27.380
+So we're gonna be saving it in the database.
+
+102
+00:05:27.380 --> 00:05:29.400
+So, first things first, make sure they're signed in.
+
+103
+00:05:29.400 --> 00:05:32.180
+So basically here, we'll get their user Id
+
+104
+00:05:32.180 --> 00:05:37.180
+and we'll say const user Id =
+
+105
+00:05:38.200 --> 00:05:42.710
+context.session.item Id,
+
+106
+00:05:42.710 --> 00:05:47.710
+I'll say if there is no user ID, then we can throw, whoa!
+
+107
+00:05:49.980 --> 00:05:54.980
+Throw a new error, that says, "Sorry you must be signed in
+
+108
+00:05:55.627 --> 00:05:57.610
+"to create an order."
+
+109
+00:05:57.610 --> 00:05:59.650
+Alright, that's the first thing.
+
+110
+00:05:59.650 --> 00:06:01.940
+Next, calculate the total price for their order.
+
+111
+00:06:01.940 --> 00:06:03.530
+I guess, like we need a step.
+
+112
+00:06:03.530 --> 00:06:05.030
+This is the problem with numbering my steps.
+
+113
+00:06:05.030 --> 00:06:08.913
+Sometimes (laughs), step 1.5 is query the current user.
+
+114
+00:06:10.690 --> 00:06:11.980
+So the way that we'll do that
+
+115
+00:06:11.980 --> 00:06:15.630
+is we'll say const user = await,
+
+116
+00:06:15.630 --> 00:06:20.630
+we'll take the context.lists.user.find one.
+
+117
+00:06:22.560 --> 00:06:24.200
+And we are going to find one
+
+118
+00:06:24.200 --> 00:06:29.153
+where the id is equal to the user Id.
+
+119
+00:06:30.220 --> 00:06:33.100
+And then the resolve fields is going
+
+120
+00:06:33.100 --> 00:06:37.570
+to be very much just a GraphQL thing here.
+
+121
+00:06:37.570 --> 00:06:39.490
+So we'll do back ticks.
+
+122
+00:06:39.490 --> 00:06:41.460
+We want, here we'll do it on its own line.
+
+123
+00:06:41.460 --> 00:06:45.620
+Id, name, email and cart.
+
+124
+00:06:45.620 --> 00:06:47.760
+Let's see where we're at with that so far.
+
+125
+00:06:47.760 --> 00:06:52.760
+So if I console.log the user and we restart our process,
+
+126
+00:06:56.120 --> 00:07:00.343
+if I run this mutation checkout with a token,
+
+127
+00:07:01.520 --> 00:07:03.500
+are we going to get the currently logged
+
+128
+00:07:03.500 --> 00:07:06.053
+in users entire cart from there.
+
+129
+00:07:07.210 --> 00:07:11.930
+So say mutation is checkout the token,
+
+130
+00:07:11.930 --> 00:07:14.220
+you know that you can pass any token you want right now,
+
+131
+00:07:14.220 --> 00:07:15.730
+it's ABC 123.
+
+132
+00:07:15.730 --> 00:07:20.313
+And then returned from that we want the Id of the user.
+
+133
+00:07:23.450 --> 00:07:25.510
+Let's just get the Id of the actual order,
+
+134
+00:07:25.510 --> 00:07:27.840
+'cause it's not actually gonna return anything just yet.
+
+135
+00:07:27.840 --> 00:07:31.180
+So, let's make sure that it's all running good.
+
+136
+00:07:31.180 --> 00:07:35.143
+Go ahead and clear out your DevTools, run it, boom!
+
+137
+00:07:37.640 --> 00:07:38.950
+We've got a bit of an error.
+
+138
+00:07:38.950 --> 00:07:41.900
+Cannot read property find one of undefined.
+
+139
+00:07:41.900 --> 00:07:44.250
+Oh, you know what I did is,
+
+140
+00:07:44.250 --> 00:07:46.900
+this needs to be a capital U, User,
+
+141
+00:07:46.900 --> 00:07:48.450
+so I gotta go through the whole song and dance,
+
+142
+00:07:48.450 --> 00:07:50.300
+I'll speed it up, okay, gonna run it.
+
+143
+00:07:51.640 --> 00:07:53.100
+Boom!
+
+144
+00:07:53.100 --> 00:07:55.630
+And good, we're getting our cart items show up here.
+
+145
+00:07:55.630 --> 00:07:57.120
+They're empty, because we have to write
+
+146
+00:07:57.120 --> 00:07:59.660
+a little bit more GraphQL here.
+
+147
+00:07:59.660 --> 00:08:01.190
+And again, we're getting this issue where this
+
+148
+00:08:01.190 --> 00:08:03.100
+is obviously just a string, but we want it
+
+149
+00:08:03.100 --> 00:08:05.980
+to look like a GraphQL once we highlight it.
+
+150
+00:08:05.980 --> 00:08:07.390
+So we can do a little trick here,
+
+151
+00:08:07.390 --> 00:08:12.307
+we say const graphql = string.raw,
+
+152
+00:08:13.320 --> 00:08:16.270
+oh, that should be a capital S, that's the built in string.
+
+153
+00:08:17.210 --> 00:08:20.300
+And then we can go ahead and tag this as graphql.
+
+154
+00:08:20.300 --> 00:08:21.460
+There we go.
+
+155
+00:08:21.460 --> 00:08:24.860
+Now inside the cart, we want a whole bunch of stuff
+
+156
+00:08:24.860 --> 00:08:25.763
+about their cart.
+
+157
+00:08:26.670 --> 00:08:30.363
+At the id of the cart, you want the quantity,
+
+158
+00:08:31.710 --> 00:08:35.360
+you want the product that's associated with that cart item,
+
+159
+00:08:35.360 --> 00:08:38.603
+you want the name, the price, the description,
+
+160
+00:08:40.800 --> 00:08:45.050
+the id, the photo inside of that is an image.
+
+161
+00:08:45.050 --> 00:08:49.230
+And then you also need the id of both of those
+
+162
+00:08:50.380 --> 00:08:55.320
+and the public Url Transformed.
+
+163
+00:08:55.320 --> 00:08:58.830
+So now if I log that out again,
+
+164
+00:08:58.830 --> 00:09:02.060
+after I restart it, we should see a huge dump of it.
+
+165
+00:09:02.060 --> 00:09:04.050
+I'm gonna use console.dir here,
+
+166
+00:09:04.050 --> 00:09:06.600
+and the reason I do that is because you can pass it
+
+167
+00:09:06.600 --> 00:09:10.480
+a depth of null and it won't truncate any objects
+
+168
+00:09:10.480 --> 00:09:13.780
+that you're logging in your terminal there.
+
+169
+00:09:13.780 --> 00:09:16.130
+So go ahead and run this, boom!
+
+170
+00:09:16.130 --> 00:09:18.770
+Look at this, we've got all the different items
+
+171
+00:09:18.770 --> 00:09:19.920
+that are in our cart.
+
+172
+00:09:19.920 --> 00:09:21.870
+One thing that I've intentionally done here
+
+173
+00:09:21.870 --> 00:09:25.510
+is that you can see there are five items in my cart.
+
+174
+00:09:25.510 --> 00:09:28.330
+But these last two don't have a product associated
+
+175
+00:09:28.330 --> 00:09:29.163
+with them.
+
+176
+00:09:29.163 --> 00:09:31.430
+So what I did, is I went ahead
+
+177
+00:09:31.430 --> 00:09:32.890
+and added something to my cart
+
+178
+00:09:32.890 --> 00:09:34.700
+and then I deleted the product.
+
+179
+00:09:34.700 --> 00:09:37.770
+So now we're in a situation where we have a cart item
+
+180
+00:09:37.770 --> 00:09:40.190
+but the product that the cart item references
+
+181
+00:09:40.190 --> 00:09:42.410
+is no longer there, it is deleted,
+
+182
+00:09:42.410 --> 00:09:44.210
+it's no longer in the database.
+
+183
+00:09:44.210 --> 00:09:47.350
+So what we have to do is we're to filter these things out.
+
+184
+00:09:47.350 --> 00:09:48.830
+We've already taken care of that
+
+185
+00:09:48.830 --> 00:09:52.610
+in our cart before we go ahead and display it
+
+186
+00:09:52.610 --> 00:09:54.000
+but we have to do it here as well,
+
+187
+00:09:54.000 --> 00:09:57.030
+where we gotta filter them out before we go ahead
+
+188
+00:09:57.030 --> 00:09:58.180
+and calculate the total.
+
+189
+00:09:58.180 --> 00:10:00.570
+So, here we'll do it, so I say const
+
+190
+00:10:00.570 --> 00:10:05.233
+cart items = user.cart.filter.
+
+191
+00:10:06.340 --> 00:10:10.030
+Then we'll take the cart item and we'll return
+
+192
+00:10:10.030 --> 00:10:12.770
+cart item.product.
+
+193
+00:10:12.770 --> 00:10:16.350
+And if that returns an object, it will be true.
+
+194
+00:10:16.350 --> 00:10:19.000
+And if it returns, null, it will be false
+
+195
+00:10:19.000 --> 00:10:20.760
+and it will filter that item out.
+
+196
+00:10:20.760 --> 00:10:23.470
+And that should give us just the actual cart items
+
+197
+00:10:23.470 --> 00:10:24.430
+that we want.
+
+198
+00:10:24.430 --> 00:10:28.070
+So, in order to calculate the total price
+
+199
+00:10:28.070 --> 00:10:31.460
+of what is in our order, we will use reduce.
+
+200
+00:10:31.460 --> 00:10:36.460
+So const amount = cart items.reduce.
+
+201
+00:10:38.040 --> 00:10:41.610
+And we'll do a proper, you could probably get away
+
+202
+00:10:41.610 --> 00:10:42.700
+with a little arrow function here
+
+203
+00:10:42.700 --> 00:10:44.660
+but I'm gonna show you how to type this.
+
+204
+00:10:44.660 --> 00:10:48.130
+So we have a tally, which means we're going to start off
+
+205
+00:10:48.130 --> 00:10:49.420
+with a zero here.
+
+206
+00:10:49.420 --> 00:10:52.480
+And that tally has to be typed as a number.
+
+207
+00:10:52.480 --> 00:10:55.280
+And then we also have each individual item in reduce,
+
+208
+00:10:55.280 --> 00:10:56.380
+that's the second argument.
+
+209
+00:10:56.380 --> 00:10:57.630
+So we'll say cart item.
+
+210
+00:10:57.630 --> 00:11:02.020
+And the type of that is, cart item,
+
+211
+00:11:02.020 --> 00:11:05.143
+I believe it's create input.
+
+212
+00:11:07.380 --> 00:11:12.380
+Then from that, we can return the tally + cart item.,
+
+213
+00:11:13.320 --> 00:11:15.180
+and you see this is why we type it
+
+214
+00:11:15.180 --> 00:11:17.620
+'cause we get these nice auto-completions.
+
+215
+00:11:17.620 --> 00:11:22.043
+We wanna take the quantity times cart item.product.,
+
+216
+00:11:25.130 --> 00:11:27.483
+what is, it's price, lives on there.
+
+217
+00:11:29.130 --> 00:11:30.460
+All right, now we have the amount.
+
+218
+00:11:30.460 --> 00:11:33.650
+you can go ahead and console.log that amount
+
+219
+00:11:33.650 --> 00:11:35.360
+and just make sure everything is working
+
+220
+00:11:35.360 --> 00:11:38.083
+before we get into the more advanced stripe stuff.
+
+221
+00:11:39.370 --> 00:11:42.120
+Go ahead and run this, boom!
+
+222
+00:11:42.120 --> 00:11:43.290
+Oh, it wasn't ready yet.
+
+223
+00:11:43.290 --> 00:11:44.880
+There we go, run it again,
+
+224
+00:11:44.880 --> 00:11:49.880
+and you see I get 30,482 for the cart items.
+
+225
+00:11:50.640 --> 00:11:52.140
+Okay, good.
+
+226
+00:11:52.140 --> 00:11:54.970
+Next thing is create the payment with the stripe library.
+
+227
+00:11:54.970 --> 00:11:57.070
+Okay, so now we need to configure stripe
+
+228
+00:11:57.070 --> 00:11:58.770
+to work on our server side.
+
+229
+00:11:58.770 --> 00:12:02.180
+And we're going to need a secret key for that to work.
+
+230
+00:12:02.180 --> 00:12:05.850
+So go back to your stripe, go to API keys,
+
+231
+00:12:05.850 --> 00:12:09.720
+reveal where you have your secret key and click on reveal.
+
+232
+00:12:09.720 --> 00:12:10.930
+Go ahead and copy that.
+
+233
+00:12:10.930 --> 00:12:13.860
+Again, treat this like a password.
+
+234
+00:12:13.860 --> 00:12:16.683
+Publishable key, that's fine, that goes in the browser.
+
+235
+00:12:17.540 --> 00:12:22.250
+Secret keys always need to be treated as passwords
+
+236
+00:12:22.250 --> 00:12:25.780
+and they should never be shown to your users
+
+237
+00:12:25.780 --> 00:12:28.380
+or your browser or anything like that.
+
+238
+00:12:28.380 --> 00:12:31.730
+So what we wanna do is go to our .env
+
+239
+00:12:31.730 --> 00:12:35.840
+and we will say stripe, oh, we already got it right here.
+
+240
+00:12:35.840 --> 00:12:36.680
+Stripe secret.
+
+241
+00:12:36.680 --> 00:12:39.323
+So we will replace that, right here, boom!
+
+242
+00:12:41.220 --> 00:12:45.590
+And we need to make a stripe.ts file.
+
+243
+00:12:45.590 --> 00:12:48.233
+So go to your lib, make a new file,
+
+244
+00:12:49.340 --> 00:12:50.303
+got stripe.ts.
+
+245
+00:12:52.517 --> 00:12:55.873
+(mouse clicking)
+
+246
+00:12:55.873 --> 00:12:59.373
+And in there, we're going to import stripe
+
+247
+00:13:01.640 --> 00:13:04.983
+from the stripe library.
+
+248
+00:13:07.150 --> 00:13:12.150
+Then we will say const stripe config = new stripe.
+
+249
+00:13:16.650 --> 00:13:18.910
+And then we pass it, our secret key.
+
+250
+00:13:18.910 --> 00:13:22.500
+So process.env.stripe_secret,
+
+251
+00:13:23.874 --> 00:13:27.520
+and then we say or an empty string
+
+252
+00:13:27.520 --> 00:13:31.210
+and that will just keep our TypeScript happy.
+
+253
+00:13:31.210 --> 00:13:34.660
+The other argument that you need if we hover over
+
+254
+00:13:34.660 --> 00:13:37.680
+this right now, it says expected two arguments
+
+255
+00:13:37.680 --> 00:13:41.880
+but got one, an argument, ooh, an argument for config
+
+256
+00:13:41.880 --> 00:13:43.010
+was not provided.
+
+257
+00:13:43.010 --> 00:13:48.010
+Okay, so, the next one is a config object.
+
+258
+00:13:48.130 --> 00:13:52.250
+And we need to have an API version
+
+259
+00:13:52.250 --> 00:13:56.250
+because it's kind of cool, stripes API changes all the time
+
+260
+00:13:56.250 --> 00:13:58.870
+but they will still run the old code
+
+261
+00:13:58.870 --> 00:14:02.810
+for you until you explicitly upgrade the API version.
+
+262
+00:14:02.810 --> 00:14:04.777
+And it says right here 2020, 08, 27.
+
+263
+00:14:08.270 --> 00:14:10.820
+I guess that's the most recent version.
+
+264
+00:14:10.820 --> 00:14:13.863
+So I'm not sure if I can copy that.
+
+265
+00:14:15.240 --> 00:14:17.533
+I can, to copy you just click it.
+
+266
+00:14:18.580 --> 00:14:21.590
+Actually, maybe it's an enum let's try.
+
+267
+00:14:21.590 --> 00:14:24.743
+API version (laughs), look, it just,
+
+268
+00:14:25.600 --> 00:14:28.710
+possible options are, there's only one right now,
+
+269
+00:14:28.710 --> 00:14:31.600
+'cause they just introduced this feature into the library.
+
+270
+00:14:31.600 --> 00:14:33.600
+But bam, it just auto-completes it for you.
+
+271
+00:14:33.600 --> 00:14:36.520
+Again, that's another huge benefit to TypeScript.
+
+272
+00:14:36.520 --> 00:14:40.977
+Then we can go ahead and export default stripe config.
+
+273
+00:14:43.750 --> 00:14:46.520
+And that is our whole stripe library.
+
+274
+00:14:46.520 --> 00:14:48.920
+I almost will always do this in my apps.
+
+275
+00:14:48.920 --> 00:14:50.920
+I just put stripe into its own file,
+
+276
+00:14:50.920 --> 00:14:53.120
+make the config and then export it.
+
+277
+00:14:53.120 --> 00:14:55.780
+And that way you can import this config anywhere you want,
+
+278
+00:14:55.780 --> 00:14:59.560
+you don't have to repass it, the secret and the API version,
+
+279
+00:14:59.560 --> 00:15:00.583
+all that stuff.
+
+280
+00:15:01.740 --> 00:15:03.533
+All right, so we've got that.
+
+281
+00:15:04.390 --> 00:15:07.903
+Let's go back into our checkout here.
+
+282
+00:15:09.180 --> 00:15:13.750
+And we're gonna go ahead and use that stripe config.
+
+283
+00:15:13.750 --> 00:15:16.210
+So, create the payment with stripe.
+
+284
+00:15:16.210 --> 00:15:18.440
+Wait, maybe we should call it create the charge,
+
+285
+00:15:18.440 --> 00:15:20.630
+that's that's the word that stripe uses.
+
+286
+00:15:20.630 --> 00:15:25.630
+So say const charge = await stripe., or stripe config.
+
+287
+00:15:29.780 --> 00:15:32.693
+And we have to import that from our stripe.js.
+
+288
+00:15:35.310 --> 00:15:37.033
+There we go, from lib stripe,
+
+289
+00:15:39.540 --> 00:15:43.083
+and we say .payment intents.create.
+
+290
+00:15:44.630 --> 00:15:46.840
+And we pass an object to that.
+
+291
+00:15:46.840 --> 00:15:49.750
+So the amount will be our amount variable.
+
+292
+00:15:49.750 --> 00:15:51.530
+So you could pass at anything,
+
+293
+00:15:51.530 --> 00:15:53.580
+stripe deals in cents as well,
+
+294
+00:15:53.580 --> 00:15:55.300
+so you don't have to convert that to dollars
+
+295
+00:15:55.300 --> 00:15:58.340
+or anything like that, you have to pass a currency
+
+296
+00:15:58.340 --> 00:16:02.600
+which is USD, confirm it's true.
+
+297
+00:16:02.600 --> 00:16:06.730
+The confirm that we have there is to attempt
+
+298
+00:16:06.730 --> 00:16:08.693
+to immediately confirm it.
+
+299
+00:16:09.720 --> 00:16:13.463
+Previously you've had to create a payment intent,
+
+300
+00:16:14.700 --> 00:16:16.440
+wait for that to come back and then you have
+
+301
+00:16:16.440 --> 00:16:19.520
+to go back to stripe and do confirm.
+
+302
+00:16:19.520 --> 00:16:20.810
+But like in most cases
+
+303
+00:16:20.810 --> 00:16:23.460
+you just wanna charge the card immediately.
+
+304
+00:16:23.460 --> 00:16:26.840
+So by typing confirm true, you'll be able
+
+305
+00:16:26.840 --> 00:16:29.370
+to do that all in one good step.
+
+306
+00:16:29.370 --> 00:16:31.440
+And then the payment method is going to be
+
+307
+00:16:31.440 --> 00:16:35.320
+the token that got sent in from our browser.
+
+308
+00:16:35.320 --> 00:16:40.270
+So that value gets passed into this resolver right here.
+
+309
+00:16:42.620 --> 00:16:45.460
+So you just pass it like there, token.
+
+310
+00:16:45.460 --> 00:16:48.690
+And that's why we called create payment method
+
+311
+00:16:48.690 --> 00:16:51.180
+on the on the front end, because then stripe knows
+
+312
+00:16:51.180 --> 00:16:53.520
+how to actually charge that card.
+
+313
+00:16:53.520 --> 00:16:55.120
+Alright, so that's that.
+
+314
+00:16:55.120 --> 00:16:57.770
+What we'll do is we'll put a catch on the end there,
+
+315
+00:16:57.770 --> 00:17:00.600
+'cause this is really important that we handle these errors.
+
+316
+00:17:00.600 --> 00:17:03.413
+And in here, we can just console.log.
+
+317
+00:17:04.950 --> 00:17:07.923
+error, but then we should actually throw an error,
+
+318
+00:17:10.030 --> 00:17:15.030
+we'll say, oops, err.message, just in case anything happens
+
+319
+00:17:15.470 --> 00:17:18.040
+from the back end.
+
+320
+00:17:18.040 --> 00:17:21.600
+So we got this charge up and running.
+
+321
+00:17:21.600 --> 00:17:24.760
+Now it is worth stopping there
+
+322
+00:17:24.760 --> 00:17:28.020
+and trying to get this working with our client side
+
+323
+00:17:28.020 --> 00:17:29.680
+'cause we wrote a whole bunch of code,
+
+324
+00:17:29.680 --> 00:17:31.220
+we have to convert the cart items
+
+325
+00:17:31.220 --> 00:17:33.080
+and create the order, we'll do that in a bit
+
+326
+00:17:33.080 --> 00:17:36.110
+but being able to send the token
+
+327
+00:17:36.110 --> 00:17:38.760
+from the front end to the back end and make a charge.
+
+328
+00:17:38.760 --> 00:17:41.160
+so it shows up in our payments here
+
+329
+00:17:41.160 --> 00:17:42.480
+is going to be a big step.
+
+330
+00:17:42.480 --> 00:17:43.980
+So, let's get that working now
+
+331
+00:17:43.980 --> 00:17:46.280
+and I'll catch you in the next video for that.
+

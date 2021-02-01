@@ -1,0 +1,1081 @@
+﻿WEBVTT
+
+1
+00:00:01.940 --> 00:00:02.960
+<v Presenter>All right. Now we're gonna talk about</v>
+
+2
+00:00:02.960 --> 00:00:04.330
+the credit card checkout.
+
+3
+00:00:04.330 --> 00:00:08.350
+We're gonna be using Stripe to actually charge credit cards.
+
+4
+00:00:08.350 --> 00:00:11.390
+Um, and then we're gonna be writing some custom mutations
+
+5
+00:00:11.390 --> 00:00:15.180
+on our back end to actually process those things cause
+
+6
+00:00:15.180 --> 00:00:18.470
+the whole Stripe checkout is sort of a two-step process.
+
+7
+00:00:18.470 --> 00:00:21.210
+First, you capture the user's credit card information
+
+8
+00:00:21.210 --> 00:00:24.340
+and any other information you need on the client,
+
+9
+00:00:24.340 --> 00:00:25.500
+you send that to Stripe,
+
+10
+00:00:25.500 --> 00:00:28.210
+Stripe comes back with what's called a token.
+
+11
+00:00:28.210 --> 00:00:30.090
+Um, that's sort of like,
+
+12
+00:00:30.090 --> 00:00:32.450
+good for one credit card charge
+
+13
+00:00:32.450 --> 00:00:34.190
+worth of however much you want.
+
+14
+00:00:34.190 --> 00:00:37.320
+Um, and then you throw that token back to your server side
+
+15
+00:00:37.320 --> 00:00:38.800
+um, and then actually go through
+
+16
+00:00:38.800 --> 00:00:40.620
+with processing the transaction.
+
+17
+00:00:40.620 --> 00:00:44.000
+The reason why they do that is cause you never wanna send
+
+18
+00:00:44.000 --> 00:00:46.410
+credit card data to your actual server,
+
+19
+00:00:46.410 --> 00:00:48.070
+because there's a whole lot of compliance
+
+20
+00:00:48.070 --> 00:00:50.100
+that needs to happen if you're actually handling
+
+21
+00:00:50.100 --> 00:00:51.960
+credit card numbers on your server.
+
+22
+00:00:51.960 --> 00:00:53.660
+And with the way Stripe does it,
+
+23
+00:00:53.660 --> 00:00:54.760
+you don't have to worry about that
+
+24
+00:00:54.760 --> 00:00:57.150
+cause it's only ever using tokens.
+
+25
+00:00:57.150 --> 00:01:02.150
+So you need to go to stripe.com and sign up for an account.
+
+26
+00:01:02.180 --> 00:01:04.670
+Um, and then when you're signed in,
+
+27
+00:01:04.670 --> 00:01:07.900
+you wanna make sure that you are in test.
+
+28
+00:01:07.900 --> 00:01:10.420
+I think by default they will put you in the test mode here.
+
+29
+00:01:10.420 --> 00:01:13.520
+I've just signed up for a completely separate account
+
+30
+00:01:13.520 --> 00:01:14.830
+called Wes Bos Tutorials
+
+31
+00:01:14.830 --> 00:01:17.080
+and I use this for all of my teaching.
+
+32
+00:01:17.080 --> 00:01:20.490
+Um, then what you wanna do is go to developers API keys
+
+33
+00:01:20.490 --> 00:01:21.760
+and we're going to make,
+
+34
+00:01:21.760 --> 00:01:26.520
+need to make an environmental variable that lives in
+
+35
+00:01:26.520 --> 00:01:27.353
+our frontend.
+
+36
+00:01:27.353 --> 00:01:31.340
+So far we only have a .ENV file for our
+
+37
+00:01:31.340 --> 00:01:32.173
+backend,
+
+38
+00:01:32.173 --> 00:01:35.270
+but we don't have .ENV file for our front end.
+
+39
+00:01:35.270 --> 00:01:36.740
+So I'm gonna show you how to do that.
+
+40
+00:01:36.740 --> 00:01:39.640
+Um, so next JS has an example right here.
+
+41
+00:01:39.640 --> 00:01:44.410
+You basically have to add a .ENV.local file
+
+42
+00:01:44.410 --> 00:01:49.410
+um, and then if you want to expose it to the browser,
+
+43
+00:01:49.770 --> 00:01:52.900
+you have to prefix it with NEXT_PUBLIC.
+
+44
+00:01:52.900 --> 00:01:56.410
+Gatsby does the same thing. Gatsby has to be gatsby_
+
+45
+00:01:56.410 --> 00:01:58.650
+So you explicitly expose
+
+46
+00:01:58.650 --> 00:02:00.980
+Environment Variables to the browser.
+
+47
+00:02:00.980 --> 00:02:04.410
+Because, otherwise if you have um,
+
+48
+00:02:04.410 --> 00:02:05.860
+private keys and things like that,
+
+49
+00:02:05.860 --> 00:02:08.640
+that shouldn't be there then they would be.
+
+50
+00:02:08.640 --> 00:02:11.940
+So we wanna go here, just go to the very root
+
+51
+00:02:11.940 --> 00:02:14.720
+of your next JS frontend folder
+
+52
+00:02:14.720 --> 00:02:15.910
+and .env
+
+53
+00:02:19.410 --> 00:02:22.820
+and it's .env.local.
+
+54
+00:02:22.820 --> 00:02:24.388
+Um, and then in here it says,
+
+55
+00:02:24.388 --> 00:02:25.373
+NEXT_
+
+56
+00:02:25.373 --> 00:02:26.260
+PUBLIC_
+
+57
+00:02:26.260 --> 00:02:27.710
+STRIPE
+
+58
+00:02:27.710 --> 00:02:28.803
+_KEY,
+
+59
+00:02:31.650 --> 00:02:35.153
+and that will be equal to whatever's in here.
+
+60
+00:02:35.153 --> 00:02:38.843
+Just go ahead and copy it and pop some quotes around it.
+
+61
+00:02:40.180 --> 00:02:41.590
+And then we wanna make sure that
+
+62
+00:02:41.590 --> 00:02:44.220
+this key is being piped into our frontend.
+
+63
+00:02:44.220 --> 00:02:47.010
+So just go somewhere like your Nav.js
+
+64
+00:02:47.010 --> 00:02:50.410
+and try to put it somewhere in your NAV.
+
+65
+00:02:50.410 --> 00:02:55.410
+I'm just gonna say process.env.NEXT_PUBLIC_STRIPE_KEY.
+
+66
+00:02:55.600 --> 00:02:57.810
+And we'll go to our frontend here.
+
+67
+00:02:57.810 --> 00:03:00.320
+And I don't think it will show up by default.
+
+68
+00:03:00.320 --> 00:03:04.040
+No, I think we probably have to restart the frontend.
+
+69
+00:03:04.040 --> 00:03:05.053
+Let's try that.
+
+70
+00:03:12.585 --> 00:03:13.418
+There we go.
+
+71
+00:03:13.418 --> 00:03:16.930
+There is, there's the key that we need.
+
+72
+00:03:16.930 --> 00:03:21.510
+Next, what we need to do is to create a checkout component
+
+73
+00:03:21.510 --> 00:03:23.730
+that we will be able to use Stripe end.
+
+74
+00:03:23.730 --> 00:03:25.270
+So go ahead and create a new file
+
+75
+00:03:25.270 --> 00:03:26.323
+call it Checkout.js.
+
+76
+00:03:29.950 --> 00:03:31.530
+And we'll make our custom component.
+
+77
+00:03:31.530 --> 00:03:33.963
+So function checkout.
+
+78
+00:03:36.080 --> 00:03:38.053
+And then from that, well return.
+
+79
+00:03:41.560 --> 00:03:43.540
+We'll call it checkout form styles.
+
+80
+00:03:43.540 --> 00:03:45.980
+We'll code those ourselves in just a sec
+
+81
+00:03:45.980 --> 00:03:48.430
+um, and then just put a paragraph tag in there
+
+82
+00:03:48.430 --> 00:03:49.387
+that says, "hey".
+
+83
+00:03:50.300 --> 00:03:53.100
+Now go above it and make those checkout form styles
+
+84
+00:03:53.100 --> 00:03:54.080
+real quick.
+
+85
+00:03:54.080 --> 00:03:56.960
+So checkout form styles
+
+86
+00:03:56.960 --> 00:03:59.013
+is equal to style.form tag.
+
+87
+00:03:59.940 --> 00:04:02.520
+The reason why we're not using our existing form here
+
+88
+00:04:02.520 --> 00:04:03.353
+is because
+
+89
+00:04:03.353 --> 00:04:05.930
+we're actually not going to be handling any inputs
+
+90
+00:04:05.930 --> 00:04:07.010
+from the user.
+
+91
+00:04:07.010 --> 00:04:09.180
+Um, we're going to be using Stripe Elements
+
+92
+00:04:09.180 --> 00:04:11.590
+and Stripe Elements handles all the inputs for us.
+
+93
+00:04:11.590 --> 00:04:12.980
+Which is pretty cool.
+
+94
+00:04:12.980 --> 00:04:14.660
+So we'll go in here and say,
+
+95
+00:04:14.660 --> 00:04:16.023
+box-shadow:
+
+96
+00:04:17.410 --> 00:04:18.370
+0
+
+97
+00:04:18.370 --> 00:04:19.203
+1px
+
+98
+00:04:20.145 --> 00:04:21.420
+2px 2px
+
+99
+00:04:21.420 --> 00:04:25.210
+rgba(0,0,0,0.04).
+
+100
+00:04:25.210 --> 00:04:26.660
+Border: 1px
+
+101
+00:04:28.380 --> 00:04:32.240
+solid rgba (0,0, 0, 0.06)
+
+102
+00:04:36.670 --> 00:04:38.330
+just in very faint lines.
+
+103
+00:04:38.330 --> 00:04:39.613
+Border-radius:
+
+104
+00:04:42.610 --> 00:04:43.800
+5px.
+
+105
+00:04:43.800 --> 00:04:44.800
+Padding:
+
+106
+00:04:44.800 --> 00:04:45.723
+1rem.
+
+107
+00:04:46.640 --> 00:04:47.650
+Display
+
+108
+00:04:47.650 --> 00:04:48.483
+grid
+
+109
+00:04:49.700 --> 00:04:52.050
+and grid-gap:
+
+110
+00:04:52.050 --> 00:04:53.320
+1rem.
+
+111
+00:04:53.320 --> 00:04:54.153
+Okay.
+
+112
+00:04:54.153 --> 00:04:57.440
+Um, now we need to go into our cart,
+
+113
+00:04:57.440 --> 00:04:59.390
+I can take this out we don't need that.
+
+114
+00:05:01.321 --> 00:05:02.830
+We don't need the page.
+
+115
+00:05:02.830 --> 00:05:04.340
+We don't need that and that.
+
+116
+00:05:04.340 --> 00:05:06.880
+I'll go into our Cart.js
+
+117
+00:05:08.450 --> 00:05:10.380
+and go all the way to the bottom AF
+
+118
+00:05:10.380 --> 00:05:12.790
+right underneath you where you formatted money
+
+119
+00:05:12.790 --> 00:05:13.623
+in the footer.
+
+120
+00:05:13.623 --> 00:05:16.193
+And let's just put our checkout component in there.
+
+121
+00:05:19.980 --> 00:05:21.183
+And we'll import it.
+
+122
+00:05:23.977 --> 00:05:26.480
+It doesn't look like it's importing itself.
+
+123
+00:05:26.480 --> 00:05:27.940
+Oh, we didn't export it.
+
+124
+00:05:27.940 --> 00:05:29.100
+Export
+
+125
+00:05:29.100 --> 00:05:29.933
+checkout.
+
+126
+00:05:34.480 --> 00:05:35.533
+Let's try it now.
+
+127
+00:05:37.130 --> 00:05:39.680
+Here we go.
+Here it is.
+
+128
+00:05:39.680 --> 00:05:41.700
+Open up our cart and there we go.
+
+129
+00:05:41.700 --> 00:05:45.470
+There's our actual checkout form showing up.
+
+130
+00:05:45.470 --> 00:05:46.780
+Next we need to
+
+131
+00:05:46.780 --> 00:05:49.930
+start working on loading in the Stripe Elements.
+
+132
+00:05:49.930 --> 00:05:54.320
+So again, Stripe elements is a package that Stripe offers
+
+133
+00:05:54.320 --> 00:05:57.120
+that allow you to embed credit card fields
+
+134
+00:05:57.120 --> 00:05:59.100
+into your application
+
+135
+00:05:59.100 --> 00:06:01.490
+so that you don't actually have to fuss with
+
+136
+00:06:01.490 --> 00:06:04.270
+um, touching any credit card numbers yourself.
+
+137
+00:06:04.270 --> 00:06:08.093
+It actually happens all on Stripes form which is great.
+
+138
+00:06:08.960 --> 00:06:12.730
+So we will first load Stripe into the page
+
+139
+00:06:12.730 --> 00:06:13.563
+and the way that you can do that
+
+140
+00:06:13.563 --> 00:06:18.310
+is, is cons Stripelib is equal to loadStripe.
+
+141
+00:06:18.310 --> 00:06:20.450
+And then you gotta give it your, your key.
+
+142
+00:06:20.450 --> 00:06:22.906
+And our key was, what was it?
+
+143
+00:06:22.906 --> 00:06:25.020
+NEXT_PUBLIC_STRIPE_KEY.
+
+144
+00:06:25.020 --> 00:06:26.863
+So process.env.
+
+145
+00:06:28.394 --> 00:06:29.780
+NEXT_PUBLIC_STRIPE_KEY
+
+146
+00:06:29.780 --> 00:06:30.920
+and then loadStripe
+
+147
+00:06:32.100 --> 00:06:36.400
+is a method that is exported from Stripe itself.
+
+148
+00:06:36.400 --> 00:06:37.550
+Doesn't look like it's working.
+
+149
+00:06:37.550 --> 00:06:38.750
+So let's try it ourselves.
+
+150
+00:06:38.750 --> 00:06:39.997
+Import
+
+151
+00:06:39.997 --> 00:06:40.830
+loadStripe
+
+152
+00:06:43.705 --> 00:06:46.290
+from @Stripe4/,
+
+153
+00:06:46.290 --> 00:06:48.760
+there's two libraries that Stripe has, Stripe.js.
+
+154
+00:06:48.760 --> 00:06:49.930
+That's their base.
+
+155
+00:06:49.930 --> 00:06:52.240
+Um, and then react Stripe.js is just their
+
+156
+00:06:52.240 --> 00:06:54.730
+react adaptation of their input.
+
+157
+00:06:54.730 --> 00:06:58.460
+So this one is Stripe-js.
+That's what we need here.
+
+158
+00:06:58.460 --> 00:07:02.360
+Next we need to do is wrap our component in their provider.
+
+159
+00:07:02.360 --> 00:07:04.020
+Remember we talked about providers, we have an
+
+160
+00:07:04.020 --> 00:07:06.540
+ApolloProvider that provides information about Apollo.
+
+161
+00:07:06.540 --> 00:07:09.940
+We have our CART provider as reached above the cart is open.
+
+162
+00:07:09.940 --> 00:07:12.550
+Now we're gonna have a Stripe Elements provider.
+
+163
+00:07:12.550 --> 00:07:14.950
+That's gonna provide information about that.
+
+164
+00:07:14.950 --> 00:07:17.380
+So we just wrap it in an elements tag
+
+165
+00:07:17.380 --> 00:07:18.980
+and hopefully we can import that.
+
+166
+00:07:18.980 --> 00:07:21.677
+Yeah. We import elements from
+
+167
+00:07:21.677 --> 00:07:24.160
+@stripe/react-Stripe-js
+
+168
+00:07:24.160 --> 00:07:27.770
+and then we'll wrap our entire component in that.
+
+169
+00:07:27.770 --> 00:07:29.860
+And then Stripe Elements actually needs
+
+170
+00:07:29.860 --> 00:07:32.280
+access to the stripeLib value right here.
+
+171
+00:07:32.280 --> 00:07:35.110
+Notice how I've required it outside of the component.
+
+172
+00:07:35.110 --> 00:07:37.080
+That's so that we're not accidentally
+
+173
+00:07:37.080 --> 00:07:40.630
+requiring it once every single time that, that thing loads.
+
+174
+00:07:40.630 --> 00:07:44.333
+So let's say Stripe is equal to stripeLib.
+
+175
+00:07:45.840 --> 00:07:47.130
+And we can go
+
+176
+00:07:47.130 --> 00:07:48.290
+to our
+
+177
+00:07:48.290 --> 00:07:49.123
+page here
+
+178
+00:07:50.300 --> 00:07:52.180
+and let's just open up the dev tools.
+
+179
+00:07:52.180 --> 00:07:53.580
+See if there's any, any errors.
+
+180
+00:07:53.580 --> 00:07:55.500
+Sometimes if you do something wrong,
+
+181
+00:07:55.500 --> 00:07:56.490
+Stripe will yell at you
+
+182
+00:07:56.490 --> 00:07:59.150
+and it looks like we're doing okay so far.
+
+183
+00:07:59.150 --> 00:08:00.630
+So the next thing that we wanna do
+
+184
+00:08:00.630 --> 00:08:02.890
+is actually start to embed
+
+185
+00:08:02.890 --> 00:08:05.760
+um, the credit card form element.
+
+186
+00:08:05.760 --> 00:08:09.720
+And that is simply just a thing called Card Element.
+
+187
+00:08:09.720 --> 00:08:11.340
+So we say Card Element
+
+188
+00:08:12.510 --> 00:08:13.620
+and import that again.
+
+189
+00:08:13.620 --> 00:08:18.343
+We're going to import that directly from Stripe Elements.
+
+190
+00:08:21.040 --> 00:08:21.873
+Get outta here!
+
+191
+00:08:21.873 --> 00:08:24.080
+I can't see where my imports are. There we go.
+
+192
+00:08:25.150 --> 00:08:26.460
+They're an import,
+Yeah. There we go.
+
+193
+00:08:26.460 --> 00:08:27.403
+Card Element.
+
+194
+00:08:28.290 --> 00:08:29.910
+And,(laughs)
+
+195
+00:08:29.910 --> 00:08:30.743
+look at that.
+
+196
+00:08:30.743 --> 00:08:31.910
+We'll get rid of this, "hey"
+
+197
+00:08:31.910 --> 00:08:34.430
+and with that much work,
+
+198
+00:08:34.430 --> 00:08:37.490
+we are already seeing a mock-up
+
+199
+00:08:37.490 --> 00:08:38.323
+of
+
+200
+00:08:38.323 --> 00:08:39.630
+the, there we go,
+
+201
+00:08:39.630 --> 00:08:42.360
+the card number, our expiry date,
+
+202
+00:08:42.360 --> 00:08:43.330
+and
+
+203
+00:08:43.330 --> 00:08:45.700
+that, which is pretty cool.
+
+204
+00:08:45.700 --> 00:08:49.940
+Um, there is an issue with these things going side by side.
+
+205
+00:08:49.940 --> 00:08:52.470
+That's not what I wanted here.
+
+206
+00:08:52.470 --> 00:08:53.730
+Um, our footer
+
+207
+00:08:53.730 --> 00:08:55.173
+is a grid.
+
+208
+00:08:56.200 --> 00:08:59.070
+Let's see, where is that style coming from?
+
+209
+00:08:59.070 --> 00:09:01.120
+Cause we need to write a little bit more.
+
+210
+00:09:06.380 --> 00:09:07.360
+Here we go.
+
+211
+00:09:07.360 --> 00:09:08.193
+Footer.
+
+212
+00:09:12.470 --> 00:09:15.580
+Let's change these ourselves.
+It's in cart styles.
+
+213
+00:09:15.580 --> 00:09:19.453
+Um, the footer is grid-template-columns auto auto.
+
+214
+00:09:20.525 --> 00:09:23.390
+I don't believe that this actually needs to be grid at all.
+
+215
+00:09:23.390 --> 00:09:26.410
+So let's take those off and there we go.
+
+216
+00:09:26.410 --> 00:09:28.950
+Now we've got the credit card input here
+
+217
+00:09:28.950 --> 00:09:33.950
+and the month, the year CVC automatically showing up.
+
+218
+00:09:34.200 --> 00:09:37.500
+Finally, we need to hook up a button that will submit it.
+
+219
+00:09:37.500 --> 00:09:40.320
+Um, so we'll go back to our checkout here
+
+220
+00:09:40.320 --> 00:09:41.690
+and we'll
+
+221
+00:09:41.690 --> 00:09:42.650
+give ourselves
+
+222
+00:09:42.650 --> 00:09:44.110
+a sick button.
+
+223
+00:09:44.110 --> 00:09:47.340
+So this is a button I've given you in the styles folder.
+
+224
+00:09:47.340 --> 00:09:49.210
+So I'll try to import that.
+
+225
+00:09:49.210 --> 00:09:50.550
+Now we'll go up here.
+
+226
+00:09:50.550 --> 00:09:51.383
+Import
+
+227
+00:09:51.383 --> 00:09:52.590
+sick
+
+228
+00:09:52.590 --> 00:09:53.423
+button
+
+229
+00:09:53.423 --> 00:09:54.870
+from
+
+230
+00:09:54.870 --> 00:09:56.480
+styles
+
+231
+00:09:56.480 --> 00:09:57.830
+sick button.
+
+232
+00:09:57.830 --> 00:09:58.663
+Here we go.
+
+233
+00:10:00.750 --> 00:10:03.670
+And then go down to our sick button.
+
+234
+00:10:03.670 --> 00:10:06.030
+Closed it on me.
+Come on now!
+
+235
+00:10:06.030 --> 00:10:07.530
+Here we go.
+
+236
+00:10:07.530 --> 00:10:10.513
+And we'll say, check out now.
+
+237
+00:10:11.517 --> 00:10:13.060
+Here we go.
+That gives us our nice little
+
+238
+00:10:13.060 --> 00:10:14.650
+button that's showing up.
+
+239
+00:10:14.650 --> 00:10:15.760
+So
+
+240
+00:10:15.760 --> 00:10:17.610
+the last thing we wanna do is
+
+241
+00:10:17.610 --> 00:10:21.250
+that when somebody submits this form
+
+242
+00:10:21.250 --> 00:10:23.480
+we need to do a whole lot of steps
+
+243
+00:10:23.480 --> 00:10:25.493
+of going to Stripe, getting our token,
+
+244
+00:10:26.930 --> 00:10:28.880
+calculating how much the total thing will be
+
+245
+00:10:28.880 --> 00:10:29.860
+all of that good stuff.
+
+246
+00:10:29.860 --> 00:10:32.190
+So what we'll do is we'll take that our form
+
+247
+00:10:32.190 --> 00:10:34.360
+and say on submit
+
+248
+00:10:34.360 --> 00:10:35.220
+is
+
+249
+00:10:35.220 --> 00:10:36.484
+equal to we'll call it, handle
+
+250
+00:10:36.484 --> 00:10:39.900
+submit.
+
+251
+00:10:39.900 --> 00:10:41.640
+I'll go right inside it.
+
+252
+00:10:41.640 --> 00:10:43.580
+We're still inside the checkout form and make
+
+253
+00:10:43.580 --> 00:10:46.560
+a function here called handle submit
+
+254
+00:10:46.560 --> 00:10:48.050
+that has event.
+
+255
+00:10:48.050 --> 00:10:50.970
+And we'll just event.preventDefault
+
+256
+00:10:53.380 --> 00:10:55.520
+and console.log.
+
+257
+00:10:55.520 --> 00:10:57.573
+We gotta do some work.
+
+258
+00:10:58.900 --> 00:11:00.060
+So
+
+259
+00:11:00.060 --> 00:11:01.453
+open up our dev tools.
+
+260
+00:11:02.360 --> 00:11:03.550
+Check out now.
+
+261
+00:11:03.550 --> 00:11:04.800
+Here we go.
+We gotta do some work.
+
+262
+00:11:04.800 --> 00:11:08.730
+Okay. So that's the very basics of the, the groundwork.
+
+263
+00:11:08.730 --> 00:11:11.460
+Nothing works yet, but we have the sort of
+
+264
+00:11:11.460 --> 00:11:12.750
+the base of it.
+
+265
+00:11:12.750 --> 00:11:15.970
+Um, in the next couple of videos we're going to get into
+
+266
+00:11:15.970 --> 00:11:16.830
+um,
+
+267
+00:11:16.830 --> 00:11:19.640
+talking to Stripe as well as talking to our custom back end
+
+268
+00:11:19.640 --> 00:11:22.283
+so that we can create our orders.
+

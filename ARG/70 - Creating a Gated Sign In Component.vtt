@@ -1,0 +1,258 @@
+﻿WEBVTT
+
+1
+00:00:01.250 --> 00:00:04.010
+<v Instructor>So now we have all of our permissions</v>
+
+2
+00:00:04.010 --> 00:00:05.100
+up and running.
+
+3
+00:00:05.100 --> 00:00:06.330
+There's still one more thing,
+
+4
+00:00:06.330 --> 00:00:08.380
+which is like when you sign out,
+
+5
+00:00:08.380 --> 00:00:10.850
+let's go to the Sell page here and copy that year out.
+
+6
+00:00:10.850 --> 00:00:14.030
+When you sign out and you still go to the Sell page,
+
+7
+00:00:14.030 --> 00:00:16.520
+you still see this UI for creating something.
+
+8
+00:00:16.520 --> 00:00:19.460
+And it won't work because we've implemented the rules,
+
+9
+00:00:19.460 --> 00:00:21.730
+but it might be confusing to our users
+
+10
+00:00:21.730 --> 00:00:24.890
+to see the fact that someone sent them this year around
+
+11
+00:00:24.890 --> 00:00:26.190
+and they start to upload their thing
+
+12
+00:00:26.190 --> 00:00:28.020
+and they're like, ah, you don't have access to do that.
+
+13
+00:00:28.020 --> 00:00:30.790
+So we should not even show them this UI at all.
+
+14
+00:00:30.790 --> 00:00:33.930
+So for that, let's head back to our front end here
+
+15
+00:00:33.930 --> 00:00:35.910
+and we'll go to our Components Director,
+
+16
+00:00:35.910 --> 00:00:38.520 line:15% 
+and we're gonna make a gated sign-in component,
+
+17
+00:00:38.520 --> 00:00:42.110 line:15% 
+which basically will render out the sign-in component
+
+18
+00:00:42.110 --> 00:00:44.270 line:15% 
+if the user is not signed in first.
+
+19
+00:00:44.270 --> 00:00:47.300 line:15% 
+So what we'll do is go to our components, make a new file.
+
+20
+00:00:47.300 --> 00:00:51.330 line:15% 
+We will call that PleaseSignIn.js,
+
+21
+00:00:51.330 --> 00:00:53.913 line:15% 
+capital P, capital S, capital I,
+
+22
+00:00:55.110 --> 00:01:00.110
+and we'll make a function, export default function.
+
+23
+00:01:01.040 --> 00:01:04.680
+That function will take in children,
+
+24
+00:01:04.680 --> 00:01:06.860
+'cause this is going to wrap components.
+
+25
+00:01:06.860 --> 00:01:09.950
+And then we will say, me is equal to useUser.
+
+26
+00:01:11.100 --> 00:01:14.710
+We'll import that hook ourselves.
+
+27
+00:01:14.710 --> 00:01:16.710
+So useUser, no, it's not working,
+
+28
+00:01:16.710 --> 00:01:21.650
+so import useUser from user.
+
+29
+00:01:25.060 --> 00:01:27.430
+And basically, we say if there is no me,
+
+30
+00:01:27.430 --> 00:01:31.953
+so if I'm not signed in, we return our SignIn component.
+
+31
+00:01:36.350 --> 00:01:38.927
+So import SignIn from SignIn.
+
+32
+00:01:45.900 --> 00:01:50.500
+And if they are signed in, we'll just return the children.
+
+33
+00:01:50.500 --> 00:01:52.860
+And what that will do is just render out what we had hoped.
+
+34
+00:01:52.860 --> 00:01:57.380
+So I'm in a logged out state right now on the Sell page.
+
+35
+00:01:57.380 --> 00:01:59.650
+What we'll do is we'll go to the Sell page
+
+36
+00:01:59.650 --> 00:02:01.700
+and we'll wrap that create product
+
+37
+00:02:01.700 --> 00:02:05.800
+in a PleaseSignIn component,
+
+38
+00:02:05.800 --> 00:02:06.850
+put it in the middle.
+
+39
+00:02:08.480 --> 00:02:09.350
+And now, look at that.
+
+40
+00:02:09.350 --> 00:02:11.200
+If somebody is not signed in,
+
+41
+00:02:11.200 --> 00:02:13.230
+then it will just say, Sign Into Your Account.
+
+42
+00:02:13.230 --> 00:02:14.920
+And the kind of cool thing is that
+
+43
+00:02:14.920 --> 00:02:16.730
+you can just sign into it right here,
+
+44
+00:02:16.730 --> 00:02:19.783
+test@example.com, test,
+
+45
+00:02:24.210 --> 00:02:25.360
+and sign in.
+
+46
+00:02:25.360 --> 00:02:29.080
+And because when you sign in, we refetch the query,
+
+47
+00:02:29.080 --> 00:02:31.400
+it'll just rerender this component
+
+48
+00:02:31.400 --> 00:02:33.380
+with the actual component that you were hoping to get,
+
+49
+00:02:33.380 --> 00:02:36.560
+which is create product, which is really, really awesome.
+
+50
+00:02:36.560 --> 00:02:38.340
+So there's a couple of spots
+
+51
+00:02:38.340 --> 00:02:40.060
+throughout the entire application
+
+52
+00:02:40.060 --> 00:02:42.930
+that you can wrap your components in this PleaseSignIn.
+
+53
+00:02:42.930 --> 00:02:45.390
+You could also make another one where
+
+54
+00:02:45.390 --> 00:02:50.030
+instead of it returning this, it returns nothing
+
+55
+00:02:50.030 --> 00:02:52.890
+and things like the Buy button or the Delete button
+
+56
+00:02:52.890 --> 00:02:54.680
+could just not be rendered at all.
+
+57
+00:02:54.680 --> 00:02:56.490
+I'll let you go ahead and add that
+
+58
+00:02:56.490 --> 00:02:58.600
+if it's something you'd like to add to your thing.
+
+59
+00:02:58.600 --> 00:02:59.980
+The only difference would just be
+
+60
+00:02:59.980 --> 00:03:04.160
+you just return null instead of an actual component,
+
+61
+00:03:04.160 --> 00:03:07.040
+and then it would just, it would render out nothing,
+
+62
+00:03:07.040 --> 00:03:07.873
+which is great.
+
+63
+00:03:07.873 --> 00:03:10.960
+So it's a kind of a cool way to just wrap a component.
+
+64
+00:03:10.960 --> 00:03:12.610
+It's sort of like a if statement.
+

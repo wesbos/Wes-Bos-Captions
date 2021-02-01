@@ -1,0 +1,314 @@
+﻿WEBVTT
+
+1
+00:00:01.710 --> 00:00:02.543
+<v Instructor>All right,</v>
+
+2
+00:00:02.543 --> 00:00:03.630
+we're going to get a little bit meta.
+
+3
+00:00:03.630 --> 00:00:07.440
+We're going to create roles and permissions for
+
+4
+00:00:07.440 --> 00:00:10.061
+managing access to roles and permissions.
+
+5
+00:00:10.061 --> 00:00:14.700
+Before we do that, let's just make a secondary role.
+
+6
+00:00:14.700 --> 00:00:16.490
+Let's just call that,
+
+7
+00:00:16.490 --> 00:00:17.373
+Editor.
+
+8
+00:00:18.460 --> 00:00:21.450
+And the editor can delete an update,
+
+9
+00:00:21.450 --> 00:00:23.863
+query users, edit users,
+
+10
+00:00:25.560 --> 00:00:26.820
+and let's say, that's it.
+
+11
+00:00:26.820 --> 00:00:28.890
+And we'll assign that to uees,
+
+12
+00:00:29.820 --> 00:00:31.460
+create the role just so that we have it.
+
+13
+00:00:31.460 --> 00:00:32.990
+So now I'm right here.
+
+14
+00:00:32.990 --> 00:00:36.290
+This is me as just a regular website user.
+
+15
+00:00:36.290 --> 00:00:38.010
+If I go to roles,
+
+16
+00:00:38.010 --> 00:00:40.210
+you see I'm able to actually see them.
+
+17
+00:00:40.210 --> 00:00:41.840
+I'm able to edit them.
+
+18
+00:00:41.840 --> 00:00:45.110
+I'm able to change who they're assigned to all that.
+
+19
+00:00:45.110 --> 00:00:48.080
+And I shouldn't be able to do that as a regular user.
+
+20
+00:00:48.080 --> 00:00:49.440
+So we need to lock that down.
+
+21
+00:00:49.440 --> 00:00:53.800
+Well, let's open up our list, which is role.ts.
+
+22
+00:00:53.800 --> 00:00:55.710
+And we'll go up here
+
+23
+00:00:55.710 --> 00:00:57.260
+and there there's a couple of things that need to happen.
+
+24
+00:00:57.260 --> 00:00:59.020
+We need hard access,
+
+25
+00:00:59.020 --> 00:01:01.800
+as also we need to hide the UI from the user.
+
+26
+00:01:01.800 --> 00:01:03.500
+So say access,
+
+27
+00:01:03.500 --> 00:01:04.850
+right here.
+
+28
+00:01:04.850 --> 00:01:07.393
+So create as permissions.
+
+29
+00:01:08.230 --> 00:01:11.060
+I imported that from my access file
+
+30
+00:01:11.060 --> 00:01:14.460
+and that is, can manage roles.
+
+31
+00:01:14.460 --> 00:01:16.300
+I mean literally the rest are going to be the same
+
+32
+00:01:16.300 --> 00:01:20.190
+create, read, update, and delete,
+
+33
+00:01:20.190 --> 00:01:21.570
+all have access to that.
+
+34
+00:01:21.570 --> 00:01:23.300
+If they're all the same I believe
+
+35
+00:01:23.300 --> 00:01:25.720
+you can also just pass it
+
+36
+00:01:25.720 --> 00:01:27.360
+to access in general
+
+37
+00:01:27.360 --> 00:01:28.520
+because they're all the same
+
+38
+00:01:28.520 --> 00:01:30.900
+but I much prefer to just have it like this
+
+39
+00:01:30.900 --> 00:01:33.840
+so that if I do need to manage it, I can do that.
+
+40
+00:01:33.840 --> 00:01:35.640
+So if I give that a save now
+
+41
+00:01:36.510 --> 00:01:38.780
+and restart the process.
+
+42
+00:01:38.780 --> 00:01:40.000
+We see now
+
+43
+00:01:40.000 --> 00:01:42.749
+there are no roles to be found for this person
+
+44
+00:01:42.749 --> 00:01:45.960
+because they do not have that permission
+
+45
+00:01:45.960 --> 00:01:48.147
+but there still is this UI here that they're like,
+
+46
+00:01:48.147 --> 00:01:49.370
+"Hmm what's a role," right?
+
+47
+00:01:49.370 --> 00:01:51.470
+Like, I didn't even know that was the thing, right?
+
+48
+00:01:51.470 --> 00:01:53.690
+So we also can take it a step further
+
+49
+00:01:53.690 --> 00:01:55.680
+and say the UI.
+
+50
+00:01:55.680 --> 00:01:58.300
+And then in the UI property here,
+
+51
+00:01:58.300 --> 00:02:00.710
+we can say there is hide create,
+
+52
+00:02:00.710 --> 00:02:02.993
+which can be done like this.
+
+53
+00:02:03.830 --> 00:02:04.663
+It is
+
+54
+00:02:07.610 --> 00:02:10.690
+we can do a little function, which is args.
+
+55
+00:02:10.690 --> 00:02:12.580
+And then we'll just return the opposite
+
+56
+00:02:12.580 --> 00:02:15.590
+of permissions.canManageRoles
+
+57
+00:02:18.110 --> 00:02:19.670
+and pass the args here.
+
+58
+00:02:19.670 --> 00:02:22.730
+And then there's another one called hideDelete.
+
+59
+00:02:22.730 --> 00:02:25.173
+And then there's another one called isHidden.
+
+60
+00:02:27.210 --> 00:02:29.500
+And if you hover over top of them,
+
+61
+00:02:29.500 --> 00:02:31.440
+exclude this list from the admin UI
+
+62
+00:02:32.700 --> 00:02:35.560
+and then hides the delete button in the admin UI
+
+63
+00:02:35.560 --> 00:02:37.900
+note that this is not disabled deleting items
+
+64
+00:02:37.900 --> 00:02:39.890
+through the graphQL API only hides it.
+
+65
+00:02:39.890 --> 00:02:41.690
+So it's really important that you don't just
+
+66
+00:02:41.690 --> 00:02:43.360
+hide the buttons from them
+
+67
+00:02:43.360 --> 00:02:46.360
+but you first actually limit their access control.
+
+68
+00:02:46.360 --> 00:02:49.220
+And then you go and
+
+69
+00:02:49.220 --> 00:02:50.370
+hide the buttons from them.
+
+70
+00:02:50.370 --> 00:02:51.530
+So it makes sense to them.
+
+71
+00:02:51.530 --> 00:02:52.900
+They don't, they're not seeing that.
+
+72
+00:02:52.900 --> 00:02:56.290
+So now give this a kill restart
+
+73
+00:02:58.080 --> 00:02:59.840
+and now it's not even in the sidebar
+
+74
+00:02:59.840 --> 00:03:02.590
+I guess it's still shows the roles here, but
+
+75
+00:03:02.590 --> 00:03:03.423
+now if you click it,
+
+76
+00:03:03.423 --> 00:03:05.830
+there's no way to get to that specific UI.
+
+77
+00:03:05.830 --> 00:03:07.913
+So that is role-based permission.
+
+78
+00:03:08.780 --> 00:03:11.680
+In the next video, we'll pick it up with a few more types.
+

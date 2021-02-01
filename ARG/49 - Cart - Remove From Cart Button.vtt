@@ -1,0 +1,438 @@
+﻿WEBVTT
+
+1
+00:00:01.470 --> 00:00:02.930
+<v Wes>Now we're gonna have the remove</v>
+
+2
+00:00:02.930 --> 00:00:04.713
+from cart button coded up.
+
+3
+00:00:05.749 --> 00:00:06.660
+And I think the very basics of this
+
+4
+00:00:06.660 --> 00:00:08.350
+you could be able to try yourself.
+
+5
+00:00:08.350 --> 00:00:10.210
+And that's what we're gonna cover in this video
+
+6
+00:00:10.210 --> 00:00:13.950
+is creating a button, creating the mutation.
+
+7
+00:00:13.950 --> 00:00:15.610
+The mutation that we're gonna be using
+
+8
+00:00:15.610 --> 00:00:18.610
+is called delete cart items.
+
+9
+00:00:18.610 --> 00:00:20.820
+So, and there's no custom mutations or anything right here.
+
+10
+00:00:20.820 --> 00:00:23.850
+We're simply just using the built-in Keystone API.
+
+11
+00:00:23.850 --> 00:00:24.683
+We'll do that.
+
+12
+00:00:24.683 --> 00:00:26.830
+So try do that on your own.
+
+13
+00:00:26.830 --> 00:00:28.310
+And then in the next couple of videos
+
+14
+00:00:28.310 --> 00:00:30.650
+we're also gonna look at some more advanced Apollo Features,
+
+15
+00:00:30.650 --> 00:00:32.970
+which is update our functions,
+
+16
+00:00:32.970 --> 00:00:36.010
+and what's called optimistic responses.
+
+17
+00:00:36.010 --> 00:00:38.140
+So that like you don't necessarily have to wait
+
+18
+00:00:38.140 --> 00:00:41.110
+for the query to re fetch when you delete it.
+
+19
+00:00:41.110 --> 00:00:43.810
+It just immediately will show you that it's been deleted.
+
+20
+00:00:43.810 --> 00:00:46.100
+So let's get going here.
+
+21
+00:00:46.100 --> 00:00:47.610
+We'll go into our components here
+
+22
+00:00:47.610 --> 00:00:49.733
+and we'll make a new component called,
+
+23
+00:00:50.856 --> 00:00:54.323
+RemoveFromCart.js.
+
+24
+00:00:55.520 --> 00:01:00.363
+In here, export default function, remove from cart.
+
+25
+00:01:02.490 --> 00:01:06.130
+And that will take in the ID of the cart item
+
+26
+00:01:06.130 --> 00:01:08.660
+that needs to be deleted.
+
+27
+00:01:08.660 --> 00:01:09.510
+And then from that
+
+28
+00:01:09.510 --> 00:01:14.510
+we will return a button that has a times in it.
+
+29
+00:01:17.590 --> 00:01:20.270
+And then when you use something like that,
+
+30
+00:01:20.270 --> 00:01:23.360
+that's gonna read to your screener as multiplication sign.
+
+31
+00:01:23.360 --> 00:01:24.193
+So what we'll do here
+
+32
+00:01:24.193 --> 00:01:25.980
+is we'll put a title on that button that says,
+
+33
+00:01:25.980 --> 00:01:30.720
+remove this item from cart, okay.
+
+34
+00:01:36.130 --> 00:01:37.240
+Now it's giving me grief
+
+35
+00:01:37.240 --> 00:01:40.633
+because I forgot to add the type of button, okay.
+
+36
+00:01:41.700 --> 00:01:43.800
+Then let's do a little bit of CSS.
+
+37
+00:01:43.800 --> 00:01:44.633
+We'll say,
+
+38
+00:01:44.633 --> 00:01:47.623
+we'll make a new styled component called big button,
+
+39
+00:01:48.707 --> 00:01:50.023
+is equal to style.button.
+
+40
+00:01:52.120 --> 00:01:54.523
+We'll import the styled attribute here.
+
+41
+00:01:57.370 --> 00:01:59.870
+And we'll go in there and we'll say font size
+
+42
+00:01:59.870 --> 00:02:04.677
+three REM, background, none, border zero.
+
+43
+00:02:06.430 --> 00:02:09.243
+And I'm gonna say, when it is hovered,
+
+44
+00:02:10.237 --> 00:02:15.237
+so end hover, the color is going to be red
+
+45
+00:02:18.190 --> 00:02:20.690
+and the cursor is a pointer
+
+46
+00:02:22.230 --> 00:02:25.230
+and we'll go here and place this button with our big button.
+
+47
+00:02:27.250 --> 00:02:31.063
+And then we'll go into our cart.js component.
+
+48
+00:02:33.500 --> 00:02:36.970
+And we'll go into our singular cart item.
+
+49
+00:02:36.970 --> 00:02:40.810
+And right below that closing div
+
+50
+00:02:40.810 --> 00:02:45.280
+we will put our remove from cart button,
+
+51
+00:02:45.280 --> 00:02:46.680
+will auto import that
+
+52
+00:02:48.300 --> 00:02:52.810
+and then it gets past the ID, which is the product.
+
+53
+00:02:52.810 --> 00:02:55.923
+No, not product, it's the cartitem.id.
+
+54
+00:02:57.850 --> 00:02:59.020
+Okay, cool.
+
+55
+00:02:59.020 --> 00:02:59.853
+Looking good.
+
+56
+00:02:59.853 --> 00:03:04.740
+We've got all of our X's showing up, which is great.
+
+57
+00:03:04.740 --> 00:03:06.600
+Next we'll code up our mutation.
+
+58
+00:03:06.600 --> 00:03:11.600
+So const remove from cart mutation is equal to GQL.
+
+59
+00:03:15.370 --> 00:03:16.803
+Go ahead and import that.
+
+60
+00:03:18.010 --> 00:03:20.677
+And the mutation that we delete
+
+61
+00:03:20.677 --> 00:03:24.350
+is called delete cart item that takes in an ID variable
+
+62
+00:03:24.350 --> 00:03:27.440
+with the type of ID and that is required.
+
+63
+00:03:27.440 --> 00:03:28.570
+And then from that
+
+64
+00:03:28.570 --> 00:03:32.020
+we will run actually, usually I, sorry, excuse me.
+
+65
+00:03:32.020 --> 00:03:34.900
+I usually call that remove for cart mutation.
+
+66
+00:03:34.900 --> 00:03:37.130
+And then here, it's called delete cart item.
+
+67
+00:03:37.130 --> 00:03:39.620
+This is the thing that lives in our Keystone API
+
+68
+00:03:39.620 --> 00:03:43.010
+and will pass an ID, which is the ID variable.
+
+69
+00:03:43.010 --> 00:03:46.047
+And then what we get back is simply just the ID
+
+70
+00:03:46.047 --> 00:03:47.750
+of the deleted item.
+
+71
+00:03:47.750 --> 00:03:49.530
+And we're gonna need that because we want to remove it
+
+72
+00:03:49.530 --> 00:03:51.960
+from the cache without having to go back to the server
+
+73
+00:03:51.960 --> 00:03:54.683
+and re fetch the entire users cart.
+
+74
+00:03:56.680 --> 00:03:58.810
+Now we'll go up here and then we'll say,
+
+75
+00:03:58.810 --> 00:04:03.810
+const remove from cart and loading is equal to use mutation.
+
+76
+00:04:10.430 --> 00:04:14.060
+And we, I auto imported that by the way
+
+77
+00:04:14.060 --> 00:04:16.350
+we pass it our remove from cart mutation
+
+78
+00:04:16.350 --> 00:04:19.680
+and then the variables that we pass
+
+79
+00:04:20.560 --> 00:04:23.883
+it's going to be simply just the ID variable.
+
+80
+00:04:25.720 --> 00:04:27.823
+And I did something wrong here.
+
+81
+00:04:29.630 --> 00:04:33.280
+What did I do wrong?
+
+82
+00:04:33.280 --> 00:04:34.863
+Unexpected comma.
+
+83
+00:04:39.160 --> 00:04:41.963
+Oh, I forgot one more curly bracket, that's why.
+
+84
+00:04:43.100 --> 00:04:44.470
+There we go.
+
+85
+00:04:44.470 --> 00:04:49.280
+So now when somebody clicks on this button
+
+86
+00:04:49.280 --> 00:04:52.150
+we will run the remove from cart button.
+
+87
+00:04:52.150 --> 00:04:57.150
+So let's say on click is equal to remove from cart.
+
+88
+00:04:57.940 --> 00:05:00.700
+And then also we'll just say disabled,
+
+89
+00:05:00.700 --> 00:05:03.570
+that's equal to loading.
+
+90
+00:05:03.570 --> 00:05:06.330
+So the person can't fire off multiple
+
+91
+00:05:06.330 --> 00:05:08.113
+or remove from cart mutations.
+
+92
+00:05:09.597 --> 00:05:11.070
+All right, I think that should be enough
+
+93
+00:05:11.070 --> 00:05:13.610
+for the very basics of it.
+
+94
+00:05:13.610 --> 00:05:16.650
+So we'll try to remove this Yeti Hondo from our cart.
+
+95
+00:05:16.650 --> 00:05:20.990
+Let's open up our Dev tools just to make sure X
+
+96
+00:05:23.230 --> 00:05:26.210
+and, now visually nothing has happened.
+
+97
+00:05:26.210 --> 00:05:28.823
+If I give it a refresh, is it still in our cart?
+
+98
+00:05:29.913 --> 00:05:30.960
+No, it's no longer in there.
+
+99
+00:05:30.960 --> 00:05:34.240
+Okay, so that has successfully worked.
+
+100
+00:05:34.240 --> 00:05:37.310
+In the next video, what we're gonna do is we have to,
+
+101
+00:05:37.310 --> 00:05:40.044
+we normally, we could do something like this,
+
+102
+00:05:40.044 --> 00:05:40.930
+like re fetch queries
+
+103
+00:05:40.930 --> 00:05:42.920
+and then we could just give it the user query
+
+104
+00:05:42.920 --> 00:05:46.420
+and it would re fetch the current user's cart
+
+105
+00:05:46.420 --> 00:05:47.790
+and then that thing would update
+
+106
+00:05:47.790 --> 00:05:50.550
+but that's not always the solution that you want.
+
+107
+00:05:50.550 --> 00:05:53.150
+So I'll say more about that in the next video.
+
+108
+00:05:53.150 --> 00:05:55.710
+We'll visually show the item being removed
+
+109
+00:05:55.710 --> 00:05:57.953
+from the cart with optimistic responses.
+

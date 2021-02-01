@@ -1,0 +1,2446 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.109
+(tone booms)
+
+2
+00:00:01.109 --> 00:00:02.310
+<v Wes>All right now, we're gonna be working</v>
+
+3
+00:00:02.310 --> 00:00:04.820
+on the search component that goes up here.
+
+4
+00:00:04.820 --> 00:00:08.790
+And it's sort of a mix between search, lazy searching
+
+5
+00:00:08.790 --> 00:00:11.590
+and like a dropdown autocomplete.
+
+6
+00:00:11.590 --> 00:00:14.580
+We're also gonna be using this library called downshift-js
+
+7
+00:00:14.580 --> 00:00:17.490
+for this, which makes doing these dropdown types
+
+8
+00:00:17.490 --> 00:00:19.633
+super easy and accessible.
+
+9
+00:00:20.810 --> 00:00:24.100
+So let's go in, make a brand new component.
+
+10
+00:00:24.100 --> 00:00:26.583
+Let's call that Search.js.
+
+11
+00:00:29.800 --> 00:00:30.960
+And then inside of here,
+
+12
+00:00:30.960 --> 00:00:35.960
+we will export default function Search.
+
+13
+00:00:35.970 --> 00:00:39.150
+And then from that, we're going to return
+
+14
+00:00:43.226 --> 00:00:44.309
+SearchStyles.
+
+15
+00:00:45.560 --> 00:00:47.653
+And we'll try to import that one.
+
+16
+00:00:48.900 --> 00:00:50.960
+Let's see what we can do here.
+
+17
+00:00:50.960 --> 00:00:53.880
+No, we're gonna import the SearchStyles directly,
+
+18
+00:00:53.880 --> 00:00:57.350
+SearchStyles from,
+
+19
+00:00:57.350 --> 00:01:01.760
+and it's in the styles directory, forward slash, DropDown
+
+20
+00:01:01.760 --> 00:01:04.340
+is where those styles are gonna live.
+
+21
+00:01:04.340 --> 00:01:07.083
+It looks like this accidentally auto closed.
+
+22
+00:01:07.950 --> 00:01:08.783
+There we go.
+
+23
+00:01:10.110 --> 00:01:13.223
+And inside of there, just putting a paragraph that says hey.
+
+24
+00:01:14.550 --> 00:01:16.900
+And we'll go into our header.js
+
+25
+00:01:17.740 --> 00:01:20.530
+and we'll find where we have that div
+
+26
+00:01:20.530 --> 00:01:21.820
+with a class of sub-bar.
+
+27
+00:01:21.820 --> 00:01:23.050
+We have our Search.
+
+28
+00:01:23.050 --> 00:01:25.820
+We can replace it with an actual Search component
+
+29
+00:01:25.820 --> 00:01:28.180
+and then go ahead and import that
+
+30
+00:01:28.180 --> 00:01:30.210
+from the file that we have, okay cool.
+
+31
+00:01:30.210 --> 00:01:32.720
+Next we need a little bit more markup here.
+
+32
+00:01:32.720 --> 00:01:35.200
+So we'll have a div here.
+
+33
+00:01:35.200 --> 00:01:39.050
+And then inside of that, we want an input with the...
+
+34
+00:01:39.050 --> 00:01:41.730
+Actually we're not gonna put any,
+
+35
+00:01:41.730 --> 00:01:42.930
+we'll put type of search on it,
+
+36
+00:01:42.930 --> 00:01:44.700
+but we're going to come back in just a second
+
+37
+00:01:44.700 --> 00:01:47.890
+and switch how these are passed to it.
+
+38
+00:01:47.890 --> 00:01:49.020
+And then below that,
+
+39
+00:01:49.020 --> 00:01:51.970
+we're going to have a DropDown component.
+
+40
+00:01:51.970 --> 00:01:56.410
+And that can be imported from component styles/dropdown.
+
+41
+00:01:56.410 --> 00:01:58.230
+You see that automatically got imported there.
+
+42
+00:01:58.230 --> 00:01:59.653
+That one worked just fine.
+
+43
+00:02:00.600 --> 00:02:03.977
+Inside of the DropDown, we're gonna have DropDownItem.
+
+44
+00:02:04.880 --> 00:02:08.010
+And that was gonna be each search result that comes back.
+
+45
+00:02:08.010 --> 00:02:09.520
+And you can import that one
+
+46
+00:02:09.520 --> 00:02:11.590
+from your styles directory as well.
+
+47
+00:02:11.590 --> 00:02:13.430
+And then inside of there just say, Hey.
+
+48
+00:02:13.430 --> 00:02:14.520
+Give yourself a couple of them
+
+49
+00:02:14.520 --> 00:02:16.740
+just so we can see what we're working with, okay cool.
+
+50
+00:02:16.740 --> 00:02:21.530
+So look, this is the base render
+
+51
+00:02:21.530 --> 00:02:24.570
+of all the the divs and everything that we want.
+
+52
+00:02:24.570 --> 00:02:28.050
+And now when we wanna add in the functionality,
+
+53
+00:02:28.050 --> 00:02:30.380
+we're going to be reaching for a library called Downshift
+
+54
+00:02:30.380 --> 00:02:32.500
+which makes doing this sort of dropdown,
+
+55
+00:02:32.500 --> 00:02:35.050
+auto-complete stuff really easily,
+
+56
+00:02:35.050 --> 00:02:36.900
+but most important, really accessible.
+
+57
+00:02:36.900 --> 00:02:37.917
+'Cause you might think like,
+
+58
+00:02:37.917 --> 00:02:39.050
+oh, it's not that big of a deal.
+
+59
+00:02:39.050 --> 00:02:40.700
+Just listen for the down and up arrows
+
+60
+00:02:40.700 --> 00:02:41.650
+and a click and you're done,
+
+61
+00:02:41.650 --> 00:02:46.090
+but making these sort of dropdowns accessible for keyboards
+
+62
+00:02:46.090 --> 00:02:47.500
+is really difficult.
+
+63
+00:02:47.500 --> 00:02:51.270
+So that's why we use a third-party package for it.
+
+64
+00:02:51.270 --> 00:02:53.780
+So we'll go right above this return here.
+
+65
+00:02:53.780 --> 00:02:56.540
+And this is going to be a little bit big
+
+66
+00:02:56.540 --> 00:02:57.780
+but we're gonna add the pieces
+
+67
+00:02:57.780 --> 00:03:01.820
+as we need them from downshift.
+
+68
+00:03:01.820 --> 00:03:02.873
+So let's say const,
+
+69
+00:03:05.480 --> 00:03:07.820
+curly brackets, getMenuProps,
+
+70
+00:03:11.815 --> 00:03:14.315
+getInputProps, and getCombobox
+
+71
+00:03:21.352 --> 00:03:23.610
+oh, lowercase box, Props.
+
+72
+00:03:23.610 --> 00:03:26.313
+And that is going to be useCombobox.
+
+73
+00:03:30.086 --> 00:03:33.380
+And that is a method that lives in downshift.
+
+74
+00:03:33.380 --> 00:03:36.870
+We'll have to import useCombobox from downshift.
+
+75
+00:03:36.870 --> 00:03:38.580
+Boom, there we go.
+
+76
+00:03:38.580 --> 00:03:40.540
+And then a bunch of arguments
+
+77
+00:03:40.540 --> 00:03:44.890
+that get passed to useCombobox is one object.
+
+78
+00:03:44.890 --> 00:03:49.890
+And inside of that, it takes a number of different options.
+
+79
+00:03:50.760 --> 00:03:52.690
+First, is the items which,
+
+80
+00:03:52.690 --> 00:03:55.100
+it will be an empty array right now.
+
+81
+00:03:55.100 --> 00:03:58.917
+Second one is going to be onInputValueChange.
+
+82
+00:04:01.800 --> 00:04:05.963
+And that will just be console.log Input changed.
+
+83
+00:04:07.290 --> 00:04:10.825
+Next one will be onSelectedItemChange.
+
+84
+00:04:10.825 --> 00:04:14.197
+And we'll just console.log Selected Item changed.
+
+85
+00:04:16.360 --> 00:04:19.650
+So this is gonna fire when somebody types into the box,
+
+86
+00:04:19.650 --> 00:04:20.790
+this is gonna fire
+
+87
+00:04:20.790 --> 00:04:23.810
+when somebody selects an item from the dropdown,
+
+88
+00:04:23.810 --> 00:04:28.010
+meaning they wish to go to that page for that specific item.
+
+89
+00:04:28.010 --> 00:04:30.040
+So I think that's the very basics
+
+90
+00:04:30.040 --> 00:04:32.500
+that we can get this up and running.
+
+91
+00:04:32.500 --> 00:04:33.500
+Then what we'll do
+
+92
+00:04:33.500 --> 00:04:37.260
+is we'll take these methods that we just created here
+
+93
+00:04:37.260 --> 00:04:38.880
+and we have to spread them
+
+94
+00:04:38.880 --> 00:04:41.510
+into the different elements on there.
+
+95
+00:04:41.510 --> 00:04:44.260
+And these are what make all of this stuff
+
+96
+00:04:44.260 --> 00:04:46.730
+keyboard-accessible without us having to worry
+
+97
+00:04:46.730 --> 00:04:49.320
+about listening for keyup and keydown
+
+98
+00:04:49.320 --> 00:04:52.160
+and ARIA attributes and all that.
+
+99
+00:04:52.160 --> 00:04:55.370
+So this right here is going to be curly brackets,
+
+100
+00:04:55.370 --> 00:04:56.683
+...getComboboxProps,
+
+101
+00:04:58.900 --> 00:05:01.381
+and it's gonna add a bunch of stuff to that.
+
+102
+00:05:01.381 --> 00:05:05.700
+The input in here, we can take this type of search out,
+
+103
+00:05:05.700 --> 00:05:07.250
+is going to be ...getInputProps
+
+104
+00:05:10.090 --> 00:05:12.300
+and then any additional options
+
+105
+00:05:12.300 --> 00:05:15.880
+which you wish to pass to your input can go in here.
+
+106
+00:05:15.880 --> 00:05:19.750
+So type search, that's gonna be the type.
+
+107
+00:05:19.750 --> 00:05:24.703
+placeholder is going to be Search for an Item.
+
+108
+00:05:26.060 --> 00:05:28.400
+The id is search.
+
+109
+00:05:28.400 --> 00:05:33.400
+And className is going to be loading.
+
+110
+00:05:33.430 --> 00:05:37.390
+And we will have to programmatically turn that on and off
+
+111
+00:05:37.390 --> 00:05:39.240
+once we actually have our query.
+
+112
+00:05:39.240 --> 00:05:42.443
+But that should be enough for now.
+
+113
+00:05:42.443 --> 00:05:44.010
+If I give this a refresh,
+
+114
+00:05:44.010 --> 00:05:45.530
+let's double check if there's any errors.
+
+115
+00:05:45.530 --> 00:05:47.260
+Yeah this is one error we get,
+
+116
+00:05:47.260 --> 00:05:49.130
+aria-controls did not match.
+
+117
+00:05:49.130 --> 00:05:53.160
+Server gave us downshift-3, Client gave us downshift-0.
+
+118
+00:05:53.160 --> 00:05:54.590
+So what's wrong in that case?
+
+119
+00:05:54.590 --> 00:05:57.920
+So what happens is that Downshift accounts
+
+120
+00:05:57.920 --> 00:06:00.400
+for having multiples on the page
+
+121
+00:06:00.400 --> 00:06:04.020
+and it will try to assign unique identifiers to each one.
+
+122
+00:06:04.020 --> 00:06:05.860
+And sometimes what the server renders
+
+123
+00:06:05.860 --> 00:06:08.220
+and what the client renders is off.
+
+124
+00:06:08.220 --> 00:06:11.300
+So there's a very simple fix for that
+
+125
+00:06:11.300 --> 00:06:14.350
+is we'll just go to the very top of this
+
+126
+00:06:14.350 --> 00:06:16.323
+and just say resetIdCounter.
+
+127
+00:06:17.170 --> 00:06:22.170
+And that is a method that is imported from downshift.
+
+128
+00:06:22.330 --> 00:06:25.630
+And then that takes care of any server side rendering issues
+
+129
+00:06:25.630 --> 00:06:27.230
+that you might have.
+
+130
+00:06:27.230 --> 00:06:28.360
+I'll give that a refresh.
+
+131
+00:06:28.360 --> 00:06:29.580
+There we go.
+
+132
+00:06:29.580 --> 00:06:30.520
+Now we get one more thing.
+
+133
+00:06:30.520 --> 00:06:32.070
+You forgot to call getMenuProps.
+
+134
+00:06:32.070 --> 00:06:33.720
+This is why I really like this library.
+
+135
+00:06:33.720 --> 00:06:36.890
+'Cause like when it gives you errors that like,
+
+136
+00:06:36.890 --> 00:06:39.120
+oh you forgot to do this, you silly goose.
+
+137
+00:06:39.120 --> 00:06:41.581
+Then you're like, oh, I did forget to do that.
+
+138
+00:06:41.581 --> 00:06:43.690
+And that will go on the DropDown here.
+
+139
+00:06:43.690 --> 00:06:46.833
+So your curly brackets, ...getMenuProps.
+
+140
+00:06:48.660 --> 00:06:49.830
+And give it a refresh.
+
+141
+00:06:49.830 --> 00:06:52.050
+Make sure there's no other errors that are happening.
+
+142
+00:06:52.050 --> 00:06:53.080
+Okay, cool.
+
+143
+00:06:53.080 --> 00:06:55.123
+Next thing we need to do is actually write a query
+
+144
+00:06:55.123 --> 00:06:59.140
+that will find the items from our GraphQL API
+
+145
+00:06:59.140 --> 00:07:01.960
+as the user searches for them.
+
+146
+00:07:01.960 --> 00:07:04.670
+So you guessed it, we're gonna write a query
+
+147
+00:07:04.670 --> 00:07:06.050
+for all the items that we want.
+
+148
+00:07:06.050 --> 00:07:11.050
+So const SEARCH_PRODUCTS_QUERY = gql.
+
+149
+00:07:13.506 --> 00:07:16.760
+We'll import gql from graphql-tag.
+
+150
+00:07:16.760 --> 00:07:21.200
+And the query will be called
+
+151
+00:07:23.255 --> 00:07:25.370
+SEARCH_PRODUCTS_QUERY, takes in a variable.
+
+152
+00:07:25.370 --> 00:07:27.120
+We'll call that searchTerm.
+
+153
+00:07:28.220 --> 00:07:29.850
+And that will be a String.
+
+154
+00:07:29.850 --> 00:07:31.730
+And you have to pass it a String
+
+155
+00:07:31.730 --> 00:07:33.800
+if you wanna be able to use that.
+
+156
+00:07:33.800 --> 00:07:34.990
+All right, and the query
+
+157
+00:07:34.990 --> 00:07:37.950
+that we call against our Keystone GraphQL API
+
+158
+00:07:37.950 --> 00:07:39.523
+is called allProducts.
+
+159
+00:07:40.960 --> 00:07:42.600
+And if you ever wanna rename,
+
+160
+00:07:42.600 --> 00:07:44.310
+you know, like when you get the data back,
+
+161
+00:07:44.310 --> 00:07:45.989
+it's like data.allProducts.
+
+162
+00:07:45.989 --> 00:07:47.180
+If you ever wanna rename that,
+
+163
+00:07:47.180 --> 00:07:49.420
+you could do something like this, searchTerms,
+
+164
+00:07:49.420 --> 00:07:52.120
+and it will search for all products
+
+165
+00:07:52.120 --> 00:07:55.400
+but it will put the data in a property called searchTerms.
+
+166
+00:07:55.400 --> 00:07:56.440
+So I'm gonna put that on there
+
+167
+00:07:56.440 --> 00:07:59.010
+just to show you how you can rename it.
+
+168
+00:07:59.010 --> 00:08:00.030
+That's especially helpful
+
+169
+00:08:00.030 --> 00:08:03.420
+is if you were doing multiple searches,
+
+170
+00:08:03.420 --> 00:08:05.390
+like I wanna search for all products
+
+171
+00:08:05.390 --> 00:08:08.330
+that have a title of yeti.
+
+172
+00:08:08.330 --> 00:08:11.970
+But then I also want to search for all products
+
+173
+00:08:11.970 --> 00:08:14.032
+that have a title of shoes, right?
+
+174
+00:08:14.032 --> 00:08:17.120
+And in that case, you'd be overlapping all products.
+
+175
+00:08:17.120 --> 00:08:20.930
+So we could rename one to shoes and one to yeti
+
+176
+00:08:20.930 --> 00:08:23.170
+and that way it would work, no problem.
+
+177
+00:08:23.170 --> 00:08:25.530
+But in our case, we just need that one.
+
+178
+00:08:25.530 --> 00:08:27.020
+So we have allProducts.
+
+179
+00:08:27.020 --> 00:08:28.730
+And then from that,
+
+180
+00:08:28.730 --> 00:08:32.582
+we want to return the id of the product that comes back,
+
+181
+00:08:32.582 --> 00:08:34.810
+the name of the product that comes back,
+
+182
+00:08:34.810 --> 00:08:38.703
+the photo with an image with the publicUrlTransformed.
+
+183
+00:08:43.810 --> 00:08:45.530
+Now the important part
+
+184
+00:08:45.530 --> 00:08:48.370
+is what we pass to all products right here, right?
+
+185
+00:08:48.370 --> 00:08:53.030
+We wanna be able to query items based on the search term.
+
+186
+00:08:53.030 --> 00:08:57.053
+So what we can do is inside of here, we'll say where.
+
+187
+00:08:58.310 --> 00:09:01.770
+And we wanna check if the name or the description
+
+188
+00:09:01.770 --> 00:09:03.910
+matches our actual items.
+
+189
+00:09:03.910 --> 00:09:06.880
+And if we go to our GraphQL API right here,
+
+190
+00:09:06.880 --> 00:09:09.200
+let me just show you a quick example.
+
+191
+00:09:09.200 --> 00:09:12.170
+We could for sure, just query allProducts
+
+192
+00:09:13.720 --> 00:09:15.940
+and we want the id and the name.
+
+193
+00:09:15.940 --> 00:09:17.120
+Let's just show you that.
+
+194
+00:09:17.120 --> 00:09:19.060
+Boom, that gives you all the products, right?
+
+195
+00:09:19.060 --> 00:09:21.050
+And then, or you could go inside of here.
+
+196
+00:09:21.050 --> 00:09:22.453
+You could say where,
+
+197
+00:09:26.811 --> 00:09:27.644
+the name.
+
+198
+00:09:27.644 --> 00:09:31.200
+And look at this, name_not_in, not in i, name_contains,
+
+199
+00:09:31.200 --> 00:09:32.390
+name_ends_with, names_starts_with.
+
+200
+00:09:32.390 --> 00:09:36.209
+They have all these different options that we have in here
+
+201
+00:09:36.209 --> 00:09:38.263
+which is really cool.
+
+202
+00:09:40.220 --> 00:09:44.540
+In our case we will do name_contains.
+
+203
+00:09:44.540 --> 00:09:46.920
+And then _i means insensitive.
+
+204
+00:09:46.920 --> 00:09:49.780
+So if someone searches for uppercase Yeti,
+
+205
+00:09:49.780 --> 00:09:52.970
+and we're a lowercase yeti, it will still return it.
+
+206
+00:09:52.970 --> 00:09:55.440
+So we could do something like this.
+
+207
+00:09:55.440 --> 00:09:57.090
+Oh, you got to use double quotes.
+
+208
+00:10:01.130 --> 00:10:02.020
+Okay so there we go.
+
+209
+00:10:02.020 --> 00:10:04.080
+That gives us a subset of it.
+
+210
+00:10:04.080 --> 00:10:05.420
+But what if we wanna search
+
+211
+00:10:05.420 --> 00:10:08.150
+for the name and the description?
+
+212
+00:10:08.150 --> 00:10:11.660
+Well, in that case, we give ourselves an OR.
+
+213
+00:10:11.660 --> 00:10:15.400
+And you can give it an array of multiples of those.
+
+214
+00:10:15.400 --> 00:10:18.030
+So OR, name.
+
+215
+00:10:18.030 --> 00:10:19.130
+What was it?
+
+216
+00:10:19.130 --> 00:10:21.330
+Oh, each one is an object.
+
+217
+00:10:21.330 --> 00:10:23.243
+OR name_contains_i
+
+218
+00:10:27.250 --> 00:10:28.083
+yeti.
+
+219
+00:10:30.800 --> 00:10:34.653
+Or another one is going to be a different field, right?
+
+220
+00:10:35.738 --> 00:10:40.738
+description_contains_i yeti.
+
+221
+00:10:42.070 --> 00:10:43.930
+And I don't think that will change anything
+
+222
+00:10:43.930 --> 00:10:45.340
+but you could run that.
+
+223
+00:10:45.340 --> 00:10:47.390
+But you could also say like, shoes,
+
+224
+00:10:47.390 --> 00:10:49.340
+you could do something totally different here
+
+225
+00:10:49.340 --> 00:10:51.940
+and that will return multiple items from it.
+
+226
+00:10:51.940 --> 00:10:54.210
+Oh, it's not working 'cause I've, again,
+
+227
+00:10:54.210 --> 00:10:56.790
+I always use double quotes in GraphQL or single quotes,
+
+228
+00:10:56.790 --> 00:10:59.970
+but single quotes do not work in GraphQL,
+
+229
+00:10:59.970 --> 00:11:02.020
+only double quotes.
+
+230
+00:11:02.020 --> 00:11:04.147
+There we go, run, boom.
+
+231
+00:11:04.147 --> 00:11:04.980
+And you look here,
+
+232
+00:11:04.980 --> 00:11:08.420
+you get a mix of shoes and Yeti coolers back.
+
+233
+00:11:08.420 --> 00:11:11.340
+So we'll go back here and we'll say,
+
+234
+00:11:11.340 --> 00:11:15.170
+give me all the products where, OR
+
+235
+00:11:16.460 --> 00:11:18.443
+the name_contains_i
+
+236
+00:11:21.070 --> 00:11:23.523
+is equal to the search term.
+
+237
+00:11:27.062 --> 00:11:30.867
+And then we'll duplicate that and make this description.
+
+238
+00:11:32.720 --> 00:11:35.810
+So give me all the products where one of these
+
+239
+00:11:35.810 --> 00:11:38.500
+and similarly there also is AND,
+
+240
+00:11:38.500 --> 00:11:40.750
+and you can nest them as far as you want
+
+241
+00:11:40.750 --> 00:11:42.580
+to make some pretty complicated queries.
+
+242
+00:11:42.580 --> 00:11:46.125
+Just remember that there is a database underneath here.
+
+243
+00:11:46.125 --> 00:11:50.387
+Sometimes people, they think GraphQL is the query layer
+
+244
+00:11:50.387 --> 00:11:54.570
+but these will be eventually converted
+
+245
+00:11:54.570 --> 00:11:58.950
+to Postgres or MongoDB or MySQL queries.
+
+246
+00:11:58.950 --> 00:12:00.630
+So you can't...
+
+247
+00:12:00.630 --> 00:12:02.810
+The more complicated you get with your queries,
+
+248
+00:12:02.810 --> 00:12:06.560
+the more time it's going to take in order to run those.
+
+249
+00:12:06.560 --> 00:12:09.790
+So now we have this query right here.
+
+250
+00:12:09.790 --> 00:12:13.110
+And normally we would fire off this query
+
+251
+00:12:13.110 --> 00:12:14.090
+on page load, right?
+
+252
+00:12:14.090 --> 00:12:18.510
+We will go inside of our function here or component
+
+253
+00:12:18.510 --> 00:12:19.900
+and run useQuery.
+
+254
+00:12:19.900 --> 00:12:24.000
+But we don't want it to fire off on component render,
+
+255
+00:12:24.000 --> 00:12:27.300
+We want this to fire off when we want, right?
+
+256
+00:12:27.300 --> 00:12:28.590
+Kind of like a mutation,
+
+257
+00:12:28.590 --> 00:12:30.310
+we can call it whenever we want.
+
+258
+00:12:30.310 --> 00:12:33.100
+But this is not a mutation, it's a query.
+
+259
+00:12:33.100 --> 00:12:37.737
+So what we do in that case is we use useLazyQuery.
+
+260
+00:12:39.330 --> 00:12:41.183
+So let's go to the very top here.
+
+261
+00:12:42.040 --> 00:12:47.040
+const findItems and loading, data
+
+262
+00:12:48.150 --> 00:12:50.760
+and error = useLazyQuery.
+
+263
+00:12:53.770 --> 00:12:58.260
+And that is imported right from Apollo client,
+
+264
+00:12:58.260 --> 00:13:00.973
+just like we would use a query or use a mutation.
+
+265
+00:13:03.200 --> 00:13:08.200
+And the query that we run is called SEARCH_PRODUCTS_QUERY.
+
+266
+00:13:08.420 --> 00:13:10.350
+That's the one that we just wrote.
+
+267
+00:13:10.350 --> 00:13:14.620
+And there is one option we need to pass here.
+
+268
+00:13:14.620 --> 00:13:16.890
+And that is called the fetchPolicy.
+
+269
+00:13:16.890 --> 00:13:19.800
+That is gonna be set to no-cache.
+
+270
+00:13:19.800 --> 00:13:21.160
+And what that will do
+
+271
+00:13:21.160 --> 00:13:25.530
+is it's going to entirely bypass the Apollo cache
+
+272
+00:13:25.530 --> 00:13:27.640
+and always go to the network.
+
+273
+00:13:27.640 --> 00:13:30.040
+And that's because we don't wanna be storing
+
+274
+00:13:30.040 --> 00:13:32.270
+or caching any of these results.
+
+275
+00:13:32.270 --> 00:13:34.150
+We just wanna go directly to the network.
+
+276
+00:13:34.150 --> 00:13:37.230
+And there also is a bit of a problem
+
+277
+00:13:37.230 --> 00:13:41.330
+because if we did not go directly to the network,
+
+278
+00:13:41.330 --> 00:13:43.870
+it would try to pull them from the cache.
+
+279
+00:13:43.870 --> 00:13:45.950
+And then in our case, it would just be showing
+
+280
+00:13:45.950 --> 00:13:47.470
+whatever's on the current page,
+
+281
+00:13:47.470 --> 00:13:49.500
+which is another issue I ran into
+
+282
+00:13:49.500 --> 00:13:51.320
+when I was updating this thing for Apollo.
+
+283
+00:13:51.320 --> 00:13:52.410
+But it makes sense
+
+284
+00:13:52.410 --> 00:13:54.540
+that you'd totally go straight to the network,
+
+285
+00:13:54.540 --> 00:13:56.693
+bypass the Apollo cache entirely.
+
+286
+00:13:58.360 --> 00:14:02.210
+Okay so now that we have this findItems here,
+
+287
+00:14:02.210 --> 00:14:05.610
+we can go ahead and start running this
+
+288
+00:14:05.610 --> 00:14:09.130
+whenever somebody types into the box, right?
+
+289
+00:14:09.130 --> 00:14:11.790
+So if we open up our DevTools here
+
+290
+00:14:11.790 --> 00:14:14.030
+and you start to type in here,
+
+291
+00:14:14.030 --> 00:14:17.130
+you'll see that you get Input changed
+
+292
+00:14:17.130 --> 00:14:18.610
+happens 39 times, right?
+
+293
+00:14:18.610 --> 00:14:21.840
+Every single time that I type in here,
+
+294
+00:14:21.840 --> 00:14:24.240
+it's going to fire off an input change.
+
+295
+00:14:24.240 --> 00:14:28.330
+And we could run findItems
+
+296
+00:14:28.330 --> 00:14:30.517
+and we could actually fire off that findItems,
+
+297
+00:14:30.517 --> 00:14:33.510
+But you could see that if I was searching for like...
+
+298
+00:14:33.510 --> 00:14:34.730
+Let's clear this console here.
+
+299
+00:14:34.730 --> 00:14:36.653
+If I was searching for yeti cooler,
+
+300
+00:14:38.030 --> 00:14:41.230
+and I search in here and I say, I'm like backspace,
+
+301
+00:14:41.230 --> 00:14:42.660
+yeti cooler, right?
+
+302
+00:14:42.660 --> 00:14:45.860
+Like I just fired off 12 change events.
+
+303
+00:14:45.860 --> 00:14:49.060
+That's gonna hit the network 12 times.
+
+304
+00:14:49.060 --> 00:14:53.520
+That will very clearly DDoS your own system very quickly.
+
+305
+00:14:53.520 --> 00:14:58.300
+So when something like that happens in JavaScript
+
+306
+00:14:58.300 --> 00:14:59.960
+or in programming in general
+
+307
+00:14:59.960 --> 00:15:01.840
+where you want it to fire off,
+
+308
+00:15:01.840 --> 00:15:05.410
+but you don't want it to fire off that often,
+
+309
+00:15:05.410 --> 00:15:07.500
+that's called debouncing a function.
+
+310
+00:15:07.500 --> 00:15:09.260
+And then debouncing a function will say,
+
+311
+00:15:09.260 --> 00:15:12.700
+yeah, fire off but like, hold on for a couple seconds
+
+312
+00:15:12.700 --> 00:15:15.520
+and like see, maybe if we fired it
+
+313
+00:15:15.520 --> 00:15:18.670
+six times within a second, wait for one second
+
+314
+00:15:18.670 --> 00:15:20.590
+and then only fire it once
+
+315
+00:15:20.590 --> 00:15:22.840
+after that one second has elapsed.
+
+316
+00:15:22.840 --> 00:15:25.290
+So what we'll do is we'll take this findItems
+
+317
+00:15:25.290 --> 00:15:28.020
+and we'll make it into a debounce function
+
+318
+00:15:28.020 --> 00:15:29.270
+called findItemsButChill.
+
+319
+00:15:30.472 --> 00:15:32.307
+So const findItemsButChill = to debounce.
+
+320
+00:15:40.180 --> 00:15:42.190
+And debounce is a function
+
+321
+00:15:42.190 --> 00:15:45.920
+that needs to be imported from lodash.
+
+322
+00:15:45.920 --> 00:15:48.962
+And you can see it's imported from lodash.debounce.
+
+323
+00:15:48.962 --> 00:15:50.417
+And before you start crying,
+
+324
+00:15:50.417 --> 00:15:52.917
+"Oh, Wes don't import lodash into the project
+
+325
+00:15:52.917 --> 00:15:54.210
+"just for one little function,"
+
+326
+00:15:54.210 --> 00:15:59.210
+Lodash will automatically ship each of their functions
+
+327
+00:15:59.210 --> 00:16:01.910
+as separate packages, which is what this is.
+
+328
+00:16:01.910 --> 00:16:04.770
+And that will only include the very small code
+
+329
+00:16:04.770 --> 00:16:06.270
+that is used to debounce a function
+
+330
+00:16:06.270 --> 00:16:08.550
+and not the entire Lodash library.
+
+331
+00:16:08.550 --> 00:16:11.350
+Then to debounce, you pass it a couple of things.
+
+332
+00:16:11.350 --> 00:16:14.307
+First, the function, which is findItems.
+
+333
+00:16:16.720 --> 00:16:17.670
+And the second argument
+
+334
+00:16:17.670 --> 00:16:20.450
+is how many milliseconds do you want it to debounce for?
+
+335
+00:16:20.450 --> 00:16:24.030
+And then that will, at most, every 350 milliseconds
+
+336
+00:16:24.030 --> 00:16:26.530
+will we run this fetch network request.
+
+337
+00:16:26.530 --> 00:16:28.060
+So that is really good.
+
+338
+00:16:28.060 --> 00:16:30.733
+Then we'll go into our onInputValueChange
+
+339
+00:16:32.660 --> 00:16:35.938
+and run findItemsButChill.
+
+340
+00:16:35.938 --> 00:16:39.320
+So you can fire off that thing
+
+341
+00:16:39.320 --> 00:16:41.690
+as much as you could possibly want,
+
+342
+00:16:41.690 --> 00:16:43.530
+but lodash will make sure
+
+343
+00:16:43.530 --> 00:16:45.160
+that it's not actually going to be run
+
+344
+00:16:45.160 --> 00:16:48.130
+more than once every 350 milliseconds.
+
+345
+00:16:48.130 --> 00:16:51.560
+Last thing we need to do is to pass the value
+
+346
+00:16:51.560 --> 00:16:54.210
+of the input box to the variables.
+
+347
+00:16:54.210 --> 00:16:57.740
+Now, because the value of the input box
+
+348
+00:16:57.740 --> 00:17:01.170
+can be either be accessed through the state
+
+349
+00:17:01.170 --> 00:17:02.950
+that comes back from useCombobox.
+
+350
+00:17:02.950 --> 00:17:04.600
+And let's actually destructure that right now.
+
+351
+00:17:04.600 --> 00:17:06.738
+It's called inputValue.
+
+352
+00:17:06.738 --> 00:17:08.190
+But you can also get that
+
+353
+00:17:08.190 --> 00:17:10.240
+from the callback function right here.
+
+354
+00:17:10.240 --> 00:17:12.170
+It should pass you the inputValue.
+
+355
+00:17:12.170 --> 00:17:13.570
+Yeah, you see it's right here.
+
+356
+00:17:13.570 --> 00:17:15.580
+I'm not gonna destructure it
+
+357
+00:17:15.580 --> 00:17:19.650
+just because that value comes from useCombobox.
+
+358
+00:17:19.650 --> 00:17:22.610
+But when we call findItemsButChill,
+
+359
+00:17:22.610 --> 00:17:24.903
+we need to pass it our variables.
+
+360
+00:17:26.730 --> 00:17:28.567
+And the searchTerm
+
+361
+00:17:31.803 --> 00:17:33.103
+is going to be inputValue.
+
+362
+00:17:36.390 --> 00:17:39.990
+Okay, so I know this is starting to get a little bit hairy
+
+363
+00:17:39.990 --> 00:17:41.653
+because look at this one,
+
+364
+00:17:42.870 --> 00:17:45.580
+this is one function right here (laughs).
+
+365
+00:17:45.580 --> 00:17:48.400
+So these are the things that we destructure from it.
+
+366
+00:17:48.400 --> 00:17:50.353
+This is the of the method.
+
+367
+00:17:51.480 --> 00:17:55.740
+And these are the options that we pass to the useCombobox.
+
+368
+00:17:55.740 --> 00:17:58.440
+So it does get a little bit hairy once we get into it
+
+369
+00:17:58.440 --> 00:18:00.450
+but it's certainly much better
+
+370
+00:18:00.450 --> 00:18:03.250
+than having to do it ourselves.
+
+371
+00:18:03.250 --> 00:18:06.110
+So if that is happening now,
+
+372
+00:18:06.110 --> 00:18:11.110
+we should be getting some data back from this useLazyQuery
+
+373
+00:18:11.410 --> 00:18:13.210
+whenever that thing fires off.
+
+374
+00:18:13.210 --> 00:18:16.743
+So if I console.log data,
+
+375
+00:18:17.820 --> 00:18:19.460
+I should get undefined.
+
+376
+00:18:19.460 --> 00:18:23.722
+But now as I type things, like yeti, there we go.
+
+377
+00:18:23.722 --> 00:18:26.480
+We get undefined a couple of times,
+
+378
+00:18:26.480 --> 00:18:29.810
+but once we do get the data back,
+
+379
+00:18:29.810 --> 00:18:31.174
+and this is...
+
+380
+00:18:31.174 --> 00:18:32.300
+Don't be alarmed,
+
+381
+00:18:32.300 --> 00:18:35.480
+this is not three network requests happening.
+
+382
+00:18:35.480 --> 00:18:38.960
+This is just that that component has rerendered three times
+
+383
+00:18:38.960 --> 00:18:41.520
+because of things changing inside of it.
+
+384
+00:18:41.520 --> 00:18:43.820
+But if you look, open it up, searchTerm,
+
+385
+00:18:43.820 --> 00:18:48.030
+look at there is the three items that we actually want.
+
+386
+00:18:48.030 --> 00:18:50.170
+So we can take that data
+
+387
+00:18:51.770 --> 00:18:55.030
+and go into our DropDown here
+
+388
+00:18:55.030 --> 00:19:00.030
+and start to render out the items as DropDownItems.
+
+389
+00:19:02.410 --> 00:19:03.860
+So go here.
+
+390
+00:19:03.860 --> 00:19:06.750
+Let's actually make a variable called items.
+
+391
+00:19:06.750 --> 00:19:11.750
+So const items = data?.searchTerms
+
+392
+00:19:19.750 --> 00:19:21.250
+or just an empty array.
+
+393
+00:19:21.250 --> 00:19:24.020
+We'll fall back to an empty array.
+
+394
+00:19:24.020 --> 00:19:26.513
+Then we'll go down to this right here.
+
+395
+00:19:27.879 --> 00:19:29.980
+You can remove those Hey dropdowns.
+
+396
+00:19:29.980 --> 00:19:34.563
+And we'll say items.map item.
+
+397
+00:19:35.490 --> 00:19:39.870
+And for each item, we will return the
+
+398
+00:19:41.570 --> 00:19:43.083
+DropDownItem, DropDownItem.
+
+399
+00:19:45.640 --> 00:19:48.030
+And inside of that DropDownItem,
+
+400
+00:19:48.030 --> 00:19:52.090
+we can put the item.name just as a very basic.
+
+401
+00:19:52.090 --> 00:19:52.930
+There we go.
+
+402
+00:19:52.930 --> 00:19:55.360
+So now if I search for shoes,
+
+403
+00:19:55.360 --> 00:19:59.120
+you see how it takes a second before the items come back,
+
+404
+00:19:59.120 --> 00:20:01.193
+even though I was like typing yeti?
+
+405
+00:20:02.810 --> 00:20:04.490
+See how it waits for me to stop typing?
+
+406
+00:20:04.490 --> 00:20:06.100
+And then after 300 milliseconds,
+
+407
+00:20:06.100 --> 00:20:08.930
+it will go ahead and display them.
+
+408
+00:20:08.930 --> 00:20:10.513
+So shoes.
+
+409
+00:20:11.756 --> 00:20:16.370
+You see this very faint glowing around the input box
+
+410
+00:20:16.370 --> 00:20:17.430
+that we have here?
+
+411
+00:20:17.430 --> 00:20:20.260
+That is because of this class of loading.
+
+412
+00:20:20.260 --> 00:20:23.160
+We can now say, if it is loading,
+
+413
+00:20:23.160 --> 00:20:24.420
+then give it a class of loading,
+
+414
+00:20:24.420 --> 00:20:27.270
+otherwise, give it a class of nothing.
+
+415
+00:20:27.270 --> 00:20:29.846
+And that will only turn on,
+
+416
+00:20:29.846 --> 00:20:32.233
+let's see if we can do it really close and see,
+
+417
+00:20:33.085 --> 00:20:35.350
+when I'm searching for something, see?
+
+418
+00:20:35.350 --> 00:20:38.190
+For a split second, you see that it does go back
+
+419
+00:20:38.190 --> 00:20:42.450
+to the the network and turns on the loading state.
+
+420
+00:20:42.450 --> 00:20:47.450
+So you could put a spinner or you could also turn on
+
+421
+00:20:48.050 --> 00:20:49.700
+the end progress on the top.
+
+422
+00:20:49.700 --> 00:20:52.400
+Lots of neat things you can do with that.
+
+423
+00:20:52.400 --> 00:20:53.980
+But let's focus our attention
+
+424
+00:20:53.980 --> 00:20:56.370
+back on these DropDownItems inside of here.
+
+425
+00:20:56.370 --> 00:20:59.640
+We need to display the image of the actual item
+
+426
+00:20:59.640 --> 00:21:01.300
+inside of that DropDownItem.
+
+427
+00:21:01.300 --> 00:21:03.450
+So we'll go right above the name here
+
+428
+00:21:03.450 --> 00:21:05.830
+and give ourselves an img tag.
+
+429
+00:21:05.830 --> 00:21:10.830
+The source will be the item.photo.image.public,
+
+430
+00:21:13.170 --> 00:21:15.033
+oops, .publicUrlTransformed.
+
+431
+00:21:19.430 --> 00:21:23.830
+And then the alt will be the item.name.
+
+432
+00:21:23.830 --> 00:21:26.713
+Pop a width of 50 px on there.
+
+433
+00:21:29.879 --> 00:21:32.120
+There we go, now we're starting to see images
+
+434
+00:21:32.120 --> 00:21:34.020
+of the actual items show up.
+
+435
+00:21:34.020 --> 00:21:36.740
+And now we wanna work with our arrow keys.
+
+436
+00:21:36.740 --> 00:21:39.210
+'Cause as you're typing something like yeti
+
+437
+00:21:39.210 --> 00:21:40.650
+and you use your arrow keys,
+
+438
+00:21:40.650 --> 00:21:43.580
+we wanna be able to highlight those items
+
+439
+00:21:43.580 --> 00:21:45.450
+showing the user that that's the item
+
+440
+00:21:45.450 --> 00:21:47.070
+that they have currently selected.
+
+441
+00:21:47.070 --> 00:21:48.760
+Same thing goes when you wanna hover
+
+442
+00:21:48.760 --> 00:21:50.350
+and click the item as well.
+
+443
+00:21:50.350 --> 00:21:54.733
+So they provide a additional method
+
+444
+00:21:56.180 --> 00:21:58.023
+in the useCombobox.
+
+445
+00:22:00.340 --> 00:22:02.780
+It's called getItemProps.
+
+446
+00:22:02.780 --> 00:22:04.393
+So we'll destructure it up here.
+
+447
+00:22:07.810 --> 00:22:11.430
+And we have to go down to the DropDownItem right here.
+
+448
+00:22:11.430 --> 00:22:13.283
+Curly brackets, ...getItemProps,
+
+449
+00:22:14.510 --> 00:22:17.860
+and you pass it your actual item.
+
+450
+00:22:17.860 --> 00:22:20.940
+So it'll be like this.
+
+451
+00:22:20.940 --> 00:22:22.380
+But I don't think I need to tell you
+
+452
+00:22:22.380 --> 00:22:23.490
+what that means anymore.
+
+453
+00:22:23.490 --> 00:22:27.010
+I've mentioned that enough in this course.
+
+454
+00:22:27.010 --> 00:22:31.210
+Additionally, the DropDownItem needs a key
+
+455
+00:22:31.210 --> 00:22:33.890
+because we are mapping over each of the items.
+
+456
+00:22:33.890 --> 00:22:36.140
+No different than any other time we map over something.
+
+457
+00:22:36.140 --> 00:22:38.720
+So we'll just give it the item.id.
+
+458
+00:22:38.720 --> 00:22:40.200
+Let's make sure that just works here.
+
+459
+00:22:40.200 --> 00:22:42.890
+So I'll search for yeti and...
+
+460
+00:22:42.890 --> 00:22:44.360
+Oh, bit of an error.
+
+461
+00:22:44.360 --> 00:22:47.440
+Pass either an item or item index to getItemProps.
+
+462
+00:22:47.440 --> 00:22:49.420
+So we did pass the item,
+
+463
+00:22:49.420 --> 00:22:52.560
+but I think you also need to let Downshift
+
+464
+00:22:52.560 --> 00:22:55.300
+know about all the possible items that there is.
+
+465
+00:22:55.300 --> 00:22:57.550
+So we've got to go back up here.
+
+466
+00:22:57.550 --> 00:23:00.770
+Remember we just put an empty array here.
+
+467
+00:23:00.770 --> 00:23:03.680
+You have to give it an array of our actual items
+
+468
+00:23:03.680 --> 00:23:04.720
+which is this right here.
+
+469
+00:23:04.720 --> 00:23:08.170
+So we'll say items and that should save to the short form.
+
+470
+00:23:08.170 --> 00:23:09.003
+There we go.
+
+471
+00:23:09.003 --> 00:23:10.373
+Does that fix it for us?
+
+472
+00:23:11.942 --> 00:23:12.780
+There we go.
+
+473
+00:23:12.780 --> 00:23:14.700
+And it might not look like much,
+
+474
+00:23:14.700 --> 00:23:17.480
+but if you take a look at the actual...
+
+475
+00:23:17.480 --> 00:23:21.080
+Look at all the markup that Downshift is giving us
+
+476
+00:23:21.080 --> 00:23:22.280
+for this type of thing.
+
+477
+00:23:22.280 --> 00:23:24.750
+And I believe if you...
+
+478
+00:23:24.750 --> 00:23:29.750
+There we go, look at, as I am using my arrow keys,
+
+479
+00:23:29.800 --> 00:23:32.241
+you can see that the aria-selected values
+
+480
+00:23:32.241 --> 00:23:36.070
+are changing from true to false, which is really cool.
+
+481
+00:23:36.070 --> 00:23:38.490
+So we can visually make those show up also
+
+482
+00:23:38.490 --> 00:23:41.820
+by passing a highlighted prop to the DropDownItem
+
+483
+00:23:41.820 --> 00:23:43.890
+so our style component will pick it up.
+
+484
+00:23:43.890 --> 00:23:47.830
+So I'll just say highlighted is equal to,
+
+485
+00:23:47.830 --> 00:23:50.160
+and we'll check if the index of the item
+
+486
+00:23:50.160 --> 00:23:53.040
+is equal to the currently selected index.
+
+487
+00:23:53.040 --> 00:23:57.220
+So if I press down right here and press down again,
+
+488
+00:23:57.220 --> 00:23:58.730
+you see how the middle one is true?
+
+489
+00:23:58.730 --> 00:24:01.350
+The index of the highlighted will be 1.
+
+490
+00:24:01.350 --> 00:24:03.350
+So we'll say we need the index
+
+491
+00:24:03.350 --> 00:24:05.060
+of the actual item we're looping over.
+
+492
+00:24:05.060 --> 00:24:06.460
+So go to this item here.
+
+493
+00:24:06.460 --> 00:24:09.073
+And also destructure the index.
+
+494
+00:24:10.618 --> 00:24:14.770
+Then we'll say if the index is equal to highlightedIndex.
+
+495
+00:24:19.480 --> 00:24:22.850
+And that highlightedIndex is not a variable just yet.
+
+496
+00:24:22.850 --> 00:24:26.880
+We need to destructure that again from useCombobox, right?
+
+497
+00:24:26.880 --> 00:24:29.000
+All the values come from useCombobox
+
+498
+00:24:30.170 --> 00:24:32.130
+and they will provide them to you.
+
+499
+00:24:32.130 --> 00:24:35.223
+And as you need them, we can destructure them from that.
+
+500
+00:24:36.890 --> 00:24:39.880
+So watch now, search for shoes.
+
+501
+00:24:39.880 --> 00:24:40.780
+It's not working.
+
+502
+00:24:40.780 --> 00:24:43.203
+I spelled highlightedIndex wrong.
+
+503
+00:24:51.103 --> 00:24:52.740
+There we go, you see?
+
+504
+00:24:52.740 --> 00:24:54.170
+Good, good, good.
+
+505
+00:24:54.170 --> 00:24:56.120
+So we are almost there.
+
+506
+00:24:56.120 --> 00:24:58.220
+There's just a couple more bits.
+
+507
+00:24:58.220 --> 00:25:00.470
+First we need to take care of what happens
+
+508
+00:25:00.470 --> 00:25:04.130
+when you hit the escape key or if you click outside.
+
+509
+00:25:04.130 --> 00:25:09.130
+And what that is is a value called isOpen
+
+510
+00:25:10.280 --> 00:25:12.870
+that, again, useCombobox gives to us.
+
+511
+00:25:12.870 --> 00:25:13.990
+And that will keep track
+
+512
+00:25:13.990 --> 00:25:16.430
+of whether this thing is currently open or not.
+
+513
+00:25:16.430 --> 00:25:20.610
+It'll, as you hit escape or you focus out of the input,
+
+514
+00:25:20.610 --> 00:25:23.470
+then it will turn that Boolean to true or false.
+
+515
+00:25:23.470 --> 00:25:27.370
+And we can just simply go to before our items.map
+
+516
+00:25:27.370 --> 00:25:29.660
+and check if it is open.
+
+517
+00:25:29.660 --> 00:25:32.355
+And if this is false, then it will not go forward
+
+518
+00:25:32.355 --> 00:25:34.500
+and map over the items for us.
+
+519
+00:25:34.500 --> 00:25:37.160
+So watch, so let's search for shoes.
+
+520
+00:25:37.160 --> 00:25:39.530
+And if I click outside, it goes away.
+
+521
+00:25:39.530 --> 00:25:42.260
+Click back into it, search for shoes.
+
+522
+00:25:42.260 --> 00:25:44.820
+If I hit my escape key, and that goes away as well.
+
+523
+00:25:44.820 --> 00:25:47.973
+So that's the first item that we have there.
+
+524
+00:25:49.320 --> 00:25:52.070
+Next little thing we need to take care of
+
+525
+00:25:52.070 --> 00:25:56.210
+is if there's nothing that is returned from that.
+
+526
+00:25:56.210 --> 00:25:59.750
+So we'll go right below the looping,
+
+527
+00:25:59.750 --> 00:26:02.530
+right before the closing DropDown here
+
+528
+00:26:02.530 --> 00:26:06.897
+and we'll say, if it is open
+
+529
+00:26:08.320 --> 00:26:10.880
+and there are no items
+
+530
+00:26:12.470 --> 00:26:15.790
+and we're not loading.
+
+531
+00:26:15.790 --> 00:26:19.010
+So basically, if it's not open, there's no items
+
+532
+00:26:19.010 --> 00:26:20.070
+and there's no loading,
+
+533
+00:26:20.070 --> 00:26:22.440
+that means we are not in a state
+
+534
+00:26:22.440 --> 00:26:23.780
+where we're currently searching for 'em
+
+535
+00:26:23.780 --> 00:26:26.380
+and we have nothing to show for it.
+
+536
+00:26:26.380 --> 00:26:29.140
+So if all of those things are true,
+
+537
+00:26:29.140 --> 00:26:34.140
+we will simply put a DropDownItem that says,
+
+538
+00:26:34.810 --> 00:26:39.810
+Sorry, No items found for,
+
+539
+00:26:40.600 --> 00:26:41.910
+and we can interpolate
+
+540
+00:26:41.910 --> 00:26:44.253
+what they were searching for, inputValue.
+
+541
+00:26:46.910 --> 00:26:48.780
+Now if we search for something really silly
+
+542
+00:26:48.780 --> 00:26:51.480
+like grilled cheese, it says,
+
+543
+00:26:51.480 --> 00:26:54.500
+Sorry, No items found for grilled cheese.
+
+544
+00:26:54.500 --> 00:26:56.480
+And we can still click outside of it
+
+545
+00:26:56.480 --> 00:26:59.300
+and it will tell us that those items are not found.
+
+546
+00:26:59.300 --> 00:27:02.020
+Last thing we need to do is this onSelectedItemChange.
+
+547
+00:27:02.020 --> 00:27:04.610
+When somebody actually selects one of these shoes here,
+
+548
+00:27:04.610 --> 00:27:08.724
+so I go down to one and I hit enter or I click it,
+
+549
+00:27:08.724 --> 00:27:12.770
+right now it just this object Object in the text bar
+
+550
+00:27:12.770 --> 00:27:14.420
+and it doesn't change the page.
+
+551
+00:27:14.420 --> 00:27:15.824
+So what we wanna do here is,
+
+552
+00:27:15.824 --> 00:27:19.670
+it will actually give us access to the selected item.
+
+553
+00:27:19.670 --> 00:27:22.330
+So destructure that with some curly brackets here.
+
+554
+00:27:22.330 --> 00:27:25.167
+And we'll just console.log selectedItem.
+
+555
+00:27:30.000 --> 00:27:32.330
+And If I search for yeti,
+
+556
+00:27:32.330 --> 00:27:34.170
+go down, I hit enter on one of those,
+
+557
+00:27:34.170 --> 00:27:37.720
+in our console it says, Selected Item.
+
+558
+00:27:37.720 --> 00:27:40.330
+There is the selected item that the user want.
+
+559
+00:27:40.330 --> 00:27:43.460
+And the important part that we want is this id.
+
+560
+00:27:43.460 --> 00:27:47.340
+So we can go into here and say, we need the router, right?
+
+561
+00:27:47.340 --> 00:27:51.800
+We need to be able to change the page with the router.
+
+562
+00:27:51.800 --> 00:27:54.800
+So we can go to the very top of our component.
+
+563
+00:27:54.800 --> 00:27:57.530
+const router = useRouter.
+
+564
+00:27:58.879 --> 00:28:00.829
+We'll have to import that from next.js.
+
+565
+00:28:06.470 --> 00:28:09.143
+And we'll go here, we'll say router.push.
+
+566
+00:28:10.260 --> 00:28:13.685
+And the path name is equal to,
+
+567
+00:28:13.685 --> 00:28:14.720
+we have to use back ticks to interpolate it,
+
+568
+00:28:14.720 --> 00:28:19.720
+/product/selectedItem.id.
+
+569
+00:28:21.460 --> 00:28:23.890
+Now we can get rid of those console logs.
+
+570
+00:28:23.890 --> 00:28:27.580
+So now if I search for yeti, go down, boom,
+
+571
+00:28:27.580 --> 00:28:29.870
+you see it changes the actual page.
+
+572
+00:28:29.870 --> 00:28:32.330
+You'll see it does this object Object.
+
+573
+00:28:32.330 --> 00:28:34.220
+And if you ever see this in JavaScript,
+
+574
+00:28:34.220 --> 00:28:38.080
+what that means is that they try to take an object
+
+575
+00:28:38.080 --> 00:28:40.560
+and run the .toString method on it.
+
+576
+00:28:40.560 --> 00:28:41.850
+If you ever have an object
+
+577
+00:28:41.850 --> 00:28:44.060
+and it looks a little something like this,
+
+578
+00:28:44.060 --> 00:28:49.060
+like curly brackets and you .toString on it, you get...
+
+579
+00:28:49.880 --> 00:28:51.700
+Oh, maybe I need some parentheses around that.
+
+580
+00:28:51.700 --> 00:28:52.810
+You get object Object.
+
+581
+00:28:52.810 --> 00:28:53.660
+That's what happens
+
+582
+00:28:53.660 --> 00:28:56.460
+when you try to make an object into a string.
+
+583
+00:28:56.460 --> 00:29:00.980
+So we have to pass an additional little option
+
+584
+00:29:00.980 --> 00:29:04.573
+to our useCombobox, which is right here.
+
+585
+00:29:05.440 --> 00:29:10.247
+And we'll do it right at the bottom that says itemToString.
+
+586
+00:29:11.340 --> 00:29:14.920
+And that is just a little function that takes the item.
+
+587
+00:29:17.320 --> 00:29:19.330
+And actually we can do this as an arrow function.
+
+588
+00:29:19.330 --> 00:29:21.100
+This is a perfect use case for an arrow function.
+
+589
+00:29:21.100 --> 00:29:24.600
+So we have the item and we will say
+
+590
+00:29:24.600 --> 00:29:29.600
+if the item is equal to null, sometimes it is null,
+
+591
+00:29:29.980 --> 00:29:31.900
+then we'll return nothing.
+
+592
+00:29:31.900 --> 00:29:35.463
+Otherwise, we return the item.name.
+
+593
+00:29:36.500 --> 00:29:38.400
+Or actually we could just do
+
+594
+00:29:40.700 --> 00:29:43.030
+item.name or
+
+595
+00:29:46.090 --> 00:29:48.710
+empty and then put a question mark on there.
+
+596
+00:29:48.710 --> 00:29:49.543
+And that will say,
+
+597
+00:29:49.543 --> 00:29:51.410
+if there is an item, give me the item name.
+
+598
+00:29:51.410 --> 00:29:53.040
+Otherwise, it will be undefined
+
+599
+00:29:53.040 --> 00:29:57.060
+and it'll fall back to this single quotes.
+
+600
+00:29:57.060 --> 00:29:58.660
+So now if I search for something
+
+601
+00:30:00.120 --> 00:30:02.390
+and then it actually puts the text in there.
+
+602
+00:30:02.390 --> 00:30:05.980
+So if we were to literally return anything,
+
+603
+00:30:05.980 --> 00:30:10.155
+WES IS COOL from there,
+
+604
+00:30:10.155 --> 00:30:14.460
+that's the text that gets shown in here, see?
+
+605
+00:30:14.460 --> 00:30:16.140
+WES IS COOL, right?
+
+606
+00:30:16.140 --> 00:30:21.140
+So we want to programmatically grab the actual item name
+
+607
+00:30:21.320 --> 00:30:23.050
+which is awesome.
+
+608
+00:30:23.050 --> 00:30:24.640
+So that is our search component.
+
+609
+00:30:24.640 --> 00:30:25.870
+Quite a nice little package
+
+610
+00:30:25.870 --> 00:30:27.450
+for working with this type of stuff.
+
+611
+00:30:27.450 --> 00:30:29.200
+And I'll catch you in the next one.
+

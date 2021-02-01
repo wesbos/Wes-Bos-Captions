@@ -1,0 +1,722 @@
+﻿WEBVTT
+
+1
+00:00:01.710 --> 00:00:03.350
+<v Instructor>Next couple of videos we gonna be,</v>
+
+2
+00:00:03.350 --> 00:00:06.010
+creating the single order page to display what is
+
+3
+00:00:06.010 --> 00:00:08.160
+in the order and the total and all that good stuff.
+
+4
+00:00:08.160 --> 00:00:11.010
+And then also there should be a page that lists all
+
+5
+00:00:11.010 --> 00:00:12.720
+of these orders.
+
+6
+00:00:12.720 --> 00:00:14.350
+And I'd like to encourage you to try
+
+7
+00:00:14.350 --> 00:00:15.547
+and do those yourselves,
+
+8
+00:00:15.547 --> 00:00:17.540
+*cause this is pretty simple stuff.
+
+9
+00:00:17.540 --> 00:00:19.940
+You're just gonna query the data, loop over it,
+
+10
+00:00:19.940 --> 00:00:22.370
+display it on the page, maybe a couple
+
+11
+00:00:22.370 --> 00:00:25.180
+of links to different pages and you're good to go.
+
+12
+00:00:25.180 --> 00:00:30.180
+So we need to do this page /order/ the ID.
+
+13
+00:00:30.670 --> 00:00:32.284
+So in order to do that,
+
+14
+00:00:32.284 --> 00:00:33.117
+(laughs loudly)
+
+15
+00:00:33.117 --> 00:00:34.170
+in order to do that,
+
+16
+00:00:34.170 --> 00:00:35.510
+you know that's good,
+
+17
+00:00:35.510 --> 00:00:37.890
+we're going to need an order folder.
+
+18
+00:00:37.890 --> 00:00:41.680
+So new folder, order and then inside of that,
+
+19
+00:00:41.680 --> 00:00:46.343
+we'll need a square [Id].js file.
+
+20
+00:00:47.840 --> 00:00:51.270
+And that should catch this specific route.
+
+21
+00:00:51.270 --> 00:00:56.270
+In there, we'll export default function order page
+
+22
+00:00:56.490 --> 00:00:59.233
+or may be a single order page, we'll call it.
+
+23
+00:01:00.150 --> 00:01:04.343
+And from that return a div, that says, hey.
+
+24
+00:01:06.110 --> 00:01:08.160
+Now if you refresh this page, here we go.
+
+25
+00:01:08.160 --> 00:01:11.640
+Now we see, hey, showing up on that page.
+
+26
+00:01:11.640 --> 00:01:14.530
+Good, so first thing we wanna do is,
+
+27
+00:01:14.530 --> 00:01:19.480
+we actually need to query the ID of the order.
+
+28
+00:01:19.480 --> 00:01:21.640
+And I believe that comes in via props.
+
+29
+00:01:21.640 --> 00:01:23.560
+Let's console.log the props
+
+30
+00:01:23.560 --> 00:01:25.360
+to see what we're working with here.
+
+31
+00:01:26.210 --> 00:01:28.430
+Here we go, query, ID.
+
+32
+00:01:28.430 --> 00:01:32.783
+So we can destructure query here.
+
+33
+00:01:35.200 --> 00:01:40.200
+And let's just try put the ID into this div that we have,
+
+34
+00:01:40.300 --> 00:01:42.730
+query.id, here we go.
+
+35
+00:01:42.730 --> 00:01:44.650
+So the ID of that order is being passed.
+
+36
+00:01:44.650 --> 00:01:46.860
+And if you don't have this page open, you can just go
+
+37
+00:01:46.860 --> 00:01:51.830
+to your orders and grab an ID from any one of these orders.
+
+38
+00:01:51.830 --> 00:01:53.210
+We haven't done permissions or anything.
+
+39
+00:01:53.210 --> 00:01:54.230
+So it doesn't even matter
+
+40
+00:01:54.230 --> 00:01:56.343
+if it's associated with the user or not.
+
+41
+00:01:57.520 --> 00:01:59.240
+Next up we'll make a query.
+
+42
+00:01:59.240 --> 00:02:02.087
+So const single order query,.
+
+43
+00:02:08.854 --> 00:02:09.687
+GQL got it.
+
+44
+00:02:09.687 --> 00:02:14.140
+Import GQL.Always do it twice.
+
+45
+00:02:14.140 --> 00:02:15.770
+There we go.
+
+46
+00:02:15.770 --> 00:02:20.770
+Now inside of here, make a query called single order query
+
+47
+00:02:21.480 --> 00:02:25.203
+It takes in an ID with the type of ID.
+
+48
+00:02:26.380 --> 00:02:28.910
+And then in there we use our Keystone query
+
+49
+00:02:28.910 --> 00:02:30.383
+which we'll go here.
+
+50
+00:02:32.490 --> 00:02:35.830
+Well, we'll do a query, just is order, right?
+
+51
+00:02:35.830 --> 00:02:37.760
+We just want one specific order.
+
+52
+00:02:37.760 --> 00:02:40.510
+So it is capital order.
+
+53
+00:02:40.510 --> 00:02:41.770
+I don't like the fact that
+
+54
+00:02:41.770 --> 00:02:43.440
+it comes back with a capital on it
+
+55
+00:02:43.440 --> 00:02:46.100
+So in our case, we could just rename that to lowercase order
+
+56
+00:02:46.100 --> 00:02:47.270
+like that.
+
+57
+00:02:47.270 --> 00:02:50.340
+And then for the order, we need to say, give me
+
+58
+00:02:50.340 --> 00:02:55.340
+a specific order where the ID is gonna be equal
+
+59
+00:02:55.780 --> 00:02:59.600
+to the ID variable that's passed in to this query.
+
+60
+00:02:59.600 --> 00:03:02.830
+Then for each order, we wanna grab the ID of that order
+
+61
+00:03:02.830 --> 00:03:06.350
+the charge, the total, the user, that order
+
+62
+00:03:06.350 --> 00:03:10.120
+is associated with, the items that are in that order,
+
+63
+00:03:10.120 --> 00:03:12.750
+and then for each item, we want the ID of that item
+
+64
+00:03:12.750 --> 00:03:14.543
+the name, the description,
+
+65
+00:03:17.560 --> 00:03:19.083
+the price,
+
+66
+00:03:19.940 --> 00:03:23.223
+the photo image,
+
+67
+00:03:27.470 --> 00:03:30.363
+and the public URL transformed,
+
+68
+00:03:31.920 --> 00:03:36.100
+and then finally, also quantity of how many did they buy
+
+69
+00:03:36.100 --> 00:03:38.470
+of that thing, all right?
+
+70
+00:03:38.470 --> 00:03:40.870
+And we'll go down here and write a little query.
+
+71
+00:03:40.870 --> 00:03:44.550
+So const data
+
+72
+00:03:44.550 --> 00:03:47.380
+And I donno
+
+73
+00:03:47.380 --> 00:03:52.370
+we just destructure like this data error and loading
+
+74
+00:03:54.770 --> 00:03:56.010
+Sequel to use query
+
+75
+00:03:58.170 --> 00:04:00.430
+Pass it or a single order query.
+
+76
+00:04:00.430 --> 00:04:01.630
+And then the variables
+
+77
+00:04:03.920 --> 00:04:07.333
+are going to be ID, which is queried ID.
+
+78
+00:04:09.840 --> 00:04:13.790
+All right, then inside of here, I could say
+
+79
+00:04:13.790 --> 00:04:18.170
+if we are loading return P loading
+
+80
+00:04:19.080 --> 00:04:24.080
+if there is an error, then return our error message
+
+81
+00:04:33.922 --> 00:04:38.120
+Got to import that at the top, import error message
+
+82
+00:04:38.120 --> 00:04:41.773
+from go up a level into components.
+
+83
+00:04:44.320 --> 00:04:46.610
+Oh, we got to go up two levels, that's why,
+
+84
+00:04:46.610 --> 00:04:51.300
+then components and then into error message.
+
+85
+00:04:51.300 --> 00:04:54.883
+Okay. And then you pass that error here.
+
+86
+00:04:56.110 --> 00:04:59.670
+This will be helpful when we get into permissions,
+
+87
+00:04:59.670 --> 00:05:02.590
+if someone's trynna view an order that is legitimate
+
+88
+00:05:02.590 --> 00:05:05.647
+but they're not allowed, then we will tell them,
+
+89
+00:05:05.647 --> 00:05:08.210
+"Hey buddy, you're not allowed to see this order."
+
+90
+00:05:08.210 --> 00:05:09.943
+what are you snooping for?
+
+91
+00:05:11.330 --> 00:05:14.710
+All right,now, next, what we wanna do is to
+
+92
+00:05:15.590 --> 00:05:17.700
+destructure the order from that.
+
+93
+00:05:17.700 --> 00:05:19.320
+So const order is equal
+
+94
+00:05:19.320 --> 00:05:22.060
+to data that will take the data.order property
+
+95
+00:05:22.060 --> 00:05:24.110
+and put it into its own value.
+
+96
+00:05:24.110 --> 00:05:27.530
+And then I believe we should be able to do things
+
+97
+00:05:27.530 --> 00:05:29.140
+like order.ID.
+
+98
+00:05:29.140 --> 00:05:32.653
+And if we save that nothing changes. It worked.
+
+99
+00:05:33.740 --> 00:05:35.980
+But we should be also seeing something like total.
+
+100
+00:05:35.980 --> 00:05:39.620
+Here we go ordered.charge
+
+101
+00:05:40.900 --> 00:05:41.750
+Here we go.
+
+102
+00:05:41.750 --> 00:05:42.583
+Good, good, good.
+
+103
+00:05:42.583 --> 00:05:44.020
+So now we can start to
+
+104
+00:05:47.180 --> 00:05:48.340
+kinda render out a bunch
+
+105
+00:05:48.340 --> 00:05:50.780
+of the data that we wanna show on the page here.
+
+106
+00:05:50.780 --> 00:05:54.230
+So let's just scare it, all this.
+
+107
+00:05:54.230 --> 00:05:56.610
+We need order styles
+
+108
+00:05:58.950 --> 00:06:00.580
+Try to auto import that and all that
+
+109
+00:06:00.580 --> 00:06:02.090
+one's not working.
+
+110
+00:06:02.090 --> 00:06:06.080
+So we'll import it at the top import order styles from
+
+111
+00:06:07.770 --> 00:06:12.510
+up to levels, into our components folder
+
+112
+00:06:12.510 --> 00:06:17.213
+into styles, directory, and then order styles.
+
+113
+00:06:27.650 --> 00:06:31.800
+And inside of that, let's use our head so we can do the SEO.
+
+114
+00:06:31.800 --> 00:06:35.410
+So we'll import head from next head.
+
+115
+00:06:35.410 --> 00:06:40.323
+What are the top import head from next head.
+
+116
+00:06:42.650 --> 00:06:45.410
+And then in here, we could simply just say title
+
+117
+00:06:48.000 --> 00:06:50.180
+is equal to sick fits
+
+118
+00:06:51.100 --> 00:06:54.113
+and we'll say, ordered.ID.
+
+119
+00:06:55.670 --> 00:06:57.040
+Here we go, now we've got, now we have some
+
+120
+00:06:57.040 --> 00:06:58.830
+a nice title bar showing up there
+
+121
+00:06:59.930 --> 00:07:02.320
+below that we need a paragraph,
+
+122
+00:07:02.320 --> 00:07:05.660
+what they span says, order ID
+
+123
+00:07:06.520 --> 00:07:11.520
+and then another span that has the order.ID.
+
+124
+00:07:16.370 --> 00:07:20.917
+Good. Let's duplicate that and say, charge
+
+125
+00:07:26.050 --> 00:07:28.460
+Good. We're basically just gonna be rendering
+
+126
+00:07:28.460 --> 00:07:31.360
+out all the data that is in that one.
+
+127
+00:07:31.360 --> 00:07:33.050
+We'll do another one.Say,
+
+128
+00:07:33.050 --> 00:07:37.090
+order total is ordered.total
+
+129
+00:07:37.090 --> 00:07:41.433
+and we can wrap that in a format, money function.
+
+130
+00:07:45.010 --> 00:07:46.703
+Obviously we gotta import it.
+
+131
+00:07:49.550 --> 00:07:50.590
+Come on VS code
+
+132
+00:07:50.590 --> 00:07:53.090
+Sometimes the import doesn't work.
+
+133
+00:07:53.090 --> 00:07:53.923
+I'm not sure why.
+
+134
+00:07:53.923 --> 00:07:56.890
+Maybe it has something to do with the fact that
+
+135
+00:07:56.890 --> 00:08:00.180
+this file has square brackets in the name I donno
+
+136
+00:08:00.180 --> 00:08:05.180
+import format money from lib format money.
+
+137
+00:08:07.690 --> 00:08:08.523
+There we go.
+
+138
+00:08:09.627 --> 00:08:10.460
+$34
+
+139
+00:08:13.880 --> 00:08:17.323
+and then we'll do another one that says item count.
+
+140
+00:08:19.670 --> 00:08:23.710
+I'll say, order.items.length
+
+141
+00:08:25.700 --> 00:08:28.450
+Good. Just so there's one item in that.
+
+142
+00:08:28.450 --> 00:08:32.120
+And then we'll give itself the div with a class of items
+
+143
+00:08:32.120 --> 00:08:36.160
+and we'll take the ordered.items and map over it.
+
+144
+00:08:36.160 --> 00:08:39.033
+Ordered.items.map.
+
+145
+00:08:39.970 --> 00:08:40.953
+We got the item.
+
+146
+00:08:42.160 --> 00:08:45.490
+And then for each one, we'll return a div with a class
+
+147
+00:08:45.490 --> 00:08:47.370
+of order-item.
+
+148
+00:08:47.370 --> 00:08:51.223
+We also need a key of the item.ID on there,
+
+149
+00:08:53.820 --> 00:08:57.920
+You source an image where the source is
+
+150
+00:08:58.920 --> 00:09:03.333
+the item.photo.image.public
+
+151
+00:09:06.020 --> 00:09:07.450
+You're all transformed.
+
+152
+00:09:07.450 --> 00:09:10.418
+I am so excited not to ever have to type that again.
+
+153
+00:09:10.418 --> 00:09:11.251
+(laughs loudly)
+
+154
+00:09:11.251 --> 00:09:14.010
+That's the worst, worst name for that.
+
+155
+00:09:14.010 --> 00:09:17.043
+And then we can say item.title.
+
+156
+00:09:19.020 --> 00:09:20.150
+There we go
+
+157
+00:09:20.150 --> 00:09:22.593
+Looking good of H2 tag.
+
+158
+00:09:23.690 --> 00:09:26.900
+Oh no, We need a div with a class of item details.
+
+159
+00:09:26.900 --> 00:09:30.490
+And then H2 tag inside of there as item.name
+
+160
+00:09:33.670 --> 00:09:38.633
+paragraph tag item.quantity,
+
+161
+00:09:42.263 --> 00:09:46.933
+qty could duplicate it.
+
+162
+00:09:48.250 --> 00:09:49.083
+Each
+
+163
+00:09:51.630 --> 00:09:56.630
+is a format money and
+
+164
+00:10:00.260 --> 00:10:01.993
+is item.price.
+
+165
+00:10:04.080 --> 00:10:05.360
+Let's say sub total
+
+166
+00:10:11.770 --> 00:10:15.340
+Which is the item.price times the item.quantity
+
+167
+00:10:17.920 --> 00:10:18.753
+there we go.
+
+168
+00:10:18.753 --> 00:10:19.586
+Looking good.
+
+169
+00:10:19.586 --> 00:10:22.430
+And then finally, a paragraph tag
+
+170
+00:10:22.430 --> 00:10:24.483
+with the item.description in it.
+
+171
+00:10:29.450 --> 00:10:31.120
+Boom, that's looking pretty good.
+
+172
+00:10:31.120 --> 00:10:33.620
+Let's try, switch out the ID with one that has more
+
+173
+00:10:33.620 --> 00:10:37.250
+than one item like this one has lots of items.
+
+174
+00:10:37.250 --> 00:10:40.343
+So I'm just gonna grab the ID here, switch it out.
+
+175
+00:10:42.300 --> 00:10:43.133
+Here we go
+
+176
+00:10:43.133 --> 00:10:46.490
+That's looking pretty slick, pretty, pretty slick.
+
+177
+00:10:46.490 --> 00:10:49.300
+So that's enough for that one single order in the next one
+
+178
+00:10:49.300 --> 00:10:52.050
+we will move over to displaying all
+
+179
+00:10:52.050 --> 00:10:55.100
+of the orders on one page that you can click through
+
+180
+00:10:55.100 --> 00:10:56.563
+and visit one of these.
+

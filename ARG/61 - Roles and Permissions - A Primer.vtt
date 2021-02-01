@@ -1,0 +1,278 @@
+﻿WEBVTT
+
+1
+00:00:01.430 --> 00:00:04.260
+<v Instructor>Alright, let's get into permissions, roles,</v>
+
+2
+00:00:04.260 --> 00:00:06.040
+and access functions a little bit.
+
+3
+00:00:06.040 --> 00:00:07.030
+I'm gonna take this first video
+
+4
+00:00:07.030 --> 00:00:10.080
+just to explain the different pieces of the stuff
+
+5
+00:00:10.080 --> 00:00:11.440
+that we're gonna be working with.
+
+6
+00:00:11.440 --> 00:00:14.250
+This stuff is inherently kind of complicated
+
+7
+00:00:14.250 --> 00:00:17.860
+because when you get into like real applications,
+
+8
+00:00:17.860 --> 00:00:20.810
+you need some very complex rules
+
+9
+00:00:20.810 --> 00:00:23.660
+as to who can access what, who can do what,
+
+10
+00:00:23.660 --> 00:00:25.980
+if you're an admin, can you do something if you own it?
+
+11
+00:00:25.980 --> 00:00:26.940
+Can you see it?
+
+12
+00:00:26.940 --> 00:00:28.790
+If you own it, can you delete it?
+
+13
+00:00:28.790 --> 00:00:29.650
+Can you update it?
+
+14
+00:00:29.650 --> 00:00:32.510
+Can you only update some of the fields on something
+
+15
+00:00:32.510 --> 00:00:34.160
+if you are a specific user?
+
+16
+00:00:34.160 --> 00:00:35.050
+So, whew!
+
+17
+00:00:35.050 --> 00:00:40.050
+It gets confusing, but let's get into it now.
+
+18
+00:00:40.260 --> 00:00:43.050
+At the very basics, we have these things
+
+19
+00:00:43.050 --> 00:00:46.130
+that are going to be referred to as permissions.
+
+20
+00:00:46.130 --> 00:00:48.720
+And permissions are going to be just like,
+
+21
+00:00:48.720 --> 00:00:51.540
+these are just gonna be check boxes of
+
+22
+00:00:51.540 --> 00:00:55.170
+can someone do something or not?
+
+23
+00:00:55.170 --> 00:01:00.170
+So, something like, can see all users, or can edit products.
+
+24
+00:01:03.970 --> 00:01:06.233
+Things like that is going to be,
+
+25
+00:01:07.120 --> 00:01:08.620
+these are going to be permissions.
+
+26
+00:01:08.620 --> 00:01:13.210
+And we're going to apply them to things and say,
+
+27
+00:01:13.210 --> 00:01:15.920
+yes or no, can you do these things or can you not?
+
+28
+00:01:15.920 --> 00:01:18.340
+Now, once you have many permissions,
+
+29
+00:01:18.340 --> 00:01:22.000
+you can sort of bundle those up into what's called a role.
+
+30
+00:01:22.000 --> 00:01:25.550
+So you might have an admin where you're allowed
+
+31
+00:01:25.550 --> 00:01:30.450
+to manage users and you're allowed to manage products
+
+32
+00:01:30.450 --> 00:01:33.700
+and you're allowed to, maybe you have another one
+
+33
+00:01:33.700 --> 00:01:38.700
+which is like editor, and you're allowed to read products
+
+34
+00:01:38.890 --> 00:01:42.400
+but you're not allowed to delete products, right?
+
+35
+00:01:42.400 --> 00:01:45.840
+Like you're allowed to do the different levels
+
+36
+00:01:45.840 --> 00:01:46.673
+of what you want.
+
+37
+00:01:46.673 --> 00:01:50.200
+So, roles are collection of multiple permissions.
+
+38
+00:01:50.200 --> 00:01:55.200
+And then one step further, we have these access functions.
+
+39
+00:01:55.251 --> 00:01:58.380
+So, when it comes down to Keystone saying,
+
+40
+00:01:58.380 --> 00:02:01.910
+alright, are you allowed to view all this products?
+
+41
+00:02:01.910 --> 00:02:03.960
+Are you allowed to update all of these products?
+
+42
+00:02:03.960 --> 00:02:07.870
+Are you allowed to query a list of all the users?
+
+43
+00:02:07.870 --> 00:02:11.900
+There is very basic yes or no functions.
+
+44
+00:02:11.900 --> 00:02:14.140
+And those are generally gonna be based upon
+
+45
+00:02:14.140 --> 00:02:16.580
+what role you have.
+
+46
+00:02:16.580 --> 00:02:20.040
+So what we'll do is we'll code up a function
+
+47
+00:02:20.040 --> 00:02:23.750
+and we'll say, can this person read all the users?
+
+48
+00:02:23.750 --> 00:02:27.250
+And that will either return a yes or a no.
+
+49
+00:02:27.250 --> 00:02:31.030
+And then one step further is sometimes the answer
+
+50
+00:02:31.030 --> 00:02:35.260
+to can this person view all the products,
+
+51
+00:02:35.260 --> 00:02:40.000
+the answer to that is gonna be no, not all of them
+
+52
+00:02:40.000 --> 00:02:42.130
+but they can view the ones that they created
+
+53
+00:02:42.130 --> 00:02:45.470
+or maybe another example would be orders.
+
+54
+00:02:45.470 --> 00:02:47.090
+Can this person read orders?
+
+55
+00:02:47.090 --> 00:02:49.180
+Well, yes, they can read their own orders,
+
+56
+00:02:49.180 --> 00:02:51.850
+but no, they can't read all of the orders,
+
+57
+00:02:51.850 --> 00:02:54.200
+and no, they can't update orders,
+
+58
+00:02:54.200 --> 00:02:56.660
+and no, they can't edit an order,
+
+59
+00:02:56.660 --> 00:02:58.230
+and also they can't delete an order.
+
+60
+00:02:58.230 --> 00:03:00.900
+So in that case, what we would do
+
+61
+00:03:00.900 --> 00:03:03.050
+is we don't return a yes or a no from it,
+
+62
+00:03:03.050 --> 00:03:05.970
+we're gonna return something like a where clause.
+
+63
+00:03:05.970 --> 00:03:07.960
+And we're gonna say, okay, give me all the orders
+
+64
+00:03:07.960 --> 00:03:12.540
+but where the user's ID is equal
+
+65
+00:03:12.540 --> 00:03:16.070
+to the ID of the currently signed in user.
+
+66
+00:03:16.070 --> 00:03:19.620
+So, with that sort of high level overlook
+
+67
+00:03:19.620 --> 00:03:22.530
+over how we're gonna tackle the permissions,
+
+68
+00:03:22.530 --> 00:03:24.580
+let's get into doing the first part
+
+69
+00:03:24.580 --> 00:03:27.863
+which is creating a UI for assigning roles.
+

@@ -1,0 +1,470 @@
+﻿WEBVTT
+
+1
+00:00:01.908 --> 00:00:03.130
+<v Wes>All right, so to test what we've got so far.</v>
+
+2
+00:00:03.130 --> 00:00:05.090
+I'm gonna do this in two steps.
+
+3
+00:00:05.090 --> 00:00:07.560
+First, I'm gonna go on the frontend
+
+4
+00:00:08.523 --> 00:00:10.830
+and we are console logging the payment method
+
+5
+00:00:10.830 --> 00:00:13.690
+that will have the ID, and then we'll go to the backend
+
+6
+00:00:13.690 --> 00:00:15.430
+and we'll actually mainly run it with the ID
+
+7
+00:00:15.430 --> 00:00:17.662
+that comes back from this payment method.
+
+8
+00:00:17.662 --> 00:00:18.850
+(clears throat)
+
+9
+00:00:18.850 --> 00:00:20.630
+And if that works, we'll write the mutation
+
+10
+00:00:20.630 --> 00:00:21.920
+and hook everything up.
+
+11
+00:00:21.920 --> 00:00:25.873
+So let's go to, I just signed out.
+
+12
+00:00:27.000 --> 00:00:27.973
+The one Click.
+
+13
+00:00:32.210 --> 00:00:37.063
+Okay, I am in, go to my cart,
+
+14
+00:00:39.346 --> 00:00:40.179
+for two,
+
+15
+00:00:46.620 --> 00:00:48.463
+so over my Dev tools.
+
+16
+00:00:49.590 --> 00:00:51.043
+Clear everything out, check it.
+
+17
+00:00:52.076 --> 00:00:52.909
+There we go.
+
+18
+00:00:52.909 --> 00:00:56.400
+There is my ID, okay.
+
+19
+00:00:56.400 --> 00:01:00.410
+Then I'll go to right here and pass that.
+
+20
+00:01:00.410 --> 00:01:02.493
+So mutation checkout ID,
+
+21
+00:01:03.730 --> 00:01:07.780
+and I'll go to my backend right here.
+
+22
+00:01:07.780 --> 00:01:08.613
+Clear it out.
+
+23
+00:01:09.868 --> 00:01:12.040
+Let's just triple check that the code is on the backend
+
+24
+00:01:12.040 --> 00:01:15.240
+is actually going to call it a log, the charge.
+
+25
+00:01:15.240 --> 00:01:16.073
+Oh, look, we didn't do that yet.
+
+26
+00:01:16.073 --> 00:01:20.850
+So console.log, the charge, how to restart it now.
+
+27
+00:01:23.350 --> 00:01:26.040
+These tokens are only good for one try.
+
+28
+00:01:26.040 --> 00:01:27.710
+So if something breaks
+
+29
+00:01:27.710 --> 00:01:29.410
+and you have to get another token.
+
+30
+00:01:32.770 --> 00:01:35.853
+All right, so clear up my Dev tools, run it.
+
+31
+00:01:38.670 --> 00:01:43.670
+And it worked, this is the charge.
+
+32
+00:01:45.140 --> 00:01:50.140
+And I believe now if we go to our Keystone payments,
+
+33
+00:01:53.350 --> 00:01:54.430
+there we go.
+
+34
+00:01:54.430 --> 00:01:57.930
+January 15th is when I'm running and recording this.
+
+35
+00:01:57.930 --> 00:02:00.963
+304 US dollars.
+
+36
+00:02:02.144 --> 00:02:02.977
+Okay, so we know all of that's working.
+
+37
+00:02:02.977 --> 00:02:07.977
+Let's go to our frontend and hookup the mutation.
+
+38
+00:02:08.290 --> 00:02:11.470
+Let's go to somewhere near the top of our checkout here
+
+39
+00:02:11.470 --> 00:02:12.500
+and write the mutation.
+
+40
+00:02:12.500 --> 00:02:17.500
+So const, create, order mutation as you could do, GQL,
+
+41
+00:02:20.410 --> 00:02:21.733
+let's import GQL.
+
+42
+00:02:27.842 --> 00:02:29.540
+Here we go.
+
+43
+00:02:29.540 --> 00:02:34.540
+We have a mutation called checkout and actually, no, sorry.
+
+44
+00:02:35.220 --> 00:02:36.850
+I've been calling that create order mutation
+
+45
+00:02:36.850 --> 00:02:41.850
+that takes in a token that is a string is required.
+
+46
+00:02:42.000 --> 00:02:43.390
+A difference between GraphQL types
+
+47
+00:02:43.390 --> 00:02:46.323
+and TypeScript types is the capital on that string.
+
+48
+00:02:48.160 --> 00:02:49.220
+Then inside of that,
+
+49
+00:02:49.220 --> 00:02:52.050
+we actually run checkout where the token
+
+50
+00:02:52.050 --> 00:02:55.070
+is the token variable that gets passed in.
+
+51
+00:02:55.070 --> 00:03:00.043
+And back from that, we want the ID, the charge, the total,
+
+52
+00:03:02.850 --> 00:03:07.850
+and then each item in that, which has ID and the name.
+
+53
+00:03:11.166 --> 00:03:12.200
+I'm gonna save.
+
+54
+00:03:12.200 --> 00:03:13.910
+And we'll take this create order mutation
+
+55
+00:03:13.910 --> 00:03:17.150
+and we'll go into our checkout form here
+
+56
+00:03:17.150 --> 00:03:19.693
+and just say const square bracket.
+
+57
+00:03:24.350 --> 00:03:26.813
+Checkout, and any errors.
+
+58
+00:03:28.250 --> 00:03:32.430
+This is going to put us in a bit of a pickle
+
+59
+00:03:32.430 --> 00:03:35.686
+because we already have a variable called error in here.
+
+60
+00:03:35.686 --> 00:03:37.150
+So we need to do is de structure that
+
+61
+00:03:37.150 --> 00:03:40.043
+and we'll call it a GraphQL error.
+
+62
+00:03:42.340 --> 00:03:45.853
+And oh, we need to de structure that here,
+
+63
+00:03:47.175 --> 00:03:50.883
+curly brackets and that is equal to use mutation,
+
+64
+00:03:52.280 --> 00:03:57.280
+make sure we import use mutation and that gets passed,
+
+65
+00:03:58.090 --> 00:03:59.583
+create order mutation.
+
+66
+00:04:00.420 --> 00:04:04.970
+And there is one variable that we need to pass,
+
+67
+00:04:04.970 --> 00:04:07.420
+but the variable is token
+
+68
+00:04:07.420 --> 00:04:10.960
+and we don't have the token variable just yet.
+
+69
+00:04:10.960 --> 00:04:15.240
+We only have the token variable at this point.
+
+70
+00:04:15.240 --> 00:04:19.130
+So this is a case where we can't pass it at definition time,
+
+71
+00:04:19.130 --> 00:04:21.283
+but we will pass it at call time.
+
+72
+00:04:22.590 --> 00:04:23.780
+So give that a save.
+
+73
+00:04:23.780 --> 00:04:26.423
+It looks like everything is happy.
+
+74
+00:04:29.090 --> 00:04:32.580
+And we'll go down here and let's take care of this error
+
+75
+00:04:32.580 --> 00:04:34.850
+before we get anything here.
+
+76
+00:04:34.850 --> 00:04:36.230
+We'll just duplicate that.
+
+77
+00:04:36.230 --> 00:04:38.350
+And if there is any GraphQL errors
+
+78
+00:04:38.350 --> 00:04:39.210
+and we'll display that
+
+79
+00:04:39.210 --> 00:04:41.700
+you could also use your error component as well,
+
+80
+00:04:41.700 --> 00:04:44.070
+if you want to use different styling, but in this case,
+
+81
+00:04:44.070 --> 00:04:47.130
+I want to keep it nice and small, right above the checkout.
+
+82
+00:04:47.130 --> 00:04:50.860
+Additionally, this error here we need to return
+
+83
+00:04:50.860 --> 00:04:55.740
+from this function, which this stops the checkout
+
+84
+00:04:56.602 --> 00:04:59.010
+from happening because there was clearly an error
+
+85
+00:04:59.870 --> 00:05:02.500
+and also we need to take our end progress
+
+86
+00:05:02.500 --> 00:05:05.951
+and called done on there because if there is an error,
+
+87
+00:05:05.951 --> 00:05:06.784
+we need to say, all right, something happened
+
+88
+00:05:06.784 --> 00:05:08.410
+we're still on this page.
+
+89
+00:05:08.410 --> 00:05:10.254
+Let's display it to the user
+
+90
+00:05:10.254 --> 00:05:11.520
+and stop this function from running.
+
+91
+00:05:11.520 --> 00:05:13.780
+But number five is what we're here for
+
+92
+00:05:13.780 --> 00:05:15.320
+is send the token from step three
+
+93
+00:05:15.320 --> 00:05:18.196
+to the Keystone server via customization.
+
+94
+00:05:18.196 --> 00:05:20.970
+So we can say const order is equal to await checkout
+
+95
+00:05:21.920 --> 00:05:26.750
+and we can pass it our variables and the variable token
+
+96
+00:05:27.640 --> 00:05:31.643
+is going to be the payment method.id.
+
+97
+00:05:34.870 --> 00:05:39.463
+Now we have an order value here and we can console.log.
+
+98
+00:05:42.320 --> 00:05:47.320
+Finished with the order, console.log order
+
+99
+00:05:51.020 --> 00:05:53.763
+and then we want to change the page to view the order.
+
+100
+00:05:54.776 --> 00:05:58.420
+And we will get to that in just a second,
+
+101
+00:05:58.420 --> 00:05:59.953
+but let's see now,
+
+102
+00:05:59.953 --> 00:06:03.180
+if we can do the whole creation of the charge
+
+103
+00:06:03.180 --> 00:06:06.150
+just from the client side.
+
+104
+00:06:06.150 --> 00:06:09.230
+So we'll go back to our payments here.
+
+105
+00:06:09.230 --> 00:06:13.210
+We'll go to our Value here.
+
+106
+00:06:13.210 --> 00:06:14.210
+This keeps getting bumped up
+
+107
+00:06:14.210 --> 00:06:17.170
+'cause I keep bumping up this local host
+
+108
+00:06:17.170 --> 00:06:19.470
+and then this local host gets bumped up again.
+
+109
+00:06:20.340 --> 00:06:23.437
+But if I now check this out, checkout, good.
+
+110
+00:06:32.635 --> 00:06:34.250
+And go to our payments
+
+111
+00:06:34.250 --> 00:06:36.723
+and we should see another one for $304.
+
+112
+00:06:38.416 --> 00:06:40.280
+Here it is beauty, beauty, beauty.
+
+113
+00:06:40.280 --> 00:06:41.470
+So the next thing we need to do
+
+114
+00:06:41.470 --> 00:06:44.080
+is hop back onto the server side, create the order,
+
+115
+00:06:44.080 --> 00:06:46.480
+the order items, and clean up any current items
+
+116
+00:06:46.480 --> 00:06:47.313
+that we may have
+
+117
+00:06:47.313 --> 00:06:49.453
+and I'll catch you in the next video did you that.
+

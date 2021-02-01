@@ -1,0 +1,799 @@
+﻿WEBVTT
+
+1
+00:00:00.004 --> 00:00:01.460
+(logo whooshing)
+
+2
+00:00:01.460 --> 00:00:02.390
+<v Instructor>Over the next couple of videos,</v>
+
+3
+00:00:02.390 --> 00:00:04.820
+we're gonna be working with signing in, signing up,
+
+4
+00:00:04.820 --> 00:00:06.770
+signing out, resetting password,
+
+5
+00:00:06.770 --> 00:00:10.350
+all of stuff that revolves around user authentication.
+
+6
+00:00:10.350 --> 00:00:13.510
+And thankfully for us, Keystone does a really good job
+
+7
+00:00:13.510 --> 00:00:16.770
+at sort of handling all the logic behind that
+
+8
+00:00:16.770 --> 00:00:19.210
+and it's up to us to actually code the UI,
+
+9
+00:00:19.210 --> 00:00:21.080
+where people can put their password in
+
+10
+00:00:21.080 --> 00:00:22.960
+or reset it and things like that.
+
+11
+00:00:22.960 --> 00:00:25.120
+So, what we're gonna do first
+
+12
+00:00:25.120 --> 00:00:28.240
+is let's go to the navigation here.
+
+13
+00:00:28.240 --> 00:00:30.624
+And we will start to show
+
+14
+00:00:30.624 --> 00:00:33.930
+the currently logged in user in the navigation
+
+15
+00:00:33.930 --> 00:00:35.970
+and if they are not logged in, we're gonna show
+
+16
+00:00:35.970 --> 00:00:39.790
+a link in here to a sign up or sign in page.
+
+17
+00:00:39.790 --> 00:00:42.160
+So, we need to go into our components here
+
+18
+00:00:42.160 --> 00:00:44.160
+and we're gonna make a user component.
+
+19
+00:00:44.160 --> 00:00:45.200
+So, User,
+
+20
+00:00:45.200 --> 00:00:49.898
+and that component is going to contain a query
+
+21
+00:00:49.898 --> 00:00:54.110
+for the current user, as well as a custom hook
+
+22
+00:00:54.110 --> 00:00:56.730
+that will allow us to get the current user,
+
+23
+00:00:56.730 --> 00:00:59.840
+regardless of which file we're in.
+
+24
+00:00:59.840 --> 00:01:02.800
+Because, we're gonna be writing a pretty big query
+
+25
+00:01:02.800 --> 00:01:04.980
+and any time you want the current user,
+
+26
+00:01:04.980 --> 00:01:07.770
+it's kind of annoying to have to rerun that single query.
+
+27
+00:01:07.770 --> 00:01:10.240
+So, what we can do here is we can just create a custom hook
+
+28
+00:01:10.240 --> 00:01:14.040
+that will just return either the current user or not.
+
+29
+00:01:14.040 --> 00:01:16.010
+And we don't have to worry about the logic
+
+30
+00:01:16.010 --> 00:01:16.960
+that's behind that.
+
+31
+00:01:16.960 --> 00:01:19.490
+So, we'll go in here into our user
+
+32
+00:01:19.490 --> 00:01:24.030
+and we will make a function called useUser.
+
+33
+00:01:26.660 --> 00:01:28.130
+And we'll export that.
+
+34
+00:01:28.130 --> 00:01:30.910
+It's not a default here, so just export useUser.
+
+35
+00:01:31.760 --> 00:01:33.483
+And then inside of that,
+
+36
+00:01:35.100 --> 00:01:36.720
+we will write a query.
+
+37
+00:01:36.720 --> 00:01:40.843
+So, const { data } is equal to useQuery.
+
+38
+00:01:42.100 --> 00:01:46.350
+And we need to write a query called current_user_query.
+
+39
+00:01:46.350 --> 00:01:48.990
+I'll write that in just a second.
+
+40
+00:01:48.990 --> 00:01:51.970
+And I'll go up here and say, const.
+
+41
+00:01:51.970 --> 00:01:53.370
+We'll take the name of that.
+
+42
+00:01:54.523 --> 00:01:57.120
+Current_user_query = GQL.
+
+43
+00:01:57.120 --> 00:02:00.350
+And let's stop a second just import a few things
+
+44
+00:02:00.350 --> 00:02:01.183
+that we need.
+
+45
+00:02:01.183 --> 00:02:03.450
+So we need to use query.
+
+46
+00:02:03.450 --> 00:02:04.283
+Good.
+
+47
+00:02:05.470 --> 00:02:08.980
+And then we also need GQL to be imported.
+
+48
+00:02:08.980 --> 00:02:10.230
+Good, okay.
+
+49
+00:02:10.230 --> 00:02:12.110
+Then inside of here,
+
+50
+00:02:12.110 --> 00:02:14.480
+the query that we need to write
+
+51
+00:02:14.480 --> 00:02:17.070
+is it's called authenticated item.
+
+52
+00:02:17.070 --> 00:02:20.210
+And the reason why it's not user,
+
+53
+00:02:20.210 --> 00:02:24.740
+because Keystone makes it sort of agnostic as to what
+
+54
+00:02:24.740 --> 00:02:26.170
+this thing is called.
+
+55
+00:02:26.170 --> 00:02:27.510
+When we set up our schema,
+
+56
+00:02:27.510 --> 00:02:31.520
+we told it to use user as the authenticated item.
+
+57
+00:02:31.520 --> 00:02:33.660
+But it could be authenticated company.
+
+58
+00:02:33.660 --> 00:02:38.090
+It could be authenticated dog.(laughs)
+
+59
+00:02:38.090 --> 00:02:39.840
+You know what I mean.
+
+60
+00:02:39.840 --> 00:02:42.220
+It could be anything, obviously, it's most likely user,
+
+61
+00:02:42.220 --> 00:02:44.820
+but we'll call it authenticated item.
+
+62
+00:02:44.820 --> 00:02:48.950
+And then it's kind of interesting, this one right here,
+
+63
+00:02:48.950 --> 00:02:52.614
+if we take a look at our graph QL API.
+
+64
+00:02:52.614 --> 00:02:55.364
+(mouse clicking)
+
+65
+00:02:56.770 --> 00:02:58.603
+And we were to query that.
+
+66
+00:03:01.190 --> 00:03:03.240
+AuthenticatedItem.
+
+67
+00:03:03.240 --> 00:03:06.143
+What is returned from that is like look,
+
+68
+00:03:07.280 --> 00:03:09.410
+if you'd start typing, it's like, there's nothing here.
+
+69
+00:03:09.410 --> 00:03:11.800
+Like name, run.
+
+70
+00:03:11.800 --> 00:03:13.480
+Cannot query name, okay.
+
+71
+00:03:13.480 --> 00:03:15.853
+Maybe ID, ID is always the one, right?
+
+72
+00:03:16.690 --> 00:03:17.523
+No.
+
+73
+00:03:17.523 --> 00:03:18.670
+So look like, what can you query?
+
+74
+00:03:18.670 --> 00:03:20.260
+I'm logged in, right, I'm logged in.
+
+75
+00:03:20.260 --> 00:03:21.093
+This is fine.
+
+76
+00:03:21.093 --> 00:03:22.630
+Like, why can't I query anything on there?
+
+77
+00:03:22.630 --> 00:03:24.840
+So we'll go to the docs for that.
+
+78
+00:03:24.840 --> 00:03:26.740
+And we'll search for AuthenticatedItem
+
+79
+00:03:28.150 --> 00:03:32.333
+and you see that it will return a user.
+
+80
+00:03:35.260 --> 00:03:38.760
+But it doesn't return those values directly.
+
+81
+00:03:38.760 --> 00:03:41.730
+It actually returns a type, which is a user.
+
+82
+00:03:41.730 --> 00:03:43.580
+So close this and you say, okay, Wes.
+
+83
+00:03:46.850 --> 00:03:47.683
+User.
+
+84
+00:03:47.683 --> 00:03:50.157
+And then we get the ID, and that work?
+
+85
+00:03:50.157 --> 00:03:50.990
+(mouse clicking)
+
+86
+00:03:50.990 --> 00:03:51.823
+No.
+
+87
+00:03:51.823 --> 00:03:54.403
+What about this user?
+
+88
+00:03:56.020 --> 00:03:59.260
+And the interesting thing about that or the important thing
+
+89
+00:03:59.260 --> 00:04:02.470
+to note that is that it returns a union.
+
+90
+00:04:02.470 --> 00:04:06.650
+And a union means it could return multiple types of values.
+
+91
+00:04:06.650 --> 00:04:09.260
+It could return this or this,
+
+92
+00:04:09.260 --> 00:04:12.950
+and in our case it could return a user.
+
+93
+00:04:12.950 --> 00:04:17.130
+And what we need to do is a special thing in graph QL
+
+94
+00:04:17.130 --> 00:04:21.440
+that says ... on User.
+
+95
+00:04:21.440 --> 00:04:25.520
+So, when the authenticated item returns a user,
+
+96
+00:04:25.520 --> 00:04:30.070
+then on that user we will return the email and the ID
+
+97
+00:04:30.070 --> 00:04:31.120
+and things like that.
+
+98
+00:04:31.120 --> 00:04:32.512
+And then it will actually run.
+
+99
+00:04:32.512 --> 00:04:34.280
+So, why is that?
+
+100
+00:04:34.280 --> 00:04:39.280
+Well, sometimes you might be like query a media, right?
+
+101
+00:04:41.630 --> 00:04:43.330
+And on that media,
+
+102
+00:04:43.330 --> 00:04:45.570
+or you wanna say like
+
+103
+00:04:45.570 --> 00:04:50.570
+on a TV show I wanna grab the episode count.
+
+104
+00:04:51.140 --> 00:04:54.450
+But then if it is on a movie,
+
+105
+00:04:54.450 --> 00:04:58.180
+then I just wanna grab the length
+
+106
+00:04:58.180 --> 00:05:01.880
+or the length of how long it is or like time.
+
+107
+00:05:01.880 --> 00:05:04.580
+And that's really important because sometimes we
+
+108
+00:05:04.580 --> 00:05:08.270
+are querying for things that return two different types.
+
+109
+00:05:08.270 --> 00:05:09.840
+They both are media.
+
+110
+00:05:09.840 --> 00:05:12.050
+So, they're still of the type of media,
+
+111
+00:05:12.050 --> 00:05:14.530
+but they're sort of a subtype.
+
+112
+00:05:14.530 --> 00:05:17.000
+And in order for us to stop writing
+
+113
+00:05:17.000 --> 00:05:19.330
+a whole bunch of if statements and whatnot,
+
+114
+00:05:19.330 --> 00:05:22.390
+we simply just say when it is a TV show or on a TV show,
+
+115
+00:05:22.390 --> 00:05:23.740
+give me the episode count.
+
+116
+00:05:23.740 --> 00:05:25.560
+And when it's a movie or on a movie,
+
+117
+00:05:25.560 --> 00:05:26.393
+give me this time.
+
+118
+00:05:26.393 --> 00:05:29.170
+So, in our case, it only does return one thing,
+
+119
+00:05:29.170 --> 00:05:30.117
+which is user.
+
+120
+00:05:30.117 --> 00:05:32.540
+But I would imagine that authenticatedItem
+
+121
+00:05:32.540 --> 00:05:36.460
+could return other things as well for that specific,
+
+122
+00:05:36.460 --> 00:05:37.920
+because it's not just a user.
+
+123
+00:05:37.920 --> 00:05:40.570
+Like I said, it could be a company as well.
+
+124
+00:05:40.570 --> 00:05:44.090
+So, in our case, we say on user, give me the ID and email.
+
+125
+00:05:44.090 --> 00:05:48.270
+So, we'll go back here and say ... on user.
+
+126
+00:05:48.270 --> 00:05:53.270
+And for that user, we wanna get the ID, the email, the name,
+
+127
+00:05:53.720 --> 00:05:56.463
+and then we'll put a little to-do here.
+
+128
+00:05:57.770 --> 00:06:00.600
+Query the cart once we have it.
+
+129
+00:06:00.600 --> 00:06:02.870
+We don't have a cart yet but we're going to be querying
+
+130
+00:06:02.870 --> 00:06:05.710
+the user's cart on this user right here.
+
+131
+00:06:05.710 --> 00:06:08.100
+So, now that we have that, we can go here
+
+132
+00:06:08.100 --> 00:06:13.100
+and say const { data } = useQuery(CURRENT_USER_QUERY).
+
+133
+00:06:13.310 --> 00:06:17.053
+And then we will return data?authenticatedItem.
+
+134
+00:06:20.890 --> 00:06:22.110
+And what that'll do is to say,
+
+135
+00:06:22.110 --> 00:06:25.780
+if there is data return the authenticatedItem inside of it.
+
+136
+00:06:25.780 --> 00:06:28.070
+If there's not data the question mark
+
+137
+00:06:28.070 --> 00:06:29.700
+will just return undefined.
+
+138
+00:06:29.700 --> 00:06:30.770
+And that way we'll know
+
+139
+00:06:30.770 --> 00:06:32.760
+that the user's not currently logged in.
+
+140
+00:06:32.760 --> 00:06:36.610
+So, this may seem really simple but this is way better
+
+141
+00:06:36.610 --> 00:06:39.730
+than having to import the query
+
+142
+00:06:39.730 --> 00:06:43.140
+and useQuery and access the autheticatedItem
+
+143
+00:06:43.140 --> 00:06:44.770
+and check for the nested values.
+
+144
+00:06:44.770 --> 00:06:47.400
+So, just tuck it away into its own little hook.
+
+145
+00:06:47.400 --> 00:06:49.980
+Then what we can do is in our Nav,
+
+146
+00:06:49.980 --> 00:06:51.290
+we simply use that hook.
+
+147
+00:06:51.290 --> 00:06:53.903
+So, we'll say, do we export that?
+
+148
+00:06:54.840 --> 00:06:55.673
+Yes we do.
+
+149
+00:06:55.673 --> 00:06:58.850
+And we also need to export the CURRENT_USER_QUERY as well.
+
+150
+00:06:58.850 --> 00:06:59.793
+That's important.
+
+151
+00:07:00.880 --> 00:07:01.880
+So, in here, we'll just say,
+
+152
+00:07:01.880 --> 00:07:04.923
+const user = useUser.
+
+153
+00:07:07.630 --> 00:07:09.620
+And we can import that.
+
+154
+00:07:09.620 --> 00:07:14.620
+And if you log out the user and you're logged in,
+
+155
+00:07:18.350 --> 00:07:19.690
+we should see an object.
+
+156
+00:07:19.690 --> 00:07:20.523
+There we go.
+
+157
+00:07:20.523 --> 00:07:23.440
+There's the object of the currently logged in user.
+
+158
+00:07:23.440 --> 00:07:28.440
+If I were to open this up in a incognito tab here.
+
+159
+00:07:28.470 --> 00:07:29.850
+That should be.
+
+160
+00:07:29.850 --> 00:07:31.210
+There we go, null.
+
+161
+00:07:31.210 --> 00:07:33.760
+It returns to us, null, which is great.
+
+162
+00:07:33.760 --> 00:07:38.683
+So, we can go into our navigation here and say,
+
+163
+00:07:41.280 --> 00:07:43.350
+like what are the things that we only wanna show
+
+164
+00:07:43.350 --> 00:07:44.263
+if they're logged in.
+
+165
+00:07:44.263 --> 00:07:45.760
+These three things right here.
+
+166
+00:07:45.760 --> 00:07:47.760
+So, what we'll do is we'll say,
+
+167
+00:07:47.760 --> 00:07:48.837
+user &amp;&amp; ().
+
+168
+00:07:52.680 --> 00:07:54.080
+And then inside of those parentheses,
+
+169
+00:07:54.080 --> 00:07:55.970
+we'll put the items that we only want to show up
+
+170
+00:07:55.970 --> 00:07:57.120
+when they're logged in.
+
+171
+00:07:58.078 --> 00:07:59.440
+(keyboard clicking)
+Okay.
+
+172
+00:07:59.440 --> 00:08:01.910
+Given me some grief here.
+
+173
+00:08:01.910 --> 00:08:03.920
+Adjacent JSX elements, obviously,
+
+174
+00:08:03.920 --> 00:08:06.080
+you can't return three elements right here.
+
+175
+00:08:06.080 --> 00:08:10.803
+So, you have to use a fragment in React.
+
+176
+00:08:13.980 --> 00:08:15.160
+So, that looks fine.
+
+177
+00:08:15.160 --> 00:08:19.830
+And if I open up the...
+
+178
+00:08:19.830 --> 00:08:23.090
+That in a not logged in state,
+
+179
+00:08:23.090 --> 00:08:24.770
+we'll only see products showing up.
+
+180
+00:08:24.770 --> 00:08:25.603
+Okay, good.
+
+181
+00:08:25.603 --> 00:08:29.703
+Now, what we want is if the user is not logged in.
+
+182
+00:08:33.120 --> 00:08:37.710
+So, if there is no user then what we wanna do is
+
+183
+00:08:37.710 --> 00:08:40.104
+we'll have a sign in link.
+
+184
+00:08:40.104 --> 00:08:42.603
+It'll link them to the sign-in page.
+
+185
+00:08:43.870 --> 00:08:46.620
+(mouse clicking)
+
+186
+00:08:47.880 --> 00:08:52.060
+And I'm gonna do this work in a incognito tab,
+
+187
+00:08:52.060 --> 00:08:54.880
+just so they don't actually have to log out just yet.
+
+188
+00:08:54.880 --> 00:08:57.760
+And then you click on, that's not a page yet.
+
+189
+00:08:57.760 --> 00:09:00.670
+So, we'll go ahead and create that page.
+
+190
+00:09:00.670 --> 00:09:02.010
+So, go to your pages.
+
+191
+00:09:02.010 --> 00:09:04.870
+Let's just take one that doesn't have anything in it.
+
+192
+00:09:04.870 --> 00:09:06.163
+What could it be here?
+
+193
+00:09:07.050 --> 00:09:07.883
+Orders.
+
+194
+00:09:07.883 --> 00:09:12.883 line:15% 
+Let's just save orders.js as signin.js.
+
+195
+00:09:13.420 --> 00:09:15.690 line:15% 
+Rename this to SignInPage.
+
+196
+00:09:18.209 --> 00:09:19.780
+And we'll say sign on in.
+
+197
+00:09:23.730 --> 00:09:27.230
+All right, so that is the querying the current user.
+
+198
+00:09:27.230 --> 00:09:31.370
+In the next one, we will code the sign-in form,
+
+199
+00:09:31.370 --> 00:09:34.323
+then the sign-up form and then there's a couple more.
+

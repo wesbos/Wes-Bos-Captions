@@ -1,0 +1,1102 @@
+﻿WEBVTT
+
+1
+00:00:00.188 --> 00:00:01.460
+(air whooshing)
+
+2
+00:00:01.460 --> 00:00:02.640
+<v Narrator>So real quick review,</v>
+
+3
+00:00:02.640 --> 00:00:06.130
+we have very basic yes or no are they signed in function,
+
+4
+00:00:06.130 --> 00:00:08.770
+then we have permission-based functions
+
+5
+00:00:08.770 --> 00:00:11.483
+that check if somebody has a specific permission
+
+6
+00:00:11.483 --> 00:00:13.380
+as well as we can add additional
+
+7
+00:00:13.380 --> 00:00:15.780
+yes or no functions to that.
+
+8
+00:00:15.780 --> 00:00:17.730
+And at the very end of that
+
+9
+00:00:17.730 --> 00:00:20.120
+and probably the ones that you'll be using most often
+
+10
+00:00:20.120 --> 00:00:21.770
+are rule-based functions.
+
+11
+00:00:21.770 --> 00:00:24.320
+So rule based functions are logical functions
+
+12
+00:00:24.320 --> 00:00:26.280
+that can be used for list access,
+
+13
+00:00:26.280 --> 00:00:29.960
+so are different types that we have products users,
+
+14
+00:00:29.960 --> 00:00:33.020
+orders, cart items, all of that stuff
+
+15
+00:00:33.020 --> 00:00:34.690
+and they allow us to either
+
+16
+00:00:34.690 --> 00:00:37.850
+return a Boolean yes or no similar to this,
+
+17
+00:00:37.850 --> 00:00:41.530
+but also a set of filters which can limit
+
+18
+00:00:41.530 --> 00:00:43.440
+the number of items that they can update.
+
+19
+00:00:43.440 --> 00:00:45.100
+So I'll show you an example that we have here.
+
+20
+00:00:45.100 --> 00:00:48.470
+Let's take a look at our product.ts
+
+21
+00:00:48.470 --> 00:00:51.070
+and you'll see here we have our product and...
+
+22
+00:00:51.070 --> 00:00:52.893
+let's go through it, create, okay.
+
+23
+00:00:53.810 --> 00:00:56.820
+Yes. Create is going to be available
+
+24
+00:00:56.820 --> 00:00:59.350
+to literally anyone who assigned into the application.
+
+25
+00:00:59.350 --> 00:01:01.860
+You should be able to create, all right?
+
+26
+00:01:01.860 --> 00:01:03.050
+Read.
+
+27
+00:01:03.050 --> 00:01:05.570
+Yeah. Everybody is going to be able to read them
+
+28
+00:01:05.570 --> 00:01:07.140
+and we're gonna come back to that in a second
+
+29
+00:01:07.140 --> 00:01:09.430
+because we actually wanna filter that
+
+30
+00:01:09.430 --> 00:01:12.200
+just for published products or available products,
+
+31
+00:01:12.200 --> 00:01:13.950
+but the one I wanna focus on right now
+
+32
+00:01:13.950 --> 00:01:16.750
+is actually update and delete.
+
+33
+00:01:16.750 --> 00:01:19.690
+So who should be able to update and delete a product?
+
+34
+00:01:19.690 --> 00:01:22.970
+Well, me, the administrator should be able to
+
+35
+00:01:22.970 --> 00:01:26.750
+and that's why we have canUpdateProducts.
+
+36
+00:01:26.750 --> 00:01:31.470
+If we take a look at our fields here
+
+37
+00:01:31.470 --> 00:01:36.470
+we have a permission called, canManageProducts right here.
+
+38
+00:01:37.890 --> 00:01:40.180
+So that person should be able to manage a product,
+
+39
+00:01:40.180 --> 00:01:42.100
+they should be able to update the text of it,
+
+40
+00:01:42.100 --> 00:01:43.420
+the price, the things like that,
+
+41
+00:01:43.420 --> 00:01:45.810
+but then that person should also be able to delete it.
+
+42
+00:01:45.810 --> 00:01:49.130
+But people who create a product can own it,
+
+43
+00:01:49.130 --> 00:01:52.890
+should be able to update and delete their own products
+
+44
+00:01:52.890 --> 00:01:55.960
+without having an elevated privilege of managing products.
+
+45
+00:01:55.960 --> 00:01:59.370
+So now we're in sort of a two step process,
+
+46
+00:01:59.370 --> 00:02:02.520
+either you have canManagedProduct role
+
+47
+00:02:02.520 --> 00:02:05.400
+or you are the owner of the item.
+
+48
+00:02:05.400 --> 00:02:07.560
+So what we'll do, is we'll go down here
+
+49
+00:02:07.560 --> 00:02:08.820
+and we'll make some rules.
+
+50
+00:02:08.820 --> 00:02:13.780
+So export const rules is equal to curly bracket
+
+51
+00:02:15.270 --> 00:02:17.860
+and let's put a little comment here right now.
+
+52
+00:02:17.860 --> 00:02:22.100
+Rules can return a Boolean yes or no,
+
+53
+00:02:22.100 --> 00:02:27.100
+or a filter which limits which products they can access
+
+54
+00:02:29.520 --> 00:02:31.250
+they can crud, right?
+
+55
+00:02:31.250 --> 00:02:34.320
+Depends on whether we put it into the list of create,
+
+56
+00:02:34.320 --> 00:02:37.000
+read, update or delete right here.
+
+57
+00:02:37.000 --> 00:02:37.930
+So we'll go.
+
+58
+00:02:37.930 --> 00:02:41.269
+First thing is, is we wanna make one called
+
+59
+00:02:41.269 --> 00:02:42.769
+canManageProducts,
+
+60
+00:02:44.490 --> 00:02:47.130
+and again, that's going to take in the session.
+
+61
+00:02:47.130 --> 00:02:49.720
+We'll destructure it with curly brackets there.
+
+62
+00:02:49.720 --> 00:02:54.530
+So we'll first gonna check is, do they have the permission
+
+63
+00:02:54.530 --> 00:02:56.763
+of canManageProducts?
+
+64
+00:02:58.150 --> 00:03:00.160
+And so this going to be a little bit confusing
+
+65
+00:03:00.160 --> 00:03:01.910
+because a rule is a combination
+
+66
+00:03:01.910 --> 00:03:04.280
+and then this is just a straight permission.
+
+67
+00:03:04.280 --> 00:03:07.320
+If you wanted to name it something different you can,
+
+68
+00:03:07.320 --> 00:03:10.300
+but I in my head like the think of permissions
+
+69
+00:03:10.300 --> 00:03:15.130
+as singular permissions and rules as multiples of them
+
+70
+00:03:15.130 --> 00:03:17.170
+then second thing we're gonna check is
+
+71
+00:03:18.050 --> 00:03:22.030
+if not, do they own this item?
+
+72
+00:03:22.030 --> 00:03:24.180
+So once here we'll say,
+
+73
+00:03:24.180 --> 00:03:26.300
+if and we'll use our permission,
+
+74
+00:03:26.300 --> 00:03:29.580
+permissions.canManageProducts
+
+75
+00:03:34.010 --> 00:03:36.700
+and you can pass it our session,
+
+76
+00:03:36.700 --> 00:03:41.080
+so if that returns true, then we return true here.
+
+77
+00:03:41.080 --> 00:03:42.400
+Otherwise do they own it?
+
+78
+00:03:42.400 --> 00:03:46.320
+We will return and this is gonna be returning a wear filter
+
+79
+00:03:46.320 --> 00:03:49.160
+that we've been using in the graph QL API.
+
+80
+00:03:49.160 --> 00:03:53.870
+So we say, return where the user ID
+
+81
+00:03:55.230 --> 00:04:00.050
+is equal to these session.item ID
+
+82
+00:04:00.050 --> 00:04:02.080
+and it's give me a red underline
+
+83
+00:04:02.080 --> 00:04:04.000
+'cause I did not type this.
+
+84
+00:04:04.000 --> 00:04:07.970
+So that's listAccessArgs, there we go.
+
+85
+00:04:07.970 --> 00:04:10.760
+Now what this will do is again, I'll say it one more time.
+
+86
+00:04:10.760 --> 00:04:12.160
+You're probably getting sick of me.
+
+87
+00:04:12.160 --> 00:04:14.170
+Do they have this permission?
+
+88
+00:04:14.170 --> 00:04:16.280
+If so they're probably an admin
+
+89
+00:04:16.280 --> 00:04:18.640
+or somebody that has given them permission
+
+90
+00:04:18.640 --> 00:04:21.090
+to do so then yes, they can access that.
+
+91
+00:04:21.090 --> 00:04:23.670
+Otherwise, do they own this item?
+
+92
+00:04:23.670 --> 00:04:25.860
+So we return the wear filter here
+
+93
+00:04:25.860 --> 00:04:28.663
+and if this where filter does not find anything,
+
+94
+00:04:30.418 --> 00:04:32.400
+it will return a false value
+
+95
+00:04:32.400 --> 00:04:35.100
+and we will not be able to do things.
+
+96
+00:04:35.100 --> 00:04:38.100
+So we'll go back to our product.ts
+
+97
+00:04:38.100 --> 00:04:40.660
+and go to update and delete here,
+
+98
+00:04:40.660 --> 00:04:45.660
+and we'll go ahead and say, rules.canManageProducts
+
+99
+00:04:50.530 --> 00:04:53.360
+and those are the rules that we have there.
+
+100
+00:04:53.360 --> 00:04:57.290
+Now we can restart our backend here
+
+101
+00:04:59.110 --> 00:05:01.343
+and I'm gonna go to the products,
+
+102
+00:05:06.410 --> 00:05:08.740
+Oh, little error here.
+
+103
+00:05:08.740 --> 00:05:11.610
+Rules is not, Oh, I forgot to import it.
+
+104
+00:05:11.610 --> 00:05:12.933
+Silly Wes.
+
+105
+00:05:15.130 --> 00:05:18.513
+So import rules from access,
+
+106
+00:05:20.480 --> 00:05:22.520
+and that will give it a start.
+
+107
+00:05:22.520 --> 00:05:24.330
+So the first thing that we can try
+
+108
+00:05:24.330 --> 00:05:27.520
+and this can be done via the app or via the Keystone UI
+
+109
+00:05:27.520 --> 00:05:30.580
+is if you try to edit one of these things,
+
+110
+00:05:30.580 --> 00:05:34.590
+so if I put an X on the end and save changes,
+
+111
+00:05:34.590 --> 00:05:38.070
+then of course the other thing we need to do is that,
+
+112
+00:05:38.070 --> 00:05:39.240
+if somebody owns the item
+
+113
+00:05:39.240 --> 00:05:40.630
+they should be able to edit it as well.
+
+114
+00:05:40.630 --> 00:05:43.010
+So we need to modify our product
+
+115
+00:05:43.010 --> 00:05:46.920
+and our user just really quickly because we do not,
+
+116
+00:05:46.920 --> 00:05:49.200
+if we take a look at our user.ts
+
+117
+00:05:49.200 --> 00:05:50.700
+we do not have a relationship
+
+118
+00:05:50.700 --> 00:05:52.540
+between the products and the user right now.
+
+119
+00:05:52.540 --> 00:05:54.230
+We've just been assuming that the administrator
+
+120
+00:05:54.230 --> 00:05:55.530
+can take care of all of it.
+
+121
+00:05:55.530 --> 00:05:57.520
+So we have to modify a little,
+
+122
+00:05:57.520 --> 00:06:00.010
+let's start in our product.ts here
+
+123
+00:06:00.010 --> 00:06:04.030
+and we'll add a new field at the bottom, right under price.
+
+124
+00:06:04.030 --> 00:06:05.747
+We'll call it user,
+
+125
+00:06:05.747 --> 00:06:08.393
+and that is going to be a relationship.
+
+126
+00:06:10.400 --> 00:06:13.570
+The reference is going to be a user.products
+
+127
+00:06:13.570 --> 00:06:18.570
+with an S the default value of when a product is created,
+
+128
+00:06:18.670 --> 00:06:21.500
+this is gonna be the important part is that
+
+129
+00:06:21.500 --> 00:06:26.500
+we have to programmatically do it based on the user session.
+
+130
+00:06:26.600 --> 00:06:29.000
+So what we'll do is we'll take the default value
+
+131
+00:06:29.950 --> 00:06:33.090
+and do a little arrow function right here,
+
+132
+00:06:33.090 --> 00:06:36.860
+we can destructure the context
+
+133
+00:06:39.200 --> 00:06:43.800
+and we'll return an object that says
+
+134
+00:06:43.800 --> 00:06:48.800
+connect the ID with the context.session.item ID.
+
+135
+00:06:53.770 --> 00:06:58.770
+So what that does here is when a product is created,
+
+136
+00:06:59.340 --> 00:07:01.700
+the reason why we didn't do this previously is 'cause
+
+137
+00:07:01.700 --> 00:07:04.220
+we didn't lock down the ability to create a product
+
+138
+00:07:04.220 --> 00:07:07.560
+just unless you were assigned in until the last video.
+
+139
+00:07:07.560 --> 00:07:10.463
+But now what we're doing is when a product is created,
+
+140
+00:07:11.300 --> 00:07:14.550
+make a relationship to user.products
+
+141
+00:07:14.550 --> 00:07:17.150
+and then the default value is going to be
+
+142
+00:07:17.150 --> 00:07:21.420
+the currently signed in user, which is exactly what we want
+
+143
+00:07:21.420 --> 00:07:26.420
+and we return an object with a connect property on it
+
+144
+00:07:26.860 --> 00:07:28.370
+which connects to that the idea
+
+145
+00:07:28.370 --> 00:07:29.520
+of the currently signed in user.
+
+146
+00:07:29.520 --> 00:07:34.430
+Then we'll flip over to the user and do the opposite.
+
+147
+00:07:34.430 --> 00:07:36.090
+So we'll go to the user, right?
+
+148
+00:07:36.090 --> 00:07:38.760
+Under role, we'll say products,
+
+149
+00:07:38.760 --> 00:07:43.760
+and that is a relationship or the ref is going to be
+
+150
+00:07:44.620 --> 00:07:49.620
+user. Oh, no product.user,
+
+151
+00:07:49.730 --> 00:07:51.600
+many is going to be true
+
+152
+00:07:51.600 --> 00:07:53.480
+'cause a user can have many products
+
+153
+00:07:54.630 --> 00:07:56.920
+and I believe that is it.
+
+154
+00:07:56.920 --> 00:08:01.500
+So let's go and kill the backend started up again.
+
+155
+00:08:01.500 --> 00:08:04.150
+And now you see there is a user,
+
+156
+00:08:04.150 --> 00:08:07.170
+we can assign that one to me,
+
+157
+00:08:07.170 --> 00:08:09.110
+save changes, good,
+
+158
+00:08:09.110 --> 00:08:11.440
+and then I'm gonna go to the products
+
+159
+00:08:11.440 --> 00:08:14.070
+and let's take a look at our users real quick.
+
+160
+00:08:14.070 --> 00:08:18.640
+Let's assign one of these products to test
+
+161
+00:08:18.640 --> 00:08:21.290
+that is tests@example.com
+
+162
+00:08:21.290 --> 00:08:23.880
+and you can actually show what their products are
+
+163
+00:08:23.880 --> 00:08:24.713
+right from here.
+
+164
+00:08:24.713 --> 00:08:26.150
+That's the beauty of two-way relationship.
+
+165
+00:08:26.150 --> 00:08:31.060
+So they own, let's say ultra boost
+
+166
+00:08:31.060 --> 00:08:34.700
+and they also own the
+
+167
+00:08:35.890 --> 00:08:37.110
+black hole.
+
+168
+00:08:37.110 --> 00:08:38.620
+Go ahead and save it.
+
+169
+00:08:38.620 --> 00:08:43.620
+Okay. So now if I sign in as test@example.com,
+
+170
+00:08:43.690 --> 00:08:45.390
+so I'll go to a local host 3000,
+
+171
+00:08:45.390 --> 00:08:46.683
+try this to sign in,
+
+172
+00:08:48.480 --> 00:08:50.030
+then go to products
+
+173
+00:08:51.450 --> 00:08:53.470
+and what was the product?
+
+174
+00:08:53.470 --> 00:08:56.700
+Let's try and edit the black hole first.
+
+175
+00:08:56.700 --> 00:09:00.920
+So go do black hole,
+
+176
+00:09:00.920 --> 00:09:04.100
+put an X on it, save, good.
+
+177
+00:09:04.100 --> 00:09:07.170
+And then let's try to edit our product that they do not own,
+
+178
+00:09:07.170 --> 00:09:10.080
+let's see Eddie Hondo put an X on the end, save product.
+
+179
+00:09:10.080 --> 00:09:10.913
+Here we go.
+
+180
+00:09:10.913 --> 00:09:12.910
+Failed update, you do not have access to this resource.
+
+181
+00:09:12.910 --> 00:09:17.840
+So the user still is able to read the resource from here
+
+182
+00:09:17.840 --> 00:09:20.210
+and you can also get a little bit more nitty gritty
+
+183
+00:09:20.210 --> 00:09:23.740
+and you could also hide it from the Keystone admin UI
+
+184
+00:09:24.800 --> 00:09:26.800
+or you could hide the entire backend UI
+
+185
+00:09:26.800 --> 00:09:29.860
+just unless you had a specific permission
+
+186
+00:09:29.860 --> 00:09:31.310
+called KenSci backend
+
+187
+00:09:32.180 --> 00:09:36.190
+but that now gives us the ability to update items
+
+188
+00:09:36.190 --> 00:09:39.510
+we do own or update all the items
+
+189
+00:09:39.510 --> 00:09:42.430
+if you are a someone who has the permission.
+
+190
+00:09:42.430 --> 00:09:44.100
+So let's try once more.
+
+191
+00:09:44.100 --> 00:09:46.120
+Let's go back to that user
+
+192
+00:09:46.120 --> 00:09:49.250
+and let's go here
+
+193
+00:09:49.250 --> 00:09:50.860
+and let's select from the role.
+
+194
+00:09:50.860 --> 00:09:53.520
+Let's make them an admin and go here
+
+195
+00:09:53.520 --> 00:09:54.970
+and then try save it again
+
+196
+00:09:54.970 --> 00:09:56.950
+and it does save successfully.
+
+197
+00:09:56.950 --> 00:09:59.110
+I'm gonna take that admin role off,
+
+198
+00:09:59.110 --> 00:10:02.130
+save changes and I wouldn't be able to do it again.
+
+199
+00:10:02.130 --> 00:10:03.710
+Now, last thing we wanna do is
+
+200
+00:10:03.710 --> 00:10:05.870
+if you go to products and you edit one of your products,
+
+201
+00:10:05.870 --> 00:10:08.920
+you see we have this status right here,
+
+202
+00:10:08.920 --> 00:10:10.790
+draft available or unavailable.
+
+203
+00:10:10.790 --> 00:10:13.620
+So right now we're not filtering by any of that.
+
+204
+00:10:13.620 --> 00:10:16.480
+And even when we're doing our queries,
+
+205
+00:10:16.480 --> 00:10:19.080
+I told you don't worry about it just yet.
+
+206
+00:10:19.080 --> 00:10:20.240
+But now what we can do
+
+207
+00:10:20.240 --> 00:10:23.250
+is we can actually put that filter
+
+208
+00:10:23.250 --> 00:10:25.130
+directly into the access control.
+
+209
+00:10:25.130 --> 00:10:30.090
+So people who have access to read all the products
+
+210
+00:10:30.090 --> 00:10:31.440
+will be able to see them all,
+
+211
+00:10:31.440 --> 00:10:33.670
+but people who only have access
+
+212
+00:10:33.670 --> 00:10:35.080
+or who don't have access to that
+
+213
+00:10:35.080 --> 00:10:37.730
+will only see products that are available.
+
+214
+00:10:37.730 --> 00:10:41.070
+So let's go back into our access.ts here
+
+215
+00:10:41.070 --> 00:10:42.870
+and we'll go down here,
+
+216
+00:10:42.870 --> 00:10:45.173
+we'll make a new one called canReadProducts
+
+217
+00:10:46.800 --> 00:10:49.040
+and we'll destructure the session
+
+218
+00:10:52.740 --> 00:10:54.930
+and return listAccessArgs
+
+219
+00:10:58.080 --> 00:10:59.930
+and then from that, we'll say
+
+220
+00:10:59.930 --> 00:11:03.930
+if the permissions got canManageProducts
+
+221
+00:11:07.500 --> 00:11:08.683
+past the session,
+
+222
+00:11:10.270 --> 00:11:15.270
+then it'll return true which is they can read everything.
+
+223
+00:11:22.120 --> 00:11:27.060
+Otherwise they should only see available products
+
+224
+00:11:28.420 --> 00:11:31.913
+and I'll say based on the status field.
+
+225
+00:11:32.940 --> 00:11:33.930
+And then what we'll do from there,
+
+226
+00:11:33.930 --> 00:11:36.100
+is we'll just return an object
+
+227
+00:11:36.100 --> 00:11:38.370
+where the status is available
+
+228
+00:11:38.370 --> 00:11:40.650
+and what that will do is that will bind
+
+229
+00:11:40.650 --> 00:11:44.220
+as a wear clause in the graph, QL API
+
+230
+00:11:44.220 --> 00:11:46.500
+and only show you products that have available.
+
+231
+00:11:46.500 --> 00:11:49.450
+So now watch, like I haven't restarted just yet,
+
+232
+00:11:49.450 --> 00:11:53.630
+but if I go to products or I go to the front end,
+
+233
+00:11:53.630 --> 00:11:55.030
+I see them all.
+
+234
+00:11:55.030 --> 00:11:58.230
+But now when I restart the sucker,
+
+235
+00:11:58.230 --> 00:12:02.823
+I should only see products that have a status of available.
+
+236
+00:12:06.090 --> 00:12:08.210
+So I'm seeing 12 products.
+
+237
+00:12:08.210 --> 00:12:12.913
+Now, if I change this one to draft and save and refresh,
+
+238
+00:12:16.270 --> 00:12:17.970
+I still see 12 product.
+
+239
+00:12:17.970 --> 00:12:20.210
+It didn't work because I forgot I wrote the function
+
+240
+00:12:20.210 --> 00:12:22.710
+but it didn't implement it. (laughs)
+
+241
+00:12:22.710 --> 00:12:24.750
+So we had to go back to our product
+
+242
+00:12:24.750 --> 00:12:29.740
+and we'll go back up to read,
+
+243
+00:12:29.740 --> 00:12:31.230
+right now we're saying, you can read it
+
+244
+00:12:31.230 --> 00:12:33.780
+if you're signed in, but in our case
+
+245
+00:12:33.780 --> 00:12:37.410
+we wanna show that to everybody, but only available ones.
+
+246
+00:12:37.410 --> 00:12:40.734
+So we'll change that to rules., what do we call it?
+
+247
+00:12:40.734 --> 00:12:42.067
+CanReadProducts.
+
+248
+00:12:45.920 --> 00:12:47.423
+Now, so restart it,
+
+249
+00:12:48.520 --> 00:12:50.350
+and whenever somebody tries to read it,
+
+250
+00:12:50.350 --> 00:12:52.820
+it's going to say, "All right, well, hold on.
+
+251
+00:12:52.820 --> 00:12:55.770
+Do you have the managed product session?
+
+252
+00:12:55.770 --> 00:12:57.040
+Otherwise, if that's true
+
+253
+00:12:57.040 --> 00:12:59.650
+then return true and you can read everything.
+
+254
+00:12:59.650 --> 00:13:02.440
+Otherwise, we're gonna give you a subset of the products
+
+255
+00:13:02.440 --> 00:13:05.960
+only ones that have a status of available."
+
+256
+00:13:05.960 --> 00:13:08.800
+And here we go look, 11 products here,
+
+257
+00:13:08.800 --> 00:13:11.270
+and there should be 12 here.
+
+258
+00:13:11.270 --> 00:13:12.300
+There we go, 12 there.
+
+259
+00:13:12.300 --> 00:13:15.170
+So now if I maybe edit a couple more
+
+260
+00:13:16.340 --> 00:13:19.037
+and turn them over to draft,
+
+261
+00:13:19.037 --> 00:13:21.787
+(mouse clicking)
+
+262
+00:13:31.650 --> 00:13:33.140
+and I refresh this
+
+263
+00:13:34.000 --> 00:13:37.690
+I only see a subset versus admin sees a whole bunch.
+
+264
+00:13:37.690 --> 00:13:41.240
+So that is pretty cool that when I saw that,
+
+265
+00:13:41.240 --> 00:13:42.390
+I was like, "Oh, that's amazing."
+
+266
+00:13:42.390 --> 00:13:46.640
+Like you took the filtering of what the users should see
+
+267
+00:13:46.640 --> 00:13:48.880
+and you didn't do it at a query level.
+
+268
+00:13:48.880 --> 00:13:52.000
+You did it at even higher level, which is an access level.
+
+269
+00:13:52.000 --> 00:13:55.130
+So those are rule-based functions.
+
+270
+00:13:55.130 --> 00:13:56.760
+Now we have a bit of work ahead of us
+
+271
+00:13:56.760 --> 00:13:57.920
+is where we need to go through
+
+272
+00:13:57.920 --> 00:14:01.810
+every single one of these products right here
+
+273
+00:14:01.810 --> 00:14:04.880
+and go through the create, read, update, delete,
+
+274
+00:14:04.880 --> 00:14:06.060
+and think about whether
+
+275
+00:14:06.060 --> 00:14:08.160
+people should be able to do things or not.
+

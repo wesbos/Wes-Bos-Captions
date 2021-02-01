@@ -1,0 +1,682 @@
+﻿WEBVTT
+
+1
+00:00:00.165 --> 00:00:01.470
+(whooshing)
+
+2
+00:00:01.470 --> 00:00:02.860
+<v Instructor>Let's get uploading images.</v>
+
+3
+00:00:02.860 --> 00:00:04.820
+So for uploading images in this course,
+
+4
+00:00:04.820 --> 00:00:06.610
+we're gonna be using something called Cloudinary.
+
+5
+00:00:06.610 --> 00:00:08.900
+Cloudinary is a service
+
+6
+00:00:08.900 --> 00:00:11.410
+with a very generous free tier.
+
+7
+00:00:11.410 --> 00:00:13.900
+The really cool thing about Cloudinary
+
+8
+00:00:13.900 --> 00:00:15.790
+is that they'll resize things based on width
+
+9
+00:00:15.790 --> 00:00:17.770
+and height and they'll change it from a PNG
+
+10
+00:00:17.770 --> 00:00:19.310
+to a WebP if they need to
+
+11
+00:00:19.310 --> 00:00:22.480
+and the quality can be dumbed down
+
+12
+00:00:22.480 --> 00:00:23.620
+if you want it to be smaller.
+
+13
+00:00:23.620 --> 00:00:25.302
+And all of your image problems
+
+14
+00:00:25.302 --> 00:00:28.000
+can be solved with Cloudinary.
+
+15
+00:00:28.000 --> 00:00:30.730
+And you can also use it with the new image tag
+
+16
+00:00:30.730 --> 00:00:33.840
+inside of Next.js, which is pretty, pretty cool.
+
+17
+00:00:33.840 --> 00:00:37.970
+So you could use Cloudinary direct on your website
+
+18
+00:00:37.970 --> 00:00:41.010
+or you could just use Cloudinary for uploading images
+
+19
+00:00:41.010 --> 00:00:44.510
+and then use the Next image tag to actually display them.
+
+20
+00:00:44.510 --> 00:00:45.770
+So we'll get into that.
+
+21
+00:00:45.770 --> 00:00:47.714
+But what I want you to do
+
+22
+00:00:47.714 --> 00:00:50.990
+is to sign up for a Cloudinary account,
+
+23
+00:00:50.990 --> 00:00:54.340
+if you haven't already and then go into your dashboard.
+
+24
+00:00:54.340 --> 00:00:58.590
+It's going to show you right here your cloud name,
+
+25
+00:00:58.590 --> 00:01:00.290
+your API key and your secret.
+
+26
+00:01:00.290 --> 00:01:02.013
+We're gonna need those in just a second.
+
+27
+00:01:02.013 --> 00:01:04.057
+Please generate your own.
+
+28
+00:01:04.057 --> 00:01:06.440
+I just logged into my tutorial account
+
+29
+00:01:06.440 --> 00:01:10.760
+and I saw that 5,482 people
+
+30
+00:01:10.760 --> 00:01:15.090
+or maybe less than that have been uploading random images
+
+31
+00:01:15.090 --> 00:01:17.920
+to my own account, which I thought was pretty funny.
+
+32
+00:01:17.920 --> 00:01:20.360
+So get your own API keys.
+
+33
+00:01:20.360 --> 00:01:22.880
+Obviously, look at that, all these people doing that.
+
+34
+00:01:22.880 --> 00:01:26.290
+I'm still well within my limits on here,
+
+35
+00:01:26.290 --> 00:01:27.180
+which is pretty funny.
+
+36
+00:01:27.180 --> 00:01:30.957
+So let's get into doing that.
+
+37
+00:01:30.957 --> 00:01:35.957
+Now, images in Next.js, we could just make a field
+
+38
+00:01:36.144 --> 00:01:38.740
+on our product called image
+
+39
+00:01:38.740 --> 00:01:40.550
+and allow someone to upload it
+
+40
+00:01:40.550 --> 00:01:42.300
+but better yet what we're gonna do
+
+41
+00:01:42.300 --> 00:01:44.670
+is we're gonna create an entirely new data type
+
+42
+00:01:44.670 --> 00:01:47.810
+called ProductImage and then we're gonna have a relationship
+
+43
+00:01:47.810 --> 00:01:48.994
+of that ProductImage
+
+44
+00:01:48.994 --> 00:01:51.220
+with the actual product
+
+45
+00:01:51.220 --> 00:01:53.260
+and what that will allow us to do,
+
+46
+00:01:53.260 --> 00:01:54.310
+any time in the future,
+
+47
+00:01:54.310 --> 00:01:56.990
+if you wanna associate multiple products
+
+48
+00:01:56.990 --> 00:01:58.050
+with a single image
+
+49
+00:01:58.050 --> 00:01:59.610
+or if you wanna make a gallery
+
+50
+00:01:59.610 --> 00:02:00.820
+and you wanna browser images.
+
+51
+00:02:00.820 --> 00:02:02.260
+The sky's the limit
+
+52
+00:02:02.260 --> 00:02:04.670
+when you make something its own data type,
+
+53
+00:02:04.670 --> 00:02:05.570
+which is pretty cool.
+
+54
+00:02:05.570 --> 00:02:08.190
+So we're gonna go into our .env file.
+
+55
+00:02:08.190 --> 00:02:10.562
+And we've gotta fill these out right here.
+
+56
+00:02:10.562 --> 00:02:13.181
+So first one, wesbostutorial.
+
+57
+00:02:13.181 --> 00:02:18.181
+Again, get your own API key right there
+
+58
+00:02:19.270 --> 00:02:24.270
+and I'm going to take my API key and put it in there.
+
+59
+00:02:24.280 --> 00:02:25.366
+You can see it there.
+
+60
+00:02:25.366 --> 00:02:28.710
+I probably should change it after I deploy this course.
+
+61
+00:02:28.710 --> 00:02:32.600
+One thing I'm wondering is is that dash gonna trip us up?
+
+62
+00:02:32.600 --> 00:02:33.630
+You can always put quotes
+
+63
+00:02:33.630 --> 00:02:37.300
+around your strings in your .env file
+
+64
+00:02:37.300 --> 00:02:39.840
+if you're wondering about that and I'm gonna do
+
+65
+00:02:39.840 --> 00:02:42.150
+that just so I don't run into some stupid issue
+
+66
+00:02:42.150 --> 00:02:44.510
+or I've gotta reboot the server 'cause it broke.
+
+67
+00:02:44.510 --> 00:02:48.010
+Okay, next, we're gonna go into our schemas
+
+68
+00:02:48.010 --> 00:02:49.000
+and make a new file
+
+69
+00:02:49.000 --> 00:02:50.480
+and we'll call that capital P,
+
+70
+00:02:50.480 --> 00:02:53.923
+ProductImage, capital I, .ts.
+
+71
+00:02:55.000 --> 00:02:57.193
+And just like before,
+
+72
+00:02:58.100 --> 00:03:00.360
+we are going to make our ProductImage.
+
+73
+00:03:00.360 --> 00:03:03.073
+So export const ProductImage
+
+74
+00:03:05.140 --> 00:03:07.550
+is equal to, so again, it's a list,
+
+75
+00:03:07.550 --> 00:03:10.020
+just like every data type that we have.
+
+76
+00:03:10.020 --> 00:03:12.033
+We'll have to import the list.
+
+77
+00:03:13.940 --> 00:03:15.690
+That worked, good.
+
+78
+00:03:15.690 --> 00:03:19.750
+Then inside of that, we have our fields.
+
+79
+00:03:19.750 --> 00:03:20.820
+We have our image
+
+80
+00:03:20.820 --> 00:03:23.790
+and that is going to be a Cloudinary image.
+
+81
+00:03:23.790 --> 00:03:26.163
+So we'll say cloudinaryImage.
+
+82
+00:03:28.510 --> 00:03:29.800
+And inside of that,
+
+83
+00:03:29.800 --> 00:03:32.610
+we are going to pass it our cloudinary config.
+
+84
+00:03:32.610 --> 00:03:34.240
+Let's just call that cloudinary for now
+
+85
+00:03:34.240 --> 00:03:37.363
+and then label is going to be Source.
+
+86
+00:03:38.450 --> 00:03:41.410
+Besides that, we also wanna pass a spot
+
+87
+00:03:41.410 --> 00:03:43.610
+to pass altText, which is just a text field.
+
+88
+00:03:44.720 --> 00:03:46.010
+Okay, so we have a couple things
+
+89
+00:03:46.010 --> 00:03:47.520
+that we need to be imported and created here.
+
+90
+00:03:47.520 --> 00:03:50.290
+First, let's start with the easy stuff, text.
+
+91
+00:03:50.290 --> 00:03:52.173
+Let's auto import that.
+
+92
+00:03:53.470 --> 00:03:54.303
+Okay.
+
+93
+00:03:54.303 --> 00:03:55.773
+And now cloudinaryImage.
+
+94
+00:03:56.674 --> 00:03:59.433
+I'm gonna import that from,
+
+95
+00:04:04.900 --> 00:04:09.380
+it's gonna be from keystone-next/cloudinary.
+
+96
+00:04:09.380 --> 00:04:10.433
+That's the one.
+
+97
+00:04:11.460 --> 00:04:14.010
+And then this one, oh, I've gotta spell it right.
+
+98
+00:04:14.010 --> 00:04:14.843
+Cloudinary.
+
+99
+00:04:15.790 --> 00:04:18.250
+We've gotta create the config for that.
+
+100
+00:04:18.250 --> 00:04:21.310
+So up here, we'll say export const cloudinary
+
+101
+00:04:21.310 --> 00:04:23.603
+is equal to that.
+
+102
+00:04:25.530 --> 00:04:27.350
+What's wrong with my highlighting here?
+
+103
+00:04:27.350 --> 00:04:28.630
+What did I break?
+
+104
+00:04:28.630 --> 00:04:30.170
+Oh, we forgot the from here.
+
+105
+00:04:30.170 --> 00:04:31.083
+There we go.
+
+106
+00:04:32.010 --> 00:04:33.830
+Inside of that, we say cloudName
+
+107
+00:04:36.360 --> 00:04:41.100
+is going to be process.env.cloudinary.
+
+108
+00:04:41.100 --> 00:04:43.120
+Here, let's open our .env file
+
+109
+00:04:43.120 --> 00:04:44.750
+and just copy, paste them.
+
+110
+00:04:44.750 --> 00:04:47.163
+CLOUD_NAME, KEY, SECRET.
+
+111
+00:04:48.630 --> 00:04:51.060
+Let's just boop,
+
+112
+00:04:51.060 --> 00:04:55.930
+and each of these will have to get a process.env
+
+113
+00:04:55.930 --> 00:04:57.470
+in front of it
+
+114
+00:04:57.470 --> 00:04:58.853
+and then it's cloudName.
+
+115
+00:05:03.240 --> 00:05:04.183
+Its apiKey.
+
+116
+00:05:07.083 --> 00:05:11.110
+apiSecret and then finally, we have a folder,
+
+117
+00:05:11.110 --> 00:05:13.710
+which you don't have to specify the folder
+
+118
+00:05:13.710 --> 00:05:15.384
+and then they'll just get dumped
+
+119
+00:05:15.384 --> 00:05:18.020
+into your media library
+
+120
+00:05:18.020 --> 00:05:21.850
+but in my case, I'm going to say it's called sickfits
+
+121
+00:05:23.530 --> 00:05:26.820
+and that is our Cloudinary config
+
+122
+00:05:26.820 --> 00:05:31.313
+and that gets passed to this cloudinaryImage right here.
+
+123
+00:05:32.450 --> 00:05:37.450
+Now we can inject that into our keystone.ts file.
+
+124
+00:05:37.730 --> 00:05:40.330
+So we'll go down here, Product,
+
+125
+00:05:40.330 --> 00:05:43.070
+it's not a ProductImage, boom.
+
+126
+00:05:43.070 --> 00:05:45.263
+Let's double check that imported.
+
+127
+00:05:46.470 --> 00:05:48.050
+It did.
+
+128
+00:05:48.050 --> 00:05:51.793
+And we should be able to now just kill this and restart it.
+
+129
+00:05:52.690 --> 00:05:56.390
+And see that we can make data by ourselves.
+
+130
+00:05:56.390 --> 00:05:57.290
+All right, we got a bit of an error.
+
+131
+00:05:57.290 --> 00:05:59.390
+CloudinaryAdapter required a cloudName,
+
+132
+00:05:59.390 --> 00:06:01.070
+apiKey, and apiSecret.
+
+133
+00:06:01.070 --> 00:06:02.580
+Ah, I ran into this once.
+
+134
+00:06:02.580 --> 00:06:04.561
+It drove me crazy.
+
+135
+00:06:04.561 --> 00:06:09.561
+So I am passing these right now
+
+136
+00:06:09.950 --> 00:06:12.439
+and the reason that it's not working
+
+137
+00:06:12.439 --> 00:06:16.870
+is because it's an environmental variable.
+
+138
+00:06:16.870 --> 00:06:19.620
+And if you wanted to figure out if that was working,
+
+139
+00:06:19.620 --> 00:06:23.500
+you could just console.log that
+
+140
+00:06:23.500 --> 00:06:26.060
+and then usually I do something obnoxious around it,
+
+141
+00:06:26.060 --> 00:06:29.933
+like log something like that.
+
+142
+00:06:33.170 --> 00:06:34.563
+And then start it again.
+
+143
+00:06:36.990 --> 00:06:39.160
+And you'll see it's undefined.
+
+144
+00:06:39.160 --> 00:06:42.640
+Okay, and I was like what is going on?
+
+145
+00:06:42.640 --> 00:06:45.520
+And it was because it did not import that .env.
+
+146
+00:06:45.520 --> 00:06:47.500
+Remember we did this?
+
+147
+00:06:47.500 --> 00:06:49.780
+Import.env/config.
+
+148
+00:06:49.780 --> 00:06:52.970
+Apparently you've gotta do that on every single file
+
+149
+00:06:52.970 --> 00:06:55.210
+where you wanna access environmental variables.
+
+150
+00:06:55.210 --> 00:06:57.033
+Watch, now if we start it again,
+
+151
+00:06:59.170 --> 00:07:02.400
+we get wesbostutorial, which is the value
+
+152
+00:07:02.400 --> 00:07:05.090
+that we have in our environmental variable.
+
+153
+00:07:05.090 --> 00:07:10.090
+So let's get rid of that console.log in our ProductImage.
+
+154
+00:07:13.532 --> 00:07:16.420
+And then we'll take a look at our backend here.
+
+155
+00:07:18.220 --> 00:07:21.580
+If we refresh, you see we have Product Images.
+
+156
+00:07:21.580 --> 00:07:24.000
+Now let's try go and create a product.
+
+157
+00:07:24.000 --> 00:07:25.483
+I wanna upload an image.
+
+158
+00:07:26.620 --> 00:07:29.420
+We'll give it a black hole.
+
+159
+00:07:29.420 --> 00:07:30.713
+Create product image.
+
+160
+00:07:31.605 --> 00:07:33.740
+Boom, we've uploaded it
+
+161
+00:07:33.740 --> 00:07:38.173
+and now I believe if we go to our Cloudinary dashboard here,
+
+162
+00:07:42.870 --> 00:07:43.703
+we should see it.
+
+163
+00:07:43.703 --> 00:07:46.640
+There we go, that's one I just uploaded
+
+164
+00:07:46.640 --> 00:07:48.650
+a couple seconds ago.
+
+165
+00:07:48.650 --> 00:07:50.800
+All right, so that's the first bit
+
+166
+00:07:50.800 --> 00:07:51.880
+but the second bit,
+
+167
+00:07:51.880 --> 00:07:53.350
+and then we're gonna cover that in the next video,
+
+168
+00:07:53.350 --> 00:07:56.330
+is how do we carry a relationship between the product
+
+169
+00:07:56.330 --> 00:07:58.700
+and the actual product image?
+
+170
+00:07:58.700 --> 00:08:00.353
+So I'll see you in that.
+

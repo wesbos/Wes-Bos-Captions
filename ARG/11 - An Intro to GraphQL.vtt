@@ -1,0 +1,638 @@
+﻿WEBVTT
+
+1
+00:00:01.440 --> 00:00:02.950
+<v Wes>Let's talk about GraphQL.</v>
+
+2
+00:00:02.950 --> 00:00:04.510
+Why is it so good?
+
+3
+00:00:04.510 --> 00:00:05.570
+Why do people like it?
+
+4
+00:00:05.570 --> 00:00:07.260
+Why are we even taking this course?
+
+5
+00:00:07.260 --> 00:00:12.260
+So GraphQL is what I call a specification
+
+6
+00:00:12.460 --> 00:00:17.460
+for requesting data and pushing data updates
+
+7
+00:00:17.480 --> 00:00:18.720
+to and from a server.
+
+8
+00:00:18.720 --> 00:00:21.410
+So GraphQL is not a library in itself.
+
+9
+00:00:21.410 --> 00:00:23.360
+It's just a, it's an idea.
+
+10
+00:00:23.360 --> 00:00:26.800
+It's a whole bunch of ideas in a specification.
+
+11
+00:00:26.800 --> 00:00:30.220
+And then what happens is that library maintainers
+
+12
+00:00:30.220 --> 00:00:33.890
+people that build Keystone, people that build Apollo
+
+13
+00:00:33.890 --> 00:00:38.350
+they go and implement that as a layer on top of a database
+
+14
+00:00:38.350 --> 00:00:40.200
+which is exactly what Keystone is.
+
+15
+00:00:40.200 --> 00:00:43.470
+So if we want to be able to create products,
+
+16
+00:00:43.470 --> 00:00:45.510
+push products, get a list of the product,
+
+17
+00:00:45.510 --> 00:00:47.650
+get a list of users and their products.
+
+18
+00:00:47.650 --> 00:00:49.630
+We will use GraphQL for that.
+
+19
+00:00:49.630 --> 00:00:51.690
+So you're not gonna be able to do this
+
+20
+00:00:51.690 --> 00:00:54.000
+because you probably don't have the finished version running
+
+21
+00:00:54.000 --> 00:00:55.680
+but I'm just gonna give you a quick visual
+
+22
+00:00:55.680 --> 00:00:57.700
+of what GraphQL looks like.
+
+23
+00:00:57.700 --> 00:00:59.450
+So when I'm in my Keystone here
+
+24
+00:00:59.450 --> 00:01:01.630
+I can go to the API Explorer.
+
+25
+00:01:01.630 --> 00:01:03.460
+And this brings up,
+
+26
+00:01:03.460 --> 00:01:06.590
+sometimes this is referred to as graphical.
+
+27
+00:01:06.590 --> 00:01:10.850
+This is a sign called a GraphQL Playground, actually.
+
+28
+00:01:10.850 --> 00:01:13.540
+And you could see I've got all kinds of
+
+29
+00:01:13.540 --> 00:01:15.480
+interesting stuff going on in here.
+
+30
+00:01:15.480 --> 00:01:16.910
+I'm just gonna open up a new tab.
+
+31
+00:01:16.910 --> 00:01:18.050
+Let's bump that up.
+
+32
+00:01:18.050 --> 00:01:20.290
+So the way that it works is
+
+33
+00:01:20.290 --> 00:01:23.950
+that we write these things called queries and mutations
+
+34
+00:01:23.950 --> 00:01:27.220
+to either queries we'll pull data down from the API
+
+35
+00:01:27.220 --> 00:01:29.270
+and mutations will either create data
+
+36
+00:01:29.270 --> 00:01:31.180
+or update existing data.
+
+37
+00:01:31.180 --> 00:01:33.130
+So let's write our first query here.
+
+38
+00:01:33.130 --> 00:01:34.710
+And I open up curly brackets.
+
+39
+00:01:34.710 --> 00:01:36.780
+Now GraphQL is its own syntax.
+
+40
+00:01:36.780 --> 00:01:38.850
+And we're gonna have to get a little bit used to that
+
+41
+00:01:38.850 --> 00:01:41.620
+but it very much looks like JavaScript objects
+
+42
+00:01:41.620 --> 00:01:44.120
+just without the actual values.
+
+43
+00:01:44.120 --> 00:01:45.330
+It's just the properties.
+
+44
+00:01:45.330 --> 00:01:49.430
+So the query that we want is we can say, oh, look at this.
+
+45
+00:01:49.430 --> 00:01:52.820
+So the nice thing about GraphQL is it is typed.
+
+46
+00:01:52.820 --> 00:01:57.270
+Meaning that everything is specified beforehand,
+
+47
+00:01:57.270 --> 00:01:59.770
+as well as if it's a string or a number
+
+48
+00:01:59.770 --> 00:02:03.650
+or a relationship to a user or anything like that.
+
+49
+00:02:03.650 --> 00:02:04.880
+So as you start typing
+
+50
+00:02:04.880 --> 00:02:07.810
+and you get this really nice auto-complete dropdown
+
+51
+00:02:07.810 --> 00:02:10.860
+and these are all the queries that we have right here.
+
+52
+00:02:10.860 --> 00:02:12.110
+So we can take a look here.
+
+53
+00:02:12.110 --> 00:02:15.450
+Let's take a look at all products.
+
+54
+00:02:15.450 --> 00:02:18.528
+And then the idea with GraphQL is you can't just say
+
+55
+00:02:18.528 --> 00:02:20.350
+give me all the products
+
+56
+00:02:20.350 --> 00:02:22.310
+and it will give you every single field,
+
+57
+00:02:22.310 --> 00:02:24.920
+every single the name, the image, the price
+
+58
+00:02:24.920 --> 00:02:25.850
+it'll give you everything about it.
+
+59
+00:02:25.850 --> 00:02:27.370
+It won't do that actually.
+
+60
+00:02:27.370 --> 00:02:29.130
+You have to explicitly ask
+
+61
+00:02:29.130 --> 00:02:31.470
+for the parts of the thing that you want.
+
+62
+00:02:31.470 --> 00:02:34.450
+So for the product we want the name,
+
+63
+00:02:34.450 --> 00:02:37.970
+let's, and the description, and maybe the price.
+
+64
+00:02:37.970 --> 00:02:40.150
+Then when I hit go,
+
+65
+00:02:40.150 --> 00:02:42.080
+what it does is it brings back to us.
+
+66
+00:02:42.080 --> 00:02:43.690
+You see how, like I said, it was like,
+
+67
+00:02:43.690 --> 00:02:47.130
+it looks like an object but without the actual values,
+
+68
+00:02:47.130 --> 00:02:48.330
+it's just the properties.
+
+69
+00:02:48.330 --> 00:02:49.850
+What it will do is it will bring back
+
+70
+00:02:49.850 --> 00:02:51.450
+to you what you asked for,
+
+71
+00:02:51.450 --> 00:02:56.370
+but with the data filled in on all the properties,
+
+72
+00:02:56.370 --> 00:02:57.850
+which is really, really nice.
+
+73
+00:02:57.850 --> 00:03:01.300
+So no longer do you have to create a whole bunch
+
+74
+00:03:01.300 --> 00:03:04.210
+of different rest end points that specify,
+
+75
+00:03:04.210 --> 00:03:07.251
+like give me the products with their name and description
+
+76
+00:03:07.251 --> 00:03:10.670
+or give me the products with all the information.
+
+77
+00:03:10.670 --> 00:03:13.470
+You just have to ask for the thing that you want
+
+78
+00:03:13.470 --> 00:03:16.280
+along with what fields you want.
+
+79
+00:03:16.280 --> 00:03:20.360
+Another kind of cool thing is that there is docs for this.
+
+80
+00:03:20.360 --> 00:03:22.650
+So we could say like, let's look for all products.
+
+81
+00:03:22.650 --> 00:03:25.160
+You click that, then it will tell you
+
+82
+00:03:25.160 --> 00:03:27.870
+all products, it takes these arguments
+
+83
+00:03:27.870 --> 00:03:31.210
+so you can filter them or search or sort them or order.
+
+84
+00:03:31.210 --> 00:03:32.980
+We'll certainly get into all of that
+
+85
+00:03:32.980 --> 00:03:35.180
+when we do searching and things like that.
+
+86
+00:03:35.180 --> 00:03:37.600
+And then it tells you what are the possible fields.
+
+87
+00:03:37.600 --> 00:03:40.370
+So you get the ID, the name, the status, the description,
+
+88
+00:03:40.370 --> 00:03:43.600
+the price, and the photo of each of those.
+
+89
+00:03:43.600 --> 00:03:45.820
+Okay, let's close that down here.
+
+90
+00:03:45.820 --> 00:03:47.690
+One kind of other cool thing
+
+91
+00:03:47.690 --> 00:03:51.200
+is you can do multiple queries in one go.
+
+92
+00:03:51.200 --> 00:03:52.520
+So we want all the products
+
+93
+00:03:52.520 --> 00:03:54.880
+but maybe we want all the users.
+
+94
+00:03:54.880 --> 00:03:58.210
+So it can be the name and the email of that user.
+
+95
+00:03:58.210 --> 00:03:59.220
+So now I run this
+
+96
+00:03:59.220 --> 00:04:01.661
+and we get all the products that we wanted
+
+97
+00:04:01.661 --> 00:04:02.860
+but we also in the same requests
+
+98
+00:04:02.860 --> 00:04:07.420
+we'll get a list of all of the actual users that we want.
+
+99
+00:04:07.420 --> 00:04:10.100
+And furthermore, it is relational.
+
+100
+00:04:10.100 --> 00:04:13.170
+Meaning that if you have data that is related to each other
+
+101
+00:04:13.170 --> 00:04:16.960
+you can say, give me all the users and give me their cart.
+
+102
+00:04:16.960 --> 00:04:20.070
+And for each item in their cart
+
+103
+00:04:20.070 --> 00:04:24.333
+give me the ID and the product, let's run it.
+
+104
+00:04:25.190 --> 00:04:26.830
+Oh, it's cause product is relationship.
+
+105
+00:04:26.830 --> 00:04:27.930
+Let's just get the ID.
+
+106
+00:04:29.360 --> 00:04:31.440
+So a relationship we have here
+
+107
+00:04:31.440 --> 00:04:34.820
+is a user has a cart which has a relationship
+
+108
+00:04:34.820 --> 00:04:37.830
+to another piece of data called cart items.
+
+109
+00:04:37.830 --> 00:04:40.150
+And inside of that cart, it has a relationship
+
+110
+00:04:40.150 --> 00:04:45.150
+to a product that has a name and a description.
+
+111
+00:04:45.300 --> 00:04:46.930
+So go ahead and run that.
+
+112
+00:04:46.930 --> 00:04:50.240
+And now what we've done is we've queried every single user,
+
+113
+00:04:50.240 --> 00:04:52.620
+their email, what's in their cart
+
+114
+00:04:52.620 --> 00:04:56.450
+and then for each item in their cart we grab the name
+
+115
+00:04:56.450 --> 00:04:59.170
+and description and the price of it.
+
+116
+00:04:59.170 --> 00:05:04.170
+And as long as you set up the relationships
+
+117
+00:05:05.490 --> 00:05:08.240
+in Keystone or in whatever you're working with,
+
+118
+00:05:08.240 --> 00:05:11.430
+you're able to write these really slick single queries
+
+119
+00:05:11.430 --> 00:05:16.430
+that will go and grab just the data that you need
+
+120
+00:05:16.630 --> 00:05:18.550
+but all in a single request.
+
+121
+00:05:18.550 --> 00:05:20.250
+So GraphQL is really, really cool.
+
+122
+00:05:20.250 --> 00:05:22.130
+So that is queries.
+
+123
+00:05:22.130 --> 00:05:24.040
+There's a whole flip side to that
+
+124
+00:05:24.040 --> 00:05:27.050
+which is things like mutation.
+
+125
+00:05:27.050 --> 00:05:29.320
+So a mutation might be as simple
+
+126
+00:05:29.320 --> 00:05:31.430
+as I need to reset my password.
+
+127
+00:05:31.430 --> 00:05:33.990
+So you run a mutation called a request reset
+
+128
+00:05:33.990 --> 00:05:35.840
+and then it return to you something
+
+129
+00:05:35.840 --> 00:05:39.190
+or updating a specific user.
+
+130
+00:05:39.190 --> 00:05:41.800
+Here I was updating a password.
+
+131
+00:05:41.800 --> 00:05:44.320
+And the idea is like, obviously we're gonna hook all this up
+
+132
+00:05:44.320 --> 00:05:47.390
+to buttons and forms and stuff in our react application
+
+133
+00:05:47.390 --> 00:05:49.700
+but the whole API is available
+
+134
+00:05:49.700 --> 00:05:52.170
+via this little playground that you can play with it.
+
+135
+00:05:52.170 --> 00:05:54.940
+So that's a very high level of what GraphQL is.
+
+136
+00:05:54.940 --> 00:05:56.270
+We're gonna be using it throughout the rest
+
+137
+00:05:56.270 --> 00:05:58.030
+of this course and get a little bit more
+
+138
+00:05:58.030 --> 00:06:01.440
+into the nitty gritty of the different things.
+
+139
+00:06:01.440 --> 00:06:03.060
+But at a very high level, you need to know that
+
+140
+00:06:03.060 --> 00:06:05.490
+GraphQL is queries and mutations
+
+141
+00:06:05.490 --> 00:06:08.560
+that either pull down the data and relational data
+
+142
+00:06:08.560 --> 00:06:11.800
+that you need or it pushes data to your server
+
+143
+00:06:11.800 --> 00:06:15.700
+where it then updates or create new products, users,
+
+144
+00:06:15.700 --> 00:06:17.800
+carte items, things like that.
+
+145
+00:06:17.800 --> 00:06:20.660
+So that is GraphQL, big fan of it.
+
+146
+00:06:20.660 --> 00:06:23.060
+It takes a little bit more work to get setup
+
+147
+00:06:23.060 --> 00:06:25.660
+than a traditional rest API endpoint
+
+148
+00:06:25.660 --> 00:06:30.600
+but the work is primarily done for us
+
+149
+00:06:30.600 --> 00:06:32.230
+under the hood with Keystone JS.
+
+150
+00:06:32.230 --> 00:06:33.670
+And especially if you're taking this course
+
+151
+00:06:33.670 --> 00:06:34.510
+for the second time
+
+152
+00:06:34.510 --> 00:06:36.660
+because I have rerecorded it
+
+153
+00:06:36.660 --> 00:06:38.960
+you'll notice that this is a lot easier
+
+154
+00:06:38.960 --> 00:06:41.090
+than the way that we did it previously.
+
+155
+00:06:41.090 --> 00:06:44.340
+And that's just because the ecosystem is maturing
+
+156
+00:06:44.340 --> 00:06:45.990
+and a lot of the tooling around this
+
+157
+00:06:45.990 --> 00:06:47.640
+is getting much, much better.
+
+158
+00:06:47.640 --> 00:06:49.090
+So I'm really excited about it.
+
+159
+00:06:49.090 --> 00:06:51.653
+Let's jump into the next video and get Keystone going.
+

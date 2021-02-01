@@ -1,0 +1,595 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.520
+(light whoosh)
+<v Instructor>All right,</v>
+
+2
+00:00:01.520 --> 00:00:02.650
+we'll make another rule.
+
+3
+00:00:02.650 --> 00:00:04.990
+We're gonna be dealing with the cart,
+
+4
+00:00:04.990 --> 00:00:06.720
+the orders and the cart items.
+
+5
+00:00:06.720 --> 00:00:08.520
+So those are three different lists
+
+6
+00:00:08.520 --> 00:00:11.060
+but they all have the exact same rules,
+
+7
+00:00:11.060 --> 00:00:12.720
+this one's pretty simple.
+
+8
+00:00:12.720 --> 00:00:13.810
+Let's go to the bottom here,
+
+9
+00:00:13.810 --> 00:00:15.640
+and we'll make a new one called,
+
+10
+00:00:15.640 --> 00:00:19.280
+actually just go ahead and take the canManageProducts
+
+11
+00:00:20.290 --> 00:00:23.040
+and duplicate it and we'll call that canOrder
+
+12
+00:00:24.270 --> 00:00:27.230
+and then really the only thing we're changing here
+
+13
+00:00:27.230 --> 00:00:29.110
+and you could probably make an abstraction,
+
+14
+00:00:29.110 --> 00:00:32.530
+but I prefer to be a little bit more verbose
+
+15
+00:00:32.530 --> 00:00:35.403
+with this kinda stuff 'cause it's so important.
+
+16
+00:00:35.403 --> 00:00:36.290
+(laughing)
+
+17
+00:00:36.290 --> 00:00:38.580
+And in this case we're just going to be checking
+
+18
+00:00:38.580 --> 00:00:39.950
+if the canManageCart
+
+19
+00:00:43.220 --> 00:00:46.790
+and then if not, then the user
+
+20
+00:00:47.900 --> 00:00:51.068
+should only be able to update items that they own
+
+21
+00:00:51.068 --> 00:00:55.050
+whether that is a cart item or whether that is an order item
+
+22
+00:00:55.050 --> 00:00:58.410
+or whether that is an actual order itself.
+
+23
+00:00:58.410 --> 00:01:01.960
+So we have canOrder, and then we'll go into
+
+24
+00:01:01.960 --> 00:01:06.880
+first one will be cart item and we'll go up here,
+
+25
+00:01:06.880 --> 00:01:10.560
+and above it we'll say access is going to be an object
+
+26
+00:01:11.561 --> 00:01:16.561
+and can you create a one you have to be is signed in, right?
+
+27
+00:01:18.640 --> 00:01:21.650
+That's all you need to be able to create a cart item.
+
+28
+00:01:21.650 --> 00:01:22.950
+Can you read it?
+
+29
+00:01:22.950 --> 00:01:25.103
+Well yeah, if it rules.canOrder.
+
+30
+00:01:27.040 --> 00:01:31.180
+Okay in order to update it,
+
+31
+00:01:31.180 --> 00:01:33.360
+it's going to be rules.canOrder
+
+32
+00:01:33.360 --> 00:01:36.560
+and if you wanna delete one as well
+
+33
+00:01:36.560 --> 00:01:39.460
+it's rules.canOrder as well.
+
+34
+00:01:39.460 --> 00:01:40.680
+Give that a save.
+
+35
+00:01:40.680 --> 00:01:43.650
+All right, next let's open up order.ts.
+
+36
+00:01:43.650 --> 00:01:48.180
+And we go and up here, we'll say access
+
+37
+00:01:48.180 --> 00:01:49.970
+again we'll have our crud
+
+38
+00:01:49.970 --> 00:01:52.430
+so create, should someone be able to create an order?
+
+39
+00:01:52.430 --> 00:01:56.100
+Yes, only if they are, is signed in
+
+40
+00:01:56.100 --> 00:01:58.446
+so that is imported there from Access.
+
+41
+00:01:58.446 --> 00:02:00.970
+Should someone be able to read an order?
+
+42
+00:02:00.970 --> 00:02:02.923
+Yeah that is rules.canOrder,
+
+43
+00:02:04.370 --> 00:02:06.550
+so they should be able to read them all
+
+44
+00:02:06.550 --> 00:02:09.460
+if they're an admin or they have the permission
+
+45
+00:02:09.460 --> 00:02:12.033
+or just read their own if they are signed in.
+
+46
+00:02:12.930 --> 00:02:15.390
+Update is always gonna be false.
+
+47
+00:02:15.390 --> 00:02:17.410
+So in that case, we just returned false
+
+48
+00:02:17.410 --> 00:02:19.550
+so you have to do a little arrow function
+
+49
+00:02:19.550 --> 00:02:22.210
+and return a Boolean false, I believe
+
+50
+00:02:22.210 --> 00:02:25.470
+the dev say soon you should be able to pass just false,
+
+51
+00:02:25.470 --> 00:02:27.280
+but for now you have to do a little arrow function
+
+52
+00:02:27.280 --> 00:02:31.290
+that returns false and then delete is also false.
+
+53
+00:02:31.290 --> 00:02:36.140
+Then we'll go to orderitem.ts and we'll add the access
+
+54
+00:02:36.140 --> 00:02:38.700
+and the access will be,
+
+55
+00:02:38.700 --> 00:02:40.610
+should they be able to create an order item?
+
+56
+00:02:40.610 --> 00:02:42.743
+Yes, if they are signed in.
+
+57
+00:02:44.070 --> 00:02:46.660
+Should they be able to update an order item?
+
+58
+00:02:46.660 --> 00:02:49.253
+No, because they should never be updated.
+
+59
+00:02:50.170 --> 00:02:51.003
+I forgot read.
+
+60
+00:02:51.003 --> 00:02:51.860
+(laughing)
+
+61
+00:02:51.860 --> 00:02:54.130
+Should they be able to read in order item?
+
+62
+00:02:54.130 --> 00:02:55.850
+This is where it gets kinda tricky
+
+63
+00:02:56.810 --> 00:02:59.650
+because if we take a look at our order item,
+
+64
+00:02:59.650 --> 00:03:02.540
+you wanna be able to see items that were in your order
+
+65
+00:03:02.540 --> 00:03:05.810
+if you own that order,
+
+66
+00:03:05.810 --> 00:03:10.810
+but we never associated a user with an order item.
+
+67
+00:03:11.070 --> 00:03:14.200
+So two options, you could just add a user to the order item
+
+68
+00:03:14.200 --> 00:03:16.610
+or in our case, we're just going to...
+
+69
+00:03:16.610 --> 00:03:18.450
+Because there's already a relationship
+
+70
+00:03:18.450 --> 00:03:20.400
+between the order we can say okay,
+
+71
+00:03:20.400 --> 00:03:24.830
+only show me if they're related orders item is,
+
+72
+00:03:24.830 --> 00:03:28.240
+or sorry, the related orders user is this item.
+
+73
+00:03:28.240 --> 00:03:31.280
+So what we'll do is we'll make a new rule
+
+74
+00:03:31.280 --> 00:03:33.140
+and we'll call it canManageOrderItems
+
+75
+00:03:36.370 --> 00:03:38.440
+and we'll go ahead and write that right now,
+
+76
+00:03:38.440 --> 00:03:41.550
+so we'll go back to our access.ts
+
+77
+00:03:41.550 --> 00:03:43.780
+and we'll go just go ahead and duplicate
+
+78
+00:03:43.780 --> 00:03:46.330
+your entire canOrder rule,
+
+79
+00:03:46.330 --> 00:03:49.107
+and we'll name that canManageOrderItems
+
+80
+00:03:50.290 --> 00:03:53.030
+and the only thing we need to change here is that
+
+81
+00:03:53.030 --> 00:03:56.860
+we're not going to filter it where the order items user is
+
+82
+00:03:56.860 --> 00:03:59.190
+we're going to filter it where the orders
+
+83
+00:04:01.030 --> 00:04:04.230
+user is equal to that.
+
+84
+00:04:04.230 --> 00:04:06.680
+So what we just did there is we take the order item,
+
+85
+00:04:06.680 --> 00:04:10.210
+we query the order and then we query the related user
+
+86
+00:04:10.210 --> 00:04:13.000
+and then we check their ID to make sure
+
+87
+00:04:13.000 --> 00:04:15.260
+that it lines up with what they have.
+
+88
+00:04:15.260 --> 00:04:17.190
+So we'll go back to our order item here.
+
+89
+00:04:17.190 --> 00:04:20.540
+So create, signed in read, only theirs
+
+90
+00:04:20.540 --> 00:04:23.510
+or if you have all the permissions update no,
+
+91
+00:04:23.510 --> 00:04:25.283
+and delete no.
+
+92
+00:04:26.390 --> 00:04:28.180
+All right, so that was a lot there.
+
+93
+00:04:28.180 --> 00:04:30.450
+You definitely need to test this stuff out.
+
+94
+00:04:30.450 --> 00:04:33.063
+So we'll restart the dashboard here,
+
+95
+00:04:33.900 --> 00:04:36.440
+and I'm gonna go into my incognito again,
+
+96
+00:04:36.440 --> 00:04:40.110
+I am in the editor role that we've created.
+
+97
+00:04:40.110 --> 00:04:41.767
+I'm gonna add a couple things to my cart.
+
+98
+00:04:41.767 --> 00:04:43.350
+I've just got to wait for Keystone to get up
+
+99
+00:04:43.350 --> 00:04:44.600
+and running, there we go.
+
+100
+00:04:46.620 --> 00:04:49.483
+The cart, type in my credit card,
+
+101
+00:04:52.410 --> 00:04:55.223
+checkout, there we go, it worked.
+
+102
+00:04:59.420 --> 00:05:00.770
+It allowed me to create an order.
+
+103
+00:05:00.770 --> 00:05:04.450
+Now the important part is if we go to our back end,
+
+104
+00:05:04.450 --> 00:05:08.180
+and we look at orders, as this person,
+
+105
+00:05:08.180 --> 00:05:10.670
+see again I'm in incognito, there's only one
+
+106
+00:05:10.670 --> 00:05:12.840
+but if I'm in my admin UI here,
+
+107
+00:05:12.840 --> 00:05:15.740
+I see all of them including the test order
+
+108
+00:05:15.740 --> 00:05:18.450
+that just went through, same with order items.
+
+109
+00:05:18.450 --> 00:05:19.600
+I should only see two here
+
+110
+00:05:19.600 --> 00:05:21.630
+'cause I've only ordered two things.
+
+111
+00:05:21.630 --> 00:05:24.080
+Whereas this person is an admin,
+
+112
+00:05:24.080 --> 00:05:25.370
+you can see absolutely everything.
+
+113
+00:05:25.370 --> 00:05:26.620
+So that's really, really important
+
+114
+00:05:26.620 --> 00:05:28.220
+that you get that nailed down
+
+115
+00:05:28.220 --> 00:05:31.263
+and honestly, this is part of what took me,
+
+116
+00:05:32.250 --> 00:05:35.870
+and honestly, this is part of what takes so long
+
+117
+00:05:35.870 --> 00:05:37.240
+when building these courses is making sure
+
+118
+00:05:37.240 --> 00:05:39.290
+you have the stuff nailed down.
+
+119
+00:05:39.290 --> 00:05:41.310
+'Cause I don't wanna just go kinda hand wavy
+
+120
+00:05:41.310 --> 00:05:43.510
+at the stuff and say make sure you check it.
+
+121
+00:05:44.560 --> 00:05:45.860
+Where you might be actually using
+
+122
+00:05:45.860 --> 00:05:48.010
+a center production application.
+
+123
+00:05:48.010 --> 00:05:50.170
+So that is our orders,
+
+124
+00:05:50.170 --> 00:05:52.483
+in the next one we'll get into users.
+
+125
+00:05:54.240 --> 00:05:56.830
+Hey, I'm just adding one more quick thing onto the end here.
+
+126
+00:05:56.830 --> 00:05:58.080
+I just thought like, okay
+
+127
+00:05:59.080 --> 00:06:01.010
+if you try to query all the orders
+
+128
+00:06:01.010 --> 00:06:04.230
+when you are in a totally signed out state
+
+129
+00:06:04.230 --> 00:06:06.220
+then you obviously don't get access to them
+
+130
+00:06:06.220 --> 00:06:07.053
+we took care of that.
+
+131
+00:06:07.053 --> 00:06:11.220
+But it does throw an error, ideally it should give us a
+
+132
+00:06:11.220 --> 00:06:13.200
+not like an actual internal server error,
+
+133
+00:06:13.200 --> 00:06:16.120
+it should give us like an access is not defined.
+
+134
+00:06:16.120 --> 00:06:20.070
+So what we have to do in those let's do that,
+
+135
+00:06:20.070 --> 00:06:23.320
+let's do the canOrder right here.
+
+136
+00:06:23.320 --> 00:06:26.470
+We'll just make another little function
+
+137
+00:06:26.470 --> 00:06:31.470
+and just say if bang is signed in and pass at the session,
+
+138
+00:06:33.020 --> 00:06:34.740
+so if they are not signed in
+
+139
+00:06:34.740 --> 00:06:36.840
+or you could even make a function called
+
+140
+00:06:36.840 --> 00:06:39.863
+is not signed in, return, false.
+
+141
+00:06:41.010 --> 00:06:44.370
+And then if we restart our process
+
+142
+00:06:44.370 --> 00:06:46.640
+now when I run this query, boom
+
+143
+00:06:46.640 --> 00:06:48.240
+you do not have access to this resource.
+
+144
+00:06:48.240 --> 00:06:52.423
+So it is worth taking this little once over,
+
+145
+00:06:53.380 --> 00:06:56.300
+and putting it at the top
+
+146
+00:06:56.300 --> 00:06:59.823
+of all of your, canOrder, canManageOrderItems,
+
+147
+00:07:01.735 --> 00:07:05.900
+and canReadProducts put them at the top of all those.
+
+148
+00:07:05.900 --> 00:07:07.533
+All right, catch you in the next one.
+

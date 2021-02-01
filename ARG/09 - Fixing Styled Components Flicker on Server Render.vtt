@@ -1,0 +1,618 @@
+﻿WEBVTT
+
+1
+00:00:01.540 --> 00:00:02.480
+We got a real quick problem
+
+2
+00:00:02.480 --> 00:00:04.590
+with stock components that we need to fix.
+
+3
+00:00:04.590 --> 00:00:05.590
+It's it's two part
+
+4
+00:00:05.590 --> 00:00:06.990
+but they're both related to the same thing.
+
+5
+00:00:06.990 --> 00:00:08.170
+First, when you load the page
+
+6
+00:00:08.170 --> 00:00:09.720
+you see that you get this.
+
+7
+00:00:09.720 --> 00:00:13.310
+Warning Prop class name did not match server SCHB
+
+8
+00:00:13.310 --> 00:00:14.190
+blah, blah, blah.
+
+9
+00:00:14.190 --> 00:00:15.590
+And the client got this.
+
+10
+00:00:15.590 --> 00:00:18.390
+You you'll see this a lot in, in react.
+
+11
+00:00:18.390 --> 00:00:20.520
+When you're doing server side react
+
+12
+00:00:20.520 --> 00:00:23.110
+that also gets re rendered in the browser.
+
+13
+00:00:23.110 --> 00:00:26.510
+And what's happening here is that the server renders
+
+14
+00:00:26.510 --> 00:00:29.850
+it one way, and then the client renders it another way.
+
+15
+00:00:29.850 --> 00:00:31.090
+And there was a difference
+
+16
+00:00:31.090 --> 00:00:33.070
+between those two
+
+17
+00:00:33.070 --> 00:00:35.790
+and in this case it's because we're creating random
+
+18
+00:00:35.790 --> 00:00:36.623
+stock moes
+
+19
+00:00:36.623 --> 00:00:38.930
+creating random IDs for each of our components.
+
+20
+00:00:38.930 --> 00:00:41.310
+And then when it hits the, the front end
+
+21
+00:00:41.310 --> 00:00:43.830
+it re renders it and it gives you another random ID.
+
+22
+00:00:43.830 --> 00:00:47.070
+So we need to, we need it to be consistently random.
+
+23
+00:00:47.070 --> 00:00:51.177
+If that's a thing, if you ever see this error ever again
+
+24
+00:00:51.177 --> 00:00:53.210
+that's because something is different
+
+25
+00:00:53.210 --> 00:00:56.350
+on your server then on your client.
+
+26
+00:00:56.350 --> 00:00:57.850
+So let's go ahead and fix that.
+
+27
+00:00:57.850 --> 00:01:00.690
+The other issue that we have is that when you reload it,
+
+28
+00:01:00.690 --> 00:01:02.700
+sometimes you can see it. Right now
+
+29
+00:01:02.700 --> 00:01:03.610
+It's not showing up for me
+
+30
+00:01:03.610 --> 00:01:08.610
+but remember earlier we were getting like the blue styling
+
+31
+00:01:08.710 --> 00:01:10.910
+and just a second later, it would kick in.
+
+32
+00:01:10.910 --> 00:01:13.240
+And the reason behind that is because
+
+33
+00:01:13.240 --> 00:01:15.910
+it wasn't actually rendering the styles
+
+34
+00:01:15.910 --> 00:01:18.680
+on the server for us, which is what we need.
+
+35
+00:01:18.680 --> 00:01:21.950
+Otherwise you get that flicker, flash of unstyle text
+
+36
+00:01:21.950 --> 00:01:24.780
+or flash of unstylish content folk.
+
+37
+00:01:24.780 --> 00:01:28.980
+So to fix it, we opened up our underscored document file.
+
+38
+00:01:28.980 --> 00:01:30.840
+And we're actually just going to add some stuff
+
+39
+00:01:30.840 --> 00:01:32.440
+from the style components docs.
+
+40
+00:01:32.440 --> 00:01:36.920
+So if you Google server style sheet styled components,
+
+41
+00:01:36.920 --> 00:01:39.820
+you're going to see a link to advanced usage.
+
+42
+00:01:39.820 --> 00:01:42.950
+And then if we look for the server style sheet
+
+43
+00:01:42.950 --> 00:01:47.950
+you see that it has the docs for that right here.
+
+44
+00:01:48.300 --> 00:01:51.430
+And if we want to use it with next JS,
+
+45
+00:01:51.430 --> 00:01:54.280
+we need to hook it up to one of their hooks.
+
+46
+00:01:54.280 --> 00:01:56.230
+That's called getinitialProps.
+
+47
+00:01:56.230 --> 00:01:58.010
+And what getinitialProps will do,
+
+48
+00:01:58.010 --> 00:02:03.010
+is it will wait until that method has been resolved
+
+49
+00:02:03.130 --> 00:02:07.970
+before it sends the data off from the server to the browser.
+
+50
+00:02:07.970 --> 00:02:09.250
+So it let's go ahead and do that.
+
+51
+00:02:09.250 --> 00:02:12.940
+Let's go to this, my document extends document
+
+52
+00:02:12.940 --> 00:02:15.550
+and then above it will say static,
+
+53
+00:02:15.550 --> 00:02:17.283
+get initial props.
+
+54
+00:02:18.870 --> 00:02:21.430
+And in that there's a argument
+
+55
+00:02:21.430 --> 00:02:24.069
+that we destructure called a render page.
+
+56
+00:02:24.069 --> 00:02:25.040
+Okay.
+
+57
+00:02:25.040 --> 00:02:26.050
+And then in it
+
+58
+00:02:26.050 --> 00:02:31.050
+we say cons sheet is equal to new server style sheet.
+
+59
+00:02:31.910 --> 00:02:33.962
+Boom, look at that!
+
+60
+00:02:33.962 --> 00:02:36.350
+I know that I keep getting surprised,
+
+61
+00:02:36.350 --> 00:02:38.200
+but this like auto import,
+
+62
+00:02:38.200 --> 00:02:39.810
+it keeps getting better in vs code.
+
+63
+00:02:39.810 --> 00:02:42.874
+I feel like it's gotten better in the last like month or so.
+
+64
+00:02:42.874 --> 00:02:44.030
+And it's awesome.
+
+65
+00:02:44.030 --> 00:02:48.540
+And then we say Cons page is equal to render page
+
+66
+00:02:51.720 --> 00:02:54.910
+and that takes a callback method,
+
+67
+00:02:54.910 --> 00:02:58.410
+which gives us our app, which has props.
+
+68
+00:02:58.410 --> 00:02:59.540
+This is a bit weird.
+
+69
+00:02:59.540 --> 00:03:03.140
+I quite honestly, you just take this from the examples.
+
+70
+00:03:03.140 --> 00:03:05.440
+This is not necessarily something that you'll be
+
+71
+00:03:05.440 --> 00:03:08.820
+coding yourself every single time, but we say sheet
+
+72
+00:03:08.820 --> 00:03:10.970
+which is our stock component
+
+73
+00:03:10.970 --> 00:03:12.593
+dot collect styles.
+
+74
+00:03:13.490 --> 00:03:14.590
+And we want to
+
+75
+00:03:14.590 --> 00:03:16.400
+so what that will do is it will go ahead
+
+76
+00:03:16.400 --> 00:03:19.110
+and go through every single component
+
+77
+00:03:19.110 --> 00:03:20.070
+that needs to be rendered
+
+78
+00:03:20.070 --> 00:03:21.220
+out to the page.
+
+79
+00:03:21.220 --> 00:03:23.870
+And it will see if there's any style components
+
+80
+00:03:23.870 --> 00:03:25.250
+in those components.
+
+81
+00:03:25.250 --> 00:03:28.010
+And it will rip out the CSS that it needs
+
+82
+00:03:28.010 --> 00:03:30.230
+and render it out to the server.
+
+83
+00:03:30.230 --> 00:03:31.700
+And then inside there,
+
+84
+00:03:31.700 --> 00:03:35.290
+we simply just render out our app tag
+
+85
+00:03:35.290 --> 00:03:37.240
+and we spread our props
+
+86
+00:03:37.240 --> 00:03:38.920
+dot, dot, dot props out.
+
+87
+00:03:38.920 --> 00:03:40.740
+Probably give us a red underline.
+
+88
+00:03:40.740 --> 00:03:43.210
+That's fine about spreading the props.
+
+89
+00:03:43.210 --> 00:03:46.180
+Cool. So that gives us an error.
+
+90
+00:03:46.180 --> 00:03:49.373
+I think we probably need to restart the sucker.
+
+91
+00:03:50.780 --> 00:03:52.700
+By the way sometimes if you see
+
+92
+00:03:52.700 --> 00:03:54.720
+an error like that and like there's nothing
+
+93
+00:03:54.720 --> 00:03:55.810
+in the console here.
+
+94
+00:03:55.810 --> 00:03:57.130
+You gotta go to your terminal
+
+95
+00:03:57.130 --> 00:03:59.850
+and you'll be able to see what the error is.
+
+96
+00:03:59.850 --> 00:04:02.250
+First, just restart it just to make sure.
+
+97
+00:04:02.250 --> 00:04:03.690
+All right, we have a bit of an error.
+
+98
+00:04:03.690 --> 00:04:05.030
+Let's dig through it ourselves.
+
+99
+00:04:05.030 --> 00:04:07.900
+So, if you get an error like this
+
+100
+00:04:07.900 --> 00:04:10.700
+don't freak out, is a little overwhelming
+
+101
+00:04:10.700 --> 00:04:13.180
+what I like to do ais to bring it into
+
+102
+00:04:17.230 --> 00:04:19.860
+a new editor and just kind of look at it here.
+
+103
+00:04:19.860 --> 00:04:22.490
+So error, document again initial PO should resolve
+
+104
+00:04:22.490 --> 00:04:26.250
+to an object, but found undefined.
+
+105
+00:04:26.250 --> 00:04:28.000
+Oh, that's cause we forgot something here.
+
+106
+00:04:28.000 --> 00:04:30.070
+We forgot to actually grab the style tag.
+
+107
+00:04:30.070 --> 00:04:34.910
+So Cons style tags is equals to sheet dot
+
+108
+00:04:34.910 --> 00:04:36.653
+get style element.
+
+109
+00:04:38.020 --> 00:04:39.080
+Let's just console log that.
+
+110
+00:04:39.080 --> 00:04:40.700
+I want to see what's in there.
+
+111
+00:04:40.700 --> 00:04:41.740
+I'm also curious.
+
+112
+00:04:41.740 --> 00:04:44.240
+Sometimes you take these, these examples from the docs
+
+113
+00:04:44.240 --> 00:04:47.620
+but it's helpful to know exactly what's going on in here
+
+114
+00:04:47.620 --> 00:04:51.660
+and then return an object with the page inside of it.
+
+115
+00:04:51.660 --> 00:04:54.890
+And then we add the style tags
+
+116
+00:04:54.890 --> 00:04:55.723
+along with it.
+
+117
+00:04:55.723 --> 00:04:57.498
+And what this essentially is doing
+
+118
+00:04:57.498 --> 00:05:01.970
+it's taking whatever the page had to initially get.
+
+119
+00:05:01.970 --> 00:05:04.440
+And then adding on one more step,
+
+120
+00:05:04.440 --> 00:05:06.540
+which is gathering all of the CSS.
+
+121
+00:05:06.540 --> 00:05:09.763
+Now I believe a restart that sucker.
+
+122
+00:05:10.910 --> 00:05:12.960
+There we go, we got our things shown up.
+
+123
+00:05:12.960 --> 00:05:14.510
+We can look at that console log.
+
+124
+00:05:14.510 --> 00:05:16.360
+It looks like it's just logging a bunch
+
+125
+00:05:16.360 --> 00:05:19.780
+of react elements that have CSS inside of them.
+
+126
+00:05:19.780 --> 00:05:21.370
+So we'll get rid of that.
+
+127
+00:05:21.370 --> 00:05:23.250
+And then the other thing is we're still getting
+
+128
+00:05:23.250 --> 00:05:24.083
+this issue here.
+
+129
+00:05:24.083 --> 00:05:26.250
+Prop class name did not match server.
+
+130
+00:05:26.250 --> 00:05:27.104
+Okay. So this happens to me sometimes with the same issue,
+
+131
+00:05:27.104 --> 00:05:31.170
+and am like, what I did the thing, I did it.
+
+132
+00:05:31.170 --> 00:05:33.700
+Why is it broken still?
+
+133
+00:05:33.700 --> 00:05:35.940
+And I found
+
+134
+00:05:35.940 --> 00:05:36.773
+On here.
+
+135
+00:05:37.980 --> 00:05:41.680
+In 15 days ago, this is the biggest threat ever.
+
+136
+00:05:41.680 --> 00:05:43.830
+Deleting the next folder solve the problem for me.
+
+137
+00:05:43.830 --> 00:05:45.050
+So I bet that's it.
+
+138
+00:05:45.050 --> 00:05:47.240
+Any time that you have you fix something
+
+139
+00:05:47.240 --> 00:05:49.380
+it doesn't seem to actually have taken effect
+
+140
+00:05:49.380 --> 00:05:51.180
+probably as a caching issue.
+
+141
+00:05:51.180 --> 00:05:53.530
+So what we can do here is I'm gonna kill the build
+
+142
+00:05:53.530 --> 00:05:55.770
+and open it in my finder.
+
+143
+00:05:55.770 --> 00:05:57.800
+And you'll see in front end
+
+144
+00:05:57.800 --> 00:06:01.040
+there is a doc next folder in this has all the cache
+
+145
+00:06:01.040 --> 00:06:02.880
+from everything that we've been building.
+
+146
+00:06:02.880 --> 00:06:05.600
+So sometimes you just need to kill that
+
+147
+00:06:05.600 --> 00:06:09.023
+delete it and start that sucker up again.
+
+148
+00:06:10.110 --> 00:06:11.580
+I bet money!
+
+149
+00:06:11.580 --> 00:06:12.713
+This will fix it.
+
+150
+00:06:18.320 --> 00:06:20.160
+Ah, yeah, it's working.
+
+151
+00:06:20.160 --> 00:06:20.993
+Okay, cool.
+
+152
+00:06:20.993 --> 00:06:24.240
+So that's how you get a server-side rendered style sheets
+
+153
+00:06:24.240 --> 00:06:28.070
+and consistent random ideas working
+
+154
+00:06:28.070 --> 00:06:29.927
+in style components and (mumbled).
+

@@ -1,0 +1,814 @@
+﻿WEBVTT
+
+1
+00:00:01.541 --> 00:00:02.460
+<v Wes>All right, there's a bunch</v>
+
+2
+00:00:02.460 --> 00:00:05.120
+of little housekeeping items that need to happen.
+
+3
+00:00:05.120 --> 00:00:09.500
+First, the cart shows 12 items.
+
+4
+00:00:09.500 --> 00:00:11.160
+Yours might not show anything,
+
+5
+00:00:11.160 --> 00:00:12.710
+and I think it's related to the fact
+
+6
+00:00:12.710 --> 00:00:16.410
+that I have deleted products in my cart still.
+
+7
+00:00:16.410 --> 00:00:17.810
+And I'm not deleting...
+
+8
+00:00:17.810 --> 00:00:19.560
+I haven't deleted them.
+
+9
+00:00:19.560 --> 00:00:21.410
+So we've got to fix that.
+
+10
+00:00:21.410 --> 00:00:24.290
+Second is we need to change the page
+
+11
+00:00:24.290 --> 00:00:27.330
+when the order is created.
+
+12
+00:00:27.330 --> 00:00:30.190
+Three, we need to close the cart.
+
+13
+00:00:30.190 --> 00:00:35.190
+Four, we need to refetch the user's cart
+
+14
+00:00:35.210 --> 00:00:36.793
+when they buy something.
+
+15
+00:00:38.220 --> 00:00:40.170
+And I think that's it,
+
+16
+00:00:40.170 --> 00:00:42.290
+just a whole bunch of little front end stuff.
+
+17
+00:00:42.290 --> 00:00:45.430
+So first one is that my cart shows 12 items.
+
+18
+00:00:45.430 --> 00:00:46.990
+And if I refresh the page,
+
+19
+00:00:46.990 --> 00:00:48.310
+there's still 12 items in there.
+
+20
+00:00:48.310 --> 00:00:50.120
+And there's nothing in here.
+
+21
+00:00:50.120 --> 00:00:52.700
+And I believe that has to do with the fact
+
+22
+00:00:52.700 --> 00:00:55.990
+that I have items in my cart where the product is deleted.
+
+23
+00:00:55.990 --> 00:00:59.920
+And we counted for those items
+
+24
+00:00:59.920 --> 00:01:01.800
+in showing the cart right here,
+
+25
+00:01:01.800 --> 00:01:04.320
+but we didn't account for them when we were counting them.
+
+26
+00:01:04.320 --> 00:01:07.500
+So let's flip to our front end now.
+
+27
+00:01:07.500 --> 00:01:10.600
+And I believe that's in our nav.js.
+
+28
+00:01:10.600 --> 00:01:11.720
+Yeah, here we go.
+
+29
+00:01:11.720 --> 00:01:13.710
+Where we reduce the cart,
+
+30
+00:01:13.710 --> 00:01:16.763
+and we just tally up how many are in there.
+
+31
+00:01:18.150 --> 00:01:19.140
+And in this case,
+
+32
+00:01:19.140 --> 00:01:23.730
+we either need to return the quantity if the product exists
+
+33
+00:01:23.730 --> 00:01:27.200
+or zero if the product is been deleted.
+
+34
+00:01:27.200 --> 00:01:29.570
+So what we can do is just put these dits parentheses.
+
+35
+00:01:29.570 --> 00:01:34.570
+And I'm gonna say if there is a cartitem.product,
+
+36
+00:01:35.080 --> 00:01:39.083
+then return the quantity, otherwise return zero.
+
+37
+00:01:40.980 --> 00:01:43.790
+Okay, so that updated it to zero.
+
+38
+00:01:43.790 --> 00:01:44.910
+The next thing is that
+
+39
+00:01:44.910 --> 00:01:46.770
+shouldn't have even been an issue for me
+
+40
+00:01:46.770 --> 00:01:51.510
+because we should have deleted all the cart items.
+
+41
+00:01:51.510 --> 00:01:53.930
+Regardless of if they have a product or not,
+
+42
+00:01:53.930 --> 00:01:56.550
+every cart item in the user's cart
+
+43
+00:01:56.550 --> 00:01:58.540
+should be deleted, right?
+
+44
+00:01:58.540 --> 00:01:59.900
+And if we go to our keystone
+
+45
+00:01:59.900 --> 00:02:02.200
+and look at our cart items here,
+
+46
+00:02:02.200 --> 00:02:05.000
+you see there's still two more cart items left.
+
+47
+00:02:05.000 --> 00:02:07.300
+There's 11 of this one and one of that one
+
+48
+00:02:07.300 --> 00:02:09.200
+which is why it was showing 12.
+
+49
+00:02:09.200 --> 00:02:11.020
+And if I click through to it,
+
+50
+00:02:11.020 --> 00:02:13.810
+you'll see there's no associated product
+
+51
+00:02:13.810 --> 00:02:15.620
+because that product was deleted.
+
+52
+00:02:15.620 --> 00:02:20.620
+So our backend mutation where we delete them all,
+
+53
+00:02:21.610 --> 00:02:25.500
+we were mapping over cartItems.
+
+54
+00:02:25.500 --> 00:02:27.377
+But if you take a look at cartItems,
+
+55
+00:02:28.541 --> 00:02:30.230
+cartItems was the filtered cart.
+
+56
+00:02:30.230 --> 00:02:31.810
+We want the unfiltered cart.
+
+57
+00:02:31.810 --> 00:02:36.030
+So that's a really easy fix is that we just have to go
+
+58
+00:02:36.030 --> 00:02:38.970
+and swap out this cartItems for user.cart.
+
+59
+00:02:38.970 --> 00:02:42.190
+And that will ensure whether there's a product that's there
+
+60
+00:02:42.190 --> 00:02:43.560
+or it's been deleted,
+
+61
+00:02:43.560 --> 00:02:46.163
+doesn't matter, they all get deleted.
+
+62
+00:02:47.010 --> 00:02:51.020
+So that is the first part.
+
+63
+00:02:51.020 --> 00:02:53.270
+Next one, change the page when the order is created,
+
+64
+00:02:53.270 --> 00:02:55.470
+close the cart and refetch the user's cart
+
+65
+00:02:55.470 --> 00:02:56.303
+when they buy something.
+
+66
+00:02:56.303 --> 00:02:59.180
+So two, change the page when the order is created.
+
+67
+00:02:59.180 --> 00:03:01.030
+Okay, let's go back to the front end.
+
+68
+00:03:02.130 --> 00:03:03.683
+We'll go to our checkout here.
+
+69
+00:03:04.850 --> 00:03:07.570
+And here we go, change the page to...
+
+70
+00:03:08.750 --> 00:03:11.260
+So what I'll do is we'll go grab the router.
+
+71
+00:03:11.260 --> 00:03:12.093
+So that's a hook,
+
+72
+00:03:12.093 --> 00:03:14.527
+so const router is equal to useRouter.
+
+73
+00:03:16.430 --> 00:03:18.393
+Make sure you import that from next.
+
+74
+00:03:21.000 --> 00:03:22.630
+Then right here, change the page
+
+75
+00:03:22.630 --> 00:03:25.690
+to view the router, router.push.
+
+76
+00:03:25.690 --> 00:03:27.030
+We wanna push it.
+
+77
+00:03:27.030 --> 00:03:31.590
+The path name is going to be /order,
+
+78
+00:03:31.590 --> 00:03:34.560
+and the query is going to have
+
+79
+00:03:34.560 --> 00:03:38.023
+an ID of the returned order.
+
+80
+00:03:39.670 --> 00:03:44.573
+So it's order.data.checkout.id.
+
+81
+00:03:46.970 --> 00:03:49.690
+Close the cart, that's pretty easy to do.
+
+82
+00:03:49.690 --> 00:03:53.223
+Don't we have a closeCart function?
+
+83
+00:03:55.740 --> 00:03:57.350
+Let's look at the useCart.
+
+84
+00:03:57.350 --> 00:03:59.120
+Where did we do our useCart?
+
+85
+00:03:59.120 --> 00:04:00.713
+Was it in cart.js?
+
+86
+00:04:03.290 --> 00:04:04.773
+No, where it was...
+
+87
+00:04:04.773 --> 00:04:06.240
+You can just click through to it.
+
+88
+00:04:06.240 --> 00:04:07.980
+It's in cartstate.js.
+
+89
+00:04:07.980 --> 00:04:12.450
+We have a function called closeCart, right?
+
+90
+00:04:12.450 --> 00:04:15.320
+So we should be able to just grab that.
+
+91
+00:04:15.320 --> 00:04:16.637
+We can leave that method in
+
+92
+00:04:16.637 --> 00:04:18.750
+and just go import it at the top.
+
+93
+00:04:18.750 --> 00:04:20.150
+See how handy these hooks are?
+
+94
+00:04:20.150 --> 00:04:23.200
+So const, we'll do structure,
+
+95
+00:04:23.200 --> 00:04:26.290
+closeCart is equal to useCart.
+
+96
+00:04:29.014 --> 00:04:30.464
+And we got to import useCart.
+
+97
+00:04:33.720 --> 00:04:35.190
+So that should close the cart,
+
+98
+00:04:35.190 --> 00:04:36.530
+and then turn the loader off.
+
+99
+00:04:36.530 --> 00:04:39.830
+Set loading false and progress done.
+
+100
+00:04:39.830 --> 00:04:42.183
+Okay, so that's that.
+
+101
+00:04:43.420 --> 00:04:47.810
+The next thing was refetch the user's cart
+
+102
+00:04:47.810 --> 00:04:49.400
+when they buy something.
+
+103
+00:04:49.400 --> 00:04:53.650
+Okay, so because we are not refreshing the page
+
+104
+00:04:53.650 --> 00:04:54.483
+once they buy something,
+
+105
+00:04:54.483 --> 00:04:56.000
+we're just pushing them to another one,
+
+106
+00:04:56.000 --> 00:04:58.590
+we got to go to this mutation right here.
+
+107
+00:04:58.590 --> 00:05:00.930
+And one of the arguments
+
+108
+00:05:00.930 --> 00:05:04.080
+that we pass here is refetchQueries.
+
+109
+00:05:04.080 --> 00:05:09.080
+That's an array with the query of current_user_query.
+
+110
+00:05:11.540 --> 00:05:14.460
+That was imported from our user component.
+
+111
+00:05:14.460 --> 00:05:15.480
+And that should do it, okay.
+
+112
+00:05:15.480 --> 00:05:18.030
+So let's go over those real quick.
+
+113
+00:05:18.030 --> 00:05:20.930
+The cart items, we've we went over that.
+
+114
+00:05:20.930 --> 00:05:22.970
+Change the page when the order is created,
+
+115
+00:05:22.970 --> 00:05:23.820
+that should now work.
+
+116
+00:05:23.820 --> 00:05:26.010
+Close the cart, that should now work
+
+117
+00:05:26.010 --> 00:05:26.960
+and refetch the user's-
+
+118
+00:05:26.960 --> 00:05:28.120
+Let's test all of that.
+
+119
+00:05:28.120 --> 00:05:29.820
+So we'll go to our front end here.
+
+120
+00:05:32.230 --> 00:05:34.600
+And let's add some items to our cart,
+
+121
+00:05:34.600 --> 00:05:37.310
+and go to here, and we'll check out.
+
+122
+00:05:37.310 --> 00:05:39.610
+By the way, I recommend making your prices
+
+123
+00:05:39.610 --> 00:05:40.910
+as high as possible
+
+124
+00:05:40.910 --> 00:05:42.880
+because it feels good when you're fake stripe
+
+125
+00:05:42.880 --> 00:05:45.100
+is full of lots of money.
+
+126
+00:05:45.100 --> 00:05:49.593
+So let's go and check out, bum, bum, bum.
+
+127
+00:05:50.570 --> 00:05:52.040
+Hey!
+
+128
+00:05:52.040 --> 00:05:56.850
+All right, I think almost everything worked.
+
+129
+00:05:56.850 --> 00:06:00.490
+The cart closed, the cart is now empty.
+
+130
+00:06:00.490 --> 00:06:01.760
+It changed the page,
+
+131
+00:06:01.760 --> 00:06:05.770
+although I don't see the ID of the order the query param,
+
+132
+00:06:05.770 --> 00:06:08.013
+so we'll have to go to that in just a second.
+
+133
+00:06:08.960 --> 00:06:12.450
+If we go to our backend orders,
+
+134
+00:06:12.450 --> 00:06:15.633
+there's a new order showing up right here.
+
+135
+00:06:17.470 --> 00:06:22.240
+And yeah, everything's work except this one.
+
+136
+00:06:22.240 --> 00:06:26.300
+For some reason, the pushing of the page
+
+137
+00:06:26.300 --> 00:06:28.470
+did not take the ID.
+
+138
+00:06:28.470 --> 00:06:30.450
+The query did not come along.
+
+139
+00:06:30.450 --> 00:06:33.280
+So what I'm gonna do is let's look at
+
+140
+00:06:34.970 --> 00:06:37.700
+the order that comes back.
+
+141
+00:06:37.700 --> 00:06:41.850
+Maybe this is not the right path to what we want.
+
+142
+00:06:41.850 --> 00:06:44.140
+Unfortunately, I didn't keep the dev tools
+
+143
+00:06:44.140 --> 00:06:45.160
+open when that happened.
+
+144
+00:06:45.160 --> 00:06:46.940
+So we got to make another one just so we can see
+
+145
+00:06:46.940 --> 00:06:48.810
+what the order looks like.
+
+146
+00:06:48.810 --> 00:06:52.110
+So products, add to cart.
+
+147
+00:06:52.110 --> 00:06:53.843
+Go here, check out.
+
+148
+00:07:03.920 --> 00:07:06.510
+There we go, there's our data.
+
+149
+00:07:06.510 --> 00:07:11.343
+That's the order, so data.checkout.id.
+
+150
+00:07:12.370 --> 00:07:14.930
+So order.data.checkout.id, okay.
+
+151
+00:07:14.930 --> 00:07:18.253
+That fine, why is it not going in the URL?
+
+152
+00:07:20.410 --> 00:07:22.883
+Let's take a look at the next docs for that.
+
+153
+00:07:27.420 --> 00:07:29.010
+Shallow, oh, I wonder if they took
+
+154
+00:07:29.010 --> 00:07:31.053
+the query option off of that?
+
+155
+00:07:33.350 --> 00:07:35.450
+Well, well, we can pass it ourselves here.
+
+156
+00:07:36.870 --> 00:07:39.663
+Oh no, no, it should work.
+
+157
+00:07:41.090 --> 00:07:41.923
+There we go.
+
+158
+00:07:43.060 --> 00:07:47.063
+Path name and the query.
+
+159
+00:07:51.321 --> 00:07:55.010
+I don't know, maybe that has changed since I've done it
+
+160
+00:07:55.010 --> 00:07:57.230
+because we don't have a square bracket in it.
+
+161
+00:07:57.230 --> 00:08:00.690
+So if we just wanna pass a query param along with it,
+
+162
+00:08:00.690 --> 00:08:03.040
+I bet we just have to interpolate it ourselves.
+
+163
+00:08:04.250 --> 00:08:06.970
+So let's say ID is equal to...
+
+164
+00:08:07.970 --> 00:08:08.860
+Oh, we got to do it here.
+
+165
+00:08:08.860 --> 00:08:13.643
+ID is equal to the order.data.checkout.id.
+
+166
+00:08:15.810 --> 00:08:17.430 line:15% 
+And obviously the other thing I didn't mention
+
+167
+00:08:17.430 --> 00:08:18.500 line:15% 
+is that's not a page yet.
+
+168
+00:08:18.500 --> 00:08:19.810 line:15% 
+We haven't created that yet.
+
+169
+00:08:19.810 --> 00:08:21.940 line:15% 
+That's why it's 404ing.
+
+170
+00:08:21.940 --> 00:08:25.920 line:15% 
+But we certainly will go to that page in just a bit.
+
+171
+00:08:25.920 --> 00:08:29.130
+So let's go through the whole song and dance one more time.
+
+172
+00:08:29.130 --> 00:08:30.630
+Let's go to products,
+
+173
+00:08:30.630 --> 00:08:32.013
+add something to the cart.
+
+174
+00:08:32.900 --> 00:08:34.343
+Go ahead and checkout.
+
+175
+00:08:37.790 --> 00:08:38.803
+Check out now.
+
+176
+00:08:42.870 --> 00:08:43.850
+And...
+
+177
+00:08:48.650 --> 00:08:52.170
+Ah, now it's encoding the question mark.
+
+178
+00:08:52.170 --> 00:08:53.413
+That's not what we want.
+
+179
+00:08:54.670 --> 00:08:56.070
+So I searched around,
+
+180
+00:08:56.070 --> 00:08:58.160
+and I'm sure we could encode that.
+
+181
+00:08:58.160 --> 00:09:00.610
+But that seems like a bit of a hack.
+
+182
+00:09:00.610 --> 00:09:03.110
+So let's just do it the next way.
+
+183
+00:09:03.110 --> 00:09:06.450
+And instead of doing query params like that,
+
+184
+00:09:06.450 --> 00:09:10.420
+let's just go to order/id.
+
+185
+00:09:11.650 --> 00:09:13.263
+And then we'll say the query,
+
+186
+00:09:14.200 --> 00:09:16.520
+ID is equal to that.
+
+187
+00:09:16.520 --> 00:09:18.470
+And I bet that will fix it for us.
+
+188
+00:09:18.470 --> 00:09:20.950
+So we'll do the forward slash instead of query param.
+
+189
+00:09:20.950 --> 00:09:23.190
+So try it one more time.
+
+190
+00:09:23.190 --> 00:09:25.313
+Add something to the cart, check out.
+
+191
+00:09:32.340 --> 00:09:34.113
+Check out, boom.
+
+192
+00:09:39.620 --> 00:09:40.540
+And there we go,
+
+193
+00:09:40.540 --> 00:09:43.100
+the URL is up and running.
+
+194
+00:09:43.100 --> 00:09:44.500
+Again, the reason why we're getting this
+
+195
+00:09:44.500 --> 00:09:46.350
+is because we haven't created that page.
+
+196
+00:09:46.350 --> 00:09:49.410
+But now we actually are getting proper URLs.
+
+197
+00:09:49.410 --> 00:09:51.240
+Again, if we go to our backend here,
+
+198
+00:09:51.240 --> 00:09:53.300
+we see there's a whole bunch of orders been created
+
+199
+00:09:53.300 --> 00:09:54.133
+since I did that.
+
+200
+00:09:54.133 --> 00:09:56.860
+So that is the checkout flow.
+
+201
+00:09:56.860 --> 00:09:58.650
+And that brings us to the next section
+
+202
+00:09:58.650 --> 00:10:00.050
+which is actually displaying
+
+203
+00:10:00.050 --> 00:10:02.753
+the user's orders and individual orders.
+

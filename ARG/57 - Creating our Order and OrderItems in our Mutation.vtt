@@ -1,0 +1,674 @@
+﻿WEBVTT
+
+1
+00:00:02.170 --> 00:00:03.350
+<v Wes>All right, so we're gonna keep going</v>
+
+2
+00:00:03.350 --> 00:00:05.710
+with the creation of the cartItems.
+
+3
+00:00:05.710 --> 00:00:06.930
+Number four is gonna be,
+
+4
+00:00:06.930 --> 00:00:09.920
+convert the cartItems into orderItems.
+
+5
+00:00:09.920 --> 00:00:14.691
+So what we'll do here is, we'll loop over the cartItems
+
+6
+00:00:14.691 --> 00:00:18.710
+that are in the user's cart and make a new object,
+
+7
+00:00:18.710 --> 00:00:20.780
+basically copying all the values from it.
+
+8
+00:00:20.780 --> 00:00:24.620
+So we'll say const orderItems is equal to,
+
+9
+00:00:24.620 --> 00:00:26.470
+and right here we're not actually gonna be creating
+
+10
+00:00:26.470 --> 00:00:27.550
+the Keystone API just yet,
+
+11
+00:00:27.550 --> 00:00:29.360
+we're just gonna be making a bunch of objects
+
+12
+00:00:29.360 --> 00:00:31.480
+that will parse to the Keystone API.
+
+13
+00:00:31.480 --> 00:00:33.633
+So, we take the cartItems,
+
+14
+00:00:35.580 --> 00:00:37.700
+and we map over them.
+
+15
+00:00:37.700 --> 00:00:40.430
+And for each cartItem that we have,
+
+16
+00:00:40.430 --> 00:00:45.090
+we want to return an object.
+
+17
+00:00:45.090 --> 00:00:47.570
+So in here, I'll just put curly brackets
+
+18
+00:00:47.570 --> 00:00:52.570
+and we'll say const orderItem is equal to an object
+
+19
+00:00:53.300 --> 00:00:57.893
+where we have the name is cartItem.product.name.
+
+20
+00:00:58.980 --> 00:01:00.053
+The description,
+
+21
+00:01:03.510 --> 00:01:04.993
+the price,
+
+22
+00:01:06.590 --> 00:01:07.853
+the quantity,
+
+23
+00:01:09.220 --> 00:01:13.300
+is going to not be on the product itself.
+
+24
+00:01:13.300 --> 00:01:14.673
+That's on the cartItem.
+
+25
+00:01:18.250 --> 00:01:22.340
+The image is going to be connected to an existing one.
+
+26
+00:01:22.340 --> 00:01:24.180
+And so this is how you make a relationship
+
+27
+00:01:24.180 --> 00:01:27.560
+is connect where the Id
+
+28
+00:01:27.560 --> 00:01:32.353
+is equal to the cartItem.product.photo.Id.
+
+29
+00:01:33.230 --> 00:01:36.810
+And then the user is going to connect
+
+30
+00:01:36.810 --> 00:01:39.400
+to the Id of the userId, right?
+
+31
+00:01:39.400 --> 00:01:40.770
+We made that variable little
+
+32
+00:01:40.770 --> 00:01:42.750
+at the very top of this function.
+
+33
+00:01:42.750 --> 00:01:44.260
+So now we should have an array.
+
+34
+00:01:44.260 --> 00:01:48.950
+Oh, we got to return the orderItem from here.
+
+35
+00:01:48.950 --> 00:01:51.010
+And we probably could have just turned returned
+
+36
+00:01:51.010 --> 00:01:53.410
+in front of this but I like to do it this way.
+
+37
+00:01:53.410 --> 00:01:57.330
+Now we have an array of all these actual items.
+
+38
+00:01:57.330 --> 00:02:00.220
+We need to create the order and return it.
+
+39
+00:02:00.220 --> 00:02:04.300
+So say a const order is equal to
+
+40
+00:02:04.300 --> 00:02:09.300
+await context.lists capital -O-.Order.createOne.
+
+41
+00:02:12.120 --> 00:02:15.710
+And the data that we pass to that is total
+
+42
+00:02:15.710 --> 00:02:17.690
+is going to be charged.amount.
+
+43
+00:02:17.690 --> 00:02:20.150
+So, we are pulling the amount
+
+44
+00:02:20.150 --> 00:02:21.850
+straight off the actual charge.
+
+45
+00:02:21.850 --> 00:02:24.850
+That way we are 100% sure that that is the amount
+
+46
+00:02:24.850 --> 00:02:26.660
+that was charged to their credit card.
+
+47
+00:02:26.660 --> 00:02:28.590
+It should be the same as the amount of variable,
+
+48
+00:02:28.590 --> 00:02:31.910
+but just in case anything weird ever happened,
+
+49
+00:02:31.910 --> 00:02:34.200
+it will 100% line up with the credit card.
+
+50
+00:02:34.200 --> 00:02:38.343
+The charge is going to be the charge.Id.
+
+51
+00:02:40.090 --> 00:02:41.840
+That comes back.
+
+52
+00:02:41.840 --> 00:02:44.080
+The items, now this is kind of cool,
+
+53
+00:02:44.080 --> 00:02:48.250
+you can create a orderItems right from this.
+
+54
+00:02:48.250 --> 00:02:52.550
+So here we are creating an order
+
+55
+00:02:52.550 --> 00:02:55.697
+but it's going to have a relationship to many items
+
+56
+00:02:55.697 --> 00:02:57.840
+and you can actually just give it an array
+
+57
+00:02:57.840 --> 00:02:59.050
+of orderItems to create
+
+58
+00:02:59.050 --> 00:03:01.420
+and it will then go ahead and make those first
+
+59
+00:03:01.420 --> 00:03:03.290
+before it does this.
+
+60
+00:03:03.290 --> 00:03:04.870
+And it's all in one single API.
+
+61
+00:03:04.870 --> 00:03:08.013
+We didn't have to create them and come back with Ids.
+
+62
+00:03:08.013 --> 00:03:09.750
+We just do it in one swoop.
+
+63
+00:03:09.750 --> 00:03:14.140
+And then the user of this order is the same Id.
+
+64
+00:03:14.140 --> 00:03:17.210
+We're gonna connect it to where the Id
+
+65
+00:03:17.210 --> 00:03:20.880
+is the user Id, lower case D on that.
+
+66
+00:03:20.880 --> 00:03:25.880
+Then we, let's put ourselves a little six clean
+
+67
+00:03:26.000 --> 00:03:28.823
+up any old cart items.
+
+68
+00:03:31.550 --> 00:03:36.550
+So we will const cartItem Ids is equal to
+
+69
+00:03:38.133 --> 00:03:40.933
+cartItems.map.
+
+70
+00:03:42.080 --> 00:03:43.310
+We'll look at the cartItem
+
+71
+00:03:43.310 --> 00:03:45.490
+and just return the cartItem.Id
+
+72
+00:03:48.400 --> 00:03:49.630
+And then we'll delete them.
+
+73
+00:03:49.630 --> 00:03:54.630
+So we'll await context.lists.cartItem.deleteMany.
+
+74
+00:03:59.420 --> 00:04:04.420
+And then that expects us to pass a read only string array
+
+75
+00:04:05.720 --> 00:04:07.650
+of strings, which is Ids.
+
+76
+00:04:07.650 --> 00:04:09.820
+So we'll pass it.
+
+77
+00:04:09.820 --> 00:04:11.630
+The Ids
+
+78
+00:04:11.630 --> 00:04:15.000
+which is we already created that remember cardItemId.
+
+79
+00:04:17.000 --> 00:04:20.690
+So that's right here, cartItemIds.
+
+80
+00:04:20.690 --> 00:04:23.950
+So that will delete all the existing cart items.
+
+81
+00:04:23.950 --> 00:04:27.950
+Finally, finally, finally, we can return the order, right?
+
+82
+00:04:27.950 --> 00:04:29.750
+The order that we just created right here
+
+83
+00:04:29.750 --> 00:04:32.200
+we can go ahead and return it to the user.
+
+84
+00:04:32.200 --> 00:04:36.759
+So if we did it right, and it's very unlikely
+
+85
+00:04:36.759 --> 00:04:37.592
+(chuckles)
+
+86
+00:04:37.592 --> 00:04:39.990
+what should happen is we should create the order items
+
+87
+00:04:39.990 --> 00:04:42.890
+the actual order itself, we should delete the cart items
+
+88
+00:04:42.890 --> 00:04:45.680
+and return the order to the user.
+
+89
+00:04:45.680 --> 00:04:46.970
+If that works, then we'll flip
+
+90
+00:04:46.970 --> 00:04:51.390
+onto the frontend and change the user
+
+91
+00:04:51.390 --> 00:04:53.840
+to a different page based on which order they have.
+
+92
+00:04:53.840 --> 00:04:57.690
+But let's not get ahead of ourselves, any it too, too much.
+
+93
+00:04:57.690 --> 00:04:59.640
+So I've got to reboot this whole thing.
+
+94
+00:05:02.750 --> 00:05:04.890
+All right, I'm going to go to my cart.
+
+95
+00:05:04.890 --> 00:05:06.663
+And put in my credit card number.
+
+96
+00:05:12.540 --> 00:05:14.650
+Cross your fingers.
+
+97
+00:05:14.650 --> 00:05:15.483
+Clear it.
+
+98
+00:05:15.483 --> 00:05:16.510
+Dev tools.
+
+99
+00:05:16.510 --> 00:05:17.823
+Go ahead and check out.
+
+100
+00:05:20.818 --> 00:05:21.651
+(arg)
+
+101
+00:05:21.651 --> 00:05:22.484
+Something happened.
+
+102
+00:05:22.484 --> 00:05:23.340
+Okay. That's fine.
+
+103
+00:05:23.340 --> 00:05:24.520
+Let's read error
+
+104
+00:05:24.520 --> 00:05:28.780
+variable data got undefined, invalid value name, data
+
+105
+00:05:31.110 --> 00:05:35.440
+field type image is not defined by orderItem.
+
+106
+00:05:35.440 --> 00:05:36.793
+Create input.
+
+107
+00:05:37.850 --> 00:05:38.913
+Let's take a look.
+
+108
+00:05:41.435 --> 00:05:44.980
+So I am creating an order item right here.
+
+109
+00:05:49.130 --> 00:05:54.130
+And it's telling me, order item does not have a field image.
+
+110
+00:05:54.140 --> 00:05:57.000
+So let's go to our orderItem.
+
+111
+00:05:57.000 --> 00:05:58.713
+Did we call it photo?
+
+112
+00:05:59.880 --> 00:06:00.713
+Yeah, we did.
+
+113
+00:06:00.713 --> 00:06:03.843
+We did Wes Wes Wes, Wes Wes Wes
+
+114
+00:06:03.843 --> 00:06:07.303
+Wes Wes Wes Wes.
+
+115
+00:06:07.303 --> 00:06:08.453
+Let's try call it photo
+
+116
+00:06:11.610 --> 00:06:13.400
+And let's try it again.
+
+117
+00:06:13.400 --> 00:06:14.400
+I guess we've got to reboot.
+
+118
+00:06:14.400 --> 00:06:17.073
+Our backend items are still in the cart.
+
+119
+00:06:17.970 --> 00:06:18.803
+Fill it out.
+
+120
+00:06:23.830 --> 00:06:25.680
+Cross your fingers for a second time.
+
+121
+00:06:26.713 --> 00:06:28.213
+Boom, boom, boom.
+
+122
+00:06:29.470 --> 00:06:30.703
+Boom.Another one.
+
+123
+00:06:33.340 --> 00:06:38.340
+Th the de field user is not defined by order, correct?
+
+124
+00:06:39.980 --> 00:06:40.813
+I am.
+
+125
+00:06:43.720 --> 00:06:48.050
+Oh, we don't have a user field on here.
+
+126
+00:06:48.050 --> 00:06:48.883
+You know what?
+
+127
+00:06:48.883 --> 00:06:49.716
+That's fine.
+
+128
+00:06:49.716 --> 00:06:54.480
+We don't actually need the user on the order item
+
+129
+00:06:54.480 --> 00:06:57.320
+because the order item will be connected to an order, which
+
+130
+00:06:57.320 --> 00:06:59.340
+in turn has access to the user.
+
+131
+00:06:59.340 --> 00:07:00.623
+So let's get rid of that.
+
+132
+00:07:01.968 --> 00:07:05.100
+That was something that I removed because I thought it
+
+133
+00:07:05.100 --> 00:07:06.400
+was unnecessary.
+
+134
+00:07:06.400 --> 00:07:11.360
+So again, this is, this is real world folks.
+
+135
+00:07:11.360 --> 00:07:15.853
+You just cross your fingers and 14 times in you, you get it.
+
+136
+00:07:19.459 --> 00:07:22.250
+And you can see that the error is showing up here as well.
+
+137
+00:07:22.250 --> 00:07:24.160
+If you wanted, you could catch these errors
+
+138
+00:07:24.160 --> 00:07:26.240
+and convert them into something
+
+139
+00:07:26.240 --> 00:07:28.590
+that would be a little bit more human readable.
+
+140
+00:07:29.530 --> 00:07:32.113
+Okay. This is running checkout.
+
+141
+00:07:36.170 --> 00:07:38.010
+We're going to do it this time folks. This is it.
+
+142
+00:07:38.010 --> 00:07:38.843
+I can feel it
+
+143
+00:07:46.340 --> 00:07:47.173
+uuuuu
+
+144
+00:07:48.020 --> 00:07:48.853
+We did.
+
+145
+00:07:48.853 --> 00:07:49.686
+We did it.
+
+146
+00:07:49.686 --> 00:07:51.260
+We did it finish the order.
+
+147
+00:07:51.260 --> 00:07:53.520
+There's the data inside of that.
+
+148
+00:07:53.520 --> 00:07:54.920
+There's the checkout.
+
+149
+00:07:54.920 --> 00:07:58.670
+And there is the Id of the order.
+
+150
+00:07:58.670 --> 00:08:00.920
+If we go into our Keystone backend
+
+151
+00:08:00.920 --> 00:08:05.920
+and take a look at our orders, now, there it is.
+
+152
+00:08:06.110 --> 00:08:08.630
+You see, look at the charge is this is actually coming back
+
+153
+00:08:08.630 --> 00:08:12.750
+from Stripe's API and I can click through to it
+
+154
+00:08:12.750 --> 00:08:15.830
+and see the items that are in that specific order.
+
+155
+00:08:15.830 --> 00:08:19.470
+And then also we should be able to go to our payments page
+
+156
+00:08:19.470 --> 00:08:23.480
+and see there we go there's the order that was just created.
+
+157
+00:08:23.480 --> 00:08:26.780
+And then finally, we should be able
+
+158
+00:08:26.780 --> 00:08:29.470
+this can be closed, obviously.
+
+159
+00:08:29.470 --> 00:08:33.840
+And if I refresh this page, there is nothing in my cart.
+
+160
+00:08:38.860 --> 00:08:43.860
+Although it still says 12, 12 items in my cart.
+
+161
+00:08:44.360 --> 00:08:46.080
+Oh, I think I know why that is.
+
+162
+00:08:46.080 --> 00:08:47.603
+I think I know why that is.
+
+163
+00:08:49.770 --> 00:08:51.920
+We'll cover that in the next video
+
+164
+00:08:51.920 --> 00:08:55.890
+but that is the basics of getting our order up and running.
+
+165
+00:08:55.890 --> 00:08:57.550
+Now we've got to flip back once more
+
+166
+00:08:57.550 --> 00:08:59.870
+to the frontend and finish up
+
+167
+00:08:59.870 --> 00:09:01.690
+a few more of these little house keeping things.
+
+168
+00:09:01.690 --> 00:09:03.923
+So everything looks a okay.
+

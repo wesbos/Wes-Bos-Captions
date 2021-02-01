@@ -1,0 +1,454 @@
+﻿WEBVTT
+
+1
+00:00:00.063 --> 00:00:01.576
+(swooshing music)
+
+2
+00:00:01.576 --> 00:00:03.290
+<v Instructor>All right now that we've got the items</v>
+
+3
+00:00:03.290 --> 00:00:06.050
+being removed from the cart, we need to now update the UI.
+
+4
+00:00:06.050 --> 00:00:07.670
+Now there's kind of like a couple options
+
+5
+00:00:07.670 --> 00:00:08.503
+we could have here.
+
+6
+00:00:08.503 --> 00:00:11.900
+We could pass a re fetch queries to this and say,
+
+7
+00:00:11.900 --> 00:00:13.310
+all right, when you delete the item,
+
+8
+00:00:13.310 --> 00:00:17.730
+make sure you go and re fetch all of the users cart
+
+9
+00:00:17.730 --> 00:00:19.470
+and we can re render it
+
+10
+00:00:19.470 --> 00:00:21.110
+but a little bit faster than that.
+
+11
+00:00:21.110 --> 00:00:23.630
+So we don't need to make a second trip to the server
+
+12
+00:00:23.630 --> 00:00:26.080
+is simply just a pop that item out of the cache
+
+13
+00:00:26.080 --> 00:00:27.760
+or to evict it from cache.
+
+14
+00:00:27.760 --> 00:00:31.080
+So what we do is you pass it an update function.
+
+15
+00:00:31.080 --> 00:00:34.003
+And I usually like to put my functions up here called,
+
+16
+00:00:35.000 --> 00:00:36.920
+I like to put them outside update
+
+17
+00:00:36.920 --> 00:00:38.070
+because the things that you need
+
+18
+00:00:38.070 --> 00:00:40.590
+are the cache and the payload
+
+19
+00:00:41.510 --> 00:00:44.950
+that get passed in when that function is running.
+
+20
+00:00:44.950 --> 00:00:48.920
+So it's not necessary to be inside of the component itself.
+
+21
+00:00:48.920 --> 00:00:53.920
+So when somebody removes an item from the cache
+
+22
+00:00:55.210 --> 00:00:58.340
+and it comes back, it's going to run the update
+
+23
+00:00:58.340 --> 00:01:00.130
+and it's gonna give us both access
+
+24
+00:01:00.130 --> 00:01:03.850
+to the entire Apollo cache as well as the information
+
+25
+00:01:03.850 --> 00:01:05.350
+that came back from the API
+
+26
+00:01:05.350 --> 00:01:08.530
+which in our case is just gonna be ID.
+
+27
+00:01:08.530 --> 00:01:09.700
+So it's actually a really simple,
+
+28
+00:01:09.700 --> 00:01:12.560
+we just run cache.evict,
+
+29
+00:01:12.560 --> 00:01:14.760
+and then we need to identify the item.
+
+30
+00:01:14.760 --> 00:01:18.630
+Normally you could just say like cart, item, six,
+
+31
+00:01:18.630 --> 00:01:20.190
+whatever, whatever, whatever.
+
+32
+00:01:20.190 --> 00:01:22.810
+And that's what it's using to evict the item.
+
+33
+00:01:22.810 --> 00:01:27.303
+But it's better to use the cache to identify API
+
+34
+00:01:28.630 --> 00:01:31.390
+because it will generate these IDs for you.
+
+35
+00:01:31.390 --> 00:01:34.223
+So we can say cache.identify,
+
+36
+00:01:35.490 --> 00:01:40.490
+and then you pass it the payload.data.delete cart item.
+
+37
+00:01:41.700 --> 00:01:44.500
+So that is this thing that's gonna be passed back.
+
+38
+00:01:44.500 --> 00:01:46.190
+It's both going to have an ID
+
+39
+00:01:46.190 --> 00:01:48.380
+as well as every response will have
+
+40
+00:01:48.380 --> 00:01:51.880
+an underscore underscore type name passed along with it.
+
+41
+00:01:51.880 --> 00:01:53.850
+It's not something you have to request explicitly
+
+42
+00:01:53.850 --> 00:01:56.630
+from the API, it will just give it to you.
+
+43
+00:01:56.630 --> 00:01:59.140
+So with that in place now,
+
+44
+00:01:59.140 --> 00:02:01.830
+I believe we should be able to click it.
+
+45
+00:02:01.830 --> 00:02:03.680
+And when that comes back from the API
+
+46
+00:02:03.680 --> 00:02:06.930
+it then remove the item from our list.
+
+47
+00:02:06.930 --> 00:02:08.960
+There is one more step that you could take
+
+48
+00:02:08.960 --> 00:02:10.660
+to make that even faster.
+
+49
+00:02:10.660 --> 00:02:13.720
+And that's a concept of an optimistic response.
+
+50
+00:02:13.720 --> 00:02:15.337
+And an optimistic response will say,
+
+51
+00:02:15.337 --> 00:02:18.077
+"Okay, I pretty sure I know what's gonna come back
+
+52
+00:02:18.077 --> 00:02:21.437
+"from the server, so what I'm gonna do is immediately
+
+53
+00:02:21.437 --> 00:02:23.527
+"give you sort of a fake response
+
+54
+00:02:23.527 --> 00:02:25.877
+"that will match what the server will give me."
+
+55
+00:02:27.000 --> 00:02:28.270
+And then if the server comes back
+
+56
+00:02:28.270 --> 00:02:29.960
+with something different we can roll that back,
+
+57
+00:02:29.960 --> 00:02:32.970
+but it looks like this optimistic response.
+
+58
+00:02:32.970 --> 00:02:35.270
+And right now I'm not sure why,
+
+59
+00:02:35.270 --> 00:02:38.270
+but this is not working in correlation with the evict
+
+60
+00:02:38.270 --> 00:02:40.990
+and I'll show you what the problem is.
+
+61
+00:02:40.990 --> 00:02:43.570
+And if I find a solution to this,
+
+62
+00:02:43.570 --> 00:02:45.430
+I'll be sure to tack it on to this video,
+
+63
+00:02:45.430 --> 00:02:48.550
+but basically the optimistic responses, what comes back,
+
+64
+00:02:48.550 --> 00:02:51.900
+well, we are expecting it to return
+
+65
+00:02:51.900 --> 00:02:53.940
+a delete cart item object.
+
+66
+00:02:53.940 --> 00:02:56.650
+And on that we are expecting a underscore underscore
+
+67
+00:02:56.650 --> 00:03:00.590
+type name to be a cart item.
+
+68
+00:03:00.590 --> 00:03:05.590
+And we are expecting the ID of the item to be,
+
+69
+00:03:05.790 --> 00:03:08.160
+the ID of the cart item that's passed in right here.
+
+70
+00:03:08.160 --> 00:03:09.670
+So we can just put that there.
+
+71
+00:03:09.670 --> 00:03:13.170
+And what will happen is this updater function
+
+72
+00:03:13.170 --> 00:03:16.550
+will run immediately once you press that button
+
+73
+00:03:16.550 --> 00:03:18.700
+with the optimistic response
+
+74
+00:03:18.700 --> 00:03:20.870
+and then it will run a second time
+
+75
+00:03:20.870 --> 00:03:25.520
+when it actually comes back from the API.
+
+76
+00:03:25.520 --> 00:03:28.420
+And if those values are any different, it will roll it back.
+
+77
+00:03:28.420 --> 00:03:30.300
+But in our case, it will just run it twice.
+
+78
+00:03:30.300 --> 00:03:32.660
+And the second time it's, there's no,
+
+79
+00:03:32.660 --> 00:03:34.250
+there will be no item of that ID.
+
+80
+00:03:34.250 --> 00:03:38.430
+So it will, it'll just, it would just ignore it.
+
+81
+00:03:38.430 --> 00:03:41.030
+So that is how it's supposed to work.
+
+82
+00:03:41.030 --> 00:03:42.650
+It's not working right now.
+
+83
+00:03:42.650 --> 00:03:45.380
+Watch (beep) for some reason,
+
+84
+00:03:45.380 --> 00:03:48.140
+it's getting totally unrelated,
+
+85
+00:03:48.140 --> 00:03:50.800
+data to all products is not defined.
+
+86
+00:03:50.800 --> 00:03:53.800
+And I did dig into this and for a split second data
+
+87
+00:03:53.800 --> 00:03:58.150
+is undefined and those loading and error states are not,
+
+88
+00:03:58.150 --> 00:03:59.750
+don't have any values in them.
+
+89
+00:03:59.750 --> 00:04:03.403
+I did look a little bit deeper and to my network tab.
+
+90
+00:04:05.590 --> 00:04:09.470
+When this happens, and you can add an item to your cart.
+
+91
+00:04:09.470 --> 00:04:11.480
+You can look at your car and you can delete it.
+
+92
+00:04:11.480 --> 00:04:13.590
+And when you delete an item
+
+93
+00:04:13.590 --> 00:04:15.580
+and all of the items that are JSON in here,
+
+94
+00:04:15.580 --> 00:04:17.230
+and if I went and fixed that,
+
+95
+00:04:17.230 --> 00:04:19.970
+like I checked if data was undefined or whatever,
+
+96
+00:04:19.970 --> 00:04:21.250
+it looks like it's re fetching
+
+97
+00:04:21.250 --> 00:04:22.910
+every single query on the page.
+
+98
+00:04:22.910 --> 00:04:24.730
+So all the products, all the pagination,
+
+99
+00:04:24.730 --> 00:04:27.500
+the user and everything, and I'm not sure why it would
+
+100
+00:04:27.500 --> 00:04:29.750
+because the whole point of updater function
+
+101
+00:04:29.750 --> 00:04:31.590
+is to not have to re fetch the query.
+
+102
+00:04:31.590 --> 00:04:34.940
+So unfortunately, I will comment this out for now
+
+103
+00:04:34.940 --> 00:04:37.910
+just because there's an issue with it.
+
+104
+00:04:37.910 --> 00:04:41.270
+And I will tack onto this video if I do find a solution.
+
+105
+00:04:41.270 --> 00:04:43.430
+And if you wanna dig into it as well,
+
+106
+00:04:43.430 --> 00:04:45.560
+by all means, please, please shoot me an email.
+
+107
+00:04:45.560 --> 00:04:48.280
+But in our case that cache out evict
+
+108
+00:04:48.280 --> 00:04:50.380
+is a pretty fast turnaround.
+
+109
+00:04:50.380 --> 00:04:52.660
+It only takes a couple of milliseconds
+
+110
+00:04:52.660 --> 00:04:54.230
+from the server and back
+
+111
+00:04:54.230 --> 00:04:56.590
+because we are just sending very small payloads
+
+112
+00:04:56.590 --> 00:04:59.630
+of a couple pieces of texts with the ID.
+
+113
+00:04:59.630 --> 00:05:02.230
+That's it for this one, let's catch in the next one.
+

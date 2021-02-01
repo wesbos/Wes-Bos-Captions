@@ -1,0 +1,862 @@
+﻿WEBVTT
+
+1
+00:00:01.430 --> 00:00:02.290
+<v Instructor>Get some Auth going</v>
+
+2
+00:00:02.290 --> 00:00:03.730
+so no one can just walk in
+
+3
+00:00:03.730 --> 00:00:04.880
+and start making users.
+
+4
+00:00:04.880 --> 00:00:05.970
+We need to be able to log in
+
+5
+00:00:05.970 --> 00:00:07.540
+before we can create that stuff.
+
+6
+00:00:07.540 --> 00:00:09.260
+And then further on in this course
+
+7
+00:00:09.260 --> 00:00:12.470
+we're gonna get fine grain into role control
+
+8
+00:00:12.470 --> 00:00:14.650
+over who should be able to do what.
+
+9
+00:00:14.650 --> 00:00:16.910
+So let's open up Keystone.ts
+
+10
+00:00:16.910 --> 00:00:17.930
+and we've got this.
+
+11
+00:00:17.930 --> 00:00:20.900
+This is our Keystone server config right here.
+
+12
+00:00:20.900 --> 00:00:22.360
+What we're gonna do is we're gonna create
+
+13
+00:00:22.360 --> 00:00:24.820
+a method called with Auth
+
+14
+00:00:24.820 --> 00:00:26.130
+that has some settings in it.
+
+15
+00:00:26.130 --> 00:00:28.130
+And that's gonna layer in the secret source.
+
+16
+00:00:28.130 --> 00:00:28.963
+That is
+
+17
+00:00:29.820 --> 00:00:32.970
+the ability to have Auth in Keystone.
+
+18
+00:00:32.970 --> 00:00:34.720
+So we'll make that.
+
+19
+00:00:34.720 --> 00:00:36.760
+Oh, lets say constant curly bracket
+
+20
+00:00:36.760 --> 00:00:38.230
+say with Auth
+
+21
+00:00:38.230 --> 00:00:39.860
+is equal to
+
+22
+00:00:39.860 --> 00:00:43.860
+and we are going to use a method called create Auth.
+
+23
+00:00:43.860 --> 00:00:44.693
+Create Auth
+
+24
+00:00:45.750 --> 00:00:47.573
+boom, did that auto import it?
+
+25
+00:00:48.905 --> 00:00:50.060
+Oh, it did.
+
+26
+00:00:50.060 --> 00:00:51.470
+All right, so here we go.
+
+27
+00:00:51.470 --> 00:00:55.650
+Import and create Auth from Keystone forward slash Auth.
+
+28
+00:00:55.650 --> 00:00:56.660
+That's awesome.
+
+29
+00:00:56.660 --> 00:00:58.240
+And inside of there it takes the settings subject.
+
+30
+00:00:58.240 --> 00:01:00.260
+So first a couple of things we have to say,
+
+31
+00:01:00.260 --> 00:01:02.820
+list key is going to be a user.
+
+32
+00:01:02.820 --> 00:01:05.280
+Why? Because it needs to know which schema
+
+33
+00:01:05.280 --> 00:01:08.050
+is going to be responsible for being the user, right?
+
+34
+00:01:08.050 --> 00:01:09.440
+Like it could be customer,
+
+35
+00:01:09.440 --> 00:01:11.780
+it could be obviously user in our case,
+
+36
+00:01:11.780 --> 00:01:12.850
+it could be person,
+
+37
+00:01:12.850 --> 00:01:14.930
+it could be company.
+
+38
+00:01:14.930 --> 00:01:17.290
+In our case it's user that logs in.
+
+39
+00:01:17.290 --> 00:01:20.110
+And then we gotta tell it the identity field,
+
+40
+00:01:20.110 --> 00:01:24.430
+which field in user is going to identify the person.
+
+41
+00:01:24.430 --> 00:01:25.880
+Our case is going to be email.
+
+42
+00:01:25.880 --> 00:01:27.260
+Like what did they log in with?
+
+43
+00:01:27.260 --> 00:01:29.150
+Is it gonna be their username, their email?
+
+44
+00:01:29.150 --> 00:01:31.670
+Pretty much just one of two of those.
+
+45
+00:01:31.670 --> 00:01:35.713
+The secret field, which that's going to be our password.
+
+46
+00:01:36.610 --> 00:01:38.700
+That's the field that is,
+
+47
+00:01:38.700 --> 00:01:40.883
+it's going to ask for when they type it in.
+
+48
+00:01:41.880 --> 00:01:44.840
+That next up we want to say in it first item.
+
+49
+00:01:44.840 --> 00:01:46.750
+So this is always kind of a chicken and egg thing
+
+50
+00:01:46.750 --> 00:01:49.010
+where you get in as you turn on Auth
+
+51
+00:01:49.010 --> 00:01:50.400
+but if you set it up
+
+52
+00:01:50.400 --> 00:01:51.530
+and there is no users
+
+53
+00:01:51.530 --> 00:01:52.610
+then how do you Auth.
+
+54
+00:01:52.610 --> 00:01:55.400
+And what a lot of places do is they just
+
+55
+00:01:55.400 --> 00:01:57.670
+you turn off Auth for a quick second, create a user
+
+56
+00:01:57.670 --> 00:01:59.530
+and then turn it back on again.
+
+57
+00:01:59.530 --> 00:02:00.960
+But Keystone has a really nice
+
+58
+00:02:00.960 --> 00:02:03.270
+this thing called in it first item
+
+59
+00:02:03.270 --> 00:02:05.240
+which is an object
+
+60
+00:02:05.240 --> 00:02:08.020
+and inside of that we say fields,
+
+61
+00:02:08.020 --> 00:02:09.170
+which fields do we want
+
+62
+00:02:09.170 --> 00:02:10.680
+to allow them to in it with?
+
+63
+00:02:10.680 --> 00:02:13.810
+We have the name, the field, the email field
+
+64
+00:02:13.810 --> 00:02:16.610
+and the password field.
+
+65
+00:02:16.610 --> 00:02:20.540
+And then finally we should say to do,
+
+66
+00:02:20.540 --> 00:02:22.020
+add in
+
+67
+00:02:22.020 --> 00:02:24.040
+initial roles here.
+
+68
+00:02:24.040 --> 00:02:25.810
+Just because when we do add roles
+
+69
+00:02:25.810 --> 00:02:28.940
+we should give this person every single role
+
+70
+00:02:28.940 --> 00:02:31.720
+cause they are going to be the administrator.
+
+71
+00:02:31.720 --> 00:02:33.440
+So I believe that's what we need.
+
+72
+00:02:33.440 --> 00:02:36.000
+Now we have this method here called with Auth.
+
+73
+00:02:36.000 --> 00:02:37.670
+What we're gonna do is we're gonna wrap
+
+74
+00:02:37.670 --> 00:02:40.590
+this config here in with Auth.
+
+75
+00:02:40.590 --> 00:02:42.090
+So that and then we'll have to go all the way
+
+76
+00:02:42.090 --> 00:02:43.830
+to the bottom here
+
+77
+00:02:43.830 --> 00:02:46.260
+and add another parentheses.
+
+78
+00:02:46.260 --> 00:02:47.270
+Okay.
+
+79
+00:02:47.270 --> 00:02:49.940
+Next, cause we need to set up a session
+
+80
+00:02:49.940 --> 00:02:51.530
+because like when somebody logs in
+
+81
+00:02:51.530 --> 00:02:52.690
+it will set a cookie
+
+82
+00:02:52.690 --> 00:02:54.220
+and that gives them a session.
+
+83
+00:02:54.220 --> 00:02:55.950
+They are logged in until they log out
+
+84
+00:02:55.950 --> 00:02:58.370
+or the cookie expires
+
+85
+00:02:58.370 --> 00:03:00.140
+which we have set earlier.
+
+86
+00:03:00.140 --> 00:03:01.470
+So we gotta go down here
+
+87
+00:03:01.470 --> 00:03:03.530
+where we have to do add a session here.
+
+88
+00:03:03.530 --> 00:03:07.440
+We will add our session argument here.
+
+89
+00:03:07.440 --> 00:03:11.580
+And that will be with item capital I item data
+
+90
+00:03:11.580 --> 00:03:12.540
+and inside of that,
+
+91
+00:03:12.540 --> 00:03:15.320
+we have stateless
+
+92
+00:03:15.320 --> 00:03:18.550
+sessions capital S and you pass it.
+
+93
+00:03:18.550 --> 00:03:21.500
+Our session config that we did earlier
+
+94
+00:03:21.500 --> 00:03:23.370
+remember up here
+
+95
+00:03:23.370 --> 00:03:26.190
+were we have the max age and the secret.
+
+96
+00:03:26.190 --> 00:03:29.650
+And then the second argument too with item data
+
+97
+00:03:29.650 --> 00:03:32.380
+is going to be an object
+
+98
+00:03:33.330 --> 00:03:36.100
+where we ask for
+
+99
+00:03:36.100 --> 00:03:38.350
+the user ID every single time.
+
+100
+00:03:38.350 --> 00:03:39.680
+And the reason why we do this
+
+101
+00:03:39.680 --> 00:03:40.780
+is that we are going
+
+102
+00:03:40.780 --> 00:03:42.860
+to get into permissions in the future videos.
+
+103
+00:03:42.860 --> 00:03:45.340
+So we're just setting ourselves up for that.
+
+104
+00:03:45.340 --> 00:03:47.560
+Essentially, what this will do is it will pass the ID
+
+105
+00:03:47.560 --> 00:03:49.640
+and any other data we query
+
+106
+00:03:49.640 --> 00:03:51.630
+along with every single session.
+
+107
+00:03:51.630 --> 00:03:53.900
+And then anytime we wanna access the session
+
+108
+00:03:53.900 --> 00:03:57.200
+we have access to the user's name, email, ID etc.
+
+109
+00:03:57.200 --> 00:03:59.820
+All right, we got some problems here with item data,
+
+110
+00:03:59.820 --> 00:04:02.300
+can't be imported, no suggestions
+
+111
+00:04:02.300 --> 00:04:04.180
+and stateless sessions
+
+112
+00:04:04.180 --> 00:04:05.520
+and can't be important either.
+
+113
+00:04:05.520 --> 00:04:07.760
+Just copy both of those.
+
+114
+00:04:07.760 --> 00:04:09.480
+We'll go to the top here
+
+115
+00:04:09.480 --> 00:04:11.850
+and let's
+
+116
+00:04:11.850 --> 00:04:13.333
+import both of those.
+
+117
+00:04:18.810 --> 00:04:21.260
+With item data and stateless sessions.
+
+118
+00:04:21.260 --> 00:04:23.650
+And that comes from at Keystone
+
+119
+00:04:25.420 --> 00:04:28.530
+dash next or just at KeystoneJS.
+
+120
+00:04:28.530 --> 00:04:32.580
+And the package is called Keystone.
+
+121
+00:04:32.580 --> 00:04:36.883
+And then it's further inside of session.
+
+122
+00:04:38.030 --> 00:04:40.300
+All right, so now we've got with item data
+
+123
+00:04:40.300 --> 00:04:41.730
+and stateless sessions.
+
+124
+00:04:41.730 --> 00:04:43.110
+The last thing is,
+
+125
+00:04:43.110 --> 00:04:44.860
+remember this is allowed access.
+
+126
+00:04:44.860 --> 00:04:46.990
+We are currently allowing it true
+
+127
+00:04:48.090 --> 00:04:49.910
+for whoever.
+
+128
+00:04:49.910 --> 00:04:51.600
+And if we left this as true
+
+129
+00:04:51.600 --> 00:04:54.350
+it would still allow anybody to come in.
+
+130
+00:04:54.350 --> 00:04:56.220
+So what we wanna do is
+
+131
+00:04:57.550 --> 00:04:59.080
+show
+
+132
+00:04:59.080 --> 00:05:00.700
+the UI
+
+133
+00:05:00.700 --> 00:05:03.300
+only for people who
+
+134
+00:05:03.300 --> 00:05:05.360
+pass this test.
+
+135
+00:05:05.360 --> 00:05:07.480
+And you could do any logic you want in here,
+
+136
+00:05:07.480 --> 00:05:09.200
+if they are admin or whatever.
+
+137
+00:05:09.200 --> 00:05:11.740
+In our case we just wanna make sure
+
+138
+00:05:11.740 --> 00:05:15.470
+that they have a session and they are logged in.
+
+139
+00:05:15.470 --> 00:05:16.900
+So what we'll do here is
+
+140
+00:05:16.900 --> 00:05:18.270
+it will actually pass us
+
+141
+00:05:18.270 --> 00:05:20.220
+the session of the user
+
+142
+00:05:20.220 --> 00:05:22.070
+and let's just console log it.
+
+143
+00:05:22.070 --> 00:05:23.330
+So we see what's going on here,
+
+144
+00:05:23.330 --> 00:05:24.627
+console.log(session).
+
+145
+00:05:28.300 --> 00:05:30.480
+And then we will return
+
+146
+00:05:33.550 --> 00:05:35.100
+if there is
+
+147
+00:05:35.100 --> 00:05:36.870
+session.data.
+
+148
+00:05:36.870 --> 00:05:38.640
+And then we'll put a question mark on there.
+
+149
+00:05:38.640 --> 00:05:41.300
+And what that will do is if there is a session
+
+150
+00:05:41.300 --> 00:05:43.670
+and there is a session.data
+
+151
+00:05:43.670 --> 00:05:45.730
+then it will return true,
+
+152
+00:05:45.730 --> 00:05:46.810
+they are logged in.
+
+153
+00:05:46.810 --> 00:05:48.850
+Otherwise they are not logged in
+
+154
+00:05:48.850 --> 00:05:50.530
+and it will show them that.
+
+155
+00:05:50.530 --> 00:05:52.973
+So let's restart NPM run dev.
+
+156
+00:05:55.410 --> 00:05:57.070
+Got a bit of an error here,
+
+157
+00:05:57.070 --> 00:05:59.620
+session config, oh look at that.
+
+158
+00:05:59.620 --> 00:06:00.770
+That should be a comma.
+
+159
+00:06:01.780 --> 00:06:02.760
+And it's telling us
+
+160
+00:06:04.270 --> 00:06:06.000
+unsafe return of any type.
+
+161
+00:06:06.000 --> 00:06:07.850
+We need to turn that into a bullion
+
+162
+00:06:07.850 --> 00:06:09.820
+and the best way to coerce that into a bullion
+
+163
+00:06:09.820 --> 00:06:12.060
+is put two bangs on the front.
+
+164
+00:06:12.060 --> 00:06:13.680
+It's also telling us
+
+165
+00:06:14.680 --> 00:06:17.790
+unsafe member access data on any value.
+
+166
+00:06:17.790 --> 00:06:19.120
+And that's fine for now,
+
+167
+00:06:19.120 --> 00:06:20.700
+we'll fix that in the future.
+
+168
+00:06:20.700 --> 00:06:22.370
+Let's just get the sucker running
+
+169
+00:06:22.370 --> 00:06:24.970
+and make sure that it asks us to login.
+
+170
+00:06:24.970 --> 00:06:26.383
+Refresh this sucker.
+
+171
+00:06:34.950 --> 00:06:35.783
+Boom, there we go.
+
+172
+00:06:35.783 --> 00:06:38.730
+So this is that initial signup.
+
+173
+00:06:38.730 --> 00:06:40.150
+Welcome to Keystone,
+
+174
+00:06:40.150 --> 00:06:41.721
+create the first user.
+
+175
+00:06:41.721 --> 00:06:43.214
+So, Wes Bos
+
+176
+00:06:43.214 --> 00:06:45.630
+wesbos@gmail.com.
+
+177
+00:06:45.630 --> 00:06:48.870
+And I gotta set my password to be, wes wes wes.
+
+178
+00:06:48.870 --> 00:06:52.000
+Don't log into my online bank with this.
+
+179
+00:06:52.000 --> 00:06:53.850
+Get started.
+
+180
+00:06:53.850 --> 00:06:55.660
+Boom, created it.
+
+181
+00:06:55.660 --> 00:06:56.700
+And look at this.
+
+182
+00:06:56.700 --> 00:06:59.840
+Remember we console log the session right here.
+
+183
+00:06:59.840 --> 00:07:01.470
+This is what a session looks like.
+
+184
+00:07:01.470 --> 00:07:03.240
+It tells us the list key, the
+
+185
+00:07:04.656 --> 00:07:05.580
+item ID
+
+186
+00:07:05.580 --> 00:07:08.497
+and then it gives us the data that we've required.
+
+187
+00:07:08.497 --> 00:07:11.830
+This is actually a GraphQL
+
+188
+00:07:11.830 --> 00:07:13.120
+query.
+
+189
+00:07:13.120 --> 00:07:15.300
+We are gonna be adding stuff here in the future
+
+190
+00:07:15.300 --> 00:07:18.470
+but even if we were to add the name and email in there
+
+191
+00:07:18.470 --> 00:07:20.163
+and restarted that sucker.
+
+192
+00:07:21.620 --> 00:07:24.690
+You see look every single time there's a request
+
+193
+00:07:24.690 --> 00:07:27.420
+the data about the user is passed along.
+
+194
+00:07:27.420 --> 00:07:29.620
+And that can be really helpful
+
+195
+00:07:29.620 --> 00:07:31.320
+for writing what is called middleware.
+
+196
+00:07:31.320 --> 00:07:33.860
+If you won't allow somebody to do something
+
+197
+00:07:33.860 --> 00:07:36.100
+or you wanna check if somebody has a certain role
+
+198
+00:07:36.100 --> 00:07:39.090
+or you wanna see if they are signed in
+
+199
+00:07:39.090 --> 00:07:41.120
+then you can always check their session
+
+200
+00:07:41.120 --> 00:07:42.887
+and information about that user.
+
+201
+00:07:42.887 --> 00:07:45.130
+And that that's great because you don't have
+
+202
+00:07:45.130 --> 00:07:46.530
+to explicitly go out
+
+203
+00:07:46.530 --> 00:07:49.100
+and query the data every single time.
+
+204
+00:07:49.100 --> 00:07:50.930
+It just comes along with every single request.
+
+205
+00:07:50.930 --> 00:07:52.450
+We did that in my Node course as well.
+
+206
+00:07:52.450 --> 00:07:54.130
+and I really liked that.
+
+207
+00:07:54.130 --> 00:07:54.963
+All right good,
+
+208
+00:07:54.963 --> 00:07:57.120
+so now we have our sessions done.
+
+209
+00:07:57.120 --> 00:07:58.630
+Let's get rid of that console.
+
+210
+00:07:58.630 --> 00:07:59.930
+I'll leave that in
+
+211
+00:07:59.930 --> 00:08:02.460
+just so in case you wanna take a look at it yourself.
+
+212
+00:08:02.460 --> 00:08:04.550
+I find console logging is helpful.
+
+213
+00:08:04.550 --> 00:08:05.670
+We got our users,
+
+214
+00:08:05.670 --> 00:08:07.160
+now let's start getting going
+
+215
+00:08:07.160 --> 00:08:08.760
+with the rest of the data types.
+

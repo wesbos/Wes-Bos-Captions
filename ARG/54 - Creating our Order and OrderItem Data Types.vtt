@@ -1,0 +1,730 @@
+﻿WEBVTT
+
+1
+00:00:01.660 --> 00:00:02.493
+<v Instructor>All right now, we're gonna flip</v>
+
+2
+00:00:02.493 --> 00:00:03.890
+to the back end for a little bit,
+
+3
+00:00:03.890 --> 00:00:05.830
+and start working on the custom mutation
+
+4
+00:00:05.830 --> 00:00:06.960
+to create the order.
+
+5
+00:00:06.960 --> 00:00:09.970
+So when you think about what data types we need
+
+6
+00:00:09.970 --> 00:00:11.900
+in order to actually create an order.
+
+7
+00:00:11.900 --> 00:00:14.460
+Well, we obviously need an order.
+
+8
+00:00:14.460 --> 00:00:17.020
+And if we think about what will be in the order,
+
+9
+00:00:17.020 --> 00:00:21.010
+there'll be things like price and like charge,
+
+10
+00:00:21.010 --> 00:00:23.920
+like they'll get a charge ID from Stripe
+
+11
+00:00:23.920 --> 00:00:25.880
+and we'll put that in the order,
+
+12
+00:00:25.880 --> 00:00:29.440
+but we also need to store reference
+
+13
+00:00:29.440 --> 00:00:31.320
+to the products that the person bought.
+
+14
+00:00:31.320 --> 00:00:32.153
+And you might think well okay,
+
+15
+00:00:32.153 --> 00:00:34.940
+we'll just have like a reference to the products.
+
+16
+00:00:34.940 --> 00:00:36.633
+The problem with that is that,
+
+17
+00:00:37.500 --> 00:00:39.400
+if somebody orders something,
+
+18
+00:00:39.400 --> 00:00:43.430
+you need to store the photo, the price, the title,
+
+19
+00:00:43.430 --> 00:00:47.130
+you need to store that information from when they bought it,
+
+20
+00:00:47.130 --> 00:00:52.130
+because if the product updates or if the price changes,
+
+21
+00:00:52.580 --> 00:00:55.380
+or any of that information changes in the product,
+
+22
+00:00:55.380 --> 00:00:57.810
+it can't change in what the user had ordered.
+
+23
+00:00:57.810 --> 00:00:59.710
+You need to tell them how much they paid
+
+24
+00:00:59.710 --> 00:01:01.880
+and show them a picture of what they actually bought,
+
+25
+00:01:01.880 --> 00:01:03.460
+and not the most recent version.
+
+26
+00:01:03.460 --> 00:01:07.020
+So, we essentially need to create two new items.
+
+27
+00:01:07.020 --> 00:01:11.330
+We need to create an order type, as well as order items,
+
+28
+00:01:11.330 --> 00:01:13.820
+in which we'll basically just copy all the fields
+
+29
+00:01:13.820 --> 00:01:18.350
+from the product into a order item that will allow us
+
+30
+00:01:18.350 --> 00:01:20.880
+to go ahead and create that.
+
+31
+00:01:20.880 --> 00:01:24.880
+So, we'll go into our schema here,
+
+32
+00:01:24.880 --> 00:01:28.800
+and let's just take a look at our, maybe product.
+
+33
+00:01:28.800 --> 00:01:33.800 line:15% 
+Let's save product.ts as capital O, order, capital I, item.
+
+34
+00:01:35.520 --> 00:01:37.240
+And let's go through this here,
+
+35
+00:01:37.240 --> 00:01:42.240
+say const, order item is equal to a list,
+
+36
+00:01:43.200 --> 00:01:46.563
+and then inside of that we have fields,
+
+37
+00:01:48.430 --> 00:01:51.710
+and we're going to have a name field,
+
+38
+00:01:51.710 --> 00:01:55.040
+we'll have a description field, okay.
+
+39
+00:01:55.040 --> 00:01:58.460
+We will have a photo field,
+
+40
+00:01:58.460 --> 00:02:00.878
+now the photo field is going to be
+
+41
+00:02:00.878 --> 00:02:04.050
+a reference to a product image.
+
+42
+00:02:04.050 --> 00:02:06.800
+So we'll have a photo field, now the reference here
+
+43
+00:02:06.800 --> 00:02:08.750
+is not gonna be product image.product,
+
+44
+00:02:08.750 --> 00:02:10.670
+it's simply just going to be reference
+
+45
+00:02:10.670 --> 00:02:15.110
+to a product image itself, it's not a two-way relationship.
+
+46
+00:02:15.110 --> 00:02:18.223
+We'll leave all of this stuff to be the same here.
+
+47
+00:02:19.400 --> 00:02:24.400
+Then the status is not something we need on that product,
+
+48
+00:02:24.450 --> 00:02:26.363
+okay, so go ahead and remove that.
+
+49
+00:02:27.680 --> 00:02:30.843
+The price is going to stay on there.
+
+50
+00:02:32.020 --> 00:02:35.480
+And then we need a couple new things added to it as well,
+
+51
+00:02:35.480 --> 00:02:39.797
+so we want quantity, so how many did they buy of that item?
+
+52
+00:02:41.070 --> 00:02:44.380
+That's integer, and then we're also going to have
+
+53
+00:02:44.380 --> 00:02:48.120
+a relationship to the order that this order item lives in.
+
+54
+00:02:48.120 --> 00:02:52.690
+So say order is going to be a relationship,
+
+55
+00:02:52.690 --> 00:02:56.900
+where the ref is order.items.
+
+56
+00:02:56.900 --> 00:03:01.040
+And this is not yet created, so if we import it right away,
+
+57
+00:03:01.040 --> 00:03:03.040
+it will probably break our build, but that's fine.
+
+58
+00:03:03.040 --> 00:03:06.163
+We'll go into our keystone.ts,
+
+59
+00:03:07.570 --> 00:03:12.570
+and let's just duplicate cart item to order item,
+
+60
+00:03:12.640 --> 00:03:14.913
+and then go ahead and import that sucker.
+
+61
+00:03:17.510 --> 00:03:19.820
+And there it is, it's being imported.
+
+62
+00:03:19.820 --> 00:03:22.770
+So that's the first one, the next thing we need to do
+
+63
+00:03:22.770 --> 00:03:26.420
+is actually go ahead and create our order itself,
+
+64
+00:03:26.420 --> 00:03:30.723 line:15% 
+so go ahead and just save that file, capital O, order.ts.
+
+65
+00:03:32.930 --> 00:03:36.210
+And the fields that we have for the order
+
+66
+00:03:36.210 --> 00:03:38.840
+are going to be pretty simple.
+
+67
+00:03:38.840 --> 00:03:41.250
+We need, let's just go, do, do, do,
+
+68
+00:03:41.250 --> 00:03:42.470
+delete everything in here.
+
+69
+00:03:42.470 --> 00:03:44.333
+The total is an integer.
+
+70
+00:03:46.740 --> 00:03:49.783
+The items in the order is a relationship,
+
+71
+00:03:50.830 --> 00:03:55.830
+and the reference is going to be order item.order,
+
+72
+00:03:55.890 --> 00:03:57.720
+All of that's gonna be in quotes.
+
+73
+00:03:57.720 --> 00:04:00.180
+So, we just created our order item
+
+74
+00:04:01.580 --> 00:04:04.820
+and the reference is this, right?
+
+75
+00:04:04.820 --> 00:04:06.850
+And then in here we say order item.order,
+
+76
+00:04:06.850 --> 00:04:09.170
+that gives us a two-way relationship.
+
+77
+00:04:09.170 --> 00:04:11.380
+We also wanna say many is true,
+
+78
+00:04:11.380 --> 00:04:15.720
+because an order can have many order items,
+
+79
+00:04:15.720 --> 00:04:17.300
+but is not true the other way around,
+
+80
+00:04:17.300 --> 00:04:20.340
+an order order item will only ever have one order
+
+81
+00:04:20.340 --> 00:04:22.330
+that it is related to.
+
+82
+00:04:22.330 --> 00:04:26.297
+We have a user which is relationship, to our user.
+
+83
+00:04:29.700 --> 00:04:34.083
+So reference to user.orders,
+
+84
+00:04:35.460 --> 00:04:38.013
+and then the charge is just a text field.
+
+85
+00:04:39.230 --> 00:04:41.830
+Okay, now last thing we need to do here is that
+
+86
+00:04:41.830 --> 00:04:44.580
+you notice we just made this relationship right here.
+
+87
+00:04:44.580 --> 00:04:46.956
+We also need to update our user,
+
+88
+00:04:46.956 --> 00:04:50.540
+so that they can have a list of their possible orders.
+
+89
+00:04:50.540 --> 00:04:53.023
+So we'll go back to our user.ts,
+
+90
+00:04:55.260 --> 00:04:56.930
+and we'll go to the bottom here, look at this,
+
+91
+00:04:56.930 --> 00:04:58.890
+add roles, cart and order.
+
+92
+00:04:58.890 --> 00:05:03.080
+We've already added cart, we're adding orders now,
+
+93
+00:05:03.080 --> 00:05:05.710
+and then roles will come in the next couple of videos.
+
+94
+00:05:05.710 --> 00:05:10.710
+So say order, what are we, orders is a relationship,
+
+95
+00:05:12.490 --> 00:05:17.407
+and the ref is going to be order.user, and many,
+
+96
+00:05:19.040 --> 00:05:21.620
+Mandy, (laughs), can Mandy access this?
+
+97
+00:05:21.620 --> 00:05:25.963
+Yes, Mandy may, but it's many, which is true.
+
+98
+00:05:27.240 --> 00:05:29.287
+All right, then we'll go back to our keystone
+
+99
+00:05:29.287 --> 00:05:32.363
+and import the order as well.
+
+100
+00:05:33.200 --> 00:05:37.353
+And then you need to, oh, we forgot to rename it.
+
+101
+00:05:44.475 --> 00:05:48.240
+Boom, nope, didn't boom it.
+
+102
+00:05:48.240 --> 00:05:50.420
+Boom, that one didn't import either.
+
+103
+00:05:50.420 --> 00:05:55.183
+All right, let's duplicate it, do, order.
+
+104
+00:05:58.280 --> 00:05:59.770
+All right, so we just did a bunch of code,
+
+105
+00:05:59.770 --> 00:06:02.000
+we just touched four different files.
+
+106
+00:06:02.000 --> 00:06:04.700
+We need to make sure that that is all still working.
+
+107
+00:06:04.700 --> 00:06:06.200
+So I'm going to kill my build,
+
+108
+00:06:06.200 --> 00:06:08.873
+start it up again, for the backend.
+
+109
+00:06:10.690 --> 00:06:13.820
+And one, if that worked properly,
+
+110
+00:06:13.820 --> 00:06:15.700
+we should see it show up in the sides,
+
+111
+00:06:15.700 --> 00:06:18.110
+unable to resolve two-way relationship field,
+
+112
+00:06:18.110 --> 00:06:21.770
+order.items for order item.order.
+
+113
+00:06:21.770 --> 00:06:23.580
+Okay, so there's something wrong
+
+114
+00:06:23.580 --> 00:06:25.470
+with the schema that we just wrote.
+
+115
+00:06:25.470 --> 00:06:29.603
+So unable to resolve the relationship order items, okay.
+
+116
+00:06:34.116 --> 00:06:36.450
+So we're referencing, that means our order
+
+117
+00:06:36.450 --> 00:06:38.803
+should have an items field on it.
+
+118
+00:06:39.720 --> 00:06:44.423
+So we'll go to our order and oh, I forgot an S here, right?
+
+119
+00:06:45.900 --> 00:06:48.600
+That's nice that Keystone will check all that stuff for us.
+
+120
+00:06:48.600 --> 00:06:50.990
+There we go, we have our order items showing up
+
+121
+00:06:50.990 --> 00:06:53.600
+at the sidebar, as well as our orders.
+
+122
+00:06:53.600 --> 00:06:57.290
+You could manually create one of these here, like shoes,
+
+123
+00:06:57.290 --> 00:06:59.540
+obviously these will just be generated for us,
+
+124
+00:06:59.540 --> 00:07:04.540
+but shoes, photo, price, quantity,
+
+125
+00:07:06.930 --> 00:07:10.170
+and we don't have an order to associate it with it yet.
+
+126
+00:07:10.170 --> 00:07:13.420
+So we'll create it, okay, and then we'll go to orders
+
+127
+00:07:13.420 --> 00:07:18.050
+and we'll create an order, for that much, the items,
+
+128
+00:07:18.050 --> 00:07:20.510
+look, and now we can select from order items.
+
+129
+00:07:20.510 --> 00:07:22.650
+I'm gonna select who bought that thing,
+
+130
+00:07:22.650 --> 00:07:26.160
+and the charge is gonna be something like CH underscore,
+
+131
+00:07:26.160 --> 00:07:29.070
+something like that, create the order, there we go.
+
+132
+00:07:29.070 --> 00:07:30.590
+So that is where you can find,
+
+133
+00:07:30.590 --> 00:07:33.380
+I think now if I edit this thing, there we go,
+
+134
+00:07:33.380 --> 00:07:35.210
+you see that it now has a relationship
+
+135
+00:07:35.210 --> 00:07:37.733
+to the actual order that it's in.
+
+136
+00:07:40.307 --> 00:07:42.710
+One other thing here is you can see
+
+137
+00:07:42.710 --> 00:07:46.250
+if we take a look at our list of orders,
+
+138
+00:07:46.250 --> 00:07:50.420
+the ID is not actually a really good thing to look at.
+
+139
+00:07:50.420 --> 00:07:55.420
+So what we can do, is we can put a label on this field,
+
+140
+00:07:55.570 --> 00:07:58.810
+so we'll say the label field is going to be a virtual field.
+
+141
+00:07:58.810 --> 00:08:01.670
+Now, a virtual field is something that is calculated
+
+142
+00:08:01.670 --> 00:08:03.960
+on demand, it's not actually a value
+
+143
+00:08:03.960 --> 00:08:07.083
+that's stored in the database, but it's something that is
+
+144
+00:08:07.083 --> 00:08:09.130
+just generated as we need it.
+
+145
+00:08:09.130 --> 00:08:10.433
+So we'll say virtual.
+
+146
+00:08:14.140 --> 00:08:16.260
+And you see it just automatically imported
+
+147
+00:08:16.260 --> 00:08:18.800
+the virtual field from next fields.
+
+148
+00:08:18.800 --> 00:08:21.690
+And then in there, there's two things we need,
+
+149
+00:08:21.690 --> 00:08:25.140
+first is a GraphQL return type, it's saying, all right,
+
+150
+00:08:25.140 --> 00:08:30.140
+well if you're going to put this thing in your GraphQL API,
+
+151
+00:08:30.920 --> 00:08:32.470
+and it's not actually in the database,
+
+152
+00:08:32.470 --> 00:08:35.780
+then you have to specify to me what is it gonna return.
+
+153
+00:08:35.780 --> 00:08:37.223
+In our case, it's a string.
+
+154
+00:08:38.130 --> 00:08:40.314
+And then we also have a resolver,
+
+155
+00:08:40.314 --> 00:08:45.314
+and that is a function that gives us the item,
+
+156
+00:08:47.030 --> 00:08:49.913
+and inside of there, we can return,
+
+157
+00:08:51.030 --> 00:08:52.410
+literally anything we want.
+
+158
+00:08:52.410 --> 00:08:57.410
+Wes is cool, item.total.
+
+159
+00:09:00.380 --> 00:09:03.913
+Watch this, actually well let's pop format, money,
+
+160
+00:09:04.820 --> 00:09:09.183
+around that, just so that we can visually see.
+
+161
+00:09:10.110 --> 00:09:14.693
+Boom, giving me grief here.
+
+162
+00:09:16.870 --> 00:09:21.870
+Left side of comma operator is unused, what did we do?
+
+163
+00:09:23.970 --> 00:09:26.710
+Oh, I put a comma here, that should be a semi-colon,
+
+164
+00:09:26.710 --> 00:09:27.863
+hey, hey, there we go.
+
+165
+00:09:33.280 --> 00:09:35.293
+Now, watch, we restart that thing.
+
+166
+00:09:37.350 --> 00:09:40.330
+And this is really helpful if you ever want to create
+
+167
+00:09:40.330 --> 00:09:45.330
+a custom label for your user,
+
+168
+00:09:46.030 --> 00:09:48.800
+and you maybe wanna format something,
+
+169
+00:09:48.800 --> 00:09:50.110
+or show it in different way,
+
+170
+00:09:50.110 --> 00:09:53.340
+or maybe bunch up a couple of fields into one field.
+
+171
+00:09:53.340 --> 00:09:55.200
+And there we go, West is cool, 2000,
+
+172
+00:09:55.200 --> 00:09:58.500
+so that order now, is showing up there.
+
+173
+00:09:58.500 --> 00:09:59.840
+Obviously we don't want the Wes is cool,
+
+174
+00:09:59.840 --> 00:10:00.760
+but I'm just showing you,
+
+175
+00:10:00.760 --> 00:10:03.240
+whatever you return from this resolver
+
+176
+00:10:03.240 --> 00:10:07.290
+will be what is shown up as the label.
+
+177
+00:10:07.290 --> 00:10:10.600
+And then of course, you can go a little bit further
+
+178
+00:10:10.600 --> 00:10:14.170
+and show a couple other columns, probably users,
+
+179
+00:10:14.170 --> 00:10:17.300
+charge, items, that's really helpful as well
+
+180
+00:10:17.300 --> 00:10:20.453
+to see what was actually in that specific order.
+
+181
+00:10:22.050 --> 00:10:24.230
+So that is a creating of the data types.
+
+182
+00:10:24.230 --> 00:10:27.323
+In the next one we need to start writing a custom mutation.
+

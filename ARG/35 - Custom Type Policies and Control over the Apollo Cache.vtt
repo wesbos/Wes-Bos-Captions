@@ -1,0 +1,1974 @@
+﻿WEBVTT
+
+1
+00:00:01.690 --> 00:00:03.300
+<v Instructor>All right, there's the saying</v>
+
+2
+00:00:03.300 --> 00:00:05.280
+is the hardest things in computer science
+
+3
+00:00:05.280 --> 00:00:08.050
+is naming things in cache invalidation.
+
+4
+00:00:08.050 --> 00:00:10.470
+And we're gonna be going up against the second thing
+
+5
+00:00:10.470 --> 00:00:12.010
+which is cache invalidation.
+
+6
+00:00:12.010 --> 00:00:14.440
+What happens when you delete an item
+
+7
+00:00:14.440 --> 00:00:16.000
+when you have pagination?
+
+8
+00:00:16.000 --> 00:00:17.680
+So let me show you right away
+
+9
+00:00:17.680 --> 00:00:20.100
+how Apollo is currently handling the cache.
+
+10
+00:00:20.100 --> 00:00:22.220
+If we go over to Apollo DevTools here,
+
+11
+00:00:22.220 --> 00:00:23.460
+we go to our cache,
+
+12
+00:00:23.460 --> 00:00:25.950
+you'll see that when we query some products,
+
+13
+00:00:25.950 --> 00:00:28.770
+previously they're all just put under all products.
+
+14
+00:00:28.770 --> 00:00:32.690
+Now, when we query some products
+
+15
+00:00:32.690 --> 00:00:35.140
+it uses the actual query itself
+
+16
+00:00:35.140 --> 00:00:37.970
+as a key to store the products.
+
+17
+00:00:37.970 --> 00:00:40.250
+And if I go onto the next page here,
+
+18
+00:00:40.250 --> 00:00:42.570
+of course the DevTools aren't working,
+
+19
+00:00:42.570 --> 00:00:44.770
+I got to close it, open it up again,
+
+20
+00:00:44.770 --> 00:00:46.320
+go back to my cache, there we go.
+
+21
+00:00:46.320 --> 00:00:50.110
+You see that now the third and fourth products
+
+22
+00:00:50.110 --> 00:00:52.053
+are under their own key.
+
+23
+00:00:52.890 --> 00:00:56.550
+And this can be a bit of an issue for a number of reasons.
+
+24
+00:00:56.550 --> 00:01:00.360
+First of all this product, this one right here
+
+25
+00:01:00.360 --> 00:01:02.570
+that's the suitcase right here.
+
+26
+00:01:02.570 --> 00:01:06.460
+And if we want it to query this suitcase again
+
+27
+00:01:06.460 --> 00:01:10.160
+somewhere else, like if we wanted to put it in that order
+
+28
+00:01:10.160 --> 00:01:12.060
+or we wanted to put it in a pop-up
+
+29
+00:01:12.060 --> 00:01:14.950
+or put it in a footer or anywhere else
+
+30
+00:01:14.950 --> 00:01:16.523
+we needed this piece of data,
+
+31
+00:01:17.380 --> 00:01:19.230
+our query is gonna be like product
+
+32
+00:01:19.230 --> 00:01:22.860
+with an ID of 5fc95 et cetera, et cetera.
+
+33
+00:01:22.860 --> 00:01:25.540
+And that's not the same query as this.
+
+34
+00:01:25.540 --> 00:01:27.940
+So it's actually not going to
+
+35
+00:01:27.940 --> 00:01:30.553
+know that it has that item in the cache.
+
+36
+00:01:31.710 --> 00:01:34.000
+It's gonna go to the network and grab it again.
+
+37
+00:01:34.000 --> 00:01:36.810
+So what we could do is we can say, all right,
+
+38
+00:01:36.810 --> 00:01:40.810
+we actually don't want to use these first and skip values
+
+39
+00:01:40.810 --> 00:01:44.530
+as part of the key when storing it in our Apollo cache.
+
+40
+00:01:44.530 --> 00:01:48.610
+We wanna stick them all in one big list of products.
+
+41
+00:01:48.610 --> 00:01:52.410
+And then we want to control ourselves
+
+42
+00:01:52.410 --> 00:01:57.250
+how these products are both fetched from the network
+
+43
+00:01:57.250 --> 00:01:58.890
+as well as return from the cache
+
+44
+00:01:58.890 --> 00:02:01.210
+so we can display them on the page.
+
+45
+00:02:01.210 --> 00:02:03.370
+So I'm gonna say right up front
+
+46
+00:02:03.370 --> 00:02:04.650
+this is gonna be a hard video.
+
+47
+00:02:04.650 --> 00:02:06.720
+This is the hard part for me.
+
+48
+00:02:06.720 --> 00:02:08.810
+There's still some weird oddities in it
+
+49
+00:02:08.810 --> 00:02:10.950
+that I couldn't fix myself.
+
+50
+00:02:10.950 --> 00:02:13.400
+I had probably six or seven calls
+
+51
+00:02:13.400 --> 00:02:16.580
+with various people on the Apollo Dev team
+
+52
+00:02:16.580 --> 00:02:18.250
+and they can't figure it out either.
+
+53
+00:02:18.250 --> 00:02:22.703
+So I'm just gonna put it out there this this sucks to me.
+
+54
+00:02:23.660 --> 00:02:25.100
+But this is how it works
+
+55
+00:02:25.100 --> 00:02:26.330
+and this is what we gotta do
+
+56
+00:02:26.330 --> 00:02:27.820
+to make it work in the pagination.
+
+57
+00:02:27.820 --> 00:02:32.130
+Just know that this is not my half-assed approach at it.
+
+58
+00:02:32.130 --> 00:02:35.030
+This is just how the library works.
+
+59
+00:02:35.030 --> 00:02:38.970
+So the idea here is that when we delete an item, delete
+
+60
+00:02:40.000 --> 00:02:41.560
+what needs to happen is that
+
+61
+00:02:41.560 --> 00:02:44.350
+that item needs to be deleted from the cache.
+
+62
+00:02:44.350 --> 00:02:46.060
+And when that happens
+
+63
+00:02:46.060 --> 00:02:48.670
+all the other items need to come sliding forward, right?
+
+64
+00:02:48.670 --> 00:02:52.210
+Like if we've got item one, two, three, four, five, six
+
+65
+00:02:52.210 --> 00:02:53.850
+and we delete item four.
+
+66
+00:02:53.850 --> 00:02:55.490
+What needs to happen as you delete it?
+
+67
+00:02:55.490 --> 00:02:57.100
+Now we have an empty spot
+
+68
+00:02:57.100 --> 00:02:59.980
+so then it needs to be brought back up.
+
+69
+00:02:59.980 --> 00:03:02.350
+Now, if we do that with pages like these
+
+70
+00:03:02.350 --> 00:03:04.513
+let's say these dashes are pages here.
+
+71
+00:03:05.790 --> 00:03:08.340
+What happens is if you delete item four
+
+72
+00:03:08.340 --> 00:03:10.890
+now five needs to go on that page
+
+73
+00:03:10.890 --> 00:03:14.000
+and six needs to be on this page by itself.
+
+74
+00:03:14.000 --> 00:03:16.690
+So the question is like, okay,
+
+75
+00:03:16.690 --> 00:03:21.570
+like what do you do to actually handle that?
+
+76
+00:03:21.570 --> 00:03:24.690
+There's like one option is you could refresh the queries
+
+77
+00:03:24.690 --> 00:03:26.810
+but there's a problem with that
+
+78
+00:03:26.810 --> 00:03:30.270
+because we don't know what all the queries are.
+
+79
+00:03:30.270 --> 00:03:34.870
+The second option is put all the products in one big list.
+
+80
+00:03:34.870 --> 00:03:36.500
+And then by doing that,
+
+81
+00:03:36.500 --> 00:03:39.630
+we ends up we just delete one item from that product list
+
+82
+00:03:39.630 --> 00:03:42.730
+and everything will bump itself up.
+
+83
+00:03:42.730 --> 00:03:45.793
+So there still is a couple of little edge cases around it.
+
+84
+00:03:46.820 --> 00:03:51.820
+There also is, one more option is when you delete an item
+
+85
+00:03:52.200 --> 00:03:55.940
+another option is just go nuclear and delete everything
+
+86
+00:03:55.940 --> 00:03:58.830
+meaning that, okay, the items or the products
+
+87
+00:03:58.830 --> 00:04:00.220
+on the page have changed,
+
+88
+00:04:00.220 --> 00:04:02.010
+just scrub them all from cache
+
+89
+00:04:02.010 --> 00:04:04.090
+and then as the person pages through,
+
+90
+00:04:04.090 --> 00:04:07.390
+then we can just fetch them again.
+
+91
+00:04:07.390 --> 00:04:09.320
+And that's actually quite a good option
+
+92
+00:04:09.320 --> 00:04:11.350
+meaning like let's just delete all the products
+
+93
+00:04:11.350 --> 00:04:13.730
+and then get them back from the network.
+
+94
+00:04:13.730 --> 00:04:16.140
+The only issue with that is that Apollo doesn't have,
+
+95
+00:04:16.140 --> 00:04:18.780
+they haven't a way to delete one item, which is evict.
+
+96
+00:04:18.780 --> 00:04:19.970
+We just use that.
+
+97
+00:04:19.970 --> 00:04:23.300
+And then they have a way to delete the entire cache
+
+98
+00:04:23.300 --> 00:04:24.860
+which is this entire thing
+
+99
+00:04:24.860 --> 00:04:26.870
+but they don't have a way currently
+
+100
+00:04:26.870 --> 00:04:31.870
+to delete all items in the cache of a certain type
+
+101
+00:04:32.540 --> 00:04:34.770
+meaning that like you can't just delete all the products.
+
+102
+00:04:34.770 --> 00:04:38.250
+You have to delete the metadata here,
+
+103
+00:04:38.250 --> 00:04:40.820
+you have to delete who's currently logged in.
+
+104
+00:04:40.820 --> 00:04:42.750
+You have to delete any other piece of data
+
+105
+00:04:42.750 --> 00:04:43.670
+in your application.
+
+106
+00:04:43.670 --> 00:04:45.340
+And that is a bit nuclear to me
+
+107
+00:04:45.340 --> 00:04:47.997
+because you don't necessarily wanna do that, right?
+
+108
+00:04:47.997 --> 00:04:49.297
+And then you have to have a huge
+
+109
+00:04:49.297 --> 00:04:52.030
+you're basically resetting the entire application.
+
+110
+00:04:52.030 --> 00:04:55.840
+So with that said, buckle up
+
+111
+00:04:55.840 --> 00:04:57.880
+and we're gonna start writing it ourselves.
+
+112
+00:04:57.880 --> 00:04:59.730
+So the way that you do that
+
+113
+00:04:59.730 --> 00:05:03.700
+is with this thing called type policies in Apollo.
+
+114
+00:05:03.700 --> 00:05:06.450
+Now, Apollo here we have this in-memory cache,
+
+115
+00:05:06.450 --> 00:05:08.610
+go to your widthdata.js
+
+116
+00:05:08.610 --> 00:05:10.480
+and we have these different fields.
+
+117
+00:05:10.480 --> 00:05:11.530
+These are fields in here.
+
+118
+00:05:11.530 --> 00:05:16.530
+And basically we say when a field comes in
+
+119
+00:05:16.930 --> 00:05:19.640
+which in our case is gonna be all products
+
+120
+00:05:19.640 --> 00:05:21.570
+let me manage it myself.
+
+121
+00:05:21.570 --> 00:05:23.350
+Instead of you doing the default
+
+122
+00:05:23.350 --> 00:05:26.020
+which is taking all of the variables
+
+123
+00:05:26.020 --> 00:05:27.460
+that are passed to that query
+
+124
+00:05:27.460 --> 00:05:29.860
+and using that to sort of split them up,
+
+125
+00:05:29.860 --> 00:05:32.320
+let me handle it myself.
+
+126
+00:05:32.320 --> 00:05:34.770
+So what we're gonna do here is let's uncomment that
+
+127
+00:05:34.770 --> 00:05:37.810
+so all products is going to be handled
+
+128
+00:05:37.810 --> 00:05:39.560
+by a pagination field.
+
+129
+00:05:39.560 --> 00:05:42.730
+Then we're gonna go ahead and write that thing ourselves.
+
+130
+00:05:42.730 --> 00:05:45.763
+So let's go into our lib folder.
+
+131
+00:05:47.320 --> 00:05:51.200
+Make a new file and call it paginationField.js
+
+132
+00:05:55.910 --> 00:05:59.297
+and export default paginationField.
+
+133
+00:06:04.710 --> 00:06:07.660
+Now, from that we're gonna return an object
+
+134
+00:06:08.700 --> 00:06:13.700
+that has a read function and a merge function.
+
+135
+00:06:16.430 --> 00:06:17.390
+Give that a save.
+
+136
+00:06:17.390 --> 00:06:21.510
+I'll go back into our data and import this pagination field.
+
+137
+00:06:21.510 --> 00:06:22.583
+Boom, okay.
+
+138
+00:06:23.760 --> 00:06:25.543
+And I think now if we,
+
+139
+00:06:26.750 --> 00:06:28.620
+Oh, did I forget the word function?
+
+140
+00:06:28.620 --> 00:06:29.940
+I always forget the word function.
+
+141
+00:06:29.940 --> 00:06:32.560
+There's a lot of things to pop in here.
+
+142
+00:06:32.560 --> 00:06:33.393
+There we go.
+
+143
+00:06:33.393 --> 00:06:36.540
+I think now if we refresh our app, we get nothing, right?
+
+144
+00:06:36.540 --> 00:06:41.483
+Because we are not returning or merging any products.
+
+145
+00:06:42.510 --> 00:06:47.410
+So the way that this read and merge works
+
+146
+00:06:47.410 --> 00:06:52.140
+is that when Apollo tries to query for all products
+
+147
+00:06:52.140 --> 00:06:56.720
+it is first going to first thing it does
+
+148
+00:06:56.720 --> 00:07:01.720
+is asks the read function for those items.
+
+149
+00:07:02.910 --> 00:07:07.910
+Here, we can either do one of two things.
+
+150
+00:07:09.400 --> 00:07:14.220
+First thing we can do is return the items
+
+151
+00:07:14.220 --> 00:07:19.220
+because they are already in the cache, okay?
+
+152
+00:07:19.540 --> 00:07:21.630
+The other thing we can do,
+
+153
+00:07:21.630 --> 00:07:26.630
+the other thing we can do is to return a false from here.
+
+154
+00:07:28.930 --> 00:07:33.600
+And what that will do is that will make a network request
+
+155
+00:07:33.600 --> 00:07:37.080
+meaning that if we run this field here
+
+156
+00:07:37.080 --> 00:07:41.360
+and Apollo says, "Please may I have the products?"
+
+157
+00:07:41.360 --> 00:07:44.220
+It will first run a read function.
+
+158
+00:07:44.220 --> 00:07:48.470
+And then if we figure out by looking at the cache
+
+159
+00:07:48.470 --> 00:07:51.040
+saying that there are no items in the cache,
+
+160
+00:07:51.040 --> 00:07:53.740
+then what we're gonna do here is we return false
+
+161
+00:07:53.740 --> 00:07:56.030
+and what Apollo will do, it says, okay, well
+
+162
+00:07:56.030 --> 00:07:57.450
+they didn't give me anything.
+
+163
+00:07:57.450 --> 00:07:59.660
+So I'm gonna go to the network
+
+164
+00:07:59.660 --> 00:08:02.430
+meaning that I'm gonna go to our Keystone database
+
+165
+00:08:02.430 --> 00:08:04.250
+and try to fetch the items.
+
+166
+00:08:04.250 --> 00:08:07.200
+Then when it comes back from the database with the items,
+
+167
+00:08:07.200 --> 00:08:11.150
+it says, "Hey,I know you told me we didn't have
+
+168
+00:08:11.150 --> 00:08:12.430
+any of the items.
+
+169
+00:08:12.430 --> 00:08:15.040
+So I went to the network and got some myself,
+
+170
+00:08:15.040 --> 00:08:16.220
+here they are."
+
+171
+00:08:16.220 --> 00:08:18.370
+And you're gonna run a merge function.
+
+172
+00:08:18.370 --> 00:08:23.370
+It says, this runs when the Apollo client comes back
+
+173
+00:08:25.300 --> 00:08:29.663
+from the network with our products.
+
+174
+00:08:30.500 --> 00:08:31.860
+And then basically we're saying
+
+175
+00:08:31.860 --> 00:08:33.730
+what the merge function is
+
+176
+00:08:33.730 --> 00:08:37.320
+like how do you wanna put them into the cache?
+
+177
+00:08:37.320 --> 00:08:38.680
+Like where do you wanna put them?
+
+178
+00:08:38.680 --> 00:08:41.000
+In what order do you wanna put them?
+
+179
+00:08:41.000 --> 00:08:43.470
+All the things like that.
+
+180
+00:08:43.470 --> 00:08:46.000
+Okay, so let's go into here.
+
+181
+00:08:46.000 --> 00:08:49.793
+Above this read function, we need to say keyArgs is false.
+
+182
+00:08:52.300 --> 00:08:56.223
+And what this will do is it tells Apollo,
+
+183
+00:08:58.000 --> 00:08:59.903
+we will take care of everything.
+
+184
+00:09:03.920 --> 00:09:06.550
+Then inside the read function here
+
+185
+00:09:06.550 --> 00:09:08.210
+it gives us a couple arguments.
+
+186
+00:09:08.210 --> 00:09:10.450
+It gives us the existing items
+
+187
+00:09:11.900 --> 00:09:16.350
+and we'll set that to be just a default of an array.
+
+188
+00:09:16.350 --> 00:09:18.840
+So any items that are already in the cache
+
+189
+00:09:18.840 --> 00:09:21.060
+it gives us the existing items here.
+
+190
+00:09:21.060 --> 00:09:23.880
+And then the second argument, it gives us is an object.
+
+191
+00:09:23.880 --> 00:09:25.930
+So we wanna actually destructure that object.
+
+192
+00:09:25.930 --> 00:09:30.177
+So curly brackets, and we wanna grab the args
+
+193
+00:09:31.290 --> 00:09:33.730
+and the cache itself.
+
+194
+00:09:33.730 --> 00:09:36.020
+and the args and the cache are gonna be,
+
+195
+00:09:36.020 --> 00:09:40.200
+the args is gonna be the first in the skip values
+
+196
+00:09:40.200 --> 00:09:44.640
+that we were asking for in our products
+
+197
+00:09:44.640 --> 00:09:48.130
+and the cache is gonna be the Apollo cache that we have.
+
+198
+00:09:48.130 --> 00:09:53.130
+So right here, if we log out existing args and cache,
+
+199
+00:09:56.950 --> 00:09:58.420
+we could probably see what we get here.
+
+200
+00:09:58.420 --> 00:10:00.763
+Go to our console, give it a refresh.
+
+201
+00:10:01.600 --> 00:10:02.433
+There we go.
+
+202
+00:10:02.433 --> 00:10:05.950
+So existing is an empty array.
+
+203
+00:10:05.950 --> 00:10:08.930
+The arguments is, give me the first two and skip two
+
+204
+00:10:08.930 --> 00:10:11.760
+that's because we're on page two.
+
+205
+00:10:11.760 --> 00:10:16.410
+And then the cache is just a reference to the Apollo cache
+
+206
+00:10:16.410 --> 00:10:19.653
+which we can use to query all of our items.
+
+207
+00:10:20.540 --> 00:10:22.520
+So let's go on the first line here
+
+208
+00:10:22.520 --> 00:10:25.653
+and just say, const skip.
+
+209
+00:10:28.230 --> 00:10:30.730
+And first is equal to args
+
+210
+00:10:30.730 --> 00:10:34.490
+and that just restructures the skipping first properties
+
+211
+00:10:34.490 --> 00:10:37.970
+into their own values so that we can have them in here.
+
+212
+00:10:37.970 --> 00:10:42.970
+And then what we need to do is read the number of items
+
+213
+00:10:43.450 --> 00:10:48.450
+on the page from the cache const data.
+
+214
+00:10:48.990 --> 00:10:52.140
+And if you wanna pull data out of your cache,
+
+215
+00:10:52.140 --> 00:10:54.033
+it looks like this cache.readQuery.
+
+216
+00:10:57.310 --> 00:11:00.890
+And you actually have to pass a graph QL query.
+
+217
+00:11:00.890 --> 00:11:05.500
+So what we'll do here is we'll say query
+
+218
+00:11:05.500 --> 00:11:09.680
+and just a GQL, you could also import this
+
+219
+00:11:09.680 --> 00:11:13.663
+directly from our pagination field.
+
+220
+00:11:17.570 --> 00:11:18.910
+Let's take a look here.
+
+221
+00:11:18.910 --> 00:11:22.120
+This is actually the query that we want.
+
+222
+00:11:22.120 --> 00:11:25.940
+So what we could do is we pop an export in front of that.
+
+223
+00:11:25.940 --> 00:11:28.350
+And let's just import that pagination query here
+
+224
+00:11:28.350 --> 00:11:31.393
+so we actually don't need to do that.
+
+225
+00:11:36.940 --> 00:11:38.980
+Now we need to import that into this file.
+
+226
+00:11:38.980 --> 00:11:41.560
+My auto import is not working
+
+227
+00:11:41.560 --> 00:11:43.700
+so we'll go ahead and import it ourselves.
+
+228
+00:11:43.700 --> 00:11:48.050
+So import pagination query from up
+
+229
+00:11:50.630 --> 00:11:53.543
+into components to pagination.
+
+230
+00:11:57.890 --> 00:12:00.770
+And we can just console.log the data
+
+231
+00:12:00.770 --> 00:12:02.093
+that comes back from that.
+
+232
+00:12:05.580 --> 00:12:10.580
+And here we go, object all products meta
+
+233
+00:12:11.060 --> 00:12:12.240
+and it gives us the count
+
+234
+00:12:12.240 --> 00:12:14.790
+of the number of items that we have.
+
+235
+00:12:14.790 --> 00:12:17.320
+So let's say const count
+
+236
+00:12:17.320 --> 00:12:22.320
+is equal to data dot underscore all products meta.count.
+
+237
+00:12:25.430 --> 00:12:27.440
+And there's a possibility that
+
+238
+00:12:28.550 --> 00:12:31.150
+these will not exist just yet.
+
+239
+00:12:31.150 --> 00:12:33.270
+So by putting question marks on there
+
+240
+00:12:33.270 --> 00:12:36.610
+what we're doing is we're making sure it doesn't break
+
+241
+00:12:36.610 --> 00:12:38.660
+by having data as undefined.
+
+242
+00:12:38.660 --> 00:12:41.540
+That question mark is a new thing in JavaScript.
+
+243
+00:12:41.540 --> 00:12:44.700
+And what it does it first checks if that value is there
+
+244
+00:12:44.700 --> 00:12:46.180
+and then it checks if that value is there
+
+245
+00:12:46.180 --> 00:12:49.940
+and then finally it grabs the count value off of that.
+
+246
+00:12:49.940 --> 00:12:52.430
+Next we need to calculate what page we are currently on.
+
+247
+00:12:52.430 --> 00:12:54.640
+So say const page is equal to
+
+248
+00:12:54.640 --> 00:12:57.893
+skip divided by first plus one.
+
+249
+00:12:59.240 --> 00:13:03.633
+And how many pages in total is equal to math.ceil.
+
+250
+00:13:03.633 --> 00:13:08.260
+We already did this once before, say count divided by first
+
+251
+00:13:08.260 --> 00:13:11.143
+and that will give us how many pages we are on.
+
+252
+00:13:12.840 --> 00:13:17.470
+Now, we say check if we have existing items,
+
+253
+00:13:17.470 --> 00:13:19.400
+that's what is next.
+
+254
+00:13:19.400 --> 00:13:23.973
+So const items is equal to existing.slice.
+
+255
+00:13:24.860 --> 00:13:27.610
+We'll start at the skip value.
+
+256
+00:13:27.610 --> 00:13:30.830
+Start at two and then how many do we wanna go for
+
+257
+00:13:30.830 --> 00:13:35.570
+when we take our skip value and plus the first.
+
+258
+00:13:35.570 --> 00:13:37.170
+And what that will do is it says
+
+259
+00:13:38.180 --> 00:13:41.410
+give me start at two and go until you hit four.
+
+260
+00:13:41.410 --> 00:13:43.430
+And that will give us the two items in our case
+
+261
+00:13:43.430 --> 00:13:45.080
+because we're doing two per page.
+
+262
+00:13:47.560 --> 00:13:50.870
+Then we wanna do a quick little filter on them
+
+263
+00:13:50.870 --> 00:13:53.240
+and that is because it's possible
+
+264
+00:13:53.240 --> 00:13:55.380
+that these items are going to be undefined.
+
+265
+00:13:55.380 --> 00:13:57.240
+We'll hit that in just a second
+
+266
+00:13:57.240 --> 00:13:59.230
+and we'll just return the item.
+
+267
+00:13:59.230 --> 00:14:01.880
+And if that is undefined it will filter it out
+
+268
+00:14:01.880 --> 00:14:04.750
+from the list of items that we have there.
+
+269
+00:14:04.750 --> 00:14:07.780
+Next we wanna check if there are existing items,
+
+270
+00:14:07.780 --> 00:14:09.320
+oh sorry, if there are not existing items
+
+271
+00:14:09.320 --> 00:14:10.530
+and we'll send them to the network.
+
+272
+00:14:10.530 --> 00:14:13.620
+So we'll say if the items.length.
+
+273
+00:14:13.620 --> 00:14:17.170
+So if the items that we pulled from the existing cache
+
+274
+00:14:17.170 --> 00:14:22.170
+does not equal the first variable that we have,
+
+275
+00:14:23.810 --> 00:14:28.550
+that means we don't have any items,
+
+276
+00:14:28.550 --> 00:14:32.403
+we must go to the network to fetch them.
+
+277
+00:14:33.910 --> 00:14:36.910
+So here we'll say return false, right?
+
+278
+00:14:36.910 --> 00:14:38.770
+What that will do is it will say, "Hey"
+
+279
+00:14:38.770 --> 00:14:42.520
+which we looked, we looked in the cache, there are no items.
+
+280
+00:14:42.520 --> 00:14:44.005
+Go to the network, go get 'em yourself
+
+281
+00:14:44.005 --> 00:14:46.323
+'cause I certainly don't have them.
+
+282
+00:14:47.240 --> 00:14:51.970
+Then here we'll say is, if there are items
+
+283
+00:14:51.970 --> 00:14:55.770
+just return them from the cache
+
+284
+00:14:55.770 --> 00:15:00.160
+and we don't need to go to the network.
+
+285
+00:15:00.160 --> 00:15:02.573
+Say if the items.length,
+
+286
+00:15:04.680 --> 00:15:06.633
+simply just console log.
+
+287
+00:15:09.900 --> 00:15:14.350
+There are, and we'll log it out items.length
+
+288
+00:15:14.350 --> 00:15:19.350
+items in the cache, gonna send them to Apollo.
+
+289
+00:15:21.380 --> 00:15:23.623
+And then we return items.
+
+290
+00:15:24.750 --> 00:15:27.460
+Finally, if either of those if statements don't work
+
+291
+00:15:27.460 --> 00:15:29.063
+we just return false.
+
+292
+00:15:30.220 --> 00:15:34.580
+And that will just fall back to network
+
+293
+00:15:34.580 --> 00:15:38.433
+just in case either of those if statements don't work out.
+
+294
+00:15:40.380 --> 00:15:42.800
+All right, so now if you refresh, the whole thing is broken.
+
+295
+00:15:42.800 --> 00:15:43.680
+It still doesn't work.
+
+296
+00:15:43.680 --> 00:15:46.060
+And that's because we're in this state right now.
+
+297
+00:15:46.060 --> 00:15:48.440
+When you come from a hard refresh,
+
+298
+00:15:48.440 --> 00:15:52.330
+we're in this state right here where we don't have any items
+
+299
+00:15:52.330 --> 00:15:54.300
+or we don't have enough items
+
+300
+00:15:54.300 --> 00:15:58.280
+and what that does is it will send us back to the network.
+
+301
+00:15:58.280 --> 00:16:02.470
+So what that will do is it'll fetch the network
+
+302
+00:16:02.470 --> 00:16:05.050
+and then we go to the merge request.
+
+303
+00:16:05.050 --> 00:16:06.990
+And the merge request is what runs
+
+304
+00:16:06.990 --> 00:16:10.000
+when we come back from the network with our items.
+
+305
+00:16:10.000 --> 00:16:12.580
+So what we do here is you get the existing cache
+
+306
+00:16:13.610 --> 00:16:17.060
+and we get the incoming new items.
+
+307
+00:16:17.060 --> 00:16:20.570
+And then we get the args of the query
+
+308
+00:16:20.570 --> 00:16:22.120
+as well in the third one,
+
+309
+00:16:22.120 --> 00:16:24.490
+that's part of a property on an object that comes in
+
+310
+00:16:24.490 --> 00:16:26.130
+so we destructure that here.
+
+311
+00:16:26.130 --> 00:16:27.760
+So we'll do right here.
+
+312
+00:16:27.760 --> 00:16:29.323
+Once I console.log,
+
+313
+00:16:30.340 --> 00:16:33.840
+merging items from the network.
+
+314
+00:16:33.840 --> 00:16:37.657
+And we could even say incoming.length.
+
+315
+00:16:47.530 --> 00:16:50.460
+And here we go, look at this merging items from the network.
+
+316
+00:16:50.460 --> 00:16:51.870
+Why is that happening?
+
+317
+00:16:51.870 --> 00:16:56.550
+Well, because the read returns false right here.
+
+318
+00:16:56.550 --> 00:16:58.100
+So it says, all right, go to the network.
+
+319
+00:16:58.100 --> 00:16:59.997
+And then the network comes back and says,
+
+320
+00:16:59.997 --> 00:17:03.020
+"All right, I went to the network and I got them.
+
+321
+00:17:03.020 --> 00:17:05.930
+Here they are, they are incoming." Right?
+
+322
+00:17:05.930 --> 00:17:10.293
+And if we were to log out the incoming items ourselves,
+
+323
+00:17:18.160 --> 00:17:20.140
+we should see them somewhere in here.
+
+324
+00:17:20.140 --> 00:17:21.923
+Here we go. There's the two items.
+
+325
+00:17:23.960 --> 00:17:27.880
+And they are just refs to the actual products themselves
+
+326
+00:17:27.880 --> 00:17:31.000
+and the value should be in our Apollo cache.
+
+327
+00:17:31.000 --> 00:17:32.340
+So what we can do here
+
+328
+00:17:33.760 --> 00:17:38.760
+is save, const merged is equal to,
+
+329
+00:17:42.890 --> 00:17:47.010
+if there are existing items in the cache already,
+
+330
+00:17:47.010 --> 00:17:51.060
+then we will take a copy of the existing.slice
+
+331
+00:17:54.290 --> 00:17:56.170
+And we grab 'em all.
+
+332
+00:17:56.170 --> 00:17:58.933
+Otherwise we just want empty array.
+
+333
+00:18:02.180 --> 00:18:04.940
+Then this is gonna be a little bit weird.
+
+334
+00:18:04.940 --> 00:18:07.120
+You think you might just be like rest,
+
+335
+00:18:07.120 --> 00:18:12.120
+just push those new items into the array and call it a day.
+
+336
+00:18:13.160 --> 00:18:15.450
+But the reason why this doesn't work
+
+337
+00:18:15.450 --> 00:18:18.963
+is because if somebody, let's go to this blank page again.
+
+338
+00:18:20.170 --> 00:18:22.620
+Imagine we have one, two, three, four, five,
+
+339
+00:18:22.620 --> 00:18:24.680
+six, seven eight, nine, 10.
+
+340
+00:18:24.680 --> 00:18:27.650
+So if somebody starts on page one
+
+341
+00:18:27.650 --> 00:18:29.940
+and you're gonna fetch items one and two.
+
+342
+00:18:29.940 --> 00:18:32.030
+And then they go to page two and they get three and four
+
+343
+00:18:32.030 --> 00:18:34.510
+and then go five and six and seven and eight.
+
+344
+00:18:34.510 --> 00:18:35.343
+But what happens
+
+345
+00:18:35.343 --> 00:18:37.570
+if somebody goes to the fourth page directly?
+
+346
+00:18:37.570 --> 00:18:38.890
+Like someone says, "Hey, check this out,"
+
+347
+00:18:38.890 --> 00:18:40.930
+and they link them to the fourth page?
+
+348
+00:18:40.930 --> 00:18:42.340
+Okay, that's a bit of a problem
+
+349
+00:18:42.340 --> 00:18:47.070
+because we still need these items to exist in these slots.
+
+350
+00:18:47.070 --> 00:18:50.660
+But since they're coming directly to that page
+
+351
+00:18:50.660 --> 00:18:53.330
+these items have never been fetched before.
+
+352
+00:18:53.330 --> 00:18:55.186
+So what we essentially need to do
+
+353
+00:18:55.186 --> 00:19:00.186
+is put blank spots wherever those items are going to be
+
+354
+00:19:04.130 --> 00:19:07.600
+like that and then slot in the two merged items
+
+355
+00:19:07.600 --> 00:19:08.433
+that we have.
+
+356
+00:19:08.433 --> 00:19:11.380
+And then the forward ones don't really matter
+
+357
+00:19:11.380 --> 00:19:12.670
+because we're not going forward.
+
+358
+00:19:12.670 --> 00:19:15.690
+We just need to know about the previous ones.
+
+359
+00:19:15.690 --> 00:19:18.540
+So the way that we do that is with a four loop.
+
+360
+00:19:18.540 --> 00:19:19.940
+This is a little bit funky as well.
+
+361
+00:19:19.940 --> 00:19:22.790
+This is why I'm like I'm sorry
+
+362
+00:19:22.790 --> 00:19:24.990
+for this part of the tutorial that it's like this
+
+363
+00:19:24.990 --> 00:19:27.960
+but again, this is how it's done.
+
+364
+00:19:27.960 --> 00:19:31.660
+We'd say, let i is equal to the skip value that comes in.
+
+365
+00:19:31.660 --> 00:19:35.350
+Oh, we need to grab our skip and first value.
+
+366
+00:19:35.350 --> 00:19:39.740
+So const skip and first is equal to args.
+
+367
+00:19:39.740 --> 00:19:41.743
+We destructure that from our arguments.
+
+368
+00:19:42.600 --> 00:19:45.920
+So let i is equal to skip.
+
+369
+00:19:45.920 --> 00:19:49.970
+I, well i is less than skip
+
+370
+00:19:51.470 --> 00:19:56.470
+plus the incoming.length and then plus, plus i.
+
+371
+00:19:58.850 --> 00:20:03.850
+Then we say the merged i is equal to incoming
+
+372
+00:20:05.900 --> 00:20:07.020
+i minus skip.
+
+373
+00:20:07.020 --> 00:20:09.560
+And I'll show you visually what this is doing
+
+374
+00:20:09.560 --> 00:20:10.660
+in just a second.
+
+375
+00:20:10.660 --> 00:20:12.670
+So what we do here is if we were don't,
+
+376
+00:20:12.670 --> 00:20:14.370
+oh we got to take this push out.
+
+377
+00:20:14.370 --> 00:20:16.320
+We don't actually need that.
+
+378
+00:20:16.320 --> 00:20:20.940
+And if we were to console.log are merged now
+
+379
+00:20:20.940 --> 00:20:24.810
+and then finally underneath that return merged.
+
+380
+00:20:24.810 --> 00:20:26.650
+And what this will do is
+
+381
+00:20:26.650 --> 00:20:31.643
+finally we return the merged items from the cache.
+
+382
+00:20:35.010 --> 00:20:39.380
+And what Apollo will do is when you return from emerge
+
+383
+00:20:39.380 --> 00:20:43.570
+it will back to the read function and try it again.
+
+384
+00:20:43.570 --> 00:20:45.510
+So it does a read function.
+
+385
+00:20:45.510 --> 00:20:48.120
+If it has nothing, it returns false,
+
+386
+00:20:48.120 --> 00:20:50.050
+then it goes down to the merge.
+
+387
+00:20:50.050 --> 00:20:52.700
+And then when the merge returns items
+
+388
+00:20:52.700 --> 00:20:54.457
+the read function runs again and says,
+
+389
+00:20:54.457 --> 00:20:58.610
+"Hi, I went to the network, let's try this again."
+
+390
+00:20:58.610 --> 00:21:00.670
+And if you return false from this
+
+391
+00:21:00.670 --> 00:21:02.990
+then you just have an infinite loop of network request.
+
+392
+00:21:02.990 --> 00:21:05.030
+But ideally what will happen is you have
+
+393
+00:21:05.030 --> 00:21:06.610
+you do have items now
+
+394
+00:21:06.610 --> 00:21:09.080
+and then you can return them from here.
+
+395
+00:21:09.080 --> 00:21:11.480
+So it goes, read, merge, read.
+
+396
+00:21:11.480 --> 00:21:14.100
+If there are items in the cache, it's just read.
+
+397
+00:21:14.100 --> 00:21:17.220
+Otherwise, if it goes to network, it's read, merge, read.
+
+398
+00:21:17.220 --> 00:21:19.470
+So I'll give that a save us a lotta code we wrote.
+
+399
+00:21:19.470 --> 00:21:22.450
+Let's see here what we got, give it a refresh.
+
+400
+00:21:22.450 --> 00:21:23.513
+Got an issue here.
+
+401
+00:21:25.150 --> 00:21:29.020
+Invalid left-hand side in prefix operation.
+
+402
+00:21:29.020 --> 00:21:30.840
+What did we do here?
+
+403
+00:21:30.840 --> 00:21:33.143
+Oh, that should not be one, that's i.
+
+404
+00:21:35.509 --> 00:21:37.400
+(laughing) Okay, it worked.
+
+405
+00:21:37.400 --> 00:21:40.400
+Now, what's important about that now
+
+406
+00:21:40.400 --> 00:21:45.220
+is if we go to our Apollo cache here, go to our cache.
+
+407
+00:21:45.220 --> 00:21:50.220
+You'll see that the all products is the first two are null
+
+408
+00:21:51.320 --> 00:21:54.410
+and then the second two are the actual products
+
+409
+00:21:54.410 --> 00:21:57.660
+that came in and that's because I went to page two directly.
+
+410
+00:21:57.660 --> 00:22:00.220
+If I go now go to page three,
+
+411
+00:22:00.220 --> 00:22:01.490
+those items should be in the cache
+
+412
+00:22:01.490 --> 00:22:03.950
+if the Apollo Dev tools worked.
+
+413
+00:22:03.950 --> 00:22:05.423
+Open it up again.
+
+414
+00:22:07.066 --> 00:22:09.280
+Here we go you see those items are in there.
+
+415
+00:22:09.280 --> 00:22:11.693
+Let me go to the very last page here.
+
+416
+00:22:13.380 --> 00:22:15.460
+And, the last page has issue.
+
+417
+00:22:15.460 --> 00:22:17.330
+Let's go to page six.
+
+418
+00:22:17.330 --> 00:22:20.030
+And then if we go to the Apollo Dev tools and cache
+
+419
+00:22:20.030 --> 00:22:23.140
+we should see a whole bunch of empty spots
+
+420
+00:22:23.140 --> 00:22:25.190
+that then will be filled in
+
+421
+00:22:25.190 --> 00:22:27.510
+when you go to previous page previous
+
+422
+00:22:30.820 --> 00:22:32.340
+and they will be updating.
+
+423
+00:22:32.340 --> 00:22:36.140
+It's just that the Dev tools are again, not very good.
+
+424
+00:22:36.140 --> 00:22:38.540
+And you have to reopen it to get a
+
+425
+00:22:40.210 --> 00:22:41.050
+fixed version of it.
+
+426
+00:22:41.050 --> 00:22:42.213
+Come on, Apollo.
+
+427
+00:22:43.309 --> 00:22:44.142
+There we go.
+
+428
+00:22:44.142 --> 00:22:47.030
+You see that it's possible that you get into this issue.
+
+429
+00:22:47.030 --> 00:22:49.390
+Okay, cool, so the very last thing is
+
+430
+00:22:49.390 --> 00:22:51.147
+there is one more issue.
+
+431
+00:22:51.147 --> 00:22:53.690
+And when you go to the last page
+
+432
+00:22:56.470 --> 00:22:59.460
+and it says cannot access property of all products
+
+433
+00:22:59.460 --> 00:23:01.510
+data is undefined.
+
+434
+00:23:01.510 --> 00:23:02.900
+And the reason we're getting that
+
+435
+00:23:02.900 --> 00:23:07.160
+is because if we take a look at our pagination field,
+
+436
+00:23:07.160 --> 00:23:07.993
+here we go
+
+437
+00:23:09.190 --> 00:23:14.190
+we are only ever returning the items when there are four.
+
+438
+00:23:18.100 --> 00:23:20.500 line:15% 
+And in this case, when you're on the last page
+
+439
+00:23:20.500 --> 00:23:22.770 line:15% 
+there are not there's not four
+
+440
+00:23:22.770 --> 00:23:25.590 line:15% 
+because there might only be one item on the last page.
+
+441
+00:23:25.590 --> 00:23:26.860
+So what we need to do
+
+442
+00:23:26.860 --> 00:23:29.530
+is before we do this one right here,
+
+443
+00:23:29.530 --> 00:23:33.473
+we need to say if the items.length and
+
+444
+00:23:35.370 --> 00:23:37.060
+so if there are items,
+
+445
+00:23:37.060 --> 00:23:42.060
+but the items.length does not equal the first value.
+
+446
+00:23:45.080 --> 00:23:47.123
+So how many we requested.
+
+447
+00:23:48.110 --> 00:23:53.110
+And the page that we're on is equal to the number of pages.
+
+448
+00:23:55.490 --> 00:23:57.650
+So let's write a comment.
+
+449
+00:23:57.650 --> 00:24:01.307
+If there are items and
+
+450
+00:24:09.510 --> 00:24:14.510
+there aren't enough items
+
+451
+00:24:14.540 --> 00:24:19.540
+to satisfy how many were requested.
+
+452
+00:24:23.370 --> 00:24:24.930
+So in our case two.
+
+453
+00:24:24.930 --> 00:24:28.363
+And we are on the last page,
+
+454
+00:24:30.580 --> 00:24:34.333
+then just send it.
+
+455
+00:24:35.650 --> 00:24:38.660
+So that covers the thing is you want two per page
+
+456
+00:24:38.660 --> 00:24:39.710
+but we only have one.
+
+457
+00:24:40.810 --> 00:24:43.210
+And if that's the case, we're just gonna send it
+
+458
+00:24:43.210 --> 00:24:45.780
+because we are on the last page.
+
+459
+00:24:45.780 --> 00:24:48.860
+And there's a possibility that we don't have enough items
+
+460
+00:24:48.860 --> 00:24:51.540
+to fill the last page entirely.
+
+461
+00:24:51.540 --> 00:24:56.513
+So if then we simply just return items.
+
+462
+00:25:03.880 --> 00:25:05.350
+There we go and that's one item.
+
+463
+00:25:05.350 --> 00:25:07.500
+So that's a very up to
+
+464
+00:25:07.500 --> 00:25:09.872
+if statement, I probably spent an entire day writing
+
+465
+00:25:09.872 --> 00:25:14.653
+(laughing) to get one item showing up on the last page.
+
+466
+00:25:16.950 --> 00:25:18.350
+So that works.
+
+467
+00:25:18.350 --> 00:25:19.610
+So now the question is
+
+468
+00:25:19.610 --> 00:25:22.100
+is what happens when we delete an item?
+
+469
+00:25:22.100 --> 00:25:23.783
+So let's go to,
+
+470
+00:25:25.640 --> 00:25:30.160
+let's go here, so we got belt, jacket, shoes.
+
+471
+00:25:30.160 --> 00:25:33.730
+So what happens when I delete this item now?
+
+472
+00:25:33.730 --> 00:25:35.940
+So delete, go ahead and, okay.
+
+473
+00:25:35.940 --> 00:25:39.523
+Boom, so what happened there is that
+
+474
+00:25:39.523 --> 00:25:41.520
+you see how it automatically went
+
+475
+00:25:41.520 --> 00:25:43.850
+and fetched the next item for the next page.
+
+476
+00:25:43.850 --> 00:25:47.600
+That's because in our Apollo cache,
+
+477
+00:25:47.600 --> 00:25:51.890
+all of our items are now under one key which is all products
+
+478
+00:25:51.890 --> 00:25:53.550
+and they're not under multiple keys
+
+479
+00:25:53.550 --> 00:25:56.700
+which is page one, page two, page three, page four.
+
+480
+00:25:56.700 --> 00:25:58.760
+So that's the thing we get into.
+
+481
+00:25:58.760 --> 00:26:01.760
+There is a couple of little Ed's Casey issues
+
+482
+00:26:01.760 --> 00:26:03.580
+that I hope will be solved.
+
+483
+00:26:03.580 --> 00:26:05.940
+And if so, I'll update this video.
+
+484
+00:26:05.940 --> 00:26:08.220
+But for now, that actually helps out
+
+485
+00:26:08.220 --> 00:26:09.950
+in almost all of our cases.
+
+486
+00:26:09.950 --> 00:26:12.820
+So you can see the number of items even has updated itself.
+
+487
+00:26:12.820 --> 00:26:15.460
+So I know that wasn't very much fun.
+
+488
+00:26:15.460 --> 00:26:17.520
+That probably took me very many days,
+
+489
+00:26:17.520 --> 00:26:20.310
+very many phone calls and I apologize for it.
+
+490
+00:26:20.310 --> 00:26:24.640
+But that is the official word from the Devs at Apollo
+
+491
+00:26:24.640 --> 00:26:27.800
+as to how you should actually approach something like this.
+
+492
+00:26:27.800 --> 00:26:29.890
+Let's get into something a little bit more fun
+
+493
+00:26:29.890 --> 00:26:31.440
+and I'll catch you in that one.
+

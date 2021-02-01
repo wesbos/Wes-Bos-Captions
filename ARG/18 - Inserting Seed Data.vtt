@@ -1,0 +1,626 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.470
+(air whooshing)
+
+2
+00:00:01.470 --> 00:00:03.600
+<v Instructor>We need a whole bunch of data in here,</v>
+
+3
+00:00:03.600 --> 00:00:07.130
+and I could tell you to click and upload all you want,
+
+4
+00:00:07.130 --> 00:00:11.360
+but it's worth having seed data for when you're working with
+
+5
+00:00:11.360 --> 00:00:13.174
+especially I found this all the time
+
+6
+00:00:13.174 --> 00:00:16.573
+when you're debugging things that delete items,
+
+7
+00:00:17.470 --> 00:00:18.530
+it gets really frustrating
+
+8
+00:00:18.530 --> 00:00:21.700
+when you spend all this time to upload like 12 items
+
+9
+00:00:21.700 --> 00:00:23.490
+and then you debug it and delete them,
+
+10
+00:00:23.490 --> 00:00:25.510
+and then your bug is not fixed
+
+11
+00:00:25.510 --> 00:00:26.910
+but you have no more items to delete
+
+12
+00:00:26.910 --> 00:00:30.140
+so you have to add more just to test the deletion mutation.
+
+13
+00:00:30.140 --> 00:00:32.180
+So we are going to write a little script
+
+14
+00:00:32.180 --> 00:00:34.620
+or I've already written a little script for you
+
+15
+00:00:34.620 --> 00:00:36.930
+but I'm gonna show you how to hook it up with seed data,
+
+16
+00:00:36.930 --> 00:00:40.760
+so if we open up our keystone.ts file
+
+17
+00:00:40.760 --> 00:00:42.950
+you'll see that we have our,
+
+18
+00:00:42.950 --> 00:00:44.813
+where's our database connection?
+
+19
+00:00:45.960 --> 00:00:48.010
+Here we go, add data seeding here,
+
+20
+00:00:48.010 --> 00:00:49.590
+okay, we're gonna do that now,
+
+21
+00:00:49.590 --> 00:00:54.170
+so the database has an on the connect function
+
+22
+00:00:54.170 --> 00:00:58.720
+that we can hook into, and we can just console.log
+
+23
+00:00:59.800 --> 00:01:04.800
+connected to the database and now when we run that,
+
+24
+00:01:05.040 --> 00:01:06.970
+kill it and started again
+
+25
+00:01:06.970 --> 00:01:11.310
+we should see as soon as Keystone connects to the database
+
+26
+00:01:11.310 --> 00:01:14.720
+we should see that it logs connected to the database,
+
+27
+00:01:14.720 --> 00:01:17.360
+there we go, so that means it's successfully connected
+
+28
+00:01:17.360 --> 00:01:18.800
+to the database, so what we can do,
+
+29
+00:01:18.800 --> 00:01:21.090
+is say once you've connected to the database
+
+30
+00:01:21.090 --> 00:01:23.827
+just inject all of these items straight away
+
+31
+00:01:23.827 --> 00:01:25.820
+into the database, so what we'll do,
+
+32
+00:01:25.820 --> 00:01:29.260
+is first we'll mark that as a sync
+
+33
+00:01:29.260 --> 00:01:31.160
+and then it also gives us access
+
+34
+00:01:31.160 --> 00:01:34.690
+to the entire Keystone value here,
+
+35
+00:01:34.690 --> 00:01:38.600
+and there is, if you take a look at the folder here,
+
+36
+00:01:38.600 --> 00:01:40.250
+I think it's in, where is it?
+
+37
+00:01:40.250 --> 00:01:44.390
+Lib no seed data in data.ts,
+
+38
+00:01:44.390 --> 00:01:47.850
+there's just some very basic data
+
+39
+00:01:47.850 --> 00:01:49.810
+that I've put in there for you,
+
+40
+00:01:49.810 --> 00:01:53.980
+and then in index.ts, this is a function
+
+41
+00:01:53.980 --> 00:01:55.530
+that here I can all read,
+
+42
+00:01:55.530 --> 00:01:56.990
+read through it with you really quickly,
+
+43
+00:01:56.990 --> 00:02:00.150
+so it console logs, inserting products,
+
+44
+00:02:00.150 --> 00:02:04.320
+we are grabbing the Keystone MongooseAdapter
+
+45
+00:02:04.320 --> 00:02:06.780
+and we're injecting this straight into the database
+
+46
+00:02:06.780 --> 00:02:09.290
+and we're not using GraphQL or anything like that,
+
+47
+00:02:09.290 --> 00:02:10.730
+so if you're using a different database
+
+48
+00:02:10.730 --> 00:02:12.310
+you might have to adapt that,
+
+49
+00:02:12.310 --> 00:02:14.370
+then we do is loop over every single product
+
+50
+00:02:14.370 --> 00:02:17.210
+that's in our products
+
+51
+00:02:17.210 --> 00:02:20.520
+and then we simply just take the product image,
+
+52
+00:02:20.520 --> 00:02:21.530
+create the image,
+
+53
+00:02:21.530 --> 00:02:24.326
+and then create the product for that, right?
+
+54
+00:02:24.326 --> 00:02:26.600
+We're doing the relationships here,
+
+55
+00:02:26.600 --> 00:02:30.170
+then we're done and we exit and we can start it again.
+
+56
+00:02:30.170 --> 00:02:35.170
+So we can go back to our Keystone here and we will await,
+
+57
+00:02:36.840 --> 00:02:39.293
+it's called insert seed data
+
+58
+00:02:39.293 --> 00:02:42.233
+and we'll have to auto import that sucker,
+
+59
+00:02:43.070 --> 00:02:44.483
+it didn't work, did it?
+
+60
+00:02:46.155 --> 00:02:47.890
+Well, that worked, that worked,
+
+61
+00:02:47.890 --> 00:02:52.570
+why is it telling us expected an argument Keystone
+
+62
+00:02:52.570 --> 00:02:53.920
+was not provided, oh yeah,
+
+63
+00:02:53.920 --> 00:02:56.330
+we forgot to pass the argument Keystone,
+
+64
+00:02:56.330 --> 00:02:58.670
+there we go, thank you, TypeScript,
+
+65
+00:02:58.670 --> 00:03:00.707
+there's another real benefit of using TypeScript,
+
+66
+00:03:00.707 --> 00:03:02.384
+is it sort of just yelled at you
+
+67
+00:03:02.384 --> 00:03:05.430
+before we tried to run it,
+
+68
+00:03:05.430 --> 00:03:07.980
+now, we don't wanna do that every single time,
+
+69
+00:03:07.980 --> 00:03:10.340
+what we wanna do is we only wanna do it,
+
+70
+00:03:10.340 --> 00:03:12.070
+when somebody passes an argument
+
+71
+00:03:12.070 --> 00:03:16.020
+to Keystone when they run it,
+
+72
+00:03:16.020 --> 00:03:17.240
+so what we'll do here is we'll say,
+
+73
+00:03:17.240 --> 00:03:22.240
+if process.argv.includes--seed-data
+
+74
+00:03:27.920 --> 00:03:32.920
+then we will run await insert seed data,
+
+75
+00:03:32.930 --> 00:03:34.170
+and the way that we run that,
+
+76
+00:03:34.170 --> 00:03:36.860
+if we take a look at our package json,
+
+77
+00:03:36.860 --> 00:03:41.320
+if we basically just run npm run seed data
+
+78
+00:03:41.320 --> 00:03:45.083
+it just runs the same Keystone function here,
+
+79
+00:03:46.310 --> 00:03:47.650
+but with --seed data,
+
+80
+00:03:47.650 --> 00:03:50.400
+sorry, if you hear my kids screaming in the background,
+
+81
+00:03:51.380 --> 00:03:54.483
+hey, guys I'm recording,
+
+82
+00:03:57.360 --> 00:03:59.180
+all right, they settled down,
+
+83
+00:03:59.180 --> 00:04:01.900
+okay, so the way that we run that is just kill your build
+
+84
+00:04:01.900 --> 00:04:05.610
+and then run npm run, actually before we even do this,
+
+85
+00:04:05.610 --> 00:04:08.230
+let's take a look at our MongoDB Compass
+
+86
+00:04:08.230 --> 00:04:12.200
+and I'm gonna go into my database
+
+87
+00:04:12.200 --> 00:04:15.710
+which is I'm gonna click this little refresh button
+
+88
+00:04:15.710 --> 00:04:19.270
+and you see that sickfits showed up in the side bar here,
+
+89
+00:04:19.270 --> 00:04:21.650
+and we see productimages, products and users,
+
+90
+00:04:21.650 --> 00:04:23.200
+those are our three data types,
+
+91
+00:04:23.200 --> 00:04:24.560
+you clicked through to products
+
+92
+00:04:24.560 --> 00:04:26.980
+and you see this as our one test product in there,
+
+93
+00:04:26.980 --> 00:04:31.980
+so now when we run npm run seed data, there we go,
+
+94
+00:04:32.392 --> 00:04:34.500
+boom, boom, boom, boom, boom, boom, boom, done,
+
+95
+00:04:34.500 --> 00:04:39.140
+inserted 12 products, if we refresh on our database
+
+96
+00:04:40.150 --> 00:04:42.450
+you'll see that the products are all here,
+
+97
+00:04:42.450 --> 00:04:45.020
+and now if we refresh our Keystone Admin,
+
+98
+00:04:45.020 --> 00:04:47.070
+oh, obviously won't work 'cause we have to run it,
+
+99
+00:04:47.070 --> 00:04:51.526
+so npm run dev and we have all of the images showing up,
+
+100
+00:04:51.526 --> 00:04:53.760
+there was one little issue in that,
+
+101
+00:04:53.760 --> 00:04:55.225
+they actually aren't showing up,
+
+102
+00:04:55.225 --> 00:04:56.420
+(laughing),
+
+103
+00:04:56.420 --> 00:04:59.440
+but it's gonna be fine, I'll explain why it's not working
+
+104
+00:04:59.440 --> 00:05:01.080
+and this won't be an issue for yours
+
+105
+00:05:01.080 --> 00:05:02.700
+is that if you click through to one of these,
+
+106
+00:05:02.700 --> 00:05:04.610
+you'll see that the image is broken
+
+107
+00:05:04.610 --> 00:05:08.590
+and if you inspect image on that and grab the URL
+
+108
+00:05:08.590 --> 00:05:10.590
+you'll see it is broken
+
+109
+00:05:10.590 --> 00:05:13.177
+and that's because I'm doing this tutorial
+
+110
+00:05:13.177 --> 00:05:15.010
+with Wes Bos tutorial,
+
+111
+00:05:15.010 --> 00:05:17.220
+what I uploaded it with was Wes Bos,
+
+112
+00:05:17.220 --> 00:05:19.900
+so likely your name is also gonna be different
+
+113
+00:05:19.900 --> 00:05:21.940
+and it's gonna be broken for you,
+
+114
+00:05:21.940 --> 00:05:23.200
+so is that a big deal?
+
+115
+00:05:23.200 --> 00:05:27.480
+No, and I'll show you why, because it doesn't change it,
+
+116
+00:05:27.480 --> 00:05:29.810
+how it outputs it in the API Explorer,
+
+117
+00:05:29.810 --> 00:05:34.150
+so if we click on here and you go to API Explorer here,
+
+118
+00:05:34.150 --> 00:05:35.930
+and if you want, let's write a query here,
+
+119
+00:05:35.930 --> 00:05:40.930
+so a query all product images and for each product image
+
+120
+00:05:42.920 --> 00:05:44.940
+we want the id, let's just run it,
+
+121
+00:05:44.940 --> 00:05:46.700
+boom, so we've got a list of all the images
+
+122
+00:05:46.700 --> 00:05:49.380
+that we've uploaded and then inside of that,
+
+123
+00:05:49.380 --> 00:05:52.410
+we want the, what is it?
+
+124
+00:05:52.410 --> 00:05:54.850
+The image and inside of the image
+
+125
+00:05:54.850 --> 00:05:58.750
+you can get all kinds of information, the encoding,
+
+126
+00:05:58.750 --> 00:06:01.870
+if you're wondering what the possible options are,
+
+127
+00:06:01.870 --> 00:06:04.450
+you can just hit Control+Space
+
+128
+00:06:04.450 --> 00:06:06.080
+and it'll show you all of them,
+
+129
+00:06:06.080 --> 00:06:11.080
+you can also go into the docs look for all product images
+
+130
+00:06:13.920 --> 00:06:15.560
+or just product image
+
+131
+00:06:15.560 --> 00:06:19.940
+and it will show you all of the fields that are available,
+
+132
+00:06:19.940 --> 00:06:21.340
+in our case we want the public URL
+
+133
+00:06:21.340 --> 00:06:25.720
+or the public URL transformed, so let's try that,
+
+134
+00:06:25.720 --> 00:06:30.720
+let's just say, public URL and public URL transformed,
+
+135
+00:06:31.330 --> 00:06:34.480
+run it and look, we got them all here,
+
+136
+00:06:34.480 --> 00:06:38.640
+and you'll see that they are matching up with Wes Bos
+
+137
+00:06:38.640 --> 00:06:41.420
+and Wes Bos tutorial
+
+138
+00:06:41.420 --> 00:06:43.950
+and that's just because the seed data that I've given you
+
+139
+00:06:43.950 --> 00:06:45.800
+is from two different accounts
+
+140
+00:06:45.800 --> 00:06:47.330
+and likely it's gonna be a different account
+
+141
+00:06:47.330 --> 00:06:49.930
+'cause you have your own account, so they still work,
+
+142
+00:06:49.930 --> 00:06:51.950
+so if you visit one of these,
+
+143
+00:06:51.950 --> 00:06:55.360
+this is one we uploaded from Keystone, it works
+
+144
+00:06:55.360 --> 00:07:00.360
+and then if you also wanna pull one from,
+
+145
+00:07:00.640 --> 00:07:03.360
+from my personal account, that one also works,
+
+146
+00:07:03.360 --> 00:07:05.600
+so no sweat there.
+
+147
+00:07:05.600 --> 00:07:07.910
+So that is seed data, that's how get it,
+
+148
+00:07:07.910 --> 00:07:12.450
+you can certainly also if you're curious yourself
+
+149
+00:07:12.450 --> 00:07:15.566
+you could upload 15 or 20 product images that you like
+
+150
+00:07:15.566 --> 00:07:19.220
+and then you could go into MongoDB Compass
+
+151
+00:07:19.220 --> 00:07:24.220
+and export them, and you can export it right here,
+
+152
+00:07:25.190 --> 00:07:28.200
+select which fields you want and you could do a little dump
+
+153
+00:07:28.200 --> 00:07:30.990
+and then put that data in your own thing,
+
+154
+00:07:30.990 --> 00:07:32.870
+so you can just automate importing that,
+
+155
+00:07:32.870 --> 00:07:34.550
+but that's a pretty handy thing to have,
+
+156
+00:07:34.550 --> 00:07:38.887
+that is seed data in Keystone, let's get into the next one.
+

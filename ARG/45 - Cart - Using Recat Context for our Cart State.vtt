@@ -1,0 +1,1298 @@
+﻿WEBVTT
+
+1
+00:00:00.115 --> 00:00:01.486
+(whooshing)
+
+2
+00:00:01.486 --> 00:00:02.440
+<v Instructor>All right, this video's gonna be</v>
+
+3
+00:00:02.440 --> 00:00:05.340
+about local state and context in React.
+
+4
+00:00:05.340 --> 00:00:08.260
+So let's just understand what those are real quick.
+
+5
+00:00:08.260 --> 00:00:10.630
+So local state in a React application
+
+6
+00:00:10.630 --> 00:00:13.710
+is state that exists just inside of the browser.
+
+7
+00:00:13.710 --> 00:00:16.950
+A lot of our state so far exists in the database
+
+8
+00:00:16.950 --> 00:00:19.140
+and it gets sent over.
+
+9
+00:00:19.140 --> 00:00:20.687
+And we have done a little bit of local state
+
+10
+00:00:20.687 --> 00:00:22.600
+and that is when we use our forms
+
+11
+00:00:22.600 --> 00:00:25.040
+and you type into those input boxes,
+
+12
+00:00:25.040 --> 00:00:27.910
+that stuff is mirrored to state and it's only there
+
+13
+00:00:27.910 --> 00:00:30.190
+until you actually send it off to the backend.
+
+14
+00:00:30.190 --> 00:00:32.930
+Another piece of local state that we need is this cart needs
+
+15
+00:00:32.930 --> 00:00:35.090
+to be either open or closed.
+
+16
+00:00:35.090 --> 00:00:37.340
+It's probably the most imply local state ever,
+
+17
+00:00:37.340 --> 00:00:38.890
+which is just gonna be is it open?
+
+18
+00:00:38.890 --> 00:00:41.177
+Yes or no? True or false?
+
+19
+00:00:41.177 --> 00:00:45.740
+And that state needs to be changed
+
+20
+00:00:45.740 --> 00:00:48.170
+in a number of different places, right?
+
+21
+00:00:48.170 --> 00:00:50.510
+Like right now, I need to be able
+
+22
+00:00:50.510 --> 00:00:53.290
+to close the cart when I'm in the cart itself.
+
+23
+00:00:53.290 --> 00:00:55.885
+But then I need to be able to open the cart
+
+24
+00:00:55.885 --> 00:00:57.580
+when the cart is closed.
+
+25
+00:00:57.580 --> 00:00:59.830
+So there can't be a button inside the cart to open it.
+
+26
+00:00:59.830 --> 00:01:01.270
+And so we wanna put like maybe a button
+
+27
+00:01:01.270 --> 00:01:02.600
+in our navigation
+
+28
+00:01:02.600 --> 00:01:06.550
+or maybe you also want it to open the cart
+
+29
+00:01:06.550 --> 00:01:08.670
+when somebody adds an item to their cart, right?
+
+30
+00:01:08.670 --> 00:01:10.740
+So you can show them that it's in here.
+
+31
+00:01:10.740 --> 00:01:12.410
+So when you click on the add to cart.
+
+32
+00:01:12.410 --> 00:01:17.410
+So in that case, the piece of state needs to exist
+
+33
+00:01:17.490 --> 00:01:20.260
+in the cart but the updater function
+
+34
+00:01:20.260 --> 00:01:23.970
+that will turn the cart open Boolean to true or false,
+
+35
+00:01:23.970 --> 00:01:28.690
+that needs to exist wherever we want it in our application.
+
+36
+00:01:28.690 --> 00:01:31.448
+So with that functionality,
+
+37
+00:01:31.448 --> 00:01:35.350
+you generally in React need to define that functionality
+
+38
+00:01:35.350 --> 00:01:38.350
+at a very high level and then you can pass it down
+
+39
+00:01:38.350 --> 00:01:42.330
+because if I go into my header right here
+
+40
+00:01:42.330 --> 00:01:45.330
+and I define that functionality inside of this cart,
+
+41
+00:01:45.330 --> 00:01:46.770
+there's no way for me to get
+
+42
+00:01:46.770 --> 00:01:50.530
+that functionality up a couple levels,
+
+43
+00:01:50.530 --> 00:01:53.210
+over a couple levels to the actual page,
+
+44
+00:01:53.210 --> 00:01:57.110
+down a couple levels to maybe this product component
+
+45
+00:01:57.110 --> 00:01:58.490
+and then get it in there.
+
+46
+00:01:58.490 --> 00:02:02.420
+So what we do with local state
+
+47
+00:02:02.420 --> 00:02:05.210
+is we put it in what's called context.
+
+48
+00:02:05.210 --> 00:02:10.000
+And context in React allows us to define data,
+
+49
+00:02:10.000 --> 00:02:12.270
+which is local state or really anything
+
+50
+00:02:12.270 --> 00:02:15.849
+and functionality, which is updater functions,
+
+51
+00:02:15.849 --> 00:02:18.100
+at a very high level.
+
+52
+00:02:18.100 --> 00:02:20.760
+In our case, it's gonna be at the top of our application.
+
+53
+00:02:20.760 --> 00:02:24.117
+And then you can access that data and functionality
+
+54
+00:02:24.117 --> 00:02:27.280
+at much lower levels without having
+
+55
+00:02:27.280 --> 00:02:29.330
+to pass it down via props
+
+56
+00:02:29.330 --> 00:02:31.710
+like we normally would pass data in.
+
+57
+00:02:31.710 --> 00:02:33.940
+Passing via props is a great way to get data
+
+58
+00:02:33.940 --> 00:02:35.920
+and functionality into a component
+
+59
+00:02:35.920 --> 00:02:38.760
+but it's really hard to do that
+
+60
+00:02:38.760 --> 00:02:42.220
+when your component is say seven or eight levels deep.
+
+61
+00:02:42.220 --> 00:02:43.830
+You have to pass it down all the way.
+
+62
+00:02:43.830 --> 00:02:47.114
+So that's exactly what we're gonna be doing right now.
+
+63
+00:02:47.114 --> 00:02:49.340
+And we're going to be doing that
+
+64
+00:02:49.340 --> 00:02:53.000
+in a file called cartState.
+
+65
+00:02:53.000 --> 00:02:55.740
+So we can stick that either in a,
+
+66
+00:02:55.740 --> 00:02:58.690
+it is technically going to be both a component,
+
+67
+00:02:58.690 --> 00:03:00.010
+which is a provider
+
+68
+00:03:00.010 --> 00:03:02.900
+and it's going to be a custom hook as well.
+
+69
+00:03:02.900 --> 00:03:05.410
+So we can stick that into components
+
+70
+00:03:05.410 --> 00:03:08.450
+but to me it seems more like a lib thing.
+
+71
+00:03:08.450 --> 00:03:10.340
+It's more just custom JavaScript.
+
+72
+00:03:10.340 --> 00:03:12.040
+So we'll put it in there.
+
+73
+00:03:12.040 --> 00:03:14.817 line:15% 
+And we're going to call that cartState.
+
+74
+00:03:16.365 --> 00:03:18.203 line:15% 
+cartState.js.
+
+75
+00:03:19.050 --> 00:03:21.920 line:15% 
+So there's gonna be two parts to creating our cartState.
+
+76
+00:03:21.920 --> 00:03:24.137
+We have one thing that's called a provider
+
+77
+00:03:24.137 --> 00:03:27.000
+and the provider's gonna live at a high level
+
+78
+00:03:27.000 --> 00:03:28.060
+in your application.
+
+79
+00:03:28.060 --> 00:03:32.370
+And the provider will store things like pieces of states,
+
+80
+00:03:32.370 --> 00:03:34.120
+as well as updater functions.
+
+81
+00:03:34.120 --> 00:03:36.437
+And then in order to access those pieces of states
+
+82
+00:03:36.437 --> 00:03:39.370
+and updater functions anywhere else in your application,
+
+83
+00:03:39.370 --> 00:03:40.920
+you call a consumer.
+
+84
+00:03:40.920 --> 00:03:44.000
+And the consumer is able to talk to the provider
+
+85
+00:03:44.000 --> 00:03:46.420
+and get those things from the provider
+
+86
+00:03:46.420 --> 00:03:48.740
+without having a direct link to them.
+
+87
+00:03:48.740 --> 00:03:51.210
+So it sort of just floats through the air
+
+88
+00:03:51.210 --> 00:03:52.670
+and they somehow can talk to each other
+
+89
+00:03:52.670 --> 00:03:55.660 line:15% 
+without having to have props or something like that.
+
+90
+00:03:55.660 --> 00:03:57.920 line:15% 
+So we are going to make our own provider
+
+91
+00:03:57.920 --> 00:03:59.570 line:15% 
+called the cartState provider
+
+92
+00:03:59.570 --> 00:04:00.960
+that has all that data in it.
+
+93
+00:04:00.960 --> 00:04:03.150
+So first thing is we need to create a context.
+
+94
+00:04:03.150 --> 00:04:05.510
+So I'll say const LocalStateContext
+
+95
+00:04:06.660 --> 00:04:08.267
+is equal to createContext
+
+96
+00:04:09.507 --> 00:04:12.080
+and createContext is a method that is in React.
+
+97
+00:04:12.080 --> 00:04:13.890
+So I'll just go ahead and import that.
+
+98
+00:04:13.890 --> 00:04:15.050
+There we go.
+
+99
+00:04:15.050 --> 00:04:18.500
+And then we also wanna put the LocalStateProvider
+
+100
+00:04:18.500 --> 00:04:20.110
+in its own variable as well.
+
+101
+00:04:20.110 --> 00:04:24.400
+So I'll stay const LocalStateProvider
+
+102
+00:04:24.400 --> 00:04:26.680
+is equal to LocalStateContext dot
+
+103
+00:04:26.680 --> 00:04:28.677
+and look, you can see there's a Provider
+
+104
+00:04:28.677 --> 00:04:31.322
+and a Consumer, so we want the Provider here.
+
+105
+00:04:31.322 --> 00:04:33.600
+This variable is not necessary
+
+106
+00:04:33.600 --> 00:04:36.140
+because you can just use that as a tag
+
+107
+00:04:36.140 --> 00:04:39.110
+but people get confused when there's dots inside of a tag.
+
+108
+00:04:39.110 --> 00:04:41.700
+So I like to put it in its own variable.
+
+109
+00:04:41.700 --> 00:04:44.920
+Next up, what we wanna do is to make a function
+
+110
+00:04:44.920 --> 00:04:46.780
+called CartStateProvider
+
+111
+00:04:48.540 --> 00:04:50.993
+that takes in one prop, which is children.
+
+112
+00:04:52.640 --> 00:04:53.920
+And then inside of here,
+
+113
+00:04:53.920 --> 00:04:58.403
+we're going to say this is our own custom provider.
+
+114
+00:05:02.270 --> 00:05:05.750
+We will store data,
+
+115
+00:05:05.750 --> 00:05:07.280
+which is state
+
+116
+00:05:09.150 --> 00:05:14.150
+and functionality, like updaters in here
+
+117
+00:05:14.410 --> 00:05:17.400
+and anyone can access it
+
+118
+00:05:18.380 --> 00:05:20.663
+via the consumer.
+
+119
+00:05:25.750 --> 00:05:29.010
+So let's do a really simple value here.
+
+120
+00:05:29.010 --> 00:05:33.600
+We'll just say const cartOpen is equal to true.
+
+121
+00:05:33.600 --> 00:05:34.630
+Right?
+
+122
+00:05:34.630 --> 00:05:37.160
+And then from this CartStateProvider,
+
+123
+00:05:37.160 --> 00:05:41.103
+we'll return our LocalStateProvider
+
+124
+00:05:45.000 --> 00:05:48.050
+and in the middle of that, you simply just put children.
+
+125
+00:05:48.050 --> 00:05:50.950
+Now, here is how you take data
+
+126
+00:05:50.950 --> 00:05:53.810
+and sort of open it up to the world
+
+127
+00:05:53.810 --> 00:05:55.720
+so other people can consume it.
+
+128
+00:05:55.720 --> 00:05:57.680
+We say value is equal to,
+
+129
+00:05:57.680 --> 00:06:01.630
+and any value that gets passed to your provider here
+
+130
+00:06:01.630 --> 00:06:05.290
+will then be accessible anywhere else in your application.
+
+131
+00:06:05.290 --> 00:06:09.100
+So you could pass just like a straight up number here
+
+132
+00:06:09.100 --> 00:06:11.670
+if you wanted but if you need to pass multiple things,
+
+133
+00:06:11.670 --> 00:06:12.880
+you have to pass an object.
+
+134
+00:06:12.880 --> 00:06:15.600
+So double set of curly brackets here.
+
+135
+00:06:15.600 --> 00:06:19.130
+And we wanna pass the cartOpen variable
+
+136
+00:06:19.130 --> 00:06:20.640
+that we have created.
+
+137
+00:06:20.640 --> 00:06:25.640
+Finally, what we'll do is you export the CartStateProvider
+
+138
+00:06:30.130 --> 00:06:33.360
+and we'll have to add a couple more things.
+
+139
+00:06:33.360 --> 00:06:35.660
+That's the very basic of creating a provider.
+
+140
+00:06:35.660 --> 00:06:37.270
+Now, what you do with this provider
+
+141
+00:06:37.270 --> 00:06:39.560
+is you stick somewhere in a high level
+
+142
+00:06:39.560 --> 00:06:41.580
+of your application and most likely,
+
+143
+00:06:41.580 --> 00:06:45.320
+that's gonna be in your _app.js
+
+144
+00:06:45.320 --> 00:06:48.370
+or it's gonna be in your like page.js.
+
+145
+00:06:48.370 --> 00:06:50.410
+Likely we'll put it in our app.js
+
+146
+00:06:50.410 --> 00:06:51.520
+and the reason we do that
+
+147
+00:06:51.520 --> 00:06:53.520
+is so that this data will persist
+
+148
+00:06:53.520 --> 00:06:56.650
+from page to page without resetting itself
+
+149
+00:06:56.650 --> 00:06:58.100
+every time we change the page.
+
+150
+00:06:58.100 --> 00:07:01.580
+So look, we already have a provider in here
+
+151
+00:07:01.580 --> 00:07:03.300
+and that's the ApolloProvider, right?
+
+152
+00:07:03.300 --> 00:07:06.040
+Because the data for Apollo lives at a very high level.
+
+153
+00:07:06.040 --> 00:07:10.320
+So we wanna go ahead and add in our own provider as well.
+
+154
+00:07:10.320 --> 00:07:13.460
+So you can put it inside or above.
+
+155
+00:07:13.460 --> 00:07:14.950
+It doesn't matter in this case
+
+156
+00:07:14.950 --> 00:07:18.160
+but we're gonna go ahead and say CartStateProvider.
+
+157
+00:07:18.160 --> 00:07:20.020
+So we wrap it and then go ahead
+
+158
+00:07:20.020 --> 00:07:22.343
+and import that sucker.
+
+159
+00:07:23.940 --> 00:07:24.930
+There we go.
+
+160
+00:07:24.930 --> 00:07:29.533
+Now, I believe if we open up our Dev Tools here for React,
+
+161
+00:07:32.066 --> 00:07:34.820
+we should see, there we go, CartStateProvider.
+
+162
+00:07:34.820 --> 00:07:37.260
+It doesn't actually show us that data just yet
+
+163
+00:07:37.260 --> 00:07:39.550
+but if we wanna be able to access that data,
+
+164
+00:07:39.550 --> 00:07:41.070
+we will write a custom hook.
+
+165
+00:07:41.070 --> 00:07:43.560
+So let's go ahead and do that now.
+
+166
+00:07:43.560 --> 00:07:46.390
+We'll go back to our cartState here
+
+167
+00:07:46.390 --> 00:07:49.610
+and we'll make a custom hook for accessing the cart.
+
+168
+00:07:49.610 --> 00:07:54.610
+So make a custom hook for accessing the cart local state.
+
+169
+00:07:58.766 --> 00:08:00.377
+This'll say function useCart
+
+170
+00:08:02.669 --> 00:08:05.780
+and this is gonna be a very, very simple hook.
+
+171
+00:08:05.780 --> 00:08:09.080
+Basically what we do is we say const all
+
+172
+00:08:09.080 --> 00:08:12.340
+is equal to useContext LocalStateContext
+
+173
+00:08:15.055 --> 00:08:16.130
+and then we return all.
+
+174
+00:08:16.130 --> 00:08:17.670
+So what just happened there?
+
+175
+00:08:17.670 --> 00:08:18.623
+Well, useContext is,
+
+176
+00:08:20.130 --> 00:08:22.503
+we need to make sure we're importing that,
+
+177
+00:08:25.016 --> 00:08:25.849
+there we go.
+
+178
+00:08:25.849 --> 00:08:28.230
+useContext is the consumer end of it.
+
+179
+00:08:28.230 --> 00:08:31.170
+Remember, we have our provider and we have our consumer.
+
+180
+00:08:31.170 --> 00:08:35.590
+We use a consumer here
+
+181
+00:08:35.590 --> 00:08:38.330
+to access the local state
+
+182
+00:08:39.300 --> 00:08:43.150
+and the reason why we put this into its own custom hook
+
+183
+00:08:43.150 --> 00:08:45.830
+is simply so that when you want to be able
+
+184
+00:08:45.830 --> 00:08:47.310
+to access the cart data,
+
+185
+00:08:47.310 --> 00:08:49.680
+you don't have to both import useContext
+
+186
+00:08:49.680 --> 00:08:51.400
+and the context itself,
+
+187
+00:08:51.400 --> 00:08:53.750
+we can simply just use this nice little hook
+
+188
+00:08:53.750 --> 00:08:57.520
+and it will internally access these values for us,
+
+189
+00:08:57.520 --> 00:08:58.870
+which is really slick.
+
+190
+00:08:58.870 --> 00:09:01.570
+So this cart here, now we can go ahead
+
+191
+00:09:01.570 --> 00:09:04.953
+and export that useCart value.
+
+192
+00:09:06.100 --> 00:09:08.740
+Now we can go anywhere in our application
+
+193
+00:09:08.740 --> 00:09:11.140
+and get access to that data.
+
+194
+00:09:11.140 --> 00:09:13.683
+So let's go back into our cart here.
+
+195
+00:09:14.830 --> 00:09:17.710
+And right below useUser, we'll say const,
+
+196
+00:09:17.710 --> 00:09:20.800
+just call it data is equal to useCart.
+
+197
+00:09:23.550 --> 00:09:24.383
+Boom.
+
+198
+00:09:25.930 --> 00:09:28.853
+And then just console.log data.
+
+199
+00:09:31.830 --> 00:09:33.133
+Now I refresh.
+
+200
+00:09:35.010 --> 00:09:36.760
+We've got a lot of consol.logs
+
+201
+00:09:36.760 --> 00:09:38.820
+we should probably get rid of right here
+
+202
+00:09:38.820 --> 00:09:41.360
+but you see, the first thing that logs
+
+203
+00:09:41.360 --> 00:09:45.380
+is this cartOpen is equal to true value.
+
+204
+00:09:45.380 --> 00:09:49.910
+So what we did is we defined our CartState here
+
+205
+00:09:49.910 --> 00:09:51.563
+at a very high level.
+
+206
+00:09:52.520 --> 00:09:55.840
+And then we can use it anywhere we want
+
+207
+00:09:55.840 --> 00:10:00.230
+by simply saying useCart, right?
+
+208
+00:10:00.230 --> 00:10:02.610
+And then we can take that data
+
+209
+00:10:02.610 --> 00:10:06.233
+and let's destructure it now into cartOpen.
+
+210
+00:10:07.890 --> 00:10:09.430
+Get rid of that console.log.
+
+211
+00:10:09.430 --> 00:10:13.593
+We can pass that cartOpen value to this.
+
+212
+00:10:16.820 --> 00:10:18.860
+And now we should be able to go in here
+
+213
+00:10:18.860 --> 00:10:20.513
+and just make that false.
+
+214
+00:10:22.957 --> 00:10:23.910
+And you see it's hidden, right?
+
+215
+00:10:23.910 --> 00:10:28.600
+True, it's shown, false, it closes itself.
+
+216
+00:10:28.600 --> 00:10:30.410
+So what we can now do
+
+217
+00:10:30.410 --> 00:10:33.630
+is not just expose this cartOpen variable
+
+218
+00:10:33.630 --> 00:10:36.170
+but we can also expose any other functions
+
+219
+00:10:36.170 --> 00:10:38.370
+that will change this variable from true to false.
+
+220
+00:10:38.370 --> 00:10:40.780
+So we don't actually wanna make this a straight up variable.
+
+221
+00:10:40.780 --> 00:10:42.940
+This should actually live in a piece of state.
+
+222
+00:10:42.940 --> 00:10:45.540
+So what we'll do is we'll get rid of that
+
+223
+00:10:45.540 --> 00:10:48.090
+and I'm going say const, square bracket,
+
+224
+00:10:48.090 --> 00:10:49.813
+cartOpen and setCartOpen
+
+225
+00:10:51.990 --> 00:10:53.620
+is equal to useState
+
+226
+00:10:55.570 --> 00:10:57.810
+and the default is gonna be false, right?
+
+227
+00:10:57.810 --> 00:11:00.450
+By default, the cart will be closed.
+
+228
+00:11:00.450 --> 00:11:04.090
+Now we need to import useState from React, good.
+
+229
+00:11:07.530 --> 00:11:12.530
+And we also want to expose this setCartOpen function
+
+230
+00:11:13.810 --> 00:11:14.800
+to our local state.
+
+231
+00:11:14.800 --> 00:11:15.690
+So anyone that wants
+
+232
+00:11:15.690 --> 00:11:19.880
+to explicitly set the cart open, totally can.
+
+233
+00:11:19.880 --> 00:11:22.790
+Also, you can create little helper functions, like this.
+
+234
+00:11:22.790 --> 00:11:24.440
+Function toggleCart.
+
+235
+00:11:25.860 --> 00:11:30.103
+We'll simply setCartOpen to be whatever the opposite
+
+236
+00:11:30.103 --> 00:11:33.120
+of the current cartOpen Boolean is.
+
+237
+00:11:33.120 --> 00:11:35.590
+So the bang, bang in JavaScript
+
+238
+00:11:35.590 --> 00:11:37.440
+will just give us the opposite of true or false.
+
+239
+00:11:37.440 --> 00:11:39.940
+So if a cartOpen is true, then it is false.
+
+240
+00:11:39.940 --> 00:11:41.480
+If it's false, it is true.
+
+241
+00:11:41.480 --> 00:11:42.600
+You can make another one.
+
+242
+00:11:42.600 --> 00:11:44.840
+Function called closeCart.
+
+243
+00:11:44.840 --> 00:11:46.490
+So if you wanna explicitly closeCart,
+
+244
+00:11:46.490 --> 00:11:48.340
+whether it's open or closed,
+
+245
+00:11:48.340 --> 00:11:49.910
+you just wanna make sure that it's closed,
+
+246
+00:11:49.910 --> 00:11:54.170
+you say setCartOpen false.
+
+247
+00:11:54.170 --> 00:11:57.360
+And then you can have another one, which is openCart
+
+248
+00:11:58.300 --> 00:11:59.870
+and that will be true.
+
+249
+00:11:59.870 --> 00:12:02.030
+And obviously, these are just very, very simple
+
+250
+00:12:02.030 --> 00:12:04.580
+but you could see how you might have a lot more logic
+
+251
+00:12:04.580 --> 00:12:06.600
+inside of these little helper function
+
+252
+00:12:06.600 --> 00:12:08.440
+that you can simply now take them
+
+253
+00:12:09.620 --> 00:12:13.327
+and expose them to your LocalStateProvider.
+
+254
+00:12:18.170 --> 00:12:20.300
+And I can go back into my cart now
+
+255
+00:12:22.440 --> 00:12:27.440
+and we can have a button that will close it.
+
+256
+00:12:27.460 --> 00:12:28.923
+So we'll say go here.
+
+257
+00:12:30.350 --> 00:12:31.647
+Let's say closeCart.
+
+258
+00:12:33.490 --> 00:12:35.973
+And we can give ourselves a little button.
+
+259
+00:12:37.180 --> 00:12:41.607
+I'll say right here onClick is equal to closeCart.
+
+260
+00:12:45.237 --> 00:12:46.163
+&amp;times.
+
+261
+00:12:49.050 --> 00:12:51.760
+And I guess we need to default the cart to be open right now
+
+262
+00:12:51.760 --> 00:12:54.330
+'cause we don't have an open button just yet.
+
+263
+00:12:54.330 --> 00:12:56.483
+So let's just default that to be open.
+
+264
+00:12:58.612 --> 00:13:00.470
+There we go, and see there's a little button right there
+
+265
+00:13:00.470 --> 00:13:01.883
+and as soon as I click it,
+
+266
+00:13:03.500 --> 00:13:06.530
+it flips that variable and then our CSS kicks in
+
+267
+00:13:06.530 --> 00:13:08.370
+and close the whole thing for us.
+
+268
+00:13:08.370 --> 00:13:11.930
+So there's that and then we also should have a button
+
+269
+00:13:11.930 --> 00:13:13.890
+that will open the cart for us.
+
+270
+00:13:13.890 --> 00:13:15.780
+So where do we wanna open it?
+
+271
+00:13:15.780 --> 00:13:17.460
+Well, let's go to our nav
+
+272
+00:13:17.460 --> 00:13:19.520
+and right below our SignOut button,
+
+273
+00:13:19.520 --> 00:13:21.920
+let's just give ourselves another button
+
+274
+00:13:21.920 --> 00:13:24.770
+that has a type of button
+
+275
+00:13:26.270 --> 00:13:29.070
+and that should just say My Cart
+
+276
+00:13:31.250 --> 00:13:34.010
+and when somebody clicks that, we wanna open it, right?
+
+277
+00:13:34.010 --> 00:13:37.150
+So okay, now we're not in the cart anymore,
+
+278
+00:13:37.150 --> 00:13:38.190
+we're in the nav.
+
+279
+00:13:38.190 --> 00:13:39.200
+How do we open the cart?
+
+280
+00:13:39.200 --> 00:13:44.200
+Well, go up here, const openCart is equal to useCart.
+
+281
+00:13:48.250 --> 00:13:51.060
+Boom, now we have that functionality available anywhere.
+
+282
+00:13:51.060 --> 00:13:53.120
+You see how you can just use this functionality
+
+283
+00:13:53.120 --> 00:13:54.190
+wherever you want?
+
+284
+00:13:54.190 --> 00:13:58.288
+And we can link it up onClick of this button.
+
+285
+00:13:58.288 --> 00:13:59.610
+openCart.
+
+286
+00:13:59.610 --> 00:14:01.820
+Now I think I should be able to click this.
+
+287
+00:14:01.820 --> 00:14:03.120
+Boom, opens it.
+
+288
+00:14:03.120 --> 00:14:05.340
+This one, boom, closes it.
+
+289
+00:14:05.340 --> 00:14:07.380
+On, off, on, off.
+
+290
+00:14:07.380 --> 00:14:12.210
+Last thing I think we need to do is to make sure
+
+291
+00:14:12.210 --> 00:14:15.850
+that that default value is false
+
+292
+00:14:15.850 --> 00:14:18.263
+'cause we want it to be closed by default.
+
+293
+00:14:22.410 --> 00:14:23.243
+Good.
+
+294
+00:14:23.243 --> 00:14:25.290
+And then I believe there's a little bit of styling we need
+
+295
+00:14:25.290 --> 00:14:27.393
+to do to close this cart here.
+
+296
+00:14:29.120 --> 00:14:32.800
+Let's go back to our cart here and tick this button.
+
+297
+00:14:32.800 --> 00:14:36.200
+That button goes inside of the header
+
+298
+00:14:36.200 --> 00:14:40.113
+and I believe I have a CloseButton component.
+
+299
+00:14:41.390 --> 00:14:42.860
+Some styles for you.
+
+300
+00:14:42.860 --> 00:14:44.230
+Let's try to auto import that.
+
+301
+00:14:44.230 --> 00:14:48.404
+No, but we can import it from here.
+
+302
+00:14:48.404 --> 00:14:49.404
+CloseButton.
+
+303
+00:14:53.520 --> 00:14:54.823
+Did I type it wrong?
+
+304
+00:14:57.520 --> 00:14:58.353
+Yeah.
+
+305
+00:15:01.290 --> 00:15:02.750
+Ah, there we go.
+
+306
+00:15:02.750 --> 00:15:03.980
+Look at that nice little button.
+
+307
+00:15:03.980 --> 00:15:06.412
+Open, close, open, close.
+
+308
+00:15:06.412 --> 00:15:09.820
+We should, let's get rid of some of these console.logs
+
+309
+00:15:09.820 --> 00:15:10.670
+before we end here.
+
+310
+00:15:10.670 --> 00:15:12.243
+So cart.js.
+
+311
+00:15:13.220 --> 00:15:15.893
+Console.log, I get rid of that product.
+
+312
+00:15:17.380 --> 00:15:19.833
+Console.log me, let's get rid of that.
+
+313
+00:15:20.740 --> 00:15:21.963
+Refresh the page.
+
+314
+00:15:23.020 --> 00:15:26.763
+Let's go to products.js, get rid of that console.log.
+
+315
+00:15:31.210 --> 00:15:32.113
+Products.
+
+316
+00:15:34.920 --> 00:15:35.753
+Yeah, there we go.
+
+317
+00:15:35.753 --> 00:15:37.790
+Too much, too many console.logs.
+
+318
+00:15:37.790 --> 00:15:39.863
+Make sure you clean up after yourself.
+
+319
+00:15:41.340 --> 00:15:42.173
+Beautiful.
+
+320
+00:15:42.173 --> 00:15:44.200
+So that is LocalStateContext.
+
+321
+00:15:44.200 --> 00:15:46.070
+I really like using LocalStateContext
+
+322
+00:15:46.070 --> 00:15:49.370
+'cause you can store the data anywhere you want
+
+323
+00:15:49.370 --> 00:15:51.896
+and then be able to access it at any lower level.
+
+324
+00:15:51.896 --> 00:15:53.747
+See you in the next one.
+

@@ -1,0 +1,1134 @@
+﻿WEBVTT
+
+1
+00:00:01.369 --> 00:00:03.450
+<v Tutor>All right, let's talk about writing styles</v>
+
+2
+00:00:03.450 --> 00:00:05.470
+in our react project.
+
+3
+00:00:05.470 --> 00:00:07.330
+So there's all kinds
+
+4
+00:00:07.330 --> 00:00:10.900
+of different ways that you can write CSS in a reacting.
+
+5
+00:00:10.900 --> 00:00:12.120
+You could literally
+
+6
+00:00:12.120 --> 00:00:14.470
+just add classes to elements
+
+7
+00:00:14.470 --> 00:00:16.680
+and then pop a CSS file in there
+
+8
+00:00:16.680 --> 00:00:18.400
+and call it a day.
+
+9
+00:00:18.400 --> 00:00:20.350
+You can do the same thing with SAS.
+
+10
+00:00:20.350 --> 00:00:23.440
+You could use utility framework.
+
+11
+00:00:23.440 --> 00:00:24.670
+One way that I like
+
+12
+00:00:24.670 --> 00:00:29.180
+to write all my CSS is via scoped CSS.
+
+13
+00:00:29.180 --> 00:00:31.500
+And the package that we're gonna be using today
+
+14
+00:00:31.500 --> 00:00:32.700
+is stout components.
+
+15
+00:00:32.700 --> 00:00:36.150
+But the ideas behind stout components
+
+16
+00:00:36.150 --> 00:00:39.280
+they are relevant in almost all
+
+17
+00:00:39.280 --> 00:00:41.680
+of the react base
+
+18
+00:00:41.680 --> 00:00:46.080
+and even angular and whatnot based scope CSS.
+
+19
+00:00:46.080 --> 00:00:49.160
+So all of these ideas will translate.
+
+20
+00:00:49.160 --> 00:00:52.220
+So the idea behind style components
+
+21
+00:00:52.220 --> 00:00:54.760
+or CSS in JS as we call it
+
+22
+00:00:54.760 --> 00:00:58.050
+is that you define all of your CSS
+
+23
+00:00:58.050 --> 00:00:59.876
+in components as well.
+
+24
+00:00:59.876 --> 00:01:03.010
+And those things have a number of benefits.
+
+25
+00:01:03.010 --> 00:01:06.540
+First, we're gonna be able to scope our CSS really easily.
+
+26
+00:01:06.540 --> 00:01:10.130
+And I'll show you what I mean about that in just a second.
+
+27
+00:01:10.130 --> 00:01:13.070
+Second, you can use JavaScript values inside of CSS.
+
+28
+00:01:13.070 --> 00:01:14.530
+So if you have a variable,
+
+29
+00:01:14.530 --> 00:01:17.250
+that's part of your state
+
+30
+00:01:17.250 --> 00:01:19.410
+or any part of your react application
+
+31
+00:01:19.410 --> 00:01:22.230
+you can actually use that variable inside
+
+32
+00:01:22.230 --> 00:01:23.690
+of your your react component.
+
+33
+00:01:23.690 --> 00:01:25.620
+So rather than get too much into it,
+
+34
+00:01:25.620 --> 00:01:27.170
+let's just start writing some,
+
+35
+00:01:27.170 --> 00:01:28.860
+and we'll explain along the way.
+
+36
+00:01:28.860 --> 00:01:31.940
+So open up your header.JS
+
+37
+00:01:33.170 --> 00:01:34.790
+And I think the first thing that we should do
+
+38
+00:01:34.790 --> 00:01:38.870
+is we wanna apply some styles to this sick fits logo.
+
+39
+00:01:38.870 --> 00:01:40.660
+So I'm gonna go to the sick fits here
+
+40
+00:01:40.660 --> 00:01:42.870
+and actually that should be wrapped in h1.
+
+41
+00:01:42.870 --> 00:01:44.710
+So wrap it in an h1 tag
+
+42
+00:01:44.710 --> 00:01:45.670
+and then we pop it there.
+
+43
+00:01:45.670 --> 00:01:47.800
+So let's see...
+
+44
+00:01:47.800 --> 00:01:50.470
+There we go sick fits right there.
+
+45
+00:01:50.470 --> 00:01:53.280
+If I wanted to apply styles to this,
+
+46
+00:01:53.280 --> 00:01:54.113
+you might think,
+
+47
+00:01:54.113 --> 00:01:55.100
+okay, I'll give it a class
+
+48
+00:01:55.100 --> 00:01:59.690
+of like header or a class of like logo.
+
+49
+00:01:59.690 --> 00:02:02.830
+And then you'll go into some other part
+
+50
+00:02:02.830 --> 00:02:05.810
+of your application and define.logo
+
+51
+00:02:05.810 --> 00:02:07.590
+But instead of applying classes
+
+52
+00:02:07.590 --> 00:02:09.260
+to things and going elsewhere,
+
+53
+00:02:09.260 --> 00:02:11.110
+what we're gonna do is we're gonna create
+
+54
+00:02:11.110 --> 00:02:15.660
+an h1 component with the styles already attached to it.
+
+55
+00:02:15.660 --> 00:02:18.210
+And then that will immediately
+
+56
+00:02:18.210 --> 00:02:21.250
+scope all of the styles to that h1 tag
+
+57
+00:02:21.250 --> 00:02:22.270
+and make sure that like
+
+58
+00:02:22.270 --> 00:02:26.650
+if I write like a link inside of this logo component
+
+59
+00:02:26.650 --> 00:02:30.670
+and it's not gonna apply to any other links on the page
+
+60
+00:02:30.670 --> 00:02:32.500
+or if I say like,
+
+61
+00:02:32.500 --> 00:02:33.750
+I have a common class,
+
+62
+00:02:33.750 --> 00:02:35.590
+like, how many times have you given something
+
+63
+00:02:35.590 --> 00:02:38.240
+a class of new or special or something like that.
+
+64
+00:02:38.240 --> 00:02:40.340
+And then accidentally you use that class
+
+65
+00:02:40.340 --> 00:02:41.640
+somewhere else on the website
+
+66
+00:02:41.640 --> 00:02:43.710
+and that broke it then.
+
+67
+00:02:43.710 --> 00:02:45.840
+So the idea here is that
+
+68
+00:02:45.840 --> 00:02:46.673
+we're gonna go up here
+
+69
+00:02:46.673 --> 00:02:50.003
+and we're to make a variable called Logo.
+
+70
+00:02:50.970 --> 00:02:52.830
+And that is equal to a styled.
+
+71
+00:02:52.830 --> 00:02:56.650
+And then here is where you will tell it
+
+72
+00:02:56.650 --> 00:02:59.620
+what type of component you want it to be.
+
+73
+00:02:59.620 --> 00:03:00.453
+So in our case,
+
+74
+00:03:00.453 --> 00:03:01.900
+we want it to be a styled.h1
+
+75
+00:03:03.810 --> 00:03:05.680
+and then we use back techs.
+
+76
+00:03:05.680 --> 00:03:08.840
+So don't use quotes, double quotes.
+
+77
+00:03:08.840 --> 00:03:10.210
+We wanna use back techs.
+
+78
+00:03:10.210 --> 00:03:11.920
+And this is what is referred
+
+79
+00:03:11.920 --> 00:03:13.680
+to as a tag template literal,
+
+80
+00:03:13.680 --> 00:03:18.090
+it's kind of like just running a function called styled.h1
+
+81
+00:03:18.090 --> 00:03:20.750
+then we'll go ahead and we'll import styles.
+
+82
+00:03:20.750 --> 00:03:23.620
+So start import styles from style components.
+
+83
+00:03:23.620 --> 00:03:27.300
+And then let's start writing our CSS inside of here.
+
+84
+00:03:27.300 --> 00:03:29.103
+So we'll say background is red.
+
+85
+00:03:30.450 --> 00:03:34.590
+Then what we do to apply the CSS, right?
+
+86
+00:03:34.590 --> 00:03:37.560
+This CSS has not been applied to anything just yet
+
+87
+00:03:37.560 --> 00:03:38.650
+is that we're going to go
+
+88
+00:03:38.650 --> 00:03:43.010
+to where we have used our h1
+
+89
+00:03:43.010 --> 00:03:45.330
+and we are gonna replace the h1
+
+90
+00:03:45.330 --> 00:03:48.030
+with our new component that we just made.
+
+91
+00:03:48.030 --> 00:03:49.870
+We'll call it Logo.
+
+92
+00:03:49.870 --> 00:03:51.400
+And then when I give it a save here
+
+93
+00:03:51.400 --> 00:03:53.844
+you'll see that this Logo
+
+94
+00:03:53.844 --> 00:03:57.200
+it's still being rendered as an h1
+
+95
+00:03:57.200 --> 00:03:58.200
+but it's got this like
+
+96
+00:03:58.200 --> 00:04:01.240
+sort of pseudo random or not pseudos,
+
+97
+00:04:01.240 --> 00:04:03.850
+it's totally random ID attached to it.
+
+98
+00:04:03.850 --> 00:04:06.470
+And then that is associated with whatever styles
+
+99
+00:04:06.470 --> 00:04:07.340
+we write on.
+
+100
+00:04:07.340 --> 00:04:11.080
+Now, actually let's change that up a little bit.
+
+101
+00:04:11.080 --> 00:04:14.980
+This Logo should encompass the entire link tag.
+
+102
+00:04:14.980 --> 00:04:16.483
+So let's make sure we do that.
+
+103
+00:04:18.930 --> 00:04:20.500
+Okay. So we've got our Logo
+
+104
+00:04:20.500 --> 00:04:22.060
+and then we have the Lincoln side of it
+
+105
+00:04:22.060 --> 00:04:24.610
+and that translates to an h1 tag
+
+106
+00:04:24.610 --> 00:04:26.300
+with an a inside of it.
+
+107
+00:04:26.300 --> 00:04:31.100
+Now, if I go in here and I select the link, like a
+
+108
+00:04:31.100 --> 00:04:36.100
+and I maybe say color is equal to white
+
+109
+00:04:38.170 --> 00:04:39.630
+you'll see that it turns white
+
+110
+00:04:39.630 --> 00:04:41.452
+and that doesn't turn the rest
+
+111
+00:04:41.452 --> 00:04:43.310
+of the links on the page white.
+
+112
+00:04:43.310 --> 00:04:45.488
+It only turns the links inside
+
+113
+00:04:45.488 --> 00:04:48.100
+of the style that h1 white.
+
+114
+00:04:48.100 --> 00:04:49.260
+And that's really, really nice
+
+115
+00:04:49.260 --> 00:04:50.580
+because now I don't have to go adding
+
+116
+00:04:50.580 --> 00:04:53.060
+like you still can add classes to things, I did
+
+117
+00:04:53.060 --> 00:04:55.120
+and we'll look at how to do that,
+
+118
+00:04:55.120 --> 00:04:58.320
+but I no longer have to think of a class name
+
+119
+00:04:58.320 --> 00:05:01.080
+a very specific class to add to this link
+
+120
+00:05:01.080 --> 00:05:03.229
+and oh! It accidentally applied to something else.
+
+121
+00:05:03.229 --> 00:05:04.780
+All of the styles
+
+122
+00:05:04.780 --> 00:05:06.560
+that I write inside of here,
+
+123
+00:05:06.560 --> 00:05:08.110
+first of all the top level ones
+
+124
+00:05:08.110 --> 00:05:10.780
+will be applied directly to the h1.
+
+125
+00:05:10.780 --> 00:05:13.370
+And then you can also have descendant selectors
+
+126
+00:05:13.370 --> 00:05:17.300
+inside of each of these style components.
+
+127
+00:05:17.300 --> 00:05:21.160
+So let's start writing a little bit of CSS on here.
+
+128
+00:05:21.160 --> 00:05:22.530
+We haven't done like a reset
+
+129
+00:05:22.530 --> 00:05:24.760
+or global styles or fonts or anything just yet.
+
+130
+00:05:24.760 --> 00:05:26.480
+That'll come in the next video,
+
+131
+00:05:26.480 --> 00:05:28.220
+but for now let's get some base styles
+
+132
+00:05:28.220 --> 00:05:29.590
+on this h1 going.
+
+133
+00:05:29.590 --> 00:05:32.260
+So we'll say font size is 4rem,
+
+134
+00:05:32.260 --> 00:05:37.260
+margin left 2rem, position relative, Z index 2
+
+135
+00:05:40.030 --> 00:05:41.940
+and by the way these completions
+
+136
+00:05:41.940 --> 00:05:44.700
+that I'm doing here again is z2.
+
+137
+00:05:44.700 --> 00:05:46.320
+And I just open it up and say,
+
+138
+00:05:46.320 --> 00:05:49.260
+expand abbreviation.
+
+139
+00:05:49.260 --> 00:05:53.350
+If you don't have a keyboard shortcut hooked up to that,
+
+140
+00:05:53.350 --> 00:05:56.460
+you can do so in your vs code settings,
+
+141
+00:05:56.460 --> 00:06:00.660
+I added control E to that one myself
+
+142
+00:06:00.660 --> 00:06:02.280
+so that it will expand.
+
+143
+00:06:02.280 --> 00:06:04.150
+And that's how I write CSS so quickly
+
+144
+00:06:04.150 --> 00:06:06.510
+as I use these Emmet expansion.
+
+145
+00:06:06.510 --> 00:06:08.820
+And then we want transform,
+
+146
+00:06:08.820 --> 00:06:11.923
+we'll say skew(-7deg), okay.
+
+147
+00:06:13.450 --> 00:06:16.420
+Text decoration none on that link.
+
+148
+00:06:16.420 --> 00:06:17.740
+Okay. Looking good.
+
+149
+00:06:17.740 --> 00:06:19.610
+Text transform uppercase
+
+150
+00:06:19.610 --> 00:06:24.610
+and padding is 0.5rem and 1REM.
+
+151
+00:06:24.770 --> 00:06:28.230
+Okay. So that's very basic CSS.
+
+152
+00:06:28.230 --> 00:06:29.530
+We're gonna make it look a lot better
+
+153
+00:06:29.530 --> 00:06:30.790
+than that in just a second,
+
+154
+00:06:30.790 --> 00:06:33.360
+but that's our basics for now
+
+155
+00:06:33.360 --> 00:06:35.430
+in terms of how do we create a style component.
+
+156
+00:06:35.430 --> 00:06:39.090
+Now, if this logo here was to be reused
+
+157
+00:06:39.090 --> 00:06:42.420
+in other portions of the website
+
+158
+00:06:42.420 --> 00:06:43.340
+then what I would do is
+
+159
+00:06:43.340 --> 00:06:45.710
+I would stick this in its own file
+
+160
+00:06:45.710 --> 00:06:47.150
+or its own component
+
+161
+00:06:47.150 --> 00:06:49.260
+and then import it as I needed it.
+
+162
+00:06:49.260 --> 00:06:52.230
+So we can take a look real quick at our components.
+
+163
+00:06:52.230 --> 00:06:54.720
+Our styles folder here has a list
+
+164
+00:06:54.720 --> 00:06:56.380
+of all these different styles
+
+165
+00:06:56.380 --> 00:06:58.230
+that I have provided for you.
+
+166
+00:06:58.230 --> 00:07:01.030
+So, some form styles.
+
+167
+00:07:01.030 --> 00:07:01.890
+So here we go,
+
+168
+00:07:01.890 --> 00:07:04.700
+const Forms = styled.form.
+
+169
+00:07:04.700 --> 00:07:06.809
+It's got the box shadow, the font size
+
+170
+00:07:06.809 --> 00:07:10.810
+and anywhere I want to apply these form styles
+
+171
+00:07:10.810 --> 00:07:12.590
+I simply just need to import it.
+
+172
+00:07:12.590 --> 00:07:15.230
+And in place of using a regular form tag
+
+173
+00:07:15.230 --> 00:07:18.370
+I can use a style component form tag
+
+174
+00:07:18.370 --> 00:07:20.600
+and it still takes all the regular attributes
+
+175
+00:07:20.600 --> 00:07:22.290
+and props that you're used to.
+
+176
+00:07:22.290 --> 00:07:23.240
+What else do we have here?
+
+177
+00:07:23.240 --> 00:07:25.006
+Pagination, we'll go through all these
+
+178
+00:07:25.006 --> 00:07:26.360
+as we need them
+
+179
+00:07:26.360 --> 00:07:29.410
+but just know that these are all reasonable styles
+
+180
+00:07:29.410 --> 00:07:31.440
+that we use throughout the website.
+
+181
+00:07:31.440 --> 00:07:33.740
+So some people say,
+
+182
+00:07:33.740 --> 00:07:38.130
+yeah, always put your styles in a separate file.
+
+183
+00:07:38.130 --> 00:07:41.080
+My sort of mantra or my way of approaching this
+
+184
+00:07:41.080 --> 00:07:44.220
+is I don't like to have too many files
+
+185
+00:07:44.220 --> 00:07:45.270
+because that gets confusing.
+
+186
+00:07:45.270 --> 00:07:47.910
+I get overwhelmed with all the files,
+
+187
+00:07:47.910 --> 00:07:48.760
+too many files for me.
+
+188
+00:07:48.760 --> 00:07:51.400
+So I'll just define the styles
+
+189
+00:07:51.400 --> 00:07:53.660
+in the component where I use it.
+
+190
+00:07:53.660 --> 00:07:55.810
+And then as I find either,
+
+191
+00:07:55.810 --> 00:07:56.850
+it's getting too big
+
+192
+00:07:56.850 --> 00:07:58.300
+in this one component
+
+193
+00:07:58.300 --> 00:08:00.710
+or I need to reuse this style
+
+194
+00:08:00.710 --> 00:08:04.430
+in six or seven or even two different places in the website
+
+195
+00:08:04.430 --> 00:08:07.680
+then I'll stick it in its own file, export it
+
+196
+00:08:07.680 --> 00:08:08.879
+and then import it
+
+197
+00:08:08.879 --> 00:08:10.530
+like a regular old component
+
+198
+00:08:10.530 --> 00:08:12.600
+into any other place
+
+199
+00:08:12.600 --> 00:08:14.463
+that I specifically need it.
+
+200
+00:08:15.310 --> 00:08:17.880
+Okay. So we got our styled h1
+
+201
+00:08:19.090 --> 00:08:20.070
+that's looking pretty good.
+
+202
+00:08:20.070 --> 00:08:21.920
+Let's make another one
+
+203
+00:08:21.920 --> 00:08:23.730
+for this header right here.
+
+204
+00:08:23.730 --> 00:08:25.240
+So what we'll do here
+
+205
+00:08:25.240 --> 00:08:27.160
+we wanna style this header.
+
+206
+00:08:27.160 --> 00:08:30.223
+So we'll say const Headerstyles
+
+207
+00:08:31.161 --> 00:08:31.994
+And sometimes I like to put
+
+208
+00:08:31.994 --> 00:08:34.750
+or usually I like to put header styles on the end
+
+209
+00:08:34.750 --> 00:08:37.710
+just so that it notes to me that it is a stalled component
+
+210
+00:08:37.710 --> 00:08:40.987
+and not a regular react component.
+
+211
+00:08:40.987 --> 00:08:43.990
+And that is this styled.header''
+
+212
+00:08:43.990 --> 00:08:45.820
+it's a header component, right?
+
+213
+00:08:45.820 --> 00:08:46.900
+And then we'll go in here
+
+214
+00:08:46.900 --> 00:08:51.900
+and let's just a background red again on that.
+
+215
+00:08:52.560 --> 00:08:55.720
+And just triple check that it's working
+
+216
+00:08:55.720 --> 00:08:57.370
+kind of one funny thing about this
+
+217
+00:08:57.370 --> 00:09:00.090
+is I'm going to show you how to put variables
+
+218
+00:09:00.090 --> 00:09:02.100
+like red variable in here,
+
+219
+00:09:02.100 --> 00:09:04.250
+but the the red that I've chosen
+
+220
+00:09:04.250 --> 00:09:06.860
+is actually just red.
+
+221
+00:09:06.860 --> 00:09:07.730
+So it's kind of nice.
+
+222
+00:09:07.730 --> 00:09:10.200
+You can just use the word red if you want.
+
+223
+00:09:10.200 --> 00:09:11.110
+But what we're going to do here
+
+224
+00:09:11.110 --> 00:09:14.230
+is where our place the open and close tag
+
+225
+00:09:14.230 --> 00:09:15.260
+with our header styles.
+
+226
+00:09:15.260 --> 00:09:16.870
+And now I give it a save.
+
+227
+00:09:16.870 --> 00:09:18.110
+It doesn't change the markup
+
+228
+00:09:18.110 --> 00:09:21.520
+but it does change which CSS is being applied to it.
+
+229
+00:09:21.520 --> 00:09:23.040
+So we don't want background red
+
+230
+00:09:23.040 --> 00:09:27.920
+but we do want to grab the bar inside of it.
+
+231
+00:09:27.920 --> 00:09:30.720
+That's why I've popped that class there.
+
+232
+00:09:30.720 --> 00:09:32.393
+It'll say border bottom.
+
+233
+00:09:35.110 --> 00:09:35.943
+There we go.
+
+234
+00:09:35.943 --> 00:09:40.350
+That one, 10px solid black,
+
+235
+00:09:40.350 --> 00:09:41.910
+and that black is actually going
+
+236
+00:09:41.910 --> 00:09:44.270
+to be a variable black.
+
+237
+00:09:44.270 --> 00:09:47.970
+So let's do this var(--black,black)
+
+238
+00:09:49.930 --> 00:09:50.763
+And what we'll do
+
+239
+00:09:50.763 --> 00:09:53.070
+is we'll set a CSS variable called black.
+
+240
+00:09:53.070 --> 00:09:56.290
+That's slightly different in just a bit,
+
+241
+00:09:56.290 --> 00:09:57.700
+but for now we'll just set it
+
+242
+00:09:57.700 --> 00:09:59.350
+to fall back to regular old black.
+
+243
+00:09:59.350 --> 00:10:01.870
+That's what the second argument of Varas.
+
+244
+00:10:01.870 --> 00:10:02.910
+If you've never seen this before,
+
+245
+00:10:02.910 --> 00:10:04.450
+this is part of CSS.
+
+246
+00:10:04.450 --> 00:10:07.290
+This is not a specific JavaScript thing.
+
+247
+00:10:07.290 --> 00:10:09.270
+Stock components does have the ability
+
+248
+00:10:09.270 --> 00:10:11.470
+to do like theme variables,
+
+249
+00:10:11.470 --> 00:10:13.300
+but with CSS variables,
+
+250
+00:10:13.300 --> 00:10:15.820
+I haven't found a necessary
+
+251
+00:10:15.820 --> 00:10:18.180
+or a need for that specific thing.
+
+252
+00:10:18.180 --> 00:10:19.570
+So I've just been doing that.
+
+253
+00:10:19.570 --> 00:10:22.530
+We'll display a grid on that
+
+254
+00:10:22.530 --> 00:10:23.880
+grid template columns.
+
+255
+00:10:23.880 --> 00:10:27.890
+GTC is going to be auto 1fr
+
+256
+00:10:27.890 --> 00:10:32.890
+justified content is space between aligned items center.
+
+257
+00:10:38.160 --> 00:10:40.390
+Is looking pretty good.
+
+258
+00:10:40.390 --> 00:10:45.390
+And then we'll grab the other one .sub-bar display grid.
+
+259
+00:10:45.900 --> 00:10:48.550
+We're not adding mobile styles right now.
+
+260
+00:10:48.550 --> 00:10:49.980
+We will come back to that.
+
+261
+00:10:49.980 --> 00:10:52.920
+So if it's looking a little funky on your phone
+
+262
+00:10:52.920 --> 00:10:57.920
+that's why grid template columns is 1fr auto border bottom.
+
+263
+00:11:01.120 --> 00:11:05.230
+Actually, let's just don't duplicate that one up here
+
+264
+00:11:07.390 --> 00:11:11.023
+Looking good, that should just be 1px not 10.
+
+265
+00:11:12.880 --> 00:11:15.800
+All right. So that's the very basics of our styles.
+
+266
+00:11:15.800 --> 00:11:17.350
+That's how we're going to be writing all
+
+267
+00:11:17.350 --> 00:11:19.330
+of the styles in this project.
+
+268
+00:11:19.330 --> 00:11:20.670
+I personally use this on,
+
+269
+00:11:20.670 --> 00:11:23.400
+I dunno, probably three or four different projects
+
+270
+00:11:23.400 --> 00:11:24.610
+I have in production.
+
+271
+00:11:24.610 --> 00:11:26.480
+And I am a big fan of it
+
+272
+00:11:26.480 --> 00:11:29.610
+because it doesn't get you too far away
+
+273
+00:11:29.610 --> 00:11:33.296
+from what regular CSS looks like
+
+274
+00:11:33.296 --> 00:11:36.360
+but it does still give you all of the benefits
+
+275
+00:11:36.360 --> 00:11:38.767
+of being able to scope it.
+
+276
+00:11:38.767 --> 00:11:40.400
+Last thing you're gonna notice is
+
+277
+00:11:40.400 --> 00:11:42.160
+that if you refresh the page here,
+
+278
+00:11:42.160 --> 00:11:43.750
+you're gonna see that it does this
+
+279
+00:11:43.750 --> 00:11:45.110
+like flicker where you get
+
+280
+00:11:45.110 --> 00:11:47.600
+like the unstyled page for just a second.
+
+281
+00:11:47.600 --> 00:11:49.050
+We're gonna look at how to fix that
+
+282
+00:11:49.050 --> 00:11:50.380
+with server-side rendering
+
+283
+00:11:50.380 --> 00:11:52.313
+in a coming video.
+

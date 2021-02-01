@@ -1,0 +1,1206 @@
+﻿WEBVTT
+
+1
+00:00:00.136 --> 00:00:01.494
+(whooshing)
+
+2
+00:00:01.494 --> 00:00:03.010
+<v Instructor>All right, we are going to get</v>
+
+3
+00:00:03.010 --> 00:00:05.950
+into Keystone in the back end of things
+
+4
+00:00:05.950 --> 00:00:08.730
+and in order to do that, we first need a database
+
+5
+00:00:08.730 --> 00:00:11.180
+because Keystone, when we create all of our items
+
+6
+00:00:11.180 --> 00:00:13.880
+and our schemas and saving products to the database
+
+7
+00:00:13.880 --> 00:00:14.713
+and uploading images,
+
+8
+00:00:14.713 --> 00:00:16.900
+all that data gets saved into a database.
+
+9
+00:00:16.900 --> 00:00:20.980
+Now, Keystone is a layer that sort of sits on top
+
+10
+00:00:20.980 --> 00:00:23.220
+of a number of different databases.
+
+11
+00:00:23.220 --> 00:00:25.540
+You can use MongoDB, you can use Postgres,
+
+12
+00:00:25.540 --> 00:00:27.200
+or you can use Prisma.
+
+13
+00:00:27.200 --> 00:00:28.439
+Now, we're gonna be using MongoDB.
+
+14
+00:00:28.439 --> 00:00:30.910
+MongDB is one of my favorite databases.
+
+15
+00:00:30.910 --> 00:00:33.240
+You'll hear people say they love it or they hate
+
+16
+00:00:33.240 --> 00:00:35.930
+or it's amazing or it's awful and slow
+
+17
+00:00:35.930 --> 00:00:38.890
+and I've been using MongoDB for many years.
+
+18
+00:00:38.890 --> 00:00:40.360
+I run my own course platform on it
+
+19
+00:00:40.360 --> 00:00:42.250
+and I'm a big fan of it.
+
+20
+00:00:42.250 --> 00:00:45.330
+So we are getting into that.
+
+21
+00:00:45.330 --> 00:00:48.677
+Now, you, if you know how to install MongoDB,
+
+22
+00:00:48.677 --> 00:00:51.250
+and you know ho to make a new database,
+
+23
+00:00:51.250 --> 00:00:53.060
+you can skip this video.
+
+24
+00:00:53.060 --> 00:00:54.040
+This video's for people
+
+25
+00:00:54.040 --> 00:00:58.240
+who don't necessarily have made a database before.
+
+26
+00:00:58.240 --> 00:01:01.370
+So we have two options for a database.
+
+27
+00:01:01.370 --> 00:01:05.420
+We can either run MongoDB locally on our computer
+
+28
+00:01:05.420 --> 00:01:09.011
+and the benefit of that is it's super fast.
+
+29
+00:01:09.011 --> 00:01:11.320
+If you have like a slow network connection
+
+30
+00:01:11.320 --> 00:01:13.110
+or you're doing this on an airplane
+
+31
+00:01:13.110 --> 00:01:14.201
+or something like that,
+
+32
+00:01:14.201 --> 00:01:16.842
+then you'll be able to do most of it
+
+33
+00:01:16.842 --> 00:01:19.500
+without having an internet connection.
+
+34
+00:01:19.500 --> 00:01:21.770
+The downside to that is it can be a little bit difficult
+
+35
+00:01:21.770 --> 00:01:25.660
+to get MongoDB installed on your specific computer.
+
+36
+00:01:25.660 --> 00:01:28.620
+So if you take a look at the MongoDB documentation,
+
+37
+00:01:28.620 --> 00:01:33.180
+they have some ways to get it installed on Windows.
+
+38
+00:01:33.180 --> 00:01:37.420
+Holy, actually the Windows is not too, too bad.
+
+39
+00:01:37.420 --> 00:01:39.090
+And installing it on macOS
+
+40
+00:01:40.410 --> 00:01:41.710
+and it's usually what I'll do
+
+41
+00:01:41.710 --> 00:01:46.560
+is I run MongoDB in a tab
+
+42
+00:01:46.560 --> 00:01:48.710
+and that will start it
+
+43
+00:01:48.710 --> 00:01:50.500
+and sort of run it in the background.
+
+44
+00:01:50.500 --> 00:01:52.440
+The other way, and what I'm gonna recommend,
+
+45
+00:01:52.440 --> 00:01:55.340
+so if you want to go down the route of installing it locally
+
+46
+00:01:55.340 --> 00:01:58.330
+in your computer, you can follow these instructions
+
+47
+00:01:58.330 --> 00:01:59.180
+to get it up and running.
+
+48
+00:01:59.180 --> 00:02:00.990
+It's really not too, too bad.
+
+49
+00:02:00.990 --> 00:02:05.330
+However, the better way is to use MongoDB Atlas.
+
+50
+00:02:05.330 --> 00:02:06.760
+And this is a hosted service.
+
+51
+00:02:06.760 --> 00:02:09.171
+It has a very generous free tier.
+
+52
+00:02:09.171 --> 00:02:11.790
+And what I like about it
+
+53
+00:02:11.790 --> 00:02:14.720
+is that it's from MongoDB themselves.
+
+54
+00:02:14.720 --> 00:02:18.100
+They give you a whole layer of like really nice UI
+
+55
+00:02:18.100 --> 00:02:22.260
+and reporting and analytics on top of your database.
+
+56
+00:02:22.260 --> 00:02:24.520
+And when it comes time to deploy this sucker
+
+57
+00:02:24.520 --> 00:02:26.678
+to the internet,
+
+58
+00:02:26.678 --> 00:02:31.140
+you're gonna have to run it on a public database somewhere
+
+59
+00:02:31.140 --> 00:02:34.306
+and I use MongoDB myself
+
+60
+00:02:34.306 --> 00:02:36.270
+on MongoDB Atlas.
+
+61
+00:02:36.270 --> 00:02:38.070
+So it's really good.
+
+62
+00:02:38.070 --> 00:02:39.020
+So what I want you to do
+
+63
+00:02:39.020 --> 00:02:41.040
+is go ahead and start a,
+
+64
+00:02:42.210 --> 00:02:44.390
+sign up for an account on MongoDB Atlas.
+
+65
+00:02:44.390 --> 00:02:45.950
+And I'm gonna go through all the steps
+
+66
+00:02:45.950 --> 00:02:47.630
+on setting it up for you.
+
+67
+00:02:47.630 --> 00:02:49.610
+If you've watched some of my other tutorials,
+
+68
+00:02:49.610 --> 00:02:51.051
+which we use Mlab,
+
+69
+00:02:51.051 --> 00:02:54.310
+the process is a little bit more involved,
+
+70
+00:02:54.310 --> 00:02:56.490
+so that's why I'm gonna record this.
+
+71
+00:02:56.490 --> 00:02:59.210
+So once you're signed into your thing,
+
+72
+00:02:59.210 --> 00:03:02.320
+you're gonna wanna make a new organization
+
+73
+00:03:02.320 --> 00:03:05.040
+for what you want.
+
+74
+00:03:05.040 --> 00:03:07.680
+And I'm saying this because you don't wanna mix
+
+75
+00:03:09.180 --> 00:03:10.990
+like production data
+
+76
+00:03:10.990 --> 00:03:13.300
+or if you ever wanna share this with a friend,
+
+77
+00:03:13.300 --> 00:03:14.630
+just make a new organization
+
+78
+00:03:14.630 --> 00:03:16.840
+and get it nice and clean from the start.
+
+79
+00:03:16.840 --> 00:03:20.520
+So if you just created a brand new account,
+
+80
+00:03:20.520 --> 00:03:23.550
+you probably can use whatever organization that you have
+
+81
+00:03:23.550 --> 00:03:25.963
+but I'm gonna create a brand new one here.
+
+82
+00:03:27.570 --> 00:03:32.243
+And I'm gonna call it Sick Fits Org.
+
+83
+00:03:33.230 --> 00:03:35.103
+We want MongoDB Atlas.
+
+84
+00:03:36.320 --> 00:03:38.202
+And add a member.
+
+85
+00:03:38.202 --> 00:03:41.120
+Permissions, okay, so this is me.
+
+86
+00:03:41.120 --> 00:03:43.660
+I've got my, I'm the organization owner.
+
+87
+00:03:43.660 --> 00:03:46.210
+You can also add additional people.
+
+88
+00:03:46.210 --> 00:03:47.990
+In my case, I don't need that,
+
+89
+00:03:47.990 --> 00:03:49.840
+so I'm gonna create the organization.
+
+90
+00:03:51.160 --> 00:03:53.140
+Okay, so now we create an organization.
+
+91
+00:03:53.140 --> 00:03:54.230
+That's not a database yet.
+
+92
+00:03:54.230 --> 00:03:57.500
+That was just like a governing body over our database.
+
+93
+00:03:57.500 --> 00:03:59.330
+Now, we wanna make a new project,
+
+94
+00:03:59.330 --> 00:04:03.460
+which I found very confusing but the word project
+
+95
+00:04:03.460 --> 00:04:04.860
+is a database.
+
+96
+00:04:04.860 --> 00:04:08.023
+So create a new project, we're gonna call it Sick Fits.
+
+97
+00:04:10.210 --> 00:04:11.373
+Click on Next.
+
+98
+00:04:12.750 --> 00:04:15.230
+And do we wanna add more people to it?
+
+99
+00:04:15.230 --> 00:04:16.063
+No.
+
+100
+00:04:16.063 --> 00:04:17.083
+Create the project.
+
+101
+00:04:19.270 --> 00:04:20.290
+Then once we're in there,
+
+102
+00:04:20.290 --> 00:04:22.020
+we need to create a cluster.
+
+103
+00:04:22.020 --> 00:04:23.710
+Click on build a cluster.
+
+104
+00:04:23.710 --> 00:04:26.483
+We wanna go for the shared free cluster.
+
+105
+00:04:28.704 --> 00:04:32.030
+It's extremely cheap when you get into running them
+
+106
+00:04:32.030 --> 00:04:33.870
+but we just want the free one.
+
+107
+00:04:33.870 --> 00:04:35.400
+So create that.
+
+108
+00:04:35.400 --> 00:04:36.233
+This is kinda cool.
+
+109
+00:04:36.233 --> 00:04:38.590
+It asks you where do you wanna put your data?
+
+110
+00:04:38.590 --> 00:04:42.410
+So in our case, I'm gonna go AWS on us-east-1.
+
+111
+00:04:42.410 --> 00:04:44.720
+That's the one that always goes down
+
+112
+00:04:44.720 --> 00:04:46.993
+that most of the internet is hosted on.
+
+113
+00:04:48.410 --> 00:04:51.670
+Cluster tier, we are on the Sandbox,
+
+114
+00:04:51.670 --> 00:04:53.290
+which is free forever.
+
+115
+00:04:53.290 --> 00:04:55.371
+And it doesn't given you any backup.
+
+116
+00:04:55.371 --> 00:04:58.830
+MongoDB version that you want.
+
+117
+00:04:58.830 --> 00:05:01.363
+It probably doesn't matter which version you want.
+
+118
+00:05:01.363 --> 00:05:03.100
+If they set that as the default,
+
+119
+00:05:03.100 --> 00:05:04.470
+then just go with that.
+
+120
+00:05:04.470 --> 00:05:06.250
+And then finally, cluster name.
+
+121
+00:05:06.250 --> 00:05:08.173
+Let's call it SickCluster.
+
+122
+00:05:11.830 --> 00:05:12.960
+I'm sure you can think
+
+123
+00:05:12.960 --> 00:05:15.350
+of some other fun names for a cluster.
+
+124
+00:05:15.350 --> 00:05:16.890
+So go ahead and create it.
+
+125
+00:05:16.890 --> 00:05:18.360
+Now, this will take, I don't know,
+
+126
+00:05:18.360 --> 00:05:20.660
+a couple minutes or so.
+
+127
+00:05:20.660 --> 00:05:21.880
+While that is going on,
+
+128
+00:05:21.880 --> 00:05:25.210
+let's open up our Keystone backend
+
+129
+00:05:25.210 --> 00:05:27.810
+and get to configging this database.
+
+130
+00:05:27.810 --> 00:05:30.033
+So I'm gonna open up my terminal here.
+
+131
+00:05:31.440 --> 00:05:35.390
+And I'm gonna go to our Sick Fits directory
+
+132
+00:05:37.220 --> 00:05:39.320
+and I'm gonna go into the backend folder.
+
+133
+00:05:39.320 --> 00:05:41.460
+We have already an npm install on this directory
+
+134
+00:05:41.460 --> 00:05:43.100
+but you should have done that earlier.
+
+135
+00:05:43.100 --> 00:05:46.280
+And then I'm going to just open up that
+
+136
+00:05:46.280 --> 00:05:48.090
+in another VS Code window
+
+137
+00:05:48.090 --> 00:05:50.265
+and you see that it is pink at the top
+
+138
+00:05:50.265 --> 00:05:55.080
+so that it shows us that this is our backend.
+
+139
+00:05:55.080 --> 00:05:58.550
+Now, in order to get going on the backend,
+
+140
+00:05:58.550 --> 00:06:02.560
+we need to put all of the information
+
+141
+00:06:02.560 --> 00:06:05.950
+about connecting to our database somewhere safe
+
+142
+00:06:05.950 --> 00:06:08.940
+because if you just put the connection strings
+
+143
+00:06:08.940 --> 00:06:10.620
+and the passwords and the usernames
+
+144
+00:06:10.620 --> 00:06:11.830
+and all of that information,
+
+145
+00:06:11.830 --> 00:06:14.350
+if you just put that in like a JavaScript file,
+
+146
+00:06:14.350 --> 00:06:16.277
+then what ends up happening
+
+147
+00:06:16.277 --> 00:06:19.894
+is that that data goes into your version control
+
+148
+00:06:19.894 --> 00:06:24.060
+and it's not good to have that sort of secret data in there.
+
+149
+00:06:24.060 --> 00:06:27.460
+So we need to put it in a .env file
+
+150
+00:06:27.460 --> 00:06:31.830
+and the .env file does not go into your version control.
+
+151
+00:06:31.830 --> 00:06:34.830
+It is just for local development
+
+152
+00:06:34.830 --> 00:06:36.660
+and then when we deploy, we'll figure out
+
+153
+00:06:36.660 --> 00:06:40.060
+how to replicate all of these.
+
+154
+00:06:40.060 --> 00:06:42.970
+These are called environmental variables in there.
+
+155
+00:06:42.970 --> 00:06:46.460
+So this is a sample file of all the environmental variables
+
+156
+00:06:46.460 --> 00:06:49.260
+that we will be using in here.
+
+157
+00:06:49.260 --> 00:06:52.130
+What I want you to do is to, and this is super important,
+
+158
+00:06:52.130 --> 00:06:54.097
+we need to rename this, okay?
+
+159
+00:06:54.097 --> 00:06:56.780
+A lot of people always get tripped up on this part
+
+160
+00:06:56.780 --> 00:06:57.613
+in my courses.
+
+161
+00:06:57.613 --> 00:06:58.490
+You've gotta rename it.
+
+162
+00:06:58.490 --> 00:07:00.083
+Don't leave it as sample.env.
+
+163
+00:07:00.083 --> 00:07:05.083
+You wanna rename it to just .env.
+
+164
+00:07:06.220 --> 00:07:07.360
+Okay?
+
+165
+00:07:07.360 --> 00:07:08.400
+Now let's go through it.
+
+166
+00:07:08.400 --> 00:07:09.790
+Cloudinary, that's for image uploading.
+
+167
+00:07:09.790 --> 00:07:10.807
+We'll get that. COOKIE_SECRET.
+
+168
+00:07:10.807 --> 00:07:13.760
+Go ahead and change this to literally anything.
+
+169
+00:07:13.760 --> 00:07:16.670
+Literally anything.
+
+170
+00:07:16.670 --> 00:07:18.740
+This just has to be a random string
+
+171
+00:07:18.740 --> 00:07:20.670
+because when we sign our cookies
+
+172
+00:07:20.670 --> 00:07:21.503
+and when we generate them,
+
+173
+00:07:21.503 --> 00:07:24.540
+they are based on this, what is in here.
+
+174
+00:07:24.540 --> 00:07:26.300
+So don't do what I did.
+
+175
+00:07:26.300 --> 00:07:28.790
+Do something, literally any other string
+
+176
+00:07:28.790 --> 00:07:31.935
+of characters in the human race do that.
+
+177
+00:07:31.935 --> 00:07:33.600
+DATABASE_URL.
+
+178
+00:07:33.600 --> 00:07:34.890
+Okay, so this is where we're going
+
+179
+00:07:34.890 --> 00:07:37.950
+to put the MongoDB URL once we get it.
+
+180
+00:07:37.950 --> 00:07:39.290
+STRIPE, that's for check out.
+
+181
+00:07:39.290 --> 00:07:40.543
+We don't need that.
+
+182
+00:07:40.543 --> 00:07:43.570
+As email, we'll hit that
+
+183
+00:07:43.570 --> 00:07:46.230
+and then finally, FRONTEND_URL, that's important.
+
+184
+00:07:46.230 --> 00:07:47.752
+And what are we running?
+
+185
+00:07:47.752 --> 00:07:50.040
+What are we running our front end URL?
+
+186
+00:07:50.040 --> 00:07:50.873
+7777.
+
+187
+00:07:50.873 --> 00:07:53.080
+So that's right, so if you're running on a different port
+
+188
+00:07:53.080 --> 00:07:57.143
+or whatever, you would change that URL right there.
+
+189
+00:07:58.220 --> 00:08:01.500
+Okay, looks like it's still being created.
+
+190
+00:08:01.500 --> 00:08:02.500
+So while we're doing that,
+
+191
+00:08:02.500 --> 00:08:05.180
+let's open up MongoDB Compass.
+
+192
+00:08:05.180 --> 00:08:07.600
+That's an app I've had you installed,
+
+193
+00:08:07.600 --> 00:08:09.670
+and this is a just a nice little tool
+
+194
+00:08:09.670 --> 00:08:11.131
+that's gonna allow us to connect.
+
+195
+00:08:11.131 --> 00:08:14.370
+Watch, I'm gonna connect to my local database right now.
+
+196
+00:08:14.370 --> 00:08:16.370
+I've got all kinds of databases in here.
+
+197
+00:08:16.370 --> 00:08:18.210
+Let's see, the one that we're working with
+
+198
+00:08:18.210 --> 00:08:22.170
+is called Sick Fits Keystone
+
+199
+00:08:22.170 --> 00:08:24.500
+and you'll see that the items are in here.
+
+200
+00:08:24.500 --> 00:08:25.333
+If I open that up.
+
+201
+00:08:25.333 --> 00:08:27.690
+Look at it, this is just all the data in our database.
+
+202
+00:08:27.690 --> 00:08:29.331
+You can view it as a table as well.
+
+203
+00:08:29.331 --> 00:08:32.210
+And if you ever, for whatever reason,
+
+204
+00:08:32.210 --> 00:08:33.680
+if the backend ever breaks
+
+205
+00:08:33.680 --> 00:08:36.638
+or you just wanna manually add or delete data,
+
+206
+00:08:36.638 --> 00:08:38.080
+you can do that.
+
+207
+00:08:38.080 --> 00:08:39.960
+This is just a raw database access.
+
+208
+00:08:39.960 --> 00:08:43.980
+So this is a really nice little database GUI
+
+209
+00:08:44.860 --> 00:08:45.800
+and big fan of that.
+
+210
+00:08:45.800 --> 00:08:49.020
+Okay, so it has created our cluster.
+
+211
+00:08:49.020 --> 00:08:52.440
+Now what we need to do is we need to connect to it.
+
+212
+00:08:52.440 --> 00:08:56.713
+So we're gonna go ahead and click on Connect.
+
+213
+00:08:57.650 --> 00:09:00.650
+And it's gonna ask us where do you want
+
+214
+00:09:00.650 --> 00:09:03.840
+to be able to connect to this database for?
+
+215
+00:09:03.840 --> 00:09:08.840
+Because by default, MongoDB will only allow connections
+
+216
+00:09:09.230 --> 00:09:11.400
+from specific IPs that you allow it to.
+
+217
+00:09:11.400 --> 00:09:12.620
+So normally what would happen
+
+218
+00:09:12.620 --> 00:09:16.200
+is you would add like IP address from your work machine,
+
+219
+00:09:16.200 --> 00:09:17.640
+you would add the IP addresses
+
+220
+00:09:17.640 --> 00:09:22.640
+of the server that you're hosting your application on,
+
+221
+00:09:22.980 --> 00:09:24.250
+et cetera, et cetera.
+
+222
+00:09:24.250 --> 00:09:26.450
+And that just stops any malicious actors
+
+223
+00:09:26.450 --> 00:09:29.340
+who are trying to connect from random IP addresses.
+
+224
+00:09:29.340 --> 00:09:32.460
+When we're working for this right now,
+
+225
+00:09:32.460 --> 00:09:33.990
+we just need to allow everybody in
+
+226
+00:09:33.990 --> 00:09:35.640
+just so you don't get tripped up on it.
+
+227
+00:09:35.640 --> 00:09:37.820
+Believe me, this is a common problem that we have.
+
+228
+00:09:37.820 --> 00:09:40.853
+So we wanna click on allow access from anywhere.
+
+229
+00:09:41.960 --> 00:09:45.520
+And say come on in.
+
+230
+00:09:45.520 --> 00:09:48.020
+Add an IP address, good.
+
+231
+00:09:48.020 --> 00:09:50.750
+Then we create a database user.
+
+232
+00:09:50.750 --> 00:09:54.280
+So we will call that oh,
+
+233
+00:09:54.280 --> 00:09:55.610
+let's call it sick
+
+234
+00:09:55.610 --> 00:09:59.640
+and the password is gonna be something good.
+
+235
+00:09:59.640 --> 00:10:02.987
+Let's just use, 1Password suggested one right here.
+
+236
+00:10:02.987 --> 00:10:07.987
+I'm gonna call that MongoDB Sick Fits
+
+237
+00:10:09.500 --> 00:10:10.500
+and I'll save that.
+
+238
+00:10:10.500 --> 00:10:14.850
+Okay, so save that data just for a second.
+
+239
+00:10:14.850 --> 00:10:15.953
+I'm gonna copy it.
+
+240
+00:10:17.988 --> 00:10:19.810
+And I'm just gonna put that in a URL.
+
+241
+00:10:19.810 --> 00:10:21.680
+Obviously, I'm gonna have to change this
+
+242
+00:10:21.680 --> 00:10:24.440
+before I deploy this course so you don't see it.
+
+243
+00:10:24.440 --> 00:10:28.083
+So put those somewhere where you won't lose them
+
+244
+00:10:28.083 --> 00:10:30.310
+just for a quick second.
+
+245
+00:10:30.310 --> 00:10:33.559
+And we click create database user, okay?
+
+246
+00:10:33.559 --> 00:10:37.170
+And then we need to choose a connection method.
+
+247
+00:10:37.170 --> 00:10:39.690
+So we need a connection string.
+
+248
+00:10:39.690 --> 00:10:40.523
+So which one?
+
+249
+00:10:40.523 --> 00:10:42.986
+Mongo Shell, connect your application
+
+250
+00:10:42.986 --> 00:10:45.260
+or connect using MongoDB Compass.
+
+251
+00:10:45.260 --> 00:10:47.910
+I think it's connect your application.
+
+252
+00:10:47.910 --> 00:10:49.140
+Yes, there we go
+
+253
+00:10:49.140 --> 00:10:53.850
+and then it's gonna give us this URL right here.
+
+254
+00:10:53.850 --> 00:10:56.160
+So what we'll do is we'll copy that URL.
+
+255
+00:10:56.160 --> 00:10:58.810
+We'll go back to our .env
+
+256
+00:10:58.810 --> 00:11:03.190
+and we will paste that into the data URL.
+
+257
+00:11:03.190 --> 00:11:05.240 line:15% 
+Then what we need to do is we need
+
+258
+00:11:05.240 --> 00:11:07.170 line:15% 
+to change the username and the password.
+
+259
+00:11:07.170 --> 00:11:10.310 line:15% 
+It looks like they've already pre-populated the username.
+
+260
+00:11:10.310 --> 00:11:11.570
+And then the password
+
+261
+00:11:13.360 --> 00:11:15.893
+that I have here, we need to put that in.
+
+262
+00:11:17.190 --> 00:11:20.360
+The angle brackets get deleted along with the word password.
+
+263
+00:11:20.360 --> 00:11:21.680
+So don't leave them in.
+
+264
+00:11:21.680 --> 00:11:23.890
+And then paste that in there.
+
+265
+00:11:23.890 --> 00:11:26.592
+The way that we can test if that has worked
+
+266
+00:11:26.592 --> 00:11:29.700
+is we can go to our MongoDB Compass
+
+267
+00:11:31.700 --> 00:11:36.700
+and I'm going to connect to a new connection,
+
+268
+00:11:39.250 --> 00:11:40.403
+paste that in there.
+
+269
+00:11:41.390 --> 00:11:44.010
+Oh, oh, we forgot one more thing.
+
+270
+00:11:44.010 --> 00:11:46.720
+The database name, we forgot to replace that.
+
+271
+00:11:46.720 --> 00:11:48.800
+So let's do that real quick.
+
+272
+00:11:48.800 --> 00:11:50.963
+We'll name that sickfits.
+
+273
+00:11:52.480 --> 00:11:56.210 line:15% 
+That's not something we've specified yet, so that is fine.
+
+274
+00:11:56.210 --> 00:11:59.080
+So again let's paste that in there.
+
+275
+00:11:59.080 --> 00:11:59.913
+Connect.
+
+276
+00:12:01.910 --> 00:12:02.743
+And there we go.
+
+277
+00:12:02.743 --> 00:12:05.260
+So it has connected to our database.
+
+278
+00:12:05.260 --> 00:12:07.920
+There's obviously nothing in there yet.
+
+279
+00:12:07.920 --> 00:12:10.700
+But that just shows that we have correctly connected
+
+280
+00:12:10.700 --> 00:12:11.870
+to the database
+
+281
+00:12:11.870 --> 00:12:14.870
+and also we've put this into our .env file.
+
+282
+00:12:14.870 --> 00:12:18.040
+So let's close up here, close
+
+283
+00:12:18.040 --> 00:12:20.740
+and we have our cluster, you can click through to that
+
+284
+00:12:20.740 --> 00:12:23.917
+and we'll be able to see our data in here
+
+285
+00:12:23.917 --> 00:12:25.840
+and all the other information.
+
+286
+00:12:25.840 --> 00:12:28.080
+The one I really like is the Performance Adviser.
+
+287
+00:12:28.080 --> 00:12:30.530
+I don't think it comes with it for free.
+
+288
+00:12:30.530 --> 00:12:31.980
+I pay for it on my own.
+
+289
+00:12:31.980 --> 00:12:33.740
+Yeah, you've gotta upgrade for that
+
+290
+00:12:33.740 --> 00:12:37.870
+but I love it because it will tell me when some sort
+
+291
+00:12:37.870 --> 00:12:41.024
+of thing I'm doing is slow
+
+292
+00:12:41.024 --> 00:12:43.620
+and it will tell you how to fix it,
+
+293
+00:12:43.620 --> 00:12:45.210
+which is really cool.
+
+294
+00:12:45.210 --> 00:12:47.830
+In Keystone, they do most of the database stuff
+
+295
+00:12:47.830 --> 00:12:48.663
+under the hood for you.
+
+296
+00:12:48.663 --> 00:12:50.800
+So you likely won't hit those issues
+
+297
+00:12:50.800 --> 00:12:53.530
+but overall, it's nice to have.
+
+298
+00:12:53.530 --> 00:12:56.189
+So that's connecting to MongoDB.
+
+299
+00:12:56.189 --> 00:12:58.370
+Let's move into the next video
+
+300
+00:12:58.370 --> 00:13:00.410
+where we actually configure Keystone
+
+301
+00:13:00.410 --> 00:13:01.810
+to hook up to this database.
+

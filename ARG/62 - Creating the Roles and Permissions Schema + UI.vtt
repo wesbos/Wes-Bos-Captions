@@ -1,0 +1,610 @@
+﻿WEBVTT
+
+1
+00:00:01.180 --> 00:00:02.470
+<v Instructor>What we're gonna be doing right now</v>
+
+2
+00:00:02.470 --> 00:00:05.310
+is making the schema type for our role,
+
+3
+00:00:05.310 --> 00:00:06.880
+because the way that we're gonna manage
+
+4
+00:00:06.880 --> 00:00:08.580
+who has what role,
+
+5
+00:00:08.580 --> 00:00:10.160
+is we can go into the side here
+
+6
+00:00:10.160 --> 00:00:11.680
+and click on roles,
+
+7
+00:00:11.680 --> 00:00:14.310
+and then we can both add people to that role
+
+8
+00:00:14.310 --> 00:00:17.850
+as well as add individual permissions.
+
+9
+00:00:17.850 --> 00:00:19.050
+So what we'll do here
+
+10
+00:00:19.050 --> 00:00:22.960
+is we'll go into our schema folder
+
+11
+00:00:22.960 --> 00:00:26.773
+and make a new file and we'll call that capital Role.ts.
+
+12
+00:00:28.800 --> 00:00:30.323
+And then in here,
+
+13
+00:00:31.230 --> 00:00:36.130
+we'll say export const Role = list,
+
+14
+00:00:36.130 --> 00:00:39.460
+let's see if we can auto import list from Keystone.
+
+15
+00:00:39.460 --> 00:00:41.060
+Boom, there it is.
+
+16
+00:00:41.060 --> 00:00:44.100
+Then inside of that, we have,
+
+17
+00:00:44.100 --> 00:00:45.440
+we just have fields right now.
+
+18
+00:00:45.440 --> 00:00:48.480
+We will have a lot more related to Access Control,
+
+19
+00:00:48.480 --> 00:00:50.000
+once we get this up and running.
+
+20
+00:00:50.000 --> 00:00:52.410
+This is kinda a chicken and the egg here. (chuckles)
+
+21
+00:00:52.410 --> 00:00:54.300
+We need to make the roles so we can apply
+
+22
+00:00:54.300 --> 00:00:56.710
+to who can manage the roles.
+
+23
+00:00:56.710 --> 00:00:59.010
+Inside of there we have a name field,
+
+24
+00:00:59.010 --> 00:01:02.900
+which is a text field from keystone,
+
+25
+00:01:02.900 --> 00:01:06.620
+that is imported from keystone forward slash fields,
+
+26
+00:01:06.620 --> 00:01:09.563
+and say isRequired is true,
+
+27
+00:01:11.230 --> 00:01:14.750
+then underneath that we'll have assignedTo
+
+28
+00:01:16.270 --> 00:01:18.723
+that will be a relationship,
+
+29
+00:01:20.320 --> 00:01:25.320
+that is reference to a User.role,
+
+30
+00:01:26.010 --> 00:01:31.010
+we'll put a quick little TODO: Add this to the user,
+
+31
+00:01:31.570 --> 00:01:32.403
+'cause we gotta,
+
+32
+00:01:32.403 --> 00:01:36.120
+if anytime you do like a two way relationship,
+
+33
+00:01:36.120 --> 00:01:37.910
+you have to reference,
+
+34
+00:01:37.910 --> 00:01:41.623
+create the reference on the other item as well.
+
+35
+00:01:43.852 --> 00:01:46.410
+And also say many is true.
+
+36
+00:01:46.410 --> 00:01:47.616
+Why?
+
+37
+00:01:47.616 --> 00:01:49.640
+Because many people can have this specific role.
+
+38
+00:01:49.640 --> 00:01:53.333
+And then the ui is itemView,
+
+39
+00:01:54.670 --> 00:01:57.030
+fieldMode is only gonna be read
+
+40
+00:01:57.030 --> 00:01:58.850
+and I'll show you why we do that in just a second.
+
+41
+00:01:58.850 --> 00:02:01.050
+So that's the very basics of that.
+
+42
+00:02:01.050 --> 00:02:04.270
+Let's go ahead and create the role field
+
+43
+00:02:04.270 --> 00:02:05.610
+on our user as well.
+
+44
+00:02:05.610 --> 00:02:09.170
+So open up our user in the schema folder
+
+45
+00:02:09.170 --> 00:02:11.860
+and we will go right below orders
+
+46
+00:02:11.860 --> 00:02:15.713
+and we'll add a new field which is called role.
+
+47
+00:02:17.615 --> 00:02:18.448
+And that is again,
+
+48
+00:02:18.448 --> 00:02:22.710
+a relationship with a reference to
+
+49
+00:02:22.710 --> 00:02:24.363
+the Role.assignedTo,
+
+50
+00:02:26.150 --> 00:02:28.983
+let's just triple check we got that capital T on there.
+
+51
+00:02:30.410 --> 00:02:33.140
+Yeah, assignedTo is equal to Role.assignedTo.
+
+52
+00:02:33.140 --> 00:02:34.300
+Okay, good.
+
+53
+00:02:34.300 --> 00:02:35.200
+Also along with that,
+
+54
+00:02:35.200 --> 00:02:40.200
+we'll need a TODO: Add Access Control,
+
+55
+00:02:41.510 --> 00:02:42.980
+once we have it up and running.
+
+56
+00:02:42.980 --> 00:02:46.450
+All right, so we just went ahead and created our role here.
+
+57
+00:02:46.450 --> 00:02:48.540
+Now we can go into our,
+
+58
+00:02:48.540 --> 00:02:51.270
+I believe it's our keystone.ts
+
+59
+00:02:51.270 --> 00:02:54.230
+and where we create all of our schemas,
+
+60
+00:02:54.230 --> 00:02:56.703
+we will also put a new one called Role,
+
+61
+00:02:57.930 --> 00:03:02.080
+that should have auto imported from our schema file, good.
+
+62
+00:03:02.080 --> 00:03:04.140
+And then we'll just give a quick restart
+
+63
+00:03:04.140 --> 00:03:09.140
+of our backend and we should see the role showing up.
+
+64
+00:03:10.820 --> 00:03:12.210
+While that's happening,
+
+65
+00:03:12.210 --> 00:03:15.790
+we're gonna need a bunch of additional fields
+
+66
+00:03:15.790 --> 00:03:20.470
+on here that are going to be our actual permissions.
+
+67
+00:03:20.470 --> 00:03:23.670
+And this is just gonna be a lot of typing,
+
+68
+00:03:23.670 --> 00:03:25.540
+so what I'm gonna get you to do is to go
+
+69
+00:03:25.540 --> 00:03:29.820
+and grab this file from the finished files folder.
+
+70
+00:03:29.820 --> 00:03:31.450
+Just because again,
+
+71
+00:03:31.450 --> 00:03:34.290
+this is not typing practice so real quick,
+
+72
+00:03:34.290 --> 00:03:36.800
+you can see here now we have roles here
+
+73
+00:03:36.800 --> 00:03:38.510
+and you can create a role
+
+74
+00:03:38.510 --> 00:03:41.780
+and you can basically say like
+
+75
+00:03:41.780 --> 00:03:45.200
+we can make this an admin role and assign it to Wes
+
+76
+00:03:45.200 --> 00:03:49.360
+but there is no additional check boxes
+
+77
+00:03:49.360 --> 00:03:51.650
+for what sort of permissions they have.
+
+78
+00:03:51.650 --> 00:03:53.113
+So we're gonna do that now.
+
+79
+00:03:53.950 --> 00:03:57.370
+So go to the finished files and grab the file
+
+80
+00:03:57.370 --> 00:04:02.250
+in the backend schemas folder called field.ts
+
+81
+00:04:02.250 --> 00:04:03.810 line:15% 
+or fields.ts.
+
+82
+00:04:03.810 --> 00:04:05.850 line:15% 
+And I'm gonna go ahead and make it myself here,
+
+83
+00:04:05.850 --> 00:04:06.793 line:15% 
+new file,
+
+84
+00:04:07.700 --> 00:04:10.223 line:15% 
+this one is lowercase fields.ts.
+
+85
+00:04:12.140 --> 00:04:13.640 line:15% 
+And inside of that,
+
+86
+00:04:13.640 --> 00:04:14.610
+we just have this code.
+
+87
+00:04:14.610 --> 00:04:16.960
+So again, go and grab this from the finished files.
+
+88
+00:04:16.960 --> 00:04:19.360
+I'm gonna explain it to you real quickly.
+
+89
+00:04:19.360 --> 00:04:21.750
+Here we are just making a bunch
+
+90
+00:04:21.750 --> 00:04:24.060
+of different permissions fields
+
+91
+00:04:24.060 --> 00:04:26.890
+for things that the user may or may not be able to do.
+
+92
+00:04:26.890 --> 00:04:28.630
+So can they manage the product?
+
+93
+00:04:28.630 --> 00:04:29.880
+Can they see other users?
+
+94
+00:04:29.880 --> 00:04:31.040
+Can they manage users?
+
+95
+00:04:31.040 --> 00:04:32.100
+Can they manage roles?
+
+96
+00:04:32.100 --> 00:04:33.720
+Can they manage the cart?
+
+97
+00:04:33.720 --> 00:04:35.233
+Can they manage orders?
+
+98
+00:04:36.640 --> 00:04:39.360
+And then each of those will have a default value of false
+
+99
+00:04:39.360 --> 00:04:41.330
+as well as a label that gives us a bit more
+
+100
+00:04:41.330 --> 00:04:44.250
+of a description as to what this thing is.
+
+101
+00:04:44.250 --> 00:04:46.427
+Finally, we're just generating some custom types here
+
+102
+00:04:46.427 --> 00:04:51.030
+and a list of all of the permissions, which is canManage.
+
+103
+00:04:51.030 --> 00:04:54.650
+And we'll go into why we did that in just a sec as well.
+
+104
+00:04:54.650 --> 00:04:57.100
+What we do now is we need to import all
+
+105
+00:04:57.100 --> 00:05:01.030
+of these permission fields into our role here
+
+106
+00:05:01.030 --> 00:05:03.050
+and the reason why I'm not putting it,
+
+107
+00:05:03.050 --> 00:05:05.610
+I'm just not directly putting it in this file is
+
+108
+00:05:05.610 --> 00:05:09.550
+because we also want to reference these lists of fields
+
+109
+00:05:09.550 --> 00:05:11.130
+in a couple other files.
+
+110
+00:05:11.130 --> 00:05:13.500
+And by putting it in its own file,
+
+111
+00:05:13.500 --> 00:05:16.530
+make sure that we don't have circular dependency issue.
+
+112
+00:05:16.530 --> 00:05:19.640
+So we'll go into our top here,
+
+113
+00:05:19.640 --> 00:05:22.363
+and what we do is just ...permissionFields,
+
+114
+00:05:25.219 --> 00:05:28.550
+and we should be able to auto import that permissionFields
+
+115
+00:05:28.550 --> 00:05:32.180
+from our fields folder or our file.
+
+116
+00:05:32.180 --> 00:05:33.730
+And yeah, we're in good shape there.
+
+117
+00:05:33.730 --> 00:05:35.360
+So what that will do is it basically
+
+118
+00:05:35.360 --> 00:05:39.230
+is just taking all of these copy
+
+119
+00:05:39.230 --> 00:05:41.210
+and pasting it in right here.
+
+120
+00:05:41.210 --> 00:05:45.270
+The fact that it did it in between doesn't really matter
+
+121
+00:05:45.270 --> 00:05:47.360
+but it's basically just adding them all in here
+
+122
+00:05:47.360 --> 00:05:50.000
+programmatically with a spread.
+
+123
+00:05:50.000 --> 00:05:52.400
+So now for your restart that sucker,
+
+124
+00:05:52.400 --> 00:05:55.000
+we should see the ability
+
+125
+00:05:55.000 --> 00:05:57.840
+to add different roles
+
+126
+00:05:57.840 --> 00:05:59.433
+to this specific user.
+
+127
+00:06:01.770 --> 00:06:02.603
+So here we go,
+
+128
+00:06:02.603 --> 00:06:04.164
+we'll create a role,
+
+129
+00:06:04.164 --> 00:06:05.630
+there we go, admin,
+
+130
+00:06:05.630 --> 00:06:07.110
+and then we'll say user can update
+
+131
+00:06:07.110 --> 00:06:08.520
+and delete any product,
+
+132
+00:06:08.520 --> 00:06:09.353
+user can query,
+
+133
+00:06:09.353 --> 00:06:10.186
+so in our case,
+
+134
+00:06:10.186 --> 00:06:13.890
+we're going to check box all
+
+135
+00:06:13.890 --> 00:06:16.150
+of these and then go ahead
+
+136
+00:06:16.150 --> 00:06:17.880
+and assign it to me,
+
+137
+00:06:17.880 --> 00:06:19.370
+and click on Create Role.
+
+138
+00:06:19.370 --> 00:06:22.610
+You can additionally go to a specific user,
+
+139
+00:06:22.610 --> 00:06:24.260
+and edit that user
+
+140
+00:06:24.260 --> 00:06:25.670
+and you should be able to select
+
+141
+00:06:25.670 --> 00:06:27.890
+from a list of roles on there.
+
+142
+00:06:27.890 --> 00:06:32.040
+So again, a role is going to be a,
+
+143
+00:06:32.040 --> 00:06:36.100
+let's go back to my crude layout here,
+
+144
+00:06:36.100 --> 00:06:39.170
+permissions, those are the check boxes that we've created,
+
+145
+00:06:39.170 --> 00:06:43.330
+then our role is going to be a collection of permissions
+
+146
+00:06:43.330 --> 00:06:46.070
+that we sort of sweep into one like,
+
+147
+00:06:46.070 --> 00:06:50.310
+one sort of giant role called can manageUser,
+
+148
+00:06:50.310 --> 00:06:52.100
+and then what we're gonna do
+
+149
+00:06:52.100 --> 00:06:55.020
+in the future is we're going to start working
+
+150
+00:06:55.020 --> 00:06:57.380
+on these access functions,
+
+151
+00:06:57.380 --> 00:07:00.280
+which will go into each of our schemas
+
+152
+00:07:00.280 --> 00:07:03.143
+and decide whether or not we can do something.
+
