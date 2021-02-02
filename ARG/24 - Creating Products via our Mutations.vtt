@@ -1,0 +1,1642 @@
+﻿WEBVTT
+
+1
+00:00:01.782 --> 00:00:02.620
+<v Instructor>All right, let's hook it up</v>
+
+2
+00:00:02.620 --> 00:00:04.510
+to our actual GraphQL API.
+
+3
+00:00:04.510 --> 00:00:05.890
+If we go to our backend here
+
+4
+00:00:05.890 --> 00:00:08.650
+and we go to our API Explorer.
+
+5
+00:00:08.650 --> 00:00:09.700
+Let's first figure out
+
+6
+00:00:09.700 --> 00:00:13.110
+what mutation we actually need in order for it to work.
+
+7
+00:00:13.110 --> 00:00:15.720
+So I'm gonna open up yet another tab here.
+
+8
+00:00:15.720 --> 00:00:17.330
+We'll say mutation.
+
+9
+00:00:17.330 --> 00:00:19.510
+And then basically we just type, create.
+
+10
+00:00:19.510 --> 00:00:20.630
+And you can see a listing
+
+11
+00:00:20.630 --> 00:00:23.910
+of all the create mutations we have.
+
+12
+00:00:23.910 --> 00:00:25.730
+In our case, it's create product.
+
+13
+00:00:25.730 --> 00:00:28.480
+There's also create products for multiple.
+
+14
+00:00:28.480 --> 00:00:29.960
+And you can see here, the only difference
+
+15
+00:00:29.960 --> 00:00:32.610
+is that the type here is an array of products,
+
+16
+00:00:32.610 --> 00:00:34.690
+whereas this is just a type of product.
+
+17
+00:00:34.690 --> 00:00:36.503
+So we'll use create product.
+
+18
+00:00:37.600 --> 00:00:39.240
+The way that it works is that
+
+19
+00:00:39.240 --> 00:00:42.160
+you open up your curly brackets here
+
+20
+00:00:42.160 --> 00:00:44.590
+and you pass in the data.
+
+21
+00:00:44.590 --> 00:00:48.040
+And then for the data, it just asks for the name.
+
+22
+00:00:48.040 --> 00:00:50.323
+Let's just call it the sample product.
+
+23
+00:00:52.650 --> 00:00:57.090
+And let's say, description is testing.
+
+24
+00:00:57.090 --> 00:00:58.780
+And what else does it need?
+The photo.
+
+25
+00:00:58.780 --> 00:01:00.200
+The photo we're not gonna be able to do
+
+26
+00:01:00.200 --> 00:01:03.760
+'cause there is no file upload built in here.
+
+27
+00:01:03.760 --> 00:01:05.980
+The whole file upload thing in GraphQL,
+
+28
+00:01:05.980 --> 00:01:09.230
+there's not a standard on how to do it.
+
+29
+00:01:09.230 --> 00:01:11.690
+So you're not gonna see any support for that
+
+30
+00:01:11.690 --> 00:01:13.220
+in this GraphQL playground.
+
+31
+00:01:13.220 --> 00:01:15.160
+And that's the reason why we've,
+
+32
+00:01:15.160 --> 00:01:17.670
+if we open up our with data, that's the reason
+
+33
+00:01:17.670 --> 00:01:20.150
+why we went with this Apollo upload client,
+
+34
+00:01:20.150 --> 00:01:21.530
+because it bakes it in for us.
+
+35
+00:01:21.530 --> 00:01:23.290
+So we can just throw it a file
+
+36
+00:01:23.290 --> 00:01:26.400
+and it'll be able to handle it for us.
+
+37
+00:01:26.400 --> 00:01:28.423
+The other thing we want is the price.
+
+38
+00:01:29.450 --> 00:01:33.630
+So that's what you pass as an argument to the function.
+
+39
+00:01:33.630 --> 00:01:36.920
+And then from that, you simply ask for the return data,
+
+40
+00:01:36.920 --> 00:01:39.600
+where you say, "Okay, go and make this.
+
+41
+00:01:39.600 --> 00:01:43.460
+And then when you done making it, bring me back,
+
+42
+00:01:43.460 --> 00:01:46.720
+ID, the price, the description.
+
+43
+00:01:46.720 --> 00:01:49.270
+Bring me back the actual data from the database."
+
+44
+00:01:49.270 --> 00:01:52.460
+Most likely we want the actual ID of the item.
+
+45
+00:01:52.460 --> 00:01:53.360
+And now if we run this,
+
+46
+00:01:53.360 --> 00:01:55.130
+I'm not sure if it's going to work or not.
+
+47
+00:01:55.130 --> 00:01:56.600
+We'll go ahead and try.
+
+48
+00:01:56.600 --> 00:01:58.010
+There we go, it worked.
+
+49
+00:01:58.010 --> 00:02:01.260
+And I believe now, if we go to our products here,
+
+50
+00:02:01.260 --> 00:02:03.020
+there's our sample product.
+
+51
+00:02:03.020 --> 00:02:05.060
+And you'll see it's in draft state.
+
+52
+00:02:05.060 --> 00:02:08.623
+We can also run it again and say,
+
+53
+00:02:09.810 --> 00:02:12.600
+the status is going to be...
+
+54
+00:02:12.600 --> 00:02:14.100
+What was the...?
+
+55
+00:02:14.100 --> 00:02:14.933
+Available.
+
+56
+00:02:17.920 --> 00:02:19.063
+Now run that.
+
+57
+00:02:20.840 --> 00:02:23.230
+Okay, we made another product.
+
+58
+00:02:23.230 --> 00:02:24.857
+Back to our products here, there it is.
+
+59
+00:02:24.857 --> 00:02:26.700
+And it's in available state.
+
+60
+00:02:26.700 --> 00:02:28.840
+So that's what we're going to be doing,
+
+61
+00:02:28.840 --> 00:02:29.673
+but we're going to do it
+
+62
+00:02:29.673 --> 00:02:30.980
+with the data that comes from the form
+
+63
+00:02:30.980 --> 00:02:32.800
+instead of manually running it here.
+
+64
+00:02:32.800 --> 00:02:34.800
+So let's just delete those two suckers
+
+65
+00:02:34.800 --> 00:02:37.150
+'cause I don't need them.
+
+66
+00:02:37.150 --> 00:02:38.830
+So we'll go over here.
+
+67
+00:02:38.830 --> 00:02:43.100
+And above here, we gotta first make our mutation.
+
+68
+00:02:43.100 --> 00:02:48.040
+So we'll say const create product mutation
+
+69
+00:02:48.040 --> 00:02:50.513
+is equal to gql.
+
+70
+00:02:51.400 --> 00:02:53.230
+And we'll auto-import that.
+
+71
+00:02:53.230 --> 00:02:56.290
+So that gets imported from GraphQL tag.
+
+72
+00:02:56.290 --> 00:03:00.860
+And then in here, you can just take this
+
+73
+00:03:00.860 --> 00:03:02.083
+and paste it in here.
+
+74
+00:03:03.130 --> 00:03:04.820
+And then we can go
+
+75
+00:03:04.820 --> 00:03:07.460
+and we need to make it a little bit further.
+
+76
+00:03:07.460 --> 00:03:09.640
+So we need to give it a name.
+
+77
+00:03:09.640 --> 00:03:12.020
+And that's because the create product mutation
+
+78
+00:03:12.020 --> 00:03:13.930
+is going to be taking variables.
+
+79
+00:03:13.930 --> 00:03:16.120
+So here we're hard coding it
+
+80
+00:03:16.120 --> 00:03:18.940
+but we need to make this a flexible mutation
+
+81
+00:03:18.940 --> 00:03:21.990
+meaning that we can pass in dynamic data,
+
+82
+00:03:21.990 --> 00:03:24.200
+known as variables in GraphQL.
+
+83
+00:03:24.200 --> 00:03:27.170
+So I like to just name them the same thing,
+
+84
+00:03:27.170 --> 00:03:28.683
+create product mutation.
+
+85
+00:03:29.890 --> 00:03:31.750
+And then inside of here
+
+86
+00:03:31.750 --> 00:03:34.550
+is where we define which variables get passed in.
+
+87
+00:03:34.550 --> 00:03:36.747
+So we can leave a little comment, say,
+
+88
+00:03:36.747 --> 00:03:41.590
+"Which variables are getting passed in
+
+89
+00:03:41.590 --> 00:03:44.630
+and what types are they?"
+
+90
+00:03:44.630 --> 00:03:48.470
+So we're expecting somebody to pass us in a name variable,
+
+91
+00:03:48.470 --> 00:03:51.310
+which is a string, and we'll put a bang on the end.
+
+92
+00:03:51.310 --> 00:03:53.190
+And that's how in GraphQL you tell it
+
+93
+00:03:53.190 --> 00:03:54.740
+if something is required.
+
+94
+00:03:54.740 --> 00:03:57.440
+So we'll say description is going to be a string
+
+95
+00:03:57.440 --> 00:03:59.350
+that is required.
+
+96
+00:03:59.350 --> 00:04:01.230
+We have a price that's coming in,
+
+97
+00:04:01.230 --> 00:04:03.260
+that is an integer, that is required.
+
+98
+00:04:03.260 --> 00:04:06.260
+So that's why we are, remember in our use form hook
+
+99
+00:04:06.260 --> 00:04:08.370
+we're converting it from a string to a number.
+
+100
+00:04:08.370 --> 00:04:09.250
+That's because if you try
+
+101
+00:04:09.250 --> 00:04:12.850
+to send a price of like a hundred as a string,
+
+102
+00:04:12.850 --> 00:04:13.937
+it's going to yell at you and be like,
+
+103
+00:04:13.937 --> 00:04:16.840
+"Hey, we need an integer, not a string."
+
+104
+00:04:16.840 --> 00:04:19.890
+And then we want a image, which is a type of upload.
+
+105
+00:04:19.890 --> 00:04:22.630
+And I'm not going to put an exclamation on there
+
+106
+00:04:22.630 --> 00:04:26.020
+'cause it's possible to upload them without an image.
+
+107
+00:04:26.020 --> 00:04:29.280
+Then we go here and we're able to use
+
+108
+00:04:29.280 --> 00:04:32.630
+these variables, that we've created here,
+
+109
+00:04:32.630 --> 00:04:33.850
+we were able to use them
+
+110
+00:04:33.850 --> 00:04:36.140
+in our actual create product mutation.
+
+111
+00:04:36.140 --> 00:04:38.180
+So we go here, data.
+
+112
+00:04:38.180 --> 00:04:43.180
+And try your hardest not to think of this as JavaScript,
+
+113
+00:04:43.270 --> 00:04:47.080
+because this is GraphQL notation
+
+114
+00:04:47.080 --> 00:04:48.870
+and you can't really
+
+115
+00:04:48.870 --> 00:04:51.460
+use JavaScript variables inside of here.
+
+116
+00:04:51.460 --> 00:04:53.560
+You can because it's a string,
+
+117
+00:04:53.560 --> 00:04:55.100
+and I'll show you how to do that later,
+
+118
+00:04:55.100 --> 00:04:56.610
+but generally you should try to stick
+
+119
+00:04:56.610 --> 00:05:00.270
+with keeping it a nice clean GraphQL mutation.
+
+120
+00:05:00.270 --> 00:05:02.810
+And that will allow us to test it and move it around
+
+121
+00:05:02.810 --> 00:05:04.640
+and make it flexible as possible.
+
+122
+00:05:04.640 --> 00:05:06.290
+So the name being passed in
+
+123
+00:05:06.290 --> 00:05:08.130
+is going to be our name variable.
+
+124
+00:05:08.130 --> 00:05:09.400
+The description being passed in
+
+125
+00:05:09.400 --> 00:05:12.470
+is obviously our description variable.
+
+126
+00:05:12.470 --> 00:05:15.430
+The price is obviously the price.
+
+127
+00:05:15.430 --> 00:05:16.820
+The status will be,
+
+128
+00:05:16.820 --> 00:05:18.740
+let's leave that as just hard-coded available.
+
+129
+00:05:18.740 --> 00:05:22.600
+I know that we set it as draft as default
+
+130
+00:05:22.600 --> 00:05:24.040
+but if somebody's uploading it,
+
+131
+00:05:24.040 --> 00:05:26.490
+not from the back end but from the front end,
+
+132
+00:05:26.490 --> 00:05:28.000
+let's default that to status.
+
+133
+00:05:28.000 --> 00:05:29.870
+And we can do that just by doing that.
+
+134
+00:05:29.870 --> 00:05:32.470
+And then the last one is the photo, right?
+
+135
+00:05:32.470 --> 00:05:35.150
+Because we're bringing in this image variable here
+
+136
+00:05:35.150 --> 00:05:37.040
+and we need to create a photo.
+
+137
+00:05:37.040 --> 00:05:39.990
+But we have a little bit of a dilemma here
+
+138
+00:05:39.990 --> 00:05:44.030
+because a photo is not simply just a field.
+
+139
+00:05:44.030 --> 00:05:46.990
+Remember when we created our backend,
+
+140
+00:05:46.990 --> 00:05:49.560
+photo was its own type?
+
+141
+00:05:49.560 --> 00:05:51.430
+If we look at our mutation here, we could run it.
+
+142
+00:05:51.430 --> 00:05:55.400
+We say create product image, right?
+
+143
+00:05:55.400 --> 00:05:57.330
+The product image is not a product,
+
+144
+00:05:57.330 --> 00:05:59.810
+it's its own type where there's a relationship.
+
+145
+00:05:59.810 --> 00:06:01.153
+So you might think, okay,
+
+146
+00:06:02.910 --> 00:06:04.800
+when we submit this thing
+
+147
+00:06:04.800 --> 00:06:07.220
+do we first have to create the product image,
+
+148
+00:06:07.220 --> 00:06:08.310
+wait for it to come back,
+
+149
+00:06:08.310 --> 00:06:10.820
+get the ID of that, and then submit it?
+
+150
+00:06:10.820 --> 00:06:11.900
+And answer to that is, no.
+
+151
+00:06:11.900 --> 00:06:16.130
+You can actually do nested creates
+
+152
+00:06:16.130 --> 00:06:20.517
+and link them as a relationship all from one query.
+
+153
+00:06:20.517 --> 00:06:22.670
+And this is specific to KeystoneJS,
+
+154
+00:06:22.670 --> 00:06:26.060
+although this is a very popular thing in lots of CMS.
+
+155
+00:06:26.060 --> 00:06:30.770
+So we'll set the photo to, create is the actual name.
+
+156
+00:06:30.770 --> 00:06:33.030
+We're going to say, go ahead and create.
+
+157
+00:06:33.030 --> 00:06:37.020
+And that has an image field, which is our image variable.
+
+158
+00:06:37.020 --> 00:06:39.930
+And alt text is going to be,
+
+159
+00:06:39.930 --> 00:06:42.740
+we could say the name or the description of both.
+
+160
+00:06:42.740 --> 00:06:46.220
+So what this will do is, it'll say the photo is,
+
+161
+00:06:46.220 --> 00:06:49.610
+oh, go ahead and create a relationship here.
+
+162
+00:06:49.610 --> 00:06:52.470
+But also create the item behind the scenes
+
+163
+00:06:52.470 --> 00:06:55.350
+and then use the image and the alt text for that.
+
+164
+00:06:55.350 --> 00:06:58.810
+And then when we're done here, we'll ask for the ID,
+
+165
+00:06:58.810 --> 00:07:01.240
+the price, the description.
+
+166
+00:07:01.240 --> 00:07:03.993
+We want the name and then we want the photo.
+
+167
+00:07:05.010 --> 00:07:06.200
+We actually don't need the photo.
+
+168
+00:07:06.200 --> 00:07:08.050
+All we really need is the ID
+
+169
+00:07:08.050 --> 00:07:09.820
+because what we're going to be doing here
+
+170
+00:07:09.820 --> 00:07:12.010
+is that when somebody uploads something
+
+171
+00:07:12.010 --> 00:07:13.720
+we're just going to move them over
+
+172
+00:07:13.720 --> 00:07:17.640
+to the individual page for that image.
+
+173
+00:07:17.640 --> 00:07:19.640
+So we really just need the ID here.
+
+174
+00:07:19.640 --> 00:07:21.410
+I'm gonna keep price, description, name on there
+
+175
+00:07:21.410 --> 00:07:24.860
+just so I can show you what comes back from this mutation.
+
+176
+00:07:24.860 --> 00:07:25.693
+All right.
+
+177
+00:07:25.693 --> 00:07:26.640
+So that's that.
+
+178
+00:07:26.640 --> 00:07:29.610
+That's our actual mutation that we just wrote out there.
+
+179
+00:07:29.610 --> 00:07:32.800
+Now, in order to hook it up inside of this onsubmit,
+
+180
+00:07:32.800 --> 00:07:36.510
+we need to use the use mutation hook
+
+181
+00:07:36.510 --> 00:07:37.690
+inside of our component.
+
+182
+00:07:37.690 --> 00:07:38.840
+So we'll say const,
+
+183
+00:07:38.840 --> 00:07:40.520
+and I'm just gonna call that payload for now.
+
+184
+00:07:40.520 --> 00:07:41.353
+We're going to come back
+
+185
+00:07:41.353 --> 00:07:43.460
+and destructure that sucker in just a second.
+
+186
+00:07:43.460 --> 00:07:45.720
+I'll say use mutation.
+
+187
+00:07:45.720 --> 00:07:48.330
+That is a method that comes from,
+
+188
+00:07:48.330 --> 00:07:52.180
+it just auto imported from Apollo client.
+
+189
+00:07:52.180 --> 00:07:54.260
+And use mutation takes,
+
+190
+00:07:54.260 --> 00:07:57.543
+the first argument is going to be the actual mutation,
+
+191
+00:07:58.500 --> 00:08:00.310
+create product mutation.
+
+192
+00:08:00.310 --> 00:08:03.220
+And then the second argument to use mutation
+
+193
+00:08:03.220 --> 00:08:05.680
+is any additional data that needs to come along.
+
+194
+00:08:05.680 --> 00:08:09.423
+In our case, we want to pass along some variables.
+
+195
+00:08:10.590 --> 00:08:12.646
+And the variables are going to be
+
+196
+00:08:12.646 --> 00:08:15.770
+everything that we have, image, name, price, description,
+
+197
+00:08:15.770 --> 00:08:17.250
+everything that we have in our inputs.
+
+198
+00:08:17.250 --> 00:08:20.500
+So we can simply just pass along the whole object
+
+199
+00:08:20.500 --> 00:08:24.380
+that is in our use form state, pass it along as a variable.
+
+200
+00:08:24.380 --> 00:08:27.250
+And that, because they're named accordingly,
+
+201
+00:08:27.250 --> 00:08:31.690
+that will then line up with these values right here.
+
+202
+00:08:31.690 --> 00:08:35.060
+Which will in turn be set on the backend
+
+203
+00:08:35.060 --> 00:08:36.660
+as these values right here.
+
+204
+00:08:36.660 --> 00:08:41.660
+Now what gets returned from using mutation is two things.
+
+205
+00:08:42.140 --> 00:08:43.690
+If we take a look at our...
+
+206
+00:08:43.690 --> 00:08:44.523
+What was it?
+
+207
+00:08:44.523 --> 00:08:48.453
+Was it products component here?
+
+208
+00:08:51.940 --> 00:08:52.970
+No, it wasn't that one.
+
+209
+00:08:52.970 --> 00:08:54.140
+It was...
+
+210
+00:08:55.370 --> 00:08:57.240
+It was indexjs,
+
+211
+00:08:57.240 --> 00:08:59.500
+which uses this one.
+
+212
+00:08:59.500 --> 00:09:01.033
+And we'll open up the default.
+
+213
+00:09:02.350 --> 00:09:03.740
+And then we have our all proudest query.
+
+214
+00:09:03.740 --> 00:09:04.600
+If we look at this one.
+
+215
+00:09:04.600 --> 00:09:05.750
+This is a query, right?
+
+216
+00:09:05.750 --> 00:09:07.730
+And what gets returned from use query,
+
+217
+00:09:07.730 --> 00:09:10.930
+we get the data, we get the error, and we get the loading.
+
+218
+00:09:10.930 --> 00:09:13.050
+Now we're gonna get all three of those things
+
+219
+00:09:13.050 --> 00:09:17.260
+as well from use mutation, but we get another value
+
+220
+00:09:17.260 --> 00:09:19.530
+which is the actual function
+
+221
+00:09:19.530 --> 00:09:22.430
+that will fire off the mutation, right?
+
+222
+00:09:22.430 --> 00:09:24.870
+So we'll go here and take this payload
+
+223
+00:09:24.870 --> 00:09:26.800
+and we're going to destructure it.
+
+224
+00:09:26.800 --> 00:09:28.800
+And it's an array that it returns.
+
+225
+00:09:28.800 --> 00:09:31.600
+The first thing that it returns is
+
+226
+00:09:34.300 --> 00:09:35.930
+create product.
+
+227
+00:09:35.930 --> 00:09:37.320
+So the first thing that returns
+
+228
+00:09:37.320 --> 00:09:40.660
+is the actual function that will run the mutation.
+
+229
+00:09:40.660 --> 00:09:42.560
+And then the second thing that it returns
+
+230
+00:09:42.560 --> 00:09:45.270
+is the same thing as the query.
+
+231
+00:09:45.270 --> 00:09:48.960
+We can have our loading state, our error state,
+
+232
+00:09:48.960 --> 00:09:53.490
+and any data that gets returned from the mutation.
+
+233
+00:09:53.490 --> 00:09:58.290
+So if we were to just console.log
+
+234
+00:10:00.010 --> 00:10:01.960
+the create product, we should see...
+
+235
+00:10:01.960 --> 00:10:03.040
+There we go,
+
+236
+00:10:03.040 --> 00:10:05.120
+function, run mutation, right?
+
+237
+00:10:05.120 --> 00:10:09.790
+This is a function that is bound to this whole mutation.
+
+238
+00:10:09.790 --> 00:10:13.770
+And when we run that sucker with the arguments
+
+239
+00:10:13.770 --> 00:10:16.970
+it will go off to the backend and run it for us.
+
+240
+00:10:16.970 --> 00:10:18.700
+Now it's an asynchronous function.
+
+241
+00:10:18.700 --> 00:10:22.470
+So we can then call it in our onsubmit function.
+
+242
+00:10:22.470 --> 00:10:24.900
+So let's go into this onsubmit.
+
+243
+00:10:24.900 --> 00:10:28.133
+First thing we need to do is we need to mark it as async,
+
+244
+00:10:30.900 --> 00:10:34.720
+and that will allow us to await this thing.
+
+245
+00:10:34.720 --> 00:10:37.430
+So it goes back to the backend then comes back.
+
+246
+00:10:37.430 --> 00:10:38.820
+And well, we can do this.
+
+247
+00:10:38.820 --> 00:10:43.820
+We'll say, submit the input fields to the backend.
+
+248
+00:10:44.550 --> 00:10:45.530
+So it's a const.
+
+249
+00:10:45.530 --> 00:10:48.390
+Response is equal to await create product.
+
+250
+00:10:48.390 --> 00:10:51.500
+Now here's something important.
+
+251
+00:10:51.500 --> 00:10:54.200
+This create product mutation function,
+
+252
+00:10:54.200 --> 00:10:57.907
+we have already preloaded it with our variables
+
+253
+00:10:57.907 --> 00:11:02.300
+and that is aware of that it's state and that it updates.
+
+254
+00:11:02.300 --> 00:11:05.370
+So you can either specify the variables
+
+255
+00:11:05.370 --> 00:11:06.990
+when you define the mutation,
+
+256
+00:11:06.990 --> 00:11:09.000
+if you know what they are at the time.
+
+257
+00:11:09.000 --> 00:11:11.507
+In our case we know that it's inputs.
+
+258
+00:11:11.507 --> 00:11:15.140
+However, you can also pass them right here
+
+259
+00:11:15.140 --> 00:11:15.973
+if you don't know them.
+
+260
+00:11:15.973 --> 00:11:18.490
+If you only know them at the time of submit
+
+261
+00:11:18.490 --> 00:11:21.320
+you can pass the variables right here.
+
+262
+00:11:21.320 --> 00:11:22.680
+And we could say, inputs.
+
+263
+00:11:22.680 --> 00:11:24.280
+Both work.
+
+264
+00:11:24.280 --> 00:11:27.280
+If you know them at the time of definition
+
+265
+00:11:27.280 --> 00:11:30.180
+then I like to stick them in the create product.
+
+266
+00:11:30.180 --> 00:11:32.930
+And that just keeps our little submit function
+
+267
+00:11:32.930 --> 00:11:34.800
+nice and tidy.
+
+268
+00:11:34.800 --> 00:11:38.890
+So we'll go here, console.log, the response.
+
+269
+00:11:38.890 --> 00:11:42.320
+And the other things that we wanna do up here
+
+270
+00:11:42.320 --> 00:11:45.510
+is the loading state and the error state.
+
+271
+00:11:45.510 --> 00:11:47.390
+So before we even submit anything
+
+272
+00:11:47.390 --> 00:11:49.100
+let's take care of those as well.
+
+273
+00:11:49.100 --> 00:11:51.510
+So we'll go to this field set here
+
+274
+00:11:51.510 --> 00:11:55.240
+and we'll say, disabled is equal to loading, right?
+
+275
+00:11:55.240 --> 00:11:56.890
+So if it is in loading state,
+
+276
+00:11:56.890 --> 00:11:59.920
+then go ahead and disable the entire form.
+
+277
+00:11:59.920 --> 00:12:01.530
+And then we, what was that other one?
+
+278
+00:12:01.530 --> 00:12:05.640
+Aria-busy is also going to be equal to loading.
+
+279
+00:12:05.640 --> 00:12:07.850
+So when we are in a loading state,
+
+280
+00:12:07.850 --> 00:12:10.480
+show them the little swoopy bar,
+
+281
+00:12:10.480 --> 00:12:12.640
+this thing will start moving,
+
+282
+00:12:12.640 --> 00:12:14.720
+and also disable all the form input.
+
+283
+00:12:14.720 --> 00:12:16.930
+So that takes care of our loading state.
+
+284
+00:12:16.930 --> 00:12:19.380
+The other state we need to do is error state, right?
+
+285
+00:12:19.380 --> 00:12:22.040
+If there's an error, we need to show the user.
+
+286
+00:12:22.040 --> 00:12:25.043
+So I've actually given you an error component here.
+
+287
+00:12:25.990 --> 00:12:29.110
+And what it does is, it just takes in the error,
+
+288
+00:12:29.110 --> 00:12:31.580
+checks what type of error there is,
+
+289
+00:12:31.580 --> 00:12:34.163
+and then will display it off to the user.
+
+290
+00:12:35.280 --> 00:12:36.560
+And we can use that
+
+291
+00:12:36.560 --> 00:12:39.640
+wherever we want to show the actual error.
+
+292
+00:12:39.640 --> 00:12:42.700
+So what we can do is, just right here above the field set,
+
+293
+00:12:42.700 --> 00:12:44.523
+we just say, error.
+
+294
+00:12:46.550 --> 00:12:47.700
+Which one is that?
+
+295
+00:12:47.700 --> 00:12:48.533
+What did we..?
+
+296
+00:12:48.533 --> 00:12:49.810
+Oh, it's error message.
+
+297
+00:12:49.810 --> 00:12:51.340
+Error message
+
+298
+00:12:52.820 --> 00:12:54.020
+We're gonna import that.
+
+299
+00:12:55.580 --> 00:12:57.993
+Oh, it didn't, it's not coming along.
+
+300
+00:12:59.190 --> 00:13:00.440
+Oh, you know why?
+
+301
+00:13:00.440 --> 00:13:01.833
+It's called display error.
+
+302
+00:13:04.020 --> 00:13:05.650
+It doesn't matter what you call it.
+
+303
+00:13:05.650 --> 00:13:07.850
+But for auto-importing to work,
+
+304
+00:13:07.850 --> 00:13:10.300
+whatever you named it in the default,
+
+305
+00:13:10.300 --> 00:13:12.100
+it needs to be auto-imported as that.
+
+306
+00:13:12.100 --> 00:13:15.350
+So that's another vote to using named exports
+
+307
+00:13:15.350 --> 00:13:17.690
+because then you don't have little goof ups like that.
+
+308
+00:13:17.690 --> 00:13:22.140
+And then you pass the error, prop as error.
+
+309
+00:13:22.140 --> 00:13:23.690
+And I really liked this because
+
+310
+00:13:23.690 --> 00:13:26.090
+there's no checking if there is an error
+
+311
+00:13:26.090 --> 00:13:27.490
+then go ahead and render it.
+
+312
+00:13:27.490 --> 00:13:30.250
+We simply render out the component, pass it the error.
+
+313
+00:13:30.250 --> 00:13:32.943
+And then internally to this, it will check.
+
+314
+00:13:33.820 --> 00:13:34.960
+Is there no error?
+
+315
+00:13:34.960 --> 00:13:37.680
+Or is there no error message, then return null,
+
+316
+00:13:37.680 --> 00:13:40.293
+and it'll just render out nothing, which is great.
+
+317
+00:13:41.290 --> 00:13:42.123
+Okay.
+
+318
+00:13:42.123 --> 00:13:43.640
+So we did a lot there.
+
+319
+00:13:43.640 --> 00:13:44.473
+Let's see where we're at.
+
+320
+00:13:44.473 --> 00:13:46.780
+I'm just going to give it a fresh...
+
+321
+00:13:46.780 --> 00:13:47.800
+No errors?
+
+322
+00:13:47.800 --> 00:13:49.500
+Come on!
+That's amazing.
+
+323
+00:13:49.500 --> 00:13:54.340
+Let's go ahead and upload the Yeti photo, coral Yeti.
+
+324
+00:13:55.870 --> 00:13:59.203
+And these are the best coolers.
+
+325
+00:14:00.940 --> 00:14:02.230
+Ready?
+
+326
+00:14:02.230 --> 00:14:03.220
+Is it gonna work?
+
+327
+00:14:03.220 --> 00:14:04.140
+Is it gonna work?
+
+328
+00:14:04.140 --> 00:14:05.130
+Let's just double check.
+
+329
+00:14:05.130 --> 00:14:06.373
+I'm console logging the response.
+
+330
+00:14:06.373 --> 00:14:08.020
+Here we go.
+
+331
+00:14:08.020 --> 00:14:10.070
+Boom.
+You see it's disabled.
+
+332
+00:14:10.070 --> 00:14:11.640
+Came back.
+Okay.
+
+333
+00:14:11.640 --> 00:14:15.080
+So a lot to unpack there.
+
+334
+00:14:15.080 --> 00:14:17.420
+We disabled all the inputs.
+
+335
+00:14:17.420 --> 00:14:18.253
+Good.
+
+336
+00:14:18.253 --> 00:14:20.200
+That's because we did the field set.
+
+337
+00:14:20.200 --> 00:14:22.970
+This little swoopy guy started turning.
+
+338
+00:14:22.970 --> 00:14:23.970
+I don't, what do you call that?
+
+339
+00:14:23.970 --> 00:14:26.040
+The loading indicator turned on.
+
+340
+00:14:26.040 --> 00:14:27.690
+There you go.
+
+341
+00:14:27.690 --> 00:14:30.820
+Then we awaited the create product.
+
+342
+00:14:30.820 --> 00:14:34.220
+And then we came back with the response
+
+343
+00:14:34.220 --> 00:14:36.890
+and we got this.
+
+344
+00:14:36.890 --> 00:14:40.300
+Data, open it up, create product.
+
+345
+00:14:40.300 --> 00:14:42.250
+And what came back?
+
+346
+00:14:42.250 --> 00:14:45.400
+An ID, a name, and a price.
+
+347
+00:14:45.400 --> 00:14:48.523
+So if we go into our backend here, refresh.
+
+348
+00:14:49.660 --> 00:14:50.683
+There it is.
+
+349
+00:14:52.370 --> 00:14:54.180
+And the image worked as well.
+
+350
+00:14:54.180 --> 00:14:57.180
+We should also be able to go to product images
+
+351
+00:14:57.180 --> 00:14:58.300
+and see, there it is.
+
+352
+00:14:58.300 --> 00:15:00.740
+There's the coral Yeti that's actually showing up.
+
+353
+00:15:00.740 --> 00:15:02.110
+And that's the first one that worked
+
+354
+00:15:02.110 --> 00:15:05.350
+because the rest of them are having that display error.
+
+355
+00:15:05.350 --> 00:15:06.620
+Which is not really a big issue.
+
+356
+00:15:06.620 --> 00:15:09.140
+But look at that.
+
+357
+00:15:09.140 --> 00:15:10.720
+It worked.
+
+358
+00:15:10.720 --> 00:15:12.670
+Let's double check that that error state
+
+359
+00:15:12.670 --> 00:15:14.780
+actually does work as well.
+
+360
+00:15:14.780 --> 00:15:16.730
+So let's just delete the name,
+
+361
+00:15:16.730 --> 00:15:21.400
+and name is required, and let's try to upload it.
+
+362
+00:15:21.400 --> 00:15:22.500
+And when we submit it,
+
+363
+00:15:22.500 --> 00:15:24.583
+it should not send a name to the backend.
+
+364
+00:15:26.340 --> 00:15:27.173
+It says, "Shoot.
+
+365
+00:15:27.173 --> 00:15:30.730
+You attempted to perform an invalid mutation."
+
+366
+00:15:30.730 --> 00:15:33.760
+You probably will get better error messages.
+
+367
+00:15:33.760 --> 00:15:35.270
+That doesn't specifically tell you
+
+368
+00:15:35.270 --> 00:15:37.180
+what went wrong in that case.
+
+369
+00:15:37.180 --> 00:15:38.660
+But in most cases it will give you
+
+370
+00:15:38.660 --> 00:15:40.970
+a bit of a better error message.
+
+371
+00:15:40.970 --> 00:15:41.920
+And that's awesome.
+
+372
+00:15:41.920 --> 00:15:43.930
+I bet the Keystone error messages
+
+373
+00:15:43.930 --> 00:15:45.740
+will get a little bit better over time as well.
+
+374
+00:15:45.740 --> 00:15:50.430
+But that just shows that we did indeed catch the error
+
+375
+00:15:50.430 --> 00:15:53.010
+and we are displaying it to the user.
+
+376
+00:15:53.010 --> 00:15:55.560
+Let's put that back so we don't screw it up,
+
+377
+00:15:55.560 --> 00:15:57.313
+there we go, there's our name.
+
+378
+00:15:58.360 --> 00:16:00.400
+Now, a couple other things.
+
+379
+00:16:00.400 --> 00:16:05.260
+When it is successfully done,
+
+380
+00:16:05.260 --> 00:16:08.503
+what we need to do is first we can just clear the form.
+
+381
+00:16:11.030 --> 00:16:14.172
+An that should clear everything on out.
+
+382
+00:16:14.172 --> 00:16:16.683
+Let's try upload something else now.
+
+383
+00:16:22.360 --> 00:16:23.193
+Boom.
+
+384
+00:16:23.193 --> 00:16:25.610
+So it came back and it cleared out all the inputs.
+
+385
+00:16:25.610 --> 00:16:26.443
+That's great.
+
+386
+00:16:26.443 --> 00:16:27.640
+Last thing I want to tell you is
+
+387
+00:16:27.640 --> 00:16:29.290
+this response right here,
+
+388
+00:16:29.290 --> 00:16:32.930
+when we console logged that response we had a data on it.
+
+389
+00:16:32.930 --> 00:16:36.360
+We also would get an error and loading attribute on that.
+
+390
+00:16:36.360 --> 00:16:41.150
+So the response that data is the same thing as this.
+
+391
+00:16:41.150 --> 00:16:45.550
+So you can either capture it in a variable
+
+392
+00:16:45.550 --> 00:16:48.750
+that is returned, or resolved, from this promise
+
+393
+00:16:48.750 --> 00:16:50.290
+or you could just access it
+
+394
+00:16:50.290 --> 00:16:54.110
+directly from this data attribute that is destructured.
+
+395
+00:16:54.110 --> 00:16:56.430
+And that's kind of the nice thing about React,
+
+396
+00:16:56.430 --> 00:16:58.527
+and Apollo in general, is that
+
+397
+00:16:59.560 --> 00:17:01.210
+even though these were created
+
+398
+00:17:01.210 --> 00:17:03.600
+long before somebody hit the submit button
+
+399
+00:17:03.600 --> 00:17:05.370
+they are reactive variables,
+
+400
+00:17:05.370 --> 00:17:07.140
+which allows us to always get
+
+401
+00:17:07.140 --> 00:17:09.950
+the most up-to-date and latest information.
+
+402
+00:17:09.950 --> 00:17:13.440
+So I'm going to take out the const response there.
+
+403
+00:17:13.440 --> 00:17:14.980
+And we can simply just await it.
+
+404
+00:17:14.980 --> 00:17:16.610
+And then, if we wanted to,
+
+405
+00:17:16.610 --> 00:17:20.330
+we could log them out inside of this onsubmit handler.
+
+406
+00:17:20.330 --> 00:17:21.710
+All right, so that's enough for that one.
+
+407
+00:17:21.710 --> 00:17:23.070
+In the next one we'll have to do
+
+408
+00:17:23.070 --> 00:17:26.570
+some refetching of our products queries
+
+409
+00:17:26.570 --> 00:17:29.070
+so that we'll be able to see them on the homepage.
+

@@ -1,0 +1,1854 @@
+﻿WEBVTT
+
+1
+00:00:00.319 --> 00:00:01.211
+(logo whooshing)
+
+2
+00:00:01.211 --> 00:00:02.044
+<v ->In this video,</v>
+
+3
+00:00:02.044 --> 00:00:04.200
+we're gonna be doing the add to cart functionality.
+
+4
+00:00:04.200 --> 00:00:05.700
+And this is actually where we're going to get
+
+5
+00:00:05.700 --> 00:00:07.620
+into writing custom mutations,
+
+6
+00:00:07.620 --> 00:00:10.860
+because, in order to create a cart item,
+
+7
+00:00:10.860 --> 00:00:12.200
+we have an API for that.
+
+8
+00:00:12.200 --> 00:00:15.330
+If we go to our GraphQL API Explorer here,
+
+9
+00:00:15.330 --> 00:00:19.963
+we could write a mutation that is called createCartItem,
+
+10
+00:00:21.700 --> 00:00:25.110
+and then we would give it link to both the user,
+
+11
+00:00:25.110 --> 00:00:27.760
+the product and the quantity that we have.
+
+12
+00:00:27.760 --> 00:00:30.430
+The issue that we run into here is that,
+
+13
+00:00:30.430 --> 00:00:32.510
+if you add an item to your cart
+
+14
+00:00:32.510 --> 00:00:35.230
+and then you add that same item to your cart again,
+
+15
+00:00:35.230 --> 00:00:37.700
+it shouldn't create two separate cart items.
+
+16
+00:00:37.700 --> 00:00:39.940
+It should just update the existing one
+
+17
+00:00:39.940 --> 00:00:42.250
+to have a quantity of one more.
+
+18
+00:00:42.250 --> 00:00:44.620
+And that type of custom logic that we need,
+
+19
+00:00:44.620 --> 00:00:47.760
+needs to go into a custom mutation.
+
+20
+00:00:47.760 --> 00:00:48.860
+And this is really great
+
+21
+00:00:48.860 --> 00:00:52.010
+because, if you have some sort of code
+
+22
+00:00:52.010 --> 00:00:57.010
+that needs to go past what the default is in Keystone,
+
+23
+00:00:57.580 --> 00:01:00.310
+you can just add your own mutation resolvers,
+
+24
+00:01:00.310 --> 00:01:01.680
+which is really cool.
+
+25
+00:01:01.680 --> 00:01:03.080
+So, what we're gonna do is,
+
+26
+00:01:03.080 --> 00:01:06.830
+we'll open up our keystone.ts on our backend.
+
+27
+00:01:06.830 --> 00:01:09.110
+And there is a property
+
+28
+00:01:09.110 --> 00:01:12.550
+on this list here called extendGraphQLSchema.
+
+29
+00:01:12.550 --> 00:01:16.670
+So, basically take the existingGraphQLSchema,
+
+30
+00:01:16.670 --> 00:01:18.230
+take all of this stuff
+
+31
+00:01:18.230 --> 00:01:20.430
+and then add in either my own queries,
+
+32
+00:01:20.430 --> 00:01:23.290
+my own types or my own methods.
+
+33
+00:01:23.290 --> 00:01:25.730
+So, we will go down here actually,
+
+34
+00:01:25.730 --> 00:01:27.280
+and we got to create it first.
+
+35
+00:01:27.280 --> 00:01:31.960
+So, we're gonna go into our mutations folder
+
+36
+00:01:31.960 --> 00:01:34.723
+and I'll make a new file called index.ts.
+
+37
+00:01:36.350 --> 00:01:37.610
+And then in here,
+
+38
+00:01:37.610 --> 00:01:39.930
+we will export const extendGraphQLSchema
+
+39
+00:01:46.710 --> 00:01:49.580
+is equal to graphQLSchemaExtension.
+
+40
+00:01:52.880 --> 00:01:57.253
+That is a method that is imported from Keystone.
+
+41
+00:01:58.240 --> 00:01:59.820
+And then inside of there,
+
+42
+00:01:59.820 --> 00:02:01.510
+we have typedefs
+
+43
+00:02:02.450 --> 00:02:07.330
+and we will have a secondary, we'll have resolvers.
+
+44
+00:02:07.330 --> 00:02:10.760
+So, type definitions are exactly this.
+
+45
+00:02:10.760 --> 00:02:11.960
+If you take a look here,
+
+46
+00:02:11.960 --> 00:02:16.210
+the type definition is what is the name of the method?
+
+47
+00:02:16.210 --> 00:02:18.070
+What arguments does it take?
+
+48
+00:02:18.070 --> 00:02:19.840
+And what does it return?
+
+49
+00:02:19.840 --> 00:02:21.070
+And then the resolvers,
+
+50
+00:02:21.070 --> 00:02:24.360
+is just links to no jazz functions that will run
+
+51
+00:02:24.360 --> 00:02:27.410
+when those things are requested upon
+
+52
+00:02:27.410 --> 00:02:29.000
+via the GraphQL API.
+
+53
+00:02:29.000 --> 00:02:30.160
+So, we have that in that,
+
+54
+00:02:30.160 --> 00:02:31.390
+let's do typedefs first.
+
+55
+00:02:31.390 --> 00:02:35.320
+So, typedefs is just going to be a string
+
+56
+00:02:35.320 --> 00:02:36.800
+that is some GraphQL.
+
+57
+00:02:36.800 --> 00:02:41.800
+So, we'll say type mutation and some curly brackets.
+
+58
+00:02:41.870 --> 00:02:43.690
+And the first one that we are going to do,
+
+59
+00:02:43.690 --> 00:02:45.100
+we will have two in this course,
+
+60
+00:02:45.100 --> 00:02:47.220
+we have addToCart and checkout.
+
+61
+00:02:47.220 --> 00:02:49.040
+So, we'll do addToCart first,
+
+62
+00:02:49.040 --> 00:02:52.300
+addToCart when we're adding an item,
+
+63
+00:02:52.300 --> 00:02:54.810
+it takes in a productId
+
+64
+00:02:54.810 --> 00:02:56.960
+which has a type of Id,
+
+65
+00:02:56.960 --> 00:03:00.040
+and then it will return a CartItem.
+
+66
+00:03:00.040 --> 00:03:02.150
+Now like, why is this green like this?
+
+67
+00:03:02.150 --> 00:03:02.990
+It's kind of annoying.
+
+68
+00:03:02.990 --> 00:03:07.990
+Normally, what we do is we type like GQL or GraphQL
+
+69
+00:03:09.430 --> 00:03:11.650
+and we get this really nice highlighting,
+
+70
+00:03:11.650 --> 00:03:16.120
+but in our case we just need to give it a raw string.
+
+71
+00:03:16.120 --> 00:03:17.580
+So, that's kind of annoying,
+
+72
+00:03:17.580 --> 00:03:21.920
+because, we don't get the really nice syntax highlighting.
+
+73
+00:03:21.920 --> 00:03:24.650
+So, I'm gonna show you a little bit of a hack,
+
+74
+00:03:24.650 --> 00:03:29.250
+because, VS Code will highlight things
+
+75
+00:03:29.250 --> 00:03:32.810
+tagged with GQL or GraphQL.
+
+76
+00:03:32.810 --> 00:03:36.420
+We can actually make our own little fake syntax highlighter.
+
+77
+00:03:36.420 --> 00:03:37.410
+So, here we go,
+
+78
+00:03:37.410 --> 00:03:40.630
+make a fake GQL,
+
+79
+00:03:40.630 --> 00:03:42.043
+or what's called GraphQL,
+
+80
+00:03:42.950 --> 00:03:46.350
+tagged template literal.
+
+81
+00:03:46.350 --> 00:03:48.840
+So, it's just this const GraphQL
+
+82
+00:03:48.840 --> 00:03:52.150
+is equal to capital S String.raw.
+
+83
+00:03:52.150 --> 00:03:57.150
+And String.raw will take in a tag template literal,
+
+84
+00:03:57.280 --> 00:03:58.490
+which are these back ticks
+
+85
+00:03:58.490 --> 00:04:01.870
+and just return the text that's inside the quotes.
+
+86
+00:04:01.870 --> 00:04:03.250
+So, very, very simple.
+
+87
+00:04:03.250 --> 00:04:04.083
+And then watch this.
+
+88
+00:04:04.083 --> 00:04:05.930
+Now we can say GraphQL
+
+89
+00:04:05.930 --> 00:04:09.350
+and we get these really nice syntax highlighting.
+
+90
+00:04:09.350 --> 00:04:10.890
+We've got a little bit of red here
+
+91
+00:04:10.890 --> 00:04:13.630
+and that is because property resolvers is missing.
+
+92
+00:04:13.630 --> 00:04:15.800
+Good, okay, well, we can do that next.
+
+93
+00:04:15.800 --> 00:04:16.920
+So, underneath here,
+
+94
+00:04:16.920 --> 00:04:19.000
+we'll say resolvers
+
+95
+00:04:19.000 --> 00:04:24.000
+and that will be a mutation underneath there.
+
+96
+00:04:25.720 --> 00:04:26.800
+And then for each one,
+
+97
+00:04:26.800 --> 00:04:31.370
+we'll say, addToCart will be a function.
+
+98
+00:04:31.370 --> 00:04:36.190
+And then the custom code goes here.
+
+99
+00:04:36.190 --> 00:04:39.373
+So, let's just console.log ADD TO CART.
+
+100
+00:04:40.850 --> 00:04:42.410
+So, let's go back here.
+
+101
+00:04:42.410 --> 00:04:46.663
+We got to kill our backend and start it up again.
+
+102
+00:04:48.770 --> 00:04:49.930
+And once that's done,
+
+103
+00:04:49.930 --> 00:04:52.570
+refresh your GraphQL Explorer.
+
+104
+00:04:52.570 --> 00:04:53.900
+And now that this is loaded,
+
+105
+00:04:53.900 --> 00:04:55.520
+we can take a look at our schema
+
+106
+00:04:55.520 --> 00:04:57.650
+and owner our schema at docs
+
+107
+00:04:57.650 --> 00:05:00.760
+and we should see, add to no, not in there.
+
+108
+00:05:00.760 --> 00:05:03.130
+Okay, why?
+
+109
+00:05:03.130 --> 00:05:04.070
+We wrote all this code,
+
+110
+00:05:04.070 --> 00:05:06.940
+but we actually forgot to tell Keystone about it.
+
+111
+00:05:06.940 --> 00:05:10.220
+So, we need to go back to our Keystone
+
+112
+00:05:10.220 --> 00:05:13.100
+and embed it right here
+
+113
+00:05:13.100 --> 00:05:17.370
+amongst all of the config options of Keystone.
+
+114
+00:05:17.370 --> 00:05:18.500
+So, what did we call that?
+
+115
+00:05:18.500 --> 00:05:20.200
+It was called extendGraphQLSchema.
+
+116
+00:05:22.460 --> 00:05:23.680
+The reason why we called it that,
+
+117
+00:05:23.680 --> 00:05:26.823
+is because the property is called extendGraphQLSchema.
+
+118
+00:05:28.070 --> 00:05:31.370
+And then the variable is gonna be also be called that.
+
+119
+00:05:31.370 --> 00:05:34.710
+Let's go and import that from our index.
+
+120
+00:05:34.710 --> 00:05:36.730
+And then it just makes a property value
+
+121
+00:05:36.730 --> 00:05:38.040
+that is exactly the same.
+
+122
+00:05:38.040 --> 00:05:39.703
+Now, if we restart it,
+
+123
+00:05:40.610 --> 00:05:45.610
+our schema should have access to that add to area,
+
+124
+00:05:45.900 --> 00:05:46.750
+look at this.
+
+125
+00:05:46.750 --> 00:05:49.900
+So, now we have our custom mutation addToCart.
+
+126
+00:05:49.900 --> 00:05:51.767
+It takes in a productId
+
+127
+00:05:51.767 --> 00:05:54.480
+with a type of Id and returns a CartItem.
+
+128
+00:05:54.480 --> 00:05:55.460
+And then it knows,
+
+129
+00:05:55.460 --> 00:05:58.230
+because we already have a type of CartItem
+
+130
+00:05:58.230 --> 00:05:59.430
+in our GraphQL schema.
+
+131
+00:05:59.430 --> 00:06:02.140
+It already knows that addToCart item has an Id,
+
+132
+00:06:02.140 --> 00:06:04.830
+a quantity and a link to product and a user.
+
+133
+00:06:04.830 --> 00:06:06.230
+See how beautiful that is,
+
+134
+00:06:06.230 --> 00:06:09.917
+to be able to make your own custom resolvers.
+
+135
+00:06:09.917 --> 00:06:11.780
+And you can just go ahead and do that.
+
+136
+00:06:11.780 --> 00:06:16.060
+Now, I like to code the stuff behind these customers solvers
+
+137
+00:06:16.060 --> 00:06:17.593
+in their own file,
+
+138
+00:06:17.593 --> 00:06:19.500
+each mutation in its own file,
+
+139
+00:06:19.500 --> 00:06:21.980
+cause they can get rather large.
+
+140
+00:06:21.980 --> 00:06:22.900
+So, what we'll do is,
+
+141
+00:06:22.900 --> 00:06:24.900
+we'll go into our mutations folder here,
+
+142
+00:06:24.900 --> 00:06:27.510
+make a new file called addToCart
+
+143
+00:06:27.510 --> 00:06:30.243
+capital T capital C dot ts.
+
+144
+00:06:31.720 --> 00:06:36.700
+And we'll export default function, addToCart.
+
+145
+00:06:40.050 --> 00:06:42.220
+And that takes a couple arguments.
+
+146
+00:06:42.220 --> 00:06:46.059
+First one is a route, which has a type of any.
+
+147
+00:06:46.059 --> 00:06:50.453
+Then we also do structure the productId
+
+148
+00:06:52.270 --> 00:06:56.280
+which is going to be a String.
+
+149
+00:06:56.280 --> 00:06:57.750
+So, I'll just type it right here.
+
+150
+00:06:57.750 --> 00:07:01.803
+The productId is going to have a type of String.
+
+151
+00:07:03.550 --> 00:07:05.810
+And then we have context
+
+152
+00:07:05.810 --> 00:07:09.133
+and that is gonna have a type of KeystoneContext.
+
+153
+00:07:10.379 --> 00:07:11.530
+We'll have to import that,
+
+154
+00:07:11.530 --> 00:07:15.263
+boom that auto imports from Keystone next types.
+
+155
+00:07:16.730 --> 00:07:20.300
+Now, we have to open our function here
+
+156
+00:07:21.160 --> 00:07:24.403
+and we'll say console.log, ADDING TO CART.
+
+157
+00:07:26.280 --> 00:07:30.840
+Then we can go here
+
+158
+00:07:30.840 --> 00:07:32.573
+and just remove this method.
+
+159
+00:07:34.840 --> 00:07:37.503
+And auto import that function.
+
+160
+00:07:40.240 --> 00:07:44.343
+It's not importing function addToCart if we do this.
+
+161
+00:07:47.815 --> 00:07:49.898
+Export default addToCart.
+
+162
+00:07:51.953 --> 00:07:54.175
+I bet if we do it like that,
+
+163
+00:07:54.175 --> 00:07:55.960
+it will auto import.
+
+164
+00:07:55.960 --> 00:07:59.060
+Nope, all right, that's okay,
+
+165
+00:07:59.060 --> 00:08:00.340
+we'll import it.
+
+166
+00:08:00.340 --> 00:08:05.147
+Import addToCart from addToCart.
+
+167
+00:08:08.480 --> 00:08:10.850
+Okay, so we have our mutation addToCart,
+
+168
+00:08:10.850 --> 00:08:11.730
+when that runs,
+
+169
+00:08:11.730 --> 00:08:15.830
+it will run this function right here.
+
+170
+00:08:15.830 --> 00:08:17.950
+So, if we get again we've got to kill
+
+171
+00:08:17.950 --> 00:08:19.360
+and restart the process
+
+172
+00:08:19.360 --> 00:08:21.323
+anytime we make changes to this.
+
+173
+00:08:22.480 --> 00:08:23.910
+But when we do run that,
+
+174
+00:08:23.910 --> 00:08:27.870
+we should be able to code up our own mutation here.
+
+175
+00:08:27.870 --> 00:08:32.050
+So, mutation addToCart,
+
+176
+00:08:32.050 --> 00:08:36.150
+takes in a productId of abc123,
+
+177
+00:08:36.150 --> 00:08:41.150
+and will return the Id, the quantity, all that good stuff.
+
+178
+00:08:41.170 --> 00:08:43.270
+So, it will probably error out
+
+179
+00:08:43.270 --> 00:08:45.610
+because we're not actually returning a value,
+
+180
+00:08:45.610 --> 00:08:47.804
+but it should at least say,
+
+181
+00:08:47.804 --> 00:08:50.200
+ADDING TO CART in the console here.
+
+182
+00:08:50.200 --> 00:08:52.263
+So, I'll clear out my console, run it,
+
+183
+00:08:53.245 --> 00:08:54.850
+boom, ADDING TO CART.
+
+184
+00:08:54.850 --> 00:08:57.990
+It returns null cause that value doesn't return anything,
+
+185
+00:08:57.990 --> 00:09:00.200
+but we are in good shape.
+
+186
+00:09:00.200 --> 00:09:02.210
+We can also do a little bit of TypeScript typing
+
+187
+00:09:02.210 --> 00:09:03.043
+to say that,
+
+188
+00:09:03.043 --> 00:09:07.030
+okay this function we've typed the things that it takes in,
+
+189
+00:09:07.030 --> 00:09:10.013
+but also you need to type what it's returning, right?
+
+190
+00:09:10.013 --> 00:09:12.270
+And we already know
+
+191
+00:09:12.270 --> 00:09:15.890
+that it's returning a cart item right here.
+
+192
+00:09:15.890 --> 00:09:17.340
+And luckily for us,
+
+193
+00:09:17.340 --> 00:09:20.580
+Keystone generates all the types based on our schemas.
+
+194
+00:09:20.580 --> 00:09:22.110
+So, we can say here,
+
+195
+00:09:22.110 --> 00:09:23.923
+it will return a CartItem.
+
+196
+00:09:25.210 --> 00:09:27.560
+And I believe it is create input.
+
+197
+00:09:27.560 --> 00:09:30.953
+You see when that auto imported itself,
+
+198
+00:09:31.852 --> 00:09:33.252
+it says CartItemCreateInput.
+
+199
+00:09:35.090 --> 00:09:37.450
+You see that it links off to the schema types.
+
+200
+00:09:37.450 --> 00:09:38.440
+And if you click through to that,
+
+201
+00:09:38.440 --> 00:09:42.514
+you can see there's tons and tons of types in here
+
+202
+00:09:42.514 --> 00:09:44.760
+that describe everything is in there.
+
+203
+00:09:44.760 --> 00:09:48.340
+And there's not just like a regular CartItem,
+
+204
+00:09:48.340 --> 00:09:50.570
+but there is CartItemCreateInput,
+
+205
+00:09:50.570 --> 00:09:52.270
+which has the quantity
+
+206
+00:09:52.270 --> 00:09:54.565
+which is an Integer or nothing.
+
+207
+00:09:54.565 --> 00:09:57.010
+And then links to products and users
+
+208
+00:09:57.010 --> 00:09:59.840
+which could be associated content.
+
+209
+00:09:59.840 --> 00:10:01.640
+So, that one will work for us.
+
+210
+00:10:01.640 --> 00:10:02.473
+The other thing is,
+
+211
+00:10:02.473 --> 00:10:04.290
+is that this is we're gonna be using
+
+212
+00:10:04.290 --> 00:10:06.730
+a little bit of sync await inside of this.
+
+213
+00:10:06.730 --> 00:10:10.110
+So, this needs to be marked as a sync.
+
+214
+00:10:10.110 --> 00:10:12.157
+And the return value is not a CardItem.
+
+215
+00:10:12.157 --> 00:10:14.483
+The return value is a promise,
+
+216
+00:10:15.730 --> 00:10:18.250
+and then this is a promise
+
+217
+00:10:18.250 --> 00:10:21.456
+that will eventually return a CartItem.
+
+218
+00:10:21.456 --> 00:10:22.860
+So, wow!, now inside of here,
+
+219
+00:10:22.860 --> 00:10:24.230
+we need to do I think five things.
+
+220
+00:10:24.230 --> 00:10:25.410
+Let's write a little bit of pseudo code.
+
+221
+00:10:25.410 --> 00:10:27.410
+First, we need to query the current user
+
+222
+00:10:28.320 --> 00:10:29.770
+and see if they're signed in.
+
+223
+00:10:33.870 --> 00:10:38.870
+Second, we need to query the current users cart.
+
+224
+00:10:42.170 --> 00:10:45.140
+Three, we need to see if the item that they're adding
+
+225
+00:10:45.140 --> 00:10:46.541
+is already in their cart,
+
+226
+00:10:46.541 --> 00:10:47.383
+because if it is,
+
+227
+00:10:47.383 --> 00:10:49.420
+then we have to just increment it by one.
+
+228
+00:10:49.420 --> 00:10:50.357
+And if it isn't,
+
+229
+00:10:50.357 --> 00:10:51.570
+we have to create a whole new cart item.
+
+230
+00:10:51.570 --> 00:10:55.910
+So three, see if the current item
+
+231
+00:10:56.760 --> 00:10:59.090
+is in the cart.
+
+232
+00:10:59.090 --> 00:11:02.570
+Four, and maybe in depth this one,
+
+233
+00:11:02.570 --> 00:11:05.650
+if it is increment by one,
+
+234
+00:11:05.650 --> 00:11:08.723
+and if it isn't,
+
+235
+00:11:10.270 --> 00:11:12.043
+create a new CartItem.
+
+236
+00:11:14.890 --> 00:11:17.380
+All right, so, first thing,
+
+237
+00:11:17.380 --> 00:11:19.390
+query the current user and see if they're signed in.
+
+238
+00:11:19.390 --> 00:11:21.600
+So, how do you tell if somebody is signed in?
+
+239
+00:11:21.600 --> 00:11:23.290
+Well, we got this context right here
+
+240
+00:11:23.290 --> 00:11:26.590
+and on that context, you've got context dot,
+
+241
+00:11:26.590 --> 00:11:28.711
+you can see on the context they give is,
+
+242
+00:11:28.711 --> 00:11:30.830
+they give you GraphQL.
+
+243
+00:11:30.830 --> 00:11:34.360
+They give you actually the instance of your Keystone,
+
+244
+00:11:34.360 --> 00:11:36.050
+a whole bunch of different methods
+
+245
+00:11:36.050 --> 00:11:38.180
+and all the lists that you have.
+
+246
+00:11:38.180 --> 00:11:41.100
+But one thing that they give you is the session.
+
+247
+00:11:41.100 --> 00:11:42.140
+So, I'll make a new variable,
+
+248
+00:11:42.140 --> 00:11:45.513
+say const sesh is equal to context.session.
+
+249
+00:11:46.750 --> 00:11:51.430
+And for some reason it is typing it as any.
+
+250
+00:11:51.430 --> 00:11:52.950
+So, in this case,
+
+251
+00:11:52.950 --> 00:11:54.540
+I'm probably just cause of Keystone types
+
+252
+00:11:54.540 --> 00:11:55.740
+haven't been updated.
+
+253
+00:11:55.740 --> 00:12:00.740
+But we can type it as Session, capital S Session here.
+
+254
+00:12:02.220 --> 00:12:06.713
+And what that will do is it will import it from our types.
+
+255
+00:12:08.810 --> 00:12:10.910
+And then if we take a look at our sesh,
+
+256
+00:12:10.910 --> 00:12:15.240
+you see that the value is now being a sesh.
+
+257
+00:12:15.240 --> 00:12:18.373
+So, we can say if the sesh.ItemId,
+
+258
+00:12:20.410 --> 00:12:22.690
+if there is no session ItemId,
+
+259
+00:12:22.690 --> 00:12:26.310
+meaning that if there is no user currently logged in,
+
+260
+00:12:26.310 --> 00:12:28.960
+we'll just throw a new error,
+
+261
+00:12:28.960 --> 00:12:33.883
+that says you must be logged in to do this.
+
+262
+00:12:36.510 --> 00:12:39.750
+Otherwise, we're going to query the current users carts.
+
+263
+00:12:39.750 --> 00:12:44.140
+Let's say, const allCartItem is equal to await
+
+264
+00:12:45.070 --> 00:12:47.210
+and we'll take that context
+
+265
+00:12:47.210 --> 00:12:48.920
+and we can grab the lists
+
+266
+00:12:49.970 --> 00:12:52.790
+and we can grab the cart item off of that,
+
+267
+00:12:52.790 --> 00:12:54.600
+and say find many.
+
+268
+00:12:54.600 --> 00:12:58.520
+So, part of the beauty of being in Keystone,
+
+269
+00:12:58.520 --> 00:13:01.980
+is that we can just reach directly into the lists
+
+270
+00:13:01.980 --> 00:13:06.060
+and run a function that will find the items for us.
+
+271
+00:13:06.060 --> 00:13:07.960
+We don't need to go to the GraphQL API,
+
+272
+00:13:07.960 --> 00:13:08.793
+or anything like that.
+
+273
+00:13:08.793 --> 00:13:11.770
+We can just go directly to the database,
+
+274
+00:13:11.770 --> 00:13:14.370
+right from our resolvers in here.
+
+275
+00:13:14.370 --> 00:13:16.713
+And we'll say find many where,
+
+276
+00:13:21.670 --> 00:13:25.480
+the user Id
+
+277
+00:13:25.480 --> 00:13:27.573
+is going to be equal to the sesh.ItemId.
+
+278
+00:13:36.070 --> 00:13:38.023
+And where the productId
+
+279
+00:13:40.460 --> 00:13:43.977
+is going to be equal to the productId.
+
+280
+00:13:45.610 --> 00:13:49.737
+And that is being passed in via the arguments, right?
+
+281
+00:13:49.737 --> 00:13:52.150
+That's this value right here.
+
+282
+00:13:52.150 --> 00:13:55.160
+So, essentially what we're doing right here is we're saying,
+
+283
+00:13:55.160 --> 00:13:58.940
+find me an item where the user
+
+284
+00:13:58.940 --> 00:14:01.680
+and the product are this.
+
+285
+00:14:01.680 --> 00:14:03.840
+And the reason why we're not just finding one,
+
+286
+00:14:03.840 --> 00:14:06.760
+is because these fields are not unique
+
+287
+00:14:06.760 --> 00:14:09.210
+and you cannot use find one
+
+288
+00:14:09.210 --> 00:14:11.860
+unless all the fields that are being used are unique.
+
+289
+00:14:11.860 --> 00:14:13.650
+So, here we just find an array.
+
+290
+00:14:13.650 --> 00:14:16.050
+And if there is one item in that array,
+
+291
+00:14:16.050 --> 00:14:19.150
+we'll know that that item is currently in their cart.
+
+292
+00:14:19.150 --> 00:14:22.990
+So, we'll throw that first item into a variable.
+
+293
+00:14:22.990 --> 00:14:24.513
+So, we'll restructure it,
+
+294
+00:14:25.628 --> 00:14:30.227
+existingCartItem is equal to allCartItems.
+
+295
+00:14:31.644 --> 00:14:33.780
+And what that does is it restructures the first item
+
+296
+00:14:33.780 --> 00:14:36.850
+of that array into a variable called existingCartItem.
+
+297
+00:14:36.850 --> 00:14:40.810
+And we'll say, if there is an existingCartItem,
+
+298
+00:14:40.810 --> 00:14:45.810
+console.log, 'this item is already in the cart
+
+299
+00:14:46.030 --> 00:14:48.007
+increment by one.'
+
+300
+00:14:54.040 --> 00:14:55.940
+And we can actually interpolate
+
+301
+00:14:55.940 --> 00:14:57.470
+how many items are in that cart.
+
+302
+00:14:57.470 --> 00:15:00.943
+So, there are already,
+
+303
+00:15:04.577 --> 00:15:07.800
+I need to use back ticks here, existingItem.quantity.
+
+304
+00:15:11.600 --> 00:15:15.283
+There are already existingItems.quantity increment by one.
+
+305
+00:15:16.300 --> 00:15:17.910
+And then what we'll do here from here,
+
+306
+00:15:17.910 --> 00:15:22.910
+is return await context.list.CartItem.updateOne,
+
+307
+00:15:31.550 --> 00:15:36.383
+where the Id is equal to the existingCartItem.Id.
+
+308
+00:15:37.730 --> 00:15:39.200
+And now the data,
+
+309
+00:15:39.200 --> 00:15:42.360
+is going to be updated as of quantity.
+
+310
+00:15:42.360 --> 00:15:46.600
+Quantity will be quantity plus one
+
+311
+00:15:50.520 --> 00:15:53.683
+and actually it's existingCartItem.quantity.
+
+312
+00:15:55.780 --> 00:15:58.200
+So, you'll see there's lots of red in here
+
+313
+00:15:58.200 --> 00:16:00.520
+and I'm not gonna go into all the nitty-gritty
+
+314
+00:16:00.520 --> 00:16:02.280
+of all the different rules of TypeScript,
+
+315
+00:16:02.280 --> 00:16:04.810
+because it's not necessarily a type trip course.
+
+316
+00:16:04.810 --> 00:16:06.390
+The reason why I didn't use TypeScript in here,
+
+317
+00:16:06.390 --> 00:16:08.763
+it's just that we can get really good auto completion.
+
+318
+00:16:08.763 --> 00:16:11.550
+So, these aren't necessarily TypeScript errors,
+
+319
+00:16:11.550 --> 00:16:13.380
+they are ESLint errors
+
+320
+00:16:13.380 --> 00:16:15.690
+that could potentially be issues down the road,
+
+321
+00:16:15.690 --> 00:16:17.730
+but not for what we're doing right now.
+
+322
+00:16:17.730 --> 00:16:19.290
+So, if they are annoying you,
+
+323
+00:16:19.290 --> 00:16:21.190
+you can just go to the top of the file
+
+324
+00:16:21.190 --> 00:16:25.563
+and put a little comment that says ESLint disable.
+
+325
+00:16:27.530 --> 00:16:31.070
+And that will puf!, all of your programming issues are gone.
+
+326
+00:16:31.070 --> 00:16:33.610
+And obviously that's maybe not the best idea,
+
+327
+00:16:33.610 --> 00:16:37.260
+but for the purpose of this course
+
+328
+00:16:37.260 --> 00:16:41.150
+and not getting too nitty-gritty into TypeScript,
+
+329
+00:16:41.150 --> 00:16:43.180
+I think that works just fine for what we're doing here.
+
+330
+00:16:43.180 --> 00:16:47.470
+So, we are returning the new CartItem,
+
+331
+00:16:47.470 --> 00:16:49.060
+because await will wait
+
+332
+00:16:49.060 --> 00:16:51.920
+for the updated CartItem to come back.
+
+333
+00:16:51.920 --> 00:16:55.620
+And then I guess that's number three right here.
+
+334
+00:16:55.620 --> 00:16:58.540
+And then form has also number four.
+
+335
+00:16:58.540 --> 00:17:00.330
+And then finally, if it isn't,
+
+336
+00:17:00.330 --> 00:17:01.420
+create a new CartItem.
+
+337
+00:17:01.420 --> 00:17:06.420
+So, return await context.lists.CartItem.createOne,
+
+338
+00:17:11.570 --> 00:17:14.653
+Where the data is the product.
+
+339
+00:17:17.160 --> 00:17:20.380
+And now we need to make relationships.
+
+340
+00:17:20.380 --> 00:17:23.450
+When you are creating a relationships in a product
+
+341
+00:17:23.450 --> 00:17:24.390
+it works like this.
+
+342
+00:17:24.390 --> 00:17:26.303
+You say product connect,
+
+343
+00:17:29.770 --> 00:17:34.197
+where the Id is equal to the productId.
+
+344
+00:17:35.180 --> 00:17:37.550
+And then the user connect,
+
+345
+00:17:37.550 --> 00:17:42.286
+or the Id of the user is equal to, what did we say?
+
+346
+00:17:42.286 --> 00:17:44.453
+Sesh.ItemId, lowercase d.
+
+347
+00:17:50.480 --> 00:17:54.997
+See how that still had the underline there,
+
+348
+00:17:54.997 --> 00:17:58.520
+because it says that's actual TypeScript error.
+
+349
+00:17:58.520 --> 00:17:59.830
+That's not just the linting error,
+
+350
+00:17:59.830 --> 00:18:01.030
+this is a TypeScript error.
+
+351
+00:18:01.030 --> 00:18:02.320
+ItemId does not exist,
+
+352
+00:18:02.320 --> 00:18:03.500
+did you mean itemId?
+
+353
+00:18:03.500 --> 00:18:04.650
+Oh yeah, I did.
+
+354
+00:18:04.650 --> 00:18:05.490
+Thank you, TypeScript.
+
+355
+00:18:05.490 --> 00:18:07.532
+That's really nice of you.
+
+356
+00:18:07.532 --> 00:18:11.307
+Wow!, all right, so, we just wrote all that code,
+
+357
+00:18:11.307 --> 00:18:13.050
+but we didn't test it yet.
+
+358
+00:18:13.050 --> 00:18:18.050
+Let's go and you got to kill the build and restart it.
+
+359
+00:18:18.770 --> 00:18:23.770
+And now when we try to add it with a product that exists,
+
+360
+00:18:24.740 --> 00:18:26.560
+go to our products,
+
+361
+00:18:26.560 --> 00:18:28.893
+I'm gonna grab the cooler.
+
+362
+00:18:29.870 --> 00:18:32.000
+I'm gonna grab the Id here
+
+363
+00:18:32.000 --> 00:18:34.040
+and then let's just try and run it.
+
+364
+00:18:34.040 --> 00:18:37.840
+And when we run it, error.
+
+365
+00:18:37.840 --> 00:18:41.070
+Okay, so we've got a bit of an error the first time.
+
+366
+00:18:41.070 --> 00:18:44.260
+They're already undefined increment by one.
+
+367
+00:18:44.260 --> 00:18:49.260
+Okay, I bet there is an issue
+
+368
+00:18:54.410 --> 00:18:55.680
+with the allCartItems.
+
+369
+00:18:55.680 --> 00:18:57.170
+So, let's debug this a little bit.
+
+370
+00:18:57.170 --> 00:19:00.277
+Will console.log, all cart item.
+
+371
+00:19:00.277 --> 00:19:03.430
+And we'll see what items it finds here.
+
+372
+00:19:03.430 --> 00:19:07.970
+So, restart, I'm gonna clear up my console,
+
+373
+00:19:07.970 --> 00:19:08.963
+run it again.
+
+374
+00:19:10.020 --> 00:19:11.260
+And here we go.
+
+375
+00:19:11.260 --> 00:19:15.073
+So, this is the CartItems for that item.
+
+376
+00:19:17.580 --> 00:19:19.610
+And it's returning three items,
+
+377
+00:19:19.610 --> 00:19:21.620
+which means there's three items in our cart.
+
+378
+00:19:21.620 --> 00:19:24.160
+This should only be returning one item,
+
+379
+00:19:24.160 --> 00:19:27.040
+because there should be only one product
+
+380
+00:19:27.040 --> 00:19:28.430
+that matches it.
+
+381
+00:19:28.430 --> 00:19:32.400
+So, I'm wondering if the productId
+
+382
+00:19:32.400 --> 00:19:35.470
+is not being passed in properly.
+
+383
+00:19:35.470 --> 00:19:39.311
+So, we'll go ahead and console log the productId as well.
+
+384
+00:19:39.311 --> 00:19:42.140
+Unfortunately this debugging is a little bit slow,
+
+385
+00:19:42.140 --> 00:19:45.050
+cause you got to kill the process and start it again.
+
+386
+00:19:45.050 --> 00:19:46.970
+But, bear with me here.
+
+387
+00:19:46.970 --> 00:19:49.603
+I'm gonna clear up my console, run it again.
+
+388
+00:19:51.150 --> 00:19:52.650
+And yeah, we get undefined.
+
+389
+00:19:52.650 --> 00:19:55.860
+Okay, so, Oh, look at this.
+
+390
+00:19:55.860 --> 00:20:00.860
+I bet it's because, did I type it as product capital ID?
+
+391
+00:20:00.950 --> 00:20:04.560
+I did, that's my problem.
+
+392
+00:20:04.560 --> 00:20:05.860
+So, we'll go back to our index
+
+393
+00:20:05.860 --> 00:20:08.300
+you see how I did capital ID here.
+
+394
+00:20:08.300 --> 00:20:10.230
+I always do this and it shouldn't be.
+
+395
+00:20:10.230 --> 00:20:12.540
+Identification is not two words,
+
+396
+00:20:12.540 --> 00:20:15.600
+so it should be lowercase d on that.
+
+397
+00:20:15.600 --> 00:20:18.593
+And then same thing when I pass the Id here.
+
+398
+00:20:19.720 --> 00:20:22.020
+And then when it is being restructured
+
+399
+00:20:22.020 --> 00:20:25.260
+in our addToCart function,
+
+400
+00:20:25.260 --> 00:20:26.250
+it's just right here.
+
+401
+00:20:26.250 --> 00:20:27.730
+That's where we did it properly.
+
+402
+00:20:27.730 --> 00:20:29.300
+So, a little bit of a goof up there.
+
+403
+00:20:29.300 --> 00:20:31.963
+So, I bet this will now run.
+
+404
+00:20:33.990 --> 00:20:34.823
+Okay, here we go.
+
+405
+00:20:34.823 --> 00:20:39.823
+Start, boom!, so we got the correct I'd
+
+406
+00:20:40.390 --> 00:20:41.830
+of the item.
+
+407
+00:20:41.830 --> 00:20:43.143
+We got the correct item
+
+408
+00:20:43.143 --> 00:20:45.870
+because there is already in the cart.
+
+409
+00:20:45.870 --> 00:20:48.113
+And then finally it says,
+
+410
+00:20:49.840 --> 00:20:50.980
+there is an error
+
+411
+00:20:50.980 --> 00:20:54.873
+that data got invalid none quantity.
+
+412
+00:20:58.560 --> 00:21:00.750
+So, we'll go back to our code here
+
+413
+00:21:00.750 --> 00:21:01.860
+and debug it.
+
+414
+00:21:01.860 --> 00:21:03.340
+So, it says if there is an existingCartItem.
+
+415
+00:21:03.340 --> 00:21:05.690
+So in this case, there is,
+
+416
+00:21:05.690 --> 00:21:06.860
+I already have it in my cart.
+
+417
+00:21:06.860 --> 00:21:08.850
+This is the Eddy cooler.
+
+418
+00:21:08.850 --> 00:21:11.583
+So, what we're doing here is we are returning it.
+
+419
+00:21:13.260 --> 00:21:17.870
+We take the existingCartItem quantity plus one.
+
+420
+00:21:17.870 --> 00:21:19.130
+So, it's telling us
+
+421
+00:21:19.130 --> 00:21:23.030
+that the value we're passing here is incorrect.
+
+422
+00:21:23.030 --> 00:21:26.050
+So, let's console log the existingCartItem.
+
+423
+00:21:28.890 --> 00:21:31.790
+And see if we can take a little bit of a closer look
+
+424
+00:21:31.790 --> 00:21:36.250
+into why that is.
+
+425
+00:21:36.250 --> 00:21:39.580
+Maybe this is like undefined for some reason,
+
+426
+00:21:39.580 --> 00:21:43.383
+clear it out, run, addToCart.
+
+427
+00:21:48.600 --> 00:21:49.948
+Ah, okay, I see.
+
+428
+00:21:49.948 --> 00:21:54.753
+It's only returning to us the Id of that CartItem.
+
+429
+00:21:58.149 --> 00:21:59.760
+So, just pause it there for a second to figure it out.
+
+430
+00:21:59.760 --> 00:22:01.390
+And this has changed in Keystone
+
+431
+00:22:01.390 --> 00:22:04.430
+is you have to explicitly tell it which fields you want.
+
+432
+00:22:04.430 --> 00:22:06.110
+So, it's resolved fields
+
+433
+00:22:06.110 --> 00:22:07.780
+and this is just you want the Id
+
+434
+00:22:07.780 --> 00:22:11.800
+and the quantity of the item that comes back
+
+435
+00:22:11.800 --> 00:22:13.870
+and that should fix it for us.
+
+436
+00:22:13.870 --> 00:22:15.247
+You see, I just ran it right here.
+
+437
+00:22:15.247 --> 00:22:18.700
+And it actually said there was three increment by one.
+
+438
+00:22:18.700 --> 00:22:21.893
+So now if we run that again,
+
+439
+00:22:24.770 --> 00:22:27.710
+it tells us there's four incremented by one.
+
+440
+00:22:27.710 --> 00:22:29.350
+There's five incremented by one.
+
+441
+00:22:29.350 --> 00:22:31.853
+If we go to the backend CartItems here,
+
+442
+00:22:33.920 --> 00:22:34.960
+should see it, there we go.
+
+443
+00:22:34.960 --> 00:22:36.730
+There's the Eddy cooler and there is six.
+
+444
+00:22:36.730 --> 00:22:38.700
+So, now if I try to add a product
+
+445
+00:22:38.700 --> 00:22:40.637
+that is not yet in my cart,
+
+446
+00:22:40.637 --> 00:22:42.703
+I think this belt is not in it.
+
+447
+00:22:43.570 --> 00:22:44.913
+Let's run it over here.
+
+448
+00:22:45.920 --> 00:22:47.063
+Go ahead and run it.
+
+449
+00:22:48.880 --> 00:22:50.803
+And there we go,
+
+450
+00:22:51.800 --> 00:22:54.020
+it says adding to cart,
+
+451
+00:22:54.020 --> 00:22:55.173
+but run it again,
+
+452
+00:22:56.340 --> 00:22:59.020
+says there's already one increment by one.
+
+453
+00:22:59.020 --> 00:23:01.840
+So, there should be a new item.
+
+454
+00:23:01.840 --> 00:23:02.673
+There we go.
+
+455
+00:23:02.673 --> 00:23:04.399
+Nice belt with two in it, okay, cool.
+
+456
+00:23:04.399 --> 00:23:06.970
+So, that's our full agile cart resolver.
+
+457
+00:23:06.970 --> 00:23:08.070
+Next, what we need to do,
+
+458
+00:23:08.070 --> 00:23:10.710
+is to actually hook this up on the front-end,
+
+459
+00:23:10.710 --> 00:23:12.810
+to a button so that when you click it,
+
+460
+00:23:12.810 --> 00:23:14.030
+it will add it to cart,
+
+461
+00:23:14.030 --> 00:23:17.280
+as well as re fetch the number of items
+
+462
+00:23:17.280 --> 00:23:18.113
+that are in the cart,
+
+463
+00:23:18.113 --> 00:23:19.990
+so we can display them on the front-end.
+

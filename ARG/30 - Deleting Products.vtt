@@ -1,0 +1,890 @@
+﻿WEBVTT
+
+1
+00:00:01.752 --> 00:00:03.310
+<v ->Alright next, let's make a delete button,</v>
+
+2
+00:00:03.310 --> 00:00:05.360
+so when you click it will remove the item.
+
+3
+00:00:05.360 --> 00:00:07.980
+There's actually kinda two ways you could go about this,
+
+4
+00:00:07.980 --> 00:00:11.220
+you could either just delete the item entirely
+
+5
+00:00:11.220 --> 00:00:15.227
+or you could change the status of the item
+
+6
+00:00:15.227 --> 00:00:18.850
+to like deleted or that's called a soft delete
+
+7
+00:00:18.850 --> 00:00:20.330
+when people are building these things,
+
+8
+00:00:20.330 --> 00:00:21.760
+sometimes people wanna undelete things,
+
+9
+00:00:21.760 --> 00:00:23.630
+while you still need record of the item,
+
+10
+00:00:23.630 --> 00:00:25.680
+even though it was deleted.
+
+11
+00:00:25.680 --> 00:00:28.220
+In our case I'm gonna show you how to actually delete it
+
+12
+00:00:28.220 --> 00:00:33.220
+but you could also in make this in update status as well.
+
+13
+00:00:33.260 --> 00:00:35.920 line:15% 
+So we'll, let's go into our components folder
+
+14
+00:00:35.920 --> 00:00:40.690 line:15% 
+and we'll make a new file called DeleteProduct.js,
+
+15
+00:00:40.690 --> 00:00:44.380
+And I'll say export default function, DeleteProduct
+
+16
+00:00:48.209 --> 00:00:52.410
+and then that will take in the idea of the product
+
+17
+00:00:52.410 --> 00:00:55.761
+that needs to be deleted as well as some children
+
+18
+00:00:55.761 --> 00:00:57.530
+because this is gonna be a button
+
+19
+00:00:57.530 --> 00:00:59.380
+where you can pass anything.
+
+20
+00:00:59.380 --> 00:01:02.910
+It's just really just a functionality in the button.
+
+21
+00:01:02.910 --> 00:01:04.980
+From that will return a button.
+
+22
+00:01:04.980 --> 00:01:09.980
+You have to give a type of a button.
+
+23
+00:01:10.320 --> 00:01:11.813
+Get outta here.
+
+24
+00:01:13.130 --> 00:01:17.633
+And then inside of that, let's just render out children.
+
+25
+00:01:19.860 --> 00:01:24.340
+We'll go into our product.js component
+
+26
+00:01:24.340 --> 00:01:27.660
+and right below where we have the edit button
+
+27
+00:01:27.660 --> 00:01:32.480
+we'll give ourselves our delete product component.
+
+28
+00:01:32.480 --> 00:01:34.530
+And then inside of that would say delete.
+
+29
+00:01:37.010 --> 00:01:39.203
+I've got to auto import this sucker.
+
+30
+00:01:41.120 --> 00:01:42.210
+Boom.
+
+31
+00:01:42.210 --> 00:01:43.410
+Let's see, there we go.
+
+32
+00:01:43.410 --> 00:01:44.700
+Imported it.
+
+33
+00:01:44.700 --> 00:01:46.030
+And now you see we've got
+
+34
+00:01:46.030 --> 00:01:49.078
+this delete button showing up there.
+
+35
+00:01:49.078 --> 00:01:53.590
+The reason why we did this children is that
+
+36
+00:01:53.590 --> 00:01:55.750
+you can literally put anything you want
+
+37
+00:01:55.750 --> 00:01:57.090
+inside of this button.
+
+38
+00:01:57.090 --> 00:02:00.020
+So if you want it to feel like a paragraph tag
+
+39
+00:02:00.020 --> 00:02:03.440
+and another button, I don't think that's possible
+
+40
+00:02:03.440 --> 00:02:06.107
+but a span, something like that,
+
+41
+00:02:06.107 --> 00:02:09.370
+You totally can put whatever you want inside of it.
+
+42
+00:02:09.370 --> 00:02:12.720
+So it's just like a, a little bit flexible.
+
+43
+00:02:12.720 --> 00:02:14.420
+It's a flexible button.
+
+44
+00:02:14.420 --> 00:02:18.040
+So it won't bring it back and just say, delete.
+
+45
+00:02:18.040 --> 00:02:22.860
+Next we need to pass the ID of the item.
+
+46
+00:02:22.860 --> 00:02:25.163
+And that is product.ID.
+
+47
+00:02:28.150 --> 00:02:30.150
+When somebody clicks this button,
+
+48
+00:02:30.150 --> 00:02:34.040
+you generally with deleting buttons,
+
+49
+00:02:34.040 --> 00:02:36.290
+you generally want to make sure
+
+50
+00:02:36.290 --> 00:02:37.740
+that they actually wanted to click it
+
+51
+00:02:37.740 --> 00:02:40.050
+because if you accidentally click something like that
+
+52
+00:02:40.050 --> 00:02:41.447
+it could be a bad day.
+
+53
+00:02:41.447 --> 00:02:44.430
+And there's kinda two ways.
+
+54
+00:02:44.430 --> 00:02:47.230
+I'll do a delete button.
+
+55
+00:02:47.230 --> 00:02:50.750
+First I'll just pop up a confirm and that's what we'll do.
+
+56
+00:02:50.750 --> 00:02:53.920
+But also I have on my own course platform
+
+57
+00:02:53.920 --> 00:02:58.180
+if I'm deleting somebody or if I'm refunding somebody
+
+58
+00:02:58.180 --> 00:03:00.530
+what happens is have to click the button once
+
+59
+00:03:00.530 --> 00:03:02.350
+and it says, click it again.
+
+60
+00:03:02.350 --> 00:03:03.183
+And you click it twice.
+
+61
+00:03:03.183 --> 00:03:04.410
+It says you click it twice once more
+
+62
+00:03:04.410 --> 00:03:06.680
+and you click it three times, it says, all right
+
+63
+00:03:06.680 --> 00:03:09.000
+we're about to do this, click it one more time.
+
+64
+00:03:09.000 --> 00:03:10.290
+And we'll actually refund the person.
+
+65
+00:03:10.290 --> 00:03:11.240
+You click it a third time.
+
+66
+00:03:11.240 --> 00:03:12.820
+And what that is doing
+
+67
+00:03:12.820 --> 00:03:16.400
+is it's maintaining a click count of state.
+
+68
+00:03:16.400 --> 00:03:18.900
+And then only once you've clicked it four times
+
+69
+00:03:18.900 --> 00:03:20.760
+does it actually run the function?
+
+70
+00:03:20.760 --> 00:03:23.280
+And that's just a little bit of safety on my end
+
+71
+00:03:24.460 --> 00:03:26.910
+before you could also throw up a model that says
+
+72
+00:03:26.910 --> 00:03:28.090
+are you sure to do that?
+
+73
+00:03:28.090 --> 00:03:29.350
+There's a lot of different approaches
+
+74
+00:03:29.350 --> 00:03:33.040
+but definitely recommend putting something in place.
+
+75
+00:03:33.040 --> 00:03:35.040
+So on our case, we're gonna give ourselves
+
+76
+00:03:35.040 --> 00:03:39.590
+an onclick event on the button.
+
+77
+00:03:39.590 --> 00:03:40.980
+And when somebody clicks
+
+78
+00:03:40.980 --> 00:03:44.230
+we just run a little inline function right here.
+
+79
+00:03:44.230 --> 00:03:49.203
+We're going to say if actually here, I'll just do it.
+
+80
+00:03:50.485 --> 00:03:55.485
+Confirm, are you sure you want to delete this item?
+
+81
+00:03:57.560 --> 00:03:58.393
+Say, watch this.
+
+82
+00:03:58.393 --> 00:03:59.573
+So now when you click it,
+
+83
+00:04:00.674 --> 00:04:01.880
+this is are you sure you wanna delete it
+
+84
+00:04:01.880 --> 00:04:04.060
+when you press okay or cancel?
+
+85
+00:04:04.060 --> 00:04:06.590
+That will return either true or false
+
+86
+00:04:06.590 --> 00:04:10.180
+depending on what you have clicked.
+
+87
+00:04:10.180 --> 00:04:13.100
+So we can wrap that in an if statement,
+
+88
+00:04:13.100 --> 00:04:16.950
+if confirm are you sure you want to delete this item?
+
+89
+00:04:16.950 --> 00:04:21.050
+Then you wanna go ahead and delete it.
+
+90
+00:04:21.050 --> 00:04:25.480
+So if someone's presses cancel, then it doesn't matter.
+
+91
+00:04:25.480 --> 00:04:28.170
+Then nothing will happen on that clicK.
+
+92
+00:04:28.170 --> 00:04:31.083
+So let's just log out deleting.
+
+93
+00:04:32.180 --> 00:04:34.750
+Open up our dev tools delete.
+
+94
+00:04:34.750 --> 00:04:35.690
+Are you sure?
+
+95
+00:04:35.690 --> 00:04:38.200
+Cancel, nothing happens, delete, okay.
+
+96
+00:04:38.200 --> 00:04:40.280
+And then we actually get the console log
+
+97
+00:04:40.280 --> 00:04:41.633
+showing up in there.
+
+98
+00:04:42.680 --> 00:04:47.680
+This is showing up because it says no restricted globals.
+
+99
+00:04:47.860 --> 00:04:50.363
+Let's look at that rule real, real quick.
+
+100
+00:04:52.693 --> 00:04:56.970
+I will probably even configure this to allow for con confirm
+
+101
+00:04:56.970 --> 00:05:00.630
+because nothing wrong with using a confirm.
+
+102
+00:05:00.630 --> 00:05:04.060
+It's a really a nice UI that's built right into the browser.
+
+103
+00:05:04.060 --> 00:05:06.100
+The reason why some people don't like it is that
+
+104
+00:05:06.100 --> 00:05:09.190
+it will block your entire UI as well as block parts
+
+105
+00:05:09.190 --> 00:05:10.060
+of your app from running.
+
+106
+00:05:10.060 --> 00:05:12.540
+But in this case it's not a big deal.
+
+107
+00:05:12.540 --> 00:05:17.540
+So what we need to do is delete this item.
+
+108
+00:05:17.630 --> 00:05:20.380
+Then we need to write a mutation
+
+109
+00:05:20.380 --> 00:05:22.770
+that will actually delete it for us.
+
+110
+00:05:22.770 --> 00:05:24.230
+So we'll go up here
+
+111
+00:05:24.230 --> 00:05:28.460
+and we will make a new graph QL query to delete the item.
+
+112
+00:05:28.460 --> 00:05:30.460
+So I'll say delete
+
+113
+00:05:31.850 --> 00:05:32.683
+Product
+
+114
+00:05:35.090 --> 00:05:38.460
+Mutation is equal to GQL Bactec.
+
+115
+00:05:38.460 --> 00:05:40.543
+So we've got to go ahead and import that.
+
+116
+00:05:44.360 --> 00:05:46.560
+Import boom.
+
+117
+00:05:46.560 --> 00:05:50.480
+Sometimes it doesn't auto import maybe that one,
+
+118
+00:05:50.480 --> 00:05:51.423
+that one worked.
+
+119
+00:05:52.715 --> 00:05:57.460
+And then in here we need to write our mutation
+
+120
+00:05:57.460 --> 00:06:00.790
+So we say mutation is,
+
+121
+00:06:00.790 --> 00:06:02.750
+again, I'll just take the name from here.
+
+122
+00:06:02.750 --> 00:06:04.610
+And that takes in one variable.
+
+123
+00:06:04.610 --> 00:06:06.220
+We'll call it ID.
+
+124
+00:06:06.220 --> 00:06:09.850
+Has a type of ID and is required.
+
+125
+00:06:09.850 --> 00:06:13.100
+And then from there, like what graph QL method
+
+126
+00:06:13.100 --> 00:06:16.270
+do we need to run while we can go to our backend here,
+
+127
+00:06:16.270 --> 00:06:21.060
+go to our API Explorer and let's write a new mutation.
+
+128
+00:06:21.060 --> 00:06:22.373
+Mutation here.
+
+129
+00:06:23.270 --> 00:06:25.370
+What does it delete product?
+
+130
+00:06:25.370 --> 00:06:26.203
+There we go.
+
+131
+00:06:26.203 --> 00:06:27.330
+Right?
+
+132
+00:06:27.330 --> 00:06:28.163
+And you can get the docs for that.
+
+133
+00:06:28.163 --> 00:06:32.870
+By going into the docs here, search for delete product.
+
+134
+00:06:34.069 --> 00:06:34.902
+Here we go.
+
+135
+00:06:34.902 --> 00:06:36.580
+It's the mutation takes in an ID.
+
+136
+00:06:36.580 --> 00:06:38.900
+So here we'll say delete product
+
+137
+00:06:38.900 --> 00:06:42.830
+pass the ID that was passed as a variable.
+
+138
+00:06:42.830 --> 00:06:45.300
+And then from that we just return it.
+
+139
+00:06:45.300 --> 00:06:47.930
+Actually here, you can take a look when you delete it
+
+140
+00:06:47.930 --> 00:06:50.160
+it returns the product itself,
+
+141
+00:06:50.160 --> 00:06:52.900
+and it will give you any of the fields
+
+142
+00:06:52.900 --> 00:06:55.860
+of the deleted item that you wish to have.
+
+143
+00:06:55.860 --> 00:06:57.760
+So we could query the ID
+
+144
+00:06:57.760 --> 00:06:59.963
+and the name of the deleted product.
+
+145
+00:07:01.010 --> 00:07:05.290
+Then we'll go down here and run the mutation.
+
+146
+00:07:05.290 --> 00:07:07.290
+So we'll go right before our return.
+
+147
+00:07:07.290 --> 00:07:08.250
+I'll say const
+
+148
+00:07:09.830 --> 00:07:13.020
+Delete product and comma.
+
+149
+00:07:13.020 --> 00:07:16.410
+And we want to actually, we don't need to destructure
+
+150
+00:07:16.410 --> 00:07:19.990
+any of the loading or I'll distructure loading.
+
+151
+00:07:19.990 --> 00:07:21.360
+You could also get the error from there.
+
+152
+00:07:21.360 --> 00:07:23.362
+I'll show you another way to get the error as well.
+
+153
+00:07:23.362 --> 00:07:28.000
+Let's cover all of our bases say muse mutation.
+
+154
+00:07:28.000 --> 00:07:32.790
+And then you pass it, your delete product mutation
+
+155
+00:07:32.790 --> 00:07:35.560
+as well as any variables that it needs, right?
+
+156
+00:07:35.560 --> 00:07:38.190
+So you pass it the actual mutation itself
+
+157
+00:07:38.190 --> 00:07:39.710
+and then any variables that it needs.
+
+158
+00:07:39.710 --> 00:07:42.000
+And in our case, it just needs an ID variable.
+
+159
+00:07:42.000 --> 00:07:45.020
+So we can pass the second argument here and say
+
+160
+00:07:45.020 --> 00:07:49.200
+if the variables that it needs is the ID property
+
+161
+00:07:49.200 --> 00:07:53.710
+which is simply the ID that was passed into this component.
+
+162
+00:07:53.710 --> 00:07:56.600
+And that will just shorten it to just ID again.
+
+163
+00:07:56.600 --> 00:07:58.370
+I know I say it's a hundred times but look
+
+164
+00:07:58.370 --> 00:08:01.010
+if it's same thing, I don't want you to be confused.
+
+165
+00:08:01.010 --> 00:08:01.843
+Save it.
+
+166
+00:08:01.843 --> 00:08:04.400
+It goes back to just ID cause the property
+
+167
+00:08:04.400 --> 00:08:06.680
+and the variable name are the same thing.
+
+168
+00:08:06.680 --> 00:08:09.560
+So now we have this mutation function here.
+
+169
+00:08:09.560 --> 00:08:13.270
+It's loaded with the mutation, as well as the variable.
+
+170
+00:08:13.270 --> 00:08:16.589
+We can go here and simply say delete product.
+
+171
+00:08:16.589 --> 00:08:21.589
+And if we want to catch any errors
+
+172
+00:08:22.100 --> 00:08:24.360
+that happen with that product
+
+173
+00:08:24.360 --> 00:08:28.580
+in some cases you could destructure the error right here
+
+174
+00:08:28.580 --> 00:08:29.890
+and that will give you a value.
+
+175
+00:08:29.890 --> 00:08:31.800
+And you could say, if there's an error
+
+176
+00:08:31.800 --> 00:08:33.021
+then you could display it.
+
+177
+00:08:33.021 --> 00:08:34.920
+But in our case it's just a button.
+
+178
+00:08:34.920 --> 00:08:38.230
+So what do you do when there's not enough UI
+
+179
+00:08:38.230 --> 00:08:39.343
+to show an error.
+
+180
+00:08:39.343 --> 00:08:41.250
+There's a couple options that we have.
+
+181
+00:08:41.250 --> 00:08:43.940
+You could pop up a little toaster
+
+182
+00:08:43.940 --> 00:08:47.430
+in the bottom and sometimes you see these little blue
+
+183
+00:08:47.430 --> 00:08:49.520
+or whatever items in the corner
+
+184
+00:08:49.520 --> 00:08:52.470
+and they pop up and say, items successfully deleted.
+
+185
+00:08:52.470 --> 00:08:54.760
+Or you can just throw it in an alert box
+
+186
+00:08:54.760 --> 00:08:58.960
+and it was successfully deleted.
+
+187
+00:08:58.960 --> 00:08:59.920
+So we're gonna do that.
+
+188
+00:08:59.920 --> 00:09:02.960
+We'll say delete product.catch.
+
+189
+00:09:02.960 --> 00:09:04.550
+If there is an error
+
+190
+00:09:04.550 --> 00:09:09.110
+we will simply just alert the error.message.
+
+191
+00:09:09.110 --> 00:09:10.883
+Say that something went wrong.
+
+192
+00:09:13.790 --> 00:09:15.560
+Now what do we got here?
+
+193
+00:09:15.560 --> 00:09:19.180
+Syntax, error, unexpected name, found dollar sign.
+
+194
+00:09:19.180 --> 00:09:20.773
+We goofed something up,
+
+195
+00:09:23.529 --> 00:09:24.362
+here we go.
+
+196
+00:09:24.362 --> 00:09:29.080
+We've got to pass the ID prop as the ID variable.
+
+197
+00:09:34.734 --> 00:09:38.160
+Let's do it with these air max right here.
+
+198
+00:09:38.160 --> 00:09:39.480
+I'm gonna open up my dev tools.
+
+199
+00:09:39.480 --> 00:09:41.230
+Just to make sure everything works.
+
+200
+00:09:42.280 --> 00:09:45.830
+Actually one more thing is this button
+
+201
+00:09:45.830 --> 00:09:49.020
+we can say disabled is equal to loading.
+
+202
+00:09:49.020 --> 00:09:50.520
+And that will just disable the button
+
+203
+00:09:50.520 --> 00:09:52.120
+while it's in the background
+
+204
+00:09:52.120 --> 00:09:53.590
+cause if you click it multiple times,
+
+205
+00:09:53.590 --> 00:09:55.110
+you're gonna fire off multiple requests
+
+206
+00:09:55.110 --> 00:09:56.290
+and we don't want that.
+
+207
+00:09:56.290 --> 00:09:58.890
+So let's go ahead and click it.
+
+208
+00:09:58.890 --> 00:10:00.560
+Are you sure?
+
+209
+00:10:00.560 --> 00:10:02.100
+See for a split second
+
+210
+00:10:02.100 --> 00:10:04.970
+that button went gray and went ahead and deleted it.
+
+211
+00:10:04.970 --> 00:10:06.780
+And then we ran the delete product.
+
+212
+00:10:06.780 --> 00:10:09.530
+Now the product is still there,
+
+213
+00:10:09.530 --> 00:10:12.780
+but I believe if I were to refresh the page
+
+214
+00:10:12.780 --> 00:10:15.020
+that should now be gone.
+
+215
+00:10:15.020 --> 00:10:15.853
+Boom, okay.
+
+216
+00:10:15.853 --> 00:10:16.686
+That item has gone.
+
+217
+00:10:16.686 --> 00:10:21.103
+So in the next one we're gonna do is we're gonna figure out,
+
+218
+00:10:22.040 --> 00:10:23.660
+how do I remove that item?
+
+219
+00:10:23.660 --> 00:10:25.490
+And there's a couple of ways we could do it.
+
+220
+00:10:25.490 --> 00:10:28.320
+I've shown you in the past how we can refresh the query
+
+221
+00:10:28.320 --> 00:10:29.860
+but I'm gonna show you how to go directly
+
+222
+00:10:29.860 --> 00:10:33.353
+into the Apollo Cash and yank that thing out.
+

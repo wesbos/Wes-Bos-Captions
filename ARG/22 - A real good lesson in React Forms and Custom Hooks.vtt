@@ -1,0 +1,1924 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:01.780
+(swoosh)
+
+2
+00:00:01.780 --> 00:00:05.140
+<v ->We've done the query, we've written one query so far</v>
+
+3
+00:00:05.140 --> 00:00:06.990
+and we've pulled in the items.
+
+4
+00:00:06.990 --> 00:00:08.730
+Now we need to learn about the flip side
+
+5
+00:00:08.730 --> 00:00:12.238
+which is what if you want to push data into our graphfield,
+
+6
+00:00:12.238 --> 00:00:14.930
+GraphQL API to create stuff,
+
+7
+00:00:14.930 --> 00:00:17.370
+and that is what we're gonna do on the sell page.
+
+8
+00:00:17.370 --> 00:00:19.000
+So this is a bit of a big one,
+
+9
+00:00:19.000 --> 00:00:20.500
+and I wanna make sure that we understand
+
+10
+00:00:20.500 --> 00:00:22.640
+all the moving pieces to it,
+
+11
+00:00:22.640 --> 00:00:24.080
+because honestly, if we nail this,
+
+12
+00:00:24.080 --> 00:00:27.870
+you'd be able to make any app you want because you're,
+
+13
+00:00:27.870 --> 00:00:28.703
+you have the
+(chuckles)
+
+14
+00:00:28.703 --> 00:00:32.020
+two basic things now which is pulling data and creating data
+
+15
+00:00:32.020 --> 00:00:33.950
+and then we'll learn how to update the data.
+
+16
+00:00:33.950 --> 00:00:38.503
+So let's get into that, we're gonna go into our,
+
+17
+00:00:39.470 --> 00:00:43.900
+we go to our pages here, and we have our sell.js,
+
+18
+00:00:43.900 --> 00:00:45.280
+we're gonna create a new component
+
+19
+00:00:45.280 --> 00:00:46.840
+in our components directory,
+
+20
+00:00:46.840 --> 00:00:50.110
+and we're gonna call that CreateProduct.js.
+
+21
+00:00:53.500 --> 00:00:56.238
+And we'll do our whole song and dance export,
+
+22
+00:00:56.238 --> 00:01:00.850
+let's find out what the Reactkeyboard is for,
+
+23
+00:01:00.850 --> 00:01:03.283
+Reactfunctional component.
+
+24
+00:01:04.147 --> 00:01:07.090
+Reactfunctional component, export.
+
+25
+00:01:07.090 --> 00:01:09.973
+Maybe that's it, let's try it, RFCE.
+
+26
+00:01:13.030 --> 00:01:15.060
+Okay, okay.
+
+27
+00:01:15.060 --> 00:01:17.220
+See, that's a little bit different than what I wanted,
+
+28
+00:01:17.220 --> 00:01:19.130
+because like first of all in Next.js
+
+29
+00:01:19.130 --> 00:01:21.020
+and actually in JSX in general,
+
+30
+00:01:21.020 --> 00:01:24.260
+you don't need to import React anymore, it's assumed,
+
+31
+00:01:24.260 --> 00:01:27.000
+and then also I like to just export default
+
+32
+00:01:27.000 --> 00:01:28.710
+where I write the function.
+
+33
+00:01:28.710 --> 00:01:30.130
+So, that's okay, it's kind of cool
+
+34
+00:01:30.130 --> 00:01:33.550
+because it infers the name of the function
+
+35
+00:01:33.550 --> 00:01:35.943
+from the file name, which, I like that.
+
+36
+00:01:36.900 --> 00:01:39.740
+Okay, so what we'll do, we'll work with that.
+
+37
+00:01:39.740 --> 00:01:42.840
+Next up what we need to do is we need a form
+
+38
+00:01:42.840 --> 00:01:46.180
+and working with forms in Reactcan be a little bit tricky,
+
+39
+00:01:46.180 --> 00:01:48.170
+and I wanna show you how to like
+
+40
+00:01:48.170 --> 00:01:49.820
+make that a little bit easier on yourself.
+
+41
+00:01:49.820 --> 00:01:51.650
+So let's build the form first,
+
+42
+00:01:51.650 --> 00:01:55.200
+and then we'll deal with the mutation of submitting it
+
+43
+00:01:55.200 --> 00:01:58.650
+and then we'll also deal with how to upload an image
+
+44
+00:01:58.650 --> 00:01:59.700
+to the back end, so
+
+45
+00:02:00.650 --> 00:02:02.763
+let's start with a form tag here,
+
+46
+00:02:03.760 --> 00:02:07.703
+and let's go in here and give ourselves a label.
+
+47
+00:02:09.460 --> 00:02:13.850
+And that is going to be for the name.
+
+48
+00:02:13.850 --> 00:02:16.010
+And then inside of that we want to input,
+
+49
+00:02:16.010 --> 00:02:20.033
+with the type of text, and it has an ID of name.
+
+50
+00:02:22.640 --> 00:02:25.157
+It also needs a name of name.
+
+51
+00:02:25.157 --> 00:02:26.340
+(laughing)
+
+52
+00:02:26.340 --> 00:02:31.340
+And then a placeholder of name.
+
+53
+00:02:31.800 --> 00:02:34.750
+And then we can also put the word name right here.
+
+54
+00:02:34.750 --> 00:02:36.660
+Okay, let's see how that looks.
+
+55
+00:02:36.660 --> 00:02:38.470
+We'll go into our Sell.js,
+
+56
+00:02:38.470 --> 00:02:42.500
+and inside of here we will, let's just return a div,
+
+57
+00:02:42.500 --> 00:02:47.210
+and then we'll put a CreateProduct component in there,
+
+58
+00:02:47.210 --> 00:02:51.990
+and then we'll import that sucker from where we defined it.
+
+59
+00:02:51.990 --> 00:02:54.820
+All right, so we have our name input here.
+
+60
+00:02:54.820 --> 00:02:59.260
+Now, if we wanna hook up an input to some state in React,
+
+61
+00:02:59.260 --> 00:03:00.730
+I'm gonna show you how to do that
+
+62
+00:03:00.730 --> 00:03:03.380
+and then I'm gonna show you how to make a use form hook
+
+63
+00:03:03.380 --> 00:03:06.790
+so that we can sort of automate it for multiple ones,
+
+64
+00:03:06.790 --> 00:03:11.790
+so the way that hooking up state to a form input works
+
+65
+00:03:11.810 --> 00:03:13.030
+is usually do something like this,
+
+66
+00:03:13.030 --> 00:03:15.770
+so we're going to say const,
+
+67
+00:03:15.770 --> 00:03:20.590
+and we'll say, let's call it name, and set name,
+
+68
+00:03:20.590 --> 00:03:22.003
+and then we'll say useState,
+
+69
+00:03:23.010 --> 00:03:25.650
+and we'll set the default state to be Wes.
+
+70
+00:03:25.650 --> 00:03:27.730
+Okay, so useState is a hook,
+
+71
+00:03:27.730 --> 00:03:29.400
+we got to import that from React
+
+72
+00:03:29.400 --> 00:03:32.070
+so import use state from React.
+
+73
+00:03:32.070 --> 00:03:36.090
+And then what we'll do is we have this piece of state,
+
+74
+00:03:36.090 --> 00:03:37.250
+which is reactive,
+
+75
+00:03:37.250 --> 00:03:39.510
+meaning that when that piece of state changes,
+
+76
+00:03:39.510 --> 00:03:42.050
+it will be updated wherever it's used,
+
+77
+00:03:42.050 --> 00:03:45.303
+and if you wanna use state in an input in React,
+
+78
+00:03:46.770 --> 00:03:47.603
+it looks something like this,
+
+79
+00:03:47.603 --> 00:03:50.190
+so you say value is equal to, curly bracket,
+
+80
+00:03:50.190 --> 00:03:52.940
+and then you give it your piece of state, right.
+
+81
+00:03:52.940 --> 00:03:54.790
+So let's open up our dev tools here
+
+82
+00:03:54.790 --> 00:03:58.133
+and make sure we see any errors going on here.
+
+83
+00:04:00.750 --> 00:04:03.570
+So here we are, immediately we get an error warning,
+
+84
+00:04:03.570 --> 00:04:06.560
+you provided a value prop to a form field
+
+85
+00:04:06.560 --> 00:04:08.300
+without an on change handler.
+
+86
+00:04:08.300 --> 00:04:11.240
+This will render a read only field if the field
+
+87
+00:04:11.240 --> 00:04:13.120
+should be immutable use default value
+
+88
+00:04:13.120 --> 00:04:15.487
+otherwise set an on change or read only, right,
+
+89
+00:04:15.487 --> 00:04:17.883
+and so if I try to type into here.
+
+90
+00:04:19.950 --> 00:04:21.370
+Nothing, why not?
+
+91
+00:04:21.370 --> 00:04:22.880
+Like why can't you type into it?
+
+92
+00:04:22.880 --> 00:04:27.370
+And that's because React is very, very, very strict,
+
+93
+00:04:27.370 --> 00:04:32.040
+strict, strict about the whole idea of
+
+94
+00:04:32.040 --> 00:04:34.860
+one single source of truth.
+
+95
+00:04:34.860 --> 00:04:37.730
+And if you have stayed in an input
+
+96
+00:04:37.730 --> 00:04:39.600
+and then you change that input,
+
+97
+00:04:39.600 --> 00:04:43.110
+all of sudden you have your data, your state in two places,
+
+98
+00:04:43.110 --> 00:04:46.400
+you have it in state, but you also have it in the input box,
+
+99
+00:04:46.400 --> 00:04:48.250
+and those can get out of sync really quickly
+
+100
+00:04:48.250 --> 00:04:49.410
+and that's a big headache.
+
+101
+00:04:49.410 --> 00:04:52.610
+So, what React does with forms is it says,
+
+102
+00:04:52.610 --> 00:04:57.160
+all right, you need to listen for a change event
+
+103
+00:04:57.160 --> 00:04:59.570
+on an input, and when that happens,
+
+104
+00:04:59.570 --> 00:05:02.500
+you need to intercept what the user had typed,
+
+105
+00:05:02.500 --> 00:05:04.110
+put it back into state,
+
+106
+00:05:04.110 --> 00:05:05.587
+and then that will trigger a rerender
+
+107
+00:05:05.587 --> 00:05:08.000
+and then update the value on there.
+
+108
+00:05:08.000 --> 00:05:10.793
+So, how that works is we say onChange.
+
+109
+00:05:12.390 --> 00:05:15.010
+And we can do a little function up here,
+
+110
+00:05:15.010 --> 00:05:17.133
+we'll do it in line, say event.
+
+111
+00:05:18.990 --> 00:05:22.630
+And let's just console.log the event to see what we got
+
+112
+00:05:22.630 --> 00:05:24.530
+working with right here so,
+
+113
+00:05:24.530 --> 00:05:26.350
+I'm gonna put, type in x.
+
+114
+00:05:26.350 --> 00:05:27.183
+Boom.
+
+115
+00:05:27.183 --> 00:05:29.653
+So, this is our event that happened.
+
+116
+00:05:30.560 --> 00:05:32.430
+And then, in there,
+
+117
+00:05:32.430 --> 00:05:34.510
+there's a whole bunch of information
+
+118
+00:05:34.510 --> 00:05:37.090
+about what had happened,
+
+119
+00:05:37.090 --> 00:05:38.300
+so e.target.
+
+120
+00:05:38.300 --> 00:05:41.900
+So if we console log e.target, that's the actual input,
+
+121
+00:05:41.900 --> 00:05:44.543
+and then if we grab the value off of that,
+
+122
+00:05:46.600 --> 00:05:49.560
+we should see what it is that I hoped I typed,
+
+123
+00:05:49.560 --> 00:05:53.110
+so I'm gonna type x boom, see there we go, wesx,
+
+124
+00:05:53.110 --> 00:05:55.920
+but React immediately backspaces it for us
+
+125
+00:05:55.920 --> 00:05:57.100
+and says no, no, no, no,
+
+126
+00:05:57.100 --> 00:06:02.010
+you may only show what is set to your piece of name state.
+
+127
+00:06:02.010 --> 00:06:06.170
+So what you have to do is we have to run set name,
+
+128
+00:06:06.170 --> 00:06:08.323
+and e.target.value.
+
+129
+00:06:11.830 --> 00:06:13.660
+And now when I type into this,
+
+130
+00:06:13.660 --> 00:06:16.240
+you'll see that the state is going to be synced with it,
+
+131
+00:06:16.240 --> 00:06:17.380
+we can go a little bit further
+
+132
+00:06:17.380 --> 00:06:20.120
+and open up our React dev tools here,
+
+133
+00:06:20.120 --> 00:06:24.107
+and we can look for our form here.
+
+134
+00:06:24.107 --> 00:06:25.620
+I'm gonna click on create product.
+
+135
+00:06:25.620 --> 00:06:29.200
+You see the state that is associated,
+
+136
+00:06:29.200 --> 00:06:30.853
+sorry I can't make it any bigger.
+
+137
+00:06:32.370 --> 00:06:34.003
+But as I change this,
+
+138
+00:06:34.870 --> 00:06:37.650
+you see that it's updating inside of
+
+139
+00:06:37.650 --> 00:06:39.660
+the state of that component.
+
+140
+00:06:39.660 --> 00:06:42.030
+So that's not that bad right, like you,
+
+141
+00:06:42.030 --> 00:06:43.440
+for every single input that you have,
+
+142
+00:06:43.440 --> 00:06:44.760
+you make a little piece of state
+
+143
+00:06:44.760 --> 00:06:48.440
+and then you put a piece of set name on it.
+
+144
+00:06:48.440 --> 00:06:51.440
+Now, where that can get a little out of hand is like,
+
+145
+00:06:51.440 --> 00:06:54.280
+what if you've 15 inputs on a form right.
+
+146
+00:06:54.280 --> 00:06:55.750
+And there's whole libraries,
+
+147
+00:06:55.750 --> 00:06:58.640
+there format is a really, really nice one for React
+
+148
+00:06:58.640 --> 00:06:59.550
+if you're doing forms,
+
+149
+00:06:59.550 --> 00:07:01.820
+but in most of my projects,
+
+150
+00:07:01.820 --> 00:07:04.330
+I don't necessarily need an entire library for my forms,
+
+151
+00:07:04.330 --> 00:07:09.330
+I just need to the ability to sync some state of inputs
+
+152
+00:07:09.880 --> 00:07:11.880
+and have it all in a single object.
+
+153
+00:07:11.880 --> 00:07:14.690
+So, to handle that, what we do is
+
+154
+00:07:14.690 --> 00:07:17.010
+I like to create a use form hook
+
+155
+00:07:17.010 --> 00:07:19.030
+that has a little bit of logic inside of that
+
+156
+00:07:19.030 --> 00:07:20.730
+and we're gonna do that right now.
+
+157
+00:07:21.930 --> 00:07:24.483
+So we're gonna go into our lib folder,
+
+158
+00:07:25.380 --> 00:07:26.740
+right along format money
+
+159
+00:07:26.740 --> 00:07:30.303
+and we're gonna create a new file called useForm.js.
+
+160
+00:07:32.942 --> 00:07:37.470
+And we're gonna export default function useForm.
+
+161
+00:07:38.645 --> 00:07:41.010
+And that will take in some initial state
+
+162
+00:07:41.010 --> 00:07:43.730
+and we'll just default that to be an empty object,
+
+163
+00:07:43.730 --> 00:07:47.250
+just in case someone doesn't pass in any default state.
+
+164
+00:07:47.250 --> 00:07:49.680
+Then what we'll do is we'll create our own state,
+
+165
+00:07:49.680 --> 00:07:51.230
+so let's do common here,
+
+166
+00:07:51.230 --> 00:07:56.230
+create in a state object for our fields,
+
+167
+00:07:58.230 --> 00:08:00.861
+or for our inputs, let's call it inputs,
+
+168
+00:08:00.861 --> 00:08:02.860
+const, inputs
+
+169
+00:08:04.410 --> 00:08:06.760
+and set inputs is equal to
+
+170
+00:08:06.760 --> 00:08:09.080
+and then we'll use a state inside of a hook.
+
+171
+00:08:09.080 --> 00:08:12.200
+So what we're doing is we're gonna do the exact same thing,
+
+172
+00:08:12.200 --> 00:08:14.830
+but we're gonna tuck away the complexity of
+
+173
+00:08:14.830 --> 00:08:16.240
+that multiple pieces of state
+
+174
+00:08:16.240 --> 00:08:17.790
+and handling updates and whatnot,
+
+175
+00:08:17.790 --> 00:08:20.690
+we're gonna tuck it away into its own custom hook
+
+176
+00:08:20.690 --> 00:08:22.760
+that we've may of called useForm,
+
+177
+00:08:22.760 --> 00:08:25.520
+and that will allow us to
+
+178
+00:08:25.520 --> 00:08:28.040
+simply just write a couple lines at the top of this one
+
+179
+00:08:28.040 --> 00:08:30.710
+and use as many form inputs as we want.
+
+180
+00:08:30.710 --> 00:08:34.650
+So use state, we got to import use state from Reactgood,
+
+181
+00:08:34.650 --> 00:08:39.250
+and then inside of here we will pass it our initial state,
+
+182
+00:08:39.250 --> 00:08:42.350
+just in case someone does pass some initial state.
+
+183
+00:08:42.350 --> 00:08:44.840
+Next up we need to make a little function
+
+184
+00:08:44.840 --> 00:08:47.160
+called handleChange
+
+185
+00:08:47.160 --> 00:08:50.760
+and that is going to be the function that gets passed
+
+186
+00:08:50.760 --> 00:08:53.560
+to the on change handler right here,
+
+187
+00:08:53.560 --> 00:08:55.750
+so we don't have to manually do it each time,
+
+188
+00:08:55.750 --> 00:08:58.780
+we can just pass it a little handle change function
+
+189
+00:08:58.780 --> 00:09:01.860
+and it will do the sort of the heavy lifting for us.
+
+190
+00:09:01.860 --> 00:09:03.970
+So that will take in the event.
+
+191
+00:09:03.970 --> 00:09:08.000
+And then in here we simply are just gonna say set inputs.
+
+192
+00:09:08.000 --> 00:09:10.490
+Now, in this case we don't just say, e.target
+
+193
+00:09:13.817 --> 00:09:14.650
+.value,
+
+194
+00:09:14.650 --> 00:09:16.530
+and the reason behind that is because
+
+195
+00:09:16.530 --> 00:09:21.280
+state is gonna be an object where we have the name input,
+
+196
+00:09:21.280 --> 00:09:25.870
+and we have the description input, nice shoes,
+
+197
+00:09:25.870 --> 00:09:27.920
+and the price input.
+
+198
+00:09:27.920 --> 00:09:30.220
+So it's gonna have a couple different values,
+
+199
+00:09:30.220 --> 00:09:32.000
+so let me leave that there just so we can visualize
+
+200
+00:09:32.000 --> 00:09:33.400
+what we're working with right here.
+
+201
+00:09:33.400 --> 00:09:36.580
+So when you are dealing with an object
+
+202
+00:09:36.580 --> 00:09:39.240
+of multiple pieces of state here,
+
+203
+00:09:39.240 --> 00:09:43.370
+what you need to do is you need to set the entire thing
+
+204
+00:09:43.370 --> 00:09:47.980
+to be an object, you need to copy the existing state,
+
+205
+00:09:47.980 --> 00:09:48.813
+so ...
+
+206
+00:09:50.980 --> 00:09:52.250
+inputs,
+
+207
+00:09:52.250 --> 00:09:53.140
+that's our piece of state
+
+208
+00:09:53.140 --> 00:09:55.400
+so let's write a little comment right here,
+
+209
+00:09:55.400 --> 00:09:58.893
+we'll say, copy the existing state.
+
+210
+00:10:00.170 --> 00:10:02.020
+And then below that we need to just
+
+211
+00:10:02.020 --> 00:10:03.420
+update the piece of state,
+
+212
+00:10:03.420 --> 00:10:05.790
+so in our case, if it was the name input,
+
+213
+00:10:05.790 --> 00:10:10.790
+we would just say, e.target.name or .value sorry,
+
+214
+00:10:10.820 --> 00:10:15.310
+our e.target is gonna be the actual input itself
+
+215
+00:10:15.310 --> 00:10:17.560
+and the value is whatever the user typed in there.
+
+216
+00:10:17.560 --> 00:10:18.440
+The problem with that is
+
+217
+00:10:18.440 --> 00:10:20.500
+we don't know if it's gonna be the name input,
+
+218
+00:10:20.500 --> 00:10:22.720
+or if it's gonna be the price input,
+
+219
+00:10:22.720 --> 00:10:24.933
+let's go ahead and duplicate this here.
+
+220
+00:10:26.880 --> 00:10:30.320
+And we could change this to price,
+
+221
+00:10:30.320 --> 00:10:32.890
+and then every single time we have name
+
+222
+00:10:32.890 --> 00:10:34.673
+on there, there, there,
+
+223
+00:10:36.330 --> 00:10:38.200
+it would say price,
+
+224
+00:10:38.200 --> 00:10:40.610
+this I guess stays name.
+
+225
+00:10:40.610 --> 00:10:44.243
+So, that's kind of weird where you have to,
+
+226
+00:10:46.230 --> 00:10:47.660
+it has to be dynamic.
+
+227
+00:10:47.660 --> 00:10:49.840
+So if we run the function against this one,
+
+228
+00:10:49.840 --> 00:10:53.550
+it has to be for price, if we run the function for this one,
+
+229
+00:10:53.550 --> 00:10:55.140
+it's gotta be for the name.
+
+230
+00:10:55.140 --> 00:10:58.700
+So what we'll do is we'll make this little part dynamic,
+
+231
+00:10:58.700 --> 00:11:02.670
+where we can use dynamic properties, or sorry as like a,
+
+232
+00:11:02.670 --> 00:11:04.520
+it's kind of like using a variable,
+
+233
+00:11:04.520 --> 00:11:06.850
+or it is using a variable as the property name so,
+
+234
+00:11:06.850 --> 00:11:11.850
+say e.target.name is set to e.target.value.
+
+235
+00:11:12.480 --> 00:11:15.123
+And let me just show you real quick what that is.
+
+236
+00:11:16.050 --> 00:11:17.170
+I gotta comment out of this price
+
+237
+00:11:17.170 --> 00:11:18.683
+just for real quick second.
+
+238
+00:11:20.160 --> 00:11:22.880
+And if we console log e.target.value
+
+239
+00:11:24.130 --> 00:11:26.423
+and e.target.name,
+
+240
+00:11:29.160 --> 00:11:30.643
+we should see here,
+
+241
+00:11:32.510 --> 00:11:33.900
+the name is name
+
+242
+00:11:33.900 --> 00:11:36.700
+and the value is whatever we typed into there.
+
+243
+00:11:36.700 --> 00:11:40.393
+And if we were to change the name of this to price.
+
+244
+00:11:43.180 --> 00:11:44.500
+You see it says price here
+
+245
+00:11:44.500 --> 00:11:48.170
+so we were able to make it flexible and dynamic that way
+
+246
+00:11:48.170 --> 00:11:51.380
+by using a variable or a property
+
+247
+00:11:51.380 --> 00:11:53.470
+as the actual property of the object,
+
+248
+00:11:53.470 --> 00:11:56.420
+and what that will do is if we have an existing name,
+
+249
+00:11:56.420 --> 00:11:57.730
+it will just overwrite it
+
+250
+00:11:57.730 --> 00:11:59.410
+because it comes later in the object,
+
+251
+00:11:59.410 --> 00:12:01.330
+and that's how we don't have to like,
+
+252
+00:12:01.330 --> 00:12:03.170
+we don't have to worry about deleting the old name,
+
+253
+00:12:03.170 --> 00:12:07.360
+it will just overwrite it and handle that update for us.
+
+254
+00:12:07.360 --> 00:12:09.650
+Okay, so that is our handle change function,
+
+255
+00:12:09.650 --> 00:12:12.450
+there's a whole lot more logic that needs to go in here,
+
+256
+00:12:13.939 --> 00:12:15.370
+but right now we're just going to
+
+257
+00:12:15.370 --> 00:12:17.899
+deal with the very basic handle change.
+
+258
+00:12:17.899 --> 00:12:22.899
+Then, if you want to surface, either functionality,
+
+259
+00:12:23.380 --> 00:12:26.600
+or data from a custom hook,
+
+260
+00:12:26.600 --> 00:12:29.290
+you must return it from that custom hook.
+
+261
+00:12:29.290 --> 00:12:30.340
+So what we're gonna do is
+
+262
+00:12:30.340 --> 00:12:35.340
+return the things we want to surface from this custom hook.
+
+263
+00:12:37.110 --> 00:12:39.360
+So we'll say return as an object
+
+264
+00:12:39.360 --> 00:12:41.060
+and we're gonna return the inputs.
+
+265
+00:12:42.000 --> 00:12:46.363
+We are also going to return the handle change function.
+
+266
+00:12:48.500 --> 00:12:51.530
+So, what we can do now is we can go back
+
+267
+00:12:51.530 --> 00:12:55.600
+and update that function to use our use form hook,
+
+268
+00:12:55.600 --> 00:12:59.263
+so we'll go right here, we're no longer gonna use use state,
+
+269
+00:13:00.345 --> 00:13:03.610
+and we're gonna say const curly bracket inputs
+
+270
+00:13:03.610 --> 00:13:08.610
+and handle change is equal to use form,
+
+271
+00:13:08.710 --> 00:13:11.300
+and we'll go ahead and import that use form.
+
+272
+00:13:11.300 --> 00:13:12.980
+There we go, we no longer need use state,
+
+273
+00:13:12.980 --> 00:13:14.530
+you can take that out of there.
+
+274
+00:13:15.864 --> 00:13:17.800
+Now, you might be asking,
+
+275
+00:13:17.800 --> 00:13:19.920
+Wes, why was that other one square bracket
+
+276
+00:13:19.920 --> 00:13:21.750
+and then this one is curly bracket?
+
+277
+00:13:21.750 --> 00:13:25.180
+And that's because we are returning an object here,
+
+278
+00:13:25.180 --> 00:13:29.320
+and we're destructuring the inputs inhale change values.
+
+279
+00:13:29.320 --> 00:13:32.500
+So, you see here, const inputs, handleChange, useForm,
+
+280
+00:13:32.500 --> 00:13:34.230
+then we can go and update this,
+
+281
+00:13:34.230 --> 00:13:38.470
+so value is equal to inputs.name,
+
+282
+00:13:41.200 --> 00:13:45.717
+and on change, simply can just be Handlechange.
+
+283
+00:13:47.800 --> 00:13:50.350
+One thing we do need to do, you see there's an error here,
+
+284
+00:13:50.350 --> 00:13:51.320
+it's saying
+
+285
+00:13:51.320 --> 00:13:53.910
+a component is changing controlled to uncontrolled,
+
+286
+00:13:53.910 --> 00:13:54.970
+we do need to set our
+
+287
+00:13:54.970 --> 00:13:57.620
+initial values for that form inside of here,
+
+288
+00:13:57.620 --> 00:13:59.610
+so we'll say name is equal to,
+
+289
+00:13:59.610 --> 00:14:01.510
+and I this just for testing purposes,
+
+290
+00:14:01.510 --> 00:14:04.960
+I like to put some dummy data in there like nice shoes,
+
+291
+00:14:04.960 --> 00:14:09.793
+let's say price is equal to something like that description,
+
+292
+00:14:10.700 --> 00:14:15.200
+it's going to be, these are the best shoes
+
+293
+00:14:15.200 --> 00:14:17.323
+and we'll leave it at that for now.
+
+294
+00:14:18.580 --> 00:14:21.163
+So let's just make sure that still works.
+
+295
+00:14:23.120 --> 00:14:25.400
+There we go see nice shoes.
+
+296
+00:14:25.400 --> 00:14:29.200
+And if I were to go to my React dev tools,
+
+297
+00:14:29.200 --> 00:14:31.740
+go to our create product component.
+
+298
+00:14:31.740 --> 00:14:36.370
+You see, our hooks, we have our form hook,
+
+299
+00:14:36.370 --> 00:14:37.563
+and then we have state,
+
+300
+00:14:38.490 --> 00:14:42.233
+and as I am changing the value of this input,
+
+301
+00:14:43.360 --> 00:14:44.993
+let's say like backpack,
+
+302
+00:14:46.630 --> 00:14:50.670
+it is then being updated in the state that we have there.
+
+303
+00:14:50.670 --> 00:14:54.640
+So we just made like a really flexible thing here,
+
+304
+00:14:54.640 --> 00:14:57.850
+we should be able to now reuse that whole
+
+305
+00:14:57.850 --> 00:15:00.280
+song and dance for both the price
+
+306
+00:15:00.280 --> 00:15:02.330
+and the description in any other fields that we want.
+
+307
+00:15:02.330 --> 00:15:04.030
+So let's go do this next one here.
+
+308
+00:15:04.960 --> 00:15:08.570
+The uncomment and VS code doesn't, look at it, like,
+
+309
+00:15:08.570 --> 00:15:13.180
+it's never worked for me, you can never uncomment in JSX,
+
+310
+00:15:13.180 --> 00:15:15.350
+should probably open issue about that.
+
+311
+00:15:15.350 --> 00:15:18.420
+Okay, so label for price, type is equal to,
+
+312
+00:15:18.420 --> 00:15:21.160
+we can even do like a number if you wanted to.
+
+313
+00:15:21.160 --> 00:15:24.100
+ID is price, name is price, placeholders price,
+
+314
+00:15:24.100 --> 00:15:27.430
+value is inputs.price,
+
+315
+00:15:27.430 --> 00:15:30.120
+and then the on change handler is simply just
+
+316
+00:15:31.713 --> 00:15:32.796
+handleChange.
+
+317
+00:15:34.477 --> 00:15:35.470
+There we go.
+
+318
+00:15:35.470 --> 00:15:38.180
+And we can click these, the tiniest buttons in the world,
+
+319
+00:15:38.180 --> 00:15:40.520
+like how useless is this input number.
+
+320
+00:15:40.520 --> 00:15:42.270
+There we go, look at it.
+
+321
+00:15:42.270 --> 00:15:43.660
+And it updates the value
+
+322
+00:15:43.660 --> 00:15:46.340
+and you can obviously type in here as well.
+
+323
+00:15:46.340 --> 00:15:49.840
+One kind of gotcha that we just run into is watch this,
+
+324
+00:15:49.840 --> 00:15:51.290
+let me refresh the page again
+
+325
+00:15:52.870 --> 00:15:57.740
+and open up a state, like this is a number.
+
+326
+00:15:57.740 --> 00:15:59.420
+See, there's no quotes around it,
+
+327
+00:15:59.420 --> 00:16:02.123
+and as soon as I change it.
+
+328
+00:16:04.330 --> 00:16:05.163
+You see it,
+
+329
+00:16:05.163 --> 00:16:06.270
+it pops quotes around it,
+
+330
+00:16:06.270 --> 00:16:08.180
+so that's gonna be a bit of a bit of a problem
+
+331
+00:16:08.180 --> 00:16:10.450
+because it's supposed to be a number,
+
+332
+00:16:10.450 --> 00:16:12.840
+and if we send it to our GraphQL API
+
+333
+00:16:12.840 --> 00:16:15.800
+as a string with quotes around it, it's gonna say, hey,
+
+334
+00:16:15.800 --> 00:16:20.250
+I was expecting a number but you gave me a string,
+
+335
+00:16:20.250 --> 00:16:22.100
+what's going on here?
+
+336
+00:16:22.100 --> 00:16:24.560
+And the thing about HTML inputs is they
+
+337
+00:16:24.560 --> 00:16:25.760
+always give you a string,
+
+338
+00:16:25.760 --> 00:16:27.470
+even if it's a type of number.
+
+339
+00:16:27.470 --> 00:16:30.160
+So what we can do is we'll go back to our custom hook
+
+340
+00:16:30.160 --> 00:16:32.893
+and just tuck away a little bit more logic.
+
+341
+00:16:34.760 --> 00:16:35.793
+We'll go up here.
+
+342
+00:16:37.370 --> 00:16:39.340
+And let's first destructure
+
+343
+00:16:39.340 --> 00:16:44.340
+the name, the type and the value from the target.
+
+344
+00:16:44.710 --> 00:16:46.473
+So it's a const, curly bracket.
+
+345
+00:16:47.700 --> 00:16:50.880
+We have the value, we need the name and we need the type
+
+346
+00:16:50.880 --> 00:16:53.460
+and we're gonna pull that off of the e.target.
+
+347
+00:16:53.460 --> 00:16:58.140
+So again, e.target is going to be the input.
+
+348
+00:16:58.140 --> 00:17:00.240
+And we're simply just gonna be pulling the type,
+
+349
+00:17:00.240 --> 00:17:02.903
+the name and the value off of it.
+
+350
+00:17:05.000 --> 00:17:07.133
+And then we can,
+
+351
+00:17:08.180 --> 00:17:10.950
+oh, oh, that's wrong, we don't wanna do it up there,
+
+352
+00:17:10.950 --> 00:17:13.490
+we gotta do it inside of our change handler.
+
+353
+00:17:13.490 --> 00:17:15.369
+And then we can simply instead of saying,
+
+354
+00:17:15.369 --> 00:17:17.890
+you know, target.name, and e.target.value,
+
+355
+00:17:17.890 --> 00:17:22.860
+we just say name and value, but what we wanna do here is,
+
+356
+00:17:22.860 --> 00:17:27.860
+we'll say, if the type is equal to number,
+
+357
+00:17:28.130 --> 00:17:30.570
+then what we wanna do is we wanna say value
+
+358
+00:17:30.570 --> 00:17:32.437
+is equal to parseint(value).
+
+359
+00:17:33.960 --> 00:17:35.510
+And now, this is not gonna work
+
+360
+00:17:35.510 --> 00:17:38.473
+because these are const, so change that to a let.
+
+361
+00:17:40.780 --> 00:17:45.780
+And now I believe when we change the value in here,
+
+362
+00:17:46.490 --> 00:17:51.430
+it's now being updated as an actual number.
+
+363
+00:17:51.430 --> 00:17:53.180
+There's one more thing we can do here,
+
+364
+00:17:53.180 --> 00:17:54.900
+and let's just code this ahead of time,
+
+365
+00:17:54.900 --> 00:17:59.510
+if it's a file, it requires an array of files,
+
+366
+00:17:59.510 --> 00:18:03.880
+so we'll say if the type is equal to file,
+
+367
+00:18:03.880 --> 00:18:08.400
+then the value square bracket zero is equal to
+
+368
+00:18:08.400 --> 00:18:11.370
+e.target.files,
+
+369
+00:18:11.370 --> 00:18:13.170
+and that's just a little bit different
+
+370
+00:18:13.170 --> 00:18:14.937
+when you're working with files,
+
+371
+00:18:14.937 --> 00:18:19.937
+you need to set the first item in the array to be the files.
+
+372
+00:18:20.440 --> 00:18:24.210
+That's just how file uploads works, it's a little bit funky,
+
+373
+00:18:24.210 --> 00:18:29.210
+other little pieces of handy functionality we need is,
+
+374
+00:18:29.840 --> 00:18:33.340
+if we wanna ever reset the form back to the initial state,
+
+375
+00:18:33.340 --> 00:18:37.330
+not empty state but the initial state is,
+
+376
+00:18:37.330 --> 00:18:41.533
+we can simply do this, function, reset form.
+
+377
+00:18:43.130 --> 00:18:47.800
+And we'll just say setInputs to be initial.
+
+378
+00:18:47.800 --> 00:18:50.150
+So, we'll take in the initial inputs
+
+379
+00:18:50.150 --> 00:18:51.310
+and just set them back
+
+380
+00:18:51.310 --> 00:18:52.700
+so if you ever wanna have a,
+
+381
+00:18:52.700 --> 00:18:54.890
+I screwed up reset it to what we started with,
+
+382
+00:18:54.890 --> 00:18:58.420
+and then we'll expose that from the hook right there.
+
+383
+00:18:58.420 --> 00:19:02.210
+And then we do also need another one called clearForm
+
+384
+00:19:02.210 --> 00:19:03.940
+which is different than resetting,
+
+385
+00:19:03.940 --> 00:19:07.580
+but we wanna just zero out all the inputs.
+
+386
+00:19:07.580 --> 00:19:09.993
+And this is kind of a fun one that I was working on,
+
+387
+00:19:09.993 --> 00:19:13.780
+I was like, huh, how do you make an,
+
+388
+00:19:13.780 --> 00:19:18.040
+how do you take an object and loop over all the properties
+
+389
+00:19:18.040 --> 00:19:22.140
+and set them to be just nothing, right.
+
+390
+00:19:22.140 --> 00:19:23.580
+And what I came up with is this,
+
+391
+00:19:23.580 --> 00:19:27.050
+this constant blank state is equal to,
+
+392
+00:19:27.050 --> 00:19:30.000
+and so, if you want,
+
+393
+00:19:30.000 --> 00:19:33.850
+if you have an object like const person is equal to name
+
+394
+00:19:33.850 --> 00:19:34.943
+is Wes,
+
+395
+00:19:35.930 --> 00:19:38.470
+price, I don't know why a person has price,
+
+396
+00:19:38.470 --> 00:19:43.350
+but age six, or whatever, and job is dev.
+
+397
+00:19:43.350 --> 00:19:46.110
+Okay, all right, so I got this person object here.
+
+398
+00:19:46.110 --> 00:19:48.663
+If you wrap that in object.entries,
+
+399
+00:19:50.830 --> 00:19:52.700
+it will give you an array
+
+400
+00:19:52.700 --> 00:19:57.082
+where each item in the array is another array
+
+401
+00:19:57.082 --> 00:19:57.915
+(laughing)
+
+402
+00:19:57.915 --> 00:20:00.850
+and each item in that array is the first thing is
+
+403
+00:20:00.850 --> 00:20:03.300
+the property, and the second thing is the value.
+
+404
+00:20:03.300 --> 00:20:07.603
+So what we're gonna do is we're gonna loop over that,
+
+405
+00:20:08.730 --> 00:20:12.880
+and set each of these keys to be nothing,
+
+406
+00:20:12.880 --> 00:20:16.080
+so we'll do that, we'll say, object
+
+407
+00:20:20.437 --> 00:20:25.330
+.entries, and take the inputs, which is our initial state,
+
+408
+00:20:25.330 --> 00:20:26.933
+and we'll map over it.
+
+409
+00:20:28.930 --> 00:20:33.600
+And so let me show you here, map, and then we say map,
+
+410
+00:20:33.600 --> 00:20:38.600
+and then for each of those, we're gonna get the item.
+
+411
+00:20:39.080 --> 00:20:43.200
+And let's, I can just return like the item or item zero,
+
+412
+00:20:43.200 --> 00:20:44.470
+that would give us the keys,
+
+413
+00:20:44.470 --> 00:20:47.400
+item one would give us the values.
+
+414
+00:20:47.400 --> 00:20:51.730
+And you can destructure this item a little bit further
+
+415
+00:20:51.730 --> 00:20:54.070
+by saying the first thing will be called key,
+
+416
+00:20:54.070 --> 00:20:56.620
+and the second thing will be called value,
+
+417
+00:20:56.620 --> 00:21:00.410
+and then you could just return the key
+
+418
+00:21:02.460 --> 00:21:04.483
+or the value,
+
+419
+00:21:05.570 --> 00:21:07.350
+or in our case, what we're gonna do is,
+
+420
+00:21:07.350 --> 00:21:09.600
+we're gonna return the key,
+
+421
+00:21:09.600 --> 00:21:12.840
+and then just nothing for the second value.
+
+422
+00:21:12.840 --> 00:21:13.990
+And then, look at this,
+
+423
+00:21:15.110 --> 00:21:17.800
+name, price, age, job, right.
+
+424
+00:21:17.800 --> 00:21:19.443
+So we can go here, map,
+
+425
+00:21:20.730 --> 00:21:22.633
+destructure key and value.
+
+426
+00:21:23.900 --> 00:21:27.560
+And then we'll return an array where we have the key,
+
+427
+00:21:27.560 --> 00:21:31.650
+and just an empty string, or you could even pass a null,
+
+428
+00:21:31.650 --> 00:21:32.610
+all of them will work,
+
+429
+00:21:32.610 --> 00:21:34.610
+empty string I think worked fine for me.
+
+430
+00:21:37.150 --> 00:21:40.860
+Then, how do we, like if we take something like this,
+
+431
+00:21:40.860 --> 00:21:42.440
+how do we turn that back into an object?
+
+432
+00:21:42.440 --> 00:21:43.960
+'Cause this is still an array,
+
+433
+00:21:43.960 --> 00:21:48.153
+we'll you wrap it in another object.fromEntries.
+
+434
+00:21:50.970 --> 00:21:51.803
+Boom.
+
+435
+00:21:51.803 --> 00:21:52.750
+And what that does
+
+436
+00:21:54.130 --> 00:21:56.940
+is it will then clear out the object for you,
+
+437
+00:21:56.940 --> 00:21:57.773
+so,
+(chuckles)
+
+438
+00:21:57.773 --> 00:22:02.290
+essentially we turn it into an array, map over it,
+
+439
+00:22:02.290 --> 00:22:04.540
+set the value to no on each,
+
+440
+00:22:04.540 --> 00:22:06.260
+or value to empty string on each
+
+441
+00:22:06.260 --> 00:22:08.680
+and then we turn it back into an object
+
+442
+00:22:08.680 --> 00:22:10.720
+with object.fromEntries.
+
+443
+00:22:10.720 --> 00:22:14.393
+So we'll do that, Object.fromEntries.
+
+444
+00:22:21.771 --> 00:22:22.604
+Here we go,
+
+445
+00:22:22.604 --> 00:22:26.823
+and then we can simply just say, set inputs, blank state.
+
+446
+00:22:28.020 --> 00:22:30.050
+And then we'll surface that clearForm,
+
+447
+00:22:30.050 --> 00:22:31.100
+we're gonna use that once
+
+448
+00:22:31.100 --> 00:22:33.380
+when somebody has created something,
+
+449
+00:22:33.380 --> 00:22:34.930
+we're gonna clear the form for them
+
+450
+00:22:34.930 --> 00:22:38.250
+so that they don't have their old values in there.
+
+451
+00:22:38.250 --> 00:22:39.360
+And like we could even,
+
+452
+00:22:39.360 --> 00:22:41.990
+we could even just hook that up to a button right now.
+
+453
+00:22:41.990 --> 00:22:44.180
+So if we go to our create product,
+
+454
+00:22:44.180 --> 00:22:46.893
+say button, clearForm.
+
+455
+00:22:50.020 --> 00:22:55.020
+Say, on click is equal to, whether we call it clearForm.
+
+456
+00:22:58.060 --> 00:23:02.660
+And we'll have to destructure that clearForm from here,
+
+457
+00:23:02.660 --> 00:23:04.940
+so handle change, clearForm,
+
+458
+00:23:04.940 --> 00:23:06.943
+let's also get the reset form as well.
+
+459
+00:23:08.200 --> 00:23:10.500
+So I think now when we click it, does it work?
+
+460
+00:23:11.710 --> 00:23:12.890
+It does.
+
+461
+00:23:12.890 --> 00:23:15.350
+It also refreshes the page,
+
+462
+00:23:15.350 --> 00:23:19.950
+and I believe we can, see it's telling me it needs a type.
+
+463
+00:23:19.950 --> 00:23:20.783
+Yeah.
+
+464
+00:23:20.783 --> 00:23:23.083
+So button, type of button.
+
+465
+00:23:27.243 --> 00:23:28.600
+There we go, look at that!
+
+466
+00:23:28.600 --> 00:23:31.250
+And then like let's do it again, let's duplicate that
+
+467
+00:23:31.250 --> 00:23:33.493
+and then just say, resetForm,
+
+468
+00:23:35.660 --> 00:23:40.283
+then I believe we can just pipe in a resetForm value here.
+
+469
+00:23:43.380 --> 00:23:47.090
+Look it goes back, clearForm, resetForm.
+
+470
+00:23:47.090 --> 00:23:48.940
+Type a whole bunch of stuff in there,
+
+471
+00:23:49.840 --> 00:23:53.700
+price is ridiculous, oh no, I don't wanna charge that much,
+
+472
+00:23:53.700 --> 00:23:55.920
+reset it back to what we started with.
+
+473
+00:23:55.920 --> 00:23:56.930
+Whoo!
+
+474
+00:23:56.930 --> 00:23:57.763
+Beautiful.
+
+475
+00:23:57.763 --> 00:23:59.800
+Okay, so I'm gonna stop there,
+
+476
+00:23:59.800 --> 00:24:03.570
+that was basically just a mini lesson in custom Reacthooks
+
+477
+00:24:03.570 --> 00:24:06.480
+and dealing with state and whatnot.
+
+478
+00:24:06.480 --> 00:24:08.970
+In the next one we'll get into
+
+479
+00:24:08.970 --> 00:24:10.270
+building this out a little bit more
+
+480
+00:24:10.270 --> 00:24:12.523
+for actually adding the rest of the fields.
+

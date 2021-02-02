@@ -1,0 +1,2018 @@
+﻿WEBVTT
+
+1
+00:00:01.459 --> 00:00:03.100
+<v Wes>All right, let's talk about CRUD.</v>
+
+2
+00:00:03.100 --> 00:00:05.860
+CRUD means create, read, update, and delete.
+
+3
+00:00:05.860 --> 00:00:10.833
+And most, I would say almost everything in the world
+
+4
+00:00:11.990 --> 00:00:15.170
+of programming can be simplified into CRUD.
+
+5
+00:00:15.170 --> 00:00:18.620
+Maybe put one on the end as well, CRUDS,
+
+6
+00:00:18.620 --> 00:00:20.220
+which would be for subscribe,
+
+7
+00:00:20.220 --> 00:00:23.500
+but if you've got a database and you're saving information,
+
+8
+00:00:23.500 --> 00:00:25.300
+you're either creating it, you're either reading it,
+
+9
+00:00:25.300 --> 00:00:26.720
+you're updating it, you're deleting it,
+
+10
+00:00:26.720 --> 00:00:31.480
+or you're subscribing to all of the above.
+
+11
+00:00:31.480 --> 00:00:33.640
+And we are going to be talking about,
+
+12
+00:00:33.640 --> 00:00:34.780
+right now is the second one.
+
+13
+00:00:34.780 --> 00:00:37.110
+We created them, then we're gonna read them,
+
+14
+00:00:37.110 --> 00:00:38.010
+a single product.
+
+15
+00:00:38.010 --> 00:00:40.210
+We click on one of the products, 404,
+
+16
+00:00:40.210 --> 00:00:42.010
+so we're gonna fix that right now.
+
+17
+00:00:42.010 --> 00:00:44.170
+And then we're going to focus in
+
+18
+00:00:44.170 --> 00:00:46.870
+on the updating and deleting of the items.
+
+19
+00:00:46.870 --> 00:00:49.360
+So let's get on into that.
+
+20
+00:00:49.360 --> 00:00:51.490
+The thing about these URLs here
+
+21
+00:00:51.490 --> 00:00:56.443
+is that it's /product/ the actual product ID.
+
+22
+00:00:57.690 --> 00:00:59.780
+And if you remember, if you've taken this course,
+
+23
+00:00:59.780 --> 00:01:01.600
+the last time we did it, last time,
+
+24
+00:01:01.600 --> 00:01:06.200
+what we did is we did product ID is equal to that.
+
+25
+00:01:06.200 --> 00:01:09.100
+And that's because Next.js used to not have
+
+26
+00:01:09.970 --> 00:01:13.130
+like file base routing, but now it does.
+
+27
+00:01:13.130 --> 00:01:15.260
+So we're able to put things
+
+28
+00:01:15.260 --> 00:01:18.170
+like the product ID right into the URL,
+
+29
+00:01:18.170 --> 00:01:19.930
+or you could go even one step further
+
+30
+00:01:19.930 --> 00:01:22.810
+and you could generate a slug for the product,
+
+31
+00:01:22.810 --> 00:01:26.350
+like nice-chair.
+
+32
+00:01:26.350 --> 00:01:28.103
+When somebody, when you create the product,
+
+33
+00:01:28.103 --> 00:01:31.100
+you create a slug and you could use that to look it up.
+
+34
+00:01:31.100 --> 00:01:32.790
+So whatever this is,
+
+35
+00:01:32.790 --> 00:01:35.160
+we're going to use that to look it up in the database.
+
+36
+00:01:35.160 --> 00:01:36.650
+So the way that we do that
+
+37
+00:01:36.650 --> 00:01:40.340
+is we're gonna go into our pages here,
+
+38
+00:01:40.340 --> 00:01:43.943
+and we're gonna create a folder called product.
+
+39
+00:01:45.200 --> 00:01:48.160
+So we're gonna go into our pages directory,
+
+40
+00:01:48.160 --> 00:01:49.800
+and we're gonna make a new file.
+
+41
+00:01:49.800 --> 00:01:51.190
+And I'm gonna show you how to make a folder
+
+42
+00:01:51.190 --> 00:01:52.840
+and a file at once in VS Code.
+
+43
+00:01:52.840 --> 00:01:56.720
+We can say product/,
+
+44
+00:01:56.720 --> 00:01:58.420
+and then the name of the file we're gonna create
+
+45
+00:01:58.420 --> 00:02:02.770
+is gonna be square brackets, id.js.
+
+46
+00:02:02.770 --> 00:02:04.390
+So there's a couple of things going on here.
+
+47
+00:02:04.390 --> 00:02:06.520
+So it made the folder called product,
+
+48
+00:02:06.520 --> 00:02:10.240
+and then we made a file called id.js inside of there.
+
+49
+00:02:10.240 --> 00:02:13.150
+Now, inside of here, this is going to match,
+
+50
+00:02:13.150 --> 00:02:15.500
+this syntax here with the square brackets,
+
+51
+00:02:15.500 --> 00:02:17.660
+that is specific to Next.js,
+
+52
+00:02:17.660 --> 00:02:20.590
+and what it will do is it is saying,
+
+53
+00:02:20.590 --> 00:02:24.853
+use this template for anything that has,
+
+54
+00:02:25.970 --> 00:02:28.690
+that matches this sort of layout.
+
+55
+00:02:28.690 --> 00:02:31.120
+So /product/ anything,
+
+56
+00:02:31.120 --> 00:02:32.210
+and then what we're gonna do
+
+57
+00:02:32.210 --> 00:02:36.140
+is it's going to give us a query param called id,
+
+58
+00:02:36.140 --> 00:02:40.070
+which we can then use to look up the item in our database.
+
+59
+00:02:40.070 --> 00:02:45.070
+So if we go in here and we say, export default function,
+
+60
+00:02:45.120 --> 00:02:50.120
+we'll call it SingleProduct, and then let's just return a p,
+
+61
+00:02:51.350 --> 00:02:54.227
+says, "Hey, I'm a single product."
+
+62
+00:02:56.410 --> 00:02:58.237
+Now, if we refresh this page, we say,
+
+63
+00:02:58.237 --> 00:03:00.030
+"Hey, I'm a single product,"
+
+64
+00:03:00.030 --> 00:03:01.980
+then if we would go into our rack dev tools
+
+65
+00:03:01.980 --> 00:03:04.760
+and go to components, we should see, here we go,
+
+66
+00:03:04.760 --> 00:03:06.920
+here's our single product component.
+
+67
+00:03:06.920 --> 00:03:08.850
+And you see that the query,
+
+68
+00:03:08.850 --> 00:03:12.880
+we now have the ID being supplied to us, why?
+
+69
+00:03:12.880 --> 00:03:17.130
+Because we name the file square bracket id.js.
+
+70
+00:03:17.130 --> 00:03:19.930
+And then what that does is match anything
+
+71
+00:03:19.930 --> 00:03:23.060
+of this URL product/ whatever.
+
+72
+00:03:23.060 --> 00:03:26.320
+And then give me that whatever
+
+73
+00:03:26.320 --> 00:03:29.960
+in a query param and we have access to it,
+
+74
+00:03:29.960 --> 00:03:32.350
+and you could nest those very much deeper.
+
+75
+00:03:32.350 --> 00:03:37.350
+If you go to syntax.fm, and you go to one of our episodes,
+
+76
+00:03:37.360 --> 00:03:42.360
+you'll see that the URL is /show/ show number,
+
+77
+00:03:43.320 --> 00:03:46.250
+forward slash slug of the actual show.
+
+78
+00:03:46.250 --> 00:03:47.780
+And if you were to inspect that,
+
+79
+00:03:47.780 --> 00:03:50.120
+you would see that there is a query param
+
+80
+00:03:50.120 --> 00:03:54.680
+both for the show number as well as for the slug of the URL.
+
+81
+00:03:54.680 --> 00:03:55.860
+And if you look at the syntax,
+
+82
+00:03:55.860 --> 00:03:58.620
+the syntax is built on Next.js as well.
+
+83
+00:03:58.620 --> 00:04:00.100
+If you look at the source code,
+
+84
+00:04:00.100 --> 00:04:02.150
+it's online, it's at GitHub, you can check it out.G
+
+85
+00:04:02.150 --> 00:04:03.073
+You'll see, oh, let me show you,
+
+86
+00:04:03.073 --> 00:04:08.073
+GitHub, Wes Bos, syntax, and we'll go into pages.
+
+87
+00:04:09.130 --> 00:04:11.970
+And then you look at this, we have a folder called show,
+
+88
+00:04:11.970 --> 00:04:14.630
+which is /show, and you go into there.
+
+89
+00:04:14.630 --> 00:04:18.270
+And then we have a folder called number.
+
+90
+00:04:18.270 --> 00:04:21.640
+And then we have a file called slug.js.
+
+91
+00:04:21.640 --> 00:04:23.320
+And it gives us both the show number
+
+92
+00:04:23.320 --> 00:04:26.110
+and the slug via the query params.
+
+93
+00:04:26.110 --> 00:04:30.000
+So we can take that in here
+
+94
+00:04:30.000 --> 00:04:31.760
+and we can restructure that ID
+
+95
+00:04:31.760 --> 00:04:33.950
+because it comes in via props.
+
+96
+00:04:33.950 --> 00:04:35.780
+Remember, this is where props comes in,
+
+97
+00:04:35.780 --> 00:04:37.350
+but we want props.id.
+
+98
+00:04:37.350 --> 00:04:40.380
+So we'll the structure the prop id here,
+
+99
+00:04:40.380 --> 00:04:42.560
+and then we'll go ahead and use it
+
+100
+00:04:42.560 --> 00:04:45.270
+just by popping id into there.
+
+101
+00:04:45.270 --> 00:04:48.690
+And it's not showing up.
+
+102
+00:04:48.690 --> 00:04:50.180
+Oh, you know why?
+
+103
+00:04:50.180 --> 00:04:52.370
+It's not id, it's query.
+
+104
+00:04:52.370 --> 00:04:55.900
+And then here we say, query.id.
+
+105
+00:04:55.900 --> 00:04:56.733
+There we go.
+
+106
+00:04:56.733 --> 00:04:58.570
+Now the id is showing up,
+
+107
+00:04:58.570 --> 00:05:02.535
+and we can then hot potato that on to a query.
+
+108
+00:05:02.535 --> 00:05:03.883
+Let's do that now.
+
+109
+00:05:04.900 --> 00:05:07.220
+So if I, look, copy this ID,
+
+110
+00:05:07.220 --> 00:05:10.670
+and go to your API Explorer in the backend,
+
+111
+00:05:10.670 --> 00:05:12.420
+and let's just write a quick little query
+
+112
+00:05:12.420 --> 00:05:14.500
+to grab that single item here.
+
+113
+00:05:14.500 --> 00:05:17.123
+So, man, I got a lot of tabs here.
+
+114
+00:05:17.123 --> 00:05:19.500
+Well, I'll use this one.
+
+115
+00:05:19.500 --> 00:05:24.500
+We'll say query as a single, or not single price,
+
+116
+00:05:24.560 --> 00:05:29.560
+it's just product, where the id is equal to that.
+
+117
+00:05:33.840 --> 00:05:37.960
+So in here, we are now passing it a filter,
+
+118
+00:05:37.960 --> 00:05:42.005
+and you wanna ask where the id is equal to that.
+
+119
+00:05:42.005 --> 00:05:47.005
+There are no other options for the thing here.
+
+120
+00:05:48.860 --> 00:05:50.270
+So here, we're asking you for a product
+
+121
+00:05:50.270 --> 00:05:52.840
+where the id is equal to that.
+
+122
+00:05:52.840 --> 00:05:55.520
+We couldn't say find me a product
+
+123
+00:05:55.520 --> 00:06:00.310
+where the name is like Yeti.
+
+124
+00:06:00.310 --> 00:06:02.660 line:15% 
+And I'll show you how to do that in just a second
+
+125
+00:06:02.660 --> 00:06:04.030 line:15% 
+if that's what you want,
+
+126
+00:06:04.030 --> 00:06:06.160 line:15% 
+but in our case, just say id, what is that.
+
+127
+00:06:06.160 --> 00:06:07.340
+And then when that comes back,
+
+128
+00:06:07.340 --> 00:06:10.790
+we wanna grab the name, the price, the description.
+
+129
+00:06:10.790 --> 00:06:12.740
+You can go ahead and run that.
+
+130
+00:06:12.740 --> 00:06:15.810
+What if you wanted to find a product
+
+131
+00:06:15.810 --> 00:06:18.030
+where it had the name Yeti in it?
+
+132
+00:06:18.030 --> 00:06:19.380
+Well, if that was the case,
+
+133
+00:06:19.380 --> 00:06:23.250
+you'd have to look for all products.
+
+134
+00:06:23.250 --> 00:06:25.030
+And the difference between product
+
+135
+00:06:25.030 --> 00:06:29.140
+is that it returns one and all products returns multiples.
+
+136
+00:06:29.140 --> 00:06:33.290
+And if you are ever returning one item from a query,
+
+137
+00:06:33.290 --> 00:06:36.360
+it must be query based on a unique field.
+
+138
+00:06:36.360 --> 00:06:39.910
+And the only unique field we have on product is id.
+
+139
+00:06:39.910 --> 00:06:42.290
+Everything else could be duplicated.
+
+140
+00:06:42.290 --> 00:06:45.360
+So here we can say, give me all products where,
+
+141
+00:06:45.360 --> 00:06:48.110
+this is how you do filtering in Keystone.
+
+142
+00:06:48.110 --> 00:06:49.700
+Most GraphQL clients
+
+143
+00:06:49.700 --> 00:06:52.370
+will have the very similar filtering though.
+
+144
+00:06:52.370 --> 00:06:54.010
+I've used maybe six or seven of them.
+
+145
+00:06:54.010 --> 00:06:56.000
+And they're all very similar to this.
+
+146
+00:06:56.000 --> 00:06:58.890
+So we say where, see, look at this, (purrs)
+
+147
+00:06:58.890 --> 00:07:03.890
+look at every possible input in here and not just id.
+
+148
+00:07:04.120 --> 00:07:06.200
+So we could say name
+
+149
+00:07:07.930 --> 00:07:11.413
+contains and there's name_contains, and name_contains_i,
+
+150
+00:07:13.240 --> 00:07:14.550
+the is for insensitive.
+
+151
+00:07:14.550 --> 00:07:18.070
+So we'll say where the name contains insensitive Yeti.
+
+152
+00:07:18.070 --> 00:07:21.030
+And then from that, give me all of the names
+
+153
+00:07:21.030 --> 00:07:24.573
+and the prices of the product that it finds.
+
+154
+00:07:25.430 --> 00:07:26.263
+There we go.
+
+155
+00:07:26.263 --> 00:07:28.610
+All products, look at it, brings us back three things.
+
+156
+00:07:28.610 --> 00:07:33.160
+Now, sometimes I find myself needing to find one item
+
+157
+00:07:33.160 --> 00:07:35.430
+based on something that is not unique,
+
+158
+00:07:35.430 --> 00:07:36.570
+and if that's the case,
+
+159
+00:07:36.570 --> 00:07:39.210
+I usually just grab the first item
+
+160
+00:07:39.210 --> 00:07:40.670
+that comes back in that case.
+
+161
+00:07:40.670 --> 00:07:41.630
+But let's back this up.
+
+162
+00:07:41.630 --> 00:07:43.060
+We don't necessarily need that right now.
+
+163
+00:07:43.060 --> 00:07:44.750
+We'll hit that when we get into search.
+
+164
+00:07:44.750 --> 00:07:45.680
+I thought I would just show you
+
+165
+00:07:45.680 --> 00:07:47.250
+while we're in the headspace.
+
+166
+00:07:47.250 --> 00:07:49.290
+So give me a product where the ID is this,
+
+167
+00:07:49.290 --> 00:07:51.090
+and then we query everything that we want.
+
+168
+00:07:51.090 --> 00:07:56.090
+So we should be able to take that query and go in here.
+
+169
+00:07:56.110 --> 00:08:00.453
+And we'll say, let's say const, what is it?
+
+170
+00:08:02.180 --> 00:08:06.600
+Data, loading, error is equal to useQuery.
+
+171
+00:08:06.600 --> 00:08:08.190
+And we actually got to write the query.
+
+172
+00:08:08.190 --> 00:08:09.023
+So go up here,
+
+173
+00:08:09.023 --> 00:08:13.667
+we'll say const SINGLE_ITEM_QUERY is equal to gql.
+
+174
+00:08:14.620 --> 00:08:16.023
+Now we're gonna have to back,
+
+175
+00:08:16.023 --> 00:08:16.856
+we're gonna have to import
+
+176
+00:08:16.856 --> 00:08:18.740
+a bunch of stuff in just a second.
+
+177
+00:08:18.740 --> 00:08:21.530
+And then we'll paste our query in there.
+
+178
+00:08:21.530 --> 00:08:26.313
+Now, we need to import gql, that's from GraphQL tag.
+
+179
+00:08:27.450 --> 00:08:29.633
+We need to import useQuery.
+
+180
+00:08:31.810 --> 00:08:33.720
+Okay, and then that's just underlined,
+
+181
+00:08:33.720 --> 00:08:35.670
+'cause we don't have a prop types for it.
+
+182
+00:08:35.670 --> 00:08:38.370
+That's totally fine, same with this one.
+
+183
+00:08:38.370 --> 00:08:41.240
+All right, then we can go back to our useQuery
+
+184
+00:08:41.240 --> 00:08:43.953
+and pass it our SINGLE_ITEM_QUERY.
+
+185
+00:08:44.890 --> 00:08:47.780
+And we should be able to console.log
+
+186
+00:08:47.780 --> 00:08:50.440
+data, loading, and error.
+
+187
+00:08:50.440 --> 00:08:53.250
+One little tip I like to use in this case
+
+188
+00:08:53.250 --> 00:08:57.790
+is if you want to know what the values are,
+
+189
+00:08:57.790 --> 00:09:00.120
+you can wrap it in curly brackets.
+
+190
+00:09:00.120 --> 00:09:04.373
+So if we go to here and go to our console,
+
+191
+00:09:06.660 --> 00:09:11.290
+you'll see we get like an object, false and undefined.
+
+192
+00:09:11.290 --> 00:09:13.100
+If you don't know what these are,
+
+193
+00:09:13.100 --> 00:09:15.200
+you can wrap them in curly brackets,
+
+194
+00:09:15.200 --> 00:09:18.150
+and what that does is it logs it as an object
+
+195
+00:09:18.150 --> 00:09:19.930
+where there's property names
+
+196
+00:09:19.930 --> 00:09:21.850
+that associate with the variables.
+
+197
+00:09:21.850 --> 00:09:23.860
+And then we get this nice little object here
+
+198
+00:09:23.860 --> 00:09:26.140
+where you say data, error, and loading.
+
+199
+00:09:26.140 --> 00:09:28.660
+And I love that little debugging tip,
+
+200
+00:09:28.660 --> 00:09:32.770
+because it's easy to see what things are called.
+
+201
+00:09:32.770 --> 00:09:35.133
+So in our case, if we refresh the page,
+
+202
+00:09:36.320 --> 00:09:38.480
+we immediately get the data.
+
+203
+00:09:38.480 --> 00:09:40.670
+No error and loading is false.
+
+204
+00:09:40.670 --> 00:09:43.770
+But if we were to go back to the homepage
+
+205
+00:09:43.770 --> 00:09:46.950
+and click on another one, like these Air Max 270's,
+
+206
+00:09:46.950 --> 00:09:50.780
+you'll see that you might get loading true first,
+
+207
+00:09:50.780 --> 00:09:53.800
+and then you'll get the data on the second re-render.
+
+208
+00:09:53.800 --> 00:09:54.930
+And the reason that's happening
+
+209
+00:09:54.930 --> 00:09:58.570
+is because it's fetching it from the browser.
+
+210
+00:09:58.570 --> 00:10:01.000
+Whereas if I were just to refresh this page,
+
+211
+00:10:01.000 --> 00:10:02.160
+we only get it once.
+
+212
+00:10:02.160 --> 00:10:04.280
+And the reason behind that is because the first render
+
+213
+00:10:04.280 --> 00:10:07.240
+is actually happening on the server,
+
+214
+00:10:07.240 --> 00:10:09.500
+so there is no loading state, which is really nice.
+
+215
+00:10:09.500 --> 00:10:12.930
+You will also sometimes get that if you click on here
+
+216
+00:10:12.930 --> 00:10:15.270
+and you click onto a product you haven't been to,
+
+217
+00:10:15.270 --> 00:10:17.010
+you see, I only got one.
+
+218
+00:10:17.010 --> 00:10:22.010
+And the reason is that the first load did happen on,
+
+219
+00:10:22.510 --> 00:10:24.478
+you can see it's right here.
+
+220
+00:10:24.478 --> 00:10:25.630
+Here we go, loading true.
+
+221
+00:10:25.630 --> 00:10:26.810
+You can see the first render
+
+222
+00:10:26.810 --> 00:10:28.160
+actually happened on the server.
+
+223
+00:10:28.160 --> 00:10:29.710
+The server is our terminal here.
+
+224
+00:10:29.710 --> 00:10:32.040
+And the second render happened on the client side.
+
+225
+00:10:32.040 --> 00:10:34.650
+That's a bit of a delicate, not delicate,
+
+226
+00:10:34.650 --> 00:10:37.950
+but you need to know that some of the renders happen
+
+227
+00:10:37.950 --> 00:10:40.970
+on the server and some of them happen on the client.
+
+228
+00:10:40.970 --> 00:10:42.620
+All right, so now that we have that,
+
+229
+00:10:42.620 --> 00:10:43.780
+look at it, we've got our object,
+
+230
+00:10:43.780 --> 00:10:45.280
+we've got our data, we've got our product,
+
+231
+00:10:45.280 --> 00:10:47.940
+and then we get everything that we want in there.
+
+232
+00:10:47.940 --> 00:10:51.400
+What I wanna do now is let's actually move this,
+
+233
+00:10:51.400 --> 00:10:53.170
+all of this to its own component.
+
+234
+00:10:53.170 --> 00:10:54.330
+And the reason behind that
+
+235
+00:10:54.330 --> 00:10:56.410
+is because this is not very flexible right now.
+
+236
+00:10:56.410 --> 00:10:58.690
+We just made a single product component,
+
+237
+00:10:58.690 --> 00:11:02.140
+but it's at a page level, right?
+
+238
+00:11:02.140 --> 00:11:03.750
+So what we could do is we can make
+
+239
+00:11:03.750 --> 00:11:05.650
+a single product component
+
+240
+00:11:05.650 --> 00:11:07.680
+that we could use it wherever we want.
+
+241
+00:11:07.680 --> 00:11:10.400
+As long as we pass an ID, it will do the querying for us.
+
+242
+00:11:10.400 --> 00:11:12.500
+So we'll go to our components folder here
+
+243
+00:11:13.667 --> 00:11:14.850
+and make a new file,
+
+244
+00:11:14.850 --> 00:11:19.850
+and we'll call it capital S, SingleProduct.js.
+
+245
+00:11:22.560 --> 00:11:27.560
+And let's move over all of this into SingleProduct.
+
+246
+00:11:32.380 --> 00:11:37.380
+And then let's also move that over.
+
+247
+00:11:38.990 --> 00:11:43.760
+So export default function SingleProduct,
+
+248
+00:11:43.760 --> 00:11:48.760
+that takes in an id of which product you want to query.
+
+249
+00:11:49.610 --> 00:11:52.290
+And then in here, we'll use that query.
+
+250
+00:11:52.290 --> 00:11:55.507
+And then we'll return "Single Product."
+
+251
+00:11:56.640 --> 00:12:00.500
+I'm gonna go back to this one and get rid of that.
+
+252
+00:12:00.500 --> 00:12:03.750
+And then here, we can simply just return
+
+253
+00:12:03.750 --> 00:12:08.670
+our single product component where the is
+
+254
+00:12:09.620 --> 00:12:11.803
+is going to be equal to the query.id.
+
+255
+00:12:13.220 --> 00:12:14.970
+All right, so I know we did a lot there.
+
+256
+00:12:14.970 --> 00:12:18.070
+We made a function called SingleProduct.
+
+257
+00:12:18.070 --> 00:12:22.390
+Oh, this should be called SingleProductPage instead,
+
+258
+00:12:22.390 --> 00:12:25.530
+that takes in the query, which comes from the browser,
+
+259
+00:12:25.530 --> 00:12:28.600
+then from that, we return our single product component
+
+260
+00:12:28.600 --> 00:12:30.730
+which we need to import now.
+
+261
+00:12:30.730 --> 00:12:32.670
+Okay, that was important there.
+
+262
+00:12:32.670 --> 00:12:36.180
+And then you pass in the id,
+
+263
+00:12:36.180 --> 00:12:40.200
+then we'll go into single product here and we can say,
+
+264
+00:12:40.200 --> 00:12:45.200
+if loading, then return paragraph loading dot, dot, dot,
+
+265
+00:12:46.890 --> 00:12:51.890
+if error, then return, we have our error,
+
+266
+00:12:55.280 --> 00:12:56.113
+what was that called?
+
+267
+00:12:56.113 --> 00:12:58.633
+Error message component.
+
+268
+00:13:02.290 --> 00:13:03.123
+What did we call that?
+
+269
+00:13:03.123 --> 00:13:07.293
+I know, DisplayError, okay.
+
+270
+00:13:09.900 --> 00:13:12.713
+There we go, and then you pass it, your error,
+
+271
+00:13:15.930 --> 00:13:18.670
+and then otherwise, if we do have data,
+
+272
+00:13:18.670 --> 00:13:23.500
+so we can return a div where there's like,
+
+273
+00:13:23.500 --> 00:13:27.140
+let's do an h2 tag with the
+
+274
+00:13:28.180 --> 00:13:30.380
+data.product.name.
+
+275
+00:13:34.520 --> 00:13:35.363
+Let's try that.
+
+276
+00:13:36.510 --> 00:13:40.720
+Cannot access property name, data.product is undefined.
+
+277
+00:13:40.720 --> 00:13:43.483
+Oh, okay, maybe it is, is it a capital P?
+
+278
+00:13:47.520 --> 00:13:48.353
+There we go.
+
+279
+00:13:48.353 --> 00:13:49.930
+So now what we did is we just created
+
+280
+00:13:49.930 --> 00:13:54.640
+a single product component that all it needs is an ID
+
+281
+00:13:54.640 --> 00:13:57.970
+and it will be able to display it wherever we want.
+
+282
+00:13:57.970 --> 00:14:01.380
+So that's pretty cool because what you can do
+
+283
+00:14:01.380 --> 00:14:06.250
+is you can take the single product component and we could,
+
+284
+00:14:06.250 --> 00:14:08.930
+let's put it, let's go into our page component.
+
+285
+00:14:08.930 --> 00:14:09.810
+You don't have to do this,
+
+286
+00:14:09.810 --> 00:14:12.010
+but let me just show you really quickly.
+
+287
+00:14:12.010 --> 00:14:13.440
+If you go into your page component,
+
+288
+00:14:13.440 --> 00:14:16.290
+and let's just go to the footer here.
+
+289
+00:14:16.290 --> 00:14:19.050
+If I were to want to put a single product
+
+290
+00:14:19.050 --> 00:14:22.430
+into the component and pass it an id
+
+291
+00:14:24.090 --> 00:14:27.453
+of, I don't know, let's go find a product.
+
+292
+00:14:29.570 --> 00:14:31.180
+The Nike VaporMax.
+
+293
+00:14:31.180 --> 00:14:34.070
+So the ID of this product,
+
+294
+00:14:34.070 --> 00:14:36.507
+we'll just pass it in right there,
+
+295
+00:14:36.507 --> 00:14:37.407
+you can import it,
+
+296
+00:14:40.460 --> 00:14:41.293
+and watch this.
+
+297
+00:14:44.238 --> 00:14:47.710
+It's showing me Yeti Hondo, why? (laughs)
+
+298
+00:14:50.510 --> 00:14:52.020
+Did we hard-code the ID?
+
+299
+00:14:52.020 --> 00:14:54.820
+I think we did, oh, Wes, Wes, Wes.
+
+300
+00:14:54.820 --> 00:14:56.950
+Okay, so obviously, we hard-coded the ID
+
+301
+00:14:56.950 --> 00:14:59.500
+of the product to be this.
+
+302
+00:14:59.500 --> 00:15:01.220
+We need to make that dynamic.
+
+303
+00:15:01.220 --> 00:15:04.070
+So what we'll do here is we'll modify this,
+
+304
+00:15:04.070 --> 00:15:05.129
+we'll just call it SINGLE_ITEM_QUERY
+
+305
+00:15:05.129 --> 00:15:08.046
+or SINGLE_PRODUCT_QUERY.
+
+306
+00:15:08.046 --> 00:15:13.046
+You pass in id that has a type of ID and is required.
+
+307
+00:15:14.490 --> 00:15:18.880
+And then in here, we can just pass the id variable.
+
+308
+00:15:18.880 --> 00:15:20.510
+So that's the first part of it.
+
+309
+00:15:20.510 --> 00:15:25.347
+And then when we run this query, so here we go, useQuery,
+
+310
+00:15:26.281 --> 00:15:27.114
+and make this a little bigger
+
+311
+00:15:27.114 --> 00:15:28.560
+so we can see it all in one line,
+
+312
+00:15:28.560 --> 00:15:31.210
+you can pass a second argument to useQuery,
+
+313
+00:15:31.210 --> 00:15:32.503
+which is the variable.
+
+314
+00:15:33.530 --> 00:15:35.650
+We wanna say the variable id
+
+315
+00:15:35.650 --> 00:15:38.070
+is going to be equal to whatever ID
+
+316
+00:15:38.070 --> 00:15:40.890
+got passed in as a prop to this component.
+
+317
+00:15:40.890 --> 00:15:42.540
+So it's just id as well.
+
+318
+00:15:42.540 --> 00:15:43.373
+Now, give that a save.
+
+319
+00:15:43.373 --> 00:15:46.380
+It's going to just shorten it to just id.
+
+320
+00:15:46.380 --> 00:15:48.960
+And now, whatever ID gets passed in
+
+321
+00:15:48.960 --> 00:15:50.960
+will be sent to the query, here we go.
+
+322
+00:15:50.960 --> 00:15:55.160
+Now, whatever product we're on, see KITH Hoodie,
+
+323
+00:15:55.160 --> 00:15:59.830
+and then Nike VaporMax shows up in the footer, why?
+
+324
+00:15:59.830 --> 00:16:00.860
+Because we can literally
+
+325
+00:16:00.860 --> 00:16:02.830
+put this component anywhere we want,
+
+326
+00:16:02.830 --> 00:16:05.680
+and as long as we pass it an ID of the product,
+
+327
+00:16:05.680 --> 00:16:10.490
+it will know how and where to get the data from
+
+328
+00:16:10.490 --> 00:16:13.570
+as well as how to display that actual data.
+
+329
+00:16:13.570 --> 00:16:14.840
+And that's really cool.
+
+330
+00:16:14.840 --> 00:16:18.960
+I was making these flexible components that are not so rigid
+
+331
+00:16:18.960 --> 00:16:21.910
+that they need like a parent data
+
+332
+00:16:21.910 --> 00:16:24.620
+or they only can be viewed on a specific page,
+
+333
+00:16:24.620 --> 00:16:26.260
+but you can put them wherever you want.
+
+334
+00:16:26.260 --> 00:16:28.050
+So obviously, we don't wanna do that in the footer,
+
+335
+00:16:28.050 --> 00:16:30.460
+so I'll bring that out there.
+
+336
+00:16:30.460 --> 00:16:31.780
+But now we have our single product.
+
+337
+00:16:31.780 --> 00:16:32.700
+Okay, so that's that.
+
+338
+00:16:32.700 --> 00:16:36.550
+Let's do a little bit more styling
+
+339
+00:16:36.550 --> 00:16:39.500
+so this will show up a little bit neater.
+
+340
+00:16:39.500 --> 00:16:42.420
+So let's first make this product variable
+
+341
+00:16:42.420 --> 00:16:46.243
+a little bit shorter, so we'll say const Product,
+
+342
+00:16:47.124 --> 00:16:49.040
+that's equal to, it's kinda weird
+
+343
+00:16:49.040 --> 00:16:50.370
+that there's a capital P on it,
+
+344
+00:16:50.370 --> 00:16:55.000
+but that's just how it comes back from the GraphQL API.
+
+345
+00:16:55.000 --> 00:16:56.510
+So there's not a whole lot,
+
+346
+00:16:56.510 --> 00:16:59.010
+well, there is something we could do, I could show you.
+
+347
+00:16:59.010 --> 00:17:02.110
+If you want it to rename something in your GraphQL query,
+
+348
+00:17:02.110 --> 00:17:04.990
+you could rename it like items.
+
+349
+00:17:04.990 --> 00:17:09.270
+And then when they come back, it's gonna be data.items
+
+350
+00:17:09.270 --> 00:17:12.542
+instead of whatever comes back from the API.
+
+351
+00:17:12.542 --> 00:17:14.420
+I very rarely need to use that,
+
+352
+00:17:14.420 --> 00:17:17.680
+just because I just use whatever comes back from the API.
+
+353
+00:17:17.680 --> 00:17:21.150
+But there's rare cases where if you're trying, not Googling,
+
+354
+00:17:21.150 --> 00:17:24.030
+if you're querying two different products
+
+355
+00:17:24.030 --> 00:17:25.810
+with a single item query,
+
+356
+00:17:25.810 --> 00:17:27.940
+then they both can't be named product.
+
+357
+00:17:27.940 --> 00:17:28.773
+So what you have to do
+
+358
+00:17:28.773 --> 00:17:31.930
+is you have to rename them in the query.
+
+359
+00:17:31.930 --> 00:17:34.030
+But I'm just gonna call it Product here.
+
+360
+00:17:34.030 --> 00:17:36.870
+I'll say that const Product is equal to data.
+
+361
+00:17:36.870 --> 00:17:38.960
+And you could also rename them
+
+362
+00:17:38.960 --> 00:17:41.990
+in the de-structuring like that as well.
+
+363
+00:17:41.990 --> 00:17:44.310
+Again, I'm not gonna confuse you,
+
+364
+00:17:44.310 --> 00:17:45.990
+just gonna put a capital on it.
+
+365
+00:17:45.990 --> 00:17:47.703
+And then we say Product.name.
+
+366
+00:17:52.790 --> 00:17:55.713
+Let's wrap that in a div with a class of details.
+
+367
+00:17:58.360 --> 00:18:01.463
+And then below it, we'll do the Product.description.
+
+368
+00:18:07.870 --> 00:18:09.840
+We do need to go back up here
+
+369
+00:18:09.840 --> 00:18:11.850
+and modify our query a little bit
+
+370
+00:18:11.850 --> 00:18:14.547
+because we need the name, the price,
+
+371
+00:18:14.547 --> 00:18:17.990
+the description, the id, we need the photo.
+
+372
+00:18:17.990 --> 00:18:22.090
+And inside of that, we need the linked image and the public,
+
+373
+00:18:22.090 --> 00:18:24.563
+lowercase publicUrlTransformed.
+
+374
+00:18:31.400 --> 00:18:33.280
+Doesn't look like the description is showing up.
+
+375
+00:18:33.280 --> 00:18:35.230
+Maybe that one just doesn't have a description.
+
+376
+00:18:35.230 --> 00:18:36.320
+Let's go to the Yeti Hondo.
+
+377
+00:18:36.320 --> 00:18:39.250
+No, all right, let's debug that real quick.
+
+378
+00:18:39.250 --> 00:18:44.250
+We'll go and try to log out the product here.
+
+379
+00:18:49.447 --> 00:18:52.670
+There we go, product descriptions right there,
+
+380
+00:18:52.670 --> 00:18:53.803
+did I spell it wrong?
+
+381
+00:19:01.280 --> 00:19:04.300
+I did, yeah, there's your problem.
+
+382
+00:19:04.300 --> 00:19:06.433
+Above it, we'll do an image tag.
+
+383
+00:19:10.090 --> 00:19:11.470
+The source is equal
+
+384
+00:19:11.470 --> 00:19:16.470
+to the Product.photo.image.publicUrlTransformed.
+
+385
+00:19:22.450 --> 00:19:27.450
+And then the alt is equal to the Product.name.
+
+386
+00:19:30.030 --> 00:19:32.520
+You could also take the alt
+
+387
+00:19:32.520 --> 00:19:34.440
+from the image as well if you wanted,
+
+388
+00:19:34.440 --> 00:19:38.700
+because we have another one there, so we could do that,
+
+389
+00:19:38.700 --> 00:19:41.843
+Product.photo.image.alt.
+
+390
+00:19:47.150 --> 00:19:49.780
+Oh, look at this, so we've got a bit of an error here.
+
+391
+00:19:49.780 --> 00:19:51.860
+Cannot query field alt on type
+
+392
+00:19:51.860 --> 00:19:53.993
+CloudinaryImage field, location.
+
+393
+00:19:56.360 --> 00:19:58.180
+Oh, I think the alt goes up here.
+
+394
+00:19:58.180 --> 00:19:59.033
+Is that why?
+
+395
+00:20:00.400 --> 00:20:03.463
+And then here, it's just photo.alt.
+
+396
+00:20:06.850 --> 00:20:10.480
+No, see, our error component is kicking in there.
+
+397
+00:20:10.480 --> 00:20:12.380
+It didn't that first time because of hot reloading,
+
+398
+00:20:12.380 --> 00:20:14.630
+but that won't happen in production.
+
+399
+00:20:14.630 --> 00:20:16.870
+So that is good.
+
+400
+00:20:16.870 --> 00:20:18.300
+Why did that not work?
+
+401
+00:20:18.300 --> 00:20:20.053
+Let's go back to this here.
+
+402
+00:20:21.650 --> 00:20:23.173
+Let me say our photo.
+
+403
+00:20:24.530 --> 00:20:28.693
+Oh, altText, come on now, altText.
+
+404
+00:20:30.840 --> 00:20:31.693
+That's why.
+
+405
+00:20:36.940 --> 00:20:39.253
+There we go, and hover over top of it.
+
+406
+00:20:45.086 --> 00:20:46.260
+There we go.
+
+407
+00:20:46.260 --> 00:20:47.510
+That's looking good.
+
+408
+00:20:47.510 --> 00:20:49.610
+So we have our image, we've got our details
+
+409
+00:20:49.610 --> 00:20:51.690
+with our name and our description.
+
+410
+00:20:51.690 --> 00:20:53.140
+One other thing and this is something
+
+411
+00:20:53.140 --> 00:20:57.210
+we haven't covered yet is, what about the title tag?
+
+412
+00:20:57.210 --> 00:20:59.820
+So far, the title tag, they're just saying random stuff
+
+413
+00:20:59.820 --> 00:21:02.170
+like this page could not be defined.
+
+414
+00:21:02.170 --> 00:21:06.310
+So if you wanna be able to define the title tag
+
+415
+00:21:06.310 --> 00:21:09.770
+in your Next.js application, it's pretty simple.
+
+416
+00:21:09.770 --> 00:21:12.420
+What you do is anywhere you want
+
+417
+00:21:12.420 --> 00:21:16.060
+to modify items that are in the head,
+
+418
+00:21:16.060 --> 00:21:20.063
+we simply just embed a capital H Head tag,
+
+419
+00:21:21.610 --> 00:21:24.100
+and then import that from,
+
+420
+00:21:24.100 --> 00:21:25.870
+oh, it looks like it's not gonna auto import.
+
+421
+00:21:25.870 --> 00:21:28.010
+So we'll have to go back up to the top here.
+
+422
+00:21:28.010 --> 00:21:33.010
+Say import capital H Head from next/head.
+
+423
+00:21:36.690 --> 00:21:40.270
+And what we'll do there is anything
+
+424
+00:21:40.270 --> 00:21:44.250
+that gets stuck in here will be injected
+
+425
+00:21:44.250 --> 00:21:45.987
+into the head of the document.
+
+426
+00:21:45.987 --> 00:21:48.520
+There is another, if you're not using Next.js,
+
+427
+00:21:48.520 --> 00:21:52.000
+in my Gatsby tutorial, we use something called helmet.
+
+428
+00:21:52.000 --> 00:21:54.180
+It works the exact same way.
+
+429
+00:21:54.180 --> 00:21:56.760
+So in here, we're just gonna call it Sick Fits |,
+
+430
+00:21:57.710 --> 00:22:01.073
+and we'll put the Product.name in there.
+
+431
+00:22:02.130 --> 00:22:06.160
+And then you see that the title tag of the tab
+
+432
+00:22:06.160 --> 00:22:09.970
+is changed when you go to an item.
+
+433
+00:22:09.970 --> 00:22:13.420
+So we'll have to go through and update those
+
+434
+00:22:13.420 --> 00:22:15.030
+on every single page,
+
+435
+00:22:15.030 --> 00:22:17.040
+just so that they all have the correct SEO.
+
+436
+00:22:17.040 --> 00:22:19.610
+But that's the first time we've used that there.
+
+437
+00:22:19.610 --> 00:22:21.860
+And we also need a little bit of styling
+
+438
+00:22:21.860 --> 00:22:23.500
+to get this to look nicely.
+
+439
+00:22:23.500 --> 00:22:25.610
+We'll write that one together.
+
+440
+00:22:25.610 --> 00:22:28.427
+Let's go up here, we'll say const ProductStyles
+
+441
+00:22:33.080 --> 00:22:35.610
+is equal to styled.div.
+
+442
+00:22:35.610 --> 00:22:39.023
+We will import styled from styled-components.
+
+443
+00:22:41.450 --> 00:22:45.120
+And we'll just say, background red,
+
+444
+00:22:45.120 --> 00:22:46.840
+and then take that ProductStyles
+
+445
+00:22:46.840 --> 00:22:51.593
+and replace it with that wrapping div we have here.
+
+446
+00:22:53.730 --> 00:22:56.540
+This Head tag can go anywhere you want, by the way.
+
+447
+00:22:56.540 --> 00:22:58.280
+And that's kind of the cool thing is that,
+
+448
+00:22:58.280 --> 00:23:00.740
+if you can use it wherever you have your data,
+
+449
+00:23:00.740 --> 00:23:02.340
+and it isn't like you would have to query
+
+450
+00:23:02.340 --> 00:23:05.560
+this single product at a page level and pass it down,
+
+451
+00:23:05.560 --> 00:23:09.120
+you can just pop it in the product where you have it.
+
+452
+00:23:09.120 --> 00:23:11.400
+Okay, so that looks like it's working.
+
+453
+00:23:11.400 --> 00:23:13.973
+We'll go back up here and start writing some CSS.
+
+454
+00:23:15.974 --> 00:23:17.523
+You wanna say display grid.
+
+455
+00:23:18.480 --> 00:23:23.030
+grid-auto-columns is 1fr,
+
+456
+00:23:23.030 --> 00:23:27.160
+and grid-auto-flow is column.
+
+457
+00:23:27.160 --> 00:23:30.170
+That means it will add the items
+
+458
+00:23:30.170 --> 00:23:33.580
+to the right-hand side in columns,
+
+459
+00:23:33.580 --> 00:23:36.393
+rather than the default of grid, which is rows.
+
+460
+00:23:37.500 --> 00:23:40.063
+We'll give it a min-height of 800px,
+
+461
+00:23:44.580 --> 00:23:47.663
+a max-width of our variable maxWidth.
+
+462
+00:23:52.249 --> 00:23:53.630
+Then we got to grab this image here.
+
+463
+00:23:53.630 --> 00:23:58.083
+Let's say width is 100%.
+
+464
+00:23:59.020 --> 00:24:01.560
+And it's looking better.
+
+465
+00:24:01.560 --> 00:24:05.440
+Also say height is 100%.
+
+466
+00:24:05.440 --> 00:24:07.190
+And then we do this.
+
+467
+00:24:07.190 --> 00:24:10.190
+Let's see, I love doing this with,
+
+468
+00:24:10.190 --> 00:24:11.640
+that looks like a kid's shoe.
+
+469
+00:24:13.690 --> 00:24:16.690
+What happened here is depending on how much room we have,
+
+470
+00:24:16.690 --> 00:24:19.053
+it's obviously gonna get smushed.
+
+471
+00:24:20.240 --> 00:24:25.090
+And we can use something in CSS called object-fit,
+
+472
+00:24:25.090 --> 00:24:27.533
+and there is something called contain,
+
+473
+00:24:28.600 --> 00:24:31.140
+and that will just obviously contain it.
+
+474
+00:24:31.140 --> 00:24:35.660
+There's also cover, which it will stretch it to fit,
+
+475
+00:24:35.660 --> 00:24:36.960
+which is not what we want.
+
+476
+00:24:36.960 --> 00:24:39.120
+We want contain to show,
+
+477
+00:24:39.120 --> 00:24:40.920
+and that way you don't have to figure out,
+
+478
+00:24:40.920 --> 00:24:43.480
+okay, is it a wide and short image
+
+479
+00:24:43.480 --> 00:24:47.480
+or is it a a tall and skinny image?
+
+480
+00:24:47.480 --> 00:24:51.210
+Contain will just figure it all out for you.
+
+481
+00:24:51.210 --> 00:24:54.960
+Let's also put this text here in the middle.
+
+482
+00:24:54.960 --> 00:24:58.193
+So justify-content center, maybe?
+
+483
+00:24:59.120 --> 00:25:01.633
+No, align-content.
+
+484
+00:25:02.880 --> 00:25:04.330
+No, it's vertical.
+
+485
+00:25:04.330 --> 00:25:09.330
+So vertical is items, align-items center.
+
+486
+00:25:10.400 --> 00:25:11.910
+There we go.
+
+487
+00:25:11.910 --> 00:25:14.500
+We'll probably put a little bit of gap on there.
+
+488
+00:25:14.500 --> 00:25:16.463
+I should probably use rems for that.
+
+489
+00:25:19.750 --> 00:25:20.750
+Actually, you know what?
+
+490
+00:25:20.750 --> 00:25:21.863
+It should be top.
+
+491
+00:25:25.240 --> 00:25:26.223
+Take that,
+
+492
+00:25:28.770 --> 00:25:30.400
+take the height off of there.
+
+493
+00:25:30.400 --> 00:25:31.510
+I'm not sure why I had that.
+
+494
+00:25:31.510 --> 00:25:33.770
+That's probably something to do with SEO,
+
+495
+00:25:33.770 --> 00:25:35.783
+same with this min-height.
+
+496
+00:25:37.010 --> 00:25:38.840
+Yeah, we don't need those.
+
+497
+00:25:38.840 --> 00:25:40.420
+Maybe we'll come back when we make sure
+
+498
+00:25:40.420 --> 00:25:43.030
+that it's all mobile-friendly and add those back in,
+
+499
+00:25:43.030 --> 00:25:44.790
+but I'm not sure why I had that initially.
+
+500
+00:25:44.790 --> 00:25:47.930
+Okay, that is looking good.
+
+501
+00:25:47.930 --> 00:25:49.120
+All right, that is looking good.
+
+502
+00:25:49.120 --> 00:25:52.020
+That's obviously querying and displaying a single item
+
+503
+00:25:52.020 --> 00:25:55.140
+on a single page with routing and SEO and all of that.
+
+504
+00:25:55.140 --> 00:25:57.853
+Let's get into the next one where we update the products.
+

@@ -1,0 +1,622 @@
+﻿WEBVTT
+
+1
+00:00:00.000 --> 00:00:02.280
+(logo whooshing)
+
+2
+00:00:02.280 --> 00:00:03.310
+<v Instructor>All right, we've got a little bit</v>
+
+3
+00:00:03.310 --> 00:00:06.350
+of a bug with our useForm hook that we've written here.
+
+4
+00:00:06.350 --> 00:00:11.350
+And this is one of my least favorite parts of React.
+
+5
+00:00:12.010 --> 00:00:15.400
+And it has to do with initial data.
+
+6
+00:00:15.400 --> 00:00:17.100
+So, we wrote this useForm hook
+
+7
+00:00:17.100 --> 00:00:19.610
+and if we open up our useForm hook.
+
+8
+00:00:19.610 --> 00:00:24.070
+What we do here is we take in our initial value.
+
+9
+00:00:24.070 --> 00:00:26.800
+And when we create our initial state,
+
+10
+00:00:26.800 --> 00:00:29.250
+we pass it our initial value.
+
+11
+00:00:29.250 --> 00:00:32.370
+And in our case for creating a product,
+
+12
+00:00:32.370 --> 00:00:35.613
+we just hard-coded the name, price, description, right?
+
+13
+00:00:36.870 --> 00:00:41.730
+However, with the update function, the initial state must be
+
+14
+00:00:42.620 --> 00:00:46.340
+like the existing data that we've pulled
+
+15
+00:00:46.340 --> 00:00:48.460
+in from the database, right?
+
+16
+00:00:48.460 --> 00:00:53.460
+And when you load the page here, it works just fine.
+
+17
+00:00:53.530 --> 00:00:55.640
+And that's because the initial load
+
+18
+00:00:55.640 --> 00:00:57.400
+of that is happening on the server.
+
+19
+00:00:57.400 --> 00:00:59.240
+And there is no loading state on the server.
+
+20
+00:00:59.240 --> 00:01:02.530
+The server simply just waits for the data to come back
+
+21
+00:01:02.530 --> 00:01:04.230
+from our graph QL API.
+
+22
+00:01:04.230 --> 00:01:07.000
+However, on the Client, there is a loading state.
+
+23
+00:01:07.000 --> 00:01:08.210
+So, you have the sort of like
+
+24
+00:01:08.210 --> 00:01:11.880
+you load the component, it loads for a quick second.
+
+25
+00:01:11.880 --> 00:01:15.650
+And then it gets the data back and then it runs it.
+
+26
+00:01:15.650 --> 00:01:20.650
+So, you might be thinking, "Okay, well, Wes,
+
+27
+00:01:20.707 --> 00:01:25.707
+"you just need to wait for the data to come back
+
+28
+00:01:26.457 --> 00:01:28.207
+"from the single product,
+
+29
+00:01:28.207 --> 00:01:30.350
+"before you can pass it to useForm."
+
+30
+00:01:30.350 --> 00:01:31.660
+And we actually...
+
+31
+00:01:31.660 --> 00:01:32.650
+I actually just tried that.
+
+32
+00:01:32.650 --> 00:01:37.650
+I just said, if it's loading then return P loading, right?
+
+33
+00:01:38.210 --> 00:01:42.180
+And the error that we get from that is that...
+
+34
+00:01:42.180 --> 00:01:44.480
+Here, let's take a look at what it is.
+
+35
+00:01:44.480 --> 00:01:45.870
+So, now we don't get it here
+
+36
+00:01:45.870 --> 00:01:47.470
+because there was no loading state.
+
+37
+00:01:47.470 --> 00:01:51.450
+But if you go to another one that gets...
+
+38
+00:01:51.450 --> 00:01:55.150
+Like right here, edit, we get the problem.
+
+39
+00:01:55.150 --> 00:01:58.930
+Rendered more hooks than the previous render,
+
+40
+00:01:58.930 --> 00:02:01.300
+is if you have...
+
+41
+00:02:01.300 --> 00:02:06.050
+The hooks must always be rendered every single time
+
+42
+00:02:06.050 --> 00:02:06.883
+that happens.
+
+43
+00:02:06.883 --> 00:02:08.300
+So, if it first renders
+
+44
+00:02:08.300 --> 00:02:10.900
+and this is all it's loading and just returns to this
+
+45
+00:02:10.900 --> 00:02:12.580
+and then loading is no longer false,
+
+46
+00:02:12.580 --> 00:02:14.260
+so it creates some more hooks.
+
+47
+00:02:14.260 --> 00:02:16.940
+For some reason, React, doesn't like that, I'm not sure why.
+
+48
+00:02:16.940 --> 00:02:20.690
+There's probably some complicated deep down thing.
+
+49
+00:02:20.690 --> 00:02:23.100
+That is the reason behind that, but that becomes a bit
+
+50
+00:02:23.100 --> 00:02:25.290
+of a problem for us because we don't wanna create
+
+51
+00:02:25.290 --> 00:02:27.703
+the useForm until we have the data.
+
+52
+00:02:28.610 --> 00:02:33.230
+So, what we need to do is go into our useForm.
+
+53
+00:02:33.230 --> 00:02:35.210
+The solution is pretty, pretty simple.
+
+54
+00:02:35.210 --> 00:02:36.570
+It's just understanding the problem.
+
+55
+00:02:36.570 --> 00:02:41.380
+I think it's probably the harder part is that we need to go
+
+56
+00:02:41.380 --> 00:02:46.050
+into our form and say, when the initial data changes,
+
+57
+00:02:46.050 --> 00:02:48.880
+like we go from loading to actually having the data,
+
+58
+00:02:48.880 --> 00:02:51.890
+then we need to update it.
+
+59
+00:02:51.890 --> 00:02:54.462
+And the way that you do that is with useEffect.
+
+60
+00:02:54.462 --> 00:02:58.450
+useEffect will allow us to monitor pieces of state
+
+61
+00:02:58.450 --> 00:03:00.280
+or monitor variables.
+
+62
+00:03:00.280 --> 00:03:03.660
+And when those variables change, we can run some code.
+
+63
+00:03:03.660 --> 00:03:08.200
+And that's helpful for a whole bunch of stuff, if you're...
+
+64
+00:03:08.200 --> 00:03:10.180
+Maybe if you were subscribing to a database
+
+65
+00:03:10.180 --> 00:03:14.100
+and you needed to send some data off when a change happens.
+
+66
+00:03:14.100 --> 00:03:19.050
+But in our case, when the undefined initial state
+
+67
+00:03:19.050 --> 00:03:23.410
+of loading path changes to an actual object full of data,
+
+68
+00:03:23.410 --> 00:03:24.630
+then we need to update it.
+
+69
+00:03:24.630 --> 00:03:28.830
+So, we'll say useEffect here and whew!
+
+70
+00:03:28.830 --> 00:03:32.250
+Let's not use the boiler plate for that.
+
+71
+00:03:32.250 --> 00:03:36.700
+Make sure we import useEffect from React, okay?
+
+72
+00:03:36.700 --> 00:03:40.520
+And then useEffect takes, first thing is,
+
+73
+00:03:40.520 --> 00:03:42.820
+a function that will run.
+
+74
+00:03:42.820 --> 00:03:46.920
+So, it we'll just say console log.
+
+75
+00:03:46.920 --> 00:03:48.910
+Not console, we'll just put a comment here.
+
+76
+00:03:48.910 --> 00:03:53.910
+This function runs when the things we are watching change.
+
+77
+00:03:56.530 --> 00:03:58.330
+And what are the things we are watching?
+
+78
+00:03:58.330 --> 00:04:01.620
+Will you pass it in an array of things to watch?
+
+79
+00:04:01.620 --> 00:04:03.340
+And initially I thought, okay, well,
+
+80
+00:04:03.340 --> 00:04:06.010
+we'll just, we'll watch for initial to change, right?
+
+81
+00:04:06.010 --> 00:04:09.440
+Because if the thing that we are thinking is changing
+
+82
+00:04:09.440 --> 00:04:12.820
+is the initial value that's being passed in,
+
+83
+00:04:12.820 --> 00:04:15.470
+can we not just wait and watch for initial to be changed?
+
+84
+00:04:15.470 --> 00:04:16.969
+And when that happens,
+
+85
+00:04:16.969 --> 00:04:21.969
+we simply just run a set inputs initial, right?
+
+86
+00:04:23.070 --> 00:04:27.680
+And this will work, but it will cause an infinite loop.
+
+87
+00:04:27.680 --> 00:04:31.480
+And I'm gonna explain why, because what happens is that
+
+88
+00:04:31.480 --> 00:04:34.223
+when the initial value initially comes in,
+
+89
+00:04:35.370 --> 00:04:37.890
+we set it to state, right, right here.
+
+90
+00:04:37.890 --> 00:04:40.020
+Then when the initial value changes
+
+91
+00:04:40.020 --> 00:04:43.120
+from that first undefined in loading state to the second,
+
+92
+00:04:43.120 --> 00:04:45.823
+which is the actual item with the name, the price
+
+93
+00:04:45.823 --> 00:04:47.920
+and the description on it,
+
+94
+00:04:47.920 --> 00:04:50.670
+what happens is that it triggers a change.
+
+95
+00:04:50.670 --> 00:04:52.470
+And then we call set inputs,
+
+96
+00:04:52.470 --> 00:04:54.630
+which then updates our initial state.
+
+97
+00:04:54.630 --> 00:04:57.400
+But that changes what initial is,
+
+98
+00:04:57.400 --> 00:05:01.110
+because useState doesn't just update the object.
+
+99
+00:05:01.110 --> 00:05:03.200
+It actually overwrites the entire object
+
+100
+00:05:03.200 --> 00:05:04.610
+to a brand new object.
+
+101
+00:05:04.610 --> 00:05:06.240
+So, what that does is (chuckles)
+
+102
+00:05:06.240 --> 00:05:09.780
+it updates state to initial object, which causes a change,
+
+103
+00:05:09.780 --> 00:05:11.810
+which updates state to initial object,
+
+104
+00:05:11.810 --> 00:05:13.140
+which causes a change,
+
+105
+00:05:13.140 --> 00:05:15.870
+which updates state to initial object and causes a change.
+
+106
+00:05:15.870 --> 00:05:17.760
+And then, and then on and on and on and on
+
+107
+00:05:17.760 --> 00:05:20.070
+and then that will spin out of control
+
+108
+00:05:20.070 --> 00:05:22.290
+and crash your dev tools and your browser,
+
+109
+00:05:22.290 --> 00:05:23.530
+because that's an infinite loop.
+
+110
+00:05:23.530 --> 00:05:27.810
+So, what we need to do is we need something in here,
+
+111
+00:05:27.810 --> 00:05:32.180
+that we can watch that will basically be trigger the change.
+
+112
+00:05:32.180 --> 00:05:34.620
+And what I've come up with here is why don't we just
+
+113
+00:05:34.620 --> 00:05:39.620
+watch the actual values on the, on the object.
+
+114
+00:05:40.000 --> 00:05:42.730
+And when the values on the object go from nothing
+
+115
+00:05:42.730 --> 00:05:45.210
+like the name, the price, and the description go
+
+116
+00:05:45.210 --> 00:05:47.040
+from nothing to something,
+
+117
+00:05:47.040 --> 00:05:48.480
+then we know it's actually changed.
+
+118
+00:05:48.480 --> 00:05:52.020
+And the reason we do that is we can't necessarily check.
+
+119
+00:05:52.020 --> 00:05:54.970
+Like we could just pass like initial.name here.
+
+120
+00:05:54.970 --> 00:05:57.320
+And when the initial.name value changes,
+
+121
+00:05:57.320 --> 00:05:59.460
+then we know it's changed.
+
+122
+00:05:59.460 --> 00:06:03.000
+But we don't always know if we're gonna have a name value
+
+123
+00:06:03.000 --> 00:06:04.930
+on our form.
+
+124
+00:06:04.930 --> 00:06:06.010
+It might be anything.
+
+125
+00:06:06.010 --> 00:06:09.330
+So, what we can do here is we just say const initialvalues
+
+126
+00:06:10.542 --> 00:06:13.540
+is equal to object.values.
+
+127
+00:06:13.540 --> 00:06:15.610
+And we pass it our initial.
+
+128
+00:06:15.610 --> 00:06:18.640
+And what that will do is it gives us an array
+
+129
+00:06:18.640 --> 00:06:20.800
+of our actual object.
+
+130
+00:06:20.800 --> 00:06:23.090
+So, object., let me show you here.
+
+131
+00:06:23.090 --> 00:06:26.130
+Object.values.
+
+132
+00:06:26.130 --> 00:06:28.253
+If we have an object that says name.
+
+133
+00:06:29.440 --> 00:06:32.823
+That's Wes and age is 100.
+
+134
+00:06:34.030 --> 00:06:36.120
+That gives us an array of the actual values.
+
+135
+00:06:36.120 --> 00:06:38.620
+And you may think, "Okay, we'll just pass that here."
+
+136
+00:06:38.620 --> 00:06:42.210
+And that will be, I think that'll be enough.
+
+137
+00:06:42.210 --> 00:06:44.880
+Another thing you can do here is just put a .join
+
+138
+00:06:44.880 --> 00:06:47.560
+on the end, and that will just give you a string.
+
+139
+00:06:47.560 --> 00:06:49.280
+I think I like that approach best.
+
+140
+00:06:49.280 --> 00:06:51.800
+So, basically, we're taking all the values
+
+141
+00:06:51.800 --> 00:06:53.110
+and passing it in.
+
+142
+00:06:53.110 --> 00:06:55.540
+And when it goes, this will only happen once.
+
+143
+00:06:55.540 --> 00:06:59.050
+It will go from a string of nothing to a string of
+
+144
+00:07:00.898 --> 00:07:02.870
+the default values that are coming in,
+
+145
+00:07:02.870 --> 00:07:05.450
+which is the name, the price and the description.
+
+146
+00:07:05.450 --> 00:07:07.770
+And then that should give us a value.
+
+147
+00:07:07.770 --> 00:07:09.090
+I do have an Eastland error,
+
+148
+00:07:09.090 --> 00:07:11.450
+where it tells us to have an exhaustive dependencies,
+
+149
+00:07:11.450 --> 00:07:13.960
+but because of this set state issue,
+
+150
+00:07:13.960 --> 00:07:17.110
+I'm gonna let it slide 'cause I think that's the best work
+
+151
+00:07:17.110 --> 00:07:18.510
+around for that type of thing.
+
+152
+00:07:18.510 --> 00:07:20.563
+So now, if we go to our products.
+
+153
+00:07:24.040 --> 00:07:25.423
+And edit one of them,
+
+154
+00:07:26.480 --> 00:07:29.941
+you see that the value shows up and that bug is gone.
+
+155
+00:07:29.941 --> 00:07:30.841
+(mouse clicks)
+

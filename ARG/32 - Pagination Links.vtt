@@ -1,0 +1,2106 @@
+﻿WEBVTT
+
+1
+00:00:01.760 --> 00:00:02.593
+<v Instructor>All right.</v>
+
+2
+00:00:02.593 --> 00:00:03.640
+Let's work on pagination now.
+
+3
+00:00:03.640 --> 00:00:05.630
+So we've got however many items
+
+4
+00:00:05.630 --> 00:00:06.463
+they're just dumped
+
+5
+00:00:06.463 --> 00:00:07.450
+onto this one page
+
+6
+00:00:07.450 --> 00:00:09.230
+or onto the products page.
+
+7
+00:00:09.230 --> 00:00:10.430
+We see all of them.
+
+8
+00:00:10.430 --> 00:00:11.263
+We want to be able
+
+9
+00:00:11.263 --> 00:00:12.750
+to have like four
+
+10
+00:00:12.750 --> 00:00:14.810
+or three or 10 per page.
+
+11
+00:00:14.810 --> 00:00:15.900
+And then we want a listing
+
+12
+00:00:15.900 --> 00:00:17.980
+of how many possible pages there are.
+
+13
+00:00:17.980 --> 00:00:19.310
+So I've just written out
+
+14
+00:00:19.310 --> 00:00:20.490
+sort of like the approach
+
+15
+00:00:20.490 --> 00:00:21.323
+that we'll take
+
+16
+00:00:21.323 --> 00:00:23.010
+to build this pagination is
+
+17
+00:00:23.010 --> 00:00:23.860
+let's just like first
+
+18
+00:00:23.860 --> 00:00:25.000
+render the actual link
+
+19
+00:00:25.000 --> 00:00:26.641
+so that we can click to them.
+
+20
+00:00:26.641 --> 00:00:29.170
+And then that will 404
+
+21
+00:00:29.170 --> 00:00:30.003
+because those pages
+
+22
+00:00:30.003 --> 00:00:30.836
+won't be available.
+
+23
+00:00:30.836 --> 00:00:31.669
+So we'll do the next
+
+24
+00:00:31.669 --> 00:00:32.950
+is we'll make dynamic routing
+
+25
+00:00:32.950 --> 00:00:36.010
+where products forward slash one
+
+26
+00:00:36.010 --> 00:00:37.440
+or products four slash two,
+
+27
+00:00:37.440 --> 00:00:39.160
+et cetera like that.
+
+28
+00:00:39.160 --> 00:00:40.450
+Then the third thing is
+
+29
+00:00:40.450 --> 00:00:42.220
+we need to filter the products
+
+30
+00:00:42.220 --> 00:00:43.053
+on the current page.
+
+31
+00:00:43.053 --> 00:00:44.470
+So if we're on page two
+
+32
+00:00:44.470 --> 00:00:45.740
+and we're showing two per page
+
+33
+00:00:45.740 --> 00:00:46.573
+then we need to show
+
+34
+00:00:46.573 --> 00:00:48.270
+these two right here
+
+35
+00:00:48.270 --> 00:00:50.300
+instead of the first two right there.
+
+36
+00:00:50.300 --> 00:00:51.620
+And then finally,
+
+37
+00:00:51.620 --> 00:00:52.453
+the toughest one
+
+38
+00:00:52.453 --> 00:00:54.298
+is dealing with the cash.
+
+39
+00:00:54.298 --> 00:00:56.480
+Like what happens when you have
+
+40
+00:00:56.480 --> 00:00:58.920
+three pages loaded into the cash?
+
+41
+00:00:58.920 --> 00:01:01.180
+And then all of a sudden
+
+42
+00:01:01.180 --> 00:01:03.270
+you delete an item on page two
+
+43
+00:01:03.270 --> 00:01:05.070
+or you add an item on page one,
+
+44
+00:01:05.070 --> 00:01:07.120
+things get bumped either way.
+
+45
+00:01:07.120 --> 00:01:08.830
+We'll look at how to tackle that.
+
+46
+00:01:08.830 --> 00:01:10.900
+So let's go and make a new component.
+
+47
+00:01:10.900 --> 00:01:11.733
+We'll go into
+
+48
+00:01:11.733 --> 00:01:13.340 line:15% 
+our components folder here,
+
+49
+00:01:13.340 --> 00:01:14.440 line:15% 
+make a new file.
+
+50
+00:01:14.440 --> 00:01:18.813 line:15% 
+Let's call that a pagination.js.
+
+51
+00:01:22.060 --> 00:01:23.740
+And we will export
+
+52
+00:01:23.740 --> 00:01:26.523
+default function pagination,
+
+53
+00:01:28.120 --> 00:01:30.830
+that will take in what page
+
+54
+00:01:30.830 --> 00:01:32.343
+we are currently on.
+
+55
+00:01:33.930 --> 00:01:35.200
+And then from that,
+
+56
+00:01:35.200 --> 00:01:36.560
+we will first let's actually
+
+57
+00:01:36.560 --> 00:01:37.640
+just deal with the SEO
+
+58
+00:01:37.640 --> 00:01:38.480
+part of this cause I'm sick
+
+59
+00:01:38.480 --> 00:01:41.150
+of having just local hosts on there.
+
+60
+00:01:41.150 --> 00:01:42.150
+So we have a head,
+
+61
+00:01:42.150 --> 00:01:43.440
+we'll have a title tag
+
+62
+00:01:45.590 --> 00:01:49.123
+I'll say sick fits page.
+
+63
+00:01:51.430 --> 00:01:53.203
+And then we'll pass the page.
+
+64
+00:01:54.190 --> 00:01:56.480
+We don't need that dollar sign of
+
+65
+00:01:56.480 --> 00:01:57.313
+and then we'll say
+
+66
+00:01:57.313 --> 00:01:58.800
+of the total number
+
+67
+00:01:58.800 --> 00:02:00.530
+that we have here.
+
+68
+00:02:00.530 --> 00:02:02.240
+And then we also need
+
+69
+00:02:02.240 --> 00:02:03.710
+the pagination styles.
+
+70
+00:02:03.710 --> 00:02:04.970
+We'll wrap everything in that.
+
+71
+00:02:04.970 --> 00:02:07.343
+So pagination styles.
+
+72
+00:02:09.760 --> 00:02:11.870
+And these things need to be imported.
+
+73
+00:02:11.870 --> 00:02:14.800
+So the head needs to be imported.
+
+74
+00:02:14.800 --> 00:02:16.080
+It doesn't look like an auto import.
+
+75
+00:02:16.080 --> 00:02:18.140
+So we'll do it ourselves.
+
+76
+00:02:18.140 --> 00:02:22.580
+So import head from next head
+
+77
+00:02:24.760 --> 00:02:27.660
+and then the pagination styles.
+
+78
+00:02:27.660 --> 00:02:29.610
+That one's not wanting to import either.
+
+79
+00:02:29.610 --> 00:02:31.840
+Let's go into our styles.
+
+80
+00:02:31.840 --> 00:02:32.823
+Here we go.
+
+81
+00:02:36.420 --> 00:02:38.350
+Import pagination styles
+
+82
+00:02:38.350 --> 00:02:42.413
+from styles, pagination styles.
+
+83
+00:02:46.680 --> 00:02:48.110
+Okay, now we need to,
+
+84
+00:02:48.110 --> 00:02:50.190
+let's start to render out.
+
+85
+00:02:50.190 --> 00:02:51.850
+Oh, I forgot to put a return
+
+86
+00:02:51.850 --> 00:02:52.770
+in front of here.
+
+87
+00:02:52.770 --> 00:02:54.800
+Oh, here we go.
+
+88
+00:02:54.800 --> 00:02:57.550
+Let's go to our page that renders
+
+89
+00:02:57.550 --> 00:02:58.700
+all of these items
+
+90
+00:02:58.700 --> 00:03:00.290
+and we'll pop one above
+
+91
+00:03:00.290 --> 00:03:01.370
+and one below it.
+
+92
+00:03:01.370 --> 00:03:05.650
+So that is in our index,
+
+93
+00:03:05.650 --> 00:03:07.010
+which our index is simply
+
+94
+00:03:07.010 --> 00:03:08.763
+just importing it from our products.
+
+95
+00:03:08.763 --> 00:03:10.150
+Here we go.
+
+96
+00:03:10.150 --> 00:03:10.983
+And in here,
+
+97
+00:03:10.983 --> 00:03:12.963
+we will render out our pagination.
+
+98
+00:03:14.746 --> 00:03:15.709
+And the kind of
+
+99
+00:03:15.709 --> 00:03:17.100
+the cool thing about that
+
+100
+00:03:17.100 --> 00:03:18.180
+is we can actually put one
+
+101
+00:03:18.180 --> 00:03:20.560
+below the products as well.
+
+102
+00:03:20.560 --> 00:03:22.350
+And all we need to do
+
+103
+00:03:22.350 --> 00:03:24.430
+is pass it that one prop,
+
+104
+00:03:24.430 --> 00:03:25.710
+which is our page
+
+105
+00:03:26.600 --> 00:03:28.140
+and then the page is going
+
+106
+00:03:28.140 --> 00:03:30.020
+to be passed in
+
+107
+00:03:30.020 --> 00:03:31.240
+via the query prams.
+
+108
+00:03:31.240 --> 00:03:32.930
+Right now, we don't know
+
+109
+00:03:32.930 --> 00:03:34.000
+which page that is.
+
+110
+00:03:34.000 --> 00:03:34.870
+So what we'll do is
+
+111
+00:03:34.870 --> 00:03:37.053
+we'll just hard-code page one.
+
+112
+00:03:39.210 --> 00:03:40.340
+All right, so back to
+
+113
+00:03:40.340 --> 00:03:42.520
+our pagination component,
+
+114
+00:03:42.520 --> 00:03:43.950
+we need a couple of things.
+
+115
+00:03:43.950 --> 00:03:44.783
+We need a link
+
+116
+00:03:44.783 --> 00:03:45.616
+to the previous page.
+
+117
+00:03:45.616 --> 00:03:47.570
+We need a link to the next page.
+
+118
+00:03:47.570 --> 00:03:52.030
+We need how many total pages there are
+
+119
+00:03:52.030 --> 00:03:55.220
+and what current page we are on.
+
+120
+00:03:55.220 --> 00:03:56.670
+So let's go ahead and do that.
+
+121
+00:03:56.670 --> 00:03:58.670
+We need the link from next jazz
+
+122
+00:04:00.150 --> 00:04:01.940
+and we'll import that,
+
+123
+00:04:01.940 --> 00:04:03.010
+there we go,
+
+124
+00:04:03.010 --> 00:04:04.630
+that one imported.
+
+125
+00:04:04.630 --> 00:04:08.320
+And here we're just do an arrow Prev,
+
+126
+00:04:09.920 --> 00:04:11.310
+these little arrows that I do,
+
+127
+00:04:11.310 --> 00:04:12.870
+these are just Unicode arrows.
+
+128
+00:04:12.870 --> 00:04:14.170
+If you Google Unicode arrow,
+
+129
+00:04:14.170 --> 00:04:15.270
+you should find them.
+
+130
+00:04:15.270 --> 00:04:17.990
+I have a little shortcut to arrow, arrow
+
+131
+00:04:17.990 --> 00:04:19.590
+and arrow arrow just because
+
+132
+00:04:19.590 --> 00:04:21.010
+I like using these arrows
+
+133
+00:04:21.010 --> 00:04:23.542
+and tweets and emails
+
+134
+00:04:23.542 --> 00:04:24.520
+and things like that.
+
+135
+00:04:24.520 --> 00:04:25.890
+So we have our prev,
+
+136
+00:04:25.890 --> 00:04:27.640
+we have our next
+
+137
+00:04:29.780 --> 00:04:30.720
+then inside of here
+
+138
+00:04:30.720 --> 00:04:33.660
+we have page underscore, underscore
+
+139
+00:04:33.660 --> 00:04:35.743
+of underscore underscore,
+
+140
+00:04:36.840 --> 00:04:38.410
+and then we need to also tell it
+
+141
+00:04:38.410 --> 00:04:40.013
+how many items total.
+
+142
+00:04:45.170 --> 00:04:46.930
+Oh, failed prop.
+
+143
+00:04:46.930 --> 00:04:48.950
+The prop pref expects a string.
+
+144
+00:04:48.950 --> 00:04:49.860
+Oh yeah.
+
+145
+00:04:49.860 --> 00:04:51.650
+We forgot to pass that.
+
+146
+00:04:51.650 --> 00:04:52.950
+We don't have those numbers yet.
+
+147
+00:04:52.950 --> 00:04:53.963
+So let's just,
+
+148
+00:04:56.060 --> 00:04:58.280
+just put it to forward slash.
+
+149
+00:04:58.280 --> 00:04:59.113
+Okay, cool.
+
+150
+00:04:59.113 --> 00:05:00.580
+So now we have our pagination here.
+
+151
+00:05:00.580 --> 00:05:01.520
+We have our previous,
+
+152
+00:05:01.520 --> 00:05:02.353
+we have our next,
+
+153
+00:05:02.353 --> 00:05:03.320
+how many pages we have
+
+154
+00:05:03.320 --> 00:05:04.210
+in our items total.
+
+155
+00:05:04.210 --> 00:05:05.730
+So I think the first thing
+
+156
+00:05:05.730 --> 00:05:07.420
+we need to do is
+
+157
+00:05:07.420 --> 00:05:08.810
+in order to calculate,
+
+158
+00:05:08.810 --> 00:05:10.220
+how many pages do you have?
+
+159
+00:05:10.220 --> 00:05:11.950
+You need two pieces of information.
+
+160
+00:05:11.950 --> 00:05:14.160
+How many items are there in total
+
+161
+00:05:14.160 --> 00:05:17.070
+and how many per page
+
+162
+00:05:17.070 --> 00:05:18.820
+are we working with?
+
+163
+00:05:18.820 --> 00:05:21.030
+So to get the total number of items
+
+164
+00:05:21.030 --> 00:05:22.200
+we can write a little query for that.
+
+165
+00:05:22.200 --> 00:05:24.260
+If we go to our backend again,
+
+166
+00:05:24.260 --> 00:05:26.960
+go to our API Explorer here,
+
+167
+00:05:26.960 --> 00:05:29.200
+we can write ourselves a little query
+
+168
+00:05:29.200 --> 00:05:30.950
+that says sign like query.
+
+169
+00:05:30.950 --> 00:05:33.070
+And if we want to query
+
+170
+00:05:33.070 --> 00:05:35.814
+like all products
+
+171
+00:05:35.814 --> 00:05:38.100
+and then we wrote the ID,
+
+172
+00:05:38.100 --> 00:05:40.230
+that's not really scalable
+
+173
+00:05:40.230 --> 00:05:41.640
+because this will literally return
+
+174
+00:05:41.640 --> 00:05:43.460
+to you an ID of every single product.
+
+175
+00:05:43.460 --> 00:05:46.113
+So what happens if you have
+
+176
+00:05:46.113 --> 00:05:48.049
+6,000 products, right?
+
+177
+00:05:48.049 --> 00:05:49.900
+You can't make a request.
+
+178
+00:05:49.900 --> 00:05:50.733
+You can,
+
+179
+00:05:50.733 --> 00:05:52.680
+but that'll be megabytes of IDs.
+
+180
+00:05:52.680 --> 00:05:54.470
+And we don't necessarily want that.
+
+181
+00:05:54.470 --> 00:05:56.720
+So Keystone actually provides us
+
+182
+00:05:56.720 --> 00:05:58.320
+with meta queries.
+
+183
+00:05:58.320 --> 00:06:00.230
+They start with underscore
+
+184
+00:06:00.230 --> 00:06:01.770
+and you say all
+
+185
+00:06:01.770 --> 00:06:03.260
+and you see there's all users meta,
+
+186
+00:06:03.260 --> 00:06:04.290
+all products meta,
+
+187
+00:06:04.290 --> 00:06:05.730
+and all product images.
+
+188
+00:06:05.730 --> 00:06:07.640
+Every single type that you have
+
+189
+00:06:07.640 --> 00:06:09.760
+it will give you the metadata about it.
+
+190
+00:06:09.760 --> 00:06:10.593
+So in our case,
+
+191
+00:06:10.593 --> 00:06:12.100
+it's all products meta.
+
+192
+00:06:12.100 --> 00:06:12.950
+And then in there,
+
+193
+00:06:12.950 --> 00:06:14.030
+really the only thing that you
+
+194
+00:06:14.030 --> 00:06:15.710
+can query is the count.
+
+195
+00:06:15.710 --> 00:06:17.127
+So now if we run that,
+
+196
+00:06:17.127 --> 00:06:18.910
+you'll see we get the actual
+
+197
+00:06:18.910 --> 00:06:19.743
+how many products
+
+198
+00:06:19.743 --> 00:06:20.576
+are in the database.
+
+199
+00:06:20.576 --> 00:06:21.910
+And then we no longer need
+
+200
+00:06:21.910 --> 00:06:24.160
+to query every single product.
+
+201
+00:06:24.160 --> 00:06:25.260
+We can simply just ask
+
+202
+00:06:25.260 --> 00:06:26.370
+for how many are in there.
+
+203
+00:06:26.370 --> 00:06:28.020
+So we can go back here
+
+204
+00:06:28.020 --> 00:06:29.770
+and do the whole song
+
+205
+00:06:29.770 --> 00:06:31.250
+and dance again of making a query.
+
+206
+00:06:31.250 --> 00:06:33.490
+So const pagination.
+
+207
+00:06:33.490 --> 00:06:35.109
+Oh, I've gotta spell it right.
+
+208
+00:06:35.109 --> 00:06:38.723
+Underscore query is equal to GQL.
+
+209
+00:06:39.910 --> 00:06:41.453
+Boom, imported it.
+
+210
+00:06:43.780 --> 00:06:46.090
+And here query
+
+211
+00:06:46.090 --> 00:06:47.090
+and wait, you know what?
+
+212
+00:06:47.090 --> 00:06:49.061
+Let's just copy this.
+
+213
+00:06:49.061 --> 00:06:50.020
+What are we,
+
+214
+00:06:50.020 --> 00:06:52.356
+what are we writing stuff
+
+215
+00:06:52.356 --> 00:06:53.690
+like suckers for that
+
+216
+00:06:53.690 --> 00:06:54.830
+we already wrote it.
+
+217
+00:06:54.830 --> 00:06:56.390
+Okay, there's no variables
+
+218
+00:06:56.390 --> 00:06:57.860
+or anything that needs to go there.
+
+219
+00:06:57.860 --> 00:06:58.693
+In this case,
+
+220
+00:06:58.693 --> 00:06:59.590
+you don't need to name the query
+
+221
+00:06:59.590 --> 00:07:01.640
+since there's no arguments or variables,
+
+222
+00:07:01.640 --> 00:07:02.890
+but you can just
+
+223
+00:07:02.890 --> 00:07:04.190
+put that in there as well.
+
+224
+00:07:05.280 --> 00:07:07.490
+Then if we want that data,
+
+225
+00:07:07.490 --> 00:07:08.950
+I simply just go here.
+
+226
+00:07:08.950 --> 00:07:13.950
+Say const, if error loading data
+
+227
+00:07:14.630 --> 00:07:16.400
+is equal to use query
+
+228
+00:07:16.400 --> 00:07:17.233
+and then you pass it,
+
+229
+00:07:17.233 --> 00:07:19.270
+your pagination query
+
+230
+00:07:19.270 --> 00:07:20.853
+we need to import use query.
+
+231
+00:07:22.690 --> 00:07:24.193
+And there's that right there.
+
+232
+00:07:26.710 --> 00:07:27.543
+And we'll just say,
+
+233
+00:07:27.543 --> 00:07:30.903
+if loading return,
+
+234
+00:07:32.690 --> 00:07:33.750
+you can return null
+
+235
+00:07:33.750 --> 00:07:35.370
+if you want nothing to render
+
+236
+00:07:35.370 --> 00:07:36.220
+or you can return
+
+237
+00:07:36.220 --> 00:07:37.160
+loading dot, dot, dot
+
+238
+00:07:37.160 --> 00:07:39.290
+depends on what you want to show.
+
+239
+00:07:39.290 --> 00:07:41.760
+Same thing for the error.
+
+240
+00:07:41.760 --> 00:07:44.040
+We can return our error.
+
+241
+00:07:44.040 --> 00:07:45.210
+What did we call it?
+
+242
+00:07:45.210 --> 00:07:49.813
+Error, error message, yeah.
+
+243
+00:07:54.130 --> 00:07:55.580
+So what we're going
+
+244
+00:07:55.580 --> 00:07:56.650
+to import it up here
+
+245
+00:07:59.260 --> 00:08:00.980
+and return it's not error,
+
+246
+00:08:00.980 --> 00:08:02.263
+it's display error.
+
+247
+00:08:04.660 --> 00:08:06.810
+And then we got a pass,
+
+248
+00:08:06.810 --> 00:08:09.400
+the actual error itself as props
+
+249
+00:08:09.400 --> 00:08:11.000
+which is error.
+
+250
+00:08:11.000 --> 00:08:12.430
+All right, so with that,
+
+251
+00:08:12.430 --> 00:08:14.180
+we should be able to have the data
+
+252
+00:08:14.180 --> 00:08:15.490
+and we can go into here
+
+253
+00:08:15.490 --> 00:08:16.800
+and say page
+
+254
+00:08:16.800 --> 00:08:18.103
+or not page items.
+
+255
+00:08:19.230 --> 00:08:20.063
+So it should be able
+
+256
+00:08:20.063 --> 00:08:21.850
+to interpolate how many items
+
+257
+00:08:21.850 --> 00:08:23.170
+there are just data
+
+258
+00:08:23.170 --> 00:08:25.253
+dot count items total.
+
+259
+00:08:26.090 --> 00:08:28.303
+Go back to our actual application here.
+
+260
+00:08:31.150 --> 00:08:33.680
+And it just has items total.
+
+261
+00:08:33.680 --> 00:08:35.180
+So maybe it's not working
+
+262
+00:08:35.180 --> 00:08:36.013
+for whatever reason.
+
+263
+00:08:36.013 --> 00:08:36.846
+So it would just go ahead
+
+264
+00:08:36.846 --> 00:08:38.900
+and log out our data,
+
+265
+00:08:38.900 --> 00:08:41.280
+see what we're working with here.
+
+266
+00:08:41.280 --> 00:08:43.080
+Oh yeah, it's .allproductmeta.count.
+
+267
+00:08:48.530 --> 00:08:49.740
+So what I'll do is
+
+268
+00:08:49.740 --> 00:08:51.963
+let's just make a little const.
+
+269
+00:08:53.430 --> 00:08:55.440
+We'll make a little variable up here
+
+270
+00:08:55.440 --> 00:08:57.810
+count is equal to data
+
+271
+00:08:57.810 --> 00:08:59.433
+dot all products meta.
+
+272
+00:09:00.900 --> 00:09:01.733
+And then here,
+
+273
+00:09:01.733 --> 00:09:03.000
+we can just use the count variable
+
+274
+00:09:03.000 --> 00:09:04.170
+because we're gonna need that one
+
+275
+00:09:04.170 --> 00:09:05.720
+many times over,
+
+276
+00:09:05.720 --> 00:09:06.553
+there we go,
+
+277
+00:09:06.553 --> 00:09:07.550
+13 items total.
+
+278
+00:09:07.550 --> 00:09:08.880
+Okay, so that's the first thing.
+
+279
+00:09:08.880 --> 00:09:10.127
+Second thing is
+
+280
+00:09:10.127 --> 00:09:11.580
+how many pages are there?
+
+281
+00:09:11.580 --> 00:09:12.920
+Well, you have to know
+
+282
+00:09:12.920 --> 00:09:13.970
+how many are going
+
+283
+00:09:13.970 --> 00:09:15.840
+to be done per page.
+
+284
+00:09:15.840 --> 00:09:16.960
+And it's best not
+
+285
+00:09:16.960 --> 00:09:19.860
+to hard-code that type of value
+
+286
+00:09:19.860 --> 00:09:21.170
+in your calculations,
+
+287
+00:09:21.170 --> 00:09:22.003
+because if you ever need
+
+288
+00:09:22.003 --> 00:09:22.836
+to change that,
+
+289
+00:09:22.836 --> 00:09:23.730
+or even if you want your user
+
+290
+00:09:23.730 --> 00:09:24.823
+to change how many per page
+
+291
+00:09:24.823 --> 00:09:26.240
+then it needs to be stored
+
+292
+00:09:26.240 --> 00:09:27.660
+in a variable somewhere.
+
+293
+00:09:27.660 --> 00:09:29.870
+So I am going to stick it
+
+294
+00:09:29.870 --> 00:09:31.140
+in our config
+
+295
+00:09:31.140 --> 00:09:33.090
+and look, we've already done that.
+
+296
+00:09:33.090 --> 00:09:34.680
+So expert cons per page
+
+297
+00:09:34.680 --> 00:09:36.170
+is equal to four.
+
+298
+00:09:36.170 --> 00:09:39.290
+And if we go back here,
+
+299
+00:09:39.290 --> 00:09:40.863
+we can import that value.
+
+300
+00:09:42.690 --> 00:09:47.690
+So import per page from,
+
+301
+00:09:49.330 --> 00:09:51.903
+we've got to go up a level into config.
+
+302
+00:09:54.510 --> 00:09:56.190
+And then if we want to know
+
+303
+00:09:56.190 --> 00:09:59.240
+how many pages there are,
+
+304
+00:09:59.240 --> 00:10:02.570
+we say const page count is equal to
+
+305
+00:10:03.410 --> 00:10:05.760
+you take the actual count
+
+306
+00:10:05.760 --> 00:10:07.800
+and divide it by how many
+
+307
+00:10:07.800 --> 00:10:09.610
+we are viewing per page.
+
+308
+00:10:09.610 --> 00:10:10.570
+And then we can take
+
+309
+00:10:10.570 --> 00:10:12.670
+that underscore here
+
+310
+00:10:12.670 --> 00:10:14.480
+and pop in the page count.
+
+311
+00:10:14.480 --> 00:10:16.251
+Now, that's gonna give us a decimal
+
+312
+00:10:16.251 --> 00:10:18.067
+because sometimes you have
+
+313
+00:10:18.067 --> 00:10:20.380
+not a full page of them.
+
+314
+00:10:20.380 --> 00:10:21.300
+So what we need to do
+
+315
+00:10:21.300 --> 00:10:22.640
+is we need to get the upper bound.
+
+316
+00:10:22.640 --> 00:10:23.650
+You don't want around that
+
+317
+00:10:23.650 --> 00:10:24.940
+because there's always gonna,
+
+318
+00:10:24.940 --> 00:10:25.820
+even if there's just like
+
+319
+00:10:25.820 --> 00:10:27.450
+one item on the last page,
+
+320
+00:10:27.450 --> 00:10:29.710
+like there is in this case
+
+321
+00:10:29.710 --> 00:10:31.040
+there still needs to be
+
+322
+00:10:31.040 --> 00:10:32.410
+a last page to show that.
+
+323
+00:10:32.410 --> 00:10:33.950
+So what you do is wrap that
+
+324
+00:10:33.950 --> 00:10:34.990
+in math that ceil
+
+325
+00:10:34.990 --> 00:10:36.440
+and that will give us
+
+326
+00:10:36.440 --> 00:10:38.480
+the upper bound of that
+
+327
+00:10:38.480 --> 00:10:40.503
+to the next whole number.
+
+328
+00:10:43.291 --> 00:10:44.124
+There we go.
+
+329
+00:10:44.124 --> 00:10:45.670
+So page four.
+
+330
+00:10:45.670 --> 00:10:49.740
+Now, if we change that value to two
+
+331
+00:10:49.740 --> 00:10:51.310
+that number of pages
+
+332
+00:10:51.310 --> 00:10:52.300
+goes up to seven.
+
+333
+00:10:52.300 --> 00:10:53.810
+You see, oh, I love,
+
+334
+00:10:53.810 --> 00:10:54.850
+love doing stuff like this
+
+335
+00:10:54.850 --> 00:10:56.300
+because look at how,
+
+336
+00:10:56.300 --> 00:10:59.370
+how quick it will update itself.
+
+337
+00:10:59.370 --> 00:11:00.393
+See if you have 10 per page,
+
+338
+00:11:00.393 --> 00:11:01.540
+it's only two pages.
+
+339
+00:11:01.540 --> 00:11:04.860
+So let's, let's do it on two.
+
+340
+00:11:04.860 --> 00:11:06.190
+That way when you delete items
+
+341
+00:11:06.190 --> 00:11:07.840
+you still have the pagination
+
+342
+00:11:07.840 --> 00:11:09.570
+working pretty well.
+
+343
+00:11:09.570 --> 00:11:10.490
+Last thing we want to do
+
+344
+00:11:10.490 --> 00:11:12.650
+is we'll take this page value here
+
+345
+00:11:12.650 --> 00:11:14.870
+and that's being passed in.
+
+346
+00:11:14.870 --> 00:11:16.980
+So page whatever of count.
+
+347
+00:11:16.980 --> 00:11:19.240
+So that's defaulting to just one
+
+348
+00:11:19.240 --> 00:11:21.110
+because we are hard coding
+
+349
+00:11:21.110 --> 00:11:22.150
+passing it right here
+
+350
+00:11:22.150 --> 00:11:23.390
+but we'll make that dynamic
+
+351
+00:11:23.390 --> 00:11:24.710
+in just a second.
+
+352
+00:11:24.710 --> 00:11:26.530
+You see, we have page one of seven
+
+353
+00:11:26.530 --> 00:11:27.710
+being popped up.
+
+354
+00:11:27.710 --> 00:11:29.050
+So what we can do now
+
+355
+00:11:29.050 --> 00:11:30.830
+is we can dynamically
+
+356
+00:11:30.830 --> 00:11:32.800
+calculate the previous
+
+357
+00:11:32.800 --> 00:11:34.280
+and next pages
+
+358
+00:11:34.280 --> 00:11:36.100
+based on that page variable.
+
+359
+00:11:36.100 --> 00:11:38.450
+So the href of this link
+
+360
+00:11:38.450 --> 00:11:39.930
+is going to be equal to
+
+361
+00:11:39.930 --> 00:11:42.620
+forward slash products forward slash
+
+362
+00:11:42.620 --> 00:11:44.543
+and take the page minus one.
+
+363
+00:11:47.040 --> 00:11:48.510
+And if we hover over that,
+
+364
+00:11:48.510 --> 00:11:49.350
+we see zero,
+
+365
+00:11:49.350 --> 00:11:50.300
+we'll deal with the fact that
+
+366
+00:11:50.300 --> 00:11:51.450
+that's not actually something
+
+367
+00:11:51.450 --> 00:11:52.820
+in just a second
+
+368
+00:11:52.820 --> 00:11:54.450
+and then take that
+
+369
+00:11:54.450 --> 00:11:57.003
+and paste it on the next one.
+
+370
+00:11:58.300 --> 00:12:00.047
+And then I do plus one.
+
+371
+00:12:01.700 --> 00:12:02.533
+And that should,
+
+372
+00:12:02.533 --> 00:12:04.120
+there we go forward slash two
+
+373
+00:12:04.120 --> 00:12:05.820
+when you hover over top
+
+374
+00:12:05.820 --> 00:12:07.510
+of that thing.
+
+375
+00:12:07.510 --> 00:12:11.090
+So if we want to disable that link
+
+376
+00:12:11.090 --> 00:12:15.220
+you could programmatically render this.
+
+377
+00:12:15.220 --> 00:12:16.250
+Like, what you could do here
+
+378
+00:12:16.250 --> 00:12:17.813
+is you could say,
+
+379
+00:12:17.813 --> 00:12:22.573
+if the page is equal to one,
+
+380
+00:12:22.573 --> 00:12:23.580
+because if we're
+
+381
+00:12:23.580 --> 00:12:24.990
+on the first page
+
+382
+00:12:24.990 --> 00:12:28.780
+or if it is not equal to one
+
+383
+00:12:28.780 --> 00:12:31.560
+then we could render out the link, right?
+
+384
+00:12:31.560 --> 00:12:34.060
+So something like that,
+
+385
+00:12:34.060 --> 00:12:35.950
+where you do and, and,
+
+386
+00:12:38.920 --> 00:12:40.400
+I got to put extra equals there.
+
+387
+00:12:40.400 --> 00:12:41.310
+There we go.
+
+388
+00:12:41.310 --> 00:12:42.143
+So you see how
+
+389
+00:12:42.143 --> 00:12:43.880
+the previous button is gone.
+
+390
+00:12:43.880 --> 00:12:45.100
+And if we were to go to change
+
+391
+00:12:45.100 --> 00:12:46.300
+this page to two,
+
+392
+00:12:46.300 --> 00:12:47.260
+it should show up.
+
+393
+00:12:47.260 --> 00:12:48.210
+There we go.
+
+394
+00:12:48.210 --> 00:12:50.230
+See the preview button is there.
+
+395
+00:12:50.230 --> 00:12:51.410
+I don't like that
+
+396
+00:12:51.410 --> 00:12:53.150
+because I don't like it
+
+397
+00:12:53.150 --> 00:12:55.730
+when things shift
+
+398
+00:12:55.730 --> 00:12:57.350
+based on how many items there are
+
+399
+00:12:57.350 --> 00:12:58.380
+especially when you're clicking
+
+400
+00:12:58.380 --> 00:12:59.213
+next, next, next
+
+401
+00:12:59.213 --> 00:13:00.670
+and the buttons are moving
+
+402
+00:13:00.670 --> 00:13:02.200
+from under your cursor.
+
+403
+00:13:02.200 --> 00:13:03.450
+So what I like to do is
+
+404
+00:13:03.450 --> 00:13:05.970
+if we take that back now is
+
+405
+00:13:05.970 --> 00:13:08.450
+I like to just disable the link
+
+406
+00:13:08.450 --> 00:13:11.500
+from happening if it has,
+
+407
+00:13:11.500 --> 00:13:12.980
+if it's a page that doesn't exist.
+
+408
+00:13:12.980 --> 00:13:13.860
+So what we can do here
+
+409
+00:13:13.860 --> 00:13:17.870
+is we can say Aria dash disabled.
+
+410
+00:13:17.870 --> 00:13:18.703
+Again, I'm using
+
+411
+00:13:18.703 --> 00:13:20.060
+the accessibility attribute here
+
+412
+00:13:20.060 --> 00:13:21.740
+and then we'll use CSS
+
+413
+00:13:21.740 --> 00:13:23.370
+to actually stop someone
+
+414
+00:13:23.370 --> 00:13:26.500
+from clicking disable the previous one,
+
+415
+00:13:26.500 --> 00:13:29.260
+if the page is less
+
+416
+00:13:29.260 --> 00:13:30.920
+or equal to one
+
+417
+00:13:32.170 --> 00:13:33.003
+or you could say,
+
+418
+00:13:33.003 --> 00:13:34.330
+if it is equal to one.
+
+419
+00:13:34.330 --> 00:13:36.060
+And now that should have,
+
+420
+00:13:36.060 --> 00:13:37.363
+if we take a look at it.
+
+421
+00:13:49.840 --> 00:13:50.673
+It should have
+
+422
+00:13:50.673 --> 00:13:52.310
+a disabled attribute on it,
+
+423
+00:13:52.310 --> 00:13:53.613
+but does not.
+
+424
+00:13:55.640 --> 00:13:56.970
+Why would that be?
+
+425
+00:13:56.970 --> 00:13:59.990
+So let's try just manually pass
+
+426
+00:13:59.990 --> 00:14:01.160
+are you disabled equals
+
+427
+00:14:01.160 --> 00:14:02.900
+equal to true.
+
+428
+00:14:02.900 --> 00:14:03.940
+I have an inkling, yeah.
+
+429
+00:14:03.940 --> 00:14:06.830
+See, none of those are are showing.
+
+430
+00:14:06.830 --> 00:14:08.040
+I wonder if we just put
+
+431
+00:14:08.040 --> 00:14:10.900
+other random stuff on here,
+
+432
+00:14:10.900 --> 00:14:13.213
+data dash cool is equal to true.
+
+433
+00:14:15.222 --> 00:14:16.492
+You see these attributes
+
+434
+00:14:16.492 --> 00:14:18.030
+are not being passed down.
+
+435
+00:14:18.030 --> 00:14:20.890
+And I have an inkling feeling
+
+436
+00:14:20.890 --> 00:14:23.700
+that you cannot just pass
+
+437
+00:14:23.700 --> 00:14:26.260
+random attributes to the link tag.
+
+438
+00:14:26.260 --> 00:14:27.436
+And if you want to put
+
+439
+00:14:27.436 --> 00:14:29.311
+additional attributes on
+
+440
+00:14:29.311 --> 00:14:31.870
+your actual rendered anchor link,
+
+441
+00:14:31.870 --> 00:14:33.230
+you put an anchor link
+
+442
+00:14:33.230 --> 00:14:34.070
+inside of it.
+
+443
+00:14:34.070 --> 00:14:35.530
+So I'm gonna change this
+
+444
+00:14:35.530 --> 00:14:37.130
+around a quick sack
+
+445
+00:14:37.130 --> 00:14:39.040
+is if you just put an A tag
+
+446
+00:14:40.150 --> 00:14:42.140
+with no attributes on it
+
+447
+00:14:42.140 --> 00:14:42.973
+and then put the
+
+448
+00:14:42.973 --> 00:14:45.290
+previous inside of there,
+
+449
+00:14:45.290 --> 00:14:46.500
+this is just an option.
+
+450
+00:14:46.500 --> 00:14:48.330
+This used to be the default index, yes,
+
+451
+00:14:48.330 --> 00:14:49.830
+but now they allow you
+
+452
+00:14:49.830 --> 00:14:50.793
+to not put it.
+
+453
+00:14:52.310 --> 00:14:53.660
+And then that will,
+
+454
+00:14:53.660 --> 00:14:54.550
+that still renders out
+
+455
+00:14:54.550 --> 00:14:55.383
+the exact same thing.
+
+456
+00:14:55.383 --> 00:14:57.980
+But I believe now I can put
+
+457
+00:14:57.980 --> 00:14:59.930
+attributes like Aria disabled
+
+458
+00:14:59.930 --> 00:15:01.330
+on that link itself
+
+459
+00:15:01.330 --> 00:15:02.513
+and it should show up.
+
+460
+00:15:03.350 --> 00:15:04.880
+Yes, see, look it,
+
+461
+00:15:04.880 --> 00:15:06.310
+see how it shows up here.
+
+462
+00:15:06.310 --> 00:15:07.143
+So that's a little,
+
+463
+00:15:07.143 --> 00:15:07.976
+a little thing
+
+464
+00:15:07.976 --> 00:15:08.809
+you should need to know
+
+465
+00:15:08.809 --> 00:15:09.642
+about next yes is
+
+466
+00:15:09.642 --> 00:15:11.240
+if you're going to be putting things
+
+467
+00:15:11.240 --> 00:15:12.552
+other than prev
+
+468
+00:15:12.552 --> 00:15:13.810
+and the other props
+
+469
+00:15:13.810 --> 00:15:15.220
+that are on link,
+
+470
+00:15:15.220 --> 00:15:17.210
+then you have to nest
+
+471
+00:15:17.210 --> 00:15:19.470
+an anchor link inside of it.
+
+472
+00:15:19.470 --> 00:15:20.620
+The only weird thing being
+
+473
+00:15:20.620 --> 00:15:21.453
+that the href,
+
+474
+00:15:21.453 --> 00:15:24.320
+the href goes on the link
+
+475
+00:15:24.320 --> 00:15:26.940
+and not the actual anchor itself.
+
+476
+00:15:26.940 --> 00:15:28.683
+So I can get rid of that here.
+
+477
+00:15:30.010 --> 00:15:32.930
+And you see, see this,
+
+478
+00:15:32.930 --> 00:15:34.280
+data dot disabled
+
+479
+00:15:35.550 --> 00:15:37.150
+or Aria disabled on it.
+
+480
+00:15:37.150 --> 00:15:37.983
+If we take a look at
+
+481
+00:15:37.983 --> 00:15:40.230
+our dev tools here, we have,
+
+482
+00:15:40.230 --> 00:15:42.120
+some CSS being applied,
+
+483
+00:15:42.120 --> 00:15:43.780
+color is equal to gray
+
+484
+00:15:43.780 --> 00:15:45.550
+and pointer events, none.
+
+485
+00:15:45.550 --> 00:15:47.181
+So that both visually tells the user
+
+486
+00:15:47.181 --> 00:15:48.940
+that you cannot click it.
+
+487
+00:15:48.940 --> 00:15:52.200
+And also accessibly tells any users
+
+488
+00:15:52.200 --> 00:15:53.370
+that they can not click it
+
+489
+00:15:53.370 --> 00:15:55.143
+because it is a disabled link.
+
+490
+00:15:56.650 --> 00:15:58.620
+Next up, we got to do the,
+
+491
+00:15:58.620 --> 00:15:59.453
+the next link.
+
+492
+00:15:59.453 --> 00:16:00.670
+Next up we need the next link.
+
+493
+00:16:00.670 --> 00:16:01.990
+So we'll go do the same thing.
+
+494
+00:16:01.990 --> 00:16:04.490
+We'll take the next text here.
+
+495
+00:16:04.490 --> 00:16:06.980
+We'll open and close an A tag,
+
+496
+00:16:06.980 --> 00:16:09.380
+and then we'll put the Aria
+
+497
+00:16:10.770 --> 00:16:12.800
+that's disabled on that one.
+
+498
+00:16:12.800 --> 00:16:13.633
+And for that one,
+
+499
+00:16:13.633 --> 00:16:15.030
+we'll just say if the page
+
+500
+00:16:15.030 --> 00:16:17.870
+is greater or equal to,
+
+501
+00:16:17.870 --> 00:16:19.420
+what's that?
+
+502
+00:16:19.420 --> 00:16:21.570
+The number of pages
+
+503
+00:16:23.480 --> 00:16:25.160
+And do we, oh, page count,
+
+504
+00:16:25.160 --> 00:16:26.163
+not pages.
+
+505
+00:16:29.160 --> 00:16:30.330
+And now I believe,
+
+506
+00:16:30.330 --> 00:16:31.230
+so in our case,
+
+507
+00:16:31.230 --> 00:16:33.060
+we have seven pages.
+
+508
+00:16:33.060 --> 00:16:33.893
+So if we were to go
+
+509
+00:16:33.893 --> 00:16:34.810
+manually change this
+
+510
+00:16:34.810 --> 00:16:36.380
+to page seven,
+
+511
+00:16:36.380 --> 00:16:38.500
+that should disable itself.
+
+512
+00:16:38.500 --> 00:16:40.440
+Boom, and you'll see the previous one
+
+513
+00:16:40.440 --> 00:16:41.770
+is now no longer disabled
+
+514
+00:16:41.770 --> 00:16:43.323
+cause we're on page seven.
+
+515
+00:16:45.011 --> 00:16:47.120
+All right, let's see where we're at.
+
+516
+00:16:47.120 --> 00:16:48.790
+Render the links, done.
+
+517
+00:16:48.790 --> 00:16:51.350
+Allow for dynamic routing.
+
+518
+00:16:51.350 --> 00:16:52.880
+No, we haven't done that just yet.
+
+519
+00:16:52.880 --> 00:16:54.670
+We've just rendered out the links.
+
+520
+00:16:54.670 --> 00:16:55.820
+So in the next video,
+
+521
+00:16:55.820 --> 00:16:57.160
+what we'll do is we'll pick it up
+
+522
+00:16:57.160 --> 00:16:59.630
+and do dynamic routing
+
+523
+00:16:59.630 --> 00:17:00.970
+and next JS as well
+
+524
+00:17:00.970 --> 00:17:02.080
+as we probably can fit
+
+525
+00:17:02.080 --> 00:17:03.130
+the filtering of the products
+
+526
+00:17:03.130 --> 00:17:04.130
+in that one as well.
+

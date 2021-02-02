@@ -1,0 +1,450 @@
+﻿WEBVTT
+
+1
+00:00:02.090 --> 00:00:04.070
+<v Instructor>So the problem that we're hitting</v>
+
+2
+00:00:04.070 --> 00:00:05.300
+are not necessarily a problem.
+
+3
+00:00:05.300 --> 00:00:07.230
+But what we're hitting is when we delete an item
+
+4
+00:00:07.230 --> 00:00:09.060
+and it actually doesn't disappear
+
+5
+00:00:09.060 --> 00:00:10.600
+until you refresh the page.
+
+6
+00:00:10.600 --> 00:00:12.470
+And that's because that item's deleted
+
+7
+00:00:12.470 --> 00:00:15.270
+from the database but it still exists in memory.
+
+8
+00:00:15.270 --> 00:00:20.270
+Still exists in the actual cash of our all products query.
+
+9
+00:00:20.900 --> 00:00:23.030
+So what we need to do is,
+
+10
+00:00:23.030 --> 00:00:25.910
+we could just refresh that query,
+
+11
+00:00:25.910 --> 00:00:28.320
+but sometimes, and this is the case a lot of times,
+
+12
+00:00:28.320 --> 00:00:30.760
+is you don't want to go to the network
+
+13
+00:00:30.760 --> 00:00:31.820
+and refresh all of them.
+
+14
+00:00:31.820 --> 00:00:33.690
+You just wanna say, well, I just deleted that one,
+
+15
+00:00:33.690 --> 00:00:35.230
+so just take it out, right.
+
+16
+00:00:35.230 --> 00:00:40.200
+So Apollo has a really nice API called Evict.
+
+17
+00:00:40.200 --> 00:00:42.630
+And it basically just take it out of the cache,
+
+18
+00:00:42.630 --> 00:00:44.780
+React will notice that the cache change
+
+19
+00:00:44.780 --> 00:00:46.190
+and it will re-render
+
+20
+00:00:46.190 --> 00:00:48.900
+and take that item on out.
+
+21
+00:00:48.900 --> 00:00:50.670
+So, the way that works is
+
+22
+00:00:51.840 --> 00:00:55.080
+you create an update function that you pass along
+
+23
+00:00:55.080 --> 00:00:56.370
+with your use mutation.
+
+24
+00:00:56.370 --> 00:00:58.200
+So here we have our use mutation
+
+25
+00:00:58.200 --> 00:00:59.410
+and we pass it variables.
+
+26
+00:00:59.410 --> 00:01:02.310
+You can also pass it in another argon
+
+27
+00:01:02.310 --> 00:01:04.880
+which is our update function.
+
+28
+00:01:04.880 --> 00:01:06.830
+And the update function will run
+
+29
+00:01:06.830 --> 00:01:09.840
+when the mutation comes back.
+
+30
+00:01:09.840 --> 00:01:11.670
+So I'm just going to say update
+
+31
+00:01:11.670 --> 00:01:13.610
+and we have a function called update.
+
+32
+00:01:13.610 --> 00:01:14.860
+And then we'll go up here.
+
+33
+00:01:14.860 --> 00:01:17.300
+So this is not inside a component or anything.
+
+34
+00:01:17.300 --> 00:01:19.770
+And just make a function called update.
+
+35
+00:01:19.770 --> 00:01:23.690
+That update function gives us access to the cache.
+
+36
+00:01:23.690 --> 00:01:25.080
+That's the Apollo cache.
+
+37
+00:01:25.080 --> 00:01:26.870
+As well as the payload.
+
+38
+00:01:26.870 --> 00:01:29.830
+The payload is what gets returned
+
+39
+00:01:29.830 --> 00:01:33.690
+from the update of the mutation.
+
+40
+00:01:33.690 --> 00:01:37.053
+So remember here, when we ran our delete product,
+
+41
+00:01:37.900 --> 00:01:39.870
+and we asked that when I delete it,
+
+42
+00:01:39.870 --> 00:01:41.913
+can you give me the ID and the name.
+
+43
+00:01:42.870 --> 00:01:45.380
+In our case what's gonna happen is that
+
+44
+00:01:45.380 --> 00:01:49.140
+we're going to be supplied with the ID and the name
+
+45
+00:01:49.140 --> 00:01:50.800
+of the item that was deleted.
+
+46
+00:01:50.800 --> 00:01:53.810
+So that we can take that payload
+
+47
+00:01:53.810 --> 00:01:56.280
+and remove it from the cash.
+
+48
+00:01:56.280 --> 00:01:59.150
+Let's just go ahead and log out here.
+
+49
+00:01:59.150 --> 00:02:04.150
+That says console.log.
+
+50
+00:02:04.460 --> 00:02:06.550
+Let's just say payload.
+
+51
+00:02:06.550 --> 00:02:08.990
+We don't need to log the cash, we know what that is.
+
+52
+00:02:08.990 --> 00:02:12.610
+So, and then we'll also console.log
+
+53
+00:02:12.610 --> 00:02:17.063
+running the update function after delete.
+
+54
+00:02:19.540 --> 00:02:23.000
+Let's just do it once to show you what's happening here.
+
+55
+00:02:23.000 --> 00:02:25.125
+So go to our console, clear it out.
+
+56
+00:02:25.125 --> 00:02:27.740
+Let's take this hoodie here, delete it.
+
+57
+00:02:27.740 --> 00:02:29.810
+Go ahead, boom.
+
+58
+00:02:29.810 --> 00:02:31.960
+And you see it was deleted, a split second later
+
+59
+00:02:31.960 --> 00:02:32.793
+once it came back
+
+60
+00:02:32.793 --> 00:02:34.860
+for the network, running the update,
+
+61
+00:02:34.860 --> 00:02:37.390
+open up the object, inside of there's data.
+
+62
+00:02:37.390 --> 00:02:39.870
+And then we see both the name and the ID.
+
+63
+00:02:39.870 --> 00:02:42.640
+As long as the type name is inferred--
+
+64
+00:02:42.640 --> 00:02:43.710
+Or not inferred.
+
+65
+00:02:43.710 --> 00:02:45.400
+It's send over by default.
+
+66
+00:02:45.400 --> 00:02:49.070
+But it gives us whatever items we actually wanted to delete.
+
+67
+00:02:49.070 --> 00:02:52.510
+So the way that we can remove that item from the cash
+
+68
+00:02:52.510 --> 00:02:54.790
+is we run cache.evict
+
+69
+00:02:56.767 --> 00:02:59.620
+and then you need to pass it referenced
+
+70
+00:02:59.620 --> 00:03:00.840
+to the actual item.
+
+71
+00:03:00.840 --> 00:03:02.380
+And we don't have reference to the item.
+
+72
+00:03:02.380 --> 00:03:06.040
+We just have this object that came back.
+
+73
+00:03:06.040 --> 00:03:07.690
+And the way that you can find--
+
+74
+00:03:07.690 --> 00:03:08.620
+It's kind of weird
+
+75
+00:03:08.620 --> 00:03:10.340
+because you gotta find the item in the cache
+
+76
+00:03:10.340 --> 00:03:11.830
+and then you gotta evict it.
+
+77
+00:03:11.830 --> 00:03:14.640
+So the way that you can find the item in the cache
+
+78
+00:03:14.640 --> 00:03:16.950
+is with cache.identify
+
+79
+00:03:19.370 --> 00:03:23.960
+and you pass it just on payload.
+
+80
+00:03:23.960 --> 00:03:27.563
+So payload.data.deleteproduct.
+
+81
+00:03:29.150 --> 00:03:32.180
+So payload is this, data, delete product.
+
+82
+00:03:32.180 --> 00:03:33.470
+So you give it this.
+
+83
+00:03:33.470 --> 00:03:37.920
+And based on the information that is in here,
+
+84
+00:03:37.920 --> 00:03:39.570
+which is type name and ID.
+
+85
+00:03:39.570 --> 00:03:41.810
+I don't know if it uses the name or not to find it.
+
+86
+00:03:41.810 --> 00:03:44.710
+But the type name and ID are all that's needed
+
+87
+00:03:44.710 --> 00:03:47.620
+for it to identify where that item is
+
+88
+00:03:47.620 --> 00:03:49.520
+in our Apollo cache.
+
+89
+00:03:49.520 --> 00:03:51.860
+And based on that it will identify it.
+
+90
+00:03:51.860 --> 00:03:52.880
+It will find it.
+
+91
+00:03:52.880 --> 00:03:55.600
+And then we pass that item to cache.evict
+
+92
+00:03:55.600 --> 00:03:58.380
+and that will boop, take it out entirely.
+
+93
+00:03:58.380 --> 00:04:03.380
+So, we can refresh, go to our console here,
+
+94
+00:04:03.380 --> 00:04:04.920
+delete this windbreaker here.
+
+95
+00:04:04.920 --> 00:04:05.770
+Delete.
+
+96
+00:04:05.770 --> 00:04:07.420
+Okay.
+
+97
+00:04:07.420 --> 00:04:08.253
+Cache.indentify.
+
+98
+00:04:10.725 --> 00:04:12.475
+(laughing)
+
+99
+00:04:12.475 --> 00:04:14.058
+IDENTIFY, identify.
+
+100
+00:04:15.700 --> 00:04:16.993
+Okay so one more.
+
+101
+00:04:19.480 --> 00:04:21.680
+Vapormax delete, okay.
+
+102
+00:04:21.680 --> 00:04:22.513
+Boom!
+
+103
+00:04:22.513 --> 00:04:23.990
+You see how it was removed.
+
+104
+00:04:23.990 --> 00:04:26.200
+And the Yeti came on up.
+
+105
+00:04:26.200 --> 00:04:27.923
+That is exactly what we want.
+
+106
+00:04:29.501 --> 00:04:31.050
+If you took this course previously,
+
+107
+00:04:31.050 --> 00:04:32.890
+that was like, I don't know,
+
+108
+00:04:32.890 --> 00:04:35.470
+30 lines of code previously.
+
+109
+00:04:35.470 --> 00:04:37.530
+And now it's a couple of minute video
+
+110
+00:04:37.530 --> 00:04:38.710
+with cache.evict.
+
+111
+00:04:38.710 --> 00:04:41.020
+So that is new in Apollo Three.
+
+112
+00:04:41.020 --> 00:04:42.893
+And a very nice API.
+

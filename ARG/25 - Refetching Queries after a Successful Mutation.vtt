@@ -1,0 +1,458 @@
+﻿WEBVTT
+
+1
+00:00:00.110 --> 00:00:01.620
+(whooshing sound)
+
+2
+00:00:01.620 --> 00:00:02.670
+<v Instructor>If you go to your homepage</v>
+
+3
+00:00:02.670 --> 00:00:03.950
+and scroll all the way to the bottom,
+
+4
+00:00:03.950 --> 00:00:06.180
+you'll see these are the two items that I just created
+
+5
+00:00:06.180 --> 00:00:08.300
+while recording this video.
+
+6
+00:00:08.300 --> 00:00:10.110
+And let's go ahead and add another one.
+
+7
+00:00:10.110 --> 00:00:14.330
+So, I'm gonna upload, let's do the Hondo
+
+8
+00:00:14.330 --> 00:00:18.320
+and we'll call it Hondo added now
+
+9
+00:00:18.320 --> 00:00:20.440
+and I'm gonna submit it.
+
+10
+00:00:20.440 --> 00:00:23.250
+Boom, okay, now if I go back to the homepage page,
+
+11
+00:00:23.250 --> 00:00:26.560
+scroll to the bottom, it's not there, right?
+
+12
+00:00:26.560 --> 00:00:28.960
+If I refresh the page,
+
+13
+00:00:28.960 --> 00:00:30.020
+oh, there it is.
+
+14
+00:00:30.020 --> 00:00:32.562
+Why, why, why, why is that happening?
+
+15
+00:00:32.562 --> 00:00:36.830
+And the reason is because we visited the homepage
+
+16
+00:00:36.830 --> 00:00:40.560
+then we went to the sell page and then we went back,
+
+17
+00:00:40.560 --> 00:00:43.150
+and since we had already been on this page,
+
+18
+00:00:43.150 --> 00:00:46.820
+it said, ah, I remember this page,
+
+19
+00:00:46.820 --> 00:00:48.620
+you wanted a list of products.
+
+20
+00:00:48.620 --> 00:00:50.700
+I luckily cashed them for you
+
+21
+00:00:50.700 --> 00:00:52.860
+and I'll just rerender that thing for you
+
+22
+00:00:52.860 --> 00:00:55.450
+and I don't have to go all the way back to the network
+
+23
+00:00:55.450 --> 00:00:57.730
+and back in order to show it.
+
+24
+00:00:57.730 --> 00:01:01.530
+So, with Apollo, you have a couple options here
+
+25
+00:01:01.530 --> 00:01:04.850
+in order to update these queries
+
+26
+00:01:04.850 --> 00:01:09.590
+where you need them to have fresh data in them.
+
+27
+00:01:09.590 --> 00:01:11.360
+So, two options are,
+
+28
+00:01:11.360 --> 00:01:14.480
+is you could just modify the cash directly,
+
+29
+00:01:14.480 --> 00:01:18.290
+meaning that if I go to my Apollo here and I go to my cash,
+
+30
+00:01:18.290 --> 00:01:21.040
+you see that we have this all products query.
+
+31
+00:01:21.040 --> 00:01:26.040
+What we could do is when we get this item returned to us
+
+32
+00:01:26.810 --> 00:01:28.280
+from the mutation,
+
+33
+00:01:28.280 --> 00:01:30.560
+we could query all the fields that we need,
+
+34
+00:01:30.560 --> 00:01:32.870
+the price, the photo, the description,
+
+35
+00:01:32.870 --> 00:01:34.580
+and the title and the ID.
+
+36
+00:01:34.580 --> 00:01:36.880
+We could query all of those right here,
+
+37
+00:01:36.880 --> 00:01:40.800
+and then we could just manually inject it into the cash,
+
+38
+00:01:40.800 --> 00:01:43.280
+and then it would just automatically update itself
+
+39
+00:01:43.280 --> 00:01:45.650
+and we wouldn't have to go back to the network
+
+40
+00:01:45.650 --> 00:01:46.840
+and it would update it.
+
+41
+00:01:46.840 --> 00:01:47.820
+And that's great,
+
+42
+00:01:47.820 --> 00:01:50.430
+because if you've ever been on a website
+
+43
+00:01:50.430 --> 00:01:53.250
+and let's say Twitter,
+
+44
+00:01:53.250 --> 00:01:55.370
+Twitter is a really good example.
+
+45
+00:01:55.370 --> 00:01:57.460
+And you write a tweet and you submit the tweet,
+
+46
+00:01:57.460 --> 00:02:01.850
+you immediately see that tweet in the UI
+
+47
+00:02:02.810 --> 00:02:03.973
+even though it might take a second
+
+48
+00:02:03.973 --> 00:02:07.060
+to actually go to Twitter servers and come back.
+
+49
+00:02:07.060 --> 00:02:09.610
+And then that's what's called an optimistic update
+
+50
+00:02:09.610 --> 00:02:11.560
+meaning that we assume it's gonna work,
+
+51
+00:02:11.560 --> 00:02:13.440
+so we're just gonna visually show you
+
+52
+00:02:13.440 --> 00:02:16.170
+that it worked for you and then everyone who's following you
+
+53
+00:02:16.170 --> 00:02:19.090
+will see it on their next network refresh.
+
+54
+00:02:19.090 --> 00:02:22.270
+The other way to do it is you can just tell Apollo
+
+55
+00:02:22.270 --> 00:02:25.610
+behind the scenes, hey you know this query
+
+56
+00:02:25.610 --> 00:02:27.460
+where you fetched all the products?
+
+57
+00:02:27.460 --> 00:02:30.563
+Can you just go to the server and refresh that thing again?
+
+58
+00:02:31.420 --> 00:02:32.930
+That would be super helpful.
+
+59
+00:02:32.930 --> 00:02:35.270
+So, I'm gonna show you how to do both in this course,
+
+60
+00:02:35.270 --> 00:02:38.040
+right now what we'll do is we'll do the network one
+
+61
+00:02:38.040 --> 00:02:39.740
+where it's much easier
+
+62
+00:02:39.740 --> 00:02:41.970
+just to go to the network and refresh it.
+
+63
+00:02:41.970 --> 00:02:45.570
+In most cases, there's absolutely no problem in doing that.
+
+64
+00:02:45.570 --> 00:02:47.970
+So, what we'll do here
+
+65
+00:02:47.970 --> 00:02:52.830
+is we will go down to this mutation here,
+
+66
+00:02:52.830 --> 00:02:56.723
+and you see where we have variables with our inputs,
+
+67
+00:02:58.810 --> 00:03:03.080
+we can also specify this thing called refetch queries
+
+68
+00:03:03.080 --> 00:03:05.720
+and that will be an array of queries
+
+69
+00:03:05.720 --> 00:03:08.680
+that it needs to go off and refetch.
+
+70
+00:03:08.680 --> 00:03:10.800
+And if we go to our products here,
+
+71
+00:03:10.800 --> 00:03:13.944
+you see we have this all products query right here,
+
+72
+00:03:13.944 --> 00:03:17.206
+we'll just tell it, hey, we already have this query here,
+
+73
+00:03:17.206 --> 00:03:21.760
+can you please just go ahead and refetch it, refresh it
+
+74
+00:03:21.760 --> 00:03:23.500
+for the user behind the scenes?
+
+75
+00:03:23.500 --> 00:03:26.099
+So, we can go and we have to first export this
+
+76
+00:03:26.099 --> 00:03:29.120
+from this file, because now this query is needed
+
+77
+00:03:31.100 --> 00:03:32.170
+in some other places.
+
+78
+00:03:32.170 --> 00:03:35.540
+So, let's go to the bottom here, we'll just say export.
+
+79
+00:03:35.540 --> 00:03:38.740
+Actually, I think we can do it right where we define it,
+
+80
+00:03:38.740 --> 00:03:39.573
+let's try that.
+
+81
+00:03:40.580 --> 00:03:41.900
+Export, there we go,
+
+82
+00:03:41.900 --> 00:03:43.900
+just put an export in front of it.
+
+83
+00:03:43.900 --> 00:03:46.633
+Then we'll take the name of it, all products query.
+
+84
+00:03:47.600 --> 00:03:49.780
+We'll say refetch queries,
+
+85
+00:03:49.780 --> 00:03:52.660
+each query is gonna be an object
+
+86
+00:03:52.660 --> 00:03:57.230
+where the query is all products query.
+
+87
+00:03:57.230 --> 00:03:58.540
+Now, that's not gonna work,
+
+88
+00:03:58.540 --> 00:03:59.890
+because we haven't imported it yet,
+
+89
+00:03:59.890 --> 00:04:02.570
+so let's try auto import it.
+
+90
+00:04:02.570 --> 00:04:05.310
+Boom, did it work, did it work?
+
+91
+00:04:05.310 --> 00:04:07.973
+Import all product query from products, good.
+
+92
+00:04:09.000 --> 00:04:14.000
+And if you had variables to pass to that query,
+
+93
+00:04:14.630 --> 00:04:17.100
+you could pass them here as well, but in our case,
+
+94
+00:04:17.100 --> 00:04:19.260
+there's no variables being currently passed
+
+95
+00:04:19.260 --> 00:04:20.093
+to all products queries,
+
+96
+00:04:20.093 --> 00:04:22.290
+so we don't have to worry about that.
+
+97
+00:04:22.290 --> 00:04:24.660
+We will in the future, but not right now.
+
+98
+00:04:24.660 --> 00:04:28.720
+And that's great, so when the mutation fires off
+
+99
+00:04:28.720 --> 00:04:30.694
+and we successfully come back,
+
+100
+00:04:30.694 --> 00:04:35.694
+please refetch the following queries, all products query.
+
+101
+00:04:35.960 --> 00:04:38.120
+So, let's try it now.
+
+102
+00:04:38.120 --> 00:04:41.160
+We'll go and try to sell something,
+
+103
+00:04:41.160 --> 00:04:43.983
+we'll upload, let's do the belt.
+
+104
+00:04:45.430 --> 00:04:49.910
+Nice belt, that's probably not a good idea.
+
+105
+00:04:49.910 --> 00:04:50.903
+Add product,
+
+106
+00:04:52.030 --> 00:04:53.010
+boom, it worked.
+
+107
+00:04:53.010 --> 00:04:55.470
+Now, if I go back to the homepage
+
+108
+00:04:55.470 --> 00:04:56.740
+and scroll all the way to the bottom,
+
+109
+00:04:56.740 --> 00:04:58.680
+it immediately has shown up,
+
+110
+00:04:58.680 --> 00:05:02.145
+because it went behind the scenes in the network
+
+111
+00:05:02.145 --> 00:05:05.470
+and rerun that query for us.
+
+112
+00:05:05.470 --> 00:05:09.830
+So, that is what is referred to as refetching our queries.
+
+113
+00:05:09.830 --> 00:05:12.700
+In the next one, we'll get into changing the page
+
+114
+00:05:12.700 --> 00:05:17.353
+once you have successfully uploaded a product.
+

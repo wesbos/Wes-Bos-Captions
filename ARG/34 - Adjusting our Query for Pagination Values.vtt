@@ -1,0 +1,374 @@
+﻿WEBVTT
+
+1
+00:00:01.970 --> 00:00:02.900
+<v ->All right.</v>
+
+2
+00:00:02.900 --> 00:00:05.490
+I just realized why we did this.
+
+3
+00:00:05.490 --> 00:00:08.270
+We, we, we got the page
+
+4
+00:00:08.270 --> 00:00:12.000
+at the page level and not inside of the pagination, as soon
+
+5
+00:00:12.000 --> 00:00:14.520
+as we also need the current page inside of our products.
+
+6
+00:00:14.520 --> 00:00:15.880
+And it's easier just to grab it out
+
+7
+00:00:15.880 --> 00:00:19.110
+of the writer once and then parse it and pass it
+
+8
+00:00:19.110 --> 00:00:23.180
+in then to use rotaries, rotaries rotaries overtime.
+
+9
+00:00:23.180 --> 00:00:25.740
+I don't, I don't think there's any performance issue there.
+
+10
+00:00:25.740 --> 00:00:27.110
+You could do it either way
+
+11
+00:00:27.110 --> 00:00:31.750
+but it's nice to have the current page being accessed once
+
+12
+00:00:31.750 --> 00:00:34.210
+because for whatever reason, if you wanted to override it
+
+13
+00:00:34.210 --> 00:00:36.140
+you simply could with this variable.
+
+14
+00:00:36.140 --> 00:00:38.450
+So we need to now go into this products here.
+
+15
+00:00:38.450 --> 00:00:41.433
+Let's just close everything else.
+
+16
+00:00:43.000 --> 00:00:45.580
+We go into our products here and we need to
+
+17
+00:00:45.580 --> 00:00:49.740
+modify this query to not give us all the products
+
+18
+00:00:49.740 --> 00:00:53.910
+but we want to get the first four products or two products
+
+19
+00:00:53.910 --> 00:00:56.670
+and then we also need to offset them based
+
+20
+00:00:56.670 --> 00:00:58.760
+on which page we currently are on.
+
+21
+00:00:58.760 --> 00:01:02.260
+So let's take that page here
+
+22
+00:01:02.260 --> 00:01:06.560
+and we'll pass the page to our products,
+
+23
+00:01:06.560 --> 00:01:09.410
+and then we'll go over to our products query here
+
+24
+00:01:10.810 --> 00:01:15.460
+and we need to first make it accept some variables.
+
+25
+00:01:15.460 --> 00:01:19.680
+So we need to take in a skip variable
+
+26
+00:01:19.680 --> 00:01:21.700
+that is going to be an integer
+
+27
+00:01:21.700 --> 00:01:24.600
+that defaults to zero and the skip variable is gonna be
+
+28
+00:01:24.600 --> 00:01:25.780
+how many should I skip?
+
+29
+00:01:25.780 --> 00:01:28.960
+So if I've got one, two, three, four, five, six, seven
+
+30
+00:01:28.960 --> 00:01:33.030
+eight, nine, 10 products, and we are doing two products
+
+31
+00:01:33.030 --> 00:01:37.080
+per page, we need to, if we're on page two
+
+32
+00:01:37.080 --> 00:01:40.130
+we need to skip the first two and get the second two.
+
+33
+00:01:40.130 --> 00:01:44.030
+Right? So the skip value is going to be calculated based
+
+34
+00:01:44.030 --> 00:01:45.850
+on what page we are on,
+
+35
+00:01:45.850 --> 00:01:48.380
+and then the other variable that we need to
+
+36
+00:01:48.380 --> 00:01:49.920
+pass is called first,
+
+37
+00:01:49.920 --> 00:01:54.350
+and that will tell us, give me the first two, four, six
+
+38
+00:01:54.350 --> 00:01:56.360
+how many per page do we need to pass?
+
+39
+00:01:56.360 --> 00:01:59.099
+So they're called skipping first here.
+
+40
+00:01:59.099 --> 00:02:00.350
+We're, we're calling them per page.
+
+41
+00:02:00.350 --> 00:02:02.683
+So that is a type of integer,
+
+42
+00:02:04.030 --> 00:02:05.220
+and we
+
+43
+00:02:05.220 --> 00:02:06.810
+won't
+
+44
+00:02:06.810 --> 00:02:08.517
+set a default there just
+
+45
+00:02:08.517 --> 00:02:10.320
+*cause we are importing it.
+
+46
+00:02:10.320 --> 00:02:11.970
+Then now that we've defined this query
+
+47
+00:02:11.970 --> 00:02:12.930
+to take in arguments
+
+48
+00:02:12.930 --> 00:02:15.690
+we need to pass it to our actual GraphQL function
+
+49
+00:02:15.690 --> 00:02:20.690
+which is all products we say the first is the first variable
+
+50
+00:02:21.130 --> 00:02:25.003
+and the skip is the skip variable that gets passed in.
+
+51
+00:02:26.470 --> 00:02:29.670
+Then we'll go down to where we've used
+
+52
+00:02:29.670 --> 00:02:31.850
+our products query right here, use query
+
+53
+00:02:31.850 --> 00:02:33.890
+and we need to pass a couple of variables.
+
+54
+00:02:33.890 --> 00:02:37.020
+So the second argument of use query is options.
+
+55
+00:02:37.020 --> 00:02:39.820
+And inside of that, we can pass our variables
+
+56
+00:02:39.820 --> 00:02:43.400
+and the two variables that we need to pass are skip,
+
+57
+00:02:43.400 --> 00:02:48.400
+and first. So the skip value is going to be calculated
+
+58
+00:02:48.820 --> 00:02:51.390
+by the current page that we are on,
+
+59
+00:02:51.390 --> 00:02:54.430
+so we have to destructure that page
+
+60
+00:02:54.430 --> 00:02:58.010
+because remember we passed it in right here.
+
+61
+00:02:58.010 --> 00:03:03.010
+So we accept it as a prop or an argument of our page.
+
+62
+00:03:03.840 --> 00:03:06.030
+So skip is equal to page
+
+63
+00:03:06.030 --> 00:03:09.680
+and then we multiply that by per page.
+
+64
+00:03:09.680 --> 00:03:14.680
+So that value needs to be imported from our config file,
+
+65
+00:03:17.760 --> 00:03:21.100
+and then we also need to subtract per page
+
+66
+00:03:21.100 --> 00:03:22.760
+because we want the lower end of it.
+
+67
+00:03:22.760 --> 00:03:24.750
+We don't want the upper end of it.
+
+68
+00:03:24.750 --> 00:03:27.900
+And then the first is simply just going to be per, per page.
+
+69
+00:03:27.900 --> 00:03:28.810
+How many per page?
+
+70
+00:03:28.810 --> 00:03:29.643
+So
+
+71
+00:03:31.220 --> 00:03:32.733
+got go put a comma there.
+
+72
+00:03:35.270 --> 00:03:36.103
+All right.
+
+73
+00:03:39.430 --> 00:03:40.263
+Some broke.
+
+74
+00:03:40.263 --> 00:03:41.260
+Let's let's take a look here.
+
+75
+00:03:42.630 --> 00:03:46.590
+Our products dot JS is undefined undefined true,
+
+76
+00:03:46.590 --> 00:03:47.453
+loading,
+
+77
+00:03:53.610 --> 00:03:56.930
+had to give it old and old refresh.
+
+78
+00:03:56.930 --> 00:04:00.730
+Okay. So it looks like it's, it's being piped in.
+
+79
+00:04:00.730 --> 00:04:04.830
+Now, if I go to the next page, here we go.
+
+80
+00:04:04.830 --> 00:04:05.663
+Look at that.
+
+81
+00:04:08.100 --> 00:04:12.310
+You see how the first time, if you refresh
+
+82
+00:04:12.310 --> 00:04:14.680
+and then press next, you see how it takes a second
+
+83
+00:04:14.680 --> 00:04:16.450
+because it has to fetch them and bring them in.
+
+84
+00:04:16.450 --> 00:04:18.140
+But then if I go back
+
+85
+00:04:18.140 --> 00:04:21.370
+those items are in the cache of Apollo.
+
+86
+00:04:21.370 --> 00:04:22.830
+So then it's nice and fast.
+
+87
+00:04:22.830 --> 00:04:25.830
+That's the beauty of having the Apollo cache, is
+
+88
+00:04:25.830 --> 00:04:28.794
+that if there's data that the user has already served too
+
+89
+00:04:28.794 --> 00:04:31.810
+you don't need to hit the network again, to get it.
+
+90
+00:04:31.810 --> 00:04:35.130
+You can simply just serve it up right from the cache.
+
+91
+00:04:35.130 --> 00:04:37.350
+And that will be the topic of the next video.
+
+92
+00:04:37.350 --> 00:04:40.000
+What do you do with the items in the cache
+
+93
+00:04:40.000 --> 00:04:43.153
+so that they reflect what's actually on the server?
+

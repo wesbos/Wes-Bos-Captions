@@ -1,0 +1,1738 @@
+﻿WEBVTT
+
+1
+00:00:01.491 --> 00:00:02.324
+<v ->All right.</v>
+
+2
+00:00:02.324 --> 00:00:05.342
+As we start to pull in data from our API
+
+3
+00:00:05.342 --> 00:00:07.960
+into our front end of our application,
+
+4
+00:00:07.960 --> 00:00:09.245
+we need some sort of software
+
+5
+00:00:09.245 --> 00:00:12.190
+that's going to be able to make those queries,
+
+6
+00:00:12.190 --> 00:00:15.970
+cache the data, evict those items from the data,
+
+7
+00:00:15.970 --> 00:00:17.830
+handle mutations,
+
+8
+00:00:17.830 --> 00:00:20.382
+give us the data that comes back from the server,
+
+9
+00:00:20.382 --> 00:00:21.215
+if there's errors
+
+10
+00:00:21.215 --> 00:00:23.047
+or if there's file uploads, all that stuff.
+
+11
+00:00:23.047 --> 00:00:25.253
+So basically, we need a piece of software
+
+12
+00:00:25.253 --> 00:00:27.750
+that will talk to our GraphQL API,
+
+13
+00:00:27.750 --> 00:00:29.780
+and manage all of that data for us.
+
+14
+00:00:29.780 --> 00:00:30.743
+And in this tutorial,
+
+15
+00:00:30.743 --> 00:00:33.822
+we are using something called Apollo GraphQL for it
+
+16
+00:00:33.822 --> 00:00:35.491
+or it's called Apollo Client.
+
+17
+00:00:35.491 --> 00:00:37.717
+Specifically it's the piece of software
+
+18
+00:00:37.717 --> 00:00:39.810
+we're gonna be using on the front end.
+
+19
+00:00:39.810 --> 00:00:42.634
+Now, Apollo Client, I've got the finished product
+
+20
+00:00:42.634 --> 00:00:44.410
+up and running right here.
+
+21
+00:00:44.410 --> 00:00:45.380
+You can take a look here.
+
+22
+00:00:45.380 --> 00:00:47.433
+You can see that we have GraphQL
+
+23
+00:00:47.433 --> 00:00:51.210
+and here you could write all of the queries as well.
+
+24
+00:00:51.210 --> 00:00:54.062
+Then we have all of the queries that we write for here.
+
+25
+00:00:54.062 --> 00:00:57.810
+So here's an all products query.
+
+26
+00:00:57.810 --> 00:01:00.511
+Give me the first four, but skipped 12, why?
+
+27
+00:01:00.511 --> 00:01:02.750
+Because I'm on page...
+
+28
+00:01:02.750 --> 00:01:04.360
+I'm on page four
+
+29
+00:01:04.360 --> 00:01:06.090
+so I'm skipping 12 of them,
+
+30
+00:01:06.090 --> 00:01:08.570
+and then I'm asking, give me the first four that come back.
+
+31
+00:01:08.570 --> 00:01:10.600
+And in this case, it's just one
+
+32
+00:01:10.600 --> 00:01:12.480
+'cause there's only one on this page
+
+33
+00:01:12.480 --> 00:01:15.681
+but if I were to go back a page, we would see that update.
+
+34
+00:01:15.681 --> 00:01:17.005
+There is a little bit of an issue
+
+35
+00:01:17.005 --> 00:01:19.730
+with Apollo dev tools right now.
+
+36
+00:01:19.730 --> 00:01:20.563
+I'm hoping it will be fixed
+
+37
+00:01:20.563 --> 00:01:23.040
+by the time you take this course
+
+38
+00:01:23.040 --> 00:01:28.040
+but sometimes the data doesn't update on Apollo.
+
+39
+00:01:28.267 --> 00:01:30.665
+And also sometimes it doesn't connect properly
+
+40
+00:01:30.665 --> 00:01:31.705
+which is a bit of a bummer.
+
+41
+00:01:31.705 --> 00:01:34.250
+They're working on like a big update.
+
+42
+00:01:34.250 --> 00:01:36.720
+So I'm hoping by the time you read this,
+
+43
+00:01:36.720 --> 00:01:37.872
+or by the time you watch this,
+
+44
+00:01:37.872 --> 00:01:39.020
+it will be updated.
+
+45
+00:01:39.020 --> 00:01:40.000
+See there. There it's working now.
+
+46
+00:01:40.000 --> 00:01:42.070
+So take a look at the queries,
+
+47
+00:01:42.070 --> 00:01:42.980
+pagination query,
+
+48
+00:01:42.980 --> 00:01:45.607
+give me the first four, skip eight.
+
+49
+00:01:45.607 --> 00:01:49.180
+It shows you the entire query that we have written.
+
+50
+00:01:49.180 --> 00:01:52.204
+And it's just so good for debugging API.
+
+51
+00:01:52.204 --> 00:01:54.880
+You can also see any mutations that happen.
+
+52
+00:01:54.880 --> 00:01:58.960
+For example, if we were to add an item to our cart,
+
+53
+00:01:58.960 --> 00:02:00.284
+boop, boop, right?
+
+54
+00:02:00.284 --> 00:02:01.910
+Look that's working.
+
+55
+00:02:01.910 --> 00:02:02.743
+Add to cart.
+
+56
+00:02:02.743 --> 00:02:03.720
+Add to cart.
+
+57
+00:02:03.720 --> 00:02:06.290
+You see that when we add an item to our cart,
+
+58
+00:02:06.290 --> 00:02:07.510
+we're passing it the ID
+
+59
+00:02:07.510 --> 00:02:10.360
+and then it returns to us the ID of that item as well,
+
+60
+00:02:10.360 --> 00:02:12.710
+as the quantity that we're in the cart.
+
+61
+00:02:12.710 --> 00:02:15.720
+And we can see all that data specifically in there.
+
+62
+00:02:15.720 --> 00:02:17.720
+Same thing, it also gives us the cache.
+
+63
+00:02:17.720 --> 00:02:19.970
+This is really important because,
+
+64
+00:02:19.970 --> 00:02:22.427
+you take a look at this page right here,
+
+65
+00:02:22.427 --> 00:02:24.920
+watch, I'm gonna click next.
+
+66
+00:02:24.920 --> 00:02:26.998
+See it took a second for the items to come in
+
+67
+00:02:26.998 --> 00:02:28.916
+and that's because it had to go to the API and go back.
+
+68
+00:02:28.916 --> 00:02:32.641
+But now if I go back back, boom, boom, boom.
+
+69
+00:02:32.641 --> 00:02:34.610
+You see how instant that is?
+
+70
+00:02:34.610 --> 00:02:38.317
+That's because Apollo GraphQL, is able to say,
+
+71
+00:02:38.317 --> 00:02:39.724
+"Oh we've already done that.
+
+72
+00:02:39.724 --> 00:02:42.600
+we already have those items
+
+73
+00:02:42.600 --> 00:02:45.130
+and we don't need to go to the network for them.
+
+74
+00:02:45.130 --> 00:02:46.920
+We can just serve them up from the cache."
+
+75
+00:02:46.920 --> 00:02:49.960
+And it does a lot of that heavy lifting for you.
+
+76
+00:02:49.960 --> 00:02:51.539
+So you simply just need to query the items,
+
+77
+00:02:51.539 --> 00:02:53.143
+and it will figure out if it has them
+
+78
+00:02:53.143 --> 00:02:56.893
+or it needs to go to the GraphQL API as well.
+
+79
+00:02:57.900 --> 00:02:59.230
+So setting up Apollo,
+
+80
+00:02:59.230 --> 00:03:00.554
+we need things that are called links.
+
+81
+00:03:00.554 --> 00:03:02.596
+And if we take a look at the docs here for Apollo links
+
+82
+00:03:02.596 --> 00:03:04.537
+they say that links is a standard interface
+
+83
+00:03:04.537 --> 00:03:08.280
+for modifying control flow of GraphQL requests
+
+84
+00:03:08.280 --> 00:03:10.900
+and fetching GraphQL results.
+
+85
+00:03:10.900 --> 00:03:11.750
+What does that mean?
+
+86
+00:03:11.750 --> 00:03:14.149
+Well, Apollo Client is made up of
+
+87
+00:03:14.149 --> 00:03:18.880
+a number of different links and each link is responsible
+
+88
+00:03:18.880 --> 00:03:23.010
+for handling how to deal with outgoing requests
+
+89
+00:03:23.010 --> 00:03:25.600
+to get data or to update data,
+
+90
+00:03:25.600 --> 00:03:29.260
+as well as responses coming back,
+
+91
+00:03:29.260 --> 00:03:32.124
+as well as dealing with the cache and whatnot.
+
+92
+00:03:32.124 --> 00:03:36.640
+And Apollo has all of the like basic stuff
+
+93
+00:03:36.640 --> 00:03:37.945
+that most people would need.
+
+94
+00:03:37.945 --> 00:03:41.230
+They put it into something called Apollo Boost
+
+95
+00:03:41.230 --> 00:03:44.803
+and it sort of all just tucked away into a package
+
+96
+00:03:44.803 --> 00:03:47.536
+because most of us just need the very simple things.
+
+97
+00:03:47.536 --> 00:03:49.030
+We need a cache.
+
+98
+00:03:49.030 --> 00:03:52.580
+We need fetching and pushing data to our API,
+
+99
+00:03:52.580 --> 00:03:56.418
+and a couple other things that are pretty common.
+
+100
+00:03:56.418 --> 00:03:58.130
+So what they do is they just wrap it up
+
+101
+00:03:58.130 --> 00:04:00.286
+into their own little package called Apollo Boost.
+
+102
+00:04:00.286 --> 00:04:02.440
+It's very, very popular.
+
+103
+00:04:02.440 --> 00:04:03.947
+One thing that they don't do,
+
+104
+00:04:03.947 --> 00:04:05.112
+and this is why I'm giving you
+
+105
+00:04:05.112 --> 00:04:06.438
+a little bit of starter code for this
+
+106
+00:04:06.438 --> 00:04:09.307
+is they don't handle image uploads.
+
+107
+00:04:09.307 --> 00:04:11.694
+And in order for us to do image uploads,
+
+108
+00:04:11.694 --> 00:04:14.090
+we need to use a third party package.
+
+109
+00:04:14.090 --> 00:04:18.130
+And as soon as you need to use a secondary link,
+
+110
+00:04:18.130 --> 00:04:19.510
+that is not part of Apollo Boost,
+
+111
+00:04:19.510 --> 00:04:21.950
+you have to like sort of eject from Apollo Boost.
+
+112
+00:04:21.950 --> 00:04:24.610
+So that's why if we go into our front end
+
+113
+00:04:24.610 --> 00:04:26.740
+again we're not in the backend folder anymore.
+
+114
+00:04:26.740 --> 00:04:29.328
+Go to your widthData.js file
+
+115
+00:04:29.328 --> 00:04:31.890
+that is there inside of the lib.
+
+116
+00:04:31.890 --> 00:04:35.149
+Now this is a whole lot of boiler plate code
+
+117
+00:04:35.149 --> 00:04:37.132
+and I know you might not be thrilled
+
+118
+00:04:37.132 --> 00:04:39.310
+that I've given it to you already,
+
+119
+00:04:39.310 --> 00:04:42.180
+but I'm gonna go through with you,
+
+120
+00:04:42.180 --> 00:04:45.053
+and sort of explain what each piece does.
+
+121
+00:04:46.060 --> 00:04:46.958
+And quite honestly,
+
+122
+00:04:46.958 --> 00:04:50.045
+this is code that you would copy paste from an example
+
+123
+00:04:50.045 --> 00:04:51.672
+or get it from an existing one
+
+124
+00:04:51.672 --> 00:04:53.746
+because it gets into the withs a little bit
+
+125
+00:04:53.746 --> 00:04:56.430
+and that's exactly why they put it in a package
+
+126
+00:04:56.430 --> 00:05:00.260
+like Apollo Boost because it is sort of boiler platey.
+
+127
+00:05:00.260 --> 00:05:01.093
+So we have this
+
+128
+00:05:01.093 --> 00:05:02.690
+and we also are gonna be adding a few things
+
+129
+00:05:02.690 --> 00:05:04.060
+to it ourselves,
+
+130
+00:05:04.060 --> 00:05:05.345
+but I thought I would go through it myself
+
+131
+00:05:05.345 --> 00:05:07.930
+because there's a lot that needs to happen here.
+
+132
+00:05:07.930 --> 00:05:08.763
+We need...
+
+133
+00:05:09.990 --> 00:05:12.050
+So when we have Apollo Client,
+
+134
+00:05:12.050 --> 00:05:14.390
+Apollo Client is again, if we look here,
+
+135
+00:05:14.390 --> 00:05:15.315
+this is the Apollo Client
+
+136
+00:05:15.315 --> 00:05:19.010
+with the cache and the queries and everything like that.
+
+137
+00:05:19.010 --> 00:05:20.565
+We go ahead and create a Client,
+
+138
+00:05:20.565 --> 00:05:23.649
+And then we inject a couple of different links that we have.
+
+139
+00:05:23.649 --> 00:05:27.147
+This first link is an error handling link
+
+140
+00:05:27.147 --> 00:05:29.413
+and all it does is
+
+141
+00:05:29.413 --> 00:05:32.040
+it takes in two different types of errors
+
+142
+00:05:32.040 --> 00:05:34.412
+that could possibly happen in your GraphQL requests.
+
+143
+00:05:34.412 --> 00:05:37.781
+You could have GraphQL errors where
+
+144
+00:05:37.781 --> 00:05:42.480
+as simple as your password was wrong, or you forgot...
+
+145
+00:05:42.480 --> 00:05:46.910
+You requested a field that doesn't exist.
+
+146
+00:05:46.910 --> 00:05:49.900
+Like if you request image on a product,
+
+147
+00:05:49.900 --> 00:05:50.850
+it will say,
+
+148
+00:05:50.850 --> 00:05:52.270
+Oh, did you mean images?
+
+149
+00:05:52.270 --> 00:05:53.350
+Or did you mean photo?
+
+150
+00:05:53.350 --> 00:05:54.576
+And it will just bring those back.
+
+151
+00:05:54.576 --> 00:05:58.520
+And it's really helpful just to simply console.log those out
+
+152
+00:05:58.520 --> 00:06:01.839
+because otherwise you have to like dig into the network tab
+
+153
+00:06:01.839 --> 00:06:02.852
+to see what went wrong.
+
+154
+00:06:02.852 --> 00:06:05.536
+So this is just really helpful in my experience.
+
+155
+00:06:05.536 --> 00:06:07.550
+A second one is in network error.
+
+156
+00:06:07.550 --> 00:06:09.740
+And this happens if your backend is down
+
+157
+00:06:09.740 --> 00:06:10.730
+for whatever reason,
+
+158
+00:06:10.730 --> 00:06:13.732
+or you have CORS issues or something like that.
+
+159
+00:06:13.732 --> 00:06:15.780
+Most commonly for us,
+
+160
+00:06:15.780 --> 00:06:16.681
+I get this error is that
+
+161
+00:06:16.681 --> 00:06:18.730
+like I forgot to start the backend
+
+162
+00:06:18.730 --> 00:06:20.664
+and you're running your front end of your application
+
+163
+00:06:20.664 --> 00:06:23.840
+and it pings the API endpoint,
+
+164
+00:06:23.840 --> 00:06:28.840
+and it gets a 400 or 500 or 404 response from it.
+
+165
+00:06:29.300 --> 00:06:31.870
+So in our case, we just log out the network error,
+
+166
+00:06:31.870 --> 00:06:34.533
+and that will help us debug exactly what's going on.
+
+167
+00:06:36.640 --> 00:06:37.920
+So that's the first one.
+
+168
+00:06:37.920 --> 00:06:40.513
+The second one, and this is the big one is,
+
+169
+00:06:41.690 --> 00:06:43.140
+Apollo HTTP link.
+
+170
+00:06:43.140 --> 00:06:44.536
+So this is the really popular one
+
+171
+00:06:44.536 --> 00:06:46.801
+that pretty much everybody will use.
+
+172
+00:06:46.801 --> 00:06:50.378
+And this is responsible for fetching data
+
+173
+00:06:50.378 --> 00:06:54.130
+as well as making post requests,
+
+174
+00:06:54.130 --> 00:06:56.652
+which is when you wanna update or delete
+
+175
+00:06:56.652 --> 00:06:59.038
+or create a new item.
+
+176
+00:06:59.038 --> 00:07:02.860
+And inside of react, Apollo is gonna give us
+
+177
+00:07:02.860 --> 00:07:06.643
+both query and mutation hooks that will allow us to do that.
+
+178
+00:07:06.643 --> 00:07:08.538
+And this HTTP link is going to allow us.
+
+179
+00:07:08.538 --> 00:07:10.097
+You might be saying like
+
+180
+00:07:10.097 --> 00:07:12.690
+"Wes, that doesn't say HTTP link,
+
+181
+00:07:12.690 --> 00:07:14.960
+that says create upload link."
+
+182
+00:07:14.960 --> 00:07:16.600
+So the thing we need to know is that
+
+183
+00:07:16.600 --> 00:07:20.630
+this is this separate package called create upload link,
+
+184
+00:07:20.630 --> 00:07:22.780
+called Apollo upload Client.
+
+185
+00:07:22.780 --> 00:07:24.410
+And essentially what they have done
+
+186
+00:07:24.410 --> 00:07:28.160
+is they've taken Apollo HTTP link,
+
+187
+00:07:28.160 --> 00:07:30.350
+and layered on additional code
+
+188
+00:07:30.350 --> 00:07:33.180
+in order to allow us to do file uploads
+
+189
+00:07:33.180 --> 00:07:34.580
+which is exactly what we need.
+
+190
+00:07:34.580 --> 00:07:37.400
+So again, don't sweat this too much.
+
+191
+00:07:37.400 --> 00:07:39.901
+This is getting a little bit into the withs here
+
+192
+00:07:39.901 --> 00:07:41.054
+but if we take a look here,
+
+193
+00:07:41.054 --> 00:07:43.312
+it says where's the GraphQL endpoint
+
+194
+00:07:43.312 --> 00:07:47.410
+and if we take a look at our config.js
+
+195
+00:07:47.410 --> 00:07:50.075
+you'll see we have a localhost 3000, API/GraphQL.
+
+196
+00:07:50.075 --> 00:07:52.335
+And if you visit that URL in your browser,
+
+197
+00:07:52.335 --> 00:07:55.216
+you'll see this is the one that we were working with earlier
+
+198
+00:07:55.216 --> 00:07:56.700
+where we can query things.
+
+199
+00:07:56.700 --> 00:08:00.080
+So that's the URL of our GraphQL endpoint.
+
+200
+00:08:00.080 --> 00:08:01.711
+And then we'll also have a production endpoint
+
+201
+00:08:01.711 --> 00:08:04.560
+where I'll pop the URL in there.
+
+202
+00:08:04.560 --> 00:08:05.398
+And then I have one more thing
+
+203
+00:08:05.398 --> 00:08:08.893
+is how many items should be shown per page.
+
+204
+00:08:09.800 --> 00:08:11.448
+You could also put these as environmental variables,
+
+205
+00:08:11.448 --> 00:08:15.640
+but in my experience, it's sometimes a little easier
+
+206
+00:08:15.640 --> 00:08:17.590
+if they're not sensitive information
+
+207
+00:08:17.590 --> 00:08:18.805
+just pop them in a JS file
+
+208
+00:08:18.805 --> 00:08:21.942
+so you can import and export them as you need it.
+
+209
+00:08:21.942 --> 00:08:23.030
+What else?
+
+210
+00:08:23.030 --> 00:08:25.060
+FetchOption include credentials.
+
+211
+00:08:25.060 --> 00:08:27.820
+So that means whenever it goes off and fetches data
+
+212
+00:08:27.820 --> 00:08:29.500
+from our GraphQL endpoint,
+
+213
+00:08:29.500 --> 00:08:31.813
+should it send the cookies along for the ride?
+
+214
+00:08:31.813 --> 00:08:33.030
+And in our case, yes
+
+215
+00:08:33.030 --> 00:08:37.180
+because we need to see if uses are logged in or not,
+
+216
+00:08:37.180 --> 00:08:38.451
+depending on what they're allowed to do
+
+217
+00:08:38.451 --> 00:08:41.740
+or what pieces of information they're allowed to see.
+
+218
+00:08:41.740 --> 00:08:44.940
+And then also, pass along the headers from their request.
+
+219
+00:08:44.940 --> 00:08:45.880
+This is really, really important
+
+220
+00:08:45.880 --> 00:08:50.260
+because we are using server-side rendering.
+
+221
+00:08:50.260 --> 00:08:55.260
+And if you are trying to server-side render logged in state,
+
+222
+00:08:55.430 --> 00:08:58.100
+like for example, I go to this page right here
+
+223
+00:08:58.100 --> 00:08:59.423
+and I refresh.
+
+224
+00:09:01.300 --> 00:09:02.210
+Oh, I am...
+
+225
+00:09:02.210 --> 00:09:03.263
+I got signed out.
+
+226
+00:09:04.137 --> 00:09:07.080
+I got signed out because I signed into my other one.
+
+227
+00:09:07.080 --> 00:09:11.350
+So maybe if I open this up in an incognito tab
+
+228
+00:09:11.350 --> 00:09:13.093
+and I go ahead and sign in,
+
+229
+00:09:14.289 --> 00:09:17.311
+gmail.com, Wes, Wes, Wes.
+
+230
+00:09:17.311 --> 00:09:18.280
+There we go.
+
+231
+00:09:18.280 --> 00:09:20.540
+So watch, when I refresh this page,
+
+232
+00:09:20.540 --> 00:09:22.530
+you see how like it shows my cart.
+
+233
+00:09:22.530 --> 00:09:27.410
+All of these things are in the signed in state immediately.
+
+234
+00:09:27.410 --> 00:09:28.776
+If you've ever been to a website
+
+235
+00:09:28.776 --> 00:09:31.990
+and you get like a little flicker
+
+236
+00:09:31.990 --> 00:09:33.730
+that says log in for a second
+
+237
+00:09:33.730 --> 00:09:35.389
+and then a split second later it says,
+
+238
+00:09:35.389 --> 00:09:38.270
+Oh, sign out and it shows like your avatar,
+
+239
+00:09:38.270 --> 00:09:40.560
+that's because on the server side,
+
+240
+00:09:40.560 --> 00:09:42.150
+they don't know if you're signed in or not.
+
+241
+00:09:42.150 --> 00:09:44.579
+So they just send the logged out version to the thing
+
+242
+00:09:44.579 --> 00:09:46.671
+and then they have to rerender it on the Client side.
+
+243
+00:09:46.671 --> 00:09:50.300
+And that's really annoying 'cause you get this like flicker.
+
+244
+00:09:50.300 --> 00:09:55.300
+So by sending along all the cookies and headers
+
+245
+00:09:56.018 --> 00:10:00.530
+with every single request, it will allow us to render
+
+246
+00:10:02.144 --> 00:10:04.393
+on the server side, all of the logged in states
+
+247
+00:10:04.393 --> 00:10:06.290
+so you don't get that weird flicker
+
+248
+00:10:06.290 --> 00:10:08.370
+every single time that you run the thing.
+
+249
+00:10:08.370 --> 00:10:10.050
+So that was really important to me.
+
+250
+00:10:10.050 --> 00:10:14.390
+And that is why I stick the JWT into a cookie,
+
+251
+00:10:14.390 --> 00:10:16.010
+and not into local storage,
+
+252
+00:10:16.010 --> 00:10:18.365
+because local storage can't be sent to the server
+
+253
+00:10:18.365 --> 00:10:19.802
+when somebody refreshes the page,
+
+254
+00:10:19.802 --> 00:10:21.600
+but cookies can be
+
+255
+00:10:21.600 --> 00:10:24.730
+and that's by these two things right here.
+
+256
+00:10:24.730 --> 00:10:27.420
+Last thing, whoo, I know this is a lot stick with me.
+
+257
+00:10:27.420 --> 00:10:29.720
+We're gonna get into writing some react code
+
+258
+00:10:29.720 --> 00:10:30.693
+in just a second.
+
+259
+00:10:31.532 --> 00:10:32.874
+The last thing is a cache.
+
+260
+00:10:32.874 --> 00:10:35.880
+So where will you be storing the cache?
+
+261
+00:10:35.880 --> 00:10:37.932
+Most popular way is just in memory
+
+262
+00:10:37.932 --> 00:10:39.754
+meaning that in the browser.
+
+263
+00:10:39.754 --> 00:10:42.204
+So if I go to this page right here
+
+264
+00:10:42.204 --> 00:10:44.340
+and I'm clicking back and forth,
+
+265
+00:10:44.340 --> 00:10:45.740
+you see how it's nice and fast.
+
+266
+00:10:45.740 --> 00:10:48.940
+But then if I had to refresh the page, that cache has gone
+
+267
+00:10:48.940 --> 00:10:50.457
+and that's okay, 'cause that's all you want.
+
+268
+00:10:50.457 --> 00:10:52.340
+You just want it for the users
+
+269
+00:10:52.340 --> 00:10:54.070
+however long they have visited.
+
+270
+00:10:54.070 --> 00:10:55.307
+We will get a little bit more
+
+271
+00:10:55.307 --> 00:10:58.840
+into something called typepolicies, but not for now.
+
+272
+00:10:58.840 --> 00:11:01.600
+And then finally this little bit right here
+
+273
+00:11:01.600 --> 00:11:04.335
+it will restore any initial state.
+
+274
+00:11:04.335 --> 00:11:06.610
+And what that does is
+
+275
+00:11:06.610 --> 00:11:11.610
+because we're initially rendering these views on the server,
+
+276
+00:11:11.610 --> 00:11:14.710
+we need to hot potato all the data
+
+277
+00:11:14.710 --> 00:11:17.370
+that was collected on the server Apollo Client,
+
+278
+00:11:17.370 --> 00:11:22.110
+and we need to give it to the hydration on the Client.
+
+279
+00:11:22.110 --> 00:11:24.140
+And that's exactly what this is doing.
+
+280
+00:11:24.140 --> 00:11:27.250
+It's saying if there's any initial state, then restore it,
+
+281
+00:11:27.250 --> 00:11:29.231
+otherwise, go ahead.
+
+282
+00:11:29.231 --> 00:11:33.120
+Last thing we just need to know is this getDataFromTree.
+
+283
+00:11:33.120 --> 00:11:35.320
+We take a look where that's used right here.
+
+284
+00:11:36.533 --> 00:11:37.624
+We're using a package called
+
+285
+00:11:37.624 --> 00:11:42.624
+withApollo that allows us to crawl
+
+286
+00:11:42.800 --> 00:11:45.450
+all of our arch pages and components,
+
+287
+00:11:45.450 --> 00:11:47.860
+and look for any queries that we have.
+
+288
+00:11:47.860 --> 00:11:49.846
+So queries for products and users
+
+289
+00:11:49.846 --> 00:11:52.030
+and orders and things like that.
+
+290
+00:11:52.030 --> 00:11:53.940
+And it will crawl them,
+
+291
+00:11:53.940 --> 00:11:56.200
+and it will make sure that we have fetched
+
+292
+00:11:56.200 --> 00:11:58.672
+and it will wait for all that data to be fetched
+
+293
+00:11:58.672 --> 00:12:01.556
+before the server sends the HTML
+
+294
+00:12:01.556 --> 00:12:03.640
+from the server to the Client.
+
+295
+00:12:03.640 --> 00:12:05.320
+So, I know that's a whole lot,
+
+296
+00:12:05.320 --> 00:12:06.886
+and that's why they often tuck away this
+
+297
+00:12:06.886 --> 00:12:09.400
+into a nice little Apollo Boost.
+
+298
+00:12:09.400 --> 00:12:11.490
+But I thought I would go through that with you.
+
+299
+00:12:11.490 --> 00:12:12.457
+So, I know that's a lot
+
+300
+00:12:12.457 --> 00:12:14.730
+but now what we'll do is we'll actually
+
+301
+00:12:14.730 --> 00:12:17.020
+take this with data function,
+
+302
+00:12:17.020 --> 00:12:19.730
+and we'll create an instance of Apollo,
+
+303
+00:12:19.730 --> 00:12:21.640
+and inject it into our application.
+
+304
+00:12:21.640 --> 00:12:23.720
+And the place where we do that,
+
+305
+00:12:23.720 --> 00:12:27.320
+is inside of our Underscore app.js file.
+
+306
+00:12:27.320 --> 00:12:28.980
+Remember we did this.
+
+307
+00:12:28.980 --> 00:12:32.256
+And we need to wrap our entire application
+
+308
+00:12:32.256 --> 00:12:34.470
+in what's called a provider.
+
+309
+00:12:34.470 --> 00:12:36.310
+And a provider in react,
+
+310
+00:12:36.310 --> 00:12:39.054
+is a component that usually lives
+
+311
+00:12:39.054 --> 00:12:42.060
+very high in your application,
+
+312
+00:12:42.060 --> 00:12:46.982
+and then it allows components that are several levels deep
+
+313
+00:12:46.982 --> 00:12:49.370
+in order to access that data.
+
+314
+00:12:49.370 --> 00:12:50.782
+So for example
+
+315
+00:12:50.782 --> 00:12:54.667
+the Apollo Client is at an application level
+
+316
+00:12:54.667 --> 00:12:58.180
+meaning that anywhere inside of this application,
+
+317
+00:12:58.180 --> 00:13:01.993
+I can go and fetch data from the Apollo Client.
+
+318
+00:13:01.993 --> 00:13:05.150
+Even if I need like the price,
+
+319
+00:13:05.150 --> 00:13:07.940
+I can get that at this product level component,
+
+320
+00:13:07.940 --> 00:13:10.930
+even though it probably lives at a much higher level.
+
+321
+00:13:10.930 --> 00:13:12.840
+And that's what a provider does, is it,
+
+322
+00:13:12.840 --> 00:13:15.160
+you stick a provider very nice and high.
+
+323
+00:13:15.160 --> 00:13:16.428
+We're gonna be creating our own providers
+
+324
+00:13:16.428 --> 00:13:17.710
+for things like the cart.
+
+325
+00:13:17.710 --> 00:13:18.580
+So we'll get to that.
+
+326
+00:13:18.580 --> 00:13:21.623
+But for now, let's go into our app.js,
+
+327
+00:13:21.623 --> 00:13:25.485
+and around our page we will give ourselves a new tag
+
+328
+00:13:25.485 --> 00:13:28.903
+called Apollo provider.
+
+329
+00:13:30.610 --> 00:13:33.466
+And you see that it imported the Apollo provider
+
+330
+00:13:33.466 --> 00:13:35.370
+from Apollo Client.
+
+331
+00:13:35.370 --> 00:13:39.593
+And then we will wrap that in our entire page here,
+
+332
+00:13:40.450 --> 00:13:44.913
+then Apollo provider needs a Client property,
+
+333
+00:13:45.870 --> 00:13:49.140
+and we are going to make one, so right above here.
+
+334
+00:13:49.140 --> 00:13:52.240
+And that is gonna come in via up here.
+
+335
+00:13:52.240 --> 00:13:53.230
+So we'll say...
+
+336
+00:13:53.230 --> 00:13:56.450
+Next to page props we'll also destructure Apollo,
+
+337
+00:13:56.450 --> 00:13:59.080
+and we'll put it into our Client here.
+
+338
+00:13:59.080 --> 00:13:59.913
+And you may be saying like,
+
+339
+00:13:59.913 --> 00:14:01.650
+"Okay Wes, but like
+
+340
+00:14:01.650 --> 00:14:02.680
+where does that come from?
+
+341
+00:14:02.680 --> 00:14:06.720
+Like if my app is as high as we possibly can get
+
+342
+00:14:06.720 --> 00:14:11.720
+in our application, who's handing us the Apollo prop Wes?"
+
+343
+00:14:12.043 --> 00:14:17.043
+Well, the answer to that is when we export our application,
+
+344
+00:14:18.140 --> 00:14:22.550
+we're gonna wrap it with data function.
+
+345
+00:14:22.550 --> 00:14:25.130
+And what that will do is it's going to
+
+346
+00:14:25.130 --> 00:14:27.690
+give us our entire application component,
+
+347
+00:14:27.690 --> 00:14:30.570
+but it will give it to us with our data.
+
+348
+00:14:30.570 --> 00:14:31.403
+That's why it's called withData.
+
+349
+00:14:31.403 --> 00:14:33.950
+So what we'll do here is,
+
+350
+00:14:33.950 --> 00:14:37.813
+we'll take off the export default from my app,
+
+351
+00:14:38.710 --> 00:14:43.406
+and we'll go down here and we'll say export default my app
+
+352
+00:14:43.406 --> 00:14:47.153
+okay normal, but we'll wrap it in withData.
+
+353
+00:14:51.360 --> 00:14:55.740
+And then we'll need to import that with data function, boom,
+
+354
+00:14:55.740 --> 00:14:58.787
+from lib withData.
+
+355
+00:14:58.787 --> 00:15:00.335
+And now what that will do is it says,
+
+356
+00:15:00.335 --> 00:15:01.654
+okay, give me my app
+
+357
+00:15:01.654 --> 00:15:05.843
+but inject the Apollo Client along inside of it.
+
+358
+00:15:05.843 --> 00:15:07.000
+Okay.
+
+359
+00:15:07.000 --> 00:15:08.374
+That was a little bit of code that we wrote.
+
+360
+00:15:08.374 --> 00:15:11.970
+And let's just go and see if it's working so far.
+
+361
+00:15:11.970 --> 00:15:12.803
+And what you can do is...
+
+362
+00:15:12.803 --> 00:15:16.750
+Let's just console.log Apollo inside of here.
+
+363
+00:15:16.750 --> 00:15:19.751
+We'll go back to our actual application
+
+364
+00:15:19.751 --> 00:15:22.163
+which is on localhost 777.
+
+365
+00:15:23.110 --> 00:15:24.950
+Gonna open up my dev tools.
+
+366
+00:15:24.950 --> 00:15:26.450
+Just refresh the page,
+
+367
+00:15:26.450 --> 00:15:29.550
+and look, this is our Apollo Client right here.
+
+368
+00:15:29.550 --> 00:15:31.243
+You see it's got cache,
+
+369
+00:15:32.263 --> 00:15:33.250
+a whole bunch of other stuff
+
+370
+00:15:33.250 --> 00:15:37.170
+mutate, query, query deduplication.
+
+371
+00:15:37.170 --> 00:15:39.140
+Most of the stuff we don't have to care about
+
+372
+00:15:39.140 --> 00:15:42.740
+but you should also see the Apollo dev tools,
+
+373
+00:15:42.740 --> 00:15:45.340
+is now popped up in our application
+
+374
+00:15:45.340 --> 00:15:46.736
+because it has figured out,
+
+375
+00:15:46.736 --> 00:15:50.090
+oh you actually have an Apollo Client now,
+
+376
+00:15:50.090 --> 00:15:51.540
+so we can see inside of it.
+
+377
+00:15:51.540 --> 00:15:53.257
+And if we look at it, there's nothing there
+
+378
+00:15:53.257 --> 00:15:54.932
+'cause we haven't actually written any queries
+
+379
+00:15:54.932 --> 00:15:57.500
+or mutations just yet.
+
+380
+00:15:57.500 --> 00:15:58.920
+The last thing we need to do here
+
+381
+00:15:58.920 --> 00:16:02.503
+is to tell Next.js,
+
+382
+00:16:03.380 --> 00:16:07.687
+that it needs to go and fetch all of the queries
+
+383
+00:16:07.687 --> 00:16:10.300
+that are in all of the children components.
+
+384
+00:16:10.300 --> 00:16:11.320
+So what we'll do here is we'll say,
+
+385
+00:16:11.320 --> 00:16:13.467
+my app.getInitialProps.
+
+386
+00:16:19.010 --> 00:16:20.006
+My app.getInitialProps,
+
+387
+00:16:20.006 --> 00:16:22.950
+that is a specific Next.js thing.
+
+388
+00:16:22.950 --> 00:16:24.351
+And this is in a sync method
+
+389
+00:16:24.351 --> 00:16:28.484
+meaning that we can wait on it to do anything.
+
+390
+00:16:28.484 --> 00:16:31.308
+You could wait on it to go fetch data from an API.
+
+391
+00:16:31.308 --> 00:16:32.830
+You could wait 10 seconds
+
+392
+00:16:32.830 --> 00:16:35.403
+if you want it to delay your loading by 10 seconds
+
+393
+00:16:35.403 --> 00:16:36.730
+for whatever reasons.
+
+394
+00:16:36.730 --> 00:16:39.320
+But that's what we mean by in a sync function.
+
+395
+00:16:39.320 --> 00:16:42.263
+'So it's equal to a sync function.
+
+396
+00:16:44.120 --> 00:16:46.013
+And in that, the props of that function
+
+397
+00:16:46.013 --> 00:16:51.013
+will destructure the component, and CTX, the context
+
+398
+00:16:51.550 --> 00:16:56.267
+and we'll say, let pageProps is equal to that,
+
+399
+00:16:56.267 --> 00:17:00.447
+and we'll say, if the component.getInitialProps,
+
+400
+00:17:02.740 --> 00:17:06.367
+then we will say, pageProps dot...
+
+401
+00:17:06.367 --> 00:17:11.133
+Oh no, is equal to await component.getInitialProps
+
+402
+00:17:12.774 --> 00:17:14.280
+and we'll pass the context.
+
+403
+00:17:14.280 --> 00:17:16.805
+So essentially what we're doing right here is we're saying
+
+404
+00:17:16.805 --> 00:17:18.790
+if any of the pages have
+
+405
+00:17:18.790 --> 00:17:21.187
+a getInitialProps method on them,
+
+406
+00:17:21.187 --> 00:17:22.560
+which they will,
+
+407
+00:17:22.560 --> 00:17:25.650
+because that's what withData is adding to them
+
+408
+00:17:25.650 --> 00:17:28.492
+then we're going to just wait and go and fetch it.
+
+409
+00:17:28.492 --> 00:17:31.651
+Again, this is more boiler plate that happens
+
+410
+00:17:31.651 --> 00:17:36.651
+because of how Apollo and Next.js work together.
+
+411
+00:17:36.735 --> 00:17:38.834
+And then underneath here, what we'll do is we'll say,
+
+412
+00:17:38.834 --> 00:17:43.300
+pageProps.query is equal to ctx.query,
+
+413
+00:17:43.300 --> 00:17:46.314
+and that will allow us to get the any query variables
+
+414
+00:17:46.314 --> 00:17:48.189
+like Forward slash products,
+
+415
+00:17:48.189 --> 00:17:52.130
+forward slash two available at a page level,
+
+416
+00:17:52.130 --> 00:17:54.197
+and then we'll return pageProps.
+
+417
+00:17:56.471 --> 00:17:57.480
+Beautiful.
+
+418
+00:17:57.480 --> 00:17:59.907
+Okay. So that is our app.
+
+419
+00:17:59.907 --> 00:18:02.130
+Let's just triple check that it's still working.
+
+420
+00:18:02.130 --> 00:18:03.160
+There's no errors.
+
+421
+00:18:03.160 --> 00:18:05.071
+No. This is looking pretty good.
+
+422
+00:18:05.071 --> 00:18:06.574
+This is not my most favorite thing.
+
+423
+00:18:06.574 --> 00:18:10.950
+I wish that this would be tucked away a little bit nicer,
+
+424
+00:18:10.950 --> 00:18:13.061
+but that is sort of a side effect
+
+425
+00:18:13.061 --> 00:18:16.140
+of JavaScript in general is that,
+
+426
+00:18:16.140 --> 00:18:19.610
+you're taking two things that have no idea about each other
+
+427
+00:18:19.610 --> 00:18:21.600
+and if you wanna make them work together,
+
+428
+00:18:21.600 --> 00:18:25.030
+you sometimes have to write 30 or 40 lines of glue
+
+429
+00:18:25.030 --> 00:18:26.127
+in order to get them to work together.
+
+430
+00:18:26.127 --> 00:18:28.260
+So, good job getting through that,
+
+431
+00:18:28.260 --> 00:18:29.930
+let's get into some more fun stuff
+
+432
+00:18:29.930 --> 00:18:31.155
+which is writing queries and mutations
+
+433
+00:18:31.155 --> 00:18:33.527
+and writing some react hooks.
+
+434
+00:18:33.527 --> 00:18:34.977
+I'll see you in the next one.
+
