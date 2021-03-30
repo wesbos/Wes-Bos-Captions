@@ -1,542 +1,1030 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.802 line:100% position:50% align:middle
-♪ [music] ♪
+1
+00:00:00.078 --> 00:00:02.661
+(Upbeat music)
+
+2
+00:00:05.918 --> 00:00:09.235
+<v Wes>Now that our menu of fish is being persisted</v>
+
+3
+00:00:09.235 --> 00:00:12.418
+to Firebase and reinstated every single time that I refresh,
+
+4
+00:00:12.418 --> 00:00:15.007
+let's turn our attention to order which is not being
+
+5
+00:00:15.007 --> 00:00:18.271
+persisted and every time I refresh, I totally lose my order.
+
+6
+00:00:18.271 --> 00:00:21.156
+I'm going to show you another way to persist data
+
+7
+00:00:21.156 --> 00:00:23.925
+that's not in a database, but sometimes you just need
+
+8
+00:00:23.925 --> 00:00:26.944
+to keep data in the users browser so that if they come back
+
+9
+00:00:26.944 --> 00:00:29.146
+to it or they change pages or refresh,
+
+10
+00:00:29.146 --> 00:00:30.417
+then we can reinstate it.
+
+11
+00:00:30.417 --> 00:00:32.594
+We're going to be doing it in the local storage
+
+12
+00:00:32.594 --> 00:00:35.540
+and if you've never heard of local storage four
+
+13
+00:00:35.540 --> 00:00:37.515
+it's kind of like cookies,
+
+14
+00:00:37.515 --> 00:00:40.995
+but a little bit easier to work with.
+
+15
+00:00:40.995 --> 00:00:44.328
+And, it's a key value token meaning that we can grab
+
+16
+00:00:44.328 --> 00:00:45.407
+a whole bunch of keys
+
+17
+00:00:45.407 --> 00:00:48.111
+and then you can store values along with them
+
+18
+00:00:48.111 --> 00:00:52.073
+and then you can come back to that at a later point in time
+
+19
+00:00:52.073 --> 00:00:54.995
+and pull that data and put it back into your applications.
+
+20
+00:00:54.995 --> 00:00:57.324
+So, you can see that Firebase actually uses
+
+21
+00:00:57.324 --> 00:00:59.781
+local storage itself.
+
+22
+00:00:59.781 --> 00:01:03.715
+There's some fish IDs that are being pulled in here from
+
+23
+00:01:03.715 --> 00:01:07.589
+previously when I was testing my other local app.
+
+24
+00:01:07.589 --> 00:01:10.626
+Then there's other things like other applications I,
+
+25
+00:01:10.626 --> 00:01:11.526
+by chance,
+
+26
+00:01:11.526 --> 00:01:14.616
+used this local storage 3000 for other applications.
+
+27
+00:01:14.616 --> 00:01:17.738
+I have got some tokens here that is used for authentication
+
+28
+00:01:17.738 --> 00:01:19.278
+and not really sure what this is from.
+
+29
+00:01:19.278 --> 00:01:21.862
+Probably from some other application running a local host.
+
+30
+00:01:21.862 --> 00:01:24.248
+If you're ever not sure, you can always just clear it out,
+
+31
+00:01:24.248 --> 00:01:29.248
+delete everything, refresh your browser and then you'll see
+
+32
+00:01:29.351 --> 00:01:31.955
+all of the different data that is being added
+
+33
+00:01:31.955 --> 00:01:34.446
+from your application on Pagelook.
+
+34
+00:01:34.446 --> 00:01:38.395
+So, let's go back to our application here.
+
+35
+00:01:38.395 --> 00:01:43.213
+We want to persist this order state in 'local storage',
+
+36
+00:01:43.213 --> 00:01:45.844
+so, we are in the app component, that makes sense,
+
+37
+00:01:45.844 --> 00:01:48.609
+but we need to talk about a couple other different
+
+38
+00:01:48.609 --> 00:01:50.192
+life cycle methods.
+
+39
+00:01:51.327 --> 00:01:54.056
+The other one that we're going to be using is called
+
+40
+00:01:54.056 --> 00:01:56.219
+'componentDidUpdate'.
+
+41
+00:01:56.219 --> 00:01:58.159
+This is something that is evoked
+
+42
+00:01:58.159 --> 00:01:59.962
+immediately after updating occurs.
+
+43
+00:01:59.962 --> 00:02:02.241
+This method is not called for the initial render.
+
+44
+00:02:02.241 --> 00:02:05.789
+That's perfect for us because as soon as it's loaded
+
+45
+00:02:05.789 --> 00:02:08.562
+and as soon as someone modifies their order,
+
+46
+00:02:08.562 --> 00:02:13.072
+what we want to do is to update our local storage showing us
+
+47
+00:02:13.072 --> 00:02:16.356
+that this is exactly what they have added to their order.
+
+48
+00:02:16.356 --> 00:02:19.087
+So, let's go ahead and do that.
+
+49
+00:02:19.087 --> 00:02:22.392
+We'll go to 'componentDidMount', we'll go underneath here.
+
+50
+00:02:22.392 --> 00:02:24.975
+We'll say 'componentDidUpdate'.
+
+51
+00:02:26.300 --> 00:02:28.083
+And sometimes I like to put
+
+52
+00:02:28.083 --> 00:02:30.603
+that above my 'componentWillUnmount' so you can kind of see
+
+53
+00:02:30.603 --> 00:02:33.642
+the whole lifecycle of this thing happens first,
+
+54
+00:02:33.642 --> 00:02:35.064
+this thing happens next.
+
+55
+00:02:35.064 --> 00:02:38.897
+So, component update, let's just 'console.log'
+
+56
+00:02:39.779 --> 00:02:41.112
+'IT UPDATED!!!'.
+
+57
+00:02:44.795 --> 00:02:47.499
+And we'll go and every time I add something to my order,
+
+58
+00:02:47.499 --> 00:02:50.862
+you'll see that 'IT UPDATED!!' is being called.
+
+59
+00:02:50.862 --> 00:02:53.339
+Which is good. Okay, good.
+
+60
+00:02:53.339 --> 00:02:57.722
+Now, let's take a look. Also, there are no arguments.
+
+61
+00:02:57.722 --> 00:03:00.034
+Sometimes you're going to see something like
+
+62
+00:03:00.034 --> 00:03:02.873
+'componentDidCAtch' or 'setState'.
+
+63
+00:03:02.873 --> 00:03:05.767
+You're going to see that it takes arguments and component
+
+64
+00:03:05.767 --> 00:03:08.551
+will update 'takes no arguments' because if we need
+
+65
+00:03:08.551 --> 00:03:10.869
+to be able to access props or states,
+
+66
+00:03:10.869 --> 00:03:12.411
+we simply just need to use
+
+67
+00:03:12.411 --> 00:03:14.404
+'this.props' or 'this.state'.
+
+68
+00:03:14.404 --> 00:03:18.386
+So, let's 'console.log', 'this.state.order'.
+
+69
+00:03:18.386 --> 00:03:21.526
+Every single time that we modify our order.
+
+70
+00:03:21.526 --> 00:03:25.707
+Good. So we're seeing that our order state is there.
+
+71
+00:03:25.707 --> 00:03:29.886
+Now, how do we stick that into our actual local storage?
+
+72
+00:03:29.886 --> 00:03:31.175
+Well, it's pretty simple.
+
+73
+00:03:31.175 --> 00:03:33.899
+We simply just say 'localStorage'
+
+74
+00:03:33.899 --> 00:03:38.899
+capital 'S.setitem' and the item that we're going to set is,
+
+75
+00:03:40.528 --> 00:03:42.522
+well we can't just say order because this
+
+76
+00:03:42.522 --> 00:03:44.939
+is gonna be for a specific...
+
+77
+00:03:45.816 --> 00:03:47.475
+(laughing) Oh that's terrible!
+
+78
+00:03:47.475 --> 00:03:52.009
+Panicky, unsightly wise of me. Let's go to a better one.
+
+79
+00:03:52.009 --> 00:03:53.561
+Here we go.
+
+80
+00:03:53.561 --> 00:03:55.040
+Loaded in, add to order.
+
+81
+00:03:55.040 --> 00:03:59.242
+We want to store the order for that specific store.
+
+82
+00:03:59.242 --> 00:04:02.669
+So, the question is, where do you get the store name?
+
+83
+00:04:02.669 --> 00:04:03.917
+That can come from 'props'.
+
+84
+00:04:03.917 --> 00:04:04.750
+Remember?
+
+85
+00:04:04.750 --> 00:04:07.583
+'this.props.match.params.storeId'.
+
+86
+00:04:10.964 --> 00:04:14.958
+We're going to use the key which is the left hand side.
+
+87
+00:04:14.958 --> 00:04:17.540
+Application. That's gonna be this.
+
+88
+00:04:17.540 --> 00:04:19.856
+And then the value is going to be
+
+89
+00:04:19.856 --> 00:04:21.255
+'this.state.order'.
+
+90
+00:04:21.255 --> 00:04:23.257
+Now, let me show you what happens
+
+91
+00:04:23.257 --> 00:04:25.022
+when that actually happens.
+
+92
+00:04:25.022 --> 00:04:26.566
+Get rid of that.
+
+93
+00:04:26.566 --> 00:04:27.399
+Save.
+
+94
+00:04:28.523 --> 00:04:29.410
+Load some sample.
+
+95
+00:04:29.410 --> 00:04:30.813
+We don't need to load some sample fishes (laughs)
+
+96
+00:04:30.813 --> 00:04:32.440
+because they already are.
+
+97
+00:04:32.440 --> 00:04:34.547
+Now, when I modify it, look what's happening.
+
+98
+00:04:34.547 --> 00:04:39.047
+We are getting the key of 'ugliest-nervous-diagnoses',
+
+99
+00:04:39.982 --> 00:04:42.612
+but the value is 'obect object'.
+
+100
+00:04:42.612 --> 00:04:43.493
+The reason why...
+
+101
+00:04:43.493 --> 00:04:45.711
+If you're ever wondering, like how come I always
+
+102
+00:04:45.711 --> 00:04:46.675
+see this "object object".
+
+103
+00:04:46.675 --> 00:04:49.760
+That's because if you ever tried to convert an object
+
+104
+00:04:49.760 --> 00:04:50.994
+to a string...
+
+105
+00:04:50.994 --> 00:04:55.553
+So like if I have "const wes" is = to "name: wes".
+
+106
+00:04:55.553 --> 00:04:57.126
+If I ever have an object and I try
+
+107
+00:04:57.126 --> 00:04:59.910
+to 'alert' it 'wes'. You will see that this is the 'object'
+
+108
+00:04:59.910 --> 00:05:02.552
+to 'object' as well and that's because anytime you try to
+
+109
+00:05:02.552 --> 00:05:07.349
+put an object into a place where a string is required,
+
+110
+00:05:07.349 --> 00:05:11.191
+the browser will just say "oh, I was expecting a string,
+
+111
+00:05:11.191 --> 00:05:13.674
+but you gave me something else. So, I'm just going to
+
+112
+00:05:13.674 --> 00:05:16.480
+call the '.toString' method on that.
+
+113
+00:05:16.480 --> 00:05:18.932
+That's where it (laughs) gives you "object" to "object"
+
+114
+00:05:18.932 --> 00:05:20.210
+which is not much use to us.
+
+115
+00:05:20.210 --> 00:05:25.210
+So, what we need to do is convert that 'object' to a string
+
+116
+00:05:25.226 --> 00:05:27.534
+representation and that's exaclty what
+
+117
+00:05:27.534 --> 00:05:29.367
+'JSON.stringify does'.
+
+118
+00:05:30.223 --> 00:05:33.188
+If I pass 'wes' to that, you will see that it gives me
+
+119
+00:05:33.188 --> 00:05:36.298
+the string version of what that actual object is.
+
+120
+00:05:36.298 --> 00:05:39.195
+That's what we're going to use to store in our database.
+
+121
+00:05:39.195 --> 00:05:42.744
+Just take your 'this.that.state.order'
+
+122
+00:05:42.744 --> 00:05:45.375
+and wrap it in a JSON.
+
+123
+00:05:45.375 --> 00:05:47.458
+Capital 'JSON.stringify'.
+
+124
+00:05:48.379 --> 00:05:51.242
+Now, go back to your application tab.
+
+125
+00:05:51.242 --> 00:05:53.061
+We're gonna be watching this.
+
+126
+00:05:53.061 --> 00:05:55.812
+And then, every time I update my order,
+
+127
+00:05:55.812 --> 00:05:58.394
+that local storage is going to work.
+
+128
+00:05:58.394 --> 00:06:01.043
+If I refresh the page, you'll see that, oh,
+
+129
+00:06:01.043 --> 00:06:02.793
+for a split second...
+
+130
+00:06:05.836 --> 00:06:07.850
+it is being updated.
+
+131
+00:06:07.850 --> 00:06:09.082
+But then I refresh.
+
+132
+00:06:09.082 --> 00:06:10.143
+Watch real quick!
+
+133
+00:06:10.143 --> 00:06:11.418
+It's there for a second and
+
+134
+00:06:11.418 --> 00:06:13.329
+then it updates to a blank object
+
+135
+00:06:13.329 --> 00:06:16.527
+and that's because when the component mounts, we are
+
+136
+00:06:16.527 --> 00:06:19.265
+updating state which is, in turn, triggering
+
+137
+00:06:19.265 --> 00:06:20.926
+'componentDidUpdate'.
+
+138
+00:06:20.926 --> 00:06:24.769
+So, what we need to do is...but when we mount, we need to
+
+139
+00:06:24.769 --> 00:06:27.102
+first, just reinstate the...
+
+140
+00:06:28.528 --> 00:06:29.679
+local storage.
+
+141
+00:06:29.679 --> 00:06:32.679
+"First reinstate our local storage".
+
+142
+00:06:33.777 --> 00:06:35.315
+So, we will say...
+
+143
+00:06:35.315 --> 00:06:39.815
+'const localStorageRef = to localStorage.getItem'
+
+144
+00:06:41.450 --> 00:06:44.970
+Local storage is super easy, it's '.setItem.getItem"
+
+145
+00:06:44.970 --> 00:06:47.322
+and I think it's '.removeItem' to delete it.
+
+146
+00:06:47.322 --> 00:06:52.322
+And we want to get the item from the 'params.store ID'.
+
+147
+00:06:52.716 --> 00:06:55.928
+Actually, we don't need back text there.
+
+148
+00:06:55.928 --> 00:06:59.190
+Let's just 'console.log', 'localStorageRef'
+
+149
+00:06:59.190 --> 00:07:01.617
+just to see what we've got there.
+
+150
+00:07:01.617 --> 00:07:05.174
+And, it's nul. It shouldn't be nul.
+
+151
+00:07:05.174 --> 00:07:09.193
+Oh, capital ID. My entire life is deciding whether
+
+152
+00:07:09.193 --> 00:07:12.364
+ID should be camel cased or not.
+
+153
+00:07:12.364 --> 00:07:14.335
+So, put a lower case D there
+
+154
+00:07:14.335 --> 00:07:18.134
+and now let's add some items to our order and then refresh.
+
+155
+00:07:18.134 --> 00:07:19.624
+We'll see that this is our
+
+156
+00:07:19.624 --> 00:07:23.207
+local storage ref right here which is fish 1 and
+
+157
+00:07:23.207 --> 00:07:24.641
+we had seven of them.
+
+158
+00:07:24.641 --> 00:07:27.407
+So, what we want to do is take that local storage ref,
+
+159
+00:07:27.407 --> 00:07:29.044
+which is going to be fish 7
+
+160
+00:07:29.044 --> 00:07:31.387
+and set it to state, but sometimes we're going
+
+161
+00:07:31.387 --> 00:07:33.771
+to be visiting a brand new store and there might not be
+
+162
+00:07:33.771 --> 00:07:34.720
+anything in it.
+
+163
+00:07:34.720 --> 00:07:36.444
+What we're going to do is say "If"
+
+164
+00:07:36.444 --> 00:07:40.798
+there is a 'localStorageRef', then, we are going to say
+
+165
+00:07:40.798 --> 00:07:42.131
+'this.set.state'
+
+166
+00:07:43.504 --> 00:07:46.313
+and we're going to update the order to be...
+
+167
+00:07:46.313 --> 00:07:48.796
+and you might think like we can just set it to
+
+168
+00:07:48.796 --> 00:07:51.637
+'localStorageRef', but what is 'localStorageRef'?
+
+169
+00:07:51.637 --> 00:07:54.563
+It's a string, right, we need to turn it back into an object
+
+170
+00:07:54.563 --> 00:07:56.618
+because that is what it's expecting.
+
+171
+00:07:56.618 --> 00:07:59.753
+So, wrap that thing in the opposite of 'JSON.stringify'
+
+172
+00:07:59.753 --> 00:08:01.985
+and it's 'JSON.parse'.
+
+173
+00:08:01.985 --> 00:08:06.386
+That will turn it back from a string into an object.
+
+174
+00:08:06.386 --> 00:08:08.703
+So, if there is a local storage value,
+
+175
+00:08:08.703 --> 00:08:10.025
+you're going to reinstate it.
+
+176
+00:08:10.025 --> 00:08:13.108
+Now, if I add some items to my order,
+
+177
+00:08:14.786 --> 00:08:16.314
+Add some lobster.
+
+178
+00:08:16.314 --> 00:08:18.083
+And refresh.
+
+179
+00:08:18.083 --> 00:08:20.914
+Ahhhhhhh nooo! What happened?!
+
+180
+00:08:20.914 --> 00:08:25.035
+"Cannot read property status of undefined".
+
+181
+00:08:25.035 --> 00:08:27.027
+I don't actually know what the issue is here,
+
+182
+00:08:27.027 --> 00:08:29.761
+but I think it would be helpful to watch me debug this.
+
+183
+00:08:29.761 --> 00:08:33.576
+My first idea is, is this order actually getting parse?
+
+184
+00:08:33.576 --> 00:08:37.635
+So, I'm going to 'console.log(JSON.parse(localStorageRef'.
+
+185
+00:08:37.635 --> 00:08:41.802
+And we'll also do 'console.log' of 'Restoring it'.
+
+186
+00:08:43.879 --> 00:08:47.269
+Then, go back to the app here and we see restoring it and
+
+187
+00:08:47.269 --> 00:08:50.298
+we also see that our fish is right there so that's good.
+
+188
+00:08:50.298 --> 00:08:53.321
+There's nothing wrong with this and it's being set to state.
+
+189
+00:08:53.321 --> 00:08:55.961
+Let's take a quicker look at the actual error.
+
+190
+00:08:55.961 --> 00:09:00.016
+"Cannot read property status of undefined".
+
+191
+00:09:00.016 --> 00:09:01.349
+Ah, there we go.
+
+192
+00:09:02.575 --> 00:09:04.266
+It's "is available 'fish.status'".
+
+193
+00:09:04.266 --> 00:09:07.289
+So, what's happening actually here is that we're looping
+
+194
+00:09:07.289 --> 00:09:10.706
+over all of the keys in our render order,
+
+195
+00:09:11.733 --> 00:09:16.219
+but what's happening is that there actually is no fish.
+
+196
+00:09:16.219 --> 00:09:18.426
+So, you're trying to get status of something
+
+197
+00:09:18.426 --> 00:09:20.286
+that doesn't exist which is the fish.
+
+198
+00:09:20.286 --> 00:09:22.263
+So, that's a bit of an issue
+
+199
+00:09:22.263 --> 00:09:24.865
+so one thing we probably could do
+
+200
+00:09:24.865 --> 00:09:28.101
+is say that if there is a fish first and there's
+
+201
+00:09:28.101 --> 00:09:30.355
+a fish status, but why is there no fish?
+
+202
+00:09:30.355 --> 00:09:33.145
+Let's talk about that for a quick second.
+
+203
+00:09:33.145 --> 00:09:37.303
+And what's happening here is that when the component mounts,
+
+204
+00:09:37.303 --> 00:09:40.510
+we are checking 'localStorage' and if it's there,
+
+205
+00:09:40.510 --> 00:09:43.980
+we are setting that to 'state' and then we're setting up
+
+206
+00:09:43.980 --> 00:09:45.297
+our 'syncState'.
+
+207
+00:09:45.297 --> 00:09:48.058
+And there's a bit of an issue because 'localStorage'
+
+208
+00:09:48.058 --> 00:09:50.175
+is local and it's gonna be immediate.
+
+209
+00:09:50.175 --> 00:09:52.690
+It's gonna be immediately set to 'this'.
+
+210
+00:09:52.690 --> 00:09:56.469
+The problem with this rebase is that there is a split second
+
+211
+00:09:56.469 --> 00:09:59.239
+where you have to go to 'Rebase' or go to 'Firebase'
+
+212
+00:09:59.239 --> 00:10:03.141
+and come back with the actual data and then,
+
+213
+00:10:03.141 --> 00:10:05.489
+what's happening is we're trying to render out
+
+214
+00:10:05.489 --> 00:10:08.270
+the order before the fishes actually exist. Right?
+
+215
+00:10:08.270 --> 00:10:11.271
+Because when we load the page, the fishes are empty until
+
+216
+00:10:11.271 --> 00:10:13.462
+they can come back from 'Firebase' and be put back
+
+217
+00:10:13.462 --> 00:10:14.562
+into our state.
+
+218
+00:10:14.562 --> 00:10:18.274
+That's what Rebase is doing, it's syncing it back into it.
+
+219
+00:10:18.274 --> 00:10:22.008
+So, should we wait on this? Or something like this?
+
+220
+00:10:22.008 --> 00:10:24.243
+There's a couple of things that we could do here.
+
+221
+00:10:24.243 --> 00:10:25.076
+We could say, first,
+
+222
+00:10:25.076 --> 00:10:28.658
+we could just check and say that it's not available.
+
+223
+00:10:28.658 --> 00:10:29.791
+We'd say...
+
+224
+00:10:29.791 --> 00:10:31.541
+'fish.&amp;&amp;fish.status'.
+
+225
+00:10:32.777 --> 00:10:35.444
+We're going to check if there is a fish and if the fish
+
+226
+00:10:35.444 --> 00:10:37.345
+status is available.
+
+227
+00:10:37.345 --> 00:10:38.178
+We check.
+
+228
+00:10:38.178 --> 00:10:40.679
+If there is a fish and the fish status is available.
+
+229
+00:10:40.679 --> 00:10:42.255
+So, let's take a quick look here.
+
+230
+00:10:42.255 --> 00:10:45.177
+I've got a bunch of fishes in there, but, you see how it
+
+231
+00:10:45.177 --> 00:10:47.356
+sort of quickly flashes?
+
+232
+00:10:47.356 --> 00:10:49.689
+Sorry, that fish is no longer available
+
+233
+00:10:49.689 --> 00:10:52.244
+and that's because as we load it, the fishes
 
-00:00:06.080 --> 00:00:10.330 line:100% position:50% align:middle
-So we have our state syncing to
-our Firebase, and that's great for when we
+234
+00:10:52.244 --> 00:10:54.331
+aren't there and as the fish get put in,
 
-00:00:10.330 --> 00:00:13.970 line:100% position:50% align:middle
-refresh. The data is still going to be
-there. However, when I add stuff to my
+235
+00:10:54.331 --> 00:10:56.203
+we will re-render that.
 
-00:00:13.970 --> 00:00:19.760 line:100% position:50% align:middle
-order and I refresh, all that data is then
-lost. And, rather than sync that to
+236
+00:10:56.203 --> 00:10:57.611
+So, that's not great.
 
-00:00:19.760 --> 00:00:23.530 line:100% position:50% align:middle
-Firebase, I want to show you to sync that
-to HTML5 local storage.
+237
+00:10:57.611 --> 00:10:59.727
+What we could do here is before we even
 
-00:00:23.530 --> 00:00:27.520 line:100% position:50% align:middle
-And essentially what that means is we're
-going to be storing the data pertaining to
+238
+00:10:59.727 --> 00:11:04.727
+render that out, we could just say 'if there's no fish'
 
-00:00:27.520 --> 00:00:30.350 line:100% position:50% align:middle
-the user's order in the actual browser.
+239
+00:11:04.787 --> 00:11:08.756
+we could do this down here, 'then return null'.
 
-00:00:30.350 --> 00:00:34.390 line:100% position:50% align:middle
-Now, you could use cookies for that but
-local storage is a much better fit.
+240
+00:11:08.756 --> 00:11:10.434
+And if you return 'null' from anything,
 
-00:00:34.390 --> 00:00:39.780 line:100% position:50% align:middle
-Now, we are going to head back to these
-React component life cycle methods.
+241
+00:11:10.434 --> 00:11:11.832
+it will just render out.
 
-00:00:39.780 --> 00:00:44.630 line:100% position:50% align:middle
-And we need to hook into two more of our
-life cycle methods. First of all,
+242
+00:11:11.832 --> 00:11:13.195
+Absolutely nothing.
 
-00:00:44.630 --> 00:00:50.110 line:100% position:50% align:middle
-what we need to do is we need to hook
-into when the data actually changes.
+243
+00:11:13.195 --> 00:11:15.600
+So, let's see this.
 
-00:00:50.110 --> 00:00:55.750 line:100% position:50% align:middle
-And rather than going into every single
-piece where we may update our order state,
+244
+00:11:15.600 --> 00:11:17.964
+So you see now it's just an empty order until
 
-00:00:55.750 --> 00:00:59.143 line:100% position:50% align:middle
-we can hook into one of the life cycle
-methods that's called
+245
+00:11:17.964 --> 00:11:20.787
+the fish get put in and then it's updating for us.
 
-00:00:59.143 --> 00:01:01.210 line:100% position:50% align:middle
-"componentWillUpdate."
+246
+00:11:20.787 --> 00:11:22.779
+I'm pretty happy with that.
 
-00:01:01.210 --> 00:01:04.450 line:100% position:50% align:middle
-Let's take a look at it right here. Here
-we go. "Updating." componentWillUpdate.
+247
+00:11:22.779 --> 00:11:27.612
+Put a little comment on that 'make sure the fish is loaded
 
-00:01:04.450 --> 00:01:09.260 line:100% position:50% align:middle
-Invoked immediately before rendering when
-new props or state is being received.
+248
+00:11:29.608 --> 00:11:31.275
+before we continue'.
 
-00:01:09.260 --> 00:01:12.740 line:100% position:50% align:middle
-So what that means is that this hook here,
-componentWillUpdate.,
+249
+00:11:33.997 --> 00:11:38.025
+Good, so that is fixed. Now we are reinstating our storage.
 
-00:01:12.740 --> 00:01:19.070 line:100% position:50% align:middle
-it runs whenever props or state changes.
-And that's perfect, because our order is
+250
+00:11:38.025 --> 00:11:40.402
+Let's try it real quick with another.
 
-00:01:19.070 --> 00:01:22.350 line:100% position:50% align:middle
-state, and that is going to be changed and
-passed down via props.
+251
+00:11:40.402 --> 00:11:43.988
+So this is 'ugliest nervous diagnoses' and I'm
 
-00:01:22.350 --> 00:01:26.180 line:100% position:50% align:middle
-So, we're going to hook into the
-componentWillUpdate, and I want to show
+252
+00:11:43.988 --> 00:11:47.987
+going to go back to my store picker and go to a new one.
 
-00:01:26.180 --> 00:01:26.940 line:100% position:50% align:middle
-you how this works.
+253
+00:11:47.987 --> 00:11:50.826
+Load some sample fishes, add some to the order.
 
-00:01:26.940 --> 00:01:31.384 line:100% position:50% align:middle
-Let's go up to right underneath our
-componentWillMount and we'll use
+254
+00:11:50.826 --> 00:11:54.962
+And then I'm gonna go back to that initial one.
 
-00:01:31.384 --> 00:01:35.230 line:100% position:50% align:middle
-componentWillUpdate. And that thing will
-pass you in two things.
+255
+00:11:54.962 --> 00:11:58.208
+And it reinstates my old one because in our application,
 
-00:01:35.230 --> 00:01:40.870 line:100% position:50% align:middle
-It will pass you in the next props and the
-next state, so that's like the updated
+256
+00:11:58.208 --> 00:12:01.078
+now we have two stores worth of data being pushed
 
-00:01:40.870 --> 00:01:45.070 line:100% position:50% align:middle
-props and the updated state. And if
-I were to just console log,
+257
+00:12:01.078 --> 00:12:02.521
+into our local storage.
 
-00:01:45.070 --> 00:01:51.700 line:100% position:50% align:middle
-something changed, and I'll take these two
-props and state and I'll console log them
-
-00:01:51.700 --> 00:01:56.950 line:100% position:50% align:middle
-both as well. By the way, that's a little
-trick you can do, next props the next day
-
-00:01:56.950 --> 00:01:59.150 line:100% position:50% align:middle
-I'll show you what that does here.
-
-00:01:59.150 --> 00:02:05.410 line:100% position:50% align:middle
-So we are going to add something to our
-order, and now when we see something
-
-00:02:05.410 --> 00:02:09.460 line:100% position:50% align:middle
-changed, open that up, there is our next
-props, that's what that little trick does.
-
-00:02:09.460 --> 00:02:14.720 line:100% position:50% align:middle
-If you pass in a curly bracket object,
-it's going to name them.
-
-00:02:14.720 --> 00:02:19.380 line:100% position:50% align:middle
-So you actually know what these variables
-are called. So next props is showing us
-
-00:02:19.380 --> 00:02:23.070 line:100% position:50% align:middle
-all of our props, and next state is
-showing us all of our state.
-
-00:02:23.070 --> 00:02:27.960 line:100% position:50% align:middle
-So that's good, we need to know that, and
-any time that our state will change,
-
-00:02:27.960 --> 00:02:31.160 line:100% position:50% align:middle
-it's going to run this
-componentWillUpdate hook.
-
-00:02:31.160 --> 00:02:35.270 line:100% position:50% align:middle
-So inside of that what we need to do is
-set our local storage.
-
-00:02:35.270 --> 00:02:39.000 line:100% position:50% align:middle
-Now if you're never worked with local
-storage before, you can access it by going
-
-00:02:39.000 --> 00:02:43.720 line:100% position:50% align:middle
-to your application tab here, and you go
-to local storage and then click on the
-
-00:02:43.720 --> 00:02:47.910 line:100% position:50% align:middle
-actual domain name here. Now you might
-have some other stuff in here depending on
-
-00:02:47.910 --> 00:02:52.130 line:100% position:50% align:middle
-if you've ever run any other applications
-on your localhost domain.
-
-00:02:52.130 --> 00:02:56.570 line:100% position:50% align:middle
-And your local storage is going to be tied
-directly to your localhost domain.
-
-00:02:56.570 --> 00:03:00.610 line:100% position:50% align:middle
-Now, there is some Firebase stuff in here,
-you don't have to really worry about that,
-
-00:03:00.610 --> 00:03:07.320 line:100% position:50% align:middle
-but local storage is a key value pair.
-Meaning that you can set a key here,
-
-00:03:07.320 --> 00:03:12.580 line:100% position:50% align:middle
-and a value...it's like an object, except
-the only difference is that you cannot
-
-00:03:12.580 --> 00:03:19.280 line:100% position:50% align:middle
-nest an object inside of it. You can only
-store numbers and strings and booleans and
-
-00:03:19.280 --> 00:03:20.730 line:100% position:50% align:middle
-things like that in the value part.
-
-00:03:20.730 --> 00:03:25.170 line:100% position:50% align:middle
-So the way that local storage works, if
-you've never used it...and if you're
-
-00:03:25.170 --> 00:03:27.790 line:100% position:50% align:middle
-familiar with it you can skip ahead a
-couple of minutes...we'll have local
-
-00:03:27.790 --> 00:03:32.930 line:100% position:50% align:middle
-storage and you say .setitem. And I'm
-going to say "Wes," and I'm going to set
-
-00:03:32.930 --> 00:03:40.408 line:100% position:50% align:middle
-that as, "is really cool." Now I jump back
-to my application tab, and there we go,
-
-00:03:40.408 --> 00:03:46.507 line:100% position:50% align:middle
-"Wes is really cool." And then I can call
-it localstorage.getItem("Wes"),
-
-00:03:46.507 --> 00:03:48.920 line:100% position:50% align:middle
-and it will return to me
-that actual value.
-
-00:03:48.920 --> 00:03:52.360 line:100% position:50% align:middle
-So what we're going to do is that whenever
-the order state is updated,
-
-00:03:52.360 --> 00:03:55.170 line:100% position:50% align:middle
-we're going to store it, we're going to
-set item in local storage,
-
-00:03:55.170 --> 00:03:58.760 line:100% position:50% align:middle
-and then when someone refreshes the page,
-when they're loading it for the first
-
-00:03:58.760 --> 00:04:02.890 line:100% position:50% align:middle
-time, we're going to check if there's
-anything in local storage and if there is,
-
-00:04:02.890 --> 00:04:07.640 line:100% position:50% align:middle
-we're going to restore our state via one
-of these life cycle hooks.
-
-00:04:07.640 --> 00:04:13.390 line:100% position:50% align:middle
-So we're going to go in here and we're
-going to say localstorage.setItem,
-
-00:04:13.390 --> 00:04:18.630 line:100% position:50% align:middle
-and I'm going to save it as order dash and
-then the name of the actual store,
-
-00:04:18.630 --> 00:04:24.859 line:100% position:50% align:middle
-so Drab Drab Tomatoes, right? But we
-can't, again, we can't hard code that,
-
-00:04:24.859 --> 00:04:29.302 line:100% position:50% align:middle
-but we can use props, because props gets
-passed down. So we'll say
-
-00:04:29.302 --> 00:04:37.160 line:100% position:50% align:middle
-this.props.params.storeID. And again,
-that's available to us if we go to our
-
-00:04:37.160 --> 00:04:44.070 line:100% position:50% align:middle
-React dev tools here. And we'll go to
-"App," open that up, you see it's in our
-
-00:04:44.070 --> 00:04:47.970 line:100% position:50% align:middle
-app.params' available here,
-if we open up our order here it's actually
-
-00:04:47.970 --> 00:04:53.360 line:100% position:50% align:middle
-not available to us. So if it's available
-at app level but not available at order
-
-00:04:53.360 --> 00:04:59.200 line:100% position:50% align:middle
-level, how do we pass down all the params?
-Well, we can go to our app and
-
-00:04:59.200 --> 00:05:03.830 line:100% position:50% align:middle
-figure out where we create our order which
-is right here. So we passed in fishes,
-
-00:05:03.900 --> 00:05:08.140 line:100% position:50% align:middle
-and if this is getting a big long you
-can put them on their own lines.
-
-00:05:08.140 --> 00:05:11.140 line:100% position:50% align:middle
-And we can either pass down all of the
-params or just the one.
-
-00:05:11.140 --> 00:05:15.578 line:100% position:50% align:middle
-So I'm going to pass them all down, and
-I'm going to say this.props.params.
-
-00:05:15.578 --> 00:05:19.970 line:100% position:50% align:middle
-Now when that refreshes, we'll go
-to our order component.
-
-00:05:19.970 --> 00:05:25.620 line:100% position:50% align:middle
-And look, params are now available to us
-at order level, and we have the storeID.
-
-00:05:25.620 --> 00:05:31.281 line:100% position:50% align:middle
-So we can go back to where we set our
-local storage, this.props.params.storeID.
-
-00:05:31.281 --> 00:05:33.820 line:100% position:50% align:middle
-so we're going to set,
-that's going to be the key,
-
-00:05:33.820 --> 00:05:42.330 line:100% position:50% align:middle
-and then the actual value is going to be
-our next state.order.
-
-00:05:42.330 --> 00:05:45.120 line:100% position:50% align:middle
-Right? Because next state is the entire
-state, and we don't want to put everything
-
-00:05:45.120 --> 00:05:49.220 line:100% position:50% align:middle
-in there, just the order state inside of
-that. Now, that's not going to work and
-
-00:05:49.220 --> 00:05:53.450 line:100% position:50% align:middle
-I'm going to show you exactly why, so
-let's go ahead and run that.
-
-00:05:53.450 --> 00:05:57.930 line:100% position:50% align:middle
-And I'm going to go to my application tab,
-and I'm going to go to my local storage
-
-00:05:57.930 --> 00:06:03.670 line:100% position:50% align:middle
-here, and as I enter the order, you see
-it right here. It's object object.
-
-00:06:03.670 --> 00:06:09.980 line:100% position:50% align:middle
-And why is that? The reason is, because
-you cannot store an object inside of local
-
-00:06:09.980 --> 00:06:16.010 line:100% position:50% align:middle
-storage, you can only store strings. So
-it's actually just turning the object into
-
-00:06:16.010 --> 00:06:20.050 line:100% position:50% align:middle
-a string, and that's what you get with
-object object. So how would you turn an
-
-00:06:20.050 --> 00:06:24.550 line:100% position:50% align:middle
-object into string? Well you can turn it
-into JSON. So we'll just wrap that entire
-
-00:06:24.550 --> 00:06:32.900 line:100% position:50% align:middle
-thing is a json.stringify, and then we
-will start adding things to our order.
-
-00:06:32.900 --> 00:06:36.380 line:100% position:50% align:middle
-And you should see... hey, there we go,
-fish one, and then when I update it, you
-
-00:06:36.380 --> 00:06:41.130 line:100% position:50% align:middle
-see local storage is getting updated,
-add to order, add a couple more.
-
-00:06:41.130 --> 00:06:45.550 line:100% position:50% align:middle
-And it's just storing the exact
-representation of our order state in local
-
-00:06:45.550 --> 00:06:51.100 line:100% position:50% align:middle
-storage. So that's one way, but now when I
-refresh, it's still there.
-
-00:06:51.100 --> 00:06:54.720 line:100% position:50% align:middle
-Drab Drab Tomato, it actually gets
-overwritten because that will run on page
-
-00:06:54.720 --> 00:07:01.460 line:100% position:50% align:middle
-load, but we have a problem here where it
-doesn't actually reinstate our order.
-
-00:07:01.460 --> 00:07:05.610 line:100% position:50% align:middle
-And we need to go back up to this
-component, willMount life cycle hook,
-
-00:07:05.610 --> 00:07:10.856 line:100% position:50% align:middle
-so again right before... maybe we put a
-comment in here. This runs right before
-
-00:07:10.856 --> 00:07:16.250 line:100% position:50% align:middle
-the app is rendered. And we already used
-that to hook into our Firebase,
-
-00:07:16.250 --> 00:07:23.270 line:100% position:50% align:middle
-but we can also check if there is any
-order in local storage. So I'm going to
-
-00:07:23.270 --> 00:07:29.760 line:100% position:50% align:middle
-make a reference to that local storage,
-equals, and then we're going to try to
-
-00:07:29.760 --> 00:07:36.443 line:100% position:50% align:middle
-get that item. So say,
-localstorage.getItem, you need to back
-
-00:07:36.443 --> 00:07:44.660 line:100% position:50% align:middle
-text, order-this.props.params.storeID.
-Then if there is something in
-
-00:07:44.660 --> 00:07:48.930 line:100% position:50% align:middle
-local storage, because it very well may be
-that there's nothing in local storage, so
-
-00:07:48.930 --> 00:07:57.030 line:100% position:50% align:middle
-we need to check. If there is a local
-storage ref, then we need to update our
-
-00:07:57.030 --> 00:08:07.727 line:100% position:50% align:middle
-app component, order state, then we say
-this.setState. Then we're going to update
-
-00:08:07.727 --> 00:08:10.450 line:100% position:50% align:middle
-the order state,
-which is going to be...
-
-00:08:10.450 --> 00:08:15.590 line:100% position:50% align:middle
-you might think it's local storage ref,
-but again, that's just going to give us
-
-00:08:15.590 --> 00:08:20.830 line:100% position:50% align:middle
-this, fish one... let me add a couple
-more to it. That's just a string,
-
-00:08:20.830 --> 00:08:25.700 line:100% position:50% align:middle
-so how do you turn a string back into an
-object? Well we do the opposite of
-
-00:08:25.700 --> 00:08:29.970 line:100% position:50% align:middle
-json.stringify, and it's json.parse.
-And that will turn the string that we
-
-00:08:29.970 --> 00:08:35.170 line:100% position:50% align:middle
-stored in local storage back into an
-actual object here. So good,
-
-00:08:35.170 --> 00:08:41.220 line:100% position:50% align:middle
-give that a save. Hey hey, there we go,
-works already. Every time I refresh now,
-
-00:08:41.220 --> 00:08:44.980 line:100% position:50% align:middle
-you will be able to see one pound
-Atlantic, and I can update that.
-
-00:08:44.980 --> 00:08:48.960 line:100% position:50% align:middle
-It's all being stored in local storage,
-and we can refresh it.
-
-00:08:48.960 --> 00:08:54.990 line:100% position:50% align:middle
-So there is a split second right there
-where it does render, and then it actually
-
-00:08:54.990 --> 00:08:58.740 line:100% position:50% align:middle
-fixes itself. You see it says, "Sorry,
-it's not available," I'm not sure if you
-
-00:08:58.740 --> 00:09:03.780 line:100% position:50% align:middle
-can catch that. And that's just because
-the actual application component is
-
-00:09:03.780 --> 00:09:07.530 line:100% position:50% align:middle
-rendering to the page, and then our local
-storage ref is updating.
-
-00:09:07.530 --> 00:09:11.208 line:100% position:50% align:middle
-So it's sort of doing a double render. I'm
-going to leave it at that just because
-
-00:09:11.208 --> 00:09:15.930 line:100% position:50% align:middle
-for simplicity's sake. However,
-you could use one of the life cycle hooks
-
-00:09:15.930 --> 00:09:21.460 line:100% position:50% align:middle
-called shouldComponentUpdate, right
-here. Invoke before rendering when new
-
-00:09:21.460 --> 00:09:28.260 line:100% position:50% align:middle
-props or states are being received. So,
-componentWillUpdate gives us the new
-
-00:09:28.260 --> 00:09:32.457 line:100% position:50% align:middle
-props and the new state. And
-shouldComponentUpdate also gives us the
-
-00:09:32.457 --> 00:09:38.020 line:100% position:50% align:middle
-new props and the new state. However, that
-will... instead of us setting it in local
-
-00:09:38.020 --> 00:09:42.880 line:100% position:50% align:middle
-storage, we will be able to tell React if
-that component should re-render.
-
-00:09:42.880 --> 00:09:47.580 line:100% position:50% align:middle
-So we're kind of getting a double render
-happening here, and shouldComponentUpdate
-
-00:09:47.580 --> 00:09:52.250 line:100% position:50% align:middle
-allows you to return true or return false
-from this actual method.
-
-00:09:52.250 --> 00:09:56.130 line:100% position:50% align:middle
-And then if... let's say you've got like,
-four or five pieces of data coming in, and
-
-00:09:56.130 --> 00:09:59.800 line:100% position:50% align:middle
-every time a new piece of data comes in,
-that component re-renders itself.
-
-00:09:59.800 --> 00:10:04.040 line:100% position:50% align:middle
-Maybe you want it to wait for four, five
-of those pieces of data to all come in,
-
-00:10:04.040 --> 00:10:07.640 line:100% position:50% align:middle
-and then re-render, that's where
-shouldComponentUpdate sort of comes in,
-
-00:10:07.640 --> 00:10:12.320 line:100% position:50% align:middle
-where you could say, if I have all five
-pieces of data or if I then have my order
-
-00:10:12.320 --> 00:10:16.820 line:100% position:50% align:middle
-state properly, then return true, and that
-will cause it to re-render.
-
-00:10:16.820 --> 00:10:20.450 line:100% position:50% align:middle
-Otherwise, return false, and then that's
-just going to... it's going to stop right
-
-00:10:20.450 --> 00:10:24.340 line:100% position:50% align:middle
-there. It's going to say, okay I have new
-data but I'm not going to re-render myself
-
-00:10:24.340 --> 00:10:29.300 line:100% position:50% align:middle
-on the page until someone returns true
-from this. So there's a whole bunch of
-
-00:10:29.300 --> 00:10:33.820 line:100% position:50% align:middle
-different life cycle hooks, and what I
-probably recommend here is look through
-
-00:10:33.820 --> 00:10:37.170 line:100% position:50% align:middle
-every single life cycle hook is in there,
-read through what it does,
-
-00:10:37.170 --> 00:10:41.070 line:100% position:50% align:middle
-and then you sort of have them in the back
-of your mind so that when you've come upon
-
-00:10:41.070 --> 00:10:43.807 line:100% position:50% align:middle
-a problem, you could say,
-"Oh, I can probably fix it
-
-00:10:43.807 --> 00:10:46.000 line:100% position:50% align:middle
-with one of these life cycle hooks."

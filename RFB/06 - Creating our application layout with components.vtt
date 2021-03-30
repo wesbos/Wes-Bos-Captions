@@ -1,267 +1,1034 @@
 WEBVTT
 
-00:00:00.289 --> 00:00:03.289 line:100% position:50% align:middle
-♪ [music] ♪
+1
+00:00:00.109 --> 00:00:02.692
+(upbeat music)
+
+2
+00:00:06.640 --> 00:00:08.730
+<v Speaker>Next up we need to make our App component</v>
+
+3
+00:00:08.730 --> 00:00:10.450
+and the App component is going to be sort
+
+4
+00:00:10.450 --> 00:00:11.650
+of like the momma component
+
+5
+00:00:11.650 --> 00:00:13.840
+that's gonna hold all of our children,
+
+6
+00:00:13.840 --> 00:00:15.320
+and then inside of that we're going
+
+7
+00:00:15.320 --> 00:00:17.930
+to have a header component which is gonna show us the title.
+
+8
+00:00:17.930 --> 00:00:19.920
+We're going to have a bunch of fish components
+
+9
+00:00:19.920 --> 00:00:23.160
+which are going to render out a picture and the title,
+
+10
+00:00:23.160 --> 00:00:25.650
+a description, and the ability to add it to our order.
+
+11
+00:00:25.650 --> 00:00:27.510
+Then we have an order component here,
+
+12
+00:00:27.510 --> 00:00:29.380
+and an inventory component.
+
+13
+00:00:29.380 --> 00:00:31.100
+All of these things are going to be siblings
+
+14
+00:00:31.100 --> 00:00:34.190
+and they will all be a child of the App component
+
+15
+00:00:34.190 --> 00:00:37.550
+which is going to allow us to share things like, data.
+
+16
+00:00:37.550 --> 00:00:41.100
+So if I were to change this data to a different value
+
+17
+00:00:41.100 --> 00:00:43.950
+it's going to update across all three of them.
+
+18
+00:00:43.950 --> 00:00:47.020
+It's gonna allow us to share things like methods,
+
+19
+00:00:47.020 --> 00:00:49.790
+where if I were to remove a fish from here,
+
+20
+00:00:49.790 --> 00:00:51.760
+it's going to remove it from here
+
+21
+00:00:51.760 --> 00:00:53.370
+as well as update our order.
+
+22
+00:00:53.370 --> 00:00:54.882
+That's going to sort of essentialize
+
+23
+00:00:54.882 --> 00:00:58.120
+both the data and the functionality
+
+24
+00:00:58.120 --> 00:00:59.580
+of the events that need to happen.
+
+25
+00:00:59.580 --> 00:01:02.140
+So, let's go back over to our catch of the day
+
+26
+00:01:02.140 --> 00:01:06.050
+and open up our sidebar that we've got here.
+
+27
+00:01:06.050 --> 00:01:08.138
+By the way, maybe I should show you that real quick.
+
+28
+00:01:08.138 --> 00:01:10.520
+If you're wondering why sometimes when I like,
+
+29
+00:01:10.520 --> 00:01:15.430
+goof up the indentation or if I use a single quote
+
+30
+00:01:15.430 --> 00:01:17.680
+or a double quote, something like that,
+
+31
+00:01:17.680 --> 00:01:19.270
+and then I give a save and it just, whoop,
+
+32
+00:01:19.270 --> 00:01:21.350
+all automatically fixed, for me,
+
+33
+00:01:21.350 --> 00:01:23.710
+that's because I'm using something called Prettier
+
+34
+00:01:23.710 --> 00:01:25.420
+and you can go ahead and find an extension
+
+35
+00:01:25.420 --> 00:01:27.155
+for your editor called Prettier.
+
+36
+00:01:27.155 --> 00:01:29.620
+And it's great for React because
+
+37
+00:01:29.620 --> 00:01:32.210
+it'll often do things like, maybe, for example,
+
+38
+00:01:32.210 --> 00:01:36.930
+in here, if I have like an open hi tag
+
+39
+00:01:36.930 --> 00:01:39.550
+and it'll automatically close the hi tag
+
+40
+00:01:39.550 --> 00:01:41.120
+and then if I were to give that a save,
+
+41
+00:01:41.120 --> 00:01:43.530
+it says, "oh, well, there's nothing in between here,
+
+42
+00:01:43.530 --> 00:01:46.870
+there's no child, so why don't you just self close."
+
+43
+00:01:46.870 --> 00:01:49.270
+So there's a lot of like, nice, little,
+
+44
+00:01:49.270 --> 00:01:51.610
+fixes that you can get when you turn on Prettier.
+
+45
+00:01:51.610 --> 00:01:53.700
+It's totally different for every single editor
+
+46
+00:01:53.700 --> 00:01:56.390
+and even in VS Code you can either configure it
+
+47
+00:01:56.390 --> 00:01:58.700
+via the Prettier plugin via an ESLint.
+
+48
+00:01:58.700 --> 00:02:01.040
+So I'm gonna leave that to another tutorial,
+
+49
+00:02:01.040 --> 00:02:02.820
+but definitely check that out
+
+50
+00:02:02.820 --> 00:02:04.360
+if you're getting a little bit frustrated
+
+51
+00:02:04.360 --> 00:02:06.150
+with the formatting in React.
+
+52
+00:02:06.150 --> 00:02:08.160
+So, we wanna go into our components here.
+
+53
+00:02:08.160 --> 00:02:11.220
+I'm gonna make a new file in the components directory.
+
+54
+00:02:11.220 --> 00:02:14.610
+I'm gonna call it App.js with a capital a.
+
+55
+00:02:14.610 --> 00:02:15.720
+Good.
+
+56
+00:02:15.720 --> 00:02:18.290
+Give that a save, and inside of that,
+
+57
+00:02:18.290 --> 00:02:19.460
+what is the first thing we need?
+
+58
+00:02:19.460 --> 00:02:21.180
+Well, we need React.
+
+59
+00:02:21.180 --> 00:02:23.211
+We need to import that from our React package.
+
+60
+00:02:23.211 --> 00:02:26.020
+Then we need to make our App components.
+
+61
+00:02:26.020 --> 00:02:29.920
+We'll say class App, capital a, extends,
+
+62
+00:02:31.160 --> 00:02:32.530
+React.Component.
+
+63
+00:02:33.510 --> 00:02:35.270
+And then let's go ahead.
+
+64
+00:02:35.270 --> 00:02:37.280
+Before you even do that, I often will, like,
+
+65
+00:02:37.280 --> 00:02:39.010
+start typing the render method.
+
+66
+00:02:39.010 --> 00:02:42.616
+But before you even do that go ahead and export default App
+
+67
+00:02:42.616 --> 00:02:44.336
+because the amount of times that I forgot
+
+68
+00:02:44.336 --> 00:02:47.240
+to actually export it from a file,
+
+69
+00:02:47.240 --> 00:02:49.510
+that just causes headaches, so export it right away.
+
+70
+00:02:49.510 --> 00:02:51.540
+You might even may want to make a nice little snippet
+
+71
+00:02:51.540 --> 00:02:54.550
+for you editor that does exactly this.
+
+72
+00:02:54.550 --> 00:02:56.550
+Now inside of it we need our render method
+
+73
+00:02:56.550 --> 00:02:58.160
+which shows what we have.
+
+74
+00:02:58.160 --> 00:02:59.870
+And from that, we're going to return,
+
+75
+00:02:59.870 --> 00:03:03.630
+and I showed you in a couple of videos ago how to return.
+
+76
+00:03:03.630 --> 00:03:04.620
+Parenthesis.
+
+77
+00:03:04.620 --> 00:03:07.202
+And inside of that, let's just give ourselves
+
+78
+00:03:07.202 --> 00:03:11.010
+maybe a div with a class of catch of the day.
+
+79
+00:03:13.700 --> 00:03:15.380
+Beautiful.
+
+80
+00:03:15.380 --> 00:03:18.040
+Put a paragraph, "heyyy!"
+
+81
+00:03:18.040 --> 00:03:18.990
+Good.
+
+82
+00:03:18.990 --> 00:03:22.185
+Now, we will go back to our App and,
+
+83
+00:03:22.185 --> 00:03:24.780
+if I refresh it, nothing's changed.
+
+84
+00:03:24.780 --> 00:03:26.840
+And that's because if we go back to our
+
+85
+00:03:26.840 --> 00:03:30.890
+index.js file we're still hard-coding the store picker
+
+86
+00:03:30.890 --> 00:03:33.200
+which is good for the front page,
+
+87
+00:03:33.200 --> 00:03:35.770
+but as soon as I, here let me show you,
+
+88
+00:03:35.770 --> 00:03:37.320
+that's the store picker.
+
+89
+00:03:37.320 --> 00:03:39.330
+But as soon as I go to an actual page,
+
+90
+00:03:39.330 --> 00:03:41.646
+then I wanna change to the App.
+
+91
+00:03:41.646 --> 00:03:44.370
+We're gonna figure out how to do that with routing,
+
+92
+00:03:44.370 --> 00:03:47.610
+but for now, let's just hard-code that App component.
+
+93
+00:03:47.610 --> 00:03:50.210
+So, we'll duplicate this one here
+
+94
+00:03:50.210 --> 00:03:52.760
+and change it over to the App component.
+
+95
+00:03:52.760 --> 00:03:57.210
+And then we'll just render out the App component.
+
+96
+00:03:57.210 --> 00:03:59.200
+Getting some errors here.
+
+97
+00:03:59.200 --> 00:04:02.760
+"You're render method should have a return statement."
+
+98
+00:04:02.760 --> 00:04:04.928
+So go back to our App.js.
+
+99
+00:04:04.928 --> 00:04:08.320
+Oh, how does return even work?
+
+100
+00:04:08.320 --> 00:04:10.930
+You have to be able to spell in order to code.
+
+101
+00:04:10.930 --> 00:04:11.763
+Okay.
+
+102
+00:04:11.763 --> 00:04:13.700
+So I've got my App component working
+
+103
+00:04:13.700 --> 00:04:17.060
+and if we go to our React you see that the REC=DEV tools
+
+104
+00:04:17.060 --> 00:04:19.390
+that we have are App component rendering out.
+
+105
+00:04:19.390 --> 00:04:21.820
+Inside of that we have a div with a class name
+
+106
+00:04:21.820 --> 00:04:23.870
+of catch of the day.
+
+107
+00:04:23.870 --> 00:04:25.740
+Then inside of that we'll give ourselves a div
+
+108
+00:04:25.740 --> 00:04:27.080
+with a class of menu.
+
+109
+00:04:27.080 --> 00:04:30.430
+Again, make sure you hit that class name instead of class.
+
+110
+00:04:30.430 --> 00:04:32.890
+And inside of that we are going to,
+
+111
+00:04:32.890 --> 00:04:35.370
+let's just scaffold out what the components are
+
+112
+00:04:35.370 --> 00:04:36.570
+that we're going to make.
+
+113
+00:04:36.570 --> 00:04:38.790
+So we're going to have a header component,
+
+114
+00:04:38.790 --> 00:04:41.260
+and that's going to look like this.
+
+115
+00:04:41.260 --> 00:04:43.380
+Now, it's going to start erroring out on us
+
+116
+00:04:43.380 --> 00:04:45.209
+because we haven't yet made that component.
+
+117
+00:04:45.209 --> 00:04:47.360
+Then underneath that we're gonna have a bunch
+
+118
+00:04:47.360 --> 00:04:48.420
+of fish components.
+
+119
+00:04:48.420 --> 00:04:50.250
+It's gonna look a little something like that,
+
+120
+00:04:50.250 --> 00:04:51.540
+except we haven't gotten there yet
+
+121
+00:04:51.540 --> 00:04:54.020
+so just put the header in there, for now.
+
+122
+00:04:54.020 --> 00:04:57.190
+Beside that we want and inventory component,
+
+123
+00:04:58.090 --> 00:05:01.030
+and beside that we also want an order component.
+
+124
+00:05:03.010 --> 00:05:05.560
+Now it's going to tell us that header inventory
+
+125
+00:05:05.560 --> 00:05:06.700
+and order do not work.
+
+126
+00:05:06.700 --> 00:05:08.160
+Oooh. That's cool.
+
+127
+00:05:08.160 --> 00:05:12.640
+If you click it, it automatically opens it up in the editor.
+
+128
+00:05:12.640 --> 00:05:13.607
+I didn't know that.
+
+129
+00:05:13.607 --> 00:05:15.180
+Neat.
+
+130
+00:05:15.180 --> 00:05:16.650
+So that's kinda cool.
+
+131
+00:05:16.650 --> 00:05:20.016
+It'll go right to the file where the thing is broken.
+
+132
+00:05:20.016 --> 00:05:22.140
+So let's go ahead and make a header inventory
+
+133
+00:05:22.140 --> 00:05:22.973
+and order component.
+
+134
+00:05:22.973 --> 00:05:25.810
+So back to our components folder, new file,
+
+135
+00:05:25.810 --> 00:05:27.080
+we'll call it header.js.
+
+136
+00:05:29.400 --> 00:05:31.110
+And if you want to at this point,
+
+137
+00:05:31.110 --> 00:05:32.780
+maybe code it by hand once more,
+
+138
+00:05:32.780 --> 00:05:33.613
+but you're probably going
+
+139
+00:05:33.613 --> 00:05:35.600
+to be copying pasting it fairly often
+
+140
+00:05:35.600 --> 00:05:37.450
+so we'll import React from React
+
+141
+00:05:39.440 --> 00:05:44.440
+and then we'll class header extends React.component.
+
+142
+00:05:46.270 --> 00:05:48.150
+That needs a render method.
+
+143
+00:05:48.150 --> 00:05:50.470
+We'll come back to that in just a second.
+
+144
+00:05:50.470 --> 00:05:55.370
+Then we'll export default header.
+
+145
+00:05:55.370 --> 00:05:57.270
+And inside of the render method we're going
+
+146
+00:05:57.270 --> 00:06:00.000
+to return in actual header tags.
+
+147
+00:06:00.000 --> 00:06:02.400
+So this is just a regular html header tag
+
+148
+00:06:02.400 --> 00:06:04.300
+with a class of top.
+
+149
+00:06:04.300 --> 00:06:06.650
+And inside of that, let's just give ourselves h1
+
+150
+00:06:06.650 --> 00:06:09.520
+that says catch of the day.
+
+151
+00:06:10.410 --> 00:06:12.810
+We'll come back to the styling of that in just a second.
+
+152
+00:06:12.810 --> 00:06:15.850
+Underneath that we want a h3 class of tagline.
+
+153
+00:06:15.850 --> 00:06:17.820
+These are just matching up with all the styles
+
+154
+00:06:17.820 --> 00:06:19.600
+that I've pre-written for you.
+
+155
+00:06:19.600 --> 00:06:23.330
+And then inside of that we need a span
+
+156
+00:06:23.330 --> 00:06:27.030
+that just says fresh daily or whatever it is
+
+157
+00:06:27.030 --> 00:06:27.863
+that you like to show.
+
+158
+00:06:27.863 --> 00:06:29.630
+We're gonna swap that out, not gonna hard-code it,
+
+159
+00:06:29.630 --> 00:06:30.740
+in just a second.
+
+160
+00:06:30.740 --> 00:06:32.077
+So give that a save.
+
+161
+00:06:32.077 --> 00:06:34.870
+If you wanna see how it works
+
+162
+00:06:34.870 --> 00:06:36.460
+then we'll go back to our App,
+
+163
+00:06:36.460 --> 00:06:40.690
+let me just comment out inventory in order real quick,
+
+164
+00:06:40.690 --> 00:06:41.670
+and we should...
+
+165
+00:06:41.670 --> 00:06:43.930
+Oh, (laughs) why doesn't it work?
+
+166
+00:06:43.930 --> 00:06:46.360
+Well, we have made the header component
+
+167
+00:06:46.360 --> 00:06:49.750
+but we have not yet imported it into the file that we need.
+
+168
+00:06:49.750 --> 00:06:51.280
+So, this is kinda interesting.
+
+169
+00:06:51.280 --> 00:06:53.947
+We don't need to import it into our index.js,
+
+170
+00:06:53.947 --> 00:06:56.640
+it's unnecessary to import things
+
+171
+00:06:56.640 --> 00:06:59.090
+that are not used in that exact file.
+
+172
+00:06:59.090 --> 00:07:01.110
+You just need to import into the file
+
+173
+00:07:01.110 --> 00:07:02.580
+where it's going to be used.
+
+174
+00:07:02.580 --> 00:07:05.560
+So, import the header from, and now it's a sibling,
+
+175
+00:07:05.560 --> 00:07:07.760
+we're already in the components folder
+
+176
+00:07:07.760 --> 00:07:10.170
+in a file called App.js so we'll just go
+
+177
+00:07:10.170 --> 00:07:12.380
+to a sibling and we'll say import it
+
+178
+00:07:12.380 --> 00:07:14.740
+from the header.js file.
+
+179
+00:07:14.740 --> 00:07:17.550
+Now if I give that a save it should show us the header.
+
+180
+00:07:17.550 --> 00:07:20.320
+Oh, now it's giving me some grief here.
+
+181
+00:07:20.320 --> 00:07:24.620
+Adjacent.jsxl must be wrapped in an enclosing tag.
+
+182
+00:07:24.620 --> 00:07:27.220
+What did we do inside of App?
+
+183
+00:07:28.610 --> 00:07:29.500
+What did we do inside of here?
+
+184
+00:07:29.500 --> 00:07:32.850
+Oh, obviously that h3 tag needs to go inside
+
+185
+00:07:32.850 --> 00:07:33.990
+of the header tag.
+
+186
+00:07:33.990 --> 00:07:36.300
+And then you see that this is showing up
+
+187
+00:07:36.300 --> 00:07:38.420
+for us which looks great.
+
+188
+00:07:38.420 --> 00:07:41.370
+And let's just get it matched up to what this looks like.
+
+189
+00:07:41.370 --> 00:07:43.160
+I have spans wrapped around the 'of the'
+
+190
+00:07:43.160 --> 00:07:46.310
+and then around each of the words 'of' and 'the'.
+
+191
+00:07:46.310 --> 00:07:48.010
+So we'll go back to our header.js,
+
+192
+00:07:48.930 --> 00:07:50.320
+and it's of.
+
+193
+00:07:51.400 --> 00:07:54.690
+Put of and the on it's own line,
+
+194
+00:07:54.690 --> 00:07:57.670
+and we're gonna wrap the entire thing in a class of of the.
+
+195
+00:07:59.760 --> 00:08:02.310
+And then we're gonna wrap each of the words
+
+196
+00:08:02.310 --> 00:08:04.640
+in a span of the class of of,
+
+197
+00:08:04.640 --> 00:08:06.440
+and a span of the class of the.
+
+198
+00:08:07.690 --> 00:08:11.910
+So h1, catch, span of the class ofThe,
+
+199
+00:08:12.890 --> 00:08:15.780
+then get an of and the the and finally the day,
+
+200
+00:08:15.780 --> 00:08:17.250
+and that should...
+
+201
+00:08:17.250 --> 00:08:18.083
+There we go.
+
+202
+00:08:18.083 --> 00:08:19.930
+We hit the little anchor and the formatting
+
+203
+00:08:19.930 --> 00:08:21.680
+of CSS has kicked in.
+
+204
+00:08:21.680 --> 00:08:23.480
+And if we open this up, you see App,
+
+205
+00:08:23.480 --> 00:08:24.970
+and we have our header component.
+
+206
+00:08:24.970 --> 00:08:27.010
+Let's go off and finish the other two,
+
+207
+00:08:27.010 --> 00:08:30.339
+which is our inventory and our order component.
+
+208
+00:08:30.339 --> 00:08:32.160
+Actually, those go the other way around.
+
+209
+00:08:32.160 --> 00:08:35.170
+It's the order and then the inventory component.
+
+210
+00:08:35.170 --> 00:08:36.420
+It's gonna start yelling at us
+
+211
+00:08:36.420 --> 00:08:37.980
+cause we haven't yet imported them,
+
+212
+00:08:37.980 --> 00:08:41.610
+so what I like to do is just duplicate this over,
+
+213
+00:08:41.610 --> 00:08:46.540
+and then select order, and then do that again for inventory.
+
+214
+00:08:49.470 --> 00:08:50.480
+Now, it's gonna tell us
+
+215
+00:08:50.480 --> 00:08:53.930
+that it cannot find a component called inventory
+
+216
+00:08:53.930 --> 00:08:55.100
+cause we haven't yet made it.
+
+217
+00:08:55.100 --> 00:08:56.890
+So, we'll go in, and what I like
+
+218
+00:08:56.890 --> 00:08:58.740
+to do in a case like this is just
+
+219
+00:08:58.740 --> 00:09:03.040
+to save a copy of header and just make that inventory.
+
+220
+00:09:05.700 --> 00:09:10.070
+And then I will get rid of all the html inside of there,
+
+221
+00:09:10.070 --> 00:09:12.810
+and we'll just return a div with a class of inventory,
+
+222
+00:09:17.510 --> 00:09:18.960
+and then rename the component.
+
+223
+00:09:18.960 --> 00:09:20.080
+This is kind of important.
+
+224
+00:09:20.080 --> 00:09:21.830
+Sometimes I forget to...
+
+225
+00:09:21.830 --> 00:09:25.360
+It will still work if you export it as header,
+
+226
+00:09:25.360 --> 00:09:28.090
+however, it will show up as header in your div tools
+
+227
+00:09:28.090 --> 00:09:29.090
+which is a bit confusing.
+
+228
+00:09:29.090 --> 00:09:31.670
+So, make sure you rename that to inventory.
+
+229
+00:09:33.550 --> 00:09:34.680
+And that's up and running.
+
+230
+00:09:34.680 --> 00:09:36.780
+One actually cool thing that Prettier does
+
+231
+00:09:36.780 --> 00:09:38.940
+for me is if it just does a one liner,
+
+232
+00:09:38.940 --> 00:09:40.800
+you're using parenthesis here,
+
+233
+00:09:40.800 --> 00:09:42.520
+and you only have a one liner,
+
+234
+00:09:42.520 --> 00:09:44.900
+it's gonna tell you, "hey, that's not necessary."
 
-00:00:07.059 --> 00:00:11.040 line:100% position:50% align:middle
-We want to make the app layout and
-that's this whole thing is going to be our
+235
+00:09:44.900 --> 00:09:47.720
+I can do that on one line so it'll just get rid of them.
 
-00:00:11.040 --> 00:00:15.090 line:100% position:50% align:middle
-app, and then inside of app we're going to
-have...we got a Header component,
+236
+00:09:47.720 --> 00:09:50.940
+So I might have to put those back in at a later time.
 
-00:00:15.090 --> 00:00:18.310 line:100% position:50% align:middle
-we've got a whole bunch of Fish components
-here. We've got our Order component and
+237
+00:09:50.940 --> 00:09:53.000
+I'll save that again.
 
-00:00:18.310 --> 00:00:23.250 line:100% position:50% align:middle
-we've got our Inventory component. So
-let's sort of scaffold that out and then
+238
+00:09:53.000 --> 00:09:54.770
+Give ourselves an order.js.
 
-00:00:23.250 --> 00:00:25.750 line:100% position:50% align:middle
-we'll go into each component
-and sort of hook them on up.
+239
+00:09:54.770 --> 00:09:57.220
+Remember to use capitals on all these file names.
 
-00:00:25.750 --> 00:00:29.140 line:100% position:50% align:middle
-So go back to our Sublime Text or whatever
-editor you're using here,
+240
+00:09:57.220 --> 00:10:00.830
+We'll just call this order,
 
-00:00:29.140 --> 00:00:33.186 line:100% position:50% align:middle
-and we want to make a new component and
-I'm going to call that "App.js."
+241
+00:10:00.830 --> 00:10:03.150
+give it div the class name of order.
 
-00:00:33.186 --> 00:00:37.390 line:100% position:50% align:middle
-And what you can do is you can pretty
-much just take...if you're comfortable
+242
+00:10:04.990 --> 00:10:05.823
+Beautiful.
 
-00:00:37.390 --> 00:00:40.080 line:100% position:50% align:middle
-with this already, you can take it from
-StorePicker and put it in App.
+243
+00:10:05.823 --> 00:10:06.820
+So we have our order in the middle,
 
-00:00:40.080 --> 00:00:43.700 line:100% position:50% align:middle
-I'm going to go through it once more with
-you. So first we need React,
+244
+00:10:06.820 --> 00:10:09.410
+our inventory on the right and our catch of the day.
 
-00:00:43.700 --> 00:00:50.930 line:100% position:50% align:middle
-then we want to make a component for our
-application, so say, "class App extends,
+245
+00:10:09.410 --> 00:10:11.400
+Obviously I am too squished here
 
-00:00:50.930 --> 00:00:54.290 line:100% position:50% align:middle
-React.component."
-
-00:00:54.290 --> 00:00:57.860 line:100% position:50% align:middle
-And what is the one method that you
-absolutely need on all of your components?
-
-00:00:57.860 --> 00:01:02.550 line:100% position:50% align:middle
-You need a render() method. And inside of
-that what we're going to do,
-
-00:01:02.550 --> 00:01:07.460 line:100% position:50% align:middle
-is we're going to return some JSX. So we
-open and close these parentheses here
-
-00:01:07.460 --> 00:01:13.900 line:100% position:50% align:middle
-because we're entering in multiple lines
-of JSX. And then we need a div with the
-
-00:01:13.900 --> 00:01:23.700 line:100% position:50% align:middle
-class of "catch-of-the-day," and inside of
-that, we're going to have a menu.
-
-00:01:23.700 --> 00:01:26.530 line:100% position:50% align:middle
-Inside of that, we're going to have a
-Header component.
+246
+00:10:11.400 --> 00:10:13.970
+so I'm gonna bring that down to the bottom.
 
-00:01:26.530 --> 00:01:30.050 line:100% position:50% align:middle
-Now, this here Header, capital H, it's not
-the same thing as a header tag.
+247
+00:10:13.970 --> 00:10:15.980
+And everything is looking good.
 
-00:01:30.050 --> 00:01:34.190 line:100% position:50% align:middle
-It's a component that we are actually
-going to make. I'm going to put it in
+248
+00:10:15.980 --> 00:10:18.270
+I also have this cheesy little fold button here
 
-00:01:34.190 --> 00:01:37.890 line:100% position:50% align:middle
-there and we'll see why that will break
-and how we can fix that.
+249
+00:10:18.270 --> 00:10:19.900
+which has nothing to do with React,
 
-00:01:37.890 --> 00:01:40.500 line:100% position:50% align:middle
-And then below here, we're going
-to...eventually, we're going to have a
+250
+00:10:19.900 --> 00:10:22.970
+it's just when it's checked it will apply
 
-00:01:40.500 --> 00:01:43.040 line:100% position:50% align:middle
-whole bunch of these Fish components here.
-So we're just going to have Fish/,
+251
+00:10:22.970 --> 00:10:26.880
+some CSS that puts a transform and skew on this
 
-00:01:43.040 --> 00:01:45.340 line:100% position:50% align:middle
-Fish/, Fish/, Fish/, over and over. But we
-haven't done that yet,
+252
+00:10:26.880 --> 00:10:28.360
+to make it look a little bit 3D.
 
-00:01:45.340 --> 00:01:48.060 line:100% position:50% align:middle
-so I'm just going to leave it right at
-Header.
+253
+00:10:28.360 --> 00:10:29.670
+It's kinda fun to have on.
 
-00:01:48.060 --> 00:01:55.750 line:100% position:50% align:middle
-And then down here, we are going to have
-an Order component and we need the
+254
+00:10:29.670 --> 00:10:32.840
+So that is a sort of a scaffold out of our application.
 
-00:01:55.750 --> 00:02:02.160 line:100% position:50% align:middle
-Inventory component. So give that a save
-and we head back to our Google
+255
+00:10:32.840 --> 00:10:34.421
+We have the main bones.
 
-00:02:02.160 --> 00:02:07.120 line:100% position:50% align:middle
-Chrome here, nothing changed. And why is
-still rendering StorePicker?
+256
+00:10:34.421 --> 00:10:37.010
+Let's move onto the next one which is talking about
 
-00:02:07.120 --> 00:02:10.160 line:100% position:50% align:middle
-It's because our render() method here is
-still rendering out the StorePicker,
+257
+00:10:37.010 --> 00:10:41.110
+how do we make this header component somewhat dynamic
 
-00:02:10.160 --> 00:02:15.390 line:100% position:50% align:middle
-it makes sense, right? So we need to go
-back into here. We need to export
+258
+00:10:41.110 --> 00:10:44.010
+because we have just been hard-coding the values in there.
 
-00:02:15.390 --> 00:02:18.400 line:100% position:50% align:middle
-default App. We need to go back into our
-index.js
-
-00:02:18.400 --> 00:02:22.500 line:100% position:50% align:middle
-and we're going to get into routing in a
-future video where if you're on the home
-
-00:02:22.500 --> 00:02:25.380 line:100% position:50% align:middle
-page, it'll show you StorePicker,
-otherwise, it's going to show you the App
-
-00:02:25.380 --> 00:02:28.930 line:100% position:50% align:middle
-component, sort of like one or the other.
-But we haven't hooked up routing yet.
-
-00:02:28.930 --> 00:02:36.360 line:100% position:50% align:middle
-So what I want to do is just import the
-App component from our components
-
-00:02:36.360 --> 00:02:43.290 line:100% position:50% align:middle
-directory and then we'll render out the
-App component here.
-
-00:02:43.290 --> 00:02:47.700 line:100% position:50% align:middle
-Save, go back. See, now it refreshes.
-Nothing here. Let's see what our dev tools
-
-00:02:47.700 --> 00:02:51.370 line:100% position:50% align:middle
-is telling us. It's telling us we have an
-error here: "ReferenceError: Header is not
-
-00:02:51.370 --> 00:02:56.150 line:100% position:50% align:middle
-defined." The reason we get that is because
-we have not yet made this Header component
-
-00:02:56.150 --> 00:03:00.970 line:100% position:50% align:middle
-nor have we made the Order component or
-the Inventory component. So let's go to
-
-00:03:00.970 --> 00:03:04.580 line:100% position:50% align:middle
-our components directory here, a new file,
-make a Header.js so we'll start to see
-
-00:03:04.580 --> 00:03:11.630 line:100% position:50% align:middle
-a pattern of making new components. We
-need to grab React. We're going to make
-
-00:03:11.630 --> 00:03:15.692 line:100% position:50% align:middle
-ourselves a class.
-
-00:03:20.230 --> 00:03:25.010 line:100% position:50% align:middle
-And then what is the one method you always
-need? Is render() inside of that.
-
-00:03:25.010 --> 00:03:31.020 line:100% position:50% align:middle
-Let's just `return`. Let's just give
-ourselves a paragraph tag for now that
-
-00:03:31.020 --> 00:03:38.240 line:100% position:50% align:middle
-says "Header" and then, of course, we need
-to export default Header. Now that we've
-
-00:03:38.240 --> 00:03:41.680 line:100% position:50% align:middle
-made this Header component, we need to go
-back to our App.js file.
-
-00:03:41.680 --> 00:03:48.310 line:100% position:50% align:middle
-We've used it here, so we need to import
-Header from './Header'; Why not use the
-
-00:03:48.310 --> 00:03:52.150 line:100% position:50% align:middle
-components folder? Because we're
-already in App.js and we're just going to
-
-00:03:52.150 --> 00:03:55.300 line:100% position:50% align:middle
-a sibling file here called Header.js.
-
-00:03:55.300 --> 00:03:59.580 line:100% position:50% align:middle
-Now, if I give that a save, it's going to
-start to complain that it cannot find
-
-00:03:59.580 --> 00:04:04.530 line:100% position:50% align:middle
-module "React." Capital R there. But
-now it's complaining that Order is not
-
-00:04:04.530 --> 00:04:08.530 line:100% position:50% align:middle
-defined and that's just because we haven't
-done Order and we haven't done Inventory
-
-00:04:08.530 --> 00:04:12.950 line:100% position:50% align:middle
-yet. So if I just temporarily take those
-out to see Header is now rendered to
-
-00:04:12.950 --> 00:04:18.680 line:100% position:50% align:middle
-the page but we need to do the exact same
-thing we did on Header for Order as well
-
-00:04:18.680 --> 00:04:24.459 line:100% position:50% align:middle
-as Inventory. So I'm just going to take a
-copy and name it Order.js. And I grab
-
-00:04:24.459 --> 00:04:29.414 line:100% position:50% align:middle
-every instance and name it Order.
-And then I can name this Inventory.js.
-
-00:04:29.414 --> 00:04:33.420 line:100% position:50% align:middle
-Grab every instance of
-Order and name it Inventory.
-
-00:04:33.420 --> 00:04:39.320 line:100% position:50% align:middle
-Finally, we'll go to our App here, I'm
-going to grab Header and say,
-
-00:04:39.320 --> 00:04:43.096 line:100% position:50% align:middle
-import Order. We'll also want
-to import Inventory.
-
-00:04:43.096 --> 00:04:46.044 line:100% position:50% align:middle
-Good, so we have just made...that was
-
-00:04:46.044 --> 00:04:50.380 line:100% position:50% align:middle
-pretty quick, but we just made three like
-really simple components; Inventory,
-
-00:04:50.380 --> 00:04:56.090 line:100% position:50% align:middle
-Order and Header. And now when we refresh,
-we should now see Header,
-
-00:04:56.090 --> 00:04:59.860 line:100% position:50% align:middle
-Order and Inventory being rendered out,
-but our React DevTools here,
-
-00:04:59.860 --> 00:05:02.930 line:100% position:50% align:middle
-you can see that we have our App
-component, inside of that we've got our
-
-00:05:02.930 --> 00:05:06.500 line:100% position:50% align:middle
-Header component, we've got an Order
-component, we've got an Inventory
-
-00:05:06.500 --> 00:05:07.611 line:100% position:50% align:middle
-component.

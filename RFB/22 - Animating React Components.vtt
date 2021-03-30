@@ -1,956 +1,2014 @@
 WEBVTT
 
-00:00:00.300 --> 00:00:03.300 line:100% position:50% align:middle
-♪[music]♪
+1
+00:00:00.918 --> 00:00:03.501
+(upbeat music)
+
+2
+00:00:06.050 --> 00:00:07.990
+<v Wes>Now let's talk about animation in React.</v>
+
+3
+00:00:07.990 --> 00:00:11.530
+And I really like how this is done because after we put
+
+4
+00:00:11.530 --> 00:00:14.910
+a couple tags wrapped around our components
+
+5
+00:00:14.910 --> 00:00:17.600
+then it's just a matter of playing with the CSS
+
+6
+00:00:17.600 --> 00:00:19.070
+to get everything up and running.
+
+7
+00:00:19.070 --> 00:00:20.850
+So there's two different kinds of animations
+
+8
+00:00:20.850 --> 00:00:21.790
+that we've got going on.
+
+9
+00:00:21.790 --> 00:00:24.629
+The first one is mounting and unmounting
+
+10
+00:00:24.629 --> 00:00:26.310
+of different components.
+
+11
+00:00:26.310 --> 00:00:28.710
+So when I add Atlantic Salmon to my order
+
+12
+00:00:28.710 --> 00:00:32.030
+it slides itself on in and then when I remove it
+
+13
+00:00:32.030 --> 00:00:33.840
+from my order it will slide itself out.
+
+14
+00:00:33.840 --> 00:00:37.140
+That's animating the component did mount
+
+15
+00:00:37.140 --> 00:00:38.650
+and the component will unmount,
+
+16
+00:00:38.650 --> 00:00:40.000
+those things come in and go out.
+
+17
+00:00:40.000 --> 00:00:42.770
+And then the other one is is that just when something
+
+18
+00:00:42.770 --> 00:00:45.945
+changes we wanna be able to animate that up and down.
+
+19
+00:00:45.945 --> 00:00:48.220
+So once I add Atlantic Salmon
+
+20
+00:00:48.220 --> 00:00:50.390
+and I add a couple more, you see that it just goes
+
+21
+00:00:50.390 --> 00:00:52.190
+bong, bong, bong, bong, bong, bong,
+
+22
+00:00:52.190 --> 00:00:54.740
+it just keeps on climbing.
+
+23
+00:00:54.740 --> 00:00:57.240
+So that's what we're gonna do is we're going to start
+
+24
+00:00:57.240 --> 00:01:01.290
+with the animating it in and animating it out
+
+25
+00:01:01.290 --> 00:01:03.960
+and then we'll look at a little bit more complicated one
+
+26
+00:01:03.960 --> 00:01:06.470
+which is the bong, bong, bong,
+
+27
+00:01:06.470 --> 00:01:08.040
+I don't know what you call that, bong, bong, bong,
+
+28
+00:01:08.040 --> 00:01:09.683
+let's call it that.
+
+29
+00:01:09.683 --> 00:01:10.684
+(laughter)
+
+30
+00:01:10.684 --> 00:01:13.220
+So open up your order dot JS and at the very top
+
+31
+00:01:13.220 --> 00:01:16.870
+we need to import a couple things.
+
+32
+00:01:16.870 --> 00:01:21.870
+We're going to import transition group and CSS transition
+
+33
+00:01:25.470 --> 00:01:27.870
+and that's going to be coming from
+
+34
+00:01:27.870 --> 00:01:31.430
+the React transition group package,
+
+35
+00:01:31.430 --> 00:01:33.090
+then we have these two new components
+
+36
+00:01:33.090 --> 00:01:36.030
+called transition group and CSS transition
+
+37
+00:01:36.030 --> 00:01:39.870
+and let's go down to this unordered list
+
+38
+00:01:39.870 --> 00:01:42.270
+of our order, that's where we're going to be
+
+39
+00:01:42.270 --> 00:01:43.910
+mapping through everything.
+
+40
+00:01:43.910 --> 00:01:45.670
+We're gonna put the each on it's own line.
+
+41
+00:01:45.670 --> 00:01:48.400
+First thing we're gonna do is replace this unordered list
+
+42
+00:01:48.400 --> 00:01:52.570
+with the transition group tag and then we still want it
+
+43
+00:01:52.570 --> 00:01:55.129
+to be an ordered list at the end of the day
+
+44
+00:01:55.129 --> 00:01:57.190
+so we're going to give it a component property,
+
+45
+00:01:57.190 --> 00:01:59.950
+and this is the, if you look at docs for transition group,
+
+46
+00:01:59.950 --> 00:02:01.930
+this tells it what element at the end of the day
+
+47
+00:02:01.930 --> 00:02:04.760
+to actually render out to the page.
+
+48
+00:02:04.760 --> 00:02:08.550
+So it's an unordered list, good, give that a save.
+
+49
+00:02:08.550 --> 00:02:11.560
+And we'll go back to here and make sure
+
+50
+00:02:11.560 --> 00:02:14.880
+that everything is still working, beautiful.
+
+51
+00:02:14.880 --> 00:02:17.520
+If I add a new one it'll still add, okay, good.
+
+52
+00:02:17.520 --> 00:02:19.460
+Then we need to take every single LI
+
+53
+00:02:19.460 --> 00:02:22.000
+that we're rendering out and wrap it in
+
+54
+00:02:22.000 --> 00:02:24.930
+that other thing that we imported, the CSS transition tag.
+
+55
+00:02:24.930 --> 00:02:27.860
+So let's go to, again, remember we kicked it off
+
+56
+00:02:27.860 --> 00:02:30.160
+to the separate render order function
+
+57
+00:02:30.160 --> 00:02:33.850
+and now we have this LI for either not finding it
+
+58
+00:02:33.850 --> 00:02:34.990
+or for finding it.
+
+59
+00:02:34.990 --> 00:02:37.360
+Now this is a bit tricky because we're returning
+
+60
+00:02:37.360 --> 00:02:40.390
+three things here and only these two should be wrapped
+
+61
+00:02:40.390 --> 00:02:43.960
+in CSS transition because null shouldn't be wrapped
+
+62
+00:02:43.960 --> 00:02:46.240
+in a CSS, in fact it will error out if it is.
+
+63
+00:02:46.240 --> 00:02:47.870
+So let's get it working on this one
+
+64
+00:02:47.870 --> 00:02:49.440
+and then I'll show you a little trick we can do
+
+65
+00:02:49.440 --> 00:02:52.380
+to not double write the same code.
+
+66
+00:02:52.380 --> 00:02:56.230
+So around here we're going to make a CSS transition tag
+
+67
+00:02:56.230 --> 00:03:00.470
+and we're going to wrap that LI and then the CSS transition
+
+68
+00:03:00.470 --> 00:03:03.320
+takes a number of different properties.
+
+69
+00:03:03.320 --> 00:03:07.580
+First one is class names, with an S, that's not a typo
+
+70
+00:03:07.580 --> 00:03:10.550
+and I'll show you why it needs that in just a second,
+
+71
+00:03:10.550 --> 00:03:12.920
+and we're just gonna say order.
+
+72
+00:03:12.920 --> 00:03:16.530
+Second is it also needs a key, so I'll just say key.
+
+73
+00:03:16.530 --> 00:03:20.940
+And third it needs a timeout, which is an object
+
+74
+00:03:20.940 --> 00:03:24.780
+of how fast do they come in and how fast do they go out,
+
+75
+00:03:24.780 --> 00:03:27.770
+so I'll say enter at 250 milliseconds
+
+76
+00:03:27.770 --> 00:03:31.470
+and exit at 250 milliseconds.
+
+77
+00:03:31.470 --> 00:03:34.940
+Good, so now we have this CSS transition group.
+
+78
+00:03:34.940 --> 00:03:37.470
+Now the weird thing is is that we need to also
+
+79
+00:03:37.470 --> 00:03:40.950
+copy it and put it on this one as well,
+
+80
+00:03:40.950 --> 00:03:42.230
+same with the closing tag.
+
+81
+00:03:42.230 --> 00:03:44.570
+Again, I'll show you a little trick we can do
+
+82
+00:03:44.570 --> 00:03:46.180
+so that we're not duplicating that
+
+83
+00:03:46.180 --> 00:03:48.840
+over and over, we can make a reusable
+
+84
+00:03:48.840 --> 00:03:50.770
+wrapper component for that.
+
+85
+00:03:50.770 --> 00:03:52.470
+So let's go back to our app and make sure
+
+86
+00:03:52.470 --> 00:03:54.700
+everything is still working.
+
+87
+00:03:54.700 --> 00:03:56.940
+Now when I add items to my order and remove them,
+
+88
+00:03:56.940 --> 00:03:59.210
+ooh, it's already animating for me
+
+89
+00:03:59.210 --> 00:04:01.570
+and that's because I've shipped you the CSS,
+
+90
+00:04:01.570 --> 00:04:03.990
+but we're going to delete all the CSS
+
+91
+00:04:03.990 --> 00:04:05.560
+and write it together so I can show you
+
+92
+00:04:05.560 --> 00:04:07.460
+exactly how it works.
+
+93
+00:04:07.460 --> 00:04:10.740
+So what I want you to do is to go back to your application,
+
+94
+00:04:10.740 --> 00:04:14.120
+open up the CSS folder and inside of that
+
+95
+00:04:14.120 --> 00:04:16.640
+you're going to see animations dot STYL.
+
+96
+00:04:17.810 --> 00:04:21.250
+And you see order enter, order exit, count enter
+
+97
+00:04:21.250 --> 00:04:22.450
+and count exit.
+
+98
+00:04:22.450 --> 00:04:24.930
+So what we're gonna do is just go ahead and delete
+
+99
+00:04:24.930 --> 00:04:27.200
+all of that and we're gonna write it together.
+
+100
+00:04:27.200 --> 00:04:30.580
+Now, a couple things before we even get running
+
+101
+00:04:30.580 --> 00:04:32.570
+on writing this CSS.
+
+102
+00:04:32.570 --> 00:04:35.640
+So first of all I'm using a language called Stylus
+
+103
+00:04:35.640 --> 00:04:39.050
+and Stylus is exactly the same as Sass, it just has
+
+104
+00:04:39.050 --> 00:04:41.810
+the option of doing it based on indentation
+
+105
+00:04:41.810 --> 00:04:44.760
+rather than using colons and semicolons.
+
+106
+00:04:44.760 --> 00:04:47.670
+However, if you are not totally comfortable
+
+107
+00:04:47.670 --> 00:04:50.287
+with Stylus because it's based on indentation,
+
+108
+00:04:50.287 --> 00:04:54.090
+then make sure that you put in the colons
+
+109
+00:04:54.090 --> 00:04:56.360
+and the curly brackets under all of them,
+
+110
+00:04:56.360 --> 00:05:00.210
+just write it like regular CSS and not like Stylus.
+
+111
+00:05:00.210 --> 00:05:02.770
+Because I know some people can get tripped up on it,
+
+112
+00:05:02.770 --> 00:05:06.950
+this is a tab character, sorry, this is two spaces,
+
+113
+00:05:06.950 --> 00:05:09.260
+not a tab character and I know in Stylus
+
+114
+00:05:09.260 --> 00:05:11.420
+if you mix tabs and spaces it will break.
+
+115
+00:05:11.420 --> 00:05:13.190
+So that's just a personal preference,
+
+116
+00:05:13.190 --> 00:05:16.400
+there's nothing there specifically that you need to use.
+
+117
+00:05:16.400 --> 00:05:18.800
+Second is, how do we actually compile this?
+
+118
+00:05:18.800 --> 00:05:20.810
+So if you're using Stylus or Sass
+
+119
+00:05:20.810 --> 00:05:23.980
+or any of these pre-processors, how do you compile it?
+
+120
+00:05:23.980 --> 00:05:27.350
+And the downside to using Create React app
+
+121
+00:05:27.350 --> 00:05:31.340
+is that you cannot use any sort of custom CSS
+
+122
+00:05:31.340 --> 00:05:33.450
+pre-processor in your web pack build
+
+123
+00:05:33.450 --> 00:05:35.750
+unless you do something called eject.
+
+124
+00:05:35.750 --> 00:05:39.410
+So what we need to do is open up our package dot JSON
+
+125
+00:05:39.410 --> 00:05:42.420
+and you're gonna see that I have two scripts here
+
+126
+00:05:42.420 --> 00:05:46.170
+that will actually run the Stylus compiling
+
+127
+00:05:46.170 --> 00:05:48.240
+outside of our Create React app.
+
+128
+00:05:48.240 --> 00:05:50.820
+The first one just does a single compile
+
+129
+00:05:50.820 --> 00:05:54.480
+of our Sylus dot style file and compiles it
+
+130
+00:05:54.480 --> 00:05:58.360
+to a style dot CSS and the second one
+
+131
+00:05:58.360 --> 00:06:02.240
+watches for changes and then will re-compile
+
+132
+00:06:02.240 --> 00:06:03.073
+them every single time.
+
+133
+00:06:03.073 --> 00:06:05.810
+So really the only difference is the dash W flag
+
+134
+00:06:05.810 --> 00:06:06.700
+which will watch.
+
+135
+00:06:06.700 --> 00:06:08.670
+So we wanna run styles watch.
+
+136
+00:06:08.670 --> 00:06:11.410
+So we're gonna go to our terminal and kill
+
+137
+00:06:11.410 --> 00:06:12.830
+the process that we currently have,
+
+138
+00:06:12.830 --> 00:06:15.880
+we can hit control, C and now we wanna run NPM
+
+139
+00:06:15.880 --> 00:06:19.530
+run styles colon watch and what that's gonna do
+
+140
+00:06:19.530 --> 00:06:21.760
+is it's going to first compile our CSS
+
+141
+00:06:21.760 --> 00:06:23.870
+and then watch for any future changes.
+
+142
+00:06:23.870 --> 00:06:26.359
+So that's pretty neat because what I can do
+
+143
+00:06:26.359 --> 00:06:30.710
+is open up my animations, delete that,
+
+144
+00:06:30.710 --> 00:06:32.832
+give it a save and you can see
+
+145
+00:06:32.832 --> 00:06:33.810
+that it will trigger a re-render,
+
+146
+00:06:33.810 --> 00:06:35.610
+it's that compiled style dot CSS
+
+147
+00:06:35.610 --> 00:06:40.610
+and then if I were to say, div background red
+
+148
+00:06:41.160 --> 00:06:43.940
+it will compile a second one and so on and so on.
+
+149
+00:06:43.940 --> 00:06:46.670
+So that's great, but now what I did
+
+150
+00:06:46.670 --> 00:06:49.729
+is I actually just broke my local host from running.
+
+151
+00:06:49.729 --> 00:06:53.870
+So how do you run both the styles and our NPM start
+
+152
+00:06:53.870 --> 00:06:54.790
+at the same time?
+
+153
+00:06:54.790 --> 00:06:58.129
+Well, that's what this package concurrently does.
+
+154
+00:06:58.129 --> 00:07:00.880
+You could just open up two terminal tabs
+
+155
+00:07:00.880 --> 00:07:03.335
+and run NPM start for your app
+
+156
+00:07:03.335 --> 00:07:06.478
+and run NPM styles watch for that,
+
+157
+00:07:06.478 --> 00:07:10.061
+but it's probably easier just to run this watch one
+
+158
+00:07:10.061 --> 00:07:13.654
+which will concurrently run two things here,
+
+159
+00:07:13.654 --> 00:07:17.620
+NPM run start and NPM run styles watch.
+
+160
+00:07:17.620 --> 00:07:20.240
+That's what it does in both ones.
+
+161
+00:07:20.240 --> 00:07:25.240
+So we're gonna do that, kill it, I'm gonna run NPM run watch
+
+162
+00:07:25.430 --> 00:07:27.590
+and that runs concurrently two things.
+
+163
+00:07:27.590 --> 00:07:29.500
+And it's kinda neat, it'll tell you first
+
+164
+00:07:29.500 --> 00:07:31.860
+what is the web pack output and second
+
+165
+00:07:31.860 --> 00:07:33.410
+what is the Stylus output.
+
+166
+00:07:33.410 --> 00:07:35.490
+So if you see console logs anywhere
+
+167
+00:07:35.490 --> 00:07:37.720
+you see exactly what you're working on.
+
+168
+00:07:37.720 --> 00:07:42.140
+And, oh (laughter) everything is red, why?
+
+169
+00:07:42.140 --> 00:07:44.450
+Because I showed you this, I said any div
+
+170
+00:07:44.450 --> 00:07:47.309
+has a background red, which is hilarious.
+
+171
+00:07:47.309 --> 00:07:48.810
+So we don't actually need that, give it a save
+
+172
+00:07:48.810 --> 00:07:51.230
+and it's gonna regenerate all of the styles for us.
+
+173
+00:07:51.230 --> 00:07:55.300
+Good, so why do we have this animation file anyway?
+
+174
+00:07:55.300 --> 00:07:57.300
+And I'll show you exactly why.
+
+175
+00:07:57.300 --> 00:08:01.390
+So first thing we need to do is go to our order.
+
+176
+00:08:01.390 --> 00:08:04.950
+And remember when we did the CSS transition,
+
+177
+00:08:04.950 --> 00:08:08.020
+we said enter 250 milliseconds, let's make that
+
+178
+00:08:08.020 --> 00:08:11.170
+5,000 milliseconds, that means it's gonna be five seconds
+
+179
+00:08:11.170 --> 00:08:13.940
+to enter and five seconds to leave.
+
+180
+00:08:13.940 --> 00:08:16.870
+Now what I want you to do is just use your regular dev tools
+
+181
+00:08:16.870 --> 00:08:21.870
+to inspect one of these LIs and hit the X on it.
+
+182
+00:08:22.060 --> 00:08:23.080
+See what's happening here?
+
+183
+00:08:23.080 --> 00:08:26.440
+It gives it a class of order exit in order exit active
+
+184
+00:08:26.440 --> 00:08:28.620
+and it's still there, but after five seconds
+
+185
+00:08:28.620 --> 00:08:30.380
+it actually removes the list item.
+
+186
+00:08:30.380 --> 00:08:33.330
+Same thing when I add, maybe, let's see,
+
+187
+00:08:34.223 --> 00:08:36.440
+I'm gonna add King Crab, it will automatically add
+
+188
+00:08:36.440 --> 00:08:38.490
+the LI, give it a class of order enter
+
+189
+00:08:38.490 --> 00:08:41.884
+and order enter active and then after five seconds
+
+190
+00:08:41.884 --> 00:08:44.360
+it will remove those classes.
+
+191
+00:08:44.360 --> 00:08:47.340
+So what's happening here is it's leaving,
+
+192
+00:08:47.340 --> 00:08:49.600
+it's leaving, it's leaving, it's leaving
+
+193
+00:08:49.600 --> 00:08:51.860
+and boom, now it's gone.
+
+194
+00:08:51.860 --> 00:08:53.530
+What's happening is it's giving us
+
+195
+00:08:53.530 --> 00:08:58.110
+these states as CSS classes and then we can go ahead
+
+196
+00:08:58.110 --> 00:09:01.390
+and use those CSS classes to add animation to it.
+
+197
+00:09:01.390 --> 00:09:03.090
+So if we go to our animations here
+
+198
+00:09:03.090 --> 00:09:06.830
+and we say, we've got two states, we have order enter
+
+199
+00:09:06.830 --> 00:09:08.190
+and then we also have another selector
+
+200
+00:09:08.190 --> 00:09:10.424
+is going to be order exit.
+
+201
+00:09:10.424 --> 00:09:12.342
+So let's just do order enter first.
+
+202
+00:09:12.342 --> 00:09:14.226
+And when the, has that order enter
+
+203
+00:09:14.226 --> 00:09:16.036
+let's just give it a background of red
+
+204
+00:09:16.036 --> 00:09:19.540
+and then when it has a class of also
+
+205
+00:09:19.540 --> 00:09:23.480
+having a class of order enter active let's give it
+
+206
+00:09:23.480 --> 00:09:27.010
+a background of yellow, a background-a,
+
+207
+00:09:27.010 --> 00:09:30.810
+a background of yellow.
+
+208
+00:09:30.810 --> 00:09:33.302
+So let's see what that looks like.
+
+209
+00:09:33.302 --> 00:09:35.360
+So I'm just gonna remove this one, remove this one,
+
+210
+00:09:35.360 --> 00:09:37.777
+takes five seconds to remove now
+
+211
+00:09:37.777 --> 00:09:40.000
+because we put that five seconds on there
+
+212
+00:09:40.000 --> 00:09:41.530
+and then it will finally unmount it,
+
+213
+00:09:41.530 --> 00:09:45.480
+but as I add it in now, you see how it's yellow immediately
+
+214
+00:09:45.480 --> 00:09:47.280
+and watch what happens now.
+
+215
+00:09:47.280 --> 00:09:49.940
+If I go to my order enter and I add a transition
+
+216
+00:09:49.940 --> 00:09:54.940
+of 0.5 seconds, or not, five seconds, watch now.
+
+217
+00:09:55.000 --> 00:10:00.000
+I'm gonna go to Mussels and you see over five seconds
+
+218
+00:10:01.710 --> 00:10:03.730
+it's animating because what's happening
+
+219
+00:10:03.730 --> 00:10:06.850
+is that React gives it a class of order enter immediately
+
+220
+00:10:06.850 --> 00:10:10.330
+and then 0.1 milliseconds later it's giving it a class
+
+221
+00:10:10.330 --> 00:10:12.070
+of order enter active.
+
+222
+00:10:12.070 --> 00:10:14.240
+And because these two things are done
+
+223
+00:10:14.240 --> 00:10:17.030
+at a different time, then we can then transition
+
+224
+00:10:17.030 --> 00:10:19.600
+all of the properties from its starting state
+
+225
+00:10:19.600 --> 00:10:23.030
+to it's finished state, which in this case
+
+226
+00:10:23.030 --> 00:10:25.051
+is just changing the background
+
+227
+00:10:25.051 --> 00:10:26.622
+and it's gonna transition
+
+228
+00:10:26.622 --> 00:10:28.986
+those properties over five seconds.
+
+229
+00:10:28.986 --> 00:10:30.210
+So that's great and what we can do with that
+
+230
+00:10:30.210 --> 00:10:34.573
+is we can put a transform on it of a translate X
+
+231
+00:10:34.573 --> 00:10:39.540
+negative 120% and then when it is active
+
+232
+00:10:39.540 --> 00:10:43.250
+we can give it a transform, translate X of zero.
+
+233
+00:10:43.250 --> 00:10:46.710
+So it's gonna go from all the way off to the left
+
+234
+00:10:46.710 --> 00:10:48.780
+to all the way where it should be.
+
+235
+00:10:48.780 --> 00:10:49.740
+Let's see here.
+
+236
+00:10:51.530 --> 00:10:53.530
+Move these suckers and let's find one
+
+237
+00:10:53.530 --> 00:10:55.870
+that I haven't yet added, Jumbo Prawns,
+
+238
+00:10:55.870 --> 00:10:58.290
+woop, there it comes.
+
+239
+00:10:59.405 --> 00:11:03.250
+And add another one, woop, another one, another one.
+
+240
+00:11:03.250 --> 00:11:06.190
+You see how it immediately gives it that class
+
+241
+00:11:06.190 --> 00:11:09.910
+and then we have that five seconds to animate itself in.
+
+242
+00:11:09.910 --> 00:11:12.350
+And then after five seconds it's going to remove
+
+243
+00:11:12.350 --> 00:11:15.860
+all of these classes and none of these CSS properties
+
+244
+00:11:15.860 --> 00:11:18.400
+are going to be applied to it.
+
+245
+00:11:18.400 --> 00:11:21.046
+So same thing can go for order exit.
+
+246
+00:11:21.046 --> 00:11:26.046
+Order exit, so we're gonna say, background thistle
+
+247
+00:11:30.200 --> 00:11:34.310
+and when the dot order exit active
+
+248
+00:11:37.800 --> 00:11:42.150
+let's say, give it a background of pale goldenrod.
+
+249
+00:11:46.020 --> 00:11:49.110
+And of course we need to, let's just take that transition
+
+250
+00:11:49.110 --> 00:11:50.850
+and put that on there as well.
+
+251
+00:11:50.850 --> 00:11:55.850
+So now when I remove it it's going to make it thistle
+
+252
+00:11:57.770 --> 00:12:00.650
+and then remove it, remove, remove, remove
+
+253
+00:12:01.720 --> 00:12:05.590
+and then after five seconds it totally removes it.
+
+254
+00:12:05.590 --> 00:12:07.650
+Oh, that's because I need an ampersand here,
+
+255
+00:12:07.650 --> 00:12:09.190
+it's not turning pale goldenrod.
+
+256
+00:12:09.190 --> 00:12:10.640
+So let me try that once more.
+
+257
+00:12:11.494 --> 00:12:12.444
+Animate them on in.
+
+258
+00:12:14.460 --> 00:12:19.460
+And then when I remove them they start to fade
+
+259
+00:12:19.840 --> 00:12:22.010
+themselves out.
+
+260
+00:12:22.010 --> 00:12:22.843
+Okay, good.
+
+261
+00:12:22.843 --> 00:12:25.000
+Well what we can do now is the opposite.
+
+262
+00:12:25.000 --> 00:12:30.000
+So the order exit will be translate X zero,
+
+263
+00:12:30.930 --> 00:12:33.360
+start where it is, and then when it's active
+
+264
+00:12:33.360 --> 00:12:36.550
+translate itself all the way to the right-hand side
+
+265
+00:12:36.550 --> 00:12:39.090
+of plus 120%.
+
+266
+00:12:39.090 --> 00:12:41.600
+So these should animate themselves in
+
+267
+00:12:45.810 --> 00:12:48.040
+and then when I click the X they start
+
+268
+00:12:48.040 --> 00:12:51.320
+to animate themselves on out.
+
+269
+00:12:51.320 --> 00:12:54.870
+It's so cool because everything is just CSS at this point
+
+270
+00:12:54.870 --> 00:12:57.000
+and we can do some little neat things.
+
+271
+00:12:57.000 --> 00:13:01.297
+So we can say, give it a max height of zero
+
+272
+00:13:01.297 --> 00:13:04.593
+and a padding of zero as well
+
+273
+00:13:04.593 --> 00:13:09.593
+and active we'll give it a max height of 60 PX
+
+274
+00:13:10.275 --> 00:13:14.760
+and a padding of two rem zero.
+
+275
+00:13:14.760 --> 00:13:17.670
+And what that's gonna do is by giving it a max height
+
+276
+00:13:17.670 --> 00:13:21.170
+you cannot transition from height auto to height
+
+277
+00:13:21.170 --> 00:13:24.770
+whatever it is, so by doing a max height
+
+278
+00:13:24.770 --> 00:13:26.380
+it's a bit of a hack that will allow us
+
+279
+00:13:26.380 --> 00:13:28.240
+to transition from one to another.
+
+280
+00:13:28.240 --> 00:13:33.240
+So by adding these they will start to grow as we have it
+
+281
+00:13:35.990 --> 00:13:37.150
+as they come in.
+
+282
+00:13:37.150 --> 00:13:39.990
+And then of course we can move these transition
+
+283
+00:13:39.990 --> 00:13:44.725
+to 0.5 seconds and 0.5 seconds
+
+284
+00:13:44.725 --> 00:13:47.667
+and then transitions are gonna be much quicker.
+
+285
+00:13:47.667 --> 00:13:50.580
+But the other thing is is that they're not removed
+
+286
+00:13:50.580 --> 00:13:52.850
+until five seconds later.
+
+287
+00:13:52.850 --> 00:13:57.430
+So we need to go back into our order and change these
+
+288
+00:13:57.430 --> 00:14:02.430
+enter and exits to 500 milliseconds or 250 milliseconds
+
+289
+00:14:02.540 --> 00:14:06.576
+to get these nice animations, woop, I like it.
+
+290
+00:14:06.576 --> 00:14:07.493
+Zoop, zoop.
+
+291
+00:14:08.350 --> 00:14:12.293
+It's not doing it just like my answer,
+
+292
+00:14:12.293 --> 00:14:14.360
+so I think that there's one more thing we need to do here
+
+293
+00:14:15.365 --> 00:14:17.000
+on the padding in order to overwrite the default padding
+
+294
+00:14:17.000 --> 00:14:20.010
+that I have in my style dot CSS,
+
+295
+00:14:20.010 --> 00:14:22.460
+let's just put some important tags
+
+296
+00:14:22.460 --> 00:14:25.490
+and then on the exit we want to do that as well,
+
+297
+00:14:25.490 --> 00:14:27.910
+on the adding we'll just say padding zero,
+
+298
+00:14:27.910 --> 00:14:29.710
+I think that should take care of it.
+
+299
+00:14:30.630 --> 00:14:31.480
+Beautiful.
+
+300
+00:14:33.300 --> 00:14:35.390
+That removing and then we're removing.
+
+301
+00:14:35.390 --> 00:14:38.500
+And let's get rid of all of these colors here.
+
+302
+00:14:41.160 --> 00:14:43.478
+Everything is nice, oh, there's still red.
+
+303
+00:14:43.478 --> 00:14:45.060
+There we go.
+
+304
+00:14:45.060 --> 00:14:48.639
+Cool, so the other one is when you wanna add multiples.
+
+305
+00:14:48.639 --> 00:14:51.800
+So eight, nine, 10, 11, it's a little bit different
+
+306
+00:14:51.800 --> 00:14:54.700
+because it's not just unmounting and mounting,
+
+307
+00:14:54.700 --> 00:14:58.690
+it's actually replacing a old div, like right here
+
+308
+00:14:58.690 --> 00:15:03.410
+we have, let's open it up, we have this 19,
+
+309
+00:15:03.410 --> 00:15:07.640
+that's going to be a span, but we are going to add
+
+310
+00:15:07.640 --> 00:15:09.430
+a second and what's gonna happen
+
+311
+00:15:09.430 --> 00:15:12.050
+is we're actually gonna have a 19 and a 20
+
+312
+00:15:12.050 --> 00:15:15.720
+and we're gonna animate the 19 up and then the 20
+
+313
+00:15:15.720 --> 00:15:18.050
+will animate into it's actual spot.
+
+314
+00:15:18.050 --> 00:15:21.100
+So we need to into our order dot JS
+
+315
+00:15:21.100 --> 00:15:23.830
+and we need to start wrapping some of this stuff
+
+316
+00:15:23.830 --> 00:15:26.310
+in some spans so that we have some sort
+
+317
+00:15:26.310 --> 00:15:28.490
+of elements to grab onto.
+
+318
+00:15:28.490 --> 00:15:33.490
+So this count here is going to be on its own line.
+
+319
+00:15:33.620 --> 00:15:35.740
+And we're going to wrap that in a span.
+
+320
+00:15:35.740 --> 00:15:39.540
+Save, see where we're at, still working, good, woo.
+
+321
+00:15:39.540 --> 00:15:42.400
+And then we will wrap everything inside of the LI
+
+322
+00:15:42.400 --> 00:15:45.430
+in another span just because that's how the CSS
+
+323
+00:15:45.430 --> 00:15:46.400
+is working out.
+
+324
+00:15:47.440 --> 00:15:49.830
+So we have an LI and we have a span
+
+325
+00:15:49.830 --> 00:15:52.202
+and then inside of that we have a span
+
+326
+00:15:52.202 --> 00:15:54.126
+and then the lbs and the button.
+
+327
+00:15:54.126 --> 00:15:55.780
+So does that give us what we're looking for?
+
+328
+00:15:55.780 --> 00:15:57.410
+Yes, it does.
+
+329
+00:15:57.410 --> 00:16:00.220
+Okay, and now we need to give ourselves
+
+330
+00:16:00.220 --> 00:16:01.440
+another transition group.
+
+331
+00:16:01.440 --> 00:16:03.300
+So inside of here we're going to wrap
+
+332
+00:16:03.300 --> 00:16:06.510
+this count here in a transition group.
+
+333
+00:16:06.510 --> 00:16:08.630
+Put the span inside of that.
+
+334
+00:16:08.630 --> 00:16:10.940
+And then we're going to wrap that span itself
+
+335
+00:16:10.940 --> 00:16:14.350
+in a CSS transition component.
+
+336
+00:16:14.350 --> 00:16:16.966
+Now the CSS transition needs a few options here
+
+337
+00:16:16.966 --> 00:16:19.200
+and also with the transition group,
+
+338
+00:16:19.200 --> 00:16:21.454
+so this is going to be a component,
+
+339
+00:16:21.454 --> 00:16:25.640
+it's going to be a span and the class name
+
+340
+00:16:27.370 --> 00:16:28.850
+is going to be count.
+
+341
+00:16:28.850 --> 00:16:32.430
+And the CSS transition the class names
+
+342
+00:16:32.430 --> 00:16:35.000
+is going to be count, that's going to be count enter
+
+343
+00:16:35.000 --> 00:16:37.240
+and count enter active, et cetera, et cetera.
+
+344
+00:16:37.240 --> 00:16:39.820
+The key is not going to be a key,
+
+345
+00:16:39.820 --> 00:16:42.010
+but the key is going to be the count
+
+346
+00:16:42.010 --> 00:16:45.530
+and by doing that it will tell the CSS transition group
+
+347
+00:16:45.530 --> 00:16:48.400
+to make two separate span elements
+
+348
+00:16:48.400 --> 00:16:50.680
+so that if we're going from 19 to 20
+
+349
+00:16:50.680 --> 00:16:52.990
+it's gonna animate the 20 or the 19 out
+
+350
+00:16:52.990 --> 00:16:56.180
+and the 20 on in and then the timeout
+
+351
+00:16:56.180 --> 00:16:58.670
+let's do the same thing we did before
+
+352
+00:16:58.670 --> 00:17:02.620
+which is we'll say, enter is going to be 5,000 milliseconds
+
+353
+00:17:02.620 --> 00:17:05.830
+and exit is going to be 5,000 as well.
+
+354
+00:17:05.830 --> 00:17:07.360
+And then my prettier just took care
+
+355
+00:17:07.360 --> 00:17:08.700
+of some of the formatting there.
+
+356
+00:17:08.700 --> 00:17:11.590
+I should note that, what is this double curly brackets here?
+
+357
+00:17:11.590 --> 00:17:13.340
+Well, the first set of curly brackets
+
+358
+00:17:13.340 --> 00:17:15.350
+is to tell React it's JavaScript
+
+359
+00:17:15.350 --> 00:17:17.780
+and the seconds is just an object literal.
+
+360
+00:17:17.780 --> 00:17:21.500
+So you could also make a settings object
+
+361
+00:17:21.500 --> 00:17:25.900
+and then up here say, const settings is equal to that,
+
+362
+00:17:25.900 --> 00:17:29.100
+but I'd rather just pass it as an object literal
+
+363
+00:17:29.100 --> 00:17:30.370
+because it's much...
+
+364
+00:17:30.370 --> 00:17:32.762
+Alright, nice, now let's go ahead
+
+365
+00:17:32.762 --> 00:17:34.580
+and inspect just that six.
+
+366
+00:17:34.580 --> 00:17:37.860
+And click on Pacific Halibut and you see
+
+367
+00:17:37.860 --> 00:17:40.950
+how it's, we got count enter and so one of them
+
+368
+00:17:40.950 --> 00:17:42.810
+is entering and the other one is exiting
+
+369
+00:17:42.810 --> 00:17:45.790
+and then after five seconds it removes all those class.
+
+370
+00:17:45.790 --> 00:17:48.800
+Let me show you again, count enter, count enter active
+
+371
+00:17:48.800 --> 00:17:50.720
+and count exit, count exit active.
+
+372
+00:17:50.720 --> 00:17:53.480
+So we actually have two different,
+
+373
+00:17:53.480 --> 00:17:55.950
+and if you hit it a couple times,
+
+374
+00:17:55.950 --> 00:17:59.152
+you see that we actually have all of the different
+
+375
+00:17:59.152 --> 00:18:02.680
+spans for five seconds, it duplicates them
+
+376
+00:18:02.680 --> 00:18:05.960
+and then after our timeout that we've specified here
+
+377
+00:18:05.960 --> 00:18:08.100
+it will actually remove them.
+
+378
+00:18:08.100 --> 00:18:10.490
+So we can go into our animations here and do the same thing.
+
+379
+00:18:10.490 --> 00:18:15.320
+So we'll say, dot count enter, background red
+
+380
+00:18:16.840 --> 00:18:19.900
+and transition five seconds.
+
+381
+00:18:22.120 --> 00:18:24.929
+And we'll say, and when it has a class of count
+
+382
+00:18:24.929 --> 00:18:29.040
+enter active background yellow.
+
+383
+00:18:32.930 --> 00:18:37.930
+So then it transitions itself from red to yellow,
+
+384
+00:18:38.060 --> 00:18:42.830
+it doesn't look like it, oh, counter, count enter active
+
+385
+00:18:42.830 --> 00:18:43.880
+that should do it.
+
+386
+00:18:45.641 --> 00:18:48.180
+You see it transitions itself from red, it's immediately red
+
+387
+00:18:48.180 --> 00:18:52.950
+and then it goes to yellow and will move itself on up.
+
+388
+00:18:52.950 --> 00:18:55.200
+So what we want to do with our count enter
+
+389
+00:18:55.200 --> 00:18:57.270
+is we're going to again transform it,
+
+390
+00:18:57.270 --> 00:18:59.520
+but this time we're gonna go on the top to bottom,
+
+391
+00:18:59.520 --> 00:19:03.180
+so we're gonna translate why 100%.
+
+392
+00:19:03.180 --> 00:19:06.370
+So it's going to start, the new one is gonna start
+
+393
+00:19:06.370 --> 00:19:10.880
+underneath the 31, it's gonna be 32, it's gonna start
+
+394
+00:19:10.880 --> 00:19:13.520
+underneath and then when it is active
+
+395
+00:19:13.520 --> 00:19:17.520
+it's gonna translate itself on up to zero.
+
+396
+00:19:17.520 --> 00:19:19.070
+Let's see what that looks like.
+
+397
+00:19:20.967 --> 00:19:24.750
+Woop, woop, you see every time I add a new one
+
+398
+00:19:24.750 --> 00:19:29.290
+it will animate itself all the way up
+
+399
+00:19:29.290 --> 00:19:32.270
+and then when it's done it will remove
+
+400
+00:19:32.270 --> 00:19:34.155
+all of those classes, so that's good.
+
+401
+00:19:34.155 --> 00:19:37.860
+Now we need to take care of the one that's exiting
+
+402
+00:19:37.860 --> 00:19:40.580
+so that you can see that it just moves over right now,
+
+403
+00:19:40.580 --> 00:19:44.260
+that 41 moves over, but we wanna do the same thing,
+
+404
+00:19:44.260 --> 00:19:48.370
+we wanna overlap it and animate itself all the way up.
+
+405
+00:19:48.370 --> 00:19:53.270
+So let's go, I'm gonna say dot count exit
+
+406
+00:19:55.450 --> 00:20:00.450
+background black and count exit active background green.
+
+407
+00:20:04.840 --> 00:20:06.900
+Let's make sure that this works.
+
+408
+00:20:08.250 --> 00:20:10.070
+There we go, so it's green.
+
+409
+00:20:11.050 --> 00:20:14.500
+So we want a transform by default,
+
+410
+00:20:14.500 --> 00:20:16.440
+actually we can just duplicate it,
+
+411
+00:20:16.440 --> 00:20:18.810
+we're going to, by default we're gonna start at zero
+
+412
+00:20:18.810 --> 00:20:22.500
+and then when it is active we're going to go to the top
+
+413
+00:20:22.500 --> 00:20:24.930
+which is negative 100%, it should animate
+
+414
+00:20:24.930 --> 00:20:28.070
+itself vertically, and then we also want a transition
+
+415
+00:20:28.070 --> 00:20:30.460
+of five seconds on that one.
+
+416
+00:20:32.270 --> 00:20:35.510
+So is this gonna, you see the ones leaving
+
+417
+00:20:35.510 --> 00:20:38.110
+as the other one comes up and then as soon
+
+418
+00:20:38.110 --> 00:20:41.320
+as it's offscreen (click) it removes itself.
+
+419
+00:20:41.320 --> 00:20:44.560
+So again, it moves on up and the other one comes in.
+
+420
+00:20:44.560 --> 00:20:46.790
+The only problem is that they're not overlapping
+
+421
+00:20:46.790 --> 00:20:49.310
+each other and that's a pretty quick fix.
+
+422
+00:20:49.310 --> 00:20:51.720
+We need to put a position absolute in there,
+
+423
+00:20:51.720 --> 00:20:55.800
+left zero, bottom zero and they should,
+
+424
+00:20:55.800 --> 00:20:59.700
+since this one is absolute and this one is just static
+
+425
+00:20:59.700 --> 00:21:01.750
+they should overlap each other
+
+426
+00:21:01.750 --> 00:21:03.460
+and animate themselves on up.
+
+427
+00:21:03.460 --> 00:21:06.040
+So there we go.
+
+428
+00:21:10.740 --> 00:21:14.050
+If you do a whole bunch it gets a little bit crazy,
+
+429
+00:21:14.050 --> 00:21:16.760
+but it still totally works.
+
+430
+00:21:16.760 --> 00:21:18.560
+Animate itself on up.
+
+431
+00:21:18.560 --> 00:21:21.440
+And so you can do some really fun stuff with this
+
+432
+00:21:21.440 --> 00:21:26.218
+where as it leaves you can scale three.
+
+433
+00:21:26.218 --> 00:21:29.990
+So the one that's leaving gets much bigger, woo.
+
+434
+00:21:29.990 --> 00:21:30.850
+Same with this.
+
+435
+00:21:30.850 --> 00:21:32.250
+We could do some other fun stuff
+
+436
+00:21:32.250 --> 00:21:34.290
+or a count enter active or maybe,
+
+437
+00:21:34.290 --> 00:21:36.920
+let's go order enter active.
+
+438
+00:21:36.920 --> 00:21:40.990
+So we're transforming it, but we also wanna rotate it,
+
+439
+00:21:40.990 --> 00:21:43.620
+I don't know, 1,000 degrees.
+
+440
+00:21:44.590 --> 00:21:47.560
+And then it will, woo, oh, that's not in there.
+
+441
+00:21:48.510 --> 00:21:52.087
+Remove a whole bunch of these and then when I add one.
+
+442
+00:21:52.087 --> 00:21:53.050
+(laughter)
+
+443
+00:21:53.050 --> 00:21:55.080
+It'll animate itself in.
+
+444
+00:21:55.080 --> 00:22:00.080
+So what's 360 degrees times four, let's move it
+
+445
+00:22:01.260 --> 00:22:02.340
+a full amount.
+
+446
+00:22:07.000 --> 00:22:09.790
+And it'll Batman itself on in.
+
+447
+00:22:09.790 --> 00:22:12.160
+It should be Batmaning itself in, I think it's because
+
+448
+00:22:12.160 --> 00:22:17.160
+we should add a rotate zero to the initial state
+
+449
+00:22:20.050 --> 00:22:23.370
+and then rotate it 1,440 degrees when you do have it.
+
+450
+00:22:23.370 --> 00:22:26.040
+So if I get rid of all these.
+
+451
+00:22:28.545 --> 00:22:29.568
+(laughter)
+
+452
+00:22:29.568 --> 00:22:32.030
+There we go, boodaloodaloo, sort of Batmans in
+
+453
+00:22:32.030 --> 00:22:33.010
+as we want it.
+
+454
+00:22:33.010 --> 00:22:35.210
+And you can do anything you could possibly want
+
+455
+00:22:35.210 --> 00:22:37.090
+other than just translating the X value
+
+456
+00:22:37.090 --> 00:22:39.410
+you can change the colors, you can change the font size,
+
+457
+00:22:39.410 --> 00:22:42.630
+you can rotate it any amount that you could possibly want.
+
+458
+00:22:42.630 --> 00:22:45.370
+So I find it is a little bit tricky to get
+
+459
+00:22:45.370 --> 00:22:48.230
+the whole transition group thing up and running,
+
+460
+00:22:48.230 --> 00:22:50.750
+but once you have those classes being added to it
+
+461
+00:22:50.750 --> 00:22:53.404
+then it's just a CSS issue from there on out.
+
+462
+00:22:53.404 --> 00:22:57.360
+Last thing I wanted to show you is this.
+
+463
+00:22:57.360 --> 00:22:59.760
+Let's go to the top here, we did this twice,
+
+464
+00:22:59.760 --> 00:23:01.740
+we did the same transition group
+
+465
+00:23:01.740 --> 00:23:03.950
+and then every single time that we change it.
+
+466
+00:23:03.950 --> 00:23:05.320
+See, we already are out of sync here,
+
+467
+00:23:05.320 --> 00:23:09.160
+this one's 500 and this one's 250, so let's change those
+
+468
+00:23:09.160 --> 00:23:13.940
+to 500 and this one also should be 500
+
+469
+00:23:13.940 --> 00:23:18.240
+and our CSS should also be 0.5 seconds.
+
+470
+00:23:19.220 --> 00:23:23.000
+It's not ideal to have this duplicated twice
+
+471
+00:23:23.000 --> 00:23:24.870
+because then if you need to update either of them
+
+472
+00:23:24.870 --> 00:23:26.810
+you need to remember that you update either of them.
+
+473
+00:23:26.810 --> 00:23:29.450
+So we can actually put all of these in just a variable.
+
+474
+00:23:29.450 --> 00:23:31.590
+So let's go right above here where we made
+
+475
+00:23:31.590 --> 00:23:34.063
+the rest of our variables and I'll say,
+
+476
+00:23:34.063 --> 00:23:36.680
+const transition options is equal to an object
+
+477
+00:23:41.930 --> 00:23:44.258
+and then inside of that object we're just going to convert
+
+478
+00:23:44.258 --> 00:23:47.840
+all of these props to properties on the object.
+
+479
+00:23:47.840 --> 00:23:50.270
+So the class name, this is gonna be order,
 
-00:00:06.900 --> 00:00:10.880 line:100% position:50% align:middle
-- Now let's learn about animation in
-React. And this is really nice because
+480
+00:23:50.270 --> 00:23:53.870
+the key is going to just be the key
 
-00:00:10.880 --> 00:00:14.090 line:100% position:50% align:middle
-you can just take your existing
-application and start to add some really
+481
+00:23:53.870 --> 00:23:57.810
+and the timeout is going to be just an object.
 
-00:00:14.090 --> 00:00:18.530 line:100% position:50% align:middle
-nice interactive features into it. So
-there's three animations really on this
+482
+00:23:57.810 --> 00:23:59.510
+And again, we don't even need the colon key
 
-00:00:18.530 --> 00:00:22.580 line:100% position:50% align:middle
-website. First is like this like cheesy
-fold button where it folds itself out like
+483
+00:23:59.510 --> 00:24:00.890
+because it's just key.
 
-00:00:22.580 --> 00:00:26.840 line:100% position:50% align:middle
-an actual menu. That actually has nothing
-to do with React, it's simply just a...if
+484
+00:24:00.890 --> 00:24:02.750
+Now we have those transition options
 
-00:00:26.840 --> 00:00:34.110 line:100% position:50% align:middle
-you look on your index.html, index.html,
-there is just a fold checkbox here.
+485
+00:24:02.750 --> 00:24:06.984
+and we can take all of our options out
 
-00:00:34.110 --> 00:00:39.110 line:100% position:50% align:middle
-And when that fold checkbox is checked,
-if you go into style.style.
+486
+00:24:06.984 --> 00:24:11.150
+and simply just spread them into that object.
 
-00:00:39.110 --> 00:00:42.810 line:100% position:50% align:middle
-By the way, this style, I never said it
-earlier, but this is just like SASS or
+487
+00:24:11.150 --> 00:24:13.640
+And again, we can replace that here as well,
 
-00:00:42.810 --> 00:00:46.300 line:100% position:50% align:middle
-LESS, or if you've used any other
-pre-processor, the really the only
+488
+00:24:15.850 --> 00:24:18.200
+this works very similar to how I showed you
 
-00:00:46.300 --> 00:00:51.470 line:100% position:50% align:middle
-difference is that there's no semi-colons
-or colons. Either hate it or you love it,
+489
+00:24:18.200 --> 00:24:19.830
+it was spreading the state.
 
-00:00:51.470 --> 00:00:55.996 line:100% position:50% align:middle
-if you like to put semi-colons and colons
-in curly the brackets, you can, but I
+490
+00:24:19.830 --> 00:24:23.150
+You can just take any object and spread it into a component
 
-00:00:55.996 --> 00:00:59.414 line:100% position:50% align:middle
-prefer to leave them off. So what I'm
-doing here is I'm just using some
+491
+00:24:23.150 --> 00:24:25.950
+and it will apply all of those options to it.
 
-00:00:59.414 --> 00:01:04.370 line:100% position:50% align:middle
-rotation, rotateY, so that when it's
-checked, it's going to rotate itself,
+492
+00:24:25.950 --> 00:24:28.000
+So we'll give it a save and we'll make sure
 
-00:01:04.370 --> 00:01:06.840 line:100% position:50% align:middle
-when it's not checked, it's going to
-rotate itself on out.
+493
+00:24:28.000 --> 00:24:29.990
+that actually still works.
 
-00:01:06.840 --> 00:01:13.690 line:100% position:50% align:middle
-So that's the rotation here, and then when
-the input is not checked,
+494
+00:24:29.990 --> 00:24:31.920
+Remove them, still works beautifully,
 
-00:01:13.690 --> 00:01:17.350 line:100% position:50% align:middle
-I just take all the transforms off, which
-is the flat state. So a little bit cheesy
+495
+00:24:31.920 --> 00:24:34.690
+add items to our order and it works beautifully.
 
-00:01:17.350 --> 00:01:21.170 line:100% position:50% align:middle
-but kind of fun to take a look at a couple
-times if you're a little bit overwhelmed
+496
+00:24:34.690 --> 00:24:36.740
+If I ever need to make an option change
 
-00:01:21.170 --> 00:01:28.320 line:100% position:50% align:middle
-with some of the state stuff. Then what we
-want to do is we are going to be editing
+497
+00:24:36.740 --> 00:24:38.990
+I just need to pop this in here.
 
-00:01:28.320 --> 00:01:32.320 line:100% position:50% align:middle
-our CSS here and we need to recompile that
-CSS every single time.
+498
+00:24:38.990 --> 00:24:42.720
+And this neat because if you even wanted to put this
 
-00:01:32.320 --> 00:01:37.300 line:100% position:50% align:middle
-And if you open up your package.json,
-we've just been running NPM start,
+499
+00:24:42.720 --> 00:24:44.770
+in a separate file because you were using
 
-00:01:37.300 --> 00:01:42.230 line:100% position:50% align:middle
-which NPM start will run the script
-'start' and that will run our web pack and
+500
+00:24:44.770 --> 00:24:47.370
+this specific transition in many components,
 
-00:01:42.230 --> 00:01:44.490 line:100% position:50% align:middle
-everything like that.
+501
+00:24:47.370 --> 00:24:49.240
+that would be totally easy, you just export it
 
-00:01:44.490 --> 00:01:50.140 line:100% position:50% align:middle
-However, we also need to run one for our
-styles as well. So I have a script called
+502
+00:24:49.240 --> 00:24:51.820
+from that file, import it into this file
 
-00:01:50.140 --> 00:01:55.650 line:100% position:50% align:middle
-styles here, and that will just run our
-style list against...and I'll put it every
+503
+00:24:51.820 --> 00:24:53.970
+and you're gonna be in good shape.
 
-00:01:55.650 --> 00:01:59.810 line:100% position:50% align:middle
-single time that it changes. And that's
-what this one is, the styles watch,
-
-00:01:59.810 --> 00:02:04.995 line:100% position:50% align:middle
-there's a -w in there. However, I want to
-run NPM run start and NPM run styles
-
-00:02:05.490 --> 00:02:09.556 line:100% position:50% align:middle
-watch. And that's two separate NPM scripts
-and I what I see a lot of people do is
-
-00:02:09.556 --> 00:02:14.852 line:100% position:50% align:middle
-they just open up two tabs and run both
-of them. And that works well but I'm using
-
-00:02:14.893 --> 00:02:17.040 line:100% position:50% align:middle
-a third package here called concurrently.
-
-00:02:17.040 --> 00:02:22.550 line:100% position:50% align:middle
-And what that's going to do is it's going
-to run NPM script start and NPM script
-
-00:02:22.550 --> 00:02:26.800 line:100% position:50% align:middle
-styles watch, it's going to run them at
-the exact same time. And if one of them
-
-00:02:26.800 --> 00:02:31.480 line:100% position:50% align:middle
-breaks, it's going to kill the other one.
-So what we need to do is head back to our
-
-00:02:31.480 --> 00:02:37.970 line:100% position:50% align:middle
-terminal here and we're going to kill it
-with Control C. You're going to run NPM
-
-00:02:37.970 --> 00:02:44.417 line:100% position:50% align:middle
-run watch. It's going to start that up for
-me, and there we go. It should then open
-
-00:02:44.417 --> 00:02:51.940 line:100% position:50% align:middle
-it  up in your browser and it'll refresh,
-and I'll load in sample fishes, add them
-
-00:02:51.940 --> 00:02:55.718 line:100% position:50% align:middle
-to my order.Good, so everything is still
-working. But if you go back to your
-
-00:02:55.718 --> 00:03:00.491 line:100% position:50% align:middle
-terminal, you'll see that some of them are
-from web pack and then if I were to open
-
-00:03:00.491 --> 00:03:06.130 line:100% position:50% align:middle
-up my style.style and make some sort of
-change, like background red,
-
-00:03:06.130 --> 00:03:13.890 line:100% position:50% align:middle
-it's going to automatically compile my
-SASS and re-kick everything up for me. So
-
-00:03:13.890 --> 00:03:17.380 line:100% position:50% align:middle
-I'm in good shape there, you can close
-that down, again, not something you will
-
-00:03:17.380 --> 00:03:21.900 line:100% position:50% align:middle
-need to open up too often unless you have
-an error in your style list and you'll see
-
-00:03:21.900 --> 00:03:23.888 line:100% position:50% align:middle
-the error in your console there.
-
-00:03:23.940 --> 00:03:29.230 line:100% position:50% align:middle
-Next up, what we want to do is open up
-animations.style. This is where we're
-
-00:03:29.230 --> 00:03:32.470 line:100% position:50% align:middle
-actually going to be writing all of our
-animation code. There's nothing in there
-
-00:03:32.470 --> 00:03:38.120 line:100% position:50% align:middle
-yet, but we'll be writing it all inside of
-here. And then we want to open up order.js
-
-00:03:38.120 --> 00:03:46.320 line:100% position:50% align:middle
-because I want to animate in this
-right here, where it animates in.
-
-00:03:46.320 --> 00:03:51.070 line:100% position:50% align:middle
-When you click X, it's going to animate
-itself on out. And then also when we click
-
-00:03:51.070 --> 00:03:55.221 line:100% position:50% align:middle
-five, six, seven, eight, I want that
-number  to move up and have the next
-
-00:03:55.221 --> 00:03:59.620 line:100% position:50% align:middle
-number replace it. We're going to do
-two nice animations there.
-
-00:03:59.620 --> 00:04:05.570 line:100% position:50% align:middle
-So how we do that is you go to the top of
-your order.js, we need to import our CSS
-
-00:04:05.570 --> 00:04:10.910 line:100% position:50% align:middle
-TransitionGroup component. So that comes
-from import CSS TransitionGroup from...and
-
-00:04:10.910 --> 00:04:14.540 line:100% position:50% align:middle
-this is a separate package, you don't
-import it from React. It used to be part
-
-00:04:14.540 --> 00:04:17.334 line:100% position:50% align:middle
-of React core.
-However, what they have been doing
-
-00:04:17.334 --> 00:04:19.768 line:100% position:50% align:middle
-with some of the stuff
-that not everybody uses.
-
-00:04:19.900 --> 00:04:22.190 line:100% position:50% align:middle
-Like not everybody is going to do
-animation in the React app,
-
-00:04:22.190 --> 00:04:26.950 line:100% position:50% align:middle
-the React is still maintaining them as
-first class citizens, but they are in
-
-00:04:26.950 --> 00:04:34.190 line:100% position:50% align:middle
-their own packages. So it's
-react-dd-ons-css-transition-group.
-
-00:04:34.190 --> 00:04:35.290 line:100% position:50% align:middle
-That's a long one.
-
-00:04:35.290 --> 00:04:41.350 line:100% position:50% align:middle
-Then we've got the CSS TransitionGroup
-component. I want you to head down to our
-
-00:04:41.350 --> 00:04:46.880 line:100% position:50% align:middle
-render function. And where we have this
-unordered LESS, let me give you some space
-
-00:04:46.880 --> 00:04:49.129 line:100% position:50% align:middle
-here. We have this ul,
-the class of order,
-
-00:04:49.129 --> 00:04:53.980 line:100% position:50% align:middle
-I want you to replace
-that unordered list with CSS
-
-00:04:53.980 --> 00:04:58.600 line:100% position:50% align:middle
-TransitionGroup. Now, we still want that
-to be unordered list when it kicks it out
-
-00:04:58.600 --> 00:05:05.440 line:100% position:50% align:middle
-to HTML. So what we can do is we give it
-the property of component equals ul.
-
-00:05:05.440 --> 00:05:08.390 line:100% position:50% align:middle
-So it's still going to kick out on
-unordered list. The other things we
-
-00:05:08.390 --> 00:05:13.000 line:100% position:50% align:middle
-need, our transition name is going to be
-order, and that's going to be important in
-
-00:05:13.000 --> 00:05:14.880 line:100% position:50% align:middle
-our CSS class naming.
-
-00:05:14.880 --> 00:05:18.670 line:100% position:50% align:middle
-We're going to have transition enter
-timeout equals and that's the number here,
-
-00:05:18.670 --> 00:05:23.430 line:100% position:50% align:middle
-so we'll use curly brackets. We want that
-animation to be 500 seconds in and then we
-
-00:05:23.430 --> 00:05:30.600 line:100% position:50% align:middle
-also need to provide a transition leave
-time out, and that's going to also be 500
-
-00:05:30.600 --> 00:05:36.790 line:100% position:50% align:middle
-milliseconds, half a second, good. So if I
-look at it now, this should still be an
-
-00:05:36.790 --> 00:05:42.640 line:100% position:50% align:middle
-unordered list. Yes, it is. But if I were
-to look at that unordered list in my React
-
-00:05:42.640 --> 00:05:48.270 line:100% position:50% align:middle
-dev tools, you see that it's a React
-TransitionGroup right here.
-
-00:05:48.270 --> 00:05:52.330 line:100% position:50% align:middle
-And then when I add something to it, it
-should still update it,
-
-00:05:52.330 --> 00:05:55.920 line:100% position:50% align:middle
-it should still add a new item, and it
-should still remove that item.
-
-00:05:55.920 --> 00:06:00.950 line:100% position:50% align:middle
-You'll notice that, "Oh, look, there's a
-bit of a delay there," and I'll show you
-
-00:06:00.950 --> 00:06:02.250 line:100% position:50% align:middle
-why in just a second.
-
-00:06:02.250 --> 00:06:08.420 line:100% position:50% align:middle
-So that is our CSS TransitionGroup. Now,
-if you inspect one of these, add a whole
-
-00:06:08.420 --> 00:06:14.140 line:100% position:50% align:middle
-bunch of stuff to your actual order. And I
-want to change this 500.
-
-00:06:14.140 --> 00:06:20.270 line:100% position:50% align:middle
-Let's change this to 5,000, that is 5
-seconds. And then I want you to go and
-
-00:06:20.270 --> 00:06:25.120 line:100% position:50% align:middle
-inspect one of these list items, not in
-the React dev tool, just in the regular
-
-00:06:25.120 --> 00:06:30.720 line:100% position:50% align:middle
-elements panel here. And when I remove
-one, watch the class names on the list
-
-00:06:30.720 --> 00:06:38.870 line:100% position:50% align:middle
-items. Order-leave, order-leave active and
-then after five seconds it removes both of
-
-00:06:38.870 --> 00:06:39.580 line:100% position:50% align:middle
-those classes.
-
-00:06:39.580 --> 00:06:45.370 line:100% position:50% align:middle
-And what's happening here, and watch we'll
-add a new one, jumble prawns.
-
-00:06:45.370 --> 00:06:51.560 line:100% position:50% align:middle
-And watch the list item down here.
-Order-enter, order-enter-active.
-
-00:06:51.560 --> 00:06:55.860 line:100% position:50% align:middle
-And then after five seconds it will
-remove those classes. So what's happening
-
-00:06:55.860 --> 00:07:02.350 line:100% position:50% align:middle
-here is that React is giving us some
-classes which we can then hook into with
-
-00:07:02.350 --> 00:07:09.270 line:100% position:50% align:middle
-our CSS. So if we go into our
-animations.style and we create a class
-
-00:07:09.270 --> 00:07:15.110 line:100% position:50% align:middle
-called order-enter and
-order-enter-active, and I'm going to
-
-00:07:15.110 --> 00:07:24.050 line:100% position:50% align:middle
-give this a background of red and this one
-is going to have a background yellow.
-
-00:07:24.050 --> 00:07:28.220 line:100% position:50% align:middle
-Not that refreshed. We don't have to
-refresh because the CSS should be
-
-00:07:28.220 --> 00:07:29.190 line:100% position:50% align:middle
-refreshed for us.
-
-00:07:29.190 --> 00:07:33.830 line:100% position:50% align:middle
-When I add a new one to our order, it
-takes five seconds that will remove it
-
-00:07:33.830 --> 00:07:38.710 line:100% position:50% align:middle
-now. So when I add mussels, see yellow,
-yellow, yellow, yellow,
-
-00:07:38.710 --> 00:07:43.060 line:100% position:50% align:middle
-yellow, and then after five seconds it's
-going to be nothing.
-
-00:07:43.060 --> 00:07:47.100 line:100% position:50% align:middle
-And what's happening here is that it adds
-a class of order-enter and then almost
-
-00:07:47.100 --> 00:07:51.310 line:100% position:50% align:middle
-immediately after it adds a class of
-order-enter-active Now, if you've ever
-
-00:07:51.310 --> 00:07:58.140 line:100% position:50% align:middle
-done any CSS transitions, you'll know that
-CSS needs an A point and a B point.
-
-00:07:58.140 --> 00:08:04.630 line:100% position:50% align:middle
-So in order for us to transition from
-something like red to yellow,
-
-00:08:04.630 --> 00:08:11.480 line:100% position:50% align:middle
-we can pop A transition all 0.5 seconds.
-And then what's going to happen is
-
-00:08:11.480 --> 00:08:17.440 line:100% position:50% align:middle
-immediately it's going to have a class of
-red on it. And then over five seconds,
-
-00:08:17.440 --> 00:08:20.866 line:100% position:50% align:middle
-it's going to transition it to yellow,
-watch.
-
-00:08:24.175 --> 00:08:26.790 line:100% position:50% align:middle
-Hope that will just update it, so I'm
-going to remove a couple of these,
-
-00:08:26.790 --> 00:08:30.630 line:100% position:50% align:middle
-they take their five seconds to remove.
-We'll talk about that in a second.
-
-00:08:30.630 --> 00:08:34.050 line:100% position:50% align:middle
-There we go. Add a lobster. It's
-immediately red and then it will
-
-00:08:34.050 --> 00:08:39.650 line:100% position:50% align:middle
-transition itself to 0.5. So we need an A
-point, which is order-enter, and
-
-00:08:39.650 --> 00:08:44.210 line:100% position:50% align:middle
-order-enter-active is our B point, and
-it's going to go the opposite way when
-
-00:08:44.210 --> 00:08:49.160 line:100% position:50% align:middle
-we remove it. So what do we need to add
-here? We have a transition of all 0.5
-
-00:08:49.160 --> 00:08:57.590 line:100% position:50% align:middle
-seconds. We are going to put a
-transform: translateX(-120%).
-
-00:08:57.590 --> 00:09:03.040 line:100% position:50% align:middle
-And what that will do, is it's going to
-put it off screen by default.
-
-00:09:03.040 --> 00:09:05.770 line:100% position:50% align:middle
-It's going to take this unordered list and
-we're going to say,
-
-00:09:05.770 --> 00:09:09.580 line:100% position:50% align:middle
-transform:translateX(-100%).
-
-00:09:09.580 --> 00:09:17.670 line:100% position:50% align:middle
-And what I just did there, is I put it off
-screen. But if I bump those values up...
-
-00:09:17.670 --> 00:09:21.600 line:100% position:50% align:middle
-Here it comes, that's what's going to
-happen, is it's just going to animate
-
-00:09:21.600 --> 00:09:27.720 line:100% position:50% align:middle
-itself on in over that half second. So
-that's why we do translateX(-120%).
-
-00:09:27.800 --> 00:09:36.730 line:100% position:50% align:middle
-We give it a max-height of zero and
-that's just for some animation stuff.
-
-00:09:36.730 --> 00:09:41.060 line:100% position:50% align:middle
-And a padding of zero in...and we've got a
-pop an important tag on there.
-
-00:09:41.060 --> 00:09:46.120 line:100% position:50% align:middle
-Just because of some CSS that I've done in
-style, where we have a default and I need
-
-00:09:46.120 --> 00:09:48.150 line:100% position:50% align:middle
-to make sure that we're overwriting that.
-
-00:09:48.150 --> 00:09:56.220 line:100% position:50% align:middle
-Then the active spot is going to be a
-max-height of 60 px, and that's why we did
-
-00:09:56.220 --> 00:09:59.280 line:100% position:50% align:middle
-a max-height here so we'll be able to
-animate from nothing to 60 px.
-
-00:09:59.280 --> 00:10:04.560 line:100% position:50% align:middle
-We'll do a padding of 2em zero and pop
-an important tip there.
-
-00:10:04.560 --> 00:10:08.330 line:100% position:50% align:middle
-Finally, we need to bring it back to its
-regular state, so we're going to transform
-
-00:10:08.330 --> 00:10:13.680 line:100% position:50% align:middle
-it. translateX(0), right, because it's
-going to start at negative 100.
-
-00:10:13.680 --> 00:10:17.710 line:100% position:50% align:middle
-It's going to start off screen, and then
-it will translate it to zero, which is the
-
-00:10:17.710 --> 00:10:21.270 line:100% position:50% align:middle
-ending point. And then eventually both of
-these classes will be ticked,
-
-00:10:21.270 --> 00:10:27.400 line:100% position:50% align:middle
-will be gone, and whatever styling is in
-our style.style is going to kick in from
-
-00:10:27.400 --> 00:10:29.250 line:100% position:50% align:middle
-there. So give that a save.
-
-00:10:29.250 --> 00:10:35.440 line:100% position:50% align:middle
-Now I try to add some lobster, mahi-mahi,
-you see it's moving in.
-
-00:10:35.440 --> 00:10:39.690 line:100% position:50% align:middle
-We can get rid of those classes. I just
-wanted to show you how that works from
-
-00:10:39.690 --> 00:10:43.050 line:100% position:50% align:middle
-Red. It's easy to visualize it when you
-have that. And then the other thing that
-
-00:10:43.050 --> 00:10:50.230 line:100% position:50% align:middle
-we can do is that we are still taking 5
-seconds, not 500 milliseconds.
-
-00:10:50.230 --> 00:10:56.030 line:100% position:50% align:middle
-So let's move those back to the five
-seconds and we should be good to go.
-
-00:10:56.030 --> 00:10:59.510 line:100% position:50% align:middle
-We should be able to remove them, they'll
-still take half a second to remove.
-
-00:10:59.510 --> 00:11:02.510 line:100% position:50% align:middle
-Try to add them in again, good.
-
-00:11:02.510 --> 00:11:06.630 line:100% position:50% align:middle
-And you can do anything you could possibly
-want with that, you can go crazy.
-
-00:11:06.630 --> 00:11:16.450 line:100% position:50% align:middle
-So I use translate but you can set like a
-rotate(0). And then we want to rotate(45)
-
-00:11:16.450 --> 00:11:28.800 line:100% position:50% align:middle
-degrees, let's try that. Or you can do
-450 degrees and you want to start
-
-00:11:28.800 --> 00:11:34.880 line:100% position:50% align:middle
-it...actually, you should probably rotate
-to 0 and from 1,000 degrees so that
-
-00:11:34.880 --> 00:11:37.750 line:100% position:50% align:middle
-it'll just spin into place like it's
-Batman or something like that.
-
-00:11:37.750 --> 00:11:46.525 line:100% position:50% align:middle
-So let me remove these, that's kind of
-fun. You can do all kinds crazy stuff with
-
-00:11:46.525 --> 00:11:49.330 line:100% position:50% align:middle
-it but don't make your users vomit
-or anything like that.
-
-00:11:49.330 --> 00:11:53.720 line:100% position:50% align:middle
-I'm going to leave mine at translateX and
-we're going to look at how do we do the
-
-00:11:53.720 --> 00:11:58.460 line:100% position:50% align:middle
-other way, which is order-leave. Because
-you'll notice that when I remove one of
-
-00:11:58.460 --> 00:12:02.480 line:100% position:50% align:middle
-these, it says, "Order-leave and
-order-leave-active." So we're going to
-
-00:12:02.480 --> 00:12:07.320 line:100% position:50% align:middle
-give ourselves two more classes.
-And when the order is leaving,
-
-00:12:07.320 --> 00:12:13.150 line:100% position:50% align:middle
-we are going to transition all 0.5s, that
-you should make sure that that 5 seconds,
-
-00:12:13.150 --> 00:12:19.610 line:100% position:50% align:middle
-or half a second, lines up with whatever
-you have right here. And we also want to
-
-00:12:19.610 --> 00:12:25.140 line:100% position:50% align:middle
-transform... We want to start it at
-translateX(0), so we want to...the
-
-00:12:25.140 --> 00:12:28.130 line:100% position:50% align:middle
-starting point is just
-going to be where it is.
-
-00:12:28.130 --> 00:12:33.620 line:100% position:50% align:middle
-And then the active state is going to be
-go to the right. So we're going to say,
-
-00:12:33.620 --> 00:12:42.240 line:100% position:50% align:middle
-transform: translateX(120%). We get a
-max-height of zero. We're pretty much
-
-00:12:42.240 --> 00:12:46.560 line:100% position:50% align:middle
-doing the opposite of what we did earlier,
-padding is going to be zero.
-
-00:12:46.560 --> 00:12:52.270 line:100% position:50% align:middle
-And that should do it. So I'm going to
-remove them, yes. Nice little animation
-
-00:12:52.270 --> 00:12:57.808 line:100% position:50% align:middle
-out. We are transitioning on the
-translateX value, the height value as well
-
-00:12:57.808 --> 00:13:01.450 line:100% position:50% align:middle
-as the padding. And if you're wondering
-why I'm using max-height and not height,
-
-00:13:01.450 --> 00:13:07.120 line:100% position:50% align:middle
-it's because you cannot transition from
-auto height, which is what they are, to a
-
-00:13:07.120 --> 00:13:10.850 line:100% position:50% align:middle
-fixed height, you need to use max-height.
-It's a bit of a trick that we do there.
-
-00:13:10.850 --> 00:13:16.140 line:100% position:50% align:middle
-So that is those elements, now let's work
-on the secondary animation that we have
-
-00:13:16.140 --> 00:13:19.830 line:100% position:50% align:middle
-here, which is a little bit different,
-and we're going to animate this number.
-
-00:13:19.830 --> 00:13:26.407 line:100% position:50% align:middle
-When we add more mussels, the three should
-go up and the four should come in from
-
-00:13:26.407 --> 00:13:31.065 line:100% position:50% align:middle
-underneath it. To work with the count,
-this is the value that we are going to be
-
-00:13:31.065 --> 00:13:33.236 line:100% position:50% align:middle
-animating. And in order
-for it to actually work,
-
-00:13:33.236 --> 00:13:36.740 line:100% position:50% align:middle
-we need multiple ones
-of that actual value.
-
-00:13:36.740 --> 00:13:40.590 line:100% position:50% align:middle
-So a couple things we need to do here,
-first, put these spans that you have
-
-00:13:40.590 --> 00:13:44.370 line:100% position:50% align:middle
-wrapped around everything, put them on
-their own line. Second,
-
-00:13:44.370 --> 00:13:50.310 line:100% position:50% align:middle
-put the LBS fish name and remove button,
-put them on their own line.
-
-00:13:50.310 --> 00:13:56.490 line:100% position:50% align:middle
-And then we need to take this count here
-and wrap it in a CSS TransitionGroups.
-
-00:13:56.490 --> 00:14:02.190 line:100% position:50% align:middle
-So I'm just going to take the name here,
-CSS TransitionGroup, we'll put the count
-
-00:14:02.190 --> 00:14:07.500 line:100% position:50% align:middle
-inside of that. And then finally, we need
-to wrap this in another span, and I'm
-
-00:14:07.500 --> 00:14:11.890 line:100% position:50% align:middle
-show you why in just a second. I'm not
-crazy, wrap it in a span.
-
-00:14:11.890 --> 00:14:18.230 line:100% position:50% align:middle
-And that span needs to have a key which is
-of count. And the reason it's count is
-
-00:14:18.230 --> 00:14:22.420 line:100% position:50% align:middle
-because every time you have a key of two
-elements that are beside each other,
-
-00:14:22.420 --> 00:14:26.100 line:100% position:50% align:middle
-they need to have a unique key and they
-have to be different than each other.
-
-00:14:26.100 --> 00:14:29.820 line:100% position:50% align:middle
-And the reason is, is if we're going to
-have a span with like a five in it, and
-
-00:14:29.900 --> 00:14:33.710 line:100% position:50% align:middle
-then when we increment that by one, we're
-going to have a span with a six in it.
-
-00:14:33.710 --> 00:14:38.570 line:100% position:50% align:middle
-And what React is going to do, is it's
-going to duplicate the first five span and
-
-00:14:38.570 --> 00:14:42.600 line:100% position:50% align:middle
-update it with the six. But it's not going
-to get rid of the original span right
-
-00:14:42.600 --> 00:14:46.280 line:100% position:50% align:middle
-away, it's going to give us 250
-milliseconds, half a second, however long
-
-00:14:46.280 --> 00:14:52.250 line:100% position:50% align:middle
-we ask it to, to animate 5 up and then we
-animate 5 into the spot where it was,
-
-00:14:52.250 --> 00:14:56.620 line:100% position:50% align:middle
-right. So that's why we need to have a key
-in here is so that React will know which
-
-00:14:56.620 --> 00:15:01.740 line:100% position:50% align:middle
-one to add a class of leaving and which
-one to add a class of entering or
-
-00:15:01.740 --> 00:15:07.060 line:100% position:50% align:middle
-order-active...or order-active-leave and
-order-active-enter. So that's why we have
-
-00:15:07.060 --> 00:15:07.650 line:100% position:50% align:middle
-that there.
-
-00:15:07.650 --> 00:15:11.780 line:100% position:50% align:middle
-Our TransitionGroup needs a couple more
-things, we first need the component, which
-
-00:15:11.780 --> 00:15:17.730 line:100% position:50% align:middle
-is going to be a span in itself. We need a
-class name, which is going to be count.
-
-00:15:17.730 --> 00:15:24.030 line:100% position:50% align:middle
-We need a transition name on it, it's
-going to be count. And then we need a
-
-00:15:24.030 --> 00:15:31.300 line:100% position:50% align:middle
-transition enter timeout and that is going
-to be equal to 250 milliseconds.
-
-00:15:31.300 --> 00:15:38.310 line:100% position:50% align:middle
-And then we also want a leave time out.
-Now, if that all worked,
-
-00:15:38.310 --> 00:15:41.910 line:100% position:50% align:middle
-we should see not any animation yet, we've
-not written in the CSS,
-
-00:15:41.910 --> 00:15:46.070 line:100% position:50% align:middle
-but we should see this two being
-duplicated for...just a second.
-
-00:15:46.200 --> 00:15:52.720 line:100% position:50% align:middle
-So Pacific halibut, so three two, four two
-five, four, etc. See how it's like
-
-00:15:52.720 --> 00:15:56.950 line:100% position:50% align:middle
-duplicating it really quickly? We inspect
-that and go to the span right here,
-
-00:15:56.950 --> 00:16:00.100 line:100% position:50% align:middle
-I'll push the button, you keep your eyes
-down here. And I click it,
-
-00:16:00.100 --> 00:16:07.600 line:100% position:50% align:middle
-you see how it duplicated those values for
-us? If we change this to maybe two and a
-
-00:16:07.600 --> 00:16:12.960 line:100% position:50% align:middle
-half seconds, it'll slow down and we'll be
-able to understand what's going on here.
-
-00:16:12.960 --> 00:16:19.810 line:100% position:50% align:middle
-So we've got this span of 12. I'm going to
-add it again. Thirteen,
-
-00:16:19.810 --> 00:16:26.050 line:100% position:50% align:middle
-see enter-leave. I'll do it again.
-Enter-active, leave-active.
-
-00:16:26.050 --> 00:16:30.460 line:100% position:50% align:middle
-So we've got these two spans now because
-React is smart enough to duplicate it for
-
-00:16:30.460 --> 00:16:36.840 line:100% position:50% align:middle
-us. And then it's up to us to take that
-first one or the one of the 15 and animate
-
-00:16:36.840 --> 00:16:41.740 line:100% position:50% align:middle
-it up. And take the second one, which is a
-16 and made it into the place where we had
-
-00:16:41.740 --> 00:16:41.870 line:100% position:50% align:middle
-it.
-
-00:16:41.870 --> 00:16:47.510 line:100% position:50% align:middle
-So we'll head back to our animations here
-and we need a whole bunch of selector.
-
-00:16:47.510 --> 00:16:57.170 line:100% position:50% align:middle
-We need a .count-enter and a
-.count-enter-active. Here we're going to
-
-00:16:57.170 --> 00:17:02.140 line:100% position:50% align:middle
-transition everything all over 2.5
-seconds. Let's do it really slowly and
-
-00:17:02.140 --> 00:17:08.680 line:100% position:50% align:middle
-we'll move it back to 250 milliseconds.
-transform: translateY.
-
-00:17:08.680 --> 00:17:12.750 line:100% position:50% align:middle
-Because we're going to be going on up and
-down axis, this time 100%.
-
-00:17:12.750 --> 00:17:17.380 line:100% position:50% align:middle
-So we're going to start it just off the
-screen when something is entering.
-
-00:17:17.380 --> 00:17:26.669 line:100% position:50% align:middle
-So we're going to take this, I'm going to
-say, transform: translateY(100%).
-
-00:17:27.179 --> 00:17:31.100 line:100% position:50% align:middle
-What that does, see it's gone. You can't
-see the four, but it's going to slowly
-
-00:17:31.100 --> 00:17:36.890 line:100% position:50% align:middle
-bring us into the actual field. See, there
-it is, that's what's going to happen and
-
-00:17:36.890 --> 00:17:40.360 line:100% position:50% align:middle
-we're going to do the opposite. We're
-going to do the opposite with the other
-
-00:17:40.360 --> 00:17:48.030 line:100% position:50% align:middle
-one and made it up. So translateY(100),
-start it off screen, and then when it's
-
-00:17:48.030 --> 00:17:55.030 line:100% position:50% align:middle
-active, we're simply just going to
-transform zero. That means just put it in
-
-00:17:55.030 --> 00:18:03.410 line:100% position:50% align:middle
-its normal resting spot. All right, so
-let's see what we've got here,
-
-00:18:03.410 --> 00:18:09.360 line:100% position:50% align:middle
-we've still got this, transform on it. If
-I add another one, you see what's
-
-00:18:09.360 --> 00:18:13.440 line:100% position:50% align:middle
-happening? If I add a whole bunch of them,
-they all animate themselves in on out.
-
-00:18:13.440 --> 00:18:18.880 line:100% position:50% align:middle
-And then after two and a half seconds, the
-old one will just remove itself.
-
-00:18:18.880 --> 00:18:21.780 line:100% position:50% align:middle
-Because React wants to give us that two
-and a half seconds, actually,
-
-00:18:21.780 --> 00:18:25.090 line:100% position:50% align:middle
-animated out, and then behind the scenes
-it's going to clean it up and actually
-
-00:18:25.090 --> 00:18:32.030 line:100% position:50% align:middle
-delete that DOM element for us. So that's
-when we need to have a count-leave and a
-
-00:18:32.030 --> 00:18:43.010 line:100% position:50% align:middle
-count-leave-active. Then we are going to
-say, "Transition all .5...we'll do,
-
-00:18:43.010 --> 00:18:48.450 line:100% position:50% align:middle
-2.5 seconds. We're going to make it
-position absolute because you'll notice
-
-00:18:48.450 --> 00:18:52.380 line:100% position:50% align:middle
-that they're just going next to each other
-right now and we need to have one of them
-
-00:18:52.380 --> 00:18:54.310 line:100% position:50% align:middle
-overlap the other actual number.
-
-00:18:54.310 --> 00:19:01.224 line:100% position:50% align:middle
-So position absolute, left, 0, bottom, 0
-and transform is going to be
-
-00:19:01.224 --> 00:19:09.150 line:100% position:50% align:middle
-translateY(0). We're going to start it
-where it is, right? Just we want to start
-
-00:19:09.150 --> 00:19:13.400 line:100% position:50% align:middle
-it. If we're getting rid of four here,
-when we add another one, we want to start
-
-00:19:13.400 --> 00:19:22.165 line:100% position:50% align:middle
-it at 0 and we want to animate it up -100%
-so we transform: translateY(100%).
-
-00:19:23.853 --> 00:19:28.830 line:100% position:50% align:middle
-Okay, that was a lot of CSS,
-but let's see if I when add it,
-
-00:19:28.830 --> 00:19:37.180 line:100% position:50% align:middle
-pump that right up. You see what's
-going on here, 34, 35, 36.
-
-00:19:37.180 --> 00:19:43.930 line:100% position:50% align:middle
-One of them animates itself up,
-the other one animates itself on in.
-
-00:19:43.930 --> 00:19:49.060 line:100% position:50% align:middle
-So that's really long, we'll take that 2.5
-seconds and make it .25 seconds.
-
-00:19:49.060 --> 00:19:55.190 line:100% position:50% align:middle
-And then we'll go back to our order here
-and make it 250 milliseconds instead.
-
-00:19:55.190 --> 00:20:02.630 line:100% position:50% align:middle
-So that should be nice and quick. Here we
-go. So that is the two ways that you do
-
-00:20:02.630 --> 00:20:08.590 line:100% position:50% align:middle
-animations. First of all, when it's coming
-in, we can animate it from its original
-
-00:20:08.590 --> 00:20:13.990 line:100% position:50% align:middle
-state, order-enter into the state where we
-want it. And then sometimes we'll have the
-
-00:20:13.990 --> 00:20:18.160 line:100% position:50% align:middle
-case where we're just duplicating things,
-and that's where React will duplicate that
-
-00:20:18.160 --> 00:20:23.160 line:100% position:50% align:middle
-element, let you animate the old one out
-while you're animating the new one in. And
-
-00:20:23.160 --> 00:20:27.770 line:100% position:50% align:middle
-at that point it's just CSS, there's no
-real extra stuff that happens in React
-
-00:20:27.770 --> 00:20:28.000 line:100% position:50% align:middle
-there.

@@ -1,528 +1,1074 @@
 WEBVTT
 
-00:00:01.378 --> 00:00:03.140 line:100% position:50% align:middle
-♪ [music] ♪
-
-00:00:06.070 --> 00:00:10.910 line:100% position:50% align:middle
-All right our first component, which is
-going to be this StorePicker component.
-
-00:00:10.910 --> 00:00:14.212 line:100% position:50% align:middle
-Where you type in the name of the
-store or it auto fills with a
-
-00:00:14.212 --> 00:00:17.036 line:100% position:50% align:middle
-hilarious one. And then we have
-a button that when you click it,
-
-00:00:17.036 --> 00:00:19.807 line:100% position:50% align:middle
-it's going to push you to that actual
-store. So if you look
-
-00:00:19.807 --> 00:00:22.510 line:100% position:50% align:middle
-at our React DevTools here,
-you'll see that there is a
-
-00:00:22.510 --> 00:00:26.348 line:100% position:50% align:middle
-StorePicker component. We're going
-to build that first ,and then we're
-
-00:00:26.348 --> 00:00:30.561 line:100% position:50% align:middle
-going to hook up the visit store, which
-is going to push the actual URL for it.
-
-00:00:30.561 --> 00:00:34.900 line:100% position:50% align:middle
-So where do we write that code? Well let's
-first write it in index.js and then we'll
-
-00:00:34.900 --> 00:00:39.073 line:100% position:50% align:middle
-move it over to the separate components
-folder here. Now before we write any
-
-00:00:39.073 --> 00:00:42.674 line:100% position:50% align:middle
-React, what do we need? We need to load
-in React just like before you write
-
-00:00:42.674 --> 00:00:46.133 line:100% position:50% align:middle
-jQuery, you need to load in jQuery.
-And you might be thinking, "Okay I'll
-
-00:00:46.133 --> 00:00:52.355 line:100% position:50% align:middle
-go into my index.html, and I'll give
-myself a script source, and I will
-
-00:00:52.355 --> 00:00:55.380 line:100% position:50% align:middle
-say react.js, and then it's on the page,
-and I'm good to go."
-
-00:00:55.380 --> 00:00:57.918 line:100% position:50% align:middle
-However modern JavaScript is done
-a little bit differently,
-
-00:00:57.918 --> 00:01:01.772 line:100% position:50% align:middle
-and we're going to be using
-what's called ES6 modules where we can
-
-00:01:01.772 --> 00:01:06.190 line:100% position:50% align:middle
-import it. So rather than using a script
-tag to load in every single library that
-
-00:01:06.190 --> 00:01:10.950 line:100% position:50% align:middle
-you want, you go into the code that you're
-writing, in this case index.js, and we're
-
-00:01:10.950 --> 00:01:17.080 line:100% position:50% align:middle
-going to import React, capital R,
-from and then a string of `react`.
-
-00:01:17.080 --> 00:01:21.880 line:100% position:50% align:middle
-And what that does is it's going to load
-everything that is in the React library
-
-00:01:21.880 --> 00:01:26.680 line:100% position:50% align:middle
-into this variable called React. Now where
-is this coming from?
-
-00:01:26.680 --> 00:01:30.094 line:100% position:50% align:middle
-Well in the first video, if you open
-up our package.json, you'll know
-
-00:01:30.094 --> 00:01:35.306 line:100% position:50% align:middle
-that I have already gone ahead and listed
-all of the things that we need for this
-
-00:01:35.306 --> 00:01:40.498 line:100% position:50% align:middle
-tutorial to work. And one of them being
-`react` and `react-dom` and `react-router`
-
-00:01:40.498 --> 00:01:45.419 line:100% position:50% align:middle
-and 'react-addons-css...` all of these
-different things. So if I didn't do that,
-
-00:01:45.419 --> 00:01:49.600 line:100% position:50% align:middle
-what you would have had to do is go
-to your terminal here, but quit this first
-
-00:01:49.600 --> 00:01:54.844 line:100% position:50% align:middle
-"npm install react --save", and that will
-go and fetch the React library
-
-00:01:54.844 --> 00:01:58.256 line:100% position:50% align:middle
-as well as save that dependency
-to your package.json.
-
-00:01:58.256 --> 00:02:01.960 line:100% position:50% align:middle
-So really
-important, this entire tutorial I do not
-
-00:02:01.960 --> 00:02:06.820 line:100% position:50% align:middle
-need you to `npm install` anything. Why?
-Because this tutorial has already come
-
-00:02:06.820 --> 00:02:09.821 line:100% position:50% align:middle
-with a list of things that you need,
-as well as the versions that are going
-
-00:02:09.821 --> 00:02:14.397 line:100% position:50% align:middle
-to work the best. These are the latest
-versions as of time of recording, and I
-
-00:02:14.397 --> 00:02:18.271 line:100% position:50% align:middle
-just want to make sure that everybody's
-on the exact same version for the duration
-
-00:02:18.271 --> 00:02:23.440 line:100% position:50% align:middle
-of this course until things get updated
-and then it's time to re-record them.
-
-00:02:23.440 --> 00:02:27.460 line:100% position:50% align:middle
-So you do not need to `npm install`
-anything, you simply just need to type "npm
-
-00:02:27.460 --> 00:02:30.994 line:100% position:50% align:middle
-install" on our first video, which we did
-already. And then you type "npm start",
-
-00:02:30.994 --> 00:02:36.140 line:100% position:50% align:middle
-to kickstart our Webpack and server
-that will open itself on up.
-
-00:02:36.140 --> 00:02:40.605 line:100% position:50% align:middle
-Let's go over to our index.js here.
-And we've imported React from `react`.
-
-00:02:40.605 --> 00:02:45.475 line:100% position:50% align:middle
-Now I'm going to open up this localhost
-in the browser here. First of all, a
-
-00:02:45.475 --> 00:02:48.999 line:100% position:50% align:middle
-couple things, you're going to sometimes
-see these warnings here, and that's
-
-00:02:48.999 --> 00:02:54.398 line:100% position:50% align:middle
-something called ESLint. ESLint is a
-linter which sort of will smack your hand
-
-00:02:54.398 --> 00:02:59.607 line:100% position:50% align:middle
-when you do things that aren't in the
-best interest of writing good React code,
-
-00:02:59.607 --> 00:03:03.225 line:100% position:50% align:middle
-and it's okay if you sometimes see these.
-We're going to run into them,
-
-00:03:03.225 --> 00:03:07.577 line:100% position:50% align:middle
-and we'll show you how to fix them.
-The Create React App comes
-
-00:03:07.577 --> 00:03:12.096 line:100% position:50% align:middle
-with a very minimal set of ESLint
-rules, and then we'll show you how
-
-00:03:12.096 --> 00:03:15.593 line:100% position:50% align:middle
-you can break out, or eject out of it,
-if you'd like to use your own
-
-00:03:15.593 --> 00:03:19.036 line:100% position:50% align:middle
-ESLint rules, if you're comfortable
-with that. However, what I want to show
-
-00:03:19.036 --> 00:03:23.070 line:100% position:50% align:middle
-you is that if we go to our elements
-panel, you'll see that the script tag
-
-00:03:23.070 --> 00:03:28.380 line:100% position:50% align:middle
-has been added. That gets added by the
-dev server. And it gives us the static
-
-00:03:28.380 --> 00:03:33.633 line:100% position:50% align:middle
-bundle js. If I were to go to that URL
-here, you'll see that...Look at this.
-
-00:03:33.633 --> 00:03:40.067 line:100% position:50% align:middle
-All this code here, this is React,
-right? only because I imported React
-
-00:03:40.067 --> 00:03:44.776 line:100% position:50% align:middle
-from `react`. If I take it out and refresh
-this URL you're going to see that React
-
-00:03:44.776 --> 00:03:47.857 line:100% position:50% align:middle
-is no longer in there. There's a whole
-bunch of stuff. This is all Webpack dev-server
-
-00:03:47.857 --> 00:03:51.608 line:100% position:50% align:middle
-stuff. That's totally fine.
-That stuff's not included when you
-
-00:03:51.608 --> 00:03:55.711 line:100% position:50% align:middle
-actually deploy it to your application,
-but if I were to write "alert('hello')",
-
-00:03:55.711 --> 00:04:02.939 line:100% position:50% align:middle
-and refresh this, you will see if I
-search for it. There we go, there is my
-
-00:04:02.939 --> 00:04:07.421 line:100% position:50% align:middle
-actual `alert` code. So any code that gets
-written in this index.js is going
-
-00:04:07.421 --> 00:04:11.398 line:100% position:50% align:middle
-to be bundled into your bundle.js file,
-and this is...again this is a
-
-00:04:11.398 --> 00:04:14.668 line:100% position:50% align:middle
-development version. So there is going
-to be a whole bunch of other stuff
-
-00:04:14.668 --> 00:04:18.361 line:100% position:50% align:middle
-in here that's just for development,
-and we're going to learn
-
-00:04:18.361 --> 00:04:22.731 line:100% position:50% align:middle
-how do we take that out for production
-mode? So we want to go back to "import
-
-00:04:22.731 --> 00:04:26.140 line:100% position:50% align:middle
-React from `react`," and we want
-to create our first component.
-
-00:04:26.140 --> 00:04:28.999 line:100% position:50% align:middle
-And the way that we do that is we
-say "class", and we're going to be using
-
-00:04:28.999 --> 00:04:33.801 line:100% position:50% align:middle
-ES6 classes here. And we'll look at what
-the difference is between the two.
-
-00:04:33.801 --> 00:04:40.293 line:100% position:50% align:middle
-But we'll say "class StorePicker", and we
-use a capital on the front of all of our
-
-00:04:40.293 --> 00:04:44.770 line:100% position:50% align:middle
-components because they can be used more
-than once. And we're going to say "extends",
-
-00:04:44.770 --> 00:04:51.930 line:100% position:50% align:middle
-and it's going to extend "React.Component",
-and open up and close your curly brackets.
-
-00:04:51.930 --> 00:04:57.667 line:100% position:50% align:middle
-Now that is our very basic component.
-In every single component that you build,
-
-00:04:57.667 --> 00:05:02.638 line:100% position:50% align:middle
-it means at least one method, and that
-is the render() method. So when a component
-
-00:05:02.638 --> 00:05:07.779 line:100% position:50% align:middle
-gets rendered to the actual page, it will
-ask StorePicker "what HTML should
-
-00:05:07.779 --> 00:05:15.094 line:100% position:50% align:middle
-I display?" So we type "render()", and if you
-are new to ES6 classes, this is sort
-
-00:05:15.094 --> 00:05:21.176 line:100% position:50% align:middle
-of similar to doing something like this
-like "function store()"-- sorry, "render()",
-
-00:05:21.176 --> 00:05:25.882 line:100% position:50% align:middle
-something like that. However, we just
-write it like this here, and then
-
-00:05:25.882 --> 00:05:30.373 line:100% position:50% align:middle
-inside of this render() we are going
-to return some JSX.
-
-00:05:30.373 --> 00:05:32.828 line:100% position:50% align:middle
-We'll learn about more of that in the
-video. So we'll say "return",
-
-00:05:32.828 --> 00:05:36.250 line:100% position:50% align:middle
-I'm just going to have a paragraph
-that says "Hello", and close
-
-00:05:36.250 --> 00:05:41.230 line:100% position:50% align:middle
-that up. Now that is our StorePicker
-component. How do I get it to actually
-
-00:05:41.230 --> 00:05:45.764 line:100% position:50% align:middle
-render onto the page? If you open up your
-HTML here, you're going to see that we
-
-00:05:45.764 --> 00:05:50.004 line:100% position:50% align:middle
-have an empty div right here. Div with the
-id of "main," and this is where the React
-
-00:05:50.004 --> 00:05:54.194 line:100% position:50% align:middle
-app is going to go. This is called a
-mounting point for us with a div with the
-
-00:05:54.194 --> 00:06:00.031 line:100% position:50% align:middle
-id of "main." So what we do here, is we
-need to go and grab `react-dom`
-
-00:06:00.031 --> 00:06:03.379 line:100% position:50% align:middle
-because React is not just for HTML
-in the DOM.
-
-00:06:03.379 --> 00:06:07.705 line:100% position:50% align:middle
-It can also be used to create
-Android apps as well as iOS
-
-00:06:07.705 --> 00:06:12.791 line:100% position:50% align:middle
-apps, and there is a `canvas` render.
-So where React renders out to is not just
-
-00:06:12.791 --> 00:06:17.820 line:100% position:50% align:middle
-HTML, but in our case we actually want it
-to render to HTML. So we need to import
-
-00:06:17.820 --> 00:06:23.640 line:100% position:50% align:middle
-the render() method from a package called
-"react-dom." Now sometimes you may see
-
-00:06:23.640 --> 00:06:29.856 line:100% position:50% align:middle
-people say import reactDOM
-from 'react-dom,' and then what we're
-
-00:06:29.856 --> 00:06:35.840 line:100% position:50% align:middle
-going to do is down here we'll say
-"ReactDom.render()", but in our case, we
-
-00:06:35.840 --> 00:06:39.411 line:100% position:50% align:middle
-don't need the entire `react-dom` package.
-We just need that one render() method.
-
-00:06:39.411 --> 00:06:45.596 line:100% position:50% align:middle
-So rather than import the entire package,
-we just import one of the methods
-
-00:06:45.596 --> 00:06:49.205 line:100% position:50% align:middle
-from it, and that's what these
-curly brackets in ES6 will do.
-
-00:06:49.205 --> 00:06:52.541 line:100% position:50% align:middle
-So what we do is say "render()",
-and the first thing that we
-
-00:06:52.541 --> 00:06:56.588 line:100% position:50% align:middle
-pass it is what component would we
-like to render. In our case, it's going
-
-00:06:56.588 --> 00:07:01.881 line:100% position:50% align:middle
-to be StorePicker. So here we say
-"StorePicker", and this is JSX here
-
-00:07:01.881 --> 00:07:04.223 line:100% position:50% align:middle
-because we created this
-component, and when you
-
-00:07:04.223 --> 00:07:08.040 line:100% position:50% align:middle
-want to render out a component,
-you open up a tag, you type the name
-
-00:07:08.040 --> 00:07:11.599 line:100% position:50% align:middle
-of the component, and then you
-close the actual component itself.
-
-00:07:11.599 --> 00:07:16.957 line:100% position:50% align:middle
-And then the second thing is what
-DOM element should it render out to?
-
-00:07:16.957 --> 00:07:21.520 line:100% position:50% align:middle
-So we have a div with the id of "main." How
-do we select that? Well we can just use
-
-00:07:21.520 --> 00:07:27.780 line:100% position:50% align:middle
-document.querySelector, and we'll pass it
-with an id of "main." You could also use
-
-00:07:27.780 --> 00:07:32.910 line:100% position:50% align:middle
-document.getElementById there. So now,
-if I save that, and go back to our
-
-00:07:32.910 --> 00:07:37.760 line:100% position:50% align:middle
-application...Oh, there we go. Look all
-ready you see "Hello," now if we go to our
-
-00:07:37.760 --> 00:07:41.900 line:100% position:50% align:middle
-React Dev ools, you'll see that the
-StorePicker component has been rendered to the
-
-00:07:41.900 --> 00:07:48.240 line:100% position:50% align:middle
-page, and that's pretty much it. Now it's
-a best practice to put each of your
-
-00:07:48.240 --> 00:07:55.096 line:100% position:50% align:middle
-components in a separate file. So rather
-than us build our entire application
-
-00:07:55.096 --> 00:07:58.959 line:100% position:50% align:middle
-in one file, and there's nothing wrong
-with that. However, it's a little bit
-
-00:07:58.959 --> 00:08:05.400 line:100% position:50% align:middle
-easier to maintain it if we put each
-of our components in their own files.
-
-00:08:05.400 --> 00:08:09.650 line:100% position:50% align:middle
-So what I like to do is go to `components`
-here. I'm going to create a file.
-
-00:08:09.650 --> 00:08:15.165 line:100% position:50% align:middle
-And I'm going to name it StorePicker.js
-and I'm naming it exactly as the component
-
-00:08:15.165 --> 00:08:21.803 line:100% position:50% align:middle
-is named. And I'm going to take this
-component here and I'm going to go
-
-00:08:21.803 --> 00:08:26.700 line:100% position:50% align:middle
-to StorePicker.js and paste it there. Now
-you might think that's all we need to do
-
-00:08:26.700 --> 00:08:30.039 line:100% position:50% align:middle
-in order for it to actually work.
-But there's a couple of things that need
-
-00:08:30.039 --> 00:08:35.059 line:100% position:50% align:middle
-to happen here. First of all, we need
-React, so we need to import React
-
-00:08:35.059 --> 00:08:38.982 line:100% position:50% align:middle
-from `react`, and you're going to have
-to do that in the top of every
-
-00:08:38.982 --> 00:08:42.437 line:100% position:50% align:middle
-single component. Not like jQuery, where
-you load on the page, and it's
-
-00:08:42.437 --> 00:08:46.071 line:100% position:50% align:middle
-available to everyone. With ES6
-modules, if you need something
-
-00:08:46.071 --> 00:08:49.916 line:100% position:50% align:middle
-inside of of these JS modules here,
-you need to make sure
-
-00:08:49.916 --> 00:08:53.550 line:100% position:50% align:middle
-that you import it inside of every
-single file that you need it.
-
-00:08:53.550 --> 00:08:58.267 line:100% position:50% align:middle
-So we've imported React. We've needed it.
-We create this class here, and then what
-
-00:08:58.267 --> 00:09:03.228 line:100% position:50% align:middle
-we would do is we type "export default
-StorePicker;", and what that's going
-
-00:09:03.228 --> 00:09:07.214 line:100% position:50% align:middle
-to allow us to do is we've created this
-tidy little component that we can go
-
-00:09:07.214 --> 00:09:16.651 line:100% position:50% align:middle
-back into our index.js and we will say
-"import StorePicker from," now you might
-
-00:09:16.651 --> 00:09:21.464 line:100% position:50% align:middle
-think we just type "StorePicker" right?
-However, if it's just a string, Webpack
-
-00:09:21.464 --> 00:09:24.983 line:100% position:50% align:middle
-thinks that you look in the node_modules
-directory, and this is not a node module.
-
-00:09:24.983 --> 00:09:29.440 line:100% position:50% align:middle
-This is a module that we've created our
-actual selves. So we need to do what's
-
-00:09:29.440 --> 00:09:34.910 line:100% position:50% align:middle
-called a relative path, so "./" for in the
-index.html, we need to go inside of the
-
-00:09:34.910 --> 00:09:39.967 line:100% position:50% align:middle
-`components` folder, and we want to look
-for StorePicker. You don't need the ".js"
-
-00:09:39.967 --> 00:09:45.058 line:100% position:50% align:middle
-on the end. It's assumed, so you can just
-simply type "StorePicker." So if we refresh,
-
-00:09:45.058 --> 00:09:51.250 line:100% position:50% align:middle
-nothing should have happened because we
-have just sort of refactored it, made the
-
-00:09:51.250 --> 00:09:54.353 line:100% position:50% align:middle
-component inside of here, and this
-is nice. We're going to be able to go
-
-00:09:54.353 --> 00:09:57.325 line:100% position:50% align:middle
-into the StorePicker every time that we
-need to edit it.  And we don't have
-
-00:09:57.325 --> 00:10:01.000 line:100% position:50% align:middle
-to scroll through a thousand
-lines of code in order to work with it.
+1
+00:00:00.272 --> 00:00:03.022
+(upbeat ukulele)
+
+2
+00:00:06.939 --> 00:00:08.880
+<v Narrator>Alright so let's get up and running</v>
+
+3
+00:00:08.880 --> 00:00:10.451
+with our first component.
+
+4
+00:00:10.451 --> 00:00:12.112
+Our first component, we're gonna build something,
+
+5
+00:00:12.112 --> 00:00:13.664
+looks a little bit something like this,
+
+6
+00:00:13.664 --> 00:00:15.215
+where it's called our store picker component,
+
+7
+00:00:15.215 --> 00:00:17.138
+where we're gonna allow people to enter in
+
+8
+00:00:17.138 --> 00:00:19.314
+the name of the store and when they click
+
+9
+00:00:19.314 --> 00:00:22.045
+the URL it's going to move them to forward slash store
+
+10
+00:00:22.045 --> 00:00:24.985
+forward slash the name of the store that we actually have.
+
+11
+00:00:24.985 --> 00:00:27.752
+So, open up your index dot JS, we're gonna write it here
+
+12
+00:00:27.752 --> 00:00:30.079
+and then refactor it out to its own component file.
+
+13
+00:00:30.079 --> 00:00:32.398
+But I wanted to talk real quick about how
+
+14
+00:00:32.398 --> 00:00:34.521
+this actually gets loaded onto the page.
+
+15
+00:00:34.521 --> 00:00:36.934
+Earlier we just had written hey and when we saved it,
+
+16
+00:00:36.934 --> 00:00:38.255
+it automatically refreshed,
+
+17
+00:00:38.255 --> 00:00:39.651
+but how is that actually happening?
+
+18
+00:00:39.651 --> 00:00:42.226
+Well, if you view the source on your actual page,
+
+19
+00:00:42.226 --> 00:00:43.985
+you'll see that there's a script tag here
+
+20
+00:00:43.985 --> 00:00:46.309
+where it says forward slash static, forward slash JS,
+
+21
+00:00:46.309 --> 00:00:48.109
+forward slash bundle dot JS.
+
+22
+00:00:48.109 --> 00:00:51.811
+And what is happening is that webpack, the thing
+
+23
+00:00:51.811 --> 00:00:54.410
+that's running under the hood with Create React App,
+
+24
+00:00:54.410 --> 00:00:57.014
+it's sort of taking in your index tag dot JS
+
+25
+00:00:57.014 --> 00:00:58.983
+and it's gonna take in all the other files that we require
+
+26
+00:00:58.983 --> 00:01:00.925
+inside of this index dot JS.
+
+27
+00:01:00.925 --> 00:01:04.059
+It's gonna bundle it all into one big dot JS file.
+
+28
+00:01:04.059 --> 00:01:06.142
+So if we actually click through to that,
+
+29
+00:01:06.142 --> 00:01:08.946
+you're going to see that there's already some code in there,
+
+30
+00:01:08.946 --> 00:01:11.675
+and don't worry too much about this just because
+
+31
+00:01:11.675 --> 00:01:15.110
+this is the code that's required to do the hot reloading,
+
+32
+00:01:15.110 --> 00:01:16.616
+the instant updating,
+
+33
+00:01:16.616 --> 00:01:19.693
+so this code doesn't actually come along for the ride
+
+34
+00:01:19.693 --> 00:01:21.743
+when we deploy it to our actual application.
+
+35
+00:01:21.743 --> 00:01:23.188
+This is just for development.
+
+36
+00:01:23.188 --> 00:01:25.647
+But this little hey that I've written in here.
+
+37
+00:01:25.647 --> 00:01:27.666
+If I search for alert hey there it is!
+
+38
+00:01:27.666 --> 00:01:29.618
+There's the code that we've actually written
+
+39
+00:01:29.618 --> 00:01:32.631
+and I'm sure if I were to say hello,
+
+40
+00:01:32.631 --> 00:01:35.910
+and give this a save and refresh,
+
+41
+00:01:35.910 --> 00:01:39.247
+now my bundle dot JS will have hello in there,
+
+42
+00:01:39.247 --> 00:01:40.582
+you can see it.
+
+43
+00:01:40.582 --> 00:01:43.136
+So, that's great what we need to do is go into this,
+
+44
+00:01:43.136 --> 00:01:46.211
+you could delete all of the code that's our index dot JS,
+
+45
+00:01:46.211 --> 00:01:49.008
+and the very first thing that we need to do is
+
+46
+00:01:49.008 --> 00:01:51.512
+import our dependencies, and the way we do that is
+
+47
+00:01:51.512 --> 00:01:55.762
+we type import react, capital r, from quotes react.
+
+48
+00:01:56.697 --> 00:02:00.226
+And what's gonna happen, sort of behind the scenes there is
+
+49
+00:02:00.226 --> 00:02:02.406
+it's going to go into our node modules folder,
+
+50
+00:02:02.406 --> 00:02:03.924
+because remember when we had that
+
+51
+00:02:03.924 --> 00:02:05.281
+package dot Jsong file here?
+
+52
+00:02:05.281 --> 00:02:07.953
+And we said that react was one of our dependencies?
+
+53
+00:02:07.953 --> 00:02:11.072
+Well that means that when we MTM installed it
+
+54
+00:02:11.072 --> 00:02:14.403
+we were able to then import it via this notation
+
+55
+00:02:14.403 --> 00:02:16.996
+that we have here, this is called ES6 Modules.
+
+56
+00:02:16.996 --> 00:02:19.841
+So we imported React from react here,
+
+57
+00:02:19.841 --> 00:02:22.219
+and then what we need to do here is make a class.
+
+58
+00:02:22.219 --> 00:02:24.565
+So every single component that we have
+
+59
+00:02:24.565 --> 00:02:27.420
+is going to be its own class.
+
+60
+00:02:27.420 --> 00:02:29.266
+And the way that you create a class in React
+
+61
+00:02:29.266 --> 00:02:31.387
+is you say class, and then we can just
+
+62
+00:02:31.387 --> 00:02:34.700
+make up the name for it, so let's call it a StorePicker.
+
+63
+00:02:34.700 --> 00:02:37.701
+It's sort of a best practice to put a capital
+
+64
+00:02:37.701 --> 00:02:39.920
+on the front of all of your classes
+
+65
+00:02:39.920 --> 00:02:43.512
+and the reasoning behind that is because they are going
+
+66
+00:02:43.512 --> 00:02:45.726
+to be reusable if we wanted to render out two or three
+
+67
+00:02:45.726 --> 00:02:48.410
+StorePicker components to the same page,
+
+68
+00:02:48.410 --> 00:02:51.296
+we totally could and that sort of notes to us.
+
+69
+00:02:51.296 --> 00:02:55.322
+Then we'll say 'extends' and react dot component
+
+70
+00:02:55.322 --> 00:02:57.321
+and component is the thing that we are extending
+
+71
+00:02:57.321 --> 00:03:01.642
+inside of there. Now you may also see sometimes online
+
+72
+00:03:01.642 --> 00:03:03.421
+instead of people importing all of React
+
+73
+00:03:03.421 --> 00:03:06.957
+they will simply just import Component from React
+
+74
+00:03:06.957 --> 00:03:09.680
+and then they just simply extend Component
+
+75
+00:03:09.680 --> 00:03:11.284
+instead of React dot Component.
+
+76
+00:03:11.284 --> 00:03:13.512
+What's the difference? Absolutely nothing.
+
+77
+00:03:13.512 --> 00:03:15.853
+It doesn't make your bundle file, bundle size
+
+78
+00:03:15.853 --> 00:03:17.857
+any smaller in the case of React here,
+
+79
+00:03:17.857 --> 00:03:22.176
+it's just you don't have to type React dot.
+
+80
+00:03:22.176 --> 00:03:23.660
+So, that's up to you just make sure
+
+81
+00:03:23.660 --> 00:03:25.800
+you remember that you do it one way.
+
+82
+00:03:25.800 --> 00:03:27.258
+Another thing you need to remember is
+
+83
+00:03:27.258 --> 00:03:29.542
+don't put a capital 'r' on here, that will cause
+
+84
+00:03:29.542 --> 00:03:33.370
+tons of pain in the future, in terms of,
+
+85
+00:03:33.370 --> 00:03:35.753
+I've done it myself, all sorts of crazy errors
+
+86
+00:03:35.753 --> 00:03:36.943
+that you don't think you have.
+
+87
+00:03:36.943 --> 00:03:40.019
+Now we're in this class here and every single class
+
+88
+00:03:40.019 --> 00:03:43.544
+in React needs at least one method inside of it,
+
+89
+00:03:43.544 --> 00:03:46.257
+and that method is something called 'render'.
+
+90
+00:03:46.257 --> 00:03:50.962
+And render determines what html do I put on the page
+
+91
+00:03:50.962 --> 00:03:53.041
+or what dom elements at the end of the day
+
+92
+00:03:53.041 --> 00:03:55.813
+do I render out to the page. So the way that we do that is
+
+93
+00:03:55.813 --> 00:03:59.466
+we type 'render', and this is just the syntax
+
+94
+00:03:59.466 --> 00:04:01.884
+for putting a method inside of a component.
+
+95
+00:04:01.884 --> 00:04:04.121
+And then from Render we simply just return
+
+96
+00:04:04.121 --> 00:04:08.503
+and let's just give ourselves a paragraph that says Hello.
+
+97
+00:04:08.503 --> 00:04:10.008
+And give that a save. Now, nothing's going to
+
+98
+00:04:10.008 --> 00:04:12.451
+show up on here and that's because we haven't yet
+
+99
+00:04:12.451 --> 00:04:15.426
+mounted our application, so this is another
+
+100
+00:04:15.426 --> 00:04:19.985
+important aspect inside of React, is that we're not
+
+101
+00:04:19.985 --> 00:04:22.175
+actually ever going to be touching the dom,
+
+102
+00:04:22.175 --> 00:04:24.810
+like what I mean by that is we're never actually
+
+103
+00:04:24.810 --> 00:04:27.095
+going to be doing any, like, selecting a div
+
+104
+00:04:27.095 --> 00:04:29.393
+and updating the text in the div.
+
+105
+00:04:29.393 --> 00:04:32.568
+But there is one time that we do need to touch the dom
+
+106
+00:04:32.568 --> 00:04:35.454
+in React, and that is when we mount the entire application
+
+107
+00:04:35.454 --> 00:04:38.966
+to the page. So if you open up the index dot JS
+
+108
+00:04:38.966 --> 00:04:42.739
+or index dot html file that's in your public folder
+
+109
+00:04:42.739 --> 00:04:45.036
+you'll notice that we have this empty div
+
+110
+00:04:45.036 --> 00:04:47.089
+with a div with an ID of 'main'.
+
+111
+00:04:47.089 --> 00:04:49.881
+And this is, sort of, where you will be
+
+112
+00:04:49.881 --> 00:04:51.846
+mounting your React application.
+
+113
+00:04:51.846 --> 00:04:54.325
+Now if this was another application,
+
+114
+00:04:54.325 --> 00:04:57.530
+maybe you were working on like a WordPress theme
+
+115
+00:04:57.530 --> 00:05:00.555
+or you have another CMS where you don't want
+
+116
+00:05:00.555 --> 00:05:03.170
+the entire app to be built in React, but you want
+
+117
+00:05:03.170 --> 00:05:05.384
+like maybe a store picker or a video player
+
+118
+00:05:05.384 --> 00:05:08.288
+to be built in React, if that's the case then
+
+119
+00:05:08.288 --> 00:05:10.399
+you would have an empty div on the page
+
+120
+00:05:10.399 --> 00:05:12.341
+and that's where your React would get mounted to.
+
+121
+00:05:12.341 --> 00:05:14.455
+In our case, the entire application is going to be
+
+122
+00:05:14.455 --> 00:05:16.978
+built in React, so really the only html
+
+123
+00:05:16.978 --> 00:05:19.569
+that you need to write is an empty div
+
+124
+00:05:19.569 --> 00:05:20.991
+where we're gonna mount it to.
+
+125
+00:05:20.991 --> 00:05:24.162
+So we'll go into here, and in order to actually
+
+126
+00:05:24.162 --> 00:05:27.004
+get it to render out to the page we need a
+
+127
+00:05:27.004 --> 00:05:29.840
+secondary package called React Dom.
+
+128
+00:05:29.840 --> 00:05:32.423
+And the reason why we have a secondary package
+
+129
+00:05:32.423 --> 00:05:34.667
+called React Dom is because React can be used for
+
+130
+00:05:34.667 --> 00:05:38.028
+a number of other things that we have, so React
+
+131
+00:05:38.028 --> 00:05:40.350
+can be used to build iOS apps, and it can be used
+
+132
+00:05:40.350 --> 00:05:43.198
+for Android apps, and it can be used to render to Canvas.
+
+133
+00:05:43.198 --> 00:05:46.057
+So it's not just rendering out to the dom,
+
+134
+00:05:46.057 --> 00:05:47.663
+but in our case we're building a website
+
+135
+00:05:47.663 --> 00:05:49.322
+so we need to render out to the dom.
+
+136
+00:05:49.322 --> 00:05:51.192
+So, here what we're gonna do is we're gonna say import,
+
+137
+00:05:51.192 --> 00:05:54.754
+curly brackets, render from 'react-dom'.
+
+138
+00:05:54.754 --> 00:05:58.894
+Now, what's the difference between importing just React
+
+139
+00:05:58.894 --> 00:06:01.098
+without the curly brackets or from this,
+
+140
+00:06:01.098 --> 00:06:05.492
+which is simply just the render method from react-dom
+
+141
+00:06:05.492 --> 00:06:08.189
+and the answer to that is in this case we need
+
+142
+00:06:08.189 --> 00:06:11.368
+the entire React package in order to build our application,
+
+143
+00:06:11.368 --> 00:06:14.971
+but in some cases you only need one of the methods
+
+144
+00:06:14.971 --> 00:06:17.041
+you sort of wanna just cherry-pick that
+
+145
+00:06:17.041 --> 00:06:20.694
+little one method from the package that you need.
+
+146
+00:06:20.694 --> 00:06:23.256
+And in our case, we only need the render method.
+
+147
+00:06:23.256 --> 00:06:24.845
+There's a couple of other methods in there
+
+148
+00:06:24.845 --> 00:06:26.596
+that are used for server side rendering
+
+149
+00:06:26.596 --> 00:06:29.678
+and rendering out to a string, but in our case
+
+150
+00:06:29.678 --> 00:06:30.974
+we just want the render method.
+
+151
+00:06:30.974 --> 00:06:33.544
+So, we have this now method called 'render'
+
+152
+00:06:33.544 --> 00:06:36.111
+and we can open and close it, and the render method
+
+153
+00:06:36.111 --> 00:06:39.585
+takes two things: first, it takes some jsx,
+
+154
+00:06:39.585 --> 00:06:42.539
+which is sort of like html. So, like, let me put
+
+155
+00:06:42.539 --> 00:06:45.189
+a paragraph tag that says hello there,
+
+156
+00:06:45.189 --> 00:06:48.552
+or let's do something more fun, 'HEYYYYY'.
+
+157
+00:06:48.552 --> 00:06:50.130
+And the second thing that render needs
+
+158
+00:06:50.130 --> 00:06:52.000
+is the mounting point. You need to give it
+
+159
+00:06:52.000 --> 00:06:55.412
+an actual dom element in order to mount to the page.
+
+160
+00:06:55.412 --> 00:06:57.127
+So the way that we can do that is supposed to say
+
+161
+00:06:57.127 --> 00:07:00.474
+'document dot query selector' and you pass it
+
+162
+00:07:00.474 --> 00:07:03.236
+an ID of 'main' and you can also swap that out
+
+163
+00:07:03.236 --> 00:07:06.041
+with 'document dot get element by ID'
+
+164
+00:07:06.041 --> 00:07:08.205
+that would work as well. So I wanna give it a save,
+
+165
+00:07:08.205 --> 00:07:11.485
+we should be able to mount our React app to the page,
+
+166
+00:07:11.485 --> 00:07:13.483
+you should see 'HEYYYY' rendering out there.
+
+167
+00:07:13.483 --> 00:07:16.918
+If you open up your React dev tools now,
+
+168
+00:07:16.918 --> 00:07:19.201
+so I'm gonna open up React dev tools,
+
+169
+00:07:19.201 --> 00:07:22.154
+you will see the dev tools tab showing up
+
+170
+00:07:22.154 --> 00:07:25.190
+and you will see that this is how React sees
+
+171
+00:07:25.190 --> 00:07:28.016
+your application, as just a paragraph tag.
+
+172
+00:07:28.016 --> 00:07:30.522
+Now, we don't wanna render out just a paragraph tag,
+
+173
+00:07:30.522 --> 00:07:33.290
+we want to render out the entire StorePicker tag.
+
+174
+00:07:33.290 --> 00:07:36.443
+So by creating a component called StorePicker
+
+175
+00:07:36.443 --> 00:07:38.893
+it allows us to use it by simply just using it
+
+176
+00:07:38.893 --> 00:07:42.393
+as a regular tag. So let's just say StorePicker,
+
+177
+00:07:42.393 --> 00:07:44.168
+and I'm going to self-close it.
+
+178
+00:07:44.168 --> 00:07:46.390
+We'll talk a little bit more about self-closing
+
+179
+00:07:46.390 --> 00:07:49.016
+in just a second, but it's important that you
+
+180
+00:07:49.016 --> 00:07:52.940
+either do something like this, StorePicker,
+
+181
+00:07:52.940 --> 00:07:56.457
+where you have a corresponding closing tag
+
+182
+00:07:56.457 --> 00:07:59.025
+or you self-close it like that.
+
+183
+00:07:59.025 --> 00:08:00.583
+Let me get rid of this extra here.
+
+184
+00:08:00.583 --> 00:08:03.556
+Give it a save, and now when React refreshes
+
+185
+00:08:03.556 --> 00:08:06.769
+you'll see that we now have a StorePicker component
+
+186
+00:08:06.769 --> 00:08:08.910
+and inside of that StorePicker component
+
+187
+00:08:08.910 --> 00:08:10.819
+we see just a regular paragraph tag.
+
+188
+00:08:10.819 --> 00:08:13.104
+And React dev tools is always going to show you
+
+189
+00:08:13.104 --> 00:08:16.457
+your custom components in purple and any other,
+
+190
+00:08:16.457 --> 00:08:19.457
+just regular dom elements in a gray.
+
+191
+00:08:21.101 --> 00:08:24.114
+Good, now, it's a best practice to store your components
+
+192
+00:08:24.114 --> 00:08:28.465
+not in one big file, but in order to aid in
+
+193
+00:08:28.465 --> 00:08:30.969
+re-usability of these StorePicker components
+
+194
+00:08:30.969 --> 00:08:33.332
+we are going to keep them in separate files
+
+195
+00:08:33.332 --> 00:08:35.075
+so that we can import them and used them
+
+196
+00:08:35.075 --> 00:08:37.668
+whenever we want. So let's open up our side bar here,
+
+197
+00:08:37.668 --> 00:08:40.934
+and what you see in the source folder there's a
+
+198
+00:08:40.934 --> 00:08:43.389
+components folder. There's nothing in there except a
+
+199
+00:08:43.389 --> 00:08:46.137
+git keep file, we're gonna create a new file
+
+200
+00:08:46.137 --> 00:08:48.452
+and we're gonna call it StorePicker dot JS.
+
+201
+00:08:48.452 --> 00:08:52.543
+I always like to name my components the same as
+
+202
+00:08:52.543 --> 00:08:55.079
+the file name that we have there.
+
+203
+00:08:55.079 --> 00:09:00.079
+And then what we wanna do, is take that class of StorePicker
+
+204
+00:09:00.929 --> 00:09:04.852
+cut it out, move it over to StorePicker dot JS,
+
+205
+00:09:04.852 --> 00:09:08.945
+and paste it in there. Now lets give both of these a save
+
+206
+00:09:08.945 --> 00:09:10.416
+or we're gonna run into some errors,
+
+207
+00:09:10.416 --> 00:09:12.264
+let's see how we can solve these.
+
+208
+00:09:12.264 --> 00:09:13.991
+So what is it complaining about?
+
+209
+00:09:13.991 --> 00:09:17.671
+First, StorePicker is not defined, and that's because
+
+210
+00:09:17.671 --> 00:09:19.916
+in order to use a component in React,
+
+211
+00:09:19.916 --> 00:09:23.405
+actually in order to use anything in all of
+
+212
+00:09:23.405 --> 00:09:26.304
+ES6 modules, you first need to import that thing
+
+213
+00:09:26.304 --> 00:09:30.670
+into the file otherwise it doesn't know where to get it.
+
+214
+00:09:30.670 --> 00:09:32.124
+It has no idea that we've loaded this,
+
+215
+00:09:32.124 --> 00:09:34.699
+or we've created this component cause it's not loaded
+
+216
+00:09:34.699 --> 00:09:36.742
+into our main index dot JS file.
+
+217
+00:09:36.742 --> 00:09:38.915
+So what we're gonna do here is,
+
+218
+00:09:38.915 --> 00:09:41.337
+first thing we're gonna do is import React,
+
+219
+00:09:41.337 --> 00:09:44.310
+so import, React, from, React.
+
+220
+00:09:44.310 --> 00:09:47.203
+And you may be saying, like 'Hold on Wes!'
+
+221
+00:09:47.203 --> 00:09:50.182
+'Didn't you already import React in index dot JS?'
+
+222
+00:09:50.182 --> 00:09:53.166
+And the answer to that is you will always need
+
+223
+00:09:53.166 --> 00:09:56.218
+to import React into your components,
+
+224
+00:09:56.218 --> 00:09:58.790
+and the fact that you import React more than once
+
+225
+00:09:58.790 --> 00:10:01.474
+into your application doesn't matter
+
+226
+00:10:01.474 --> 00:10:04.622
+it's not going to put through you 40 copies of React,
+
+227
+00:10:04.622 --> 00:10:06.798
+it's going to de-dupe them and only
+
+228
+00:10:06.798 --> 00:10:09.230
+give you one copy of React in the rendered.
+
+229
+00:10:09.230 --> 00:10:12.721
+So you import it, you make what you want to make,
+
+230
+00:10:12.721 --> 00:10:14.218
+and then at the end of the day
+
+231
+00:10:14.218 --> 00:10:15.826
+you export the thing that you want.
+
+232
+00:10:15.826 --> 00:10:18.623
+I always like to think of this as making sausage.
+
+233
+00:10:18.623 --> 00:10:20.998
+Let's, before I give you this stupid example,
+
+234
+00:10:20.998 --> 00:10:24.503
+let's export, default, StorePicker.
+
+235
+00:10:24.503 --> 00:10:27.217
+So what we do here is you, you're making sausage,
+
+236
+00:10:27.217 --> 00:10:30.893
+you import your ingredients, you make your sausage,
+
+237
+00:10:30.893 --> 00:10:32.563
+or whatever it is that you're trying to make
+
+238
+00:10:32.563 --> 00:10:36.595
+and then in order to make that, in order to surface it
+
+239
+00:10:36.595 --> 00:10:39.289
+to other files in your application you need to
+
+240
+00:10:39.289 --> 00:10:42.952
+export it as a default from that file.
+
+241
+00:10:42.952 --> 00:10:45.961
+Now if we go back into index AS dot JS
+
+242
+00:10:45.961 --> 00:10:47.624
+we're still having this problem because
+
+243
+00:10:47.624 --> 00:10:49.407
+we're supposed to be trying to use a variable
+
+244
+00:10:49.407 --> 00:10:52.763
+called StorePicker here, when it knows nothing about it.
+
+245
+00:10:52.763 --> 00:10:57.720
+So we'll go ahead and import the StorePicker component
+
+246
+00:10:57.720 --> 00:11:00.869
+from, and you might think like, okay, I'll just say
+
+247
+00:11:00.869 --> 00:11:03.771
+'StorePicker' right, because that's what it was called.
+
+248
+00:11:03.771 --> 00:11:06.771
+However, if there is no path on here
+
+249
+00:11:07.848 --> 00:11:11.781
+then it doesn't know whether to look into node modules
+
+250
+00:11:11.781 --> 00:11:13.663
+cause it's something we installed,
+
+251
+00:11:13.663 --> 00:11:16.771
+or it doesn't know to look into your components folder
+
+252
+00:11:16.771 --> 00:11:18.356
+cause that's something that we made.
+
+253
+00:11:18.356 --> 00:11:20.213
+So what we wanna do is give it a path,
+
+254
+00:11:20.213 --> 00:11:22.513
+a relative path to where it is.
+
+255
+00:11:22.513 --> 00:11:24.150
+So, we're in the source folder,
+
+256
+00:11:24.150 --> 00:11:26.592
+we need to go into the components folder,
+
+257
+00:11:26.592 --> 00:11:31.592
+and then we wanna go and grab the StorePicker dot JS file.
+
+258
+00:11:31.797 --> 00:11:33.973
+Now, you do not need the dot JS on the end
+
+259
+00:11:33.973 --> 00:11:36.213
+that's assumed, so you can leave that out.
+
+260
+00:11:36.213 --> 00:11:39.026
+Now when I give it a refresh it should render out
+
+261
+00:11:39.026 --> 00:11:41.501
+the StorePicker back how we're used to,
+
+262
+00:11:41.501 --> 00:11:43.281
+let's just double check it one more time
+
+263
+00:11:43.281 --> 00:11:45.948
+and say 'I am the Store Picker'.
+
+264
+00:11:47.871 --> 00:11:50.924
+Beautiful! Alright, so hopefully we have that
+
+265
+00:11:50.924 --> 00:11:53.190
+up and running. We're gonna be doing this whole thing
+
+266
+00:11:53.190 --> 00:11:55.591
+import, create a class, and export that.
+
+267
+00:11:55.591 --> 00:11:58.445
+We're gonna be doing that a whole lot throughout this class.
+
+268
+00:11:58.445 --> 00:12:00.445
+See you in the next one.
+
