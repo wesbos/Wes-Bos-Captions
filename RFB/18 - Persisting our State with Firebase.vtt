@@ -1,691 +1,1306 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:03.000 line:100% position:50% align:middle
-♪ [music] ♪
-
-00:00:07.180 --> 00:00:11.980 line:100% position:50% align:middle
-So far with our application, when we
-refresh the page, all of our data is gone,
-
-00:00:11.980 --> 00:00:16.140 line:100% position:50% align:middle
-and there's no persisting of actual data,
-and for that to actually work we need
-
-00:00:16.140 --> 00:00:19.717 line:100% position:50% align:middle
-some sort of backend service, and what
-we're going to be using in this video is
-
-00:00:19.717 --> 00:00:23.620 line:100% position:50% align:middle
-something called Firebase. Firebase is a
-product from Google and it's really,
-
-00:00:23.620 --> 00:00:27.040 line:100% position:50% align:middle
-really nice, and probably the coolest part
-about is that it uses something called
-
-00:00:27.040 --> 00:00:31.950 line:100% position:50% align:middle
-HTML5 WebSockets meaning that you can
-sync all of your data from your
-
-00:00:31.950 --> 00:00:37.240 line:100% position:50% align:middle
-application up to Firebase and vice versa.
-When someone changes it in Firebase,
-
-00:00:37.240 --> 00:00:42.580 line:100% position:50% align:middle
-it will be synced to our application, so
-what Firebase allows us to do is not only
-
-00:00:42.580 --> 00:00:47.990 line:100% position:50% align:middle
-have a backend database but also make that
-real-time, so that regardless of who's got
+1
+00:00:00.317 --> 00:00:03.067
+(cheerful music)
+
+2
+00:00:07.065 --> 00:00:09.804
+<v Narrator>So far, when we add any data here,</v>
+
+3
+00:00:09.804 --> 00:00:11.651
+and we add items to our order,
+
+4
+00:00:11.651 --> 00:00:12.968
+and then we refresh the page,
+
+5
+00:00:12.968 --> 00:00:16.876
+we lose both our menu items here as well as our order.
+
+6
+00:00:16.876 --> 00:00:19.210
+So, what we wanna do is, when we load in some fishes,
+
+7
+00:00:19.210 --> 00:00:21.517
+or when we create a new fish, or when we update the fish,
+
+8
+00:00:21.517 --> 00:00:23.201
+we want to save that to a database,
+
+9
+00:00:23.201 --> 00:00:25.388
+so that when I come back to it at a later point in time,
+
+10
+00:00:25.388 --> 00:00:28.140
+or when someone actually visits our store,
+
+11
+00:00:28.140 --> 00:00:30.515
+that data needs to be available to them.
+
+12
+00:00:30.515 --> 00:00:32.441
+So, we are gonna be using a service from Google,
+
+13
+00:00:32.441 --> 00:00:35.284
+called Firebase, and Firebase is awesome,
+
+14
+00:00:35.284 --> 00:00:37.476
+because it's super easy to get up and running,
+
+15
+00:00:37.476 --> 00:00:39.368
+it's really intuitive for JavaScript developer,
+
+16
+00:00:39.368 --> 00:00:41.747
+and, most of all, it is real-time.
+
+17
+00:00:41.747 --> 00:00:45.026
+Meaning that if I update any piece of data
+
+18
+00:00:45.026 --> 00:00:47.135
+on our application that is in Firebase,
+
+19
+00:00:47.135 --> 00:00:48.990
+it will automatically relay that to
+
+20
+00:00:48.990 --> 00:00:51.155
+everyone else who has a store open.
+
+21
+00:00:51.155 --> 00:00:54.175
+It uses a technology called WebSockets,
+
+22
+00:00:54.175 --> 00:00:55.545
+which is part of HTML5,
+
+23
+00:00:55.545 --> 00:00:57.728
+and WebSockets allows us to do real-time,
+
+24
+00:00:57.728 --> 00:01:00.060
+rather than using like a Ajax,
+
+25
+00:01:00.060 --> 00:01:02.960
+where we ping the database for changes.
+
+26
+00:01:02.960 --> 00:01:04.202
+So, I just want to show you an example
+
+27
+00:01:04.202 --> 00:01:07.754
+of how Firebase works. So, I have my answer going up here,
+
+28
+00:01:07.754 --> 00:01:10.794
+and as I refresh it's going to give me a random one,
+
+29
+00:01:10.794 --> 00:01:13.300
+and if I go over to my Firebase database here,
+
+30
+00:01:13.300 --> 00:01:15.257
+you can see that this is my database,
+
+31
+00:01:15.257 --> 00:01:16.942
+and then underneath that we're going to have
+
+32
+00:01:16.942 --> 00:01:19.359
+all of our stores, and (laughing) looks like somebody,
+
+33
+00:01:19.359 --> 00:01:22.009
+I just deleted this, but somebody must be trying to demo
+
+34
+00:01:22.009 --> 00:01:24.342
+out on the website, 'cause they just created that.
+
+35
+00:01:24.342 --> 00:01:27.466
+Now, as soon as I visit the store, you see what happens
+
+36
+00:01:27.466 --> 00:01:31.197
+is it updates handsome-helpless-nuclei,
+
+37
+00:01:31.197 --> 00:01:33.991
+and I open it up and there is only an owner,
+
+38
+00:01:33.991 --> 00:01:36.926
+which we are gonna be using that for authentication,
+
+39
+00:01:36.926 --> 00:01:39.075
+but as soon as I load some sample fishes in,
+
+40
+00:01:39.075 --> 00:01:42.235
+you'll see that that data is automatically relayed
+
+41
+00:01:42.235 --> 00:01:44.388
+to Firebase. So we got fish one through nine,
+
+42
+00:01:44.388 --> 00:01:46.307
+and then as I add them to the order,
+
+43
+00:01:46.307 --> 00:01:47.894
+the order is not going to be,
+
+44
+00:01:47.894 --> 00:01:48.823
+we're gonna be using something called
+
+45
+00:01:48.823 --> 00:01:50.392
+Local Storage for that.
+
+46
+00:01:50.392 --> 00:01:51.788
+But, what's kinda neat about that
+
+47
+00:01:51.788 --> 00:01:54.282
+is as soon as I make a change,
+
+48
+00:01:54.282 --> 00:01:56.183
+let me zoom out on this so we can see.
+
+49
+00:01:56.183 --> 00:01:58.263
+Soon as I make a change to Pacific Halibut,
+
+50
+00:01:58.263 --> 00:02:00.013
+maybe say Atlantic...
+
+51
+00:02:01.211 --> 00:02:03.718
+You see that it's obviously updating right here,
+
+52
+00:02:03.718 --> 00:02:06.416
+it's updating right here, and it's updating right here.
+
+53
+00:02:06.416 --> 00:02:09.651
+Which is great, because that's updating our state,
+
+54
+00:02:09.651 --> 00:02:14.224
+but the state is also being mirrored to our Firebase, right.
+
+55
+00:02:14.224 --> 00:02:16.037
+You can see it says, "Atlantic Halibut."
+
+56
+00:02:16.037 --> 00:02:18.612
+So, that means if I change it to West Halibut and hit enter,
+
+57
+00:02:18.612 --> 00:02:21.062
+you see that that data automatically updated,
+
+58
+00:02:21.062 --> 00:02:24.689
+and is now mirrored over to our Catch-of-the-Day
+
+59
+00:02:24.689 --> 00:02:26.685
+application right here and right here,
+
+60
+00:02:26.685 --> 00:02:30.279
+similarly, if I were open this up in maybe Safari,
+
+61
+00:02:30.279 --> 00:02:33.354
+you can see I can't login cause I'm not the owner of that,
+
+62
+00:02:33.354 --> 00:02:34.799
+and that's what we will go over
+
+63
+00:02:34.799 --> 00:02:37.391
+in our authentication episode, but it says, "West Halibut."
+
+64
+00:02:37.391 --> 00:02:42.210
+Now, if I were to change this again to "Cool Halibut"
+
+65
+00:02:42.210 --> 00:02:44.966
+and hit enter, it updated it both in Safari
+
+66
+00:02:44.966 --> 00:02:48.149
+as well as in every other browser that currently
+
+67
+00:02:48.149 --> 00:02:50.649
+has this item open, which is amazing.
+
+68
+00:02:50.649 --> 00:02:52.803
+So, let's get started with that,
+
+69
+00:02:52.803 --> 00:02:55.414
+what I need you to do is to sign-up.
+
+70
+00:02:55.414 --> 00:03:00.199
+Go to firebase.google.com and sign-up for an account
+
+71
+00:03:00.199 --> 00:03:02.173
+or just login with your Google account.
+
+72
+00:03:02.173 --> 00:03:04.270
+I need you to make a new project,
+
+73
+00:03:04.270 --> 00:03:06.577
+so we're gonna go ahead and add a new project here,
+
+74
+00:03:06.577 --> 00:03:09.827
+and you can call that Catch of the Day,
+
+75
+00:03:11.456 --> 00:03:14.300
+and then you can put your name in there,
+
+76
+00:03:14.300 --> 00:03:16.052
+cause there's gonna be lots of us with it.
+
+77
+00:03:16.052 --> 00:03:17.815
+So Wes Bos, I've done this a couple times
+
+78
+00:03:17.815 --> 00:03:19.295
+I'm gonna put 2 on it,
+
+79
+00:03:19.295 --> 00:03:21.602
+and it's gonna give you a nice project.
+
+80
+00:03:21.602 --> 00:03:24.290
+Then, you can decide where the data is going to go,
+
+81
+00:03:24.290 --> 00:03:26.890
+and, we can create the project.
+
+82
+00:03:26.890 --> 00:03:28.566
+Now, while that is creating,
+
+83
+00:03:28.566 --> 00:03:31.741
+let's go into our actual application here,
+
+84
+00:03:31.741 --> 00:03:35.543
+and we're gonna create a new file called base.js,
+
+85
+00:03:35.543 --> 00:03:37.463
+and this is not gonna go in the components folder,
+
+86
+00:03:37.463 --> 00:03:39.633
+it's not a component, it's gonna go directly
+
+87
+00:03:39.633 --> 00:03:41.541
+in our SRC file.
+
+88
+00:03:41.541 --> 00:03:44.178
+So, call this base.js,
+
+89
+00:03:44.178 --> 00:03:46.372
+and no capitals or anything on that one,
+
+90
+00:03:46.372 --> 00:03:48.789
+and then inside of this we need two packages.
+
+91
+00:03:48.789 --> 00:03:51.746
+So, first we're gonna import somethin called the rebase,
+
+92
+00:03:51.746 --> 00:03:54.621
+and that's going to be from a package called re-base,
+
+93
+00:03:54.621 --> 00:03:57.142
+and that's going to allow us,
+
+94
+00:03:57.142 --> 00:04:00.723
+it's like a React/Firebase specific package
+
+95
+00:04:00.723 --> 00:04:03.067
+that's gonna allow us to mirror our state
+
+96
+00:04:03.067 --> 00:04:05.840
+to our Firebase changes. And then we also need
+
+97
+00:04:05.840 --> 00:04:09.730
+the official Firebase package from Firebase,
+
+98
+00:04:09.730 --> 00:04:12.187
+and that's what we're going to be using
+
+99
+00:04:12.187 --> 00:04:15.212
+for anything that is not just mirroring to state.
+
+100
+00:04:15.212 --> 00:04:16.655
+And when we setup re-base,
+
+101
+00:04:16.655 --> 00:04:18.999
+we actually have to pass it out Firebase.
+
+102
+00:04:18.999 --> 00:04:21.933
+Now, inside of that we need to configure our application,
+
+103
+00:04:21.933 --> 00:04:26.933
+so let's say const.firebaseApp = firebase.initializeApp,
+
+104
+00:04:28.866 --> 00:04:31.240
+and then inside of that we need to go back
+
+105
+00:04:31.240 --> 00:04:34.212
+to our application here, that the project is now ready,
+
+106
+00:04:34.212 --> 00:04:37.054
+so we're gonna click on continue.
+
+107
+00:04:37.054 --> 00:04:40.284
+And Firebase has a couple of different items in it,
+
+108
+00:04:40.284 --> 00:04:42.109
+they have off, which we're gonna use,
+
+109
+00:04:42.109 --> 00:04:44.129
+they have a database, real-time database,
+
+110
+00:04:44.129 --> 00:04:45.309
+which we are gonna use.
+
+111
+00:04:45.309 --> 00:04:46.674
+Then they also have the ability
+
+112
+00:04:46.674 --> 00:04:49.702
+to host your application there, and maybe store files,
+
+113
+00:04:49.702 --> 00:04:51.793
+and do something called server-less function,
+
+114
+00:04:51.793 --> 00:04:53.725
+so we're not using those three ones,
+
+115
+00:04:53.725 --> 00:04:56.444
+in this tutorial we will just be using the Auth
+
+116
+00:04:56.444 --> 00:04:59.837
+and the Database, so click on the Databse that you got here,
+
+117
+00:04:59.837 --> 00:05:02.678
+and we're going to click on the Get Started.
+
+118
+00:05:02.678 --> 00:05:06.928
+We're just looking for some sort of authentication.
+
+119
+00:05:09.125 --> 00:05:11.991
+And, by default Firebase puts some auth on it,
+
+120
+00:05:11.991 --> 00:05:13.832
+and what we're gonna do is we're gonna temporarily
+
+121
+00:05:13.832 --> 00:05:16.532
+disable that authentication until we get to those videos,
+
+122
+00:05:16.532 --> 00:05:19.762
+so let's go over to our rules, here.
+
+123
+00:05:19.762 --> 00:05:22.919
+And, you're going to change these
+
+124
+00:05:22.919 --> 00:05:25.002
+to read true, write true,
+
+125
+00:05:26.750 --> 00:05:29.179
+and that's gonna open up all of the security rules,
+
+126
+00:05:29.179 --> 00:05:30.695
+obviously you would never do that
+
+127
+00:05:30.695 --> 00:05:31.852
+in a production application,
+
+128
+00:05:31.852 --> 00:05:33.452
+we're gonna be coming back to that,
+
+129
+00:05:33.452 --> 00:05:35.115
+for now let's just open it right up
+
+130
+00:05:35.115 --> 00:05:37.342
+so that we can get prototyping,
+
+131
+00:05:37.342 --> 00:05:40.519
+and we'll go ahead and publish that.
+
+132
+00:05:40.519 --> 00:05:43.868
+And, next what we need to do is get that configuration,
+
+133
+00:05:43.868 --> 00:05:46.392
+we need apiKeys and authDomain and whatnot,
+
+134
+00:05:46.392 --> 00:05:47.559
+so that is....
+
+135
+00:05:49.574 --> 00:05:51.936
+That is available if you go to project overview,
+
+136
+00:05:51.936 --> 00:05:53.223
+and it says, "Get started here."
+
+137
+00:05:53.223 --> 00:05:55.686
+We are doing a webapp, so you click that,
+
+138
+00:05:55.686 --> 00:05:58.762
+and it's going to give us the config that we need.
+
+139
+00:05:58.762 --> 00:06:01.438
+So, let's just copy, we don't need everything
+
+140
+00:06:01.438 --> 00:06:04.688
+just this object right here, copy that,
+
+141
+00:06:05.845 --> 00:06:08.262
+go ahead and take these away,
+
+142
+00:06:09.345 --> 00:06:11.108
+and I'll paste it in there.
+
+143
+00:06:11.108 --> 00:06:13.498
+We actually really only need a couple things,
+
+144
+00:06:13.498 --> 00:06:16.970
+so we need the apiKey, we need the authDomain,
+
+145
+00:06:16.970 --> 00:06:17.803
+and we also need the databaseURL.
+
+146
+00:06:17.803 --> 00:06:21.220
+We can get rid of these things right here
+
+147
+00:06:23.421 --> 00:06:26.158
+because we're not specifically using them.
+
+148
+00:06:26.158 --> 00:06:29.075
+Good! Now what we need to do is create our rebase,
+
+149
+00:06:29.075 --> 00:06:33.242
+so we'll say const base = Rebase.createClass,
+
+150
+00:06:35.086 --> 00:06:37.675
+and then we will pass it, capital C on there,
+
+151
+00:06:37.675 --> 00:06:41.132
+we pass it our firebaseApp.database,
+
+152
+00:06:41.132 --> 00:06:43.802
+and database is a function that will return
+
+153
+00:06:43.802 --> 00:06:46.767
+the actual database that we have. Good!
+
+154
+00:06:46.767 --> 00:06:48.253
+Now, so we've created two things here,
+
+155
+00:06:48.253 --> 00:06:50.000
+we've created our firebaseApp,
+
+156
+00:06:50.000 --> 00:06:52.328
+and we've creating our rebase binding,
+
+157
+00:06:52.328 --> 00:06:54.796
+and then we need to export them from here.
+
+158
+00:06:54.796 --> 00:06:58.539
+So we're gonna say export { firebaseApp };
+
+159
+00:06:58.539 --> 00:07:01.286
+and here let's leave a comment,
+
+160
+00:07:01.286 --> 00:07:04.786
+this is a named export. Cause remember in,
+
+161
+00:07:05.812 --> 00:07:09.397
+let's go over to js, remember when we imported formatPrice?
+
+162
+00:07:09.397 --> 00:07:13.090
+That was a named import, we knew what it was called,
+
+163
+00:07:13.090 --> 00:07:15.202
+and this is a named export,
+
+164
+00:07:15.202 --> 00:07:17.182
+and then we're also going to say,
+
+165
+00:07:17.182 --> 00:07:18.974
+"This is a default export."
+
+166
+00:07:18.974 --> 00:07:22.503
+So, the main thing that gets exported from this base.js
+
+167
+00:07:22.503 --> 00:07:26.651
+config file, is our base that we've created with rebase.
+
+168
+00:07:26.651 --> 00:07:28.909
+We'll say export default base,
+
+169
+00:07:28.909 --> 00:07:32.140
+and that's gonna allow us to bring it into our other file.
+
+170
+00:07:32.140 --> 00:07:34.683
+So, that's good, we can close all these files down.
+
+171
+00:07:34.683 --> 00:07:38.513
+Now, what we need to do is go back into our app.js,
+
+172
+00:07:38.513 --> 00:07:41.689
+and we need to now mirror our fish state
+
+173
+00:07:41.689 --> 00:07:46.125
+over to what is our firebase. And in order to do that,
+
+174
+00:07:46.125 --> 00:07:48.658
+we need to sort of wait until this App component
+
+175
+00:07:48.658 --> 00:07:52.046
+is on the page, and then we'll start to sync them up.
+
+176
+00:07:52.046 --> 00:07:54.179
+So, this is where we're gonna start getting into
+
+177
+00:07:54.179 --> 00:07:56.000
+what are called Lifestyle Methods.
+
+178
+00:07:56.000 --> 00:07:57.716
+And Lifecycle Methods in React are,
+
+179
+00:07:57.716 --> 00:08:01.404
+if you're used to jQery, you know that we have
+
+180
+00:08:01.404 --> 00:08:04.402
+a document ready and that's when the page is ready to go,
+
+181
+00:08:04.402 --> 00:08:06.323
+or you have like a window on load,
+
+182
+00:08:06.323 --> 00:08:08.741
+and that's when all the images have been downloaded.
+
+183
+00:08:08.741 --> 00:08:10.821
+In React we have all kinds of Lifecycle Methods
+
+184
+00:08:10.821 --> 00:08:14.243
+that essentially tell us when certain things are happening,
+
+185
+00:08:14.243 --> 00:08:16.439
+and the one that we're going to be using
+
+186
+00:08:16.439 --> 00:08:18.003
+is called componentDidMount(),
+
+187
+00:08:18.003 --> 00:08:20.664
+and componentDidMount() is sort of like a hook
+
+188
+00:08:20.664 --> 00:08:23.764
+into the very first possible second
+
+189
+00:08:23.764 --> 00:08:27.831
+that the application is loaded onto the page,
+
+190
+00:08:27.831 --> 00:08:30.287
+and in our page the specific app componoent.
+
+191
+00:08:30.287 --> 00:08:32.815
+So, you can take a quick look here
+
+192
+00:08:32.815 --> 00:08:35.728
+at all the React lifecycle methods.
+
+193
+00:08:35.728 --> 00:08:37.310
+There's the constructor(), which we've talked about,
+
+194
+00:08:37.310 --> 00:08:39.407
+there's compononentWillMount(), render(),
+
+195
+00:08:39.407 --> 00:08:41.470
+componentDidMount(), and then there's a whole bunch
+
+196
+00:08:41.470 --> 00:08:44.079
+for updating, shouldComponentUpdate(),
+
+197
+00:08:44.079 --> 00:08:47.454
+compnonentWillUpdate(), we're go over a couple more of these
+
+198
+00:08:47.454 --> 00:08:50.734
+in specific use cases, but definitely take a look
+
+199
+00:08:50.734 --> 00:08:52.360
+at the docs for all of the different
+
+200
+00:08:52.360 --> 00:08:54.880
+lifecycle methods that we have.
+
+201
+00:08:54.880 --> 00:08:56.797
+So, we're gonna go into
+
+202
+00:08:57.807 --> 00:08:59.770
+our app here, and above our custom methods
+
+203
+00:08:59.770 --> 00:09:03.403
+we're going to add a compononentDidMount(),
+
+204
+00:09:03.403 --> 00:09:06.277
+and let's just do a console.log("MOUNTED"),
+
+205
+00:09:06.277 --> 00:09:08.707
+let's just double check that that's still firing,
+
+206
+00:09:08.707 --> 00:09:10.403
+open it up, yeah we get our app
+
+207
+00:09:10.403 --> 00:09:12.043
+that js console.logging "MOUNTED."
+
+208
+00:09:12.043 --> 00:09:14.228
+So, now that we know we're in good shape,
+
+209
+00:09:14.228 --> 00:09:16.785
+what we're going to do is import our firebase.
+
+210
+00:09:16.785 --> 00:09:20.285
+So, let's say import base from up a level,
+
+211
+00:09:21.559 --> 00:09:25.179
+and then that is just going to be from the base.js file,
+
+212
+00:09:25.179 --> 00:09:27.387
+and in our componentDidMount() we're going to say
+
+213
+00:09:27.387 --> 00:09:31.637
+this.ref, and this.ref is different than the actual
+
+214
+00:09:32.471 --> 00:09:35.452
+input refs that we were talking about earlier,
+
+215
+00:09:35.452 --> 00:09:39.429
+refs in Firebase are sort of the reference to
+
+216
+00:09:39.429 --> 00:09:41.621
+a piece of data in the database,
+
+217
+00:09:41.621 --> 00:09:43.848
+and we'll talk more about that in the future.
+
+218
+00:09:43.848 --> 00:09:47.431
+I'll say base.syncState(),
+
+219
+00:09:48.393 --> 00:09:51.143
+and we're going to sync this with
+
+220
+00:09:52.859 --> 00:09:55.960
+not with the entire database, cause it's unnecessary,
+
+221
+00:09:55.960 --> 00:09:58.289
+let me go back to my database and show you,
+
+222
+00:09:58.289 --> 00:10:02.293
+let me go back to that other one I was working with,
+
+223
+00:10:02.293 --> 00:10:03.876
+and go to database.
+
+224
+00:10:05.084 --> 00:10:09.150
+So, all this data here, we don't necessarily care
+
+225
+00:10:09.150 --> 00:10:13.986
+about king, or uptight-jealous-women, or helpless-cacti,
+
+226
+00:10:13.986 --> 00:10:17.887
+because that's not our data for this specific store,
+
+227
+00:10:17.887 --> 00:10:22.237
+we just care about the handsome-helpless-nuclei, right?
+
+228
+00:10:22.237 --> 00:10:26.213
+So, we're going to sync it with the name of the store.
+
+229
+00:10:26.213 --> 00:10:30.953
+And where do we get the name of the store in app?
+
+230
+00:10:30.953 --> 00:10:34.048
+Well, let's go back here, let's look at it.
+
+231
+00:10:34.048 --> 00:10:39.048
+Quaint-defeated-people, and if we look at our app component,
+
+232
+00:10:42.285 --> 00:10:46.057
+you'll notice that we have props from React router,
+
+233
+00:10:46.057 --> 00:10:47.940
+React router is gonna give our props,
+
+234
+00:10:47.940 --> 00:10:50.829
+and in match there's going to be something call params,
+
+235
+00:10:50.829 --> 00:10:53.593
+and then there's going to be a storeId,
+
+236
+00:10:53.593 --> 00:10:55.703
+and that will give us quaint-defeated-people,
+
+237
+00:10:55.703 --> 00:10:58.895
+that will give us whatever is in the actual URL.
+
+238
+00:10:58.895 --> 00:11:00.795
+So, we will sync it with,
+
+239
+00:11:00.795 --> 00:11:03.225
+and we will put the params in there,
+
+240
+00:11:03.225 --> 00:11:05.892
+this.props.match.params.storeId,
+
+241
+00:11:08.248 --> 00:11:11.055
+and that seems a little bit long,
+
+242
+00:11:11.055 --> 00:11:12.480
+and that is probably true.
+
+243
+00:11:12.480 --> 00:11:15.239
+So, what we can do is we can destructor that our
+
+244
+00:11:15.239 --> 00:11:17.988
+into it's own variable, we'll just name it params.
+
+245
+00:11:17.988 --> 00:11:20.321
+So, above we'll say const...
+
+246
+00:11:21.496 --> 00:11:24.079
+Params = this.props.match,
+
+247
+00:11:25.475 --> 00:11:28.663
+and then we're able to grab the params.storeID in there,
+
+248
+00:11:28.663 --> 00:11:30.661
+and then /fishes, right?
+
+249
+00:11:30.661 --> 00:11:35.099
+Because even inside of our catch-of-the-day,
+
+250
+00:11:35.099 --> 00:11:37.840
+if we're inside of one of the specific,
+
+251
+00:11:37.840 --> 00:11:40.443
+we don't care about the owner just yet,
+
+252
+00:11:40.443 --> 00:11:41.940
+we're going to be going into that,
+
+253
+00:11:41.940 --> 00:11:44.765
+but we care about the fishes, not anything else.
+
+254
+00:11:44.765 --> 00:11:46.606
+So, that's why we do /fishes.
+
+255
+00:11:46.606 --> 00:11:48.589
+That's a kinda cool thing about Firebase,
+
+256
+00:11:48.589 --> 00:11:51.328
+is as you get deep in nested objects,
+
+257
+00:11:51.328 --> 00:11:55.925
+you just do /// and that helps you go deeper.
+
+258
+00:11:55.925 --> 00:12:00.249
+So, that is the ref to / the store name /
+
+259
+00:12:00.249 --> 00:12:03.362
+the actual fishes object, which will contain
+
+260
+00:12:03.362 --> 00:12:07.277
+and mirror our state. Good? And then the sync state
+
+261
+00:12:07.277 --> 00:12:10.610
+also requires an object of some options,
+
+262
+00:12:11.743 --> 00:12:14.352
+the first one is context, it is going to be this,
+
+263
+00:12:14.352 --> 00:12:18.091
+and the state that we are going to sync
+
+264
+00:12:18.091 --> 00:12:20.264
+is going to be fishes, right?
+
+265
+00:12:20.264 --> 00:12:21.744
+It's not going to be our order state,
+
+266
+00:12:21.744 --> 00:12:24.072
+we're going to be syncing our fish state.
+
+267
+00:12:24.072 --> 00:12:26.542
+So, if I give that a save...
+
+268
+00:12:26.542 --> 00:12:31.542
+Now, I can close this out, if we go to our application,
+
+269
+00:12:31.689 --> 00:12:34.022
+and we go to our database...
+
+270
+00:12:37.928 --> 00:12:41.657
+Going to look at it, get started, there's nothing in there,
+
+271
+00:12:41.657 --> 00:12:44.907
+but if I load some sample fishes, boom!
+
+272
+00:12:46.578 --> 00:12:49.697
+Look at, quaint-defeated-people, fishes,
+
+273
+00:12:49.697 --> 00:12:52.022
+all of that data is now being synced,
+
+274
+00:12:52.022 --> 00:12:56.321
+and if I change Pacific Halibut to Atlantic...
+
+275
+00:12:56.321 --> 00:12:59.287
+And go back, oooh! It has changed as well,
+
+276
+00:12:59.287 --> 00:13:03.281
+so isn't that amazing, that just this much code
+
+277
+00:13:03.281 --> 00:13:05.752
+is able to sync our state we don't have to do any
+
+278
+00:13:05.752 --> 00:13:09.009
+updating and whatnot? So, I really like this package
+
+279
+00:13:09.009 --> 00:13:13.092
+for syncing state between Firebase and our state.
+
+280
+00:13:13.942 --> 00:13:16.450
+Now, what we also have to do is that we are now
+
+281
+00:13:16.450 --> 00:13:18.174
+listening for changes on here,
+
+282
+00:13:18.174 --> 00:13:22.674
+but if I were to go back and then go into another one
+
+283
+00:13:22.674 --> 00:13:25.092
+called the Wes-Store and visit that one,
+
+284
+00:13:25.092 --> 00:13:28.055
+and load in some fishes, now what I have done,
+
+285
+00:13:28.055 --> 00:13:31.567
+is I've created two stores, however we unmounted
+
+286
+00:13:31.567 --> 00:13:34.697
+the application by going back to the store picker,
+
+287
+00:13:34.697 --> 00:13:36.771
+and then we remounted it by going forward.
+
+288
+00:13:36.771 --> 00:13:39.203
+And if your user were to do that multiple times,
+
+289
+00:13:39.203 --> 00:13:42.064
+what happens is you are sort of listening for changes
+
+290
+00:13:42.064 --> 00:13:45.467
+every single time, but you're never unlistening for changes,
+
+291
+00:13:45.467 --> 00:13:48.207
+and that can lead to what is called a memory leak
+
+292
+00:13:48.207 --> 00:13:50.998
+in the future because you forgot to actually
+
+293
+00:13:50.998 --> 00:13:53.705
+kinda cleanup after you left that store.
+
+294
+00:13:53.705 --> 00:13:55.715
+So, that's exactly what we need to do,
+
+295
+00:13:55.715 --> 00:13:59.210
+we're going to be using another Lifecycle Method
+
+296
+00:13:59.210 --> 00:14:03.142
+called componentWillUnmount(),
+
+297
+00:14:03.142 --> 00:14:05.915
+and as soon as the component is unmounting,
+
+298
+00:14:05.915 --> 00:14:08.923
+so console.log("UNMOUNTING");
+
+299
+00:14:08.923 --> 00:14:10.590
+And, so, here we go.
+
+300
+00:14:12.301 --> 00:14:14.551
+Now, let's go to this page.
+
+301
+00:14:15.681 --> 00:14:17.927
+I visit a store, and then I go back,
+
+302
+00:14:17.927 --> 00:14:19.928
+you see that it says "UNMOUNTING," why?
 
-00:00:47.990 --> 00:00:52.603 line:100% position:50% align:middle
-the application open or how
-many people are editing it at once,
+303
+00:14:19.928 --> 00:14:21.826
+Because that triggered an unmount
 
-00:00:52.603 --> 00:00:55.300 line:100% position:50% align:middle
-that data will always be
-synced to everyone's' computer.
+304
+00:14:21.826 --> 00:14:23.939
+because the app component is no longer shower.
 
-00:00:55.300 --> 00:01:00.800 line:100% position:50% align:middle
-So I'm going to show you an example right
-here, and I've got a blank Firebase
+305
+00:14:23.939 --> 00:14:26.707
+And then we simply just need to take our base package
 
-00:01:00.800 --> 00:01:05.988 line:100% position:50% align:middle
-database right here, and the way you can
-think about Firebase as it's one big
+306
+00:14:26.707 --> 00:14:31.000
+and removeBinding(this.ref);
 
-00:01:05.988 --> 00:01:10.820 line:100% position:50% align:middle
-object. Now that works really, really well
-with React, because the state is one big
+307
+00:14:31.000 --> 00:14:33.417
+and that's exactly why we stored
 
-00:01:10.820 --> 00:01:15.270 line:100% position:50% align:middle
-object, and what's really cool is that we
-can sync our state with Firebase,
+308
+00:14:33.417 --> 00:14:37.462
+the reference to the database in this.ref,
 
-00:01:15.270 --> 00:01:18.430 line:100% position:50% align:middle
-and then any time any of them changes,
-they'll all automatically sync together.
+309
+00:14:37.462 --> 00:14:40.795
+so that when we leave, we can remove it.
 
-00:01:18.430 --> 00:01:22.080 line:100% position:50% align:middle
-So I'm going to go to
-old-fashioned-grumpy-teeth here and click
+310
+00:14:42.625 --> 00:14:45.385
+Beautiful! So, I'm gonna visit the store,
 
-00:01:22.080 --> 00:01:25.610 line:100% position:50% align:middle
-Visit Store. And all of sudden, you see
-on my right-hand side
+311
+00:14:45.385 --> 00:14:48.365
+and then when I go back, it's gonna unmount it for me,
 
-00:01:25.610 --> 00:01:29.850 line:100% position:50% align:middle
-I have created that store and we've got
-owner. This is some authentication stuff
+312
+00:14:48.365 --> 00:14:52.201
+and clean up any memory issues that may have.
 
-00:01:29.850 --> 00:01:33.280 line:100% position:50% align:middle
-that we're going to be doing in later
-videos. However, when I load some sample
+313
+00:14:52.201 --> 00:14:55.618
+Beautiful! So, now when we load the page,
 
-00:01:33.280 --> 00:01:37.370 line:100% position:50% align:middle
-fishes here, oh, look, it
-automatically...those fishes pop up,
+314
+00:14:57.087 --> 00:14:59.822
+load some sample fishes, and I refresh the page,
 
-00:01:37.370 --> 00:01:42.010 line:100% position:50% align:middle
-and there's all of my fishes. There's fish
-one and if I can add them to my order,
+315
+00:14:59.822 --> 00:15:02.736
+you see that after a split second,
 
-00:01:42.010 --> 00:01:45.680 line:100% position:50% align:middle
-no problem. However, if I were to
-change one of these to maybe,
+316
+00:15:02.736 --> 00:15:06.484
+the fish are immediately re-instated into my store,
 
-00:01:45.680 --> 00:01:51.692 line:100% position:50% align:middle
-like, Atlantic. Look it. It's happening in
-real-time, both in my application but also
+317
+00:15:06.484 --> 00:15:10.777
+because they are now being persisted in our database.
 
-00:01:51.692 --> 00:01:55.604 line:100% position:50% align:middle
-it's being synced up to Firebase and that
-also works the other way around.
+318
+00:15:10.777 --> 00:15:12.205
+One last thing, you'll probably see this
 
-00:01:55.604 --> 00:02:02.250 line:100% position:50% align:middle
-I changed this back to Pacific. Hit Enter.
-See how it changed it in Firebase
+319
+00:15:12.205 --> 00:15:14.142
+FIREBASE WARNING: Invalid query segment,
 
-00:02:02.250 --> 00:02:05.450 line:100% position:50% align:middle
-and it's going to go open here. So if I
-were to open up, like,
+320
+00:15:14.142 --> 00:15:16.582
+I did look this up, and it's just an issue
 
-00:02:05.450 --> 00:02:09.400 line:100% position:50% align:middle
-Safari here. I can see all the data about
-it. I'm not able to log in,
+321
+00:15:16.582 --> 00:15:19.040
+with the current Firebase package,
 
-00:02:09.400 --> 00:02:13.830 line:100% position:50% align:middle
-because I'm not the owner of this one, and
-we'll talk about that in our actual
+322
+00:15:19.040 --> 00:15:21.548
+once they've already fixed it on gitHub
 
-00:02:13.830 --> 00:02:17.740 line:100% position:50% align:middle
-authentication application. But if I were
-then to change one of these,
+323
+00:15:21.548 --> 00:15:24.396
+and once they push that, it should no longer be an issue.
 
-00:02:17.740 --> 00:02:23.520 line:100% position:50% align:middle
-again, back to Atlantic...see, changed
-right there. Sorry, it's a little bit hard
+324
+00:15:24.396 --> 00:15:26.147
+So, if you do see this, you're taking it in
 
-00:02:23.520 --> 00:02:27.720 line:100% position:50% align:middle
-to see. I'm going to make it bigger. That
-one changed. That one changed.
+325
+00:15:26.147 --> 00:15:27.943
+the first couple days after I release it.
 
-00:02:27.720 --> 00:02:31.489 line:100% position:50% align:middle
-It's real-time regardless of
-who's got this specific store
+326
+00:15:27.943 --> 00:15:29.796
+You can totally safely ignore that.
 
-00:02:31.489 --> 00:02:34.120 line:100% position:50% align:middle
-open at any given moment.
-
-00:02:34.120 --> 00:02:39.250 line:100% position:50% align:middle
-Great. Now what I need you to do is to
-sign up for a Firebase account.
-
-00:02:39.250 --> 00:02:44.470 line:100% position:50% align:middle
-Go to firebase.com and sign up and you'll
-go to your Firebase dashboard
-
-00:02:44.470 --> 00:02:49.130 line:100% position:50% align:middle
-so Firebase recently just changed
-everything up on us. So if you have,
-
-00:02:49.130 --> 00:02:54.540 line:100% position:50% align:middle
-like, a previous one from the last version
-of Sartorial or any other Firebase
-
-00:02:54.540 --> 00:02:58.130 line:100% position:50% align:middle
-that maybe you ever worked with. Make sure
-that you create a new project using the
-
-00:02:58.130 --> 00:03:03.280 line:100% position:50% align:middle
-new Firebase, not the old legacy one that
-we don't want. So you want to go ahead
-
-00:03:03.280 --> 00:03:11.040 line:100% position:50% align:middle
-and create a new project here, and we're
-going to call that Catch Of The Day,
-
-00:03:11.040 --> 00:03:14.510 line:100% position:50% align:middle
-and then put your name in it because
-there's going to be thousands of you
-
-00:03:14.510 --> 00:03:18.740 line:100% position:50% align:middle
-creating this and we can't all have the
-same name. Create the project there.
-
-00:03:18.740 --> 00:03:22.600 line:100% position:50% align:middle
-Now first thing we need to do is go
-to the database here
-
-00:03:22.600 --> 00:03:26.660 line:100% position:50% align:middle
-and this is going to be our empty
-database. Now we want to click on the
-
-00:03:26.660 --> 00:03:31.130 line:100% position:50% align:middle
-rules right here, and we're going to learn
-all about how authentication works
-
-00:03:31.130 --> 00:03:35.528 line:100% position:50% align:middle
-and by default, Firebase is now locked
-down, meaning that no one can edit the
-
-00:03:35.528 --> 00:03:41.000 line:100% position:50% align:middle
-data. However for learning, it's a little
-bit cumbersome, because who likes to build
-
-00:03:41.000 --> 00:03:44.310 line:100% position:50% align:middle
-their authentication before they
-actually learn how to use the thing.
-
-00:03:44.310 --> 00:03:47.380 line:100% position:50% align:middle
-So what we're going to do is we're going
-to open it up, and it's obviously just
-
-00:03:47.380 --> 00:03:50.740 line:100% position:50% align:middle
-going to be you working on this database,
-and then, in the authentication video,
-
-00:03:50.740 --> 00:03:54.170 line:100% position:50% align:middle
-we're going to come back here and make
-sure that we lock it down so that only the
-
-00:03:54.170 --> 00:03:57.400 line:100% position:50% align:middle
-person who owns that specific
-store will be able to edit it.
-
-00:03:57.400 --> 00:04:01.240 line:100% position:50% align:middle
-So we've got these rules called ".read"
-and ".write" and right here it's saying
-
-00:04:01.240 --> 00:04:07.550 line:100% position:50% align:middle
-everybody can't, so we are just going to
-change that to true, and we are going to
-
-00:04:07.550 --> 00:04:14.120 line:100% position:50% align:middle
-say ".write" to also be true and then
-give that a save. And it's going to tell
-
-00:04:14.120 --> 00:04:18.125 line:100% position:50% align:middle
-us your security rules are defined as
-public, anyone...that's no problem there.
-
-00:04:18.600 --> 00:04:20.830 line:100% position:50% align:middle
-Again, we're going to
-come back and grab it.
-
-00:04:20.830 --> 00:04:26.050 line:100% position:50% align:middle
-Now we need to head back to our code
-here, and we need to open up our app
-
-00:04:26.050 --> 00:04:32.350 line:100% position:50% align:middle
-component and take a little look at our
-state here. So we've got our state,
-
-00:04:32.350 --> 00:04:35.445 line:100% position:50% align:middle
-and order isn't going to be synced to
-Firebase. We're actually going to sync
-
-00:04:35.445 --> 00:04:39.700 line:100% position:50% align:middle
-that with local storage in a future
-video, but the fishes... Any change that
-
-00:04:39.700 --> 00:04:43.900 line:100% position:50% align:middle
-happens to any of our fish state, that
-needs to be synced with Firebase,
-
-00:04:43.900 --> 00:04:46.720 line:100% position:50% align:middle
-and we're going to be using a package
-called Rebase to do that.
-
-00:04:46.720 --> 00:04:51.069 line:100% position:50% align:middle
-In order to connect to Rebase, we need to
-make a new file and I'm not going to put
-
-00:04:51.069 --> 00:04:53.950 line:100% position:50% align:middle
-that in a components folder because it's
-not a component. I'm going to go one level
-
-00:04:53.950 --> 00:04:59.030 line:100% position:50% align:middle
-higher in source and I'm going to
-call it base.js, and in there,
-
-00:04:59.030 --> 00:05:06.090 line:100% position:50% align:middle
-we're going to import the Rebase package
-from re-base, and we are going to create
-
-00:05:06.090 --> 00:05:10.870 line:100% position:50% align:middle
-what's called a base and that's just a
-connection to our Firebase database.
-
-00:05:10.870 --> 00:05:18.020 line:100% position:50% align:middle
-So we are saying const base equals
-Rebase.createClass and we need to
-
-00:05:18.020 --> 00:05:22.303 line:100% position:50% align:middle
-pass it a couple of things. We need an
-API key, we need the domain that we're
-
-00:05:22.303 --> 00:05:26.520 line:100% position:50% align:middle
-actually connecting to, as well as the
-database you were [inaudible].
-
-00:05:26.520 --> 00:05:29.450 line:100% position:50% align:middle
-So what I want you to do is go back to
-your Firebase console,
-
-00:05:29.450 --> 00:05:33.130 line:100% position:50% align:middle
-click on the name of your database
-in the top, left-hand corner,
-
-00:05:33.130 --> 00:05:37.270 line:100% position:50% align:middle
-just make sure you're on this page where
-it says iOS. It might change by the time
-
-00:05:37.270 --> 00:05:41.210 line:100% position:50% align:middle
-you're seeing this but we have this, "Add
-Firebase to your web app." Click that
-
-00:05:41.210 --> 00:05:46.990 line:100% position:50% align:middle
-and it's going to pop open some javascript
-config here. Now we don't need all of
-
-00:05:46.990 --> 00:05:50.980 line:100% position:50% align:middle
-this. We just need the first three
-things, apiKey, authDomain
-
-00:05:50.980 --> 00:05:56.240 line:100% position:50% align:middle
-and databaseURL. You can also set store
-files with that as well if you're
-
-00:05:56.240 --> 00:05:59.340 line:100% position:50% align:middle
-interested in that but we're not
-going to be doing that here.
-
-00:05:59.340 --> 00:06:06.270 line:100% position:50% align:middle
-And you just paste that on in here and
-then we'll export that base URL so that we
-
-00:06:06.270 --> 00:06:11.270 line:100% position:50% align:middle
-can access this database connection
-from any one of our files.
-
-00:06:11.270 --> 00:06:15.220 line:100% position:50% align:middle
-Anytime we need to work with Firebase, we
-can just import this base,
-
-00:06:15.220 --> 00:06:18.978 line:100% position:50% align:middle
-and it's going to be already connected
-to Firebase and doing all the
-
-00:06:18.978 --> 00:06:20.950 line:100% position:50% align:middle
-API keys behind the scenes.
-
-00:06:20.950 --> 00:06:25.800 line:100% position:50% align:middle
-By the way, if you're wondering, like, is
-that safe to put a API key on the client,
-
-00:06:25.800 --> 00:06:30.496 line:100% position:50% align:middle
-like, couldn't anyone see that? And that's
-where the authentication rules on Firebase
-
-00:06:30.496 --> 00:06:34.250 line:100% position:50% align:middle
-are going to come in handy so totally
-fine if you're wondering about that.
-
-00:06:34.250 --> 00:06:38.640 line:100% position:50% align:middle
-Then we head back over to our app.js and
-we want to import the base.
-
-00:06:38.640 --> 00:06:47.110 line:100% position:50% align:middle
-So we say import base from base.
-That's our base.js file and now
-
-00:06:47.110 --> 00:06:51.880 line:100% position:50% align:middle
-we need to talk a little bit about
-something called the React lifecycle
-
-00:06:51.880 --> 00:06:57.000 line:100% position:50% align:middle
-hooks. React has this component,
-lifecycle, where it gives us a number of
-
-00:06:57.000 --> 00:07:03.520 line:100% position:50% align:middle
-sort of entry points into a component. So
-when a component is being mounted or
-
-00:07:03.520 --> 00:07:08.030 line:100% position:50% align:middle
-when a component is being rendered onto
-the page, there's different entry points
-
-00:07:08.030 --> 00:07:14.030 line:100% position:50% align:middle
-where we can hook into and do various
-things like do an AJAX request or check
-
-00:07:14.030 --> 00:07:18.380 line:100% position:50% align:middle
-for any number of items or, in our case,
-we're going to connect to rebate.
-
-00:07:18.380 --> 00:07:22.860 line:100% position:50% align:middle
-We're going to be using one called
-componentWillMount, and what that does is
-
-00:07:22.860 --> 00:07:27.740 line:100% position:50% align:middle
-it allows us to hook into that, like,
-split-second right before our component is
-
-00:07:27.740 --> 00:07:31.830 line:100% position:50% align:middle
-rendered, our app component is rendered to
-the screen, and it's going to allow us to
-
-00:07:31.830 --> 00:07:37.950 line:100% position:50% align:middle
-sync our component state with our actual
-Firebase state. So we've got
-
-00:07:37.950 --> 00:07:41.996 line:100% position:50% align:middle
-componentWillMount, componentDidMount,
-componentWillReceiveProps,
-
-00:07:41.996 --> 00:07:46.428 line:100% position:50% align:middle
-shouldComponentUpdate,
-componentWillupdate, componentDidUpdate
-
-00:07:46.428 --> 00:07:49.756 line:100% position:50% align:middle
-and, like, anytime you feel like, hmm, I
-need to do, like, a quick check or I need
-
-00:07:49.756 --> 00:07:54.910 line:100% position:50% align:middle
-to go and fetch something on one of these
-hooks, go to this component lifecycle and
-
-00:07:54.910 --> 00:07:59.857 line:100% position:50% align:middle
-look for the one that you want. The one
-that we want is called componentWillMount
-
-00:07:59.857 --> 00:08:03.630 line:100% position:50% align:middle
-and I'm going to do that right
-underneath our constructor here.
-
-00:08:03.630 --> 00:08:09.640 line:100% position:50% align:middle
-I'll say componentWillMount. Now we
-didn't make that up. That is a special one
-
-00:08:09.640 --> 00:08:14.410 line:100% position:50% align:middle
-that is made by React. So we have render,
-which we know is a special one,
-
-00:08:14.410 --> 00:08:17.520 line:100% position:50% align:middle
-but then we've just been making up, like,
-addFish and loadSamples.
-
-00:08:17.520 --> 00:08:20.920 line:100% position:50% align:middle
-Now componentWillMount is one that
-specifically comes from React
-
-00:08:20.920 --> 00:08:25.690 line:100% position:50% align:middle
-and we can take a look at it right here.
-Invoked once, both on the client and the
-
-00:08:25.690 --> 00:08:29.520 line:100% position:50% align:middle
-server. So that's important to know if
-you're doing server-side rendering.
-
-00:08:29.520 --> 00:08:33.340 line:100% position:50% align:middle
-Immediately, before the initial rendering
-occurs, you call setState within this
-
-00:08:33.340 --> 00:08:37.440 line:100% position:50% align:middle
-method on render. Render will see the
-updated state and will be executed only
-
-00:08:37.440 --> 00:08:41.410 line:100% position:50% align:middle
-once despite the state change. So that's
-really interesting because if you wanted
-
-00:08:41.410 --> 00:08:45.420 line:100% position:50% align:middle
-to change state before it got rendered to
-the page rather than rendering it,
-
-00:08:45.420 --> 00:08:47.976 line:100% position:50% align:middle
-changing state, and then
-rendering a second time, that could
-
-00:08:47.976 --> 00:08:50.263 line:100% position:50% align:middle
-really save you in performance.
-
-00:08:50.263 --> 00:08:56.130 line:100% position:50% align:middle
-So what we want to do is to say this.ref
-equals base.syncState,
-
-00:08:56.130 --> 00:09:00.621 line:100% position:50% align:middle
-and the first thing that it takes is a
-string that points to the actual piece of
-
-00:09:00.621 --> 00:09:03.960 line:100% position:50% align:middle
-your Firebase that you'd like to sync
-with, because if we take a look at my
-
-00:09:03.960 --> 00:09:07.216 line:100% position:50% align:middle
-Firebase right here...and this is the one
-that I've done. The top level is,
-
-00:09:07.216 --> 00:09:11.715 line:100% position:50% align:middle
-like, the entire database and we don't
-want to sync this one store.
-
-00:09:11.715 --> 00:09:16.300 line:100% position:50% align:middle
-Remember that, like, we're just viewing
-this one, panicky-lazy-fungi store,
-
-00:09:16.300 --> 00:09:21.000 line:100% position:50% align:middle
-and we don't want to sync the entire
-thing. So we have to tell it don't sync
-
-00:09:21.000 --> 00:09:24.350 line:100% position:50% align:middle
-the entire catch-of-the-day,
-but instead, sync
-
-00:09:24.350 --> 00:09:31.138 line:100% position:50% align:middle
-catch-of-the-day/panicky-lazy-fungi/fishes
-so let me do that here.
-
-00:09:31.138 --> 00:09:34.960 line:100% position:50% align:middle
-If we do backticks it would be...
-let's grab the URL
-
-00:09:34.960 --> 00:09:44.490 line:100% position:50% align:middle
-here panicky-lazy-fungi/fishes, right? But
-I can't hard-code panicky-lazy-fungi
-
-00:09:44.490 --> 00:09:47.871 line:100% position:50% align:middle
-because that's going
-to be different depending on
-
-00:09:47.871 --> 00:09:51.520 line:100% position:50% align:middle
-which of the stores I'm on, right?
-
-00:09:51.520 --> 00:09:57.640 line:100% position:50% align:middle
-So how do we get that little piece of the
-URL here, panicky-lazy-fungi or
-
-00:09:57.640 --> 00:10:05.080 line:100% position:50% align:middle
-drab-drab-tomatoes? How do I access that
-actual piece? Well, that's done via props.
-
-00:10:05.080 --> 00:10:11.980 line:100% position:50% align:middle
-If we go and inspect our app
-component here, you'll see that...look,
-
-00:10:11.980 --> 00:10:18.950 line:100% position:50% align:middle
-oh, this.props.params... And we never did
-anything to do that but our friend React
-
-00:10:18.950 --> 00:10:24.340 line:100% position:50% align:middle
-Router, which is the parent to app, said,
-"Oh, by the way, you probably will need
-
-00:10:24.340 --> 00:10:29.332 line:100% position:50% align:middle
-this storeId variable." Now remember
-that's what we did in our index.js,
-
-00:10:29.332 --> 00:10:34.934 line:100% position:50% align:middle
-storeId was defined right here. You
-probably will need that so we can simply
-
-00:10:34.934 --> 00:10:43.076 line:100% position:50% align:middle
-just use this.props.params.storeid and
-that's it. I have access to the actual
-
-00:10:43.076 --> 00:10:48.420 line:100% position:50% align:middle
-piece and then we do /fishes because if we
-look at this right here, we're also going
-
-00:10:48.420 --> 00:10:52.703 line:100% position:50% align:middle
-to do authentication which has owner, and
-we may have other metadata associated with
-
-00:10:52.703 --> 00:10:57.160 line:100% position:50% align:middle
-this store. The fishes is just one piece
-of that actual store so that's where we're
-
-00:10:57.160 --> 00:11:02.750 line:100% position:50% align:middle
-going to be syncing it, and then we also
-need to pass in an object which has a
-
-00:11:02.750 --> 00:11:07.130 line:100% position:50% align:middle
-context, which is this, and the state
-that we actually want to sync.
-
-00:11:07.130 --> 00:11:10.236 line:100% position:50% align:middle
-In our case, it's going to be called
-fishes. Because, like, we also have an
-
-00:11:10.236 --> 00:11:15.060 line:100% position:50% align:middle
-OrderState which we could sync as well,
-but in our case, we only want to do fishes
-
-00:11:15.060 --> 00:11:19.830 line:100% position:50% align:middle
-so that is componentWillMount, and then
-however what happens if we switch from
-
-00:11:19.830 --> 00:11:25.430 line:100% position:50% align:middle
-one store to another store? We need to
-stop syncing as soon as we go to another
-
-00:11:25.430 --> 00:11:28.220 line:100% position:50% align:middle
-store or we go to another page.
-Otherwise, you're going to be,
-
-00:11:28.220 --> 00:11:32.810 line:100% position:50% align:middle
-like, racking up all these listeners
-behind the scenes, and it could be
-
-00:11:32.810 --> 00:11:43.142 line:100% position:50% align:middle
-catastrophic. So we want to say
-componentWillUnmount, and we simply say
-
-00:11:43.142 --> 00:11:48.808 line:100% position:50% align:middle
-base, which is our Firebase,
-.removeBinding then we pass it this.ref,
-
-00:11:48.808 --> 00:11:55.280 line:100% position:50% align:middle
-and that's why we put the syncState in
-here, that's Y-N-C. We put the syncState
-
-00:11:55.280 --> 00:11:59.660 line:100% position:50% align:middle
-in the ref so that we could reference
-it later and remove that.
-
-00:11:59.660 --> 00:12:04.340 line:100% position:50% align:middle
-So let's give that a save and see where
-we're at. I'm going to go back to my
-
-00:12:04.340 --> 00:12:10.812 line:100% position:50% align:middle
-Firebase console here. Open up my Catch Of
-The Day. Go to my database and
-
-00:12:10.812 --> 00:12:14.720 line:100% position:50% align:middle
-then I'm going to go to our application
-that we've got here, drab-drab-tomatoes
-
-00:12:14.720 --> 00:12:17.810 line:100% position:50% align:middle
-and I'm going to load in some sample
-fishes, add some to my order.
-
-00:12:17.810 --> 00:12:22.450 line:100% position:50% align:middle
-Looks to be working. Now if I go to my
-Firebase console, do we see any data?
-
-00:12:22.450 --> 00:12:26.690 line:100% position:50% align:middle
-Yep, there we go, just popped up.
-Opened it up, there's my fishes,
-
-00:12:26.690 --> 00:12:31.550 line:100% position:50% align:middle
-fish one, fish two. Now the cool thing
-about that is when I then refresh this
-
-00:12:31.550 --> 00:12:38.650 line:100% position:50% align:middle
-page, all of that data is then immediately
-reinstated for me and I can make changes
-
-00:12:38.650 --> 00:12:44.620 line:100% position:50% align:middle
-to it, either on the Firebase side or on
-my state side. Here, let's go in here and
-
-00:12:44.620 --> 00:12:52.320 line:100% position:50% align:middle
-change Pacific Halibut to Atlantic.
-Enter. Go back to our app.
-
-00:12:52.320 --> 00:12:55.142 line:100% position:50% align:middle
-It's already being updated.
-If I refresh once more,
-
-00:12:55.142 --> 00:12:58.190 line:100% position:50% align:middle
-it's already updated immediately.
-
-00:12:58.190 --> 00:13:03.890 line:100% position:50% align:middle
-So just with...I don't know, maybe we
-wrote 15, 20 lines of code in this video.
-
-00:13:03.890 --> 00:13:07.980 line:100% position:50% align:middle
-It's very simple to be able to sync all of
-your state, and now you don't have to
-
-00:13:07.980 --> 00:13:12.440 line:100% position:50% align:middle
-worry about, okay, I changed my state, I
-need to make sure that I updated that in
-
-00:13:12.440 --> 00:13:15.830 line:100% position:50% align:middle
-the database. And these things get out of
-sync really easily where now,
-
-00:13:15.830 --> 00:13:20.140 line:100% position:50% align:middle
-you as a developer, you only care about
-your state and everything else,
-
-00:13:20.140 --> 00:13:23.564 line:100% position:50% align:middle
-your HTML, as well as your
-Firebase, it's going to be listening
-
-00:13:23.564 --> 00:13:25.500 line:100% position:50% align:middle
-to that and they're going
-to update themselves.
